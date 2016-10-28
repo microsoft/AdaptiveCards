@@ -1,0 +1,3 @@
+# Interactive Visualizer
+
+The HTML Visualizer will allow previewing of Cards and will be available in early November.
