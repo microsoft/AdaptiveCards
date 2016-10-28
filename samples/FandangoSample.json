@@ -1,0 +1,42 @@
+{
+  "type": "message",
+  "text": "Hello there, I'm a bot",
+  "attachments": [
+    {
+      "contentType": "application/vnd.microsoft.card.adaptive",
+      "content": [
+        {
+          "text": "Great. What time would you like to see it?",
+          "hint-style": "title",
+          "hint-maxLines": 3
+        },
+        {
+          "text": "Showtimes for The Revenant are..."
+        }
+      ],
+      "buttons": [
+        {
+          "title": "11:00 AM",
+          "type": "imBack",
+          "value": "time11:00 AM"
+        },
+        {
+          "title": "2:00 PM",
+          "type": "imBack",
+          "value": "time2:00 PM"
+        },
+        {
+          "title": "5:00 PM",
+          "type": "imBack",
+          "value": "time5:00 PM"
+        },
+        {
+          "title": "10:00 PM",
+          "type": "imBack",
+          "value": "time10:00 PM"
+        }
+      ]
+    }
+  ],
+  "entities": []
+}

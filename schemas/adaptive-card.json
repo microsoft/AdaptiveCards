@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Microsoft Adaptive Card Schema",
+    "description": "Card schema for the adaptive card.",
+
+    "type": "object",
+	"required": [ "contentType", "content" ],
+	"additionalProperties": false,
+    "properties": {
+		"contentType": {
+			"enum": [ "application/vnd.microsoft.card.adaptive" ],
+			"description": "MIME type for the adaptive card."
+		},
+		"content": {
+			"type": "object",
+			"properties": {
+				"title": {
+					"type": "string",
+					"description": "Title/caption for the adaptive card."
+				},
+				"button": {
+					"$ref": "action-schema.json/action",
+					"description": "Button action to initiate adaptive."
+				}
+			},            
+			"required": [  ],			
+		}
+	}
+}
