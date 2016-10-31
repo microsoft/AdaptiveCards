@@ -22,8 +22,8 @@ They are comprised of `text`, `images`, `input`, and `buttons`, that may be `gro
 * Documentation of the schema (see /docs)
 * An Interactive Visualizer to preview Card payloads *(coming soon)*
 * Sample Cards (see /samples) *(coming soon)*
-* Card Renderer libraries for multiple platforms (iOS, Android, .NET) *(more info on this effort coming soon)*
-* Card Builders for .NET *(coming soon)*
+* Card Renderer libraries for multiple platforms (HTML, iOS, Android, .NET) *(more info on this effort coming soon)*
+* Card Builders for .NET and Node *(coming soon)*
 
 # Adaptive Card Schema
 
