@@ -6,7 +6,8 @@
 				{
 					"type": "TextBlock",
 					"text": "This is a text element",
-					"style": "sectionTitle"
+					"style": "sectionTitle",
+					"hint-textStacking": "bottom"
 				},
 				{
 					"type": "Picture",

@@ -2,10 +2,10 @@
     "version": "0.1.0",
     "configurations": [
         {
-            "name": "Launch index.html",
+            "name": "Launch Visualizer",
             "type": "chrome",
             "request": "launch",
-            "file": "${workspaceRoot}/index.html",
+            "file": "${workspaceRoot}/src/InteractiveVisualizer/index.html",
             "sourceMaps": true
         }
     ]
