@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="./css/flexiblecard.css" type="text/css" />
     <link rel="stylesheet" href="./css/app.css" type="text/css" />
-    <script src="js/flexiblecard.js"></script>
+    <script src="js/adaptivecard.js"></script>
     <script src="js/swiftcard.js"></script>
     <script src="js/app.js"></script>
     <script src="ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -22,22 +22,22 @@
             <div class="markup">
                 <div id="editor">
 {
-	"@type": "FlexibleCard",
+	"type": "AdaptiveCard",
 	"sections": [
 		{
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "This is a text element",
 					"style": "sectionTitle"
 				},
 				{
-					"@type": "Picture",
+					"type": "Picture",
 					"url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
 					"size": "medium"
 				},
 				{
-					"@type": "FactGroup",
+					"type": "FactGroup",
 					"items": [
 						{
 							"name": "This is a fact name",
@@ -54,15 +54,15 @@
 					]
 				},
 				{
-				    "@type": "DateInput"
+				    "type": "DateInput"
 				},
 				{
-				    "@type": "TextInput",
+				    "type": "TextInput",
 				    "topSpacing": "narrow",
 				    "title": "Enter text here"
 				},
 				{
-				    "@type": "MultichoiceInput",
+				    "type": "MultichoiceInput",
 				    "topSpacing": "narrow",
 				    "choices": [
 				        { "display": "Choice 1", "value": "1" },
@@ -71,7 +71,7 @@
 				    ]
 				},
 				{
-					"@type": "PictureGallery",
+					"type": "PictureGallery",
 					"imageSize": "medium",
 					"items": [
 						"http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
@@ -80,21 +80,21 @@
 					]
 				},
 				{
-					"@type": "ActionGroup",
+					"type": "ActionGroup",
 					"items": [
 						{
-							"@type": "ActionCard",
+							"type": "ActionCard",
 							"name": "Comment",
 							"card": {
 							    "items": [
 							        {
-							            "@type": "ColumnGroup",
+							            "type": "FlexBox",
 							            "items": [
 							                {
 							                    "size": 50,
 							                    "items": [
 							                        {
-							                            "@type": "TextInput"
+							                            "type": "TextInput"
 							                        }
 							                    ]
 							                },
@@ -102,11 +102,11 @@
 							                    "size": 50,
 							                    "items": [
 							                        {
-							                            "@type": "DateInput",
+							                            "type": "DateInput",
 							                            "size": "stretch"
 							                        },
 							                        {
-                    									"@type": "MultichoiceInput",
+                    									"type": "MultichoiceInput",
 							                            "size": "stretch",
                     									"topSpacing": "narrow",
                     									"id": "list",
@@ -131,7 +131,7 @@
 							            ]
 							        },
 							        {
-							            "@type": "TextInput",
+							            "type": "TextInput",
 							            "topSpacing": "narrow"
 							        }
 							    ]
@@ -139,7 +139,7 @@
 							"inputs": [
 								{
 
-									"@type": "TextInput",
+									"type": "TextInput",
 									"id": "comment",
 									"isMultiline": true,
 									"title": "Input's title property"
@@ -147,7 +147,7 @@
 							],
 							"actions": [
 								{
-									"@type": "HttpPOST",
+									"type": "HttpPOST",
 									"name": "Action's name prop.",
 									"target": "http://...",
 									"successMessage": "This is the action's successMessage property.",
@@ -157,11 +157,11 @@
 							]
 						},
 						{
-							"@type": "ActionCard",
+							"type": "ActionCard",
 							"name": "Move",
 							"inputs": [
 								{
-									"@type": "MultichoiceInput",
+									"type": "MultichoiceInput",
 									"id": "list",
 									"title": "Pick an option",
 									"choices": [
@@ -182,7 +182,7 @@
 							],
 							"actions": [
 								{
-									"@type": "HttpPOST",
+									"type": "HttpPOST",
 									"name": "Action's name prop.",
 									"target": "http://...",
 									"successMessage": "This is the action's successMessage property.",
@@ -191,18 +191,18 @@
 							]
 						},
 						{
-							"@type": "ActionCard",
+							"type": "ActionCard",
 							"name": "Due Date",
 							"inputs": [
 								{
-									"@type": "DateInput",
+									"type": "DateInput",
 									"id": "dueDate",
 									"title": "Input's title property"
 								}
 							],
 							"actions": [
 								{
-									"@type": "HttpPOST",
+									"type": "HttpPOST",
 									"name": "Action's name prop.",
 									"target": "http://...",
 									"successMessage": "This is the action's successMessage property.",
@@ -212,7 +212,7 @@
 							]
 						},
 						{
-							"@type": "HttpPOST",
+							"type": "HttpPOST",
 
 							"name": "Action's name prop.",
 							"target": "http://...",
@@ -220,7 +220,7 @@
 							"errorMessage": "This is the action's errorMessage property."
 						},
 						{
-							"@type": "OpenUri",
+							"type": "OpenUri",
 							"name": "Action's name prop",
 							"targets": [
 								{
@@ -236,21 +236,21 @@
 		{
 			"items": [
 				{
-					"@type": "Separator"
+					"type": "Separator"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Second section",
 					"style": "sectionTitle"
 				},
 				{
-					"@type": "ColumnGroup",
+					"type": "FlexBox",
 					"items": [
 						{
 							"size": "auto",
 							"items": [
                 				{
-                					"@type": "Picture",
+                					"type": "Picture",
                 					"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
                 					"size": "small"
                 				}
@@ -260,18 +260,18 @@
 							"size": "stretch",
 							"items": [
 							    {
-							        "@type": "TextBlock",
+							        "type": "TextBlock",
 							        "text": "This is the activityTitle property",
 							        "style": "activityTitle"
 							    },
 							    {
-							        "@type": "TextBlock",
+							        "type": "TextBlock",
 							        "text": "This is the activitySubtitle property",
 							        "style": "activitySubtitle",
 									"topSpacing": "none"
 							    },
 							    {
-							        "@type": "TextBlock",
+							        "type": "TextBlock",
 							        "text": "This is the activityText property",
 							        "style": "activityText",
 									"topSpacing": "none"
@@ -282,16 +282,16 @@
 						    "size": "large",
 						    "items": [
                 				{
-                				    "@type": "DateInput",
+                				    "type": "DateInput",
                 				    "size": "stretch"
                 				},
                 				{
-                				    "@type": "TextInput",
+                				    "type": "TextInput",
                 				    "topSpacing": "narrow",
                 				    "title": "Enter text here"
                 				},
                 				{
-                				    "@type": "MultichoiceInput",
+                				    "type": "MultichoiceInput",
                 				    "size": "stretch",
                 				    "topSpacing": "narrow",
                 				    "choices": [

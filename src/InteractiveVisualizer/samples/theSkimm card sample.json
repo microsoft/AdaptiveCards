@@ -30,7 +30,7 @@
 	"potentialAction": [
 		{
 			"@context": "http:\/\/schema.org",
-			"@type": "ViewAction",
+			"type": "ViewAction",
 			"name": "View Full Issue",
 			"target": [
 				"https:\/\/www.theskimm.com\/2016\/10\/10\/skimm-for-october-11th-2"

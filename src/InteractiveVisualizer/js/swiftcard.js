@@ -78,7 +78,7 @@ function parseActionGroup(container, json) {
     var actionGroup = new ActionGroup(container);
     var actionArray = json;
     for (var i = 0; i < actionArray.length; i++) {
-        var action = Action.create(actionGroup, actionArray[i]["@type"]);
+        var action = Action.create(actionGroup, actionArray[i]["type"]);
         action.parse(actionArray[i]);
         actionGroup.actions.push(action);
     }

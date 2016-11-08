@@ -219,8 +219,8 @@ var CardElement = (function () {
                 return new FactGroup(container);
             case "Separator":
                 return new Separator(container);
-            case "ColumnGroup":
-                return new ColumnGroup(container);
+            case "FlexBox":
+                return new FlexBox(container);
             case "TextInput":
                 return new TextInput(container);
             case "DateInput":
@@ -578,7 +578,7 @@ var OpenUri = (function (_super) {
     }
     OpenUri.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        if (json["@type"] == "ViewAction") {
+        if (json["type"] == "ViewAction") {
             var target = new TargetUri();
             target.uri = json["target"][0];
         }
@@ -764,7 +764,7 @@ var ActionCard = (function (_super) {
         if (json["inputs"] != undefined) {
             var inputArray = json["inputs"];
             for (var i = 0; i < inputArray.length; i++) {
-                var input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
+                var input = Input.createInput(this.owner.container, inputArray[i]["type"]);
                 input.parse(inputArray[i]);
                 this._inputs.push(input);
             }
@@ -775,13 +775,13 @@ var ActionCard = (function (_super) {
                 var actionJson = actionArray[i];
                 var typeIsAllowed = false;
                 for (var j = 0; j < this._allowedActionTypes.length; j++) {
-                    if (actionJson["@type"] === this._allowedActionTypes[j]) {
+                    if (actionJson["type"] === this._allowedActionTypes[j]) {
                         typeIsAllowed = true;
                         break;
                     }
                 }
                 if (typeIsAllowed) {
-                    var action = Action.create(this.owner, actionJson["@type"]);
+                    var action = Action.create(this.owner, actionJson["type"]);
                     action.parse(actionJson);
                     this._actions.push(action);
                 }
@@ -978,7 +978,7 @@ var ActionGroup = (function (_super) {
         if (json["items"] != null) {
             var actionArray = json["items"];
             for (var i = 0; i < actionArray.length; i++) {
-                var action = Action.create(this, actionArray[i]["@type"]);
+                var action = Action.create(this, actionArray[i]["type"]);
                 action.parse(actionArray[i]);
                 this._actions.push(action);
             }
@@ -1118,7 +1118,7 @@ var Container = (function (_super) {
         if (json["items"] != null) {
             var items = json["items"];
             for (var i = 0; i < items.length; i++) {
-                var elementType = items[i]["@type"];
+                var elementType = items[i]["type"];
                 if (this.isAllowedItemType(elementType)) {
                     var element = CardElement.createElement(this, elementType);
                     element.parse(items[i]);
@@ -1308,14 +1308,14 @@ var Column = (function (_super) {
     };
     return Column;
 }(Container));
-var ColumnGroup = (function (_super) {
-    __extends(ColumnGroup, _super);
-    function ColumnGroup() {
+var FlexBox = (function (_super) {
+    __extends(FlexBox, _super);
+    function FlexBox() {
         _super.apply(this, arguments);
         this._items = [];
         this._spacing = Spacing.Narrow;
     }
-    Object.defineProperty(ColumnGroup.prototype, "spacing", {
+    Object.defineProperty(FlexBox.prototype, "spacing", {
         get: function () {
             return this._spacing;
         },
@@ -1325,19 +1325,19 @@ var ColumnGroup = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ColumnGroup.prototype.parse = function (json) {
+    FlexBox.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
         this._spacing = stringToSpacing(json["spacing"], Spacing.Narrow);
         if (json["items"] != null) {
             var itemArray = json["items"];
             for (var i = 0; i < itemArray.length; i++) {
-                var groupItem = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
+                var groupItem = new Column(this.container, ["FlexBox", "ActionGroup"]);
                 groupItem.parse(itemArray[i]);
                 this._items.push(groupItem);
             }
         }
     };
-    ColumnGroup.prototype.render = function () {
+    FlexBox.prototype.render = function () {
         var element = document.createElement("div");
         element.className = "groupContainer";
         for (var i = 0; i < this._items.length; i++) {
@@ -1349,7 +1349,7 @@ var ColumnGroup = (function (_super) {
         }
         return element;
     };
-    return ColumnGroup;
+    return FlexBox;
 }(CardElement));
 var ActionCardContainer = (function (_super) {
     __extends(ActionCardContainer, _super);
@@ -1358,11 +1358,11 @@ var ActionCardContainer = (function (_super) {
     }
     return ActionCardContainer;
 }(Container));
-var FlexibleCard = (function () {
-    function FlexibleCard() {
+var AdaptiveCard = (function () {
+    function AdaptiveCard() {
         this._rootSection = new Section(null);
     }
-    FlexibleCard.prototype.parse = function (json) {
+    AdaptiveCard.prototype.parse = function (json) {
         this._rootSection.useMargins = true;
         this._rootSection.style = SectionStyle.Card;
         if (json["sections"] != undefined) {
@@ -1374,9 +1374,9 @@ var FlexibleCard = (function () {
             }
         }
     };
-    FlexibleCard.prototype.render = function () {
+    AdaptiveCard.prototype.render = function () {
         return this._rootSection.internalRender();
     };
-    return FlexibleCard;
+    return AdaptiveCard;
 }());
-//# sourceMappingURL=flexibleCard.js.map
+//# sourceMappingURL=adaptiveCard.js.map

@@ -43,7 +43,7 @@
     "potentialAction": [
         {
             "@context": "http://schema.org",
-            "@type": "ViewAction",
+            "type": "ViewAction",
             "name": "View in Trello",
             "target": [
                 "https://trello.com/c/1101/"

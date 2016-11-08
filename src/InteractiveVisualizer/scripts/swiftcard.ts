@@ -98,7 +98,7 @@ function parseActionGroup(container: Container, json: any): ActionGroup {
     let actionArray = json as Array<any>;
 
     for (var i = 0; i < actionArray.length; i++) {
-        let action = Action.create(actionGroup, actionArray[i]["@type"]);
+        let action = Action.create(actionGroup, actionArray[i]["type"]);
 
         action.parse(actionArray[i]);
 

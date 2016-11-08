@@ -36,11 +36,11 @@
             ],
             "potentialAction": [
                 {
-                    "@type": "ActionCard",
+                    "type": "ActionCard",
                     "name": "Comment",
                     "inputs": [
                         {
-                            "@type": "TextInput",
+                            "type": "TextInput",
                             "id": "comment",
                             "isMultiline": true,
                             "title": "Input's title property"
@@ -48,7 +48,7 @@
                     ],
                     "actions": [
                         {
-                            "@type": "HttpPOST",
+                            "type": "HttpPOST",
                             "name": "Action's name prop.",
                             "target": "http://...",
                             "successMessage": "This is the action's successMessage property.",
@@ -57,18 +57,18 @@
                     ]
                 },
                 {
-                    "@type": "ActionCard",
+                    "type": "ActionCard",
                     "name": "Due Date",
                     "inputs": [
                         {
-                            "@type": "DateInput",
+                            "type": "DateInput",
                             "id": "dueDate",
                             "title": "Input's title property"
                         }
                     ],
                     "actions": [
                         {
-                            "@type": "HttpPOST",
+                            "type": "HttpPOST",
                             "name": "Action's name prop.",
                             "target": "http://...",
                             "successMessage": "This is the action's successMessage property.",
@@ -77,14 +77,14 @@
                     ]
                 },
                 {
-                    "@type": "HttpPOST",
+                    "type": "HttpPOST",
                     "name": "Action's name prop.",
                     "target": "http://...",
                     "successMessage": "This is the action's successMessage property.",
                     "errorMessage": "This is the action's errorMessage property."
                 },
                 {
-                    "@type": "OpenUri",
+                    "type": "OpenUri",
                     "name": "Action's name prop",
                     "targets": [
                         { "os": "default", "uri": "http://..." }

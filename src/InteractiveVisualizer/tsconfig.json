@@ -3,10 +3,10 @@
         "target": "es5",
         "module": "commonjs",
         "outDir": "js",
-        "strictNullChecks": false,
         "watch": true,
         "sourceMap": true,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "strictNullChecks": false
     },
     "compileOnSave": true
 }

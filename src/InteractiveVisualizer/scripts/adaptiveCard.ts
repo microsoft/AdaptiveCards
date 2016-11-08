@@ -25,7 +25,7 @@ function stringToTextStyle(value: string, defaultValue: TextStyle): TextStyle {
         case "cardTitle":
             return TextStyle.CardTitle;
         case "cardText":
-            return TextStyle.CardText;
+            return TextStyle.CardText; 
         case "sectionTitle":
             return TextStyle.SectionTitle;
         case "sectionText":
@@ -228,8 +228,8 @@ abstract class CardElement {
                 return new FactGroup(container);
             case "Separator":
                 return new Separator(container);
-            case "ColumnGroup":
-                return new ColumnGroup(container);
+            case "FlexBox":
+                return new FlexBox(container);
             case "TextInput":
                 return new TextInput(container);
             case "DateInput":
@@ -604,7 +604,7 @@ class OpenUri extends ExternalAction {
     parse(json: any) {
         super.parse(json);
 
-        if (json["@type"] == "ViewAction") {
+        if (json["type"] == "ViewAction") {
             let target = new TargetUri();
 
             target.uri = (json["target"] as Array<any>)[0];
@@ -824,7 +824,7 @@ class ActionCard extends Action {
             let inputArray = json["inputs"] as Array<any>;
 
             for (let i = 0; i < inputArray.length; i++) {
-                let input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
+                let input = Input.createInput(this.owner.container, inputArray[i]["type"]);
 
                 input.parse(inputArray[i]);
 
@@ -840,14 +840,14 @@ class ActionCard extends Action {
                 let typeIsAllowed: boolean = false;
 
                 for (let j = 0; j < this._allowedActionTypes.length; j++) {
-                    if (actionJson["@type"] === this._allowedActionTypes[j]) {
+                    if (actionJson["type"] === this._allowedActionTypes[j]) {
                         typeIsAllowed = true;
                         break;
                     }
                 }
 
                 if (typeIsAllowed) {
-                    let action = Action.create(this.owner, actionJson["@type"]);
+                    let action = Action.create(this.owner, actionJson["type"]);
 
                     action.parse(actionJson);
 
@@ -1071,7 +1071,7 @@ class ActionGroup extends CardElement {
             var actionArray = json["items"] as Array<any>;
 
             for (var i = 0; i < actionArray.length; i++) {
-                let action = Action.create(this, actionArray[i]["@type"]);
+                let action = Action.create(this, actionArray[i]["type"]);
 
                 action.parse(actionArray[i]);
 
@@ -1234,7 +1234,7 @@ abstract class Container extends CardElement {
             let items = json["items"] as Array<any>;
 
             for (let i = 0; i < items.length; i++) {
-                let elementType = items[i]["@type"];
+                let elementType = items[i]["type"];
 
                 if (this.isAllowedItemType(elementType)) {
                     let element = CardElement.createElement(this, elementType);
@@ -1451,7 +1451,7 @@ class Column extends Container {
     }
 }
 
-class ColumnGroup extends CardElement {
+class FlexBox extends CardElement {
     private _items: Array<Column> = [];
     private _spacing: Spacing = Spacing.Narrow;
 
@@ -1472,7 +1472,7 @@ class ColumnGroup extends CardElement {
             let itemArray = json["items"] as Array<any>;
 
             for (let i = 0; i < itemArray.length; i++) {
-                let groupItem = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
+                let groupItem = new Column(this.container, ["FlexBox", "ActionGroup"]);
 
                 groupItem.parse(itemArray[i]);
 
@@ -1502,7 +1502,7 @@ class ColumnGroup extends CardElement {
 class ActionCardContainer extends Container {
 }
 
-class FlexibleCard {
+class AdaptiveCard {
     private _rootSection = new Section(null);
 
     parse(json: any) {
