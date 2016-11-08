@@ -9,7 +9,8 @@
     "properties": {
 		"contentType": {
 			"enum": [ "application/vnd.microsoft.card.adaptive" ],
-			"description": "MIME type for the adaptive card."
+			"description": "MIME type for the adaptive card.",
+			"version": "number",
 		},
 		"content": {
 			"type": "object",
@@ -23,7 +24,7 @@
 					"description": "Button action to initiate adaptive."
 				}
 			},            
-			"required": [  ],			
+			"required": [ "" ],	
 		}
 	}
 }

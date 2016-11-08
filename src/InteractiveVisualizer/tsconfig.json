@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "outDir": "js",
+        "strictNullChecks": false,
+        "watch": true,
+        "sourceMap": true,
+        "noImplicitAny": false
+    },
+    "compileOnSave": true
+}

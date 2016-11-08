@@ -1,0 +1,98 @@
+{
+    "summary": "This is the summary property",
+    "title": "This is the title property",
+    "themeColor": "E81123",
+    "sections": [
+        {
+            "title": "This is the **section's title** property",
+            "activityTitle": "This is the section's activityTitle property",
+            "activitySubtitle": "This is the section's activitySubtitle property",
+            "activityText": "This is the section's activityText property.",
+            "activityImage": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+            "facts": [
+                {
+                    "name": "This is a fact name",
+                    "value": "This is a fact value"
+                },
+                {
+                    "name": "This is a fact name",
+                    "value": "This is a fact value"
+                },
+                {
+                    "name": "This is a fact name",
+                    "value": "This is a fact value"
+                }
+            ],
+            "images": [
+                {
+                    "image": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg"
+                },
+                {
+                    "image": "http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg"
+                },
+                {
+                    "image": "http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg"
+                }
+            ],
+            "potentialAction": [
+                {
+                    "@type": "ActionCard",
+                    "name": "Comment",
+                    "inputs": [
+                        {
+                            "@type": "TextInput",
+                            "id": "comment",
+                            "isMultiline": true,
+                            "title": "Input's title property"
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "@type": "HttpPOST",
+                            "name": "Action's name prop.",
+                            "target": "http://...",
+                            "successMessage": "This is the action's successMessage property.",
+                            "errorMessage": "This is the action's errorMessage property."
+                        }
+                    ]
+                },
+                {
+                    "@type": "ActionCard",
+                    "name": "Due Date",
+                    "inputs": [
+                        {
+                            "@type": "DateInput",
+                            "id": "dueDate",
+                            "title": "Input's title property"
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "@type": "HttpPOST",
+                            "name": "Action's name prop.",
+                            "target": "http://...",
+                            "successMessage": "This is the action's successMessage property.",
+                            "errorMessage": "This is the action's errorMessage property."
+                        }
+                    ]
+                },
+                {
+                    "@type": "HttpPOST",
+                    "name": "Action's name prop.",
+                    "target": "http://...",
+                    "successMessage": "This is the action's successMessage property.",
+                    "errorMessage": "This is the action's errorMessage property."
+                },
+                {
+                    "@type": "OpenUri",
+                    "name": "Action's name prop",
+                    "targets": [
+                        { "os": "default", "uri": "http://..." }
+                    ]
+                }
+            ],
+            "text": "This is the section's text property. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        }
+    ],
+    "text": "This is the card's text property. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+}

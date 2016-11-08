@@ -1,0 +1,289 @@
+* {
+    box-sizing: border-box;
+}
+
+.emphasizedSection {
+    background-color: #F8F8F8;
+}
+
+table.factsTable {
+	border-width: 0px;
+	border-spacing: 0px;
+	border-style: none;
+	border-collapse: collapse;
+}
+
+table.factsTable td {
+	border-width: 0px;
+	padding: 0px;
+	border-style: none;
+}
+
+table.factsTable td.factNameCell {
+    min-width: 100px;
+    vertical-align: top;
+}
+
+table.factsTable td.factValueCell {
+    vertical-align: top;
+    padding: 0px 0px 0px 10px;
+}
+
+.cardRootSimple {
+    outline: none;
+    border: 1px solid #F1F1F1;
+}
+
+.cardRootWithTheme {
+    outline: none;
+    border-top: 1px solid #F1F1F1;
+    border-right: 1px solid #F1F1F1;
+    border-bottom: 1px solid #F1F1F1;
+    border-left: 3px solid #F1F1F1; 
+}
+
+.defaultTextStyle {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    color: #333333;
+    line-height: 20px;
+}
+
+.cardTitle {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 21px;
+    font-weight: normal;
+    color: #333333;
+}
+
+.cardText {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    color: #333333;
+    line-height: 20px;
+}
+
+.sectionTitle {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    color: #333333;
+}
+
+.sectionText {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    color: #333333;
+    line-height: 20px;
+}
+
+.activityTitle {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    color: #333333;
+    line-height: 20px;
+}
+
+.activitySubtitle {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    color: #666666;
+    line-height: 20px;
+}
+
+.activityText {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    color: #333333;
+    line-height: 20px;
+}
+
+.factName {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333;
+    line-height: 20px;
+}
+
+.factValue {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    color: #666666;
+    line-height: 20px;
+}
+
+.activitySection {
+    display: flex;
+}
+
+.activityImage {
+    flex: 0 1 auto;
+    margin-right: 10px;
+}
+
+.activityContent {
+    flex: 1 1 auto;
+    margin-top: -5px;
+}
+
+.horizontalSeparator {
+    border-top: 1px solid #EEEEEE;
+}
+
+.groupContainer {
+    display: flex;
+}
+
+.linkButtonsContainer {
+    display: flex;
+}
+
+.pushButtonsContainer {
+    display: flex;
+}
+
+.actionItem {
+    flex: 0 1 auto;
+    margin-right: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.actionCard {
+    margin-top: 16px;
+}
+
+div.button {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+.linkNormal {
+    color: #0078D7;
+    cursor: pointer;
+}
+
+.linkSelected {
+    color: #0078D7;
+    cursor: pointer;
+}
+
+.linkInactive {
+    color: #666666;
+    cursor: pointer;
+}
+
+.pushProminentNormal {
+    background-color: #0078D7;
+    color: white;    
+    padding: 4px 10px 5px 10px;
+    min-width: 80px; 
+    height: 31px;
+    text-align: center;
+    vertical-align: middle;  
+    cursor: default;
+}
+
+.pushProminentSelected {
+    background-color: #005A9E;
+    color: white;
+    padding: 4px 10px 5px 10px;
+    min-width: 80px;   
+    height: 31px;
+    text-align: center;  
+    vertical-align: middle;  
+    cursor: default;
+}
+
+.pushProminentInactive {
+    background-color: #EAEAEA;
+    color: A6A6A6;
+    padding: 4px 10px 5px 10px;
+    min-width: 80px;   
+    height: 31px;
+    text-align: center;  
+    vertical-align: middle;  
+    cursor: default;
+}
+
+.pushSubduedNormal {
+    background-color: #EAEAEA;
+    color: black;    
+    padding: 4px 10px 5px 10px;
+    min-width: 80px; 
+    height: 31px;
+    text-align: center;
+    vertical-align: middle;  
+    cursor: default;
+}
+
+.pushSubduedSelected {
+    background-color: #CCCCCC;
+    color: black;
+    padding: 4px 10px 5px 10px;
+    min-width: 80px;   
+    height: 31px;
+    text-align: center;  
+    vertical-align: middle;  
+    cursor: default;
+}
+
+.pushSubduedInactive {
+    background-color: #EAEAEA;
+    color: #A6A6A6;
+    padding: 4px 10px 5px 10px;
+    min-width: 80px;   
+    height: 31px;
+    text-align: center;  
+    vertical-align: middle;  
+    cursor: default;
+}
+
+textarea.textInput {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 4px 8px;
+    height: 72px;
+    resize: none;
+}
+
+input.dateInput {
+    font-family: 'Segoe UI', sans-serif;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 5px 8px;
+}
+
+input.timeInput {
+    font-family: 'Segoe UI', sans-serif;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 5px 8px;
+}
+
+select.multichoiceInput {
+    font-family: 'Segoe UI', sans-serif;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 6px 8px;
+}

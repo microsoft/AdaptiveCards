@@ -1,0 +1,53 @@
+{
+    "summary": "Miguel Garcia commented on Trello",
+    "title": "Project Tango",
+    "sections": [
+        {
+            "activityTitle": "Miguel Garcia commented",
+            "activitySubtitle": "On Project Tango",
+            "activityText": "\"Here are the designs\"",
+            "activityImage": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg"
+        },
+        {
+            "title": "Details",
+            "facts": [
+                {
+                    "name": "Labels",
+                    "value": "Designs, redlines"
+                },
+                {
+                    "name": "Due date",
+                    "value": "Dec 7, 2016"
+                },
+                {
+                    "name": "Attachments",
+                    "value": "[final.jpg](http://connectorsdemo.azurewebsites.net/images/WIN14_Jan_04.jpg)"
+                }
+            ]
+        },
+        {
+            "title": "Images",
+            "images": [
+                {
+                    "image":"http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg"
+                },
+                {
+                    "image":"http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg"
+                },
+                {
+                    "image":"http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg"
+                }
+            ]
+        }
+    ],
+    "potentialAction": [
+        {
+            "@context": "http://schema.org",
+            "@type": "ViewAction",
+            "name": "View in Trello",
+            "target": [
+                "https://trello.com/c/1101/"
+            ]
+        }
+    ]
+}

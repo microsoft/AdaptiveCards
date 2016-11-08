@@ -174,6 +174,11 @@ Buttons can be specified in a "command bar" at the bottom of the Card, or they c
 
 ## Input
 
+1. Associate input with actions
+1. Features
+
+Collapsible groups/overflow text. FAQ sends a huge blob of text, would be nice to offer expand/collapse to make the chat more compact
+
 Text box, drop-down lists, dates
 
 # Speech customizations
