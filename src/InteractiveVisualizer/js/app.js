@@ -1,22 +1,29 @@
-/// <reference path="adaptiveCard.ts" />
 var editor;
 var markdownProcessor;
 function renderCard() {
     try {
         var json = JSON.parse(editor.getValue());
-        var cardTypeName = json["type"];
-        if (cardTypeName === undefined) {
-            cardTypeName = "AdaptiveCard";
-        }
+        var cardTypeName = json["@type"];
         var renderedCard = void 0;
         switch (cardTypeName) {
+            case "SwiftCard":
+            case "MessageCard":
+                var swiftCard = new MessageCard();
+                swiftCard.parse(json);
+                renderedCard = swiftCard.render();
+                break;
             case "AdaptiveCard":
-                var adaptiveCard = new AdaptiveCard();
-                adaptiveCard.parse(json);
-                renderedCard = adaptiveCard.render();
+                var flexibleCard = new AdaptiveCard();
+                flexibleCard.parse(json);
+                renderedCard = flexibleCard.render();
                 break;
             default:
-                throw new Error("Unknown card type: " + cardTypeName);
+                if (isNullOrEmpty(cardTypeName)) {
+                    throw new Error("The card's type must be specified.");
+                }
+                else {
+                    throw new Error("Unknown card type: " + cardTypeName);
+                }
         }
         var node = document.getElementById('content');
         node.innerHTML = '';

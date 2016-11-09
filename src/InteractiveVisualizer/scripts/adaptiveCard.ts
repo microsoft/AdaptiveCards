@@ -1,7 +1,7 @@
 ﻿/*
 Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
 */
- 
+
 enum TextStyle {
     Default,
     CardSummary,
@@ -25,7 +25,7 @@ function stringToTextStyle(value: string, defaultValue: TextStyle): TextStyle {
         case "cardTitle":
             return TextStyle.CardTitle;
         case "cardText":
-            return TextStyle.CardText; 
+            return TextStyle.CardText;
         case "sectionTitle":
             return TextStyle.SectionTitle;
         case "sectionText":
@@ -69,6 +69,25 @@ function textStyleToCssClassName(style: TextStyle): string {
             return "factValue";
         default:
             return "defaultTextStyle";
+    }
+}
+
+enum HorizontalAlignment {
+    Left,
+    Center,
+    Right
+}
+
+function stringToHorizontalAlignment(value: string, defaultValue: HorizontalAlignment): HorizontalAlignment {
+    switch (value) {
+        case "left":
+            return HorizontalAlignment.Left;
+        case "center":
+            return HorizontalAlignment.Center;
+        case "right":
+            return HorizontalAlignment.Right;
+        default:
+            return defaultValue;
     }
 }
 
@@ -117,23 +136,6 @@ enum ButtonState {
     Normal,
     Selected,
     Inactive
-}
-
-enum SectionStyle {
-    Normal,
-    Card,
-    Emphasis
-}
-
-function stringToSectionStyle(value: string, defaultValue: SectionStyle): SectionStyle {
-    switch (value) {
-        case "normal":
-            return SectionStyle.Normal;
-        case "emphasis":
-            return SectionStyle.Emphasis;
-        default:
-            return defaultValue;
-    }
 }
 
 enum Spacing {
@@ -213,6 +215,7 @@ abstract class CardElement {
     private _container: Container;
     private _topSpacing: Spacing = Spacing.Normal;
     private _size: Size = Size.Auto;
+    private _horizontalAlignment: HorizontalAlignment = HorizontalAlignment.Left;
 
     static createElement(container: Container, typeName: string): CardElement {
         switch (typeName) {
@@ -228,8 +231,8 @@ abstract class CardElement {
                 return new FactGroup(container);
             case "Separator":
                 return new Separator(container);
-            case "FlexBox":
-                return new FlexBox(container);
+            case "ColumnGroup":
+                return new ColumnGroup(container);
             case "TextInput":
                 return new TextInput(container);
             case "DateInput":
@@ -265,21 +268,38 @@ abstract class CardElement {
         this._size = value;
     }
 
+    get horizontalAlignment(): HorizontalAlignment {
+        return this._horizontalAlignment;
+    }
+
+    set horizontalAlignment(value: HorizontalAlignment) {
+        this._horizontalAlignment = value;
+    }
+
     abstract render(): HTMLElement;
 
-    adjustPhysicalSize(element: HTMLElement) {
+    adjustLayout(element: HTMLElement) {
         if (this.size == Size.Stretch) {
             element.style.width = "100%";
         }
         else if (this.size != Size.Auto) {
             element.style.width = this.getPhysicalSize().toString() + "px";
         }
+
+        switch (this.horizontalAlignment) {
+            case HorizontalAlignment.Center:
+                element.style.textAlign = "center";
+                break;
+            case HorizontalAlignment.Right:
+                element.style.textAlign = "right";
+                break;
+        }
     }
 
     internalRender(): HTMLElement {
         let renderedElement =  this.render();
 
-        this.adjustPhysicalSize(renderedElement);
+        this.adjustLayout(renderedElement);
 
         return renderedElement;
     }
@@ -302,6 +322,7 @@ abstract class CardElement {
     parse(json: any) {
         this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.Normal);
         this._size = stringToSize(json["size"], this.size);
+        this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     }
 
     getSpacingAfterThis(): number {
@@ -604,7 +625,7 @@ class OpenUri extends ExternalAction {
     parse(json: any) {
         super.parse(json);
 
-        if (json["type"] == "ViewAction") {
+        if (json["@type"] == "ViewAction") {
             let target = new TargetUri();
 
             target.uri = (json["target"] as Array<any>)[0];
@@ -824,7 +845,7 @@ class ActionCard extends Action {
             let inputArray = json["inputs"] as Array<any>;
 
             for (let i = 0; i < inputArray.length; i++) {
-                let input = Input.createInput(this.owner.container, inputArray[i]["type"]);
+                let input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
 
                 input.parse(inputArray[i]);
 
@@ -840,14 +861,14 @@ class ActionCard extends Action {
                 let typeIsAllowed: boolean = false;
 
                 for (let j = 0; j < this._allowedActionTypes.length; j++) {
-                    if (actionJson["type"] === this._allowedActionTypes[j]) {
+                    if (actionJson["@type"] === this._allowedActionTypes[j]) {
                         typeIsAllowed = true;
                         break;
                     }
                 }
 
                 if (typeIsAllowed) {
-                    let action = Action.create(this.owner, actionJson["type"]);
+                    let action = Action.create(this.owner, actionJson["@type"]);
 
                     action.parse(actionJson);
 
@@ -861,17 +882,15 @@ class ActionCard extends Action {
         alert('Now executing "' + actionButton.text + '"');
     }
 
-    renderUi(container: Section, needsTopSpacer: boolean = false): HTMLElement {
+    renderUi(container: Container, needsTopSpacer: boolean = false): HTMLElement {
         let actionCardElement = document.createElement("div");
 
         if (needsTopSpacer) {
             actionCardElement.style.marginTop = "16px";
         }
 
-        let topBottomPadding = container.getActionCardTopBottomPadding();
-
-        actionCardElement.style.paddingTop = topBottomPadding.toString() + "px";
-        actionCardElement.style.paddingBottom = topBottomPadding.toString() + "px";
+        actionCardElement.style.paddingTop = container.padding == 0 ? "16px" : getPhysicalSpacing(container.padding).toString() + "px";
+        actionCardElement.style.paddingBottom = actionCardElement.style.paddingTop;
 
         if (this._card != null) {
             appendChild(actionCardElement, this._card.render());
@@ -881,10 +900,7 @@ class ActionCard extends Action {
                 let inputElement = this._inputs[i].internalRender();
 
                 if (i > 0) {
-                    let spacer = document.createElement("div");
-                    spacer.style.height = "10px";
-
-                    appendChild(actionCardElement, spacer);
+                    inputElement.style.marginTop = "10px";
                 }
 
                 appendChild(actionCardElement, inputElement);
@@ -1071,7 +1087,7 @@ class ActionGroup extends CardElement {
             var actionArray = json["items"] as Array<any>;
 
             for (var i = 0; i < actionArray.length; i++) {
-                let action = Action.create(this, actionArray[i]["type"]);
+                let action = Action.create(this, actionArray[i]["@type"]);
 
                 action.parse(actionArray[i]);
 
@@ -1091,7 +1107,7 @@ class ActionGroup extends CardElement {
         let containerPadding = this.container.getActionCardLeftRightPadding();
 
         this._actionCardContainer = document.createElement("div");
-        this._actionCardContainer.style.backgroundColor = this.container.getActionCardBackgroundColor();
+        this._actionCardContainer.style.backgroundColor = "#F8F8F8";
         this._actionCardContainer.style.marginLeft = "-" + containerPadding.toString() + "px";
         this._actionCardContainer.style.marginRight = "-" + containerPadding.toString() + "px";
         this._actionCardContainer.style.paddingLeft = containerPadding.toString() + "px";
@@ -1138,13 +1154,13 @@ class Separator extends CardElement {
     }
 }
 
-abstract class Container extends CardElement {
+class Container extends CardElement {
     private _forbiddenItemTypes: Array<string>;
     private _items: Array<CardElement> = [];
-    private _bottomSpacer: HTMLElement;
-    private _padding: number = 0;
-    private _backgroundImageUrl;
-    private _useMargins = false;
+    private _element: HTMLDivElement;
+    private _backgroundImageUrl: string;
+    private _backgroundColor: string;
+    private _padding: Spacing = Spacing.None;
 
     private isAllowedItemType(elementType: string) {
         if (this._forbiddenItemTypes == null) {
@@ -1171,11 +1187,11 @@ abstract class Container extends CardElement {
         this._forbiddenItemTypes = forbiddenItemTypes;
     }
 
-    get padding(): number {
+    get padding(): Spacing {
         return this._padding;
     }
 
-    set padding(value: number) {
+    set padding(value: Spacing) {
         this._padding = value;
     }
 
@@ -1183,12 +1199,12 @@ abstract class Container extends CardElement {
         return this._items.length;
     }
 
-    get useMargins(): boolean {
-        return this._useMargins;
+    get backgroundColor(): string {
+        return this._backgroundColor;
     }
 
-    set useMargins(value: boolean) {
-        this._useMargins = value;
+    set backgroundColor(value: string) {
+        this._backgroundColor = value;
     }
 
     addElement(element: CardElement) {
@@ -1207,7 +1223,7 @@ abstract class Container extends CardElement {
 
     showBottomSpacer(requestingElement: CardElement) {
         if (this.isLastElement(requestingElement)) {
-            this._bottomSpacer.style.height = this.padding.toString() + "px";
+            this._element.style.paddingBottom = getPhysicalSpacing(this.padding) + "px"; 
 
             if (this.container != null) {
                 this.container.showBottomSpacer(this);
@@ -1217,7 +1233,7 @@ abstract class Container extends CardElement {
 
     hideBottomSpacer(requestingElement: CardElement) {
         if (this.isLastElement(requestingElement)) {
-            this._bottomSpacer.style.height = "0px";
+            this._element.style.paddingBottom = "0px"; 
 
             if (this.container != null) {
                 this.container.hideBottomSpacer(this);
@@ -1227,14 +1243,16 @@ abstract class Container extends CardElement {
 
     parse(json: any) {
         super.parse(json);
-        
+
+        this._padding = stringToSpacing(json["padding"], Spacing.None);        
         this._backgroundImageUrl = json["backgroundImage"];
+        this._backgroundColor = json["backgroundColor"];
 
         if (json["items"] != null) {
             let items = json["items"] as Array<any>;
 
             for (let i = 0; i < items.length; i++) {
-                let elementType = items[i]["type"];
+                let elementType = items[i]["@type"];
 
                 if (this.isAllowedItemType(elementType)) {
                     let element = CardElement.createElement(this, elementType);
@@ -1251,57 +1269,42 @@ abstract class Container extends CardElement {
     }
 
     render(): HTMLElement {
-        this._bottomSpacer = document.createElement("div");
-        this._bottomSpacer.style.height = this.padding.toString() + "px";
-
-        let element: HTMLElement = null;
-
         if (this.elementCount > 0) {
-            element = document.createElement("div");
-            element.style.paddingLeft = this._padding.toString() + "px";
-            element.style.paddingTop = this._padding.toString() + "px";
-            element.style.paddingRight = this._padding.toString() + "px";
+            this._element = document.createElement("div");
+
+            if (!isNullOrEmpty(this.backgroundColor)) {
+                this._element.style.backgroundColor = this.backgroundColor;
+            }
+
+            this._element.style.padding = getPhysicalSpacing(this.padding) + "px"; 
 
             let html: string = '';
             let previousElement: CardElement = null;
-            let spaceUsingMargins: boolean = this.getRootContainer().useMargins; 
 
             for (var i = 0; i < this.elementCount; i++) {
-                let spacing: Number = 0;
-
-                if (!spaceUsingMargins) {
-                    spacing = previousElement != null ? previousElement.getSpacingAfterThis() : 0;
-                }
-                else {
-                    spacing = getPhysicalSpacing(this.getElement(i).topSpacing);
-                }
+                let spacing = getPhysicalSpacing(this.getElement(i).topSpacing);
 
                 let renderedElement = this.getElement(i).internalRender();
 
                 if (renderedElement != null) {
                     if (previousElement != null && spacing > 0) {
-                        let spacer = document.createElement("div");
-                        spacer.style.height = spacing.toString() + "px";
-
-                        appendChild(element, spacer);
+                        renderedElement.style.marginTop = spacing.toString() + "px";
                     }
 
-                    appendChild(element, renderedElement);
+                    appendChild(this._element, renderedElement);
                 }
 
                 previousElement = this.getElement(i);
             }
 
             if (!isNullOrEmpty(this._backgroundImageUrl)) {
-                element.style.backgroundImage = "url(" + this._backgroundImageUrl + ")";
-                element.style.backgroundRepeat = "no-repeat";
-                element.style.backgroundSize = "cover";
+                this._element.style.backgroundImage = 'url("' + this._backgroundImageUrl + '")';
+                this._element.style.backgroundRepeat = "no-repeat";
+                this._element.style.backgroundSize = "cover";
             }
-
-            appendChild(element, this._bottomSpacer);
         }
 
-        return element;
+        return this._element;
     }
 
     getActionCardLeftRightPadding(): number {
@@ -1309,20 +1312,12 @@ abstract class Container extends CardElement {
         let result: number = 0;
 
         while (currentSection != null && result == 0) {
-            result = currentSection.padding;
+            result = getPhysicalSpacing(currentSection.padding);
 
             currentSection = currentSection.container;
         };
 
         return result;
-    }
-
-    getActionCardTopBottomPadding(): number {
-        return 16;
-    }
-
-    getActionCardBackgroundColor(): string {
-        return "transparent";
     }
 
     getRootContainer(): Container {
@@ -1333,86 +1328,6 @@ abstract class Container extends CardElement {
         }
 
         return currentContainer;
-    }
-}
-
-class Section extends Container {
-    private _style: SectionStyle;
-    private _themeColor: string;
-
-    get style(): SectionStyle {
-        return this._style;
-    }
-
-    set style(value: SectionStyle) {
-        this._style = value;
-
-        switch (this._style) {
-            case SectionStyle.Emphasis:
-                this.padding = 10;
-                break;
-            case SectionStyle.Card:
-                this.padding = 20;
-                break;
-            default:
-                this.padding = 0;
-                break;
-        }
-    }
-
-    get themeColor(): string {
-        return this._themeColor;
-    }
-
-    set themeColor(value: string) {
-        this._themeColor = value;
-    }
-
-    getActionCardTopBottomPadding(): number {
-        switch (this.style) {
-            case SectionStyle.Emphasis:
-                return this.padding;
-            default:
-                return 16;
-        }
-    }
-
-    getActionCardBackgroundColor(): string {
-        switch (this.style) {
-            case SectionStyle.Emphasis:
-                return "#EAEAEA";
-            default:
-                return "#F8F8F8";
-        }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.style = stringToSectionStyle(json["style"], SectionStyle.Normal); 
-    }
-
-    render(): HTMLElement {
-        let element = super.render();
-
-        if (element != null) {
-            switch (this.style) {
-                case SectionStyle.Emphasis:
-                    element.className = "emphasizedSection";
-                    break;
-                case SectionStyle.Card:
-                    if (isNullOrEmpty(this._themeColor)) {
-                        element.className = "cardRootSimple";
-                    }
-                    else {
-                        element.className = "cardRootWithTheme";
-                        element.style.borderLeftColor = "#" + this._themeColor;
-                    }
-                    break;
-            }
-        }
-
-        return element;
     }
 }
 
@@ -1431,7 +1346,7 @@ class Column extends Container {
         }
     }
 
-    adjustPhysicalSize(element: HTMLElement) {
+    adjustLayout(element: HTMLElement) {
         if (this._useWeight) {
             element.style.flex = "1 1 " + this._weight + "%";
         }
@@ -1448,31 +1363,33 @@ class Column extends Container {
                     break;
             }
         }
+
+        element.style.overflow = "hidden";
     }
 }
 
-class FlexBox extends CardElement {
+class ColumnGroup extends CardElement {
     private _items: Array<Column> = [];
-    private _spacing: Spacing = Spacing.Narrow;
+    private _columnSpacing: Spacing = Spacing.Narrow;
 
     get spacing(): number {
-        return this._spacing;
+        return this._columnSpacing;
     }
 
     set spacing(value: number) {
-        this._spacing = value;
+        this._columnSpacing = value;
     }
 
     parse(json: any) {
         super.parse(json);
 
-        this._spacing = stringToSpacing(json["spacing"], Spacing.Narrow);
+        this._columnSpacing = stringToSpacing(json["columnSpacing"], Spacing.Narrow);
         
         if (json["items"] != null) {
             let itemArray = json["items"] as Array<any>;
 
             for (let i = 0; i < itemArray.length; i++) {
-                let groupItem = new Column(this.container, ["FlexBox", "ActionGroup"]);
+                let groupItem = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
 
                 groupItem.parse(itemArray[i]);
 
@@ -1482,20 +1399,36 @@ class FlexBox extends CardElement {
     }
 
     render(): HTMLElement {
-        let element = document.createElement("div");
-        element.className = "groupContainer";
+        if (this._items.length > 0) {
+            let element = document.createElement("div");
+            element.style.display = "flex";
 
-        for (let i = 0; i < this._items.length; i++) {
-            let renderedGroup = this._items[i].internalRender();
+            let perColumnTotalSpacing = ((this._items.length - 1) * getPhysicalSpacing(this.spacing)) / this._items.length;
 
-            if (i < this._items.length - 1) {
-                renderedGroup.style.marginRight = getPhysicalSpacing(this.spacing).toString() + "px";
+            for (let i = 0; i < this._items.length; i++) {
+                let renderedColumn = this._items[i].internalRender();
+
+                if (this._items.length > 1) {
+                    if (i == 0) {
+                        renderedColumn.style.paddingRight = perColumnTotalSpacing.toString() + "px";
+                    }
+                    else if (i == this._items.length - 1) {
+                        renderedColumn.style.paddingLeft = perColumnTotalSpacing.toString() + "px";
+                    }
+                    else {
+                        renderedColumn.style.paddingRight = (perColumnTotalSpacing / 2).toString() + "px";
+                        renderedColumn.style.paddingLeft = (perColumnTotalSpacing / 2).toString() + "px";
+                    }
+                }
+
+                appendChild(element, renderedColumn);
             }
 
-            appendChild(element, renderedGroup);
+            return element;
         }
-
-        return element;
+        else {
+            return null;
+        }
     }
 }
 
@@ -1503,17 +1436,24 @@ class ActionCardContainer extends Container {
 }
 
 class AdaptiveCard {
-    private _rootSection = new Section(null);
+    private _backgroundImageUrl: string;
+    private _backgroundColor: string;
+    private _rootSection = new Container(null);
+    private _width: number;
+    private _height: number;
 
     parse(json: any) {
-        this._rootSection.useMargins = true;
-        this._rootSection.style = SectionStyle.Card;
+        this._rootSection.padding = stringToSpacing(json["padding"], Spacing.None);
+        this._backgroundImageUrl = json["backgroundImage"];
+        this._backgroundColor = json["backgroundColor"];
+        this._width = <number>json["width"];
+        this._height = <number>json["height"];
 
         if (json["sections"] != undefined) {
             let sectionArray = json["sections"] as Array<any>;
 
             for (var i = 0; i < sectionArray.length; i++) {
-                let section = new Section(this._rootSection, [ "Section" ]);
+                let section = new Container(this._rootSection, [ "Section" ]);
 
                 section.parse(sectionArray[i]);
 
@@ -1523,6 +1463,34 @@ class AdaptiveCard {
     }
 
     render(): HTMLElement {
-        return this._rootSection.internalRender();
-    }
+        let element = document.createElement("div");
+        element.style.display = "flex";
+        element.style.flexDirection = "column";
+
+        if (this._width != undefined) {
+            element.style.width = this._width.toString() + "px";
+        }
+
+        if (this._height != undefined) {
+            element.style.height = this._height.toString() + "px";
+        }
+
+        if (!isNullOrEmpty(this._backgroundImageUrl)) {
+            element.style.backgroundImage = 'url("' + this._backgroundImageUrl + '")';
+            element.style.backgroundRepeat = "no-repeat";
+            element.style.backgroundSize = "cover";
+        }
+
+        if (!isNullOrEmpty(this._backgroundColor)) {
+            element.style.backgroundColor = this._backgroundColor;
+        }
+
+
+        let renderedRootSection = this._rootSection.internalRender();
+        renderedRootSection.style.flex = "1 1 100%";
+
+        appendChild(element, renderedRootSection);
+
+        return element;
+   }
 }

@@ -5,7 +5,7 @@
             "name": "Launch Visualizer",
             "type": "chrome",
             "request": "launch",
-            "file": "${workspaceRoot}/src/InteractiveVisualizer/index.html",
+            "file": "${workspaceRoot}/src/InteractiveVisualizer/adaptiveCardVisualizer.html",
             "sourceMaps": true
         }
     ]

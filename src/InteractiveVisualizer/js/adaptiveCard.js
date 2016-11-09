@@ -74,6 +74,24 @@ function textStyleToCssClassName(style) {
             return "defaultTextStyle";
     }
 }
+var HorizontalAlignment;
+(function (HorizontalAlignment) {
+    HorizontalAlignment[HorizontalAlignment["Left"] = 0] = "Left";
+    HorizontalAlignment[HorizontalAlignment["Center"] = 1] = "Center";
+    HorizontalAlignment[HorizontalAlignment["Right"] = 2] = "Right";
+})(HorizontalAlignment || (HorizontalAlignment = {}));
+function stringToHorizontalAlignment(value, defaultValue) {
+    switch (value) {
+        case "left":
+            return HorizontalAlignment.Left;
+        case "center":
+            return HorizontalAlignment.Center;
+        case "right":
+            return HorizontalAlignment.Right;
+        default:
+            return defaultValue;
+    }
+}
 var Size;
 (function (Size) {
     Size[Size["Auto"] = 0] = "Auto";
@@ -119,22 +137,6 @@ var ButtonState;
     ButtonState[ButtonState["Selected"] = 1] = "Selected";
     ButtonState[ButtonState["Inactive"] = 2] = "Inactive";
 })(ButtonState || (ButtonState = {}));
-var SectionStyle;
-(function (SectionStyle) {
-    SectionStyle[SectionStyle["Normal"] = 0] = "Normal";
-    SectionStyle[SectionStyle["Card"] = 1] = "Card";
-    SectionStyle[SectionStyle["Emphasis"] = 2] = "Emphasis";
-})(SectionStyle || (SectionStyle = {}));
-function stringToSectionStyle(value, defaultValue) {
-    switch (value) {
-        case "normal":
-            return SectionStyle.Normal;
-        case "emphasis":
-            return SectionStyle.Emphasis;
-        default:
-            return defaultValue;
-    }
-}
 var Spacing;
 (function (Spacing) {
     Spacing[Spacing["None"] = 0] = "None";
@@ -203,6 +205,7 @@ var CardElement = (function () {
     function CardElement(container) {
         this._topSpacing = Spacing.Normal;
         this._size = Size.Auto;
+        this._horizontalAlignment = HorizontalAlignment.Left;
         this._container = container;
     }
     CardElement.createElement = function (container, typeName) {
@@ -219,8 +222,8 @@ var CardElement = (function () {
                 return new FactGroup(container);
             case "Separator":
                 return new Separator(container);
-            case "FlexBox":
-                return new FlexBox(container);
+            case "ColumnGroup":
+                return new ColumnGroup(container);
             case "TextInput":
                 return new TextInput(container);
             case "DateInput":
@@ -258,17 +261,35 @@ var CardElement = (function () {
         enumerable: true,
         configurable: true
     });
-    CardElement.prototype.adjustPhysicalSize = function (element) {
+    Object.defineProperty(CardElement.prototype, "horizontalAlignment", {
+        get: function () {
+            return this._horizontalAlignment;
+        },
+        set: function (value) {
+            this._horizontalAlignment = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    CardElement.prototype.adjustLayout = function (element) {
         if (this.size == Size.Stretch) {
             element.style.width = "100%";
         }
         else if (this.size != Size.Auto) {
             element.style.width = this.getPhysicalSize().toString() + "px";
         }
+        switch (this.horizontalAlignment) {
+            case HorizontalAlignment.Center:
+                element.style.textAlign = "center";
+                break;
+            case HorizontalAlignment.Right:
+                element.style.textAlign = "right";
+                break;
+        }
     };
     CardElement.prototype.internalRender = function () {
         var renderedElement = this.render();
-        this.adjustPhysicalSize(renderedElement);
+        this.adjustLayout(renderedElement);
         return renderedElement;
     };
     CardElement.getPhysicalSize = function (size) {
@@ -287,6 +308,7 @@ var CardElement = (function () {
     CardElement.prototype.parse = function (json) {
         this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.Normal);
         this._size = stringToSize(json["size"], this.size);
+        this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     };
     CardElement.prototype.getSpacingAfterThis = function () {
         return 20;
@@ -578,7 +600,7 @@ var OpenUri = (function (_super) {
     }
     OpenUri.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        if (json["type"] == "ViewAction") {
+        if (json["@type"] == "ViewAction") {
             var target = new TargetUri();
             target.uri = json["target"][0];
         }
@@ -764,7 +786,7 @@ var ActionCard = (function (_super) {
         if (json["inputs"] != undefined) {
             var inputArray = json["inputs"];
             for (var i = 0; i < inputArray.length; i++) {
-                var input = Input.createInput(this.owner.container, inputArray[i]["type"]);
+                var input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
                 input.parse(inputArray[i]);
                 this._inputs.push(input);
             }
@@ -775,13 +797,13 @@ var ActionCard = (function (_super) {
                 var actionJson = actionArray[i];
                 var typeIsAllowed = false;
                 for (var j = 0; j < this._allowedActionTypes.length; j++) {
-                    if (actionJson["type"] === this._allowedActionTypes[j]) {
+                    if (actionJson["@type"] === this._allowedActionTypes[j]) {
                         typeIsAllowed = true;
                         break;
                     }
                 }
                 if (typeIsAllowed) {
-                    var action = Action.create(this.owner, actionJson["type"]);
+                    var action = Action.create(this.owner, actionJson["@type"]);
                     action.parse(actionJson);
                     this._actions.push(action);
                 }
@@ -798,9 +820,8 @@ var ActionCard = (function (_super) {
         if (needsTopSpacer) {
             actionCardElement.style.marginTop = "16px";
         }
-        var topBottomPadding = container.getActionCardTopBottomPadding();
-        actionCardElement.style.paddingTop = topBottomPadding.toString() + "px";
-        actionCardElement.style.paddingBottom = topBottomPadding.toString() + "px";
+        actionCardElement.style.paddingTop = container.padding == 0 ? "16px" : getPhysicalSpacing(container.padding).toString() + "px";
+        actionCardElement.style.paddingBottom = actionCardElement.style.paddingTop;
         if (this._card != null) {
             appendChild(actionCardElement, this._card.render());
         }
@@ -808,9 +829,7 @@ var ActionCard = (function (_super) {
             for (var i = 0; i < this._inputs.length; i++) {
                 var inputElement = this._inputs[i].internalRender();
                 if (i > 0) {
-                    var spacer = document.createElement("div");
-                    spacer.style.height = "10px";
-                    appendChild(actionCardElement, spacer);
+                    inputElement.style.marginTop = "10px";
                 }
                 appendChild(actionCardElement, inputElement);
             }
@@ -978,7 +997,7 @@ var ActionGroup = (function (_super) {
         if (json["items"] != null) {
             var actionArray = json["items"];
             for (var i = 0; i < actionArray.length; i++) {
-                var action = Action.create(this, actionArray[i]["type"]);
+                var action = Action.create(this, actionArray[i]["@type"]);
                 action.parse(actionArray[i]);
                 this._actions.push(action);
             }
@@ -992,7 +1011,7 @@ var ActionGroup = (function (_super) {
         appendChild(element, actionContainer);
         var containerPadding = this.container.getActionCardLeftRightPadding();
         this._actionCardContainer = document.createElement("div");
-        this._actionCardContainer.style.backgroundColor = this.container.getActionCardBackgroundColor();
+        this._actionCardContainer.style.backgroundColor = "#F8F8F8";
         this._actionCardContainer.style.marginLeft = "-" + containerPadding.toString() + "px";
         this._actionCardContainer.style.marginRight = "-" + containerPadding.toString() + "px";
         this._actionCardContainer.style.paddingLeft = containerPadding.toString() + "px";
@@ -1038,8 +1057,7 @@ var Container = (function (_super) {
         if (forbiddenItemTypes === void 0) { forbiddenItemTypes = null; }
         _super.call(this, container);
         this._items = [];
-        this._padding = 0;
-        this._useMargins = false;
+        this._padding = Spacing.None;
         this._forbiddenItemTypes = forbiddenItemTypes;
     }
     Container.prototype.isAllowedItemType = function (elementType) {
@@ -1075,12 +1093,12 @@ var Container = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Container.prototype, "useMargins", {
+    Object.defineProperty(Container.prototype, "backgroundColor", {
         get: function () {
-            return this._useMargins;
+            return this._backgroundColor;
         },
         set: function (value) {
-            this._useMargins = value;
+            this._backgroundColor = value;
         },
         enumerable: true,
         configurable: true
@@ -1098,7 +1116,7 @@ var Container = (function (_super) {
     };
     Container.prototype.showBottomSpacer = function (requestingElement) {
         if (this.isLastElement(requestingElement)) {
-            this._bottomSpacer.style.height = this.padding.toString() + "px";
+            this._element.style.paddingBottom = getPhysicalSpacing(this.padding) + "px";
             if (this.container != null) {
                 this.container.showBottomSpacer(this);
             }
@@ -1106,7 +1124,7 @@ var Container = (function (_super) {
     };
     Container.prototype.hideBottomSpacer = function (requestingElement) {
         if (this.isLastElement(requestingElement)) {
-            this._bottomSpacer.style.height = "0px";
+            this._element.style.paddingBottom = "0px";
             if (this.container != null) {
                 this.container.hideBottomSpacer(this);
             }
@@ -1114,11 +1132,13 @@ var Container = (function (_super) {
     };
     Container.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
+        this._padding = stringToSpacing(json["padding"], Spacing.None);
         this._backgroundImageUrl = json["backgroundImage"];
+        this._backgroundColor = json["backgroundColor"];
         if (json["items"] != null) {
             var items = json["items"];
             for (var i = 0; i < items.length; i++) {
-                var elementType = items[i]["type"];
+                var elementType = items[i]["@type"];
                 if (this.isAllowedItemType(elementType)) {
                     var element = CardElement.createElement(this, elementType);
                     element.parse(items[i]);
@@ -1131,60 +1151,42 @@ var Container = (function (_super) {
         }
     };
     Container.prototype.render = function () {
-        this._bottomSpacer = document.createElement("div");
-        this._bottomSpacer.style.height = this.padding.toString() + "px";
-        var element = null;
         if (this.elementCount > 0) {
-            element = document.createElement("div");
-            element.style.paddingLeft = this._padding.toString() + "px";
-            element.style.paddingTop = this._padding.toString() + "px";
-            element.style.paddingRight = this._padding.toString() + "px";
+            this._element = document.createElement("div");
+            if (!isNullOrEmpty(this.backgroundColor)) {
+                this._element.style.backgroundColor = this.backgroundColor;
+            }
+            this._element.style.padding = getPhysicalSpacing(this.padding) + "px";
             var html = '';
             var previousElement = null;
-            var spaceUsingMargins = this.getRootContainer().useMargins;
             for (var i = 0; i < this.elementCount; i++) {
-                var spacing = 0;
-                if (!spaceUsingMargins) {
-                    spacing = previousElement != null ? previousElement.getSpacingAfterThis() : 0;
-                }
-                else {
-                    spacing = getPhysicalSpacing(this.getElement(i).topSpacing);
-                }
+                var spacing = getPhysicalSpacing(this.getElement(i).topSpacing);
                 var renderedElement = this.getElement(i).internalRender();
                 if (renderedElement != null) {
                     if (previousElement != null && spacing > 0) {
-                        var spacer = document.createElement("div");
-                        spacer.style.height = spacing.toString() + "px";
-                        appendChild(element, spacer);
+                        renderedElement.style.marginTop = spacing.toString() + "px";
                     }
-                    appendChild(element, renderedElement);
+                    appendChild(this._element, renderedElement);
                 }
                 previousElement = this.getElement(i);
             }
             if (!isNullOrEmpty(this._backgroundImageUrl)) {
-                element.style.backgroundImage = "url(" + this._backgroundImageUrl + ")";
-                element.style.backgroundRepeat = "no-repeat";
-                element.style.backgroundSize = "cover";
+                this._element.style.backgroundImage = 'url("' + this._backgroundImageUrl + '")';
+                this._element.style.backgroundRepeat = "no-repeat";
+                this._element.style.backgroundSize = "cover";
             }
-            appendChild(element, this._bottomSpacer);
         }
-        return element;
+        return this._element;
     };
     Container.prototype.getActionCardLeftRightPadding = function () {
         var currentSection = this;
         var result = 0;
         while (currentSection != null && result == 0) {
-            result = currentSection.padding;
+            result = getPhysicalSpacing(currentSection.padding);
             currentSection = currentSection.container;
         }
         ;
         return result;
-    };
-    Container.prototype.getActionCardTopBottomPadding = function () {
-        return 16;
-    };
-    Container.prototype.getActionCardBackgroundColor = function () {
-        return "transparent";
     };
     Container.prototype.getRootContainer = function () {
         var currentContainer = this;
@@ -1195,84 +1197,6 @@ var Container = (function (_super) {
     };
     return Container;
 }(CardElement));
-var Section = (function (_super) {
-    __extends(Section, _super);
-    function Section() {
-        _super.apply(this, arguments);
-    }
-    Object.defineProperty(Section.prototype, "style", {
-        get: function () {
-            return this._style;
-        },
-        set: function (value) {
-            this._style = value;
-            switch (this._style) {
-                case SectionStyle.Emphasis:
-                    this.padding = 10;
-                    break;
-                case SectionStyle.Card:
-                    this.padding = 20;
-                    break;
-                default:
-                    this.padding = 0;
-                    break;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Section.prototype, "themeColor", {
-        get: function () {
-            return this._themeColor;
-        },
-        set: function (value) {
-            this._themeColor = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Section.prototype.getActionCardTopBottomPadding = function () {
-        switch (this.style) {
-            case SectionStyle.Emphasis:
-                return this.padding;
-            default:
-                return 16;
-        }
-    };
-    Section.prototype.getActionCardBackgroundColor = function () {
-        switch (this.style) {
-            case SectionStyle.Emphasis:
-                return "#EAEAEA";
-            default:
-                return "#F8F8F8";
-        }
-    };
-    Section.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.style = stringToSectionStyle(json["style"], SectionStyle.Normal);
-    };
-    Section.prototype.render = function () {
-        var element = _super.prototype.render.call(this);
-        if (element != null) {
-            switch (this.style) {
-                case SectionStyle.Emphasis:
-                    element.className = "emphasizedSection";
-                    break;
-                case SectionStyle.Card:
-                    if (isNullOrEmpty(this._themeColor)) {
-                        element.className = "cardRootSimple";
-                    }
-                    else {
-                        element.className = "cardRootWithTheme";
-                        element.style.borderLeftColor = "#" + this._themeColor;
-                    }
-                    break;
-            }
-        }
-        return element;
-    };
-    return Section;
-}(Container));
 var Column = (function (_super) {
     __extends(Column, _super);
     function Column() {
@@ -1288,7 +1212,7 @@ var Column = (function (_super) {
             this._weight = Number(json["size"]);
         }
     };
-    Column.prototype.adjustPhysicalSize = function (element) {
+    Column.prototype.adjustLayout = function (element) {
         if (this._useWeight) {
             element.style.flex = "1 1 " + this._weight + "%";
         }
@@ -1305,51 +1229,67 @@ var Column = (function (_super) {
                     break;
             }
         }
+        element.style.overflow = "hidden";
     };
     return Column;
 }(Container));
-var FlexBox = (function (_super) {
-    __extends(FlexBox, _super);
-    function FlexBox() {
+var ColumnGroup = (function (_super) {
+    __extends(ColumnGroup, _super);
+    function ColumnGroup() {
         _super.apply(this, arguments);
         this._items = [];
-        this._spacing = Spacing.Narrow;
+        this._columnSpacing = Spacing.Narrow;
     }
-    Object.defineProperty(FlexBox.prototype, "spacing", {
+    Object.defineProperty(ColumnGroup.prototype, "spacing", {
         get: function () {
-            return this._spacing;
+            return this._columnSpacing;
         },
         set: function (value) {
-            this._spacing = value;
+            this._columnSpacing = value;
         },
         enumerable: true,
         configurable: true
     });
-    FlexBox.prototype.parse = function (json) {
+    ColumnGroup.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        this._spacing = stringToSpacing(json["spacing"], Spacing.Narrow);
+        this._columnSpacing = stringToSpacing(json["columnSpacing"], Spacing.Narrow);
         if (json["items"] != null) {
             var itemArray = json["items"];
             for (var i = 0; i < itemArray.length; i++) {
-                var groupItem = new Column(this.container, ["FlexBox", "ActionGroup"]);
+                var groupItem = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
                 groupItem.parse(itemArray[i]);
                 this._items.push(groupItem);
             }
         }
     };
-    FlexBox.prototype.render = function () {
-        var element = document.createElement("div");
-        element.className = "groupContainer";
-        for (var i = 0; i < this._items.length; i++) {
-            var renderedGroup = this._items[i].internalRender();
-            if (i < this._items.length - 1) {
-                renderedGroup.style.marginRight = getPhysicalSpacing(this.spacing).toString() + "px";
+    ColumnGroup.prototype.render = function () {
+        if (this._items.length > 0) {
+            var element = document.createElement("div");
+            element.style.display = "flex";
+            var perColumnTotalSpacing = ((this._items.length - 1) * getPhysicalSpacing(this.spacing)) / this._items.length;
+            for (var i = 0; i < this._items.length; i++) {
+                var renderedColumn = this._items[i].internalRender();
+                if (this._items.length > 1) {
+                    if (i == 0) {
+                        renderedColumn.style.paddingRight = perColumnTotalSpacing.toString() + "px";
+                    }
+                    else if (i == this._items.length - 1) {
+                        renderedColumn.style.paddingLeft = perColumnTotalSpacing.toString() + "px";
+                    }
+                    else {
+                        renderedColumn.style.paddingRight = (perColumnTotalSpacing / 2).toString() + "px";
+                        renderedColumn.style.paddingLeft = (perColumnTotalSpacing / 2).toString() + "px";
+                    }
+                }
+                appendChild(element, renderedColumn);
             }
-            appendChild(element, renderedGroup);
+            return element;
         }
-        return element;
+        else {
+            return null;
+        }
     };
-    return FlexBox;
+    return ColumnGroup;
 }(CardElement));
 var ActionCardContainer = (function (_super) {
     __extends(ActionCardContainer, _super);
@@ -1360,22 +1300,45 @@ var ActionCardContainer = (function (_super) {
 }(Container));
 var AdaptiveCard = (function () {
     function AdaptiveCard() {
-        this._rootSection = new Section(null);
+        this._rootSection = new Container(null);
     }
     AdaptiveCard.prototype.parse = function (json) {
-        this._rootSection.useMargins = true;
-        this._rootSection.style = SectionStyle.Card;
+        this._rootSection.padding = stringToSpacing(json["padding"], Spacing.None);
+        this._backgroundImageUrl = json["backgroundImage"];
+        this._backgroundColor = json["backgroundColor"];
+        this._width = json["width"];
+        this._height = json["height"];
         if (json["sections"] != undefined) {
             var sectionArray = json["sections"];
             for (var i = 0; i < sectionArray.length; i++) {
-                var section = new Section(this._rootSection, ["Section"]);
+                var section = new Container(this._rootSection, ["Section"]);
                 section.parse(sectionArray[i]);
                 this._rootSection.addElement(section);
             }
         }
     };
     AdaptiveCard.prototype.render = function () {
-        return this._rootSection.internalRender();
+        var element = document.createElement("div");
+        element.style.display = "flex";
+        element.style.flexDirection = "column";
+        if (this._width != undefined) {
+            element.style.width = this._width.toString() + "px";
+        }
+        if (this._height != undefined) {
+            element.style.height = this._height.toString() + "px";
+        }
+        if (!isNullOrEmpty(this._backgroundImageUrl)) {
+            element.style.backgroundImage = 'url("' + this._backgroundImageUrl + '")';
+            element.style.backgroundRepeat = "no-repeat";
+            element.style.backgroundSize = "cover";
+        }
+        if (!isNullOrEmpty(this._backgroundColor)) {
+            element.style.backgroundColor = this._backgroundColor;
+        }
+        var renderedRootSection = this._rootSection.internalRender();
+        renderedRootSection.style.flex = "1 1 100%";
+        appendChild(element, renderedRootSection);
+        return element;
     };
     return AdaptiveCard;
 }());

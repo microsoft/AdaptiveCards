@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Adaptive Card Visualizer</title>
+
+    <link rel="stylesheet" href="./css/flexiblecard.css" type="text/css" />
+    <link rel="stylesheet" href="./css/app.css" type="text/css" />
+
+	<script src="https://cdn.jsdelivr.net/markdown-it/7.0.0/markdown-it.min.js"></script>
+    <script src="ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="js/adaptivecard.js"></script>
+    <script src="js/messagecard.js"></script>
+    <script src="js/app.js"></script>    
+</head>
+<body>
+    <div class="uiRoot">
+        <div class="cardEditor">
+            <div class="markup">
+                <div id="editor">
+{
+    "@type": "MessageCard",
+    "summary": "This is the summary property",
+    "title": "This is the title property",
+    "themeColor": "E81123",
+    "sections": [
+        {
+            "title": "This is the **section's title** property",
+            "activityTitle": "This is the section's activityTitle property",
+            "activitySubtitle": "This is the section's activitySubtitle property",
+            "activityText": "This is the section's activityText property.",
+            "activityImage": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+            "facts": [
+                {
+                    "name": "This is a fact name",
+                    "value": "This is a fact value"
+                },
+                {
+                    "name": "This is a fact name",
+                    "value": "This is a fact value"
+                },
+                {
+                    "name": "This is a fact name",
+                    "value": "This is a fact value"
+                }
+            ],
+            "images": [
+                {
+                    "image": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg"
+                },
+                {
+                    "image": "http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg"
+                },
+                {
+                    "image": "http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg"
+                }
+            ],
+            "potentialAction": [
+                {
+                    "@type": "ActionCard",
+                    "name": "Comment",
+                    "inputs": [
+                        {
+                            "@type": "TextInput",
+                            "id": "comment",
+                            "isMultiline": true,
+                            "title": "Input's title property"
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "@type": "HttpPOST",
+                            "name": "Action's name prop.",
+                            "target": "http://...",
+                            "successMessage": "This is the action's successMessage property.",
+                            "errorMessage": "This is the action's errorMessage property."
+                        }
+                    ]
+                },
+                {
+                    "@type": "ActionCard",
+                    "name": "Move",
+                    "inputs": [
+                        {
+                            "@type": "MultichoiceInput",
+                            "id": "list",
+                            "title": "Pick an option",
+                            "choices": [
+                                { "display": "Choice 1", "value": "1" },
+                                { "display": "Choice 2", "value": "2" },
+                                { "display": "Choice 3", "value": "3" }
+                            ]
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "@type": "HttpPOST",
+                            "name": "Action's name prop.",
+                            "target": "http://...",
+                            "successMessage": "This is the action's successMessage property.",
+                            "errorMessage": "This is the action's errorMessage property."
+                        }
+                    ]
+                },
+                {
+                    "@type": "ActionCard",
+                    "name": "Due Date",
+                    "inputs": [
+                        {
+                            "@type": "DateInput",
+                            "id": "dueDate",
+                            "title": "Input's title property"
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "@type": "HttpPOST",
+                            "name": "Action's name prop.",
+                            "target": "http://...",
+                            "successMessage": "This is the action's successMessage property.",
+                            "errorMessage": "This is the action's errorMessage property."
+                        }
+                    ]
+                },
+                {
+                    "@type": "HttpPOST",
+                    "name": "Action's name prop.",
+                    "target": "http://...",
+                    "successMessage": "This is the action's successMessage property.",
+                    "errorMessage": "This is the action's errorMessage property."
+                },
+                {
+                    "@type": "OpenUri",
+                    "name": "Action's name prop",
+                    "targets": [
+                        { "os": "default", "uri": "http://..." }
+                    ]
+                }
+            ],
+            "text": "This is the section's text property. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        }
+    ],
+    "text": "This is the card's text property. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+}
+                </div>
+            </div>
+            <div class="markupRenderContainer">
+                <div id="content" class="markupRender"></div>
+            </div>
+        </div>
+        <div class="uiFooter">
+            <div style="width: 0px; height: 0px; overflow: hidden">
+                <input type="file" id="filePicker" />
+            </div>
+            <button onclick="openFilePicker();">Load sample from file...</button>
+        </div>
+    </div>
+    <script>
+        markdownProcessor = window.markdownit();
+
+        editor = ace.edit("editor");
+        editor.setTheme("ace/theme/chrome");
+        editor.setOptions(
+            {
+                "showPrintMargin": false,
+                "displayIndentGuides": false,
+                "showFoldWidgets": false,
+                "highlightSelectedWord": false,
+                "fontSize": "14px"
+            });
+        editor.getSession().setMode("ace/mode/json");
+        editor.getSession().on(
+            'change',
+            function(e) { renderCard(); });
+    </script>
+</body>
+</html>

@@ -1,31 +1,38 @@
-﻿/// <reference path="adaptiveCard.ts" />
-
-var editor;
+﻿var editor;
 var markdownProcessor;
 
 function renderCard() {
     try {
-        let json: string = JSON.parse(editor.getValue());
-        let cardTypeName: string = json["type"];
-
-        if (cardTypeName === undefined) {
-           cardTypeName = "AdaptiveCard";
-        }
+        let json = JSON.parse(editor.getValue());
+        let cardTypeName = json["@type"];
 
         let renderedCard: HTMLElement;
 
         switch (cardTypeName) {
+            case "SwiftCard":
+            case "MessageCard":
+                let swiftCard = new MessageCard();
+                swiftCard.parse(json);
 
+                renderedCard = swiftCard.render();
+
+                break;
             case "AdaptiveCard":
-                let adaptiveCard = new AdaptiveCard();
-                adaptiveCard.parse(json);
+                let flexibleCard = new AdaptiveCard();
+                flexibleCard.parse(json);
 
-                renderedCard = adaptiveCard.render();
+                renderedCard = flexibleCard.render();
+
                 break;
             default:
-                throw new Error("Unknown card type: " + cardTypeName);
+                if (isNullOrEmpty(cardTypeName)) {
+                    throw new Error("The card's type must be specified.");
+                }
+                else {
+                    throw new Error("Unknown card type: " + cardTypeName);
+                }
         }
-
+        
         var node = document.getElementById('content');
 
         node.innerHTML = '';
@@ -33,13 +40,13 @@ function renderCard() {
 
         var anchors = node.getElementsByTagName("a");
 
-        for (var i = 0; i < anchors.length; i++) {
+        for (var i = 0; i < anchors.length; i++) { 
             anchors[i].target = "_blank";
         }
 
         var paragraphs = node.getElementsByTagName("p");
 
-        for (var i = 0; i < paragraphs.length; i++) {
+        for (var i = 0; i < paragraphs.length; i++) { 
             paragraphs[i].style.margin = "0";
         }
     }
@@ -52,25 +59,25 @@ function textareaChange() {
     renderCard();
 }
 
-function openFilePicker() {
+function openFilePicker(){
     document.getElementById("filePicker").click();
 }
 
 function filePickerChanged(evt) {
     let filePicker = document.getElementById("filePicker") as HTMLInputElement;
 
-    let file = filePicker.files[0];
+    let file = filePicker.files[0]; 
 
     if (file) {
         let reader = new FileReader();
 
-        reader.onload = function (e: ProgressEvent) {
+        reader.onload = function(e: ProgressEvent) {
             editor.session.setValue((e.target as FileReader).result);
         }
 
         reader.readAsText(file);
     }
-    else {
+    else { 
         alert("Failed to load file");
     }
 }
