@@ -6,6 +6,21 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var TextContrast;
+(function (TextContrast) {
+    TextContrast[TextContrast["DarkOnLight"] = 0] = "DarkOnLight";
+    TextContrast[TextContrast["LightOnDark"] = 1] = "LightOnDark";
+})(TextContrast || (TextContrast = {}));
+function stringToTextContrast(value) {
+    switch (value) {
+        case "darkOnLight":
+            return TextContrast.DarkOnLight;
+        case "lightOnDark":
+            return TextContrast.LightOnDark;
+        default:
+            return undefined;
+    }
+}
 var TextStyle;
 (function (TextStyle) {
     TextStyle[TextStyle["Default"] = 0] = "Default";
@@ -71,7 +86,7 @@ function textStyleToCssClassName(style) {
         case TextStyle.FactValue:
             return "factValue";
         default:
-            return "defaultTextStyle";
+            return "default";
     }
 }
 var HorizontalAlignment;
@@ -330,10 +345,10 @@ var TextBlock = (function (_super) {
         }
         return result;
     };
-    TextBlock.render = function (value, style) {
+    TextBlock.render = function (value, style, textContrast) {
         if (!isNullOrEmpty(value)) {
             var element = document.createElement("div");
-            element.className = textStyleToCssClassName(style);
+            element.className = "text " + textStyleToCssClassName(style) + " " + (textContrast == TextContrast.LightOnDark ? "lightOnDark" : "darkOnLight");
             element.innerHTML = processMarkdown(value);
             return element;
         }
@@ -347,7 +362,7 @@ var TextBlock = (function (_super) {
         this.style = stringToTextStyle(json["style"], TextStyle.Default);
     };
     TextBlock.prototype.render = function () {
-        return TextBlock.render(this.text, this.style);
+        return TextBlock.render(this.text, this.style, this.container.textContrast);
     };
     TextBlock.prototype.getSpacingAfterThis = function () {
         if (this.style == TextStyle.SectionTitle) {
@@ -404,10 +419,10 @@ var FactGroup = (function (_super) {
             for (var i = 0; i < this._items.length; i++) {
                 html += '<tr>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
-                html += TextBlock.render(this._items[i].name, TextStyle.FactName).outerHTML;
+                html += TextBlock.render(this._items[i].name, TextStyle.FactName, this.container.textContrast).outerHTML;
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding 0px 0px 0px 10px">';
-                html += TextBlock.render(this._items[i].value, TextStyle.FactValue).outerHTML;
+                html += TextBlock.render(this._items[i].value, TextStyle.FactValue, this.container.textContrast).outerHTML;
                 html += '    </td>';
                 html += '</tr>';
             }
@@ -1066,6 +1081,7 @@ var Container = (function (_super) {
         _super.call(this, container);
         this._items = [];
         this._padding = Spacing.None;
+        this._textContrast = undefined;
         this._forbiddenItemTypes = forbiddenItemTypes;
     }
     Container.prototype.isAllowedItemType = function (elementType) {
@@ -1101,12 +1117,38 @@ var Container = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Container.prototype, "backgroundImageUrl", {
+        get: function () {
+            return this._backgroundImageUrl;
+        },
+        set: function (value) {
+            this._backgroundImageUrl = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Container.prototype, "backgroundColor", {
         get: function () {
             return this._backgroundColor;
         },
         set: function (value) {
             this._backgroundColor = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Container.prototype, "textContrast", {
+        get: function () {
+            if (this._textContrast != undefined) {
+                return this._textContrast;
+            }
+            if (this.container != null) {
+                return this.container.textContrast;
+            }
+            return TextContrast.DarkOnLight;
+        },
+        set: function (value) {
+            this._textContrast = value;
         },
         enumerable: true,
         configurable: true
@@ -1143,6 +1185,7 @@ var Container = (function (_super) {
         this._padding = stringToSpacing(json["padding"], Spacing.None);
         this._backgroundImageUrl = json["backgroundImage"];
         this._backgroundColor = json["backgroundColor"];
+        this._textContrast = stringToTextContrast(json["textContrast"]);
         if (json["items"] != null) {
             var items = json["items"];
             for (var i = 0; i < items.length; i++) {
@@ -1312,8 +1355,9 @@ var AdaptiveCard = (function () {
     }
     AdaptiveCard.prototype.parse = function (json) {
         this._rootSection.padding = stringToSpacing(json["padding"], Spacing.None);
-        this._backgroundImageUrl = json["backgroundImage"];
-        this._backgroundColor = json["backgroundColor"];
+        this._rootSection.backgroundImageUrl = json["backgroundImage"];
+        this._rootSection.backgroundColor = json["backgroundColor"];
+        this._rootSection.textContrast = stringToTextContrast(json["textContrast"]);
         this._width = json["width"];
         this._height = json["height"];
         if (json["sections"] != undefined) {
@@ -1332,14 +1376,6 @@ var AdaptiveCard = (function () {
         }
         if (this._height != undefined) {
             element.style.height = this._height.toString() + "px";
-        }
-        if (!isNullOrEmpty(this._backgroundImageUrl)) {
-            element.style.backgroundImage = 'url("' + this._backgroundImageUrl + '")';
-            element.style.backgroundRepeat = "no-repeat";
-            element.style.backgroundSize = "cover";
-        }
-        if (!isNullOrEmpty(this._backgroundColor)) {
-            element.style.backgroundColor = this._backgroundColor;
         }
         return element;
     };

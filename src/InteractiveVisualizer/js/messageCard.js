@@ -13,12 +13,10 @@ var Activity = (function (_super) {
     Activity.prototype.render = function () {
         var html = '';
         var element = document.createElement("div");
-        // element.className = "activitySection";
         element.style.display = "flex";
         if (!isNullOrEmpty(this.imageUrl)) {
             var size = Picture.getPhysicalSize(this.imageSize);
             var imageSection = document.createElement("div");
-            // imageSection.className = "activityImage";
             imageSection.style.flex = "0 1 auto";
             imageSection.style.marginRight = "10px";
             imageSection.style.height = size.toString() + "px";
@@ -37,12 +35,11 @@ var Activity = (function (_super) {
         }
         if (!isNullOrEmpty(this.title) || !isNullOrEmpty(this.subtitle) || !isNullOrEmpty(this.text)) {
             var contentSection = document.createElement("div");
-            // contentSection.className = "activityContent";
             contentSection.style.flex = "1 1 auto";
             contentSection.style.marginTop = "-5px";
-            appendChild(contentSection, TextBlock.render(this.title, TextStyle.ActivityTitle));
-            appendChild(contentSection, TextBlock.render(this.subtitle, TextStyle.ActivitySubtitle));
-            appendChild(contentSection, TextBlock.render(this.text, TextStyle.ActivityText));
+            appendChild(contentSection, TextBlock.render(this.title, TextStyle.ActivityTitle, this.container.textContrast));
+            appendChild(contentSection, TextBlock.render(this.subtitle, TextStyle.ActivitySubtitle, this.container.textContrast));
+            appendChild(contentSection, TextBlock.render(this.text, TextStyle.ActivityText, this.container.textContrast));
             appendChild(element, contentSection);
         }
         return element;

@@ -371,7 +371,7 @@
     <Content Include="assets\Increase.png" />
     <Content Include="assets\PieChart.png" />
     <Content Include="css\app.css" />
-    <Content Include="css\flexiblecard.css" />
+    <Content Include="css\adaptivecard.css" />
     <Content Include="index.html" />
     <Content Include="scripts\app.js" />
     <Content Include="scripts\flexiblecard.js" />

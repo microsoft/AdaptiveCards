@@ -2,6 +2,22 @@
 Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
 */
 
+enum TextContrast {
+    DarkOnLight,
+    LightOnDark
+}
+
+function stringToTextContrast(value: string): TextContrast {
+    switch (value) {
+        case "darkOnLight":
+            return TextContrast.DarkOnLight;
+        case "lightOnDark":
+            return TextContrast.LightOnDark;
+        default:
+            return undefined;
+    }
+}
+
 enum TextStyle {
     Default,
     CardSummary,
@@ -68,7 +84,7 @@ function textStyleToCssClassName(style: TextStyle): string {
         case TextStyle.FactValue:
             return "factValue";
         default:
-            return "defaultTextStyle";
+            return "default";
     }
 }
 
@@ -346,10 +362,10 @@ class TextBlock extends CardElement {
         return result;
     }
 
-    static render(value: string, style: TextStyle): HTMLElement {
+    static render(value: string, style: TextStyle, textContrast: TextContrast): HTMLElement {
         if (!isNullOrEmpty(value)) {
             var element = document.createElement("div");
-            element.className = textStyleToCssClassName(style);
+            element.className = "text " + textStyleToCssClassName(style) + " " + (textContrast == TextContrast.LightOnDark ? "lightOnDark" : "darkOnLight");
             element.innerHTML = processMarkdown(value);
 
             return element;
@@ -367,7 +383,7 @@ class TextBlock extends CardElement {
     }
 
     render(): HTMLElement {
-        return TextBlock.render(this.text, this.style);
+        return TextBlock.render(this.text, this.style, this.container.textContrast);
     }
 
     getSpacingAfterThis(): number {
@@ -429,10 +445,10 @@ class FactGroup extends CardElement {
                 html += '<tr>';
 
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
-                html += TextBlock.render(this._items[i].name, TextStyle.FactName).outerHTML;
+                html += TextBlock.render(this._items[i].name, TextStyle.FactName, this.container.textContrast).outerHTML;
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding 0px 0px 0px 10px">';
-                html += TextBlock.render(this._items[i].value, TextStyle.FactValue).outerHTML;
+                html += TextBlock.render(this._items[i].value, TextStyle.FactValue, this.container.textContrast).outerHTML;
                 html += '    </td>';
                 html += '</tr>';
             }
@@ -1170,6 +1186,7 @@ class Container extends CardElement {
     private _backgroundImageUrl: string;
     private _backgroundColor: string;
     private _padding: Spacing = Spacing.None;
+    private _textContrast: TextContrast = undefined;
 
     private isAllowedItemType(elementType: string) {
         if (this._forbiddenItemTypes == null) {
@@ -1208,12 +1225,36 @@ class Container extends CardElement {
         return this._items.length;
     }
 
+    get backgroundImageUrl(): string {
+        return this._backgroundImageUrl;
+    }
+
+    set backgroundImageUrl(value: string) {
+        this._backgroundImageUrl = value;
+    }
+
     get backgroundColor(): string {
         return this._backgroundColor;
     }
 
     set backgroundColor(value: string) {
         this._backgroundColor = value;
+    }
+
+    set textContrast(value: TextContrast) {
+        this._textContrast = value;
+    }
+
+    get textContrast(): TextContrast {
+        if (this._textContrast != undefined) {
+            return this._textContrast;
+        }
+
+        if (this.container != null) {
+            return this.container.textContrast;
+        }
+
+        return TextContrast.DarkOnLight;
     }
 
     addElement(element: CardElement) {
@@ -1256,6 +1297,7 @@ class Container extends CardElement {
         this._padding = stringToSpacing(json["padding"], Spacing.None);        
         this._backgroundImageUrl = json["backgroundImage"];
         this._backgroundColor = json["backgroundColor"];
+        this._textContrast = stringToTextContrast(json["textContrast"]);
 
         if (json["items"] != null) {
             let items = json["items"] as Array<any>;
@@ -1445,16 +1487,15 @@ class ActionCardContainer extends Container {
 }
 
 class AdaptiveCard {
-    private _backgroundImageUrl: string;
-    private _backgroundColor: string;
     private _rootSection = new Container(null);
     private _width: number;
     private _height: number;
 
     parse(json: any) {
         this._rootSection.padding = stringToSpacing(json["padding"], Spacing.None);
-        this._backgroundImageUrl = json["backgroundImage"];
-        this._backgroundColor = json["backgroundColor"];
+        this._rootSection.backgroundImageUrl = json["backgroundImage"];
+        this._rootSection.backgroundColor = json["backgroundColor"];
+        this._rootSection.textContrast = stringToTextContrast(json["textContrast"]);
         this._width = <number>json["width"];
         this._height = <number>json["height"];
 
@@ -1480,16 +1521,6 @@ class AdaptiveCard {
 
         if (this._height != undefined) {
             element.style.height = this._height.toString() + "px";
-        }
-
-        if (!isNullOrEmpty(this._backgroundImageUrl)) {
-            element.style.backgroundImage = 'url("' + this._backgroundImageUrl + '")';
-            element.style.backgroundRepeat = "no-repeat";
-            element.style.backgroundSize = "cover";
-        }
-
-        if (!isNullOrEmpty(this._backgroundColor)) {
-            element.style.backgroundColor = this._backgroundColor;
         }
 
         return element;

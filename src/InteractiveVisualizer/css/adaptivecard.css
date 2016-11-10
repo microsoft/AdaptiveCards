@@ -2,82 +2,120 @@
     box-sizing: border-box;
 }
 
-.defaultTextStyle {
+.text {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     font-weight: normal;
-    color: #333333;
+}
+
+.text.default {
     line-height: 20px;
 }
 
-.cardTitle {
-    font-family: 'Segoe UI', sans-serif;
+.text.default.darkOnLight {
+    color: #333333;
+}
+
+.text.default.lightOnDark {
+    color: white;
+}
+
+.text.cardTitle {
     font-size: 21px;
-    font-weight: normal;
+}
+
+.text.cardTitle.darkOnLight {
     color: #333333;
 }
 
-.cardText {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    color: #333333;
+.text.cardTitle.lightOnDark {
+    color: white;
+}
+
+.text.cardText {
     line-height: 20px;
 }
 
-.sectionTitle {
-    font-family: 'Segoe UI', sans-serif;
+.text.cardText.darkOnLight {
+    color: #333333;
+}
+
+.text.cardText.lightOnDark {
+    color: white;
+}
+
+.text.sectionTitle {
     font-size: 18px;
-    font-weight: normal;
+}
+
+.text.sectionTitle.darkOnLight {
     color: #333333;
 }
 
-.sectionText {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    color: #333333;
+.text.sectionTitle.lightOnDark {
+    color: white;
+}
+
+.text.sectionText {
     line-height: 20px;
 }
 
-.activityTitle {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: normal;
+.text.sectionText.darkOnLight {
     color: #333333;
+}
+
+.text.sectionText.lightOnDark {
+    color: white;
+}
+
+.text.activityTitle {
     line-height: 20px;
 }
 
-.activitySubtitle {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
+.text.activityTitle.darkOnLight {
+    color: #333333;
+}
+
+.text.activityTitle.lightOnDark {
+    color: white;
+}
+
+.text.activitySubtitle {
     font-weight: 200;
+    line-height: 20px;
+}
+
+.text.activitySubtitle.darkOnLight {
     color: #666666;
+}
+
+.text.activitySubtitle.lightOnDark {
+    color: #CCCCCC;
+}
+
+.text.activityText {
     line-height: 20px;
 }
 
-.activityText {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: normal;
+.text.activityText.darkOnLight {
     color: #333333;
-    line-height: 20px;
 }
 
-.factName {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
+.text.factName {
     font-weight: 600;
-    color: #333333;
     line-height: 20px;
 }
 
-.factValue {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    color: #666666;
+.text.factName.darkOnLight {
+    color: #333333;
+}
+
+.text.factValue {
     line-height: 20px;
+}
+
+.text.factValue.darkOnLight {
+    color: #666666;
 }
 
 .button {

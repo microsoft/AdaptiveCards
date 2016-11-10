@@ -10,14 +10,12 @@ class Activity extends CardElement {
         let html: string = '';
 
         let element = document.createElement("div");
-        // element.className = "activitySection";
         element.style.display = "flex";
 
         if (!isNullOrEmpty(this.imageUrl)) {
             let size = Picture.getPhysicalSize(this.imageSize);
 
             let imageSection = document.createElement("div");
-            // imageSection.className = "activityImage";
             imageSection.style.flex = "0 1 auto";
             imageSection.style.marginRight = "10px";
             imageSection.style.height = size.toString() + "px";
@@ -43,12 +41,11 @@ class Activity extends CardElement {
 
         if (!isNullOrEmpty(this.title) || !isNullOrEmpty(this.subtitle) || !isNullOrEmpty(this.text)) {
             let contentSection = document.createElement("div");
-            // contentSection.className = "activityContent";
             contentSection.style.flex = "1 1 auto";
             contentSection.style.marginTop = "-5px";
-            appendChild(contentSection, TextBlock.render(this.title, TextStyle.ActivityTitle)); 
-            appendChild(contentSection, TextBlock.render(this.subtitle, TextStyle.ActivitySubtitle));
-            appendChild(contentSection, TextBlock.render(this.text, TextStyle.ActivityText));
+            appendChild(contentSection, TextBlock.render(this.title, TextStyle.ActivityTitle, this.container.textContrast)); 
+            appendChild(contentSection, TextBlock.render(this.subtitle, TextStyle.ActivitySubtitle, this.container.textContrast));
+            appendChild(contentSection, TextBlock.render(this.text, TextStyle.ActivityText, this.container.textContrast));
 
             appendChild(element, contentSection)
         }
