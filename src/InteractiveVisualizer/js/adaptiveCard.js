@@ -396,14 +396,17 @@ var FactGroup = (function (_super) {
         var element = null;
         if (this._items.length > 0) {
             element = document.createElement("table");
-            element.className = "factsTable";
+            element.style.borderWidth = "0px";
+            element.style.borderSpacing = "0px";
+            element.style.borderStyle = "none";
+            element.style.borderCollapse = "collapse";
             var html = '';
             for (var i = 0; i < this._items.length; i++) {
                 html += '<tr>';
-                html += '    <td class="factNameCell">';
+                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
                 html += TextBlock.render(this._items[i].name, TextStyle.FactName).outerHTML;
                 html += '    </td>';
-                html += '    <td class="factValueCell">';
+                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding 0px 0px 0px 10px">';
                 html += TextBlock.render(this._items[i].value, TextStyle.FactValue).outerHTML;
                 html += '    </td>';
                 html += '</tr>';
@@ -835,7 +838,7 @@ var ActionCard = (function (_super) {
             }
         }
         var buttonsContainer = document.createElement("div");
-        buttonsContainer.className = "pushButtonsContainer";
+        buttonsContainer.style.display = "flex";
         buttonsContainer.style.marginTop = "16px";
         for (var i = 0; i < this._actions.length; i++) {
             var actionButton = new ActionButton(this._actions[i], this._actions.length == 1 ? ActionButtonStyle.PushProminent : ActionButtonStyle.PushSubdued);
@@ -843,12 +846,10 @@ var ActionCard = (function (_super) {
             actionButton.onClick.subscribe(function (ab, args) {
                 _this.actionClicked(ab);
             });
-            appendChild(buttonsContainer, actionButton.element);
-            if (i < this._actions.length - 1) {
-                var spacer = document.createElement("div");
-                spacer.style.width = "16px";
-                appendChild(buttonsContainer, spacer);
+            if (this._actions.length > 1 && i < this._actions.length - 1) {
+                actionButton.element.style.marginRight = "16px";
             }
+            appendChild(buttonsContainer, actionButton.element);
         }
         appendChild(actionCardElement, buttonsContainer);
         return actionCardElement;
@@ -914,22 +915,26 @@ var ActionButton = (function () {
             this._state = value;
             var styleName = this._baseStyleName;
             if (this._style == ActionButtonStyle.PushProminent) {
-                styleName += "Prominent";
+                styleName += " prominent";
             }
             else if (this._style == ActionButtonStyle.PushSubdued) {
-                styleName += "Subdued";
+                styleName += " subdued";
             }
             switch (this._state) {
                 case ButtonState.Selected:
-                    this._element.className = "button " + styleName + "Selected actionItem";
+                    this._element.className = "button " + styleName + " selected";
                     break;
                 case ButtonState.Inactive:
-                    this._element.className = "button " + styleName + "Inactive actionItem";
+                    this._element.className = "button " + styleName + " inactive";
                     break;
                 default:
-                    this._element.className = "button " + styleName + "Normal actionItem";
+                    this._element.className = "button " + styleName + " normal";
                     break;
             }
+            this._element.style.flex = "0 1 auto";
+            this._element.style.textOverflow = "ellipsis";
+            this._element.style.whiteSpace = "nowrap";
+            this._element.style.overflow = "hidden";
         },
         enumerable: true,
         configurable: true
@@ -1007,7 +1012,7 @@ var ActionGroup = (function (_super) {
         var _this = this;
         var element = document.createElement("div");
         var actionContainer = document.createElement("div");
-        actionContainer.className = "linkButtonsContainer";
+        actionContainer.style.display = "flex";
         appendChild(element, actionContainer);
         var containerPadding = this.container.getActionCardLeftRightPadding();
         this._actionCardContainer = document.createElement("div");
@@ -1024,6 +1029,9 @@ var ActionGroup = (function (_super) {
             for (var i = 0; i < this._actions.length; i++) {
                 var actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Link);
                 actionButton.text = this._actions[i].name;
+                if (i < this._actions.length - 1) {
+                    actionButton.element.style.marginRight = "20px";
+                }
                 actionButton.onClick.subscribe(function (ab, args) {
                     _this.actionClicked(ab);
                 });
@@ -1046,7 +1054,7 @@ var Separator = (function (_super) {
     };
     Separator.prototype.render = function () {
         var element = document.createElement("div");
-        element.className = "horizontalSeparator";
+        element.style.borderTop = "1px solid #EEEEEE";
         return element;
     };
     return Separator;
@@ -1318,9 +1326,7 @@ var AdaptiveCard = (function () {
         }
     };
     AdaptiveCard.prototype.render = function () {
-        var element = document.createElement("div");
-        element.style.display = "flex";
-        element.style.flexDirection = "column";
+        var element = this._rootSection.internalRender();
         if (this._width != undefined) {
             element.style.width = this._width.toString() + "px";
         }
@@ -1335,9 +1341,6 @@ var AdaptiveCard = (function () {
         if (!isNullOrEmpty(this._backgroundColor)) {
             element.style.backgroundColor = this._backgroundColor;
         }
-        var renderedRootSection = this._rootSection.internalRender();
-        renderedRootSection.style.flex = "1 1 100%";
-        appendChild(element, renderedRootSection);
         return element;
     };
     return AdaptiveCard;

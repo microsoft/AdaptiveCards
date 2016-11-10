@@ -418,16 +418,20 @@ class FactGroup extends CardElement {
 
         if (this._items.length > 0) {
             element = document.createElement("table");
-            element.className = "factsTable";
+            element.style.borderWidth = "0px";
+            element.style.borderSpacing = "0px";
+            element.style.borderStyle = "none";
+            element.style.borderCollapse = "collapse";
 
             let html: string = '';
 
             for (var i = 0; i < this._items.length; i++) {
                 html += '<tr>';
-                html += '    <td class="factNameCell">';
+
+                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
                 html += TextBlock.render(this._items[i].name, TextStyle.FactName).outerHTML;
                 html += '    </td>';
-                html += '    <td class="factValueCell">';
+                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding 0px 0px 0px 10px">';
                 html += TextBlock.render(this._items[i].value, TextStyle.FactValue).outerHTML;
                 html += '    </td>';
                 html += '</tr>';
@@ -908,7 +912,7 @@ class ActionCard extends Action {
         }
 
         let buttonsContainer = document.createElement("div");
-        buttonsContainer.className = "pushButtonsContainer";
+        buttonsContainer.style.display = "flex";
         buttonsContainer.style.marginTop = "16px";
 
         for (let i = 0; i < this._actions.length; i++) {
@@ -921,15 +925,12 @@ class ActionCard extends Action {
                 (ab, args) => {
                     this.actionClicked(ab);
                 });
+
+            if (this._actions.length > 1 && i < this._actions.length - 1) {
+                actionButton.element.style.marginRight = "16px";
+            }
             
             appendChild(buttonsContainer, actionButton.element);
-
-            if (i < this._actions.length - 1) {
-                let spacer = document.createElement("div");
-                spacer.style.width = "16px";
-
-                appendChild(buttonsContainer, spacer);
-            }
         }
 
         appendChild(actionCardElement, buttonsContainer);
@@ -1003,23 +1004,28 @@ class ActionButton {
         let styleName = this._baseStyleName;
 
         if (this._style == ActionButtonStyle.PushProminent) {
-            styleName += "Prominent";
+            styleName += " prominent";
         }
         else if (this._style == ActionButtonStyle.PushSubdued) {
-            styleName += "Subdued";
+            styleName += " subdued";
         }
 
         switch (this._state) {
             case ButtonState.Selected:
-                this._element.className = "button " + styleName + "Selected actionItem";
+                this._element.className = "button " + styleName + " selected";
                 break;
             case ButtonState.Inactive:
-                this._element.className = "button " + styleName + "Inactive actionItem";
+                this._element.className = "button " + styleName + " inactive";
                 break;
             default:
-                this._element.className = "button " + styleName + "Normal actionItem";
+                this._element.className = "button " + styleName + " normal";
                 break;
         }
+
+        this._element.style.flex = "0 1 auto";
+        this._element.style.textOverflow = "ellipsis";
+        this._element.style.whiteSpace = "nowrap";
+        this._element.style.overflow = "hidden";
     }
 }
 
@@ -1100,7 +1106,7 @@ class ActionGroup extends CardElement {
         let element = document.createElement("div");
 
         let actionContainer = document.createElement("div");
-        actionContainer.className = "linkButtonsContainer";
+        actionContainer.style.display = "flex";
 
         appendChild(element, actionContainer);
 
@@ -1122,6 +1128,10 @@ class ActionGroup extends CardElement {
             for (let i = 0; i < this._actions.length; i++) {
                 let actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Link);
                 actionButton.text = this._actions[i].name;
+
+                if (i < this._actions.length - 1) {
+                    actionButton.element.style.marginRight = "20px";
+                }
 
                 actionButton.onClick.subscribe(
                     (ab, args) => {
@@ -1147,8 +1157,7 @@ class Separator extends CardElement {
 
     render() {
         let element = document.createElement("div");
-
-        element.className = "horizontalSeparator";
+        element.style.borderTop = "1px solid #EEEEEE";
 
         return element;
     }
@@ -1463,9 +1472,7 @@ class AdaptiveCard {
     }
 
     render(): HTMLElement {
-        let element = document.createElement("div");
-        element.style.display = "flex";
-        element.style.flexDirection = "column";
+        let element = this._rootSection.internalRender();
 
         if (this._width != undefined) {
             element.style.width = this._width.toString() + "px";
@@ -1484,12 +1491,6 @@ class AdaptiveCard {
         if (!isNullOrEmpty(this._backgroundColor)) {
             element.style.backgroundColor = this._backgroundColor;
         }
-
-
-        let renderedRootSection = this._rootSection.internalRender();
-        renderedRootSection.style.flex = "1 1 100%";
-
-        appendChild(element, renderedRootSection);
 
         return element;
    }

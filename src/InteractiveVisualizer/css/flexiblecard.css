@@ -2,46 +2,6 @@
     box-sizing: border-box;
 }
 
-.emphasizedSection {
-    background-color: #F8F8F8;
-}
-
-table.factsTable {
-	border-width: 0px;
-	border-spacing: 0px;
-	border-style: none;
-	border-collapse: collapse;
-}
-
-table.factsTable td {
-	border-width: 0px;
-	padding: 0px;
-	border-style: none;
-}
-
-table.factsTable td.factNameCell {
-    min-width: 100px;
-    vertical-align: top;
-}
-
-table.factsTable td.factValueCell {
-    vertical-align: top;
-    padding: 0px 0px 0px 10px;
-}
-
-.cardRootSimple {
-    outline: none;
-    border: 1px solid #F1F1F1;
-}
-
-.cardRootWithTheme {
-    outline: none;
-    border-top: 1px solid #F1F1F1;
-    border-right: 1px solid #F1F1F1;
-    border-bottom: 1px solid #F1F1F1;
-    border-left: 3px solid #F1F1F1; 
-}
-
 .defaultTextStyle {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
@@ -120,49 +80,7 @@ table.factsTable td.factValueCell {
     line-height: 20px;
 }
 
-.activitySection {
-    display: flex;
-}
-
-.activityImage {
-    flex: 0 1 auto;
-    margin-right: 10px;
-}
-
-.activityContent {
-    flex: 1 1 auto;
-    margin-top: -5px;
-}
-
-.horizontalSeparator {
-    border-top: 1px solid #EEEEEE;
-}
-
-.groupContainer {
-    display: flex;
-}
-
-.linkButtonsContainer {
-    display: flex;
-}
-
-.pushButtonsContainer {
-    display: flex;
-}
-
-.actionItem {
-    flex: 0 1 auto;
-    margin-right: 20px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.actionCard {
-    margin-top: 16px;
-}
-
-div.button {
+.button {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     font-weight: 500;
@@ -172,85 +90,59 @@ div.button {
     user-select: none;
 }
 
-.linkNormal {
-    color: #0078D7;
+.button.link {
     cursor: pointer;
 }
 
-.linkSelected {
+.button.link.normal {
     color: #0078D7;
-    cursor: pointer;
 }
 
-.linkInactive {
+.button.link.selected {
+    color: #0078D7;
+}
+
+.button.link.inactive {
     color: #666666;
-    cursor: pointer;
 }
 
-.pushProminentNormal {
+.button.push {
+    padding: 4px 10px 5px 10px;
+    min-width: 80px; 
+    height: 31px;
+    text-align: center;
+    vertical-align: middle;  
+    cursor: default;
+}
+
+.button.push.prominent.normal {
     background-color: #0078D7;
     color: white;    
-    padding: 4px 10px 5px 10px;
-    min-width: 80px; 
-    height: 31px;
-    text-align: center;
-    vertical-align: middle;  
-    cursor: default;
 }
 
-.pushProminentSelected {
+.button.push.prominent.selected {
     background-color: #005A9E;
     color: white;
-    padding: 4px 10px 5px 10px;
-    min-width: 80px;   
-    height: 31px;
-    text-align: center;  
-    vertical-align: middle;  
-    cursor: default;
 }
 
-.pushProminentInactive {
+.button.push.prominent.inactive {
     background-color: #EAEAEA;
     color: A6A6A6;
-    padding: 4px 10px 5px 10px;
-    min-width: 80px;   
-    height: 31px;
-    text-align: center;  
-    vertical-align: middle;  
-    cursor: default;
 }
 
-.pushSubduedNormal {
+.button.push.subdued.normal {
     background-color: #EAEAEA;
     color: black;    
-    padding: 4px 10px 5px 10px;
-    min-width: 80px; 
-    height: 31px;
-    text-align: center;
-    vertical-align: middle;  
-    cursor: default;
 }
 
-.pushSubduedSelected {
+.button.push.subdued.selected {
     background-color: #CCCCCC;
     color: black;
-    padding: 4px 10px 5px 10px;
-    min-width: 80px;   
-    height: 31px;
-    text-align: center;  
-    vertical-align: middle;  
-    cursor: default;
 }
 
-.pushSubduedInactive {
+.button.push.subdued.inactive {
     background-color: #EAEAEA;
     color: #A6A6A6;
-    padding: 4px 10px 5px 10px;
-    min-width: 80px;   
-    height: 31px;
-    text-align: center;  
-    vertical-align: middle;  
-    cursor: default;
 }
 
 textarea.textInput {

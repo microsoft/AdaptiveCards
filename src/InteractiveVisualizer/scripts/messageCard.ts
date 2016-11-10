@@ -10,13 +10,16 @@ class Activity extends CardElement {
         let html: string = '';
 
         let element = document.createElement("div");
-        element.className = "activitySection";
+        // element.className = "activitySection";
+        element.style.display = "flex";
 
         if (!isNullOrEmpty(this.imageUrl)) {
             let size = Picture.getPhysicalSize(this.imageSize);
 
             let imageSection = document.createElement("div");
-            imageSection.className = "activityImage";
+            // imageSection.className = "activityImage";
+            imageSection.style.flex = "0 1 auto";
+            imageSection.style.marginRight = "10px";
             imageSection.style.height = size.toString() + "px";
 
             let image = document.createElement("img");
@@ -40,7 +43,9 @@ class Activity extends CardElement {
 
         if (!isNullOrEmpty(this.title) || !isNullOrEmpty(this.subtitle) || !isNullOrEmpty(this.text)) {
             let contentSection = document.createElement("div");
-            contentSection.className = "activityContent";
+            // contentSection.className = "activityContent";
+            contentSection.style.flex = "1 1 auto";
+            contentSection.style.marginTop = "-5px";
             appendChild(contentSection, TextBlock.render(this.title, TextStyle.ActivityTitle)); 
             appendChild(contentSection, TextBlock.render(this.subtitle, TextStyle.ActivitySubtitle));
             appendChild(contentSection, TextBlock.render(this.text, TextStyle.ActivityText));
@@ -204,11 +209,13 @@ class MessageCard {
         let element = document.createElement("div");
 
         if (isNullOrEmpty(this.themeColor)) {
-            element.className = "cardRootSimple";
+            element.style.border = "1px solid #F1F1F1"
         }
         else {
-            element.className = "cardRootWithTheme";
-            element.style.borderLeftColor = "#" + this.themeColor;
+            element.style.borderTop = "1px solid #F1F1F1";
+            element.style.borderRight = "1px solid #F1F1F1";
+            element.style.borderBottom = "1px solid #F1F1F1";
+            element.style.borderLeft = "1px solid #" + this.themeColor;
         }
 
         appendChild(element, this._rootSection.render());
