@@ -837,7 +837,7 @@ class ActionCard extends Action {
     private _allowedActionTypes: Array<string> = [ "OpenUri", "HttpPOST" ]; 
     private _inputs: Array<Input> = [];
     private _actions: Array<ExternalAction> = [];
-    private _card: ActionCardContainer; 
+    private _card: Container; 
 
     name: string;
 
@@ -857,7 +857,7 @@ class ActionCard extends Action {
         super.parse(json);
 
         if (json["card"] != undefined) {
-            this._card = new ActionCardContainer(this.owner.container, [ "ActionGroup" ]);
+            this._card = new Container(this.owner.container, [ "ActionGroup" ]);
             this._card.parse(json["card"]);
         }
 
@@ -1481,9 +1481,6 @@ class ColumnGroup extends CardElement {
             return null;
         }
     }
-}
-
-class ActionCardContainer extends Container {
 }
 
 class AdaptiveCard {
