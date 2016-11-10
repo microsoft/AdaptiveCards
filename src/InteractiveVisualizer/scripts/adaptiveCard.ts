@@ -18,73 +18,66 @@ function stringToTextContrast(value: string): TextContrast {
     }
 }
 
-enum TextStyle {
-    Default,
-    CardSummary,
-    CardTitle,
-    CardText,
-    SectionTitle,
-    SectionText,
-    ActivityTitle,
-    ActivitySubtitle,
-    ActivityText,
-    FactName,
-    FactValue
+enum TextSize {
+    ExtraSmall,
+    Small,
+    Normal,
+    Large,
+    ExtraLarge
 }
 
-function stringToTextStyle(value: string, defaultValue: TextStyle): TextStyle {
+function stringToTextSize(value: string, defaultValue: TextSize): TextSize {
     switch (value) {
-        case "defaultTextStyle":
-            return TextStyle.Default;
-        case "cardSummary":
-            return TextStyle.CardSummary;
-        case "cardTitle":
-            return TextStyle.CardTitle;
-        case "cardText":
-            return TextStyle.CardText;
-        case "sectionTitle":
-            return TextStyle.SectionTitle;
-        case "sectionText":
-            return TextStyle.SectionText;
-        case "activityTitle":
-            return TextStyle.ActivityTitle;
-        case "activitySubtitle":
-            return TextStyle.ActivitySubtitle;
-        case "activityText":
-            return TextStyle.ActivityText;
-        case "factName":
-            return TextStyle.FactName;
-        case "factValue":
-            return TextStyle.FactValue;
+        case "extraSmall":
+            return TextSize.ExtraLarge;
+        case "small":
+            return TextSize.Small;
+        case "normal":
+            return TextSize.Normal;
+        case "large":
+            return TextSize.Large;
+        case "extraLarge":
+            return TextSize.ExtraLarge;
         default:
             return defaultValue;
     }
 }
 
-function textStyleToCssClassName(style: TextStyle): string {
-    switch (style) {
-        case TextStyle.CardSummary:
-            return "cardSummary";
-        case TextStyle.CardTitle:
-            return "cardTitle";
-        case TextStyle.CardText:
-            return "cardText";
-        case TextStyle.SectionTitle:
-            return "sectionTitle";
-        case TextStyle.SectionText:
-            return "sectionText";
-        case TextStyle.ActivityTitle:
-            return "activityTitle";
-        case TextStyle.ActivitySubtitle:
-            return "activitySubtitle";
-        case TextStyle.ActivityText:
-            return "activityText";
-        case TextStyle.FactName:
-            return "factName";
-        case TextStyle.FactValue:
-            return "factValue";
+enum TextWeight {
+    Lighter,
+    Normal,
+    Bolder
+}
+
+function stringToTextWeight(value: string, defaultValue: TextWeight): TextWeight {
+    switch (value) {
+        case "lighter":
+            return TextWeight.Lighter;
+        case "normal":
+            return TextWeight.Normal;
+        case "bolder":
+            return TextWeight.Bolder;
         default:
-            return "default";
+            return defaultValue;
+    }
+}
+
+enum TextColor {
+    Darker,
+    Normal,
+    Brighter
+}
+
+function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
+    switch (value) {
+        case "darker":
+            return TextColor.Darker;
+        case "normal":
+            return TextColor.Normal;
+        case "brighter":
+            return TextColor.Brighter;
+        default:
+            return defaultValue;
     }
 }
 
@@ -156,6 +149,7 @@ enum ButtonState {
 
 enum Spacing {
     None,
+    ExtraNarrow,
     Narrow,
     Normal,
     Wide
@@ -165,6 +159,8 @@ function stringToSpacing(value: string, defaultValue: Spacing): Spacing {
     switch (value) {
         case "none":
             return Spacing.None;
+        case "extraNarrow":
+            return Spacing.ExtraNarrow;
         case "narrow":
             return Spacing.Narrow;
         case "normal":
@@ -178,6 +174,8 @@ function stringToSpacing(value: string, defaultValue: Spacing): Spacing {
 
 function getPhysicalSpacing(size: Spacing): number {
     switch (size) {
+        case Spacing.ExtraNarrow:
+            return 5;
         case Spacing.Narrow:
             return 10;
         case Spacing.Normal:
@@ -340,32 +338,88 @@ abstract class CardElement {
         this._size = stringToSize(json["size"], this.size);
         this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     }
-
-    getSpacingAfterThis(): number {
-        return 20;
-    }
 }
 
 class TextBlock extends CardElement {
-    style: TextStyle = TextStyle.Default;
+    textSize: TextSize = TextSize.Normal;
+    textWeight: TextWeight = TextWeight.Normal;
+    textColor: TextColor = TextColor.Normal;
     text: string;
 
-    static create(container: Container, text: string, style: TextStyle): TextBlock {
+    static create(
+        container: Container,
+        text: string,
+        textSize: TextSize,
+        textWeight: TextWeight,
+        textColor: TextColor): TextBlock {
         let result: TextBlock = null;
 
         if (!isNullOrEmpty(text)) {
             result = new TextBlock(container);
-            result.style = style;
             result.text = text;
+            result.textSize = textSize;
+            result.textWeight = textWeight;
+            result.textColor = textColor;
         }
 
         return result;
     }
 
-    static render(value: string, style: TextStyle, textContrast: TextContrast): HTMLElement {
+    static render(
+        value: string,
+        textSize: TextSize,
+        textWeight: TextWeight,
+        textColor: TextColor,
+        textContrast: TextContrast): HTMLElement {
         if (!isNullOrEmpty(value)) {
-            var element = document.createElement("div");
-            element.className = "text " + textStyleToCssClassName(style) + " " + (textContrast == TextContrast.LightOnDark ? "lightOnDark" : "darkOnLight");
+            let element = document.createElement("div");
+            let cssStyle = "text ";
+
+            switch (textSize) {
+                case TextSize.ExtraSmall:
+                    cssStyle += "extraSmall ";
+                    break; 
+                case TextSize.Small:
+                    cssStyle += "small ";
+                    break; 
+                case TextSize.Large:
+                    cssStyle += "large ";
+                    break; 
+                case TextSize.ExtraLarge:
+                    cssStyle += "extraLarge ";
+                    break; 
+                default:
+                    cssStyle += "defaultSize ";
+                    break;
+            }
+
+            switch (textColor) {
+                case TextColor.Darker:
+                    cssStyle += "darker ";
+                    break;
+                case TextColor.Brighter:
+                    cssStyle += "lighter ";
+                    break;
+                default:
+                    cssStyle += "defaultColor ";
+                    break;
+            }
+
+            switch (textWeight) {
+                case TextWeight.Lighter:
+                    cssStyle += "lighter ";
+                    break;
+                case TextWeight.Bolder:
+                    cssStyle += "bolder ";
+                    break;
+                default:
+                    cssStyle += "defaultWeight ";
+                    break;
+            }
+
+            cssStyle += textContrast == TextContrast.DarkOnLight ? "darkOnLight" : "lightOnDark";
+            
+            element.className = cssStyle;            
             element.innerHTML = processMarkdown(value);
 
             return element;
@@ -379,20 +433,17 @@ class TextBlock extends CardElement {
         super.parse(json);
 
         this.text = json["text"];
-        this.style = stringToTextStyle(json["style"], TextStyle.Default);
+        this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
+        this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
     }
 
     render(): HTMLElement {
-        return TextBlock.render(this.text, this.style, this.container.textContrast);
-    }
-
-    getSpacingAfterThis(): number {
-        if (this.style == TextStyle.SectionTitle) {
-            return 10;
-        }
-        else {
-            return super.getSpacingAfterThis();
-        }
+        return TextBlock.render(
+            this.text,
+            this.textSize,
+            this.textWeight,
+            this.textColor,
+            this.container.textContrast);
     }
 }
 
@@ -445,10 +496,10 @@ class FactGroup extends CardElement {
                 html += '<tr>';
 
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
-                html += TextBlock.render(this._items[i].name, TextStyle.FactName, this.container.textContrast).outerHTML;
+                html += TextBlock.render(this._items[i].name, TextSize.Normal, TextWeight.Bolder, TextColor.Normal, this.container.textContrast).outerHTML;
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding 0px 0px 0px 10px">';
-                html += TextBlock.render(this._items[i].value, TextStyle.FactValue, this.container.textContrast).outerHTML;
+                html += TextBlock.render(this._items[i].value, TextSize.Normal, TextWeight.Lighter, TextColor.Normal, this.container.textContrast).outerHTML;
                 html += '    </td>';
                 html += '</tr>';
             }

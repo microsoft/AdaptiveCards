@@ -43,9 +43,9 @@ class Activity extends CardElement {
             let contentSection = document.createElement("div");
             contentSection.style.flex = "1 1 auto";
             contentSection.style.marginTop = "-5px";
-            appendChild(contentSection, TextBlock.render(this.title, TextStyle.ActivityTitle, this.container.textContrast)); 
-            appendChild(contentSection, TextBlock.render(this.subtitle, TextStyle.ActivitySubtitle, this.container.textContrast));
-            appendChild(contentSection, TextBlock.render(this.text, TextStyle.ActivityText, this.container.textContrast));
+            appendChild(contentSection, TextBlock.render(this.title, TextSize.Normal, TextWeight.Normal, TextColor.Normal, TextContrast.DarkOnLight)); 
+            appendChild(contentSection, TextBlock.render(this.subtitle, TextSize.Normal, TextWeight.Lighter, TextColor.Brighter, TextContrast.DarkOnLight));
+            appendChild(contentSection, TextBlock.render(this.text, TextSize.Normal, TextWeight.Normal, TextColor.Normal, TextContrast.DarkOnLight));
 
             appendChild(element, contentSection)
         }
@@ -112,12 +112,19 @@ function parseActionGroup(container: Container, json: any): ActionGroup {
 
 function parseSection(container: Container, json: any): Container {
     let section = new Container(container, [ "Section" ]);
+    section.textContrast = TextContrast.DarkOnLight;
 
     if (json["startGroup"] === true) {
         section.addElement(new Separator(section));
     }
 
-    section.addElement(TextBlock.create(section, json["title"], TextStyle.SectionTitle));
+    section.addElement(
+        TextBlock.create(
+            section,
+            json["title"],
+            TextSize.Large,
+            TextWeight.Normal,
+            TextColor.Normal));
 
     if (json["style"] == "emphasis") {
         section.backgroundColor = "#F8F8F8";
@@ -146,7 +153,13 @@ function parseSection(container: Container, json: any): Container {
         section.addElement(picture);
     }
 
-    section.addElement(TextBlock.create(section, json["text"], TextStyle.SectionText));
+    section.addElement(
+        TextBlock.create(
+            section,
+            json["text"],
+            TextSize.Normal,
+            TextWeight.Normal,
+            TextColor.Normal));
 
     if (json["facts"] != undefined) {
         let factGroup = parseFactGroup(section, json["facts"]);
@@ -181,9 +194,22 @@ class MessageCard {
 
         this._rootSection = new Container(null);
         this._rootSection.padding = Spacing.Normal;
+        this._rootSection.textContrast = TextContrast.DarkOnLight;
 
-        this._rootSection.addElement(TextBlock.create(this._rootSection, json["title"], TextStyle.CardTitle));
-        this._rootSection.addElement(TextBlock.create(this._rootSection, json["text"], TextStyle.CardText));
+        this._rootSection.addElement(
+            TextBlock.create(
+                this._rootSection,
+                json["title"],
+                TextSize.ExtraLarge,
+                TextWeight.Normal,
+                TextColor.Normal));
+        this._rootSection.addElement(
+            TextBlock.create(
+                this._rootSection,
+                json["text"],
+                TextSize.Normal,
+                TextWeight.Normal,
+                TextColor.Normal));
 
         if (json["sections"] != undefined) {
             let sectionArray = json["sections"] as Array<any>;
