@@ -21,72 +21,64 @@ function stringToTextContrast(value) {
             return undefined;
     }
 }
-var TextStyle;
-(function (TextStyle) {
-    TextStyle[TextStyle["Default"] = 0] = "Default";
-    TextStyle[TextStyle["CardSummary"] = 1] = "CardSummary";
-    TextStyle[TextStyle["CardTitle"] = 2] = "CardTitle";
-    TextStyle[TextStyle["CardText"] = 3] = "CardText";
-    TextStyle[TextStyle["SectionTitle"] = 4] = "SectionTitle";
-    TextStyle[TextStyle["SectionText"] = 5] = "SectionText";
-    TextStyle[TextStyle["ActivityTitle"] = 6] = "ActivityTitle";
-    TextStyle[TextStyle["ActivitySubtitle"] = 7] = "ActivitySubtitle";
-    TextStyle[TextStyle["ActivityText"] = 8] = "ActivityText";
-    TextStyle[TextStyle["FactName"] = 9] = "FactName";
-    TextStyle[TextStyle["FactValue"] = 10] = "FactValue";
-})(TextStyle || (TextStyle = {}));
-function stringToTextStyle(value, defaultValue) {
+var TextSize;
+(function (TextSize) {
+    TextSize[TextSize["ExtraSmall"] = 0] = "ExtraSmall";
+    TextSize[TextSize["Small"] = 1] = "Small";
+    TextSize[TextSize["Normal"] = 2] = "Normal";
+    TextSize[TextSize["Large"] = 3] = "Large";
+    TextSize[TextSize["ExtraLarge"] = 4] = "ExtraLarge";
+})(TextSize || (TextSize = {}));
+function stringToTextSize(value, defaultValue) {
     switch (value) {
-        case "defaultTextStyle":
-            return TextStyle.Default;
-        case "cardSummary":
-            return TextStyle.CardSummary;
-        case "cardTitle":
-            return TextStyle.CardTitle;
-        case "cardText":
-            return TextStyle.CardText;
-        case "sectionTitle":
-            return TextStyle.SectionTitle;
-        case "sectionText":
-            return TextStyle.SectionText;
-        case "activityTitle":
-            return TextStyle.ActivityTitle;
-        case "activitySubtitle":
-            return TextStyle.ActivitySubtitle;
-        case "activityText":
-            return TextStyle.ActivityText;
-        case "factName":
-            return TextStyle.FactName;
-        case "factValue":
-            return TextStyle.FactValue;
+        case "extraSmall":
+            return TextSize.ExtraLarge;
+        case "small":
+            return TextSize.Small;
+        case "normal":
+            return TextSize.Normal;
+        case "large":
+            return TextSize.Large;
+        case "extraLarge":
+            return TextSize.ExtraLarge;
         default:
             return defaultValue;
     }
 }
-function textStyleToCssClassName(style) {
-    switch (style) {
-        case TextStyle.CardSummary:
-            return "cardSummary";
-        case TextStyle.CardTitle:
-            return "cardTitle";
-        case TextStyle.CardText:
-            return "cardText";
-        case TextStyle.SectionTitle:
-            return "sectionTitle";
-        case TextStyle.SectionText:
-            return "sectionText";
-        case TextStyle.ActivityTitle:
-            return "activityTitle";
-        case TextStyle.ActivitySubtitle:
-            return "activitySubtitle";
-        case TextStyle.ActivityText:
-            return "activityText";
-        case TextStyle.FactName:
-            return "factName";
-        case TextStyle.FactValue:
-            return "factValue";
+var TextWeight;
+(function (TextWeight) {
+    TextWeight[TextWeight["Lighter"] = 0] = "Lighter";
+    TextWeight[TextWeight["Normal"] = 1] = "Normal";
+    TextWeight[TextWeight["Bolder"] = 2] = "Bolder";
+})(TextWeight || (TextWeight = {}));
+function stringToTextWeight(value, defaultValue) {
+    switch (value) {
+        case "lighter":
+            return TextWeight.Lighter;
+        case "normal":
+            return TextWeight.Normal;
+        case "bolder":
+            return TextWeight.Bolder;
         default:
-            return "default";
+            return defaultValue;
+    }
+}
+var TextColor;
+(function (TextColor) {
+    TextColor[TextColor["Darker"] = 0] = "Darker";
+    TextColor[TextColor["Normal"] = 1] = "Normal";
+    TextColor[TextColor["Brighter"] = 2] = "Brighter";
+})(TextColor || (TextColor = {}));
+function stringToTextColor(value, defaultValue) {
+    switch (value) {
+        case "darker":
+            return TextColor.Darker;
+        case "normal":
+            return TextColor.Normal;
+        case "brighter":
+            return TextColor.Brighter;
+        default:
+            return defaultValue;
     }
 }
 var HorizontalAlignment;
@@ -155,14 +147,17 @@ var ButtonState;
 var Spacing;
 (function (Spacing) {
     Spacing[Spacing["None"] = 0] = "None";
-    Spacing[Spacing["Narrow"] = 1] = "Narrow";
-    Spacing[Spacing["Normal"] = 2] = "Normal";
-    Spacing[Spacing["Wide"] = 3] = "Wide";
+    Spacing[Spacing["ExtraNarrow"] = 1] = "ExtraNarrow";
+    Spacing[Spacing["Narrow"] = 2] = "Narrow";
+    Spacing[Spacing["Normal"] = 3] = "Normal";
+    Spacing[Spacing["Wide"] = 4] = "Wide";
 })(Spacing || (Spacing = {}));
 function stringToSpacing(value, defaultValue) {
     switch (value) {
         case "none":
             return Spacing.None;
+        case "extraNarrow":
+            return Spacing.ExtraNarrow;
         case "narrow":
             return Spacing.Narrow;
         case "normal":
@@ -175,6 +170,8 @@ function stringToSpacing(value, defaultValue) {
 }
 function getPhysicalSpacing(size) {
     switch (size) {
+        case Spacing.ExtraNarrow:
+            return 5;
         case Spacing.Narrow:
             return 10;
         case Spacing.Normal:
@@ -325,30 +322,72 @@ var CardElement = (function () {
         this._size = stringToSize(json["size"], this.size);
         this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     };
-    CardElement.prototype.getSpacingAfterThis = function () {
-        return 20;
-    };
     return CardElement;
 }());
 var TextBlock = (function (_super) {
     __extends(TextBlock, _super);
     function TextBlock() {
         _super.apply(this, arguments);
-        this.style = TextStyle.Default;
+        this.textSize = TextSize.Normal;
+        this.textWeight = TextWeight.Normal;
+        this.textColor = TextColor.Normal;
     }
-    TextBlock.create = function (container, text, style) {
+    TextBlock.create = function (container, text, textSize, textWeight, textColor) {
         var result = null;
         if (!isNullOrEmpty(text)) {
             result = new TextBlock(container);
-            result.style = style;
             result.text = text;
+            result.textSize = textSize;
+            result.textWeight = textWeight;
+            result.textColor = textColor;
         }
         return result;
     };
-    TextBlock.render = function (value, style, textContrast) {
+    TextBlock.render = function (value, textSize, textWeight, textColor, textContrast) {
         if (!isNullOrEmpty(value)) {
             var element = document.createElement("div");
-            element.className = "text " + textStyleToCssClassName(style) + " " + (textContrast == TextContrast.LightOnDark ? "lightOnDark" : "darkOnLight");
+            var cssStyle = "text ";
+            switch (textSize) {
+                case TextSize.ExtraSmall:
+                    cssStyle += "extraSmall ";
+                    break;
+                case TextSize.Small:
+                    cssStyle += "small ";
+                    break;
+                case TextSize.Large:
+                    cssStyle += "large ";
+                    break;
+                case TextSize.ExtraLarge:
+                    cssStyle += "extraLarge ";
+                    break;
+                default:
+                    cssStyle += "defaultSize ";
+                    break;
+            }
+            switch (textColor) {
+                case TextColor.Darker:
+                    cssStyle += "darker ";
+                    break;
+                case TextColor.Brighter:
+                    cssStyle += "lighter ";
+                    break;
+                default:
+                    cssStyle += "defaultColor ";
+                    break;
+            }
+            switch (textWeight) {
+                case TextWeight.Lighter:
+                    cssStyle += "lighter ";
+                    break;
+                case TextWeight.Bolder:
+                    cssStyle += "bolder ";
+                    break;
+                default:
+                    cssStyle += "defaultWeight ";
+                    break;
+            }
+            cssStyle += textContrast == TextContrast.DarkOnLight ? "darkOnLight" : "lightOnDark";
+            element.className = cssStyle;
             element.innerHTML = processMarkdown(value);
             return element;
         }
@@ -359,18 +398,11 @@ var TextBlock = (function (_super) {
     TextBlock.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
         this.text = json["text"];
-        this.style = stringToTextStyle(json["style"], TextStyle.Default);
+        this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
+        this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
     };
     TextBlock.prototype.render = function () {
-        return TextBlock.render(this.text, this.style, this.container.textContrast);
-    };
-    TextBlock.prototype.getSpacingAfterThis = function () {
-        if (this.style == TextStyle.SectionTitle) {
-            return 10;
-        }
-        else {
-            return _super.prototype.getSpacingAfterThis.call(this);
-        }
+        return TextBlock.render(this.text, this.textSize, this.textWeight, this.textColor, this.container.textContrast);
     };
     return TextBlock;
 }(CardElement));
@@ -419,10 +451,10 @@ var FactGroup = (function (_super) {
             for (var i = 0; i < this._items.length; i++) {
                 html += '<tr>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
-                html += TextBlock.render(this._items[i].name, TextStyle.FactName, this.container.textContrast).outerHTML;
+                html += TextBlock.render(this._items[i].name, TextSize.Normal, TextWeight.Bolder, TextColor.Normal, this.container.textContrast).outerHTML;
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding 0px 0px 0px 10px">';
-                html += TextBlock.render(this._items[i].value, TextStyle.FactValue, this.container.textContrast).outerHTML;
+                html += TextBlock.render(this._items[i].value, TextSize.Normal, TextWeight.Lighter, TextColor.Normal, this.container.textContrast).outerHTML;
                 html += '    </td>';
                 html += '</tr>';
             }
@@ -798,7 +830,7 @@ var ActionCard = (function (_super) {
     ActionCard.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
         if (json["card"] != undefined) {
-            this._card = new ActionCardContainer(this.owner.container, ["ActionGroup"]);
+            this._card = new Container(this.owner.container, ["ActionGroup"]);
             this._card.parse(json["card"]);
         }
         if (json["inputs"] != undefined) {
@@ -1342,13 +1374,6 @@ var ColumnGroup = (function (_super) {
     };
     return ColumnGroup;
 }(CardElement));
-var ActionCardContainer = (function (_super) {
-    __extends(ActionCardContainer, _super);
-    function ActionCardContainer() {
-        _super.apply(this, arguments);
-    }
-    return ActionCardContainer;
-}(Container));
 var AdaptiveCard = (function () {
     function AdaptiveCard() {
         this._rootSection = new Container(null);

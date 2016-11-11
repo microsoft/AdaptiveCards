@@ -37,9 +37,9 @@ var Activity = (function (_super) {
             var contentSection = document.createElement("div");
             contentSection.style.flex = "1 1 auto";
             contentSection.style.marginTop = "-5px";
-            appendChild(contentSection, TextBlock.render(this.title, TextStyle.ActivityTitle, this.container.textContrast));
-            appendChild(contentSection, TextBlock.render(this.subtitle, TextStyle.ActivitySubtitle, this.container.textContrast));
-            appendChild(contentSection, TextBlock.render(this.text, TextStyle.ActivityText, this.container.textContrast));
+            appendChild(contentSection, TextBlock.render(this.title, TextSize.Normal, TextWeight.Normal, TextColor.Normal, TextContrast.DarkOnLight));
+            appendChild(contentSection, TextBlock.render(this.subtitle, TextSize.Normal, TextWeight.Lighter, TextColor.Brighter, TextContrast.DarkOnLight));
+            appendChild(contentSection, TextBlock.render(this.text, TextSize.Normal, TextWeight.Normal, TextColor.Normal, TextContrast.DarkOnLight));
             appendChild(element, contentSection);
         }
         return element;
@@ -88,10 +88,11 @@ function parseActionGroup(container, json) {
 }
 function parseSection(container, json) {
     var section = new Container(container, ["Section"]);
+    section.textContrast = TextContrast.DarkOnLight;
     if (json["startGroup"] === true) {
         section.addElement(new Separator(section));
     }
-    section.addElement(TextBlock.create(section, json["title"], TextStyle.SectionTitle));
+    section.addElement(TextBlock.create(section, json["title"], TextSize.Large, TextWeight.Normal, TextColor.Normal));
     if (json["style"] == "emphasis") {
         section.backgroundColor = "#F8F8F8";
         section.padding = Spacing.Normal;
@@ -113,7 +114,7 @@ function parseSection(container, json) {
         picture.url = json["heroImage"];
         section.addElement(picture);
     }
-    section.addElement(TextBlock.create(section, json["text"], TextStyle.SectionText));
+    section.addElement(TextBlock.create(section, json["text"], TextSize.Normal, TextWeight.Normal, TextColor.Normal));
     if (json["facts"] != undefined) {
         var factGroup = parseFactGroup(section, json["facts"]);
         section.addElement(factGroup);
@@ -136,8 +137,9 @@ var MessageCard = (function () {
         this.themeColor = json["themeColor"];
         this._rootSection = new Container(null);
         this._rootSection.padding = Spacing.Normal;
-        this._rootSection.addElement(TextBlock.create(this._rootSection, json["title"], TextStyle.CardTitle));
-        this._rootSection.addElement(TextBlock.create(this._rootSection, json["text"], TextStyle.CardText));
+        this._rootSection.textContrast = TextContrast.DarkOnLight;
+        this._rootSection.addElement(TextBlock.create(this._rootSection, json["title"], TextSize.ExtraLarge, TextWeight.Normal, TextColor.Normal));
+        this._rootSection.addElement(TextBlock.create(this._rootSection, json["text"], TextSize.Normal, TextWeight.Normal, TextColor.Normal));
         if (json["sections"] != undefined) {
             var sectionArray = json["sections"];
             for (var i = 0; i < sectionArray.length; i++) {

@@ -8,114 +8,56 @@
     font-weight: normal;
 }
 
-.text.default {
-    line-height: 20px;
+.text.small {
+    font-size: 12px;
 }
 
-.text.default.darkOnLight {
-    color: #333333;
+.text.defaultSize {
+    font-size: 14px;
 }
 
-.text.default.lightOnDark {
-    color: white;
-}
-
-.text.cardTitle {
-    font-size: 21px;
-}
-
-.text.cardTitle.darkOnLight {
-    color: #333333;
-}
-
-.text.cardTitle.lightOnDark {
-    color: white;
-}
-
-.text.cardText {
-    line-height: 20px;
-}
-
-.text.cardText.darkOnLight {
-    color: #333333;
-}
-
-.text.cardText.lightOnDark {
-    color: white;
-}
-
-.text.sectionTitle {
+.text.large {
     font-size: 18px;
 }
 
-.text.sectionTitle.darkOnLight {
-    color: #333333;
+.text.extraLarge {
+    font-size: 22px;
 }
 
-.text.sectionTitle.lightOnDark {
-    color: white;
-}
-
-.text.sectionText {
-    line-height: 20px;
-}
-
-.text.sectionText.darkOnLight {
-    color: #333333;
-}
-
-.text.sectionText.lightOnDark {
-    color: white;
-}
-
-.text.activityTitle {
-    line-height: 20px;
-}
-
-.text.activityTitle.darkOnLight {
-    color: #333333;
-}
-
-.text.activityTitle.lightOnDark {
-    color: white;
-}
-
-.text.activitySubtitle {
+.text.lighter {
     font-weight: 200;
-    line-height: 20px;
 }
 
-.text.activitySubtitle.darkOnLight {
-    color: #666666;
+.text.defaultWeight {
+    font-weight: 400;
 }
 
-.text.activitySubtitle.lightOnDark {
-    color: #CCCCCC;
-}
-
-.text.activityText {
-    line-height: 20px;
-}
-
-.text.activityText.darkOnLight {
-    color: #333333;
-}
-
-.text.factName {
+.text.bolder {
     font-weight: 600;
-    line-height: 20px;
 }
 
-.text.factName.darkOnLight {
+.text.brighter.darkOnLight {
+    color: #666666;
+}
+
+.text.defaultColor.darkOnLight {
     color: #333333;
 }
 
-.text.factValue {
-    line-height: 20px;
+.text.darker.darkOnLight {
+    color: black;
 }
 
-.text.factValue.darkOnLight {
-    color: #666666;
+.text.brighter.lightOnDark {
+    color: white;
+}
+
+.text.defaultColor.lightOnDark {
+    color: white;
+}
+
+.text.darker.lightOnDark {
+    color: #D2D2D2;
 }
 
 .button {
