@@ -25,26 +25,30 @@
 			                "items": [
 			                    {
 			                        "@type": "TextBlock",
-			                        "text": "**Monday**"
+			                        "text": "**Monday**",
+			                        "textSize": "large"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
 			                        "topSpacing": "none",
-			                        "text": "63 / 42"
-			                    },
-			                    {
-			                        "@type": "TextBlock",
-			                        "style": "activitySubtitle",
-			                        "topSpacing": "none",
-			                        "textColor": "darker",
-			                        "text": "20% chance of rain"
+			                        "text": "63 / 42",
+			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
 			                        "style": "activitySubtitle",
 			                        "topSpacing": "none",
 			                        "textColor": "darker",
-			                        "text": "Winds 5 mph NE"
+			                        "text": "20% chance of rain",
+			                        "textSize": "small"
+			                    },
+			                    {
+			                        "@type": "TextBlock",
+			                        "style": "activitySubtitle",
+			                        "topSpacing": "none",
+			                        "textColor": "darker",
+			                        "text": "Winds 5 mph NE",
+			                        "textSize": "small"
 			                    }
 			                ]
 			            }
@@ -66,7 +70,8 @@
 			                    {
 			                        "@type": "TextBlock",
 			                        "horizontalAlignment": "center",
-			                        "text": "Fri"
+			                        "text": "Fri",
+			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "Picture",
@@ -77,14 +82,16 @@
 			                        "@type": "TextBlock",
 			                        "topSpacing": "extraNarrow",
 			                        "horizontalAlignment": "center",
-			                        "text": "62"
+			                        "text": "62",
+			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
 			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
 			                        "textColor": "darker",
-			                        "text": "52"
+			                        "text": "52",
+			                        "textSize": "small"
 			                    }
 			                ]
 			            },
@@ -94,7 +101,8 @@
 			                    {
 			                        "@type": "TextBlock",
 			                        "horizontalAlignment": "center",
-			                        "text": "Sat"
+			                        "text": "Sat",
+			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "Picture",
@@ -105,14 +113,16 @@
 			                        "@type": "TextBlock",
 			                        "topSpacing": "extraNarrow",
 			                        "horizontalAlignment": "center",
-			                        "text": "60"
+			                        "text": "60",
+			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
 			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
 			                        "textColor": "darker",
-			                        "text": "48"
+			                        "text": "48",
+			                        "textSize": "small"
 			                    }
 			                ]
 			            },
@@ -122,7 +132,8 @@
 			                    {
 			                        "@type": "TextBlock",
 			                        "horizontalAlignment": "center",
-			                        "text": "Sun"
+			                        "text": "Sun",
+			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "Picture",
@@ -133,14 +144,16 @@
 			                        "@type": "TextBlock",
 			                        "topSpacing": "extraNarrow",
 			                        "horizontalAlignment": "center",
-			                        "text": "59"
+			                        "text": "59",
+			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
 			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
 			                        "textColor": "darker",
-			                        "text": "49"
+			                        "text": "49",
+			                        "textSize": "small"
 			                    }
 			                ]
 			            },
@@ -150,7 +163,8 @@
 			                    {
 			                        "@type": "TextBlock",
 			                        "horizontalAlignment": "center",
-			                        "text": "Mon"
+			                        "text": "Mon",
+			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "Picture",
@@ -161,14 +175,16 @@
 			                        "@type": "TextBlock",
 			                        "topSpacing": "extraNarrow",
 			                        "horizontalAlignment": "center",
-			                        "text": "64"
+			                        "text": "64",
+			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
 			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
 			                        "textColor": "darker",
-			                        "text": "51"
+			                        "text": "51",
+			                        "textSize": "small"
 			                    }
 			                ]
 			            }
