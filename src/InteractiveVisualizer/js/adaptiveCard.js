@@ -11,6 +11,53 @@ var TextContrast;
     TextContrast[TextContrast["DarkOnLight"] = 0] = "DarkOnLight";
     TextContrast[TextContrast["LightOnDark"] = 1] = "LightOnDark";
 })(TextContrast || (TextContrast = {}));
+var TextSize;
+(function (TextSize) {
+    TextSize[TextSize["ExtraSmall"] = 0] = "ExtraSmall";
+    TextSize[TextSize["Small"] = 1] = "Small";
+    TextSize[TextSize["Normal"] = 2] = "Normal";
+    TextSize[TextSize["Large"] = 3] = "Large";
+    TextSize[TextSize["ExtraLarge"] = 4] = "ExtraLarge";
+})(TextSize || (TextSize = {}));
+var TextWeight;
+(function (TextWeight) {
+    TextWeight[TextWeight["Lighter"] = 0] = "Lighter";
+    TextWeight[TextWeight["Normal"] = 1] = "Normal";
+    TextWeight[TextWeight["Bolder"] = 2] = "Bolder";
+})(TextWeight || (TextWeight = {}));
+var TextColor;
+(function (TextColor) {
+    TextColor[TextColor["Darker"] = 0] = "Darker";
+    TextColor[TextColor["Normal"] = 1] = "Normal";
+    TextColor[TextColor["Brighter"] = 2] = "Brighter";
+})(TextColor || (TextColor = {}));
+var HorizontalAlignment;
+(function (HorizontalAlignment) {
+    HorizontalAlignment[HorizontalAlignment["Left"] = 0] = "Left";
+    HorizontalAlignment[HorizontalAlignment["Center"] = 1] = "Center";
+    HorizontalAlignment[HorizontalAlignment["Right"] = 2] = "Right";
+})(HorizontalAlignment || (HorizontalAlignment = {}));
+var Size;
+(function (Size) {
+    Size[Size["Auto"] = 0] = "Auto";
+    Size[Size["Small"] = 1] = "Small";
+    Size[Size["Medium"] = 2] = "Medium";
+    Size[Size["Large"] = 3] = "Large";
+    Size[Size["Stretch"] = 4] = "Stretch";
+})(Size || (Size = {}));
+var PictureStyle;
+(function (PictureStyle) {
+    PictureStyle[PictureStyle["Normal"] = 0] = "Normal";
+    PictureStyle[PictureStyle["Person"] = 1] = "Person";
+})(PictureStyle || (PictureStyle = {}));
+var Spacing;
+(function (Spacing) {
+    Spacing[Spacing["None"] = 0] = "None";
+    Spacing[Spacing["ExtraNarrow"] = 1] = "ExtraNarrow";
+    Spacing[Spacing["Narrow"] = 2] = "Narrow";
+    Spacing[Spacing["Normal"] = 3] = "Normal";
+    Spacing[Spacing["Wide"] = 4] = "Wide";
+})(Spacing || (Spacing = {}));
 function stringToTextContrast(value) {
     switch (value) {
         case "darkOnLight":
@@ -21,14 +68,6 @@ function stringToTextContrast(value) {
             return undefined;
     }
 }
-var TextSize;
-(function (TextSize) {
-    TextSize[TextSize["ExtraSmall"] = 0] = "ExtraSmall";
-    TextSize[TextSize["Small"] = 1] = "Small";
-    TextSize[TextSize["Normal"] = 2] = "Normal";
-    TextSize[TextSize["Large"] = 3] = "Large";
-    TextSize[TextSize["ExtraLarge"] = 4] = "ExtraLarge";
-})(TextSize || (TextSize = {}));
 function stringToTextSize(value, defaultValue) {
     switch (value) {
         case "extraSmall":
@@ -45,12 +84,6 @@ function stringToTextSize(value, defaultValue) {
             return defaultValue;
     }
 }
-var TextWeight;
-(function (TextWeight) {
-    TextWeight[TextWeight["Lighter"] = 0] = "Lighter";
-    TextWeight[TextWeight["Normal"] = 1] = "Normal";
-    TextWeight[TextWeight["Bolder"] = 2] = "Bolder";
-})(TextWeight || (TextWeight = {}));
 function stringToTextWeight(value, defaultValue) {
     switch (value) {
         case "lighter":
@@ -63,12 +96,6 @@ function stringToTextWeight(value, defaultValue) {
             return defaultValue;
     }
 }
-var TextColor;
-(function (TextColor) {
-    TextColor[TextColor["Darker"] = 0] = "Darker";
-    TextColor[TextColor["Normal"] = 1] = "Normal";
-    TextColor[TextColor["Brighter"] = 2] = "Brighter";
-})(TextColor || (TextColor = {}));
 function stringToTextColor(value, defaultValue) {
     switch (value) {
         case "darker":
@@ -81,12 +108,6 @@ function stringToTextColor(value, defaultValue) {
             return defaultValue;
     }
 }
-var HorizontalAlignment;
-(function (HorizontalAlignment) {
-    HorizontalAlignment[HorizontalAlignment["Left"] = 0] = "Left";
-    HorizontalAlignment[HorizontalAlignment["Center"] = 1] = "Center";
-    HorizontalAlignment[HorizontalAlignment["Right"] = 2] = "Right";
-})(HorizontalAlignment || (HorizontalAlignment = {}));
 function stringToHorizontalAlignment(value, defaultValue) {
     switch (value) {
         case "left":
@@ -99,14 +120,6 @@ function stringToHorizontalAlignment(value, defaultValue) {
             return defaultValue;
     }
 }
-var Size;
-(function (Size) {
-    Size[Size["Auto"] = 0] = "Auto";
-    Size[Size["Small"] = 1] = "Small";
-    Size[Size["Medium"] = 2] = "Medium";
-    Size[Size["Large"] = 3] = "Large";
-    Size[Size["Stretch"] = 4] = "Stretch";
-})(Size || (Size = {}));
 function stringToSize(value, defaultValue) {
     switch (value) {
         case "auto":
@@ -123,11 +136,6 @@ function stringToSize(value, defaultValue) {
             return defaultValue;
     }
 }
-var PictureStyle;
-(function (PictureStyle) {
-    PictureStyle[PictureStyle["Normal"] = 0] = "Normal";
-    PictureStyle[PictureStyle["Person"] = 1] = "Person";
-})(PictureStyle || (PictureStyle = {}));
 function stringToPictureStyle(value, defaultValue) {
     switch (value) {
         case "person":
@@ -144,14 +152,6 @@ var ButtonState;
     ButtonState[ButtonState["Selected"] = 1] = "Selected";
     ButtonState[ButtonState["Inactive"] = 2] = "Inactive";
 })(ButtonState || (ButtonState = {}));
-var Spacing;
-(function (Spacing) {
-    Spacing[Spacing["None"] = 0] = "None";
-    Spacing[Spacing["ExtraNarrow"] = 1] = "ExtraNarrow";
-    Spacing[Spacing["Narrow"] = 2] = "Narrow";
-    Spacing[Spacing["Normal"] = 3] = "Normal";
-    Spacing[Spacing["Wide"] = 4] = "Wide";
-})(Spacing || (Spacing = {}));
 function stringToSpacing(value, defaultValue) {
     switch (value) {
         case "none":
@@ -369,7 +369,7 @@ var TextBlock = (function (_super) {
                     cssStyle += "darker ";
                     break;
                 case TextColor.Brighter:
-                    cssStyle += "lighter ";
+                    cssStyle += "brighter ";
                     break;
                 default:
                     cssStyle += "defaultColor ";
@@ -399,6 +399,7 @@ var TextBlock = (function (_super) {
         _super.prototype.parse.call(this, json);
         this.text = json["text"];
         this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
+        this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
         this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
     };
     TextBlock.prototype.render = function () {
@@ -1132,6 +1133,13 @@ var Container = (function (_super) {
             return true;
         }
     };
+    Object.defineProperty(Container.prototype, "items", {
+        get: function () {
+            return this._items;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Container.prototype, "padding", {
         get: function () {
             return this._padding;
