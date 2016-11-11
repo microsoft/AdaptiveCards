@@ -494,11 +494,10 @@ class FactGroup extends CardElement {
 
             for (var i = 0; i < this._items.length; i++) {
                 html += '<tr>';
-
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
                 html += TextBlock.render(this._items[i].name, TextSize.Normal, TextWeight.Bolder, TextColor.Normal, this.container.textContrast).outerHTML;
                 html += '    </td>';
-                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding 0px 0px 0px 10px">';
+                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding: 0px 0px 0px 10px">';
                 html += TextBlock.render(this._items[i].value, TextSize.Normal, TextWeight.Lighter, TextColor.Normal, this.container.textContrast).outerHTML;
                 html += '    </td>';
                 html += '</tr>';
@@ -1474,11 +1473,11 @@ class ColumnGroup extends CardElement {
     private _items: Array<Column> = [];
     private _columnSpacing: Spacing = Spacing.Narrow;
 
-    get spacing(): number {
+    get columnSpacing(): number {
         return this._columnSpacing;
     }
 
-    set spacing(value: number) {
+    set columnSpacing(value: number) {
         this._columnSpacing = value;
     }
 
@@ -1505,25 +1504,17 @@ class ColumnGroup extends CardElement {
             let element = document.createElement("div");
             element.style.display = "flex";
 
-            let perColumnTotalSpacing = ((this._items.length - 1) * getPhysicalSpacing(this.spacing)) / this._items.length;
-
             for (let i = 0; i < this._items.length; i++) {
                 let renderedColumn = this._items[i].internalRender();
 
-                if (this._items.length > 1) {
-                    if (i == 0) {
-                        renderedColumn.style.paddingRight = perColumnTotalSpacing.toString() + "px";
-                    }
-                    else if (i == this._items.length - 1) {
-                        renderedColumn.style.paddingLeft = perColumnTotalSpacing.toString() + "px";
-                    }
-                    else {
-                        renderedColumn.style.paddingRight = (perColumnTotalSpacing / 2).toString() + "px";
-                        renderedColumn.style.paddingLeft = (perColumnTotalSpacing / 2).toString() + "px";
-                    }
-                }
-
                 appendChild(element, renderedColumn);
+
+                if (this._items.length > 1 && i < this._items.length - 1) {
+                    let spacer = document.createElement("div");
+                    spacer.style.flex = "0 0 " + getPhysicalSpacing(this.columnSpacing) + "px";
+
+                    appendChild(element, spacer);
+                }
             }
 
             return element;
