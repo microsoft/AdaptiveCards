@@ -215,7 +215,7 @@ function appendChild(node, child) {
 }
 var CardElement = (function () {
     function CardElement(container) {
-        this._topSpacing = Spacing.Normal;
+        this._topSpacing = Spacing.None;
         this._size = Size.Auto;
         this._horizontalAlignment = HorizontalAlignment.Left;
         this._container = container;
@@ -318,7 +318,7 @@ var CardElement = (function () {
         return CardElement.getPhysicalSize(this.size);
     };
     CardElement.prototype.parse = function (json) {
-        this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.Normal);
+        this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.None);
         this._size = stringToSize(json["size"], this.size);
         this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     };

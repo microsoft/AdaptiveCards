@@ -100,6 +100,7 @@ function parseSection(container, json) {
     if (json["activityTitle"] != undefined || json["activitySubtitle"] != undefined ||
         json["activityText"] != undefined || json["activityImage"] != undefined) {
         var activity = new Activity(this);
+        activity.topSpacing = Spacing.Normal;
         activity.title = json["activityTitle"];
         activity.subtitle = json["activitySubtitle"];
         activity.text = json["activityText"];
@@ -110,21 +111,27 @@ function parseSection(container, json) {
     }
     if (json["heroImage"] != undefined) {
         var picture = new Picture(section);
+        picture.topSpacing = Spacing.Normal;
         picture.size = Size.Auto;
         picture.url = json["heroImage"];
         section.addElement(picture);
     }
-    section.addElement(TextBlock.create(section, json["text"], TextSize.Normal, TextWeight.Normal, TextColor.Normal));
+    var text = TextBlock.create(section, json["text"], TextSize.Normal, TextWeight.Normal, TextColor.Normal);
+    text.topSpacing = Spacing.Normal;
+    section.addElement(text);
     if (json["facts"] != undefined) {
         var factGroup = parseFactGroup(section, json["facts"]);
+        factGroup.topSpacing = Spacing.Normal;
         section.addElement(factGroup);
     }
     if (json["images"] != undefined) {
         var pictureGallery = parsePictureGallery(section, json["images"]);
+        pictureGallery.topSpacing = Spacing.Normal;
         section.addElement(pictureGallery);
     }
     if (json["potentialAction"] != undefined) {
         var actionGroup = parseActionGroup(section, json["potentialAction"]);
+        actionGroup.topSpacing = Spacing.Normal;
         section.addElement(actionGroup);
     }
     return section;
@@ -139,11 +146,14 @@ var MessageCard = (function () {
         this._rootSection.padding = Spacing.Normal;
         this._rootSection.textContrast = TextContrast.DarkOnLight;
         this._rootSection.addElement(TextBlock.create(this._rootSection, json["title"], TextSize.ExtraLarge, TextWeight.Normal, TextColor.Normal));
-        this._rootSection.addElement(TextBlock.create(this._rootSection, json["text"], TextSize.Normal, TextWeight.Normal, TextColor.Normal));
+        var text = TextBlock.create(this._rootSection, json["text"], TextSize.Normal, TextWeight.Normal, TextColor.Normal);
+        text.topSpacing = Spacing.Normal;
+        this._rootSection.addElement(text);
         if (json["sections"] != undefined) {
             var sectionArray = json["sections"];
             for (var i = 0; i < sectionArray.length; i++) {
                 var section = parseSection(this._rootSection, sectionArray[i]);
+                section.topSpacing = Spacing.Normal;
                 this._rootSection.addElement(section);
             }
         }

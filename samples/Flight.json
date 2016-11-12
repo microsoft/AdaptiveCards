@@ -31,7 +31,6 @@
 		                        },
 		                        {
 		                            "@type": "TextBlock",
-		                            "topSpacing": "none",
 		                            "horizontalAlignment": "right",
 		                            "textWeight": "bolder",
 		                            "textSize": "large",
@@ -54,21 +53,18 @@
 				},
 				{
 					"@type": "TextBlock",
-					"topSpacing": "none",
 					"text": "Sarah Hum",
 					"textSize": "large",
 					"textWeight": "bolder"
 				},
 				{
 					"@type": "TextBlock",
-					"topSpacing": "none",
 					"text": "Jeremy Goldberg",
 					"textSize": "large",
 					"textWeight": "bolder"
 				},
 				{
 					"@type": "TextBlock",
-					"topSpacing": "none",
 					"text": "Evan Litvak",
 					"textSize": "large",
 					"textWeight": "bolder"
@@ -86,7 +82,6 @@
 				},
 				{
 					"@type": "TextBlock",
-					"topSpacing": "none",
 					"text": "Fri, October 10 8:30 AM",
 					"textSize": "large",
 					"textWeight": "bolder"
@@ -105,7 +100,6 @@
 				                },
 				                {
 				                    "@type": "TextBlock",
-				                    "topSpacing": "none",
 				                    "textSize": "extraLarge",
 				                    "text": "SFO"
 				                }
@@ -133,7 +127,6 @@
 				                },
 				                {
 				                    "@type": "TextBlock",
-				                    "topSpacing": "none",
 				                    "horizontalAlignment": "right",
 				                    "textSize": "extraLarge",
 				                    "text": "AMS"
@@ -155,7 +148,6 @@
 				},
 				{
 					"@type": "TextBlock",
-					"topSpacing": "none",
 					"text": "Fri, October 18 9:50 PM",
 					"textSize": "large",
 					"textWeight": "bolder"
@@ -174,7 +166,6 @@
 				                },
 				                {
 				                    "@type": "TextBlock",
-				                    "topSpacing": "none",
 				                    "textSize": "extraLarge",
 				                    "text": "AMS"
 				                }
@@ -202,7 +193,6 @@
 				                },
 				                {
 				                    "@type": "TextBlock",
-				                    "topSpacing": "none",
 				                    "horizontalAlignment": "right",
 				                    "textSize": "extraLarge",
 				                    "text": "SFO"
@@ -248,4 +238,3 @@
 		}
 	]
 }
-                

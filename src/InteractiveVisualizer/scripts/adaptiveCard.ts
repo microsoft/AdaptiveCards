@@ -227,7 +227,7 @@ function appendChild(node: Node, child: Node) {
 
 abstract class CardElement {
     private _container: Container;
-    private _topSpacing: Spacing = Spacing.Normal;
+    private _topSpacing: Spacing = Spacing.None;
     private _size: Size = Size.Auto;
     private _horizontalAlignment: HorizontalAlignment = HorizontalAlignment.Left;
 
@@ -334,7 +334,7 @@ abstract class CardElement {
     }
 
     parse(json: any) {
-        this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.Normal);
+        this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.None);
         this._size = stringToSize(json["size"], this.size);
         this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     }
