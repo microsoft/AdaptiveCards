@@ -1,5 +1,7 @@
 * {
     box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .text {

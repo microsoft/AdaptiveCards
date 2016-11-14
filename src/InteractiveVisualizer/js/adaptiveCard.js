@@ -331,23 +331,22 @@ var TextBlock = (function (_super) {
         this.textSize = TextSize.Normal;
         this.textWeight = TextWeight.Normal;
         this.textColor = TextColor.Normal;
+        this.textContrast = undefined;
+        this.wrap = true;
     }
-    TextBlock.create = function (container, text, textSize, textWeight, textColor) {
-        var result = null;
-        if (!isNullOrEmpty(text)) {
-            result = new TextBlock(container);
-            result.text = text;
-            result.textSize = textSize;
-            result.textWeight = textWeight;
-            result.textColor = textColor;
-        }
-        return result;
+    TextBlock.prototype.parse = function (json) {
+        _super.prototype.parse.call(this, json);
+        this.text = json["text"];
+        this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
+        this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
+        this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
+        this.wrap = json["wrap"];
     };
-    TextBlock.render = function (value, textSize, textWeight, textColor, textContrast) {
-        if (!isNullOrEmpty(value)) {
+    TextBlock.prototype.render = function () {
+        if (!isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
             var cssStyle = "text ";
-            switch (textSize) {
+            switch (this.textSize) {
                 case TextSize.ExtraSmall:
                     cssStyle += "extraSmall ";
                     break;
@@ -364,7 +363,7 @@ var TextBlock = (function (_super) {
                     cssStyle += "defaultSize ";
                     break;
             }
-            switch (textColor) {
+            switch (this.textColor) {
                 case TextColor.Darker:
                     cssStyle += "darker ";
                     break;
@@ -375,7 +374,7 @@ var TextBlock = (function (_super) {
                     cssStyle += "defaultColor ";
                     break;
             }
-            switch (textWeight) {
+            switch (this.textWeight) {
                 case TextWeight.Lighter:
                     cssStyle += "lighter ";
                     break;
@@ -386,24 +385,19 @@ var TextBlock = (function (_super) {
                     cssStyle += "defaultWeight ";
                     break;
             }
-            cssStyle += textContrast == TextContrast.DarkOnLight ? "darkOnLight" : "lightOnDark";
-            element.className = cssStyle;
-            element.innerHTML = processMarkdown(value);
+            var contrast = this.textContrast != undefined ? this.textContrast : this.container.textContrast;
+            cssStyle += contrast == TextContrast.DarkOnLight ? "darkOnLight" : "lightOnDark";
+            element.innerHTML = processMarkdown(this.text);
+            var firstChild = element.firstChild;
+            firstChild.className = cssStyle;
+            if (!this.wrap) {
+                firstChild.style.whiteSpace = "nowrap";
+            }
             return element;
         }
         else {
             return null;
         }
-    };
-    TextBlock.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.text = json["text"];
-        this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
-        this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
-        this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
-    };
-    TextBlock.prototype.render = function () {
-        return TextBlock.render(this.text, this.textSize, this.textWeight, this.textColor, this.container.textContrast);
     };
     return TextBlock;
 }(CardElement));
@@ -452,10 +446,16 @@ var FactGroup = (function (_super) {
             for (var i = 0; i < this._items.length; i++) {
                 html += '<tr>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
-                html += TextBlock.render(this._items[i].name, TextSize.Normal, TextWeight.Bolder, TextColor.Normal, this.container.textContrast).outerHTML;
+                var textBlock = new TextBlock(this.container);
+                textBlock.text = this._items[i].name;
+                textBlock.textWeight = TextWeight.Bolder;
+                html += textBlock.render().outerHTML;
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding: 0px 0px 0px 10px">';
-                html += TextBlock.render(this._items[i].value, TextSize.Normal, TextWeight.Lighter, TextColor.Normal, this.container.textContrast).outerHTML;
+                textBlock = new TextBlock(this.container);
+                textBlock.text = this._items[i].name;
+                textBlock.textWeight = TextWeight.Lighter;
+                html += textBlock.render().outerHTML;
                 html += '    </td>';
                 html += '</tr>';
             }
@@ -980,9 +980,7 @@ var ActionButton = (function () {
                     break;
             }
             this._element.style.flex = "0 1 auto";
-            this._element.style.textOverflow = "ellipsis";
             this._element.style.whiteSpace = "nowrap";
-            this._element.style.overflow = "hidden";
         },
         enumerable: true,
         configurable: true
@@ -1320,7 +1318,6 @@ var Column = (function (_super) {
                     break;
             }
         }
-        element.style.overflow = "hidden";
     };
     return Column;
 }(Container));

@@ -344,38 +344,26 @@ class TextBlock extends CardElement {
     textSize: TextSize = TextSize.Normal;
     textWeight: TextWeight = TextWeight.Normal;
     textColor: TextColor = TextColor.Normal;
+    textContrast: TextContrast = undefined;
     text: string;
+    wrap: boolean = true;
 
-    static create(
-        container: Container,
-        text: string,
-        textSize: TextSize,
-        textWeight: TextWeight,
-        textColor: TextColor): TextBlock {
-        let result: TextBlock = null;
+    parse(json: any) {
+        super.parse(json);
 
-        if (!isNullOrEmpty(text)) {
-            result = new TextBlock(container);
-            result.text = text;
-            result.textSize = textSize;
-            result.textWeight = textWeight;
-            result.textColor = textColor;
-        }
-
-        return result;
+        this.text = json["text"];
+        this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
+        this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
+        this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
+        this.wrap = json["wrap"];
     }
 
-    static render(
-        value: string,
-        textSize: TextSize,
-        textWeight: TextWeight,
-        textColor: TextColor,
-        textContrast: TextContrast): HTMLElement {
-        if (!isNullOrEmpty(value)) {
+    render(): HTMLElement {
+        if (!isNullOrEmpty(this.text)) {
             let element = document.createElement("div");
             let cssStyle = "text ";
 
-            switch (textSize) {
+            switch (this.textSize) {
                 case TextSize.ExtraSmall:
                     cssStyle += "extraSmall ";
                     break; 
@@ -393,7 +381,7 @@ class TextBlock extends CardElement {
                     break;
             }
 
-            switch (textColor) {
+            switch (this.textColor) {
                 case TextColor.Darker:
                     cssStyle += "darker ";
                     break;
@@ -405,7 +393,7 @@ class TextBlock extends CardElement {
                     break;
             }
 
-            switch (textWeight) {
+            switch (this.textWeight) {
                 case TextWeight.Lighter:
                     cssStyle += "lighter ";
                     break;
@@ -417,34 +405,25 @@ class TextBlock extends CardElement {
                     break;
             }
 
-            cssStyle += textContrast == TextContrast.DarkOnLight ? "darkOnLight" : "lightOnDark";
+            let contrast = this.textContrast != undefined ? this.textContrast : this.container.textContrast;
+
+            cssStyle += contrast == TextContrast.DarkOnLight ? "darkOnLight" : "lightOnDark";
             
-            element.className = cssStyle;            
-            element.innerHTML = processMarkdown(value);
+            element.innerHTML = processMarkdown(this.text);
+
+            let firstChild = <HTMLElement>element.firstChild;
+
+            firstChild.className = cssStyle;
+
+            if (!this.wrap) {
+                firstChild.style.whiteSpace = "nowrap";
+            }
 
             return element;
         }
         else {
             return null;
         }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.text = json["text"];
-        this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
-        this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
-        this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
-    }
-
-    render(): HTMLElement {
-        return TextBlock.render(
-            this.text,
-            this.textSize,
-            this.textWeight,
-            this.textColor,
-            this.container.textContrast);
     }
 }
 
@@ -496,10 +475,22 @@ class FactGroup extends CardElement {
             for (var i = 0; i < this._items.length; i++) {
                 html += '<tr>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
-                html += TextBlock.render(this._items[i].name, TextSize.Normal, TextWeight.Bolder, TextColor.Normal, this.container.textContrast).outerHTML;
+
+                let textBlock = new TextBlock(this.container);
+                textBlock.text = this._items[i].name;
+                textBlock.textWeight = TextWeight.Bolder;
+
+                html += textBlock.render().outerHTML;
+
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding: 0px 0px 0px 10px">';
-                html += TextBlock.render(this._items[i].value, TextSize.Normal, TextWeight.Lighter, TextColor.Normal, this.container.textContrast).outerHTML;
+
+                textBlock = new TextBlock(this.container);
+                textBlock.text = this._items[i].name;
+                textBlock.textWeight = TextWeight.Lighter;
+                
+                html += textBlock.render().outerHTML;
+
                 html += '    </td>';
                 html += '</tr>';
             }
@@ -1090,9 +1081,7 @@ class ActionButton {
         }
 
         this._element.style.flex = "0 1 auto";
-        this._element.style.textOverflow = "ellipsis";
         this._element.style.whiteSpace = "nowrap";
-        this._element.style.overflow = "hidden";
     }
 }
 
@@ -1469,8 +1458,6 @@ class Column extends Container {
                     break;
             }
         }
-
-        element.style.overflow = "hidden";
     }
 }
 
