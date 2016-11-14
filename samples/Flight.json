@@ -1,0 +1,240 @@
+
+{
+	"@type": "AdaptiveCard",
+	"sections": [
+		{
+		    "backgroundColor": "#2E89FC",
+		    "padding": "normal",
+		    "textContrast": "lightOnDark",
+		    "items": [
+		        {
+		            "@type": "ColumnGroup",
+		            "items": [
+		                {
+		                    "size": 50,
+		                    "items": [
+		                        {
+		                            "@type": "Picture",
+		                            "size": "small",
+		                            "url": "http://www.clipartbest.com/cliparts/LcK/eeA/LcKeeA7ki.png"
+		                        }
+		                    ]
+		                },
+		                {
+		                    "size": 50,
+		                    "items": [
+		                        {
+		                            "@type": "TextBlock",
+		                            "horizontalAlignment": "right",
+		                            "text": "Booking Number",
+		                            "textColor": "darker"
+		                        },
+		                        {
+		                            "@type": "TextBlock",
+		                            "horizontalAlignment": "right",
+		                            "textWeight": "bolder",
+		                            "textSize": "large",
+		                            "text": "D0FQTK"
+		                        }
+		                    ]
+		                }
+		            ]
+		        }
+		    ]
+		},
+		{
+		    "padding": "normal",
+		    "topSpacing": "none",
+			"items": [
+				{
+					"@type": "TextBlock",
+					"text": "Passenders",
+					"textColor": "brighter"
+				},
+				{
+					"@type": "TextBlock",
+					"text": "Sarah Hum",
+					"textSize": "large",
+					"textWeight": "bolder"
+				},
+				{
+					"@type": "TextBlock",
+					"text": "Jeremy Goldberg",
+					"textSize": "large",
+					"textWeight": "bolder"
+				},
+				{
+					"@type": "TextBlock",
+					"text": "Evan Litvak",
+					"textSize": "large",
+					"textWeight": "bolder"
+				},
+				{
+				    "@type": "Separator",
+				    "topSpacing": "narrow"
+				},
+				{
+					"@type": "TextBlock",
+				    "topSpacing": "narrow",
+					"text": "2 Stops",
+					"textSize": "large",
+					"textWeight": "bolder"
+				},
+				{
+					"@type": "TextBlock",
+					"text": "Fri, October 10 8:30 AM",
+					"textSize": "large",
+					"textWeight": "bolder"
+				},
+				{
+				    "@type": "ColumnGroup",
+				    "topSpacing": "narrow",
+				    "items": [
+				        {
+				            "size": 20,
+				            "items": [
+				                {
+				                    "@type": "TextBlock",
+				                    "textColor": "brighter",
+				                    "text": "San Francisco"
+				                },
+				                {
+				                    "@type": "TextBlock",
+				                    "textSize": "extraLarge",
+				                    "text": "SFO"
+				                }
+				            ]
+				        },
+				        {
+				            "size": "auto",
+				            "items": [
+				                {
+				                    "@type": "Picture",
+				                    "size": "medium",
+				                    "url": "https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/airplane-512.png"
+				                }
+				            ]
+	
+				        },
+				        {
+				            "size": 20,
+				            "items": [
+				                {
+				                    "@type": "TextBlock",
+				                    "horizontalAlignment": "right",
+				                    "textColor": "brighter",
+				                    "text": "Amsterdam"
+				                },
+				                {
+				                    "@type": "TextBlock",
+				                    "horizontalAlignment": "right",
+				                    "textSize": "extraLarge",
+				                    "text": "AMS"
+				                }
+				            ]
+				        }
+				    ]
+				},
+				{
+				    "@type": "Separator",
+				    "topSpacing": "narrow"
+				},
+				{
+					"@type": "TextBlock",
+				    "topSpacing": "narrow",
+					"text": "Non-Stop",
+					"textSize": "large",
+					"textWeight": "bolder"
+				},
+				{
+					"@type": "TextBlock",
+					"text": "Fri, October 18 9:50 PM",
+					"textSize": "large",
+					"textWeight": "bolder"
+				},
+				{
+				    "@type": "ColumnGroup",
+				    "topSpacing": "narrow",
+				    "items": [
+				        {
+				            "size": 20,
+				            "items": [
+				                {
+				                    "@type": "TextBlock",
+				                    "textColor": "brighter",
+				                    "text": "Amsterdam"
+				                },
+				                {
+				                    "@type": "TextBlock",
+				                    "textSize": "extraLarge",
+				                    "text": "AMS"
+				                }
+				            ]
+				        },
+				        {
+				            "size": "auto",
+				            "items": [
+				                {
+				                    "@type": "Picture",
+				                    "size": "medium",
+				                    "url": "https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/airplane-512.png"
+				                }
+				            ]
+	
+				        },
+				        {
+				            "size": 20,
+				            "items": [
+				                {
+				                    "@type": "TextBlock",
+				                    "horizontalAlignment": "right",
+				                    "textColor": "brighter",
+				                    "text": "San Francisco"
+				                },
+				                {
+				                    "@type": "TextBlock",
+				                    "horizontalAlignment": "right",
+				                    "textSize": "extraLarge",
+				                    "text": "SFO"
+				                }
+				            ]
+				        }
+				    ]
+				},
+				{
+				    "@type": "Separator",
+				    "topSpacing": "narrow"
+				},
+				{
+				    "@type": "ColumnGroup",
+				    "topSpacing": "narrow",
+				    "items": [
+				        {
+				            "size": 50,
+				            "items": [
+                				{
+                					"@type": "TextBlock",
+                					"text": "Total",
+                					"textSize": "large",
+                					"textColor": "brighter"
+                				}
+				            ]
+				        },
+				        {
+				            "size": 50,
+				            "items": [
+                				{
+                					"@type": "TextBlock",
+                					"horizontalAlignment": "right",
+                					"text": "$4,032.54",
+                					"textSize": "extraLarge",
+                					"textWeight": "bolder"
+                				}
+				            ]
+				        }
+				    ]
+				}
+			]
+		}
+	]
+}

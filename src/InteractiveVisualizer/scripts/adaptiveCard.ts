@@ -7,6 +7,53 @@ enum TextContrast {
     LightOnDark
 }
 
+enum TextSize {
+    ExtraSmall,
+    Small,
+    Normal,
+    Large,
+    ExtraLarge
+}
+
+enum TextWeight {
+    Lighter,
+    Normal,
+    Bolder
+}
+
+enum TextColor {
+    Darker,
+    Normal,
+    Brighter
+}
+
+enum HorizontalAlignment {
+    Left,
+    Center,
+    Right
+}
+
+enum Size {
+    Auto,
+    Small,
+    Medium,
+    Large,
+    Stretch
+}
+
+enum PictureStyle {
+    Normal,
+    Person
+}
+
+enum Spacing {
+    None,
+    ExtraNarrow,
+    Narrow,
+    Normal,
+    Wide
+}
+
 function stringToTextContrast(value: string): TextContrast {
     switch (value) {
         case "darkOnLight":
@@ -16,14 +63,6 @@ function stringToTextContrast(value: string): TextContrast {
         default:
             return undefined;
     }
-}
-
-enum TextSize {
-    ExtraSmall,
-    Small,
-    Normal,
-    Large,
-    ExtraLarge
 }
 
 function stringToTextSize(value: string, defaultValue: TextSize): TextSize {
@@ -43,12 +82,6 @@ function stringToTextSize(value: string, defaultValue: TextSize): TextSize {
     }
 }
 
-enum TextWeight {
-    Lighter,
-    Normal,
-    Bolder
-}
-
 function stringToTextWeight(value: string, defaultValue: TextWeight): TextWeight {
     switch (value) {
         case "lighter":
@@ -60,12 +93,6 @@ function stringToTextWeight(value: string, defaultValue: TextWeight): TextWeight
         default:
             return defaultValue;
     }
-}
-
-enum TextColor {
-    Darker,
-    Normal,
-    Brighter
 }
 
 function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
@@ -81,12 +108,6 @@ function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
     }
 }
 
-enum HorizontalAlignment {
-    Left,
-    Center,
-    Right
-}
-
 function stringToHorizontalAlignment(value: string, defaultValue: HorizontalAlignment): HorizontalAlignment {
     switch (value) {
         case "left":
@@ -98,14 +119,6 @@ function stringToHorizontalAlignment(value: string, defaultValue: HorizontalAlig
         default:
             return defaultValue;
     }
-}
-
-enum Size {
-    Auto,
-    Small,
-    Medium,
-    Large,
-    Stretch
 }
 
 function stringToSize(value: string, defaultValue: Size): Size {
@@ -125,11 +138,6 @@ function stringToSize(value: string, defaultValue: Size): Size {
     }
 }
 
-enum PictureStyle {
-    Normal,
-    Person
-}
-
 function stringToPictureStyle(value: string, defaultValue: PictureStyle): PictureStyle {
     switch (value) {
         case "person":
@@ -145,14 +153,6 @@ enum ButtonState {
     Normal,
     Selected,
     Inactive
-}
-
-enum Spacing {
-    None,
-    ExtraNarrow,
-    Narrow,
-    Normal,
-    Wide
 }
 
 function stringToSpacing(value: string, defaultValue: Spacing): Spacing {
@@ -227,7 +227,7 @@ function appendChild(node: Node, child: Node) {
 
 abstract class CardElement {
     private _container: Container;
-    private _topSpacing: Spacing = Spacing.Normal;
+    private _topSpacing: Spacing = Spacing.None;
     private _size: Size = Size.Auto;
     private _horizontalAlignment: HorizontalAlignment = HorizontalAlignment.Left;
 
@@ -334,7 +334,7 @@ abstract class CardElement {
     }
 
     parse(json: any) {
-        this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.Normal);
+        this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.None);
         this._size = stringToSize(json["size"], this.size);
         this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     }
@@ -398,7 +398,7 @@ class TextBlock extends CardElement {
                     cssStyle += "darker ";
                     break;
                 case TextColor.Brighter:
-                    cssStyle += "lighter ";
+                    cssStyle += "brighter ";
                     break;
                 default:
                     cssStyle += "defaultColor ";
@@ -434,6 +434,7 @@ class TextBlock extends CardElement {
 
         this.text = json["text"];
         this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
+        this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
         this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
     }
 
@@ -1261,6 +1262,10 @@ class Container extends CardElement {
         super(container);
 
         this._forbiddenItemTypes = forbiddenItemTypes;
+    }
+
+    get items(): Array<CardElement> {
+        return this._items;
     }
 
     get padding(): Spacing {
