@@ -4,37 +4,36 @@
 	"sections": [
 		{
 		    "backgroundColor": "#2E89FC",
-		    "padding": "normal",
+		    "padding": "narrow",
 		    "textContrast": "lightOnDark",
 		    "items": [
 		        {
 		            "@type": "ColumnGroup",
 		            "items": [
 		                {
-		                    "size": 50,
+		                    "size": "auto",
 		                    "items": [
 		                        {
 		                            "@type": "Picture",
 		                            "size": "small",
-		                            "url": "http://www.clipartbest.com/cliparts/LcK/eeA/LcKeeA7ki.png"
+		                            "url": "http://messagecardplayground.azurewebsites.net/assets/airplane in circle.png"
 		                        }
 		                    ]
 		                },
 		                {
-		                    "size": 50,
+		                    "size": "stretch",
 		                    "items": [
 		                        {
 		                            "@type": "TextBlock",
 		                            "horizontalAlignment": "right",
 		                            "text": "Booking Number",
-		                            "textColor": "darker"
+				                    "isSubtle": true
 		                        },
 		                        {
 		                            "@type": "TextBlock",
 		                            "horizontalAlignment": "right",
-		                            "textWeight": "bolder",
 		                            "textSize": "large",
-		                            "text": "D0FQTK"
+		                            "text": "**D0FQTK**"
 		                        }
 		                    ]
 		                }
@@ -43,13 +42,13 @@
 		    ]
 		},
 		{
-		    "padding": "normal",
+		    "padding": "narrow",
 		    "topSpacing": "none",
 			"items": [
 				{
 					"@type": "TextBlock",
-					"text": "Passenders",
-					"textColor": "brighter"
+					"text": "Passengers",
+					"isSubtle": true
 				},
 				{
 					"@type": "TextBlock",
@@ -91,16 +90,17 @@
 				    "topSpacing": "narrow",
 				    "items": [
 				        {
-				            "size": 20,
+				            "size": 1,
 				            "items": [
 				                {
 				                    "@type": "TextBlock",
-				                    "textColor": "brighter",
-				                    "text": "San Francisco"
+				                    "text": "San Francisco",
+				                    "isSubtle": true
 				                },
 				                {
 				                    "@type": "TextBlock",
 				                    "textSize": "extraLarge",
+				                    "textColor": "accent",
 				                    "text": "SFO"
 				                }
 				            ]
@@ -110,25 +110,25 @@
 				            "items": [
 				                {
 				                    "@type": "Picture",
-				                    "size": "medium",
-				                    "url": "https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/airplane-512.png"
+				                    "url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png"
 				                }
 				            ]
 	
 				        },
 				        {
-				            "size": 20,
+				            "size": 1,
 				            "items": [
 				                {
 				                    "@type": "TextBlock",
 				                    "horizontalAlignment": "right",
-				                    "textColor": "brighter",
-				                    "text": "Amsterdam"
+				                    "text": "Amsterdam",
+				                    "isSubtle": true
 				                },
 				                {
 				                    "@type": "TextBlock",
 				                    "horizontalAlignment": "right",
 				                    "textSize": "extraLarge",
+				                    "textColor": "accent",
 				                    "text": "AMS"
 				                }
 				            ]
@@ -157,16 +157,17 @@
 				    "topSpacing": "narrow",
 				    "items": [
 				        {
-				            "size": 20,
+				            "size": 1,
 				            "items": [
 				                {
 				                    "@type": "TextBlock",
-				                    "textColor": "brighter",
-				                    "text": "Amsterdam"
+				                    "text": "Amsterdam",
+				                    "isSubtle": true
 				                },
 				                {
 				                    "@type": "TextBlock",
 				                    "textSize": "extraLarge",
+				                    "textColor": "accent",
 				                    "text": "AMS"
 				                }
 				            ]
@@ -176,25 +177,25 @@
 				            "items": [
 				                {
 				                    "@type": "Picture",
-				                    "size": "medium",
-				                    "url": "https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/airplane-512.png"
+				                    "url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png"
 				                }
 				            ]
 	
 				        },
 				        {
-				            "size": 20,
+				            "size": 1,
 				            "items": [
 				                {
 				                    "@type": "TextBlock",
 				                    "horizontalAlignment": "right",
-				                    "textColor": "brighter",
-				                    "text": "San Francisco"
+				                    "text": "San Francisco",
+				                    "isSubtle": true
 				                },
 				                {
 				                    "@type": "TextBlock",
 				                    "horizontalAlignment": "right",
 				                    "textSize": "extraLarge",
+				                    "textColor": "accent",
 				                    "text": "SFO"
 				                }
 				            ]
@@ -210,18 +211,18 @@
 				    "topSpacing": "narrow",
 				    "items": [
 				        {
-				            "size": 50,
+				            "size": 1,
 				            "items": [
                 				{
                 					"@type": "TextBlock",
                 					"text": "Total",
                 					"textSize": "large",
-                					"textColor": "brighter"
+				                    "isSubtle": true
                 				}
 				            ]
 				        },
 				        {
-				            "size": 50,
+				            "size": 1,
 				            "items": [
                 				{
                 					"@type": "TextBlock",

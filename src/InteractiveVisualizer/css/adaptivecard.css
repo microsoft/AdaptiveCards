@@ -38,28 +38,36 @@
     font-weight: 600;
 }
 
-.text.brighter.darkOnLight {
-    color: #666666;
-}
-
 .text.defaultColor.darkOnLight {
-    color: #333333;
+    color: rgb(51, 51, 51);
 }
 
-.text.darker.darkOnLight {
-    color: black;
-}
-
-.text.brighter.lightOnDark {
-    color: white;
+.text.defaultColor.darkOnLight.subtle {
+    color: rgba(51, 51, 51, 0.5);
 }
 
 .text.defaultColor.lightOnDark {
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
-.text.darker.lightOnDark {
-    color: #D2D2D2;
+.text.defaultColor.lightOnDark.subtle {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.text.accentColor.darkOnLight {
+    color:  rgb(46, 137, 252);
+}
+
+.text.accentColor.darkOnLight.subtle {
+    color:  rgba(46, 137, 252, 0.5);
+}
+
+.text.accentColor.lightOnDark {
+    color:  rgb(46, 137, 252);
+}
+
+.text.accentColor.lightOnDark.subtle {
+    color:  rgba(46, 137, 252, 0.5);
 }
 
 .button {

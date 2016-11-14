@@ -52,7 +52,7 @@ class Activity extends CardElement {
             textBlock = new TextBlock(this.container);
             textBlock.text = this.subtitle;
             textBlock.textWeight = TextWeight.Lighter;
-            textBlock.textColor = TextColor.Brighter;
+            // textBlock.textColor = TextColor.Brighter;
 
             appendChild(contentSection, textBlock.render());
 

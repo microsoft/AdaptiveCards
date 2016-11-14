@@ -21,10 +21,9 @@ enum TextWeight {
     Bolder
 }
 
-enum TextColor {
-    Darker,
-    Normal,
-    Brighter
+enum Color {
+    Default,
+    Accent
 }
 
 enum HorizontalAlignment {
@@ -95,14 +94,12 @@ function stringToTextWeight(value: string, defaultValue: TextWeight): TextWeight
     }
 }
 
-function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
+function stringToColor(value: string, defaultValue: Color): Color {
     switch (value) {
-        case "darker":
-            return TextColor.Darker;
-        case "normal":
-            return TextColor.Normal;
-        case "brighter":
-            return TextColor.Brighter;
+        case "default":
+            return Color.Default;
+        case "accent":
+            return Color.Accent;
         default:
             return defaultValue;
     }
@@ -343,9 +340,10 @@ abstract class CardElement {
 class TextBlock extends CardElement {
     textSize: TextSize = TextSize.Normal;
     textWeight: TextWeight = TextWeight.Normal;
-    textColor: TextColor = TextColor.Normal;
+    textColor: Color = Color.Default;
     textContrast: TextContrast = undefined;
     text: string;
+    isSubtle: boolean = false;
     wrap: boolean = true;
 
     parse(json: any) {
@@ -354,7 +352,8 @@ class TextBlock extends CardElement {
         this.text = json["text"];
         this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
         this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
-        this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
+        this.textColor = stringToColor(json["textColor"], Color.Default);
+        this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"];
     }
 
@@ -382,17 +381,18 @@ class TextBlock extends CardElement {
             }
 
             switch (this.textColor) {
-                case TextColor.Darker:
-                    cssStyle += "darker ";
-                    break;
-                case TextColor.Brighter:
-                    cssStyle += "brighter ";
+                case Color.Accent:
+                    cssStyle += "accentColor ";
                     break;
                 default:
                     cssStyle += "defaultColor ";
                     break;
             }
 
+            if (this.isSubtle) {
+                cssStyle += "subtle ";
+            }
+            
             switch (this.textWeight) {
                 case TextWeight.Lighter:
                     cssStyle += "lighter ";
@@ -1448,7 +1448,7 @@ class Column extends Container {
         else {
             switch (this.size) {
                 case Size.Auto:
-                    element.style.flex = "0 1 auto";
+                    element.style.flex = "0 0 auto";
                     break;
                 case Size.Stretch:
                     element.style.flex = "1 1 auto";

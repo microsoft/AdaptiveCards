@@ -25,12 +25,11 @@ var TextWeight;
     TextWeight[TextWeight["Normal"] = 1] = "Normal";
     TextWeight[TextWeight["Bolder"] = 2] = "Bolder";
 })(TextWeight || (TextWeight = {}));
-var TextColor;
-(function (TextColor) {
-    TextColor[TextColor["Darker"] = 0] = "Darker";
-    TextColor[TextColor["Normal"] = 1] = "Normal";
-    TextColor[TextColor["Brighter"] = 2] = "Brighter";
-})(TextColor || (TextColor = {}));
+var Color;
+(function (Color) {
+    Color[Color["Default"] = 0] = "Default";
+    Color[Color["Accent"] = 1] = "Accent";
+})(Color || (Color = {}));
 var HorizontalAlignment;
 (function (HorizontalAlignment) {
     HorizontalAlignment[HorizontalAlignment["Left"] = 0] = "Left";
@@ -96,14 +95,12 @@ function stringToTextWeight(value, defaultValue) {
             return defaultValue;
     }
 }
-function stringToTextColor(value, defaultValue) {
+function stringToColor(value, defaultValue) {
     switch (value) {
-        case "darker":
-            return TextColor.Darker;
-        case "normal":
-            return TextColor.Normal;
-        case "brighter":
-            return TextColor.Brighter;
+        case "default":
+            return Color.Default;
+        case "accent":
+            return Color.Accent;
         default:
             return defaultValue;
     }
@@ -330,8 +327,9 @@ var TextBlock = (function (_super) {
         _super.apply(this, arguments);
         this.textSize = TextSize.Normal;
         this.textWeight = TextWeight.Normal;
-        this.textColor = TextColor.Normal;
+        this.textColor = Color.Default;
         this.textContrast = undefined;
+        this.isSubtle = false;
         this.wrap = true;
     }
     TextBlock.prototype.parse = function (json) {
@@ -339,7 +337,8 @@ var TextBlock = (function (_super) {
         this.text = json["text"];
         this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
         this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
-        this.textColor = stringToTextColor(json["textColor"], TextColor.Normal);
+        this.textColor = stringToColor(json["textColor"], Color.Default);
+        this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"];
     };
     TextBlock.prototype.render = function () {
@@ -364,15 +363,15 @@ var TextBlock = (function (_super) {
                     break;
             }
             switch (this.textColor) {
-                case TextColor.Darker:
-                    cssStyle += "darker ";
-                    break;
-                case TextColor.Brighter:
-                    cssStyle += "brighter ";
+                case Color.Accent:
+                    cssStyle += "accentColor ";
                     break;
                 default:
                     cssStyle += "defaultColor ";
                     break;
+            }
+            if (this.isSubtle) {
+                cssStyle += "subtle ";
             }
             switch (this.textWeight) {
                 case TextWeight.Lighter:
@@ -1308,7 +1307,7 @@ var Column = (function (_super) {
         else {
             switch (this.size) {
                 case Size.Auto:
-                    element.style.flex = "0 1 auto";
+                    element.style.flex = "0 0 auto";
                     break;
                 case Size.Stretch:
                     element.style.flex = "1 1 auto";
