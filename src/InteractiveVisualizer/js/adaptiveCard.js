@@ -13,9 +13,9 @@ var TextContrast;
 })(TextContrast || (TextContrast = {}));
 var TextSize;
 (function (TextSize) {
-    TextSize[TextSize["ExtraSmall"] = 0] = "ExtraSmall";
-    TextSize[TextSize["Small"] = 1] = "Small";
-    TextSize[TextSize["Normal"] = 2] = "Normal";
+    TextSize[TextSize["Small"] = 0] = "Small";
+    TextSize[TextSize["Normal"] = 1] = "Normal";
+    TextSize[TextSize["Medium"] = 2] = "Medium";
     TextSize[TextSize["Large"] = 3] = "Large";
     TextSize[TextSize["ExtraLarge"] = 4] = "ExtraLarge";
 })(TextSize || (TextSize = {}));
@@ -69,12 +69,12 @@ function stringToTextContrast(value) {
 }
 function stringToTextSize(value, defaultValue) {
     switch (value) {
-        case "extraSmall":
-            return TextSize.ExtraLarge;
         case "small":
             return TextSize.Small;
         case "normal":
             return TextSize.Normal;
+        case "medium":
+            return TextSize.Medium;
         case "large":
             return TextSize.Large;
         case "extraLarge":
@@ -346,11 +346,11 @@ var TextBlock = (function (_super) {
             var element = document.createElement("div");
             var cssStyle = "text ";
             switch (this.textSize) {
-                case TextSize.ExtraSmall:
-                    cssStyle += "extraSmall ";
-                    break;
                 case TextSize.Small:
                     cssStyle += "small ";
+                    break;
+                case TextSize.Medium:
+                    cssStyle += "medium ";
                     break;
                 case TextSize.Large:
                     cssStyle += "large ";

@@ -18,12 +18,16 @@
     font-size: 14px;
 }
 
+.text.medium {
+    font-size: 20px;
+}
+
 .text.large {
-    font-size: 18px;
+    font-size: 24px;
 }
 
 .text.extraLarge {
-    font-size: 22px;
+    font-size: 30px;
 }
 
 .text.lighter {
