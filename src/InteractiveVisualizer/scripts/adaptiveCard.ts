@@ -8,9 +8,9 @@ enum TextContrast {
 }
 
 enum TextSize {
-    ExtraSmall,
     Small,
     Normal,
+    Medium,
     Large,
     ExtraLarge
 }
@@ -66,12 +66,12 @@ function stringToTextContrast(value: string): TextContrast {
 
 function stringToTextSize(value: string, defaultValue: TextSize): TextSize {
     switch (value) {
-        case "extraSmall":
-            return TextSize.ExtraLarge;
         case "small":
             return TextSize.Small;
         case "normal":
             return TextSize.Normal;
+        case "medium":
+            return TextSize.Medium;
         case "large":
             return TextSize.Large;
         case "extraLarge":
@@ -363,11 +363,11 @@ class TextBlock extends CardElement {
             let cssStyle = "text ";
 
             switch (this.textSize) {
-                case TextSize.ExtraSmall:
-                    cssStyle += "extraSmall ";
-                    break; 
                 case TextSize.Small:
                     cssStyle += "small ";
+                    break; 
+                case TextSize.Medium:
+                    cssStyle += "medium ";
                     break; 
                 case TextSize.Large:
                     cssStyle += "large ";

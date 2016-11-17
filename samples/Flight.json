@@ -53,19 +53,19 @@
 				{
 					"@type": "TextBlock",
 					"text": "Sarah Hum",
-					"textSize": "large",
+					"textSize": "medium",
 					"textWeight": "bolder"
 				},
 				{
 					"@type": "TextBlock",
 					"text": "Jeremy Goldberg",
-					"textSize": "large",
+					"textSize": "medium",
 					"textWeight": "bolder"
 				},
 				{
 					"@type": "TextBlock",
 					"text": "Evan Litvak",
-					"textSize": "large",
+					"textSize": "medium",
 					"textWeight": "bolder"
 				},
 				{
@@ -76,13 +76,13 @@
 					"@type": "TextBlock",
 				    "topSpacing": "narrow",
 					"text": "2 Stops",
-					"textSize": "large",
+					"textSize": "medium",
 					"textWeight": "bolder"
 				},
 				{
 					"@type": "TextBlock",
 					"text": "Fri, October 10 8:30 AM",
-					"textSize": "large",
+					"textSize": "medium",
 					"textWeight": "bolder"
 				},
 				{
@@ -143,13 +143,13 @@
 					"@type": "TextBlock",
 				    "topSpacing": "narrow",
 					"text": "Non-Stop",
-					"textSize": "large",
+					"textSize": "medium",
 					"textWeight": "bolder"
 				},
 				{
 					"@type": "TextBlock",
 					"text": "Fri, October 18 9:50 PM",
-					"textSize": "large",
+					"textSize": "medium",
 					"textWeight": "bolder"
 				},
 				{
@@ -216,7 +216,7 @@
                 				{
                 					"@type": "TextBlock",
                 					"text": "Total",
-                					"textSize": "large",
+                 					"textSize": "medium",
 				                    "isSubtle": true
                 				}
 				            ]
@@ -228,7 +228,7 @@
                 					"@type": "TextBlock",
                 					"horizontalAlignment": "right",
                 					"text": "$4,032.54",
-                					"textSize": "extraLarge",
+                					"textSize": "medium",
                 					"textWeight": "bolder"
                 				}
 				            ]

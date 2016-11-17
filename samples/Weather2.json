@@ -38,7 +38,7 @@
 			                        "@type": "TextBlock",
 			                        "style": "activitySubtitle",
 			                        "topSpacing": "none",
-			                        "textColor": "darker",
+			                        "isSubtle": true,
 			                        "text": "20% chance of rain",
 			                        "textSize": "small"
 			                    },
@@ -46,7 +46,7 @@
 			                        "@type": "TextBlock",
 			                        "style": "activitySubtitle",
 			                        "topSpacing": "none",
-			                        "textColor": "darker",
+			                        "isSubtle": true,
 			                        "text": "Winds 5 mph NE",
 			                        "textSize": "small"
 			                    }
@@ -89,7 +89,7 @@
 			                        "@type": "TextBlock",
 			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
-			                        "textColor": "darker",
+			                        "isSubtle": true,
 			                        "text": "52",
 			                        "textSize": "small"
 			                    }
@@ -120,7 +120,7 @@
 			                        "@type": "TextBlock",
 			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
-			                        "textColor": "darker",
+			                        "isSubtle": true,
 			                        "text": "48",
 			                        "textSize": "small"
 			                    }
@@ -151,7 +151,7 @@
 			                        "@type": "TextBlock",
 			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
-			                        "textColor": "darker",
+			                        "isSubtle": true,
 			                        "text": "49",
 			                        "textSize": "small"
 			                    }
@@ -182,7 +182,7 @@
 			                        "@type": "TextBlock",
 			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
-			                        "textColor": "darker",
+			                        "isSubtle": true,
 			                        "text": "51",
 			                        "textSize": "small"
 			                    }
