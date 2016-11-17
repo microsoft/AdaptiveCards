@@ -280,6 +280,13 @@ var CardElement = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(CardElement.prototype, "hideOverflow", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
     CardElement.prototype.adjustLayout = function (element) {
         if (this.size == Size.Stretch) {
             element.style.width = "100%";
@@ -294,6 +301,9 @@ var CardElement = (function () {
             case HorizontalAlignment.Right:
                 element.style.textAlign = "right";
                 break;
+        }
+        if (this.hideOverflow) {
+            element.style.overflow = "hidden";
         }
     };
     CardElement.prototype.internalRender = function () {
@@ -389,10 +399,16 @@ var TextBlock = (function (_super) {
             element.innerHTML = processMarkdown(this.text);
             var firstChild = element.firstChild;
             firstChild.className = cssStyle;
+            firstChild.style.margin = "0px";
+            var anchors = firstChild.getElementsByTagName("a");
+            for (var i = 0; i < anchors.length; i++) {
+                anchors[i].target = "_blank";
+            }
             if (!this.wrap) {
                 firstChild.style.whiteSpace = "nowrap";
+                firstChild.style.textOverflow = "ellipsis";
             }
-            return element;
+            return firstChild;
         }
         else {
             return null;
@@ -1042,6 +1058,13 @@ var ActionGroup = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ActionGroup.prototype, "hideOverflow", {
+        get: function () {
+            return false;
+        },
+        enumerable: true,
+        configurable: true
+    });
     ActionGroup.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
         if (json["items"] != null) {
@@ -1058,6 +1081,7 @@ var ActionGroup = (function (_super) {
         var element = document.createElement("div");
         var actionContainer = document.createElement("div");
         actionContainer.style.display = "flex";
+        actionContainer.style.overflow = "hidden";
         appendChild(element, actionContainer);
         var containerPadding = this.container.getActionCardLeftRightPadding();
         this._actionCardContainer = document.createElement("div");
@@ -1074,6 +1098,8 @@ var ActionGroup = (function (_super) {
             for (var i = 0; i < this._actions.length; i++) {
                 var actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Link);
                 actionButton.text = this._actions[i].name;
+                actionButton.element.style.textOverflow = "ellipsis";
+                actionButton.element.style.overflow = "hidden";
                 if (i < this._actions.length - 1) {
                     actionButton.element.style.marginRight = "20px";
                 }
@@ -1186,6 +1212,13 @@ var Container = (function (_super) {
         },
         set: function (value) {
             this._textContrast = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Container.prototype, "hideOverflow", {
+        get: function () {
+            return false;
         },
         enumerable: true,
         configurable: true
