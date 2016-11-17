@@ -37,18 +37,6 @@ function renderCard() {
 
         node.innerHTML = '';
         node.appendChild(renderedCard);
-
-        var anchors = node.getElementsByTagName("a");
-
-        for (var i = 0; i < anchors.length; i++) { 
-            anchors[i].target = "_blank";
-        }
-
-        var paragraphs = node.getElementsByTagName("p");
-
-        for (var i = 0; i < paragraphs.length; i++) { 
-            paragraphs[i].style.margin = "0";
-        }
     }
     catch (e) {
         document.getElementById('content').innerHTML = "Error: " + e.toString();

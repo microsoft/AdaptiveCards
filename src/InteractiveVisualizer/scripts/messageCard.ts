@@ -21,7 +21,7 @@ class Activity extends CardElement {
             imageSection.style.height = size.toString() + "px";
 
             let image = document.createElement("img");
-
+ 
             image.style.width = size.toString() + "px"; 
             image.style.height = size.toString() + "px";
 
@@ -251,7 +251,7 @@ class MessageCard {
             element.style.borderTop = "1px solid #F1F1F1";
             element.style.borderRight = "1px solid #F1F1F1";
             element.style.borderBottom = "1px solid #F1F1F1";
-            element.style.borderLeft = "1px solid #" + this.themeColor;
+            element.style.borderLeft = "3px solid #" + this.themeColor;
         }
 
         appendChild(element, this._rootContainer.render());

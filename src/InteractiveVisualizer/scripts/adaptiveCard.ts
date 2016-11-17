@@ -287,6 +287,10 @@ abstract class CardElement {
         this._horizontalAlignment = value;
     }
 
+    get hideOverflow(): boolean {
+        return true;
+    }
+
     abstract render(): HTMLElement;
 
     adjustLayout(element: HTMLElement) {
@@ -304,6 +308,10 @@ abstract class CardElement {
             case HorizontalAlignment.Right:
                 element.style.textAlign = "right";
                 break;
+        }
+
+        if (this.hideOverflow) {
+            element.style.overflow = "hidden";
         }
     }
 
@@ -360,6 +368,7 @@ class TextBlock extends CardElement {
     render(): HTMLElement {
         if (!isNullOrEmpty(this.text)) {
             let element = document.createElement("div");
+
             let cssStyle = "text ";
 
             switch (this.textSize) {
@@ -412,14 +421,21 @@ class TextBlock extends CardElement {
             element.innerHTML = processMarkdown(this.text);
 
             let firstChild = <HTMLElement>element.firstChild;
-
             firstChild.className = cssStyle;
+            firstChild.style.margin = "0px";
+
+            var anchors = firstChild.getElementsByTagName("a");
+
+            for (var i = 0; i < anchors.length; i++) { 
+                anchors[i].target = "_blank";
+            }
 
             if (!this.wrap) {
                 firstChild.style.whiteSpace = "nowrap";
+                firstChild.style.textOverflow = "ellipsis";
             }
 
-            return element;
+            return firstChild;
         }
         else {
             return null;
@@ -1142,6 +1158,10 @@ class ActionGroup extends CardElement {
         return this._actions;
     }
 
+    get hideOverflow(): boolean {
+        return false;
+    }
+
     parse(json: any) {
         super.parse(json);
         
@@ -1163,6 +1183,7 @@ class ActionGroup extends CardElement {
 
         let actionContainer = document.createElement("div");
         actionContainer.style.display = "flex";
+        actionContainer.style.overflow = "hidden";
 
         appendChild(element, actionContainer);
 
@@ -1184,6 +1205,8 @@ class ActionGroup extends CardElement {
             for (let i = 0; i < this._actions.length; i++) {
                 let actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Link);
                 actionButton.text = this._actions[i].name;
+                actionButton.element.style.textOverflow = "ellipsis";
+                actionButton.element.style.overflow = "hidden";
 
                 if (i < this._actions.length - 1) {
                     actionButton.element.style.marginRight = "20px";
@@ -1299,6 +1322,10 @@ class Container extends CardElement {
         }
 
         return TextContrast.DarkOnLight;
+    }
+
+    get hideOverflow() {
+        return false;
     }
 
     addElement(element: CardElement) {
