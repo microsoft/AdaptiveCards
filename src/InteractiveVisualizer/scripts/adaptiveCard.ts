@@ -422,7 +422,6 @@ class TextBlock extends CardElement {
 
             let firstChild = <HTMLElement>element.firstChild;
             firstChild.className = cssStyle;
-            firstChild.style.margin = "0px";
 
             var anchors = firstChild.getElementsByTagName("a");
 

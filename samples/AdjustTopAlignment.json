@@ -1,0 +1,36 @@
+
+{
+	"@type": "AdaptiveCard",
+	"sections": [
+		{
+		    "padding": "narrow",
+		    "items": [
+		        {
+		            "@type": "ColumnGroup",
+		            "items": [
+		                {
+		                    "size": "auto",
+		                    "items": [
+		                        {
+		                            "@type": "Picture",
+		                            "size": "medium",
+		                            "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg"
+		                        }
+		                    ]
+		                },
+		                {
+		                    "size": "stretch",
+		                    "items": [
+		                        {
+		                            "@type": "TextBlock",
+		                            "textSize": "large",
+		                            "text": "**ADJUST TOP ALIGNMENT**"
+		                        }
+		                    ]
+		                }
+		            ]
+		        }
+		    ]
+		}
+	]
+}

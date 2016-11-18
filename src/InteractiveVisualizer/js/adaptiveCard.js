@@ -399,7 +399,6 @@ var TextBlock = (function (_super) {
             element.innerHTML = processMarkdown(this.text);
             var firstChild = element.firstChild;
             firstChild.className = cssStyle;
-            firstChild.style.margin = "0px";
             var anchors = firstChild.getElementsByTagName("a");
             for (var i = 0; i < anchors.length; i++) {
                 anchors[i].target = "_blank";

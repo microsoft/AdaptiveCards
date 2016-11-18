@@ -42,7 +42,6 @@ class Activity extends CardElement {
         if (!isNullOrEmpty(this.title) || !isNullOrEmpty(this.subtitle) || !isNullOrEmpty(this.text)) {
             let contentSection = document.createElement("div");
             contentSection.style.flex = "1 1 auto";
-            contentSection.style.marginTop = "-5px";
 
             let textBlock = new TextBlock(this.container);
             textBlock.text = this.title;
@@ -52,7 +51,6 @@ class Activity extends CardElement {
             textBlock = new TextBlock(this.container);
             textBlock.text = this.subtitle;
             textBlock.textWeight = TextWeight.Lighter;
-            // textBlock.textColor = TextColor.Brighter;
 
             appendChild(contentSection, textBlock.render());
 
