@@ -6,11 +6,11 @@
   "dependencies": {
     "gulp-sass": "latest",
     "gulp-typescript": "latest",
-    "merge2": "^1.0.2",
-    "typescript": "^2.0.10"
+    "merge2": "latest",
+    "typescript": "latest"
   },
   "devDependencies": {
-    "browser-sync": "^2.18.1",
+    "browser-sync": "latest",
     "browserify": "^13.1.1",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
