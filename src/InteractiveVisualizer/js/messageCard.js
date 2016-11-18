@@ -36,14 +36,12 @@ var Activity = (function (_super) {
         if (!isNullOrEmpty(this.title) || !isNullOrEmpty(this.subtitle) || !isNullOrEmpty(this.text)) {
             var contentSection = document.createElement("div");
             contentSection.style.flex = "1 1 auto";
-            contentSection.style.marginTop = "-5px";
             var textBlock = new TextBlock(this.container);
             textBlock.text = this.title;
             appendChild(contentSection, textBlock.render());
             textBlock = new TextBlock(this.container);
             textBlock.text = this.subtitle;
             textBlock.textWeight = TextWeight.Lighter;
-            // textBlock.textColor = TextColor.Brighter;
             appendChild(contentSection, textBlock.render());
             textBlock = new TextBlock(this.container);
             textBlock.text = this.text;

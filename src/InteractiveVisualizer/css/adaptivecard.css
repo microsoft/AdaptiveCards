@@ -10,22 +10,27 @@
 
 .text.small {
     font-size: 12px;
+    margin: -4px 0px 4px 0px;
 }
 
 .text.defaultSize {
     font-size: 14px;
+    margin: -5px 0px 5px 0px;
 }
 
 .text.medium {
     font-size: 20px;
+    margin: -8px 0px 8px 0px;
 }
 
 .text.large {
     font-size: 24px;
+    margin: -9px 0px 9px 0px;
 }
 
 .text.extraLarge {
     font-size: 30px;
+    margin: -11px 0px 11px 0px;
 }
 
 .text.lighter {
