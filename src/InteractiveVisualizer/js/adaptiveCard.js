@@ -308,7 +308,9 @@ var CardElement = (function () {
     };
     CardElement.prototype.internalRender = function () {
         var renderedElement = this.render();
-        this.adjustLayout(renderedElement);
+        if (renderedElement != null) {
+            this.adjustLayout(renderedElement);
+        }
         return renderedElement;
     };
     CardElement.getPhysicalSize = function (size) {
@@ -467,7 +469,7 @@ var FactGroup = (function (_super) {
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding: 0px 0px 0px 10px">';
                 textBlock = new TextBlock(this.container);
-                textBlock.text = this._items[i].name;
+                textBlock.text = this._items[i].value;
                 textBlock.textWeight = TextWeight.Lighter;
                 html += textBlock.render().outerHTML;
                 html += '    </td>';
