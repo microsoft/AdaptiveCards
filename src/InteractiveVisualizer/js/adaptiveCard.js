@@ -1,11 +1,83 @@
-/*
-Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
-*/
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/*
+Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
+*/
+var Setting = (function () {
+    function Setting(name, physicalSize) {
+        if (physicalSize === void 0) { physicalSize = undefined; }
+        this._name = name;
+        this._physicalSize = physicalSize;
+    }
+    Object.defineProperty(Setting.prototype, "name", {
+        get: function () {
+            return this._name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Setting.prototype, "physicalSize", {
+        get: function () {
+            return this._physicalSize;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Setting;
+}());
+var Size = (function (_super) {
+    __extends(Size, _super);
+    function Size(name, physicalSize, physicalPictureSize) {
+        if (physicalSize === void 0) { physicalSize = undefined; }
+        if (physicalPictureSize === void 0) { physicalPictureSize = undefined; }
+        _super.call(this, name, physicalSize);
+        this.physicalPictureSize = physicalPictureSize;
+    }
+    Size.parse = function (name, defaultValue) {
+        for (var key in Size) {
+            if (!isNullOrEmpty(Size[key].name) && Size[key].name == name) {
+                return Size[key];
+            }
+        }
+        return defaultValue;
+    };
+    Object.defineProperty(Size.prototype, "physicalSize", {
+        set: function (value) {
+            this._physicalSize = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Size.Auto = new Size("auto");
+    Size.Stretch = new Size("stretch");
+    Size.Small = new Size("small", 100, 40);
+    Size.Medium = new Size("medium", 200, 80);
+    Size.Large = new Size("large", 300, 160);
+    return Size;
+}(Setting));
+var Spacing = (function (_super) {
+    __extends(Spacing, _super);
+    function Spacing() {
+        _super.apply(this, arguments);
+    }
+    Spacing.parse = function (name, defaultValue) {
+        for (var key in Spacing) {
+            if (!isNullOrEmpty(Spacing[key].name) && Spacing[key].name == name) {
+                return Spacing[key];
+            }
+        }
+        return defaultValue;
+    };
+    Spacing.None = new Spacing("none", 0);
+    Spacing.ExtraNarrow = new Spacing("extraNarrow", 5);
+    Spacing.Narrow = new Spacing("narrow", 10);
+    Spacing.Normal = new Spacing("normal", 20);
+    Spacing.Wide = new Spacing("wide", 30);
+    return Spacing;
+}(Setting));
 var TextContrast;
 (function (TextContrast) {
     TextContrast[TextContrast["DarkOnLight"] = 0] = "DarkOnLight";
@@ -36,27 +108,11 @@ var HorizontalAlignment;
     HorizontalAlignment[HorizontalAlignment["Center"] = 1] = "Center";
     HorizontalAlignment[HorizontalAlignment["Right"] = 2] = "Right";
 })(HorizontalAlignment || (HorizontalAlignment = {}));
-var Size;
-(function (Size) {
-    Size[Size["Auto"] = 0] = "Auto";
-    Size[Size["Small"] = 1] = "Small";
-    Size[Size["Medium"] = 2] = "Medium";
-    Size[Size["Large"] = 3] = "Large";
-    Size[Size["Stretch"] = 4] = "Stretch";
-})(Size || (Size = {}));
 var PictureStyle;
 (function (PictureStyle) {
     PictureStyle[PictureStyle["Normal"] = 0] = "Normal";
     PictureStyle[PictureStyle["Person"] = 1] = "Person";
 })(PictureStyle || (PictureStyle = {}));
-var Spacing;
-(function (Spacing) {
-    Spacing[Spacing["None"] = 0] = "None";
-    Spacing[Spacing["ExtraNarrow"] = 1] = "ExtraNarrow";
-    Spacing[Spacing["Narrow"] = 2] = "Narrow";
-    Spacing[Spacing["Normal"] = 3] = "Normal";
-    Spacing[Spacing["Wide"] = 4] = "Wide";
-})(Spacing || (Spacing = {}));
 function stringToTextContrast(value) {
     switch (value) {
         case "darkOnLight":
@@ -117,22 +173,6 @@ function stringToHorizontalAlignment(value, defaultValue) {
             return defaultValue;
     }
 }
-function stringToSize(value, defaultValue) {
-    switch (value) {
-        case "auto":
-            return Size.Auto;
-        case "small":
-            return Size.Small;
-        case "medium":
-            return Size.Medium;
-        case "large":
-            return Size.Large;
-        case "stretch":
-            return Size.Stretch;
-        default:
-            return defaultValue;
-    }
-}
 function stringToPictureStyle(value, defaultValue) {
     switch (value) {
         case "person":
@@ -149,36 +189,6 @@ var ButtonState;
     ButtonState[ButtonState["Selected"] = 1] = "Selected";
     ButtonState[ButtonState["Inactive"] = 2] = "Inactive";
 })(ButtonState || (ButtonState = {}));
-function stringToSpacing(value, defaultValue) {
-    switch (value) {
-        case "none":
-            return Spacing.None;
-        case "extraNarrow":
-            return Spacing.ExtraNarrow;
-        case "narrow":
-            return Spacing.Narrow;
-        case "normal":
-            return Spacing.Normal;
-        case "wide":
-            return Spacing.Wide;
-        default:
-            return defaultValue;
-    }
-}
-function getPhysicalSpacing(size) {
-    switch (size) {
-        case Spacing.ExtraNarrow:
-            return 5;
-        case Spacing.Narrow:
-            return 10;
-        case Spacing.Normal:
-            return 20;
-        case Spacing.Wide:
-            return 30;
-        default:
-            return 0;
-    }
-}
 var EventDispatcher = (function () {
     function EventDispatcher() {
         this._subscriptions = new Array();
@@ -292,7 +302,8 @@ var CardElement = (function () {
             element.style.width = "100%";
         }
         else if (this.size != Size.Auto) {
-            element.style.width = this.getPhysicalSize().toString() + "px";
+            // element.style.width = this.getPhysicalSize().toString() + "px";
+            element.style.width = this.size.physicalSize.toString() + "px";
         }
         switch (this.horizontalAlignment) {
             case HorizontalAlignment.Center:
@@ -313,22 +324,16 @@ var CardElement = (function () {
         }
         return renderedElement;
     };
-    CardElement.getPhysicalSize = function (size) {
-        switch (size) {
-            case Size.Small:
-                return 100;
-            case Size.Large:
-                return 300;
-            default:
-                return 200;
-        }
-    };
-    CardElement.prototype.getPhysicalSize = function () {
-        return CardElement.getPhysicalSize(this.size);
-    };
+    /*
+    getPhysicalSize(): number {
+        return getPhysicalSize(this.size);
+    }
+    */
     CardElement.prototype.parse = function (json) {
-        this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.None);
-        this._size = stringToSize(json["size"], this.size);
+        // this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.None);
+        this._topSpacing = Spacing.parse(json["topSpacing"], Spacing.None);
+        // this._size = stringToSize(json["size"], this.size);
+        this._size = Size.parse(json["size"], this.size);
         this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     };
     return CardElement;
@@ -487,20 +492,23 @@ var Picture = (function (_super) {
         _super.apply(this, arguments);
         this._style = PictureStyle.Normal;
     }
-    Picture.getPhysicalSize = function (size) {
-        switch (size) {
-            case Size.Small:
-                return 40;
-            case Size.Medium:
-                return 80;
-            default:
-                return 160;
-        }
-    };
-    Picture.prototype.getPhysicalSize = function () {
-        return Picture.getPhysicalSize(this.size);
-    };
     Object.defineProperty(Picture.prototype, "style", {
+        /*
+        static getPhysicalSize(size: Size): number {
+            switch (size) {
+                case Size.Small:
+                    return 40;
+                case Size.Medium:
+                    return 80;
+                default:
+                    return 160;
+            }
+        }
+    
+        getPhysicalSize(): number {
+            return Picture.getPhysicalSize(this.size);
+        }
+        */
         get: function () {
             return this._style;
         },
@@ -537,7 +545,8 @@ var Picture = (function (_super) {
                 image.style.maxWidth = "100%";
             }
             else {
-                var physicalSize = Picture.getPhysicalSize(this.size);
+                // let physicalSize = Picture.getPhysicalSize(this.size);
+                var physicalSize = this.size.physicalPictureSize;
                 image.style.maxWidth = physicalSize.toString() + "px";
                 image.style.maxHeight = physicalSize.toString() + "px";
                 if (this._style == PictureStyle.Person) {
@@ -573,7 +582,8 @@ var PictureGallery = (function (_super) {
     });
     PictureGallery.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        this._pictureSize = stringToSize(json["imageSize"], Size.Medium);
+        // this._pictureSize = stringToSize(json["imageSize"], Size.Medium);
+        this._pictureSize = Size.parse(json["imageSize"], Size.Medium);
         if (json["items"] != null) {
             var pictureArray = json["items"];
             for (var i = 0; i < pictureArray.length; i++) {
@@ -887,7 +897,7 @@ var ActionCard = (function (_super) {
         if (needsTopSpacer) {
             actionCardElement.style.marginTop = "16px";
         }
-        actionCardElement.style.paddingTop = container.padding == 0 ? "16px" : getPhysicalSpacing(container.padding).toString() + "px";
+        actionCardElement.style.paddingTop = container.padding.physicalSize == 0 ? "16px" : container.padding.physicalSize.toString() + "px";
         actionCardElement.style.paddingBottom = actionCardElement.style.paddingTop;
         if (this._card != null) {
             appendChild(actionCardElement, this._card.render());
@@ -1237,7 +1247,7 @@ var Container = (function (_super) {
     };
     Container.prototype.showBottomSpacer = function (requestingElement) {
         if (this.isLastElement(requestingElement)) {
-            this._element.style.paddingBottom = getPhysicalSpacing(this.padding) + "px";
+            this._element.style.paddingBottom = this.padding.physicalSize + "px";
             if (this.container != null) {
                 this.container.showBottomSpacer(this);
             }
@@ -1253,7 +1263,7 @@ var Container = (function (_super) {
     };
     Container.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        this._padding = stringToSpacing(json["padding"], Spacing.None);
+        this._padding = Spacing.parse(json["padding"], Spacing.None);
         this._backgroundImageUrl = json["backgroundImage"];
         this._backgroundColor = json["backgroundColor"];
         this._textContrast = stringToTextContrast(json["textContrast"]);
@@ -1278,11 +1288,11 @@ var Container = (function (_super) {
             if (!isNullOrEmpty(this.backgroundColor)) {
                 this._element.style.backgroundColor = this.backgroundColor;
             }
-            this._element.style.padding = getPhysicalSpacing(this.padding) + "px";
+            this._element.style.padding = this.padding.physicalSize.toString() + "px";
             var html = '';
             var previousElement = null;
             for (var i = 0; i < this.elementCount; i++) {
-                var spacing = getPhysicalSpacing(this.getElement(i).topSpacing);
+                var spacing = this.getElement(i).topSpacing.physicalSize;
                 var renderedElement = this.getElement(i).internalRender();
                 if (renderedElement != null) {
                     if (previousElement != null && spacing > 0) {
@@ -1304,7 +1314,7 @@ var Container = (function (_super) {
         var currentSection = this;
         var result = 0;
         while (currentSection != null && result == 0) {
-            result = getPhysicalSpacing(currentSection.padding);
+            result = currentSection.padding.physicalSize;
             currentSection = currentSection.container;
         }
         ;
@@ -1328,7 +1338,7 @@ var Column = (function (_super) {
     }
     Column.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        this.size = stringToSize(json["size"], undefined);
+        this.size = Size.parse(json["size"], undefined);
         if (this.size == undefined) {
             this._useWeight = true;
             this._weight = Number(json["size"]);
@@ -1347,7 +1357,7 @@ var Column = (function (_super) {
                     element.style.flex = "1 1 auto";
                     break;
                 default:
-                    element.style.flex = "0 0 " + CardElement.getPhysicalSize(this.size) + "px";
+                    element.style.flex = "0 0 " + this.size.physicalSize + "px";
                     break;
             }
         }
@@ -1373,7 +1383,7 @@ var ColumnGroup = (function (_super) {
     });
     ColumnGroup.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        this._columnSpacing = stringToSpacing(json["columnSpacing"], Spacing.Narrow);
+        this._columnSpacing = Spacing.parse(json["columnSpacing"], Spacing.Narrow);
         if (json["items"] != null) {
             var itemArray = json["items"];
             for (var i = 0; i < itemArray.length; i++) {
@@ -1392,7 +1402,7 @@ var ColumnGroup = (function (_super) {
                 appendChild(element, renderedColumn);
                 if (this._items.length > 1 && i < this._items.length - 1) {
                     var spacer = document.createElement("div");
-                    spacer.style.flex = "0 0 " + getPhysicalSpacing(this.columnSpacing) + "px";
+                    spacer.style.flex = "0 0 " + this.columnSpacing.physicalSize.toString() + "px";
                     appendChild(element, spacer);
                 }
             }
@@ -1409,7 +1419,8 @@ var AdaptiveCard = (function () {
         this._rootSection = new Container(null);
     }
     AdaptiveCard.prototype.parse = function (json) {
-        this._rootSection.padding = stringToSpacing(json["padding"], Spacing.None);
+        Size.Medium.physicalSize = 250;
+        this._rootSection.padding = Spacing.parse(json["padding"], Spacing.None);
         this._rootSection.backgroundImageUrl = json["backgroundImage"];
         this._rootSection.backgroundColor = json["backgroundColor"];
         this._rootSection.textContrast = stringToTextContrast(json["textContrast"]);

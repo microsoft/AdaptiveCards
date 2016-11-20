@@ -15,7 +15,7 @@ var Activity = (function (_super) {
         var element = document.createElement("div");
         element.style.display = "flex";
         if (!isNullOrEmpty(this.imageUrl)) {
-            var size = Picture.getPhysicalSize(this.imageSize);
+            var size = this.imageSize.physicalPictureSize;
             var imageSection = document.createElement("div");
             imageSection.style.flex = "0 0 auto";
             imageSection.style.marginRight = "10px";
@@ -60,7 +60,7 @@ function parsePicture(container, json, defaultSize, defaultStyle) {
     if (defaultStyle === void 0) { defaultStyle = PictureStyle.Normal; }
     var picture = new Picture(container);
     picture.url = json["image"];
-    picture.size = stringToSize(json["size"], defaultSize);
+    picture.size = Size.parse(json["size"], defaultSize);
     return picture;
 }
 function parsePictureGallery(container, json) {
@@ -114,7 +114,7 @@ function parseSection(container, json) {
         activity.subtitle = json["activitySubtitle"];
         activity.text = json["activityText"];
         activity.imageUrl = json["activityImage"];
-        activity.imageSize = stringToSize(json["activityImageSize"], Size.Small);
+        activity.imageSize = Size.parse(json["activityImageSize"], Size.Small);
         activity.imageStyle = stringToPictureStyle(json["activityImageStyle"], PictureStyle.Person);
         section.addElement(activity);
     }

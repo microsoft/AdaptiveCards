@@ -13,7 +13,7 @@ class Activity extends CardElement {
         element.style.display = "flex";
 
         if (!isNullOrEmpty(this.imageUrl)) {
-            let size = Picture.getPhysicalSize(this.imageSize);
+            let size = this.imageSize.physicalPictureSize;
 
             let imageSection = document.createElement("div");
             imageSection.style.flex = "0 0 auto";
@@ -74,7 +74,7 @@ function parsePicture(container: Container, json: any, defaultSize: Size = Size.
     let picture = new Picture(container);
 
     picture.url = json["image"];
-    picture.size = stringToSize(json["size"], defaultSize);
+    picture.size = Size.parse(json["size"], defaultSize);
 
     return picture;
 }
@@ -150,7 +150,7 @@ function parseSection(container: Container, json: any): Container {
         activity.subtitle = json["activitySubtitle"];
         activity.text = json["activityText"];
         activity.imageUrl = json["activityImage"];
-        activity.imageSize = stringToSize(json["activityImageSize"], Size.Small);
+        activity.imageSize = Size.parse(json["activityImageSize"], Size.Small);
         activity.imageStyle = stringToPictureStyle(json["activityImageStyle"], PictureStyle.Person);
 
         section.addElement(activity);
