@@ -1,6 +1,64 @@
 ﻿/*
 Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
 */
+abstract class Setting {
+    private _name: string;
+
+    protected constructor(name: string, physicalSize: number = undefined) {
+        this._name = name;
+        this.physicalSize = physicalSize;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    physicalSize: number;
+}
+
+class Size extends Setting {
+    static Auto = new Size("auto");
+    static Stretch = new Size("stretch");
+    static Small = new Size("small", 100, 40);
+    static Medium = new Size("medium", 200, 80);
+    static Large = new Size("large", 300, 160);
+
+    protected constructor(name: string, physicalSize: number = undefined, physicalPictureSize: number = undefined) {
+        super(name, physicalSize);
+
+        this.physicalPictureSize = physicalPictureSize;
+    }
+
+    static parse(name: string, defaultValue: Size): Size {
+        for (let key in Size) {
+            if (!isNullOrEmpty(Size[key].name) && Size[key].name == name) {
+                return Size[key];
+            }
+        }
+
+        return defaultValue;
+    }
+
+    physicalPictureSize: number;
+}
+
+class Spacing extends Setting {
+    static None = new Spacing("none", 0);
+    static ExtraNarrow = new Spacing("extraNarrow", 5);
+    static Narrow = new Spacing("narrow", 10);
+    static Normal = new Spacing("normal", 20);
+    static Wide = new Spacing("wide", 30);
+
+    static parse(name: string, defaultValue: Spacing): Spacing {
+        for (let key in Spacing) {
+            if (!isNullOrEmpty(Spacing[key].name) && Spacing[key].name == name) {
+                return Spacing[key];
+            }
+        }
+
+        return defaultValue;
+    }
+}
 
 enum TextContrast {
     DarkOnLight,
@@ -32,25 +90,9 @@ enum HorizontalAlignment {
     Right
 }
 
-enum Size {
-    Auto,
-    Small,
-    Medium,
-    Large,
-    Stretch
-}
-
 enum PictureStyle {
     Normal,
     Person
-}
-
-enum Spacing {
-    None,
-    ExtraNarrow,
-    Narrow,
-    Normal,
-    Wide
 }
 
 function stringToTextContrast(value: string): TextContrast {
@@ -118,23 +160,6 @@ function stringToHorizontalAlignment(value: string, defaultValue: HorizontalAlig
     }
 }
 
-function stringToSize(value: string, defaultValue: Size): Size {
-    switch (value) {
-        case "auto":
-            return Size.Auto;
-        case "small":
-            return Size.Small;
-        case "medium":
-            return Size.Medium;
-        case "large":
-            return Size.Large;
-        case "stretch":
-            return Size.Stretch;
-        default:
-            return defaultValue;
-    }
-}
-
 function stringToPictureStyle(value: string, defaultValue: PictureStyle): PictureStyle {
     switch (value) {
         case "person":
@@ -150,38 +175,6 @@ enum ButtonState {
     Normal,
     Selected,
     Inactive
-}
-
-function stringToSpacing(value: string, defaultValue: Spacing): Spacing {
-    switch (value) {
-        case "none":
-            return Spacing.None;
-        case "extraNarrow":
-            return Spacing.ExtraNarrow;
-        case "narrow":
-            return Spacing.Narrow;
-        case "normal":
-            return Spacing.Normal;
-        case "wide":
-            return Spacing.Wide;
-        default:
-            return defaultValue;
-    }
-}
-
-function getPhysicalSpacing(size: Spacing): number {
-    switch (size) {
-        case Spacing.ExtraNarrow:
-            return 5;
-        case Spacing.Narrow:
-            return 10;
-        case Spacing.Normal:
-            return 20;
-        case Spacing.Wide:
-            return 30;
-        default:
-            return 0;
-    }
 }
 
 interface IEvent<TSender> {
@@ -278,7 +271,7 @@ abstract class CardElement {
     set size(value: Size) {
         this._size = value;
     }
-
+    
     get horizontalAlignment(): HorizontalAlignment {
         return this._horizontalAlignment;
     }
@@ -298,7 +291,8 @@ abstract class CardElement {
             element.style.width = "100%";
         }
         else if (this.size != Size.Auto) {
-            element.style.width = this.getPhysicalSize().toString() + "px";
+            // element.style.width = this.getPhysicalSize().toString() + "px";
+            element.style.width = this.size.physicalSize.toString() + "px";
         }
 
         switch (this.horizontalAlignment) {
@@ -325,24 +319,17 @@ abstract class CardElement {
         return renderedElement;
     }
 
-    static getPhysicalSize(size: Size) {
-        switch (size) {
-            case Size.Small:
-                return 100;
-            case Size.Large:
-                return 300;
-            default:
-                return 200;
-        }
-    }
-
+    /*
     getPhysicalSize(): number {
-        return CardElement.getPhysicalSize(this.size);
+        return getPhysicalSize(this.size);
     }
+    */
 
     parse(json: any) {
-        this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.None);
-        this._size = stringToSize(json["size"], this.size);
+        // this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.None);
+        this._topSpacing = Spacing.parse(json["topSpacing"], Spacing.None);
+        // this._size = stringToSize(json["size"], this.size);
+        this._size = Size.parse(json["size"], this.size);
         this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     }
 }
@@ -523,6 +510,7 @@ class Picture extends CardElement {
     private _style: PictureStyle = PictureStyle.Normal;
     private _url: string;
 
+    /*
     static getPhysicalSize(size: Size): number {
         switch (size) {
             case Size.Small:
@@ -537,6 +525,7 @@ class Picture extends CardElement {
     getPhysicalSize(): number {
         return Picture.getPhysicalSize(this.size);
     }
+    */
 
     get style(): PictureStyle {
         return this._style;
@@ -575,7 +564,8 @@ class Picture extends CardElement {
                 image.style.maxWidth = "100%";
             }
             else {
-                let physicalSize = Picture.getPhysicalSize(this.size);
+                // let physicalSize = Picture.getPhysicalSize(this.size);
+                let physicalSize = this.size.physicalPictureSize;
 
                 image.style.maxWidth = physicalSize.toString() + "px"; 
                 image.style.maxHeight = physicalSize.toString() + "px";
@@ -611,7 +601,8 @@ class PictureGallery extends CardElement {
     parse(json: any) {
         super.parse(json);
         
-        this._pictureSize = stringToSize(json["imageSize"], Size.Medium);
+        // this._pictureSize = stringToSize(json["imageSize"], Size.Medium);
+        this._pictureSize = Size.parse(json["imageSize"], Size.Medium);
 
         if (json["items"] != null) {
             let pictureArray = json["items"] as Array<any>;
@@ -968,7 +959,7 @@ class ActionCard extends Action {
             actionCardElement.style.marginTop = "16px";
         }
 
-        actionCardElement.style.paddingTop = container.padding == 0 ? "16px" : getPhysicalSpacing(container.padding).toString() + "px";
+        actionCardElement.style.paddingTop = container.padding.physicalSize == 0 ? "16px" : container.padding.physicalSize.toString() + "px";
         actionCardElement.style.paddingBottom = actionCardElement.style.paddingTop;
 
         if (this._card != null) {
@@ -1345,7 +1336,7 @@ class Container extends CardElement {
 
     showBottomSpacer(requestingElement: CardElement) {
         if (this.isLastElement(requestingElement)) {
-            this._element.style.paddingBottom = getPhysicalSpacing(this.padding) + "px"; 
+            this._element.style.paddingBottom = this.padding.physicalSize + "px"; 
 
             if (this.container != null) {
                 this.container.showBottomSpacer(this);
@@ -1366,7 +1357,7 @@ class Container extends CardElement {
     parse(json: any) {
         super.parse(json);
 
-        this._padding = stringToSpacing(json["padding"], Spacing.None);        
+        this._padding = Spacing.parse(json["padding"], Spacing.None);        
         this._backgroundImageUrl = json["backgroundImage"];
         this._backgroundColor = json["backgroundColor"];
         this._textContrast = stringToTextContrast(json["textContrast"]);
@@ -1399,13 +1390,13 @@ class Container extends CardElement {
                 this._element.style.backgroundColor = this.backgroundColor;
             }
 
-            this._element.style.padding = getPhysicalSpacing(this.padding) + "px"; 
+            this._element.style.padding = this.padding.physicalSize.toString() + "px"; 
 
             let html: string = '';
             let previousElement: CardElement = null;
 
             for (var i = 0; i < this.elementCount; i++) {
-                let spacing = getPhysicalSpacing(this.getElement(i).topSpacing);
+                let spacing = this.getElement(i).topSpacing.physicalSize;
 
                 let renderedElement = this.getElement(i).internalRender();
 
@@ -1435,7 +1426,7 @@ class Container extends CardElement {
         let result: number = 0;
 
         while (currentSection != null && result == 0) {
-            result = getPhysicalSpacing(currentSection.padding);
+            result = currentSection.padding.physicalSize;
 
             currentSection = currentSection.container;
         };
@@ -1461,7 +1452,7 @@ class Column extends Container {
     parse(json: any) {
         super.parse(json);
 
-        this.size = stringToSize(json["size"], undefined);
+        this.size = Size.parse(json["size"], undefined);
 
         if (this.size == undefined) {
             this._useWeight = true;
@@ -1482,7 +1473,7 @@ class Column extends Container {
                     element.style.flex = "1 1 auto";
                     break;
                 default:
-                    element.style.flex = "0 0 " + CardElement.getPhysicalSize(this.size) + "px";
+                    element.style.flex = "0 0 " + this.size.physicalSize + "px";
                     break;
             }
         }
@@ -1493,18 +1484,18 @@ class ColumnGroup extends CardElement {
     private _items: Array<Column> = [];
     private _columnSpacing: Spacing = Spacing.Narrow;
 
-    get columnSpacing(): number {
+    get columnSpacing(): Spacing {
         return this._columnSpacing;
     }
 
-    set columnSpacing(value: number) {
+    set columnSpacing(value: Spacing) {
         this._columnSpacing = value;
     }
 
     parse(json: any) {
         super.parse(json);
 
-        this._columnSpacing = stringToSpacing(json["columnSpacing"], Spacing.Narrow);
+        this._columnSpacing = Spacing.parse(json["columnSpacing"], Spacing.Narrow);
         
         if (json["items"] != null) {
             let itemArray = json["items"] as Array<any>;
@@ -1531,7 +1522,7 @@ class ColumnGroup extends CardElement {
 
                 if (this._items.length > 1 && i < this._items.length - 1) {
                     let spacer = document.createElement("div");
-                    spacer.style.flex = "0 0 " + getPhysicalSpacing(this.columnSpacing) + "px";
+                    spacer.style.flex = "0 0 " + this.columnSpacing.physicalSize.toString() + "px";
 
                     appendChild(element, spacer);
                 }
@@ -1551,7 +1542,8 @@ class AdaptiveCard {
     private _height: number;
 
     parse(json: any) {
-        this._rootSection.padding = stringToSpacing(json["padding"], Spacing.None);
+        Size.Medium.physicalSize = 250;
+        this._rootSection.padding = Spacing.parse(json["padding"], Spacing.None);
         this._rootSection.backgroundImageUrl = json["backgroundImage"];
         this._rootSection.backgroundColor = json["backgroundColor"];
         this._rootSection.textContrast = stringToTextContrast(json["textContrast"]);
