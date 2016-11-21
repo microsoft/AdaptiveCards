@@ -60,11 +60,6 @@ class Spacing extends Setting {
     }
 }
 
-enum TextContrast {
-    DarkOnLight,
-    LightOnDark
-}
-
 enum TextSize {
     Small,
     Normal,
@@ -79,8 +74,10 @@ enum TextWeight {
     Bolder
 }
 
-enum Color {
+enum TextColor {
     Default,
+    Dark,
+    Light,
     Accent
 }
 
@@ -93,17 +90,6 @@ enum HorizontalAlignment {
 enum PictureStyle {
     Normal,
     Person
-}
-
-function stringToTextContrast(value: string): TextContrast {
-    switch (value) {
-        case "darkOnLight":
-            return TextContrast.DarkOnLight;
-        case "lightOnDark":
-            return TextContrast.LightOnDark;
-        default:
-            return undefined;
-    }
 }
 
 function stringToTextSize(value: string, defaultValue: TextSize): TextSize {
@@ -136,12 +122,16 @@ function stringToTextWeight(value: string, defaultValue: TextWeight): TextWeight
     }
 }
 
-function stringToColor(value: string, defaultValue: Color): Color {
+function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
     switch (value) {
         case "default":
-            return Color.Default;
+            return TextColor.Default;
+        case "dark":
+            return TextColor.Dark;
+        case "light":
+            return TextColor.Light;
         case "accent":
-            return Color.Accent;
+            return TextColor.Accent;
         default:
             return defaultValue;
     }
@@ -337,8 +327,7 @@ abstract class CardElement {
 class TextBlock extends CardElement {
     textSize: TextSize = TextSize.Normal;
     textWeight: TextWeight = TextWeight.Normal;
-    textColor: Color = Color.Default;
-    textContrast: TextContrast = undefined;
+    textColor: TextColor = TextColor.Default;
     text: string;
     isSubtle: boolean = false;
     wrap: boolean = true;
@@ -349,7 +338,7 @@ class TextBlock extends CardElement {
         this.text = json["text"];
         this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
         this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
-        this.textColor = stringToColor(json["textColor"], Color.Default);
+        this.textColor = stringToTextColor(json["textColor"], TextColor.Default);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"];
     }
@@ -379,7 +368,13 @@ class TextBlock extends CardElement {
             }
 
             switch (this.textColor) {
-                case Color.Accent:
+                case TextColor.Dark:
+                    cssStyle += "darkColor ";
+                    break;
+                case TextColor.Light:
+                    cssStyle += "lightColor ";
+                    break;
+                case TextColor.Accent:
                     cssStyle += "accentColor ";
                     break;
                 default:
@@ -403,10 +398,6 @@ class TextBlock extends CardElement {
                     break;
             }
 
-            let contrast = this.textContrast != undefined ? this.textContrast : this.container.textContrast;
-
-            cssStyle += contrast == TextContrast.DarkOnLight ? "darkOnLight" : "lightOnDark";
-            
             element.innerHTML = processMarkdown(this.text);
 
             let firstChild = <HTMLElement>element.firstChild;
@@ -1241,7 +1232,6 @@ class Container extends CardElement {
     private _backgroundImageUrl: string;
     private _backgroundColor: string;
     private _padding: Spacing = Spacing.None;
-    private _textContrast: TextContrast = undefined;
 
     private isAllowedItemType(elementType: string) {
         if (this._forbiddenItemTypes == null) {
@@ -1300,22 +1290,6 @@ class Container extends CardElement {
         this._backgroundColor = value;
     }
 
-    set textContrast(value: TextContrast) {
-        this._textContrast = value;
-    }
-
-    get textContrast(): TextContrast {
-        if (this._textContrast != undefined) {
-            return this._textContrast;
-        }
-
-        if (this.container != null) {
-            return this.container.textContrast;
-        }
-
-        return TextContrast.DarkOnLight;
-    }
-
     get hideOverflow() {
         return false;
     }
@@ -1360,7 +1334,6 @@ class Container extends CardElement {
         this._padding = Spacing.parse(json["padding"], Spacing.None);        
         this._backgroundImageUrl = json["backgroundImage"];
         this._backgroundColor = json["backgroundColor"];
-        this._textContrast = stringToTextContrast(json["textContrast"]);
 
         if (json["items"] != null) {
             let items = json["items"] as Array<any>;
@@ -1546,7 +1519,6 @@ class AdaptiveCard {
         this._rootSection.padding = Spacing.parse(json["padding"], Spacing.None);
         this._rootSection.backgroundImageUrl = json["backgroundImage"];
         this._rootSection.backgroundColor = json["backgroundColor"];
-        this._rootSection.textContrast = stringToTextContrast(json["textContrast"]);
         this._width = <number>json["width"];
         this._height = <number>json["height"];
 

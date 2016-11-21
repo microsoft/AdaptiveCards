@@ -124,7 +124,6 @@ function parseActionGroup(container: Container, json: any): ActionGroup {
 
 function parseSection(container: Container, json: any): Container {
     let section = new Container(container, [ "Section" ]);
-    section.textContrast = TextContrast.DarkOnLight;
 
     if (json["startGroup"] === true) {
         section.addElement(new Separator(section));
@@ -207,7 +206,6 @@ class MessageCard {
 
         this._rootContainer = new Container(null);
         this._rootContainer.padding = Spacing.Normal;
-        this._rootContainer.textContrast = TextContrast.DarkOnLight;
 
         let textBlock = new TextBlock(this._rootContainer);
         textBlock.text = json["title"];

@@ -94,7 +94,6 @@ function parseActionGroup(container, json) {
 }
 function parseSection(container, json) {
     var section = new Container(container, ["Section"]);
-    section.textContrast = TextContrast.DarkOnLight;
     if (json["startGroup"] === true) {
         section.addElement(new Separator(section));
     }
@@ -154,7 +153,6 @@ var MessageCard = (function () {
         this.themeColor = json["themeColor"];
         this._rootContainer = new Container(null);
         this._rootContainer.padding = Spacing.Normal;
-        this._rootContainer.textContrast = TextContrast.DarkOnLight;
         var textBlock = new TextBlock(this._rootContainer);
         textBlock.text = json["title"];
         textBlock.textSize = TextSize.ExtraLarge;
