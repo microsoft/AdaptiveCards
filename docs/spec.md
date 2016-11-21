@@ -47,21 +47,15 @@ Controls the weight of TextBlock elements.
 | **normal** | The default text weight |
 | **bolder** | Bolder text (wider stroke) |
 
-## Color
-Controls the color of various elements.
+## TextColor
+Controls the color of TextBlock elements.
 
 | Value | Meaning |
 |---|---|
-| **default** | The default color for the element (can be different depending on the element type) |
-| **accent** | The accent color |
-
-## TextContrast
-Controls whether text should be displayed dark-on-light or light-on-dark.
-
-| Value | Meaning |
-|---|---|
-| **darkOnLight** | Text is displayed using a dark shade. Use this contrast when displaying text over a light background. |
-| **lightOnDark** | Text is displayed using a light shade. Use this contrast when displaying text over a dark background. |
+| **default** | The default color, which guarantees appropriate contrast. |
+| **dark** | Forces text to be rendered in a dark color that is suitable when displayed over a light background. |
+| **light** | Forces text to be rendered in a light color that is suitable when displayed over a dark background. |
+| **accent** | The accent color. |
 
 ## PictureStyle
 Controls the way Picture elements are displayed.
@@ -86,7 +80,6 @@ The Container element contains a list of elements that are logically grouped.
 |---|---|---|
 | **backgroundImageUrl** | string | The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained. |
 | **backgroundColor** | string | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
-| **textContrast** | [TextContrast](#textcontrast) | Specifies whether text in this container should be light-on-dark or dark-on-light. When using light images of background colors, text will likely have to displayed dark-on-light for improved legibility. Similarly, text will have to be displayed light-on-dark against dark backgrounds. |
 | **padding** | [Size](#size) | Specifies the amount of padding along the edges of the container. |
 | **items** | array of [CardElement](#cardelement) | The elements that are to be displayed in this container. |
 ## TextBlock
@@ -97,7 +90,7 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 |---|---|---|
 | **textSize** | [TextSize](#textsize) | The size of the text |
 | **textWeight** | [TextWeight](#textweight) | The weight of the text |
-| **textColor** | [Color](#color) | The color of the text |
+| **textColor** | [TextColor](#textcolor) | The color of the text |
 | **isSubtle** | boolean | Indicates whether the color of the text should be slightly toned down to appear less prominent |
 | **text** | string | The actual text to display |
 
