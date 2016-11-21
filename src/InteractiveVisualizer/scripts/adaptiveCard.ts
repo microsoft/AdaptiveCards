@@ -2,22 +2,18 @@
 Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
 */
 abstract class Setting {
-    protected _physicalSize: number;
+    private _name: string;
 
     protected constructor(name: string, physicalSize: number = undefined) {
         this._name = name;
-        this._physicalSize = physicalSize;
+        this.physicalSize = physicalSize;
     }
-
-    private _name: string;
 
     get name(): string {
         return this._name;
     }
 
-    get physicalSize(): number {
-        return this._physicalSize;
-    }
+    physicalSize: number;
 }
 
 class Size extends Setting {
@@ -43,10 +39,6 @@ class Size extends Setting {
         return defaultValue;
     }
 
-    set physicalSize(value: number) {
-        this._physicalSize = value;
-    }
-    
     physicalPictureSize: number;
 }
 

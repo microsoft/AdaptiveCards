@@ -10,18 +10,11 @@ var Setting = (function () {
     function Setting(name, physicalSize) {
         if (physicalSize === void 0) { physicalSize = undefined; }
         this._name = name;
-        this._physicalSize = physicalSize;
+        this.physicalSize = physicalSize;
     }
     Object.defineProperty(Setting.prototype, "name", {
         get: function () {
             return this._name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Setting.prototype, "physicalSize", {
-        get: function () {
-            return this._physicalSize;
         },
         enumerable: true,
         configurable: true
@@ -44,13 +37,6 @@ var Size = (function (_super) {
         }
         return defaultValue;
     };
-    Object.defineProperty(Size.prototype, "physicalSize", {
-        set: function (value) {
-            this._physicalSize = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Size.Auto = new Size("auto");
     Size.Stretch = new Size("stretch");
     Size.Small = new Size("small", 100, 40);
