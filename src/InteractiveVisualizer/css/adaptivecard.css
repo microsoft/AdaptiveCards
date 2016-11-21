@@ -45,35 +45,35 @@
     font-weight: 600;
 }
 
-.text.defaultColor.darkOnLight {
+.text.defaultColor {
     color: rgb(51, 51, 51);
 }
 
-.text.defaultColor.darkOnLight.subtle {
+.text.defaultColor.subtle {
     color: rgba(51, 51, 51, 0.5);
 }
 
-.text.defaultColor.lightOnDark {
+.text.darkColor {
+    color: rgb(51, 51, 51);
+}
+
+.text.darkColor.subtle {
+    color: rgba(51, 51, 51, 0.5);
+}
+
+.text.lightColor {
     color: rgb(255, 255, 255);
 }
 
-.text.defaultColor.lightOnDark.subtle {
+.text.lightColor.subtle {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.text.accentColor.darkOnLight {
+.text.accentColor {
     color:  rgb(46, 137, 252);
 }
 
-.text.accentColor.darkOnLight.subtle {
-    color:  rgba(46, 137, 252, 0.5);
-}
-
-.text.accentColor.lightOnDark {
-    color:  rgb(46, 137, 252);
-}
-
-.text.accentColor.lightOnDark.subtle {
+.text.accentColor.subtle {
     color:  rgba(46, 137, 252, 0.5);
 }
 

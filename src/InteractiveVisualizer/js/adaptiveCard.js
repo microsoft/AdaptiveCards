@@ -64,11 +64,6 @@ var Spacing = (function (_super) {
     Spacing.Wide = new Spacing("wide", 30);
     return Spacing;
 }(Setting));
-var TextContrast;
-(function (TextContrast) {
-    TextContrast[TextContrast["DarkOnLight"] = 0] = "DarkOnLight";
-    TextContrast[TextContrast["LightOnDark"] = 1] = "LightOnDark";
-})(TextContrast || (TextContrast = {}));
 var TextSize;
 (function (TextSize) {
     TextSize[TextSize["Small"] = 0] = "Small";
@@ -83,11 +78,13 @@ var TextWeight;
     TextWeight[TextWeight["Normal"] = 1] = "Normal";
     TextWeight[TextWeight["Bolder"] = 2] = "Bolder";
 })(TextWeight || (TextWeight = {}));
-var Color;
-(function (Color) {
-    Color[Color["Default"] = 0] = "Default";
-    Color[Color["Accent"] = 1] = "Accent";
-})(Color || (Color = {}));
+var TextColor;
+(function (TextColor) {
+    TextColor[TextColor["Default"] = 0] = "Default";
+    TextColor[TextColor["Dark"] = 1] = "Dark";
+    TextColor[TextColor["Light"] = 2] = "Light";
+    TextColor[TextColor["Accent"] = 3] = "Accent";
+})(TextColor || (TextColor = {}));
 var HorizontalAlignment;
 (function (HorizontalAlignment) {
     HorizontalAlignment[HorizontalAlignment["Left"] = 0] = "Left";
@@ -99,16 +96,6 @@ var PictureStyle;
     PictureStyle[PictureStyle["Normal"] = 0] = "Normal";
     PictureStyle[PictureStyle["Person"] = 1] = "Person";
 })(PictureStyle || (PictureStyle = {}));
-function stringToTextContrast(value) {
-    switch (value) {
-        case "darkOnLight":
-            return TextContrast.DarkOnLight;
-        case "lightOnDark":
-            return TextContrast.LightOnDark;
-        default:
-            return undefined;
-    }
-}
 function stringToTextSize(value, defaultValue) {
     switch (value) {
         case "small":
@@ -137,12 +124,16 @@ function stringToTextWeight(value, defaultValue) {
             return defaultValue;
     }
 }
-function stringToColor(value, defaultValue) {
+function stringToTextColor(value, defaultValue) {
     switch (value) {
         case "default":
-            return Color.Default;
+            return TextColor.Default;
+        case "dark":
+            return TextColor.Dark;
+        case "light":
+            return TextColor.Light;
         case "accent":
-            return Color.Accent;
+            return TextColor.Accent;
         default:
             return defaultValue;
     }
@@ -330,8 +321,7 @@ var TextBlock = (function (_super) {
         _super.apply(this, arguments);
         this.textSize = TextSize.Normal;
         this.textWeight = TextWeight.Normal;
-        this.textColor = Color.Default;
-        this.textContrast = undefined;
+        this.textColor = TextColor.Default;
         this.isSubtle = false;
         this.wrap = true;
     }
@@ -340,7 +330,7 @@ var TextBlock = (function (_super) {
         this.text = json["text"];
         this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
         this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
-        this.textColor = stringToColor(json["textColor"], Color.Default);
+        this.textColor = stringToTextColor(json["textColor"], TextColor.Default);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"];
     };
@@ -366,7 +356,13 @@ var TextBlock = (function (_super) {
                     break;
             }
             switch (this.textColor) {
-                case Color.Accent:
+                case TextColor.Dark:
+                    cssStyle += "darkColor ";
+                    break;
+                case TextColor.Light:
+                    cssStyle += "lightColor ";
+                    break;
+                case TextColor.Accent:
                     cssStyle += "accentColor ";
                     break;
                 default:
@@ -387,8 +383,6 @@ var TextBlock = (function (_super) {
                     cssStyle += "defaultWeight ";
                     break;
             }
-            var contrast = this.textContrast != undefined ? this.textContrast : this.container.textContrast;
-            cssStyle += contrast == TextContrast.DarkOnLight ? "darkOnLight" : "lightOnDark";
             element.innerHTML = processMarkdown(this.text);
             var firstChild = element.firstChild;
             firstChild.className = cssStyle;
@@ -1134,7 +1128,6 @@ var Container = (function (_super) {
         _super.call(this, container);
         this._items = [];
         this._padding = Spacing.None;
-        this._textContrast = undefined;
         this._forbiddenItemTypes = forbiddenItemTypes;
     }
     Container.prototype.isAllowedItemType = function (elementType) {
@@ -1197,22 +1190,6 @@ var Container = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Container.prototype, "textContrast", {
-        get: function () {
-            if (this._textContrast != undefined) {
-                return this._textContrast;
-            }
-            if (this.container != null) {
-                return this.container.textContrast;
-            }
-            return TextContrast.DarkOnLight;
-        },
-        set: function (value) {
-            this._textContrast = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(Container.prototype, "hideOverflow", {
         get: function () {
             return false;
@@ -1252,7 +1229,6 @@ var Container = (function (_super) {
         this._padding = Spacing.parse(json["padding"], Spacing.None);
         this._backgroundImageUrl = json["backgroundImage"];
         this._backgroundColor = json["backgroundColor"];
-        this._textContrast = stringToTextContrast(json["textContrast"]);
         if (json["items"] != null) {
             var items = json["items"];
             for (var i = 0; i < items.length; i++) {
@@ -1409,7 +1385,6 @@ var AdaptiveCard = (function () {
         this._rootSection.padding = Spacing.parse(json["padding"], Spacing.None);
         this._rootSection.backgroundImageUrl = json["backgroundImage"];
         this._rootSection.backgroundColor = json["backgroundColor"];
-        this._rootSection.textContrast = stringToTextContrast(json["textContrast"]);
         this._width = json["width"];
         this._height = json["height"];
         if (json["sections"] != undefined) {
