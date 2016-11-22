@@ -367,7 +367,9 @@ class TextBlock extends CardElement {
                     break;
             }
 
-            switch (this.textColor) {
+            let actualTextColor = this.textColor == TextColor.Default ? this.container.textColor : this.textColor;
+
+            switch (actualTextColor) {
                 case TextColor.Dark:
                     cssStyle += "darkColor ";
                     break;
@@ -1232,6 +1234,7 @@ class Container extends CardElement {
     private _backgroundImageUrl: string;
     private _backgroundColor: string;
     private _padding: Spacing = Spacing.None;
+    private _textColor: TextColor = TextColor.Default;
 
     private isAllowedItemType(elementType: string) {
         if (this._forbiddenItemTypes == null) {
@@ -1294,6 +1297,22 @@ class Container extends CardElement {
         return false;
     }
 
+    get textColor(): TextColor {
+        if (this.container == null) {
+            return this._textColor == TextColor.Default ? TextColor.Dark : this._textColor;
+        }
+
+        if (this._textColor == TextColor.Default) {
+            return this.container.textColor;
+        }
+
+        return this._textColor;
+    }
+
+    set textColor(value: TextColor) {
+        this._textColor = value;
+    }
+
     addElement(element: CardElement) {
         if (element != null) {
             this._items.push(element);
@@ -1334,6 +1353,7 @@ class Container extends CardElement {
         this._padding = Spacing.parse(json["padding"], Spacing.None);        
         this._backgroundImageUrl = json["backgroundImage"];
         this._backgroundColor = json["backgroundColor"];
+        this._textColor = stringToTextColor(json["textColor"], TextColor.Default);
 
         if (json["items"] != null) {
             let items = json["items"] as Array<any>;
@@ -1511,16 +1531,16 @@ class ColumnGroup extends CardElement {
 
 class AdaptiveCard {
     private _rootSection = new Container(null);
-    private _width: number;
-    private _height: number;
+    
+    padding: Spacing = Spacing.Narrow;
+    textColor: TextColor = TextColor.Dark;
 
     parse(json: any) {
-        Size.Medium.physicalSize = 250;
-        this._rootSection.padding = Spacing.parse(json["padding"], Spacing.None);
         this._rootSection.backgroundImageUrl = json["backgroundImage"];
+        /*
+        this._rootSection.padding = Spacing.parse(json["padding"], Spacing.None);
         this._rootSection.backgroundColor = json["backgroundColor"];
-        this._width = <number>json["width"];
-        this._height = <number>json["height"];
+        */
 
         if (json["sections"] != undefined) {
             let sectionArray = json["sections"] as Array<any>;
@@ -1536,16 +1556,9 @@ class AdaptiveCard {
     }
 
     render(): HTMLElement {
-        let element = this._rootSection.internalRender();
+        this._rootSection.padding = this.padding;
+        this._rootSection.textColor = this.textColor;
 
-        if (this._width != undefined) {
-            element.style.width = this._width.toString() + "px";
-        }
-
-        if (this._height != undefined) {
-            element.style.height = this._height.toString() + "px";
-        }
-
-        return element;
+        return this._rootSection.internalRender();;
    }
 }

@@ -6,6 +6,7 @@
     <title>Adaptive Card Visualizer</title>
 
     <link rel="stylesheet" href="./css/adaptivecard.css" type="text/css" />
+    <link rel="stylesheet" href="./css/controls.css" type="text/css" />
     <link rel="stylesheet" href="./css/app.css" type="text/css" />
 
 	<script src="https://cdn.jsdelivr.net/markdown-it/7.0.0/markdown-it.min.js"></script>
@@ -19,6 +20,7 @@
         <div class="cardEditor">
             <div class="markup">
                 <div id="editor">
+
 {
 	"@type": "AdaptiveCard",
 	"sections": [
@@ -27,7 +29,8 @@
 				{
 					"@type": "TextBlock",
 					"text": "This is a text element",
-					"style": "sectionTitle"
+					"style": "sectionTitle",
+					"textSize": "large"
 				},
 				{
 					"@type": "Picture",
@@ -36,6 +39,7 @@
 				},
 				{
 					"@type": "FactGroup",
+					"topSpacing": "normal",
 					"items": [
 						{
 							"name": "This is a fact name",
@@ -52,7 +56,8 @@
 					]
 				},
 				{
-				    "@type": "DateInput"
+				    "@type": "DateInput",
+					"topSpacing": "normal"
 				},
 				{
 				    "@type": "TextInput",
@@ -70,6 +75,7 @@
 				},
 				{
 					"@type": "PictureGallery",
+					"topSpacing": "normal",
 					"imageSize": "medium",
 					"items": [
 						"http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
@@ -79,6 +85,7 @@
 				},
 				{
 					"@type": "ActionGroup",
+					"topSpacing": "normal",
 					"items": [
 						{
 							"@type": "ActionCard",
@@ -232,17 +239,21 @@
 			]
 		},
 		{
+			"topSpacing": "normal",
 			"items": [
 				{
 					"@type": "Separator"
 				},
 				{
 					"@type": "TextBlock",
+		        	"topSpacing": "normal",
 					"text": "Second section",
+					"textSize": "large",
 					"style": "sectionTitle"
 				},
 				{
 					"@type": "ColumnGroup",
+        			"topSpacing": "normal",
 					"items": [
 						{
 							"size": "auto",
@@ -316,7 +327,10 @@
             <div style="width: 0px; height: 0px; overflow: hidden">
                 <input type="file" id="filePicker" />
             </div>
-            <button onclick="openFilePicker();">Load sample from file...</button>
+			<span>
+            	<button onclick="openFilePicker();">Load sample from file...</button>
+				<select id="hostContainerPicker" style="select multichoiceInput"/>
+			</span>
         </div>
     </div>
     <script>
