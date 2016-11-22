@@ -1,10 +1,7 @@
 {
     "@type": "AdaptiveCard",
     "backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Background-Dark.jpg",
-    "textContrast": "lightOnDark",
     "padding": "extraNarrow",
-    "width": 203,
-    "height": 203,
 	"sections": [
 		{
 			"items": [

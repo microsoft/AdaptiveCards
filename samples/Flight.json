@@ -5,7 +5,7 @@
 		{
 		    "backgroundColor": "#2E89FC",
 		    "padding": "narrow",
-		    "textContrast": "lightOnDark",
+		    "textColor": "light",
 		    "items": [
 		        {
 		            "@type": "ColumnGroup",

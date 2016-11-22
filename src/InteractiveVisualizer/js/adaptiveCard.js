@@ -355,7 +355,8 @@ var TextBlock = (function (_super) {
                     cssStyle += "defaultSize ";
                     break;
             }
-            switch (this.textColor) {
+            var actualTextColor = this.textColor == TextColor.Default ? this.container.textColor : this.textColor;
+            switch (actualTextColor) {
                 case TextColor.Dark:
                     cssStyle += "darkColor ";
                     break;
@@ -1128,6 +1129,7 @@ var Container = (function (_super) {
         _super.call(this, container);
         this._items = [];
         this._padding = Spacing.None;
+        this._textColor = TextColor.Default;
         this._forbiddenItemTypes = forbiddenItemTypes;
     }
     Container.prototype.isAllowedItemType = function (elementType) {
@@ -1197,6 +1199,22 @@ var Container = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Container.prototype, "textColor", {
+        get: function () {
+            if (this.container == null) {
+                return this._textColor == TextColor.Default ? TextColor.Dark : this._textColor;
+            }
+            if (this._textColor == TextColor.Default) {
+                return this.container.textColor;
+            }
+            return this._textColor;
+        },
+        set: function (value) {
+            this._textColor = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Container.prototype.addElement = function (element) {
         if (element != null) {
             this._items.push(element);
@@ -1229,6 +1247,7 @@ var Container = (function (_super) {
         this._padding = Spacing.parse(json["padding"], Spacing.None);
         this._backgroundImageUrl = json["backgroundImage"];
         this._backgroundColor = json["backgroundColor"];
+        this._textColor = stringToTextColor(json["textColor"], TextColor.Default);
         if (json["items"] != null) {
             var items = json["items"];
             for (var i = 0; i < items.length; i++) {
@@ -1379,14 +1398,15 @@ var ColumnGroup = (function (_super) {
 var AdaptiveCard = (function () {
     function AdaptiveCard() {
         this._rootSection = new Container(null);
+        this.padding = Spacing.Narrow;
+        this.textColor = TextColor.Dark;
     }
     AdaptiveCard.prototype.parse = function (json) {
-        Size.Medium.physicalSize = 250;
-        this._rootSection.padding = Spacing.parse(json["padding"], Spacing.None);
         this._rootSection.backgroundImageUrl = json["backgroundImage"];
+        /*
+        this._rootSection.padding = Spacing.parse(json["padding"], Spacing.None);
         this._rootSection.backgroundColor = json["backgroundColor"];
-        this._width = json["width"];
-        this._height = json["height"];
+        */
         if (json["sections"] != undefined) {
             var sectionArray = json["sections"];
             for (var i = 0; i < sectionArray.length; i++) {
@@ -1397,14 +1417,10 @@ var AdaptiveCard = (function () {
         }
     };
     AdaptiveCard.prototype.render = function () {
-        var element = this._rootSection.internalRender();
-        if (this._width != undefined) {
-            element.style.width = this._width.toString() + "px";
-        }
-        if (this._height != undefined) {
-            element.style.height = this._height.toString() + "px";
-        }
-        return element;
+        this._rootSection.padding = this.padding;
+        this._rootSection.textColor = this.textColor;
+        return this._rootSection.internalRender();
+        ;
     };
     return AdaptiveCard;
 }());
