@@ -75,20 +75,23 @@ function renderCard() {
     try {
         var json = JSON.parse(editor.getValue());
         var cardTypeName = json["@type"];
-        var hostContainer = hostContainerOptions[selectedHostContainerIndex].hostContainer;
-        var renderedCard = void 0;
+        var node = document.getElementById('content');
+        node.innerHTML = '';
         switch (cardTypeName) {
             case "SwiftCard":
             case "MessageCard":
                 var swiftCard = new MessageCard();
                 swiftCard.parse(json);
-                renderedCard = swiftCard.render();
+                node.appendChild(swiftCard.render());
                 break;
             case "AdaptiveCard":
                 var adaptiveCard = new AdaptiveCard();
                 adaptiveCard.parse(json);
+                var hostContainer = hostContainerOptions[selectedHostContainerIndex].hostContainer;
                 hostContainer.initializeCard(adaptiveCard);
-                renderedCard = adaptiveCard.render();
+                var renderedHostContainer = hostContainer.render();
+                renderedHostContainer.appendChild(adaptiveCard.render());
+                node.appendChild(renderedHostContainer);
                 break;
             default:
                 if (isNullOrEmpty(cardTypeName)) {
@@ -98,11 +101,6 @@ function renderCard() {
                     throw new Error("Unknown card type: " + cardTypeName);
                 }
         }
-        var node = document.getElementById('content');
-        node.innerHTML = '';
-        var renderedHostContainer = hostContainer.render();
-        renderedHostContainer.appendChild(renderedCard);
-        node.appendChild(renderedHostContainer);
     }
     catch (e) {
         document.getElementById('content').innerHTML = "Error: " + e.toString();
@@ -151,7 +149,7 @@ window.onload = function () {
     hostContainerOptions.push(new HostContainerOption("Small Live Tile", new LiveTileContainer(48, 48, Spacing.Narrow)));
     hostContainerOptions.push(new HostContainerOption("Skype Card", new SkypeCardContainer(Spacing.None)));
     var hostContainerPicker = document.getElementById("hostContainerPicker");
-    if (hostContainerPicker !== undefined) {
+    if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
         for (var i = 0; i < hostContainerOptions.length; i++) {
             var option = document.createElement("option");
