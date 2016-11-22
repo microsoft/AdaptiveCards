@@ -4,17 +4,13 @@ var hostContainerOptions: Array<HostContainerOption> = [];
 var selectedHostContainerIndex: number = 0;
 
 abstract class HostContainer {
-    protected _padding: Spacing = Spacing.None;
-
-    constructor(padding: Spacing) {
-        this._padding = padding;
+    constructor(styleSheet: string) {
+        this.styleSheet = styleSheet;
     }
 
-    initializeCard(card: AdaptiveCard) {
-        card.padding = this._padding;
-    }
+    abstract render(card: AdaptiveCard): HTMLElement;
 
-    abstract render(): HTMLElement;
+    readonly styleSheet: string;
 }
 
 class LiveTileContainer extends HostContainer {
@@ -24,25 +20,26 @@ class LiveTileContainer extends HostContainer {
     private _width: number;
     private _height: number;
 
-    constructor(width: number, height: number, padding: Spacing) {
-        super(padding);
+    constructor(width: number, height: number, styleSheet: string) {
+        super(styleSheet);
 
         this._width = width;
         this._height = height;
     }
 
-    initializeCard(card: AdaptiveCard) {
-        super.initializeCard(card);
-
-        card.textColor = LiveTileContainer.textColor;
-    }
-
-    render(): HTMLElement {
+    render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
         element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
+
+        card.textColor = LiveTileContainer.textColor;
+
+        let renderedCard = card.render();
+        renderedCard.style.height = "100%";
+
+        appendChild(element, renderedCard);
 
         return element;
     }
@@ -51,13 +48,13 @@ class LiveTileContainer extends HostContainer {
 class ConnectorContainer extends HostContainer {
     private _themeColor: string;
 
-    constructor(themeColor: string, padding: Spacing) {
-        super(padding);
+    constructor(themeColor: string, styleSheet: string) {
+        super(styleSheet);
 
         this._themeColor = themeColor;
     }
 
-    render(): HTMLElement {
+    render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
@@ -70,13 +67,23 @@ class ConnectorContainer extends HostContainer {
             element.style.borderLeft = "3px solid " + this._themeColor;
         }
 
+        let renderedCard = card.render();
+
+        appendChild(element, renderedCard);
+
         return element;
     }
 }
 
 class SkypeCardContainer extends HostContainer {
-    render(): HTMLElement {
-        return document.createElement("div");
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+
+        let renderedCard = card.render();
+
+        appendChild(element, renderedCard);
+
+        return element;
     }
 }
 
@@ -102,10 +109,7 @@ function renderCard() {
                 adaptiveCard.parse(json);
 
                 let hostContainer = hostContainerOptions[selectedHostContainerIndex].hostContainer;
-                hostContainer.initializeCard(adaptiveCard);
-
-                let renderedHostContainer = hostContainer.render();
-                renderedHostContainer.appendChild(adaptiveCard.render());
+                let renderedHostContainer = hostContainer.render(adaptiveCard);
 
                 node.appendChild(renderedHostContainer);
 
@@ -151,10 +155,27 @@ function filePickerChanged(evt) {
     }
 }
 
+function updateStyleSheet() {
+    let styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
+
+    if (styleSheetLinkElement == null) {
+        styleSheetLinkElement = document.createElement("link");
+
+        let headElement = document.getElementsByTagName("head")[0];
+        appendChild(headElement, styleSheetLinkElement);
+    }
+
+    styleSheetLinkElement.rel = "stylesheet";
+    styleSheetLinkElement.type = "text/css";
+    styleSheetLinkElement.href = hostContainerOptions[selectedHostContainerIndex].hostContainer.styleSheet;
+}
+
 function hostContainerPickerChanged(evt) {
     let hostContainerPicker = document.getElementById("hostContainerPicker") as HTMLSelectElement;
 
     selectedHostContainerIndex = hostContainerPicker.selectedIndex;
+
+    updateStyleSheet();
 
     renderCard();
 }
@@ -177,27 +198,27 @@ window.onload = () => {
     hostContainerOptions.push(
         new HostContainerOption(
             "Connector Card",
-            new ConnectorContainer("red", Spacing.Wide)));
+            new ConnectorContainer("red", "./css/connectorCard.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Large Live Tile",
-            new LiveTileContainer(204, 204, Spacing.Narrow)));
+            new LiveTileContainer(204, 204, "./css/liveTile.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Wide Live Tile",
-            new LiveTileContainer(204, 100, Spacing.Narrow)));
+            new LiveTileContainer(204, 100, "./css/liveTile.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Medium Live Tile",
-            new LiveTileContainer(100, 100, Spacing.Narrow)));
+            new LiveTileContainer(100, 100, "./css/liveTile.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Small Live Tile",
-            new LiveTileContainer(48, 48, Spacing.Narrow)));
+            new LiveTileContainer(48, 48, "./css/liveTile.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Skype Card",
-            new SkypeCardContainer(Spacing.None)));
+            new SkypeCardContainer("./css/skypeCard.css")));
 
     let hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
@@ -214,6 +235,8 @@ window.onload = () => {
 
     let filePicker = document.getElementById("filePicker");
     filePicker.addEventListener("change", filePickerChanged);
+
+    updateStyleSheet();
 
     renderCard();
 };

@@ -1,24 +1,5 @@
-﻿<!DOCTYPE html>
 
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Adaptive Card Visualizer</title>
 
-    <link rel="stylesheet" href="./css/controls.css" type="text/css" />
-    <link rel="stylesheet" href="./css/app.css" type="text/css" />
-
-	<script src="https://cdn.jsdelivr.net/markdown-it/7.0.0/markdown-it.min.js"></script>
-    <script src="ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
-
-    <script src="js/adaptivecard.js"></script>
-    <script src="js/app.js"></script>    
-</head>
-<body>
-    <div class="uiRoot">
-        <div class="cardEditor">
-            <div class="markup">
-                <div id="editor">
 {
 	"@type": "AdaptiveCard",
 	"sections": [
@@ -300,39 +281,3 @@
 		}
 	]
 }
-                </div>
-            </div>
-            <div class="markupRenderContainer">
-                <div id="content" class="markupRender"></div>
-            </div>
-        </div>
-        <div class="uiFooter">
-            <div style="width: 0px; height: 0px; overflow: hidden">
-                <input type="file" id="filePicker" />
-            </div>
-			<span>
-            	<button onclick="openFilePicker();">Load sample from file...</button>
-				<select id="hostContainerPicker" style="select multichoiceInput"/>
-			</span>
-        </div>
-    </div>
-    <script>
-        markdownProcessor = window.markdownit();
-
-        editor = ace.edit("editor");
-        editor.setTheme("ace/theme/chrome");
-        editor.setOptions(
-            {
-                "showPrintMargin": false,
-                "displayIndentGuides": false,
-                "showFoldWidgets": true,
-                "highlightSelectedWord": false,
-                "fontSize": "14px"
-            });
-        editor.getSession().setMode("ace/mode/json");
-        editor.getSession().on(
-            'change',
-            function(e) { renderCard(); });
-    </script>
-</body>
-</html>

@@ -1,0 +1,138 @@
+* {
+    box-sizing: border-box;
+}
+
+.text {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.text.small {
+    font-size: 12px;
+    margin: -4px 0px 5px 0px;
+    padding: 20px 0px 0px 0px;
+}
+
+.text.defaultSize {
+    font-size: 14px;
+    margin: -5px 0px 5px 0px;
+    padding: 20px 0px 0px 0px;
+}
+
+.text.medium {
+    font-size: 20px;
+    margin: -8px 0px 5px 0px;
+    padding: 15px 0px 0px 0px;
+}
+
+.text.large {
+    font-size: 24px;
+    margin: -9px 0px 5px 0px;
+    padding: 20px 0px 0px 0px;
+}
+
+.text.extraLarge {
+    font-size: 30px;
+    margin: -11px 0px 5px 0px;
+    padding: 30px 0px 0px 0px;
+}
+
+.text.lighter {
+    font-weight: 200;
+}
+
+.text.defaultWeight {
+    font-weight: 400;
+}
+
+.text.bolder {
+    font-weight: 600;
+}
+
+.text.defaultColor {
+    color: rgb(51, 51, 51);
+}
+
+.text.defaultColor.subtle {
+    color: rgba(51, 51, 51, 0.5);
+}
+
+.text.darkColor {
+    color: rgb(51, 51, 51);
+}
+
+.text.darkColor.subtle {
+    color: rgba(51, 51, 51, 0.5);
+}
+
+.text.lightColor {
+    color: rgb(255, 255, 255);
+}
+
+.text.lightColor.subtle {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.text.accentColor {
+    color:  rgb(46, 137, 252);
+}
+
+.text.accentColor.subtle {
+    color:  rgba(46, 137, 252, 0.5);
+}
+
+.rootContainer {
+    padding: 0px;
+}
+
+.container {
+    margin: 20px 0px 0px 0px;
+}
+
+.picture {
+    margin: 20px 0px 0px 0px;
+}
+
+table.factGroup {
+    margin: 20px 0px 0px 0px;
+    border-width: 0px;
+    border-spacing: 0px;
+    border-style: none;
+    border-collapse: collapse;
+}
+
+tr.factGroupRowSpacer {
+    height: 10px;
+}
+
+.pictureGallery {
+    margin: 20px 0px 0px 0px;
+}
+
+.input {
+    margin: 10px 0px 0px 0px;
+}
+
+.separator {
+    border-top: 1px solid #EEEEEE;
+    margin: 20px 0px 0px 0px;
+}
+
+.actionGroup {
+    margin: 20px 0px 0px 0px;
+}
+
+.columnGroup {
+    margin: 20px 0px 0px 0px;
+}
+
+.columnSpacer {
+    width: 10px;    
+}
+
+.actionCardContainer {
+    margin: 16px -20px 0px -20px;
+    padding: 16px 20px 16px 20px;
+    background-color: #F8F8F8;
+}

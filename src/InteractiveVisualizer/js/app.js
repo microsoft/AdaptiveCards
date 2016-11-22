@@ -8,32 +8,28 @@ var markdownProcessor;
 var hostContainerOptions = [];
 var selectedHostContainerIndex = 0;
 var HostContainer = (function () {
-    function HostContainer(padding) {
-        this._padding = Spacing.None;
-        this._padding = padding;
+    function HostContainer(styleSheet) {
+        this.styleSheet = styleSheet;
     }
-    HostContainer.prototype.initializeCard = function (card) {
-        card.padding = this._padding;
-    };
     return HostContainer;
 }());
 var LiveTileContainer = (function (_super) {
     __extends(LiveTileContainer, _super);
-    function LiveTileContainer(width, height, padding) {
-        _super.call(this, padding);
+    function LiveTileContainer(width, height, styleSheet) {
+        _super.call(this, styleSheet);
         this._width = width;
         this._height = height;
     }
-    LiveTileContainer.prototype.initializeCard = function (card) {
-        _super.prototype.initializeCard.call(this, card);
-        card.textColor = LiveTileContainer.textColor;
-    };
-    LiveTileContainer.prototype.render = function () {
+    LiveTileContainer.prototype.render = function (card) {
         var element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
         element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
+        card.textColor = LiveTileContainer.textColor;
+        var renderedCard = card.render();
+        renderedCard.style.height = "100%";
+        appendChild(element, renderedCard);
         return element;
     };
     LiveTileContainer.backgroundColor = "#0078D7";
@@ -42,11 +38,11 @@ var LiveTileContainer = (function (_super) {
 }(HostContainer));
 var ConnectorContainer = (function (_super) {
     __extends(ConnectorContainer, _super);
-    function ConnectorContainer(themeColor, padding) {
-        _super.call(this, padding);
+    function ConnectorContainer(themeColor, styleSheet) {
+        _super.call(this, styleSheet);
         this._themeColor = themeColor;
     }
-    ConnectorContainer.prototype.render = function () {
+    ConnectorContainer.prototype.render = function (card) {
         var element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
@@ -57,6 +53,8 @@ var ConnectorContainer = (function (_super) {
         else {
             element.style.borderLeft = "3px solid " + this._themeColor;
         }
+        var renderedCard = card.render();
+        appendChild(element, renderedCard);
         return element;
     };
     return ConnectorContainer;
@@ -66,8 +64,11 @@ var SkypeCardContainer = (function (_super) {
     function SkypeCardContainer() {
         _super.apply(this, arguments);
     }
-    SkypeCardContainer.prototype.render = function () {
-        return document.createElement("div");
+    SkypeCardContainer.prototype.render = function (card) {
+        var element = document.createElement("div");
+        var renderedCard = card.render();
+        appendChild(element, renderedCard);
+        return element;
     };
     return SkypeCardContainer;
 }(HostContainer));
@@ -88,9 +89,7 @@ function renderCard() {
                 var adaptiveCard = new AdaptiveCard();
                 adaptiveCard.parse(json);
                 var hostContainer = hostContainerOptions[selectedHostContainerIndex].hostContainer;
-                hostContainer.initializeCard(adaptiveCard);
-                var renderedHostContainer = hostContainer.render();
-                renderedHostContainer.appendChild(adaptiveCard.render());
+                var renderedHostContainer = hostContainer.render(adaptiveCard);
                 node.appendChild(renderedHostContainer);
                 break;
             default:
@@ -126,9 +125,21 @@ function filePickerChanged(evt) {
         alert("Failed to load file");
     }
 }
+function updateStyleSheet() {
+    var styleSheetLinkElement = document.getElementById("adaptiveCardStylesheet");
+    if (styleSheetLinkElement == null) {
+        styleSheetLinkElement = document.createElement("link");
+        var headElement = document.getElementsByTagName("head")[0];
+        appendChild(headElement, styleSheetLinkElement);
+    }
+    styleSheetLinkElement.rel = "stylesheet";
+    styleSheetLinkElement.type = "text/css";
+    styleSheetLinkElement.href = hostContainerOptions[selectedHostContainerIndex].hostContainer.styleSheet;
+}
 function hostContainerPickerChanged(evt) {
     var hostContainerPicker = document.getElementById("hostContainerPicker");
     selectedHostContainerIndex = hostContainerPicker.selectedIndex;
+    updateStyleSheet();
     renderCard();
 }
 function processMarkdown(text) {
@@ -142,12 +153,12 @@ var HostContainerOption = (function () {
     return HostContainerOption;
 }());
 window.onload = function () {
-    hostContainerOptions.push(new HostContainerOption("Connector Card", new ConnectorContainer("red", Spacing.Wide)));
-    hostContainerOptions.push(new HostContainerOption("Large Live Tile", new LiveTileContainer(204, 204, Spacing.Narrow)));
-    hostContainerOptions.push(new HostContainerOption("Wide Live Tile", new LiveTileContainer(204, 100, Spacing.Narrow)));
-    hostContainerOptions.push(new HostContainerOption("Medium Live Tile", new LiveTileContainer(100, 100, Spacing.Narrow)));
-    hostContainerOptions.push(new HostContainerOption("Small Live Tile", new LiveTileContainer(48, 48, Spacing.Narrow)));
-    hostContainerOptions.push(new HostContainerOption("Skype Card", new SkypeCardContainer(Spacing.None)));
+    hostContainerOptions.push(new HostContainerOption("Connector Card", new ConnectorContainer("red", "./css/connectorCard.css")));
+    hostContainerOptions.push(new HostContainerOption("Large Live Tile", new LiveTileContainer(204, 204, "./css/liveTile.css")));
+    hostContainerOptions.push(new HostContainerOption("Wide Live Tile", new LiveTileContainer(204, 100, "./css/liveTile.css")));
+    hostContainerOptions.push(new HostContainerOption("Medium Live Tile", new LiveTileContainer(100, 100, "./css/liveTile.css")));
+    hostContainerOptions.push(new HostContainerOption("Small Live Tile", new LiveTileContainer(48, 48, "./css/liveTile.css")));
+    hostContainerOptions.push(new HostContainerOption("Skype Card", new SkypeCardContainer("./css/skypeCard.css")));
     var hostContainerPicker = document.getElementById("hostContainerPicker");
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
@@ -159,6 +170,7 @@ window.onload = function () {
     }
     var filePicker = document.getElementById("filePicker");
     filePicker.addEventListener("change", filePickerChanged);
+    updateStyleSheet();
     renderCard();
 };
 //# sourceMappingURL=app.js.map
