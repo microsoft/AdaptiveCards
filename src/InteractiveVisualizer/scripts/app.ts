@@ -85,8 +85,8 @@ function renderCard() {
         let json = JSON.parse(editor.getValue());
         let cardTypeName = json["@type"];
 
-        let hostContainer = hostContainerOptions[selectedHostContainerIndex].hostContainer;
-        let renderedCard: HTMLElement;
+        let node = document.getElementById('content');
+        node.innerHTML = '';
 
         switch (cardTypeName) {
             case "SwiftCard":
@@ -94,15 +94,20 @@ function renderCard() {
                 let swiftCard = new MessageCard();
                 swiftCard.parse(json);
 
-                renderedCard = swiftCard.render();
-
+                node.appendChild(swiftCard.render());
+                
                 break;
             case "AdaptiveCard":
                 let adaptiveCard = new AdaptiveCard();
                 adaptiveCard.parse(json);
 
+                let hostContainer = hostContainerOptions[selectedHostContainerIndex].hostContainer;
                 hostContainer.initializeCard(adaptiveCard);
-                renderedCard = adaptiveCard.render();
+
+                let renderedHostContainer = hostContainer.render();
+                renderedHostContainer.appendChild(adaptiveCard.render());
+
+                node.appendChild(renderedHostContainer);
 
                 break;
             default:
@@ -113,15 +118,6 @@ function renderCard() {
                     throw new Error("Unknown card type: " + cardTypeName);
                 }
         }
-        
-        var node = document.getElementById('content');
-        node.innerHTML = '';
-
-        let renderedHostContainer = hostContainer.render();
-
-        renderedHostContainer.appendChild(renderedCard);
-
-        node.appendChild(renderedHostContainer);
     }
     catch (e) {
         document.getElementById('content').innerHTML = "Error: " + e.toString();
@@ -205,7 +201,7 @@ window.onload = () => {
 
     let hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
-    if (hostContainerPicker !== undefined) {
+    if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
 
         for (let i = 0; i < hostContainerOptions.length; i++) {
