@@ -6,148 +6,155 @@
 		    "items": [
 		        {
     		        "@type": "TextBlock",
-    		        "topSpacing": "narrow",
     		        "text": "**textWeight = lighter**"
 		        },
 		        {
 		            "@type": "Separator",
-    		        "topSpacing": "narrow"
+    		        "topSpacing": "none"
 		        },
 		        {
     		        "@type": "TextBlock",
-    		        "topSpacing": "normal",
     		        "textSize": "small",
     		        "textWeight": "lighter",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = small)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "normal",
     		        "textWeight": "lighter",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = normal)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "medium",
     		        "textWeight": "lighter",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = medium)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "large",
     		        "textWeight": "lighter",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = large)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "extraLarge",
      		        "textWeight": "lighter",
        		        "text": "The quick brown fox jumps over the lazy dog. (textSize = extraLarge)"
 		        },
 		        {
     		        "@type": "TextBlock",
-    		        "topSpacing": "normal",
     		        "text": "**textWeight = normal**"
 		        },
 		        {
 		            "@type": "Separator",
-    		        "topSpacing": "narrow"
+    		        "topSpacing": "none"
 		        },
 		        {
     		        "@type": "TextBlock",
-    		        "topSpacing": "normal",
     		        "textSize": "small",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = small)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "normal",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = normal)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "medium",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = medium)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "large",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = large)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "extraLarge",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = extraLarge)"
 		        },
 		        {
     		        "@type": "TextBlock",
-    		        "topSpacing": "normal",
     		        "text": "**textWeight = bolder**"
 		        },
 		        {
 		            "@type": "Separator",
-    		        "topSpacing": "narrow"
+    		        "topSpacing": "none"
 		        },
 		        {
     		        "@type": "TextBlock",
-    		        "topSpacing": "normal",
     		        "textSize": "small",
     		        "textWeight": "bolder",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = small)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "normal",
     		        "textWeight": "bolder",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = normal)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "medium",
     		        "textWeight": "bolder",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = medium)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "large",
     		        "textWeight": "bolder",
     		        "text": "The quick brown fox jumps over the lazy dog. (textSize = large)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "extraLarge",
     		        "textWeight": "bolder",
        		        "text": "The quick brown fox jumps over the lazy dog. (textSize = extraLarge)"
 		        },
 		        {
     		        "@type": "TextBlock",
-    		        "topSpacing": "normal",
     		        "text": "**Text colors**"
 		        },
 		        {
 		            "@type": "Separator",
-    		        "topSpacing": "narrow"
+    		        "topSpacing": "none"
 		        },
 		        {
     		        "@type": "TextBlock",
-    		        "topSpacing": "normal",
     		        "textSize": "medium",
     		        "text": "The quick brown fox jumps over the lazy dog. (textColor = default)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "medium",
     		        "isSubtle": true,
     		        "text": "The quick brown fox jumps over the lazy dog. (textColor = default, isSubtle = true)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "medium",
     		        "textColor": "accent",
     		        "text": "The quick brown fox jumps over the lazy dog. (textColor = accent)"
 		        },
 		        {
     		        "@type": "TextBlock",
+    		        "topSpacing": "none",
     		        "textSize": "medium",
     		        "textColor": "accent",
     		        "isSubtle": true,

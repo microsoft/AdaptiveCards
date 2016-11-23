@@ -1,22 +1,7 @@
 ﻿/*
 Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
 */
-abstract class Setting {
-    private _name: string;
-
-    protected constructor(name: string, physicalSize: number = undefined) {
-        this._name = name;
-        this.physicalSize = physicalSize;
-    }
-
-    get name(): string {
-        return this._name;
-    }
-
-    physicalSize: number;
-}
-
-class Size extends Setting {
+class Size {
     static Auto = new Size("auto");
     static Stretch = new Size("stretch");
     static Small = new Size("small", 100, 40);
@@ -24,8 +9,8 @@ class Size extends Setting {
     static Large = new Size("large", 300, 160);
 
     protected constructor(name: string, physicalSize: number = undefined, physicalPictureSize: number = undefined) {
-        super(name, physicalSize);
-
+        this.name = name;
+        this.physicalSize = physicalSize;
         this.physicalPictureSize = physicalPictureSize;
     }
 
@@ -39,25 +24,14 @@ class Size extends Setting {
         return defaultValue;
     }
 
+    readonly name: string;
+    physicalSize: number;
     physicalPictureSize: number;
 }
 
-class Spacing extends Setting {
-    static None = new Spacing("none", 0);
-    static ExtraNarrow = new Spacing("extraNarrow", 5);
-    static Narrow = new Spacing("narrow", 10);
-    static Normal = new Spacing("normal", 20);
-    static Wide = new Spacing("wide", 30);
-
-    static parse(name: string, defaultValue: Spacing): Spacing {
-        for (let key in Spacing) {
-            if (!isNullOrEmpty(Spacing[key].name) && Spacing[key].name == name) {
-                return Spacing[key];
-            }
-        }
-
-        return defaultValue;
-    }
+enum Spacing {
+    None,
+    Default
 }
 
 enum TextSize {
@@ -206,11 +180,6 @@ function appendChild(node: Node, child: Node) {
 }
 
 abstract class CardElement {
-    private _container: Container;
-    private _topSpacing: Spacing = Spacing.None;
-    private _size: Size = Size.Auto;
-    private _horizontalAlignment: HorizontalAlignment = HorizontalAlignment.Left;
-
     static createElement(container: Container, typeName: string): CardElement {
         switch (typeName) {
             case "TextBlock":
@@ -238,6 +207,12 @@ abstract class CardElement {
         }
     }
 
+    private _container: Container;
+
+    size: Size = Size.Auto;
+    horizontalAlignment: HorizontalAlignment = HorizontalAlignment.Left;
+    topSpacing: Spacing = Spacing.Default;
+
     constructor(container: Container) {
         this._container = container;
     }
@@ -246,42 +221,21 @@ abstract class CardElement {
         return this._container;
     }
 
-    get topSpacing(): Spacing {
-        return this._topSpacing;
-    }
-
-    set topSpacing(value: Spacing) {
-        this._topSpacing = value;
-    }
-
-    get size(): Size {
-        return this._size;
-    }
-
-    set size(value: Size) {
-        this._size = value;
-    }
-    
-    get horizontalAlignment(): HorizontalAlignment {
-        return this._horizontalAlignment;
-    }
-
-    set horizontalAlignment(value: HorizontalAlignment) {
-        this._horizontalAlignment = value;
-    }
-
     get hideOverflow(): boolean {
         return true;
     }
 
     abstract render(): HTMLElement;
 
+    removeTopSpacing(element: HTMLElement) {
+        element.style.marginTop = "0px";
+    }
+
     adjustLayout(element: HTMLElement) {
         if (this.size == Size.Stretch) {
             element.style.width = "100%";
         }
         else if (this.size != Size.Auto) {
-            // element.style.width = this.getPhysicalSize().toString() + "px";
             element.style.width = this.size.physicalSize.toString() + "px";
         }
 
@@ -306,21 +260,20 @@ abstract class CardElement {
             this.adjustLayout(renderedElement);
         }
 
+        if (this.topSpacing == Spacing.None) {
+            this.removeTopSpacing(renderedElement);
+        }
+
         return renderedElement;
     }
 
-    /*
-    getPhysicalSize(): number {
-        return getPhysicalSize(this.size);
-    }
-    */
-
     parse(json: any) {
-        // this._topSpacing = stringToSpacing(json["topSpacing"], Spacing.None);
-        this._topSpacing = Spacing.parse(json["topSpacing"], Spacing.None);
-        // this._size = stringToSize(json["size"], this.size);
-        this._size = Size.parse(json["size"], this.size);
-        this._horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
+        this.size = Size.parse(json["size"], this.size);
+        this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
+        
+        if (json["topSpacing"] === "none") {
+            this.topSpacing = Spacing.None;
+        }
     }
 }
 
@@ -422,6 +375,10 @@ class TextBlock extends CardElement {
             return null;
         }
     }
+
+    removeTopSpacing(element: HTMLElement) {
+        element.style.paddingTop = "0px";
+    }
 }
 
 class Fact {
@@ -462,10 +419,7 @@ class FactGroup extends CardElement {
 
         if (this._items.length > 0) {
             element = document.createElement("table");
-            element.style.borderWidth = "0px";
-            element.style.borderSpacing = "0px";
-            element.style.borderStyle = "none";
-            element.style.borderCollapse = "collapse";
+            element.className = "factGroup";
 
             let html: string = '';
 
@@ -476,8 +430,9 @@ class FactGroup extends CardElement {
                 let textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].name;
                 textBlock.textWeight = TextWeight.Bolder;
+                textBlock.topSpacing = Spacing.None;
 
-                html += textBlock.render().outerHTML;
+                html += textBlock.internalRender().outerHTML;
 
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding: 0px 0px 0px 10px">';
@@ -485,8 +440,9 @@ class FactGroup extends CardElement {
                 textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].value;
                 textBlock.textWeight = TextWeight.Lighter;
+                textBlock.topSpacing = Spacing.None;
                 
-                html += textBlock.render().outerHTML;
+                html += textBlock.internalRender().outerHTML;
 
                 html += '    </td>';
                 html += '</tr>';
@@ -500,83 +456,39 @@ class FactGroup extends CardElement {
 }
 
 class Picture extends CardElement {
-    private _style: PictureStyle = PictureStyle.Normal;
-    private _url: string;
-
-    /*
-    static getPhysicalSize(size: Size): number {
-        switch (size) {
-            case Size.Small:
-                return 40;
-            case Size.Medium:
-                return 80;
-            default:
-                return 160;
-        }
-    }
-
-    getPhysicalSize(): number {
-        return Picture.getPhysicalSize(this.size);
-    }
-    */
-
-    get style(): PictureStyle {
-        return this._style;
-    }
-
-    set style(value: PictureStyle) {
-        this._style = value;
-    }
-
-    get url(): string {
-        return this._url;
-    }
-
-    set url(value: string) {
-        this._url = value;
-    }
+    style: PictureStyle = PictureStyle.Normal;
+    url: string;
 
     parse(json: any) {
         super.parse(json);
         
-        this._url = json["url"];
-        this._style = stringToPictureStyle(json["style"], PictureStyle.Normal);
+        this.url = json["url"];
+        this.style = stringToPictureStyle(json["style"], PictureStyle.Normal);
     }
 
-    render(
-        marginLeft: number = 0,
-        marginTop: number = 0,
-        marginRight: number = 0,
-        marginBottom: number = 0): HTMLElement {
+    render(): HTMLElement {
         let image: HTMLImageElement = null;
 
-        if (!isNullOrEmpty(this._url)) {
+        if (!isNullOrEmpty(this.url)) {
             image = document.createElement("img");
+            image.className = "picture";
 
             if (this.size == Size.Auto) {
                 image.style.maxWidth = "100%";
             }
             else {
-                // let physicalSize = Picture.getPhysicalSize(this.size);
-                let physicalSize = this.size.physicalPictureSize;
+                image.style.maxWidth = this.size.physicalPictureSize.toString() + "px"; 
+                image.style.maxHeight = this.size.physicalPictureSize.toString() + "px";
 
-                image.style.maxWidth = physicalSize.toString() + "px"; 
-                image.style.maxHeight = physicalSize.toString() + "px";
-
-                if (this._style == PictureStyle.Person) {
+                if (this.style == PictureStyle.Person) {
                     image.className = "inCircle";
-                    image.style.borderRadius = (physicalSize / 2).toString() + "px";
+                    image.style.borderRadius = (this.size.physicalPictureSize / 2).toString() + "px";
                     image.style.backgroundPosition = "50% 50%";
                     image.style.backgroundRepeat = "no-repeat";
                 }
             }
 
-            image.style.marginLeft = marginLeft.toString() + "px";
-            image.style.marginTop = marginTop.toString() + "px";
-            image.style.marginRight = marginRight.toString() + "px";
-            image.style.marginBottom = marginBottom.toString() + "px";
-
-            image.src = this._url;
+            image.src = this.url;
         }
 
         return image;
@@ -585,7 +497,8 @@ class Picture extends CardElement {
 
 class PictureGallery extends CardElement {
     private _items: Array<Picture> = [];
-    private _pictureSize: Size = Size.Medium;
+
+    pictureSize: Size = Size.Medium;
 
     get items(): Array<Picture> {
         return this._items;
@@ -594,8 +507,7 @@ class PictureGallery extends CardElement {
     parse(json: any) {
         super.parse(json);
         
-        // this._pictureSize = stringToSize(json["imageSize"], Size.Medium);
-        this._pictureSize = Size.parse(json["imageSize"], Size.Medium);
+        this.pictureSize = Size.parse(json["imageSize"], Size.Medium);
 
         if (json["items"] != null) {
             let pictureArray = json["items"] as Array<any>;
@@ -603,7 +515,7 @@ class PictureGallery extends CardElement {
             for (let i = 0; i < pictureArray.length; i++) {
                 let picture = new Picture(this.container);
 
-                picture.size = this._pictureSize;
+                picture.size = this.pictureSize;
                 picture.url = pictureArray[i];
 
                 this._items.push(picture);
@@ -616,9 +528,14 @@ class PictureGallery extends CardElement {
 
         if (this._items.length > 0) {
             element = document.createElement("div");
+            element.className = "pictureGallery";
 
             for (var i = 0; i < this._items.length; i++) {
-                appendChild(element, this._items[i].render(0, 0, 10, 0));
+                let renderedPicture =  this._items[i].render();
+                renderedPicture.style.margin = "0px";
+                renderedPicture.style.marginRight = "10px";
+
+                appendChild(element, renderedPicture);
             }
         }
 
@@ -628,7 +545,8 @@ class PictureGallery extends CardElement {
 
 abstract class Action {
     private _owner: CardElement;
-    private _name: string;
+    
+    name: string;
 
     static create(owner: CardElement, typeName: string): Action {
         switch (typeName) {
@@ -653,15 +571,11 @@ abstract class Action {
     }
 
     parse(json: any) {
-        this._name = json["name"];
+        this.name = json["name"];
     }
 
     renderUi(container: Container, requiresTopSpacer: boolean = false): HTMLElement {
         return null;
-    }
-
-    get name() {
-        return this._name;
     }
 
     get hasUi(): boolean {
@@ -683,7 +597,15 @@ class TargetUri {
 }
 
 class OpenUri extends ExternalAction {
-    targets: Array<TargetUri> = [];
+    private _targets: Array<TargetUri> = [];
+
+    addTarget(): TargetUri {
+        let targetUri = new TargetUri();
+
+        this._targets.push(targetUri);
+
+        return targetUri;
+    }
 
     parse(json: any) {
         super.parse(json);
@@ -698,11 +620,8 @@ class OpenUri extends ExternalAction {
                 let targetArray = json["targets"] as Array<any>;
 
                 for (let i = 0; i < targetArray.length; i++) {
-                    let target = new TargetUri();
-
+                    let target = this.addTarget();
                     target.parse(targetArray[i]);
-
-                    this.targets.push(target);
                 }
             }
         }
@@ -775,7 +694,7 @@ class TextInput extends Input {
 
     render(): HTMLElement {
         let element = document.createElement("textarea");
-        element.className = "textInput";
+        element.className = "input textInput";
         element.placeholder = this.title;
 
         return element;
@@ -819,7 +738,7 @@ class MultichoiceInput extends Input {
 
     render(): HTMLElement {
         let selectElement = document.createElement("select");
-        selectElement.className = "multichoiceInput";
+        selectElement.className = "input multichoiceInput";
 
         for (let i = 0; i < this._choices.length; i++) {
             let option = document.createElement("option");
@@ -850,6 +769,7 @@ class DateInput extends Input {
     
     render(): HTMLElement {
         let container = document.createElement("div");
+        container.className = "input";
         container.style.display = "flex";
 
         let datePicker = document.createElement("input");
@@ -910,6 +830,10 @@ class ActionCard extends Action {
             for (let i = 0; i < inputArray.length; i++) {
                 let input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
 
+                if (i == 0) {
+                    input.topSpacing = Spacing.None;
+                }
+
                 input.parse(inputArray[i]);
 
                 this._inputs.push(input);
@@ -947,13 +871,6 @@ class ActionCard extends Action {
 
     renderUi(container: Container, needsTopSpacer: boolean = false): HTMLElement {
         let actionCardElement = document.createElement("div");
-
-        if (needsTopSpacer) {
-            actionCardElement.style.marginTop = "16px";
-        }
-
-        actionCardElement.style.paddingTop = container.padding.physicalSize == 0 ? "16px" : container.padding.physicalSize.toString() + "px";
-        actionCardElement.style.paddingBottom = actionCardElement.style.paddingTop;
 
         if (this._card != null) {
             appendChild(actionCardElement, this._card.render());
@@ -1093,6 +1010,8 @@ class ActionGroup extends CardElement {
 
     private hideActionCardPane() {
         this._actionCardContainer.innerHTML = '';
+        this._actionCardContainer.style.padding = "0px";
+        this._actionCardContainer.style.marginTop = "0px";
 
         this.container.showBottomSpacer(this);
     }
@@ -1101,6 +1020,8 @@ class ActionGroup extends CardElement {
         this.container.hideBottomSpacer(this);
 
         this._actionCardContainer.innerHTML = '';
+        this._actionCardContainer.style.padding = null;
+        this._actionCardContainer.style.marginTop = null;
 
         appendChild(
             this._actionCardContainer,
@@ -1165,6 +1086,7 @@ class ActionGroup extends CardElement {
 
     render(): HTMLElement {
         let element = document.createElement("div");
+        element.className = "actionGroup";
 
         let actionContainer = document.createElement("div");
         actionContainer.style.display = "flex";
@@ -1172,14 +1094,10 @@ class ActionGroup extends CardElement {
 
         appendChild(element, actionContainer);
 
-        let containerPadding = this.container.getActionCardLeftRightPadding();
-
         this._actionCardContainer = document.createElement("div");
-        this._actionCardContainer.style.backgroundColor = "#F8F8F8";
-        this._actionCardContainer.style.marginLeft = "-" + containerPadding.toString() + "px";
-        this._actionCardContainer.style.marginRight = "-" + containerPadding.toString() + "px";
-        this._actionCardContainer.style.paddingLeft = containerPadding.toString() + "px";
-        this._actionCardContainer.style.paddingRight = containerPadding.toString() + "px";
+        this._actionCardContainer.className = "actionCardContainer";
+        this._actionCardContainer.style.padding = "0px";
+        this._actionCardContainer.style.marginTop = "0px";
 
         appendChild(element, this._actionCardContainer);
 
@@ -1221,7 +1139,7 @@ class Separator extends CardElement {
 
     render() {
         let element = document.createElement("div");
-        element.style.borderTop = "1px solid #EEEEEE";
+        element.className = "separator";
 
         return element;
     }
@@ -1231,9 +1149,6 @@ class Container extends CardElement {
     private _forbiddenItemTypes: Array<string>;
     private _items: Array<CardElement> = [];
     private _element: HTMLDivElement;
-    private _backgroundImageUrl: string;
-    private _backgroundColor: string;
-    private _padding: Spacing = Spacing.None;
     private _textColor: TextColor = TextColor.Default;
 
     private isAllowedItemType(elementType: string) {
@@ -1255,6 +1170,9 @@ class Container extends CardElement {
         }
     }
 
+    backgroundImageUrl: string;
+    backgroundColor: string;
+
     constructor(container: Container, forbiddenItemTypes: Array<string> = null) {
         super(container);
 
@@ -1265,32 +1183,8 @@ class Container extends CardElement {
         return this._items;
     }
 
-    get padding(): Spacing {
-        return this._padding;
-    }
-
-    set padding(value: Spacing) {
-        this._padding = value;
-    }
-
     get elementCount(): number {
         return this._items.length;
-    }
-
-    get backgroundImageUrl(): string {
-        return this._backgroundImageUrl;
-    }
-
-    set backgroundImageUrl(value: string) {
-        this._backgroundImageUrl = value;
-    }
-
-    get backgroundColor(): string {
-        return this._backgroundColor;
-    }
-
-    set backgroundColor(value: string) {
-        this._backgroundColor = value;
     }
 
     get hideOverflow() {
@@ -1329,7 +1223,7 @@ class Container extends CardElement {
 
     showBottomSpacer(requestingElement: CardElement) {
         if (this.isLastElement(requestingElement)) {
-            this._element.style.paddingBottom = this.padding.physicalSize + "px"; 
+            this._element.style.paddingBottom = null; 
 
             if (this.container != null) {
                 this.container.showBottomSpacer(this);
@@ -1350,9 +1244,9 @@ class Container extends CardElement {
     parse(json: any) {
         super.parse(json);
 
-        this._padding = Spacing.parse(json["padding"], Spacing.None);        
-        this._backgroundImageUrl = json["backgroundImage"];
-        this._backgroundColor = json["backgroundColor"];
+        this.backgroundImageUrl = json["backgroundImage"];
+        this.backgroundColor = json["backgroundColor"];
+
         this._textColor = stringToTextColor(json["textColor"], TextColor.Default);
 
         if (json["items"] != null) {
@@ -1378,25 +1272,22 @@ class Container extends CardElement {
     render(): HTMLElement {
         if (this.elementCount > 0) {
             this._element = document.createElement("div");
+            this._element.className = "container";
 
             if (!isNullOrEmpty(this.backgroundColor)) {
                 this._element.style.backgroundColor = this.backgroundColor;
             }
 
-            this._element.style.padding = this.padding.physicalSize.toString() + "px"; 
-
             let html: string = '';
             let previousElement: CardElement = null;
 
             for (var i = 0; i < this.elementCount; i++) {
-                let spacing = this.getElement(i).topSpacing.physicalSize;
-
                 let renderedElement = this.getElement(i).internalRender();
 
                 if (renderedElement != null) {
-                    if (previousElement != null && spacing > 0) {
-                        renderedElement.style.marginTop = spacing.toString() + "px";
-                    }
+                    if (previousElement == null) {
+                        this.getElement(i).removeTopSpacing(renderedElement);
+                    } 
 
                     appendChild(this._element, renderedElement);
                 }
@@ -1404,27 +1295,14 @@ class Container extends CardElement {
                 previousElement = this.getElement(i);
             }
 
-            if (!isNullOrEmpty(this._backgroundImageUrl)) {
-                this._element.style.backgroundImage = 'url("' + this._backgroundImageUrl + '")';
+            if (!isNullOrEmpty(this.backgroundImageUrl)) {
+                this._element.style.backgroundImage = 'url("' + this.backgroundImageUrl + '")';
                 this._element.style.backgroundRepeat = "no-repeat";
                 this._element.style.backgroundSize = "cover";
             }
         }
 
         return this._element;
-    }
-
-    getActionCardLeftRightPadding(): number {
-        let currentSection: Container = this;
-        let result: number = 0;
-
-        while (currentSection != null && result == 0) {
-            result = currentSection.padding.physicalSize;
-
-            currentSection = currentSection.container;
-        };
-
-        return result;
     }
 
     getRootContainer(): Container {
@@ -1447,7 +1325,7 @@ class Column extends Container {
 
         this.size = Size.parse(json["size"], undefined);
 
-        if (this.size == undefined) {
+        if (this.size === undefined) {
             this._useWeight = true;
             this._weight = Number(json["size"]);
         }
@@ -1475,30 +1353,25 @@ class Column extends Container {
 
 class ColumnGroup extends CardElement {
     private _items: Array<Column> = [];
-    private _columnSpacing: Spacing = Spacing.Narrow;
 
-    get columnSpacing(): Spacing {
-        return this._columnSpacing;
-    }
+    addColumn(): Column {
+        let column = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
+        column.topSpacing = Spacing.None;
 
-    set columnSpacing(value: Spacing) {
-        this._columnSpacing = value;
+        this._items.push(column);
+
+        return column;
     }
 
     parse(json: any) {
         super.parse(json);
 
-        this._columnSpacing = Spacing.parse(json["columnSpacing"], Spacing.Narrow);
-        
         if (json["items"] != null) {
             let itemArray = json["items"] as Array<any>;
 
             for (let i = 0; i < itemArray.length; i++) {
-                let groupItem = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
-
-                groupItem.parse(itemArray[i]);
-
-                this._items.push(groupItem);
+                let column = this.addColumn();
+                column.parse(itemArray[i]);
             }
         }
     }
@@ -1506,6 +1379,7 @@ class ColumnGroup extends CardElement {
     render(): HTMLElement {
         if (this._items.length > 0) {
             let element = document.createElement("div");
+            element.className = "columnGroup";
             element.style.display = "flex";
 
             for (let i = 0; i < this._items.length; i++) {
@@ -1515,7 +1389,8 @@ class ColumnGroup extends CardElement {
 
                 if (this._items.length > 1 && i < this._items.length - 1) {
                     let spacer = document.createElement("div");
-                    spacer.style.flex = "0 0 " + this.columnSpacing.physicalSize.toString() + "px";
+                    spacer.className = "columnSpacer";
+                    spacer.style.flex = "0 0 auto";
 
                     appendChild(element, spacer);
                 }
@@ -1530,35 +1405,32 @@ class ColumnGroup extends CardElement {
 }
 
 class AdaptiveCard {
-    private _rootSection = new Container(null);
+    private _rootContainer = new Container(null);
     
-    padding: Spacing = Spacing.Narrow;
     textColor: TextColor = TextColor.Dark;
 
     parse(json: any) {
-        this._rootSection.backgroundImageUrl = json["backgroundImage"];
-        /*
-        this._rootSection.padding = Spacing.parse(json["padding"], Spacing.None);
-        this._rootSection.backgroundColor = json["backgroundColor"];
-        */
+        this._rootContainer.backgroundImageUrl = json["backgroundImage"];
 
         if (json["sections"] != undefined) {
             let sectionArray = json["sections"] as Array<any>;
 
             for (var i = 0; i < sectionArray.length; i++) {
-                let section = new Container(this._rootSection, [ "Section" ]);
+                let section = new Container(this._rootContainer, [ "Section" ]);
 
                 section.parse(sectionArray[i]);
 
-                this._rootSection.addElement(section);
+                this._rootContainer.addElement(section);
             }
         }
     }
 
     render(): HTMLElement {
-        this._rootSection.padding = this.padding;
-        this._rootSection.textColor = this.textColor;
+        this._rootContainer.textColor = this.textColor;
 
-        return this._rootSection.internalRender();;
+        let renderedContainer = this._rootContainer.internalRender();
+        renderedContainer.className = "rootContainer";
+
+        return renderedContainer;
    }
 }

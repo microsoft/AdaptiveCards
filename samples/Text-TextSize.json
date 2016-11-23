@@ -1,0 +1,27 @@
+{
+    "@type": "AdaptiveCard",
+    "sections": [
+        {
+            "items": [
+                {
+                    "@type": "TextBlock",
+                    "text": "This is the first line"
+                },
+                {
+                    "@type": "TextBlock",
+                    "text": "This is the second line"
+                },
+                {
+                    "@type": "TextBlock",
+                    "text": "This is the third line",
+                    "textSize": "large"
+                },
+                {
+                    "@type": "TextBlock",
+                    "text": "This is the fourth line",
+                    "textSize": "extraLarge"
+                }
+            ]
+        }
+    ]
+}

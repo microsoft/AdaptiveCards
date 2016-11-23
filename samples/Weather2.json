@@ -1,7 +1,6 @@
 {
     "@type": "AdaptiveCard",
     "backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Background-Dark.jpg",
-    "padding": "extraNarrow",
 	"sections": [
 		{
 			"items": [
@@ -27,22 +26,17 @@
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "topSpacing": "none",
 			                        "text": "63 / 42",
 			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "style": "activitySubtitle",
-			                        "topSpacing": "none",
 			                        "isSubtle": true,
 			                        "text": "20% chance of rain",
 			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "style": "activitySubtitle",
-			                        "topSpacing": "none",
 			                        "isSubtle": true,
 			                        "text": "Winds 5 mph NE",
 			                        "textSize": "small"
@@ -50,16 +44,9 @@
 			                ]
 			            }
 			        ]
-			    }
-			]
-		},
-		{
-		    "topSpacing": "none",
-		    "padding": "narrow",
-		    "items": [
+			    },
 			    {
 			        "@type": "ColumnGroup",
-			        "columnSpacing": "normal",
 			        "items": [
 			            {
 			                "size": 20,
@@ -72,19 +59,16 @@
 			                    },
 			                    {
 			                        "@type": "Picture",
-			                        "topSpacing": "extraNarrow",
 			                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "topSpacing": "extraNarrow",
 			                        "horizontalAlignment": "center",
 			                        "text": "62",
 			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
 			                        "isSubtle": true,
 			                        "text": "52",
@@ -103,19 +87,16 @@
 			                    },
 			                    {
 			                        "@type": "Picture",
-			                        "topSpacing": "extraNarrow",
 			                        "url": "http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "topSpacing": "extraNarrow",
 			                        "horizontalAlignment": "center",
 			                        "text": "60",
 			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
 			                        "isSubtle": true,
 			                        "text": "48",
@@ -134,19 +115,16 @@
 			                    },
 			                    {
 			                        "@type": "Picture",
-			                        "topSpacing": "extraNarrow",
 			                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "topSpacing": "extraNarrow",
 			                        "horizontalAlignment": "center",
 			                        "text": "59",
 			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
 			                        "isSubtle": true,
 			                        "text": "49",
@@ -165,19 +143,16 @@
 			                    },
 			                    {
 			                        "@type": "Picture",
-			                        "topSpacing": "extraNarrow",
 			                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "topSpacing": "extraNarrow",
 			                        "horizontalAlignment": "center",
 			                        "text": "64",
 			                        "textSize": "small"
 			                    },
 			                    {
 			                        "@type": "TextBlock",
-			                        "topSpacing": "none",
 			                        "horizontalAlignment": "center",
 			                        "isSubtle": true,
 			                        "text": "51",
@@ -185,19 +160,9 @@
 			                    }
 			                ]
 			            }
-			        ]
+		            ]
 			    }
-			    
 			]
 		}
-	],
-	"footer": {
-	    "items": [
-	        {
-	            "@type": "TextBlock",
-	            "topSpacing": "none",
-	            "text": "Bellevue, WA"
-	        }
-	    ]
-	}
+	]
 }

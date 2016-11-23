@@ -1,75 +1,3 @@
-class Activity extends CardElement {
-    title: string;
-    subtitle: string;
-    text: string;
-    imageUrl: string;
-    imageSize: Size = Size.Medium;
-    imageStyle: PictureStyle = PictureStyle.Person;
-
-    render(): HTMLElement {
-        let html: string = '';
-
-        let element = document.createElement("div");
-        element.style.display = "flex";
-
-        if (!isNullOrEmpty(this.imageUrl)) {
-            let size = this.imageSize.physicalPictureSize;
-
-            let imageSection = document.createElement("div");
-            imageSection.style.flex = "0 0 auto";
-            imageSection.style.marginRight = "10px";
-            imageSection.style.height = size.toString() + "px";
-
-            let image = document.createElement("img");
- 
-            image.style.width = size.toString() + "px"; 
-            image.style.height = size.toString() + "px";
-
-            if (this.imageStyle == PictureStyle.Person) {
-                image.className = "inCircle";
-                image.style.borderRadius = (size / 2).toString() + "px";
-                image.style.backgroundPosition = "50% 50%";
-                image.style.backgroundRepeat = "no-repeat";
-            }
-
-            image.src = this.imageUrl;
-
-            appendChild(imageSection, image);
-
-            appendChild(element, imageSection); 
-        }
-
-        if (!isNullOrEmpty(this.title) || !isNullOrEmpty(this.subtitle) || !isNullOrEmpty(this.text)) {
-            let contentSection = document.createElement("div");
-            contentSection.style.flex = "1 1 auto";
-
-            let textBlock = new TextBlock(this.container);
-            textBlock.text = this.title;
-
-            appendChild(contentSection, textBlock.render());
-
-            textBlock = new TextBlock(this.container);
-            textBlock.text = this.subtitle;
-            textBlock.textWeight = TextWeight.Lighter;
-
-            appendChild(contentSection, textBlock.render());
-
-            textBlock = new TextBlock(this.container);
-            textBlock.text = this.text;
-
-            appendChild(contentSection, textBlock.render());
-
-            appendChild(element, contentSection)
-        }
-
-        return element;
-    }
-
-    getSpacingAfterThis(): number {
-        return 16;
-    }
-}
-
 function parsePicture(container: Container, json: any, defaultSize: Size = Size.Medium, defaultStyle: PictureStyle = PictureStyle.Normal): Picture {
     let picture = new Picture(container);
 
@@ -137,27 +65,60 @@ function parseSection(container: Container, json: any): Container {
 
     if (json["style"] == "emphasis") {
         section.backgroundColor = "#F8F8F8";
-        section.padding = Spacing.Normal;
     }
 
     if (json["activityTitle"] != undefined || json["activitySubtitle"] != undefined ||
         json["activityText"] != undefined || json["activityImage"] != undefined) {
-        let activity: Activity = new Activity(container);
 
-        activity.topSpacing = Spacing.Normal;
-        activity.title = json["activityTitle"];
-        activity.subtitle = json["activitySubtitle"];
-        activity.text = json["activityText"];
-        activity.imageUrl = json["activityImage"];
-        activity.imageSize = Size.parse(json["activityImageSize"], Size.Small);
-        activity.imageStyle = stringToPictureStyle(json["activityImageStyle"], PictureStyle.Person);
+        let columnGroup = new ColumnGroup(container);
 
-        section.addElement(activity);
+        // Image column
+        if (json["activityImage"] != null) {
+            let column = columnGroup.addColumn();
+            column.size = Size.Auto;
+
+            let picture = new Picture(column);
+            picture.size = Size.Small;
+            picture.style = PictureStyle.Person;
+            picture.url = json["activityImage"];
+
+            column.addElement(picture);
+        }
+
+        // Text column
+        let column = columnGroup.addColumn();
+        column.size = Size.Stretch;
+
+        if (json["activityTitle"] != null) {
+            let textBlock = new TextBlock(column);
+            textBlock.text = json["activityTitle"];
+
+            column.addElement(textBlock);
+        }
+
+        if (json["activitySubtitle"] != null) {
+            let textBlock = new TextBlock(column);
+            textBlock.text = json["activitySubtitle"];
+            textBlock.textWeight = TextWeight.Lighter;
+            textBlock.isSubtle = true;
+            textBlock.topSpacing = Spacing.None;
+
+            column.addElement(textBlock);
+        }
+
+        if (json["activityText"] != null) {
+            let textBlock = new TextBlock(column);
+            textBlock.text = json["activityText"];
+            textBlock.topSpacing = Spacing.None;
+
+            column.addElement(textBlock);
+        }
+
+        section.addElement(columnGroup);
     }
 
     if (json["heroImage"] != undefined) {
         let picture = new Picture(section);
-        picture.topSpacing = Spacing.Normal;
         picture.size = Size.Auto;
         picture.url = json["heroImage"];
 
@@ -166,27 +127,23 @@ function parseSection(container: Container, json: any): Container {
 
     let text = new TextBlock(section);
     text.text = json["text"];
-    text.topSpacing = Spacing.Normal;
 
     section.addElement(text);
 
     if (json["facts"] != undefined) {
         let factGroup = parseFactGroup(section, json["facts"]);
-        factGroup.topSpacing = Spacing.Normal;
 
         section.addElement(factGroup);
     }
 
     if (json["images"] != undefined) {
         let pictureGallery = parsePictureGallery(section, json["images"]);
-        pictureGallery.topSpacing = Spacing.Normal;
 
         section.addElement(pictureGallery);
     }
 
     if (json["potentialAction"] != undefined) {
         let actionGroup = parseActionGroup(section, json["potentialAction"]);
-        actionGroup.topSpacing = Spacing.Normal;
 
         section.addElement(actionGroup);
     }
@@ -205,26 +162,32 @@ class MessageCard {
         this.themeColor = json["themeColor"];
 
         this._rootContainer = new Container(null);
-        this._rootContainer.padding = Spacing.Normal;
+        this._rootContainer.topSpacing = Spacing.None;
 
-        let textBlock = new TextBlock(this._rootContainer);
-        textBlock.text = json["title"];
-        textBlock.textSize = TextSize.ExtraLarge;
+        if (json["title"] != null) {
+            let textBlock = new TextBlock(this._rootContainer);
+            textBlock.text = json["title"];
+            textBlock.textSize = TextSize.ExtraLarge;
 
-        this._rootContainer.addElement(textBlock);
+            this._rootContainer.addElement(textBlock);
+        }
 
-        textBlock = new TextBlock(this._rootContainer);
-        textBlock.text = json["text"],
-        textBlock.topSpacing = Spacing.Normal;
+        if (json["text"] != null) {
+            let textBlock = new TextBlock(this._rootContainer);
+            textBlock.text = json["text"],
 
-        this._rootContainer.addElement(textBlock);
+            this._rootContainer.addElement(textBlock);
+        }
 
         if (json["sections"] != undefined) {
             let sectionArray = json["sections"] as Array<any>;
 
             for (var i = 0; i < sectionArray.length; i++) {
                 let section = parseSection(this._rootContainer, sectionArray[i]);
-                section.topSpacing = Spacing.Normal;
+
+                if (i == 0 && this._rootContainer.elementCount == 0) {
+                    section.topSpacing = Spacing.None;
+                }
 
                 this._rootContainer.addElement(section);
             }
@@ -250,7 +213,10 @@ class MessageCard {
             element.style.borderLeft = "3px solid #" + this.themeColor;
         }
 
-        appendChild(element, this._rootContainer.render());
+        let renderedContainer = this._rootContainer.internalRender();
+        renderedContainer.className = "rootContainer";
+
+        appendChild(element, renderedContainer);
 
         return element;
     }
