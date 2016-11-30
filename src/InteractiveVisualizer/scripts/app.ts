@@ -45,6 +45,35 @@ class LiveTileContainer extends HostContainer {
     }
 }
 
+class ToastContainer extends HostContainer {
+    static backgroundColor: string = "#1F1F1F";
+    static textColor: TextColor = TextColor.Light;
+
+    private _width: number;
+
+    constructor(width: number, styleSheet: string) {
+        super(styleSheet);
+
+        this._width = width;
+    }
+
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.style.border = "#474747 1px solid";
+        element.style.width = this._width + "px";
+        element.style.backgroundColor = ToastContainer.backgroundColor;
+        element.style.overflow = "hidden";
+
+        card.textColor = LiveTileContainer.textColor;
+
+        let renderedCard = card.render();
+
+        appendChild(element, renderedCard);
+
+        return element;
+    }
+}
+
 class ConnectorContainer extends HostContainer {
     private _themeColor: string;
 
@@ -199,6 +228,10 @@ window.onload = () => {
         new HostContainerOption(
             "Connector Card",
             new ConnectorContainer("red", "./css/connectorCard.css")));
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Toast",
+            new ToastContainer(362, "./css/toast.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Large Live Tile",

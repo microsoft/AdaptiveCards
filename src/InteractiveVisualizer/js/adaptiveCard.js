@@ -130,12 +130,6 @@ function stringToPictureStyle(value, defaultValue) {
             return defaultValue;
     }
 }
-var ButtonState;
-(function (ButtonState) {
-    ButtonState[ButtonState["Normal"] = 0] = "Normal";
-    ButtonState[ButtonState["Selected"] = 1] = "Selected";
-    ButtonState[ButtonState["Inactive"] = 2] = "Inactive";
-})(ButtonState || (ButtonState = {}));
 var EventDispatcher = (function () {
     function EventDispatcher() {
         this._subscriptions = new Array();
@@ -737,6 +731,7 @@ var ActionCard = (function (_super) {
         _super.prototype.parse.call(this, json);
         if (json["card"] != undefined) {
             this._card = new Container(this.owner.container, ["ActionGroup"]);
+            this._card.topSpacing = Spacing.None;
             this._card.parse(json["card"]);
         }
         if (json["inputs"] != undefined) {
@@ -777,7 +772,7 @@ var ActionCard = (function (_super) {
         if (needsTopSpacer === void 0) { needsTopSpacer = false; }
         var actionCardElement = document.createElement("div");
         if (this._card != null) {
-            appendChild(actionCardElement, this._card.render());
+            appendChild(actionCardElement, this._card.internalRender());
         }
         else {
             for (var i = 0; i < this._inputs.length; i++) {
@@ -792,7 +787,7 @@ var ActionCard = (function (_super) {
         buttonsContainer.style.display = "flex";
         buttonsContainer.style.marginTop = "16px";
         for (var i = 0; i < this._actions.length; i++) {
-            var actionButton = new ActionButton(this._actions[i], this._actions.length == 1 ? ActionButtonStyle.PushProminent : ActionButtonStyle.PushSubdued);
+            var actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Push);
             actionButton.text = this._actions[i].name;
             actionButton.onClick.subscribe(function (ab, args) {
                 _this.actionClicked(ab);
@@ -810,28 +805,40 @@ var ActionCard = (function (_super) {
 var ActionButtonStyle;
 (function (ActionButtonStyle) {
     ActionButtonStyle[ActionButtonStyle["Link"] = 0] = "Link";
-    ActionButtonStyle[ActionButtonStyle["PushProminent"] = 1] = "PushProminent";
-    ActionButtonStyle[ActionButtonStyle["PushSubdued"] = 2] = "PushSubdued";
+    ActionButtonStyle[ActionButtonStyle["Push"] = 1] = "Push";
 })(ActionButtonStyle || (ActionButtonStyle = {}));
+var ActionButtonState;
+(function (ActionButtonState) {
+    ActionButtonState[ActionButtonState["Normal"] = 0] = "Normal";
+    ActionButtonState[ActionButtonState["Expanded"] = 1] = "Expanded";
+    ActionButtonState[ActionButtonState["Subdued"] = 2] = "Subdued";
+})(ActionButtonState || (ActionButtonState = {}));
 var ActionButton = (function () {
     function ActionButton(action, style) {
         var _this = this;
         this._onClick = new EventDispatcher();
         this._element = null;
-        this._state = ButtonState.Normal;
+        this._state = ActionButtonState.Normal;
         this._action = action;
         this._style = style;
-        this._baseStyleName = this._style == ActionButtonStyle.Link ? "link" : "push";
         this._element = document.createElement("div");
         this._element.onclick = function (e) { _this.click(); };
-        if (style != ActionButtonStyle.Link) {
-            this._element.onmouseenter = function (e) { _this.state = ButtonState.Selected; };
-            this._element.onmouseleave = function (e) { _this.state = ButtonState.Normal; };
-        }
-        this.state = ButtonState.Normal;
+        this.updateCssStyle();
     }
     ActionButton.prototype.click = function () {
         this._onClick.dispatch(this, null);
+    };
+    ActionButton.prototype.updateCssStyle = function () {
+        var cssStyle = this._style == ActionButtonStyle.Link ? "linkButton " : "pushButton ";
+        switch (this._state) {
+            case ActionButtonState.Expanded:
+                cssStyle += " expanded";
+                break;
+            case ActionButtonState.Subdued:
+                cssStyle += " subdued";
+                break;
+        }
+        this._element.className = cssStyle;
     };
     Object.defineProperty(ActionButton.prototype, "action", {
         get: function () {
@@ -858,39 +865,20 @@ var ActionButton = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ActionButton.prototype, "element", {
+        get: function () {
+            return this._element;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(ActionButton.prototype, "state", {
         get: function () {
             return this._state;
         },
         set: function (value) {
             this._state = value;
-            var styleName = this._baseStyleName;
-            if (this._style == ActionButtonStyle.PushProminent) {
-                styleName += " prominent";
-            }
-            else if (this._style == ActionButtonStyle.PushSubdued) {
-                styleName += " subdued";
-            }
-            switch (this._state) {
-                case ButtonState.Selected:
-                    this._element.className = "button " + styleName + " selected";
-                    break;
-                case ButtonState.Inactive:
-                    this._element.className = "button " + styleName + " inactive";
-                    break;
-                default:
-                    this._element.className = "button " + styleName + " normal";
-                    break;
-            }
-            this._element.style.flex = "0 1 auto";
-            this._element.style.whiteSpace = "nowrap";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ActionButton.prototype, "element", {
-        get: function () {
-            return this._element;
+            this.updateCssStyle();
         },
         enumerable: true,
         configurable: true
@@ -903,6 +891,7 @@ var ActionGroup = (function (_super) {
         _super.apply(this, arguments);
         this._actionButtons = [];
         this._actions = [];
+        this._expandedAction = null;
     }
     ActionGroup.prototype.hideActionCardPane = function () {
         this._actionCardContainer.innerHTML = '';
@@ -920,25 +909,27 @@ var ActionGroup = (function (_super) {
     ActionGroup.prototype.actionClicked = function (actionButton) {
         if (!actionButton.action.hasUi) {
             for (var i = 0; i < this._actionButtons.length; i++) {
-                this._actionButtons[i].state = ButtonState.Normal;
+                this._actionButtons[i].state = ActionButtonState.Normal;
             }
             this.hideActionCardPane();
             alert("Executing action " + actionButton.text);
         }
         else {
-            if (actionButton.state == ButtonState.Selected) {
+            if (actionButton.action === this._expandedAction) {
                 for (var i = 0; i < this._actionButtons.length; i++) {
-                    this._actionButtons[i].state = ButtonState.Normal;
+                    this._actionButtons[i].state = ActionButtonState.Normal;
                 }
+                this._expandedAction = null;
                 this.hideActionCardPane();
             }
             else {
                 for (var i = 0; i < this._actionButtons.length; i++) {
                     if (this._actionButtons[i] !== actionButton) {
-                        this._actionButtons[i].state = ButtonState.Inactive;
+                        this._actionButtons[i].state = ActionButtonState.Subdued;
                     }
                 }
-                actionButton.state = ButtonState.Selected;
+                actionButton.state = ActionButtonState.Expanded;
+                this._expandedAction = actionButton.action;
                 this.showActionCardPane(actionButton.action);
             }
         }
@@ -972,34 +963,34 @@ var ActionGroup = (function (_super) {
         var _this = this;
         var element = document.createElement("div");
         element.className = "actionGroup";
-        var actionContainer = document.createElement("div");
-        actionContainer.style.display = "flex";
-        actionContainer.style.overflow = "hidden";
-        appendChild(element, actionContainer);
-        this._actionCardContainer = document.createElement("div");
-        this._actionCardContainer.className = "actionCardContainer";
-        this._actionCardContainer.style.padding = "0px";
-        this._actionCardContainer.style.marginTop = "0px";
-        appendChild(element, this._actionCardContainer);
+        var buttonStrip = document.createElement("div");
+        buttonStrip.className = "buttonStrip";
         if (this._actions.length == 1 && this._actions[0] instanceof ActionCard) {
             this.showActionCardPane(this._actions[0]);
         }
         else {
             for (var i = 0; i < this._actions.length; i++) {
+                var buttonStripItem = document.createElement("div");
+                buttonStripItem.className = "buttonStripItem";
+                if (i < this._actions.length - 1) {
+                    buttonStripItem.style.marginRight = "20px";
+                }
                 var actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Link);
                 actionButton.text = this._actions[i].name;
-                actionButton.element.style.textOverflow = "ellipsis";
-                actionButton.element.style.overflow = "hidden";
-                if (i < this._actions.length - 1) {
-                    actionButton.element.style.marginRight = "20px";
-                }
                 actionButton.onClick.subscribe(function (ab, args) {
                     _this.actionClicked(ab);
                 });
                 this._actionButtons.push(actionButton);
-                appendChild(actionContainer, actionButton.element);
+                appendChild(buttonStripItem, actionButton.element);
+                appendChild(buttonStrip, buttonStripItem);
             }
         }
+        appendChild(element, buttonStrip);
+        this._actionCardContainer = document.createElement("div");
+        this._actionCardContainer.className = "actionCardContainer";
+        this._actionCardContainer.style.padding = "0px";
+        this._actionCardContainer.style.marginTop = "0px";
+        appendChild(element, this._actionCardContainer);
         return element;
     };
     return ActionGroup;

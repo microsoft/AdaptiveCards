@@ -135,12 +135,6 @@ function stringToPictureStyle(value: string, defaultValue: PictureStyle): Pictur
     }
 }
 
-enum ButtonState {
-    Normal,
-    Selected,
-    Inactive
-}
-
 interface IEvent<TSender> {
     subscribe(fn: (sender: TSender, args: any) => void): void;
     unsubscribe(fn: (sender: TSender, args: any) => void): void;
@@ -821,6 +815,7 @@ class ActionCard extends Action {
 
         if (json["card"] != undefined) {
             this._card = new Container(this.owner.container, [ "ActionGroup" ]);
+            this._card.topSpacing = Spacing.None;
             this._card.parse(json["card"]);
         }
 
@@ -873,7 +868,7 @@ class ActionCard extends Action {
         let actionCardElement = document.createElement("div");
 
         if (this._card != null) {
-            appendChild(actionCardElement, this._card.render());
+            appendChild(actionCardElement, this._card.internalRender());
         }
         else {
             for (let i = 0; i < this._inputs.length; i++) {
@@ -892,9 +887,7 @@ class ActionCard extends Action {
         buttonsContainer.style.marginTop = "16px";
 
         for (let i = 0; i < this._actions.length; i++) {
-            let actionButton = new ActionButton(
-                this._actions[i],
-                this._actions.length == 1 ? ActionButtonStyle.PushProminent : ActionButtonStyle.PushSubdued);
+            let actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Push);
             actionButton.text = this._actions[i].name;
 
             actionButton.onClick.subscribe(
@@ -917,36 +910,49 @@ class ActionCard extends Action {
 
 enum ActionButtonStyle {
     Link,
-    PushProminent,
-    PushSubdued
+    Push
+}
+
+enum ActionButtonState {
+    Normal,
+    Expanded,
+    Subdued
 }
 
 class ActionButton {
     private _action: Action;
     private _style: ActionButtonStyle;
-    private _baseStyleName: string;
     private _onClick: EventDispatcher<ActionButton> = new EventDispatcher<ActionButton>();
     private _element: HTMLElement = null;
-    private _state: ButtonState = ButtonState.Normal;
+    private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
 
     private click() {
         this._onClick.dispatch(this, null);
     }
 
+    private updateCssStyle() {
+        let cssStyle = this._style == ActionButtonStyle.Link ? "linkButton " : "pushButton ";
+
+        switch (this._state) {
+            case ActionButtonState.Expanded:
+                cssStyle += " expanded";
+                break;
+            case ActionButtonState.Subdued:
+                cssStyle += " subdued";
+                break;
+        }
+
+        this._element.className = cssStyle;
+    }
+
     constructor(action: Action, style: ActionButtonStyle) {
         this._action = action;
         this._style = style;
-        this._baseStyleName = this._style == ActionButtonStyle.Link ? "link" : "push";
         this._element = document.createElement("div");
         this._element.onclick = (e) => { this.click(); };
 
-        if (style != ActionButtonStyle.Link) {
-            this._element.onmouseenter = (e) => { this.state = ButtonState.Selected; };
-            this._element.onmouseleave = (e) => { this.state = ButtonState.Normal; };
-        }
-
-        this.state = ButtonState.Normal;
+        this.updateCssStyle();
     }
 
     get action() {
@@ -966,40 +972,18 @@ class ActionButton {
         this._element.innerText = this._text;
     }
 
-    get state(): ButtonState {
-        return this._state;
-    }
-
     get element(): HTMLElement {
         return this._element;
     }
 
-    set state(value: ButtonState) {
+    get state(): ActionButtonState {
+        return this._state;
+    }
+
+    set state(value: ActionButtonState) {
         this._state = value;
 
-        let styleName = this._baseStyleName;
-
-        if (this._style == ActionButtonStyle.PushProminent) {
-            styleName += " prominent";
-        }
-        else if (this._style == ActionButtonStyle.PushSubdued) {
-            styleName += " subdued";
-        }
-
-        switch (this._state) {
-            case ButtonState.Selected:
-                this._element.className = "button " + styleName + " selected";
-                break;
-            case ButtonState.Inactive:
-                this._element.className = "button " + styleName + " inactive";
-                break;
-            default:
-                this._element.className = "button " + styleName + " normal";
-                break;
-        }
-
-        this._element.style.flex = "0 1 auto";
-        this._element.style.whiteSpace = "nowrap";
+        this.updateCssStyle();
     }
 }
 
@@ -1007,6 +991,7 @@ class ActionGroup extends CardElement {
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
     private _actions: Array<Action> = [];
+    private _expandedAction: Action = null;
 
     private hideActionCardPane() {
         this._actionCardContainer.innerHTML = '';
@@ -1031,7 +1016,7 @@ class ActionGroup extends CardElement {
     private actionClicked(actionButton: ActionButton) {
         if (!actionButton.action.hasUi) {
             for (var i = 0; i < this._actionButtons.length; i++) {
-                this._actionButtons[i].state = ButtonState.Normal;
+                this._actionButtons[i].state = ActionButtonState.Normal;
             }
 
             this.hideActionCardPane();
@@ -1039,21 +1024,25 @@ class ActionGroup extends CardElement {
             alert("Executing action " + actionButton.text)
         }
         else {
-            if (actionButton.state == ButtonState.Selected) {
+            if (actionButton.action === this._expandedAction) {
                 for (var i = 0; i < this._actionButtons.length; i++) {
-                    this._actionButtons[i].state = ButtonState.Normal;
+                    this._actionButtons[i].state = ActionButtonState.Normal;
                 }
+
+                this._expandedAction = null;
 
                 this.hideActionCardPane();
             }
             else {
                 for (var i = 0; i < this._actionButtons.length; i++) {
                     if (this._actionButtons[i] !== actionButton) {
-                        this._actionButtons[i].state = ButtonState.Inactive;
+                        this._actionButtons[i].state = ActionButtonState.Subdued;
                     }
                 }
 
-                actionButton.state = ButtonState.Selected;
+                actionButton.state = ActionButtonState.Expanded;
+
+                this._expandedAction = actionButton.action;
 
                 this.showActionCardPane(actionButton.action);
             }
@@ -1088,32 +1077,23 @@ class ActionGroup extends CardElement {
         let element = document.createElement("div");
         element.className = "actionGroup";
 
-        let actionContainer = document.createElement("div");
-        actionContainer.style.display = "flex";
-        actionContainer.style.overflow = "hidden";
-
-        appendChild(element, actionContainer);
-
-        this._actionCardContainer = document.createElement("div");
-        this._actionCardContainer.className = "actionCardContainer";
-        this._actionCardContainer.style.padding = "0px";
-        this._actionCardContainer.style.marginTop = "0px";
-
-        appendChild(element, this._actionCardContainer);
+        let buttonStrip = document.createElement("div");
+        buttonStrip.className = "buttonStrip";
 
         if (this._actions.length == 1 && this._actions[0] instanceof ActionCard) {
             this.showActionCardPane(this._actions[0]);
         }
         else {
             for (let i = 0; i < this._actions.length; i++) {
-                let actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Link);
-                actionButton.text = this._actions[i].name;
-                actionButton.element.style.textOverflow = "ellipsis";
-                actionButton.element.style.overflow = "hidden";
+                let buttonStripItem = document.createElement("div");
+                buttonStripItem.className = "buttonStripItem";
 
                 if (i < this._actions.length - 1) {
-                    actionButton.element.style.marginRight = "20px";
+                    buttonStripItem.style.marginRight = "20px";
                 }
+
+                let actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Link);
+                actionButton.text = this._actions[i].name;
 
                 actionButton.onClick.subscribe(
                     (ab, args) => {
@@ -1122,9 +1102,19 @@ class ActionGroup extends CardElement {
                 
                 this._actionButtons.push(actionButton);
 
-                appendChild(actionContainer, actionButton.element);
+                appendChild(buttonStripItem, actionButton.element);
+                appendChild(buttonStrip, buttonStripItem);
             }
         }
+
+        appendChild(element, buttonStrip);
+
+        this._actionCardContainer = document.createElement("div");
+        this._actionCardContainer.className = "actionCardContainer";
+        this._actionCardContainer.style.padding = "0px";
+        this._actionCardContainer.style.marginTop = "0px";
+
+        appendChild(element, this._actionCardContainer);
 
         return element;
     }
