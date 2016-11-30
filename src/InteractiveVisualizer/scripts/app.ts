@@ -36,6 +36,9 @@ class LiveTileContainer extends HostContainer {
 
         card.textColor = LiveTileContainer.textColor;
 
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionGroup.buttonSpacing = 10;
+
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
 
@@ -65,6 +68,9 @@ class ToastContainer extends HostContainer {
         element.style.overflow = "hidden";
 
         card.textColor = LiveTileContainer.textColor;
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionGroup.buttonSpacing = 10;
 
         let renderedCard = card.render();
 
@@ -96,6 +102,9 @@ class ConnectorContainer extends HostContainer {
             element.style.borderLeft = "3px solid " + this._themeColor;
         }
 
+        ActionGroup.buttonStyle = ActionButtonStyle.Link;
+        ActionGroup.buttonSpacing = 20;
+
         let renderedCard = card.render();
 
         appendChild(element, renderedCard);
@@ -107,6 +116,9 @@ class ConnectorContainer extends HostContainer {
 class SkypeCardContainer extends HostContainer {
     render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionGroup.buttonSpacing = 10;
 
         let renderedCard = card.render();
 
@@ -189,6 +201,7 @@ function updateStyleSheet() {
 
     if (styleSheetLinkElement == null) {
         styleSheetLinkElement = document.createElement("link");
+        styleSheetLinkElement.id = "adaptiveCardStylesheet";
 
         let headElement = document.getElementsByTagName("head")[0];
         appendChild(headElement, styleSheetLinkElement);

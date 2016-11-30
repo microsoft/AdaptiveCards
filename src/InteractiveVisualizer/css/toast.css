@@ -143,7 +143,7 @@ tr.factGroupRowSpacer {
 }
 
 .buttonStripItem {
-    flex: 0 1 auto;
+    flex: 0 1 100%;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -156,7 +156,6 @@ tr.factGroupRowSpacer {
     text-overflow: ellipsis;
     border: none;
     padding: 4px 10px 5px 10px;
-    min-width: 80px; 
     text-align: center;
     vertical-align: middle;  
     cursor: default;

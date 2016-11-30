@@ -27,6 +27,8 @@ var LiveTileContainer = (function (_super) {
         element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
         card.textColor = LiveTileContainer.textColor;
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionGroup.buttonSpacing = 10;
         var renderedCard = card.render();
         renderedCard.style.height = "100%";
         appendChild(element, renderedCard);
@@ -49,6 +51,8 @@ var ToastContainer = (function (_super) {
         element.style.backgroundColor = ToastContainer.backgroundColor;
         element.style.overflow = "hidden";
         card.textColor = LiveTileContainer.textColor;
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionGroup.buttonSpacing = 10;
         var renderedCard = card.render();
         appendChild(element, renderedCard);
         return element;
@@ -74,6 +78,8 @@ var ConnectorContainer = (function (_super) {
         else {
             element.style.borderLeft = "3px solid " + this._themeColor;
         }
+        ActionGroup.buttonStyle = ActionButtonStyle.Link;
+        ActionGroup.buttonSpacing = 20;
         var renderedCard = card.render();
         appendChild(element, renderedCard);
         return element;
@@ -87,6 +93,8 @@ var SkypeCardContainer = (function (_super) {
     }
     SkypeCardContainer.prototype.render = function (card) {
         var element = document.createElement("div");
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionGroup.buttonSpacing = 10;
         var renderedCard = card.render();
         appendChild(element, renderedCard);
         return element;
@@ -150,6 +158,7 @@ function updateStyleSheet() {
     var styleSheetLinkElement = document.getElementById("adaptiveCardStylesheet");
     if (styleSheetLinkElement == null) {
         styleSheetLinkElement = document.createElement("link");
+        styleSheetLinkElement.id = "adaptiveCardStylesheet";
         var headElement = document.getElementsByTagName("head")[0];
         appendChild(headElement, styleSheetLinkElement);
     }
