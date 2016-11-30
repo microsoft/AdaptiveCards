@@ -136,3 +136,133 @@ tr.factGroupRowSpacer {
     padding: 16px 20px 16px 20px;
     background-color: #F8F8F8;
 }
+
+.buttonStrip {
+    display: flex;
+    overflow: hidden;
+}
+
+.buttonStripItem {
+    flex: 0 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.pushButton {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    padding: 4px 10px 5px 10px;
+    min-width: 80px; 
+    text-align: center;
+    vertical-align: middle;  
+    cursor: default;
+    background-color: #0078D7;
+    color: white;    
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+.pushButton:hover {
+    background-color: #005A9E;
+}
+
+.pushButton:active {
+    background-color: #004D84;
+}
+
+/*
+Other styles that can be specified:
+    .pushButton.expanded
+    .pushButton.expanded:hover
+    .pushButton.expanded:active
+
+    .pushButton.subdued
+    .pushButton.subdued:hover
+    .pushButton.subdued:active
+*/
+
+.linkButton {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    border: none;
+    padding: none;
+    color: #0078D7;
+    background-color: transparent;
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+.linkButton:hover {
+    color: #005A9E;
+}
+
+.linkButton:active {
+    color: #004D84;
+}
+
+.linkButton.subdued {
+    color: #666666;
+    font-weight: 500;
+}
+
+.linkButton.subdued:hover {
+    color: #005A9E;
+}
+
+.linkButton.subdued:active {
+    color: #004D84;
+}
+
+/*
+Other styles that can be specified:
+    .linkButton.expanded
+    .linkButton.expanded:hover
+    .linkButton.expanded:active
+*/
+
+textarea.textInput {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 4px 8px;
+    height: 72px;
+    resize: none;
+}
+
+input.dateInput {
+    font-family: 'Segoe UI', sans-serif;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 5px 8px;
+}
+
+input.timeInput {
+    font-family: 'Segoe UI', sans-serif;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 5px 8px;
+}
+
+select.multichoiceInput {
+    font-family: 'Segoe UI', sans-serif;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 6px 8px;
+}

@@ -59,3 +59,15 @@ div.markup #editor {
     overflow: auto;
     border: 1px solid #F1F1F1;
 }
+
+/*
+button.myButton:focus {
+    background-color: yellow;
+    height: 32px;
+}
+
+.myButton:focus:hover {
+    background-color: purple;
+    height: 32px;
+}
+*/

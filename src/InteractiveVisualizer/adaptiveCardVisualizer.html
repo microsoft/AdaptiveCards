@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <title>Adaptive Card Visualizer</title>
 
-    <link rel="stylesheet" href="./css/controls.css" type="text/css" />
     <link rel="stylesheet" href="./css/app.css" type="text/css" />
 
 	<script src="https://cdn.jsdelivr.net/markdown-it/7.0.0/markdown-it.min.js"></script>
@@ -311,6 +310,8 @@
                 <input type="file" id="filePicker" />
             </div>
 			<span>
+            	<button class="linkButton" disabled="true">Push button</button>
+            	<button class="linkButton">Push button (subtle)</button>
             	<button onclick="openFilePicker();">Load sample from file...</button>
 				<select id="hostContainerPicker" style="select multichoiceInput"/>
 			</span>

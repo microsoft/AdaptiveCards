@@ -36,6 +36,27 @@ var LiveTileContainer = (function (_super) {
     LiveTileContainer.textColor = TextColor.Light;
     return LiveTileContainer;
 }(HostContainer));
+var ToastContainer = (function (_super) {
+    __extends(ToastContainer, _super);
+    function ToastContainer(width, styleSheet) {
+        _super.call(this, styleSheet);
+        this._width = width;
+    }
+    ToastContainer.prototype.render = function (card) {
+        var element = document.createElement("div");
+        element.style.border = "#474747 1px solid";
+        element.style.width = this._width + "px";
+        element.style.backgroundColor = ToastContainer.backgroundColor;
+        element.style.overflow = "hidden";
+        card.textColor = LiveTileContainer.textColor;
+        var renderedCard = card.render();
+        appendChild(element, renderedCard);
+        return element;
+    };
+    ToastContainer.backgroundColor = "#1F1F1F";
+    ToastContainer.textColor = TextColor.Light;
+    return ToastContainer;
+}(HostContainer));
 var ConnectorContainer = (function (_super) {
     __extends(ConnectorContainer, _super);
     function ConnectorContainer(themeColor, styleSheet) {
@@ -154,6 +175,7 @@ var HostContainerOption = (function () {
 }());
 window.onload = function () {
     hostContainerOptions.push(new HostContainerOption("Connector Card", new ConnectorContainer("red", "./css/connectorCard.css")));
+    hostContainerOptions.push(new HostContainerOption("Toast", new ToastContainer(362, "./css/toast.css")));
     hostContainerOptions.push(new HostContainerOption("Large Live Tile", new LiveTileContainer(204, 204, "./css/liveTile.css")));
     hostContainerOptions.push(new HostContainerOption("Wide Live Tile", new LiveTileContainer(204, 100, "./css/liveTile.css")));
     hostContainerOptions.push(new HostContainerOption("Medium Live Tile", new LiveTileContainer(100, 100, "./css/liveTile.css")));
