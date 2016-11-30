@@ -973,9 +973,9 @@ var ActionGroup = (function (_super) {
                 var buttonStripItem = document.createElement("div");
                 buttonStripItem.className = "buttonStripItem";
                 if (i < this._actions.length - 1) {
-                    buttonStripItem.style.marginRight = "20px";
+                    buttonStripItem.style.marginRight = ActionGroup.buttonSpacing + "px";
                 }
-                var actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Link);
+                var actionButton = new ActionButton(this._actions[i], ActionGroup.buttonStyle);
                 actionButton.text = this._actions[i].name;
                 actionButton.onClick.subscribe(function (ab, args) {
                     _this.actionClicked(ab);
@@ -993,6 +993,8 @@ var ActionGroup = (function (_super) {
         appendChild(element, this._actionCardContainer);
         return element;
     };
+    ActionGroup.buttonStyle = ActionButtonStyle.Push;
+    ActionGroup.buttonSpacing = 10;
     return ActionGroup;
 }(CardElement));
 var Separator = (function (_super) {

@@ -988,6 +988,9 @@ class ActionButton {
 }
 
 class ActionGroup extends CardElement {
+    static buttonStyle: ActionButtonStyle = ActionButtonStyle.Push;
+    static buttonSpacing: number = 10;
+
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
     private _actions: Array<Action> = [];
@@ -1089,10 +1092,10 @@ class ActionGroup extends CardElement {
                 buttonStripItem.className = "buttonStripItem";
 
                 if (i < this._actions.length - 1) {
-                    buttonStripItem.style.marginRight = "20px";
+                    buttonStripItem.style.marginRight = ActionGroup.buttonSpacing + "px";
                 }
 
-                let actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Link);
+                let actionButton = new ActionButton(this._actions[i], ActionGroup.buttonStyle);
                 actionButton.text = this._actions[i].name;
 
                 actionButton.onClick.subscribe(
