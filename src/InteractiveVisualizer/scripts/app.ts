@@ -37,7 +37,6 @@ class LiveTileContainer extends HostContainer {
         card.textColor = LiveTileContainer.textColor;
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
-        ActionGroup.buttonSpacing = 10;
 
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
@@ -70,7 +69,6 @@ class ToastContainer extends HostContainer {
         card.textColor = LiveTileContainer.textColor;
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
-        ActionGroup.buttonSpacing = 10;
 
         let renderedCard = card.render();
 
@@ -103,7 +101,6 @@ class ConnectorContainer extends HostContainer {
         }
 
         ActionGroup.buttonStyle = ActionButtonStyle.Link;
-        ActionGroup.buttonSpacing = 20;
 
         let renderedCard = card.render();
 
@@ -118,7 +115,6 @@ class SkypeCardContainer extends HostContainer {
         let element = document.createElement("div");
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
-        ActionGroup.buttonSpacing = 10;
 
         let renderedCard = card.render();
 

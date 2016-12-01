@@ -30,6 +30,7 @@
 		                        },
 		                        {
 		                            "@type": "TextBlock",
+		                            "topSpacing": "none",
 		                            "horizontalAlignment": "right",
 		                            "textSize": "large",
 		                            "text": "**D0FQTK**"
@@ -42,7 +43,6 @@
 		},
 		{
 		    "padding": "narrow",
-		    "topSpacing": "none",
 			"items": [
 				{
 					"@type": "TextBlock",
@@ -57,12 +57,14 @@
 				},
 				{
 					"@type": "TextBlock",
+                    "topSpacing": "none",
 					"text": "Jeremy Goldberg",
 					"textSize": "medium",
 					"textWeight": "bolder"
 				},
 				{
 					"@type": "TextBlock",
+                    "topSpacing": "none",
 					"text": "Evan Litvak",
 					"textSize": "medium",
 					"textWeight": "bolder"
@@ -80,6 +82,7 @@
 				},
 				{
 					"@type": "TextBlock",
+                    "topSpacing": "none",
 					"text": "Fri, October 10 8:30 AM",
 					"textSize": "medium",
 					"textWeight": "bolder"
@@ -98,6 +101,7 @@
 				                },
 				                {
 				                    "@type": "TextBlock",
+                                    "topSpacing": "none",
 				                    "textSize": "extraLarge",
 				                    "textColor": "accent",
 				                    "text": "SFO"
@@ -125,6 +129,7 @@
 				                },
 				                {
 				                    "@type": "TextBlock",
+                                    "topSpacing": "none",
 				                    "horizontalAlignment": "right",
 				                    "textSize": "extraLarge",
 				                    "textColor": "accent",
@@ -135,18 +140,17 @@
 				    ]
 				},
 				{
-				    "@type": "Separator",
-				    "topSpacing": "narrow"
+				    "@type": "Separator"
 				},
 				{
 					"@type": "TextBlock",
-				    "topSpacing": "narrow",
 					"text": "Non-Stop",
 					"textSize": "medium",
 					"textWeight": "bolder"
 				},
 				{
 					"@type": "TextBlock",
+				    "topSpacing": "none",
 					"text": "Fri, October 18 9:50 PM",
 					"textSize": "medium",
 					"textWeight": "bolder"
@@ -165,6 +169,7 @@
 				                },
 				                {
 				                    "@type": "TextBlock",
+                                    "topSpacing": "none",
 				                    "textSize": "extraLarge",
 				                    "textColor": "accent",
 				                    "text": "AMS"
@@ -192,6 +197,7 @@
 				                },
 				                {
 				                    "@type": "TextBlock",
+                                    "topSpacing": "none",
 				                    "horizontalAlignment": "right",
 				                    "textSize": "extraLarge",
 				                    "textColor": "accent",

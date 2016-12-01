@@ -2,6 +2,22 @@
     box-sizing: border-box;
 }
 
+.stretch {
+    width: 100%;
+}
+
+.smallSize {
+    width: 100px;
+}
+
+.mediumSize {
+    width: 200px;
+}
+
+.largeSize {
+    width: 300px;
+}
+
 .text {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
@@ -11,31 +27,26 @@
 .text.small {
     font-size: 12px;
     margin: -4px 0px 5px 0px;
-    padding: 20px 0px 0px 0px;
 }
 
 .text.defaultSize {
-    font-size: 14px;
+    font-size: 15px;
     margin: -5px 0px 5px 0px;
-    padding: 20px 0px 0px 0px;
 }
 
 .text.medium {
     font-size: 20px;
     margin: -8px 0px 5px 0px;
-    padding: 15px 0px 0px 0px;
 }
 
 .text.large {
     font-size: 24px;
     margin: -9px 0px 5px 0px;
-    padding: 20px 0px 0px 0px;
 }
 
 .text.extraLarge {
     font-size: 30px;
     margin: -11px 0px 5px 0px;
-    padding: 30px 0px 0px 0px;
 }
 
 .text.lighter {
@@ -87,11 +98,37 @@
 }
 
 .container {
-    margin: 20px 0px 0px 0px;
+    margin: 15px 0px 0px 0px;
 }
 
 .picture {
     margin: 20px 0px 0px 0px;
+}
+
+.picture.autoSize {
+    max-width: 100%;
+}
+
+.picture.stretch {
+    width: 100%;
+}
+
+.picture.small {
+    max-width: 40px;
+}
+
+.picture.medium {
+    max-width: 80px;
+}
+
+.picture.large {
+    max-width: 160px;
+}
+
+.picture.person {
+    border-radius: 50%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
 }
 
 table.factGroup {
@@ -111,16 +148,16 @@ tr.factGroupRowSpacer {
 }
 
 .input {
-    margin: 10px 0px 0px 0px;
+    margin: 2px 0px 0px 0px;
 }
 
 .separator {
-    border-top: 1px solid #EEEEEE;
+    border-top: 1px solid #464646;
     margin: 20px 0px 0px 0px;
 }
 
 .actionGroup {
-    margin: 20px 0px 0px 0px;
+    margin: 10px 0px 0px 0px;
 }
 
 .columnGroup {
@@ -148,18 +185,22 @@ tr.factGroupRowSpacer {
     overflow: hidden;
 }
 
+.buttonStripItemSpacer {
+    margin-right: 5px;
+}
+
 .pushButton {
     font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: none;
+    border: 2px solid transparent;
     padding: 4px 10px 5px 10px;
     text-align: center;
     vertical-align: middle;  
     cursor: default;
-    background-color: #0078D7;
+    background-color: #464646;
     color: white;    
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
     -moz-user-select: none;      /* Firefox */
@@ -168,11 +209,11 @@ tr.factGroupRowSpacer {
 }
 
 .pushButton:hover {
-    background-color: #005A9E;
+    border: 2px solid #A9A9A9;
 }
 
 .pushButton:active {
-    background-color: #004D84;
+    background-color: #828282;
 }
 
 /*
@@ -234,34 +275,54 @@ Other styles that can be specified:
 textarea.textInput {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
-    border-color: #EAEAEA;
-    border-width: 1px;
-    border-style: solid;
+    border: 2px solid #797979;
     padding: 4px 8px 4px 8px;
+    background-color: #131313;
+    color: white;
     height: 72px;
     resize: none;
 }
 
+textarea.textInput:hover {
+    border: 2px solid #A5A5A5;
+    background-color: #0C0C0C;
+}
+
 input.dateInput {
     font-family: 'Segoe UI', sans-serif;
-    border-color: #EAEAEA;
-    border-width: 1px;
-    border-style: solid;
+    border: 2px solid #797979;
     padding: 4px 8px 5px 8px;
+    background-color: #131313;
+    color: white;
+}
+
+input.dateInput:hover {
+    border: 2px solid #A5A5A5;
+    background-color: #0C0C0C;
 }
 
 input.timeInput {
     font-family: 'Segoe UI', sans-serif;
-    border-color: #EAEAEA;
-    border-width: 1px;
-    border-style: solid;
+    border: 2px solid #797979;
     padding: 4px 8px 5px 8px;
+    background-color: #131313;
+    color: white;
+}
+
+input.timeInput:hover {
+    border: 2px solid #A5A5A5;
+    background-color: #0C0C0C;
 }
 
 select.multichoiceInput {
     font-family: 'Segoe UI', sans-serif;
-    border-color: #EAEAEA;
-    border-width: 1px;
-    border-style: solid;
+    border: 2px solid #797979;
     padding: 4px 8px 6px 8px;
+    background-color: #131313;
+    color: white;
+}
+
+select.multichoiceInput:hover {
+    border: 2px solid #A5A5A5;
+    background-color: #0C0C0C;
 }

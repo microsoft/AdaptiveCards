@@ -7,12 +7,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
 */
 var Size = (function () {
-    function Size(name, physicalSize, physicalPictureSize) {
+    function Size(name, physicalSize) {
         if (physicalSize === void 0) { physicalSize = undefined; }
-        if (physicalPictureSize === void 0) { physicalPictureSize = undefined; }
         this.name = name;
         this.physicalSize = physicalSize;
-        this.physicalPictureSize = physicalPictureSize;
     }
     Size.parse = function (name, defaultValue) {
         for (var key in Size) {
@@ -24,9 +22,9 @@ var Size = (function () {
     };
     Size.Auto = new Size("auto");
     Size.Stretch = new Size("stretch");
-    Size.Small = new Size("small", 100, 40);
-    Size.Medium = new Size("medium", 200, 80);
-    Size.Large = new Size("large", 300, 160);
+    Size.Small = new Size("small", 100);
+    Size.Medium = new Size("medium", 200);
+    Size.Large = new Size("large", 300);
     return Size;
 }());
 var Spacing;
@@ -208,15 +206,32 @@ var CardElement = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(CardElement.prototype, "useDefaultSizing", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
     CardElement.prototype.removeTopSpacing = function (element) {
         element.style.marginTop = "0px";
     };
     CardElement.prototype.adjustLayout = function (element) {
-        if (this.size == Size.Stretch) {
-            element.style.width = "100%";
-        }
-        else if (this.size != Size.Auto) {
-            element.style.width = this.size.physicalSize.toString() + "px";
+        if (this.useDefaultSizing) {
+            switch (this.size) {
+                case Size.Stretch:
+                    element.className += " stretch";
+                    break;
+                case Size.Small:
+                    element.className += " smallSize";
+                    break;
+                case Size.Medium:
+                    element.className += " mediumSize";
+                    break;
+                case Size.Large:
+                    element.className += " largeSize";
+                    break;
+            }
         }
         switch (this.horizontalAlignment) {
             case HorizontalAlignment.Center:
@@ -409,32 +424,47 @@ var Picture = (function (_super) {
         _super.apply(this, arguments);
         this.style = PictureStyle.Normal;
     }
+    Object.defineProperty(Picture.prototype, "useDefaultSizing", {
+        get: function () {
+            return false;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Picture.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
         this.url = json["url"];
         this.style = stringToPictureStyle(json["style"], PictureStyle.Normal);
     };
     Picture.prototype.render = function () {
-        var image = null;
+        var imageElement = null;
         if (!isNullOrEmpty(this.url)) {
-            image = document.createElement("img");
-            image.className = "picture";
-            if (this.size == Size.Auto) {
-                image.style.maxWidth = "100%";
+            imageElement = document.createElement("img");
+            var cssStyle = "picture";
+            switch (this.size) {
+                case Size.Auto:
+                    cssStyle += " autoSize";
+                    break;
+                case Size.Stretch:
+                    cssStyle += " stretch";
+                    break;
+                case Size.Small:
+                    cssStyle += " small";
+                    break;
+                case Size.Large:
+                    cssStyle += " large";
+                    break;
+                default:
+                    cssStyle += " medium";
+                    break;
             }
-            else {
-                image.style.maxWidth = this.size.physicalPictureSize.toString() + "px";
-                image.style.maxHeight = this.size.physicalPictureSize.toString() + "px";
-                if (this.style == PictureStyle.Person) {
-                    image.className = "inCircle";
-                    image.style.borderRadius = (this.size.physicalPictureSize / 2).toString() + "px";
-                    image.style.backgroundPosition = "50% 50%";
-                    image.style.backgroundRepeat = "no-repeat";
-                }
+            if (this.style == PictureStyle.Person) {
+                cssStyle += " person";
             }
-            image.src = this.url;
+            imageElement.className = cssStyle;
+            imageElement.src = this.url;
         }
-        return image;
+        return imageElement;
     };
     return Picture;
 }(CardElement));
@@ -471,7 +501,7 @@ var PictureGallery = (function (_super) {
             element = document.createElement("div");
             element.className = "pictureGallery";
             for (var i = 0; i < this._items.length; i++) {
-                var renderedPicture = this._items[i].render();
+                var renderedPicture = this._items[i].internalRender();
                 renderedPicture.style.margin = "0px";
                 renderedPicture.style.marginRight = "10px";
                 appendChild(element, renderedPicture);
@@ -972,15 +1002,15 @@ var ActionGroup = (function (_super) {
             for (var i = 0; i < this._actions.length; i++) {
                 var buttonStripItem = document.createElement("div");
                 buttonStripItem.className = "buttonStripItem";
-                if (i < this._actions.length - 1) {
-                    buttonStripItem.style.marginRight = ActionGroup.buttonSpacing + "px";
-                }
                 var actionButton = new ActionButton(this._actions[i], ActionGroup.buttonStyle);
                 actionButton.text = this._actions[i].name;
                 actionButton.onClick.subscribe(function (ab, args) {
                     _this.actionClicked(ab);
                 });
                 this._actionButtons.push(actionButton);
+                if (i < this._actions.length - 1) {
+                    buttonStripItem.className += " buttonStripItemSpacer";
+                }
                 appendChild(buttonStripItem, actionButton.element);
                 appendChild(buttonStrip, buttonStripItem);
             }
@@ -994,7 +1024,6 @@ var ActionGroup = (function (_super) {
         return element;
     };
     ActionGroup.buttonStyle = ActionButtonStyle.Push;
-    ActionGroup.buttonSpacing = 10;
     return ActionGroup;
 }(CardElement));
 var Separator = (function (_super) {
