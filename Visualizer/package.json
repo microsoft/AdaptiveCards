@@ -1,9 +1,10 @@
 {
-  "name": "adaptive-card-toolkit",
+  "name": "adaptive-card-visualizer",
   "version": "1.0.0",
-  "description": "Adaptive Card Toolkit",
+  "description": "Adaptive Card Toolkit Visualizer",
   "main": "js/app.js",
   "dependencies": {
+    "ajv-cli": "1.1.1",
     "gulp-sass": "^2.3.2",
     "gulp-typescript": "^3.1.3",
     "merge2": "^1.0.2",
@@ -30,5 +31,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }

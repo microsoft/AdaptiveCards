@@ -3,8 +3,7 @@ function parsePicture(container, json, defaultSize, defaultStyle) {
     if (defaultStyle === void 0) { defaultStyle = PictureStyle.Normal; }
     var picture = new Picture(container);
     picture.url = json["image"];
-    // picture.size = Size.parse(json["size"], defaultSize);
-    picture.size = stringToSize(json["size"], defaultSize);
+    picture.size = Size.parse(json["size"], defaultSize);
     return picture;
 }
 function parsePictureGallery(container, json) {
@@ -51,7 +50,6 @@ function parseSection(container, json) {
     if (json["activityTitle"] != undefined || json["activitySubtitle"] != undefined ||
         json["activityText"] != undefined || json["activityImage"] != undefined) {
         var columnGroup = new ColumnGroup(container);
-        // Image column
         if (json["activityImage"] != null) {
             var column_1 = columnGroup.addColumn();
             column_1.size = Size.Auto;
@@ -61,7 +59,6 @@ function parseSection(container, json) {
             picture.url = json["activityImage"];
             column_1.addElement(picture);
         }
-        // Text column
         var column = columnGroup.addColumn();
         column.size = Size.Stretch;
         if (json["activityTitle"] != null) {
@@ -160,4 +157,5 @@ var MessageCard = (function () {
     };
     return MessageCard;
 }());
+
 //# sourceMappingURL=messageCard.js.map
