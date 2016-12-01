@@ -3,9 +3,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-/*
-Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
-*/
 var Size;
 (function (Size) {
     Size[Size["Auto"] = 0] = "Auto";
@@ -14,33 +11,6 @@ var Size;
     Size[Size["Medium"] = 3] = "Medium";
     Size[Size["Large"] = 4] = "Large";
 })(Size || (Size = {}));
-/*
-class Size {
-    static Auto = new Size("auto");
-    static Stretch = new Size("stretch");
-    static Small = new Size("small", 100);
-    static Medium = new Size("medium", 200);
-    static Large = new Size("large", 300);
-
-    protected constructor(name: string, physicalSize: number = undefined) {
-        this.name = name;
-        this.physicalSize = physicalSize;
-    }
-
-    static parse(name: string, defaultValue: Size): Size {
-        for (let key in Size) {
-            if (!isNullOrEmpty(Size[key].name) && Size[key].name == name) {
-                return Size[key];
-            }
-        }
-
-        return defaultValue;
-    }
-
-    readonly name: string;
-    physicalSize: number;
-}
-*/
 var Spacing;
 (function (Spacing) {
     Spacing[Spacing["None"] = 0] = "None";
@@ -286,7 +256,6 @@ var CardElement = (function () {
         return renderedElement;
     };
     CardElement.prototype.parse = function (json) {
-        // this.size = Size.parse(json["size"], this.size);
         this.size = stringToSize(json["size"], this.size);
         this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
         if (json["topSpacing"] === "none") {
@@ -515,7 +484,6 @@ var PictureGallery = (function (_super) {
     });
     PictureGallery.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        // this.pictureSize = Size.parse(json["imageSize"], Size.Medium);
         this.pictureSize = stringToSize(json["imageSize"], Size.Medium);
         if (json["items"] != null) {
             var pictureArray = json["items"];
@@ -1065,7 +1033,6 @@ var Separator = (function (_super) {
     }
     Separator.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        // Nothing else to parse
     };
     Separator.prototype.render = function () {
         var element = document.createElement("div");
@@ -1228,7 +1195,6 @@ var Column = (function (_super) {
     }
     Column.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
-        // this.size = Size.parse(json["size"], undefined);
         this.size = stringToSize(json["size"], undefined);
         if (this.size === undefined) {
             this._useWeight = true;

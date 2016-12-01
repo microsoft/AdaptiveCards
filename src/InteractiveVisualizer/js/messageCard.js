@@ -3,7 +3,8 @@ function parsePicture(container, json, defaultSize, defaultStyle) {
     if (defaultStyle === void 0) { defaultStyle = PictureStyle.Normal; }
     var picture = new Picture(container);
     picture.url = json["image"];
-    picture.size = Size.parse(json["size"], defaultSize);
+    // picture.size = Size.parse(json["size"], defaultSize);
+    picture.size = stringToSize(json["size"], defaultSize);
     return picture;
 }
 function parsePictureGallery(container, json) {
