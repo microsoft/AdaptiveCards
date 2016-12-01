@@ -28,7 +28,6 @@ var LiveTileContainer = (function (_super) {
         element.style.overflow = "hidden";
         card.textColor = LiveTileContainer.textColor;
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
-        ActionGroup.buttonSpacing = 10;
         var renderedCard = card.render();
         renderedCard.style.height = "100%";
         appendChild(element, renderedCard);
@@ -52,7 +51,6 @@ var ToastContainer = (function (_super) {
         element.style.overflow = "hidden";
         card.textColor = LiveTileContainer.textColor;
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
-        ActionGroup.buttonSpacing = 10;
         var renderedCard = card.render();
         appendChild(element, renderedCard);
         return element;
@@ -79,7 +77,6 @@ var ConnectorContainer = (function (_super) {
             element.style.borderLeft = "3px solid " + this._themeColor;
         }
         ActionGroup.buttonStyle = ActionButtonStyle.Link;
-        ActionGroup.buttonSpacing = 20;
         var renderedCard = card.render();
         appendChild(element, renderedCard);
         return element;
@@ -94,7 +91,6 @@ var SkypeCardContainer = (function (_super) {
     SkypeCardContainer.prototype.render = function (card) {
         var element = document.createElement("div");
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
-        ActionGroup.buttonSpacing = 10;
         var renderedCard = card.render();
         appendChild(element, renderedCard);
         return element;

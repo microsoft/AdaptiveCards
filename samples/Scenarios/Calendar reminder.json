@@ -1,0 +1,79 @@
+
+{
+	"@type": "AdaptiveCard",
+	"sections": [
+		{
+			"items": [
+				{
+					"@type": "ColumnGroup",
+					"items": [
+						{
+							"size": "auto",
+							"items": [
+                				{
+                					"@type": "Picture",
+                					"url": "./assets/calendaricon.png",
+                					"size": "auto"
+                				}
+							]
+						},
+						{
+							"size": "stretch",
+							"items": [
+							    {
+							        "@type": "TextBlock",
+							        "text": "Adaptive Card design session"
+							    },
+							    {
+							        "@type": "TextBlock",
+							        "text": "Conf Room 112/3377 (10)",
+							        "isSubtle": true
+							    },
+							    {
+							        "@type": "TextBlock",
+							        "text": "12:30 PM - 1:30 PM",
+							        "isSubtle": true
+							    }
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+		    "items": [
+			    {
+			        "@type": "TextBlock",
+			        "text": "Snooze for"
+			    },
+			    {
+			        "@type": "MultichoiceInput",
+			        "size": "stretch",
+			        "choices": [
+			            { "display": "5 minutes" },
+			            { "display": "15 minutes" },
+			            { "display": "30 minutes" }
+			        ]
+			    },
+			    {
+			        "@type": "ActionGroup",
+			        "items": [
+			            {
+			                "@type": "HttpPOST",
+			                "name": "Snooze"
+			            },
+			            {
+			                "@type": "HttpPOST",
+			                "name": "I'll be late"
+			            },
+			            {
+			                "@type": "HttpPOST",
+			                "name": "Dismiss"
+			            }
+			        ]
+			    }
+		    ]
+		}
+	]
+}
+                

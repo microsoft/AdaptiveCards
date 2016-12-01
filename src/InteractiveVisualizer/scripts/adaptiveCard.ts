@@ -4,14 +4,13 @@ Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-even
 class Size {
     static Auto = new Size("auto");
     static Stretch = new Size("stretch");
-    static Small = new Size("small", 100, 40);
-    static Medium = new Size("medium", 200, 80);
-    static Large = new Size("large", 300, 160);
+    static Small = new Size("small", 100);
+    static Medium = new Size("medium", 200);
+    static Large = new Size("large", 300);
 
-    protected constructor(name: string, physicalSize: number = undefined, physicalPictureSize: number = undefined) {
+    protected constructor(name: string, physicalSize: number = undefined) {
         this.name = name;
         this.physicalSize = physicalSize;
-        this.physicalPictureSize = physicalPictureSize;
     }
 
     static parse(name: string, defaultValue: Size): Size {
@@ -26,7 +25,6 @@ class Size {
 
     readonly name: string;
     physicalSize: number;
-    physicalPictureSize: number;
 }
 
 enum Spacing {
@@ -219,6 +217,10 @@ abstract class CardElement {
         return true;
     }
 
+    get useDefaultSizing(): boolean {
+        return true;
+    }
+
     abstract render(): HTMLElement;
 
     removeTopSpacing(element: HTMLElement) {
@@ -226,11 +228,21 @@ abstract class CardElement {
     }
 
     adjustLayout(element: HTMLElement) {
-        if (this.size == Size.Stretch) {
-            element.style.width = "100%";
-        }
-        else if (this.size != Size.Auto) {
-            element.style.width = this.size.physicalSize.toString() + "px";
+        if (this.useDefaultSizing) {
+            switch (this.size) {
+                case Size.Stretch:
+                    element.className += " stretch";
+                    break;
+                case Size.Small:
+                    element.className += " smallSize";
+                    break;
+                case Size.Medium:
+                    element.className += " mediumSize";
+                    break;
+                case Size.Large:
+                    element.className += " largeSize";
+                    break;
+            }
         }
 
         switch (this.horizontalAlignment) {
@@ -453,6 +465,10 @@ class Picture extends CardElement {
     style: PictureStyle = PictureStyle.Normal;
     url: string;
 
+    get useDefaultSizing() {
+        return false;
+    }
+
     parse(json: any) {
         super.parse(json);
         
@@ -461,31 +477,41 @@ class Picture extends CardElement {
     }
 
     render(): HTMLElement {
-        let image: HTMLImageElement = null;
+        let imageElement: HTMLImageElement = null;
 
         if (!isNullOrEmpty(this.url)) {
-            image = document.createElement("img");
-            image.className = "picture";
+            imageElement = document.createElement("img");
+            
+            let cssStyle = "picture";
 
-            if (this.size == Size.Auto) {
-                image.style.maxWidth = "100%";
+            switch (this.size) {
+                case Size.Auto:
+                    cssStyle += " autoSize";
+                    break;
+                case Size.Stretch:
+                    cssStyle += " stretch";
+                    break;
+                case Size.Small:
+                    cssStyle += " small";
+                    break;
+                case Size.Large:
+                    cssStyle += " large";
+                    break;
+                default:
+                    cssStyle += " medium";
+                    break;
             }
-            else {
-                image.style.maxWidth = this.size.physicalPictureSize.toString() + "px"; 
-                image.style.maxHeight = this.size.physicalPictureSize.toString() + "px";
 
-                if (this.style == PictureStyle.Person) {
-                    image.className = "inCircle";
-                    image.style.borderRadius = (this.size.physicalPictureSize / 2).toString() + "px";
-                    image.style.backgroundPosition = "50% 50%";
-                    image.style.backgroundRepeat = "no-repeat";
-                }
+            if (this.style == PictureStyle.Person) {
+                cssStyle += " person";
             }
 
-            image.src = this.url;
+            imageElement.className = cssStyle;
+
+            imageElement.src = this.url;
         }
 
-        return image;
+        return imageElement;
     }
 }
 
@@ -525,7 +551,7 @@ class PictureGallery extends CardElement {
             element.className = "pictureGallery";
 
             for (var i = 0; i < this._items.length; i++) {
-                let renderedPicture =  this._items[i].render();
+                let renderedPicture =  this._items[i].internalRender();
                 renderedPicture.style.margin = "0px";
                 renderedPicture.style.marginRight = "10px";
 
@@ -989,7 +1015,6 @@ class ActionButton {
 
 class ActionGroup extends CardElement {
     static buttonStyle: ActionButtonStyle = ActionButtonStyle.Push;
-    static buttonSpacing: number = 10;
 
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
@@ -1091,10 +1116,6 @@ class ActionGroup extends CardElement {
                 let buttonStripItem = document.createElement("div");
                 buttonStripItem.className = "buttonStripItem";
 
-                if (i < this._actions.length - 1) {
-                    buttonStripItem.style.marginRight = ActionGroup.buttonSpacing + "px";
-                }
-
                 let actionButton = new ActionButton(this._actions[i], ActionGroup.buttonStyle);
                 actionButton.text = this._actions[i].name;
 
@@ -1104,6 +1125,10 @@ class ActionGroup extends CardElement {
                     });
                 
                 this._actionButtons.push(actionButton);
+
+                if (i < this._actions.length - 1) {
+                    buttonStripItem.className += " buttonStripItemSpacer";
+                }
 
                 appendChild(buttonStripItem, actionButton.element);
                 appendChild(buttonStrip, buttonStripItem);

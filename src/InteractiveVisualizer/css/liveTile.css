@@ -2,6 +2,22 @@
     box-sizing: border-box;
 }
 
+.stretch {
+    width: 100%;
+}
+
+.smallSize {
+    width: 100px;
+}
+
+.mediumSize {
+    width: 200px;
+}
+
+.largeSize {
+    width: 300px;
+}
+
 .text {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
@@ -90,6 +106,36 @@
     margin: 20px 0px 0px 0px;
 }
 
+.picture {
+    margin: 20px 0px 0px 0px;
+}
+
+.picture.autoSize {
+    max-width: 100%;
+}
+
+.picture.stretch {
+    width: 100%;
+}
+
+.picture.small {
+    max-width: 40px;
+}
+
+.picture.medium {
+    max-width: 80px;
+}
+
+.picture.large {
+    max-width: 160px;
+}
+
+.picture.person {
+    border-radius: 50%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
 table.factGroup {
     margin: 20px 0px 0px 0px;
     border-width: 0px;
@@ -100,10 +146,6 @@ table.factGroup {
 
 tr.factGroupRowSpacer {
     height: 10px;
-}
-
-.picture {
-    margin: 0px 0px 5px 0px;
 }
 
 .pictureGallery {
@@ -146,6 +188,10 @@ tr.factGroupRowSpacer {
     flex: 0 1 auto;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.buttonStripItemSpacer {
+    margin-right: 10px;
 }
 
 .pushButton {
