@@ -9,7 +9,7 @@ var gulp        = require("gulp"),
     exec        = require("child_process").exec,
     browserSync = require('browser-sync').create();
 
-var interactiveVisualizerPath = "src/InteractiveVisualizer/";
+var interactiveVisualizerPath = "Visualizer/";
 var schemaPath = "schemas/adaptive-card.json";
 var samplesPath = "samples/**/**.json"
 
@@ -32,18 +32,18 @@ var tsProject = tsc.createProject("tsconfig.json");
 gulp.task("build-visualizer", function() {
     return gulp.src(
         [
-            interactiveVisualizerPath + "scripts/**/**.ts"
+            interactiveVisualizerPath + "src/**.ts"
         ])
         .pipe(sourcemaps.init())
         .pipe(tsProject())
         .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest(interactiveVisualizerPath + "js/"));
+        .pipe(gulp.dest(interactiveVisualizerPath + "dist/"));
 });
 
 gulp.task("bundle-visualizer", function() {
 
-    var libraryName = "interactiveVisualizer";
-    var mainTsFilePath = interactiveVisualizerPath + "js/app.js";
+    var libraryName = "Visualizer";
+    var mainTsFilePath = interactiveVisualizerPath + "dist/app.js";
     var outputFolder   = "dist/";
     var outputFileName = libraryName + ".min.js";
 

@@ -104,12 +104,6 @@ function renderCard() {
         var node = document.getElementById('content');
         node.innerHTML = '';
         switch (cardTypeName) {
-            case "SwiftCard":
-            case "MessageCard":
-                var swiftCard = new MessageCard();
-                swiftCard.parse(json);
-                node.appendChild(swiftCard.render());
-                break;
             case "AdaptiveCard":
                 var adaptiveCard = new AdaptiveCard();
                 adaptiveCard.parse(json);
@@ -200,4 +194,5 @@ window.onload = function () {
     updateStyleSheet();
     renderCard();
 };
+
 //# sourceMappingURL=app.js.map

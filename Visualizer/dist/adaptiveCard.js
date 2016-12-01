@@ -1287,4 +1287,5 @@ var AdaptiveCard = (function () {
     };
     return AdaptiveCard;
 }());
+
 //# sourceMappingURL=adaptiveCard.js.map
