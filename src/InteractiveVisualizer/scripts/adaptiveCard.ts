@@ -1,30 +1,12 @@
 ﻿/*
 Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
 */
-class Size {
-    static Auto = new Size("auto");
-    static Stretch = new Size("stretch");
-    static Small = new Size("small", 100);
-    static Medium = new Size("medium", 200);
-    static Large = new Size("large", 300);
-
-    protected constructor(name: string, physicalSize: number = undefined) {
-        this.name = name;
-        this.physicalSize = physicalSize;
-    }
-
-    static parse(name: string, defaultValue: Size): Size {
-        for (let key in Size) {
-            if (!isNullOrEmpty(Size[key].name) && Size[key].name == name) {
-                return Size[key];
-            }
-        }
-
-        return defaultValue;
-    }
-
-    readonly name: string;
-    physicalSize: number;
+enum Size {
+    Auto,
+    Stretch,
+    Small,
+    Medium,
+    Large
 }
 
 enum Spacing {
@@ -62,6 +44,23 @@ enum HorizontalAlignment {
 enum PictureStyle {
     Normal,
     Person
+}
+
+function stringToSize(value: string, defaultValue: Size): Size {
+    switch (value) {
+        case "auto":
+            return Size.Auto;
+        case "stretch":
+            return Size.Stretch;
+        case "small":
+            return Size.Small;
+        case "medium":
+            return Size.Medium;
+        case "large":
+            return Size.Large;
+        default:
+            return defaultValue;
+    }
 }
 
 function stringToTextSize(value: string, defaultValue: TextSize): TextSize {
@@ -274,7 +273,7 @@ abstract class CardElement {
     }
 
     parse(json: any) {
-        this.size = Size.parse(json["size"], this.size);
+        this.size = stringToSize(json["size"], this.size);
         this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
         
         if (json["topSpacing"] === "none") {
@@ -527,7 +526,7 @@ class PictureGallery extends CardElement {
     parse(json: any) {
         super.parse(json);
         
-        this.pictureSize = Size.parse(json["imageSize"], Size.Medium);
+        this.pictureSize = stringToSize(json["imageSize"], Size.Medium);
 
         if (json["items"] != null) {
             let pictureArray = json["items"] as Array<any>;
@@ -1341,7 +1340,7 @@ class Column extends Container {
     parse(json: any) {
         super.parse(json);
 
-        this.size = Size.parse(json["size"], undefined);
+        this.size = stringToSize(json["size"], undefined);
 
         if (this.size === undefined) {
             this._useWeight = true;
@@ -1355,14 +1354,11 @@ class Column extends Container {
         }
         else {
             switch (this.size) {
-                case Size.Auto:
-                    element.style.flex = "0 0 auto";
-                    break;
                 case Size.Stretch:
                     element.style.flex = "1 1 auto";
                     break;
-                default:
-                    element.style.flex = "0 0 " + this.size.physicalSize + "px";
+                default: // Default to Auto
+                    element.style.flex = "0 0 auto";
                     break;
             }
         }

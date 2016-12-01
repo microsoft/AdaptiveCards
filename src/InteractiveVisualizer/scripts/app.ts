@@ -133,14 +133,6 @@ function renderCard() {
         node.innerHTML = '';
 
         switch (cardTypeName) {
-            case "SwiftCard":
-            case "MessageCard":
-                let swiftCard = new MessageCard();
-                swiftCard.parse(json);
-
-                node.appendChild(swiftCard.render());
-                
-                break;
             case "AdaptiveCard":
                 let adaptiveCard = new AdaptiveCard();
                 adaptiveCard.parse(json);
