@@ -1,12 +1,21 @@
 {
     "compilerOptions": {
         "target": "es5",
-        "module": "commonjs",
-        "outDir": "js",
-        "watch": true,
         "sourceMap": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
         "noImplicitAny": false,
-        "strictNullChecks": false
+        "removeComments": false,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "rootDir": "src",
+        "outDir": "dist"
     },
     "compileOnSave": true
 }
