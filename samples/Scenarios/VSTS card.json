@@ -1,0 +1,63 @@
+
+{
+	"@type": "AdaptiveCard",
+	"sections": [
+		{
+			"items": [
+				{
+					"@type": "ColumnGroup",
+					"items": [
+						{
+							"size": "auto",
+							"items": [
+                				{
+                					"@type": "Picture",
+                					"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+                					"size": "medium"
+                				}
+							]
+						},
+						{
+							"size": "stretch",
+							"items": [
+							    {
+							        "@type": "TextBlock",
+							        "text": "Title of connector card",
+							        "textSize": "medium"
+							    },
+							    {
+							        "@type": "TextBlock",
+							        "text": "Bug XXXXXX: This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. ",
+							        "wrap": true
+							    }
+							]
+						}
+					]
+				},
+				{
+				    "@type": "FactGroup",
+				    "items": [
+				        { "name": "Work item type:", "value": "Bug" },
+				        { "name": "State:", "value": "Closed" },
+				        { "name": "Area Path:", "value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines" },
+				        { "name": "Iteration Path:", "value": "t365\\Tabs\\Extensibility\\longer to show" },
+				        { "name": "Priority:", "value": "1" }
+				    ]
+				},
+				{
+				    "@type": "ActionGroup",
+				    "items": [
+				        {
+				            "@type": "HttpPOST",
+				            "name": "View more work items"
+				        },
+				        {
+				            "@type": "HttpPOST",
+				            "name": "View more work items"
+				        }
+				    ]
+				}
+			]
+		}
+	]
+}

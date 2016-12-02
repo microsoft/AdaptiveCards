@@ -437,7 +437,11 @@ class FactGroup extends CardElement {
                 textBlock.textWeight = TextWeight.Bolder;
                 textBlock.topSpacing = Spacing.None;
 
-                html += textBlock.internalRender().outerHTML;
+                let renderedText = textBlock.internalRender();
+
+                if (renderedText != null) {
+                    html += renderedText.outerHTML; 
+                }
 
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding: 0px 0px 0px 10px">';
@@ -447,7 +451,11 @@ class FactGroup extends CardElement {
                 textBlock.textWeight = TextWeight.Lighter;
                 textBlock.topSpacing = Spacing.None;
                 
-                html += textBlock.internalRender().outerHTML;
+                renderedText = textBlock.internalRender();
+
+                if (renderedText != null) {
+                    html += renderedText.outerHTML; 
+                }
 
                 html += '    </td>';
                 html += '</tr>';
