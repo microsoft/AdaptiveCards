@@ -3,6 +3,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/*
+Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
+*/
 var Size;
 (function (Size) {
     Size[Size["Auto"] = 0] = "Auto";
@@ -401,14 +404,20 @@ var FactGroup = (function (_super) {
                 textBlock.text = this._items[i].name;
                 textBlock.textWeight = TextWeight.Bolder;
                 textBlock.topSpacing = Spacing.None;
-                html += textBlock.internalRender().outerHTML;
+                var renderedText = textBlock.internalRender();
+                if (renderedText != null) {
+                    html += renderedText.outerHTML;
+                }
                 html += '    </td>';
                 html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding: 0px 0px 0px 10px">';
                 textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].value;
                 textBlock.textWeight = TextWeight.Lighter;
                 textBlock.topSpacing = Spacing.None;
-                html += textBlock.internalRender().outerHTML;
+                renderedText = textBlock.internalRender();
+                if (renderedText != null) {
+                    html += renderedText.outerHTML;
+                }
                 html += '    </td>';
                 html += '</tr>';
             }
@@ -1033,6 +1042,7 @@ var Separator = (function (_super) {
     }
     Separator.prototype.parse = function (json) {
         _super.prototype.parse.call(this, json);
+        // Nothing else to parse
     };
     Separator.prototype.render = function () {
         var element = document.createElement("div");
@@ -1287,5 +1297,4 @@ var AdaptiveCard = (function () {
     };
     return AdaptiveCard;
 }());
-
 //# sourceMappingURL=adaptiveCard.js.map

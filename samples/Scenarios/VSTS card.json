@@ -12,7 +12,7 @@
 							"items": [
                 				{
                 					"@type": "Picture",
-                					"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+                					"url": "./assets/closed bug 92x92.png",
                 					"size": "medium"
                 				}
 							]
@@ -23,6 +23,7 @@
 							    {
 							        "@type": "TextBlock",
 							        "text": "Title of connector card",
+							        "textWeight": "bolder",
 							        "textSize": "medium"
 							    },
 							    {
