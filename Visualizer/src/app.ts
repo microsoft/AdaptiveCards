@@ -78,7 +78,7 @@ class ToastContainer extends HostContainer {
     }
 }
 
-class ConnectorContainer extends HostContainer {
+class OutlookConnectorContainer extends HostContainer {
     private _themeColor: string;
 
     constructor(themeColor: string, styleSheet: string) {
@@ -99,6 +99,24 @@ class ConnectorContainer extends HostContainer {
         else {
             element.style.borderLeft = "3px solid " + this._themeColor;
         }
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Link;
+
+        let renderedCard = card.render();
+
+        appendChild(element, renderedCard);
+
+        return element;
+    }
+}
+
+class TeamsConnectorContainer extends HostContainer {
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.style.borderTop = "1px solid #F1F1F1";
+        element.style.borderRight = "1px solid #F1F1F1";
+        element.style.borderBottom = "1px solid #F1F1F1";
+        element.style.border = "1px solid #F1F1F1"
 
         ActionGroup.buttonStyle = ActionButtonStyle.Link;
 
@@ -227,8 +245,12 @@ class HostContainerOption {
 window.onload = () => {
     hostContainerOptions.push(
         new HostContainerOption(
-            "Connector Card",
-            new ConnectorContainer("red", "./css/connectorCard.css")));
+            "Outlook Connector Card",
+            new OutlookConnectorContainer("red", "./css/outlookConnectorCard.css")));
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Teams Connector Card",
+            new TeamsConnectorContainer("./css/teamsConnectorCard.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Toast",

@@ -59,13 +59,13 @@ var ToastContainer = (function (_super) {
     ToastContainer.textColor = TextColor.Light;
     return ToastContainer;
 }(HostContainer));
-var ConnectorContainer = (function (_super) {
-    __extends(ConnectorContainer, _super);
-    function ConnectorContainer(themeColor, styleSheet) {
+var OutlookConnectorContainer = (function (_super) {
+    __extends(OutlookConnectorContainer, _super);
+    function OutlookConnectorContainer(themeColor, styleSheet) {
         _super.call(this, styleSheet);
         this._themeColor = themeColor;
     }
-    ConnectorContainer.prototype.render = function (card) {
+    OutlookConnectorContainer.prototype.render = function (card) {
         var element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
@@ -81,7 +81,25 @@ var ConnectorContainer = (function (_super) {
         appendChild(element, renderedCard);
         return element;
     };
-    return ConnectorContainer;
+    return OutlookConnectorContainer;
+}(HostContainer));
+var TeamsConnectorContainer = (function (_super) {
+    __extends(TeamsConnectorContainer, _super);
+    function TeamsConnectorContainer() {
+        _super.apply(this, arguments);
+    }
+    TeamsConnectorContainer.prototype.render = function (card) {
+        var element = document.createElement("div");
+        element.style.borderTop = "1px solid #F1F1F1";
+        element.style.borderRight = "1px solid #F1F1F1";
+        element.style.borderBottom = "1px solid #F1F1F1";
+        element.style.border = "1px solid #F1F1F1";
+        ActionGroup.buttonStyle = ActionButtonStyle.Link;
+        var renderedCard = card.render();
+        appendChild(element, renderedCard);
+        return element;
+    };
+    return TeamsConnectorContainer;
 }(HostContainer));
 var SkypeCardContainer = (function (_super) {
     __extends(SkypeCardContainer, _super);
@@ -173,7 +191,8 @@ var HostContainerOption = (function () {
     return HostContainerOption;
 }());
 window.onload = function () {
-    hostContainerOptions.push(new HostContainerOption("Connector Card", new ConnectorContainer("red", "./css/connectorCard.css")));
+    hostContainerOptions.push(new HostContainerOption("Outlook Connector Card", new OutlookConnectorContainer("red", "./css/outlookConnectorCard.css")));
+    hostContainerOptions.push(new HostContainerOption("Teams Connector Card", new TeamsConnectorContainer("./css/teamsConnectorCard.css")));
     hostContainerOptions.push(new HostContainerOption("Toast", new ToastContainer(362, "./css/toast.css")));
     hostContainerOptions.push(new HostContainerOption("Large Live Tile", new LiveTileContainer(204, 204, "./css/liveTile.css")));
     hostContainerOptions.push(new HostContainerOption("Wide Live Tile", new LiveTileContainer(204, 100, "./css/liveTile.css")));
@@ -194,5 +213,4 @@ window.onload = function () {
     updateStyleSheet();
     renderCard();
 };
-
 //# sourceMappingURL=app.js.map
