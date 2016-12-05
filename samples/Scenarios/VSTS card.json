@@ -4,6 +4,12 @@
 	"sections": [
 		{
 			"items": [
+			    {
+			        "@type": "TextBlock",
+			        "text": "Title of connector card",
+			        "textWeight": "bolder",
+			        "textSize": "medium"
+			    },
 				{
 					"@type": "ColumnGroup",
 					"items": [
@@ -20,12 +26,6 @@
 						{
 							"size": "stretch",
 							"items": [
-							    {
-							        "@type": "TextBlock",
-							        "text": "Title of connector card",
-							        "textWeight": "bolder",
-							        "textSize": "medium"
-							    },
 							    {
 							        "@type": "TextBlock",
 							        "text": "Bug XXXXXX: This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. ",

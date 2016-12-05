@@ -359,22 +359,28 @@ class TextBlock extends CardElement {
             }
 
             element.innerHTML = processMarkdown(this.text);
+            element.className = cssStyle;
 
-            let firstChild = <HTMLElement>element.firstChild;
-            firstChild.className = cssStyle;
+            if (element.firstElementChild instanceof(HTMLElement)) { 
+                (<HTMLElement>element.firstElementChild).style.marginTop = "0px";
+            }
 
-            var anchors = firstChild.getElementsByTagName("a");
+            if (element.lastElementChild instanceof(HTMLElement)) { 
+                (<HTMLElement>element.lastElementChild).style.marginBottom = "0px";
+            }
+
+            var anchors = element.getElementsByTagName("a");
 
             for (var i = 0; i < anchors.length; i++) { 
                 anchors[i].target = "_blank";
             }
 
             if (!this.wrap) {
-                firstChild.style.whiteSpace = "nowrap";
-                firstChild.style.textOverflow = "ellipsis";
+                element.style.whiteSpace = "nowrap";
+                element.style.textOverflow = "ellipsis";
             }
 
-            return firstChild;
+            return element;
         }
         else {
             return null;

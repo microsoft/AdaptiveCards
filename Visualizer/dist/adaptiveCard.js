@@ -1,11 +1,11 @@
+/*
+Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
+*/
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-/*
-Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
-*/
 var Size;
 (function (Size) {
     Size[Size["Auto"] = 0] = "Auto";
@@ -337,17 +337,22 @@ var TextBlock = (function (_super) {
                     break;
             }
             element.innerHTML = processMarkdown(this.text);
-            var firstChild = element.firstChild;
-            firstChild.className = cssStyle;
-            var anchors = firstChild.getElementsByTagName("a");
+            element.className = cssStyle;
+            if (element.firstElementChild instanceof (HTMLElement)) {
+                element.firstElementChild.style.marginTop = "0px";
+            }
+            if (element.lastElementChild instanceof (HTMLElement)) {
+                element.lastElementChild.style.marginBottom = "0px";
+            }
+            var anchors = element.getElementsByTagName("a");
             for (var i = 0; i < anchors.length; i++) {
                 anchors[i].target = "_blank";
             }
             if (!this.wrap) {
-                firstChild.style.whiteSpace = "nowrap";
-                firstChild.style.textOverflow = "ellipsis";
+                element.style.whiteSpace = "nowrap";
+                element.style.textOverflow = "ellipsis";
             }
-            return firstChild;
+            return element;
         }
         else {
             return null;
