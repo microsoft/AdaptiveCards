@@ -131,11 +131,26 @@ class TeamsConnectorContainer extends HostContainer {
 class SkypeCardContainer extends HostContainer {
     render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
+        element.className = "skypeContainer";
+
+        // Draw the hexagon bot logo
+        let botElement = document.createElement("div");
+        botElement.className = "hexagon";
+
+        var botElementIn1 = document.createElement("div");
+        botElementIn1.className = "hexagon-in1";
+        botElement.appendChild(botElementIn1);
+
+        var botElementIn2 = document.createElement("div");
+        botElementIn2.className = "hexagon-in2";
+        botElementIn1.appendChild(botElementIn2);
+
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
 
         let renderedCard = card.render();
 
+        appendChild(element, botElement);
         appendChild(element, renderedCard);
 
         return element;

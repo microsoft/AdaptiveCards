@@ -108,8 +108,19 @@ var SkypeCardContainer = (function (_super) {
     }
     SkypeCardContainer.prototype.render = function (card) {
         var element = document.createElement("div");
+        element.className = "skypeContainer";
+        // Draw the hexagon bot logo
+        var botElement = document.createElement("div");
+        botElement.className = "hexagon";
+        var botElementIn1 = document.createElement("div");
+        botElementIn1.className = "hexagon-in1";
+        botElement.appendChild(botElementIn1);
+        var botElementIn2 = document.createElement("div");
+        botElementIn2.className = "hexagon-in2";
+        botElementIn1.appendChild(botElementIn2);
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
         var renderedCard = card.render();
+        appendChild(element, botElement);
         appendChild(element, renderedCard);
         return element;
     };
