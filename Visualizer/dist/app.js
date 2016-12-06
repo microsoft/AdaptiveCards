@@ -180,6 +180,18 @@ function hostContainerPickerChanged(evt) {
     updateStyleSheet();
     renderCard();
 }
+function getParameterByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+    if (!results)
+        return null;
+    if (!results[2])
+        return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 function processMarkdown(text) {
     return markdownProcessor.render(text);
 }
@@ -212,5 +224,10 @@ window.onload = function () {
     filePicker.addEventListener("change", filePickerChanged);
     updateStyleSheet();
     renderCard();
+    var requestedHostContainer = getParameterByName("hostApp", null);
+    if (requestedHostContainer) {
+        hostContainerPicker.value = getParameterByName("hostApp", null);
+        hostContainerPickerChanged(null);
+    }
 };
 //# sourceMappingURL=app.js.map

@@ -228,6 +228,18 @@ function hostContainerPickerChanged(evt) {
     renderCard();
 }
 
+function getParameterByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 function processMarkdown(text: string): any {
     return markdownProcessor.render(text);
 }
@@ -295,4 +307,10 @@ window.onload = () => {
     updateStyleSheet();
 
     renderCard();
+
+    let requestedHostContainer = getParameterByName("hostApp", null);
+    if (requestedHostContainer) {
+        hostContainerPicker.value = getParameterByName("hostApp", null);
+        hostContainerPickerChanged(null);
+    }
 };
