@@ -1,0 +1,212 @@
+{
+	"@type": "AdaptiveCard",
+	"sections": [
+		{
+			"separator": "bottom",
+			"items": [
+				{
+					"@type": "ColumnGroup",
+					"items": [
+						{
+							"size": "auto",
+							"items": [
+								{
+									"@type": "Picture",
+									"size": "small",
+									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane in circle.png"
+								}
+							]
+						},
+						{
+							"size": "stretch",
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Flight Status",
+									"horizontalAlignment": "right",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"text": "DELAYED",
+									"horizontalAlignment": "right",
+									"textSize": "large",
+									"textColor": "attention"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"separator": "bottom",
+			"items": [
+				{
+					"@type": "ColumnGroup",
+					"items": [
+						{
+							"size": "stretch",
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Passengers",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"text": "Sarah Hum"
+								},
+								{
+									"@type": "TextBlock",
+									"text": "Jeremy Goldberg"
+								},
+								{
+									"@type": "TextBlock",
+									"text": "Evan Litvak"
+								}
+							]
+						},
+						{
+							"size": "auto",
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Seat",
+									"horizontalAlignment": "right",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"text": "14A",
+									"horizontalAlignment": "right"
+								},
+								{
+									"@type": "TextBlock",
+									"text": "14B",
+									"horizontalAlignment": "right"
+								},
+								{
+									"@type": "TextBlock",
+									"text": "14C",
+									"horizontalAlignment": "right"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"separator": "bottom",
+			"items": [
+				{
+					"@type": "ColumnGroup",
+					"items": [
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Flight",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"text": "KL0605"
+								}
+							]
+						},
+						{
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Departs",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"text": "10:10 AM",
+									"textColor": "attention"
+								}
+							]
+						},
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Arrives",
+									"isSubtle": true,
+									"horizontalAlignment": "right"
+								},
+								{
+									"@type": "TextBlock",
+									"text": "12:00 AM",
+									"textColor": "attention",
+									"horizontalAlignment": "right"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"separator": "bottom",
+			"items": [
+				{
+					"@type": "ColumnGroup",
+					"items": [
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Amsterdam",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"text": "AMS",
+									"textSize": "extraLarge"
+								}
+							]
+						},
+						{
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "&nbsp;"
+								},
+								{
+									"@type": "Picture",
+									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
+									"size": "small",
+									"textWeight": "lighter"
+								}
+							]
+						},
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "San Francisco",
+									"isSubtle": true,
+									"horizontalAlignment": "right"
+								},
+								{
+									"@type": "TextBlock",
+									"text": "SFO",
+									"horizontalAlignment": "right",
+									"textSize": "extraLarge"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
