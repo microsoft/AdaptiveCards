@@ -102,7 +102,7 @@
 }
 
 .picture {
-    margin: 20px 0px 0px 0px;
+    margin: 5px 0px 0px 0px;
 }
 
 .picture.autoSize {
@@ -132,7 +132,7 @@
 }
 
 table.factGroup {
-    margin: 20px 0px 0px 0px;
+    margin: 10px 0px 0px 0px;
     border-width: 0px;
     border-spacing: 0px;
     border-style: none;
@@ -141,6 +141,24 @@ table.factGroup {
 
 tr.factGroupRowSpacer {
     height: 10px;
+}
+
+td.factName {
+    border-width: 0px;
+    padding: 0px;
+    border-style: none;
+    min-width: 100px;
+    vertical-align: top;
+    white-space: nowrap;
+    padding-top: 4px;
+}
+
+td.factValue {
+    border-width: 0px;
+    padding: 0px;
+    border-style: none;
+    vertical-align: top;
+    padding: 4px 0px 0px 10px;
 }
 
 .pictureGallery {
@@ -171,7 +189,7 @@ tr.factGroupRowSpacer {
 .actionCardContainer {
     margin: 16px -20px 0px -20px;
     padding: 16px 20px 16px 20px;
-    background-color: #F8F8F8;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .buttonStrip {
@@ -214,6 +232,18 @@ tr.factGroupRowSpacer {
 
 .pushButton:active {
     background-color: #828282;
+}
+
+.pushButton.expanded {
+    background-color: #0078D7;
+}
+
+.pushButton.expanded:hover {
+    background-color: #005A9E;
+}
+
+.pushButton.expanded:active {
+    background-color: #004D84;
 }
 
 /*

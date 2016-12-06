@@ -436,7 +436,7 @@ class FactGroup extends CardElement {
 
             for (var i = 0; i < this._items.length; i++) {
                 html += '<tr>';
-                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
+                html += '    <td class="factName">';
 
                 let textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].name;
@@ -450,7 +450,7 @@ class FactGroup extends CardElement {
                 }
 
                 html += '    </td>';
-                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding: 0px 0px 0px 10px">';
+                html += '    <td class="factValue">';
 
                 textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].value;
