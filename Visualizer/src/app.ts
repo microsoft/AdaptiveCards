@@ -131,11 +131,26 @@ class TeamsConnectorContainer extends HostContainer {
 class SkypeCardContainer extends HostContainer {
     render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
+        element.className = "skypeContainer";
+
+        // Draw the hexagon bot logo
+        let botElement = document.createElement("div");
+        botElement.className = "hexagon";
+
+        var botElementIn1 = document.createElement("div");
+        botElementIn1.className = "hexagon-in1";
+        botElement.appendChild(botElementIn1);
+
+        var botElementIn2 = document.createElement("div");
+        botElementIn2.className = "hexagon-in2";
+        botElementIn1.appendChild(botElementIn2);
+
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
 
         let renderedCard = card.render();
 
+        appendChild(element, botElement);
         appendChild(element, renderedCard);
 
         return element;
@@ -228,6 +243,18 @@ function hostContainerPickerChanged(evt) {
     renderCard();
 }
 
+function getParameterByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 function processMarkdown(text: string): any {
     return markdownProcessor.render(text);
 }
@@ -295,4 +322,10 @@ window.onload = () => {
     updateStyleSheet();
 
     renderCard();
+
+    let requestedHostContainer = getParameterByName("hostApp", null);
+    if (requestedHostContainer) {
+        hostContainerPicker.value = getParameterByName("hostApp", null);
+        hostContainerPickerChanged(null);
+    }
 };

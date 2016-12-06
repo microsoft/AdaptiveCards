@@ -2,6 +2,17 @@
     box-sizing: border-box;
 }
 
+.skypeContainer {
+    display: flex;
+    align-items: flex-start;
+}
+
+.rootContainer {
+    width: 300px;
+    border-radius: 5px;
+    background: rgba(234, 234, 234, 0.68);
+}
+
 .stretch {
     width: 100%;
 }
@@ -22,36 +33,37 @@
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     font-weight: normal;
-}
-
-.text.small {
-    font-size: 12px;
-    margin: -4px 0px 5px 0px;
-    padding: 20px 0px 0px 0px;
+    color: #fff;
 }
 
 .text.defaultSize {
     font-size: 14px;
     margin: -5px 0px 5px 0px;
-    padding: 20px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+.text.small {
+    font-size: 12px;
+    margin: -4px 0px 5px 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 .text.medium {
     font-size: 20px;
     margin: -8px 0px 5px 0px;
-    padding: 15px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 .text.large {
     font-size: 24px;
     margin: -9px 0px 5px 0px;
-    padding: 20px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 .text.extraLarge {
     font-size: 30px;
     margin: -11px 0px 5px 0px;
-    padding: 30px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 .text.lighter {
@@ -99,7 +111,7 @@
 }
 
 .rootContainer {
-    padding: 0px;
+    padding: 10px;
 }
 
 .container {
@@ -158,7 +170,7 @@ tr.factGroupRowSpacer {
 
 .separator {
     border-top: 1px solid #EEEEEE;
-    margin: 20px 0px 0px 0px;
+    margin: 5px 0px 5px 0px;
 }
 
 .actionGroup {
@@ -166,7 +178,7 @@ tr.factGroupRowSpacer {
 }
 
 .columnGroup {
-    margin: 20px 0px 0px 0px;
+    margin: 5px 0px 5px 0px;
 }
 
 .columnSpacer {
@@ -181,45 +193,45 @@ tr.factGroupRowSpacer {
 
 .buttonStrip {
     display: flex;
-    overflow: hidden;
+    flex-direction: column;
 }
 
 .buttonStripItem {
-    flex: 0 1 auto;
-    white-space: nowrap;
-    overflow: hidden;
+    flex-grow: 1;
+    flex-shrink: 1;
+    text-align: center;
+    flex-wrap: wrap;
+    margin: 5px;
 }
 
 .buttonStripItemSpacer {
-    margin-right: 10px;
 }
 
 .pushButton {
     font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: none;
-    padding: 4px 10px 5px 10px;
-    min-width: 80px; 
+    padding: 6px 10px 5px 10px;
     text-align: center;
     vertical-align: middle;  
     cursor: default;
-    background-color: #0078D7;
-    color: white;    
-    -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -moz-user-select: none;      /* Firefox */
-    -ms-user-select: none;       /* Internet Explorer/Edge */
-    user-select: none;
+    background-color: white;
+    border: solid 2px #dcdcdc;
+    border-radius: 25px;
+    color: #0078d7;
+    height: 40px;
 }
 
 .pushButton:hover {
-    background-color: #005A9E;
+    background-color: #0078d7;
+    color: #fff;
 }
 
 .pushButton:active {
-    background-color: #004D84;
+    background-color: #0078d7;
+    color: #fff;
 }
 
 /*
@@ -311,4 +323,46 @@ select.multichoiceInput {
     border-width: 1px;
     border-style: solid;
     padding: 4px 8px 6px 8px;
+}
+
+/*Bot hexagon*/
+
+.hexagon {
+    overflow: hidden;
+    visibility: hidden;
+    -webkit-transform: rotate(120deg);
+       -moz-transform: rotate(120deg);
+        -ms-transform: rotate(120deg);
+         -o-transform: rotate(120deg);
+            transform: rotate(120deg);
+    cursor: pointer;
+    width: 50px;
+    height: 40px;
+    margin: 2px 5px -20px 0px;
+}
+
+.hexagon-in1 {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: rotate(-60deg);
+       -moz-transform: rotate(-60deg);
+        -ms-transform: rotate(-60deg);
+         -o-transform: rotate(-60deg);
+            transform: rotate(-60deg);
+}
+
+.hexagon-in2 {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-image: url(../assets/bot-framework.png);
+    background-size: 50px 50px;
+    visibility: visible;
+    -webkit-transform: rotate(-60deg);
+       -moz-transform: rotate(-60deg);
+        -ms-transform: rotate(-60deg);
+         -o-transform: rotate(-60deg);
+            transform: rotate(-60deg);
 }
