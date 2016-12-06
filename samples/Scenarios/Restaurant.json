@@ -39,7 +39,20 @@
                             ]
                         }
                     ]
-                }
+                },
+                {
+				    "@type": "ActionGroup",
+				    "items": [
+				        {
+				            "@type": "HttpPOST",
+				            "name": "More Info"
+				        },
+				        {
+				            "@type": "HttpPOST",
+				            "name": "View on Foursquare"
+				        }
+				    ]
+				}
             ]
         }
     ]

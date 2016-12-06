@@ -193,45 +193,45 @@ tr.factGroupRowSpacer {
 
 .buttonStrip {
     display: flex;
-    overflow: hidden;
+    flex-direction: column;
 }
 
 .buttonStripItem {
-    flex: 0 1 auto;
-    white-space: nowrap;
-    overflow: hidden;
+    flex-grow: 1;
+    flex-shrink: 1;
+    text-align: center;
+    flex-wrap: wrap;
+    margin: 5px;
 }
 
 .buttonStripItemSpacer {
-    margin-right: 10px;
 }
 
 .pushButton {
     font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: none;
-    padding: 4px 10px 5px 10px;
-    min-width: 80px; 
+    padding: 6px 10px 5px 10px;
     text-align: center;
     vertical-align: middle;  
     cursor: default;
-    background-color: #0078D7;
-    color: white;    
-    -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -moz-user-select: none;      /* Firefox */
-    -ms-user-select: none;       /* Internet Explorer/Edge */
-    user-select: none;
+    background-color: white;
+    border: solid 2px #dcdcdc;
+    border-radius: 25px;
+    color: #0078d7;
+    height: 40px;
 }
 
 .pushButton:hover {
-    background-color: #005A9E;
+    background-color: #0078d7;
+    color: #fff;
 }
 
 .pushButton:active {
-    background-color: #004D84;
+    background-color: #0078d7;
+    color: #fff;
 }
 
 /*
