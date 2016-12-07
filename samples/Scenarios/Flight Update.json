@@ -13,7 +13,7 @@
 								{
 									"@type": "Picture",
 									"size": "small",
-									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane in circle blue.png"
+									"url": "assets/airplane in circle blue.png"
 								}
 							]
 						},
@@ -169,7 +169,8 @@
 								{
 									"@type": "TextBlock",
 									"text": "AMS",
-									"textSize": "extraLarge"
+									"textSize": "extraLarge",
+									"textColor": "accent"
 								}
 							]
 						},
@@ -200,7 +201,8 @@
 									"@type": "TextBlock",
 									"text": "SFO",
 									"horizontalAlignment": "right",
-									"textSize": "extraLarge"
+									"textSize": "extraLarge",
+									"textColor": "accent"
 								}
 							]
 						}
