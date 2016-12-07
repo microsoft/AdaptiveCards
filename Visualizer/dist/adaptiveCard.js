@@ -404,7 +404,7 @@ var FactGroup = (function (_super) {
             var html = '';
             for (var i = 0; i < this._items.length; i++) {
                 html += '<tr>';
-                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; min-width: 100px; vertical-align: top">';
+                html += '    <td class="factName">';
                 var textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].name;
                 textBlock.textWeight = TextWeight.Bolder;
@@ -414,7 +414,7 @@ var FactGroup = (function (_super) {
                     html += renderedText.outerHTML;
                 }
                 html += '    </td>';
-                html += '    <td style="border-width: 0px; padding: 0px; border-style: none; vertical-align: top; padding: 0px 0px 0px 10px">';
+                html += '    <td class="factValue">';
                 textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].value;
                 textBlock.textWeight = TextWeight.Lighter;
