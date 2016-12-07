@@ -61,7 +61,7 @@
 }
 
 .text.extraLarge {
-    font-size: 30px;
+    font-size: 40px;
     margin: -11px 0px 5px 0px;
     padding: 0px 0px 0px 0px;
 }
@@ -119,7 +119,7 @@
 }
 
 .picture {
-    margin: 20px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
 }
 
 .picture.autoSize {
@@ -194,9 +194,9 @@ td.factValue {
     margin: 20px 0px 0px 0px;
 }
 
-.columnGroup {
+/*.columnGroup {
     margin: 15px 0px 5px 0px;
-}
+}*/
 
 .columnSpacer {
     width: 10px;    
