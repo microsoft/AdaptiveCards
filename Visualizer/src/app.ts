@@ -1,5 +1,9 @@
-﻿var editor;
-var markdownProcessor;
+﻿import {AdaptiveCard, TextColor, ActionGroup, ActionButtonStyle, appendChild, isNullOrEmpty} from "./adaptiveCard";
+import * as ace from "brace";
+import "brace/mode/json";
+import "brace/theme/chrome";
+
+var editor;
 var hostContainerOptions: Array<HostContainerOption> = [];
 var selectedHostContainerIndex: number = 0;
 
@@ -255,9 +259,7 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-function processMarkdown(text: string): any {
-    return markdownProcessor.render(text);
-}
+
 
 class HostContainerOption {
     readonly name: string;
@@ -270,6 +272,19 @@ class HostContainerOption {
 }
 
 window.onload = () => {
+    editor = ace.edit("editor");
+    editor.setTheme("ace/theme/chrome");
+    editor.setOptions(
+        {
+            "showPrintMargin": false,
+            "displayIndentGuides": false,
+            "showFoldWidgets": true,
+            "highlightSelectedWord": false,
+            "fontSize": "14px",
+        });
+    editor.getSession().setMode("ace/mode/json");
+    editor.getSession().on("change", function (e) { renderCard(); });
+
     hostContainerOptions.push(
         new HostContainerOption(
             "Outlook Connector Card",

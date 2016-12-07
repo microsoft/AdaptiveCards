@@ -1,0 +1,33 @@
+{
+  "name": "adaptive-card-html-renderer",
+  "version": "0.1.0",
+  "description": "adaptive card toolkit html rendering library",
+  "main": "visualizer/src/adaptiveCard.js",
+  "types": "dist/adaptiveCard.d.ts",
+  "private": true,
+  "dependencies": {
+      "brace": "0.9.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "0.0.1",
+    "@types/node": "0.0.2",
+    "@types/ace": "0.0.32",
+    "browserify": "^13.1.1",
+    "http-server": "0.9.0",
+    "markdown-it": "8.2.1",
+    "tslint": "3.15.1",
+    "typescript": "2.0.10",
+    "watchify": "3.7.0",
+    "tsify": "2.0.3",
+    "ajv-cli": "1.1.1"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "watch": "tsc -p . -w",
+    "bundle": "npm run build && watchify -p [tsify] visualizer/dist/app.js -o visualizer/dist/bundle.js",
+    "server": "node node_modules/http-server/bin/http-server ./Visualizer -c-1 -o",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
