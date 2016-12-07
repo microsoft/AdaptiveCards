@@ -218,9 +218,20 @@ window.onload = function () {
     hostContainerOptions.push(new HostContainerOption("Teams Connector Card", new TeamsConnectorContainer("./css/teamsConnectorCard.css")));
     hostContainerOptions.push(new HostContainerOption("Toast", new ToastContainer(362, "./css/toast.css")));
     hostContainerOptions.push(new HostContainerOption("Large Live Tile", new LiveTileContainer(204, 204, "./css/liveTile.css")));
-    hostContainerOptions.push(new HostContainerOption("Wide Live Tile", new LiveTileContainer(204, 100, "./css/liveTile.css")));
-    hostContainerOptions.push(new HostContainerOption("Medium Live Tile", new LiveTileContainer(100, 100, "./css/liveTile.css")));
-    hostContainerOptions.push(new HostContainerOption("Small Live Tile", new LiveTileContainer(48, 48, "./css/liveTile.css")));
+    /*
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Wide Live Tile",
+            new LiveTileContainer(204, 100, "./css/liveTile.css")));
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Medium Live Tile",
+            new LiveTileContainer(100, 100, "./css/liveTile.css")));
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Small Live Tile",
+            new LiveTileContainer(48, 48, "./css/liveTile.css")));
+    */
     hostContainerOptions.push(new HostContainerOption("Skype Card", new SkypeCardContainer("./css/skypeCard.css")));
     var hostContainerPicker = document.getElementById("hostContainerPicker");
     if (hostContainerPicker) {

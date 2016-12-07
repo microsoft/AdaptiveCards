@@ -1,35 +1,3 @@
-﻿<!DOCTYPE html>
-
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Adaptive Card Visualizer</title>
-
-    <link rel="stylesheet" href="./css/app.css" type="text/css" />
-
-	<script src="https://cdn.jsdelivr.net/markdown-it/7.0.0/markdown-it.min.js"></script>
-    <script src="ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
-
-    <script src="dist/adaptivecard.js"></script>
-    <script src="dist/app.js"></script>
-</head>
-<body>
-    <div class="uiRoot">
-        <div class="uiHeader" style="display: flex;">
-			<div class="leftPane">
-				<div style="width: 0px; height: 0px; overflow: hidden">
-					<input type="file" id="filePicker" />
-				</div>
-            	<button style="height: 100%; float:left; display: table;" onclick="openFilePicker();">Load sample from file...</button>
-			</div>
-			<div class="rightPane">
-                <span style="margin-right: 6px;">Select a container:</span>
-				<select id="hostContainerPicker" style="height: 100%;"></select>
-			</div>
-        </div>
-        <div class="cardEditor">
-            <div class="leftPane">
-                <div id="editor">
 {
 	"@type": "AdaptiveCard",
 	"sections": [
@@ -144,30 +112,3 @@
 		}
 	]
 }
-                </div>
-            </div>
-            <div class="rightPane">
-                <div id="content" class="markupRender"></div>
-            </div>
-        </div>
-    </div>
-    <script>
-        markdownProcessor = window.markdownit();
-
-        editor = ace.edit("editor");
-        editor.setTheme("ace/theme/chrome");
-        editor.setOptions(
-            {
-                "showPrintMargin": false,
-                "displayIndentGuides": false,
-                "showFoldWidgets": true,
-                "highlightSelectedWord": false,
-                "fontSize": "14px"
-            });
-        editor.getSession().setMode("ace/mode/json");
-        editor.getSession().on(
-            'change',
-            function(e) { renderCard(); });
-    </script>
-</body>
-</html>

@@ -27,31 +27,26 @@
 .text.small {
     font-size: 12px;
     margin: -4px 0px 5px 0px;
-    padding: 12px 0px 0px 0px;
 }
 
 .text.defaultSize {
     font-size: 14px;
     margin: -5px 0px 5px 0px;
-    padding: 12px 0px 0px 0px;
 }
 
 .text.medium {
     font-size: 18px;
     margin: -6px 0px 5px 0px;
-    padding: 12px 0px 0px 0px;
 }
 
 .text.large {
     font-size: 24px;
     margin: -9px 0px 5px 0px;
-    padding: 12px 0px 0px 0px;
 }
 
 .text.extraLarge {
     font-size: 30px;
     margin: -11px 0px 5px 0px;
-    padding: 30px 0px 0px 0px;
 }
 
 .text.lighter {
