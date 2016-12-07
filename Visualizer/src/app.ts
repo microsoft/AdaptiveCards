@@ -286,6 +286,7 @@ window.onload = () => {
         new HostContainerOption(
             "Large Live Tile",
             new LiveTileContainer(204, 204, "./css/liveTile.css")));
+    /*
     hostContainerOptions.push(
         new HostContainerOption(
             "Wide Live Tile",
@@ -298,6 +299,7 @@ window.onload = () => {
         new HostContainerOption(
             "Small Live Tile",
             new LiveTileContainer(48, 48, "./css/liveTile.css")));
+    */
     hostContainerOptions.push(
         new HostContainerOption(
             "Skype Card",

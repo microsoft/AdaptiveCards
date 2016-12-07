@@ -194,6 +194,10 @@ td.factValue {
     margin: 20px 0px 0px 0px;
 }
 
+/*.columnGroup {
+    margin: 15px 0px 5px 0px;
+}*/
+
 .columnSpacer {
     width: 10px;    
 }
