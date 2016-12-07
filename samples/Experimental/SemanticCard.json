@@ -1,0 +1,205 @@
+{
+	"@type": "AdaptiveCard",
+	"title": "Line 1 of toast",
+	"description": "Line 2 of toast",
+	"application/vnd.microsoft.toast": {
+    	"heroImage": {
+    	    "url": "",
+    	    "alt": ""
+    	},
+    	"audio": {
+    	    "src": "",
+    	    "loop": true
+	    }
+	},
+	"application/vnd.microsof.tile": {
+	    "branding": "none",
+	    "displayName": "Monday, 22"
+	},
+	"actions": {
+	    
+	    
+	},
+	"free-draw-region": [
+		{
+			"title": "Passengers",
+			"separator": "bottom",
+			"items": [
+				{
+					"@type": "TextBlock",
+					"text": "Sarah Hum"
+				},
+				{
+					"@type": "TextBlock",
+					"text": "Jeremy Goldberg"
+				},
+				{
+					"@type": "TextBlock",
+					"text": "Evan Litvak"
+				}
+			]
+		},
+		{
+			"title": "2 Stops",
+			"separator": "bottom",
+			"items": [
+				{
+					"@type": "TextBlock",
+					"text": "Fri, October 10 8:30 AM",
+					"textWeight": "bolder"
+				},
+				{
+					"@type": "ColumnGroup",
+					"items": [
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "San Francisco",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"textSize": "extraLarge",
+									"textColor": "accent",
+									"text": "SFO"
+								}
+							]
+						},
+						{
+							"size": "auto",
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "&nbsp;"
+								},
+								{
+									"@type": "Picture",
+									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
+									"size": "small"
+								}
+							]
+						},
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"horizontalAlignment": "right",
+									"text": "Amsterdam",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"horizontalAlignment": "right",
+									"textSize": "extraLarge",
+									"textColor": "accent",
+									"text": "AMS"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"title": "Non-Stop",
+			"items": [
+				{
+					"@type": "TextBlock",
+					"text": "Fri, October 18 9:50 PM",
+					"textWeight": "bolder"
+				},
+				{
+					"@type": "ColumnGroup",
+					"topSpacing": "narrow",
+					"items": [
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Amsterdam",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"textSize": "extraLarge",
+									"textColor": "accent",
+									"text": "AMS"
+								}
+							]
+						},
+						{
+							"size": "auto",
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "&nbsp;"
+								},
+								{
+									"@type": "Picture",
+									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
+									"size": "small"
+								}
+							]
+						},
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"horizontalAlignment": "right",
+									"text": "San Francisco",
+									"isSubtle": true
+								},
+								{
+									"@type": "TextBlock",
+									"topSpacing": "none",
+									"horizontalAlignment": "right",
+									"textSize": "extraLarge",
+									"textColor": "accent",
+									"text": "SFO"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"items": [
+				{
+					"@type": "ColumnGroup",
+					"topSpacing": "narrow",
+					"items": [
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Total",
+									"textSize": "medium",
+									"isSubtle": true
+								}
+							]
+						},
+						{
+							"size": 1,
+							"items": [
+								{
+									"@type": "TextBlock",
+									"horizontalAlignment": "right",
+									"text": "$4,032.54",
+									"textSize": "medium",
+									"textWeight": "bolder"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
