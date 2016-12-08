@@ -6,7 +6,7 @@ export const defaultPayload: string = `
 			"items": [
 			    {
 			        "@type": "TextBlock",
-			        "text": "Card created: \"Publish Adaptive Card schema\"",
+			        "text": "Card created: Publish Adaptive Card schema",
 			        "textWeight": "bolder",
 			        "textSize": "medium"
 			    },

@@ -6,7 +6,7 @@ import "brace/theme/chrome";
 
 var editor;
 var hostContainerOptions: Array<HostContainerOption> = [];
-var selectedHostContainerIndex: number = 0;
+let hostContainerPicker: HTMLSelectElement;
 
 abstract class HostContainer {
     constructor(styleSheet: string) {
@@ -175,12 +175,17 @@ function renderCard() {
                 let adaptiveCard = new AdaptiveCard();
                 adaptiveCard.parse(json);
 
-                let hostContainer = hostContainerOptions[selectedHostContainerIndex].hostContainer;
+                let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
                 let renderedHostContainer = hostContainer.render(adaptiveCard);
 
                 node.appendChild(renderedHostContainer);
 
-                sessionStorage.setItem("AdaptivePayload", editor.getValue());
+                try {
+                    sessionStorage.setItem("AdaptivePayload", editor.getValue());
+                }
+                catch (e2) {
+                    console.log("Unable to cache payload")
+                }
 
                 break;
             default:
@@ -237,7 +242,7 @@ function updateStyleSheet() {
 
     styleSheetLinkElement.rel = "stylesheet";
     styleSheetLinkElement.type = "text/css";
-    styleSheetLinkElement.href = hostContainerOptions[selectedHostContainerIndex].hostContainer.styleSheet;
+    styleSheetLinkElement.href = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer.styleSheet;
 }
 
 function getParameterByName(name, url) {
@@ -277,13 +282,19 @@ function setupEditor() {
     editor.getSession().on("change", function(e) { renderCard(); });
 
     // Load the cached payload if the user had one
-    let cachedPayload = sessionStorage.getItem("AdaptivePayload");
-    if (cachedPayload) {
-        editor.session.setValue(cachedPayload);
+    try {
+        let cachedPayload = sessionStorage.getItem("AdaptivePayload");
+        if (cachedPayload) {
+            editor.session.setValue(cachedPayload);
+        }
+        else {
+            editor.session.setValue(defaultPayload);
+        }
     }
-    else {
+    catch (e) {
         editor.session.setValue(defaultPayload);
     }
+
 }
 
 function setupContainerPicker() {
@@ -323,7 +334,6 @@ function setupContainerPicker() {
             "Skype Card",
             new SkypeCardContainer("./css/skypeCard.css")));
 
-    let hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", () => {
@@ -336,9 +346,10 @@ function setupContainerPicker() {
 
         for (let i = 0; i < hostContainerOptions.length; i++) {
             let option = document.createElement("option");
+            option.value =  hostContainerOptions[i].name;
             option.text = hostContainerOptions[i].name;
 
-            appendChild(hostContainerPicker, option);
+            hostContainerPicker.appendChild(option);
         }
     }
 
@@ -346,19 +357,16 @@ function setupContainerPicker() {
 }
 
 function setContainerAppFromUrl() {
-    let hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
     let requestedHostApp = getParameterByName("hostApp", null);
     if (requestedHostApp) {
-        hostContainerPicker.value = getParameterByName("hostApp", null);
+        console.log(`Setting host app to ${requestedHostApp}`);
+        hostContainerPicker.value = requestedHostApp;
     }
 
     renderSelectedHostApp();
 }
 
 function renderSelectedHostApp() {
-    let hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
-    selectedHostContainerIndex = hostContainerPicker.selectedIndex;
-
     updateStyleSheet();
     renderCard();
 }
@@ -369,6 +377,8 @@ function setupFilePicker() {
 }
 
 window.onload = () => {
+
+    hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
     setupEditor();
 
