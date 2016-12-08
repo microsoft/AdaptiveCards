@@ -193,6 +193,9 @@ td.factValue {
     margin: 20px 0px 0px 0px;
 }
 
+.column {
+}
+
 .columnSpacer {
     width: 16px;    
 }
@@ -294,7 +297,7 @@ Other styles that can be specified:
     .linkButton.expanded:active
 */
 
-textarea.textInput {
+.textInput {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     border-color: #EAEAEA;
@@ -305,7 +308,7 @@ textarea.textInput {
     resize: none;
 }
 
-input.dateInput {
+.dateInput {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
     border-width: 1px;
@@ -313,7 +316,7 @@ input.dateInput {
     padding: 4px 8px 5px 8px;
 }
 
-input.timeInput {
+.timeInput {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
     border-width: 1px;
@@ -321,7 +324,7 @@ input.timeInput {
     padding: 4px 8px 5px 8px;
 }
 
-select.multichoiceInput {
+.multichoiceInput {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
     border-width: 1px;
