@@ -337,7 +337,6 @@ function setupContainerPicker() {
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", () => {
-
             // update the query string
             history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
 
@@ -372,12 +371,11 @@ function renderSelectedHostApp() {
 }
 
 function setupFilePicker() {
-    let filePicker = document.getElementById("filePicker");
-    filePicker.addEventListener("change", filePickerChanged);
+    document.getElementById("loadSample").onclick = () => { document.getElementById("filePicker").click(); };
+    document.getElementById("filePicker").addEventListener("change", filePickerChanged);
 }
 
 window.onload = () => {
-
     hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
     setupEditor();
