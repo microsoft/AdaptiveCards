@@ -55,7 +55,7 @@
 									"text": "&nbsp;"
 								},
 								{
-									"@type": "Picture",
+									"@type": "Image",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
 									"size": "small"
 								}
@@ -119,7 +119,7 @@
 									"text": "&nbsp;"
 								},
 								{
-									"@type": "Picture",
+									"@type": "Image",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
 									"size": "small"
 								}

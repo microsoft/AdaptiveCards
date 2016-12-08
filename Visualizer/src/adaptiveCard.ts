@@ -51,7 +51,7 @@ export enum HorizontalAlignment {
     Right
 }
 
-export enum PictureStyle {
+export enum ImageStyle {
     Normal,
     Person
 }
@@ -137,12 +137,12 @@ export function stringToHorizontalAlignment(value: string, defaultValue: Horizon
     }
 }
 
-export function stringToPictureStyle(value: string, defaultValue: PictureStyle): PictureStyle {
+export function stringToImageStyle(value: string, defaultValue: ImageStyle): ImageStyle {
     switch (value) {
         case "person":
-            return PictureStyle.Person;
+            return ImageStyle.Person;
         case "normal":
-            return PictureStyle.Normal;
+            return ImageStyle.Normal;
         default:
             return defaultValue;
     }
@@ -191,10 +191,10 @@ export abstract class CardElement {
         switch (typeName) {
             case "TextBlock":
                 return new TextBlock(container);
-            case "Picture":
-                return new Picture(container);
-            case "PictureGallery":
-                return new PictureGallery(container);
+            case "Image":
+                return new Image(container);
+            case "ImageGallery":
+                return new ImageGallery(container);
             case "ActionGroup":
                 return new ActionGroup(container);
             case "FactGroup":
@@ -499,8 +499,8 @@ export class FactGroup extends CardElement {
     }
 }
 
-export class Picture extends CardElement {
-    style: PictureStyle = PictureStyle.Normal;
+export class Image extends CardElement {
+    style: ImageStyle = ImageStyle.Normal;
     url: string;
 
     get useDefaultSizing() {
@@ -511,7 +511,7 @@ export class Picture extends CardElement {
         super.parse(json);
 
         this.url = json["url"];
-        this.style = stringToPictureStyle(json["style"], PictureStyle.Normal);
+        this.style = stringToImageStyle(json["style"], ImageStyle.Normal);
     }
 
     render(): HTMLElement {
@@ -520,7 +520,7 @@ export class Picture extends CardElement {
         if (!isNullOrEmpty(this.url)) {
             imageElement = document.createElement("img");
 
-            let cssStyle = "picture";
+            let cssStyle = "image";
 
             switch (this.size) {
                 case Size.Auto:
@@ -540,7 +540,7 @@ export class Picture extends CardElement {
                     break;
             }
 
-            if (this.style == PictureStyle.Person) {
+            if (this.style == ImageStyle.Person) {
                 cssStyle += " person";
             }
 
@@ -553,30 +553,30 @@ export class Picture extends CardElement {
     }
 }
 
-export class PictureGallery extends CardElement {
-    private _items: Array<Picture> = [];
+export class ImageGallery extends CardElement {
+    private _items: Array<Image> = [];
 
-    pictureSize: Size = Size.Medium;
+    imageSize: Size = Size.Medium;
 
-    get items(): Array<Picture> {
+    get items(): Array<Image> {
         return this._items;
     }
 
     parse(json: any) {
         super.parse(json);
 
-        this.pictureSize = stringToSize(json["imageSize"], Size.Medium);
+        this.imageSize = stringToSize(json["imageSize"], Size.Medium);
 
         if (json["items"] != null) {
-            let pictureArray = json["items"] as Array<any>;
+            let imageArray = json["items"] as Array<any>;
 
-            for (let i = 0; i < pictureArray.length; i++) {
-                let picture = new Picture(this.container);
+            for (let i = 0; i < imageArray.length; i++) {
+                let image = new Image(this.container);
 
-                picture.size = this.pictureSize;
-                picture.url = pictureArray[i];
+                image.size = this.imageSize;
+                image.url = imageArray[i];
 
-                this._items.push(picture);
+                this._items.push(image);
             }
         }
     }
@@ -586,14 +586,14 @@ export class PictureGallery extends CardElement {
 
         if (this._items.length > 0) {
             element = document.createElement("div");
-            element.className = "pictureGallery";
+            element.className = "imageGallery";
 
             for (var i = 0; i < this._items.length; i++) {
-                let renderedPicture = this._items[i].internalRender();
-                renderedPicture.style.margin = "0px";
-                renderedPicture.style.marginRight = "10px";
+                let renderedImage = this._items[i].internalRender();
+                renderedImage.style.margin = "0px";
+                renderedImage.style.marginRight = "10px";
 
-                appendChild(element, renderedPicture);
+                appendChild(element, renderedImage);
             }
         }
 

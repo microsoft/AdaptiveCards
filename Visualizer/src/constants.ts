@@ -17,7 +17,7 @@ export const defaultPayload: string = `
 							"size": "auto",
 							"items": [
                 				{
-                					"@type": "Picture",
+                					"@type": "Image",
                 					"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
                 					"size": "small",
                 					"style": "person"
