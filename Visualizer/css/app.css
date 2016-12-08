@@ -59,7 +59,7 @@ div.markupRender {
     border: 1px solid #F1F1F1;
 }
 
-button {
+.button {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -79,11 +79,11 @@ button {
     user-select: none;
 }
 
-button:hover {
+.button:hover {
     background-color: #005A9E;
 }
 
-button:active {
+.button:active {
     background-color: #004D84;
 }
 
