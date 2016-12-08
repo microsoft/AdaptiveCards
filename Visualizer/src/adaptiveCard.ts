@@ -16,11 +16,6 @@ export enum Size {
     Large
 }
 
-export enum Spacing {
-    None,
-    Default
-}
-
 export enum TextSize {
     Small,
     Normal,
@@ -218,7 +213,6 @@ export abstract class CardElement {
 
     size: Size = Size.Auto;
     horizontalAlignment: HorizontalAlignment = HorizontalAlignment.Left;
-    topSpacing: Spacing = Spacing.Default;
 
     constructor(container: Container) {
         this._container = container;
@@ -281,20 +275,12 @@ export abstract class CardElement {
             this.adjustLayout(renderedElement);
         }
 
-        if (this.topSpacing == Spacing.None) {
-            this.removeTopSpacing(renderedElement);
-        }
-
         return renderedElement;
     }
 
     parse(json: any) {
         this.size = stringToSize(json["size"], this.size);
         this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
-
-        if (json["topSpacing"] === "none") {
-            this.topSpacing = Spacing.None;
-        }
     }
 }
 
@@ -466,7 +452,6 @@ export class FactGroup extends CardElement {
                 let textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].name;
                 textBlock.textWeight = TextWeight.Bolder;
-                textBlock.topSpacing = Spacing.None;
 
                 let renderedText = textBlock.internalRender();
 
@@ -480,7 +465,6 @@ export class FactGroup extends CardElement {
                 textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].value;
                 textBlock.textWeight = TextWeight.Lighter;
-                textBlock.topSpacing = Spacing.None;
 
                 renderedText = textBlock.internalRender();
 
@@ -752,7 +736,7 @@ export class TextInput extends Input {
 
     render(): HTMLElement {
         let element = document.createElement("textarea");
-        element.className = "input textInput";
+        element.className = "textInput";
         element.placeholder = this.title;
 
         return element;
@@ -796,7 +780,7 @@ export class MultichoiceInput extends Input {
 
     render(): HTMLElement {
         let selectElement = document.createElement("select");
-        selectElement.className = "input multichoiceInput";
+        selectElement.className = "multichoiceInput";
 
         for (let i = 0; i < this._choices.length; i++) {
             let option = document.createElement("option");
@@ -827,7 +811,6 @@ export class DateInput extends Input {
 
     render(): HTMLElement {
         let container = document.createElement("div");
-        container.className = "input";
         container.style.display = "flex";
 
         let datePicker = document.createElement("input");
@@ -879,7 +862,6 @@ export class ActionCard extends Action {
 
         if (json["card"] != undefined) {
             this._card = new Container(this.owner.container, ["ActionGroup"]);
-            this._card.topSpacing = Spacing.None;
             this._card.parse(json["card"]);
         }
 
@@ -888,10 +870,6 @@ export class ActionCard extends Action {
 
             for (let i = 0; i < inputArray.length; i++) {
                 let input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
-
-                if (i == 0) {
-                    input.topSpacing = Spacing.None;
-                }
 
                 input.parse(inputArray[i]);
 
@@ -937,10 +915,6 @@ export class ActionCard extends Action {
         else {
             for (let i = 0; i < this._inputs.length; i++) {
                 let inputElement = this._inputs[i].internalRender();
-
-                if (i > 0) {
-                    inputElement.style.marginTop = "10px";
-                }
 
                 appendChild(actionCardElement, inputElement);
             }
@@ -1226,6 +1200,10 @@ export class Container extends CardElement {
         }
     }
 
+    protected get cssClassName(): string {
+        return "container";
+    }
+
     backgroundImageUrl: string;
     backgroundColor: string;
 
@@ -1328,7 +1306,7 @@ export class Container extends CardElement {
     render(): HTMLElement {
         if (this.elementCount > 0) {
             this._element = document.createElement("div");
-            this._element.className = "container";
+            this._element.className = this.cssClassName;
 
             if (!isNullOrEmpty(this.backgroundColor)) {
                 this._element.style.backgroundColor = this.backgroundColor;
@@ -1376,6 +1354,10 @@ export class Column extends Container {
     private _useWeight: boolean = false;
     private _weight: number = 100;
 
+    protected get cssClassName(): string {
+        return "column";
+    }
+
     parse(json: any) {
         super.parse(json);
 
@@ -1409,7 +1391,6 @@ export class ColumnGroup extends CardElement {
 
     addColumn(): Column {
         let column = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
-        column.topSpacing = Spacing.None;
 
         this._items.push(column);
 

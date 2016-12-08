@@ -194,6 +194,9 @@ td.factValue {
     margin: 20px 0px 0px 0px;
 }
 
+.column {
+}
+
 .columnSpacer {
     width: 10px;    
 }
@@ -314,7 +317,7 @@ Other styles that can be specified:
     .linkButton.expanded:active
 */
 
-textarea.textInput {
+.textInput {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     border: 2px solid #797979;
@@ -325,12 +328,12 @@ textarea.textInput {
     resize: none;
 }
 
-textarea.textInput:hover {
+.textInput:hover {
     border: 2px solid #A5A5A5;
     background-color: #0C0C0C;
 }
 
-input.dateInput {
+.dateInput {
     font-family: 'Segoe UI', sans-serif;
     border: 2px solid #797979;
     padding: 4px 8px 5px 8px;
@@ -338,12 +341,12 @@ input.dateInput {
     color: white;
 }
 
-input.dateInput:hover {
+.dateInput:hover {
     border: 2px solid #A5A5A5;
     background-color: #0C0C0C;
 }
 
-input.timeInput {
+.timeInput {
     font-family: 'Segoe UI', sans-serif;
     border: 2px solid #797979;
     padding: 4px 8px 5px 8px;
@@ -351,12 +354,12 @@ input.timeInput {
     color: white;
 }
 
-input.timeInput:hover {
+.timeInput:hover {
     border: 2px solid #A5A5A5;
     background-color: #0C0C0C;
 }
 
-select.multichoiceInput {
+.multichoiceInput {
     font-family: 'Segoe UI', sans-serif;
     border: 2px solid #797979;
     padding: 4px 8px 6px 8px;
@@ -364,7 +367,7 @@ select.multichoiceInput {
     color: white;
 }
 
-select.multichoiceInput:hover {
+.multichoiceInput:hover {
     border: 2px solid #A5A5A5;
     background-color: #0C0C0C;
 }
