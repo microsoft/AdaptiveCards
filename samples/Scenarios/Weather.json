@@ -11,7 +11,7 @@
 			                "size": 35,
 			                "items": [
 			                    {
-			                        "@type": "Picture",
+			                        "@type": "Image",
 			                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 			                    }
 			                ]
@@ -58,7 +58,7 @@
 			                        "textSize": "small"
 			                    },
 			                    {
-			                        "@type": "Picture",
+			                        "@type": "Image",
 			                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 			                    },
 			                    {
@@ -86,7 +86,7 @@
 			                        "textSize": "small"
 			                    },
 			                    {
-			                        "@type": "Picture",
+			                        "@type": "Image",
 			                        "url": "http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
 			                    },
 			                    {
@@ -114,7 +114,7 @@
 			                        "textSize": "small"
 			                    },
 			                    {
-			                        "@type": "Picture",
+			                        "@type": "Image",
 			                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 			                    },
 			                    {
@@ -142,7 +142,7 @@
 			                        "textSize": "small"
 			                    },
 			                    {
-			                        "@type": "Picture",
+			                        "@type": "Image",
 			                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 			                    },
 			                    {

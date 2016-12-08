@@ -11,7 +11,7 @@
 							"size": "auto",
 							"items": [
                 				{
-                					"@type": "Picture",
+                					"@type": "Image",
                 					"url": "./assets/calendaricon.png",
                 					"size": "auto"
                 				}

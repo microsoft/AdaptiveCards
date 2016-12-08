@@ -33,7 +33,7 @@
                             "size": "auto",
                             "items": [
                                 {
-                                    "@type": "Picture",
+                                    "@type": "Image",
                                     "url": "http://res.cloudinary.com/sagacity/image/upload/c_crop,h_670,w_635,x_0,y_0/c_scale,w_640/v1397425743/Untitled-4_lviznp.jpg",
                                     "size": "large"
                                 }

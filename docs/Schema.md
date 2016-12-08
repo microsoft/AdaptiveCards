@@ -57,13 +57,13 @@ Controls the color of TextBlock elements.
 | **light** | Forces text to be rendered in a light color that is suitable when displayed over a dark background. |
 | **accent** | The accent color. |
 
-## PictureStyle
-Controls the way Picture elements are displayed.
+## ImageStyle
+Controls the way Image elements are displayed.
 
 | Value | Meaning |
 |---|---|
-| **normal** | The picture is displayed within a rectangle. |
-| **person** | The picture is cropped to a circle, a common way to represent people photos. |
+| **normal** | The image is displayed within a rectangle. |
+| **person** | The image is cropped to a circle, a common way to represent people photos. |
 # Element types
 ## CardElement
 CardElement is the base type for all elements that can be used to define an Adaptive Card.
@@ -94,14 +94,14 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 | **isSubtle** | boolean | Indicates whether the color of the text should be slightly toned down to appear less prominent |
 | **text** | string | The actual text to display |
 
-## Picture
+## Image
 **Extends [CardElement](#cardelement)**
-The Picture element allows for the inclusion of pictures in an Adaptive Card.
+The Image element allows for the inclusion of images in an Adaptive Card.
 
 | Property | Type | Description |
 |---|---|---|
-| **url** | The URL to the picture. |
-| **style** | [PictureStyle](#picturestyle) | The style in which the picture is displayed. |
+| **url** | The URL to the image. |
+| **style** | [ImageStyle](#imagestyle) | The style in which the image is displayed. |
 
 ## Separator
 **Extends [CardElement](#cardelement)**

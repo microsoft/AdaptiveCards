@@ -17,11 +17,11 @@ Developers author the experience they want using a generic yet powerful JSON pay
 
 The payload is designed to be expressive enough that it addresses the long-tail of scenarios, without imposing the burden of fine-grained design, development, and testing on a variety of platforms and applications. 
 
-Adaptive Cards are comprised of `TextBlock`, `Pictures`, `Input`, and `Actions`, that may be `combined` together as necessary. 
+Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, that may be `combined` together as necessary. 
 
 * All content flows top-down in the order specified. 
 * `TextBlocks` takes up a single line (by default) and will be truncated as necessary. 
-* `Pictures` expand to the width of their container, while maintaining aspect ratio.
+* `Images` expand to the width of their container, while maintaining aspect ratio.
 * `ColumnGroups` allow developers to create rows and columns to partition elements
 * `Buttons` align horizontally if they fit; otherwise stack vertically.
 * `Input` includes text, multi-line, selections, dates, etc.

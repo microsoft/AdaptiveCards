@@ -17,7 +17,7 @@
 							"size": "auto",
 							"items": [
                 				{
-                					"@type": "Picture",
+                					"@type": "Image",
                 					"url": "./assets/closed bug 92x92.png",
                 					"size": "medium"
                 				}

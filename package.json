@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc -p .",
     "watch": "tsc -p . -w",
-    "bundle": "npm run build && watchify -p [tsify] visualizer/dist/app.js -o visualizer/dist/bundle.js",
+    "bundle": "npm run build && watchify -v -p [tsify] visualizer/dist/app.js -o visualizer/dist/bundle.js",
     "server": "node node_modules/http-server/bin/http-server ./Visualizer -c-1 -o",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

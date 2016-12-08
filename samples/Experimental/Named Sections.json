@@ -10,7 +10,7 @@
                         "size": "auto",
                         "items": [
                             {
-                                "@type": "Picture",
+                                "@type": "Image",
                                 "size": "small",
                                 "url": "http://messagecardplayground.azurewebsites.net/assets/airplane in circle.png"
                             }

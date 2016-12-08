@@ -11,7 +11,7 @@
 							"size": "auto",
 							"items": [
 								{
-									"@type": "Picture",
+									"@type": "Image",
 									"size": "small",
 									"url": "assets/airplane in circle blue.png"
 								}
@@ -183,7 +183,7 @@
 									"text": "&nbsp;"
 								},
 								{
-									"@type": "Picture",
+									"@type": "Image",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
 									"size": "small",
 									"textWeight": "lighter"
