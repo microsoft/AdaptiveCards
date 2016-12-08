@@ -130,31 +130,31 @@
     margin: 20px 0px 0px 0px;
 }
 
-.picture {
+.image {
     margin: 0px 0px 0px 0px;
 }
 
-.picture.autoSize {
+.image.autoSize {
     max-width: 100%;
 }
 
-.picture.stretch {
+.image.stretch {
     width: 100%;
 }
 
-.picture.small {
+.image.small {
     max-width: 40px;
 }
 
-.picture.medium {
+.image.medium {
     max-width: 80px;
 }
 
-.picture.large {
+.image.large {
     max-width: 160px;
 }
 
-.picture.person {
+.image.person {
     border-radius: 50%;
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -189,7 +189,7 @@ td.factValue {
     padding: 0px 0px 0px 10px
 }
 
-.pictureGallery {
+.imageGallery {
     margin: 20px 0px 0px 0px;
 }
 

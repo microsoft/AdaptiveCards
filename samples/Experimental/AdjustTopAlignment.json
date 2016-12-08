@@ -12,7 +12,7 @@
 		                    "size": "auto",
 		                    "items": [
 		                        {
-		                            "@type": "Picture",
+		                            "@type": "Image",
 		                            "size": "medium",
 		                            "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg"
 		                        }
