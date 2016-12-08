@@ -39,6 +39,9 @@ var TextColor;
     TextColor[TextColor["Dark"] = 1] = "Dark";
     TextColor[TextColor["Light"] = 2] = "Light";
     TextColor[TextColor["Accent"] = 3] = "Accent";
+    TextColor[TextColor["Good"] = 4] = "Good";
+    TextColor[TextColor["Warning"] = 5] = "Warning";
+    TextColor[TextColor["Attention"] = 6] = "Attention";
 })(TextColor || (TextColor = {}));
 var HorizontalAlignment;
 (function (HorizontalAlignment) {
@@ -105,6 +108,12 @@ function stringToTextColor(value, defaultValue) {
             return TextColor.Light;
         case "accent":
             return TextColor.Accent;
+        case "good":
+            return TextColor.Good;
+        case "warning":
+            return TextColor.Warning;
+        case "attention":
+            return TextColor.Attention;
         default:
             return defaultValue;
     }
@@ -317,6 +326,15 @@ var TextBlock = (function (_super) {
                     break;
                 case TextColor.Accent:
                     cssStyle += "accentColor ";
+                    break;
+                case TextColor.Good:
+                    cssStyle += "goodColor ";
+                    break;
+                case TextColor.Warning:
+                    cssStyle += "warningColor ";
+                    break;
+                case TextColor.Attention:
+                    cssStyle += "attentionColor ";
                     break;
                 default:
                     cssStyle += "defaultColor ";

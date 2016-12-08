@@ -93,6 +93,18 @@
     color:  rgba(46, 137, 252, 0.5);
 }
 
+.text.goodColor {
+    color: #2ccc35;
+}
+
+.text.warningColor {
+    color: #f9a203;
+}
+
+.text.attentionColor {
+    color: darkred;
+}
+
 .rootContainer {
     padding: 16px;
 }

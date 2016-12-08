@@ -285,7 +285,7 @@ window.onload = () => {
     hostContainerOptions.push(
         new HostContainerOption(
             "Large Live Tile",
-            new LiveTileContainer(204, 204, "./css/liveTile.css")));
+            new LiveTileContainer(310, 310, "./css/liveTile.css")));
     /*
     hostContainerOptions.push(
         new HostContainerOption(

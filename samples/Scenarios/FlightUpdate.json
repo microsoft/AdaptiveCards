@@ -127,7 +127,8 @@
 								{
 									"@type": "TextBlock",
 									"text": "10:10 AM",
-									"textColor": "attention"
+									"textColor": "attention",
+									"textWeight": "bolder"
 								}
 							]
 						},
@@ -144,7 +145,8 @@
 									"@type": "TextBlock",
 									"text": "12:00 AM",
 									"textColor": "attention",
-									"horizontalAlignment": "right"
+									"horizontalAlignment": "right",
+									"textWeight": "bolder"
 								}
 							]
 						}

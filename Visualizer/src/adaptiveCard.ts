@@ -32,7 +32,10 @@ enum TextColor {
     Default,
     Dark,
     Light,
-    Accent
+    Accent,
+    Good,
+    Warning,
+    Attention
 }
 
 enum HorizontalAlignment {
@@ -103,6 +106,12 @@ function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
             return TextColor.Light;
         case "accent":
             return TextColor.Accent;
+        case "good":
+            return TextColor.Good;
+        case "warning":
+            return TextColor.Warning;
+        case "attention":
+            return TextColor.Attention;
         default:
             return defaultValue;
     }
@@ -133,31 +142,31 @@ function stringToPictureStyle(value: string, defaultValue: PictureStyle): Pictur
 }
 
 interface IEvent<TSender> {
-    subscribe(fn: (sender: TSender, args: any) => void): void;
-    unsubscribe(fn: (sender: TSender, args: any) => void): void;
+    subscribe(fn: (sender: TSender, args: any) => void): void;
+    unsubscribe(fn: (sender: TSender, args: any) => void): void;
 }
 
-class EventDispatcher<TSender> implements IEvent<TSender> { 
-    private _subscriptions: Array<(sender: TSender, args: any) => void> = new Array<(sender: TSender, args: any) => void>();
- 
-    subscribe(fn: (sender: TSender, args: any) => void): void {
-        if (fn) {
-            this._subscriptions.push(fn);
-        }
-    }
- 
-    unsubscribe(fn: (sender: TSender, args: any) => void): void {
-        let i = this._subscriptions.indexOf(fn);
-        if (i > -1) {
-            this._subscriptions.splice(i, 1);
-        }
-    }
- 
-    dispatch(sender: TSender, args: any): void {
-        for (let handler of this._subscriptions) {
-            handler(sender, args);
-        }
-    }
+class EventDispatcher<TSender> implements IEvent<TSender> {
+    private _subscriptions: Array<(sender: TSender, args: any) => void> = new Array<(sender: TSender, args: any) => void>();
+
+    subscribe(fn: (sender: TSender, args: any) => void): void {
+        if (fn) {
+            this._subscriptions.push(fn);
+        }
+    }
+
+    unsubscribe(fn: (sender: TSender, args: any) => void): void {
+        let i = this._subscriptions.indexOf(fn);
+        if (i > -1) {
+            this._subscriptions.splice(i, 1);
+        }
+    }
+
+    dispatch(sender: TSender, args: any): void {
+        for (let handler of this._subscriptions) {
+            handler(sender, args);
+        }
+    }
 }
 
 function isNullOrEmpty(value: string): boolean {
@@ -259,7 +268,7 @@ abstract class CardElement {
     }
 
     internalRender(): HTMLElement {
-        let renderedElement =  this.render();
+        let renderedElement = this.render();
 
         if (renderedElement != null) {
             this.adjustLayout(renderedElement);
@@ -275,7 +284,7 @@ abstract class CardElement {
     parse(json: any) {
         this.size = stringToSize(json["size"], this.size);
         this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
-        
+
         if (json["topSpacing"] === "none") {
             this.topSpacing = Spacing.None;
         }
@@ -310,16 +319,16 @@ class TextBlock extends CardElement {
             switch (this.textSize) {
                 case TextSize.Small:
                     cssStyle += "small ";
-                    break; 
+                    break;
                 case TextSize.Medium:
                     cssStyle += "medium ";
-                    break; 
+                    break;
                 case TextSize.Large:
                     cssStyle += "large ";
-                    break; 
+                    break;
                 case TextSize.ExtraLarge:
                     cssStyle += "extraLarge ";
-                    break; 
+                    break;
                 default:
                     cssStyle += "defaultSize ";
                     break;
@@ -337,6 +346,15 @@ class TextBlock extends CardElement {
                 case TextColor.Accent:
                     cssStyle += "accentColor ";
                     break;
+                case TextColor.Good:
+                    cssStyle += "goodColor ";
+                    break;
+                case TextColor.Warning:
+                    cssStyle += "warningColor ";
+                    break;
+                case TextColor.Attention:
+                    cssStyle += "attentionColor ";
+                    break;
                 default:
                     cssStyle += "defaultColor ";
                     break;
@@ -345,7 +363,7 @@ class TextBlock extends CardElement {
             if (this.isSubtle) {
                 cssStyle += "subtle ";
             }
-            
+
             switch (this.textWeight) {
                 case TextWeight.Lighter:
                     cssStyle += "lighter ";
@@ -361,17 +379,17 @@ class TextBlock extends CardElement {
             element.innerHTML = processMarkdown(this.text);
             element.className = cssStyle;
 
-            if (element.firstElementChild instanceof(HTMLElement)) { 
+            if (element.firstElementChild instanceof (HTMLElement)) {
                 (<HTMLElement>element.firstElementChild).style.marginTop = "0px";
             }
 
-            if (element.lastElementChild instanceof(HTMLElement)) { 
+            if (element.lastElementChild instanceof (HTMLElement)) {
                 (<HTMLElement>element.lastElementChild).style.marginBottom = "0px";
             }
 
             var anchors = element.getElementsByTagName("a");
 
-            for (var i = 0; i < anchors.length; i++) { 
+            for (var i = 0; i < anchors.length; i++) {
                 anchors[i].target = "_blank";
             }
 
@@ -446,7 +464,7 @@ class FactGroup extends CardElement {
                 let renderedText = textBlock.internalRender();
 
                 if (renderedText != null) {
-                    html += renderedText.outerHTML; 
+                    html += renderedText.outerHTML;
                 }
 
                 html += '    </td>';
@@ -456,11 +474,11 @@ class FactGroup extends CardElement {
                 textBlock.text = this._items[i].value;
                 textBlock.textWeight = TextWeight.Lighter;
                 textBlock.topSpacing = Spacing.None;
-                
+
                 renderedText = textBlock.internalRender();
 
                 if (renderedText != null) {
-                    html += renderedText.outerHTML; 
+                    html += renderedText.outerHTML;
                 }
 
                 html += '    </td>';
@@ -484,7 +502,7 @@ class Picture extends CardElement {
 
     parse(json: any) {
         super.parse(json);
-        
+
         this.url = json["url"];
         this.style = stringToPictureStyle(json["style"], PictureStyle.Normal);
     }
@@ -494,7 +512,7 @@ class Picture extends CardElement {
 
         if (!isNullOrEmpty(this.url)) {
             imageElement = document.createElement("img");
-            
+
             let cssStyle = "picture";
 
             switch (this.size) {
@@ -539,7 +557,7 @@ class PictureGallery extends CardElement {
 
     parse(json: any) {
         super.parse(json);
-        
+
         this.pictureSize = stringToSize(json["imageSize"], Size.Medium);
 
         if (json["items"] != null) {
@@ -564,7 +582,7 @@ class PictureGallery extends CardElement {
             element.className = "pictureGallery";
 
             for (var i = 0; i < this._items.length; i++) {
-                let renderedPicture =  this._items[i].internalRender();
+                let renderedPicture = this._items[i].internalRender();
                 renderedPicture.style.margin = "0px";
                 renderedPicture.style.marginRight = "10px";
 
@@ -578,7 +596,7 @@ class PictureGallery extends CardElement {
 
 abstract class Action {
     private _owner: CardElement;
-    
+
     name: string;
 
     static create(owner: CardElement, typeName: string): Action {
@@ -755,7 +773,7 @@ class MultichoiceInput extends Input {
 
     parse(json: any) {
         super.parse(json);
-        
+
         if (json["choices"] != undefined) {
             let choiceArray = json["choices"] as Array<any>;
 
@@ -796,10 +814,10 @@ class DateInput extends Input {
 
     parse(json: any) {
         super.parse(json);
-        
+
         this.includeTime = json["includeTime"];
     }
-    
+
     render(): HTMLElement {
         let container = document.createElement("div");
         container.className = "input";
@@ -830,10 +848,10 @@ class DateInput extends Input {
 }
 
 class ActionCard extends Action {
-    private _allowedActionTypes: Array<string> = [ "OpenUri", "HttpPOST" ]; 
+    private _allowedActionTypes: Array<string> = ["OpenUri", "HttpPOST"];
     private _inputs: Array<Input> = [];
     private _actions: Array<ExternalAction> = [];
-    private _card: Container; 
+    private _card: Container;
 
     name: string;
 
@@ -853,7 +871,7 @@ class ActionCard extends Action {
         super.parse(json);
 
         if (json["card"] != undefined) {
-            this._card = new Container(this.owner.container, [ "ActionGroup" ]);
+            this._card = new Container(this.owner.container, ["ActionGroup"]);
             this._card.topSpacing = Spacing.None;
             this._card.parse(json["card"]);
         }
@@ -937,7 +955,7 @@ class ActionCard extends Action {
             if (this._actions.length > 1 && i < this._actions.length - 1) {
                 actionButton.element.style.marginRight = "16px";
             }
-            
+
             appendChild(buttonsContainer, actionButton.element);
         }
 
@@ -961,7 +979,7 @@ enum ActionButtonState {
 class ActionButton {
     private _action: Action;
     private _style: ActionButtonStyle;
-    private _onClick: EventDispatcher<ActionButton> = new EventDispatcher<ActionButton>();
+    private _onClick: EventDispatcher<ActionButton> = new EventDispatcher<ActionButton>();
     private _element: HTMLElement = null;
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
@@ -999,8 +1017,8 @@ class ActionButton {
     }
 
     get onClick(): IEvent<ActionButton> {
-        return this._onClick;
-    }
+        return this._onClick;
+    }
 
     get text(): string {
         return this._text;
@@ -1100,7 +1118,7 @@ class ActionGroup extends CardElement {
 
     parse(json: any) {
         super.parse(json);
-        
+
         if (json["items"] != null) {
             var actionArray = json["items"] as Array<any>;
 
@@ -1136,7 +1154,7 @@ class ActionGroup extends CardElement {
                     (ab, args) => {
                         this.actionClicked(ab);
                     });
-                
+
                 this._actionButtons.push(actionButton);
 
                 if (i < this._actions.length - 1) {
@@ -1164,7 +1182,7 @@ class ActionGroup extends CardElement {
 class Separator extends CardElement {
     parse(json: any) {
         super.parse(json);
-        
+
         // Nothing else to parse
     }
 
@@ -1254,7 +1272,7 @@ class Container extends CardElement {
 
     showBottomSpacer(requestingElement: CardElement) {
         if (this.isLastElement(requestingElement)) {
-            this._element.style.paddingBottom = null; 
+            this._element.style.paddingBottom = null;
 
             if (this.container != null) {
                 this.container.showBottomSpacer(this);
@@ -1264,7 +1282,7 @@ class Container extends CardElement {
 
     hideBottomSpacer(requestingElement: CardElement) {
         if (this.isLastElement(requestingElement)) {
-            this._element.style.paddingBottom = "0px"; 
+            this._element.style.paddingBottom = "0px";
 
             if (this.container != null) {
                 this.container.hideBottomSpacer(this);
@@ -1295,7 +1313,7 @@ class Container extends CardElement {
                 }
                 else {
                     throw new Error("Elements of type " + elementType + " are not allowed in this container.");
-                } 
+                }
             }
         }
     }
@@ -1318,7 +1336,7 @@ class Container extends CardElement {
                 if (renderedElement != null) {
                     if (previousElement == null) {
                         this.getElement(i).removeTopSpacing(renderedElement);
-                    } 
+                    }
 
                     appendChild(this._element, renderedElement);
                 }
@@ -1434,7 +1452,7 @@ class ColumnGroup extends CardElement {
 
 class AdaptiveCard {
     private _rootContainer = new Container(null);
-    
+
     textColor: TextColor = TextColor.Dark;
 
     parse(json: any) {
@@ -1444,7 +1462,7 @@ class AdaptiveCard {
             let sectionArray = json["sections"] as Array<any>;
 
             for (var i = 0; i < sectionArray.length; i++) {
-                let section = new Container(this._rootContainer, [ "Section" ]);
+                let section = new Container(this._rootContainer, ["Section"]);
 
                 section.parse(sectionArray[i]);
 
@@ -1460,5 +1478,5 @@ class AdaptiveCard {
         renderedContainer.className = "rootContainer";
 
         return renderedContainer;
-   }
+    }
 }
