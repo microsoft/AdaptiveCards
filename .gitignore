@@ -250,3 +250,8 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Generated javascript
+**/dist/*.js
+**/dist/*.js.map
+**/dist/*.d.ts 

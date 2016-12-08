@@ -1,7 +1,14 @@
-﻿/*
+﻿import markdownIt = require("markdown-it");
+let markdownProcessor = new markdownIt();
+
+export function processMarkdown(text: string): any {
+    return markdownProcessor.render(text);
+}
+
+/*
 Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
 */
-enum Size {
+export enum Size {
     Auto,
     Stretch,
     Small,
@@ -9,12 +16,12 @@ enum Size {
     Large
 }
 
-enum Spacing {
+export enum Spacing {
     None,
     Default
 }
 
-enum TextSize {
+export enum TextSize {
     Small,
     Normal,
     Medium,
@@ -22,13 +29,13 @@ enum TextSize {
     ExtraLarge
 }
 
-enum TextWeight {
+export enum TextWeight {
     Lighter,
     Normal,
     Bolder
 }
 
-enum TextColor {
+export enum TextColor {
     Default,
     Dark,
     Light,
@@ -38,18 +45,18 @@ enum TextColor {
     Attention
 }
 
-enum HorizontalAlignment {
+export enum HorizontalAlignment {
     Left,
     Center,
     Right
 }
 
-enum PictureStyle {
+export enum PictureStyle {
     Normal,
     Person
 }
 
-function stringToSize(value: string, defaultValue: Size): Size {
+export function stringToSize(value: string, defaultValue: Size): Size {
     switch (value) {
         case "auto":
             return Size.Auto;
@@ -66,7 +73,7 @@ function stringToSize(value: string, defaultValue: Size): Size {
     }
 }
 
-function stringToTextSize(value: string, defaultValue: TextSize): TextSize {
+export function stringToTextSize(value: string, defaultValue: TextSize): TextSize {
     switch (value) {
         case "small":
             return TextSize.Small;
@@ -83,7 +90,7 @@ function stringToTextSize(value: string, defaultValue: TextSize): TextSize {
     }
 }
 
-function stringToTextWeight(value: string, defaultValue: TextWeight): TextWeight {
+export function stringToTextWeight(value: string, defaultValue: TextWeight): TextWeight {
     switch (value) {
         case "lighter":
             return TextWeight.Lighter;
@@ -96,7 +103,7 @@ function stringToTextWeight(value: string, defaultValue: TextWeight): TextWeight
     }
 }
 
-function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
+export function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
     switch (value) {
         case "default":
             return TextColor.Default;
@@ -117,7 +124,7 @@ function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
     }
 }
 
-function stringToHorizontalAlignment(value: string, defaultValue: HorizontalAlignment): HorizontalAlignment {
+export function stringToHorizontalAlignment(value: string, defaultValue: HorizontalAlignment): HorizontalAlignment {
     switch (value) {
         case "left":
             return HorizontalAlignment.Left;
@@ -130,7 +137,7 @@ function stringToHorizontalAlignment(value: string, defaultValue: HorizontalAlig
     }
 }
 
-function stringToPictureStyle(value: string, defaultValue: PictureStyle): PictureStyle {
+export function stringToPictureStyle(value: string, defaultValue: PictureStyle): PictureStyle {
     switch (value) {
         case "person":
             return PictureStyle.Person;
@@ -141,7 +148,7 @@ function stringToPictureStyle(value: string, defaultValue: PictureStyle): Pictur
     }
 }
 
-interface IEvent<TSender> {
+export interface IEvent<TSender> {
     subscribe(fn: (sender: TSender, args: any) => void): void;
     unsubscribe(fn: (sender: TSender, args: any) => void): void;
 }
@@ -169,17 +176,17 @@ class EventDispatcher<TSender> implements IEvent<TSender> {
     }
 }
 
-function isNullOrEmpty(value: string): boolean {
+export function isNullOrEmpty(value: string): boolean {
     return value === undefined || value === null || value === "";
 }
 
-function appendChild(node: Node, child: Node) {
+export function appendChild(node: Node, child: Node) {
     if (child != null && child != undefined) {
         node.appendChild(child);
     }
 }
 
-abstract class CardElement {
+export abstract class CardElement {
     static createElement(container: Container, typeName: string): CardElement {
         switch (typeName) {
             case "TextBlock":
@@ -291,7 +298,7 @@ abstract class CardElement {
     }
 }
 
-class TextBlock extends CardElement {
+export class TextBlock extends CardElement {
     textSize: TextSize = TextSize.Normal;
     textWeight: TextWeight = TextWeight.Normal;
     textColor: TextColor = TextColor.Default;
@@ -410,7 +417,7 @@ class TextBlock extends CardElement {
     }
 }
 
-class Fact {
+export class Fact {
     name: string;
     value: string;
 
@@ -420,7 +427,7 @@ class Fact {
     }
 }
 
-class FactGroup extends CardElement {
+export class FactGroup extends CardElement {
     private _items: Array<Fact> = [];
 
     get items(): Array<Fact> {
@@ -492,7 +499,7 @@ class FactGroup extends CardElement {
     }
 }
 
-class Picture extends CardElement {
+export class Picture extends CardElement {
     style: PictureStyle = PictureStyle.Normal;
     url: string;
 
@@ -546,7 +553,7 @@ class Picture extends CardElement {
     }
 }
 
-class PictureGallery extends CardElement {
+export class PictureGallery extends CardElement {
     private _items: Array<Picture> = [];
 
     pictureSize: Size = Size.Medium;
@@ -594,7 +601,7 @@ class PictureGallery extends CardElement {
     }
 }
 
-abstract class Action {
+export abstract class Action {
     private _owner: CardElement;
 
     name: string;
@@ -634,10 +641,10 @@ abstract class Action {
     }
 }
 
-abstract class ExternalAction extends Action {
+export abstract class ExternalAction extends Action {
 }
 
-class TargetUri {
+export class TargetUri {
     os: string;
     uri: string;
 
@@ -647,7 +654,7 @@ class TargetUri {
     }
 }
 
-class OpenUri extends ExternalAction {
+export class OpenUri extends ExternalAction {
     private _targets: Array<TargetUri> = [];
 
     addTarget(): TargetUri {
@@ -679,7 +686,7 @@ class OpenUri extends ExternalAction {
     }
 }
 
-class HttpPOST extends ExternalAction {
+export class HttpPOST extends ExternalAction {
     target: string;
     body: string;
     bodyContentType: string;
@@ -697,7 +704,7 @@ class HttpPOST extends ExternalAction {
     }
 }
 
-abstract class Input extends CardElement {
+export abstract class Input extends CardElement {
     id: string;
     title: string;
     value: string;
@@ -726,7 +733,7 @@ abstract class Input extends CardElement {
     abstract render(): HTMLElement;
 }
 
-class TextInput extends Input {
+export class TextInput extends Input {
     maxLength: number;
     isMultiline: boolean;
 
@@ -752,7 +759,7 @@ class TextInput extends Input {
     }
 }
 
-class Choice {
+export class Choice {
     display: string;
     value: string;
 
@@ -762,7 +769,7 @@ class Choice {
     }
 }
 
-class MultichoiceInput extends Input {
+export class MultichoiceInput extends Input {
     private _choices: Array<Choice> = [];
 
     constructor(container: Container) {
@@ -803,7 +810,7 @@ class MultichoiceInput extends Input {
     }
 }
 
-class DateInput extends Input {
+export class DateInput extends Input {
     includeTime: boolean;
 
     constructor(container: Container) {
@@ -847,7 +854,7 @@ class DateInput extends Input {
     }
 }
 
-class ActionCard extends Action {
+export class ActionCard extends Action {
     private _allowedActionTypes: Array<string> = ["OpenUri", "HttpPOST"];
     private _inputs: Array<Input> = [];
     private _actions: Array<ExternalAction> = [];
@@ -965,18 +972,18 @@ class ActionCard extends Action {
     }
 }
 
-enum ActionButtonStyle {
+export enum ActionButtonStyle {
     Link,
     Push
 }
 
-enum ActionButtonState {
+export enum ActionButtonState {
     Normal,
     Expanded,
     Subdued
 }
 
-class ActionButton {
+export class ActionButton {
     private _action: Action;
     private _style: ActionButtonStyle;
     private _onClick: EventDispatcher<ActionButton> = new EventDispatcher<ActionButton>();
@@ -1044,7 +1051,7 @@ class ActionButton {
     }
 }
 
-class ActionGroup extends CardElement {
+export class ActionGroup extends CardElement {
     static buttonStyle: ActionButtonStyle = ActionButtonStyle.Push;
 
     private _actionButtons: Array<ActionButton> = [];
@@ -1179,7 +1186,7 @@ class ActionGroup extends CardElement {
     }
 }
 
-class Separator extends CardElement {
+export class Separator extends CardElement {
     parse(json: any) {
         super.parse(json);
 
@@ -1194,7 +1201,7 @@ class Separator extends CardElement {
     }
 }
 
-class Container extends CardElement {
+export class Container extends CardElement {
     private _forbiddenItemTypes: Array<string>;
     private _items: Array<CardElement> = [];
     private _element: HTMLDivElement;
@@ -1365,7 +1372,7 @@ class Container extends CardElement {
     }
 }
 
-class Column extends Container {
+export class Column extends Container {
     private _useWeight: boolean = false;
     private _weight: number = 100;
 
@@ -1397,7 +1404,7 @@ class Column extends Container {
     }
 }
 
-class ColumnGroup extends CardElement {
+export class ColumnGroup extends CardElement {
     private _items: Array<Column> = [];
 
     addColumn(): Column {
@@ -1450,7 +1457,7 @@ class ColumnGroup extends CardElement {
     }
 }
 
-class AdaptiveCard {
+export class AdaptiveCard {
     private _rootContainer = new Container(null);
 
     textColor: TextColor = TextColor.Dark;

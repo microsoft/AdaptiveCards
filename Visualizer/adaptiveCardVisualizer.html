@@ -7,11 +7,7 @@
 
     <link rel="stylesheet" href="./css/app.css" type="text/css" />
 
-	<script src="https://cdn.jsdelivr.net/markdown-it/7.0.0/markdown-it.min.js"></script>
-    <script src="ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
-
-    <script src="dist/adaptivecard.js"></script>
-    <script src="dist/app.js"></script>
+    <script src="dist/bundle.js"></script>
 </head>
 <body>
     <div class="uiRoot">
@@ -151,23 +147,5 @@
             </div>
         </div>
     </div>
-    <script>
-        markdownProcessor = window.markdownit();
-
-        editor = ace.edit("editor");
-        editor.setTheme("ace/theme/chrome");
-        editor.setOptions(
-            {
-                "showPrintMargin": false,
-                "displayIndentGuides": false,
-                "showFoldWidgets": true,
-                "highlightSelectedWord": false,
-                "fontSize": "14px"
-            });
-        editor.getSession().setMode("ace/mode/json");
-        editor.getSession().on(
-            'change',
-            function(e) { renderCard(); });
-    </script>
 </body>
 </html>
