@@ -1,4 +1,5 @@
-﻿import {AdaptiveCard, TextColor, ActionGroup, ActionButtonStyle, appendChild, isNullOrEmpty} from "./adaptiveCard";
+﻿import { AdaptiveCard, TextColor, ActionGroup, ActionButtonStyle, appendChild, isNullOrEmpty } from "./adaptiveCard";
+import { defaultPayload } from "./constants";
 import * as ace from "brace";
 import "brace/mode/json";
 import "brace/theme/chrome";
@@ -179,6 +180,8 @@ function renderCard() {
 
                 node.appendChild(renderedHostContainer);
 
+                sessionStorage.setItem("AdaptivePayload", editor.getValue());
+
                 break;
             default:
                 if (isNullOrEmpty(cardTypeName)) {
@@ -198,14 +201,14 @@ function textareaChange() {
     renderCard();
 }
 
-function openFilePicker(){
+function openFilePicker() {
     document.getElementById("filePicker").click();
 }
 
 function filePickerChanged(evt) {
     let filePicker = document.getElementById("filePicker") as HTMLInputElement;
 
-    let file = filePicker.files[0]; 
+    let file = filePicker.files[0];
 
     if (file) {
         let reader = new FileReader();
@@ -216,7 +219,7 @@ function filePickerChanged(evt) {
 
         reader.readAsText(file);
     }
-    else { 
+    else {
         alert("Failed to load file");
     }
 }
@@ -237,16 +240,6 @@ function updateStyleSheet() {
     styleSheetLinkElement.href = hostContainerOptions[selectedHostContainerIndex].hostContainer.styleSheet;
 }
 
-function hostContainerPickerChanged(evt) {
-    let hostContainerPicker = document.getElementById("hostContainerPicker") as HTMLSelectElement;
-
-    selectedHostContainerIndex = hostContainerPicker.selectedIndex;
-
-    updateStyleSheet();
-
-    renderCard();
-}
-
 function getParameterByName(name, url) {
     if (!url) {
         url = window.location.href;
@@ -259,8 +252,6 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-
-
 class HostContainerOption {
     readonly name: string;
     readonly hostContainer: HostContainer;
@@ -271,7 +262,7 @@ class HostContainerOption {
     }
 }
 
-window.onload = () => {
+function setupEditor() {
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/chrome");
     editor.setOptions(
@@ -283,7 +274,19 @@ window.onload = () => {
             "fontSize": "14px",
         });
     editor.getSession().setMode("ace/mode/json");
-    editor.getSession().on("change", function (e) { renderCard(); });
+    editor.getSession().on("change", function(e) { renderCard(); });
+
+    // Load the cached payload if the user had one
+    let cachedPayload = sessionStorage.getItem("AdaptivePayload");
+    if (cachedPayload) {
+        editor.session.setValue(cachedPayload);
+    }
+    else {
+        editor.session.setValue(defaultPayload);
+    }
+}
+
+function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -323,7 +326,13 @@ window.onload = () => {
     let hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
     if (hostContainerPicker) {
-        hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
+        hostContainerPicker.addEventListener("change", () => {
+
+            // update the query string
+            history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
+
+            renderSelectedHostApp();
+        });
 
         for (let i = 0; i < hostContainerOptions.length; i++) {
             let option = document.createElement("option");
@@ -333,16 +342,47 @@ window.onload = () => {
         }
     }
 
+    setContainerAppFromUrl();
+}
+
+function setContainerAppFromUrl() {
+    let hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
+    let requestedHostApp = getParameterByName("hostApp", null);
+    if (requestedHostApp) {
+        hostContainerPicker.value = getParameterByName("hostApp", null);
+    }
+
+    renderSelectedHostApp();
+}
+
+function renderSelectedHostApp() {
+    let hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
+    selectedHostContainerIndex = hostContainerPicker.selectedIndex;
+
+    updateStyleSheet();
+    renderCard();
+}
+
+function setupFilePicker() {
     let filePicker = document.getElementById("filePicker");
     filePicker.addEventListener("change", filePickerChanged);
+}
+
+window.onload = () => {
+
+    setupEditor();
+
+    setupContainerPicker();
+
+    setupFilePicker();
 
     updateStyleSheet();
 
     renderCard();
 
-    let requestedHostContainer = getParameterByName("hostApp", null);
-    if (requestedHostContainer) {
-        hostContainerPicker.value = getParameterByName("hostApp", null);
-        hostContainerPickerChanged(null);
-    }
+    // handle Back and Forward after the Container app drop down is changed
+    window.addEventListener('popstate', function(e) {
+        setContainerAppFromUrl();
+    });
 };
+

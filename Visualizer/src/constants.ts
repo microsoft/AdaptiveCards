@@ -1,31 +1,4 @@
-﻿<!DOCTYPE html>
-
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Adaptive Card Visualizer</title>
-
-    <link rel="stylesheet" href="./css/app.css" type="text/css" />
-
-    <script src="dist/bundle.js"></script>
-</head>
-<body>
-    <div class="uiRoot">
-        <div class="uiHeader" style="display: flex;">
-			<div class="leftPane">
-				<div style="width: 0px; height: 0px; overflow: hidden">
-					<input type="file" id="filePicker" />
-				</div>
-            	<button style="height: 100%; float:left; display: table;" onclick="openFilePicker();">Load sample from file...</button>
-			</div>
-			<div class="rightPane">
-                <span style="margin-right: 6px;">Select a container:</span>
-				<select id="hostContainerPicker" style="height: 100%;"></select>
-			</div>
-        </div>
-        <div class="cardEditor">
-            <div class="leftPane">
-                <div id="editor">
+export const defaultPayload: string = `
 {
 	"@type": "AdaptiveCard",
 	"sections": [
@@ -139,13 +112,4 @@
 			]
 		}
 	]
-}
-                </div>
-            </div>
-            <div class="rightPane">
-                <div id="content" class="markupRender"></div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+}`;
