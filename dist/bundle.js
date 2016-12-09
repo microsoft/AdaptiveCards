@@ -288,7 +288,7 @@
 	    }
 	}
 	function setupContainerPicker() {
-	    hostContainerOptions.push(new HostContainerOption("Outlook Connector Card", new OutlookConnectorContainer("red", "./css/outlookConnectorCard.css")));
+	    hostContainerOptions.push(new HostContainerOption("Outlook Connector Card with some test text", new OutlookConnectorContainer("red", "./css/outlookConnectorCard.css")));
 	    hostContainerOptions.push(new HostContainerOption("Teams Connector Card", new TeamsConnectorContainer("./css/teamsConnectorCard.css")));
 	    hostContainerOptions.push(new HostContainerOption("Toast", new ToastContainer(362, "./css/toast.css")));
 	    hostContainerOptions.push(new HostContainerOption("Large Live Tile", new LiveTileContainer(310, 310, "./css/liveTile.css")));
