@@ -11,22 +11,20 @@ For example:
 
 **TODO: add Screenshot of some good Cards**
 
-## Installing
+## Install and build
 
-To run the interactive visualizer:
+To build and run the Visualizer:
 
-```
-cd to cloned repository root.
-npm install
-npm run build
-npm start
-```
+1. Clone this repo
+1. `npm install`
+1. `npm run build` (to build on every change do `npm run watch`)
+1. `npm start`
 
 # How it works
 
-Developers author the experience they want using a generic yet powerful JSON payload. With a properly described payload we take on the burden of presenting the best experience to a user wherever they are.
+Developers describe the experience they want using a generic yet powerful JSON payload. With a properly described payload we take on the burden of presenting the best experience to a user wherever they are.
 
-The payload is designed to be expressive enough that it addresses the long-tail of scenarios, without imposing the burden of fine-grained design, development, and testing on a variety of platforms and applications. 
+The payload is designed to be expressive enough that it addresses the long-tail of scenarios, without imposing the burden of fine-grained design, development, and testing across every platform and application. 
 
 Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, that may be `combined` together as necessary. 
 
@@ -34,7 +32,7 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 * `TextBlocks` takes up a single line (by default) and will be truncated as necessary. 
 * `Images` expand to the width of their container, while maintaining aspect ratio.
 * `ColumnGroups` allow developers to create rows and columns to partition elements
-* `Buttons` align horizontally if they fit; otherwise stack vertically.
+* `Actions` align horizontally if they fit; otherwise stack vertically.
 * `Input` includes text, multi-line, selections, dates, etc.
 
 # What's in the Toolkit
@@ -51,42 +49,15 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 Please see [the full schema](docs/Schema.md) for the list of elements and properties that we support.
 The `/samples` folder also has a list of payloads to get started with.
  
-# Render Hints
+# Documentation
 
-Certain applications will have specialized rendering features that aren't applicable everywhere. For example, Live Tiles allow for vertical text alignment, while others do not.
-
-To accomodate this requirement we partitioned the properties of each element to must-have, and nice-to-have. A "nice-to-have" property will be prefixed with `hint-*`
-
-What this means is that each client will make a best-effort approach to render the Card as the developer specified, but may have some loss of fidelity under some circumstances.
-
-## Hints Example
-
-Take the following payload which describes a line of text that will be vertically aligned *if possible*
-
-```
-{
-    "text": "Great. What time would you like to see it?",
-    "hint-verticalAligment": "bottom",
-}
-```
-
-The `hint-verticalAligment` property may not be rendered on an older Skype client, but the `text` itself will be preserved.
-
-# Speech customizations
-
-While we commonly focus on a Card being visual, it's important to consider how your bot might behave on a headless device that is purely speech enabled. By adorning your Card with speech-hints, you can influence how your Card is read aloud on headless devices that don't have a screen.
+Please see the `docs` folder for more information.
 
 # Versioning and fallback
 
 Versioning and Fallback are important topics and have a dedicated page/discussion. 
 
 See the following page for more details on [Versioning and Graceful fallback](docs/GracefulFallback.md)
-
-# Future Explorations
-
-* Allow developers who **require** full UI customization to take on the burden of drawing their own UI: XAML, HTML, 3D 
-* Inline update of Cards
-* Contextual tailoring based on client-properties (e.g., if user is driving)
 
 # Rendering Cards in your App or Web Site
 
