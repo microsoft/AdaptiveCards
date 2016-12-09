@@ -257,4 +257,5 @@ paket-files/
 *.d.ts
 *.js.map
 *.md
+Visualizer/*.*
 tsconfig.json
