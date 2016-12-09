@@ -11,7 +11,7 @@
     "bundle": "webpack --watch",
     "start": "http-server ./Visualizer -c-1 -o -a localhost",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "validate-schema": "ajv validate -s ./schemas/adaptive-card.json -d 'samples/**/*.json'"
+    "validate-schema": "ajv validate -s ./schemas/adaptive-card.json -d \"samples/{Approved,Proposed}/**/*.json\""
   },
   "repository": {
     "type": "git",
