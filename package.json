@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://git@github.com/matthidinger/AdaptiveCardToolkit.git"
+    "url": "git://git@github.com/microsoft/AdaptiveCards.git"
   },
   "dependencies": {
     "brace": "0.9.0",
