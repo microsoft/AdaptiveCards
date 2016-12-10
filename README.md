@@ -7,9 +7,8 @@ For example:
 * A Bot Framework developer can send an Adaptive Card to a Skype user, which would render beautifully on iOS, Android, Windows, and the web.
 * An Outlook Connector developer can describe a rich Connector visualization with complex layout
 * A Windows developer can create a rich Live Tile or Toast Notification on PC, Mobile, Xbox, and HoloLens
-* A Cortana developer can describe a notification that can appear on a PC screen, a Car, or spoken aloud on a headless device
 
-**TODO: add Screenshot of some good Cards**
+![Diagram](docs/images/AdaptiveCardsDiagram.png)
 
 ## Install and build
 
