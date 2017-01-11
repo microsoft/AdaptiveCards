@@ -1,0 +1,37 @@
+{
+    "appName": "Amzon.com",
+    "activationUri": "...",
+    "visual": {
+        "backgroundColor":"@34234",
+        "icon":"...",
+        "title":"...",
+        "body": [
+            {
+                "@type": "TextBlock",
+                "text": "Serious Pie",
+                "textWeight": "bolder",
+                "textSize": "medium"
+            },
+            {
+                "@type": "TextBlock",
+                "text": "9.3 · $$ · Pizza",
+                "isSubtle": true
+            },
+            {
+                "@type": "TextBlock",
+                "text": "The BEST artisan pizza in Seattle!",
+                "wrap": true
+            },
+            {
+                "@type": "Image",
+                "url": "http://res.cloudinary.com/sagacity/image/upload/c_crop,h_670,w_635,x_0,y_0/c_scale,w_640/v1397425743/Untitled-4_lviznp.jpg",
+                "size": "large"
+            },
+            {
+                // This is NOT part of protocol, but custom element which has custom string interpreted by client
+                "@type": "ProgressBar",
+                "Value": "{Binding XYZ}"
+            }
+        ]
+    }
+}
