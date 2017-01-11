@@ -281,6 +281,7 @@ function renderCard() {
     }
     catch (e) {
         document.getElementById('content').innerHTML = "Error: " + e.toString();
+        debugger;
     }
 }
 
