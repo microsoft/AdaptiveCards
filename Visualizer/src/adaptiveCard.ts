@@ -184,6 +184,8 @@ export function appendChild(node: Node, child: Node) {
 export abstract class CardElement {
     static createElement(container: Container, typeName: string): CardElement {
         switch (typeName) {
+            case "Container":
+                return new Container(container);
             case "TextBlock":
                 return new TextBlock(container);
             case "Image":
@@ -204,6 +206,8 @@ export abstract class CardElement {
                 return new DateInput(container);
             case "MultichoiceInput":
                 return new MultichoiceInput(container);
+            case "ToggleInput":
+                return new ToggleInput(container);
             default:
                 throw new Error("Unknown element type: " + typeName);
         }
@@ -701,6 +705,8 @@ export abstract class Input extends CardElement {
                 return new MultichoiceInput(container);
             case "DateInput":
                 return new DateInput(container);
+            case "ToggleInput":
+                return new ToggleInput(container);
             default:
                 throw new Error("Unknown input type: " + typeName);
         }
@@ -736,7 +742,12 @@ export class TextInput extends Input {
 
     render(): HTMLElement {
         let element = document.createElement("textarea");
-        element.className = "textInput";
+        element.className = "input textInput";
+
+        if (this.isMultiline) {
+            element.className += " multiline";
+        }
+
         element.placeholder = this.title;
 
         return element;
@@ -750,6 +761,15 @@ export class Choice {
     parse(json: any) {
         this.display = json["display"];
         this.value = json["value"];
+    }
+}
+
+export class ToggleInput extends Input {
+    render(): HTMLElement {
+        let element = document.createElement("div");
+        element.innerHTML = '<input type="checkbox" class="input toggleInput"></input><div class="toggleInputLabel">' + this.title + '</div>';
+
+        return element;
     }
 }
 
@@ -780,7 +800,7 @@ export class MultichoiceInput extends Input {
 
     render(): HTMLElement {
         let selectElement = document.createElement("select");
-        selectElement.className = "multichoiceInput";
+        selectElement.className = "input multichoiceInput";
 
         for (let i = 0; i < this._choices.length; i++) {
             let option = document.createElement("option");
@@ -811,6 +831,7 @@ export class DateInput extends Input {
 
     render(): HTMLElement {
         let container = document.createElement("div");
+        container.className = "input";
         container.style.display = "flex";
 
         let datePicker = document.createElement("input");
@@ -915,6 +936,10 @@ export class ActionCard extends Action {
         else {
             for (let i = 0; i < this._inputs.length; i++) {
                 let inputElement = this._inputs[i].internalRender();
+
+                if (i == 0) {
+                    this._inputs[i].removeTopSpacing(inputElement);
+                }
 
                 appendChild(actionCardElement, inputElement);
             }
@@ -1046,7 +1071,7 @@ export class ActionGroup extends CardElement {
 
         this._actionCardContainer.innerHTML = '';
         this._actionCardContainer.style.padding = null;
-        this._actionCardContainer.style.marginTop = null;
+        this._actionCardContainer.style.marginTop = this._actions.length > 1 ? null : "0px";
 
         appendChild(
             this._actionCardContainer,
@@ -1120,6 +1145,11 @@ export class ActionGroup extends CardElement {
         let buttonStrip = document.createElement("div");
         buttonStrip.className = "buttonStrip";
 
+        this._actionCardContainer = document.createElement("div");
+        this._actionCardContainer.className = "actionCardContainer";
+        this._actionCardContainer.style.padding = "0px";
+        this._actionCardContainer.style.marginTop = "0px";
+
         if (this._actions.length == 1 && this._actions[0] instanceof ActionCard) {
             this.showActionCardPane(this._actions[0]);
         }
@@ -1149,11 +1179,6 @@ export class ActionGroup extends CardElement {
 
         appendChild(element, buttonStrip);
 
-        this._actionCardContainer = document.createElement("div");
-        this._actionCardContainer.className = "actionCardContainer";
-        this._actionCardContainer.style.padding = "0px";
-        this._actionCardContainer.style.marginTop = "0px";
-
         appendChild(element, this._actionCardContainer);
 
         return element;
@@ -1180,6 +1205,7 @@ export class Container extends CardElement {
     private _items: Array<CardElement> = [];
     private _element: HTMLDivElement;
     private _textColor: TextColor = TextColor.Default;
+    private _itemsCollectionPropertyName: string;
 
     private isAllowedItemType(elementType: string) {
         if (this._forbiddenItemTypes == null) {
@@ -1207,9 +1233,13 @@ export class Container extends CardElement {
     backgroundImageUrl: string;
     backgroundColor: string;
 
-    constructor(container: Container, forbiddenItemTypes: Array<string> = null) {
+    constructor(
+        container: Container,
+        forbiddenItemTypes: Array<string> = null,
+        itemsCollectionPropertyName: string = "items") {
         super(container);
 
+        this._itemsCollectionPropertyName = itemsCollectionPropertyName;
         this._forbiddenItemTypes = forbiddenItemTypes;
     }
 
@@ -1283,8 +1313,8 @@ export class Container extends CardElement {
 
         this._textColor = stringToTextColor(json["textColor"], TextColor.Default);
 
-        if (json["items"] != null) {
-            let items = json["items"] as Array<any>;
+        if (json[this._itemsCollectionPropertyName] != null) {
+            let items = json[this._itemsCollectionPropertyName] as Array<any>;
 
             for (let i = 0; i < items.length; i++) {
                 let elementType = items[i]["@type"];
@@ -1351,8 +1381,11 @@ export class Container extends CardElement {
 }
 
 export class Column extends Container {
-    private _useWeight: boolean = false;
-    private _weight: number = 100;
+    private get useWeight(): boolean {
+        return this.size === undefined;
+    }
+    
+    weight: number = 100;
 
     protected get cssClassName(): string {
         return "column";
@@ -1364,14 +1397,13 @@ export class Column extends Container {
         this.size = stringToSize(json["size"], undefined);
 
         if (this.size === undefined) {
-            this._useWeight = true;
-            this._weight = Number(json["size"]);
+            this.weight = Number(json["size"]);
         }
     }
 
     adjustLayout(element: HTMLElement) {
-        if (this._useWeight) {
-            element.style.flex = "1 1 " + this._weight + "%";
+        if (this.useWeight) {
+            element.style.flex = "1 1 " + this.weight + "%";
         }
         else {
             switch (this.size) {
@@ -1439,30 +1471,21 @@ export class ColumnGroup extends CardElement {
 }
 
 export class AdaptiveCard {
-    private _rootContainer = new Container(null);
-
-    textColor: TextColor = TextColor.Dark;
+    root = new Container(null, null, "body");
+    title: string;
+    description1: string;
+    description2: string;
 
     parse(json: any) {
-        this._rootContainer.backgroundImageUrl = json["backgroundImage"];
+        this.title = json["title"];
+        this.description1 = json["description1"];
+        this.description2 = json["description2"];
 
-        if (json["sections"] != undefined) {
-            let sectionArray = json["sections"] as Array<any>;
-
-            for (var i = 0; i < sectionArray.length; i++) {
-                let section = new Container(this._rootContainer, ["Section"]);
-
-                section.parse(sectionArray[i]);
-
-                this._rootContainer.addElement(section);
-            }
-        }
+        this.root.parse(json);
     }
 
     render(): HTMLElement {
-        this._rootContainer.textColor = this.textColor;
-
-        let renderedContainer = this._rootContainer.internalRender();
+        let renderedContainer = this.root.internalRender();
         renderedContainer.className = "rootContainer";
 
         return renderedContainer;

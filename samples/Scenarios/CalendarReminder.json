@@ -1,82 +1,38 @@
-
 {
 	"@type": "AdaptiveCard",
-	"sections": [
-		{
-			"items": [
-				{
-					"@type": "ColumnGroup",
-					"items": [
-						{
-							"size": "auto",
-							"items": [
-                				{
-                					"@type": "Image",
-                					"url": "./assets/calendaricon.png",
-                					"size": "auto"
-                				}
-							]
-						},
-						{
-							"size": "stretch",
-							"items": [
-							    {
-							        "@type": "TextBlock",
-							        "text": "Adaptive Card design session",
-							        "phonetic": "Your upcoming event Adaptive Card design sessions"
-							    },
-							    {
-							        "@type": "TextBlock",
-							        "text": "Conf Room 112/3377 (10)",
-							        "phonetic": "In Conf Room 112/3377",
-							        "isSubtle": true
-							    },
-							    {
-							        "@type": "TextBlock",
-							        "text": "12:30 PM - 1:30 PM",
-							        "phonetic": "At 12:30 PM",
-							        "isSubtle": true
-							    }
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-		    "items": [
-			    {
-			        "@type": "TextBlock",
-			        "text": "Snooze for"
-			    },
-			    {
-			        "@type": "MultichoiceInput",
-			        "size": "stretch",
-			        "choices": [
-			            { "display": "5 minutes" },
-			            { "display": "15 minutes" },
-			            { "display": "30 minutes" }
-			        ]
-			    },
-			    {
-			        "@type": "ActionGroup",
-			        "items": [
-			            {
-			                "@type": "HttpPOST",
-			                "name": "Snooze"
-			            },
-			            {
-			                "@type": "HttpPOST",
-			                "name": "I'll be late"
-			            },
-			            {
-			                "@type": "HttpPOST",
-			                "name": "Dismiss"
-			            }
-			        ]
-			    }
-		    ]
-		}
+	"title": "Adaptive Card design session",
+	"description1": "Conf Room 112/3377 (10)",
+	"description2": "12:30 PM - 1:30 PM",
+	"body": [
+	    {
+	        "@type": "TextBlock",
+	        "text": "Snooze for"
+	    },
+	    {
+	        "@type": "MultichoiceInput",
+	        "size": "stretch",
+	        "choices": [
+	            { "display": "5 minutes" },
+	            { "display": "15 minutes" },
+	            { "display": "30 minutes" }
+	        ]
+	    },
+	    {
+	        "@type": "ActionGroup",
+	        "items": [
+	            {
+	                "@type": "HttpPOST",
+	                "name": "Snooze"
+	            },
+	            {
+	                "@type": "HttpPOST",
+	                "name": "I'll be late"
+	            },
+	            {
+	                "@type": "HttpPOST",
+	                "name": "Dismiss"
+	            }
+	        ]
+	    }
 	]
 }
-                

@@ -1,7 +1,8 @@
 {
 	"@type": "AdaptiveCard",
-	"sections": [
+	"body": [
 		{
+		    "@type": "Container",
 		    "backgroundColor": "#2E89FC",
 		    "padding": "narrow",
 		    "textColor": "light",
@@ -42,7 +43,7 @@
 		    ]
 		},
 		{
-		    "padding": "narrow",
+		    "@type": "Container",
 			"items": [
 				{
 					"@type": "TextBlock",

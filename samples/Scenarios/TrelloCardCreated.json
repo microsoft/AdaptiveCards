@@ -1,11 +1,12 @@
 {
 	"@type": "AdaptiveCard",
-	"sections": [
+	"body": [
 		{
+		    "@type": "Container",
 			"items": [
 			    {
 			        "@type": "TextBlock",
-			        "text": "Card created: \"Publish Adaptive Card schema\"",
+			        "text": "Card created: Publish Adaptive Card schema",
 			        "textWeight": "bolder",
 			        "textSize": "medium"
 			    },
@@ -44,6 +45,7 @@
 			]
 		},
 		{
+		    "@type": "Container",
 		    "items": [
 			    {
 			        "@type": "TextBlock",
