@@ -39,7 +39,7 @@ class LiveTileContainer extends HostContainer {
         element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        card.textColor = LiveTileContainer.textColor;
+        card.root.textColor = LiveTileContainer.textColor;
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
 
@@ -71,7 +71,37 @@ class ToastContainer extends HostContainer {
         element.style.backgroundColor = ToastContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        card.textColor = LiveTileContainer.textColor;
+        if (card.title != undefined || card.description1 != undefined) {
+            let headerElement = document.createElement("div");
+            headerElement.className = "headerContainer";
+
+            let html: string = '';
+            html += '<div style="flex: 0 0 auto; margin-right: 10px;">';
+            html += '  <img class="image autoSize" style="overflow: hidden; margin-top: 0px;" src="./assets/appicon.png"/>';
+            html += '</div>';
+
+            html += '<div style="flex: 1 1 100%">';
+
+            if (card.title != undefined) {
+                html += '  <div class="text defaultSize lightColor">' + card.title + '</div>';
+            }
+
+            if (card.description1 != undefined) {
+                html += '  <div class="text defaultSize lightColor subtle">' + card.description1 + '</div>';
+            }
+
+            if (card.description2 != undefined) {
+                html += '  <div class="text small lightColor subtle">' + card.description2 + '</div>';
+            }
+
+            html += '</div>';
+
+            headerElement.innerHTML = html;
+
+            appendChild(element, headerElement);
+        }
+
+        card.root.textColor = LiveTileContainer.textColor;
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
 
@@ -83,7 +113,47 @@ class ToastContainer extends HostContainer {
     }
 }
 
-class OutlookConnectorContainer extends HostContainer {
+abstract class ConnectorContainer extends HostContainer {
+    renderHeader(card: AdaptiveCard): HTMLElement {
+        let headerElement: HTMLElement = null;
+
+        if (card.title != undefined || card.description1 != undefined) {
+            headerElement = document.createElement("div");
+            headerElement.className = "headerContainer";
+
+            let html = '<div>';
+            let spaceNeeded = false;
+
+            if (card.title != undefined) {
+                html += '  <div class="text medium bolder defaultColor">' + card.title + '</div>';
+
+                spaceNeeded = true;
+            }
+
+            if (card.description1 != undefined) {
+                html += '  <div class="text defaultSize defaultColor"';
+
+                if (spaceNeeded) {
+                    html += ' style="padding-top: 16px;"';
+                }
+                
+                html += '>' + card.description1 + '</div>';
+            }
+
+            if (card.description2 != undefined) {
+                html += '  <div class="text defaultSize defaultColor subtle">' + card.description2 + '</div>';
+            }
+
+            html += '</div>';
+
+            headerElement.innerHTML = html;
+        }
+
+        return headerElement;
+    }
+}
+
+class OutlookConnectorContainer extends ConnectorContainer {
     private _themeColor: string;
 
     constructor(themeColor: string, styleSheet: string) {
@@ -105,6 +175,12 @@ class OutlookConnectorContainer extends HostContainer {
             element.style.borderLeft = "3px solid " + this._themeColor;
         }
 
+        let headerElement = this.renderHeader(card);
+
+        if (headerElement != null) {
+            appendChild(element, headerElement);
+        }
+
         ActionGroup.buttonStyle = ActionButtonStyle.Link;
 
         let renderedCard = card.render();
@@ -115,13 +191,19 @@ class OutlookConnectorContainer extends HostContainer {
     }
 }
 
-class TeamsConnectorContainer extends HostContainer {
+class TeamsConnectorContainer extends ConnectorContainer {
     render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
         element.style.borderBottom = "1px solid #F1F1F1";
         element.style.border = "1px solid #F1F1F1"
+
+        let headerElement = this.renderHeader(card);
+
+        if (headerElement != null) {
+            appendChild(element, headerElement);
+        }
 
         ActionGroup.buttonStyle = ActionButtonStyle.Link;
 
@@ -199,6 +281,7 @@ function renderCard() {
     }
     catch (e) {
         document.getElementById('content').innerHTML = "Error: " + e.toString();
+        debugger;
     }
 }
 

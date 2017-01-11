@@ -1,7 +1,8 @@
 {
 	"@type": "AdaptiveCard",
-	"sections": [
+	"body": [
 		{
+		    "@type": "Container",
 			"title": "Passengers",
 			"separator": "bottom",
 			"items": [
@@ -20,6 +21,7 @@
 			]
 		},
 		{
+		    "@type": "Container",
 			"title": "2 Stops",
 			"separator": "bottom",
 			"items": [
@@ -84,6 +86,7 @@
 			]
 		},
 		{
+		    "@type": "Container",
 			"title": "Non-Stop",
 			"items": [
 				{
@@ -149,6 +152,7 @@
 			]
 		},
 		{
+		    "@type": "Container",
 			"items": [
 				{
 					"@type": "ColumnGroup",

@@ -1,7 +1,8 @@
 {
 	"@type": "AdaptiveCard",
-	"sections": [
+	"body": [
 		{
+		    "@type": "Container",
 			"separator": "bottom",
 			"items": [
 				{
@@ -40,6 +41,7 @@
 			]
 		},
 		{
+		    "@type": "Container",
 			"separator": "bottom",
 			"items": [
 				{
@@ -98,6 +100,7 @@
 			]
 		},
 		{
+		    "@type": "Container",
 			"separator": "bottom",
 			"items": [
 				{
@@ -155,6 +158,7 @@
 			]
 		},
 		{
+		    "@type": "Container",
 			"separator": "bottom",
 			"items": [
 				{
