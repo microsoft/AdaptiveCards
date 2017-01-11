@@ -38,23 +38,23 @@
 	// Find a better name?
 	"body": [
 		{
-			"@type": "@TextBlock"
+			"@type": "TextBlock"
 		},
 		{
-			"@type": "@Image"
+			"@type": "Image"
 		},
 		{
-			"@type": "@FactGroup"
+			"@type": "FactGroup"
 		},
 		{
-			"@type": "@ColumnGroup"
+			"@type": "ColumnGroup"
 		},
 		{
-			"@type": "@ImageGallery"
+			"@type": "ImageGallery"
 		},
 		{
 			// Used for Inline Actions
-			"@type": "@ActionGroup"
+			"@type": "ActionGroup"
 		}
 	]
 }
