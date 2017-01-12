@@ -105,6 +105,10 @@
     color: darkred;
 }
 
+.headerContainer {
+    padding: 16px 16px 0px 16px;
+}
+
 .rootContainer {
     padding: 16px;
 }
@@ -174,10 +178,6 @@ td.factValue {
 
 .imageGallery {
     margin: 20px 0px 0px 0px;
-}
-
-.input {
-    margin: 10px 0px 0px 0px;
 }
 
 .separator {
@@ -297,15 +297,23 @@ Other styles that can be specified:
     .linkButton.expanded:active
 */
 
-.textInput {
+.input {
+    margin: 10px 0px 0px 0px;
+}
+
+.input.textInput {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     border-color: #EAEAEA;
     border-width: 1px;
     border-style: solid;
     padding: 4px 8px 4px 8px;
-    height: 72px;
+    height: 30px;
     resize: none;
+}
+
+.input.textInput.multiline {
+    height: 72px;
 }
 
 .dateInput {
@@ -324,10 +332,22 @@ Other styles that can be specified:
     padding: 4px 8px 5px 8px;
 }
 
-.multichoiceInput {
+.input.multichoiceInput {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
     border-width: 1px;
     border-style: solid;
     padding: 4px 8px 6px 8px;
+}
+
+.input.toggleInput {
+    float: left;
+}
+
+.input.toggleInputLabel {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    margin-top: -3px;
+    margin-left: 6px;
+    float: left;
 }

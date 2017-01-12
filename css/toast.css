@@ -36,7 +36,7 @@
 
 .text.medium {
     font-size: 20px;
-    margin: -8px 0px 5px 0px;
+    margin: -6px 0px 5px 0px;
 }
 
 .text.large {
@@ -103,6 +103,11 @@
 
 .text.attentionColor {
     color: darkred;
+}
+
+.headerContainer {
+    padding: 12px 12px 0px 12px;
+    display: flex;
 }
 
 .rootContainer {
@@ -175,10 +180,6 @@ td.factValue {
 
 .imageGallery {
     margin: 20px 0px 0px 0px;
-}
-
-.input {
-    margin: 2px 0px 0px 0px;
 }
 
 .separator {
@@ -317,18 +318,26 @@ Other styles that can be specified:
     .linkButton.expanded:active
 */
 
-.textInput {
+.input {
+    margin: 2px 0px 0px 0px;
+}
+
+.input.textInput {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     border: 2px solid #797979;
     padding: 4px 8px 4px 8px;
     background-color: #131313;
     color: white;
-    height: 72px;
+    height: 30px;
     resize: none;
 }
 
-.textInput:hover {
+.input.textInput.multiline {
+    height: 72px;
+}
+
+.input.textInput:hover {
     border: 2px solid #A5A5A5;
     background-color: #0C0C0C;
 }
@@ -359,7 +368,7 @@ Other styles that can be specified:
     background-color: #0C0C0C;
 }
 
-.multichoiceInput {
+.input.multichoiceInput {
     font-family: 'Segoe UI', sans-serif;
     border: 2px solid #797979;
     padding: 4px 8px 6px 8px;
@@ -367,7 +376,19 @@ Other styles that can be specified:
     color: white;
 }
 
-.multichoiceInput:hover {
+.input.multichoiceInput:hover {
     border: 2px solid #A5A5A5;
     background-color: #0C0C0C;
+}
+
+.input.toggleInput {
+    float: left;
+}
+
+.input.toggleInputLabel {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    margin-top: -3px;
+    margin-left: 6px;
+    float: left;
 }
