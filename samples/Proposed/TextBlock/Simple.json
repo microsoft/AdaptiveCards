@@ -1,17 +1,13 @@
 {
     "@type": "AdaptiveCard",
-    "sections": [
+    "body": [
         {
-            "items": [
-                {
-                    "@type": "TextBlock",
-                    "text": "This is the first line"
-                },
-                {
-                    "@type": "TextBlock",
-                    "text": "This is the second line"
-                }
-            ]
+            "@type": "TextBlock",
+            "text": "This is the first line"
+        },
+        {
+            "@type": "TextBlock",
+            "text": "This is the second line"
         }
     ]
 }

@@ -1,27 +1,34 @@
 {
     "@type": "AdaptiveCard",
-    "sections": [
+    "body": [
         {
-            "items": [
-                {
-                    "@type": "TextBlock",
-                    "text": "This is the first line"
-                },
-                {
-                    "@type": "TextBlock",
-                    "text": "This is the second line"
-                },
-                {
-                    "@type": "TextBlock",
-                    "text": "This is the third line",
-                    "textSize": "large"
-                },
-                {
-                    "@type": "TextBlock",
-                    "text": "This is the fourth line",
-                    "textSize": "extraLarge"
-                }
-            ]
+            "@type": "TextBlock",
+            "text": "Default"
+        },
+        {
+            "@type": "TextBlock",
+            "text": "Small",
+            "textSize": "small"
+        },
+        {
+            "@type": "TextBlock",
+            "text": "Normal",
+            "textSize": "normal"
+        },
+        {
+            "@type": "TextBlock",
+            "text": "Medium",
+            "textSize": "medium"
+        },
+        {
+            "@type": "TextBlock",
+            "text": "Large",
+            "textSize": "large"
+        },
+        {
+            "@type": "TextBlock",
+            "text": "ExtraLarge",
+            "textSize": "extraLarge"
         }
     ]
 }
