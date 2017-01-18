@@ -1,8 +1,11 @@
+// TOOD: Can I pull this from the samples folder rather than copying it here?
+
 export const defaultPayload: string = `
 {
 	"@type": "AdaptiveCard",
-	"sections": [
+	"body": [
 		{
+		    "@type": "Container",
 			"items": [
 			    {
 			        "@type": "TextBlock",
@@ -45,6 +48,7 @@ export const defaultPayload: string = `
 			]
 		},
 		{
+		    "@type": "Container",
 		    "items": [
 			    {
 			        "@type": "TextBlock",
