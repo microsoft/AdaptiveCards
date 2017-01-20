@@ -2,17 +2,6 @@
     box-sizing: border-box;
 }
 
-.skypeContainer {
-    display: flex;
-    align-items: flex-start;
-}
-
-.rootContainer {
-    width: 300px;
-    border-radius: 5px;
-    background: rgba(234, 234, 234, 0.68);
-}
-
 .stretch {
     width: 100%;
 }
@@ -33,7 +22,6 @@
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     font-weight: normal;
-    color: #fff;
 }
 
 .text.defaultSize {
@@ -61,8 +49,8 @@
 }
 
 .text.extraLarge {
-    font-size: 40px;
-    margin: -15px 0px 5px 0px;
+    font-size: 30px;
+    margin: -11px 0px 5px 0px;
     padding: 0px 0px 0px 0px;
 }
 
@@ -103,7 +91,7 @@
 }
 
 .text.accentColor {
-    color: rgb(46, 137, 252);
+    color:  rgb(46, 137, 252);
 }
 
 .text.accentColor.subtle {
@@ -123,7 +111,9 @@
 }
 
 .rootContainer {
-    padding: 10px;
+    padding: 10px 12px;
+    /*Needed to position the bing glyph in the lower right*/
+    position: relative;
 }
 
 .container {
@@ -131,7 +121,7 @@
 }
 
 .image {
-    margin: 0px 0px 0px 0px;
+    margin: 5px 0px 0px 0px;
 }
 
 .image.autoSize {
@@ -202,9 +192,9 @@ td.factValue {
     margin: 20px 0px 0px 0px;
 }
 
-/*.columnGroup {
+.columnGroup {
     margin: 15px 0px 5px 0px;
-}*/
+}
 
 .column {
 }
@@ -221,45 +211,45 @@ td.factValue {
 
 .buttonStrip {
     display: flex;
-    flex-direction: column;
+    overflow: hidden;
 }
 
 .buttonStripItem {
-    flex-grow: 1;
-    flex-shrink: 1;
-    text-align: center;
-    flex-wrap: wrap;
-    margin: 5px;
+    flex: 0 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .buttonStripItemSpacer {
+    margin-right: 10px;
 }
 
 .pushButton {
     font-family: 'Segoe UI', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 6px 10px 5px 10px;
+    border: none;
+    padding: 4px 10px 5px 10px;
+    min-width: 80px; 
     text-align: center;
     vertical-align: middle;  
     cursor: default;
-    background-color: white;
-    border: solid 2px #dcdcdc;
-    border-radius: 25px;
-    color: #0078d7;
-    height: 40px;
+    background-color: #0078D7;
+    color: white;    
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
 }
 
 .pushButton:hover {
-    background-color: #0078d7;
-    color: #fff;
+    background-color: #005A9E;
 }
 
 .pushButton:active {
-    background-color: #0078d7;
-    color: #fff;
+    background-color: #004D84;
 }
 
 /*
@@ -373,44 +363,14 @@ Other styles that can be specified:
     float: left;
 }
 
-/*Bot hexagon*/
+/*Bing Glpyh*/
 
-.hexagon {
-    overflow: hidden;
-    visibility: hidden;
-    -webkit-transform: rotate(120deg);
-       -moz-transform: rotate(120deg);
-        -ms-transform: rotate(120deg);
-         -o-transform: rotate(120deg);
-            transform: rotate(120deg);
-    cursor: pointer;
-    width: 50px;
-    height: 40px;
-    margin: 2px 5px -20px 0px;
-}
-
-.hexagon-in1 {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    -webkit-transform: rotate(-60deg);
-       -moz-transform: rotate(-60deg);
-        -ms-transform: rotate(-60deg);
-         -o-transform: rotate(-60deg);
-            transform: rotate(-60deg);
-}
-
-.hexagon-in2 {
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: 50%;
-    background-image: url(../assets/bot-framework.png);
-    background-size: 50px 50px;
-    visibility: visible;
-    -webkit-transform: rotate(-60deg);
-       -moz-transform: rotate(-60deg);
-        -ms-transform: rotate(-60deg);
-         -o-transform: rotate(-60deg);
-            transform: rotate(-60deg);
+.rootContainer:after {
+   content: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMS4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjQyIiBoZWlnaHQ9IjQyIiB4PSIwIiB5PSIwIg0KCSB2aWV3Qm94PSIwIDAgNDIgNDIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyIDQyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7b3BhY2l0eTowLjg7ZmlsbDojRTJFMkUyO30NCgkuc3Qxe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPGc+DQoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTMzLjYsOC40TDguNCwzMy42TDAsNDJoNDJWMEwzMy42LDguNHoiLz4NCgk8cG9seWdvbiBjbGFzcz0ic3QxIiBwb2ludHM9IjI5LjMsMjUuNiAzMC40LDI4LjIgMzIsMjkgMjguNywzMC45IDI4LjcsMjIuNSAyNi4zLDIxLjcgMjYuMywzMi4zIDI4LjcsMzMuNyAzNC43LDMwLjIgMzQuNywyNy41IAkNCgkJIi8+DQo8L2c+DQo8L3N2Zz4NCg==);
+    
+    position: absolute;
+    pointer-events: none;
+    display: inline-block;
+    left: 243px;
+    top: 110px;
 }

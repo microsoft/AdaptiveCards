@@ -52,6 +52,40 @@ class LiveTileContainer extends HostContainer {
     }
 }
 
+class BingContainer extends HostContainer {
+    static backgroundColor: string = "#fff";
+    static textColor: TextColor = TextColor.Dark;
+
+    private _width: number;
+    private _height: number;
+
+    constructor(width: number, height: number, styleSheet: string) {
+        super(styleSheet);
+
+        this._width = width;
+        this._height = height;
+    }
+
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.style.width = this._width + "px";
+        element.style.height = this._height + "px";
+        element.style.backgroundColor = BingContainer.backgroundColor;
+        element.style.overflow = "hidden";
+
+        card.root.textColor = BingContainer.textColor;
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+
+        let renderedCard = card.render();
+        renderedCard.style.height = "100%";
+
+        appendChild(element, renderedCard);
+
+        return element;
+    }
+}
+
 class ToastContainer extends HostContainer {
     static backgroundColor: string = "#1F1F1F";
     static textColor: TextColor = TextColor.Light;
@@ -417,6 +451,10 @@ function setupContainerPicker() {
             "Skype Card",
             new SkypeCardContainer("./css/skypeCard.css")));
 
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Bing Answers",
+            new BingContainer(285, 150, "./css/bing.css")));
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", () => {
