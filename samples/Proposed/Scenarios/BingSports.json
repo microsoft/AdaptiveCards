@@ -6,7 +6,8 @@
             "items": [
                 {
                     "@type": "TextBlock",
-                    "text": "Seattle vs Panthers"
+                    "text": "Seattle vs Panthers",
+                    "isSubtle": true
                 }
             ]
         },

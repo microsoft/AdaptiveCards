@@ -6,11 +6,13 @@
             "items": [
                 {
                     "@type": "TextBlock",
-                    "text": "Microsoft Corp (NASDAQ: MSFT)"
+                    "text": "Microsoft Corp (NASDAQ: MSFT)",
+                    "isSubtle": true
                 },
                 {
                     "@type": "TextBlock",
-                    "text": "January 19, 4:00 PM EST"
+                    "text": "January 19, 4:00 PM EST",
+                    "isSubtle": true
                 }
             ]
         },
