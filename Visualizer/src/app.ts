@@ -453,7 +453,7 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "Bing Answers",
+            "Bing",
             new BingContainer(285, 150, "./css/bing.css")));
 
     if (hostContainerPicker) {
