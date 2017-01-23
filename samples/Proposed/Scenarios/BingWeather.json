@@ -1,0 +1,86 @@
+{
+	"@type": "AdaptiveCard",
+	"body": [
+		{
+			"@type": "Container",
+			"items": [
+				{
+					"@type": "TextBlock",
+					"text": "Seattle, Washington - January 20, 7:30 AM",
+					"isSubtle": "true"
+				}
+			]
+		},
+		{
+			"@type": "Container",
+			"items": [
+				{
+					"@type": "ColumnGroup",
+					"items": [
+						{
+							"size": "auto",
+							"items": [
+								{
+									"@type": "Image",
+									"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
+									"size": "small",
+									"horizontalAlignment": "center"
+								}
+							]
+						},
+						{
+							"size": "auto",
+							"items": [
+								{
+									"@type": "ColumnGroup",
+									"items": [
+										{
+											"@type": "Column",
+											"size": "auto",
+											"items": [
+												{
+													"@type": "TextBlock",
+													"text": "42",
+													"textSize": "extraLarge"
+												}
+											]
+										},
+										{
+											"@type": "Column",
+											"size": "auto",
+											"items": [
+												{
+													"@type": "TextBlock",
+													"text": "°F",
+													"textWeight": "bolder"
+												}
+											]
+										}
+									]
+								},
+								{
+									"@type": "TextBlock",
+									"text": "Mostly Clear",
+									"isSubtle": "true"
+								}
+							]
+						},
+						{
+							"size": "auto",
+							"items": [
+								{
+									"@type": "TextBlock",
+									"text": "Hi 51"
+								},
+								{
+									"@type": "TextBlock",
+									"text": "Lo 40"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
