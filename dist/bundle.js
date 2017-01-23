@@ -88,6 +88,30 @@
 	    LiveTileContainer.textColor = adaptiveCard_1.TextColor.Light;
 	    return LiveTileContainer;
 	}(HostContainer));
+	var BingContainer = (function (_super) {
+	    __extends(BingContainer, _super);
+	    function BingContainer(width, height, styleSheet) {
+	        _super.call(this, styleSheet);
+	        this._width = width;
+	        this._height = height;
+	    }
+	    BingContainer.prototype.render = function (card) {
+	        var element = document.createElement("div");
+	        element.style.width = this._width + "px";
+	        element.style.height = this._height + "px";
+	        element.style.backgroundColor = BingContainer.backgroundColor;
+	        element.style.overflow = "hidden";
+	        card.root.textColor = BingContainer.textColor;
+	        adaptiveCard_1.ActionGroup.buttonStyle = adaptiveCard_1.ActionButtonStyle.Push;
+	        var renderedCard = card.render();
+	        renderedCard.style.height = "100%";
+	        adaptiveCard_1.appendChild(element, renderedCard);
+	        return element;
+	    };
+	    BingContainer.backgroundColor = "#fff";
+	    BingContainer.textColor = adaptiveCard_1.TextColor.Dark;
+	    return BingContainer;
+	}(HostContainer));
 	var ToastContainer = (function (_super) {
 	    __extends(ToastContainer, _super);
 	    function ToastContainer(width, styleSheet) {
@@ -370,6 +394,7 @@
 	            new LiveTileContainer(48, 48, "./css/liveTile.css")));
 	    */
 	    hostContainerOptions.push(new HostContainerOption("Skype Card", new SkypeCardContainer("./css/skypeCard.css")));
+	    hostContainerOptions.push(new HostContainerOption("Bing", new BingContainer(285, 150, "./css/bing.css")));
 	    if (hostContainerPicker) {
 	        hostContainerPicker.addEventListener("change", function () {
 	            // update the query string
@@ -1741,7 +1766,7 @@
 	        this._items = [];
 	    }
 	    ColumnGroup.prototype.addColumn = function () {
-	        var column = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
+	        var column = new Column(this.container, ["ActionGroup"]);
 	        this._items.push(column);
 	        return column;
 	    };
