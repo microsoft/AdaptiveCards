@@ -1,0 +1,31 @@
+{
+    "@type": "AdaptiveCard",
+        "input": ""
+    },
+    "body": [
+        {
+            "@type": "Form",
+            "title": "Departure Date",
+            "inputs": [
+                {
+                    "@type": "Input",
+                    "id": "departureDate",
+                    "inputType": "date"
+                },
+                {
+                    "@type": "Input",
+                    "id": "returnDate",
+                    "title": "Return Date",
+                    "inputType": "date"
+                }
+            ],
+            "actions": [
+                {
+                    "@type": "Submit",
+                    "name": "Find Flights",
+                    "value": {}
+                }
+            ]
+        }
+    ]
+}
