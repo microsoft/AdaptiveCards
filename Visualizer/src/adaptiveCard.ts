@@ -1422,7 +1422,7 @@ export class ColumnGroup extends CardElement {
     private _items: Array<Column> = [];
 
     addColumn(): Column {
-        let column = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
+        let column = new Column(this.container, ["ActionGroup"]);
 
         this._items.push(column);
 
