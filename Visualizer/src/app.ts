@@ -419,6 +419,27 @@ class SkypeCardContainer extends HostContainer {
     }
 }
 
+
+class CortanaCarContainer extends HostContainer {
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.style.borderTop = "1px solid #F1F1F1";
+        element.style.borderRight = "1px solid #F1F1F1";
+        element.style.borderBottom = "1px solid #F1F1F1";
+        element.style.border = "1px solid #F1F1F1"
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Link;
+
+        let renderedCard = card.render();
+
+        appendChild(element, renderedCard);
+        let hostDiv = document.createElement("div");
+        appendChild(hostDiv, element);
+        appendChild(hostDiv, super.render(card));
+        return hostDiv;
+    }
+}
+
 declare var SpeechSynthesisUtterance: any;
 
 
@@ -572,38 +593,33 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "Outlook Connector Card",
+            "Outlook Connector",
             new OutlookConnectorContainer("red", "./css/outlookConnectorCard.css")));
+
     hostContainerOptions.push(
         new HostContainerOption(
-            "Teams Connector Card",
+            "Microsoft Teams",
             new TeamsConnectorContainer("./css/teamsConnectorCard.css")));
+
     hostContainerOptions.push(
         new HostContainerOption(
-            "Toast",
+            "Windows Notification",
             new ToastContainer(362, "./css/toast.css")));
+
     hostContainerOptions.push(
         new HostContainerOption(
-            "Large Live Tile",
+            "Windows Live Tile",
             new LiveTileContainer(310, 310, "./css/liveTile.css")));
-    /*
+            
     hostContainerOptions.push(
         new HostContainerOption(
-            "Wide Live Tile",
-            new LiveTileContainer(204, 100, "./css/liveTile.css")));
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Medium Live Tile",
-            new LiveTileContainer(100, 100, "./css/liveTile.css")));
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Small Live Tile",
-            new LiveTileContainer(48, 48, "./css/liveTile.css")));
-    */
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Skype Card",
+            "Skype",
             new SkypeCardContainer("./css/skypeCard.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Cortana Car",
+            new CortanaCarContainer("./css/cortanaCar.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
