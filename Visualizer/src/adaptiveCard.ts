@@ -651,17 +651,18 @@ export class ImageGallery extends CardElement {
 export abstract class Action {
     private _owner: CardElement;
 
-    name: string;
+    title: string;
 
     static create(owner: CardElement, typeName: string): Action {
         switch (typeName) {
             case "OpenUri":
             case "ViewAction":
-                return new OpenUri(owner);
+                return new OpenUriAction(owner);
+            case "Submit":
             case "HttpPOST":
-                return new HttpPOST(owner);
-            case "ActionCard":
-                return new ActionCard(owner);
+                return new SubmitAction(owner);
+            case "ShowCard":
+                return new ShowCardAction(owner);
             default:
                 throw new Error("Unknown action type: " + typeName);
         }
@@ -676,7 +677,7 @@ export abstract class Action {
     }
 
     parse(json: any) {
-        this.name = json["name"];
+        this.title = json["title"];
     }
 
     renderUi(container: Container, requiresTopSpacer: boolean = false): HTMLElement {
@@ -686,9 +687,6 @@ export abstract class Action {
     get hasUi(): boolean {
         return false;
     }
-}
-
-export abstract class ExternalAction extends Action {
 }
 
 export class TargetUri {
@@ -701,7 +699,7 @@ export class TargetUri {
     }
 }
 
-export class OpenUri extends ExternalAction {
+export class OpenUriAction extends Action {
     private _targets: Array<TargetUri> = [];
 
     addTarget(): TargetUri {
@@ -733,7 +731,47 @@ export class OpenUri extends ExternalAction {
     }
 }
 
-export class HttpPOST extends ExternalAction {
+export class ShowCardAction extends Action {
+    card: ICard;
+
+    parse(json: any) {
+        super.parse(json);
+
+        //this.card = json["card"];
+        if (json["card"] != undefined) {
+            this.card = new Container(this.owner.container, ["ActionGroup"]);
+            this.card.parse(json["card"]);
+        }
+
+    }
+}
+
+
+export class SubmitAction extends Action {
+    data: any;
+    inputs: Array<Input> = new Array<Input>();
+
+    parse(json: any) {
+        super.parse(json);
+
+
+        if (json["inputs"] != undefined) {
+            let inputArray = json["inputs"] as Array<any>;
+
+            for (let i = 0; i < inputArray.length; i++) {
+                let input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
+
+                input.parse(inputArray[i]);
+
+                this.inputs.push(input);
+            }
+        }
+    }
+}
+
+
+// TODO: Should we remove this and use SubmitAction?
+export class HttpPOSTAction extends Action {
     target: string;
     body: string;
     bodyContentType: string;
@@ -926,118 +964,6 @@ export class DateInput extends Input {
     }
 }
 
-export class ActionCard extends Action {
-    private _allowedActionTypes: Array<string> = ["OpenUri", "HttpPOST"];
-    private _inputs: Array<Input> = [];
-    private _actions: Array<ExternalAction> = [];
-    private _card: Container;
-
-    name: string;
-
-    get hasUi(): boolean {
-        return true;
-    }
-
-    get inputs(): Array<Input> {
-        return this._inputs;
-    }
-
-    get actions(): Array<Action> {
-        return this._actions;
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        if (json["card"] != undefined) {
-            this._card = new Container(this.owner.container, ["ActionGroup"]);
-            this._card.parse(json["card"]);
-        }
-
-        if (json["inputs"] != undefined) {
-            let inputArray = json["inputs"] as Array<any>;
-
-            for (let i = 0; i < inputArray.length; i++) {
-                let input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
-
-                input.parse(inputArray[i]);
-
-                this._inputs.push(input);
-            }
-        }
-
-        if (json["actions"] != undefined) {
-            let actionArray = json["actions"] as Array<any>;
-
-            for (let i = 0; i < actionArray.length; i++) {
-                let actionJson = actionArray[i];
-                let typeIsAllowed: boolean = false;
-
-                for (let j = 0; j < this._allowedActionTypes.length; j++) {
-                    if (actionJson["@type"] === this._allowedActionTypes[j]) {
-                        typeIsAllowed = true;
-                        break;
-                    }
-                }
-
-                if (typeIsAllowed) {
-                    let action = Action.create(this.owner, actionJson["@type"]);
-
-                    action.parse(actionJson);
-
-                    this._actions.push(action);
-                }
-            }
-        }
-    }
-
-    private actionClicked(actionButton: ActionButton) {
-        alert('Now executing "' + actionButton.text + '"');
-    }
-
-    renderUi(container: Container, needsTopSpacer: boolean = false): HTMLElement {
-        let actionCardElement = document.createElement("div");
-
-        if (this._card != null) {
-            appendChild(actionCardElement, this._card.internalRender());
-        }
-        else {
-            for (let i = 0; i < this._inputs.length; i++) {
-                let inputElement = this._inputs[i].internalRender();
-
-                if (i == 0) {
-                    this._inputs[i].removeTopSpacing(inputElement);
-                }
-
-                appendChild(actionCardElement, inputElement);
-            }
-        }
-
-        let buttonsContainer = document.createElement("div");
-        buttonsContainer.style.display = "flex";
-        buttonsContainer.style.marginTop = "16px";
-
-        for (let i = 0; i < this._actions.length; i++) {
-            let actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Push);
-            actionButton.text = this._actions[i].name;
-
-            actionButton.onClick.subscribe(
-                (ab, args) => {
-                    this.actionClicked(ab);
-                });
-
-            if (this._actions.length > 1 && i < this._actions.length - 1) {
-                actionButton.element.style.marginRight = "16px";
-            }
-
-            appendChild(buttonsContainer, actionButton.element);
-        }
-
-        appendChild(actionCardElement, buttonsContainer);
-
-        return actionCardElement;
-    }
-}
 
 export enum ActionButtonStyle {
     Link,
@@ -1192,9 +1118,13 @@ export class ActionGroup extends CardElement {
 
     parse(json: any) {
         super.parse(json);
+        var actions = json["actions"];
 
-        if (json["items"] != null) {
-            var actionArray = json["items"] as Array<any>;
+        if (actions == null)
+            actions = json["items"];
+
+        if (actions != null) {
+            var actionArray = actions as Array<any>;
 
             for (var i = 0; i < actionArray.length; i++) {
                 let action = Action.create(this, actionArray[i]["@type"]);
@@ -1218,7 +1148,7 @@ export class ActionGroup extends CardElement {
         this._actionCardContainer.style.padding = "0px";
         this._actionCardContainer.style.marginTop = "0px";
 
-        if (this._actions.length == 1 && this._actions[0] instanceof ActionCard) {
+        if (this._actions.length == 1 && this._actions[0] instanceof FormCard) {
             this.showActionCardPane(this._actions[0]);
         }
         else {
@@ -1227,7 +1157,7 @@ export class ActionGroup extends CardElement {
                 buttonStripItem.className = "buttonStripItem";
 
                 let actionButton = new ActionButton(this._actions[i], ActionGroup.buttonStyle);
-                actionButton.text = this._actions[i].name;
+                actionButton.text = this._actions[i].title;
 
                 actionButton.onClick.subscribe(
                     (ab, args) => {
@@ -1256,17 +1186,6 @@ export class ActionGroup extends CardElement {
         if (this.speak != null)
             return this.speak + '\n';
 
-        // // render each fact 
-        // let speak = null;
-        // if (this._actionButtons.length > 0) {
-        //     speak = '';
-        //     for (var i = 0; i < this._actionButtons.length; i++) {
-        //         let speech = this._actionButtons[i].renderSpeech();
-        //         if (speech)
-        //             speak += speech;
-        //     }
-        // }
-        // return '<p>' + speak + '\n</p>\n';
         return null;
     }
 }
@@ -1593,28 +1512,169 @@ export class ColumnGroup extends CardElement {
 
 }
 
-export class AdaptiveCard {
-    root = new Container(null, null, "body");
-    title: string;
-    description1: string;
-    description2: string;
+export interface ICard {
+    render(): HTMLElement;
+    parse(json: any);
+}
+
+export class AdaptiveCard implements ICard {
+    // TODO: Add Input as forbidden?
+    private _body = new Container(null, null, "body");
+    private _actions: ActionGroup = new ActionGroup(this.body);
+
+    get body() {
+        return this._body;
+    }
+
+    get actions() {
+        return this._actions;
+    }
 
     parse(json: any) {
-        this.title = json["title"];
-        this.description1 = json["description1"];
-        this.description2 = json["description2"];
-
-        this.root.parse(json);
+        this.body.parse(json);
+        this.actions.parse(json);
     }
 
     render(): HTMLElement {
-        let renderedContainer = this.root.internalRender();
+        let renderedContainer = this.body.internalRender();
         renderedContainer.className = "rootContainer";
+
+        if (this.actions) {
+            let actionsBar = this.actions.render();
+            renderedContainer.appendChild(actionsBar);
+        }
 
         return renderedContainer;
     }
 
     renderSpeech(): string {
-        return this.root.renderSpeech();
+        return this.body.renderSpeech();
+    }
+}
+
+export class InputCard extends AdaptiveCard {
+    private _inputs: Array<Input> = [];
+    private _data: any;
+    // actions gets initialized with Submit    
+}
+
+export class FormCard extends AdaptiveCard {
+    private _data: any;
+    // actions gets initialized with Submit    
+
+}
+
+
+
+export class ActionCard extends Action {
+    private _allowedActionTypes: Array<string> = ["OpenUri", "HttpPOST"];
+    private _inputs: Array<Input> = [];
+    private _actions: Array<Action> = [];
+    private _card: Container;
+
+    name: string;
+
+    get hasUi(): boolean {
+        return true;
+    }
+
+    get inputs(): Array<Input> {
+        return this._inputs;
+    }
+
+    get actions(): Array<Action> {
+        return this._actions;
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        if (json["card"] != undefined) {
+            this._card = new Container(this.owner.container, ["ActionGroup"]);
+            this._card.parse(json["card"]);
+        }
+
+        if (json["inputs"] != undefined) {
+            let inputArray = json["inputs"] as Array<any>;
+
+            for (let i = 0; i < inputArray.length; i++) {
+                let input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
+
+                input.parse(inputArray[i]);
+
+                this._inputs.push(input);
+            }
+        }
+
+        if (json["actions"] != undefined) {
+            let actionArray = json["actions"] as Array<any>;
+
+            for (let i = 0; i < actionArray.length; i++) {
+                let actionJson = actionArray[i];
+                let typeIsAllowed: boolean = false;
+
+                for (let j = 0; j < this._allowedActionTypes.length; j++) {
+                    if (actionJson["@type"] === this._allowedActionTypes[j]) {
+                        typeIsAllowed = true;
+                        break;
+                    }
+                }
+
+                if (typeIsAllowed) {
+                    let action = Action.create(this.owner, actionJson["@type"]);
+
+                    action.parse(actionJson);
+
+                    this._actions.push(action);
+                }
+            }
+        }
+    }
+
+    private actionClicked(actionButton: ActionButton) {
+        alert('Now executing "' + actionButton.text + '"');
+    }
+
+    renderUi(container: Container, needsTopSpacer: boolean = false): HTMLElement {
+        let actionCardElement = document.createElement("div");
+
+        if (this._card != null) {
+            appendChild(actionCardElement, this._card.internalRender());
+        }
+        else {
+            for (let i = 0; i < this._inputs.length; i++) {
+                let inputElement = this._inputs[i].internalRender();
+
+                if (i == 0) {
+                    this._inputs[i].removeTopSpacing(inputElement);
+                }
+
+                appendChild(actionCardElement, inputElement);
+            }
+        }
+
+        let buttonsContainer = document.createElement("div");
+        buttonsContainer.style.display = "flex";
+        buttonsContainer.style.marginTop = "16px";
+
+        for (let i = 0; i < this._actions.length; i++) {
+            let actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Push);
+            actionButton.text = this._actions[i].title;
+
+            actionButton.onClick.subscribe(
+                (ab, args) => {
+                    this.actionClicked(ab);
+                });
+
+            if (this._actions.length > 1 && i < this._actions.length - 1) {
+                actionButton.element.style.marginRight = "16px";
+            }
+
+            appendChild(buttonsContainer, actionButton.element);
+        }
+
+        appendChild(actionCardElement, buttonsContainer);
+
+        return actionCardElement;
     }
 }

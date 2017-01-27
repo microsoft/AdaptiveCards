@@ -18,7 +18,7 @@
             "@type": "ShowForm",
             "title": "Set due date",
             "form": {
-                "@type": "Form",
+                "@type": "InputForm",
                 "okText": "OK",
                 "cancelText": "Close",
                 "data": {

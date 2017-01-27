@@ -169,7 +169,7 @@ class LiveTileContainer extends HostContainer {
         element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        card.root.textColor = LiveTileContainer.textColor;
+        card.body.textColor = LiveTileContainer.textColor;
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
 
@@ -205,7 +205,7 @@ class BingContainer extends HostContainer {
         element.style.backgroundColor = BingContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        card.root.textColor = BingContainer.textColor;
+        card.body.textColor = BingContainer.textColor;
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
 
@@ -239,37 +239,37 @@ class ToastContainer extends HostContainer {
         element.style.backgroundColor = ToastContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        if (card.title != undefined || card.description1 != undefined) {
-            let headerElement = document.createElement("div");
-            headerElement.className = "headerContainer";
+        // if (card.title != undefined || card.description1 != undefined) {
+        //     let headerElement = document.createElement("div");
+        //     headerElement.className = "headerContainer";
 
-            let html: string = '';
-            html += '<div style="flex: 0 0 auto; margin-right: 10px;">';
-            html += '  <img class="image autoSize" style="overflow: hidden; margin-top: 0px;" src="./assets/appicon.png"/>';
-            html += '</div>';
+        //     let html: string = '';
+        //     html += '<div style="flex: 0 0 auto; margin-right: 10px;">';
+        //     html += '  <img class="image autoSize" style="overflow: hidden; margin-top: 0px;" src="./assets/appicon.png"/>';
+        //     html += '</div>';
 
-            html += '<div style="flex: 1 1 100%">';
+        //     html += '<div style="flex: 1 1 100%">';
 
-            if (card.title != undefined) {
-                html += '  <div class="text defaultSize lightColor">' + card.title + '</div>';
-            }
+        //     if (card.title != undefined) {
+        //         html += '  <div class="text defaultSize lightColor">' + card.title + '</div>';
+        //     }
 
-            if (card.description1 != undefined) {
-                html += '  <div class="text defaultSize lightColor subtle">' + card.description1 + '</div>';
-            }
+        //     if (card.description1 != undefined) {
+        //         html += '  <div class="text defaultSize lightColor subtle">' + card.description1 + '</div>';
+        //     }
 
-            if (card.description2 != undefined) {
-                html += '  <div class="text small lightColor subtle">' + card.description2 + '</div>';
-            }
+        //     if (card.description2 != undefined) {
+        //         html += '  <div class="text small lightColor subtle">' + card.description2 + '</div>';
+        //     }
 
-            html += '</div>';
+        //     html += '</div>';
 
-            headerElement.innerHTML = html;
+        //     headerElement.innerHTML = html;
 
-            appendChild(element, headerElement);
-        }
+        //     appendChild(element, headerElement);
+        // }
 
-        card.root.textColor = LiveTileContainer.textColor;
+        card.body.textColor = LiveTileContainer.textColor;
 
         ActionGroup.buttonStyle = ActionButtonStyle.Push;
 
@@ -286,37 +286,37 @@ class ToastContainer extends HostContainer {
 abstract class ConnectorContainer extends HostContainer {
     renderHeader(card: AdaptiveCard): HTMLElement {
         let headerElement: HTMLElement = null;
-        if (card.title != undefined || card.description1 != undefined) {
-            headerElement = document.createElement("div");
-            headerElement.className = "headerContainer";
+        // if (card.title != undefined || card.description1 != undefined) {
+        //     headerElement = document.createElement("div");
+        //     headerElement.className = "headerContainer";
 
-            let html = '<div>';
-            let spaceNeeded = false;
+        //     let html = '<div>';
+        //     let spaceNeeded = false;
 
-            if (card.title != undefined) {
-                html += '  <div class="text medium bolder defaultColor">' + card.title + '</div>';
+        //     if (card.title != undefined) {
+        //         html += '  <div class="text medium bolder defaultColor">' + card.title + '</div>';
 
-                spaceNeeded = true;
-            }
+        //         spaceNeeded = true;
+        //     }
 
-            if (card.description1 != undefined) {
-                html += '  <div class="text defaultSize defaultColor"';
+        //     if (card.description1 != undefined) {
+        //         html += '  <div class="text defaultSize defaultColor"';
 
-                if (spaceNeeded) {
-                    html += ' style="padding-top: 16px;"';
-                }
+        //         if (spaceNeeded) {
+        //             html += ' style="padding-top: 16px;"';
+        //         }
 
-                html += '>' + card.description1 + '</div>';
-            }
+        //         html += '>' + card.description1 + '</div>';
+        //     }
 
-            if (card.description2 != undefined) {
-                html += '  <div class="text defaultSize defaultColor subtle">' + card.description2 + '</div>';
-            }
+        //     if (card.description2 != undefined) {
+        //         html += '  <div class="text defaultSize defaultColor subtle">' + card.description2 + '</div>';
+        //     }
 
-            html += '</div>';
+        //     html += '</div>';
 
-            headerElement.innerHTML = html;
-        }
+        //     headerElement.innerHTML = html;
+        // }
 
         return headerElement;
     }
@@ -444,6 +444,7 @@ function renderCard() {
             case "AdaptiveCard":
                 let adaptiveCard = new AdaptiveCard();
                 adaptiveCard.parse(json);
+ 
 
                 let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
                 let renderedHostContainer = hostContainer.render(adaptiveCard);
