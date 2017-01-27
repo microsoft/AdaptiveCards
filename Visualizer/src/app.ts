@@ -3,6 +3,7 @@ import { defaultPayload } from "./constants";
 import * as ace from "brace";
 import "brace/mode/json";
 import "brace/theme/chrome";
+import * as vkbeautify from "vkbeautify";
 
 var editor;
 var hostContainerOptions: Array<HostContainerOption> = [];
@@ -170,7 +171,7 @@ abstract class ConnectorContainer extends HostContainer {
                 if (spaceNeeded) {
                     html += ' style="padding-top: 16px;"';
                 }
-                
+
                 html += '>' + card.description1 + '</div>';
             }
 
@@ -278,9 +279,138 @@ class SkypeCardContainer extends HostContainer {
     }
 }
 
+declare var SpeechSynthesisUtterance: any;
+
+
+class SpeechContainer extends HostContainer {
+
+    private processNodes(nodes: NodeList, output: any[]): void {
+        for (let i = 0; i < nodes.length; i++) {
+            let node = nodes[i];
+            if (node.nodeName == 'p') {
+                this.processNodes(node.childNodes, output);
+                output.push(250);
+            } else if (node.nodeName == 's') {
+                this.processNodes(node.childNodes, output);
+                output.push(100);
+            } else if (node.nodeName == 'break') {
+                if (node.attributes["strength"]) {
+                    let strength = node.attributes["strength"].nodeValue;
+                    if (strength == "weak") {
+                        // output.push(50);
+                    } else if (strength == "medium") {
+                        output.push(50);
+                    } else if (strength == "strong") {
+                        output.push(100);
+                    } else if (strength == "x-strong") {
+                        output.push(250);
+                    }
+                } else if (node.attributes["time"]) {
+                    output.push(JSON.parse(node.attributes["time"].value));
+                }
+            } else if (node.nodeName == 'audio') {
+                if (node.attributes["src"]) {
+                    output.push(node.attributes["src"].value);
+                }
+            } else if (node.nodeName == 'say-as') {
+                this.processNodes(node.childNodes, output);
+            } else if (node.nodeName == 'w') {
+                this.processNodes(node.childNodes, output);
+            } else if (node.nodeName == 'phoneme') {
+                this.processNodes(node.childNodes, output);
+            } else {
+                output.push(node.nodeValue);
+            }
+        }
+    }
+
+    static playNextTTS(output: any[], iCurrent: number) {
+        if (iCurrent < output.length) {
+            let current = output[iCurrent];
+            if (typeof current === "number") {
+                setTimeout(() => {
+                    SpeechContainer.playNextTTS(output, iCurrent + 1);
+                }, current);
+            } else {
+                if (current.indexOf("http") == 0) {
+                    let audio: any = document.getElementById('player');
+                    audio.src = current;
+                    audio.onended = () => {
+                        SpeechContainer.playNextTTS(output, iCurrent + 1);
+                    };
+                    audio.onerror = () => {
+                        SpeechContainer.playNextTTS(output, iCurrent + 1);
+                    };
+                    audio.play();
+                } else {
+                    let msg = new SpeechSynthesisUtterance();
+                    //msg.voiceURI = 'native';
+                    // msg.volume = 1; // 0 to 1
+                    // msg.rate = 1; // 0.1 to 10
+                    // msg.pitch = 2; //0 to 2
+                    msg.text = current;
+                    msg.lang = 'en-US';
+                    msg.onerror = (event) => {
+                        SpeechContainer.playNextTTS(output, iCurrent + 1);
+                    };
+                    msg.onend = (event) => {
+                        SpeechContainer.playNextTTS(output, iCurrent + 1);
+                    };
+                    (<any>window).speechSynthesis.speak(msg);
+                }
+            }
+        }
+    }
+
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.className = "speechContainer";
+
+        // Draw the hexagon bot logo
+        let button = document.createElement("button");
+        let t = document.createTextNode("Speak");
+        let text = card.renderSpeech();
+        let output = new Array<any>();
+        if (text[0] == '<') {
+            if (text.indexOf("<speak") != 0)
+                text = '<speak>\n' + text + '\n</speak>\n';
+            let parser = new DOMParser();
+            let dom = parser.parseFromString(text, "text/xml");
+            let nodes = dom.documentElement.childNodes;
+            this.processNodes(nodes, output);
+            let serializer = new XMLSerializer();
+            text = vkbeautify.xml(serializer.serializeToString(dom));;
+        }
+        else {
+            output.push(text);
+            vkbeautify
+            text = vkbeautify.xml(text);
+        }
+        let pre = document.createElement("pre");
+        appendChild(pre, document.createTextNode(text));
+        appendChild(element, pre);
+
+        button.appendChild(t);
+        button.addEventListener("click", function () {
+            SpeechContainer.playNextTTS(output, 0);
+        });
+
+        appendChild(element, button);
+
+        //appendChild(pre, document.createTextNode(text));
+        let audio = document.createElement("audio");
+        audio.id = 'player';
+        audio.autoplay = true;
+        appendChild(element, audio);
+
+        return element;
+    }
+}
+
 function renderCard() {
+    let jsonText = editor.getValue();
     try {
-        let json = JSON.parse(editor.getValue());
+        let json = JSON.parse(jsonText);
         let cardTypeName = json["@type"];
 
         let node = document.getElementById('content');
@@ -315,7 +445,7 @@ function renderCard() {
     }
     catch (e) {
         document.getElementById('content').innerHTML = "Error: " + e.toString();
-        debugger;
+        console.log(e.toString() + '\n' + jsonText);
     }
 }
 
@@ -335,7 +465,7 @@ function filePickerChanged(evt) {
     if (file) {
         let reader = new FileReader();
 
-        reader.onload = function(e: ProgressEvent) {
+        reader.onload = function (e: ProgressEvent) {
             editor.session.setValue((e.target as FileReader).result);
         }
 
@@ -396,7 +526,7 @@ function setupEditor() {
             "fontSize": "14px",
         });
     editor.getSession().setMode("ace/mode/json");
-    editor.getSession().on("change", function(e) { renderCard(); });
+    editor.getSession().on("change", function (e) { renderCard(); });
 
     // Load the cached payload if the user had one
     try {
@@ -456,6 +586,11 @@ function setupContainerPicker() {
             "Bing",
             new BingContainer(285, 150, "./css/bing.css")));
 
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Speech",
+            new SpeechContainer("./css/bing.css")));
+
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", () => {
             // update the query string
@@ -466,7 +601,7 @@ function setupContainerPicker() {
 
         for (let i = 0; i < hostContainerOptions.length; i++) {
             let option = document.createElement("option");
-            option.value =  hostContainerOptions[i].name;
+            option.value = hostContainerOptions[i].name;
             option.text = hostContainerOptions[i].name;
 
             hostContainerPicker.appendChild(option);
@@ -510,7 +645,7 @@ window.onload = () => {
     renderCard();
 
     // handle Back and Forward after the Container app drop down is changed
-    window.addEventListener('popstate', function(e) {
+    window.addEventListener('popstate', function (e) {
         setContainerAppFromUrl();
     });
 };
