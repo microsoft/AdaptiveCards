@@ -55,6 +55,7 @@
 	var ace = __webpack_require__(71);
 	__webpack_require__(74);
 	__webpack_require__(76);
+	var vkbeautify = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"vkbeautify\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var editor;
 	var hostContainerOptions = [];
 	var hostContainerPicker;
@@ -62,6 +63,142 @@
 	    function HostContainer(styleSheet) {
 	        this.styleSheet = styleSheet;
 	    }
+	    HostContainer.prototype.render = function (card, showXml) {
+	        if (showXml === void 0) { showXml = false; }
+	        var element = document.createElement("div");
+	        element.className = "speechContainer";
+	        var button = document.createElement("button");
+	        var t = document.createTextNode("Speak");
+	        var text = card.renderSpeech();
+	        var output = new Array();
+	        if (text[0] == '<') {
+	            if (text.indexOf("<speak") != 0)
+	                text = '<speak>\n' + text + '\n</speak>\n';
+	            var parser = new DOMParser();
+	            var dom = parser.parseFromString(text, "text/xml");
+	            var nodes = dom.documentElement.childNodes;
+	            this.processNodes(nodes, output);
+	            var serializer = new XMLSerializer();
+	            text = vkbeautify.xml(serializer.serializeToString(dom));
+	            ;
+	        }
+	        else {
+	            output.push(text);
+	            vkbeautify;
+	            text = vkbeautify.xml(text);
+	        }
+	        button.appendChild(t);
+	        button.addEventListener("click", function () {
+	            SpeechContainer.playNextTTS(output, 0);
+	        });
+	        adaptiveCard_1.appendChild(element, document.createElement("br"));
+	        adaptiveCard_1.appendChild(element, document.createElement("br"));
+	        adaptiveCard_1.appendChild(element, document.createElement("hr"));
+	        adaptiveCard_1.appendChild(element, button);
+	        if (showXml) {
+	            var pre = document.createElement("pre");
+	            adaptiveCard_1.appendChild(pre, document.createTextNode(text));
+	            adaptiveCard_1.appendChild(element, pre);
+	        }
+	        //appendChild(pre, document.createTextNode(text));
+	        var audio = document.createElement("audio");
+	        audio.id = 'player';
+	        audio.autoplay = true;
+	        adaptiveCard_1.appendChild(element, audio);
+	        return element;
+	    };
+	    // process SSML markup into an array of either 
+	    // * utterenance
+	    // * number which is delay in msg
+	    // * url which is an audio file 
+	    HostContainer.prototype.processNodes = function (nodes, output) {
+	        for (var i = 0; i < nodes.length; i++) {
+	            var node = nodes[i];
+	            if (node.nodeName == 'p') {
+	                this.processNodes(node.childNodes, output);
+	                output.push(250);
+	            }
+	            else if (node.nodeName == 's') {
+	                this.processNodes(node.childNodes, output);
+	                output.push(100);
+	            }
+	            else if (node.nodeName == 'break') {
+	                if (node.attributes["strength"]) {
+	                    var strength = node.attributes["strength"].nodeValue;
+	                    if (strength == "weak") {
+	                    }
+	                    else if (strength == "medium") {
+	                        output.push(50);
+	                    }
+	                    else if (strength == "strong") {
+	                        output.push(100);
+	                    }
+	                    else if (strength == "x-strong") {
+	                        output.push(250);
+	                    }
+	                }
+	                else if (node.attributes["time"]) {
+	                    output.push(JSON.parse(node.attributes["time"].value));
+	                }
+	            }
+	            else if (node.nodeName == 'audio') {
+	                if (node.attributes["src"]) {
+	                    output.push(node.attributes["src"].value);
+	                }
+	            }
+	            else if (node.nodeName == 'say-as') {
+	                this.processNodes(node.childNodes, output);
+	            }
+	            else if (node.nodeName == 'w') {
+	                this.processNodes(node.childNodes, output);
+	            }
+	            else if (node.nodeName == 'phoneme') {
+	                this.processNodes(node.childNodes, output);
+	            }
+	            else {
+	                output.push(node.nodeValue);
+	            }
+	        }
+	    };
+	    HostContainer.playNextTTS = function (output, iCurrent) {
+	        if (iCurrent < output.length) {
+	            var current = output[iCurrent];
+	            if (typeof current === "number") {
+	                setTimeout(function () {
+	                    SpeechContainer.playNextTTS(output, iCurrent + 1);
+	                }, current);
+	            }
+	            else {
+	                if (current.indexOf("http") == 0) {
+	                    var audio = document.getElementById('player');
+	                    audio.src = current;
+	                    audio.onended = function () {
+	                        SpeechContainer.playNextTTS(output, iCurrent + 1);
+	                    };
+	                    audio.onerror = function () {
+	                        SpeechContainer.playNextTTS(output, iCurrent + 1);
+	                    };
+	                    audio.play();
+	                }
+	                else {
+	                    var msg = new SpeechSynthesisUtterance();
+	                    //msg.voiceURI = 'native';
+	                    // msg.volume = 1; // 0 to 1
+	                    // msg.rate = 1; // 0.1 to 10
+	                    // msg.pitch = 2; //0 to 2
+	                    msg.text = current;
+	                    msg.lang = 'en-US';
+	                    msg.onerror = function (event) {
+	                        SpeechContainer.playNextTTS(output, iCurrent + 1);
+	                    };
+	                    msg.onend = function (event) {
+	                        SpeechContainer.playNextTTS(output, iCurrent + 1);
+	                    };
+	                    window.speechSynthesis.speak(msg);
+	                }
+	            }
+	        }
+	    };
 	    return HostContainer;
 	}());
 	var LiveTileContainer = (function (_super) {
@@ -82,7 +219,10 @@
 	        var renderedCard = card.render();
 	        renderedCard.style.height = "100%";
 	        adaptiveCard_1.appendChild(element, renderedCard);
-	        return element;
+	        var hostDiv = document.createElement("div");
+	        adaptiveCard_1.appendChild(hostDiv, element);
+	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
+	        return hostDiv;
 	    };
 	    LiveTileContainer.backgroundColor = "#0078D7";
 	    LiveTileContainer.textColor = adaptiveCard_1.TextColor.Light;
@@ -106,7 +246,10 @@
 	        var renderedCard = card.render();
 	        renderedCard.style.height = "100%";
 	        adaptiveCard_1.appendChild(element, renderedCard);
-	        return element;
+	        var hostDiv = document.createElement("div");
+	        adaptiveCard_1.appendChild(hostDiv, element);
+	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
+	        return hostDiv;
 	    };
 	    BingContainer.backgroundColor = "#fff";
 	    BingContainer.textColor = adaptiveCard_1.TextColor.Dark;
@@ -149,7 +292,10 @@
 	        adaptiveCard_1.ActionGroup.buttonStyle = adaptiveCard_1.ActionButtonStyle.Push;
 	        var renderedCard = card.render();
 	        adaptiveCard_1.appendChild(element, renderedCard);
-	        return element;
+	        var hostDiv = document.createElement("div");
+	        adaptiveCard_1.appendChild(hostDiv, element);
+	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
+	        return hostDiv;
 	    };
 	    ToastContainer.backgroundColor = "#1F1F1F";
 	    ToastContainer.textColor = adaptiveCard_1.TextColor.Light;
@@ -212,7 +358,10 @@
 	        adaptiveCard_1.ActionGroup.buttonStyle = adaptiveCard_1.ActionButtonStyle.Link;
 	        var renderedCard = card.render();
 	        adaptiveCard_1.appendChild(element, renderedCard);
-	        return element;
+	        var hostDiv = document.createElement("div");
+	        adaptiveCard_1.appendChild(hostDiv, element);
+	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
+	        return hostDiv;
 	    };
 	    return OutlookConnectorContainer;
 	}(ConnectorContainer));
@@ -234,7 +383,10 @@
 	        adaptiveCard_1.ActionGroup.buttonStyle = adaptiveCard_1.ActionButtonStyle.Link;
 	        var renderedCard = card.render();
 	        adaptiveCard_1.appendChild(element, renderedCard);
-	        return element;
+	        var hostDiv = document.createElement("div");
+	        adaptiveCard_1.appendChild(hostDiv, element);
+	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
+	        return hostDiv;
 	    };
 	    return TeamsConnectorContainer;
 	}(ConnectorContainer));
@@ -259,13 +411,29 @@
 	        var renderedCard = card.render();
 	        adaptiveCard_1.appendChild(element, botElement);
 	        adaptiveCard_1.appendChild(element, renderedCard);
-	        return element;
+	        var hostDiv = document.createElement("div");
+	        adaptiveCard_1.appendChild(hostDiv, element);
+	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
+	        return hostDiv;
 	    };
 	    return SkypeCardContainer;
 	}(HostContainer));
+	var SpeechContainer = (function (_super) {
+	    __extends(SpeechContainer, _super);
+	    function SpeechContainer() {
+	        _super.apply(this, arguments);
+	    }
+	    SpeechContainer.prototype.render = function (card) {
+	        var hostDiv = document.createElement("div");
+	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card, true));
+	        return hostDiv;
+	    };
+	    return SpeechContainer;
+	}(HostContainer));
 	function renderCard() {
+	    var jsonText = editor.getValue();
 	    try {
-	        var json = JSON.parse(editor.getValue());
+	        var json = JSON.parse(jsonText);
 	        var cardTypeName = json["@type"];
 	        var node = document.getElementById('content');
 	        node.innerHTML = '';
@@ -294,7 +462,7 @@
 	    }
 	    catch (e) {
 	        document.getElementById('content').innerHTML = "Error: " + e.toString();
-	        debugger;
+	        console.log(e.toString() + '\n' + jsonText);
 	    }
 	}
 	function textareaChange() {
@@ -395,6 +563,7 @@
 	    */
 	    hostContainerOptions.push(new HostContainerOption("Skype Card", new SkypeCardContainer("./css/skypeCard.css")));
 	    hostContainerOptions.push(new HostContainerOption("Bing", new BingContainer(285, 150, "./css/bing.css")));
+	    hostContainerOptions.push(new HostContainerOption("Speech", new SpeechContainer("./css/bing.css")));
 	    if (hostContainerPicker) {
 	        hostContainerPicker.addEventListener("change", function () {
 	            // update the query string
@@ -724,6 +893,7 @@
 	        return renderedElement;
 	    };
 	    CardElement.prototype.parse = function (json) {
+	        this.speak = json["speak"];
 	        this.size = stringToSize(json["size"], this.size);
 	        this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
 	    };
@@ -830,6 +1000,13 @@
 	            return null;
 	        }
 	    };
+	    TextBlock.prototype.renderSpeech = function () {
+	        if (this.speak != null)
+	            return this.speak + '\n';
+	        if (this.text)
+	            return '<s>' + this.text + '</s>\n';
+	        return null;
+	    };
 	    TextBlock.prototype.removeTopSpacing = function (element) {
 	        element.style.paddingTop = "0px";
 	    };
@@ -842,6 +1019,12 @@
 	    Fact.prototype.parse = function (json) {
 	        this.name = json["name"];
 	        this.value = json["value"];
+	        this.speak = json["speak"];
+	    };
+	    Fact.prototype.renderSpeech = function () {
+	        if (this.speak != null)
+	            return this.speak + '\n';
+	        return '<s>' + this.name + ' ' + this.value + '</s>\n';
 	    };
 	    return Fact;
 	}());
@@ -902,6 +1085,21 @@
 	        }
 	        return element;
 	    };
+	    FactGroup.prototype.renderSpeech = function () {
+	        if (this.speak != null)
+	            return this.speak + '\n';
+	        // render each fact 
+	        var speak = null;
+	        if (this._items.length > 0) {
+	            speak = '';
+	            for (var i = 0; i < this._items.length; i++) {
+	                var speech = this._items[i].renderSpeech();
+	                if (speech)
+	                    speak += speech;
+	            }
+	        }
+	        return '<p>' + speak + '\n</p>\n';
+	    };
 	    return FactGroup;
 	}(CardElement));
 	exports.FactGroup = FactGroup;
@@ -953,6 +1151,11 @@
 	        }
 	        return imageElement;
 	    };
+	    Image.prototype.renderSpeech = function () {
+	        if (this.speak != null)
+	            return this.speak + '\n';
+	        return null;
+	    };
 	    return Image;
 	}(CardElement));
 	exports.Image = Image;
@@ -996,6 +1199,18 @@
 	            }
 	        }
 	        return element;
+	    };
+	    ImageGallery.prototype.renderSpeech = function () {
+	        if (this.speak != null)
+	            return this.speak;
+	        var speak = null;
+	        if (this._items.length > 0) {
+	            speak = '';
+	            for (var i = 0; i < this._items.length; i++) {
+	                speak += this._items[i].renderSpeech();
+	            }
+	        }
+	        return speak;
 	    };
 	    return ImageGallery;
 	}(CardElement));
@@ -1129,6 +1344,13 @@
 	        this.id = json["id"];
 	        this.title = json["title"];
 	        this.value = json["value"];
+	    };
+	    Input.prototype.renderSpeech = function () {
+	        if (this.speak != null)
+	            return this.speak;
+	        if (this.title)
+	            return '<s>' + this.title + '</s>\n';
+	        return null;
 	    };
 	    return Input;
 	}(CardElement));
@@ -1538,6 +1760,22 @@
 	        appendChild(element, this._actionCardContainer);
 	        return element;
 	    };
+	    ActionGroup.prototype.renderSpeech = function () {
+	        if (this.speak != null)
+	            return this.speak + '\n';
+	        // // render each fact 
+	        // let speak = null;
+	        // if (this._actionButtons.length > 0) {
+	        //     speak = '';
+	        //     for (var i = 0; i < this._actionButtons.length; i++) {
+	        //         let speech = this._actionButtons[i].renderSpeech();
+	        //         if (speech)
+	        //             speak += speech;
+	        //     }
+	        // }
+	        // return '<p>' + speak + '\n</p>\n';
+	        return null;
+	    };
 	    ActionGroup.buttonStyle = ActionButtonStyle.Push;
 	    return ActionGroup;
 	}(CardElement));
@@ -1555,6 +1793,9 @@
 	        var element = document.createElement("div");
 	        element.className = "separator";
 	        return element;
+	    };
+	    Separator.prototype.renderSpeech = function () {
+	        return null;
 	    };
 	    return Separator;
 	}(CardElement));
@@ -1704,6 +1945,21 @@
 	        }
 	        return this._element;
 	    };
+	    Container.prototype.renderSpeech = function () {
+	        if (this.speak != null)
+	            return this.speak;
+	        // render each item
+	        var speak = null;
+	        if (this._items.length > 0) {
+	            speak = '';
+	            for (var i = 0; i < this._items.length; i++) {
+	                var result = this._items[i].renderSpeech();
+	                if (result)
+	                    speak += result;
+	            }
+	        }
+	        return speak;
+	    };
 	    Container.prototype.getRootContainer = function () {
 	        var currentContainer = this;
 	        while (currentContainer.container != null) {
@@ -1801,6 +2057,18 @@
 	            return null;
 	        }
 	    };
+	    ColumnGroup.prototype.renderSpeech = function () {
+	        if (this.speak != null)
+	            return this.speak;
+	        // render each item
+	        var speak = '';
+	        if (this._items.length > 0) {
+	            for (var i = 0; i < this._items.length; i++) {
+	                speak += this._items[i].renderSpeech();
+	            }
+	        }
+	        return speak;
+	    };
 	    return ColumnGroup;
 	}(CardElement));
 	exports.ColumnGroup = ColumnGroup;
@@ -1818,6 +2086,9 @@
 	        var renderedContainer = this.root.internalRender();
 	        renderedContainer.className = "rootContainer";
 	        return renderedContainer;
+	    };
+	    AdaptiveCard.prototype.renderSpeech = function () {
+	        return this.root.renderSpeech();
 	    };
 	    return AdaptiveCard;
 	}());
@@ -12133,7 +12404,7 @@
 
 	// TOOD: Can I pull this from the samples folder rather than copying it here?
 	"use strict";
-	exports.defaultPayload = "\n{\n\t\"@type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\t{\n\t\t    \"@type\": \"Container\",\n\t\t\t\"items\": [\n\t\t\t    {\n\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t        \"text\": \"Card created: Publish Adaptive Card schema\",\n\t\t\t        \"textWeight\": \"bolder\",\n\t\t\t        \"textSize\": \"medium\"\n\t\t\t    },\n\t\t\t\t{\n\t\t\t\t\t\"@type\": \"ColumnGroup\",\n\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"size\": \"auto\",\n\t\t\t\t\t\t\t\"items\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"Image\",\n                \t\t\t\t\t\"url\": \"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n                \t\t\t\t\t\"size\": \"small\",\n                \t\t\t\t\t\"style\": \"person\"\n                \t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"size\": \"stretch\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t    {\n\t\t\t\t\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\t\t        \"text\": \"**Miguel Garcia**\",\n\t\t\t\t\t\t\t        \"wrap\": true\n\t\t\t\t\t\t\t    },\n\t\t\t\t\t\t\t    {\n\t\t\t\t\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\t\t        \"text\": \"9/13/2016, 3:34pm\",\n\t\t\t\t\t\t\t        \"isSubtle\": true,\n\t\t\t\t\t\t\t        \"wrap\": true\n\t\t\t\t\t\t\t    }\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t    \"@type\": \"Container\",\n\t\t    \"items\": [\n\t\t\t    {\n\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t        \"text\": \"Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.\",\n\t\t\t        \"wrap\": true\n\t\t\t    },\n\t\t\t\t{\n\t\t\t\t    \"@type\": \"FactGroup\",\n\t\t\t\t    \"items\": [\n\t\t\t\t        { \"name\": \"Board:\", \"value\": \"Adaptive Card\" },\n\t\t\t\t        { \"name\": \"List:\", \"value\": \"Backlog\" },\n\t\t\t\t        { \"name\": \"Assigned to:\", \"value\": \"David Claux\" },\n\t\t\t\t        { \"name\": \"Due date:\", \"value\": \"Not set\" }\n\t\t\t\t    ]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t    \"@type\": \"ActionGroup\",\n\t\t\t\t    \"items\": [\n                \t\t{\n                \t\t\t\"@type\": \"ActionCard\",\n                \t\t\t\"name\": \"Set due date\",\n                \t\t\t\"inputs\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"DateInput\",\n                \t\t\t\t\t\"id\": \"dueDate\",\n                \t\t\t\t\t\"title\": \"Select a date\"\n                \t\t\t\t}\n                \t\t\t],\n                \t\t\t\"actions\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"HttpPOST\",\n                \t\t\t\t\t\"name\": \"OK\",\n                \t\t\t\t\t\"target\": \"http://...\"\n                \t\t\t\t}\n                \t\t\t]\n                \t\t},\n                \t\t{\n                \t\t\t\"@type\": \"ActionCard\",\n                \t\t\t\"name\": \"Comment\",\n                \t\t\t\"inputs\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"TextInput\",\n                \t\t\t\t\t\"id\": \"comment\",\n                \t\t\t\t\t\"isMultiline\": true,\n                \t\t\t\t\t\"title\": \"Enter your comment\"\n                \t\t\t\t}\n                \t\t\t],\n                \t\t\t\"actions\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"HttpPOST\",\n                \t\t\t\t\t\"name\": \"OK\",\n                \t\t\t\t\t\"target\": \"http://...\"\n                \t\t\t\t}\n                \t\t\t]\n                \t\t},\n                \t\t{\n                \t\t\t\"@type\": \"OpenUri\",\n                \t\t\t\"name\": \"View\",\n                \t\t\t\"targets\": [\n                \t\t\t\t{ \"os\": \"default\", \"uri\": \"http://...\" }\n                \t\t\t]\n                \t\t}\n\t\t\t\t    ]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}";
+	exports.defaultPayload = "\n\n{\n\t\"@type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\t{\n\t\t    \"@type\": \"Container\",\n\t\t\t\"items\": [\n\t\t\t    {\n\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t        \"text\": \"Card created: Publish Adaptive Card schema\",\n\t\t\t        \"textWeight\": \"bolder\",\n\t\t\t        \"textSize\": \"medium\"\n\t\t\t    },\n\t\t\t\t{\n\t\t\t\t\t\"@type\": \"ColumnGroup\",\n\t\t\t\t\t\"speak\": \"<s>Created by Miguel Garcia</s>\",\n\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"size\": \"auto\",\n\t\t\t\t\t\t\t\"items\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"Image\",\n                \t\t\t\t\t\"url\": \"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n                \t\t\t\t\t\"size\": \"small\",\n                \t\t\t\t\t\"style\": \"person\"\n                \t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"size\": \"stretch\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t    {\n\t\t\t\t\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\t\t        \"text\": \"**Miguel Garcia**\",\n\t\t\t\t\t\t\t        \"wrap\": true\n\t\t\t\t\t\t\t    },\n\t\t\t\t\t\t\t    {\n\t\t\t\t\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\t\t        \"text\": \"9/13/2016, 3:34pm\",\n\t\t\t\t\t\t\t        \"isSubtle\": true,\n\t\t\t\t\t\t\t        \"wrap\": true\n\t\t\t\t\t\t\t    }\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t    \"@type\": \"Container\",\n\t\t    \"items\": [\n\t\t\t    {\n\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\"speak\": \"\",\n\t\t\t        \"text\": \"Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.\",\n\t\t\t        \"wrap\": true\n\t\t\t    },\n\t\t\t\t{\n\t\t\t\t    \"@type\": \"FactGroup\",\n\t\t\t\t    \"items\": [\n\t\t\t\t        { \"name\": \"Board:\", \"value\": \"Adaptive Card\", \"speak\":\"\" },\n\t\t\t\t        { \"name\": \"List:\", \"value\": \"Backlog\", \"speak\":\"\" },\n\t\t\t\t        { \"name\": \"Assigned to:\", \"value\": \"David Claux\" },\n\t\t\t\t        { \"name\": \"Due date:\", \"value\": \"Not set\", \"speak\":\"\" }\n\t\t\t\t    ]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t    \"@type\": \"ActionGroup\",\n\t\t\t\t\t\"speak\": \"You can set the due date, add a comment or view more information.\",\n\t\t\t\t    \"items\": [\n                \t\t{\n                \t\t\t\"@type\": \"ActionCard\",\n                \t\t\t\"name\": \"Set due date\",\n                \t\t\t\"inputs\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"DateInput\",\n                \t\t\t\t\t\"id\": \"dueDate\",\n                \t\t\t\t\t\"title\": \"Select a date\"\n                \t\t\t\t}\n                \t\t\t],\n                \t\t\t\"actions\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"HttpPOST\",\n                \t\t\t\t\t\"name\": \"OK\",\n                \t\t\t\t\t\"target\": \"http://...\"\n                \t\t\t\t}\n                \t\t\t]\n                \t\t},\n                \t\t{\n                \t\t\t\"@type\": \"ActionCard\",\n                \t\t\t\"name\": \"Comment\",\n                \t\t\t\"inputs\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"TextInput\",\n                \t\t\t\t\t\"id\": \"comment\",\n                \t\t\t\t\t\"isMultiline\": true,\n                \t\t\t\t\t\"title\": \"Enter your comment\"\n                \t\t\t\t}\n                \t\t\t],\n                \t\t\t\"actions\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"HttpPOST\",\n                \t\t\t\t\t\"name\": \"OK\",\n                \t\t\t\t\t\"target\": \"http://...\"\n                \t\t\t\t}\n                \t\t\t]\n                \t\t},\n                \t\t{\n                \t\t\t\"@type\": \"OpenUri\",\n                \t\t\t\"name\": \"View\",\n                \t\t\t\"targets\": [\n                \t\t\t\t{ \"os\": \"default\", \"uri\": \"http://...\" }\n                \t\t\t]\n                \t\t}\n\t\t\t\t    ]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}";
 
 
 /***/ },
