@@ -1,6 +1,7 @@
 // TOOD: Can I pull this from the samples folder rather than copying it here?
 
 export const defaultPayload: string = `
+
 {
 	"@type": "AdaptiveCard",
 	"body": [
@@ -15,6 +16,7 @@ export const defaultPayload: string = `
 			    },
 				{
 					"@type": "ColumnGroup",
+					"speak": "<s>Created by Miguel Garcia</s>",
 					"items": [
 						{
 							"size": "auto",
@@ -52,20 +54,22 @@ export const defaultPayload: string = `
 		    "items": [
 			    {
 			        "@type": "TextBlock",
+					"speak": "",
 			        "text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
 			        "wrap": true
 			    },
 				{
 				    "@type": "FactGroup",
 				    "items": [
-				        { "name": "Board:", "value": "Adaptive Card" },
-				        { "name": "List:", "value": "Backlog" },
+				        { "name": "Board:", "value": "Adaptive Card", "speak":"" },
+				        { "name": "List:", "value": "Backlog", "speak":"" },
 				        { "name": "Assigned to:", "value": "David Claux" },
-				        { "name": "Due date:", "value": "Not set" }
+				        { "name": "Due date:", "value": "Not set", "speak":"" }
 				    ]
 				},
 				{
 				    "@type": "ActionGroup",
+					"speak": "You can set the due date, add a comment or view more information.",
 				    "items": [
                 		{
                 			"@type": "ActionCard",

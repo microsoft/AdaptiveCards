@@ -14,276 +14,60 @@ abstract class HostContainer {
         this.styleSheet = styleSheet;
     }
 
-    abstract render(card: AdaptiveCard): HTMLElement;
-
-    readonly styleSheet: string;
-}
-
-class LiveTileContainer extends HostContainer {
-    static backgroundColor: string = "#0078D7";
-    static textColor: TextColor = TextColor.Light;
-
-    private _width: number;
-    private _height: number;
-
-    constructor(width: number, height: number, styleSheet: string) {
-        super(styleSheet);
-
-        this._width = width;
-        this._height = height;
-    }
-
-    render(card: AdaptiveCard): HTMLElement {
+    render(card: AdaptiveCard, showXml: boolean = false): HTMLElement {
         let element = document.createElement("div");
-        element.style.width = this._width + "px";
-        element.style.height = this._height + "px";
-        element.style.backgroundColor = LiveTileContainer.backgroundColor;
-        element.style.overflow = "hidden";
+        element.className = "speechContainer";
 
-        card.root.textColor = LiveTileContainer.textColor;
-
-        ActionGroup.buttonStyle = ActionButtonStyle.Push;
-
-        let renderedCard = card.render();
-        renderedCard.style.height = "100%";
-
-        appendChild(element, renderedCard);
-
-        return element;
-    }
-}
-
-class BingContainer extends HostContainer {
-    static backgroundColor: string = "#fff";
-    static textColor: TextColor = TextColor.Dark;
-
-    private _width: number;
-    private _height: number;
-
-    constructor(width: number, height: number, styleSheet: string) {
-        super(styleSheet);
-
-        this._width = width;
-        this._height = height;
-    }
-
-    render(card: AdaptiveCard): HTMLElement {
-        let element = document.createElement("div");
-        element.style.width = this._width + "px";
-        element.style.height = this._height + "px";
-        element.style.backgroundColor = BingContainer.backgroundColor;
-        element.style.overflow = "hidden";
-
-        card.root.textColor = BingContainer.textColor;
-
-        ActionGroup.buttonStyle = ActionButtonStyle.Push;
-
-        let renderedCard = card.render();
-        renderedCard.style.height = "100%";
-
-        appendChild(element, renderedCard);
-
-        return element;
-    }
-}
-
-class ToastContainer extends HostContainer {
-    static backgroundColor: string = "#1F1F1F";
-    static textColor: TextColor = TextColor.Light;
-
-    private _width: number;
-
-    constructor(width: number, styleSheet: string) {
-        super(styleSheet);
-
-        this._width = width;
-    }
-
-    render(card: AdaptiveCard): HTMLElement {
-        let element = document.createElement("div");
-        element.style.border = "#474747 1px solid";
-        element.style.width = this._width + "px";
-        element.style.backgroundColor = ToastContainer.backgroundColor;
-        element.style.overflow = "hidden";
-
-        if (card.title != undefined || card.description1 != undefined) {
-            let headerElement = document.createElement("div");
-            headerElement.className = "headerContainer";
-
-            let html: string = '';
-            html += '<div style="flex: 0 0 auto; margin-right: 10px;">';
-            html += '  <img class="image autoSize" style="overflow: hidden; margin-top: 0px;" src="./assets/appicon.png"/>';
-            html += '</div>';
-
-            html += '<div style="flex: 1 1 100%">';
-
-            if (card.title != undefined) {
-                html += '  <div class="text defaultSize lightColor">' + card.title + '</div>';
-            }
-
-            if (card.description1 != undefined) {
-                html += '  <div class="text defaultSize lightColor subtle">' + card.description1 + '</div>';
-            }
-
-            if (card.description2 != undefined) {
-                html += '  <div class="text small lightColor subtle">' + card.description2 + '</div>';
-            }
-
-            html += '</div>';
-
-            headerElement.innerHTML = html;
-
-            appendChild(element, headerElement);
-        }
-
-        card.root.textColor = LiveTileContainer.textColor;
-
-        ActionGroup.buttonStyle = ActionButtonStyle.Push;
-
-        let renderedCard = card.render();
-
-        appendChild(element, renderedCard);
-
-        return element;
-    }
-}
-
-abstract class ConnectorContainer extends HostContainer {
-    renderHeader(card: AdaptiveCard): HTMLElement {
-        let headerElement: HTMLElement = null;
-
-        if (card.title != undefined || card.description1 != undefined) {
-            headerElement = document.createElement("div");
-            headerElement.className = "headerContainer";
-
-            let html = '<div>';
-            let spaceNeeded = false;
-
-            if (card.title != undefined) {
-                html += '  <div class="text medium bolder defaultColor">' + card.title + '</div>';
-
-                spaceNeeded = true;
-            }
-
-            if (card.description1 != undefined) {
-                html += '  <div class="text defaultSize defaultColor"';
-
-                if (spaceNeeded) {
-                    html += ' style="padding-top: 16px;"';
-                }
-
-                html += '>' + card.description1 + '</div>';
-            }
-
-            if (card.description2 != undefined) {
-                html += '  <div class="text defaultSize defaultColor subtle">' + card.description2 + '</div>';
-            }
-
-            html += '</div>';
-
-            headerElement.innerHTML = html;
-        }
-
-        return headerElement;
-    }
-}
-
-class OutlookConnectorContainer extends ConnectorContainer {
-    private _themeColor: string;
-
-    constructor(themeColor: string, styleSheet: string) {
-        super(styleSheet);
-
-        this._themeColor = themeColor;
-    }
-
-    render(card: AdaptiveCard): HTMLElement {
-        let element = document.createElement("div");
-        element.style.borderTop = "1px solid #F1F1F1";
-        element.style.borderRight = "1px solid #F1F1F1";
-        element.style.borderBottom = "1px solid #F1F1F1";
-
-        if (isNullOrEmpty(this._themeColor)) {
-            element.style.border = "1px solid #F1F1F1"
+        let button = document.createElement("button");
+        let t = document.createTextNode("Speak");
+        let text = card.renderSpeech();
+        let output = new Array<any>();
+        if (text[0] == '<') {
+            if (text.indexOf("<speak") != 0)
+                text = '<speak>\n' + text + '\n</speak>\n';
+            let parser = new DOMParser();
+            let dom = parser.parseFromString(text, "text/xml");
+            let nodes = dom.documentElement.childNodes;
+            this.processNodes(nodes, output);
+            let serializer = new XMLSerializer();
+            text = vkbeautify.xml(serializer.serializeToString(dom));;
         }
         else {
-            element.style.borderLeft = "3px solid " + this._themeColor;
+            output.push(text);
+            vkbeautify
+            text = vkbeautify.xml(text);
+        }
+        button.appendChild(t);
+        button.addEventListener("click", function () {
+            SpeechContainer.playNextTTS(output, 0);
+        });
+
+        appendChild(element, document.createElement("br"));
+        appendChild(element, document.createElement("br"));
+        appendChild(element, document.createElement("hr"));
+        appendChild(element, button);
+
+        if (showXml) {
+            let pre = document.createElement("pre");
+            appendChild(pre, document.createTextNode(text));
+            appendChild(element, pre);
         }
 
-        let headerElement = this.renderHeader(card);
-
-        if (headerElement != null) {
-            appendChild(element, headerElement);
-        }
-
-        ActionGroup.buttonStyle = ActionButtonStyle.Link;
-
-        let renderedCard = card.render();
-
-        appendChild(element, renderedCard);
+        //appendChild(pre, document.createTextNode(text));
+        let audio = document.createElement("audio");
+        audio.id = 'player';
+        audio.autoplay = true;
+        appendChild(element, audio);
 
         return element;
     }
-}
 
-class TeamsConnectorContainer extends ConnectorContainer {
-    render(card: AdaptiveCard): HTMLElement {
-        let element = document.createElement("div");
-        element.style.borderTop = "1px solid #F1F1F1";
-        element.style.borderRight = "1px solid #F1F1F1";
-        element.style.borderBottom = "1px solid #F1F1F1";
-        element.style.border = "1px solid #F1F1F1"
+    readonly styleSheet: string;
 
-        let headerElement = this.renderHeader(card);
-
-        if (headerElement != null) {
-            appendChild(element, headerElement);
-        }
-
-        ActionGroup.buttonStyle = ActionButtonStyle.Link;
-
-        let renderedCard = card.render();
-
-        appendChild(element, renderedCard);
-
-        return element;
-    }
-}
-
-class SkypeCardContainer extends HostContainer {
-    render(card: AdaptiveCard): HTMLElement {
-        let element = document.createElement("div");
-        element.className = "skypeContainer";
-
-        // Draw the hexagon bot logo
-        let botElement = document.createElement("div");
-        botElement.className = "hexagon";
-
-        var botElementIn1 = document.createElement("div");
-        botElementIn1.className = "hexagon-in1";
-        botElement.appendChild(botElementIn1);
-
-        var botElementIn2 = document.createElement("div");
-        botElementIn2.className = "hexagon-in2";
-        botElementIn1.appendChild(botElementIn2);
-
-
-        ActionGroup.buttonStyle = ActionButtonStyle.Push;
-
-        let renderedCard = card.render();
-
-        appendChild(element, botElement);
-        appendChild(element, renderedCard);
-
-        return element;
-    }
-}
-
-declare var SpeechSynthesisUtterance: any;
-
-
-class SpeechContainer extends HostContainer {
-
+    // process SSML markup into an array of either 
+    // * utterenance
+    // * number which is delay in msg
+    // * url which is an audio file 
     private processNodes(nodes: NodeList, output: any[]): void {
         for (let i = 0; i < nodes.length; i++) {
             let node = nodes[i];
@@ -362,48 +146,288 @@ class SpeechContainer extends HostContainer {
         }
     }
 
+}
+
+class LiveTileContainer extends HostContainer {
+    static backgroundColor: string = "#0078D7";
+    static textColor: TextColor = TextColor.Light;
+
+    private _width: number;
+    private _height: number;
+
+    constructor(width: number, height: number, styleSheet: string) {
+        super(styleSheet);
+
+        this._width = width;
+        this._height = height;
+    }
+
     render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
-        element.className = "speechContainer";
+        element.style.width = this._width + "px";
+        element.style.height = this._height + "px";
+        element.style.backgroundColor = LiveTileContainer.backgroundColor;
+        element.style.overflow = "hidden";
 
-        // Draw the hexagon bot logo
-        let button = document.createElement("button");
-        let t = document.createTextNode("Speak");
-        let text = card.renderSpeech();
-        let output = new Array<any>();
-        if (text[0] == '<') {
-            if (text.indexOf("<speak") != 0)
-                text = '<speak>\n' + text + '\n</speak>\n';
-            let parser = new DOMParser();
-            let dom = parser.parseFromString(text, "text/xml");
-            let nodes = dom.documentElement.childNodes;
-            this.processNodes(nodes, output);
-            let serializer = new XMLSerializer();
-            text = vkbeautify.xml(serializer.serializeToString(dom));;
+        card.root.textColor = LiveTileContainer.textColor;
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+
+        let renderedCard = card.render();
+        renderedCard.style.height = "100%";
+
+        appendChild(element, renderedCard);
+        let hostDiv = document.createElement("div");
+        appendChild(hostDiv, element);
+        appendChild(hostDiv, super.render(card));
+        return hostDiv;
+    }
+}
+
+class BingContainer extends HostContainer {
+    static backgroundColor: string = "#fff";
+    static textColor: TextColor = TextColor.Dark;
+
+    private _width: number;
+    private _height: number;
+
+    constructor(width: number, height: number, styleSheet: string) {
+        super(styleSheet);
+
+        this._width = width;
+        this._height = height;
+    }
+
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.style.width = this._width + "px";
+        element.style.height = this._height + "px";
+        element.style.backgroundColor = BingContainer.backgroundColor;
+        element.style.overflow = "hidden";
+
+        card.root.textColor = BingContainer.textColor;
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+
+        let renderedCard = card.render();
+        renderedCard.style.height = "100%";
+
+        appendChild(element, renderedCard);
+        let hostDiv = document.createElement("div");
+        appendChild(hostDiv, element);
+        appendChild(hostDiv, super.render(card));
+        return hostDiv;
+    }
+}
+
+class ToastContainer extends HostContainer {
+    static backgroundColor: string = "#1F1F1F";
+    static textColor: TextColor = TextColor.Light;
+
+    private _width: number;
+
+    constructor(width: number, styleSheet: string) {
+        super(styleSheet);
+
+        this._width = width;
+    }
+
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.style.border = "#474747 1px solid";
+        element.style.width = this._width + "px";
+        element.style.backgroundColor = ToastContainer.backgroundColor;
+        element.style.overflow = "hidden";
+
+        if (card.title != undefined || card.description1 != undefined) {
+            let headerElement = document.createElement("div");
+            headerElement.className = "headerContainer";
+
+            let html: string = '';
+            html += '<div style="flex: 0 0 auto; margin-right: 10px;">';
+            html += '  <img class="image autoSize" style="overflow: hidden; margin-top: 0px;" src="./assets/appicon.png"/>';
+            html += '</div>';
+
+            html += '<div style="flex: 1 1 100%">';
+
+            if (card.title != undefined) {
+                html += '  <div class="text defaultSize lightColor">' + card.title + '</div>';
+            }
+
+            if (card.description1 != undefined) {
+                html += '  <div class="text defaultSize lightColor subtle">' + card.description1 + '</div>';
+            }
+
+            if (card.description2 != undefined) {
+                html += '  <div class="text small lightColor subtle">' + card.description2 + '</div>';
+            }
+
+            html += '</div>';
+
+            headerElement.innerHTML = html;
+
+            appendChild(element, headerElement);
+        }
+
+        card.root.textColor = LiveTileContainer.textColor;
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+
+        let renderedCard = card.render();
+
+        appendChild(element, renderedCard);
+        let hostDiv = document.createElement("div");
+        appendChild(hostDiv, element);
+        appendChild(hostDiv, super.render(card));
+        return hostDiv;
+    }
+}
+
+abstract class ConnectorContainer extends HostContainer {
+    renderHeader(card: AdaptiveCard): HTMLElement {
+        let headerElement: HTMLElement = null;
+        if (card.title != undefined || card.description1 != undefined) {
+            headerElement = document.createElement("div");
+            headerElement.className = "headerContainer";
+
+            let html = '<div>';
+            let spaceNeeded = false;
+
+            if (card.title != undefined) {
+                html += '  <div class="text medium bolder defaultColor">' + card.title + '</div>';
+
+                spaceNeeded = true;
+            }
+
+            if (card.description1 != undefined) {
+                html += '  <div class="text defaultSize defaultColor"';
+
+                if (spaceNeeded) {
+                    html += ' style="padding-top: 16px;"';
+                }
+
+                html += '>' + card.description1 + '</div>';
+            }
+
+            if (card.description2 != undefined) {
+                html += '  <div class="text defaultSize defaultColor subtle">' + card.description2 + '</div>';
+            }
+
+            html += '</div>';
+
+            headerElement.innerHTML = html;
+        }
+
+        return headerElement;
+    }
+}
+
+class OutlookConnectorContainer extends ConnectorContainer {
+    private _themeColor: string;
+
+    constructor(themeColor: string, styleSheet: string) {
+        super(styleSheet);
+
+        this._themeColor = themeColor;
+    }
+
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.style.borderTop = "1px solid #F1F1F1";
+        element.style.borderRight = "1px solid #F1F1F1";
+        element.style.borderBottom = "1px solid #F1F1F1";
+
+        if (isNullOrEmpty(this._themeColor)) {
+            element.style.border = "1px solid #F1F1F1"
         }
         else {
-            output.push(text);
-            vkbeautify
-            text = vkbeautify.xml(text);
+            element.style.borderLeft = "3px solid " + this._themeColor;
         }
-        let pre = document.createElement("pre");
-        appendChild(pre, document.createTextNode(text));
-        appendChild(element, pre);
 
-        button.appendChild(t);
-        button.addEventListener("click", function () {
-            SpeechContainer.playNextTTS(output, 0);
-        });
+        let headerElement = this.renderHeader(card);
 
-        appendChild(element, button);
+        if (headerElement != null) {
+            appendChild(element, headerElement);
+        }
 
-        //appendChild(pre, document.createTextNode(text));
-        let audio = document.createElement("audio");
-        audio.id = 'player';
-        audio.autoplay = true;
-        appendChild(element, audio);
+        ActionGroup.buttonStyle = ActionButtonStyle.Link;
 
-        return element;
+        let renderedCard = card.render();
+
+        appendChild(element, renderedCard);
+        let hostDiv = document.createElement("div");
+        appendChild(hostDiv, element);
+        appendChild(hostDiv, super.render(card));
+        return hostDiv;
+    }
+}
+
+class TeamsConnectorContainer extends ConnectorContainer {
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.style.borderTop = "1px solid #F1F1F1";
+        element.style.borderRight = "1px solid #F1F1F1";
+        element.style.borderBottom = "1px solid #F1F1F1";
+        element.style.border = "1px solid #F1F1F1"
+
+        let headerElement = this.renderHeader(card);
+
+        if (headerElement != null) {
+            appendChild(element, headerElement);
+        }
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Link;
+
+        let renderedCard = card.render();
+
+        appendChild(element, renderedCard);
+        let hostDiv = document.createElement("div");
+        appendChild(hostDiv, element);
+        appendChild(hostDiv, super.render(card));
+        return hostDiv;
+    }
+}
+
+class SkypeCardContainer extends HostContainer {
+    render(card: AdaptiveCard): HTMLElement {
+        let element = document.createElement("div");
+        element.className = "skypeContainer";
+
+        // Draw the hexagon bot logo
+        let botElement = document.createElement("div");
+        botElement.className = "hexagon";
+
+        var botElementIn1 = document.createElement("div");
+        botElementIn1.className = "hexagon-in1";
+        botElement.appendChild(botElementIn1);
+
+        var botElementIn2 = document.createElement("div");
+        botElementIn2.className = "hexagon-in2";
+        botElementIn1.appendChild(botElementIn2);
+
+
+        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+
+        let renderedCard = card.render();
+
+        appendChild(element, botElement);
+        appendChild(element, renderedCard);
+        let hostDiv = document.createElement("div");
+        appendChild(hostDiv, element);
+        appendChild(hostDiv, super.render(card));
+        return hostDiv;
+    }
+}
+
+declare var SpeechSynthesisUtterance: any;
+
+
+class SpeechContainer extends HostContainer {
+
+    render(card: AdaptiveCard): HTMLElement {
+        let hostDiv = document.createElement("div");
+        appendChild(hostDiv, super.render(card, true));
+        return hostDiv;
     }
 }
 

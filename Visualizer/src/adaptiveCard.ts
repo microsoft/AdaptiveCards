@@ -290,7 +290,6 @@ export abstract class CardElement {
         this.size = stringToSize(json["size"], this.size);
         this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     }
-
 }
 
 export class TextBlock extends CardElement {
