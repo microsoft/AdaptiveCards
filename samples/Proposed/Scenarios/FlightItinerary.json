@@ -1,5 +1,6 @@
 {
 	"@type": "AdaptiveCard",
+	"speak":"<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>",
 	"body": [
 		{
 		    "@type": "Container",
@@ -117,10 +118,6 @@
 						{
 							"size": "auto",
 							"items": [
-								{
-									"@type": "TextBlock",
-									"text": "&nbsp;"
-								},
 								{
 									"@type": "Image",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",

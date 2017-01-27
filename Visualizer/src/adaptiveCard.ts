@@ -290,6 +290,7 @@ export abstract class CardElement {
         this.size = stringToSize(json["size"], this.size);
         this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     }
+
 }
 
 export class TextBlock extends CardElement {
@@ -1253,14 +1254,20 @@ export class ActionGroup extends CardElement {
     }
 
     renderSpeech(): string {
-        // // render each item
+        if (this.speak != null)
+            return this.speak + '\n';
+
+        // // render each fact 
         // let speak = null;
-        // if (this._actions.length > 0) {
+        // if (this._actionButtons.length > 0) {
         //     speak = '';
-        //     for (var i = 0; i < this._actions.length; i++) {
-        //         speak += this._actions[i].renderSpeech();
+        //     for (var i = 0; i < this._actionButtons.length; i++) {
+        //         let speech = this._actionButtons[i].renderSpeech();
+        //         if (speech)
+        //             speak += speech;
         //     }
         // }
+        // return '<p>' + speak + '\n</p>\n';
         return null;
     }
 }
