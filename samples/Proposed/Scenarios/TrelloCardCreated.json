@@ -3,6 +3,7 @@
 	"body": [
 		{
 		    "@type": "Container",
+	        "speak":"<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
 			"items": [
 			    {
 			        "@type": "TextBlock",
@@ -50,10 +51,12 @@
 			    {
 			        "@type": "TextBlock",
 			        "text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+			        "speak":"",
 			        "wrap": true
 			    },
 				{
 				    "@type": "FactGroup",
+				    "speak":"It has been assigned to: David Claux",
 				    "items": [
 				        { "name": "Board:", "value": "Adaptive Card" },
 				        { "name": "List:", "value": "Backlog" },
@@ -63,6 +66,7 @@
 				},
 				{
 				    "@type": "ActionGroup",
+				    "speak":"",
 				    "items": [
                 		{
                 			"@type": "ActionCard",

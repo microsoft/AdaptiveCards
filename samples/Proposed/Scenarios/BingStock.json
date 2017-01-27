@@ -1,5 +1,6 @@
 {
     "@type": "AdaptiveCard",
+    "speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
     "body": [
         {
             "@type": "Container",
