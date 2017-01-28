@@ -67,7 +67,7 @@
 }
 
 .text.defaultColor {
-    color: rgb(51, 51, 51);
+    color: rgb(255, 255, 255);
 }
 
 .text.defaultColor.subtle {
@@ -75,11 +75,11 @@
 }
 
 .text.darkColor {
-    color: rgb(51, 51, 51);
+    color: rgb(255, 255, 255);
 }
 
 .text.darkColor.subtle {
-    color: rgba(51, 51, 51, 0.5);
+    color: rgba(240, 240, 240, 0.5);
 }
 
 .text.lightColor {
@@ -111,9 +111,9 @@
 }
 
 .rootContainer {
+    width: 300px;
+    background: black;
     padding: 10px 12px;
-    /*Needed to position the bing glyph in the lower right*/
-    position: relative;
 }
 
 .container {
