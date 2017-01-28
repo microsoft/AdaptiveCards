@@ -423,10 +423,7 @@ class SkypeCardContainer extends HostContainer {
 class CortanaCarContainer extends HostContainer {
     render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
-        element.style.borderTop = "1px solid #F1F1F1";
-        element.style.borderRight = "1px solid #F1F1F1";
-        element.style.borderBottom = "1px solid #F1F1F1";
-        element.style.border = "1px solid #F1F1F1"
+        //element.classList.add("text", "defaultSize", "lightColor");
 
         ActionGroup.buttonStyle = ActionButtonStyle.Link;
 
