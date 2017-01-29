@@ -423,11 +423,19 @@ class SkypeCardContainer extends HostContainer {
 class CortanaCarContainer extends HostContainer {
     render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
-        //element.classList.add("text", "defaultSize", "lightColor");
-
+        
         ActionGroup.buttonStyle = ActionButtonStyle.Link;
 
         let renderedCard = card.render();
+
+        let imgDiv = document.createElement("div");
+        imgDiv.classList.add("title");
+        
+        let img = document.createElement("img");
+        img.classList.add("image", "cortanaLogo");
+        img.src = "./assets/cortana-logo.png";
+        appendChild(imgDiv, img);
+        renderedCard.insertBefore(imgDiv, renderedCard.firstChild);
 
         appendChild(element, renderedCard);
         let hostDiv = document.createElement("div");
