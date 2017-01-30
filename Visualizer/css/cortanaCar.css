@@ -2,6 +2,16 @@
     box-sizing: border-box;
 }
 
+.cortanaLogo {
+    width: 50px;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
 .stretch {
     width: 100%;
 }
@@ -26,32 +36,22 @@
 
 .text.defaultSize {
     font-size: 14px;
-    margin: -5px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.small {
     font-size: 12px;
-    margin: -4px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.medium {
     font-size: 20px;
-    margin: -8px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.large {
     font-size: 24px;
-    margin: -9px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.extraLarge {
     font-size: 30px;
-    margin: -11px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.lighter {
@@ -67,7 +67,7 @@
 }
 
 .text.defaultColor {
-    color: rgb(51, 51, 51);
+    color: rgb(255, 255, 255);
 }
 
 .text.defaultColor.subtle {
@@ -75,11 +75,11 @@
 }
 
 .text.darkColor {
-    color: rgb(51, 51, 51);
+    color: rgb(255, 255, 255);
 }
 
 .text.darkColor.subtle {
-    color: rgba(51, 51, 51, 0.5);
+    color: rgba(240, 240, 240, 0.5);
 }
 
 .text.lightColor {
@@ -111,13 +111,14 @@
 }
 
 .rootContainer {
+    width: 300px;
+    height: 300px;
+    background: black;
     padding: 10px 12px;
-    /*Needed to position the bing glyph in the lower right*/
-    position: relative;
 }
 
 .container {
-    margin: 20px 0px 0px 0px;
+    margin: 5px 0px 0px 0px;
 }
 
 .image {
