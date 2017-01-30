@@ -418,6 +418,30 @@
 	    };
 	    return SkypeCardContainer;
 	}(HostContainer));
+	var CortanaCarContainer = (function (_super) {
+	    __extends(CortanaCarContainer, _super);
+	    function CortanaCarContainer() {
+	        _super.apply(this, arguments);
+	    }
+	    CortanaCarContainer.prototype.render = function (card) {
+	        var element = document.createElement("div");
+	        adaptiveCard_1.ActionGroup.buttonStyle = adaptiveCard_1.ActionButtonStyle.Link;
+	        var renderedCard = card.render();
+	        var imgDiv = document.createElement("div");
+	        imgDiv.classList.add("title");
+	        var img = document.createElement("img");
+	        img.classList.add("image", "cortanaLogo");
+	        img.src = "./assets/cortana-logo.png";
+	        adaptiveCard_1.appendChild(imgDiv, img);
+	        renderedCard.insertBefore(imgDiv, renderedCard.firstChild);
+	        adaptiveCard_1.appendChild(element, renderedCard);
+	        var hostDiv = document.createElement("div");
+	        adaptiveCard_1.appendChild(hostDiv, element);
+	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
+	        return hostDiv;
+	    };
+	    return CortanaCarContainer;
+	}(HostContainer));
 	var SpeechContainer = (function (_super) {
 	    __extends(SpeechContainer, _super);
 	    function SpeechContainer() {
@@ -543,25 +567,12 @@
 	    }
 	}
 	function setupContainerPicker() {
-	    hostContainerOptions.push(new HostContainerOption("Outlook Connector Card", new OutlookConnectorContainer("red", "./css/outlookConnectorCard.css")));
-	    hostContainerOptions.push(new HostContainerOption("Teams Connector Card", new TeamsConnectorContainer("./css/teamsConnectorCard.css")));
-	    hostContainerOptions.push(new HostContainerOption("Toast", new ToastContainer(362, "./css/toast.css")));
-	    hostContainerOptions.push(new HostContainerOption("Large Live Tile", new LiveTileContainer(310, 310, "./css/liveTile.css")));
-	    /*
-	    hostContainerOptions.push(
-	        new HostContainerOption(
-	            "Wide Live Tile",
-	            new LiveTileContainer(204, 100, "./css/liveTile.css")));
-	    hostContainerOptions.push(
-	        new HostContainerOption(
-	            "Medium Live Tile",
-	            new LiveTileContainer(100, 100, "./css/liveTile.css")));
-	    hostContainerOptions.push(
-	        new HostContainerOption(
-	            "Small Live Tile",
-	            new LiveTileContainer(48, 48, "./css/liveTile.css")));
-	    */
-	    hostContainerOptions.push(new HostContainerOption("Skype Card", new SkypeCardContainer("./css/skypeCard.css")));
+	    hostContainerOptions.push(new HostContainerOption("Outlook Connector", new OutlookConnectorContainer("red", "./css/outlookConnectorCard.css")));
+	    hostContainerOptions.push(new HostContainerOption("Microsoft Teams", new TeamsConnectorContainer("./css/teamsConnectorCard.css")));
+	    hostContainerOptions.push(new HostContainerOption("Windows Notification", new ToastContainer(362, "./css/toast.css")));
+	    hostContainerOptions.push(new HostContainerOption("Windows Live Tile", new LiveTileContainer(310, 310, "./css/liveTile.css")));
+	    hostContainerOptions.push(new HostContainerOption("Skype", new SkypeCardContainer("./css/skypeCard.css")));
+	    hostContainerOptions.push(new HostContainerOption("Cortana Car", new CortanaCarContainer("./css/cortanaCar.css")));
 	    hostContainerOptions.push(new HostContainerOption("Bing", new BingContainer(285, 150, "./css/bing.css")));
 	    hostContainerOptions.push(new HostContainerOption("Speech", new SpeechContainer("./css/bing.css")));
 	    if (hostContainerPicker) {
