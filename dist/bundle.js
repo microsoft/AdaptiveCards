@@ -11092,8 +11092,8 @@
 	                      .map(escapeRE)
 	                      .join('|');
 	  // (?!_) cause 1.5x slowdown
-	  self.re.schema_test   = RegExp('(^|(?!_)(?:[><]|' + re.src_ZPCc + '))(' + slist + ')', 'i');
-	  self.re.schema_search = RegExp('(^|(?!_)(?:[><]|' + re.src_ZPCc + '))(' + slist + ')', 'ig');
+	  self.re.schema_test   = RegExp('(^|(?!_)(?:[><\uff5c]|' + re.src_ZPCc + '))(' + slist + ')', 'i');
+	  self.re.schema_search = RegExp('(^|(?!_)(?:[><\uff5c]|' + re.src_ZPCc + '))(' + slist + ')', 'ig');
 	
 	  self.re.pretest       = RegExp(
 	                            '(' + self.re.schema_test.source + ')|' +
@@ -11497,10 +11497,14 @@
 	  // \p{\Z\Cc} (white spaces + control)
 	  re.src_ZCc = [ re.src_Z, re.src_Cc ].join('|');
 	
+	  // Experimental. List of chars, completely prohibited in links
+	  // because can separate it from other part of text
+	  var text_separators = '[><\uff5c]';
+	
 	  // All possible word characters (everything without punctuation, spaces & controls)
 	  // Defined via punctuation & spaces to save space
 	  // Should be something like \p{\L\N\S\M} (\w but without `_`)
-	  re.src_pseudo_letter       = '(?:(?!>|<|' + re.src_ZPCc + ')' + re.src_Any + ')';
+	  re.src_pseudo_letter       = '(?:(?!' + text_separators + '|' + re.src_ZPCc + ')' + re.src_Any + ')';
 	  // The same as abothe but without [0-9]
 	  // var src_pseudo_letter_non_d = '(?:(?![0-9]|' + src_ZPCc + ')' + src_Any + ')';
 	
@@ -11519,14 +11523,14 @@
 	
 	  re.src_host_terminator =
 	
-	    '(?=$|>|<|' + re.src_ZPCc + ')(?!-|_|:\\d|\\.-|\\.(?!$|' + re.src_ZPCc + '))';
+	    '(?=$|' + text_separators + '|' + re.src_ZPCc + ')(?!-|_|:\\d|\\.-|\\.(?!$|' + re.src_ZPCc + '))';
 	
 	  re.src_path =
 	
 	    '(?:' +
 	      '[/?#]' +
 	        '(?:' +
-	          '(?!' + re.src_ZCc + '|[()[\\]{}.,"\'?!\\-<>]).|' +
+	          '(?!' + re.src_ZCc + '|' + text_separators + '|[()[\\]{}.,"\'?!\\-]).|' +
 	          '\\[(?:(?!' + re.src_ZCc + '|\\]).)*\\]|' +
 	          '\\((?:(?!' + re.src_ZCc + '|[)]).)*\\)|' +
 	          '\\{(?:(?!' + re.src_ZCc + '|[}]).)*\\}|' +
@@ -11636,19 +11640,19 @@
 	
 	  re.tpl_email_fuzzy =
 	
-	      '(^|<|>|\\(|' + re.src_ZCc + ')(' + re.src_email_name + '@' + re.tpl_host_fuzzy_strict + ')';
+	      '(^|' + text_separators + '|\\(|' + re.src_ZCc + ')(' + re.src_email_name + '@' + re.tpl_host_fuzzy_strict + ')';
 	
 	  re.tpl_link_fuzzy =
 	      // Fuzzy link can't be prepended with .:/\- and non punctuation.
 	      // but can start with > (markdown blockquote)
-	      '(^|(?![.:/\\-_@])(?:[$+<=>^`|]|' + re.src_ZPCc + '))' +
-	      '((?![$+<=>^`|])' + re.tpl_host_port_fuzzy_strict + re.src_path + ')';
+	      '(^|(?![.:/\\-_@])(?:[$+<=>^`|\uff5c]|' + re.src_ZPCc + '))' +
+	      '((?![$+<=>^`|\uff5c])' + re.tpl_host_port_fuzzy_strict + re.src_path + ')';
 	
 	  re.tpl_link_no_ip_fuzzy =
 	      // Fuzzy link can't be prepended with .:/\- and non punctuation.
 	      // but can start with > (markdown blockquote)
-	      '(^|(?![.:/\\-_@])(?:[$+<=>^`|]|' + re.src_ZPCc + '))' +
-	      '((?![$+<=>^`|])' + re.tpl_host_port_no_ip_fuzzy_strict + re.src_path + ')';
+	      '(^|(?![.:/\\-_@])(?:[$+<=>^`|\uff5c]|' + re.src_ZPCc + '))' +
+	      '((?![$+<=>^`|\uff5c])' + re.tpl_host_port_no_ip_fuzzy_strict + re.src_path + ')';
 	
 	  return re;
 	};
