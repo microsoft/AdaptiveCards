@@ -13,70 +13,67 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 AdaptiveTextBlock::AdaptiveTextBlock()
 {
+    m_TextBlock = std::make_unique<TextBlock>();
 }
 
-HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
+HRESULT AdaptiveTextBlock::get_Text(HSTRING* Text)
 {
-    return HStringReference(this->GetText().c_str()).CopyTo(text);
+    return StringToHSTRING(m_TextBlock->GetText(), Text);
 }
 
-HRESULT AdaptiveTextBlock::put_Text(HSTRING text)
+HRESULT AdaptiveTextBlock::put_Text(HSTRING Text)
 {
-    if (text == nullptr)
-    {
-        return E_INVALIDARG;
-    }
-    HString Wrapper;
-    RETURN_IF_FAILED(Wrapper.Set(text));
-    this->SetText(Wrapper.GetRawBuffer(nullptr));
+    std::string out;
+    RETURN_IF_FAILED(HSTRINGToString(Text, out));
+    m_TextBlock->SetText(out);
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::get_TextSize(ObjectModel::TextSize* TextSize)
 {
-    *TextSize = (ObjectModel::TextSize)this->GetTextSize();
+    *TextSize = (ObjectModel::TextSize) m_TextBlock->GetTextSize();
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::put_TextSize(ObjectModel::TextSize TextSize)
 {
-    this->SetTextSize((AdaptiveCards::TextSize)TextSize);
+    m_TextBlock->SetTextSize((AdaptiveCards::TextSize)TextSize);
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::get_TextWeight(ObjectModel::TextWeight* TextWeight)
 {
-    *TextWeight = (ObjectModel::TextWeight)this->GetTextWeight();
+    *TextWeight = (ObjectModel::TextWeight) m_TextBlock->GetTextWeight();
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::put_TextWeight(ObjectModel::TextWeight TextWeight)
 {
-    this->SetTextWeight((AdaptiveCards::TextWeight)TextWeight);
+    m_TextBlock->SetTextWeight((AdaptiveCards::TextWeight)TextWeight);
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::get_Wrap(boolean* Wrap)
 {
-    *Wrap = this->GetWrap();
+    *Wrap = m_TextBlock->GetWrap();
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::put_Wrap(boolean Wrap)
 {
-    this->SetWrap(Wrap);
+    m_TextBlock->SetWrap(Boolify(Wrap));
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::get_IsSubtle(boolean* IsSubtle)
 {
-    *IsSubtle = this->GetIsSubtle();
+    *IsSubtle = m_TextBlock->GetIsSubtle();
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::put_IsSubtle(boolean IsSubtle)
 {
-    this->SetIsSubtle(IsSubtle);
+    m_TextBlock->SetIsSubtle(Boolify(IsSubtle));
     return S_OK;
 }
 
