@@ -1,7 +1,7 @@
 # Interactive Visualizer
 
-[Online HTML visualizer](https://microsoft.github.io/AdaptiveCards/)
+To make it easy to design your cards we have an [Online HTML visualizer](https://microsoft.github.io/AdaptiveCards/).
 
-![Coming soon](images/visualizer.png)
+![Online visualizer](images/visualizer.png)
 
 

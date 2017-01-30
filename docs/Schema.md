@@ -6,7 +6,7 @@ CardElement is the base type for all elements that can be used to define an Adap
 |---|---|---|
 | **size** | [Size](#size) | Specifies the horizontal size of the element. |
 | **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | Specifies how the element should be aligned horizontally within its container. |
-| **speak** | [Speak](#speak) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ## TextBlock 
 *Extends [CardElement](#cardelement)*
@@ -20,7 +20,7 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 | **textColor** | [TextColor](#textcolor) | The color of the text |
 | **isSubtle** | boolean | Indicates whether the color of the text should be slightly toned down to appear less prominent |
 | **text** | string | The actual text to display |
-| **speak** | [speak](#speak) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. If not specified then text of all child elements will be used |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ## Image 
 *Extends [CardElement](#cardelement)*
@@ -64,17 +64,15 @@ Represents one "fact" in a [FactGroup](#factgroup) element.
 |---|---|---|
 | **name** | string | The fact's name. |
 | **value** | string | The fact's value. |
-| **speak** | [Speak](#speak) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. If not specified then text of all child elements will be used |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ## ColumnGroup 
 *Extends [CardElement](#cardelement)*
 
 The column group element adds the ability to have a set of coulmn objects.
 
-# Containers
-Containers are cardElements which contain a list of cardElements
-
 ## Container 
+*Extends [CardElement](#cardelement)*
 The Container is a CardElement which contains a list of CardElements that are logically grouped.
 
 | Property | Type | Description |
