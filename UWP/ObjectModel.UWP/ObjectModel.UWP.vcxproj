@@ -26,10 +26,31 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\shared\ObjectModel\ACParseException.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\ACParser.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCard.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\Container.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\Enums.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\ICardElement.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\jsoncpp.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\TextBlock.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\shared\ObjectModel\ACParseException.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\ACParser.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCard.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\Container.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\Enums.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\ICardElement.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\json\json-forwards.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\json\json.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\TextBlock.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</ProjectGuid>
     <Keyword>StaticLibrary</Keyword>
-    <RootNamespace>ObjectModelLib</RootNamespace>
+    <RootNamespace>ObjectModel.UWP</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
@@ -37,6 +58,7 @@
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.10586.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+    <ProjectName>ObjectModel.UWP</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -71,6 +93,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\shared\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,14 +113,6 @@
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Enums.h" />
-    <ClInclude Include="ICardElement.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="TextBlock.h" />
-    <ClCompile Include="ICardElement.cpp" />
-    <ClCompile Include="TextBlock.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

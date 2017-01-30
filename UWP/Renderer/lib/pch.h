@@ -13,5 +13,6 @@
 #endif
 
 #include "ErrorHandling.h"
+#include "util.h"
 
 #include <ppltasks.h>
