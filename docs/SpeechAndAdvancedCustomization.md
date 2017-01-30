@@ -5,7 +5,8 @@
 The way that you add speech to a card is to describe the contents of the card.  By default clients will
 usually simply read all of the text properties of a card, but that doesn't always give you the best experience.
 
-To support speech we have  *speak* property which is raw text of what to say, or SSML markup for what to say.
+To support speech we have  *speak* property which is raw text of what to say, or fragments of 
+[SSML markup](https://msdn.microsoft.com/en-us/library/office/hh361578(v=office.14).aspx) for what to say.
 
 Examples:
 
