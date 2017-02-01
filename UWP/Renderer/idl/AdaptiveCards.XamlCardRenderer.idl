@@ -12,7 +12,7 @@ namespace AdaptiveCards
 
         [
             uuid(DB7C7BB8-C313-440A-A421-B52620107F8B),
-            version(NTDDI_WINTHRESHOLD),
+            version(NTDDI_WIN10_RS1),
             exclusiveto(XamlCardRenderer),
         ]
         interface IXamlCardRenderer : IInspectable
@@ -22,8 +22,8 @@ namespace AdaptiveCards
         }
 
         [
-            version(NTDDI_WINTHRESHOLD),
-            activatable(NTDDI_WINTHRESHOLD),
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
         ]
         runtimeclass XamlCardRenderer
         {
