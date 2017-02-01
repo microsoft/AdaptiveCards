@@ -1,0 +1,33 @@
+import "inspectable.idl";
+import "Windows.Foundation.idl";
+import "Windows.UI.Xaml.idl";
+
+#include <sdkddkver.h>
+
+namespace AdaptiveCards
+{
+    namespace XamlCardRenderer
+    {
+        runtimeclass XamlCardRenderer;
+
+        [
+            uuid(DB7C7BB8-C313-440A-A421-B52620107F8B),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(XamlCardRenderer),
+        ]
+        interface IXamlCardRenderer : IInspectable
+        {
+            HRESULT RenderCardAsXaml([out, retval] Windows.UI.Xaml.UIElement** root);
+            HRESULT RenderCardAsImage();
+        }
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+        ]
+        runtimeclass XamlCardRenderer
+        {
+            [default] interface IXamlCardRenderer;
+        }
+    }
+}
