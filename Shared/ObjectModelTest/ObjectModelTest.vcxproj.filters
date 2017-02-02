@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="TestJsonFiles">
+      <UniqueIdentifier>{3caa0b31-9328-462d-b5d7-e393773344e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -32,5 +35,16 @@
     <ClCompile Include="ObjectModelTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestJsonFiles\nounicode.json">
+      <Filter>TestJsonFiles</Filter>
+    </None>
+    <None Include="TestJsonFiles\test1.json">
+      <Filter>TestJsonFiles</Filter>
+    </None>
+    <None Include="TestJsonFiles\textblock_noUnicode.json">
+      <Filter>TestJsonFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -133,16 +133,24 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ACParseException.h" />
     <ClInclude Include="AdaptiveCard.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="ICardElement.h" />
+    <ClInclude Include="json\json-forwards.h" />
+    <ClInclude Include="json\json.h" />
+    <ClInclude Include="ACParser.h" />
     <ClInclude Include="TextBlock.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ACParseException.cpp" />
     <ClCompile Include="AdaptiveCard.cpp" />
     <ClCompile Include="Container.cpp" />
+    <ClCompile Include="Enums.cpp" />
     <ClCompile Include="ICardElement.cpp" />
+    <ClCompile Include="jsoncpp.cpp" />
+    <ClCompile Include="ACParser.cpp" />
     <ClCompile Include="TextBlock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -3,27 +3,33 @@
 #include <vector>
 #include <memory>
 #include "ICardElement.h"
+#include "json\json.h"
 
 namespace AdaptiveCards
 {
-    class Container;
+class Container;
 
-    class AdaptiveCard
-    {
-    public:
-        AdaptiveCard(std::wstring title, std::wstring description1, std::wstring description2, std::shared_ptr<Container> root);
+class AdaptiveCard
+{
+public:
+    AdaptiveCard();
+    AdaptiveCard(std::string title, std::string description1, std::string description2, std::shared_ptr<Container> root);
 
-        std::wstring GetTitle() const;
-        std::wstring GetDescription1() const;
-        std::wstring GetDescription2() const;
+    std::string GetTitle() const;
+    std::string GetDescription1() const;
+    std::string GetDescription2() const;
 
-        const Container* GetRoot() const;
+    const Container* GetRoot() const;
 
-    private:
-        std::wstring m_title;
-        std::wstring m_description1;
-        std::wstring m_description2;
-        std::shared_ptr<Container> m_root;
+    static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string & jsonFile);
+    static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json);
 
-    };
+private:
+
+    std::string m_title;
+    std::string m_description1;
+    std::string m_description2;
+    std::shared_ptr<Container> m_root;
+
+};
 }
