@@ -85,18 +85,24 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">O:\adaptive\AdaptiveCardToolkit\shared\ObjectModelLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">O:\adaptive\AdaptiveCardToolkit\shared\ObjectModelLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">O:\adaptive\AdaptiveCardToolkit\shared\ObjectModelLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">O:\adaptive\AdaptiveCardToolkit\shared\ObjectModelLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">O:\adaptive\AdaptiveCardToolkit\shared\ObjectModelLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">O:\adaptive\AdaptiveCardToolkit\shared\ObjectModelLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="lib\AdaptiveTextBlock.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +110,11 @@
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
     </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\shared\ObjectModelLib\ObjectModelLib.vcxproj">
+      <Project>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
