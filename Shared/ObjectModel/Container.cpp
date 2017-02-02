@@ -5,12 +5,23 @@
 
 namespace AdaptiveCards
 {
-std::vector<std::shared_ptr<ICardElement>>& AdaptiveCards::Container::GetItems()
+const std::vector<std::shared_ptr<ICardElement>>& AdaptiveCards::Container::GetItems()
 {
     return m_items;
 }
-int aoeu(const std::string& foo) {
-    return 0;}
+std::shared_ptr<ICardElement> Container::GetItem(int index)
+{
+    if (0 > index || m_items.size() <= index)
+    {
+        throw std::invalid_argument("Invalid Index");
+    }
+    return m_items[index];
+}
+
+void Container::AddItem(std::shared_ptr<ICardElement> item)
+{
+    m_items.emplace_back(item);
+}
 
 std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
 {
@@ -54,7 +65,7 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
 
     for (size_t i = 0; i < elements.size(); i++)
     {
-        container->GetItems().emplace_back(elements[i]);
+        container->AddItem(elements[i]);
     }
     return container;
 }

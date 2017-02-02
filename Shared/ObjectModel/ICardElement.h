@@ -1,18 +1,23 @@
 #pragma once
 
 #include <memory>
-#include "enums.h"
 #include "container.h"
+#include "enums.h"
+
 
 namespace AdaptiveCards
 {
+class Container;
 class ICardElement
 {
 public:
     ICardElement(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak);
+    ICardElement();
+
     virtual ~ICardElement() = 0 {};
 
     std::shared_ptr<Container> GetContainer() const;
+    void SetContainer(std::shared_ptr<Container> container);
 
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);

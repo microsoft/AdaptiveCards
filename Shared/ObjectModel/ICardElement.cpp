@@ -4,9 +4,16 @@ namespace AdaptiveCards
 {
 ICardElement::ICardElement(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak) : m_container(container), m_horizontalAlignment(horizontalAlignment), m_size(size), m_speak(speak) {}
 
+ICardElement::ICardElement() : m_horizontalAlignment(HorizontalAlignment::Left), m_size(Size::Auto) {}
+
 std::shared_ptr<Container> ICardElement::GetContainer() const
 {
     return m_container.lock();
+}
+
+void ICardElement::SetContainer(std::shared_ptr<Container> container)
+{
+    m_container = container;
 }
 
 HorizontalAlignment ICardElement::GetHorizontalAlignment() const

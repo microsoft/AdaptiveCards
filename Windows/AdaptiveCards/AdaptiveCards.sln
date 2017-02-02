@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectModel", "..\..\Shared\ObjectModel\ObjectModel.vcxproj", "{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectModel", "..\..\shared\ObjectModel\ObjectModel.vcxproj", "{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectModelTest", "..\..\Shared\ObjectModelTest\ObjectModelTest.vcxproj", "{CA10F25C-4CA3-4BD6-B4F6-C14EAE347490}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectModelTest", "..\..\shared\ObjectModelTest\ObjectModelTest.vcxproj", "{CA10F25C-4CA3-4BD6-B4F6-C14EAE347490}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +18,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}.Debug|ARM.ActiveCfg = Debug|Win32
+		{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}.Debug|ARM.Build.0 = Debug|Win32
 		{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}.Debug|x64.ActiveCfg = Debug|x64
 		{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}.Debug|x64.Build.0 = Debug|x64
 		{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}.Debug|x86.ActiveCfg = Debug|Win32
@@ -28,6 +29,7 @@ Global
 		{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}.Release|x86.ActiveCfg = Release|Win32
 		{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}.Release|x86.Build.0 = Release|Win32
 		{CA10F25C-4CA3-4BD6-B4F6-C14EAE347490}.Debug|ARM.ActiveCfg = Debug|Win32
+		{CA10F25C-4CA3-4BD6-B4F6-C14EAE347490}.Debug|ARM.Build.0 = Debug|Win32
 		{CA10F25C-4CA3-4BD6-B4F6-C14EAE347490}.Debug|x64.ActiveCfg = Debug|x64
 		{CA10F25C-4CA3-4BD6-B4F6-C14EAE347490}.Debug|x64.Build.0 = Debug|x64
 		{CA10F25C-4CA3-4BD6-B4F6-C14EAE347490}.Debug|x86.ActiveCfg = Debug|Win32
