@@ -11,8 +11,6 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-
-
 AdaptiveTextBlock::AdaptiveTextBlock()
 {
 }

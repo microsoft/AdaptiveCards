@@ -95,8 +95,6 @@
     <ClInclude Include="ICardElement.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextBlock.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="ICardElement.cpp" />
     <ClCompile Include="TextBlock.cpp" />
   </ItemGroup>
