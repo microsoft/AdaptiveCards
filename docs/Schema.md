@@ -90,6 +90,72 @@ A Column is a container which contains a list of cardElements that are logically
 |---|---|---|
 | **weight** | string | The weight to apply to this column |
 
+## Form
+*Extends [Container](#container)*
+
+Form defines a collection of input and an ActionCard.  The ActionCard should have a Submit button which fires
+an event to the client that the form data should be submitted.  The actual submission of the data is client 
+dependent. For example: it may be an HTTP POST, or an activity message or any other client appropriate delivery path.
+
+| Property | Type | Description |
+|---|---|---|
+| **okText** | string | text to display on OK button (this is a shortcut for defining SUBMIT action) |
+| **cancelText** | string | text to display on Cancel button (this is shortcut for defining CANCEL action) |
+| **data** | object | initial data object which will be merged with user input when SUBMIT is processed |
+| **items** | CardElement[] | CardElements including INPUT for describing form  |
+| **actions** | object | Actions for the form.  SUBMIT action is required to submit the form |
+
+### Input
+*Extends [CardElement](#cardelement)*
+
+Input is used as part of a Form CardElement to collect information from a user
+
+| Property | Type | Description |
+|---|---|---|
+| **id** | string | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
+| **title** | string | Title Description of the input desired|
+| **value** | string | The initial value for a field |
+
+### TextInput
+*Extends [Input](#input)*
+
+TextInput collects text from the user
+
+| Property | Type | Description |
+|---|---|---|
+| **maxLength** | number | the maximum number of characters to collect |
+| **isMultiline** | bool | true to collect multiple lines of text (default is false)|
+
+### DateInput
+*Extends [Input](#input)*
+
+DateInput collects date information from the user
+
+| Property | Type | Description |
+|---|---|---|
+| **includeTime** | bool | select time as well as date|
+> NOTE: More input types coming ....
+
+## MultichoiceInput
+*Extends [Input](#input)*
+Shows an array of Choice objects (like via a combobox)
+
+| Property | Type | Description |
+|---|---|---|
+| **choices** | Choice[] | the choice options |
+
+### Choice
+Represents a single Choice
+
+| Property | Type | Description |
+|---|---|---|
+| **display** | string | The display text for a choice|
+| **value** | string | the raw value for the choice|
+
+# Actions
+Actions define buttons that do something
+
+
 # Enumerations
 The following enumerations are used by various element types.
 
