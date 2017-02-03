@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "XamlCardRendererComponent.h"
-
-#include <windows.foundation.collections.h>
 #include "AdaptiveTextBlock.h"
+#include "XamlCardRendererComponent.h"
+#include <windows.foundation.collections.h>
 
+using namespace ABI::AdaptiveCards::XamlCardRenderer;
 using namespace AdaptiveCards::XamlCardRenderer;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -11,13 +11,10 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
+
+
 AdaptiveTextBlock::AdaptiveTextBlock()
 {
-}
-
-HRESULT AdaptiveTextBlock::RuntimeClassInitialize()
-{
-    return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
@@ -37,25 +34,25 @@ HRESULT AdaptiveTextBlock::put_Text(HSTRING text)
     return S_OK;
 }
 
-HRESULT AdaptiveTextBlock::get_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize* TextSize)
+HRESULT AdaptiveTextBlock::get_TextSize(ObjectModel::TextSize* TextSize)
 {
-    *TextSize = (ABI::AdaptiveCards::XamlCardRenderer::TextSize)this->GetTextSize();
+    *TextSize = (ObjectModel::TextSize)this->GetTextSize();
     return S_OK;
 }
 
-HRESULT AdaptiveTextBlock::put_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize TextSize)
+HRESULT AdaptiveTextBlock::put_TextSize(ObjectModel::TextSize TextSize)
 {
     this->SetTextSize((AdaptiveCards::TextSize)TextSize);
     return S_OK;
 }
 
-HRESULT AdaptiveTextBlock::get_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight* TextWeight)
+HRESULT AdaptiveTextBlock::get_TextWeight(ObjectModel::TextWeight* TextWeight)
 {
-    *TextWeight = (ABI::AdaptiveCards::XamlCardRenderer::TextWeight)this->GetTextWeight();
+    *TextWeight = (ObjectModel::TextWeight)this->GetTextWeight();
     return S_OK;
 }
 
-HRESULT AdaptiveTextBlock::put_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight TextWeight)
+HRESULT AdaptiveTextBlock::put_TextWeight(ObjectModel::TextWeight TextWeight)
 {
     this->SetTextWeight((AdaptiveCards::TextWeight)TextWeight);
     return S_OK;
@@ -85,7 +82,7 @@ HRESULT AdaptiveTextBlock::put_IsSubtle(boolean IsSubtle)
     return S_OK;
 }
 
-HRESULT AdaptiveTextBlock::Render(ABI::Windows::UI::Xaml::IUIElement** TextBlock)
+HRESULT AdaptiveTextBlock::Render(IUIElement** TextBlock)
 {
     *TextBlock = nullptr;
 

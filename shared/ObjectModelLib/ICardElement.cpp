@@ -3,10 +3,7 @@
 namespace AdaptiveCards
 {
 
-    ICardElement::ICardElement()
-    {
-
-    }
+    ICardElement::ICardElement() : m_horizontalAlignment(HorizontalAlignment::Left), m_size(Size::Auto) {}
 
     ICardElement::ICardElement(HorizontalAlignment horizontalAlignment, Size size, std::wstring speak) : m_horizontalAlignment(horizontalAlignment), m_size(size), m_speak(speak) {}
 
@@ -39,6 +36,5 @@ namespace AdaptiveCards
     {
         m_speak = value;
     }
-
 }
 

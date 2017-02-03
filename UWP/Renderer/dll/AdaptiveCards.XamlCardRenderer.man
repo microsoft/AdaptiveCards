@@ -38,7 +38,7 @@
               trustLevel="Base"
               />
           <class
-             activatableClassId="AdaptiveCards.XamlCardRenderer.XamlCardRenderer"
+             activatableClassId="AdaptiveCards.XamlCardRenderer.AdaptiveTextBlock"
              threading="Both"
              trustLevel="Base"
               />
