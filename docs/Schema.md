@@ -22,14 +22,14 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 | **text** | string | The actual text to display |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
-## Image 
+## Image Object
 *Extends [CardElement](#cardelement)*
 
 The Image element allows for the inclusion of images in an Adaptive Card.
 
 | Property | Type | Description |
 |---|---|---|
-| **url** | The URL to the image. |
+| **url** | string | The URL to the image. |
 | **style** | [ImageStyle](#imagestyle) | The style in which the image is displayed. |
 
 ## ImageGallery 
@@ -39,6 +39,7 @@ The ImageGallery allows for the inclusion of a collection images like a photogal
 
 | Property | Type | Description |
 |---|---|---|
+| **Items**| Image[] | Array of Image objects |
 | **size** | [Size](#size) | Specifies the horizontal size of each image in the gallery. |
 
 ## Separator 
