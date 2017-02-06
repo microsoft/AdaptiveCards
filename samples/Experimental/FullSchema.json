@@ -35,7 +35,6 @@
 			"text": "Something"
 		}
 	],
-	// Find a better name?
 	"body": [
 		{
 			"@type": "TextBlock"

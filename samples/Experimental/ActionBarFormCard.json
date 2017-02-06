@@ -6,6 +6,9 @@
             "title": "View",
             "uri": "http://..."
         },
+        // Possibly reintroduce HttpPost, would not be supported by bots/tiles/etc
+        // Windows needs new types for Foreground/Background activation
+        // OR we can add metadata like URL or foreground/background properties
         {
             "@type": "Submit", // Submit action
             "title": "Declined",
@@ -17,10 +20,21 @@
         {
             "@type": "Submit", // Submit action that collects input first
             "title": "Set due date",
+            "uri": "http://",
+            "method": "POST",
             "data": {
                 "reportId": "ABC",
                 "approved": "false"
             },
+            "httpHeaders": [
+                {
+                    "content-type": "application/json"
+                }
+            ],
+            //Move this to HttpPost 
+            "postBody":
+            // data binding
+            "",
             "okText": "OK", // ISSUE: these don't apply without inputs, is that ok?
             "cancelText": "Cancel",
             "inputs": [

@@ -81,11 +81,11 @@
 	],
 	"actions": [
 		{
-			"@type": "Submit", // submit action with Inputs toggles UI to collect the input
+			"@type": "Submit",
 			"title": "Set due date",
 			"inputs": [
 				{
-					"@type": "Input",
+					"@type": "TextInput",
 					"inputType": "date",
 					"id": "dueDate",
 					"prompt": "Select a date"
@@ -94,10 +94,10 @@
 		},
 		{
 			"@type": "Submit",
-			"name": "Comment",
+			"title": "Comment",
 			"inputs": [
 				{
-					"@type": "Input",
+					"@type": "TextInput",
 					"id": "comment",
 					"isMultiline": true,
 					"prompt": "Enter your comment"
