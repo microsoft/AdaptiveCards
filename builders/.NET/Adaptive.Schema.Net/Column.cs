@@ -13,9 +13,9 @@ namespace Adaptive.Schema.Net
     {
         public Column() { }
 
-        /// <summary>
-        /// Size which is either Auto|Stretch|Small|Medium|Large| or a number
-        /// </summary>
-        public string Size { get; set; }
+        ///// <summary>
+        ///// Size which is either Auto|Stretch|Small|Medium|Large| or a number
+        ///// </summary>
+        //public string Size { get; set; }
     }
 }

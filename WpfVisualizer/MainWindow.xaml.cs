@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ADP = Adaptive.Schema.Net;
+using Newtonsoft.Json;
 
 namespace WpfVisualizer
 {
@@ -23,6 +25,23 @@ namespace WpfVisualizer
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var renderer = new AdaptiveRenderer();
+            try
+            {
+                this.card.Children.Clear();
+                var aCard = JsonConvert.DeserializeObject<ADP.AdaptiveCard>(this.textBox.Text);
+                var element = renderer.Render(aCard);
+                this.card.Children.Add(element);
+            }
+            catch (Exception err)
+            {
+                this.card.Children.Clear();
+                this.card.Children.Add(new TextBlock() { Text = err.Message });
+            }
         }
     }
 }

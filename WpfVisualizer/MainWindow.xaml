@@ -6,7 +6,16 @@
         xmlns:local="clr-namespace:WpfVisualizer"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBox AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>
+
+        <Border BorderBrush="Black" Grid.Column="1">
+            <Grid Name="card" />
+        </Border>
     </Grid>
 </Window>

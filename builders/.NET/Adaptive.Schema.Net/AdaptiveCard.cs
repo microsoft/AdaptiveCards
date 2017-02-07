@@ -15,6 +15,6 @@ namespace Adaptive.Schema.Net
 
         public string Speak { get; set; }
 
-        public Container Body { get; set; }
+        public List<CardElement> Body { get; set; } = new List<CardElement>();
     }
 }
