@@ -1,8 +1,9 @@
 #pragma once
-#include "Enums.h"
-#include <functional>
-#include "json\json.h"
+
 #include "ACParseException.h"
+#include "Enums.h"
+#include "json\json.h"
+#include <functional>
 
 namespace AdaptiveCards
 {

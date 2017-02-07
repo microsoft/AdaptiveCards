@@ -64,7 +64,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\ObjectModel.Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,7 +107,7 @@
     <None Include="TestJsonFiles\textblock_noUnicode.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ObjectModel.Shared\ObjectModel.Shared.vcxproj">
+    <ProjectReference Include="..\ObjectModel\ObjectModel.vcxproj">
       <Project>{8f322f44-78b1-46f8-89d2-86b0a2e1b1c5}</Project>
     </ProjectReference>
   </ItemGroup>

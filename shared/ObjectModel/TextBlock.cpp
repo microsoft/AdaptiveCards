@@ -1,16 +1,13 @@
 #include "TextBlock.h"
 #include "ACParser.h"
 
-namespace AdaptiveCards
-{
+using namespace AdaptiveCards;
 
 TextBlock::TextBlock() : ICardElement(nullptr, HorizontalAlignment::Left, Size::Auto, "")
 {
 }
 
 TextBlock::TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak, std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap) : ICardElement(container, horizontalAlignment, size, speak), m_text(text), m_textSize(textSize), m_textWeight(textWeight), m_isSubtle(isSubtle), m_wrap(wrap) {}
-
-TextBlock::~TextBlock() {}
 
 std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
 {
@@ -85,5 +82,4 @@ bool TextBlock::GetIsSubtle() const
 void TextBlock::SetIsSubtle(const bool value)
 {
     m_isSubtle = value;
-}
 }

@@ -104,4 +104,5 @@ Size SizeFromString(const std::string& type);
 
 const std::string TextWrapToString(TextWrap type);
 TextWrap TextWrapFromString(const std::string& type);
+
 }

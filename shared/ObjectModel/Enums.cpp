@@ -333,5 +333,4 @@ TextWrap TextWrapFromString(const std::string& type)
 
     return TextWrapNameToEnum[type];
 }
-
 }

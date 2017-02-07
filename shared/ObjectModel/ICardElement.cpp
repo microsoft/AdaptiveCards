@@ -1,7 +1,8 @@
 #include "ICardElement.h"
+#include "ACParser.h"
 
-namespace AdaptiveCards
-{
+using namespace AdaptiveCards;
+
 ICardElement::ICardElement(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak) : m_container(container), m_horizontalAlignment(horizontalAlignment), m_size(size), m_speak(speak) {}
 
 ICardElement::ICardElement() : m_horizontalAlignment(HorizontalAlignment::Left), m_size(Size::Auto) {}
@@ -44,7 +45,5 @@ std::string ICardElement::GetSpeak() const
 void ICardElement::SetSpeak(const std::string value)
 {
     m_speak = value;
-}
-
 }
 

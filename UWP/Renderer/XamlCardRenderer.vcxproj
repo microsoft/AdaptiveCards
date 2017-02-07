@@ -86,7 +86,7 @@
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\shared\ObjectModel.Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\shared\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -105,7 +105,7 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\shared\ObjectModel.UWP\ObjectModel.UWP.vcxproj">
+    <ProjectReference Include="..\ObjectModel.UWP\ObjectModel.UWP.vcxproj">
       <Project>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</Project>
     </ProjectReference>
   </ItemGroup>

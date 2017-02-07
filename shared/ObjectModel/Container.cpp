@@ -1,26 +1,33 @@
 #include "Container.h"
+#include "ACParser.h"
 #include "TextBlock.h"
 #include <unordered_map>
 #include <algorithm>
 
-namespace AdaptiveCards
-{
+using namespace AdaptiveCards;
+
 const std::vector<std::shared_ptr<ICardElement>>& AdaptiveCards::Container::GetItems()
 {
     return m_items;
 }
-std::shared_ptr<ICardElement> Container::GetItem(int index)
+std::shared_ptr<ICardElement> Container::GetItem(size_t index) const
 {
-    if (0 > index || m_items.size() <= index)
+    if (m_items.size() <= index)
     {
         throw std::invalid_argument("Invalid Index");
     }
     return m_items[index];
 }
 
-void Container::AddItem(std::shared_ptr<ICardElement> item)
+void Container::AddItem(std::shared_ptr<ICardElement>& item)
 {
+    item->SetContainer(shared_from_this());
     m_items.emplace_back(item);
+}
+
+std::string Container::Serialize()
+{
+    return "";
 }
 
 std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
@@ -68,6 +75,5 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
         container->AddItem(elements[i]);
     }
     return container;
-}
 }
 

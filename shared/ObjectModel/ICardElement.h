@@ -1,9 +1,8 @@
 #pragma once
 
 #include <memory>
-#include "container.h"
-#include "enums.h"
-
+#include "Enums.h"
+#include "json\json.h"
 
 namespace AdaptiveCards
 {

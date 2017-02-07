@@ -2,8 +2,7 @@
 #include "ACParser.h"
 #include <fstream>
 
-namespace AdaptiveCards
-{
+using namespace AdaptiveCards;
 
 AdaptiveCard::AdaptiveCard()
 {
@@ -36,6 +35,8 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     // Parse actions
 
     auto result = std::make_shared<AdaptiveCard>();
+    result->SetRoot(bodies);
+
     return result;
 }
 
@@ -44,9 +45,19 @@ std::string AdaptiveCard::GetTitle() const
     return m_title;
 }
 
+void AdaptiveCards::AdaptiveCard::SetTitle(const std::string value)
+{
+    m_title = value;
+}
+
 std::string AdaptiveCard::GetDescription1() const
 {
     return m_description1;
+}
+
+void AdaptiveCards::AdaptiveCard::SetDescription1(const std::string value)
+{
+    m_description1 = value;
 }
 
 std::string AdaptiveCard::GetDescription2() const
@@ -54,10 +65,18 @@ std::string AdaptiveCard::GetDescription2() const
     return m_description2;
 }
 
-const Container* AdaptiveCard::GetRoot() const
+void AdaptiveCards::AdaptiveCard::SetDescription2(const std::string value)
 {
-    return m_root.get();
+    m_description2 = value;
 }
 
-};
+std::shared_ptr<Container> AdaptiveCard::GetRoot()
+{
+    return m_root;
+}
+
+void AdaptiveCards::AdaptiveCard::SetRoot(std::shared_ptr<Container> value)
+{
+    m_root = value;
+}
 
