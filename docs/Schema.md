@@ -39,7 +39,7 @@ The ImageGallery allows for the inclusion of a collection images like a photogal
 
 | Property | Type | Description |
 |---|---|---|
-| **Items**| Image[] | Array of Image objects |
+| **images**| Image[] | Array of Image objects |
 | **size** | [Size](#size) | Specifies the horizontal size of each image in the gallery. |
 
 ## Separator 
@@ -56,7 +56,7 @@ The FactGroup element makes it simple to display a se  ries of "facts" (e.g. nam
 
 | Property | Type | Description |
 |---|---|---|
-| **items** | array of [Fact](#fact object) | The facts to be displayed. |
+| **facts** | array of [Fact](#fact object) | The facts to be displayed. |
 
 ### Fact object
 Represents one "fact" in a [FactGroup](#factgroup) element.
@@ -71,6 +71,9 @@ Represents one "fact" in a [FactGroup](#factgroup) element.
 *Extends [CardElement](#cardelement)*
 
 The column group element adds the ability to have a set of coulmn objects.
+| Property | Type | Description |
+|---|---|---|
+| **columns** | Column[] | array of columns (each a container of elements)  |
 
 ## Container 
 *Extends [CardElement](#cardelement)*
