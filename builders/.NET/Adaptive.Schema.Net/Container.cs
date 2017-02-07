@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Adaptive.Schema.Net
 {
@@ -14,17 +15,19 @@ namespace Adaptive.Schema.Net
         public Container()
         { }
 
-        // Issue:  Should this be Elements?  
+        [JsonRequired]
         public List<CardElement> Items { get; set; } = new List<CardElement>();
 
         /// <summary>
         /// Image to use for the background of a card
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BackgroundImageUrl { get; set; }
 
         /// <summary>
         /// Background color to use for the card as RGB string
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BackgroundColor { get; set; }
     }
 }

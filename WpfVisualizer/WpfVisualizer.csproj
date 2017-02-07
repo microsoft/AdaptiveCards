@@ -63,7 +63,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AdapativeToUIElement.cs" />
+    <Compile Include="AdaptiveXamlRenderer.cs" />
+    <Compile Include="AdaptiveTheme.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -20,17 +20,20 @@ namespace Adaptive.Schema.Net
         /// <summary>
         /// SSML fragment for spoken interaction
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Speak { get; set; }
 
         /// <summary>
         /// Size hint for the element
         /// </summary>
-        public Size Size { get; set; } = Size.Auto;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public Size? Size { get; set; }
 
         /// <summary>
         /// Horizontal alignment for element
         /// </summary>
-        public HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Left;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public HorizontalAlignment? HorizontalAlignment { get; set; }
     }
 }
 
