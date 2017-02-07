@@ -28,8 +28,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{cf169157-f487-420c-8b9b-ca3abe2bb209}</ProjectGuid>
-    <Keyword>WindowsRuntimeComponent</Keyword>
-    <RootNamespace>WindowsRuntimeComponent1</RootNamespace>
+    <Keyword>AdaptiveCards</Keyword>
+    <RootNamespace>AdaptiveCards.XamlCardRenderer</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
@@ -37,6 +37,8 @@
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.14393.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+    <TargetName>AdaptiveCards.XamlCardRenderer</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -59,13 +61,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
-  <PropertyGroup>
-    <GenerateManifest>false</GenerateManifest>
-  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>
@@ -80,7 +78,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <ModuleDefinitionFile>.\dll\AdaptiveCards.XamlCardRenderer.def</ModuleDefinitionFile>
     </Link>
+    <CustomBuildStep>
+      <Command >mdmerge -partial -i "$(OutDir)." -o "$(OutDir)Output" -metadata_dir "$(FrameworkSdkDir)UnionMetadata" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
+      <Outputs>$(OutDir)%(TargetName).winmd</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
@@ -97,6 +100,7 @@
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dll\dll.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +108,9 @@
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
     </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dll\AdaptiveCards.XamlCardRenderer.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
