@@ -20,12 +20,10 @@ namespace WpfVisualizer
     class AdaptiveXamlRenderer
     {
         private ResourceDictionary resources;
-        private IAdaptiveTheme Theme = new DefaultTheme();
 
-        public AdaptiveXamlRenderer(IAdaptiveTheme theme, ResourceDictionary resources)
+        public AdaptiveXamlRenderer(ResourceDictionary resources)
         {
             this.resources = resources;
-            this.Theme = theme;
         }
 
         public UIElement Render(ADP.AdaptiveCard card)
@@ -225,48 +223,50 @@ namespace WpfVisualizer
             switch (textBlock.TextColor)
             {
                 case ADP.TextColor.Accent:
-                    uiTextBlock.Foreground = this.Theme.AccentColor;
+                    uiTextBlock.Foreground = resources["Adaptive.AccentBrush"] as Brush;
                     break;
                 case ADP.TextColor.Attention:
-                    uiTextBlock.Foreground = this.Theme.AttentionColor;
+                    uiTextBlock.Foreground = resources["Adaptive.AttentionBrush"] as Brush;
                     break;
                 case ADP.TextColor.Dark:
-                    uiTextBlock.Foreground = this.Theme.DarkColor;
+                    uiTextBlock.Foreground = resources["Adaptive.DarkBrush"] as Brush;
                     break;
                 case ADP.TextColor.Good:
-                    uiTextBlock.Foreground = this.Theme.GoodColor;
+                    uiTextBlock.Foreground = resources["Adaptive.GoodBrush"] as Brush;
                     break;
                 case ADP.TextColor.Light:
-                    uiTextBlock.Foreground = this.Theme.LightColor;
+                    uiTextBlock.Foreground = resources["Adaptive.LightBrush"] as Brush;
                     break;
                 case ADP.TextColor.Warning:
-                    uiTextBlock.Foreground = this.Theme.WarningColor;
+                    uiTextBlock.Foreground = resources["Adaptive.WarningBrush"] as Brush;
                     break;
                 case ADP.TextColor.Default:
                 default:
-                    uiTextBlock.Foreground = this.Theme.DefaultColor;
+                    uiTextBlock.Foreground = resources["Adaptive.DefaultBrush"] as Brush;
                     break;
             }
 
             switch (textBlock.TextWeight)
             {
                 case ADP.TextWeight.Bolder:
-                    uiTextBlock.FontWeight = FontWeights.Bold;
+                    uiTextBlock.FontWeight = (FontWeight)resources["Adaptive.BolderFontWeight"] ;
                     break;
                 case ADP.TextWeight.Lighter:
-                    uiTextBlock.FontWeight = FontWeights.Thin;
+                    uiTextBlock.FontWeight = (FontWeight)resources["Adaptive.LighterFontWeight"];
                     break;
                 case ADP.TextWeight.Normal:
                 default:
-                    uiTextBlock.FontWeight = FontWeights.Normal;
+                    uiTextBlock.FontWeight = (FontWeight)resources["Adaptive.NormalFontWeight"];
                     break;
             }
 
-            if (textBlock.Wrap.HasValue && textBlock.Wrap.Value == true)
+            if (textBlock.Wrap.HasValue && textBlock.Wrap == true)
                 uiTextBlock.TextWrapping = TextWrapping.Wrap;
             else
                 uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
+            if (textBlock.IsSubtle.HasValue && textBlock.IsSubtle == true)
+                uiTextBlock.Opacity = (double)resources["Adaptive.IsSubtleOpacity"];
             return uiTextBlock;
         }
 

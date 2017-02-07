@@ -4,71 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfVisualizer"
+        xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    
+        Title="MainWindow" Height="1000" Width="1000">
+
     <Window.Resources>
-        
-        <!-- adaptive card Styling -->
-        <Style x:Key="Adaptive.Card" TargetType="Grid">
-            <Setter Property="Margin" Value="8"/>
-            <Setter Property="Background" Value="WhiteSmoke"/>
-        </Style>
 
-        <Style x:Key="Adaptive.Container" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
-        </Style>
-
-        <Style x:Key="Adaptive.ColumnGroup" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
-        </Style>
-
-        <Style x:Key="Adaptive.FactGroup" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
-        </Style>
-
-        <Style x:Key="Adaptive.Fact.Name" TargetType="TextBlock">
-            <Setter Property="Margin" Value="2, 2, 10, 2"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-        </Style>
-
-        <Style x:Key="Adaptive.Fact.Value" TargetType="TextBlock">
-            <Setter Property="Margin" Value="2"/>
-        </Style>
-
-        <Style x:Key="Adaptive.Column" TargetType="Grid">
-            <Setter Property="Margin" Value="4,0,4,0"/>
-        </Style>
-
-        <Style x:Key="Adaptive.Seperator" TargetType="Separator">
-            <Setter Property="Margin" Value="4"/>
-        </Style>
-
-        <Style x:Key="Adaptive.Image" TargetType="Image">
-            <Setter Property="Margin" Value="4"/>
-        </Style>
-        
-        <Style x:Key="Adaptive.Image.Small" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
-            <Setter Property="Width" Value="75"/>
-            <Setter Property="Height" Value="75"/>
-        </Style>
-
-        <Style x:Key="Adaptive.Image.Medium" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
-            <Setter Property="Width" Value="150"/>
-            <Setter Property="Height" Value="150"/>
-        </Style>
-
-        <Style x:Key="Adaptive.Image.Large" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
-            <Setter Property="Width" Value="300"/>
-            <Setter Property="Height" Value="300"/>
-        </Style>
-
-        <Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
-            <Setter Property="Margin" Value="0,4,0,4"/>
-        </Style>
-
+        <!-- TextBlock definitions -->
         <Style x:Key="Adaptive.TextBlock" TargetType="TextBlock" >
-            
         </Style>
 
         <Style x:Key="Adaptive.TextBlock.Small" TargetType="TextBlock" BasedOn="{StaticResource Adaptive.TextBlock}">
@@ -91,8 +34,88 @@
             <Setter Property="FontSize" Value="20"/>
         </Style>
 
+        <!-- color definitions -->
+        <SolidColorBrush x:Key="Adaptive.DefaultBrush" Color="Black"/>
+        <SolidColorBrush x:Key="Adaptive.AccentBrush" Color="Blue"/>
+        <SolidColorBrush x:Key="Adaptive.DarkBrush" Color="Black"/>
+        <SolidColorBrush x:Key="Adaptive.LightBrush" Color="White"/>
+        <SolidColorBrush x:Key="Adaptive.GoodBrush" Color="Green"/>
+        <SolidColorBrush x:Key="Adaptive.WarningBrush" Color="Gold"/>
+        <SolidColorBrush x:Key="Adaptive.AttentionBrush" Color="DarkRed"/>
+
+        <!-- textWeight definitions -->
+        <FontWeight x:Key="Adaptive.BolderFontWeight">Bold</FontWeight>
+        <FontWeight x:Key="Adaptive.NormalFontWeight">Normal</FontWeight>
+        <FontWeight x:Key="Adaptive.LighterFontWeight">Thin</FontWeight>
+
+        <!-- Text IsSubtle Opacity -->
+        <core:Double x:Key="Adaptive.IsSubtleOpacity">.50</core:Double>
+
+        <!-- adaptive card Styling -->
+        <Style x:Key="Adaptive.Card" TargetType="Grid">
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Background" Value="WhiteSmoke"/>
+        </Style>
+
+        <!-- Container Styling -->
+        <Style x:Key="Adaptive.Container" TargetType="Grid">
+            <Setter Property="Margin" Value="0,4,0,4"/>
+        </Style>
+
+        <!-- Column/ColumGroup Styling-->
+        <Style x:Key="Adaptive.ColumnGroup" TargetType="Grid">
+            <Setter Property="Margin" Value="0,4,0,4"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Column" TargetType="Grid">
+            <Setter Property="Margin" Value="4,0,4,0"/>
+        </Style>
+
+        <!-- Seperator Styling -->
+        <Style x:Key="Adaptive.Seperator" TargetType="Separator">
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+
+        <!-- Fact/FactGroup Styling -->
+        <Style x:Key="Adaptive.FactGroup" TargetType="Grid">
+            <Setter Property="Margin" Value="0,4,0,4"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Fact.Name" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2, 2, 10, 2"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Fact.Value" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+
+        <!-- Image/ImageGallery Styling -->
+        <Style x:Key="Adaptive.Image" TargetType="Image">
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Image.Small" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Image.Medium" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="80"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Image.Large" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="100"/>
+        </Style>
+
+        <Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
+            <Setter Property="Margin" Value="0,4,0,4"/>
+        </Style>
+
     </Window.Resources>
-    
+
     <Grid Margin="8">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

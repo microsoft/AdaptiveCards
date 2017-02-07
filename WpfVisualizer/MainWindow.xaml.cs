@@ -29,7 +29,7 @@ namespace WpfVisualizer
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var renderer = new AdaptiveXamlRenderer(new DefaultTheme(), this.Resources);
+            var renderer = new AdaptiveXamlRenderer(this.Resources);
             try
             {
                 this.card.Children.Clear();
