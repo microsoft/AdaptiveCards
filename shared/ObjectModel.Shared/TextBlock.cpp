@@ -1,58 +1,85 @@
 #include "TextBlock.h"
+#include "ACParser.h"
 
-namespace AdaptiveCards
+using namespace AdaptiveCards;
+
+TextBlock::TextBlock() : ICardElement(nullptr, HorizontalAlignment::Left, Size::Auto, "")
 {
-    TextBlock::TextBlock(HorizontalAlignment horizontalAlignment, Size size, std::wstring speak, std::wstring text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap) : ICardElement(horizontalAlignment, size, speak), m_text(text), m_textSize(textSize), m_textWeight(textWeight), m_isSubtle(isSubtle), m_wrap(wrap) {}
+}
 
-    TextBlock::TextBlock() {}
+TextBlock::TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak, std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap) : ICardElement(container, horizontalAlignment, size, speak), m_text(text), m_textSize(textSize), m_textWeight(textWeight), m_isSubtle(isSubtle), m_wrap(wrap) {}
 
-    std::wstring TextBlock::GetText() const
-    {
-        return m_text;
-    }
+std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
+{
+    ACParser::ThrowIfNotJsonObject(json);
+    ACParser::ExpectTypeString(json, CardElementType::TextBlockType);
 
-    void TextBlock::SetText(const std::wstring value)
-    {
-        m_text = value;
-    }
+    // Parse text field
+    std::string speak = ACParser::GetString(json, AdaptiveCardSchemaKey::Speak);
+    std::string text = ACParser::GetString(json, AdaptiveCardSchemaKey::Text);
+    Size size = ACParser::GetEnumValue<Size>(json, AdaptiveCardSchemaKey::Size, Size::Auto, SizeFromString);
 
-    TextSize TextBlock::GetTextSize() const
-    {
-        return m_textSize;
-    }
+    TextSize textSize = ACParser::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::TextSize, TextSize::Normal, TextSizeFromString);
+    TextColor textColor = ACParser::GetEnumValue<TextColor>(json, AdaptiveCardSchemaKey::TextColor, TextColor::Default, TextColorFromString);
+    TextWeight textWeight = ACParser::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Normal, TextWeightFromString);
+    TextWrap textWrap = ACParser::GetEnumValue<TextWrap>(json, AdaptiveCardSchemaKey::TextWrap, TextWrap::NoWrap, TextWrapFromString);
+    HorizontalAlignment horAlignment = ACParser::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString);
 
-    void TextBlock::SetTextSize(const TextSize value)
-    {
-        m_textSize = value;
-    }
+    auto textBlock = std::make_shared<TextBlock>(nullptr, horAlignment, size, speak, text, textSize, textWeight, false, textWrap == TextWrap::Wrap);
+    return textBlock;
+}
 
-    TextWeight TextBlock::GetTextWeight() const
-    {
-        return m_textWeight;
-    }
+std::string TextBlock::Serialize()
+{
+    return "";
+}
 
-    void TextBlock::SetTextWeight(const TextWeight value)
-    {
-        m_textWeight = value;
-    }
+std::string TextBlock::GetText() const
+{
+    return m_text;
+}
 
-    bool TextBlock::GetWrap() const
-    {
-        return m_wrap;
-    }
+void TextBlock::SetText(const std::string value)
+{
+    m_text = value;
+}
 
-    void TextBlock::SetWrap(const bool value)
-    {
-        m_wrap = value;
-    }
+TextSize TextBlock::GetTextSize() const
+{
+    return m_textSize;
+}
 
-    bool TextBlock::GetIsSubtle() const
-    {
-        return m_isSubtle;
-    }
+void TextBlock::SetTextSize(const TextSize value)
+{
+    m_textSize = value;
+}
 
-    void TextBlock::SetIsSubtle(const bool value)
-    {
-        m_isSubtle = value;
-    }
+TextWeight TextBlock::GetTextWeight() const
+{
+    return m_textWeight;
+}
+
+void TextBlock::SetTextWeight(const TextWeight value)
+{
+    m_textWeight = value;
+}
+
+bool TextBlock::GetWrap() const
+{
+    return m_wrap;
+}
+
+void TextBlock::SetWrap(const bool value)
+{
+    m_wrap = value;
+}
+
+bool TextBlock::GetIsSubtle() const
+{
+    return m_isSubtle;
+}
+
+void TextBlock::SetIsSubtle(const bool value)
+{
+    m_isSubtle = value;
 }

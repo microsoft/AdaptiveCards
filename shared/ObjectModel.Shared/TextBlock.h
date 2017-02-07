@@ -1,37 +1,42 @@
 #pragma once
+
+#include<string>
 #include <memory>
-#include <string>
-#include "Enums.h"
 #include "ICardElement.h"
+#include "Enums.h"
 
 namespace AdaptiveCards
 {
-    class TextBlock : public ICardElement
-    {
-    public:
-        TextBlock(HorizontalAlignment horizontalAlignment, Size size, std::wstring speak, std::wstring text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap);
-        TextBlock();
+class TextBlock : public ICardElement
+{
+public:
+    TextBlock();
+    TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak, std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap);
 
-        std::wstring GetText() const;
-        void SetText(const std::wstring value);
+    static std::shared_ptr<TextBlock> Deserialize(const Json::Value& root);
 
-        TextSize GetTextSize() const;
-        void SetTextSize(const TextSize value);
+    virtual std::string Serialize();
 
-        TextWeight GetTextWeight() const;
-        void SetTextWeight(const TextWeight value);
+    std::string GetText() const;
+    void SetText(const std::string value);
 
-        bool GetWrap() const;
-        void SetWrap(const bool value);
+    TextSize GetTextSize() const;
+    void SetTextSize(const TextSize value);
 
-        bool GetIsSubtle() const;
-        void SetIsSubtle(const bool value);
+    TextWeight GetTextWeight() const;
+    void SetTextWeight(const TextWeight value);
 
-    private:
-        std::wstring m_text;
-        TextSize m_textSize;
-        TextWeight m_textWeight;
-        bool m_isSubtle;
-        bool m_wrap;
-    };
+    bool GetWrap() const;
+    void SetWrap(const bool value);
+
+    bool GetIsSubtle() const;
+    void SetIsSubtle(const bool value);
+
+private:
+    std::string m_text;
+    TextSize m_textSize;
+    TextWeight m_textWeight;
+    bool m_isSubtle;
+    bool m_wrap;
+};
 }

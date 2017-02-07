@@ -28,8 +28,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{cf169157-f487-420c-8b9b-ca3abe2bb209}</ProjectGuid>
-    <Keyword>WindowsRuntimeComponent</Keyword>
-    <RootNamespace>WindowsRuntimeComponent1</RootNamespace>
+    <Keyword>AdaptiveCards.XamlCardRenderer</Keyword>
+    <RootNamespace>AdaptiveCards.XamlCardRenderer</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
@@ -86,14 +86,16 @@
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\shared\ObjectModelLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\shared\ObjectModel.Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
     <ClInclude Include="lib\pch.h" />
+    <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
+    <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -103,7 +105,7 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\shared\ObjectModelLib\ObjectModelLib.vcxproj">
+    <ProjectReference Include="..\..\shared\ObjectModel.UWP\ObjectModel.UWP.vcxproj">
       <Project>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</Project>
     </ProjectReference>
   </ItemGroup>

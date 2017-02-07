@@ -1,31 +1,39 @@
 #pragma once
 
 #include <memory>
-#include <string>
-#include "enums.h"
+#include "Enums.h"
+#include "json\json.h"
 
 namespace AdaptiveCards
 {
-    class ICardElement
-    {
-    public:
-        ICardElement(HorizontalAlignment horizontalAlignment, Size size, std::wstring speak);
-        ICardElement();
-        virtual ~ICardElement() = 0 {};
+class Container;
+class ICardElement
+{
+public:
+    ICardElement(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak);
+    ICardElement();
 
-        HorizontalAlignment GetHorizontalAlignment() const;
-        void SetHorizontalAlignment(const HorizontalAlignment value);
+    virtual ~ICardElement() = 0 {};
 
-        Size GetSize() const;
-        void SetSize(const Size value);
+    std::shared_ptr<Container> GetContainer() const;
+    void SetContainer(std::shared_ptr<Container> container);
 
-        std::wstring GetSpeak() const;
-        void SetSpeak(const std::wstring value);
+    HorizontalAlignment GetHorizontalAlignment() const;
+    void SetHorizontalAlignment(const HorizontalAlignment value);
 
-    private:
-        HorizontalAlignment m_horizontalAlignment;
-        Size m_size;
-        std::wstring m_speak;
-    };
+    Size GetSize() const;
+    void SetSize(const Size value);
+
+    std::string GetSpeak() const;
+    void SetSpeak(const std::string value);
+
+    virtual std::string Serialize() = 0;
+
+private:
+    std::weak_ptr<Container> m_container;
+    HorizontalAlignment m_horizontalAlignment;
+    Size m_size;
+    std::string m_speak;
+};
 }
 

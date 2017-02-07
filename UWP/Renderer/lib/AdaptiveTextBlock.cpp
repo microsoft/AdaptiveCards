@@ -15,20 +15,16 @@ AdaptiveTextBlock::AdaptiveTextBlock()
 {
 }
 
-HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
+HRESULT AdaptiveTextBlock::get_Text(HSTRING* Text)
 {
-    return HStringReference(this->GetText().c_str()).CopyTo(text);
+    return StringToHSTRING(this->GetText(), Text);
 }
 
-HRESULT AdaptiveTextBlock::put_Text(HSTRING text)
+HRESULT AdaptiveTextBlock::put_Text(HSTRING Text)
 {
-    if (text == nullptr)
-    {
-        return E_INVALIDARG;
-    }
-    HString Wrapper;
-    RETURN_IF_FAILED(Wrapper.Set(text));
-    this->SetText(Wrapper.GetRawBuffer(nullptr));
+    std::string out;
+    RETURN_IF_FAILED(HSTRINGToString(Text, out));
+    this->SetText(out);
     return S_OK;
 }
 
@@ -64,7 +60,7 @@ HRESULT AdaptiveTextBlock::get_Wrap(boolean* Wrap)
 
 HRESULT AdaptiveTextBlock::put_Wrap(boolean Wrap)
 {
-    this->SetWrap(Wrap);
+    this->SetWrap(Boolify(Wrap));
     return S_OK;
 }
 
@@ -76,7 +72,7 @@ HRESULT AdaptiveTextBlock::get_IsSubtle(boolean* IsSubtle)
 
 HRESULT AdaptiveTextBlock::put_IsSubtle(boolean IsSubtle)
 {
-    this->SetIsSubtle(IsSubtle);
+    this->SetIsSubtle(Boolify(IsSubtle));
     return S_OK;
 }
 
