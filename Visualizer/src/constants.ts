@@ -17,8 +17,9 @@ export const defaultPayload: string = `
 				{
 					"@type": "ColumnGroup",
 					"speak": "<s>Created by Miguel Garcia</s>",
-					"items": [
+					"columns": [
 						{
+							"@type":"Column",
 							"size": "auto",
 							"items": [
                 				{
@@ -30,6 +31,7 @@ export const defaultPayload: string = `
 							]
 						},
 						{
+							"@type":"Column",
 							"size": "stretch",
 							"items": [
 							    {
@@ -60,7 +62,7 @@ export const defaultPayload: string = `
 			    },
 				{
 				    "@type": "FactGroup",
-				    "items": [
+				    "facts": [
 				        { "name": "Board:", "value": "Adaptive Card", "speak":"" },
 				        { "name": "List:", "value": "Backlog", "speak":"" },
 				        { "name": "Assigned to:", "value": "David Claux" },

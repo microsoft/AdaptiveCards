@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ADP = Adaptive.Schema.Net;
 using Newtonsoft.Json;
+using Microsoft.Win32;
+using System.IO;
 
 namespace WpfVisualizer
 {
@@ -41,6 +43,18 @@ namespace WpfVisualizer
             {
                 this.card.Children.Clear();
                 this.card.Children.Add(new TextBlock() { Text = err.Message });
+            }
+        }
+
+        private void loadButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "Json documents (*.json)|*.json";
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                this.textBox.Text = File.ReadAllText(dlg.FileName);
             }
         }
     }

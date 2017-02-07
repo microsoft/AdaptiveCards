@@ -95,6 +95,14 @@
             <Setter Property="Margin" Value="4"/>
         </Style>
 
+        <Style x:Key="Adaptive.Image.Auto" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
+            <Setter Property="Stretch" Value="Uniform"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Image.Stretch" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
+            <Setter Property="Stretch" Value="UniformToFill"/>
+        </Style>
+
         <Style x:Key="Adaptive.Image.Small" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="40"/>
@@ -110,6 +118,36 @@
             <Setter Property="Height" Value="100"/>
         </Style>
 
+        <!-- Circular Person mask -->
+        <RadialGradientBrush x:Key="PersonMask" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+            <GradientStop Color="#ffffffff" Offset="0.9" />
+            <GradientStop Color="#00ffffff" Offset="1.0" />
+        </RadialGradientBrush>
+
+        <Style x:Key="Adaptive.Image.Person" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
+            <Setter Property="OpacityMask" Value="{StaticResource PersonMask}"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Image.Auto.Person" TargetType="Image" BasedOn="{StaticResource Adaptive.Image.Auto}">
+            <Setter Property="OpacityMask" Value="{StaticResource PersonMask}"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Image.Stretch.Person" TargetType="Image" BasedOn="{StaticResource Adaptive.Image.Stretch}">
+            <Setter Property="OpacityMask" Value="{StaticResource PersonMask}"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Image.Small.Person" TargetType="Image" BasedOn="{StaticResource Adaptive.Image.Small}">
+            <Setter Property="OpacityMask" Value="{StaticResource PersonMask}"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Image.Medium.Person" TargetType="Image" BasedOn="{StaticResource Adaptive.Image.Medium}">
+            <Setter Property="OpacityMask" Value="{StaticResource PersonMask}"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Image.Large.Person" TargetType="Image" BasedOn="{StaticResource Adaptive.Image.Large}">
+            <Setter Property="OpacityMask" Value="{StaticResource PersonMask}"/>
+        </Style>
+
         <Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
             <Setter Property="Margin" Value="0,4,0,4"/>
         </Style>
@@ -117,14 +155,22 @@
     </Window.Resources>
 
     <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBox AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>
+        <StackPanel Orientation="Horizontal">
+            <Button Name="loadButton" Click="loadButton_Click" Content="Load" Margin="4"/>
+        </StackPanel>
 
-        <Border Margin="68,67,60,67"  CornerRadius="20" Grid.Column="1" VerticalAlignment="Top" >
+        <TextBox Grid.Row="1 " AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>
+
+        <Border Margin="68,67,60,67"  CornerRadius="20" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" >
             <Border.Effect>
                 <DropShadowEffect />
             </Border.Effect >

@@ -295,30 +295,13 @@ namespace WpfVisualizer
                 uiImage.HorizontalAlignment = alignment;
             // How do  I figure image size???
             // image.Size = ADP.Schema.Net.Size.
-            switch (image.Size)
-            {
-                case ADP.Size.Auto:
-                    uiImage.Stretch = Stretch.Uniform;
-                    uiImage.Style = resources["Adaptive.Image"] as Style;
-                    break;
+            string style = $"Adaptive.Image";
+            if (image.Size != null)
+                style += $".{image.Size.ToString()}";
 
-                case ADP.Size.Stretch:
-                    uiImage.Stretch = Stretch.UniformToFill;
-                    uiImage.Style = resources["Adaptive.Image"] as Style;
-                    break;
-
-                case ADP.Size.Small:
-                    uiImage.Style = resources["Adaptive.Image.Small"] as Style;
-                    break;
-
-                case ADP.Size.Medium:
-                    uiImage.Style = resources["Adaptive.Image.Medium"] as Style;
-                    break;
-
-                case ADP.Size.Large:
-                    uiImage.Style = resources["Adaptive.Image.Large"] as Style;
-                    break;
-            }
+            if (image.Style == ADP.ImageStyle.Person)
+                style += $".{image.Style.ToString()}";
+            uiImage.Style = resources[style] as Style;
             return uiImage;
         }
 

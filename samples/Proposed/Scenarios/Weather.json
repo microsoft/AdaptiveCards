@@ -1,165 +1,171 @@
 {
-    "@type": "AdaptiveCard",
-    "speak":"<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
-    "backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Background-Dark.jpg",
+	"@type": "AdaptiveCard",
+	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
+	"backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Background-Dark.jpg",
 	"body": [
-	    {
-	        "@type": "ColumnGroup",
-	        "items": [
-	            {
-	                "size": 35,
-	                "items": [
-	                    {
-	                        "@type": "Image",
-	                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
-	                    }
-	                ]
-	            },
-	            {
-	                "size": 65,
-	                "items": [
-	                    {
-	                        "@type": "TextBlock",
-	                        "text": "**Monday**",
-	                        "textSize": "large"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "text": "63 / 42",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "isSubtle": true,
-	                        "text": "20% chance of rain",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "isSubtle": true,
-	                        "text": "Winds 5 mph NE",
-	                        "textSize": "small"
-	                    }
-	                ]
-	            }
-	        ]
-	    },
-	    {
-	        "@type": "ColumnGroup",
-	        "items": [
-	            {
-	                "size": 20,
-	                "items": [
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "text": "Fri",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "Image",
-	                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "text": "62",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "isSubtle": true,
-	                        "text": "52",
-	                        "textSize": "small"
-	                    }
-	                ]
-	            },
-	            {
-	                "size": 20,
-	                "items": [
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "text": "Sat",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "Image",
-	                        "url": "http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "text": "60",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "isSubtle": true,
-	                        "text": "48",
-	                        "textSize": "small"
-	                    }
-	                ]
-	            },
-	            {
-	                "size": 20,
-	                "items": [
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "text": "Sun",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "Image",
-	                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "text": "59",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "isSubtle": true,
-	                        "text": "49",
-	                        "textSize": "small"
-	                    }
-	                ]
-	            },
-	            {
-	                "size": 20,
-	                "items": [
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "text": "Mon",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "Image",
-	                        "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "text": "64",
-	                        "textSize": "small"
-	                    },
-	                    {
-	                        "@type": "TextBlock",
-	                        "horizontalAlignment": "center",
-	                        "isSubtle": true,
-	                        "text": "51",
-	                        "textSize": "small"
-	                    }
-	                ]
-	            }
-            ]
-	    }
+		{
+			"@type": "ColumnGroup",
+			"columns": [
+				{
+					"@type": "Column",
+					"size": 35,
+					"items": [
+						{
+							"@type": "Image",
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
+						}
+					]
+				},
+				{
+					"@type": "Column",
+					"size": 65,
+					"items": [
+						{
+							"@type": "TextBlock",
+							"text": "**Monday**",
+							"textSize": "large"
+						},
+						{
+							"@type": "TextBlock",
+							"text": "63 / 42",
+							"textSize": "small"
+						},
+						{
+							"@type": "TextBlock",
+							"isSubtle": true,
+							"text": "20% chance of rain",
+							"textSize": "small"
+						},
+						{
+							"@type": "TextBlock",
+							"isSubtle": true,
+							"text": "Winds 5 mph NE",
+							"textSize": "small"
+						}
+					]
+				}
+			]
+		},
+		{
+			"@type": "ColumnGroup",
+			"columns": [
+				{
+					"@type": "Column",
+					"size": 20,
+					"items": [
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "Fri",
+							"textSize": "small"
+						},
+						{
+							"@type": "Image",
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
+						},
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "62",
+							"textSize": "small"
+						},
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"isSubtle": true,
+							"text": "52",
+							"textSize": "small"
+						}
+					]
+				},
+				{
+					"@type": "Column",
+					"size": 20,
+					"items": [
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "Sat",
+							"textSize": "small"
+						},
+						{
+							"@type": "Image",
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
+						},
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "60",
+							"textSize": "small"
+						},
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"isSubtle": true,
+							"text": "48",
+							"textSize": "small"
+						}
+					]
+				},
+				{
+					"@type": "Column",
+					"size": 20,
+					"items": [
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "Sun",
+							"textSize": "small"
+						},
+						{
+							"@type": "Image",
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
+						},
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "59",
+							"textSize": "small"
+						},
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"isSubtle": true,
+							"text": "49",
+							"textSize": "small"
+						}
+					]
+				},
+				{
+					"@type": "Column",
+					"size": 20,
+					"items": [
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "Mon",
+							"textSize": "small"
+						},
+						{
+							"@type": "Image",
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
+						},
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "64",
+							"textSize": "small"
+						},
+						{
+							"@type": "TextBlock",
+							"horizontalAlignment": "center",
+							"isSubtle": true,
+							"text": "51",
+							"textSize": "small"
+						}
+					]
+				}
+			]
+		}
 	]
 }

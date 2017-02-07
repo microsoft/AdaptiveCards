@@ -16,7 +16,7 @@
 				},
 				{
 					"@type": "FactGroup",
-					"items": [
+					"facts": [
 						{
 							"name": "This is a fact name",
 							"value": "This is a fact value"
@@ -32,19 +32,28 @@
 					]
 				},
 				{
-				    "@type": "DateInput"
+					"@type": "DateInput"
 				},
 				{
-				    "@type": "TextInput",
-				    "title": "Enter text here"
+					"@type": "TextInput",
+					"title": "Enter text here"
 				},
 				{
-				    "@type": "MultichoiceInput",
-				    "choices": [
-				        { "display": "Choice 1", "value": "1" },
-				        { "display": "Choice 2", "value": "2" },
-				        { "display": "Choice 3", "value": "3" }
-				    ]
+					"@type": "MultichoiceInput",
+					"choices": [
+						{
+							"display": "Choice 1",
+							"value": "1"
+						},
+						{
+							"display": "Choice 2",
+							"value": "2"
+						},
+						{
+							"display": "Choice 3",
+							"value": "3"
+						}
+					]
 				},
 				{
 					"@type": "ImageGallery",
@@ -62,57 +71,58 @@
 							"@type": "ActionCard",
 							"name": "Comment",
 							"card": {
-							    "items": [
-							        {
-							            "@type": "ColumnGroup",
-							            "items": [
-							                {
-							                    "size": 50,
-							                    "items": [
-							                        {
-							                            "@type": "TextInput"
-							                        }
-							                    ]
-							                },
-							                {
-							                    "size": 50,
-							                    "items": [
-							                        {
-							                            "@type": "DateInput",
-							                            "size": "stretch"
-							                        },
-							                        {
-                    									"@type": "MultichoiceInput",
-							                            "size": "stretch",
-                    									"id": "list",
-                    									"title": "Pick an option",
-                    									"choices": [
-                    										{
-                    											"display": "Choice 1",
-                    											"value": "1"
-                    										},
-                    										{
-                    											"display": "Choice 2",
-                    											"value": "2"
-                    										},
-                    										{
-                    											"display": "Choice 3",
-                    											"value": "3"
-                    										}
-                    									]
-							                        }
-							                    ]
-							                }
-							            ]
-							        },
-							        {
-							            "@type": "TextInput"
-							        }
-							    ]
+								"items": [
+									{
+										"@type": "ColumnGroup",
+										"columns": [
+											{
+												"@type": "Column",
+												"size": 50,
+												"items": [
+													{
+														"@type": "TextInput"
+													}
+												]
+											},
+											{
+												"@type": "Column",
+												"size": 50,
+												"items": [
+													{
+														"@type": "DateInput",
+														"size": "stretch"
+													},
+													{
+														"@type": "MultichoiceInput",
+														"size": "stretch",
+														"id": "list",
+														"title": "Pick an option",
+														"choices": [
+															{
+																"display": "Choice 1",
+																"value": "1"
+															},
+															{
+																"display": "Choice 2",
+																"value": "2"
+															},
+															{
+																"display": "Choice 3",
+																"value": "3"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"@type": "TextInput"
+									}
+								]
 							},
 							"inputs": [
 								{
-
 									"@type": "TextInput",
 									"id": "comment",
 									"isMultiline": true,
@@ -180,7 +190,6 @@
 									"target": "http://...",
 									"successMessage": "This is the action's successMessage property.",
 									"errorMessage": "This is the action's errorMessage property."
-
 								}
 							]
 						},
@@ -218,60 +227,72 @@
 				},
 				{
 					"@type": "ColumnGroup",
-					"items": [
+					"columns": [
 						{
+							"@type": "Column",
 							"size": "auto",
 							"items": [
-                				{
-                					"@type": "Image",
-                					"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-                					"size": "small"
-                				}
+								{
+									"@type": "Image",
+									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+									"size": "small"
+								}
 							]
 						},
 						{
+							"@type": "Column",
 							"size": "stretch",
 							"items": [
-							    {
-							        "@type": "TextBlock",
-							        "text": "This is the activityTitle property",
-							        "style": "activityTitle"
-							    },
-							    {
-							        "@type": "TextBlock",
-							        "text": "This is the activitySubtitle property",
-							        "style": "activitySubtitle",
+								{
+									"@type": "TextBlock",
+									"text": "This is the activityTitle property",
+									"style": "activityTitle"
+								},
+								{
+									"@type": "TextBlock",
+									"text": "This is the activitySubtitle property",
+									"style": "activitySubtitle",
 									"topSpacing": "none"
-							    },
-							    {
-							        "@type": "TextBlock",
-							        "text": "This is the activityText property",
-							        "style": "activityText",
+								},
+								{
+									"@type": "TextBlock",
+									"text": "This is the activityText property",
+									"style": "activityText",
 									"topSpacing": "none"
-							    }
+								}
 							]
 						},
 						{
-						    "size": "large",
-						    "items": [
-                				{
-                				    "@type": "DateInput",
-                				    "size": "stretch"
-                				},
-                				{
-                				    "@type": "TextInput",
-                				    "title": "Enter text here"
-                				},
-                				{
-                				    "@type": "MultichoiceInput",
-                				    "size": "stretch",
-                				    "choices": [
-                				        { "display": "Choice 1", "value": "1" },
-                				        { "display": "Choice 2", "value": "2" },
-                				        { "display": "Choice 3", "value": "3" }
-                				    ]
-                				}
-						    ]
+							"@type": "Column",
+							"size": "large",
+							"items": [
+								{
+									"@type": "DateInput",
+									"size": "stretch"
+								},
+								{
+									"@type": "TextInput",
+									"title": "Enter text here"
+								},
+								{
+									"@type": "MultichoiceInput",
+									"size": "stretch",
+									"choices": [
+										{
+											"display": "Choice 1",
+											"value": "1"
+										},
+										{
+											"display": "Choice 2",
+											"value": "2"
+										},
+										{
+											"display": "Choice 3",
+											"value": "3"
+										}
+									]
+								}
+							]
 						}
 					]
 				}

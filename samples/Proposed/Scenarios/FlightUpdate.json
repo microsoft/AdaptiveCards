@@ -3,13 +3,14 @@
 	"speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
 	"body": [
 		{
-		    "@type": "Container",
+			"@type": "Container",
 			"separator": "bottom",
 			"items": [
 				{
 					"@type": "ColumnGroup",
 					"items": [
 						{
+							"@type": "Column",
 							"size": "auto",
 							"items": [
 								{
@@ -20,6 +21,7 @@
 							]
 						},
 						{
+							"@type": "Column",
 							"size": "stretch",
 							"items": [
 								{
@@ -42,13 +44,14 @@
 			]
 		},
 		{
-		    "@type": "Container",
+			"@type": "Container",
 			"separator": "bottom",
 			"items": [
 				{
 					"@type": "ColumnGroup",
-					"items": [
+					"columns": [
 						{
+							"@type": "Column",
 							"size": "stretch",
 							"items": [
 								{
@@ -71,6 +74,7 @@
 							]
 						},
 						{
+							"@type": "Column",
 							"size": "auto",
 							"items": [
 								{
@@ -101,13 +105,14 @@
 			]
 		},
 		{
-		    "@type": "Container",
+			"@type": "Container",
 			"separator": "bottom",
 			"items": [
 				{
 					"@type": "ColumnGroup",
-					"items": [
+					"columns": [
 						{
+							"@type": "Column",
 							"size": 1,
 							"items": [
 								{
@@ -122,6 +127,7 @@
 							]
 						},
 						{
+							"@type": "Column",
 							"items": [
 								{
 									"@type": "TextBlock",
@@ -137,6 +143,7 @@
 							]
 						},
 						{
+							"@type": "Column",
 							"size": 1,
 							"items": [
 								{
@@ -159,13 +166,14 @@
 			]
 		},
 		{
-		    "@type": "Container",
+			"@type": "Container",
 			"separator": "bottom",
 			"items": [
 				{
 					"@type": "ColumnGroup",
-					"items": [
+					"columns": [
 						{
+							"@type": "Column",
 							"size": 1,
 							"items": [
 								{
@@ -182,6 +190,7 @@
 							]
 						},
 						{
+							"@type": "Column",
 							"items": [
 								{
 									"@type": "TextBlock",
@@ -196,6 +205,7 @@
 							]
 						},
 						{
+							"@type": "Column",
 							"size": 1,
 							"items": [
 								{

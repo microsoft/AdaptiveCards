@@ -439,24 +439,24 @@ export class Fact {
 }
 
 export class FactGroup extends CardElement {
-    private _items: Array<Fact> = [];
+    private _facts: Array<Fact> = [];
 
-    get items(): Array<Fact> {
-        return this._items;
+    get facts(): Array<Fact> {
+        return this._facts;
     }
 
     parse(json: any) {
         super.parse(json);
 
-        if (json["items"] != null) {
-            var factArray = json["items"] as Array<any>;
+        if (json["facts"] != null) {
+            var factArray = json["facts"] as Array<any>;
 
             for (var i = 0; i < factArray.length; i++) {
                 let fact = new Fact();
 
                 fact.parse(factArray[i]);
 
-                this._items.push(fact);
+                this._facts.push(fact);
             }
         }
     }
@@ -464,18 +464,18 @@ export class FactGroup extends CardElement {
     render(): HTMLElement {
         let element: HTMLElement = null;
 
-        if (this._items.length > 0) {
+        if (this._facts.length > 0) {
             element = document.createElement("table");
             element.className = "factGroup";
 
             let html: string = '';
 
-            for (var i = 0; i < this._items.length; i++) {
+            for (var i = 0; i < this._facts.length; i++) {
                 html += '<tr>';
                 html += '    <td class="factName">';
 
                 let textBlock = new TextBlock(this.container);
-                textBlock.text = this._items[i].name;
+                textBlock.text = this._facts[i].name;
                 textBlock.textWeight = TextWeight.Bolder;
 
                 let renderedText = textBlock.internalRender();
@@ -488,7 +488,7 @@ export class FactGroup extends CardElement {
                 html += '    <td class="factValue">';
 
                 textBlock = new TextBlock(this.container);
-                textBlock.text = this._items[i].value;
+                textBlock.text = this._facts[i].value;
                 textBlock.textWeight = TextWeight.Lighter;
 
                 renderedText = textBlock.internalRender();
@@ -513,10 +513,10 @@ export class FactGroup extends CardElement {
 
         // render each fact 
         let speak = null;
-        if (this._items.length > 0) {
+        if (this._facts.length > 0) {
             speak = '';
-            for (var i = 0; i < this._items.length; i++) {
-                let speech = this._items[i].renderSpeech();
+            for (var i = 0; i < this._facts.length; i++) {
+                let speech = this._facts[i].renderSpeech();
                 if (speech)
                     speak += speech;
             }
@@ -587,11 +587,11 @@ export class Image extends CardElement {
 }
 
 export class ImageGallery extends CardElement {
-    private _items: Array<Image> = [];
+    private _images: Array<Image> = [];
     imageSize: Size = Size.Medium;
 
-    get items(): Array<Image> {
-        return this._items;
+    get images(): Array<Image> {
+        return this._images;
     }
 
     parse(json: any) {
@@ -599,8 +599,8 @@ export class ImageGallery extends CardElement {
 
         this.imageSize = stringToSize(json["imageSize"], Size.Medium);
 
-        if (json["items"] != null) {
-            let imageArray = json["items"] as Array<any>;
+        if (json["images"] != null) {
+            let imageArray = json["images"] as Array<any>;
 
             for (let i = 0; i < imageArray.length; i++) {
                 let image = new Image(this.container);
@@ -608,7 +608,7 @@ export class ImageGallery extends CardElement {
                 image.size = this.imageSize;
                 image.url = imageArray[i];
 
-                this._items.push(image);
+                this._images.push(image);
             }
         }
     }
@@ -616,12 +616,12 @@ export class ImageGallery extends CardElement {
     render(): HTMLElement {
         let element: HTMLElement = null;
 
-        if (this._items.length > 0) {
+        if (this._images.length > 0) {
             element = document.createElement("div");
             element.className = "imageGallery";
 
-            for (var i = 0; i < this._items.length; i++) {
-                let renderedImage = this._items[i].internalRender();
+            for (var i = 0; i < this._images.length; i++) {
+                let renderedImage = this._images[i].internalRender();
                 renderedImage.style.margin = "0px";
                 renderedImage.style.marginRight = "10px";
 
@@ -637,10 +637,10 @@ export class ImageGallery extends CardElement {
             return this.speak;
 
         let speak = null;
-        if (this._items.length > 0) {
+        if (this._images.length > 0) {
             speak = '';
-            for (var i = 0; i < this._items.length; i++) {
-                speak += this._items[i].renderSpeech();
+            for (var i = 0; i < this._images.length; i++) {
+                speak += this._images[i].renderSpeech();
             }
         }
 
@@ -1527,12 +1527,12 @@ export class Column extends Container {
 }
 
 export class ColumnGroup extends CardElement {
-    private _items: Array<Column> = [];
+    private _columns: Array<Column> = [];
 
     addColumn(): Column {
         let column = new Column(this.container, ["ActionGroup"]);
 
-        this._items.push(column);
+        this._columns.push(column);
 
         return column;
     }
@@ -1540,8 +1540,8 @@ export class ColumnGroup extends CardElement {
     parse(json: any) {
         super.parse(json);
 
-        if (json["items"] != null) {
-            let itemArray = json["items"] as Array<any>;
+        if (json["columns"] != null) {
+            let itemArray = json["columns"] as Array<any>;
 
             for (let i = 0; i < itemArray.length; i++) {
                 let column = this.addColumn();
@@ -1551,17 +1551,17 @@ export class ColumnGroup extends CardElement {
     }
 
     render(): HTMLElement {
-        if (this._items.length > 0) {
+        if (this._columns.length > 0) {
             let element = document.createElement("div");
             element.className = "columnGroup";
             element.style.display = "flex";
 
-            for (let i = 0; i < this._items.length; i++) {
-                let renderedColumn = this._items[i].internalRender();
+            for (let i = 0; i < this._columns.length; i++) {
+                let renderedColumn = this._columns[i].internalRender();
 
                 appendChild(element, renderedColumn);
 
-                if (this._items.length > 1 && i < this._items.length - 1) {
+                if (this._columns.length > 1 && i < this._columns.length - 1) {
                     let spacer = document.createElement("div");
                     spacer.className = "columnSpacer";
                     spacer.style.flex = "0 0 auto";
@@ -1583,9 +1583,9 @@ export class ColumnGroup extends CardElement {
 
         // render each item
         let speak = '';
-        if (this._items.length > 0) {
-            for (var i = 0; i < this._items.length; i++) {
-                speak += this._items[i].renderSpeech();
+        if (this._columns.length > 0) {
+            for (var i = 0; i < this._columns.length; i++) {
+                speak += this._columns[i].renderSpeech();
             }
         }
         return speak;
