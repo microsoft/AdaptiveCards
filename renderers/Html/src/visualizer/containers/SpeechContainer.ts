@@ -1,6 +1,6 @@
 import { HostContainer} from "./HostContainer";
-import * as Adaptive from "../Adaptive";
-import * as Utils from "../Utils";
+import * as Adaptive from "../../Adaptive";
+import * as Utils from "../../Utils";
 
 export class SpeechContainer extends HostContainer {
 

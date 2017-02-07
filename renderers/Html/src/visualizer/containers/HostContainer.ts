@@ -1,5 +1,5 @@
-import * as Adaptive from "../Adaptive";
-import * as Utils from "../Utils";
+import * as Adaptive from "../../Adaptive";
+import * as Utils from "../../Utils";
 
 import * as vkbeautify from "vkbeautify";
 

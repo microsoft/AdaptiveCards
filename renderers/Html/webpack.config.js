@@ -1,7 +1,7 @@
 module.exports = {
-    entry: "./visualizer/src/app.ts",
+    entry: "./src/visualizer/app.ts",
     output: {
-        filename: "./visualizer/dist/bundle.js"
+        filename: "./dist/bundle.js"
     },
 
     // Enable sourcemaps for debugging webpack's output.

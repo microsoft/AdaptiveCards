@@ -1,5 +1,5 @@
 import { HostContainer} from "./HostContainer";
-import * as Adaptive from "../Adaptive";
+import * as Adaptive from "../../Adaptive";
 
 export abstract class ConnectorContainer extends HostContainer {
     renderHeader(card: Adaptive.AdaptiveCard): HTMLElement {

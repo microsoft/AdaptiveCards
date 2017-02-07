@@ -10,7 +10,7 @@
             "showOutput": "always",
             "taskName": "bundle",
             "isBuildCommand": true,
-            "isWatching": true,
+            "isBackground": true,
             "problemMatcher": "$tsc-watch"
         }
     ]

@@ -1,6 +1,4 @@
-﻿import * as Utils from "./Utils";
-
-import * as Adaptive from "./Adaptive";
+﻿import * as Adaptive from "../Adaptive";
 import * as Constants from "./Constants";
 
 import { BingContainer } from "./containers/BingContainer";
@@ -40,7 +38,7 @@ function renderCard() {
                 let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
                 let renderedHostContainer = hostContainer.render(adaptiveCard);
 
-                Utils.appendChild(node, renderedHostContainer);
+                node.appendChild(renderedHostContainer);
 
                 try {
                     sessionStorage.setItem("AdaptivePayload", editor.getValue());
@@ -51,7 +49,9 @@ function renderCard() {
 
                 break;
             default:
-                if (Utils.isNullOrEmpty(cardTypeName)) {
+                // TODO: Fix this
+                //if (isNullOrEmpty(cardTypeName)) {
+                if(!false) {
                     throw new Error("The card's type must be specified.");
                 }
                 else {
@@ -100,7 +100,7 @@ function updateStyleSheet() {
         styleSheetLinkElement.id = "adaptiveCardStylesheet";
         // TODO: Is this a bug? Won't previous style sheets stick around then?
         let headElement = document.getElementsByTagName("head")[0];
-        Utils.appendChild(headElement, styleSheetLinkElement);
+        headElement.appendChild(styleSheetLinkElement);
     }
 
     styleSheetLinkElement.rel = "stylesheet";
@@ -206,8 +206,8 @@ function setupContainerPicker() {
             let option = document.createElement("option");
             option.value = hostContainerOptions[i].name;
             option.text = hostContainerOptions[i].name;
-
-            Utils.appendChild(hostContainerPicker, option);
+            
+            hostContainerPicker.appendChild(option);
         }
     }
 

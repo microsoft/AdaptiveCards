@@ -1,10 +1,10 @@
 import { HostContainer} from "./HostContainer";
-import * as Adaptive from "../Adaptive";
-import * as Utils from "../Utils";
+import * as Adaptive from "../../Adaptive";
+import * as Utils from "../../Utils";
 
-export class BingContainer extends HostContainer {
-    static backgroundColor: string = "#fff";
-    static textColor: Adaptive.TextColor = Adaptive.TextColor.Dark;
+export class LiveTileContainer extends HostContainer {
+    static backgroundColor: string = "#0078D7";
+    static textColor: Adaptive.TextColor = Adaptive.TextColor.Light;
 
     private _width: number;
     private _height: number;
@@ -14,18 +14,17 @@ export class BingContainer extends HostContainer {
 
         this._width = width;
         this._height = height;
+        this.supportsActionBar = false;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
-        element.style.backgroundColor = BingContainer.backgroundColor;
+        element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        card.body.textColor = BingContainer.textColor;
-
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
+        card.body.textColor = LiveTileContainer.textColor;
 
         let renderedCard = card.render();
         renderedCard.style.height = "100%";

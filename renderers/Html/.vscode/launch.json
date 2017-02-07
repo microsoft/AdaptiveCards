@@ -5,7 +5,7 @@
             "name": "Launch Visualizer",
             "type": "chrome",
             "request": "launch",
-            "file": "${workspaceRoot}/Visualizer/index.html",
+            "file": "${workspaceRoot}/visualizer/index.html",
             "sourceMaps": true
         }
     ]
