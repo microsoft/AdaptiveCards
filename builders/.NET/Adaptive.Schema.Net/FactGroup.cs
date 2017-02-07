@@ -17,7 +17,6 @@ namespace Adaptive.Schema.Net
         /// <summary>
         /// The facts to be displayed.
         /// </summary>
-        // ISSUE: This only takes Fact objects, should this be called Facts?
-        public List<Fact> Items { get; set; } = new List<Fact>();
+        public List<Fact> Facts { get; set; } = new List<Fact>();
     }
 }

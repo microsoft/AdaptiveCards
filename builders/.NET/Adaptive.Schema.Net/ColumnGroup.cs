@@ -13,7 +13,9 @@ namespace Adaptive.Schema.Net
     {
         public ColumnGroup() { }
 
-        // ISSUE? Should this be called columns, it only can take Column elements, right?
-        public List<Column> Items { get; set; } = new List<Column>();
+        /// <summary>
+        /// Columns that are part of this group
+        /// </summary>
+        public List<Column> Columns { get; set; } = new List<Column>();
     }
 }

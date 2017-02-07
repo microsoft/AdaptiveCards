@@ -9,7 +9,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Container for a collection of elements
     /// </summary>
-    public class Container : TypedElement
+    public class Container : CardElement
     {
         public Container()
         { }
@@ -23,9 +23,8 @@ namespace Adaptive.Schema.Net
         public string BackgroundImageUrl { get; set; }
 
         /// <summary>
-        /// Background color to use for the card
+        /// Background color to use for the card as RGB string
         /// </summary>
-        // ISSUE: Why is this a string?  
         public string BackgroundColor { get; set; }
     }
 }
