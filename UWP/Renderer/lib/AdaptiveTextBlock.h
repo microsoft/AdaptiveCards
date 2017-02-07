@@ -10,8 +10,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             Microsoft::WRL::FtmBase,
-            ABI::AdaptiveCards::XamlCardRenderer::ObjectModel::IAdaptiveTextBlock>,
-        AdaptiveCards::TextBlock
+            ABI::AdaptiveCards::XamlCardRenderer::ObjectModel::IAdaptiveTextBlock>
     {
         InspectableClass(L"AdaptiveCards.AdaptiveTextBlock", BaseTrust)
 
@@ -34,6 +33,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_IsSubtle(boolean isSubtle);
 
         IFACEMETHODIMP Render(ABI::Windows::UI::Xaml::IUIElement** TextBlock);
+
+    private:
+        std::unique_ptr<TextBlock> m_TextBlock;
     };
 
     ActivatableClass(AdaptiveTextBlock);
