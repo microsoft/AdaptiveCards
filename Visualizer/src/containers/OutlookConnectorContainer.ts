@@ -1,6 +1,7 @@
-import { HostContainer} from "./hostContainer";
-import { ConnectorContainer } from "./connectorContainer";
-import { AdaptiveCard, TextColor, ActionBar, ActionButtonStyle, isNullOrEmpty, appendChild } from "../adaptiveCard";
+import { HostContainer} from "./HostContainer";
+import { ConnectorContainer } from "./ConnectorContainer";
+import * as Adaptive from "../Adaptive";
+import * as Utils from "../Utils";
 
 export class OutlookConnectorContainer extends ConnectorContainer {
     private _themeColor: string;
@@ -11,13 +12,13 @@ export class OutlookConnectorContainer extends ConnectorContainer {
         this._themeColor = themeColor;
     }
 
-    render(card: AdaptiveCard): HTMLElement {
+    render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
         element.style.borderBottom = "1px solid #F1F1F1";
 
-        if (isNullOrEmpty(this._themeColor)) {
+        if (Utils.isNullOrEmpty(this._themeColor)) {
             element.style.border = "1px solid #F1F1F1"
         }
         else {
@@ -27,17 +28,17 @@ export class OutlookConnectorContainer extends ConnectorContainer {
         let headerElement = this.renderHeader(card);
 
         if (headerElement != null) {
-            appendChild(element, headerElement);
+            Utils.appendChild(element, headerElement);
         }
 
-        ActionBar.buttonStyle = ActionButtonStyle.Link;
+        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Link;
 
         let renderedCard = card.render();
 
-        appendChild(element, renderedCard);
+        Utils.appendChild(element, renderedCard);
         let hostDiv = document.createElement("div");
-        appendChild(hostDiv, element);
-        appendChild(hostDiv, super.render(card));
+        Utils.appendChild(hostDiv, element);
+        Utils.appendChild(hostDiv, super.render(card));
         return hostDiv;
     }
 }

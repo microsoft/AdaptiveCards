@@ -1,9 +1,10 @@
-import { HostContainer} from "./hostContainer";
-import { AdaptiveCard, TextColor, ActionBar, ActionButtonStyle, appendChild } from "../adaptiveCard";
+import { HostContainer} from "./HostContainer";
+import * as Adaptive from "../Adaptive";
+import * as Utils from "../Utils";
 
 export class BingContainer extends HostContainer {
     static backgroundColor: string = "#fff";
-    static textColor: TextColor = TextColor.Dark;
+    static textColor: Adaptive.TextColor = Adaptive.TextColor.Dark;
 
     private _width: number;
     private _height: number;
@@ -15,7 +16,7 @@ export class BingContainer extends HostContainer {
         this._height = height;
     }
 
-    render(card: AdaptiveCard): HTMLElement {
+    render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
@@ -24,15 +25,15 @@ export class BingContainer extends HostContainer {
 
         card.body.textColor = BingContainer.textColor;
 
-        ActionBar.buttonStyle = ActionButtonStyle.Push;
+        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
 
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
 
-        appendChild(element, renderedCard);
+        Utils.appendChild(element, renderedCard);
         let hostDiv = document.createElement("div");
-        appendChild(hostDiv, element);
-        appendChild(hostDiv, super.render(card));
+        Utils.appendChild(hostDiv, element);
+        Utils.appendChild(hostDiv, super.render(card));
         return hostDiv;
     }
 }

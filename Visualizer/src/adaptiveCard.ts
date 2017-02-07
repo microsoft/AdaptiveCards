@@ -1,4 +1,8 @@
-﻿import markdownIt = require("markdown-it");
+﻿import * as Utils from "./Utils";
+import { InputBase, TextInput, DateInput, Choice, MultichoiceInput, ToggleInput } from "./Inputs";
+import { ActionBar, Action, ActionButton, ActionButtonStyle } from "./Actions";
+
+import markdownIt = require("markdown-it");
 let markdownProcessor = new markdownIt();
 
 export function processMarkdown(text: string): any {
@@ -143,43 +147,6 @@ export function stringToImageStyle(value: string, defaultValue: ImageStyle): Ima
     }
 }
 
-export interface IEvent<TSender> {
-    subscribe(fn: (sender: TSender, args: any) => void): void;
-    unsubscribe(fn: (sender: TSender, args: any) => void): void;
-}
-
-class EventDispatcher<TSender> implements IEvent<TSender> {
-    private _subscriptions: Array<(sender: TSender, args: any) => void> = new Array<(sender: TSender, args: any) => void>();
-
-    subscribe(fn: (sender: TSender, args: any) => void): void {
-        if (fn) {
-            this._subscriptions.push(fn);
-        }
-    }
-
-    unsubscribe(fn: (sender: TSender, args: any) => void): void {
-        let i = this._subscriptions.indexOf(fn);
-        if (i > -1) {
-            this._subscriptions.splice(i, 1);
-        }
-    }
-
-    dispatch(sender: TSender, args: any): void {
-        for (let handler of this._subscriptions) {
-            handler(sender, args);
-        }
-    }
-}
-
-export function isNullOrEmpty(value: string): boolean {
-    return value === undefined || value === null || value === "";
-}
-
-export function appendChild(node: Node, child: Node) {
-    if (child != null && child != undefined) {
-        node.appendChild(child);
-    }
-}
 
 export abstract class CardElement {
     static createElement(container: Container, typeName: string): CardElement {
@@ -192,8 +159,8 @@ export abstract class CardElement {
                 return new Image(container);
             case "ImageGallery":
                 return new ImageGallery(container);
-            case "ActionGroup":
-                return new ActionGroup(container);
+            // case "ActionBar":
+            //     return new ActionBar(container);
             case "FactGroup":
                 return new FactGroup(container);
             case "Separator":
@@ -312,7 +279,7 @@ export class TextBlock extends CardElement {
     }
 
     render(): HTMLElement {
-        if (!isNullOrEmpty(this.text)) {
+        if (!Utils.isNullOrEmpty(this.text)) {
             let element = document.createElement("div");
 
             let cssStyle = "text ";
@@ -544,7 +511,7 @@ export class Image extends CardElement {
     render(): HTMLElement {
         let imageElement: HTMLImageElement = null;
 
-        if (!isNullOrEmpty(this.url)) {
+        if (!Utils.isNullOrEmpty(this.url)) {
             imageElement = document.createElement("img");
 
             let cssStyle = "image";
@@ -625,7 +592,7 @@ export class ImageGallery extends CardElement {
                 renderedImage.style.margin = "0px";
                 renderedImage.style.marginRight = "10px";
 
-                appendChild(element, renderedImage);
+                Utils.appendChild(element, renderedImage);
             }
         }
 
@@ -645,548 +612,6 @@ export class ImageGallery extends CardElement {
         }
 
         return speak;
-    }
-}
-
-export abstract class Action {
-    private _owner: CardElement;
-
-    title: string;
-
-    static create(owner: CardElement, typeName: string): Action {
-        switch (typeName) {
-            case "OpenUri":
-            case "ViewAction":
-                return new OpenUriAction(owner);
-            case "Submit":
-            case "HttpPOST":
-                return new SubmitAction(owner);
-            case "ShowCard":
-                return new ShowCardAction(owner);
-            default:
-                throw new Error("Unknown action type: " + typeName);
-        }
-    }
-
-    get owner(): CardElement {
-        return this._owner;
-    }
-
-    constructor(owner: CardElement) {
-        this._owner = owner;
-    }
-
-    parse(json: any) {
-        this.title = json["title"];
-    }
-
-    renderUi(container: Container, requiresTopSpacer: boolean = false): HTMLElement {
-        return null;
-    }
-
-    get hasUi(): boolean {
-        return false;
-    }
-}
-
-export class TargetUri {
-    os: string;
-    uri: string;
-
-    parse(json: any) {
-        this.os = json["os"];
-        this.uri = json["uri"];
-    }
-}
-
-export class OpenUriAction extends Action {
-    private _targets: Array<TargetUri> = [];
-
-    addTarget(): TargetUri {
-        let targetUri = new TargetUri();
-
-        this._targets.push(targetUri);
-
-        return targetUri;
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        if (json["@type"] == "ViewAction") {
-            let target = new TargetUri();
-
-            target.uri = (json["target"] as Array<any>)[0];
-        }
-        else {
-            if (json["targets"] != undefined) {
-                let targetArray = json["targets"] as Array<any>;
-
-                for (let i = 0; i < targetArray.length; i++) {
-                    let target = this.addTarget();
-                    target.parse(targetArray[i]);
-                }
-            }
-        }
-    }
-}
-
-export class ShowCardAction extends Action {
-    card: ICard;
-
-    parse(json: any) {
-        super.parse(json);
-
-        //this.card = json["card"];
-        if (json["card"] != undefined) {
-            this.card = new Container(this.owner.container, ["ActionGroup"]);
-            this.card.parse(json["card"]);
-        }
-
-    }
-}
-
-
-export class SubmitAction extends Action {
-    data: any;
-    inputs: Array<Input> = new Array<Input>();
-
-    parse(json: any) {
-        super.parse(json);
-
-
-        if (json["inputs"] != undefined) {
-            let inputArray = json["inputs"] as Array<any>;
-
-            for (let i = 0; i < inputArray.length; i++) {
-                let input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
-
-                input.parse(inputArray[i]);
-
-                this.inputs.push(input);
-            }
-        }
-    }
-}
-
-
-// TODO: Should we remove this and use SubmitAction?
-export class HttpPOSTAction extends Action {
-    target: string;
-    body: string;
-    bodyContentType: string;
-    successMessage: string;
-    errorMessage: string;
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.target = json["target"];
-        this.body = json["body"];
-        this.bodyContentType = json["bodyContentType"];
-        this.successMessage = json["successMessage"];
-        this.errorMessage = json["errorMessage"];
-    }
-}
-
-export abstract class Input extends CardElement {
-    id: string;
-    title: string;
-    value: string;
-
-    static createInput(container: Container, typeName: string): Input {
-        switch (typeName) {
-            case "TextInput":
-                return new TextInput(container);
-            case "MultichoiceInput":
-                return new MultichoiceInput(container);
-            case "DateInput":
-                return new DateInput(container);
-            case "ToggleInput":
-                return new ToggleInput(container);
-            default:
-                throw new Error("Unknown input type: " + typeName);
-        }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.id = json["id"];
-        this.title = json["title"];
-        this.value = json["value"];
-    }
-
-    abstract render(): HTMLElement;
-
-    renderSpeech(): string {
-        if (this.speak != null)
-            return this.speak;
-
-        if (this.title)
-            return '<s>' + this.title + '</s>\n';
-        return null;
-    }
-}
-
-export class TextInput extends Input {
-    maxLength: number;
-    isMultiline: boolean;
-
-    constructor(container: Container) {
-        super(container);
-
-        this.size = Size.Stretch;
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.maxLength = json["maxLength"];
-        this.isMultiline = json["isMultiline"];
-    }
-
-    render(): HTMLElement {
-        let element = document.createElement("textarea");
-        element.className = "input textInput";
-
-        if (this.isMultiline) {
-            element.className += " multiline";
-        }
-
-        element.placeholder = this.title;
-
-        return element;
-    }
-}
-
-export class Choice {
-    display: string;
-    value: string;
-
-    parse(json: any) {
-        this.display = json["display"];
-        this.value = json["value"];
-    }
-}
-
-export class ToggleInput extends Input {
-    render(): HTMLElement {
-        let element = document.createElement("div");
-        element.innerHTML = '<input type="checkbox" class="input toggleInput"></input><div class="toggleInputLabel">' + this.title + '</div>';
-
-        return element;
-    }
-}
-
-export class MultichoiceInput extends Input {
-    private _choices: Array<Choice> = [];
-
-    constructor(container: Container) {
-        super(container);
-
-        this.size = Size.Medium;
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        if (json["choices"] != undefined) {
-            let choiceArray = json["choices"] as Array<any>;
-
-            for (let i = 0; i < choiceArray.length; i++) {
-                let choice = new Choice();
-
-                choice.parse(choiceArray[i]);
-
-                this._choices.push(choice);
-            }
-        }
-    }
-
-    render(): HTMLElement {
-        let selectElement = document.createElement("select");
-        selectElement.className = "input multichoiceInput";
-
-        for (let i = 0; i < this._choices.length; i++) {
-            let option = document.createElement("option");
-            option.value = this._choices[i].value;
-            option.text = this._choices[i].display;
-
-            appendChild(selectElement, option);
-        }
-
-        return selectElement;
-    }
-}
-
-export class DateInput extends Input {
-    includeTime: boolean;
-
-    constructor(container: Container) {
-        super(container);
-
-        this.size = Size.Medium;
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.includeTime = json["includeTime"];
-    }
-
-    render(): HTMLElement {
-        let container = document.createElement("div");
-        container.className = "input";
-        container.style.display = "flex";
-
-        let datePicker = document.createElement("input");
-        datePicker.type = "date";
-        datePicker.className = "dateInput";
-
-        appendChild(container, datePicker);
-
-        if (this.includeTime) {
-            datePicker.style.flex = "1 1 67%";
-
-            let timePicker = document.createElement("input");
-            timePicker.type = "time";
-            timePicker.className = "timeInput";
-            timePicker.style.flex = "1 1 33%";
-
-            appendChild(container, timePicker);
-        }
-        else {
-            datePicker.style.flex = "1 1 100%";
-        }
-
-        return container;
-    }
-}
-
-
-export enum ActionButtonStyle {
-    Link,
-    Push
-}
-
-export enum ActionButtonState {
-    Normal,
-    Expanded,
-    Subdued
-}
-
-export class ActionButton {
-    private _action: Action;
-    private _style: ActionButtonStyle;
-    private _onClick: EventDispatcher<ActionButton> = new EventDispatcher<ActionButton>();
-    private _element: HTMLElement = null;
-    private _state: ActionButtonState = ActionButtonState.Normal;
-    private _text: string;
-
-    private click() {
-        this._onClick.dispatch(this, null);
-    }
-
-    private updateCssStyle() {
-        let cssStyle = this._style == ActionButtonStyle.Link ? "linkButton " : "pushButton ";
-
-        switch (this._state) {
-            case ActionButtonState.Expanded:
-                cssStyle += " expanded";
-                break;
-            case ActionButtonState.Subdued:
-                cssStyle += " subdued";
-                break;
-        }
-
-        this._element.className = cssStyle;
-    }
-
-    constructor(action: Action, style: ActionButtonStyle) {
-        this._action = action;
-        this._style = style;
-        this._element = document.createElement("div");
-        this._element.onclick = (e) => { this.click(); };
-
-        this.updateCssStyle();
-    }
-
-    get action() {
-        return this._action;
-    }
-
-    get onClick(): IEvent<ActionButton> {
-        return this._onClick;
-    }
-
-    get text(): string {
-        return this._text;
-    }
-
-    set text(value: string) {
-        this._text = value;
-        this._element.innerText = this._text;
-    }
-
-    get element(): HTMLElement {
-        return this._element;
-    }
-
-    get state(): ActionButtonState {
-        return this._state;
-    }
-
-    set state(value: ActionButtonState) {
-        this._state = value;
-
-        this.updateCssStyle();
-    }
-}
-
-export class ActionGroup extends CardElement {
-    static buttonStyle: ActionButtonStyle = ActionButtonStyle.Push;
-
-    private _actionButtons: Array<ActionButton> = [];
-    private _actionCardContainer: HTMLDivElement;
-    private _actions: Array<Action> = [];
-    private _expandedAction: Action = null;
-
-    private hideActionCardPane() {
-        this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.padding = "0px";
-        this._actionCardContainer.style.marginTop = "0px";
-
-        this.container.showBottomSpacer(this);
-    }
-
-    private showActionCardPane(action: Action) {
-        this.container.hideBottomSpacer(this);
-
-        this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.padding = null;
-        this._actionCardContainer.style.marginTop = this._actions.length > 1 ? null : "0px";
-
-        appendChild(
-            this._actionCardContainer,
-            action.renderUi(this.container, this._actions.length > 1));
-    }
-
-    private actionClicked(actionButton: ActionButton) {
-        if (!actionButton.action.hasUi) {
-            for (var i = 0; i < this._actionButtons.length; i++) {
-                this._actionButtons[i].state = ActionButtonState.Normal;
-            }
-
-            this.hideActionCardPane();
-
-            alert("Executing action " + actionButton.text)
-        }
-        else {
-            if (actionButton.action === this._expandedAction) {
-                for (var i = 0; i < this._actionButtons.length; i++) {
-                    this._actionButtons[i].state = ActionButtonState.Normal;
-                }
-
-                this._expandedAction = null;
-
-                this.hideActionCardPane();
-            }
-            else {
-                for (var i = 0; i < this._actionButtons.length; i++) {
-                    if (this._actionButtons[i] !== actionButton) {
-                        this._actionButtons[i].state = ActionButtonState.Subdued;
-                    }
-                }
-
-                actionButton.state = ActionButtonState.Expanded;
-
-                this._expandedAction = actionButton.action;
-
-                this.showActionCardPane(actionButton.action);
-            }
-        }
-    }
-
-    get actions(): Array<Action> {
-        return this._actions;
-    }
-
-    get hideOverflow(): boolean {
-        return false;
-    }
-
-    parse(json: any) {
-        super.parse(json);
-        var actions = json["actions"];
-
-        if (actions == null)
-            actions = json["items"];
-
-        if (actions != null) {
-            var actionArray = actions as Array<any>;
-
-            for (var i = 0; i < actionArray.length; i++) {
-                let action = Action.create(this, actionArray[i]["@type"]);
-
-                action.parse(actionArray[i]);
-
-                this._actions.push(action);
-            }
-        }
-    }
-
-    render(): HTMLElement {
-        let element = document.createElement("div");
-        element.className = "actionGroup";
-
-        let buttonStrip = document.createElement("div");
-        buttonStrip.className = "buttonStrip";
-
-        this._actionCardContainer = document.createElement("div");
-        this._actionCardContainer.className = "actionCardContainer";
-        this._actionCardContainer.style.padding = "0px";
-        this._actionCardContainer.style.marginTop = "0px";
-
-        if (this._actions.length == 1 && this._actions[0] instanceof FormCard) {
-            this.showActionCardPane(this._actions[0]);
-        }
-        else {
-            for (let i = 0; i < this._actions.length; i++) {
-                let buttonStripItem = document.createElement("div");
-                buttonStripItem.className = "buttonStripItem";
-
-                let actionButton = new ActionButton(this._actions[i], ActionGroup.buttonStyle);
-                actionButton.text = this._actions[i].title;
-
-                actionButton.onClick.subscribe(
-                    (ab, args) => {
-                        this.actionClicked(ab);
-                    });
-
-                this._actionButtons.push(actionButton);
-
-                if (i < this._actions.length - 1) {
-                    buttonStripItem.className += " buttonStripItemSpacer";
-                }
-
-                appendChild(buttonStripItem, actionButton.element);
-                appendChild(buttonStrip, buttonStripItem);
-            }
-        }
-
-        appendChild(element, buttonStrip);
-
-        appendChild(element, this._actionCardContainer);
-
-        return element;
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null)
-            return this.speak + '\n';
-
-        return null;
     }
 }
 
@@ -1348,7 +773,7 @@ export class Container extends CardElement {
             this._element = document.createElement("div");
             this._element.className = this.cssClassName;
 
-            if (!isNullOrEmpty(this.backgroundColor)) {
+            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
                 this._element.style.backgroundColor = this.backgroundColor;
             }
 
@@ -1363,13 +788,13 @@ export class Container extends CardElement {
                         this.getElement(i).removeTopSpacing(renderedElement);
                     }
 
-                    appendChild(this._element, renderedElement);
+                    Utils.appendChild(this._element, renderedElement);
                 }
 
                 previousElement = this.getElement(i);
             }
 
-            if (!isNullOrEmpty(this.backgroundImageUrl)) {
+            if (!Utils.isNullOrEmpty(this.backgroundImageUrl)) {
                 this._element.style.backgroundImage = 'url("' + this.backgroundImageUrl + '")';
                 this._element.style.backgroundRepeat = "no-repeat";
                 this._element.style.backgroundSize = "cover";
@@ -1449,7 +874,7 @@ export class ColumnGroup extends CardElement {
     private _items: Array<Column> = [];
 
     addColumn(): Column {
-        let column = new Column(this.container, ["ActionGroup"]);
+        let column = new Column(this.container, ["ActionBar"]);
 
         this._items.push(column);
 
@@ -1478,14 +903,14 @@ export class ColumnGroup extends CardElement {
             for (let i = 0; i < this._items.length; i++) {
                 let renderedColumn = this._items[i].internalRender();
 
-                appendChild(element, renderedColumn);
+                Utils.appendChild(element, renderedColumn);
 
                 if (this._items.length > 1 && i < this._items.length - 1) {
                     let spacer = document.createElement("div");
                     spacer.className = "columnSpacer";
                     spacer.style.flex = "0 0 auto";
 
-                    appendChild(element, spacer);
+                    Utils.appendChild(element, spacer);
                 }
             }
 
@@ -1515,12 +940,19 @@ export class ColumnGroup extends CardElement {
 export interface ICard {
     render(): HTMLElement;
     parse(json: any);
+    OnAction(): Utils.IEvent<ICard, Action>;
+
 }
 
 export class AdaptiveCard implements ICard {
     // TODO: Add Input as forbidden?
     private _body = new Container(null, null, "body");
-    private _actions: ActionGroup = new ActionGroup(this.body);
+    private _actions: ActionBar = new ActionBar(this.body);
+    private _onClick: Utils.EventDispatcher<AdaptiveCard, Action> = new Utils.EventDispatcher<AdaptiveCard, Action>();
+
+    OnAction(): Utils.IEvent<ICard, Action> {
+        return this._onClick;
+    }
 
     get body() {
         return this._body;
@@ -1541,7 +973,8 @@ export class AdaptiveCard implements ICard {
 
         if (this.actions) {
             let actionsBar = this.actions.render();
-            renderedContainer.appendChild(actionsBar);
+
+            Utils.appendChild(renderedContainer, actionsBar);
         }
 
         return renderedContainer;
@@ -1552,129 +985,3 @@ export class AdaptiveCard implements ICard {
     }
 }
 
-export class InputCard extends AdaptiveCard {
-    private _inputs: Array<Input> = [];
-    private _data: any;
-    // actions gets initialized with Submit    
-}
-
-export class FormCard extends AdaptiveCard {
-    private _data: any;
-    // actions gets initialized with Submit    
-
-}
-
-
-
-export class ActionCard extends Action {
-    private _allowedActionTypes: Array<string> = ["OpenUri", "HttpPOST"];
-    private _inputs: Array<Input> = [];
-    private _actions: Array<Action> = [];
-    private _card: Container;
-
-    name: string;
-
-    get hasUi(): boolean {
-        return true;
-    }
-
-    get inputs(): Array<Input> {
-        return this._inputs;
-    }
-
-    get actions(): Array<Action> {
-        return this._actions;
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        if (json["card"] != undefined) {
-            this._card = new Container(this.owner.container, ["ActionGroup"]);
-            this._card.parse(json["card"]);
-        }
-
-        if (json["inputs"] != undefined) {
-            let inputArray = json["inputs"] as Array<any>;
-
-            for (let i = 0; i < inputArray.length; i++) {
-                let input = Input.createInput(this.owner.container, inputArray[i]["@type"]);
-
-                input.parse(inputArray[i]);
-
-                this._inputs.push(input);
-            }
-        }
-
-        if (json["actions"] != undefined) {
-            let actionArray = json["actions"] as Array<any>;
-
-            for (let i = 0; i < actionArray.length; i++) {
-                let actionJson = actionArray[i];
-                let typeIsAllowed: boolean = false;
-
-                for (let j = 0; j < this._allowedActionTypes.length; j++) {
-                    if (actionJson["@type"] === this._allowedActionTypes[j]) {
-                        typeIsAllowed = true;
-                        break;
-                    }
-                }
-
-                if (typeIsAllowed) {
-                    let action = Action.create(this.owner, actionJson["@type"]);
-
-                    action.parse(actionJson);
-
-                    this._actions.push(action);
-                }
-            }
-        }
-    }
-
-    private actionClicked(actionButton: ActionButton) {
-        alert('Now executing "' + actionButton.text + '"');
-    }
-
-    renderUi(container: Container, needsTopSpacer: boolean = false): HTMLElement {
-        let actionCardElement = document.createElement("div");
-
-        if (this._card != null) {
-            appendChild(actionCardElement, this._card.internalRender());
-        }
-        else {
-            for (let i = 0; i < this._inputs.length; i++) {
-                let inputElement = this._inputs[i].internalRender();
-
-                if (i == 0) {
-                    this._inputs[i].removeTopSpacing(inputElement);
-                }
-
-                appendChild(actionCardElement, inputElement);
-            }
-        }
-
-        let buttonsContainer = document.createElement("div");
-        buttonsContainer.style.display = "flex";
-        buttonsContainer.style.marginTop = "16px";
-
-        for (let i = 0; i < this._actions.length; i++) {
-            let actionButton = new ActionButton(this._actions[i], ActionButtonStyle.Push);
-            actionButton.text = this._actions[i].title;
-
-            actionButton.onClick.subscribe(
-                (ab, args) => {
-                    this.actionClicked(ab);
-                });
-
-            if (this._actions.length > 1 && i < this._actions.length - 1) {
-                actionButton.element.style.marginRight = "16px";
-            }
-
-            appendChild(buttonsContainer, actionButton.element);
-        }
-
-        appendChild(actionCardElement, buttonsContainer);
-
-        return actionCardElement;
-    }
-}

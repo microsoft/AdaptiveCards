@@ -1,9 +1,10 @@
-import { HostContainer} from "./hostContainer";
-import { AdaptiveCard, TextColor, ActionBar, ActionButtonStyle, appendChild } from "../adaptiveCard";
+import { HostContainer} from "./HostContainer";
+import * as Adaptive from "../Adaptive";
+import * as Utils from "../Utils";
 
 export class ToastContainer extends HostContainer {
     static backgroundColor: string = "#1F1F1F";
-    static textColor: TextColor = TextColor.Light;
+    static textColor: Adaptive.TextColor = Adaptive.TextColor.Light;
 
     private _width: number;
 
@@ -13,7 +14,7 @@ export class ToastContainer extends HostContainer {
         this._width = width;
     }
 
-    render(card: AdaptiveCard): HTMLElement {
+    render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.border = "#474747 1px solid";
         element.style.width = this._width + "px";
@@ -54,14 +55,14 @@ export class ToastContainer extends HostContainer {
 
         card.body.textColor = ToastContainer.textColor;
 
-        ActionBar.buttonStyle = ActionButtonStyle.Push;
+        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
 
         let renderedCard = card.render();
 
-        appendChild(element, renderedCard);
+        Utils.appendChild(element, renderedCard);
         let hostDiv = document.createElement("div");
-        appendChild(hostDiv, element);
-        appendChild(hostDiv, super.render(card));
+        Utils.appendChild(hostDiv, element);
+        Utils.appendChild(hostDiv, super.render(card));
         return hostDiv;
     }
 }

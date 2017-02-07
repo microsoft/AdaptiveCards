@@ -1,6 +1,9 @@
-import { AdaptiveCard, TextColor, ActionBar, ActionButtonStyle, appendChild, isNullOrEmpty } from "../adaptiveCard";
+import * as Adaptive from "../Adaptive";
+import * as Utils from "../Utils";
+
 import * as vkbeautify from "vkbeautify";
 
+declare var SpeechSynthesisUtterance: any;
 
 export abstract class HostContainer {
     readonly styleSheet: string;
@@ -11,7 +14,9 @@ export abstract class HostContainer {
         this.styleSheet = styleSheet;
     }
 
-    render(card: AdaptiveCard, showXml: boolean = false): HTMLElement {
+    render(card: Adaptive.AdaptiveCard, showXml: boolean = false): HTMLElement {
+
+        // speech visualizer
         let element = document.createElement("div");
         element.className = "speechContainer";
 
@@ -38,22 +43,22 @@ export abstract class HostContainer {
             HostContainer.playNextTTS(output, 0);
         });
 
-        appendChild(element, document.createElement("br"));
-        appendChild(element, document.createElement("br"));
-        appendChild(element, document.createElement("hr"));
-        appendChild(element, button);
+        Utils.appendChild(element, document.createElement("br"));
+        Utils.appendChild(element, document.createElement("br"));
+        Utils.appendChild(element, document.createElement("hr"));
+        Utils.appendChild(element, button);
 
         if (showXml) {
             let pre = document.createElement("pre");
-            appendChild(pre, document.createTextNode(text));
-            appendChild(element, pre);
+            Utils.appendChild(pre, document.createTextNode(text));
+            Utils.appendChild(element, pre);
         }
 
         //appendChild(pre, document.createTextNode(text));
         let audio = document.createElement("audio");
         audio.id = 'player';
         audio.autoplay = true;
-        appendChild(element, audio);
+        Utils.appendChild(element, audio);
 
         return element;
     }

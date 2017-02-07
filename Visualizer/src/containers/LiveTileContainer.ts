@@ -1,10 +1,10 @@
-import { HostContainer} from "./hostContainer";
-import { AdaptiveCard, TextColor, ActionButtonStyle, appendChild } from "../adaptiveCard";
-
+import { HostContainer} from "./HostContainer";
+import * as Adaptive from "../Adaptive";
+import * as Utils from "../Utils";
 
 export class LiveTileContainer extends HostContainer {
     static backgroundColor: string = "#0078D7";
-    static textColor: TextColor = TextColor.Light;
+    static textColor: Adaptive.TextColor = Adaptive.TextColor.Light;
 
     private _width: number;
     private _height: number;
@@ -17,7 +17,7 @@ export class LiveTileContainer extends HostContainer {
         this.supportsActionBar = false;
     }
 
-    render(card: AdaptiveCard): HTMLElement {
+    render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
@@ -29,10 +29,10 @@ export class LiveTileContainer extends HostContainer {
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
 
-        appendChild(element, renderedCard);
+        Utils.appendChild(element, renderedCard);
         let hostDiv = document.createElement("div");
-        appendChild(hostDiv, element);
-        appendChild(hostDiv, super.render(card));
+        Utils.appendChild(hostDiv, element);
+        Utils.appendChild(hostDiv, super.render(card));
         return hostDiv;
     }
 }

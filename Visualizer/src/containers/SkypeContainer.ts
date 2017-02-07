@@ -1,8 +1,9 @@
-import { HostContainer} from "./hostContainer";
-import { AdaptiveCard, TextColor, ActionBar, ActionButtonStyle, appendChild } from "../adaptiveCard";
+import { HostContainer } from "./HostContainer";
+import * as Adaptive from "../Adaptive";
+import * as Utils from "../Utils";
 
 export class SkypeContainer extends HostContainer {
-    render(card: AdaptiveCard): HTMLElement {
+    render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.className = "skypeContainer";
 
@@ -19,15 +20,16 @@ export class SkypeContainer extends HostContainer {
         botElementIn1.appendChild(botElementIn2);
 
 
-        ActionBar.buttonStyle = ActionButtonStyle.Push;
+        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
 
+        //card.onAction = (action) => { alert(action.title);}
         let renderedCard = card.render();
 
-        appendChild(element, botElement);
-        appendChild(element, renderedCard);
+        Utils.appendChild(element, botElement);
+        Utils.appendChild(element, renderedCard);
         let hostDiv = document.createElement("div");
-        appendChild(hostDiv, element);
-        appendChild(hostDiv, super.render(card));
+        Utils.appendChild(hostDiv, element);
+        Utils.appendChild(hostDiv, super.render(card));
         return hostDiv;
     }
 }

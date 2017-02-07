@@ -1,7 +1,10 @@
-﻿import { AdaptiveCard, TextColor, ActionBar, ActionButtonStyle, appendChild, isNullOrEmpty } from "./AdaptiveCard";
-import { defaultPayload } from "./Constants";
-import { BingContainer} from "./containers/BingContainer";
-import { HostContainer} from "./containers/HostContainer";
+﻿import * as Utils from "./Utils";
+
+import * as Adaptive from "./Adaptive";
+import * as Constants from "./Constants";
+
+import { BingContainer } from "./containers/BingContainer";
+import { HostContainer } from "./containers/HostContainer";
 import { ConnectorContainer } from "./containers/ConnectorContainer";
 import { LiveTileContainer } from "./containers/LiveTileContainer";
 import { OutlookConnectorContainer } from "./containers/OutlookConnectorContainer";
@@ -15,11 +18,12 @@ import "brace/mode/json";
 import "brace/theme/chrome";
 import * as vkbeautify from "vkbeautify";
 
-let  editor: ace.Editor;
+let editor: ace.Editor;
 let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
 function renderCard() {
+
     let jsonText = editor.getValue();
     try {
         let json = JSON.parse(jsonText);
@@ -30,14 +34,13 @@ function renderCard() {
 
         switch (cardTypeName) {
             case "AdaptiveCard":
-                let adaptiveCard = new AdaptiveCard();
+                let adaptiveCard = new Adaptive.AdaptiveCard();
                 adaptiveCard.parse(json);
- 
 
                 let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
                 let renderedHostContainer = hostContainer.render(adaptiveCard);
 
-                node.appendChild(renderedHostContainer);
+                Utils.appendChild(node, renderedHostContainer);
 
                 try {
                     sessionStorage.setItem("AdaptivePayload", editor.getValue());
@@ -48,7 +51,7 @@ function renderCard() {
 
                 break;
             default:
-                if (isNullOrEmpty(cardTypeName)) {
+                if (Utils.isNullOrEmpty(cardTypeName)) {
                     throw new Error("The card's type must be specified.");
                 }
                 else {
@@ -95,9 +98,9 @@ function updateStyleSheet() {
     if (styleSheetLinkElement == null) {
         styleSheetLinkElement = document.createElement("link");
         styleSheetLinkElement.id = "adaptiveCardStylesheet";
-
+        // TODO: Is this a bug? Won't previous style sheets stick around then?
         let headElement = document.getElementsByTagName("head")[0];
-        appendChild(headElement, styleSheetLinkElement);
+        Utils.appendChild(headElement, styleSheetLinkElement);
     }
 
     styleSheetLinkElement.rel = "stylesheet";
@@ -148,11 +151,11 @@ function setupEditor() {
             editor.session.setValue(cachedPayload);
         }
         else {
-            editor.session.setValue(defaultPayload);
+            // editor.session.setValue(Constants.defaultPayload);
         }
     }
     catch (e) {
-        editor.session.setValue(defaultPayload);
+        // editor.session.setValue(Constants.defaultPayload);
     }
 
 }
@@ -204,7 +207,7 @@ function setupContainerPicker() {
             option.value = hostContainerOptions[i].name;
             option.text = hostContainerOptions[i].name;
 
-            hostContainerPicker.appendChild(option);
+            Utils.appendChild(hostContainerPicker, option);
         }
     }
 

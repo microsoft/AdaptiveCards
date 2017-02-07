@@ -1,8 +1,8 @@
-import { HostContainer} from "./hostContainer";
-import { AdaptiveCard, TextColor, ActionBar, ActionButtonStyle, appendChild } from "../adaptiveCard";
+import { HostContainer} from "./HostContainer";
+import * as Adaptive from "../Adaptive";
 
 export abstract class ConnectorContainer extends HostContainer {
-    renderHeader(card: AdaptiveCard): HTMLElement {
+    renderHeader(card: Adaptive.AdaptiveCard): HTMLElement {
         let headerElement: HTMLElement = null;
         // if (card.title != undefined || card.description1 != undefined) {
         //     headerElement = document.createElement("div");
