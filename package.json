@@ -18,9 +18,10 @@
     "url": "git://git@github.com/microsoft/AdaptiveCards.git"
   },
   "dependencies": {
-    "brace": "0.9.0",
-    "markdown-it": "8.2.1",
-    "vkbeautify": "^0.99.1"
+    "brace": "^0.9.1",
+    "markdown-it": "^8.2.2",
+    "vkbeautify": "^0.99.1",
+    "webpack": "^2.2.1"
   },
   "devDependencies": {
     "@types/ace": "0.0.32",
@@ -30,10 +31,9 @@
     "ajv-cli": "1.1.1",
     "http-server": "0.9.0",
     "json-loader": "0.5.4",
-    "ts-loader": "1.3.0",
-    "tslint": "3.15.1",
-    "typescript": "^2.0.15",
-    "webpack": "1.14.0"
+    "ts-loader": "^2.0.0",
+    "tslint": "^4.4.2",
+    "typescript": "^2.1.5"
   },
   "author": "Microsoft",
   "license": "MIT"
