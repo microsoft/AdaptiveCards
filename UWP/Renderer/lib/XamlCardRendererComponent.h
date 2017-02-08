@@ -11,15 +11,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             Microsoft::WRL::FtmBase,
             ABI::AdaptiveCards::XamlCardRenderer::IXamlCardRenderer>
     {
-        InspectableClass(L"AdaptiveCards.XamlCardRenderer", BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_XamlCardRenderer, BaseTrust)
 
     public:
         XamlCardRenderer();
         HRESULT RuntimeClassInitialize();
 
-        IFACEMETHODIMP RenderCardAsXaml(ABI::Windows::UI::Xaml::IUIElement** root);
-        IFACEMETHODIMP RenderCardAsImage();
-
+        IFACEMETHODIMP SetRenderOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::RenderOptions options);
+        IFACEMETHODIMP SetOverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
+        IFACEMETHODIMP RenderCardAsXaml(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** root);
+        IFACEMETHODIMP RenderCardAsImage(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
+            _COM_Outptr_result_maybenull_ ABI::Windows::Foundation::IAsyncOperation<ABI::AdaptiveCards::XamlCardRenderer::ImageRenderResult*>** result);
     };
 
     ActivatableClass(XamlCardRenderer);

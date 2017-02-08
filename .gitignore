@@ -255,3 +255,10 @@ paket-files/
 **/dist/*.js
 **/dist/*.js.map
 **/dist/*.d.ts 
+
+# SourceDepot Integration
+dirs*
+sources*
+build*
+**/objfre/*
+**/objchk/*
