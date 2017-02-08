@@ -6,11 +6,13 @@
 
 using namespace AdaptiveCards;
 
-const std::vector<std::shared_ptr<ICardElement>>& AdaptiveCards::Container::GetItems()
+Container::Container() : BaseCardElement(CardElementType::ContainerType) {}
+
+const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCards::Container::GetItems()
 {
     return m_items;
 }
-std::shared_ptr<ICardElement> Container::GetItem(size_t index) const
+std::shared_ptr<BaseCardElement> Container::GetItem(size_t index) const
 {
     if (m_items.size() <= index)
     {
@@ -19,7 +21,7 @@ std::shared_ptr<ICardElement> Container::GetItem(size_t index) const
     return m_items[index];
 }
 
-void Container::AddItem(std::shared_ptr<ICardElement>& item)
+void Container::AddItem(std::shared_ptr<BaseCardElement>& item)
 {
     item->SetContainer(shared_from_this());
     m_items.emplace_back(item);
@@ -47,7 +49,7 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
     }
 
     // Map card type to the proper parser
-    std::unordered_map<CardElementType, std::function<std::shared_ptr<ICardElement>(const Json::Value&)>> cardElementParsers =
+    std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> cardElementParsers =
     {
         //{ CardElementType::ActionGroupType, ActionGroup::ParseJsonObject },
         //{ CardElementType::AdaptiveCardType, AdaptiveCard::ParseJsonObject },
@@ -58,21 +60,21 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
         { CardElementType::TextBlockType, TextBlock::Deserialize},
     };
 
-    //container->GetItems().resize(elementArray.size()); // Make sure the container fits the elements in the json file
-    std::vector<std::shared_ptr<ICardElement>> elements(elementArray.size());
+    // Make sure the container fits the elements in the json file
+    std::vector<std::shared_ptr<BaseCardElement>> elements(elementArray.size());
     std::transform(elementArray.begin(), elementArray.end(), elements.begin(), [&cardElementParsers](const Json::Value& cur)
     {
         // Get the body type
         CardElementType curBodyType = ACParser::GetCardElementType(cur);
 
         // Use the parser that maps to the bodytype
-        std::shared_ptr<ICardElement> cardElement = cardElementParsers[curBodyType](cur);
+        std::shared_ptr<BaseCardElement> cardElement = cardElementParsers[curBodyType](cur);
         return cardElement;
     });
 
-    for (size_t i = 0; i < elements.size(); i++)
+    for (std::shared_ptr<BaseCardElement> element : elements)
     {
-        container->AddItem(elements[i]);
+        container->AddItem(element);
     }
     return container;
 }

@@ -3,7 +3,7 @@
 #include "ACParseException.h"
 #include "Enums.h"
 #include "json\json.h"
-#include <functional>
+#include "pch.h"
 
 namespace AdaptiveCards
 {

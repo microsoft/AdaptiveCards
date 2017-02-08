@@ -80,3 +80,8 @@ void AdaptiveCards::AdaptiveCard::SetRoot(std::shared_ptr<Container> value)
     m_root = value;
 }
 
+const CardElementType AdaptiveCards::AdaptiveCard::GetElementType() const
+{
+    return CardElementType::AdaptiveCardType;
+}
+

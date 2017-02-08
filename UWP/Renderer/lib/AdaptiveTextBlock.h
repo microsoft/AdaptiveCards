@@ -35,7 +35,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP Render(ABI::Windows::UI::Xaml::IUIElement** TextBlock);
 
     private:
-        std::unique_ptr<TextBlock> m_TextBlock;
+        std::unique_ptr<AdaptiveCards::TextBlock> m_TextBlock;
     };
 
     ActivatableClass(AdaptiveTextBlock);

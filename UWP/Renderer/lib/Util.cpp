@@ -8,7 +8,7 @@ using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace std;
 
-HRESULT StringToHSTRING(const string in, HSTRING* out)
+HRESULT UTF8ToHString(const string& in, HSTRING* out)
 {
     if (out == nullptr)
     {
@@ -19,7 +19,7 @@ HRESULT StringToHSTRING(const string in, HSTRING* out)
     return HStringReference(wide.c_str()).CopyTo(out);
 }
 
-HRESULT HSTRINGToString(const HSTRING in, string& out)
+HRESULT HStringToUTF8(const HSTRING& in, string& out)
 {
     if (in == nullptr)
     {

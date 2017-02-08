@@ -1,16 +1,13 @@
 #pragma once
 
 #include "Enums.h"
-#include "ICardElement.h"
+#include "BaseCardElement.h"
 #include "Container.h"
-#include <string>
-#include <vector>
-#include <memory>
+#include "pch.h"
 
 namespace AdaptiveCards
 {
 class Container;
-class ICardElement;
 
 class AdaptiveCard
 {
@@ -26,6 +23,8 @@ public:
     void SetDescription2(const std::string value);
     std::shared_ptr<Container> GetRoot();
     void SetRoot(std::shared_ptr<Container> value);
+
+    const CardElementType GetElementType() const;
 
     static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string & jsonFile);
     static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json);

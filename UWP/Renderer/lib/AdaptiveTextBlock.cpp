@@ -18,38 +18,38 @@ AdaptiveTextBlock::AdaptiveTextBlock()
 
 HRESULT AdaptiveTextBlock::get_Text(HSTRING* Text)
 {
-    return StringToHSTRING(m_TextBlock->GetText(), Text);
+    return UTF8ToHString(m_TextBlock->GetText(), Text);
 }
 
 HRESULT AdaptiveTextBlock::put_Text(HSTRING Text)
 {
     std::string out;
-    RETURN_IF_FAILED(HSTRINGToString(Text, out));
+    RETURN_IF_FAILED(HStringToUTF8(Text, out));
     m_TextBlock->SetText(out);
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::get_TextSize(ObjectModel::TextSize* TextSize)
 {
-    *TextSize = (ObjectModel::TextSize) m_TextBlock->GetTextSize();
+    *TextSize = static_cast<ObjectModel::TextSize>(m_TextBlock->GetTextSize());
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::put_TextSize(ObjectModel::TextSize TextSize)
 {
-    m_TextBlock->SetTextSize((AdaptiveCards::TextSize)TextSize);
+    m_TextBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(TextSize));
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::get_TextWeight(ObjectModel::TextWeight* TextWeight)
 {
-    *TextWeight = (ObjectModel::TextWeight) m_TextBlock->GetTextWeight();
+    *TextWeight = static_cast<ObjectModel::TextWeight>(m_TextBlock->GetTextWeight());
     return S_OK;
 }
 
 HRESULT AdaptiveTextBlock::put_TextWeight(ObjectModel::TextWeight TextWeight)
 {
-    m_TextBlock->SetTextWeight((AdaptiveCards::TextWeight)TextWeight);
+    m_TextBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(TextWeight));
     return S_OK;
 }
 

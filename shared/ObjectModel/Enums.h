@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include "pch.h"
 
 namespace AdaptiveCards
 {
@@ -13,7 +13,7 @@ enum class AdaptiveCardSchemaKey
     TextColor,
     HorizontalAlignment,
     ImageStyle,
-    CardElement,
+    BaseCardElement,
     Text,
     Speak,
     Type,

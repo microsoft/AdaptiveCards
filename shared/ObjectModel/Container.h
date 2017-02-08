@@ -1,27 +1,26 @@
 #pragma once
 
-#include <vector>
-#include <memory>
+#include "pch.h"
 #include "Enums.h"
-#include "ICardElement.h"
+#include "BaseCardElement.h"
 
 namespace AdaptiveCards
 {
-class ICardElement;
-class Container : public std::enable_shared_from_this<Container>, ICardElement
+class BaseCardElement;
+class Container : public std::enable_shared_from_this<Container>, BaseCardElement
 {
 public:
-
+    Container();
     virtual std::string Serialize();
-    const std::vector<std::shared_ptr<ICardElement>>& GetItems();
+    const std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
 
-    void AddItem(std::shared_ptr<ICardElement>& item);
-    std::shared_ptr<ICardElement> GetItem(const size_t index) const;
+    void AddItem(std::shared_ptr<BaseCardElement>& item);
+    std::shared_ptr<BaseCardElement> GetItem(const size_t index) const;
 
     static std::shared_ptr<Container> Deserialize(const Json::Value& root);
 
 private:
-    std::vector<std::shared_ptr<AdaptiveCards::ICardElement>> m_items;
+    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
 
 };
 }

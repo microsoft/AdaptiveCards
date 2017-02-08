@@ -30,9 +30,9 @@
     <ClCompile Include="..\..\shared\ObjectModel\ACParseException.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\ACParser.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCard.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\BaseCardElement.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\Container.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\Enums.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\ICardElement.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\jsoncpp.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\TextBlock.cpp" />
   </ItemGroup>
@@ -40,9 +40,9 @@
     <ClInclude Include="..\..\shared\ObjectModel\ACParseException.h" />
     <ClInclude Include="..\..\shared\ObjectModel\ACParser.h" />
     <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCard.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\BaseCardElement.h" />
     <ClInclude Include="..\..\shared\ObjectModel\Container.h" />
     <ClInclude Include="..\..\shared\ObjectModel\Enums.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\ICardElement.h" />
     <ClInclude Include="..\..\shared\ObjectModel\json\json-forwards.h" />
     <ClInclude Include="..\..\shared\ObjectModel\json\json.h" />
     <ClInclude Include="..\..\shared\ObjectModel\TextBlock.h" />
@@ -50,7 +50,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</ProjectGuid>
     <Keyword>StaticLibrary</Keyword>
-    <RootNamespace>ObjectModel.UWP</RootNamespace>
+    <RootNamespace>ObjectModelProjection</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
@@ -58,7 +58,7 @@
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.10586.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <ProjectName>ObjectModel.UWP</ProjectName>
+    <ProjectName>ObjectModelProjection</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -77,10 +77,7 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)'=='Debug'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)'=='Release'">
+  <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -88,24 +85,12 @@
   <PropertyGroup>
     <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+  <ItemDefinitionGroup>
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\shared\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
-      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\shared\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

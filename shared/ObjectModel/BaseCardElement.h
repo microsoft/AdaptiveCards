@@ -1,19 +1,19 @@
 #pragma once
 
-#include <memory>
+#include "pch.h"
 #include "Enums.h"
 #include "json\json.h"
 
 namespace AdaptiveCards
 {
 class Container;
-class ICardElement
+class BaseCardElement
 {
 public:
-    ICardElement(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak);
-    ICardElement();
+    BaseCardElement(CardElementType type, std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak);
+    BaseCardElement(CardElementType type);
 
-    virtual ~ICardElement() = 0 {};
+    virtual ~BaseCardElement() = 0 {};
 
     std::shared_ptr<Container> GetContainer() const;
     void SetContainer(std::shared_ptr<Container> container);
@@ -27,6 +27,8 @@ public:
     std::string GetSpeak() const;
     void SetSpeak(const std::string value);
 
+    const CardElementType GetElementType() const;
+
     virtual std::string Serialize() = 0;
 
 private:
@@ -34,6 +36,7 @@ private:
     HorizontalAlignment m_horizontalAlignment;
     Size m_size;
     std::string m_speak;
+    CardElementType m_type;
 };
 }
 

@@ -2,12 +2,12 @@
 
 #include<string>
 #include <memory>
-#include "ICardElement.h"
+#include "BaseCardElement.h"
 #include "Enums.h"
 
 namespace AdaptiveCards
 {
-class TextBlock : public ICardElement
+class TextBlock : public BaseCardElement
 {
 public:
     TextBlock();

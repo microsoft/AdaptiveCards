@@ -1,7 +1,4 @@
 #include "Enums.h"
-#include <unordered_map>
-#include <numeric>
-#include <cctype>
 
 namespace AdaptiveCards
 {
@@ -27,7 +24,7 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "textColor", AdaptiveCardSchemaKey::TextColor },
     { "horizontalAlignment", AdaptiveCardSchemaKey::HorizontalAlignment },
     { "imageStyle", AdaptiveCardSchemaKey::ImageStyle},
-    { "cardElement", AdaptiveCardSchemaKey::CardElement},
+    { "BaseCardElement", AdaptiveCardSchemaKey::BaseCardElement},
     { "text", AdaptiveCardSchemaKey::Text},
     { "speak", AdaptiveCardSchemaKey::Speak },
 };
@@ -42,7 +39,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchema
     { AdaptiveCardSchemaKey::TextColor, "textColor"},
     { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment"},
     { AdaptiveCardSchemaKey::ImageStyle, "imageStyle"},
-    { AdaptiveCardSchemaKey::CardElement, "cardElement"},
+    { AdaptiveCardSchemaKey::BaseCardElement, "BaseCardElement"},
     { AdaptiveCardSchemaKey::Text, "text"},
     { AdaptiveCardSchemaKey::Speak, "speak"},
 };
