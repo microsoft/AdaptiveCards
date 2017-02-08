@@ -13,6 +13,8 @@ public:
     BaseCardElement(CardElementType type, std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak);
     BaseCardElement(CardElementType type);
 
+    virtual ~BaseCardElement();
+
     std::shared_ptr<Container> GetContainer() const;
     void SetContainer(std::shared_ptr<Container> container);
 

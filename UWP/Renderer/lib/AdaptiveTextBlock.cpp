@@ -17,45 +17,45 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Text(HSTRING* Text)
+    HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
     {
-        return UTF8ToHString(m_TextBlock->GetText(), Text);
+        return UTF8ToHString(m_TextBlock->GetText(), text);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Text(HSTRING Text)
+    HRESULT AdaptiveTextBlock::put_Text(HSTRING text)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(Text, out));
+        RETURN_IF_FAILED(HStringToUTF8(text, out));
         m_TextBlock->SetText(out);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize* TextSize)
+    HRESULT AdaptiveTextBlock::get_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize* textSize)
     {
-        *TextSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextSize>(m_TextBlock->GetTextSize());
+        *textSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextSize>(m_TextBlock->GetTextSize());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize TextSize)
+    HRESULT AdaptiveTextBlock::put_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize)
     {
-        m_TextBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(TextSize));
+        m_TextBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(textSize));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight* TextWeight)
+    HRESULT AdaptiveTextBlock::get_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight* textWeight)
     {
-        *TextWeight = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextWeight>(m_TextBlock->GetTextWeight());
+        *textWeight = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextWeight>(m_TextBlock->GetTextWeight());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight TextWeight)
+    HRESULT AdaptiveTextBlock::put_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight)
     {
-        m_TextBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(TextWeight));
+        m_TextBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(textWeight));
         return S_OK;
     }
 

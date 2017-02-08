@@ -7,6 +7,10 @@ BaseCardElement::BaseCardElement(CardElementType type, std::shared_ptr<Container
 
 BaseCardElement::BaseCardElement(CardElementType type) : m_type(type), m_horizontalAlignment(HorizontalAlignment::Left), m_size(CardElementSize::Auto) {}
 
+AdaptiveCards::BaseCardElement::~BaseCardElement()
+{
+}
+
 std::shared_ptr<Container> BaseCardElement::GetContainer() const
 {
     return m_container.lock();

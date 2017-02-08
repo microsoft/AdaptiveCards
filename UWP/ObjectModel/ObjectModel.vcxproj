@@ -22,7 +22,7 @@
     <ProjectGuid>{8F322F44-78B1-46F8-89D2-86B0A2E1B1C5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>AdaptiveCards.ObjectModel</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectName>ObjectModel</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -109,7 +109,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-    <ItemGroup>
+  <ItemGroup>
     <ClInclude Include="..\..\shared\ObjectModel\ACParseException.h" />
     <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCard.h" />
     <ClInclude Include="..\..\shared\ObjectModel\Container.h" />
