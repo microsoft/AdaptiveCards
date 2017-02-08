@@ -4,12 +4,16 @@
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
+    <ClCompile Include="lib\AdaptiveCard.cpp" />
+    <ClCompile Include="dll\dll.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
+    <ClInclude Include="lib\AdaptiveCard.h" />
+    <ClInclude Include="lib\ErrorHandling.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

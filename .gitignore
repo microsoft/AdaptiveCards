@@ -264,11 +264,8 @@ build*
 **/objfre/*
 **/objchk/*
 
-<<<<<<< 4f103c905dd8997a8dcdffc6b3a0b46d34b3b5ff
 # Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
 
-=======
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
->>>>>>> CR Feedback
