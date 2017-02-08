@@ -224,6 +224,10 @@ export class ActionButton {
 
 export class ActionBar extends CardElement {
     static buttonStyle: ActionButtonStyle = ActionButtonStyle.Push;
+    
+    constructor(container: Container) {
+        super(container);
+    }
 
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
@@ -329,7 +333,7 @@ export class ActionBar extends CardElement {
         // if (this._actions.length == 1 && this._actions[0] instanceof ActionCard) {
         //     this.showActionCardPane(this._actions[0]);
         // }
-        if(false){
+        if (false) {
 
         }
         else {

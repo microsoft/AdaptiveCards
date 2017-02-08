@@ -159,8 +159,8 @@ export abstract class CardElement {
                 return new Image(container);
             case "ImageGallery":
                 return new ImageGallery(container);
-            // case "ActionBar":
-            //     return new ActionBar(container);
+            case "ActionBar":
+                return new ActionBar(container);
             case "FactGroup":
                 return new FactGroup(container);
             case "Separator":

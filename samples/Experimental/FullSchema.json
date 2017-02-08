@@ -37,6 +37,9 @@
 	],
 	"body": [
 		{
+			"@type": "Container"
+		},
+		{
 			"@type": "TextBlock"
 		},
 		{
