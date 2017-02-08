@@ -264,8 +264,5 @@ build*
 **/objfre/*
 **/objchk/*
 
-# Generated header from MIDL
-**/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
-
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
