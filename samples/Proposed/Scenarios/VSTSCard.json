@@ -10,6 +10,7 @@
 	    },
 		{
 			"@type": "ColumnGroup",
+			"speak":"",
 			"items": [
 				{
 					"size": "auto",
@@ -38,13 +39,14 @@
 		    "items": [
 		        { "name": "Work item type:", "value": "Bug" },
 		        { "name": "State:", "value": "Closed" },
-		        { "name": "Area Path:", "value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines" },
-		        { "name": "Iteration Path:", "value": "t365\\Tabs\\Extensibility\\longer to show" },
+		        { "name": "Area Path:", "value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines", "speak":"" },
+		        { "name": "Iteration Path:", "value": "t365\\Tabs\\Extensibility\\longer to show", "speak":"" },
 		        { "name": "Priority:", "value": "1" }
 		    ]
 		},
 		{
 		    "@type": "ActionGroup",
+		    "speak":"",
 		    "items": [
 		        {
 		            "@type": "HttpPOST",

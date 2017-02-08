@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveVisualizer", "src\InteractiveVisualizer\InteractiveVisualizer.csproj", "{AE93161A-244A-4410-BC34-466189AEFAF7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Renderers", "Renderers", "{412460AB-E5CC-4605-8813-7EFFC924D990}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Visualizer", "Visualizer", "{CD8C128A-ABFB-43F8-B86A-8CC06FB0C7AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builders", "Builders", "{CB015F2B-73A6-45E8-9066-77154240257B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET", ".NET", "{38D9E098-DD38-49B7-B861-917FA527D346}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.Schema.Net", "builders\.NET\Adaptive.Schema.Net\Adaptive.Schema.Net.csproj", "{692311B2-E537-4700-8EF7-A5F83D90383C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,15 +19,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AE93161A-244A-4410-BC34-466189AEFAF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE93161A-244A-4410-BC34-466189AEFAF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE93161A-244A-4410-BC34-466189AEFAF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE93161A-244A-4410-BC34-466189AEFAF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{692311B2-E537-4700-8EF7-A5F83D90383C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{692311B2-E537-4700-8EF7-A5F83D90383C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{692311B2-E537-4700-8EF7-A5F83D90383C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{692311B2-E537-4700-8EF7-A5F83D90383C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{AE93161A-244A-4410-BC34-466189AEFAF7} = {CD8C128A-ABFB-43F8-B86A-8CC06FB0C7AA}
+		{38D9E098-DD38-49B7-B861-917FA527D346} = {CB015F2B-73A6-45E8-9066-77154240257B}
+		{692311B2-E537-4700-8EF7-A5F83D90383C} = {38D9E098-DD38-49B7-B861-917FA527D346}
 	EndGlobalSection
 EndGlobal

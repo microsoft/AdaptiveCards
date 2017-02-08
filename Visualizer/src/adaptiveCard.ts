@@ -215,6 +215,7 @@ export abstract class CardElement {
 
     private _container: Container;
 
+    speak: string;
     size: Size = Size.Auto;
     horizontalAlignment: HorizontalAlignment = HorizontalAlignment.Left;
 
@@ -235,6 +236,8 @@ export abstract class CardElement {
     }
 
     abstract render(): HTMLElement;
+
+    abstract renderSpeech(): string;
 
     removeTopSpacing(element: HTMLElement) {
         element.style.marginTop = "0px";
@@ -283,6 +286,7 @@ export abstract class CardElement {
     }
 
     parse(json: any) {
+        this.speak = json["speak"];
         this.size = stringToSize(json["size"], this.size);
         this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     }
@@ -402,6 +406,15 @@ export class TextBlock extends CardElement {
         }
     }
 
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak + '\n';
+
+        if (this.text)
+            return '<s>' + this.text + '</s>\n';
+        return null;
+    }
+
     removeTopSpacing(element: HTMLElement) {
         element.style.paddingTop = "0px";
     }
@@ -410,10 +423,18 @@ export class TextBlock extends CardElement {
 export class Fact {
     name: string;
     value: string;
+    speak: string;
 
     parse(json: any) {
         this.name = json["name"];
         this.value = json["value"];
+        this.speak = json["speak"];
+    }
+
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak + '\n';
+        return '<s>' + this.name + ' ' + this.value + '</s>\n';
     }
 }
 
@@ -485,6 +506,24 @@ export class FactGroup extends CardElement {
 
         return element;
     }
+
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak + '\n';
+
+        // render each fact 
+        let speak = null;
+        if (this._items.length > 0) {
+            speak = '';
+            for (var i = 0; i < this._items.length; i++) {
+                let speech = this._items[i].renderSpeech();
+                if (speech)
+                    speak += speech;
+            }
+        }
+        return '<p>' + speak + '\n</p>\n';
+    }
+
 }
 
 export class Image extends CardElement {
@@ -539,11 +578,16 @@ export class Image extends CardElement {
 
         return imageElement;
     }
+
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak + '\n';
+        return null;
+    }
 }
 
 export class ImageGallery extends CardElement {
     private _items: Array<Image> = [];
-
     imageSize: Size = Size.Medium;
 
     get items(): Array<Image> {
@@ -586,6 +630,21 @@ export class ImageGallery extends CardElement {
         }
 
         return element;
+    }
+
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak;
+
+        let speak = null;
+        if (this._items.length > 0) {
+            speak = '';
+            for (var i = 0; i < this._items.length; i++) {
+                speak += this._items[i].renderSpeech();
+            }
+        }
+
+        return speak;
     }
 }
 
@@ -721,6 +780,15 @@ export abstract class Input extends CardElement {
     }
 
     abstract render(): HTMLElement;
+
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak;
+
+        if (this.title)
+            return '<s>' + this.title + '</s>\n';
+        return null;
+    }
 }
 
 export class TextInput extends Input {
@@ -1183,6 +1251,24 @@ export class ActionGroup extends CardElement {
 
         return element;
     }
+
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak + '\n';
+
+        // // render each fact 
+        // let speak = null;
+        // if (this._actionButtons.length > 0) {
+        //     speak = '';
+        //     for (var i = 0; i < this._actionButtons.length; i++) {
+        //         let speech = this._actionButtons[i].renderSpeech();
+        //         if (speech)
+        //             speak += speech;
+        //     }
+        // }
+        // return '<p>' + speak + '\n</p>\n';
+        return null;
+    }
 }
 
 export class Separator extends CardElement {
@@ -1198,6 +1284,11 @@ export class Separator extends CardElement {
 
         return element;
     }
+
+    renderSpeech(): string {
+        return null;
+    }
+
 }
 
 export class Container extends CardElement {
@@ -1369,6 +1460,23 @@ export class Container extends CardElement {
         return this._element;
     }
 
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak;
+
+        // render each item
+        let speak = null;
+        if (this._items.length > 0) {
+            speak = '';
+            for (var i = 0; i < this._items.length; i++) {
+                var result = this._items[i].renderSpeech();
+                if (result)
+                    speak += result;
+            }
+        }
+        return speak;
+    }
+
     getRootContainer(): Container {
         let currentContainer: Container = this;
 
@@ -1384,7 +1492,7 @@ export class Column extends Container {
     private get useWeight(): boolean {
         return this.size === undefined;
     }
-    
+
     weight: number = 100;
 
     protected get cssClassName(): string {
@@ -1422,7 +1530,7 @@ export class ColumnGroup extends CardElement {
     private _items: Array<Column> = [];
 
     addColumn(): Column {
-        let column = new Column(this.container, ["ColumnGroup", "ActionGroup"]);
+        let column = new Column(this.container, ["ActionGroup"]);
 
         this._items.push(column);
 
@@ -1468,6 +1576,21 @@ export class ColumnGroup extends CardElement {
             return null;
         }
     }
+
+    renderSpeech(): string {
+        if (this.speak != null)
+            return this.speak;
+
+        // render each item
+        let speak = '';
+        if (this._items.length > 0) {
+            for (var i = 0; i < this._items.length; i++) {
+                speak += this._items[i].renderSpeech();
+            }
+        }
+        return speak;
+    }
+
 }
 
 export class AdaptiveCard {
@@ -1489,5 +1612,9 @@ export class AdaptiveCard {
         renderedContainer.className = "rootContainer";
 
         return renderedContainer;
+    }
+
+    renderSpeech(): string {
+        return this.root.renderSpeech();
     }
 }
