@@ -1193,8 +1193,8 @@ export class ActionGroup extends CardElement {
     parse(json: any) {
         super.parse(json);
 
-        if (json["items"] != null) {
-            var actionArray = json["items"] as Array<any>;
+        if (json["actions"] != null) {
+            var actionArray = json["actions"] as Array<any>;
 
             for (var i = 0; i < actionArray.length; i++) {
                 let action = Action.create(this, actionArray[i]["@type"]);

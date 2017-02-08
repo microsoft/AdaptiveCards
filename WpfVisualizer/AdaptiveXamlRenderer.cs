@@ -30,6 +30,12 @@ namespace WpfVisualizer
         {
             var grid = new Grid();
             grid.Style = resources["Adaptive.Card"] as Style;
+            if (card.BackgroundImage != null)
+            {
+                Uri uri = new Uri(card.BackgroundImage);
+                grid.Background = new ImageBrush(new BitmapImage(uri));
+            }
+
             int iRow = 0;
             foreach (var cardElement in card.Body)
             {
@@ -79,9 +85,18 @@ namespace WpfVisualizer
             {
                 return Render(element as ADP.Container);
             }
-            else 
+            else if (element is ADP.ActionGroup)
+            {
+                return Render(element as ADP.ActionGroup);
+            }
+            else if (element is ADP.Action)
+            {
+                return Render(element as ADP.Action);
+            }
+            else
                 Debug.Print($"Unknown Element type {element.GetType().Name}");
-            return null;
+            // return place holder
+            return new Grid();
         }
 
         public UIElement Render(ADP.Container container)
@@ -109,23 +124,36 @@ namespace WpfVisualizer
             foreach (var column in columnGroup.Columns)
             {
                 UIElement uiElement = Render(column);
+
+                // do some sizing magic using the magic GridUnitType.Star
                 switch (column.Size)
                 {
                     case ADP.Size.Stretch:
                         uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                         break;
+
                     case ADP.Size.Small:
                         uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(.2, GridUnitType.Star) });
                         break;
+
                     case ADP.Size.Medium:
                         uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(.5, GridUnitType.Star) });
                         break;
+
                     case ADP.Size.Large:
                         uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(.7, GridUnitType.Star) });
                         break;
+
                     case ADP.Size.Auto:
-                    default:
                         uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                        break;
+
+                    default:
+                        double val;
+                        if (double.TryParse(column.Size.ToString(), out val))
+                            uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
+                        else
+                            uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                         break;
                 }
 
@@ -327,7 +355,28 @@ namespace WpfVisualizer
 
         public UIElement Render(ADP.Input input)
         {
-            return null;
+            return new Grid();
+        }
+
+        public UIElement Render(ADP.ActionGroup actionGroup)
+        {
+            var uiActionGroup = new Grid();
+            uiActionGroup.Style = resources["Adaptive.Container"] as Style;
+
+            int iRow = 0;
+            foreach (var action in actionGroup.Actions)
+            {
+                UIElement uiElement = RenderUnknownElement(action);
+                uiActionGroup.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                Grid.SetRow(uiElement, iRow++);
+                uiActionGroup.Children.Add(uiElement);
+            }
+            return uiActionGroup;
+        }
+        public UIElement Render(ADP.Action action)
+        {
+            var uiActionGroup = new Grid();
+            return uiActionGroup;
         }
     }
 }

@@ -81,7 +81,7 @@
 				{
 					"@type": "ActionGroup",
 					"speak": "",
-					"items": [
+					"actions": [
 						{
 							"@type": "ActionCard",
 							"name": "Set due date",

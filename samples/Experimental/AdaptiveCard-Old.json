@@ -59,7 +59,7 @@
 				},
 				{
 					"type": "ActionGroup",
-					"items": [
+					"actions": [
 						{
 							"type": "ActionCard",
 							"name": "Comment",

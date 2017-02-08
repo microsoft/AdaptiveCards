@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Adaptive.Schema.Net
 {
     /// <summary>
     /// Represents one "fact" in a FactGroup element.
     /// </summary>
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class Fact
     {
         public Fact(string name, string value, string speak=null)

@@ -18,6 +18,9 @@ namespace Adaptive.Schema.Net
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Speak { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string BackgroundImage { get; set; }
+
         public List<CardElement> Body { get; set; } = new List<CardElement>();
     }
 }

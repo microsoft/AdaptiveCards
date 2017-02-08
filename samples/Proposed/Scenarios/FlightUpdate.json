@@ -8,15 +8,16 @@
 			"items": [
 				{
 					"@type": "ColumnGroup",
-					"items": [
+					"columns": [
 						{
 							"@type": "Column",
+							"background": "blue",
 							"size": "auto",
 							"items": [
 								{
 									"@type": "Image",
 									"size": "small",
-									"url": "assets/airplane in circle blue.png"
+									"url": "http://messagecardplayground.azurewebsites.net/assets/Airplane.png"
 								}
 							]
 						},

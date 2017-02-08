@@ -43,7 +43,7 @@
         {
 		    "@type": "ActionGroup",
             "speak": "<s>You can view more info or view it on four square</s>",
-		    "items": [
+		    "actions": [
 		        {
 		            "@type": "HttpPOST",
 		            "name": "More Info"
