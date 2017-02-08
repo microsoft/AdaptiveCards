@@ -3,7 +3,6 @@
 //
 #include <windows.h>
 #include <wrl.h>
-#include <wil\resultmacros.h>
 #include <wrl\wrappers\corewrappers.h>
 
 using namespace Microsoft::WRL;

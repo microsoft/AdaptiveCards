@@ -67,7 +67,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalUsingDirectories>
@@ -85,7 +85,7 @@
       <ModuleDefinitionFile>.\dll\AdaptiveCards.XamlCardRenderer.def</ModuleDefinitionFile>
     </Link>
     <CustomBuildStep>
-      <Command >mdmerge -partial -i "$(OutDir)." -o "$(OutDir)Output" -metadata_dir "$(FrameworkSdkDir)UnionMetadata" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
+      <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(FrameworkSdkDir)UnionMetadata" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
       <Outputs>$(OutDir)%(TargetName).winmd</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -107,9 +107,12 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="lib\AdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
+    <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
+    <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
     <ClCompile Include="dll\dll.cpp" />

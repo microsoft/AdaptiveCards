@@ -8,117 +8,135 @@ namespace AdaptiveCards
 {
     namespace XamlCardRenderer
     {
-        namespace ObjectModel
+        runtimeclass AdaptiveTextBlock;
+        runtimeclass AdaptiveCard;
+        interface IAdaptiveCardElement;
+        interface IAdaptiveTextBlock;
+        interface IAdaptiveCard;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum Size
         {
-            [version(NTDDI_WIN10_RS1)]
-            typedef [v1_enum] enum Size
-            {
-                Auto = 0,
-                Stretch,
-                Small,
-                Medium,
-                Large
-            } Size;
+            Auto = 0,
+            Stretch,
+            Small,
+            Medium,
+            Large
+        } Size;
 
-            [version(NTDDI_WIN10_RS1)]
-            typedef [v1_enum] enum TextSize
-            {
-                Small = 0,
-                Normal,
-                Medium,
-                Large,
-                ExtraLarge
-            } TextSize;
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum TextSize
+        {
+            Small = 0,
+            Normal,
+            Medium,
+            Large,
+            ExtraLarge
+        } TextSize;
 
-            [version(NTDDI_WIN10_RS1)]
-            typedef [v1_enum] enum TextWeight
-            {
-                Lighter = 0,
-                Normal,
-                Bolder
-            } TextWeight;
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum TextWeight
+        {
+            Lighter = 0,
+            Normal,
+            Bolder
+        } TextWeight;
 
-            [version(NTDDI_WIN10_RS1)]
-            typedef [v1_enum] enum TextColor
-            {
-                Default = 0,
-                Dark,
-                Light,
-                Accent,
-                Good,
-                Warning,
-                Attention
-            } TextColor;
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum TextColor
+        {
+            Default = 0,
+            Dark,
+            Light,
+            Accent,
+            Good,
+            Warning,
+            Attention
+        } TextColor;
 
-            [version(NTDDI_WIN10_RS1)]
-            typedef [v1_enum] enum HAlignment
-            {
-                Left = 0,
-                Center,
-                Right
-            } HAlignment;
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum HAlignment
+        {
+            Left = 0,
+            Center,
+            Right
+        } HAlignment;
 
-            runtimeclass AdaptiveTextBlock;
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ElementType
+        {
+            TextBlock = 0,
+        } ElementType;
 
-            [
-                uuid(f3b844da-2d6a-4003-8a57-4e5541fcd078),
-                version(NTDDI_WIN10_RS1),
-                exclusiveto(AdaptiveTextBlock)
-            ]
-            interface IAdaptiveTextBlock : IInspectable
-            {
-                [propget] HRESULT TextSize([out, retval] TextSize* value);
-                [propput] HRESULT TextSize([in] TextSize value);
-
-                [propget] HRESULT TextWeight([out, retval] TextWeight* value);
-                [propput] HRESULT TextWeight([in] TextWeight value);
-
-                [propget] HRESULT Text([out, retval] HSTRING* value);
-                [propput] HRESULT Text([in] HSTRING value);
-
-                [propget] HRESULT IsSubtle([out, retval] boolean* value);
-                [propput] HRESULT IsSubtle([in] boolean value);
-
-                [propget] HRESULT Wrap([out, retval] boolean* value);
-                [propput] HRESULT Wrap([in] boolean value);
-
-                HRESULT Render([out, retval] Windows.UI.Xaml.UIElement** uiElement);
-            };
-
-            [
-                version(NTDDI_WIN10_RS1),
-                activatable(NTDDI_WIN10_RS1)
-            ]
-            runtimeclass AdaptiveTextBlock
-            {
-                [default] interface IAdaptiveTextBlock;
-            };
+        declare
+        {
+            interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
         }
 
-        #pragma region Temporary defintions
-        runtimeclass AdaptiveCard;
-
         [
-        uuid(00000000-0000-0000-0000-000000000001),
-        version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCard),
+            uuid(74D69C2F-7F1C-47FD-A319-F4B4E7F72EE9),
+            version(NTDDI_WIN10_RS1),
         ]
-        interface IAdaptiveCard : IInspectable
+        interface IAdaptiveCardElement : IInspectable
         {
+            [propget] HRESULT ElementType([out, retval] ElementType* value);
+            [propput] HRESULT ElementType([in] ElementType value);
 
+            HRESULT Render([out, retval] Windows.UI.Xaml.UIElement** uiElement);
         };
 
         [
-        version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
+            uuid(f3b844da-2d6a-4003-8a57-4e5541fcd078),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveTextBlock)
+        ]
+        interface IAdaptiveTextBlock : IInspectable
+        {
+            [propget] HRESULT TextSize([out, retval] TextSize* value);
+            [propput] HRESULT TextSize([in] TextSize value);
+
+            [propget] HRESULT TextWeight([out, retval] TextWeight* value);
+            [propput] HRESULT TextWeight([in] TextWeight value);
+
+            [propget] HRESULT Text([out, retval] HSTRING* value);
+            [propput] HRESULT Text([in] HSTRING value);
+
+            [propget] HRESULT IsSubtle([out, retval] boolean* value);
+            [propput] HRESULT IsSubtle([in] boolean value);
+
+            [propget] HRESULT Wrap([out, retval] boolean* value);
+            [propput] HRESULT Wrap([in] boolean value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveTextBlock
+        {
+            [default] interface IAdaptiveTextBlock;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(9F68A612-9DCB-4710-8121-A116BD33B69B),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveCard),
+        ]
+        interface IAdaptiveCard : IInspectable
+        {
+            [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
         ]
         runtimeclass AdaptiveCard
         {
             [default] interface IAdaptiveCard;
         }
 
-        #pragma endregion Temporary defintions
-                            
         runtimeclass XamlCardRenderer;
         runtimeclass ImageRenderResult;
 

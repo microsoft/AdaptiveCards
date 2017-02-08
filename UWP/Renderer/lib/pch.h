@@ -12,6 +12,8 @@
 #undef GetCurrentTime
 #endif
 
+#include <unordered_map>
+
 #include "ErrorHandling.h"
 
 #include <ppltasks.h>
