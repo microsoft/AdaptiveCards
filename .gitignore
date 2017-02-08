@@ -256,3 +256,6 @@ paket-files/
 **/dist/*.js
 **/dist/*.js.map
 **/dist/*.d.ts 
+
+#Generated header from MIDL
+**/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h

@@ -1,7 +1,5 @@
 #include "ACParser.h"
 #include "ACParseException.h"
-#include <algorithm>
-#include <unordered_map>
 
 namespace AdaptiveCards
 {

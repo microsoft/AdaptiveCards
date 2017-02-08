@@ -1,9 +1,9 @@
 #pragma once
 
+#include "pch.h"
 #include "ACParseException.h"
 #include "Enums.h"
 #include "json\json.h"
-#include "pch.h"
 
 namespace AdaptiveCards
 {

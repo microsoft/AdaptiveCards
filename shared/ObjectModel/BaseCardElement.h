@@ -10,10 +10,8 @@ class Container;
 class BaseCardElement
 {
 public:
-    BaseCardElement(CardElementType type, std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak);
+    BaseCardElement(CardElementType type, std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak);
     BaseCardElement(CardElementType type);
-
-    virtual ~BaseCardElement() = 0 {};
 
     std::shared_ptr<Container> GetContainer() const;
     void SetContainer(std::shared_ptr<Container> container);
@@ -21,8 +19,8 @@ public:
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
-    Size GetSize() const;
-    void SetSize(const Size value);
+    CardElementSize GetSize() const;
+    void SetSize(const CardElementSize value);
 
     std::string GetSpeak() const;
     void SetSpeak(const std::string value);
@@ -34,7 +32,7 @@ public:
 private:
     std::weak_ptr<Container> m_container;
     HorizontalAlignment m_horizontalAlignment;
-    Size m_size;
+    CardElementSize m_size;
     std::string m_speak;
     CardElementType m_type;
 };

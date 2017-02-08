@@ -3,9 +3,9 @@
 
 using namespace AdaptiveCards;
 
-BaseCardElement::BaseCardElement(CardElementType type, std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak) : m_type(type), m_container(container), m_horizontalAlignment(horizontalAlignment), m_size(size), m_speak(speak) {}
+BaseCardElement::BaseCardElement(CardElementType type, std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak) : m_type(type), m_container(container), m_horizontalAlignment(horizontalAlignment), m_size(size), m_speak(speak) {}
 
-BaseCardElement::BaseCardElement(CardElementType type) : m_type(type), m_horizontalAlignment(HorizontalAlignment::Left), m_size(Size::Auto) {}
+BaseCardElement::BaseCardElement(CardElementType type) : m_type(type), m_horizontalAlignment(HorizontalAlignment::Left), m_size(CardElementSize::Auto) {}
 
 std::shared_ptr<Container> BaseCardElement::GetContainer() const
 {
@@ -27,12 +27,12 @@ void BaseCardElement::SetHorizontalAlignment(const HorizontalAlignment value)
     m_horizontalAlignment = value;
 }
 
-Size BaseCardElement::GetSize() const
+CardElementSize BaseCardElement::GetSize() const
 {
     return m_size;
 }
 
-void BaseCardElement::SetSize(const Size value)
+void BaseCardElement::SetSize(const CardElementSize value)
 {
     m_size = value;
 }

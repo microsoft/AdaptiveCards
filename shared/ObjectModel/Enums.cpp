@@ -17,7 +17,7 @@ struct CaseInsensitiveHash {
 static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHash, CaseInsensitiveEqualTo> AdaptiveCardSchemaKeyNameToEnum =
 {
     { "@type", AdaptiveCardSchemaKey::Type },
-    { "size", AdaptiveCardSchemaKey::Size },
+    { "size", AdaptiveCardSchemaKey::CardElementSize },
     { "textSize", AdaptiveCardSchemaKey::TextSize },
     { "textWeight", AdaptiveCardSchemaKey::TextWeight },
     { "textWrap", AdaptiveCardSchemaKey::TextWrap },
@@ -32,7 +32,7 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
 static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchemaKeyEnumToName =
 {
     { AdaptiveCardSchemaKey::Type, "@type"},
-    { AdaptiveCardSchemaKey::Size, "size"},
+    { AdaptiveCardSchemaKey::CardElementSize, "size"},
     { AdaptiveCardSchemaKey::TextSize, "textSize"},
     { AdaptiveCardSchemaKey::TextWeight, "textWeight"},
     { AdaptiveCardSchemaKey::TextWrap, "textWrap"},
@@ -46,26 +46,26 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchema
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
 {
-    {"AdaptiveCard", CardElementType::AdaptiveCardType},
-    {"TextBlock", CardElementType::TextBlockType},
-    //{ "Image", CardElementType::ImageType },
-    //{ "FactGroup", CardElementType::FactGroupType },
-    //{ "ColumnGroup", CardElementType::ColumnGroupType },
-    //{ "ImageGallery", CardElementType::ImageGalleryType },
-    //{ "ActionGroup", CardElementType::ActionGroupType },
-    { "body", CardElementType::ContainerType},
+    {"AdaptiveCard", CardElementType::AdaptiveCard},
+    {"TextBlock", CardElementType::TextBlock},
+    //{ "Image", CardElementType::Image },
+    //{ "FactGroup", CardElementType::FactGroup },
+    //{ "ColumnGroup", CardElementType::ColumnGroup },
+    //{ "ImageGallery", CardElementType::ImageGallery },
+    //{ "ActionGroup", CardElementType::ActionGroup },
+    { "body", CardElementType::Container},
 };
 
 static std::unordered_map<CardElementType, std::string> CardElementTypeEnumToName =
 {
-    { CardElementType::AdaptiveCardType, "AdaptiveCard" },
-    { CardElementType::TextBlockType, "TextBlock" },
-    //{ CardElementType::ImageType, "Image" },
-    //{ CardElementType::FactGroupType, "FactGroup" },
-    //{ CardElementType::ColumnGroupType, "ColumnGroup" },
-    //{ CardElementType::ImageGalleryType, "ImageGallery" },
-    //{ CardElementType::ActionGroupType, "ActionGroup" },
-    { CardElementType::ContainerType, "body" },
+    { CardElementType::AdaptiveCard, "AdaptiveCard" },
+    { CardElementType::TextBlock, "TextBlock" },
+    //{ CardElementType::Image, "Image" },
+    //{ CardElementType::FactGroup, "FactGroup" },
+    //{ CardElementType::ColumnGroup, "ColumnGroup" },
+    //{ CardElementType::ImageGallery, "ImageGallery" },
+    //{ CardElementType::ActionGroup, "ActionGroup" },
+    { CardElementType::Container, "body" },
 };
 
 static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageStyleEnumToName =
@@ -159,22 +159,22 @@ static std::unordered_map<TextSize, std::string> TextSizeEnumToName =
     {TextSize::ExtraLarge, "ExtraLarge"},
 };
 
-static std::unordered_map<std::string, Size, CaseInsensitiveHash, CaseInsensitiveEqualTo> SizeNameToEnum =
+static std::unordered_map<std::string, CardElementSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> SizeNameToEnum =
 {
-    {"Auto", Size::Auto},
-    {"Stretch", Size::Stretch},
-    {"Small", Size::Small},
-    {"Medium", Size::Medium},
-    {"Large", Size::Large},
+    {"Auto", CardElementSize::Auto},
+    {"Stretch", CardElementSize::Stretch},
+    {"Small", CardElementSize::Small},
+    {"Medium", CardElementSize::Medium},
+    {"Large", CardElementSize::Large},
 };
 
-static std::unordered_map<Size, std::string> SizeEnumToName =
+static std::unordered_map<CardElementSize, std::string> SizeEnumToName =
 {
-    {Size::Auto, "Auto"},
-    {Size::Stretch, "Stretch"},
-    {Size::Small, "Small"},
-    {Size::Medium, "Medium"},
-    {Size::Large, "Large"},
+    {CardElementSize::Auto, "Auto"},
+    {CardElementSize::Stretch, "Stretch"},
+    {CardElementSize::Small, "Small"},
+    {CardElementSize::Medium, "Medium"},
+    {CardElementSize::Large, "Large"},
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
@@ -293,20 +293,20 @@ TextSize TextSizeFromString(const std::string& type)
     return TextSizeNameToEnum[type];
 }
 
-const std::string SizeToString(Size type)
+const std::string SizeToString(CardElementSize type)
 {
     if (SizeEnumToName.find(type) == SizeEnumToName.end())
     {
-        throw std::out_of_range("Invalid Size type");
+        throw std::out_of_range("Invalid CardElementSize type");
     }
     return SizeEnumToName[type];
 }
 
-Size SizeFromString(const std::string& type)
+CardElementSize SizeFromString(const std::string& type)
 {
     if (SizeNameToEnum.find(type) == SizeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid Size: " + type);
+        throw std::out_of_range("Invalid CardElementSize: " + type);
     }
 
     return SizeNameToEnum[type];

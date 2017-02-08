@@ -6,7 +6,7 @@ namespace AdaptiveCards
 
 enum class AdaptiveCardSchemaKey
 {
-    Size = 0,
+    CardElementSize = 0,
     TextSize,
     TextWeight,
     TextWrap,
@@ -19,7 +19,7 @@ enum class AdaptiveCardSchemaKey
     Type,
 };
 
-enum class Size
+enum class CardElementSize
 {
     Auto = 0,
     Stretch,
@@ -71,14 +71,14 @@ enum class ImageStyle {
 
 enum class CardElementType
 {
-    AdaptiveCardType = 0,
-    TextBlockType,
-    ImageType,
-    FactGroupType,
-    ColumnGroupType,
-    ImageGalleryType,
-    ActionGroupType,
-    ContainerType,
+    AdaptiveCard = 0,
+    TextBlock,
+    Image,
+    FactGroup,
+    ColumnGroup,
+    ImageGallery,
+    ActionGroup,
+    Container,
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
@@ -99,8 +99,8 @@ TextWeight TextWeightFromString(const std::string& type);
 const std::string TextSizeToString(TextSize type);
 TextSize TextSizeFromString(const std::string& type);
 
-const std::string SizeToString(Size type);
-Size SizeFromString(const std::string& type);
+const std::string SizeToString(CardElementSize type);
+CardElementSize SizeFromString(const std::string& type);
 
 const std::string TextWrapToString(TextWrap type);
 TextWrap TextWrapFromString(const std::string& type);

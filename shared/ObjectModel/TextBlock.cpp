@@ -3,21 +3,21 @@
 
 using namespace AdaptiveCards;
 
-TextBlock::TextBlock() : BaseCardElement(CardElementType::TextBlockType, nullptr, HorizontalAlignment::Left, Size::Auto, "")
+TextBlock::TextBlock() : BaseCardElement(CardElementType::TextBlock, nullptr, HorizontalAlignment::Left, CardElementSize::Auto, "")
 {
 }
 
-TextBlock::TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, Size size, std::string speak, std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap) : BaseCardElement(CardElementType::TextBlockType, container, horizontalAlignment, size, speak), m_text(text), m_textSize(textSize), m_textWeight(textWeight), m_isSubtle(isSubtle), m_wrap(wrap) {}
+TextBlock::TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak, std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap) : BaseCardElement(CardElementType::TextBlock, container, horizontalAlignment, size, speak), m_text(text), m_textSize(textSize), m_textWeight(textWeight), m_isSubtle(isSubtle), m_wrap(wrap) {}
 
 std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
 {
     ACParser::ThrowIfNotJsonObject(json);
-    ACParser::ExpectTypeString(json, CardElementType::TextBlockType);
+    ACParser::ExpectTypeString(json, CardElementType::TextBlock);
 
     // Parse text field
     std::string speak = ACParser::GetString(json, AdaptiveCardSchemaKey::Speak);
     std::string text = ACParser::GetString(json, AdaptiveCardSchemaKey::Text);
-    Size size = ACParser::GetEnumValue<Size>(json, AdaptiveCardSchemaKey::Size, Size::Auto, SizeFromString);
+    CardElementSize size = ACParser::GetEnumValue<CardElementSize>(json, AdaptiveCardSchemaKey::CardElementSize, CardElementSize::Auto, SizeFromString);
 
     TextSize textSize = ACParser::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::TextSize, TextSize::Normal, TextSizeFromString);
     TextColor textColor = ACParser::GetEnumValue<TextColor>(json, AdaptiveCardSchemaKey::TextColor, TextColor::Default, TextColorFromString);

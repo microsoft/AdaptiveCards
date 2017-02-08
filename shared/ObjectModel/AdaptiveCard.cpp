@@ -1,6 +1,5 @@
 #include "AdaptiveCard.h"
 #include "ACParser.h"
-#include <fstream>
 
 using namespace AdaptiveCards;
 
@@ -10,12 +9,12 @@ AdaptiveCard::AdaptiveCard()
 
 AdaptiveCard::AdaptiveCard(std::string title, std::string description1, std::string description2, std::shared_ptr<Container> root) : m_title(title), m_description1(description1), m_description2(description2), m_root(root) {}
 
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string & jsonFile)
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile)
 {
-    std::ifstream in(jsonFile);
+    std::ifstream jsonFileStream(jsonFile);
 
     Json::Value root;
-    in >> root;
+    jsonFileStream >> root;
 
     return AdaptiveCard::Deserialize(root);
 }
@@ -25,7 +24,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     ACParser::ThrowIfNotJsonObject(json);
 
     // Verify this is an adaptive card
-    ACParser::ExpectTypeString(json, CardElementType::AdaptiveCardType);
+    ACParser::ExpectTypeString(json, CardElementType::AdaptiveCard);
 
     // Parse body
     auto bodies = Container::Deserialize(json);
@@ -82,6 +81,6 @@ void AdaptiveCards::AdaptiveCard::SetRoot(std::shared_ptr<Container> value)
 
 const CardElementType AdaptiveCards::AdaptiveCard::GetElementType() const
 {
-    return CardElementType::AdaptiveCardType;
+    return CardElementType::AdaptiveCard;
 }
 

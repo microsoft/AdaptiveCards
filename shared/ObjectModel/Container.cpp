@@ -1,12 +1,10 @@
 #include "Container.h"
 #include "ACParser.h"
 #include "TextBlock.h"
-#include <unordered_map>
-#include <algorithm>
 
 using namespace AdaptiveCards;
 
-Container::Container() : BaseCardElement(CardElementType::ContainerType) {}
+Container::Container() : BaseCardElement(CardElementType::Container) {}
 
 const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCards::Container::GetItems()
 {
@@ -35,7 +33,7 @@ std::string Container::Serialize()
 std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
 {
     // Try to get the cardelement container. If it it doesn't exist we return an empty container
-    auto elementArray = root.get(CardElementTypeToString(CardElementType::ContainerType), Json::Value());
+    auto elementArray = root.get(CardElementTypeToString(CardElementType::Container), Json::Value());
 
     auto container = std::make_shared<Container>();
     if (elementArray.empty())
@@ -57,7 +55,7 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
         //{ CardElementType::FactGroupType, FactGroup::ParseJsonObject },
         //{ CardElementType::ImageGalleryType, ImageGallery::ParseJsonObject },
         //{ CardElementType::ImageType, Image::ParseJsonObject },
-        { CardElementType::TextBlockType, TextBlock::Deserialize},
+        { CardElementType::TextBlock, TextBlock::Deserialize},
     };
 
     // Make sure the container fits the elements in the json file

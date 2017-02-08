@@ -1,9 +1,9 @@
 #pragma once
 
+#include "pch.h"
 #include "Enums.h"
 #include "BaseCardElement.h"
 #include "Container.h"
-#include "pch.h"
 
 namespace AdaptiveCards
 {
