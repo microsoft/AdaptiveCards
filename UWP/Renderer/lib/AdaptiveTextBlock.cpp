@@ -3,24 +3,26 @@
 #include "XamlCardRendererComponent.h"
 #include <windows.foundation.collections.h>
 
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
-using namespace AdaptiveCards::XamlCardRenderer;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
+using namespace ABI::AdaptiveCards::XamlCardRenderer;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveTextBlock::AdaptiveTextBlock()
+namespace AdaptiveCards {
+namespace XamlCardRenderer
 {
-    m_TextBlock = std::make_unique<TextBlock>();
-}
 
+AdaptiveTextBlock::AdaptiveTextBlock : m_TextBlock(std::make_unique<TextBlock>()) {}
+
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::get_Text(HSTRING* Text)
 {
     return UTF8ToHString(m_TextBlock->GetText(), Text);
 }
 
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::put_Text(HSTRING Text)
 {
     std::string out;
@@ -29,54 +31,75 @@ HRESULT AdaptiveTextBlock::put_Text(HSTRING Text)
     return S_OK;
 }
 
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::get_TextSize(ObjectModel::TextSize* TextSize)
 {
     *TextSize = static_cast<ObjectModel::TextSize>(m_TextBlock->GetTextSize());
     return S_OK;
 }
 
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::put_TextSize(ObjectModel::TextSize TextSize)
 {
     m_TextBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(TextSize));
     return S_OK;
 }
 
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::get_TextWeight(ObjectModel::TextWeight* TextWeight)
 {
     *TextWeight = static_cast<ObjectModel::TextWeight>(m_TextBlock->GetTextWeight());
     return S_OK;
 }
 
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::put_TextWeight(ObjectModel::TextWeight TextWeight)
 {
     m_TextBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(TextWeight));
     return S_OK;
 }
 
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::get_Wrap(boolean* Wrap)
 {
     *Wrap = m_TextBlock->GetWrap();
     return S_OK;
 }
 
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::put_Wrap(boolean Wrap)
 {
     m_TextBlock->SetWrap(Boolify(Wrap));
     return S_OK;
 }
 
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::get_IsSubtle(boolean* IsSubtle)
 {
     *IsSubtle = m_TextBlock->GetIsSubtle();
     return S_OK;
 }
 
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::put_IsSubtle(boolean IsSubtle)
 {
     m_TextBlock->SetIsSubtle(Boolify(IsSubtle));
     return S_OK;
 }
 
+_Use_decl_annotations_
+IFACEMETHODIMP AdaptiveTextBlock::get_ElementType(ElementType* /*elementType*/)
+{
+    return S_OK;
+}
+
+_Use_decl_annotations_
+IFACEMETHODIMP AdaptiveTextBlock::put_ElementType(ElementType /*elementType*/)
+{
+    return S_OK;
+}
+
+_Use_decl_annotations_
 HRESULT AdaptiveTextBlock::Render(IUIElement** TextBlock)
 {
     *TextBlock = nullptr;
@@ -98,5 +121,5 @@ HRESULT AdaptiveTextBlock::Render(IUIElement** TextBlock)
 
     return textBlock->QueryInterface(TextBlock);
 }
-
-
+}
+}

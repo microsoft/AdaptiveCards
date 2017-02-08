@@ -257,5 +257,13 @@ paket-files/
 **/dist/*.js.map
 **/dist/*.d.ts 
 
-#Generated header from MIDL
+# SourceDepot Integration
+dirs*
+sources*
+build*
+**/objfre/*
+**/objchk/*
+
+# Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
+
