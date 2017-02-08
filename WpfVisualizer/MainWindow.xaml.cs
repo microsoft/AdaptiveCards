@@ -16,6 +16,7 @@ using ADP = Adaptive.Schema.Net;
 using Newtonsoft.Json;
 using Microsoft.Win32;
 using System.IO;
+using System.Diagnostics;
 
 namespace WpfVisualizer
 {
@@ -56,6 +57,29 @@ namespace WpfVisualizer
             {
                 this.textBox.Text = File.ReadAllText(dlg.FileName);
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var binding = new CommandBinding(NavigationCommands.GoToPage, GoToPage, CanGoToPage);
+            // Register CommandBinding for all windows.
+            CommandManager.RegisterClassCommandBinding(typeof(Window), binding);
+
+        }
+
+        private void GoToPage(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is string)
+            {
+                string name = e.Parameter as string;
+                if (!String.IsNullOrWhiteSpace(name))
+                    Process.Start(name);
+            }
+        }
+
+        private void CanGoToPage(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
         }
     }
 }

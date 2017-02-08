@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml;
+using MarkedNet;
 using ADP = Adaptive.Schema.Net;
 
 namespace WpfVisualizer
@@ -216,10 +220,18 @@ namespace WpfVisualizer
 
         public UIElement Render(ADP.TextBlock textBlock)
         {
-            var uiTextBlock = new TextBlock();
+            Marked marked = new Marked();
+            marked.Options.Renderer = new XamlRenderer();
+            marked.Options.Mangle = false;
+            marked.Options.Sanitize = true;
+
+            // uiTextBlock.Text = textBlock.Text;
+            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(textBlock.Text)}</TextBlock>";
+            StringReader stringReader = new StringReader(xaml);
+            XmlReader xmlReader = XmlReader.Create(stringReader);
+            var uiTextBlock = (TextBlock)XamlReader.Load(xmlReader);
             uiTextBlock.Style = resources["Adaptive.TextBlock"] as Style;
 
-            uiTextBlock.Text = textBlock.Text;
 
             if (textBlock.HorizontalAlignment.HasValue)
             {
