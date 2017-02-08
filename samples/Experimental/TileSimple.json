@@ -1,0 +1,58 @@
+{
+    "visual": {
+        "branding": "nameAndLogo",
+        "displayName": "Wed 28th",
+        "arguments": "action=viewEvent&eventId=548",
+        
+        "tileSmall": {
+            
+            "contentType": "adaptive",
+            "content": {
+                "peek": {
+                    "backgroundImages": [
+                        {
+                            "src": "flowers.jpg"
+                        }
+                    ]
+                },
+                "body": {
+                    "backgroundImages": [
+                        {
+                            "src": "clouds.jpg"
+                        }
+                    ],
+                    "children": [
+                        {
+                            "@type": "TextBlock",
+                            "text": "Hello world",
+                            "textSize": "large"
+                        },
+                        {
+                            "@type": "TextBlock",
+                            "text": "Good afternoon!",
+                            "textSize": "medium",
+                            "isSubtle": "true"
+                        }
+                    ]
+                }
+            }
+        },
+        
+        "tileMedium": {
+            "contentType": "photos",
+            "content": {
+                "images": [
+                    {
+                        "src": "flowers.jpg"
+                    },
+                    {
+                        "src": "clouds.jpg"
+                    },
+                    {
+                        "src": "mountains.jpg"
+                    }
+                ]
+            }
+        }
+    }
+}
