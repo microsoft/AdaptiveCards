@@ -2,15 +2,15 @@
     "@type": "AdaptiveCard",
     "actions": [
         {
-            "@type": "OpenUri", //or OpenWebView
+            "@type": "OpenUrlAction", //or OpenWebView
             "title": "View",
-            "uri": "http://..."
+            "url": "http://..."
         },
         // Possibly reintroduce HttpPost, would not be supported by bots/tiles/etc
         // Windows needs new types for Foreground/Background activation
         // OR we can add metadata like URL or foreground/background properties
         {
-            "@type": "Submit", // Submit action
+            "@type": "SubmitAction", // Submit action
             "title": "Declined",
             "data": {
                 "reportId": "ABC",
@@ -18,76 +18,36 @@
             }
         },
         {
-            "@type": "Submit", // Submit action that collects input first
+            "@type": "HttpAction",
+            "method": "POST",
             "title": "Set due date",
             "uri": "http://",
-            "method": "POST",
-            "data": {
-                "reportId": "ABC",
-                "approved": "false"
-            },
             "httpHeaders": [
                 {
                     "content-type": "application/json"
                 }
             ],
             //Move this to HttpPost 
-            "postBody":
-            // data binding
-            "",
-            "okText": "OK", // ISSUE: these don't apply without inputs, is that ok?
-            "cancelText": "Cancel",
-            "inputs": [
-                {
-                    "@type": "Input",
-                    "inputType": "date",
-                    "id": "dueDate",
-                    "prompt": "Select a date"
-                }
-            ]
+            "postBody": "{Data binding}"
         },
         {
-            "@type": "ShowCard",
-            "title": "Show a custom form",
-            "card": {
-                "@type": "FormCard",
-                "actions": [], // Submit button by default
-                "body": [
-                    {
-                        "@type": "TextBlock",
-                        "text": "Hello"
-                    },
-                    {
-                        "@type": "Input",
-                        "id": "approvalDate",
-                        "inputType": "date",
-                        "title": "Select a date"
-                    }
-                ],
-                "data": {
-                    "orderId": "ABC"
-                }
-            }
-        },
-        {
-            "@type": "ShowCard",
+            "@type": "ShowCardAction",
             "title": "View details",
             "card": {
                 "@type": "AdaptiveCard",
                 "body": [],
                 "actions": []
             }
+        },
+        {
+            "@type": "CancelAction",
+            "title": "Reset"
         }
     ],
     "body": [
         {
-            "@type": "FormCard",
-            "okText": "OK", // potentially don't add this
-            "cancelText": "Cancel",
-            "data": {
-                "orderId": "ABC"
-            },
-            "body": [
+            "@type": "Container",
+            "items": [
                 {
                     "@type": "TextBlock",
                     "text": "Hi there, what is your name?"
