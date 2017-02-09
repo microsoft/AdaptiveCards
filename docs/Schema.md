@@ -43,7 +43,7 @@ AdaptiveCard is top level object which represents a card
 ## CardElement
 CardElement is the base type for all elements that can be used to define an Adaptive Card
 
-> it cannot be added by itself, you can only add derived types
+> NOTE: You cannot add an CardElement directly, only the derived types.
 
 | Property | Type | Description |
 |---|---|---|
