@@ -16,7 +16,7 @@
 				},
 				{
 					"type": "FactGroup",
-					"items": [
+					"facts": [
 						{
 							"name": "This is a fact name",
 							"value": "This is a fact value"
@@ -59,7 +59,7 @@
 				},
 				{
 					"type": "ActionGroup",
-					"items": [
+					"actions": [
 						{
 							"type": "ActionCard",
 							"name": "Comment",

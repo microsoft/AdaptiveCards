@@ -14,7 +14,7 @@ namespace Adaptive.Schema.Net
     {
         public DateInput() 
         {
-            this.Size = Size.Medium;
+            // this.Size = Size.Medium;
         }
 
         public bool IncludeTime { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Adaptive.Schema.Net
 {
@@ -17,14 +18,15 @@ namespace Adaptive.Schema.Net
         }
 
         /// <summary>
-        /// Collection of image objects to display
+        /// Collection of images to display together in the gallery
         /// </summary>
-        // ISSUE: Shouldn't this  be called Images since it can only contain Image 
-        public List<Image> Items { get; set; } = new List<Image>();
+        [JsonRequired]
+        public List<Image> Images { get; set; } = new List<Image>();
 
         /// <summary>
         /// Specifies the horizontal size of each image in the gallery.
         /// </summary>
-        public Size ImageSize { get; set; } = Size.Medium;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public Size? ImageSize { get; set; }
     }
 }

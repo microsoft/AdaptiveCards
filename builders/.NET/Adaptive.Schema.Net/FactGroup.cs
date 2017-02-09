@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Adaptive.Schema.Net
 {
@@ -11,13 +12,13 @@ namespace Adaptive.Schema.Net
     /// </summary>
     public class FactGroup : CardElement
     {
-        public FactGroup() 
+        public FactGroup()
         { }
 
         /// <summary>
         /// The facts to be displayed.
         /// </summary>
-        // ISSUE: This only takes Fact objects, should this be called Facts?
-        public List<Fact> Items { get; set; } = new List<Fact>();
+        [JsonRequired]
+        public List<Fact> Facts { get; set; } = new List<Fact>();
     }
 }

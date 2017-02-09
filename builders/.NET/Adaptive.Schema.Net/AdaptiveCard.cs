@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Adaptive.Schema.Net
 {
@@ -13,8 +15,12 @@ namespace Adaptive.Schema.Net
     {
         public AdaptiveCard() { }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Speak { get; set; }
 
-        public Container Body { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string BackgroundImage { get; set; }
+
+        public List<CardElement> Body { get; set; } = new List<CardElement>();
     }
 }

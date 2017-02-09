@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Adaptive.Schema.Net
 {
     /// <summary>
     /// Controls the horizontal size (width) of element.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum Size
     {
         /// <summary>
@@ -40,6 +44,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls the relative size of TextBlock elements
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum TextSize
     {
         /// <summary>
@@ -71,6 +76,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls the weight of TextBock Elements
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum TextWeight
     {
         /// <summary>
@@ -92,6 +98,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls the color style of TextBlock Elements
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum TextColor
     {
         /// <summary>
@@ -133,6 +140,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls how elements are horizontally positioned within their container.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum HorizontalAlignment
     {
         /// <summary>
@@ -154,6 +162,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls the way Image elements are displayed.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum ImageStyle
     {
         /// <summary>

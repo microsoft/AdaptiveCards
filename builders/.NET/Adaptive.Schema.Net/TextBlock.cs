@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Adaptive.Schema.Net
 {
@@ -13,19 +14,23 @@ namespace Adaptive.Schema.Net
 
         }
 
-        public TextSize TextSize { get; set; } = TextSize.Normal;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public TextSize? TextSize { get; set; }
 
-        public TextWeight TextWeight { get; set; } = TextWeight.Normal;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public TextWeight? TextWeight { get; set; }
 
-        public TextColor TextColor { get; set; } = TextColor.Default;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public TextColor? TextColor { get; set; } 
 
+        [JsonRequired]
         public string Text { get; set; }
 
-        public string Speak { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool? IsSubtle { get; set; } 
 
-        public bool IsSubtle { get; set; } = false;
-
-        public bool Wrap { get; set; } = false;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool? Wrap { get; set; } 
 
     }
 }

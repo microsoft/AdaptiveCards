@@ -5,8 +5,9 @@
         "header": [
             {
                 "@type": "ColumnGroup",
-                "items": [
+                "columns": [
                     {
+                        "@type": "Column",
                         "size": "auto",
                         "items": [
                             {
@@ -17,6 +18,7 @@
                         ]
                     },
                     {
+                        "@type": "Column",
                         "size": "stretch",
                         "items": [
                             {

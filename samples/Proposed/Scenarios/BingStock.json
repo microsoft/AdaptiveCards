@@ -22,7 +22,7 @@
             "items": [
                 {
                     "@type": "ColumnGroup",
-                    "items": [
+                    "columns": [
                         {
                             "@type": "Column",
                             "size": "60",
@@ -46,7 +46,7 @@
                             "items": [
                                 {
                                     "@type": "FactGroup",
-                                    "items": [
+                                    "facts": [
                                         {
                                             "name": "Open",
                                             "value": "62.24"

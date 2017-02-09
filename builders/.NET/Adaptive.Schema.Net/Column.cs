@@ -13,7 +13,9 @@ namespace Adaptive.Schema.Net
     {
         public Column() { }
 
-        // ISSUE Number?  I thought we had "Auto" and stuff..
-        public int Weight { get; set; }
+        ///// <summary>
+        ///// Size which is either Auto|Stretch|Small|Medium|Large| or a number
+        ///// </summary>
+        //public string Size { get; set; }
     }
 }

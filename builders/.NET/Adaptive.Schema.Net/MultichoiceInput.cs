@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Adaptive.Schema.Net
 {
@@ -10,9 +11,9 @@ namespace Adaptive.Schema.Net
     {
         public MultichoiceInput()
         {
-            this.Size = Size.Medium;
         }
 
-        public List<Choice> Items { get; set; } = new List<Choice>();
+        [JsonRequired]
+        public List<Choice> Choices { get; set; } = new List<Choice>();
     }
 }
