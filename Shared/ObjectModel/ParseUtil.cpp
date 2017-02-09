@@ -19,6 +19,7 @@ void ParseUtil::ExpectString(const Json::Value& json)
     }
 }
 
+// TODO: Remove? This code path might not be desirable going forward depending on how we decide to support forward compat. Task 10893205
 std::string ParseUtil::GetTypeAsString(const Json::Value& json)
 {
     std::string typeKey = "@type";
