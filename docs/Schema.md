@@ -66,7 +66,7 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 | **text** | string | The actual text to display |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
-## Image Object
+## Image 
 
 *Extends [CardElement](#cardelement)*
 
@@ -143,7 +143,7 @@ The Container is a CardElement which contains a list of CardElements that are lo
 | **backgroundColor** | string | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
 | **items** |  [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
 | **actions** | [Action](#action)[] | Actions associated with this container |
-| **seperator** | [SeperationStyle](#seperationstyle) | visually seperate this container from preiovus or pending containers (**before**, **after**, **both**) |
+| **separator** | [SeparationStyle](#separationstyle) | visually separate this container from preiovus or pending containers (**before**, **after**, **both**) |
 
 ## ColumnGroup 
 *Extends [CardElement](#cardelement)*
@@ -330,14 +330,14 @@ Controls the way Image elements are displayed.
 | **normal** | The image is displayed within a rectangle. |
 | **person** | The image is cropped to a circle, a common way to represent people photos. |
 
-## SeperationStyle
-Controls the seperation style for the current container
+## SeparationStyle
+Controls the separation style for the current container
 
 | Value | Meaning |
 |---|---|
-| **before** | seperate the current container from the previous container |
-| **after** | seperate the current container from the following container |
-| **both** | seperate the current container from the previous and following container |
+| **before** | separate the current container from the previous container |
+| **after** | separate the current container from the following container |
+| **both** | separate the current container from the previous and following container |
 
 ## TextInputStyle
 Style hint for [TextInput](#textinput).
