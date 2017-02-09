@@ -3,12 +3,14 @@ AdaptiveCard is top level object which represents a card
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"AdaptiveCard"** |
 | **body** | [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
 | **actions** |[Action](#action)[]| Actions |
 
 # CardElements
+
 ## CardElement
-CardElement is the base type for all elements that can be used to define an Adaptive Card.
+CardElement is the base type for all elements that can be used to define an Adaptive Card, it cannot be added by itself
 
 | Property | Type | Description |
 |---|---|---|
@@ -23,6 +25,7 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"TextBlock"** |
 | **textSize** | [TextSize](#textsize) | The size of the text |
 | **textWeight** | [TextWeight](#textweight) | The weight of the text |
 | **textColor** | [TextColor](#textcolor) | The color of the text |
@@ -31,12 +34,14 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ## Image Object
+
 *Extends [CardElement](#cardelement)*
 
 The Image element allows for the inclusion of images in an Adaptive Card.
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"Image"** |
 | **url** | string | The URL to the image. |
 | **style** | [ImageStyle](#imagestyle) | The style in which the image is displayed. |
 
@@ -47,6 +52,7 @@ The ImageGallery allows for the inclusion of a collection images like a photogal
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"ImageGallery"** |
 | **images**| Image[] | Array of Image objects |
 | **size** | [Size](#size) | Specifies the horizontal size of each image in the gallery. |
 
@@ -57,6 +63,7 @@ The FactGroup element makes it simple to display a se  ries of "facts" (e.g. nam
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"FactGroup"** |
 | **facts** | array of [Fact](#fact object) | The facts to be displayed. |
 
 ### Fact object
@@ -74,6 +81,7 @@ Represents one "fact" in a [FactGroup](#factgroup) element.
 The column group element adds the ability to have a set of coulmn objects.
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"ColumnGroup"** |
 | **columns** | Column[] | array of columns (each a container of elements)  |
 
 ## Container 
@@ -82,6 +90,7 @@ The Container is a CardElement which contains a list of CardElements that are lo
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"Container"** |
 | **backgroundImageUrl** | string | The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained. |
 | **backgroundColor** | string | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
 | **items** |  [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
@@ -95,13 +104,17 @@ A Column is a container which contains a list of cardElements that are logically
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"Column"** |
 | **weight** | string | The weight to apply to this column |
 
-## Input
+## InputBase
 *Extends [CardElement](#cardelement)*
 
-Input is used as part of a container to collect information from a user. NOTE: You need to define an SubmitAction or HttpAction to
-gather the information from input and do something with it.
+Input is a base CardElement which describes shared properties for input to collect information from a user. 
+
+>NOTE: You cannot add an Input directly, only the derived types.
+
+>NOTE: You need to define an SubmitAction or HttpAction to gather the information from input and do something with it.
 
 | Property | Type | Description |
 |---|---|---|
@@ -117,6 +130,7 @@ TextInput collects text from the user
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"TextInput"** |
 | **style**| [TextInputStyle](#textInputStyle) | Hint of style of input, if client doesn't support the style it will become simple text input |
 | **isMultiline** | bool | true to collect multiple lines of text (default is false)|
 | **maxLength** | number | hint of maximum length characters to collect *(may be ignored by some clients)* |
@@ -130,6 +144,7 @@ Shows an array of Choice objects
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"ChoiceInput"** |
 | **style** | [ChoiceInputStyle](#choiceInputStyle) | Style for choice | 
 | **multiSelect** | boolean | allow multiple choices to be selected |
 | **choices** | Choice[] | the choice options |
@@ -149,6 +164,8 @@ Actions define clickable targets that do something.
 ## Action
 Base class for all actions
 
+> NOTE: You cannot add a Action directly, you can only add derived action 
+
 | Property | Type | Description |
 |---|---|---|
 | **title** | string | Label for button or link that represents this action |
@@ -161,6 +178,7 @@ with embedded web browser.
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"OpenUrlAction"** |
 | **url** | url to display |
 
 ## HttpAction
@@ -172,6 +190,7 @@ to an arbitrary url.
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"HttpAction"** |
 | **url** | url to use (can have binding information) |
 | **method** | string | Http method (Example: POST) |
 | **headers** | object | Object which represents headers Example: { "content-type":"application/json" }  |
@@ -184,6 +203,7 @@ ShowCard defines an inline AdaptiveCard which is shown to the user when it is cl
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"ShowCardAction"** |
 | **card** | [AdaptiveCard](#adaptivecard) | inline card defining the card to be shown when this action is invoked. It is up to client to decide how to show this inline card. |
 
 ## SubmitAction
@@ -195,12 +215,17 @@ For example: With BotFramework bots the client would send an activity through th
 
 | Property | Type | Description |
 |---|---|---|
+| **type**| string | **"SubmitAction"** |
 | **data** | object | initial data that input fields will be combined with.  This is essentially 'hidden' properties |
 
 ## CancelAction
 *Extends [Action](#action)*
 
 When CancelAction is invoked it resets any input that is in scope, and closes a card if it is part of a card which was shown via ShowCardAction.
+
+| Property | Type | Description |
+|---|---|---|
+| **type**| string | **"CancelAction"** |
 
 
 # Enumerations
