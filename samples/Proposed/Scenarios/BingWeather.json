@@ -17,8 +17,9 @@
 			"items": [
 				{
 					"@type": "ColumnGroup",
-					"items": [
+					"columns": [
 						{
+							"@type": "Column",
 							"size": "auto",
 							"items": [
 								{
@@ -30,11 +31,12 @@
 							]
 						},
 						{
+							"@type": "Column",
 							"size": "auto",
 							"items": [
 								{
 									"@type": "ColumnGroup",
-									"items": [
+									"columns": [
 										{
 											"@type": "Column",
 											"size": "auto",
@@ -67,6 +69,7 @@
 							]
 						},
 						{
+							"@type": "Column",
 							"size": "auto",
 							"items": [
 								{

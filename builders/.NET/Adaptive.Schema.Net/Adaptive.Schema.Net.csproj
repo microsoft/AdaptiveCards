@@ -34,20 +34,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Action.cs" />
+    <Compile Include="ActionButton.cs" />
+    <Compile Include="ActionCard.cs" />
     <Compile Include="AdaptiveCard.cs" />
     <Compile Include="CardElement.cs" />
     <Compile Include="Choice.cs" />
     <Compile Include="Column.cs" />
+    <Compile Include="ActionGroup.cs" />
     <Compile Include="ColumnGroup.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="DateInput.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="ExternalAction.cs" />
     <Compile Include="Fact.cs" />
     <Compile Include="FactGroup.cs" />
+    <Compile Include="HttpPOST.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="ImageGallery.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="MultichoiceInput.cs" />
+    <Compile Include="OpenUriAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seperator.cs" />
     <Compile Include="TextBlock.cs" />

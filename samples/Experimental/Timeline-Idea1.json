@@ -12,7 +12,7 @@
             },
             {
                 "@type": "FactGroup",
-                "items": [
+                "facts": [
                     {
                         "name": "Work item type:",
                         "value": "Bug"

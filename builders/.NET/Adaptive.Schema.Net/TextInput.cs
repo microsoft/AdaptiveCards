@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Adaptive.Schema.Net
 {
@@ -10,11 +11,12 @@ namespace Adaptive.Schema.Net
     {
         public TextInput()
         {
-            this.Size = Size.Stretch;
         }
 
-        public int MaxLength { get; set; } = int.MaxValue;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public int? MaxLength { get; set; }
 
-        public bool IsMultiline { get; set; } = false;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool? IsMultiline { get; set; }
     }
 }
