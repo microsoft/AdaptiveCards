@@ -94,8 +94,8 @@ export class ShowCardAction extends Action {
             // TODO: UNCOMMENT THIS
             // TODO: This should inspect the @type to construct the right type of card
 
-            // var renderer = new Renderer();
-            // this.card = renderer.parseCard(json["card"]);
+            var renderer = new Renderer();
+            this.card = renderer.parseCard(json["card"]);
         }
     }
 }

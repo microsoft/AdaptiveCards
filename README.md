@@ -38,7 +38,7 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 
 * The official Adaptive Card JSON schema (see /schema) *(coming soon)*
 * Documentation of the schema (see /docs)
-* An Interactive Visualizer to preview Card payloads
+* An [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards/) to preview and design Card payloads
 * Sample Cards (see /samples)
 * Card Renderer libraries for multiple platforms (HTML, iOS, Android, .NET) *(more info on this effort coming soon)*
 * Card Builders for .NET and Node *(coming soon)*

@@ -10,6 +10,7 @@ import { SkypeContainer } from "./containers/SkypeContainer";
 import { SpeechContainer } from "./containers/SpeechContainer";
 import { TeamsConnectorContainer } from "./containers/TeamsConnectorContainer";
 import { ToastContainer } from "./containers/ToastContainer";
+import { CortanaCarContainer } from "./containers/CortanaCarContainer";
 
 import * as ace from "brace";
 import "brace/mode/json";
@@ -188,6 +189,11 @@ function setupContainerPicker() {
         new HostContainerOption(
             "Bing",
             new BingContainer(285, 150, "./../../css/bing.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Cortana Car",
+            new CortanaCarContainer("./../../css/cortanaCar.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
