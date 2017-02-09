@@ -25,8 +25,6 @@ HRESULT HStringToUTF8(const HSTRING& in, string& out)
     {
         return E_INVALIDARG;
     }
-    HString wrapper;
-    RETURN_IF_FAILED(wrapper.Set(in));
     wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
     out = converter.to_bytes(WindowsGetStringRawBuffer(in, nullptr));
     return S_OK;

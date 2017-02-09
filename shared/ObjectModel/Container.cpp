@@ -62,13 +62,13 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
     std::vector<std::shared_ptr<BaseCardElement>> elements(elementArray.size());
     std::transform(elementArray.begin(), elementArray.end(), elements.begin(), [&cardElementParsers](const Json::Value& cur)
     {
-        // Get the body type
-        CardElementType curBodyType = ParseUtil::TryGetCardElementType(cur);
+        // Get the element's type
+        CardElementType curElementType = ParseUtil::TryGetCardElementType(cur);
 
-        if (curBodyType != CardElementType::Unsupported)
+        if (curElementType != CardElementType::Unsupported)
         {
-            // Use the parser that maps to the bodytype
-            std::shared_ptr<BaseCardElement> cardElement = cardElementParsers[curBodyType](cur);
+            // Use the parser that maps to the type
+            std::shared_ptr<BaseCardElement> cardElement = cardElementParsers[curElementType](cur);
             return cardElement;
         }
         return std::shared_ptr<BaseCardElement>();
