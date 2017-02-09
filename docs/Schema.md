@@ -1,5 +1,6 @@
 # AdaptiveCard
-AdaptiveCard is top level object which represents the cardelement
+AdaptiveCard is top level object which represents a card 
+
 | Property | Type | Description |
 |---|---|---|
 | **body** | [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
