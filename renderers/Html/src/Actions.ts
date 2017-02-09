@@ -1,5 +1,7 @@
-import { CardElement, Container, Size, ICard, AdaptiveCard } from "./AdaptiveCard";
+import { CardElement, ICard, IContainer } from "./Interfaces";
+import { Renderer } from "./Renderer";
 import { InputBase } from "./Inputs";
+import { Size } from "./Enums";
 import * as Utils from "./Utils";
 
 
@@ -33,10 +35,6 @@ export abstract class Action {
 
     parse(json: any) {
         this.title = json["title"];
-    }
-
-    renderUi(container: Container, requiresTopSpacer: boolean = false): HTMLElement {
-        return null;
     }
 
     get hasUi(): boolean {
@@ -93,9 +91,11 @@ export class ShowCardAction extends Action {
         super.parse(json);
 
         if (json["card"] != undefined) {
+            // TODO: UNCOMMENT THIS
             // TODO: This should inspect the @type to construct the right type of card
-            this.card = new AdaptiveCard();
-            this.card.parse(json["card"]);
+
+            // var renderer = new Renderer();
+            // this.card = renderer.parseCard(json["card"]);
         }
     }
 }
@@ -222,10 +222,11 @@ export class ActionButton {
     }
 }
 
+
 export class ActionBar extends CardElement {
     static buttonStyle: ActionButtonStyle = ActionButtonStyle.Push;
     
-    constructor(container: Container) {
+    constructor(container: IContainer) {
         super(container);
     }
 
@@ -234,61 +235,61 @@ export class ActionBar extends CardElement {
     private _actions: Array<Action> = [];
     private _expandedAction: Action = null;
 
-    private hideActionCardPane() {
-        this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.padding = "0px";
-        this._actionCardContainer.style.marginTop = "0px";
+    // private hideActionCardPane() {
+    //     this._actionCardContainer.innerHTML = '';
+    //     this._actionCardContainer.style.padding = "0px";
+    //     this._actionCardContainer.style.marginTop = "0px";
 
-        this.container.showBottomSpacer(this);
-    }
+    //     this.container.showBottomSpacer(this);
+    // }
 
-    private showActionCardPane(action: Action) {
-        this.container.hideBottomSpacer(this);
+    // private showActionCardPane(action: Action) {
+    //     this.container.hideBottomSpacer(this);
 
-        this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.padding = null;
-        this._actionCardContainer.style.marginTop = this._actions.length > 1 ? null : "0px";
+    //     this._actionCardContainer.innerHTML = '';
+    //     this._actionCardContainer.style.padding = null;
+    //     this._actionCardContainer.style.marginTop = this._actions.length > 1 ? null : "0px";
 
-        Utils.appendChild(
-            this._actionCardContainer,
-            action.renderUi(this.container, this._actions.length > 1));
-    }
+    //     Utils.appendChild(
+    //         this._actionCardContainer,
+    //         action.renderUi(this.container, this._actions.length > 1));
+    // }
 
-    private actionClicked(actionButton: ActionButton) {
-        if (!actionButton.action.hasUi) {
-            for (var i = 0; i < this._actionButtons.length; i++) {
-                this._actionButtons[i].state = ActionButtonState.Normal;
-            }
+    // private actionClicked(actionButton: ActionButton) {
+    //     if (!actionButton.action.hasUi) {
+    //         for (var i = 0; i < this._actionButtons.length; i++) {
+    //             this._actionButtons[i].state = ActionButtonState.Normal;
+    //         }
 
-            this.hideActionCardPane();
+    //         this.hideActionCardPane();
 
-            alert("Executing action " + actionButton.text)
-        }
-        else {
-            if (actionButton.action === this._expandedAction) {
-                for (var i = 0; i < this._actionButtons.length; i++) {
-                    this._actionButtons[i].state = ActionButtonState.Normal;
-                }
+    //         alert("Executing action " + actionButton.text)
+    //     }
+    //     else {
+    //         if (actionButton.action === this._expandedAction) {
+    //             for (var i = 0; i < this._actionButtons.length; i++) {
+    //                 this._actionButtons[i].state = ActionButtonState.Normal;
+    //             }
 
-                this._expandedAction = null;
+    //             this._expandedAction = null;
 
-                this.hideActionCardPane();
-            }
-            else {
-                for (var i = 0; i < this._actionButtons.length; i++) {
-                    if (this._actionButtons[i] !== actionButton) {
-                        this._actionButtons[i].state = ActionButtonState.Subdued;
-                    }
-                }
+    //             this.hideActionCardPane();
+    //         }
+    //         else {
+    //             for (var i = 0; i < this._actionButtons.length; i++) {
+    //                 if (this._actionButtons[i] !== actionButton) {
+    //                     this._actionButtons[i].state = ActionButtonState.Subdued;
+    //                 }
+    //             }
 
-                actionButton.state = ActionButtonState.Expanded;
+    //             actionButton.state = ActionButtonState.Expanded;
 
-                this._expandedAction = actionButton.action;
+    //             this._expandedAction = actionButton.action;
 
-                this.showActionCardPane(actionButton.action);
-            }
-        }
-    }
+    //             this.showActionCardPane(actionButton.action);
+    //         }
+    //     }
+    // }
 
     get actions(): Array<Action> {
         return this._actions;
@@ -346,7 +347,7 @@ export class ActionBar extends CardElement {
 
                 actionButton.onClick.subscribe(
                     (ab, args) => {
-                        this.actionClicked(ab);
+                        //this.actionClicked(ab);
                     });
 
                 this._actionButtons.push(actionButton);

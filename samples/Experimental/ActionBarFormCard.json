@@ -21,14 +21,14 @@
             "@type": "HttpAction",
             "method": "POST",
             "title": "Set due date",
-            "uri": "http://",
-            "httpHeaders": [
+            "uri": "http://mysite/approve/{reportId}/",
+            "headers": [
                 {
                     "content-type": "application/json"
                 }
             ],
             //Move this to HttpPost 
-            "postBody": "{Data binding}"
+            "postBody": "TweetId={reportId}"
         },
         {
             "@type": "ShowCardAction",

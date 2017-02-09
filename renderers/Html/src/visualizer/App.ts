@@ -151,11 +151,11 @@ function setupEditor() {
             editor.session.setValue(cachedPayload);
         }
         else {
-            // editor.session.setValue(Constants.defaultPayload);
+             editor.session.setValue(Constants.defaultPayload);
         }
     }
     catch (e) {
-        // editor.session.setValue(Constants.defaultPayload);
+         editor.session.setValue(Constants.defaultPayload);
     }
 
 }
@@ -165,34 +165,34 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Outlook Connector",
-            new OutlookConnectorContainer("red", "./css/outlookConnectorCard.css")));
+            new OutlookConnectorContainer("red", "./../../css/outlookConnectorCard.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Microsoft Teams Connector",
-            new TeamsConnectorContainer("./css/teamsConnectorCard.css")));
+            new TeamsConnectorContainer("./../../css/teamsConnectorCard.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Windows Toast Notification",
-            new ToastContainer(362, "./css/toast.css")));
+            new ToastContainer(362, "./../../css/toast.css")));
     hostContainerOptions.push(
         new HostContainerOption(
             "Large Live Tile",
-            new LiveTileContainer(310, 310, "./css/liveTile.css")));
+            new LiveTileContainer(310, 310, "./../../css/liveTile.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Skype",
-            new SkypeContainer("./css/skypeCard.css")));
+            new SkypeContainer("./../../css/skypeCard.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Bing",
-            new BingContainer(285, 150, "./css/bing.css")));
+            new BingContainer(285, 150, "./../../css/bing.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Speech",
-            new SpeechContainer("./css/bing.css")));
+            new SpeechContainer("./../../css/bing.css")));
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", () => {
@@ -239,13 +239,13 @@ window.onload = () => {
 
     setupEditor();
 
-    setupContainerPicker();
+     setupContainerPicker();
 
     setupFilePicker();
 
     updateStyleSheet();
 
-    renderCard();
+     renderCard();
 
     // handle Back and Forward after the Container app drop down is changed
     window.addEventListener('popstate', function (e) {

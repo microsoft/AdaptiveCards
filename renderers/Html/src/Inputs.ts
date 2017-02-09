@@ -1,5 +1,6 @@
 import * as Utils from "./Utils";
-import { CardElement, Container, Size } from "./AdaptiveCard";
+import { Size } from "./Enums";
+import { IContainer, CardElement } from "./Interfaces";
 
 export abstract class InputBase extends CardElement {
     id: string;
@@ -45,7 +46,7 @@ export class TextInput extends InputBase {
     maxLength: number;
     isMultiline: boolean;
 
-    constructor(container: Container) {
+    constructor(container: IContainer) {
         super(container);
 
         this.size = Size.Stretch;
@@ -94,7 +95,7 @@ export class ToggleInput extends InputBase {
 export class MultichoiceInput extends InputBase {
     private _choices: Array<Choice> = [];
 
-    constructor(container: Container) {
+    constructor(container: IContainer) {
         super(container);
 
         this.size = Size.Medium;
@@ -135,7 +136,7 @@ export class MultichoiceInput extends InputBase {
 export class DateInput extends InputBase{
     includeTime: boolean;
 
-    constructor(container: Container) {
+    constructor(container: IContainer) {
         super(container);
 
         this.size = Size.Medium;
