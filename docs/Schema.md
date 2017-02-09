@@ -53,7 +53,7 @@ The ImageGallery allows for the inclusion of a collection images like a photogal
 | Property | Type | Description |
 |---|---|---|
 | **type**| string | **"ImageGallery"** |
-| **images**| Image[] | Array of Image objects |
+| **images**| [Image](#image)[] | Array of Image objects |
 | **size** | [Size](#size) | Specifies the horizontal size of each image in the gallery. |
 
 ## FactGroup 
@@ -64,9 +64,9 @@ The FactGroup element makes it simple to display a se  ries of "facts" (e.g. nam
 | Property | Type | Description |
 |---|---|---|
 | **type**| string | **"FactGroup"** |
-| **facts** | array of [Fact](#fact object) | The facts to be displayed. |
+| **facts** | [Fact](#fact)[] | The facts to be displayed. |
 
-### Fact object
+### Fact 
 Represents one "fact" in a [FactGroup](#factgroup) element.
 
 | Property | Type | Description |
@@ -95,7 +95,7 @@ The Container is a CardElement which contains a list of CardElements that are lo
 | **backgroundColor** | string | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
 | **items** |  [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
 | **actions** | [Action](#action)[] | Actions associated with this container |
-| **seperator** | [SeperationStyle](#SeperationStyle) | visually seperate this container from preiovus or pending containers (**before**, **after**, **both**) |
+| **seperator** | [SeperationStyle](#seperationstyle) | visually seperate this container from preiovus or pending containers (**before**, **after**, **both**) |
 
 ## Column
 **Extends [Container](#container)**
@@ -131,7 +131,7 @@ TextInput collects text from the user
 | Property | Type | Description |
 |---|---|---|
 | **type**| string | **"TextInput"** |
-| **style**| [TextInputStyle](#textInputStyle) | Hint of style of input, if client doesn't support the style it will become simple text input |
+| **style**| [TextInputStyle](#textinputstyle) | Hint of style of input, if client doesn't support the style it will become simple text input |
 | **isMultiline** | bool | true to collect multiple lines of text (default is false)|
 | **maxLength** | number | hint of maximum length characters to collect *(may be ignored by some clients)* |
 | **min** | string | hint of minimum value *(may be ignored by some clients)*|
@@ -145,7 +145,7 @@ Shows an array of Choice objects
 | Property | Type | Description |
 |---|---|---|
 | **type**| string | **"ChoiceInput"** |
-| **style** | [ChoiceInputStyle](#choiceInputStyle) | Style for choice | 
+| **style** | [ChoiceInputStyle](#choiceinputstyle) | Style for choice | 
 | **multiSelect** | boolean | allow multiple choices to be selected |
 | **choices** | Choice[] | the choice options |
 
@@ -164,7 +164,7 @@ Actions define clickable targets that do something.
 ## Action
 Base class for all actions
 
-> NOTE: You cannot add a Action directly, you can only add derived action 
+> NOTE: You cannot add a Action directly, you can only add derived action types
 
 | Property | Type | Description |
 |---|---|---|
@@ -302,7 +302,7 @@ Controls the seperation style for the current container
 | **both** | seperate the current container from the previous and following container |
 
 ## TextInputStyle
-Style hint for TextInput .
+Style hint for [TextInput](#textinput).
 
 | Value | Meaning |
 |---|---|
@@ -319,7 +319,7 @@ Style hint for TextInput .
 | **week**  | Input is week. **min**, **max** properties expressed as Date may be used by client to help user to select a week via a text box|
 
 ## ChoiceInputStyle
-Style hint for ChoiceInput.
+Style hint for [ChoiceInput](#choiceinput).
 
 | Value | Meaning |
 |---|---|
