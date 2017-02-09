@@ -1,3 +1,29 @@
+# Table of Contents
+
+* Cards
+    * [AdaptiveCard](#adaptivecard) - top level card
+* Card Elements
+    * [TextBlock](#textblock) - text element
+    * [Image](#image) - image element
+    * [ImageGallery](#container) - container of Images
+    * [Container](#container) - logical container of elements
+    * [ColumnGroup](#columngrup) - logical container of columns
+        * [Column](#column) - container of elements
+    * [FactGroup](#factgroup) - container of facts
+        * [Fact](#fact) - fact object
+* Inputs
+    * [TextInput](#textinput) - request text input from user    
+    * [ChoiceInput](#choiceinput) - request user to select one or many choices
+        * [Choice](#choice) - choice object
+* Actions 
+    * [OpenUrlAction](#openurlaction) - action which opens a url either in external browser or embedded browser
+    * [HttpAction](#httpaction) - action which collects input and does raw HTTP call to arbitrary Http endpoint
+    * [SubmitAction](#submitaction) - action which collects input and sends via client appropriate mechanism (it's up to client)
+    * [CancelAction](#cancelaction) - action which resets input fields and if opened card closes the card
+    * [ShowCardAction](#showcardaction) - Action which shows a card to the user
+
+
+
 # AdaptiveCard
 AdaptiveCard is top level object which represents a card 
 
@@ -107,7 +133,9 @@ A Column is a container which contains a list of cardElements that are logically
 | **type**| string | **"Column"** |
 | **weight** | string | The weight to apply to this column |
 
-## InputBase
+# Inputs 
+
+## Input
 *Extends [CardElement](#cardelement)*
 
 Input is a base CardElement which describes shared properties for input to collect information from a user. 
