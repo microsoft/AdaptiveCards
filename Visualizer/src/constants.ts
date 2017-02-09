@@ -72,7 +72,7 @@ export const defaultPayload: string = `
 				{
 				    "@type": "ActionGroup",
 					"speak": "You can set the due date, add a comment or view more information.",
-				    "items": [
+				    "actions": [
                 		{
                 			"@type": "ActionCard",
                 			"name": "Set due date",
