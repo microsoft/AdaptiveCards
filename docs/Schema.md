@@ -1,30 +1,35 @@
 # Table of Contents
 
-* Cards
-    * [AdaptiveCard](#adaptivecard) - top level card
-* Card Elements
-    * [TextBlock](#textblock) - text element
-    * [Image](#image) - image element
-    * [ImageGallery](#container) - container of Images
-    * [Container](#container) - logical container of elements
-    * [ColumnGroup](#columngrup) - logical container of columns
-        * [Column](#column) - container of elements
-    * [FactGroup](#factgroup) - container of facts
-        * [Fact](#fact) - fact object
-* Inputs
-    * [TextInput](#textinput) - request text input from user    
-    * [ChoiceInput](#choiceinput) - request user to select one or many choices
-        * [Choice](#choice) - choice object
-* Actions 
-    * [OpenUrlAction](#openurlaction) - action which opens a url either in external browser or embedded browser
-    * [HttpAction](#httpaction) - action which collects input and does raw HTTP call to arbitrary Http endpoint
-    * [SubmitAction](#submitaction) - action which collects input and sends via client appropriate mechanism (it's up to client)
-    * [CancelAction](#cancelaction) - action which resets input fields and if opened card closes the card
-    * [ShowCardAction](#showcardaction) - Action which shows a card to the user
+[Cards](#cards)
+* [AdaptiveCard](#adaptivecard) - top level card
+
+[Elements](#elements)
+* [TextBlock](#textblock) - text element
+* [Image](#image) - image element
+* [TextInput](#textinput) - get text input from user    
+* [ChoiceInput](#choiceinput) - get choice input from user
+    * [Choice](#choice) - choice object
+
+[Containers](#containers) 
+* [Container](#container) - logical container of elements
+* [ColumnGroup](#columngrup) - logical container of columns
+    * [Column](#column) - container of elements
+* [ImageGallery](#container) - container of Images
+* [FactGroup](#factgroup) - container of facts
+    * [Fact](#fact) - fact object
+
+[Actions](#actions)
+* [OpenUrlAction](#openurlaction) - defines action which opens a url either in external browser or embedded browser
+* [HttpAction](#httpaction) - defines action which collects input and does raw HTTP call to arbitrary Http endpoint
+* [SubmitAction](#submitaction) - defines action which collects input and sends via client appropriate mechanism (it's up to client)
+* [CancelAction](#cancelaction) - defines action which resets input fields and if opened card closes the card
+* [ShowCardAction](#showcardaction) - defines action which shows a card to the user
 
 
 
-# AdaptiveCard
+# Cards
+
+## AdaptiveCard
 AdaptiveCard is top level object which represents a card 
 
 | Property | Type | Description |
@@ -33,10 +38,12 @@ AdaptiveCard is top level object which represents a card
 | **body** | [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
 | **actions** |[Action](#action)[]| Actions |
 
-# CardElements
+# Elements
 
 ## CardElement
-CardElement is the base type for all elements that can be used to define an Adaptive Card, it cannot be added by itself
+CardElement is the base type for all elements that can be used to define an Adaptive Card
+
+> it cannot be added by itself, you can only add derived types
 
 | Property | Type | Description |
 |---|---|---|
@@ -71,69 +78,6 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 | **url** | string | The URL to the image. |
 | **style** | [ImageStyle](#imagestyle) | The style in which the image is displayed. |
 
-## ImageGallery 
-*Extends [CardElement](#cardelement)*
-
-The ImageGallery allows for the inclusion of a collection images like a photogallery.
-
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"ImageGallery"** |
-| **images**| [Image](#image)[] | Array of Image objects |
-| **size** | [Size](#size) | Specifies the horizontal size of each image in the gallery. |
-
-## FactGroup 
-*Extends [CardElement](#cardelement)*
-
-The FactGroup element makes it simple to display a se  ries of "facts" (e.g. name/value pairs) in a tabular form.
-
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"FactGroup"** |
-| **facts** | [Fact](#fact)[] | The facts to be displayed. |
-
-### Fact 
-Represents one "fact" in a [FactGroup](#factgroup) element.
-
-| Property | Type | Description |
-|---|---|---|
-| **name** | string | The fact's name. |
-| **value** | string | The fact's value. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
-
-## ColumnGroup 
-*Extends [CardElement](#cardelement)*
-
-The column group element adds the ability to have a set of coulmn objects.
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"ColumnGroup"** |
-| **columns** | Column[] | array of columns (each a container of elements)  |
-
-## Container 
-*Extends [CardElement](#cardelement)*
-The Container is a CardElement which contains a list of CardElements that are logically grouped.
-
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"Container"** |
-| **backgroundImageUrl** | string | The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained. |
-| **backgroundColor** | string | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
-| **items** |  [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
-| **actions** | [Action](#action)[] | Actions associated with this container |
-| **seperator** | [SeperationStyle](#seperationstyle) | visually seperate this container from preiovus or pending containers (**before**, **after**, **both**) |
-
-## Column
-**Extends [Container](#container)**
-
-A Column is a container which contains a list of cardElements that are logically grouped.
-
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"Column"** |
-| **weight** | string | The weight to apply to this column |
-
-# Inputs 
 
 ## Input
 *Extends [CardElement](#cardelement)*
@@ -185,6 +129,72 @@ Represents a single Choice
 | **display** | string | The display text for a choice|
 | **value** | string | the raw value for the choice|
 | **isSelected** | bool | is the choice selected |
+
+# Containers
+
+## Container 
+*Extends [CardElement](#cardelement)*
+The Container is a CardElement which contains a list of CardElements that are logically grouped.
+
+| Property | Type | Description |
+|---|---|---|
+| **type**| string | **"Container"** |
+| **backgroundImageUrl** | string | The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained. |
+| **backgroundColor** | string | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
+| **items** |  [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
+| **actions** | [Action](#action)[] | Actions associated with this container |
+| **seperator** | [SeperationStyle](#seperationstyle) | visually seperate this container from preiovus or pending containers (**before**, **after**, **both**) |
+
+## ColumnGroup 
+*Extends [CardElement](#cardelement)*
+
+The column group element adds the ability to have a set of coulmn objects.
+| Property | Type | Description |
+|---|---|---|
+| **type**| string | **"ColumnGroup"** |
+| **columns** | Column[] | array of columns (each a container of elements)  |
+
+## Column
+**Extends [Container](#container)**
+
+A Column is a container which contains a list of cardElements that are logically grouped.
+
+| Property | Type | Description |
+|---|---|---|
+| **type**| string | **"Column"** |
+| **weight** | string | The weight to apply to this column |
+
+
+## ImageGallery 
+*Extends [CardElement](#cardelement)*
+
+The ImageGallery allows for the inclusion of a collection images like a photogallery.
+
+| Property | Type | Description |
+|---|---|---|
+| **type**| string | **"ImageGallery"** |
+| **images**| [Image](#image)[] | Array of Image objects |
+| **size** | [Size](#size) | Specifies the horizontal size of each image in the gallery. |
+
+## FactGroup 
+*Extends [CardElement](#cardelement)*
+
+The FactGroup element makes it simple to display a se  ries of "facts" (e.g. name/value pairs) in a tabular form.
+
+| Property | Type | Description |
+|---|---|---|
+| **type**| string | **"FactGroup"** |
+| **facts** | [Fact](#fact)[] | The facts to be displayed. |
+
+### Fact 
+Represents one "fact" in a [FactGroup](#factgroup) element.
+
+| Property | Type | Description |
+|---|---|---|
+| **name** | string | The fact's name. |
+| **value** | string | The fact's value. |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
+
 
 # Actions
 Actions define clickable targets that do something.
