@@ -27,14 +27,20 @@ std::string ParseUtil::GetTypeAsString(const Json::Value& json)
         throw AdaptiveCardParseException("The JSON element is missing the following value: " + typeKey);
     }
 
-    return json.get(typeKey, Json::Value("")).asString();
+    return json.get(typeKey, Json::Value()).asString();
 }
 
 std::string ParseUtil::TryGetTypeAsString(const Json::Value& json)
 {
-    std::string typeKey = "@type";
+    try
+    {
+        return GetTypeAsString(json);
+    }
+    catch (const AdaptiveCardParseException&)
+    {
+        return "";
+    }
 
-    return json.get(typeKey, Json::Value()).asString();
 }
 
 std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey key)
@@ -97,12 +103,11 @@ CardElementType ParseUtil::GetCardElementType(const Json::Value& json)
 
 CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
 {
-    std::string actualType = TryGetTypeAsString(json);
     try
     {
-        return CardElementTypeFromString(actualType);
+        return GetCardElementType(json);
     }
-    catch (const std::out_of_range&)
+    catch (const AdaptiveCardParseException&)
     {
         return CardElementType::Unsupported;
     }
