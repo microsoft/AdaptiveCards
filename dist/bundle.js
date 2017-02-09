@@ -204,9 +204,10 @@
 	var LiveTileContainer = (function (_super) {
 	    __extends(LiveTileContainer, _super);
 	    function LiveTileContainer(width, height, styleSheet) {
-	        _super.call(this, styleSheet);
-	        this._width = width;
-	        this._height = height;
+	        var _this = _super.call(this, styleSheet) || this;
+	        _this._width = width;
+	        _this._height = height;
+	        return _this;
 	    }
 	    LiveTileContainer.prototype.render = function (card) {
 	        var element = document.createElement("div");
@@ -224,16 +225,17 @@
 	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
 	        return hostDiv;
 	    };
-	    LiveTileContainer.backgroundColor = "#0078D7";
-	    LiveTileContainer.textColor = adaptiveCard_1.TextColor.Light;
 	    return LiveTileContainer;
 	}(HostContainer));
+	LiveTileContainer.backgroundColor = "#0078D7";
+	LiveTileContainer.textColor = adaptiveCard_1.TextColor.Light;
 	var BingContainer = (function (_super) {
 	    __extends(BingContainer, _super);
 	    function BingContainer(width, height, styleSheet) {
-	        _super.call(this, styleSheet);
-	        this._width = width;
-	        this._height = height;
+	        var _this = _super.call(this, styleSheet) || this;
+	        _this._width = width;
+	        _this._height = height;
+	        return _this;
 	    }
 	    BingContainer.prototype.render = function (card) {
 	        var element = document.createElement("div");
@@ -251,15 +253,16 @@
 	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
 	        return hostDiv;
 	    };
-	    BingContainer.backgroundColor = "#fff";
-	    BingContainer.textColor = adaptiveCard_1.TextColor.Dark;
 	    return BingContainer;
 	}(HostContainer));
+	BingContainer.backgroundColor = "#fff";
+	BingContainer.textColor = adaptiveCard_1.TextColor.Dark;
 	var ToastContainer = (function (_super) {
 	    __extends(ToastContainer, _super);
 	    function ToastContainer(width, styleSheet) {
-	        _super.call(this, styleSheet);
-	        this._width = width;
+	        var _this = _super.call(this, styleSheet) || this;
+	        _this._width = width;
+	        return _this;
 	    }
 	    ToastContainer.prototype.render = function (card) {
 	        var element = document.createElement("div");
@@ -297,14 +300,14 @@
 	        adaptiveCard_1.appendChild(hostDiv, _super.prototype.render.call(this, card));
 	        return hostDiv;
 	    };
-	    ToastContainer.backgroundColor = "#1F1F1F";
-	    ToastContainer.textColor = adaptiveCard_1.TextColor.Light;
 	    return ToastContainer;
 	}(HostContainer));
+	ToastContainer.backgroundColor = "#1F1F1F";
+	ToastContainer.textColor = adaptiveCard_1.TextColor.Light;
 	var ConnectorContainer = (function (_super) {
 	    __extends(ConnectorContainer, _super);
 	    function ConnectorContainer() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    ConnectorContainer.prototype.renderHeader = function (card) {
 	        var headerElement = null;
@@ -337,8 +340,9 @@
 	var OutlookConnectorContainer = (function (_super) {
 	    __extends(OutlookConnectorContainer, _super);
 	    function OutlookConnectorContainer(themeColor, styleSheet) {
-	        _super.call(this, styleSheet);
-	        this._themeColor = themeColor;
+	        var _this = _super.call(this, styleSheet) || this;
+	        _this._themeColor = themeColor;
+	        return _this;
 	    }
 	    OutlookConnectorContainer.prototype.render = function (card) {
 	        var element = document.createElement("div");
@@ -368,7 +372,7 @@
 	var TeamsConnectorContainer = (function (_super) {
 	    __extends(TeamsConnectorContainer, _super);
 	    function TeamsConnectorContainer() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    TeamsConnectorContainer.prototype.render = function (card) {
 	        var element = document.createElement("div");
@@ -393,7 +397,7 @@
 	var SkypeCardContainer = (function (_super) {
 	    __extends(SkypeCardContainer, _super);
 	    function SkypeCardContainer() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    SkypeCardContainer.prototype.render = function (card) {
 	        var element = document.createElement("div");
@@ -421,7 +425,7 @@
 	var CortanaCarContainer = (function (_super) {
 	    __extends(CortanaCarContainer, _super);
 	    function CortanaCarContainer() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    CortanaCarContainer.prototype.render = function (card) {
 	        var element = document.createElement("div");
@@ -445,7 +449,7 @@
 	var SpeechContainer = (function (_super) {
 	    __extends(SpeechContainer, _super);
 	    function SpeechContainer() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    SpeechContainer.prototype.render = function (card) {
 	        var hostDiv = document.createElement("div");
@@ -639,28 +643,29 @@
 	/*
 	Strongly typed events from https://keestalkstech.com/2016/03/strongly-typed-event-handlers-in-typescript-part-1/
 	*/
+	var Size;
 	(function (Size) {
 	    Size[Size["Auto"] = 0] = "Auto";
 	    Size[Size["Stretch"] = 1] = "Stretch";
 	    Size[Size["Small"] = 2] = "Small";
 	    Size[Size["Medium"] = 3] = "Medium";
 	    Size[Size["Large"] = 4] = "Large";
-	})(exports.Size || (exports.Size = {}));
-	var Size = exports.Size;
+	})(Size = exports.Size || (exports.Size = {}));
+	var TextSize;
 	(function (TextSize) {
 	    TextSize[TextSize["Small"] = 0] = "Small";
 	    TextSize[TextSize["Normal"] = 1] = "Normal";
 	    TextSize[TextSize["Medium"] = 2] = "Medium";
 	    TextSize[TextSize["Large"] = 3] = "Large";
 	    TextSize[TextSize["ExtraLarge"] = 4] = "ExtraLarge";
-	})(exports.TextSize || (exports.TextSize = {}));
-	var TextSize = exports.TextSize;
+	})(TextSize = exports.TextSize || (exports.TextSize = {}));
+	var TextWeight;
 	(function (TextWeight) {
 	    TextWeight[TextWeight["Lighter"] = 0] = "Lighter";
 	    TextWeight[TextWeight["Normal"] = 1] = "Normal";
 	    TextWeight[TextWeight["Bolder"] = 2] = "Bolder";
-	})(exports.TextWeight || (exports.TextWeight = {}));
-	var TextWeight = exports.TextWeight;
+	})(TextWeight = exports.TextWeight || (exports.TextWeight = {}));
+	var TextColor;
 	(function (TextColor) {
 	    TextColor[TextColor["Default"] = 0] = "Default";
 	    TextColor[TextColor["Dark"] = 1] = "Dark";
@@ -669,19 +674,18 @@
 	    TextColor[TextColor["Good"] = 4] = "Good";
 	    TextColor[TextColor["Warning"] = 5] = "Warning";
 	    TextColor[TextColor["Attention"] = 6] = "Attention";
-	})(exports.TextColor || (exports.TextColor = {}));
-	var TextColor = exports.TextColor;
+	})(TextColor = exports.TextColor || (exports.TextColor = {}));
+	var HorizontalAlignment;
 	(function (HorizontalAlignment) {
 	    HorizontalAlignment[HorizontalAlignment["Left"] = 0] = "Left";
 	    HorizontalAlignment[HorizontalAlignment["Center"] = 1] = "Center";
 	    HorizontalAlignment[HorizontalAlignment["Right"] = 2] = "Right";
-	})(exports.HorizontalAlignment || (exports.HorizontalAlignment = {}));
-	var HorizontalAlignment = exports.HorizontalAlignment;
+	})(HorizontalAlignment = exports.HorizontalAlignment || (exports.HorizontalAlignment = {}));
+	var ImageStyle;
 	(function (ImageStyle) {
 	    ImageStyle[ImageStyle["Normal"] = 0] = "Normal";
 	    ImageStyle[ImageStyle["Person"] = 1] = "Person";
-	})(exports.ImageStyle || (exports.ImageStyle = {}));
-	var ImageStyle = exports.ImageStyle;
+	})(ImageStyle = exports.ImageStyle || (exports.ImageStyle = {}));
 	function stringToSize(value, defaultValue) {
 	    switch (value) {
 	        case "auto":
@@ -914,12 +918,13 @@
 	var TextBlock = (function (_super) {
 	    __extends(TextBlock, _super);
 	    function TextBlock() {
-	        _super.apply(this, arguments);
-	        this.textSize = TextSize.Normal;
-	        this.textWeight = TextWeight.Normal;
-	        this.textColor = TextColor.Default;
-	        this.isSubtle = false;
-	        this.wrap = true;
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.textSize = TextSize.Normal;
+	        _this.textWeight = TextWeight.Normal;
+	        _this.textColor = TextColor.Default;
+	        _this.isSubtle = false;
+	        _this.wrap = true;
+	        return _this;
 	    }
 	    TextBlock.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
@@ -1043,38 +1048,39 @@
 	var FactGroup = (function (_super) {
 	    __extends(FactGroup, _super);
 	    function FactGroup() {
-	        _super.apply(this, arguments);
-	        this._items = [];
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this._facts = [];
+	        return _this;
 	    }
-	    Object.defineProperty(FactGroup.prototype, "items", {
+	    Object.defineProperty(FactGroup.prototype, "facts", {
 	        get: function () {
-	            return this._items;
+	            return this._facts;
 	        },
 	        enumerable: true,
 	        configurable: true
 	    });
 	    FactGroup.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
-	        if (json["items"] != null) {
-	            var factArray = json["items"];
+	        if (json["facts"] != null) {
+	            var factArray = json["facts"];
 	            for (var i = 0; i < factArray.length; i++) {
 	                var fact = new Fact();
 	                fact.parse(factArray[i]);
-	                this._items.push(fact);
+	                this._facts.push(fact);
 	            }
 	        }
 	    };
 	    FactGroup.prototype.render = function () {
 	        var element = null;
-	        if (this._items.length > 0) {
+	        if (this._facts.length > 0) {
 	            element = document.createElement("table");
 	            element.className = "factGroup";
 	            var html = '';
-	            for (var i = 0; i < this._items.length; i++) {
+	            for (var i = 0; i < this._facts.length; i++) {
 	                html += '<tr>';
 	                html += '    <td class="factName">';
 	                var textBlock = new TextBlock(this.container);
-	                textBlock.text = this._items[i].name;
+	                textBlock.text = this._facts[i].name;
 	                textBlock.textWeight = TextWeight.Bolder;
 	                var renderedText = textBlock.internalRender();
 	                if (renderedText != null) {
@@ -1083,7 +1089,7 @@
 	                html += '    </td>';
 	                html += '    <td class="factValue">';
 	                textBlock = new TextBlock(this.container);
-	                textBlock.text = this._items[i].value;
+	                textBlock.text = this._facts[i].value;
 	                textBlock.textWeight = TextWeight.Lighter;
 	                renderedText = textBlock.internalRender();
 	                if (renderedText != null) {
@@ -1101,10 +1107,10 @@
 	            return this.speak + '\n';
 	        // render each fact 
 	        var speak = null;
-	        if (this._items.length > 0) {
+	        if (this._facts.length > 0) {
 	            speak = '';
-	            for (var i = 0; i < this._items.length; i++) {
-	                var speech = this._items[i].renderSpeech();
+	            for (var i = 0; i < this._facts.length; i++) {
+	                var speech = this._facts[i].renderSpeech();
 	                if (speech)
 	                    speak += speech;
 	            }
@@ -1117,8 +1123,9 @@
 	var Image = (function (_super) {
 	    __extends(Image, _super);
 	    function Image() {
-	        _super.apply(this, arguments);
-	        this.style = ImageStyle.Normal;
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.style = ImageStyle.Normal;
+	        return _this;
 	    }
 	    Object.defineProperty(Image.prototype, "useDefaultSizing", {
 	        get: function () {
@@ -1173,13 +1180,14 @@
 	var ImageGallery = (function (_super) {
 	    __extends(ImageGallery, _super);
 	    function ImageGallery() {
-	        _super.apply(this, arguments);
-	        this._items = [];
-	        this.imageSize = Size.Medium;
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this._images = [];
+	        _this.imageSize = Size.Medium;
+	        return _this;
 	    }
-	    Object.defineProperty(ImageGallery.prototype, "items", {
+	    Object.defineProperty(ImageGallery.prototype, "images", {
 	        get: function () {
-	            return this._items;
+	            return this._images;
 	        },
 	        enumerable: true,
 	        configurable: true
@@ -1187,23 +1195,23 @@
 	    ImageGallery.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
 	        this.imageSize = stringToSize(json["imageSize"], Size.Medium);
-	        if (json["items"] != null) {
-	            var imageArray = json["items"];
+	        if (json["images"] != null) {
+	            var imageArray = json["images"];
 	            for (var i = 0; i < imageArray.length; i++) {
 	                var image = new Image(this.container);
 	                image.size = this.imageSize;
 	                image.url = imageArray[i];
-	                this._items.push(image);
+	                this._images.push(image);
 	            }
 	        }
 	    };
 	    ImageGallery.prototype.render = function () {
 	        var element = null;
-	        if (this._items.length > 0) {
+	        if (this._images.length > 0) {
 	            element = document.createElement("div");
 	            element.className = "imageGallery";
-	            for (var i = 0; i < this._items.length; i++) {
-	                var renderedImage = this._items[i].internalRender();
+	            for (var i = 0; i < this._images.length; i++) {
+	                var renderedImage = this._images[i].internalRender();
 	                renderedImage.style.margin = "0px";
 	                renderedImage.style.marginRight = "10px";
 	                appendChild(element, renderedImage);
@@ -1215,10 +1223,10 @@
 	        if (this.speak != null)
 	            return this.speak;
 	        var speak = null;
-	        if (this._items.length > 0) {
+	        if (this._images.length > 0) {
 	            speak = '';
-	            for (var i = 0; i < this._items.length; i++) {
-	                speak += this._items[i].renderSpeech();
+	            for (var i = 0; i < this._images.length; i++) {
+	                speak += this._images[i].renderSpeech();
 	            }
 	        }
 	        return speak;
@@ -1270,7 +1278,7 @@
 	var ExternalAction = (function (_super) {
 	    __extends(ExternalAction, _super);
 	    function ExternalAction() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    return ExternalAction;
 	}(Action));
@@ -1288,8 +1296,9 @@
 	var OpenUri = (function (_super) {
 	    __extends(OpenUri, _super);
 	    function OpenUri() {
-	        _super.apply(this, arguments);
-	        this._targets = [];
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this._targets = [];
+	        return _this;
 	    }
 	    OpenUri.prototype.addTarget = function () {
 	        var targetUri = new TargetUri();
@@ -1318,7 +1327,7 @@
 	var HttpPOST = (function (_super) {
 	    __extends(HttpPOST, _super);
 	    function HttpPOST() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    HttpPOST.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
@@ -1334,7 +1343,7 @@
 	var Input = (function (_super) {
 	    __extends(Input, _super);
 	    function Input() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    Input.createInput = function (container, typeName) {
 	        switch (typeName) {
@@ -1369,8 +1378,9 @@
 	var TextInput = (function (_super) {
 	    __extends(TextInput, _super);
 	    function TextInput(container) {
-	        _super.call(this, container);
-	        this.size = Size.Stretch;
+	        var _this = _super.call(this, container) || this;
+	        _this.size = Size.Stretch;
+	        return _this;
 	    }
 	    TextInput.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
@@ -1402,7 +1412,7 @@
 	var ToggleInput = (function (_super) {
 	    __extends(ToggleInput, _super);
 	    function ToggleInput() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    ToggleInput.prototype.render = function () {
 	        var element = document.createElement("div");
@@ -1415,9 +1425,10 @@
 	var MultichoiceInput = (function (_super) {
 	    __extends(MultichoiceInput, _super);
 	    function MultichoiceInput(container) {
-	        _super.call(this, container);
-	        this._choices = [];
-	        this.size = Size.Medium;
+	        var _this = _super.call(this, container) || this;
+	        _this._choices = [];
+	        _this.size = Size.Medium;
+	        return _this;
 	    }
 	    MultichoiceInput.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
@@ -1447,8 +1458,9 @@
 	var DateInput = (function (_super) {
 	    __extends(DateInput, _super);
 	    function DateInput(container) {
-	        _super.call(this, container);
-	        this.size = Size.Medium;
+	        var _this = _super.call(this, container) || this;
+	        _this.size = Size.Medium;
+	        return _this;
 	    }
 	    DateInput.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
@@ -1481,10 +1493,11 @@
 	var ActionCard = (function (_super) {
 	    __extends(ActionCard, _super);
 	    function ActionCard() {
-	        _super.apply(this, arguments);
-	        this._allowedActionTypes = ["OpenUri", "HttpPOST"];
-	        this._inputs = [];
-	        this._actions = [];
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this._allowedActionTypes = ["OpenUri", "HttpPOST"];
+	        _this._inputs = [];
+	        _this._actions = [];
+	        return _this;
 	    }
 	    Object.defineProperty(ActionCard.prototype, "hasUi", {
 	        get: function () {
@@ -1579,17 +1592,17 @@
 	    return ActionCard;
 	}(Action));
 	exports.ActionCard = ActionCard;
+	var ActionButtonStyle;
 	(function (ActionButtonStyle) {
 	    ActionButtonStyle[ActionButtonStyle["Link"] = 0] = "Link";
 	    ActionButtonStyle[ActionButtonStyle["Push"] = 1] = "Push";
-	})(exports.ActionButtonStyle || (exports.ActionButtonStyle = {}));
-	var ActionButtonStyle = exports.ActionButtonStyle;
+	})(ActionButtonStyle = exports.ActionButtonStyle || (exports.ActionButtonStyle = {}));
+	var ActionButtonState;
 	(function (ActionButtonState) {
 	    ActionButtonState[ActionButtonState["Normal"] = 0] = "Normal";
 	    ActionButtonState[ActionButtonState["Expanded"] = 1] = "Expanded";
 	    ActionButtonState[ActionButtonState["Subdued"] = 2] = "Subdued";
-	})(exports.ActionButtonState || (exports.ActionButtonState = {}));
-	var ActionButtonState = exports.ActionButtonState;
+	})(ActionButtonState = exports.ActionButtonState || (exports.ActionButtonState = {}));
 	var ActionButton = (function () {
 	    function ActionButton(action, style) {
 	        var _this = this;
@@ -1666,10 +1679,11 @@
 	var ActionGroup = (function (_super) {
 	    __extends(ActionGroup, _super);
 	    function ActionGroup() {
-	        _super.apply(this, arguments);
-	        this._actionButtons = [];
-	        this._actions = [];
-	        this._expandedAction = null;
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this._actionButtons = [];
+	        _this._actions = [];
+	        _this._expandedAction = null;
+	        return _this;
 	    }
 	    ActionGroup.prototype.hideActionCardPane = function () {
 	        this._actionCardContainer.innerHTML = '';
@@ -1728,8 +1742,8 @@
 	    });
 	    ActionGroup.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
-	        if (json["items"] != null) {
-	            var actionArray = json["items"];
+	        if (json["actions"] != null) {
+	            var actionArray = json["actions"];
 	            for (var i = 0; i < actionArray.length; i++) {
 	                var action = Action.create(this, actionArray[i]["@type"]);
 	                action.parse(actionArray[i]);
@@ -1787,14 +1801,14 @@
 	        // return '<p>' + speak + '\n</p>\n';
 	        return null;
 	    };
-	    ActionGroup.buttonStyle = ActionButtonStyle.Push;
 	    return ActionGroup;
 	}(CardElement));
+	ActionGroup.buttonStyle = ActionButtonStyle.Push;
 	exports.ActionGroup = ActionGroup;
 	var Separator = (function (_super) {
 	    __extends(Separator, _super);
 	    function Separator() {
-	        _super.apply(this, arguments);
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    Separator.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
@@ -1816,11 +1830,12 @@
 	    function Container(container, forbiddenItemTypes, itemsCollectionPropertyName) {
 	        if (forbiddenItemTypes === void 0) { forbiddenItemTypes = null; }
 	        if (itemsCollectionPropertyName === void 0) { itemsCollectionPropertyName = "items"; }
-	        _super.call(this, container);
-	        this._items = [];
-	        this._textColor = TextColor.Default;
-	        this._itemsCollectionPropertyName = itemsCollectionPropertyName;
-	        this._forbiddenItemTypes = forbiddenItemTypes;
+	        var _this = _super.call(this, container) || this;
+	        _this._items = [];
+	        _this._textColor = TextColor.Default;
+	        _this._itemsCollectionPropertyName = itemsCollectionPropertyName;
+	        _this._forbiddenItemTypes = forbiddenItemTypes;
+	        return _this;
 	    }
 	    Container.prototype.isAllowedItemType = function (elementType) {
 	        if (this._forbiddenItemTypes == null) {
@@ -1984,8 +1999,9 @@
 	var Column = (function (_super) {
 	    __extends(Column, _super);
 	    function Column() {
-	        _super.apply(this, arguments);
-	        this.weight = 100;
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.weight = 100;
+	        return _this;
 	    }
 	    Object.defineProperty(Column.prototype, "useWeight", {
 	        get: function () {
@@ -2029,18 +2045,19 @@
 	var ColumnGroup = (function (_super) {
 	    __extends(ColumnGroup, _super);
 	    function ColumnGroup() {
-	        _super.apply(this, arguments);
-	        this._items = [];
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this._columns = [];
+	        return _this;
 	    }
 	    ColumnGroup.prototype.addColumn = function () {
 	        var column = new Column(this.container, ["ActionGroup"]);
-	        this._items.push(column);
+	        this._columns.push(column);
 	        return column;
 	    };
 	    ColumnGroup.prototype.parse = function (json) {
 	        _super.prototype.parse.call(this, json);
-	        if (json["items"] != null) {
-	            var itemArray = json["items"];
+	        if (json["columns"] != null) {
+	            var itemArray = json["columns"];
 	            for (var i = 0; i < itemArray.length; i++) {
 	                var column = this.addColumn();
 	                column.parse(itemArray[i]);
@@ -2048,14 +2065,14 @@
 	        }
 	    };
 	    ColumnGroup.prototype.render = function () {
-	        if (this._items.length > 0) {
+	        if (this._columns.length > 0) {
 	            var element = document.createElement("div");
 	            element.className = "columnGroup";
 	            element.style.display = "flex";
-	            for (var i = 0; i < this._items.length; i++) {
-	                var renderedColumn = this._items[i].internalRender();
+	            for (var i = 0; i < this._columns.length; i++) {
+	                var renderedColumn = this._columns[i].internalRender();
 	                appendChild(element, renderedColumn);
-	                if (this._items.length > 1 && i < this._items.length - 1) {
+	                if (this._columns.length > 1 && i < this._columns.length - 1) {
 	                    var spacer = document.createElement("div");
 	                    spacer.className = "columnSpacer";
 	                    spacer.style.flex = "0 0 auto";
@@ -2073,9 +2090,9 @@
 	            return this.speak;
 	        // render each item
 	        var speak = '';
-	        if (this._items.length > 0) {
-	            for (var i = 0; i < this._items.length; i++) {
-	                speak += this._items[i].renderSpeech();
+	        if (this._columns.length > 0) {
+	            for (var i = 0; i < this._columns.length; i++) {
+	                speak += this._columns[i].renderSpeech();
 	            }
 	        }
 	        return speak;
@@ -12419,7 +12436,7 @@
 
 	// TOOD: Can I pull this from the samples folder rather than copying it here?
 	"use strict";
-	exports.defaultPayload = "\n\n{\n\t\"@type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\t{\n\t\t    \"@type\": \"Container\",\n\t\t\t\"items\": [\n\t\t\t    {\n\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t        \"text\": \"Card created: Publish Adaptive Card schema\",\n\t\t\t        \"textWeight\": \"bolder\",\n\t\t\t        \"textSize\": \"medium\"\n\t\t\t    },\n\t\t\t\t{\n\t\t\t\t\t\"@type\": \"ColumnGroup\",\n\t\t\t\t\t\"speak\": \"<s>Created by Miguel Garcia</s>\",\n\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"size\": \"auto\",\n\t\t\t\t\t\t\t\"items\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"Image\",\n                \t\t\t\t\t\"url\": \"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n                \t\t\t\t\t\"size\": \"small\",\n                \t\t\t\t\t\"style\": \"person\"\n                \t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"size\": \"stretch\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t    {\n\t\t\t\t\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\t\t        \"text\": \"**Miguel Garcia**\",\n\t\t\t\t\t\t\t        \"wrap\": true\n\t\t\t\t\t\t\t    },\n\t\t\t\t\t\t\t    {\n\t\t\t\t\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\t\t        \"text\": \"9/13/2016, 3:34pm\",\n\t\t\t\t\t\t\t        \"isSubtle\": true,\n\t\t\t\t\t\t\t        \"wrap\": true\n\t\t\t\t\t\t\t    }\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t    \"@type\": \"Container\",\n\t\t    \"items\": [\n\t\t\t    {\n\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\"speak\": \"\",\n\t\t\t        \"text\": \"Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.\",\n\t\t\t        \"wrap\": true\n\t\t\t    },\n\t\t\t\t{\n\t\t\t\t    \"@type\": \"FactGroup\",\n\t\t\t\t    \"items\": [\n\t\t\t\t        { \"name\": \"Board:\", \"value\": \"Adaptive Card\", \"speak\":\"\" },\n\t\t\t\t        { \"name\": \"List:\", \"value\": \"Backlog\", \"speak\":\"\" },\n\t\t\t\t        { \"name\": \"Assigned to:\", \"value\": \"David Claux\" },\n\t\t\t\t        { \"name\": \"Due date:\", \"value\": \"Not set\", \"speak\":\"\" }\n\t\t\t\t    ]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t    \"@type\": \"ActionGroup\",\n\t\t\t\t\t\"speak\": \"You can set the due date, add a comment or view more information.\",\n\t\t\t\t    \"items\": [\n                \t\t{\n                \t\t\t\"@type\": \"ActionCard\",\n                \t\t\t\"name\": \"Set due date\",\n                \t\t\t\"inputs\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"DateInput\",\n                \t\t\t\t\t\"id\": \"dueDate\",\n                \t\t\t\t\t\"title\": \"Select a date\"\n                \t\t\t\t}\n                \t\t\t],\n                \t\t\t\"actions\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"HttpPOST\",\n                \t\t\t\t\t\"name\": \"OK\",\n                \t\t\t\t\t\"target\": \"http://...\"\n                \t\t\t\t}\n                \t\t\t]\n                \t\t},\n                \t\t{\n                \t\t\t\"@type\": \"ActionCard\",\n                \t\t\t\"name\": \"Comment\",\n                \t\t\t\"inputs\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"TextInput\",\n                \t\t\t\t\t\"id\": \"comment\",\n                \t\t\t\t\t\"isMultiline\": true,\n                \t\t\t\t\t\"title\": \"Enter your comment\"\n                \t\t\t\t}\n                \t\t\t],\n                \t\t\t\"actions\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"HttpPOST\",\n                \t\t\t\t\t\"name\": \"OK\",\n                \t\t\t\t\t\"target\": \"http://...\"\n                \t\t\t\t}\n                \t\t\t]\n                \t\t},\n                \t\t{\n                \t\t\t\"@type\": \"OpenUri\",\n                \t\t\t\"name\": \"View\",\n                \t\t\t\"targets\": [\n                \t\t\t\t{ \"os\": \"default\", \"uri\": \"http://...\" }\n                \t\t\t]\n                \t\t}\n\t\t\t\t    ]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}";
+	exports.defaultPayload = "\n\n{\n\t\"@type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\t{\n\t\t    \"@type\": \"Container\",\n\t\t\t\"items\": [\n\t\t\t    {\n\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t        \"text\": \"Card created: Publish Adaptive Card schema\",\n\t\t\t        \"textWeight\": \"bolder\",\n\t\t\t        \"textSize\": \"medium\"\n\t\t\t    },\n\t\t\t\t{\n\t\t\t\t\t\"@type\": \"ColumnGroup\",\n\t\t\t\t\t\"speak\": \"<s>Created by Miguel Garcia</s>\",\n\t\t\t\t\t\"columns\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"@type\":\"Column\",\n\t\t\t\t\t\t\t\"size\": \"auto\",\n\t\t\t\t\t\t\t\"items\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"Image\",\n                \t\t\t\t\t\"url\": \"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n                \t\t\t\t\t\"size\": \"small\",\n                \t\t\t\t\t\"style\": \"person\"\n                \t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"@type\":\"Column\",\n\t\t\t\t\t\t\t\"size\": \"stretch\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t    {\n\t\t\t\t\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\t\t        \"text\": \"**Miguel Garcia**\",\n\t\t\t\t\t\t\t        \"wrap\": true\n\t\t\t\t\t\t\t    },\n\t\t\t\t\t\t\t    {\n\t\t\t\t\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\t\t        \"text\": \"9/13/2016, 3:34pm\",\n\t\t\t\t\t\t\t        \"isSubtle\": true,\n\t\t\t\t\t\t\t        \"wrap\": true\n\t\t\t\t\t\t\t    }\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t    \"@type\": \"Container\",\n\t\t    \"items\": [\n\t\t\t    {\n\t\t\t        \"@type\": \"TextBlock\",\n\t\t\t\t\t\"speak\": \"\",\n\t\t\t        \"text\": \"Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.\",\n\t\t\t        \"wrap\": true\n\t\t\t    },\n\t\t\t\t{\n\t\t\t\t    \"@type\": \"FactGroup\",\n\t\t\t\t    \"facts\": [\n\t\t\t\t        { \"name\": \"Board:\", \"value\": \"Adaptive Card\", \"speak\":\"\" },\n\t\t\t\t        { \"name\": \"List:\", \"value\": \"Backlog\", \"speak\":\"\" },\n\t\t\t\t        { \"name\": \"Assigned to:\", \"value\": \"David Claux\" },\n\t\t\t\t        { \"name\": \"Due date:\", \"value\": \"Not set\", \"speak\":\"\" }\n\t\t\t\t    ]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t    \"@type\": \"ActionGroup\",\n\t\t\t\t\t\"speak\": \"You can set the due date, add a comment or view more information.\",\n\t\t\t\t    \"actions\": [\n                \t\t{\n                \t\t\t\"@type\": \"ActionCard\",\n                \t\t\t\"name\": \"Set due date\",\n                \t\t\t\"inputs\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"DateInput\",\n                \t\t\t\t\t\"id\": \"dueDate\",\n                \t\t\t\t\t\"title\": \"Select a date\"\n                \t\t\t\t}\n                \t\t\t],\n                \t\t\t\"actions\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"HttpPOST\",\n                \t\t\t\t\t\"name\": \"OK\",\n                \t\t\t\t\t\"target\": \"http://...\"\n                \t\t\t\t}\n                \t\t\t]\n                \t\t},\n                \t\t{\n                \t\t\t\"@type\": \"ActionCard\",\n                \t\t\t\"name\": \"Comment\",\n                \t\t\t\"inputs\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"TextInput\",\n                \t\t\t\t\t\"id\": \"comment\",\n                \t\t\t\t\t\"isMultiline\": true,\n                \t\t\t\t\t\"title\": \"Enter your comment\"\n                \t\t\t\t}\n                \t\t\t],\n                \t\t\t\"actions\": [\n                \t\t\t\t{\n                \t\t\t\t\t\"@type\": \"HttpPOST\",\n                \t\t\t\t\t\"name\": \"OK\",\n                \t\t\t\t\t\"target\": \"http://...\"\n                \t\t\t\t}\n                \t\t\t]\n                \t\t},\n                \t\t{\n                \t\t\t\"@type\": \"OpenUri\",\n                \t\t\t\"name\": \"View\",\n                \t\t\t\"targets\": [\n                \t\t\t\t{ \"os\": \"default\", \"uri\": \"http://...\" }\n                \t\t\t]\n                \t\t}\n\t\t\t\t    ]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}";
 
 
 /***/ },
