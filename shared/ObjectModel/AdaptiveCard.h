@@ -34,6 +34,7 @@ private:
     std::string m_title;
     std::string m_description1;
     std::string m_description2;
+    // TODO: Task 10886212 Change Adaptive Card root type from Container to its own type.
     std::shared_ptr<Container> m_root;
 
 };
