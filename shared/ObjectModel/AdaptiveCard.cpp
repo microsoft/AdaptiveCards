@@ -1,5 +1,5 @@
 #include "AdaptiveCard.h"
-#include "ACParser.h"
+#include "ParseUtil.h"
 
 using namespace AdaptiveCards;
 
@@ -21,20 +21,20 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::strin
 
 std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
 {
-    ACParser::ThrowIfNotJsonObject(json);
+    ParseUtil::ThrowIfNotJsonObject(json);
 
     // Verify this is an adaptive card
-    ACParser::ExpectTypeString(json, CardElementType::AdaptiveCard);
+    ParseUtil::ExpectTypeString(json, CardElementType::AdaptiveCard);
 
     // Parse body
-    auto bodies = Container::Deserialize(json);
+    auto body = Container::Deserialize(json);
 
     // Parse targets
 
     // Parse actions
 
     auto result = std::make_shared<AdaptiveCard>();
-    result->SetRoot(bodies);
+    result->SetRoot(body);
 
     return result;
 }

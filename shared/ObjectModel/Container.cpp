@@ -1,5 +1,5 @@
 #include "Container.h"
-#include "ACParser.h"
+#include "ParseUtil.h"
 #include "TextBlock.h"
 
 using namespace AdaptiveCards;
@@ -43,7 +43,7 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
 
     if (!elementArray.isArray())
     {
-        throw ACParseException("Could not parse AdaptiveCard body. It was not an array");
+        throw AdaptiveCardParseException("Could not parse AdaptiveCard body. It was not an array");
     }
 
     // Map card type to the proper parser
@@ -63,16 +63,23 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
     std::transform(elementArray.begin(), elementArray.end(), elements.begin(), [&cardElementParsers](const Json::Value& cur)
     {
         // Get the body type
-        CardElementType curBodyType = ACParser::GetCardElementType(cur);
+        CardElementType curBodyType = ParseUtil::TryGetCardElementType(cur);
 
-        // Use the parser that maps to the bodytype
-        std::shared_ptr<BaseCardElement> cardElement = cardElementParsers[curBodyType](cur);
-        return cardElement;
+        if (curBodyType != CardElementType::Unsupported)
+        {
+            // Use the parser that maps to the bodytype
+            std::shared_ptr<BaseCardElement> cardElement = cardElementParsers[curBodyType](cur);
+            return cardElement;
+        }
+        return std::shared_ptr<BaseCardElement>();
     });
 
     for (std::shared_ptr<BaseCardElement> element : elements)
     {
-        container->AddItem(element);
+        if (element != nullptr)
+        {
+            container->AddItem(element);
+        }
     }
     return container;
 }

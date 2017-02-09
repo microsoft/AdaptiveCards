@@ -1,14 +1,14 @@
 #pragma once
 
 #include "pch.h"
-#include "ACParseException.h"
+#include "AdaptiveCardParseException.h"
 #include "Enums.h"
 #include "json\json.h"
 
 namespace AdaptiveCards
 {
 
-class ACParser
+class ParseUtil
 {
 
 public:
@@ -19,9 +19,13 @@ public:
 
     static std::string GetTypeAsString(const Json::Value& json);
 
+    static std::string TryGetTypeAsString(const Json::Value& json);
+
     static std::string GetString(const Json::Value& json, AdaptiveCardSchemaKey key);
 
     static CardElementType GetCardElementType(const Json::Value& json);
+
+    static CardElementType TryGetCardElementType(const Json::Value& json);
 
     template <typename T>
     static T GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, std::function<T(const std::string& name)> enumConverter);
@@ -33,13 +37,13 @@ public:
 
 
 private:
-    ACParser();
-    ~ACParser();
+    ParseUtil();
+    ~ParseUtil();
 
 };
 
 template <typename T>
-T ACParser::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, std::function<T(const std::string& name)> enumConverter)
+T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, std::function<T(const std::string& name)> enumConverter)
 {
     std::string propertyValueStr = "";
     try
@@ -53,7 +57,7 @@ T ACParser::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T d
         
         if (!propertyValue.isString())
         {
-            throw ACParseException("Enum type was invalid. Expected type string.");
+            throw AdaptiveCardParseException("Enum type was invalid. Expected type string.");
         }
 
         propertyValueStr = propertyValue.asString();
@@ -61,7 +65,7 @@ T ACParser::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T d
     }
     catch (const std::out_of_range&)
     {
-        throw ACParseException("Enum type was out of range. Actual: " + propertyValueStr);
+        throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
     }
 }
 }

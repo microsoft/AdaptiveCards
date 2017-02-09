@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "ACParser.h"
-#include "ACParseException.h"
+#include "ParseUtil.h"
+#include "AdaptiveCardParseException.h"
 #include "AdaptiveCard.h"
 #include "TextBlock.h"
 #include <memory>
@@ -41,7 +41,7 @@ int main(int argc, const char* argv[])
                 printf("  Passed test %zu, (%s, %s)\n", i, path.c_str(), expectedResult.c_str());
             }
         }
-        catch (const AdaptiveCards::ACParseException& e)
+        catch (const AdaptiveCards::AdaptiveCardParseException& e)
         {
             printf("  Failed test %zu, (%s, %s)\n  ", i, path.c_str(), expectedResult.c_str());
             printf(e.what());

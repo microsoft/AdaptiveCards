@@ -110,25 +110,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\shared\ObjectModel\ACParseException.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCard.h" />
     <ClInclude Include="..\..\shared\ObjectModel\Container.h" />
     <ClInclude Include="..\..\shared\ObjectModel\Enums.h" />
     <ClInclude Include="..\..\shared\ObjectModel\BaseCardElement.h" />
     <ClInclude Include="..\..\shared\ObjectModel\json\json-forwards.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\ACParser.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\ParseUtil.h" />
     <ClInclude Include="..\..\shared\ObjectModel\json\json.h" />
     <ClInclude Include="..\..\shared\ObjectModel\pch.h" />
     <ClInclude Include="..\..\shared\ObjectModel\TextBlock.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\shared\ObjectModel\ACParseException.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCard.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\Container.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\BaseCardElement.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\jsoncpp.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\ACParser.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\ParseUtil.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\TextBlock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

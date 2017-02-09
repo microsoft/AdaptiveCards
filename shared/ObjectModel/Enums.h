@@ -71,7 +71,8 @@ enum class ImageStyle {
 
 enum class CardElementType
 {
-    AdaptiveCard = 0,
+    Unsupported = 0,
+    AdaptiveCard,
     TextBlock,
     Image,
     FactGroup,

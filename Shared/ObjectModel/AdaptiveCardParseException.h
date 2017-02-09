@@ -5,11 +5,11 @@
 namespace AdaptiveCards
 {
 
-class ACParseException : public std::exception
+class AdaptiveCardParseException : public std::exception
 {
 public:
-    ACParseException(const std::string& message);
-    ~ACParseException();
+    AdaptiveCardParseException(const std::string& message);
+    ~AdaptiveCardParseException();
 
     virtual const char* what() const throw();
 
