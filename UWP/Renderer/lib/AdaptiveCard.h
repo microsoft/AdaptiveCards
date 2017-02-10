@@ -14,7 +14,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveCard, BaseTrust)
 
     public:
-        AdaptiveCard();
+        HRESULT RuntimeClassInitialize();
 
         // IAdaptiveCard
         IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** items);

@@ -40,7 +40,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT XamlCardRenderer::RenderCardAsXaml(
         IAdaptiveCard* adaptiveCard, 
-        IUIElement** root)
+        IUIElement** root) try
     {
         *root = nullptr;
 
@@ -52,7 +52,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             RETURN_IF_FAILED(xamlTreeRoot.CopyTo(root));
         }
         return S_OK;
-    }
+    } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT XamlCardRenderer::RenderCardAsImage(

@@ -6,8 +6,6 @@
 using namespace ABI::Windows::Foundation::Collections;
 using namespace Microsoft::WRL;
 
-#define CATCH_RETURN catch (...) {return E_FAIL;}
-
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
     template <typename T>
@@ -154,7 +152,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         STDMETHODIMP get_Size(unsigned int* size) try
         {
-            *size = m_wrappedVector->size();
+            *size = static_cast<unsigned int>(m_wrappedVector->size());
             return S_OK;
         } CATCH_RETURN;
 
