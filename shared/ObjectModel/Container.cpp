@@ -47,7 +47,7 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
     }
 
     // Map card type to the proper parser
-    std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> cardElementParsers =
+    std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> cardElementParsers =
     {
         //{ CardElementType::ActionGroupType, ActionGroup::ParseJsonObject },
         //{ CardElementType::AdaptiveCardType, AdaptiveCard::ParseJsonObject },

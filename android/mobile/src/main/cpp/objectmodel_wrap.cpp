@@ -255,6 +255,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg
                     throw std::out_of_range("vector index out of range");
             }
 
+#include "pch.h"
 #include "Enums.h"
 #include "BaseCardElement.h"
 #include "Container.h"
@@ -440,6 +441,43 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
   (void)jenv;
   (void)jcls;
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_EnableSharedFromThisContainer_1shared_1from_1this(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::enable_shared_from_this< AdaptiveCards::Container > *arg1 = (std::enable_shared_from_this< AdaptiveCards::Container > *) 0 ;
+  std::shared_ptr< AdaptiveCards::Container > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::enable_shared_from_this< AdaptiveCards::Container > **)&jarg1; 
+  result = (arg1)->shared_from_this();
+  *(std::shared_ptr< AdaptiveCards::Container > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::Container >(result) : 0; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1EnumHash(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::EnumHash *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::EnumHash *)new AdaptiveCards::EnumHash();
+  *(AdaptiveCards::EnumHash **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1EnumHash(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::EnumHash *arg1 = (AdaptiveCards::EnumHash *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(AdaptiveCards::EnumHash **)&jarg1; 
   delete arg1;
 }
 

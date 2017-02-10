@@ -20,6 +20,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseCardElementVector_get(long jarg1, BaseCardElementVector jarg1_, int jarg2);
   public final static native void BaseCardElementVector_set(long jarg1, BaseCardElementVector jarg1_, int jarg2, long jarg3, BaseCardElement jarg3_);
   public final static native void delete_BaseCardElementVector(long jarg1);
+  public final static native long EnableSharedFromThisContainer_shared_from_this(long jarg1, EnableSharedFromThisContainer jarg1_);
+  public final static native long new_EnumHash();
+  public final static native void delete_EnumHash(long jarg1);
   public final static native int AdaptiveCardSchemaKey_CardElementSize_get();
   public final static native int CardElementSize_Auto_get();
   public final static native int TextSize_Small_get();
