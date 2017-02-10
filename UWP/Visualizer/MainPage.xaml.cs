@@ -28,8 +28,17 @@ namespace XamlCardVisualizer
         {
             this.InitializeComponent();
 
+            // Construct a temporary object model tree until the parser is available
+            AdaptiveCard card = new AdaptiveCard();
+            AdaptiveTextBlock textBlock1 = new AdaptiveTextBlock();
+            textBlock1.Text = "Hello";
+            card.Items.Add(textBlock1);
+            AdaptiveTextBlock textBlock2 = new AdaptiveTextBlock();
+            textBlock2.Text = "World";
+            card.Items.Add(textBlock2);
+
             AdaptiveCards.XamlCardRenderer.XamlCardRenderer renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();
-            this.renderedXamlPresenter.Content = renderer.RenderCardAsXaml(null);
+            this.renderedXamlPresenter.Content = renderer.RenderCardAsXaml(card);
         }
     }
 }

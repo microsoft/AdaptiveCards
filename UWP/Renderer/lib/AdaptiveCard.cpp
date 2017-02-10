@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AdaptiveCard.h"
 
+#include "Vector.h"
 #include <windows.foundation.collections.h>
 
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
@@ -9,10 +10,15 @@ using namespace ABI::Windows::UI::Xaml;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveCard::get_Items(IVector<IAdaptiveCardElement*>** /*items*/)
+    AdaptiveCard::AdaptiveCard()
     {
-        return S_OK;
+        m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
+    }
+
+    _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveCard::get_Items(IVector<IAdaptiveCardElement*>** items)
+    {
+        return m_items.CopyTo(items);
     }
 
     _Use_decl_annotations_

@@ -71,6 +71,7 @@ namespace AdaptiveCards
         declare
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
+            interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
         }
 
         [
@@ -193,6 +194,5 @@ namespace AdaptiveCards
         {
             [default] interface IXamlCardRenderer;
         }
-
     }
 }
