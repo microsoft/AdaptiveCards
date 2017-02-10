@@ -149,11 +149,12 @@ The Container is a CardElement which contains a list of CardElements that are lo
 ## ColumnGroup 
 *Extends [CardElement](#cardelement)*
 
-The column group element adds the ability to have a set of coulmn objects.
+The column group element adds the ability to have a set of Column objects.
+
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"ColumnGroup"** |
-| **columns** | Column[] | true | array of columns (each a container of elements)  |
+| **columns** | [Column](#column)[] | true | array of columns (each a container of elements)  |
 
 ## Column
 **Extends [Container](#container)**
