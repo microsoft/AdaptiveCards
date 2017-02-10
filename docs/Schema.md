@@ -73,7 +73,7 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 The Image element allows for the inclusion of images in an Adaptive Card.
 
 | Property | Type | Required |Description |
-|---|---|---| --|
+|---|---|---|---|
 | **type**| string | true | **"Image"** |
 | **url** | string | true | The URL to the image. |
 | **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
