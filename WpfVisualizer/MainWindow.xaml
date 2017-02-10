@@ -162,6 +162,10 @@
             <Setter Property="Margin" Value="4"/>
         </Style>
 
+        <Style x:Key="Adaptive.Input.ChoiceInput" TargetType="FrameworkElement" >
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+
         <Style x:Key="Adaptive.Input.TextInput.Date" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
         </Style>
 
@@ -176,8 +180,12 @@
 
         <Style x:Key="Adaptive.Input.TextInput.Week" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
         </Style>
-        
+
         <Style x:Key="Adaptive.Input.TextInput.Range" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.Range.TextBox" TargetType="TextBox"  >
+            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.Input.TextInput.Number" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
@@ -190,6 +198,18 @@
         </Style>
 
         <Style x:Key="Adaptive.Input.TextInput.Email" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.ChoiceInput.ComboBox" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.ChoiceInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.ChoiceInput.ComboBoxItem" TargetType="ComboBoxItem"  >
+        </Style>
+
+        <Style x:Key="Adaptive.Input.ChoiceInput.Radio" TargetType="RadioButton"  >
+        </Style>
+
+        <Style x:Key="Adaptive.Input.ChoiceInput.CheckBox" TargetType="CheckBox"  >
         </Style>
 
     </Window.Resources>

@@ -1,0 +1,144 @@
+{
+    "@type": "AdaptiveCard",
+    "speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
+    "body": [
+        {
+            "@type": "TextInput",
+            "id": "123",
+            "title": "TextInput",
+            "placeholder": "placeholder"
+        },
+        {
+            "@type": "TextInput",
+            "id": "123",
+            "title": "Multline Text",
+            "placeholder": "placeholder",
+            "isMultiLine": true
+        },
+        {
+            "@type": "TextInput",
+            "style": "date",
+            "id": "123",
+            "title": "Date",
+            "placeholder": "placeholder"
+        },
+        {
+            "@type": "TextInput",
+            "style": "datetime",
+            "id": "123",
+            "title": "DateTime",
+            "placeholder": "placeholder"
+        },
+        {
+            "@type": "TextInput",
+            "style": "month",
+            "title": "Month",
+            "id": "123",
+            "placeholder": "placeholder"
+        },
+        {
+            "@type": "TextInput",
+            "style": "week",
+            "title": "Week",
+            "id": "123",
+            "placeholder": "placeholder"
+        },
+        {
+            "@type": "TextInput",
+            "style": "password",
+            "id": "123",
+            "title": "Password",
+            "placeholder": "placeholder"
+        },
+        {
+            "@type": "TextInput",
+            "style": "range",
+            "id": "123",
+            "min": "-50",
+            "max": "50",
+            "step": 5,
+            "title": "Range",
+            "placeholder": "placeholder"
+        },
+        {
+            "@type": "TextInput",
+            "style": "tel",
+            "id": "123",
+            "title": "phone",
+            "placeholder": "placeholder"
+        },
+        {
+            "@type": "TextInput",
+            "style": "number",
+            "id": "123",
+            "title": "Number",
+            "min": "-5",
+            "max": "5",
+            "step": 2,
+            "placeholder": "placeholder"
+        },
+        {
+            "@type": "ChoiceInput",
+            "title": "SingleSelect",
+            "id": "12313",
+            "choices": [
+                {
+                    "display": "One",
+                    "value": "1",
+                    "isSelected": true
+                },
+                {
+                    "display": "Two",
+                    "value": "2"
+                },
+                {
+                    "display": "Three",
+                    "value": "3"
+                }
+            ]
+        },
+        {
+            "@type": "ChoiceInput",
+            "title": "MultiSelect",
+            "id": "12313",
+            "multiSelect": true,
+            "choices": [
+                {
+                    "display": "One",
+                    "value": "1",
+                    "isSelected": true
+                },
+                {
+                    "display": "Two",
+                    "value": "2"
+                },
+                {
+                    "display": "Three",
+                    "value": "3",
+                    "isSelected": true
+                }
+            ]
+        },
+        {
+            "@type": "ChoiceInput",
+            "title": "Combo",
+            "id": "12313",
+            "style": "compact",
+            "choices": [
+                {
+                    "display": "One",
+                    "value": "1",
+                    "isSelected": true
+                },
+                {
+                    "display": "Two",
+                    "value": "2"
+                },
+                {
+                    "display": "Three",
+                    "value": "3"
+                }
+            ]
+        }
+    ]
+}

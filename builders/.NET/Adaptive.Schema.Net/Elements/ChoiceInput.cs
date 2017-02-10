@@ -22,19 +22,19 @@ namespace Adaptive.Schema.Net
         /// Style for choice 
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        ChoiceInputStyle? Style { get; set; }
+        public ChoiceInputStyle? Style { get; set; }
 
         /// <summary>
         /// allow multiple choices to be selected (default false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        bool? MultiSelect { get; set; }
+        public bool? MultiSelect { get; set; }
 
         /// <summary>
         ///  the choice options
         /// </summary>
         [JsonRequired]
-        Choice[] choices { get; set; }
+        public List<Choice> Choices { get; set; } = new List<Choice>();
     }
 
     /// <summary>
@@ -57,6 +57,11 @@ namespace Adaptive.Schema.Net
         /// </summary>
         [JsonRequired]
         public string Value { get; set; }
+
+        /// <summary>
+        /// Is this choice selected?
+        /// </summary>
+        public bool IsSelected { get; set; } = false;
 
         /// <summary>
         /// (OPTIONAL) Speech description of the choice

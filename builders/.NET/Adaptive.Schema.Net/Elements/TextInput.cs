@@ -50,6 +50,6 @@ namespace Adaptive.Schema.Net
         /// hint of step value(may be ignored by some clients)   
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? Step { get; set; }
+        public string Step { get; set; }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -43,16 +44,15 @@ namespace WpfVisualizer
                 Uri uri = new Uri(card.BackgroundImage);
                 grid.Background = new ImageBrush(new BitmapImage(uri));
             }
-            AddContainerElements(grid, card.Body);
+            AddContainerElements(grid, card.Body, 0);
             return grid;
         }
 
-        private void AddContainerElements(Grid grid, List<ADP.CardElement> elements)
+        private int AddContainerElements(Grid grid, List<ADP.CardElement> elements, int iRow)
         {
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
-            int iRow = 0;
             foreach (var cardElement in elements)
             {
                 UIElement uiElement = RenderUnknownElement(cardElement);
@@ -74,9 +74,12 @@ namespace WpfVisualizer
                         Grid.SetColumnSpan(uiElement, 2);
                     }
                 }
+                else
+                    Grid.SetColumnSpan(uiElement, 2);
                 grid.Children.Add(uiElement);
                 iRow++;
             }
+            return iRow;
         }
 
         /// <summary>
@@ -170,7 +173,7 @@ namespace WpfVisualizer
             if (container.Separation == ADP.SeparationStyle.Before || container.Separation == ADP.SeparationStyle.Both)
                 iRow = AddSeperator(uiContainer, iRow);
 
-            AddContainerElements(uiContainer, container.Items);
+            iRow = AddContainerElements(uiContainer, container.Items, iRow);
 
             if (container.Separation == ADP.SeparationStyle.After || container.Separation == Adaptive.Schema.Net.SeparationStyle.Both)
                 iRow = AddSeperator(uiContainer, iRow);
@@ -181,12 +184,12 @@ namespace WpfVisualizer
         {
             var sep = new Separator();
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-            Grid.SetRow(sep, iRow++);
+            Grid.SetRow(sep, iRow);
             Grid.SetColumnSpan(sep, 2);
             sep.Style = resources["Adaptive.Separator"] as Style;
             uiContainer.Children.Add(sep);
 
-            return iRow;
+            return ++iRow;
         }
 
         /// <summary>
@@ -534,18 +537,19 @@ namespace WpfVisualizer
                     case ADP.TextInputStyle.Number:
                         {
                             IntegerUpDown numberPicker = new IntegerUpDown();
-                            int value;
-                            if (int.TryParse(textInput.Value, out value))
-                                numberPicker.Value = value;
-                            int minValue;
-                            if (int.TryParse(textInput.Min, out minValue))
-                                numberPicker.Minimum = minValue;
-                            int maxValue;
-                            if (int.TryParse(textInput.Max, out maxValue))
-                                numberPicker.Maximum = maxValue;
+                            float value;
+                            if (float.TryParse(textInput.Value, out value))
+                                numberPicker.Value = Convert.ToInt32(value);
+                            float minValue;
+                            if (float.TryParse(textInput.Min, out minValue))
+                                numberPicker.Minimum = Convert.ToInt32(minValue);
+                            float maxValue;
+                            if (float.TryParse(textInput.Max, out maxValue))
+                                numberPicker.Maximum = Convert.ToInt32(maxValue);
                             numberPicker.ShowButtonSpinner = true;
-                            if (textInput.Step.HasValue)
-                                numberPicker.Increment = textInput.Step.Value;
+                            float step;
+                            if (float.TryParse(textInput.Step, out step))
+                                numberPicker.Increment = Convert.ToInt32(step);
                             numberPicker.Watermark = textInput.Placeholder;
                             numberPicker.Style = this.resources["Adaptive.Input.TextInput.Number"] as Style;
                             return numberPicker;
@@ -565,7 +569,18 @@ namespace WpfVisualizer
 
                     case ADP.TextInputStyle.Range:
                         {
+                            var rangeGrid = new Grid();
+                            rangeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                            rangeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                            rangeGrid.Style = this.resources["Adapative.Input.TextInput.Range"] as Style;
+
+                            var rangePanel = new StackPanel();
+                            rangePanel.Orientation = Orientation.Horizontal;
+                            Grid.SetColumn(rangePanel, 1);
+
                             Slider slider = new Slider();
+                            slider.IsSnapToTickEnabled = true;
+                            slider.TickPlacement = TickPlacement.BottomRight;
                             double min;
                             if (double.TryParse(textInput.Min, out min))
                                 slider.Minimum = min;
@@ -575,11 +590,27 @@ namespace WpfVisualizer
                             double val;
                             if (double.TryParse(textInput.Value, out val))
                                 slider.Value = val;
-                            double step;
-                            if (textInput.Step.HasValue)
-                                slider.SmallChange = textInput.Step.Value;
-                            slider.Style = this.resources["Adaptive.Input.TextInput.Range"] as Style;
-                            return slider;
+                            float step;
+                            if (float.TryParse(textInput.Step, out step))
+                            {
+                                slider.SmallChange = Convert.ToInt32(step);
+                                slider.LargeChange = 2 * Convert.ToInt32(step);
+                            }
+                            rangeGrid.Children.Add(slider);
+
+                            TextBox tb = new TextBox();
+                            tb.VerticalAlignment = VerticalAlignment.Center;
+                            tb.Style = this.resources["Adaptive.Input.TextInput.Range.TextBox"] as Style;
+                            rangePanel.Children.Add(tb);
+
+                            tb.SetBinding(TextBox.TextProperty, new Binding()
+                            {
+                                Path = new PropertyPath("Value"),
+                                Source = slider,
+                                Mode = BindingMode.TwoWay
+                            });
+                            rangeGrid.Children.Add(rangePanel);
+                            return rangeGrid;
                         }
 
                     case ADP.TextInputStyle.Tel:
@@ -627,7 +658,53 @@ namespace WpfVisualizer
         /// <returns></returns>
         public UIElement Render(ADP.ChoiceInput choiceInput)
         {
-            return new Grid();
+            var uiComboBox = new ComboBox();
+            uiComboBox.Style = resources["Adaptive.Input.ChoiceInput.ComboBox"] as Style;
+            uiComboBox.Tag = choiceInput;
+
+            var uiStackPanel = new StackPanel();
+            uiStackPanel.Tag = choiceInput;
+            uiStackPanel.Orientation = Orientation.Vertical;
+            uiStackPanel.Style = resources["Adaptive.Input.ChoiceInput"] as Style;
+
+            foreach (var choice in choiceInput.Choices)
+            {
+                if (choiceInput.MultiSelect == true)
+                {
+                    var uiCheckbox = new CheckBox();
+                    uiCheckbox.Content = choice.Display;
+                    uiCheckbox.IsChecked = choice.IsSelected;
+                    uiCheckbox.Tag = choice;
+                    uiCheckbox.Style = resources["Adaptive.Input.ChoiceInput.CheckBox"] as Style;
+                    uiStackPanel.Children.Add(uiCheckbox);
+                }
+                else
+                {
+                    if (choiceInput.Style == ADP.ChoiceInputStyle.Compact)
+                    {
+                        var uiComboItem = new ComboBoxItem();
+                        uiComboItem.Style = resources["Adaptive.Input.ChoiceInput.ComboBoxItem"] as Style;
+                        uiComboItem.Content = choice.Display;
+                        uiComboItem.Tag = choice;
+                        uiComboBox.Items.Add(uiComboItem);
+                        if (choice.IsSelected)
+                            uiComboBox.SelectedItem = uiComboItem;
+                    }
+                    else
+                    {
+                        var uiRadio = new RadioButton();
+                        uiRadio.Content = choice.Display;
+                        uiRadio.IsChecked = choice.IsSelected;
+                        uiRadio.GroupName = choiceInput.Id;
+                        uiRadio.Tag = choice;
+                        uiRadio.Style = resources["Adaptive.Input.ChoiceInput.Radio"] as Style;
+                        uiStackPanel.Children.Add(uiRadio);
+                    }
+                }
+            }
+            if (choiceInput.Style == ADP.ChoiceInputStyle.Compact)
+                return uiComboBox;
+            return uiStackPanel;
         }
 
         /// <summary>
