@@ -76,6 +76,10 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetRoot(swigCPtr, this, Container.getCPtr(value), value);
   }
 
+  public CardElementType GetElementType() {
+    return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCard_GetElementType(swigCPtr, this));
+  }
+
   public static AdaptiveCard DeserializeFromFile(String jsonFile) {
     long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromFile(jsonFile);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);

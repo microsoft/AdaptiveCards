@@ -8,12 +8,12 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public final class Size {
-  public final static Size Auto = new Size("Auto", AdaptiveCardObjectModelJNI.Size_Auto_get());
-  public final static Size Stretch = new Size("Stretch");
-  public final static Size Small = new Size("Small");
-  public final static Size Medium = new Size("Medium");
-  public final static Size Large = new Size("Large");
+public final class CardElementSize {
+  public final static CardElementSize Auto = new CardElementSize("Auto", AdaptiveCardObjectModelJNI.CardElementSize_Auto_get());
+  public final static CardElementSize Stretch = new CardElementSize("Stretch");
+  public final static CardElementSize Small = new CardElementSize("Small");
+  public final static CardElementSize Medium = new CardElementSize("Medium");
+  public final static CardElementSize Large = new CardElementSize("Large");
 
   public final int swigValue() {
     return swigValue;
@@ -23,33 +23,33 @@ public final class Size {
     return swigName;
   }
 
-  public static Size swigToEnum(int swigValue) {
+  public static CardElementSize swigToEnum(int swigValue) {
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
     for (int i = 0; i < swigValues.length; i++)
       if (swigValues[i].swigValue == swigValue)
         return swigValues[i];
-    throw new IllegalArgumentException("No enum " + Size.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + CardElementSize.class + " with value " + swigValue);
   }
 
-  private Size(String swigName) {
+  private CardElementSize(String swigName) {
     this.swigName = swigName;
     this.swigValue = swigNext++;
   }
 
-  private Size(String swigName, int swigValue) {
+  private CardElementSize(String swigName, int swigValue) {
     this.swigName = swigName;
     this.swigValue = swigValue;
     swigNext = swigValue+1;
   }
 
-  private Size(String swigName, Size swigEnum) {
+  private CardElementSize(String swigName, CardElementSize swigEnum) {
     this.swigName = swigName;
     this.swigValue = swigEnum.swigValue;
     swigNext = this.swigValue+1;
   }
 
-  private static Size[] swigValues = { Auto, Stretch, Small, Medium, Large };
+  private static CardElementSize[] swigValues = { Auto, Stretch, Small, Medium, Large };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

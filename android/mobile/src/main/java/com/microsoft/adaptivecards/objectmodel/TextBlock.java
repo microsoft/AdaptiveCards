@@ -8,7 +8,7 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class TextBlock extends ICardElement {
+public class TextBlock extends BaseCardElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -41,7 +41,7 @@ public class TextBlock extends ICardElement {
     this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_0(), true);
   }
 
-  public TextBlock(Container container, HorizontalAlignment horizontalAlignment, Size size, String speak, String text, TextSize textSize, TextWeight textWeight, boolean isSubtle, boolean wrap) {
+  public TextBlock(Container container, HorizontalAlignment horizontalAlignment, CardElementSize size, String speak, String text, TextSize textSize, TextWeight textWeight, boolean isSubtle, boolean wrap) {
     this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_1(Container.getCPtr(container), container, horizontalAlignment.swigValue(), size.swigValue(), speak, text, textSize.swigValue(), textWeight.swigValue(), isSubtle, wrap), true);
   }
 

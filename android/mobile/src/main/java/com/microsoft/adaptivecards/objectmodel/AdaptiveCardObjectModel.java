@@ -57,12 +57,12 @@ public class AdaptiveCardObjectModel {
     return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextSizeFromString(type));
   }
 
-  public static String SizeToString(Size type) {
+  public static String SizeToString(CardElementSize type) {
     return AdaptiveCardObjectModelJNI.SizeToString(type.swigValue());
   }
 
-  public static Size SizeFromString(String type) {
-    return Size.swigToEnum(AdaptiveCardObjectModelJNI.SizeFromString(type));
+  public static CardElementSize SizeFromString(String type) {
+    return CardElementSize.swigToEnum(AdaptiveCardObjectModelJNI.SizeFromString(type));
   }
 
   public static String TextWrapToString(TextWrap type) {

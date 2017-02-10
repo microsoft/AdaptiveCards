@@ -8,7 +8,7 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class Container extends ICardElement {
+public class Container extends BaseCardElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -37,30 +37,30 @@ public class Container extends ICardElement {
     super.delete();
   }
 
+  public Container() {
+    this(AdaptiveCardObjectModelJNI.new_Container(), true);
+  }
+
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.Container_Serialize(swigCPtr, this);
   }
 
-  public ICardElementVector GetItems() {
-    return new ICardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems(swigCPtr, this), false);
+  public BaseCardElementVector GetItems() {
+    return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems(swigCPtr, this), false);
   }
 
-  public void AddItem(ICardElement item) {
-    AdaptiveCardObjectModelJNI.Container_AddItem(swigCPtr, this, ICardElement.getCPtr(item), item);
+  public void AddItem(BaseCardElement item) {
+    AdaptiveCardObjectModelJNI.Container_AddItem(swigCPtr, this, BaseCardElement.getCPtr(item), item);
   }
 
-  public ICardElement GetItem(long index) {
+  public BaseCardElement GetItem(long index) {
     long cPtr = AdaptiveCardObjectModelJNI.Container_GetItem(swigCPtr, this, index);
-    return (cPtr == 0) ? null : new ICardElement(cPtr, true);
+    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 
   public static Container Deserialize(SWIGTYPE_p_Json__Value root) {
     long cPtr = AdaptiveCardObjectModelJNI.Container_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
     return (cPtr == 0) ? null : new Container(cPtr, true);
-  }
-
-  public Container() {
-    this(AdaptiveCardObjectModelJNI.new_Container(), true);
   }
 
 }

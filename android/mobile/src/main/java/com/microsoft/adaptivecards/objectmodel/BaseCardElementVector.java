@@ -63,17 +63,17 @@ public class BaseCardElementVector {
     AdaptiveCardObjectModelJNI.BaseCardElementVector_clear(swigCPtr, this);
   }
 
-  public void add(SWIGTYPE_p_AdaptiveCards__BaseCardElement x) {
-    AdaptiveCardObjectModelJNI.BaseCardElementVector_add(swigCPtr, this, SWIGTYPE_p_AdaptiveCards__BaseCardElement.getCPtr(x));
+  public void add(BaseCardElement x) {
+    AdaptiveCardObjectModelJNI.BaseCardElementVector_add(swigCPtr, this, BaseCardElement.getCPtr(x), x);
   }
 
-  public SWIGTYPE_p_AdaptiveCards__BaseCardElement get(int i) {
+  public BaseCardElement get(int i) {
     long cPtr = AdaptiveCardObjectModelJNI.BaseCardElementVector_get(swigCPtr, this, i);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_AdaptiveCards__BaseCardElement(cPtr, true);
+    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 
-  public void set(int i, SWIGTYPE_p_AdaptiveCards__BaseCardElement val) {
-    AdaptiveCardObjectModelJNI.BaseCardElementVector_set(swigCPtr, this, i, SWIGTYPE_p_AdaptiveCards__BaseCardElement.getCPtr(val));
+  public void set(int i, BaseCardElement val) {
+    AdaptiveCardObjectModelJNI.BaseCardElementVector_set(swigCPtr, this, i, BaseCardElement.getCPtr(val), val);
   }
 
 }

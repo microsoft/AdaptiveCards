@@ -9,14 +9,15 @@
 package com.microsoft.adaptivecards.objectmodel;
 
 public final class CardElementType {
-  public final static CardElementType AdaptiveCardType = new CardElementType("AdaptiveCardType", AdaptiveCardObjectModelJNI.CardElementType_AdaptiveCardType_get());
-  public final static CardElementType TextBlockType = new CardElementType("TextBlockType");
-  public final static CardElementType ImageType = new CardElementType("ImageType");
-  public final static CardElementType FactGroupType = new CardElementType("FactGroupType");
-  public final static CardElementType ColumnGroupType = new CardElementType("ColumnGroupType");
-  public final static CardElementType ImageGalleryType = new CardElementType("ImageGalleryType");
-  public final static CardElementType ActionGroupType = new CardElementType("ActionGroupType");
-  public final static CardElementType ContainerType = new CardElementType("ContainerType");
+  public final static CardElementType Unsupported = new CardElementType("Unsupported", AdaptiveCardObjectModelJNI.CardElementType_Unsupported_get());
+  public final static CardElementType AdaptiveCard = new CardElementType("AdaptiveCard");
+  public final static CardElementType TextBlock = new CardElementType("TextBlock");
+  public final static CardElementType Image = new CardElementType("Image");
+  public final static CardElementType FactGroup = new CardElementType("FactGroup");
+  public final static CardElementType ColumnGroup = new CardElementType("ColumnGroup");
+  public final static CardElementType ImageGallery = new CardElementType("ImageGallery");
+  public final static CardElementType ActionGroup = new CardElementType("ActionGroup");
+  public final static CardElementType Container = new CardElementType("Container");
 
   public final int swigValue() {
     return swigValue;
@@ -52,7 +53,7 @@ public final class CardElementType {
     swigNext = this.swigValue+1;
   }
 
-  private static CardElementType[] swigValues = { AdaptiveCardType, TextBlockType, ImageType, FactGroupType, ColumnGroupType, ImageGalleryType, ActionGroupType, ContainerType };
+  private static CardElementType[] swigValues = { Unsupported, AdaptiveCard, TextBlock, Image, FactGroup, ColumnGroup, ImageGallery, ActionGroup, Container };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;
