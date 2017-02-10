@@ -33,7 +33,7 @@
 AdaptiveCard is top level object which represents a card 
 
 | Property | Type | Required | Description |
-|---|---|---|--|
+|---|---|---|---|
 | **type**| string | true | **"AdaptiveCard"** |
 | **body** | [CardElement](#cardelement)[] | true | The elements that are to be displayed in this container. |
 | **actions** |[Action](#action)[]| false | Actions |
@@ -46,7 +46,7 @@ CardElement is the base type for all elements that can be used to define an Adap
 > NOTE: You cannot add an Input directly, only the derived types.
 
 | Property | Type |  Required |Description |
-|---|---|---|--|
+|---|---|---|---|
 | **size** | [Size](#size) | false | Specifies the horizontal size of the element. |
 | **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
@@ -57,7 +57,7 @@ CardElement is the base type for all elements that can be used to define an Adap
 The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.
 
 | Property | Type | Required | Description |
-|---|---|---|--|
+|---|---|---|---|
 | **type**| string | true | **"TextBlock"** |
 | **text** | string | true |The actual text to display |
 | **textSize** | [TextSize](#textsize) | false |The size of the text |
@@ -89,7 +89,7 @@ Input is a base CardElement which describes shared properties for input to colle
 >NOTE: You need to define an SubmitAction or HttpAction to gather the information from input and do something with it.
 
 | Property | Type | Required | Description |
-|---|---|---| --|
+|---|---|---|---|
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **title** | string | true | Title Description of the input desired|
 | **value** | string | false | The initial value for a field |
@@ -101,7 +101,7 @@ Input is a base CardElement which describes shared properties for input to colle
 TextInput collects text from the user
 
 | Property | Type | Required | Description |
-|---|---|---| -- |
+|---|---|---|---|
 | **type**| string | true | **"TextInput"** |
 | **style**| [TextInputStyle](#textinputstyle) | false | Hint of style of input, if client doesn't support the style it will become simple text input |
 | **isMultiline** | bool | false | true to collect multiple lines of text (default is false)|
@@ -153,7 +153,7 @@ The Container is a CardElement which contains a list of CardElements that are lo
 
 The column group element adds the ability to have a set of coulmn objects.
 | Property | Type | Required | Description |
-|---|---|---| -- |
+|---|---|---|---||
 | **type**| string | true | **"ColumnGroup"** |
 | **columns** | Column[] | true | array of columns (each a container of elements)  |
 
@@ -163,7 +163,7 @@ The column group element adds the ability to have a set of coulmn objects.
 A Column is a container which contains a list of cardElements that are logically grouped.
 
 | Property | Type | Required |  Description |
-|---|---|---|--|
+|---|---|---|---|
 | **type**| string | true |  **"Column"** |
 | **weight** | string | false | The weight to apply to this column |
 
@@ -174,7 +174,7 @@ A Column is a container which contains a list of cardElements that are logically
 The ImageGallery allows for the inclusion of a collection images like a photogallery.
 
 | Property | Type | Required | Description |
-|---|---|---| -- |
+|---|---|---|---|
 | **type**| string | true | **"ImageGallery"** |
 | **images**| [Image](#image)[] | true | Array of Image objects |
 | **size** | [Size](#size) | false | Specifies the horizontal size of each image in the gallery. |
@@ -185,7 +185,7 @@ The ImageGallery allows for the inclusion of a collection images like a photogal
 The FactGroup element makes it simple to display a se  ries of "facts" (e.g. name/value pairs) in a tabular form.
 
 | Property | Type | Required | Description |
-|---|---|---| -- |
+|---|---|---|---|
 | **type**| string | true | **"FactGroup"** |
 | **facts** | [Fact](#fact)[] | true| The facts to be displayed. |
 
@@ -193,7 +193,7 @@ The FactGroup element makes it simple to display a se  ries of "facts" (e.g. nam
 Represents one "fact" in a [FactGroup](#factgroup) element.
 
 | Property | Type | Required | Description |
-|---|---|---| -- |
+|---|---|---|---|
 | **name** | string | true | The fact's name. |
 | **value** | string | true |The fact's value. |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
