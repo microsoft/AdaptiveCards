@@ -90,6 +90,7 @@ namespace WpfVisualizer
             {
                 StackPanel uiActionBar = new StackPanel();
                 uiActionBar.Orientation = Orientation.Horizontal;
+                uiActionBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
                 foreach (var action in actions)
                 {
                     // add actions
