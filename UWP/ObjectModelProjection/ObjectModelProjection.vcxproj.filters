@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\shared\ObjectModel\ACParseException.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\ACParser.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCard.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\Container.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\Enums.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\BaseCardElement.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\jsoncpp.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\shared\ObjectModel\ACParseException.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\ACParser.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCard.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\Container.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\Enums.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\BaseCardElement.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\json\json.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\ObjectModel\json\json-forwards.h">
+      <Filter>json</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="json">
+      <UniqueIdentifier>{beeafc87-6665-4590-bad9-a4a9e552cdef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -15,14 +15,14 @@ namespace AdaptiveCards
         interface IAdaptiveCard;
 
         [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum Size
+        typedef [v1_enum] enum CardElementSize
         {
             Auto = 0,
             Stretch,
             Small,
             Medium,
             Large
-        } Size;
+        } CardElementSize;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -193,7 +193,6 @@ namespace AdaptiveCards
         {
             [default] interface IXamlCardRenderer;
         }
-
 
     }
 }

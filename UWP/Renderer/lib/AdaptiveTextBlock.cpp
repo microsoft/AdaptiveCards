@@ -12,82 +12,78 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    AdaptiveTextBlock::AdaptiveTextBlock()
+    AdaptiveTextBlock::AdaptiveTextBlock() : m_TextBlock(std::make_unique<TextBlock>()) 
     {
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Text(HSTRING* text)
     {
-        return HStringReference(this->GetText().c_str()).CopyTo(text);
+        return UTF8ToHString(m_TextBlock->GetText(), text);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_Text(HSTRING text)
     {
-        if (text == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-        HString Wrapper;
-        RETURN_IF_FAILED(Wrapper.Set(text));
-        this->SetText(Wrapper.GetRawBuffer(nullptr));
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(text, out));
+        m_TextBlock->SetText(out);
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize* textSize)
     {
-        *textSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextSize>(this->GetTextSize());
+        *textSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextSize>(m_TextBlock->GetTextSize());
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize)
     {
-        this->SetTextSize(static_cast<AdaptiveCards::TextSize>(textSize));
+        m_TextBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(textSize));
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight* textWeight)
     {
-        *textWeight = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextWeight>(this->GetTextWeight());
+        *textWeight = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextWeight>(m_TextBlock->GetTextWeight());
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight)
     {
-        this->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(textWeight));
+        m_TextBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(textWeight));
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Wrap(boolean* Wrap)
     {
-        *Wrap = this->GetWrap();
+        *Wrap = m_TextBlock->GetWrap();
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_Wrap(boolean Wrap)
     {
-        this->SetWrap(Wrap);
+        m_TextBlock->SetWrap(Boolify(Wrap));
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_IsSubtle(boolean* IsSubtle)
     {
-        *IsSubtle = this->GetIsSubtle();
+        *IsSubtle = m_TextBlock->GetIsSubtle();
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_IsSubtle(boolean IsSubtle)
     {
-        this->SetIsSubtle(IsSubtle);
+        m_TextBlock->SetIsSubtle(Boolify(IsSubtle));
         return S_OK;
     }
 
@@ -124,5 +120,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // Fill other properties.
 
         return textBlock->QueryInterface(TextBlock);
+
     }
 }}

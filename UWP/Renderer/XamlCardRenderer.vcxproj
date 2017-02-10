@@ -103,7 +103,7 @@
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\shared\ObjectModelLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\shared\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -111,9 +111,11 @@
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
     <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\pch.h" />
+    <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
+    <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
     <ClCompile Include="dll\dll.cpp" />
   </ItemGroup>
@@ -124,7 +126,7 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\shared\ObjectModelLib\ObjectModelLib.vcxproj">
+    <ProjectReference Include="..\ObjectModelProjection\ObjectModelProjection.vcxproj">
       <Project>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</Project>
     </ProjectReference>
   </ItemGroup>
