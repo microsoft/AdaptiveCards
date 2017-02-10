@@ -4,12 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfVisualizer"
-        mc:Ignorable="d"
-        Title="ShowCardWindow" Height="300" Width="300">
-    <Window.CommandBindings>
-        <CommandBinding Command="SystemCommands.CloseWindowCommand" Executed="CloseWindow_Execute" CanExecute="CloseWindow_CanExecute" />
-    </Window.CommandBindings>
-    
+        mc:Ignorable="d" Loaded="Window_Loaded" SizeToContent="WidthAndHeight"
+        MinWidth="480"  MinHeight="100">
     <Grid x:Name="Body">
     </Grid>
 </Window>

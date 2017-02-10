@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using WPF = System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -17,29 +18,32 @@ using System.Windows.Media.Imaging;
 using System.Xml;
 using MarkedNet;
 using Xceed.Wpf.Toolkit;
+using Adaptive.Schema.Net;
 using AC = Adaptive.Schema.Net;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace WpfVisualizer
 {
     public partial class AdaptiveXamlRenderer
     {
 
-        public UIElement Render(AC.ActionBase action, List<Control> inputControls, object content = null)
+        private UIElement _renderAction(ActionBase action, List<Control> inputControls, object content = null)
         {
-            if (action is AC.OpenUrlAction)
-                return Render((AC.OpenUrlAction)action, inputControls, content);
+            if (action is OpenUrlAction)
+                return Render((OpenUrlAction)action, inputControls, content);
 
-            if (action is AC.SubmitAction)
-                return Render((AC.SubmitAction)action, inputControls, content);
+            if (action is SubmitAction)
+                return Render((SubmitAction)action, inputControls, content);
 
-            if (action is AC.CancelAction)
-                return Render((AC.CancelAction)action, inputControls, content);
+            if (action is CancelAction)
+                return Render((CancelAction)action, inputControls, content);
 
-            if (action is AC.ShowCardAction)
-                return Render((AC.ShowCardAction)action, inputControls, content);
+            if (action is ShowCardAction)
+                return Render((ShowCardAction)action, inputControls, content);
 
-            if (action is AC.HttpAction)
-                return Render((AC.HttpAction)action, inputControls, content);
+            if (action is HttpAction)
+                return Render((HttpAction)action, inputControls, content);
 
             return new Grid();
         }
@@ -50,12 +54,12 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="httpAction"></param>
         /// <returns></returns>
-        public UIElement Render(AC.HttpAction httpAction, List<Control> inputControls, object content)
+        public UIElement Render(HttpAction httpAction, List<Control> inputControls, object content)
         {
             var uiActionGroup = new Grid();
-            var actionInstance = new ActionInstance() { Action = httpAction, Inputs = inputControls };
-            Hyperlink link = new Hyperlink(new Run() { Text = httpAction.Title });
-            link.Tag = actionInstance;
+            //var actionInstance = new ActionInstance() { Action = httpAction, Inputs = inputControls };
+            //Hyperlink link = new Hyperlink(new Run() { Text = httpAction.Title });
+            //link.Tag = actionInstance;
             return uiActionGroup;
         }
 
@@ -64,13 +68,12 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="showCardAction"></param>
         /// <returns></returns>
-        public UIElement Render(AC.ShowCardAction showCardAction, List<Control> inputControls, object content)
+        public UIElement Render(ShowCardAction showCardAction, List<Control> inputControls, object content)
         {
             Button uiButton = _createActionButton(showCardAction, content);
             uiButton.Click += (sender, e) =>
             {
-                ShowCardWindow dialog = new ShowCardWindow(showCardAction.Card, this.resources);
-                dialog.ShowDialog();
+                OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = showCardAction, Data = null } );
             };
             return uiButton;
         }
@@ -80,12 +83,12 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="openUrlAction"></param>
         /// <returns></returns>
-        public UIElement Render(AC.OpenUrlAction openUrlAction, List<Control> inputControls, object content)
+        public UIElement Render(OpenUrlAction openUrlAction, List<Control> inputControls, object content)
         {
             Button uiButton = _createActionButton(openUrlAction, content);
             uiButton.Click += (sender, e) =>
             {
-                Process.Start(openUrlAction.Url);
+                OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = openUrlAction });
             };
             return uiButton;
         }
@@ -95,11 +98,15 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="submitAction"></param>
         /// <returns></returns>
-        public UIElement Render(AC.SubmitAction submitAction, List<Control> inputControls, object content)
+        public UIElement Render(SubmitAction submitAction, List<Control> inputControls, object content)
         {
             Button uiButton = _createActionButton(submitAction, content);
             uiButton.Click += (sender, e) =>
             {
+                dynamic data = (submitAction.Data != null) ? ((JToken)submitAction.Data).DeepClone() : new JObject();
+                _fillDataFromInputControls(data, inputControls);
+
+                OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = submitAction, Data = data });
             };
             return uiButton;
         }
@@ -109,24 +116,22 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="cancelAction"></param>
         /// <returns></returns>
-        public UIElement Render(AC.CancelAction cancelAction, List<Control> inputControls, object content)
+        public UIElement Render(CancelAction cancelAction, List<Control> inputControls, object content)
         {
             Button uiButton = _createActionButton(cancelAction, content);
             uiButton.Click += (sender, e) =>
             {
-                ActionInstance.Reset(inputControls);
-                var hostWindow = uiButton.DataContext as Window;
-                if (hostWindow is ShowCardWindow)
-                    hostWindow.Close();
+                _resetInputControls(inputControls);
+                OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = cancelAction });
             };
             return uiButton;
         }
-        private Button _createActionButton(AC.ActionBase action, object content)
+        private Button _createActionButton(ActionBase action, object content)
         {
             var uiButton = new Button();
             if (content == null)
             {
-                TextBlock uiTitle = new TextBlock() { Text = action.Title };
+                WPF.TextBlock uiTitle = new WPF.TextBlock() { Text = action.Title };
                 uiTitle.Style = resources["Adaptive.Action.Title"] as Style;
                 uiButton.Content = uiTitle;
             }

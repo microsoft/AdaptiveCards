@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ADP = Adaptive.Schema.Net;
+using AC = Adaptive.Schema.Net;
 using Newtonsoft.Json;
 using Microsoft.Win32;
 using System.IO;
@@ -25,6 +25,8 @@ namespace WpfVisualizer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private AdaptiveXamlRenderer _renderer;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,12 +34,11 @@ namespace WpfVisualizer
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var renderer = new AdaptiveXamlRenderer(this.Resources);
             try
             {
                 this.card.Children.Clear();
-                var aCard = JsonConvert.DeserializeObject<ADP.AdaptiveCard>(this.textBox.Text);
-                var element = renderer.Render(aCard);
+                var aCard = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
+                var element = this._renderer.Render(aCard);
                 this.card.Children.Add(element);
             }
             catch (Exception err)
@@ -61,10 +62,37 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            this._renderer = new AdaptiveXamlRenderer(this.Resources);
+            this._renderer.OnAction += _renderer_OnAction;
+
             var binding = new CommandBinding(NavigationCommands.GoToPage, GoToPage, CanGoToPage);
             // Register CommandBinding for all windows.
             CommandManager.RegisterClassCommandBinding(typeof(Window), binding);
 
+        }
+
+        private void _renderer_OnAction(object sender, ActionEventArgs e)
+        {
+            if (e.Action is AC.OpenUrlAction)
+            {
+                AC.OpenUrlAction action = (AC.OpenUrlAction)e.Action;
+                Process.Start(action.Url);
+            }
+            else if (e.Action is AC.ShowCardAction)
+            {
+                AC.ShowCardAction action = (AC.ShowCardAction)e.Action;
+                ShowCardWindow dialog = new ShowCardWindow(action.Card, this.Resources);
+                dialog.ShowDialog();
+            }
+            else if (e.Action is AC.SubmitAction)
+            {
+                AC.SubmitAction action = (AC.SubmitAction)e.Action;
+                System.Windows.MessageBox.Show(JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), action.Title);
+            }
+            else if (e.Action is AC.HttpAction)
+            {
+                AC.HttpAction action = (AC.HttpAction)e.Action;
+            }
         }
 
         private void GoToPage(object sender, ExecutedRoutedEventArgs e)

@@ -17,7 +17,9 @@ using System.Windows.Media.Imaging;
 using System.Xml;
 using MarkedNet;
 using Xceed.Wpf.Toolkit;
-using AC = Adaptive.Schema.Net;
+using Adaptive.Schema.Net;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace WpfVisualizer
 {
@@ -29,14 +31,14 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public UIElement Render(AC.TextInput textInput, List<Control> inputControls)
+        public UIElement Render(TextInput textInput, List<Control> inputControls)
         {
             if (textInput.Style.HasValue)
             {
                 switch (textInput.Style)
                 {
-                    case AC.TextInputStyle.Week:
-                    case AC.TextInputStyle.Date:
+                    case TextInputStyle.Week:
+                    case TextInputStyle.Date:
                         {
                             var datePicker = new DatePicker();
                             DateTime value;
@@ -54,7 +56,7 @@ namespace WpfVisualizer
                             return datePicker;
                         }
 
-                    case AC.TextInputStyle.Datetime:
+                    case TextInputStyle.Datetime:
                         {
                             var dateTimePicker = new DateTimePicker();
                             dateTimePicker.TimePickerVisibility = Visibility.Visible;
@@ -75,7 +77,7 @@ namespace WpfVisualizer
                             return dateTimePicker;
                         }
 
-                    case AC.TextInputStyle.Time:
+                    case TextInputStyle.Time:
                         {
                             var timePicker = new TimePicker();
                             DateTime value;
@@ -93,7 +95,7 @@ namespace WpfVisualizer
                             return timePicker;
                         }
 
-                    case AC.TextInputStyle.Number:
+                    case TextInputStyle.Number:
                         {
                             IntegerUpDown numberPicker = new IntegerUpDown();
                             // numberPicker.ShowButtonSpinner = true;
@@ -122,7 +124,7 @@ namespace WpfVisualizer
                         }
 
 
-                    case AC.TextInputStyle.Password:
+                    case TextInputStyle.Password:
                         {
                             PasswordBox passwordBox = new PasswordBox() { Password = textInput.Value };
 
@@ -135,7 +137,7 @@ namespace WpfVisualizer
                             return passwordBox;
                         }
 
-                    case AC.TextInputStyle.Range:
+                    case TextInputStyle.Range:
                         {
                             var rangeGrid = new Grid();
                             rangeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
@@ -183,7 +185,7 @@ namespace WpfVisualizer
                             return rangeGrid;
                         }
 
-                    case AC.TextInputStyle.Tel:
+                    case TextInputStyle.Tel:
                         {
                             var telTextBox = new MaskedTextBox();
                             telTextBox.Text = textInput.Value;
@@ -194,8 +196,8 @@ namespace WpfVisualizer
                             return telTextBox;
                         }
 
-                    case AC.TextInputStyle.Email:
-                    case AC.TextInputStyle.Month:
+                    case TextInputStyle.Email:
+                    case TextInputStyle.Month:
                     default:
                         break;
                 }
@@ -223,7 +225,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public UIElement Render(AC.ChoiceInput choiceInput, List<Control> inputControls)
+        public UIElement Render(ChoiceInput choiceInput, List<Control> inputControls)
         {
             var uiComboBox = new ComboBox();
             uiComboBox.Style = resources["Adaptive.Input.ChoiceInput.ComboBox"] as Style;
@@ -241,19 +243,19 @@ namespace WpfVisualizer
                     var uiCheckbox = new CheckBox();
                     uiCheckbox.Content = choice.Display;
                     uiCheckbox.IsChecked = choice.IsSelected;
-                    uiCheckbox.Tag = new Tuple<AC.ChoiceInput, AC.Choice>(choiceInput, choice);
+                    uiCheckbox.Tag = new Tuple<ChoiceInput, Choice>(choiceInput, choice);
                     uiCheckbox.Style = resources["Adaptive.Input.ChoiceInput.CheckBox"] as Style;
                     inputControls.Add(uiCheckbox);
                     uiStackPanel.Children.Add(uiCheckbox);
                 }
                 else
                 {
-                    if (choiceInput.Style == AC.ChoiceInputStyle.Compact)
+                    if (choiceInput.Style == ChoiceInputStyle.Compact)
                     {
                         var uiComboItem = new ComboBoxItem();
                         uiComboItem.Style = resources["Adaptive.Input.ChoiceInput.ComboBoxItem"] as Style;
                         uiComboItem.Content = choice.Display;
-                        uiComboItem.Tag = new Tuple<AC.ChoiceInput, AC.Choice>(choiceInput, choice);
+                        uiComboItem.Tag = choice;
                         uiComboBox.Items.Add(uiComboItem);
                         if (choice.IsSelected)
                             uiComboBox.SelectedItem = uiComboItem;
@@ -264,19 +266,157 @@ namespace WpfVisualizer
                         uiRadio.Content = choice.Display;
                         uiRadio.IsChecked = choice.IsSelected;
                         uiRadio.GroupName = choiceInput.Id;
-                        uiRadio.Tag = new Tuple<AC.ChoiceInput, AC.Choice>(choiceInput, choice);
+                        uiRadio.Tag = new Tuple<ChoiceInput, Choice>(choiceInput, choice);
                         uiRadio.Style = resources["Adaptive.Input.ChoiceInput.Radio"] as Style;
                         inputControls.Add(uiRadio);
                         uiStackPanel.Children.Add(uiRadio);
                     }
                 }
             }
-            if (choiceInput.Style == AC.ChoiceInputStyle.Compact)
+            if (choiceInput.Style == ChoiceInputStyle.Compact)
             {
                 inputControls.Add(uiComboBox);
                 return uiComboBox;
             }
             return uiStackPanel;
         }
+
+        private dynamic _fillDataFromInputControls(dynamic data, List<Control> inputControls)
+        {
+            Dictionary<string, List<String>> multiChoices = new Dictionary<string, List<string>>();
+
+            foreach (var inputControl in inputControls)
+            {
+                if (inputControl is TextBox)
+                {
+                    TextInput input = inputControl.Tag as TextInput;
+                    data[input.Id] = ((TextBox)inputControl).Text;
+                }
+                else if (inputControl is DatePicker)
+                {
+                    TextInput input = inputControl.Tag as TextInput;
+                    data[input.Id] = ((DatePicker)inputControl).Text;
+                }
+                else if (inputControl is DateTimePicker)
+                {
+                    TextInput input = inputControl.Tag as TextInput;
+                    data[input.Id] = ((DateTimePicker)inputControl).Text;
+                }
+                else if (inputControl is TimePicker)
+                {
+                    TextInput input = inputControl.Tag as TextInput;
+                    data[input.Id] = ((TimePicker)inputControl).Text;
+                }
+                else if (inputControl is IntegerUpDown)
+                {
+                    TextInput input = inputControl.Tag as TextInput;
+                    data[input.Id] = ((IntegerUpDown)inputControl).Text;
+                }
+                else if (inputControl is PasswordBox)
+                {
+                    TextInput input = inputControl.Tag as TextInput;
+                    data[input.Id] = ((PasswordBox)inputControl).Password;
+                }
+                else if (inputControl is MaskedTextBox)
+                {
+                    TextInput input = inputControl.Tag as TextInput;
+                    data[input.Id] = ((MaskedTextBox)inputControl).Text;
+                }
+                else if (inputControl is CheckBox)
+                {
+                    CheckBox checkBox = (CheckBox)inputControl;
+                    var tuple = inputControl.Tag as Tuple<ChoiceInput, Choice>;
+                    if (!multiChoices.ContainsKey(tuple.Item1.Id))
+                        multiChoices.Add(tuple.Item1.Id, new List<String>());
+                    if (checkBox.IsChecked == true)
+                        multiChoices[tuple.Item1.Id].Add(tuple.Item2.Value);
+                }
+                else if (inputControl is RadioButton)
+                {
+                    RadioButton radioBox = (RadioButton)inputControl;
+                    var tuple = inputControl.Tag as Tuple<ChoiceInput, Choice>;
+                    if (radioBox.IsChecked == true)
+                        data[tuple.Item1.Id] = tuple.Item2.Value;
+                }
+                else if (inputControl is ComboBox)
+                {
+                    ComboBox comboBox = (ComboBox)inputControl;
+                    ChoiceInput choiceInput = comboBox.Tag as ChoiceInput;
+                    ComboBoxItem item = comboBox.SelectedItem as ComboBoxItem;
+                    if (item != null)
+                    {
+                        Choice choice = item.Tag as Choice;
+                        data[choiceInput.Id] = choice.Value;
+                    }
+                }
+                else
+                    Debug.Print($"Unknown control {inputControl.GetType().Name}");
+            }
+            foreach (var val in multiChoices)
+                data[val.Key] = new JArray(val.Value.ToArray());
+            return data;
+        }
+
+        private static void _resetInputControls(List<Control> inputControls)
+        {
+            foreach (var control in inputControls)
+            {
+                if (control is TextBox)
+                {
+                    TextInput input = control.Tag as TextInput;
+                    ((TextBox)control).Text = input.Value;
+                }
+                else if (control is DatePicker)
+                {
+                    TextInput input = control.Tag as TextInput;
+                    ((DatePicker)control).Text = input.Value;
+                }
+                else if (control is DateTimePicker)
+                {
+                    TextInput input = control.Tag as TextInput;
+                    ((DateTimePicker)control).Text = input.Value;
+                }
+                else if (control is TimePicker)
+                {
+                    TextInput input = control.Tag as TextInput;
+                    ((TimePicker)control).Text = input.Value;
+                }
+                else if (control is IntegerUpDown)
+                {
+                    TextInput input = control.Tag as TextInput;
+                    ((IntegerUpDown)control).Text = input.Value;
+                }
+                else if (control is PasswordBox)
+                {
+                    TextInput input = control.Tag as TextInput;
+                    ((PasswordBox)control).Password = input.Value;
+                }
+                else if (control is MaskedTextBox)
+                {
+                    TextInput input = control.Tag as TextInput;
+                    ((MaskedTextBox)control).Text = input.Value;
+                }
+                else if (control is CheckBox)
+                {
+                    CheckBox checkBox = (CheckBox)control;
+                    var tuple = control.Tag as Tuple<ChoiceInput, Choice>;
+                    checkBox.IsChecked = tuple.Item2.IsSelected == true;
+                }
+                else if (control is RadioButton)
+                {
+                    RadioButton radioBox = (RadioButton)control;
+                    var tuple = control.Tag as Tuple<ChoiceInput, Choice>;
+                    radioBox.IsChecked = tuple.Item2.IsSelected == true;
+                }
+                else if (control is ComboBox)
+                {
+                    //ComboBox comboBox = (ComboBox)control;
+                    //var tuple = control.Tag as Tuple<ChoiceInput, Choice>;
+                    //if (comboBox.IsChecked == true)
+                    //    data[tuple.Item1.Id] = tuple.Item2.Value;
+                }
+            }
+        }
+
     }
 }

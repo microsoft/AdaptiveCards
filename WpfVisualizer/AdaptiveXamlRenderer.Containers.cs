@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using WPF = System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -17,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Xml;
 using MarkedNet;
 using Xceed.Wpf.Toolkit;
+using Adaptive.Schema.Net;
 using AC = Adaptive.Schema.Net;
 
 namespace WpfVisualizer
@@ -28,7 +30,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="card"></param>
         /// <returns></returns>
-        public UIElement Render(AC.AdaptiveCard card)
+        public UIElement Render(AdaptiveCard card)
         {
             var grid = new Grid();
             grid.Style = resources["Adaptive.Card"] as Style;
@@ -45,7 +47,7 @@ namespace WpfVisualizer
             return grid;
         }
 
-        private void _addContainerElements(Grid grid, List<AC.CardElement> elements, List<AC.ActionBase> actions, List<Control> inputControls)
+        private void _addContainerElements(Grid grid, List<CardElement> elements, List<ActionBase> actions, List<Control> inputControls)
         {
             bool hasActions = actions != null && actions.Any();
             if (hasActions)
@@ -64,15 +66,15 @@ namespace WpfVisualizer
                 Grid.SetColumnSpan(uiElement, 2);
 
                 // if we have input 
-                if (cardElement is AC.Input)
+                if (cardElement is Input)
                 {
-                    var input = cardElement as AC.Input;
+                    var input = cardElement as Input;
                     // and a title                    
                     if (input.Title != null)
                     {
                         // Add input title as column[0] peer to input element
                         // this is so all input labels line up nicely
-                        var uiTitle = new TextBlock() { Text = input.Title };
+                        var uiTitle = new WPF.TextBlock() { Text = input.Title };
                         uiTitle.Style = resources["Adaptive.Input.Title"] as Style;
                         Grid.SetRow(uiTitle, grid.RowDefinitions.Count - 1);
                         Grid.SetColumn(uiElement, 1);
@@ -91,7 +93,7 @@ namespace WpfVisualizer
                 foreach (var action in actions)
                 {
                     // add actions
-                    var uiAction = Render(action, inputControls);
+                    var uiAction = _renderAction(action, inputControls);
                     uiActionBar.Children.Add(uiAction);
                 }
                 uiActionBar.Style = resources["Adaptive.Actions"] as Style;
@@ -107,43 +109,43 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        private UIElement _renderCardElement(AC.CardElement element, List<Control> inputControls)
+        private UIElement _renderCardElement(CardElement element, List<Control> inputControls)
         {
-            if (element is AC.ColumnGroup)
+            if (element is ColumnGroup)
             {
-                return Render(element as AC.ColumnGroup, inputControls);
+                return Render(element as ColumnGroup, inputControls);
             }
-            else if (element is AC.Column)
+            else if (element is Column)
             {
-                return Render(element as AC.Container, inputControls);
+                return Render(element as Container, inputControls);
             }
-            else if (element is AC.ImageGallery)
+            else if (element is ImageGallery)
             {
-                return Render(element as AC.ImageGallery);
+                return Render(element as ImageGallery);
             }
-            else if (element is AC.FactGroup)
+            else if (element is FactGroup)
             {
-                return Render(element as AC.FactGroup);
+                return Render(element as FactGroup);
             }
             else if (element is AC.TextBlock)
             {
                 return Render(element as AC.TextBlock);
             }
-            else if (element is AC.TextInput)
+            else if (element is TextInput)
             {
-                return Render(element as AC.TextInput, inputControls);
+                return Render(element as TextInput, inputControls);
             }
-            else if (element is AC.ChoiceInput)
+            else if (element is ChoiceInput)
             {
-                return Render(element as AC.ChoiceInput, inputControls);
+                return Render(element as ChoiceInput, inputControls);
             }
             else if (element is AC.Image)
             {
                 return Render(element as AC.Image);
             }
-            else if (element is AC.Container)
+            else if (element is Container)
             {
-                return Render(element as AC.Container, inputControls);
+                return Render(element as Container, inputControls);
             }
             else
                 Debug.Print($"Unknown Element type {element.GetType().Name}");
@@ -151,23 +153,23 @@ namespace WpfVisualizer
             return new Grid();
         }
 
-        
+
         /// <summary>
         /// Container
         /// </summary>
         /// <param name="container"></param>
         /// <returns></returns>
-        public UIElement Render(AC.Container container, List<Control> inputControls)
+        public UIElement Render(Container container, List<Control> inputControls)
         {
             var uiContainer = new Grid();
             uiContainer.Style = resources["Adaptive.Container"] as Style;
 
-            if (container.Separation == AC.SeparationStyle.Before || container.Separation == AC.SeparationStyle.Both)
+            if (container.Separation == SeparationStyle.Before || container.Separation == SeparationStyle.Both)
                 _addSeperator(uiContainer);
 
             _addContainerElements(uiContainer, container.Items, container.Actions, inputControls);
 
-            if (container.Separation == AC.SeparationStyle.After || container.Separation == Adaptive.Schema.Net.SeparationStyle.Both)
+            if (container.Separation == SeparationStyle.After || container.Separation == Adaptive.Schema.Net.SeparationStyle.Both)
                 _addSeperator(uiContainer);
             return uiContainer;
         }
@@ -187,7 +189,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="columnGroup"></param>
         /// <returns></returns>
-        public UIElement Render(AC.ColumnGroup columnGroup, List<Control> inputControls)
+        public UIElement Render(ColumnGroup columnGroup, List<Control> inputControls)
         {
             var uiColumnGroup = new Grid();
             uiColumnGroup.Style = resources["Adaptive.ColumnGroup"] as Style;
@@ -241,7 +243,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="factGroup"></param>
         /// <returns></returns>
-        public UIElement Render(AC.FactGroup factGroup)
+        public UIElement Render(FactGroup factGroup)
         {
             var uiFactGroup = new Grid();
             // grid.Margin = this.Theme.FactGroupMargins;
@@ -252,7 +254,7 @@ namespace WpfVisualizer
             int iRow = 0;
             foreach (var fact in factGroup.Facts)
             {
-                Tuple<UIElement, UIElement> uiElements = Render(fact as AC.Fact);
+                Tuple<UIElement, UIElement> uiElements = Render(fact as Fact);
                 uiFactGroup.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
                 Grid.SetColumn(uiElements.Item1, 0);
@@ -271,14 +273,14 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="fact"></param>
         /// <returns></returns>
-        public Tuple<UIElement, UIElement> Render(AC.Fact fact)
+        public Tuple<UIElement, UIElement> Render(Fact fact)
         {
-            return new Tuple<UIElement, UIElement>(new TextBlock()
+            return new Tuple<UIElement, UIElement>(new WPF.TextBlock()
             {
                 Text = fact.Name,
                 Style = this.resources["Adaptive.Fact.Name"] as Style
             },
-            new TextBlock()
+            new WPF.TextBlock()
             {
                 Text = fact.Value,
                 Style = this.resources["Adaptive.Fact.Value"] as Style
@@ -290,7 +292,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="imageGallery"></param>
         /// <returns></returns>
-        public UIElement Render(AC.ImageGallery imageGallery)
+        public UIElement Render(ImageGallery imageGallery)
         {
             var uiGallery = new ListBox();
             uiGallery.Style = resources["Adaptive.ImageGallery"] as Style;
