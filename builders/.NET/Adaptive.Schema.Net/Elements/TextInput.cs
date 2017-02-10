@@ -20,36 +20,36 @@ namespace Adaptive.Schema.Net
         /// Hint of style of input, if client doesn't support the style it will become simple text input
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        TextInputStyle? Style { get; set; }
+        public TextInputStyle? Style { get; set; }
 
         /// <summary>
         /// true to collect multiple lines of text(default is false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        bool? IsMultiline { get; set; }
+        public bool? IsMultiline { get; set; }
 
         /// <summary>
         /// hint of maximum length characters to collect(may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        int? MaxLength { get; set; }
+        public int? MaxLength { get; set; }
 
         /// <summary>
         /// hint of minimum value(may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        string Min { get; set; }
+        public string Min { get; set; }
 
         /// <summary>
         /// hint of maximum value(may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        string Max { get; set; }
-
+        public string Max { get; set; }
+        
         /// <summary>
         /// hint of step value(may be ignored by some clients)   
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        int? Step { get; set; }
+        public int? Step { get; set; }
     }
 }

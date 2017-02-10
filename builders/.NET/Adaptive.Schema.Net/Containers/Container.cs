@@ -41,5 +41,11 @@ namespace Adaptive.Schema.Net
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<Action> Actions { get; set; } = new List<Action>();
+
+        /// <summary>
+        /// visually separate this container from preiovus or pending containers
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public SeparationStyle? Separation { get; set; }
     }
 }

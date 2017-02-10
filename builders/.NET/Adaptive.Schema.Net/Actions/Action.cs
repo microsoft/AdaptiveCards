@@ -10,7 +10,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// A container for grouping columns together
     /// </summary>
-    public class Action : CardElement
+    public class Action : TypedElement
     {
         public Action() { }
 

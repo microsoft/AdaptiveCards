@@ -71,9 +71,9 @@
             <Setter Property="Margin" Value="4,0,4,0"/>
         </Style>
 
-        <!-- Seperator Styling -->
-        <Style x:Key="Adaptive.Seperator" TargetType="Separator">
-            <Setter Property="Margin" Value="4"/>
+        <!-- Separator Styling -->
+        <Style x:Key="Adaptive.Separator" TargetType="Separator">
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <!-- Fact/FactGroup Styling -->
@@ -118,6 +118,10 @@
             <Setter Property="Height" Value="100"/>
         </Style>
 
+        <Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
+            <Setter Property="Margin" Value="0,4,0,4"/>
+        </Style>
+
         <!-- Circular Person mask -->
         <RadialGradientBrush x:Key="PersonMask" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
             <GradientStop Color="#ffffffff" Offset="0.9" />
@@ -148,8 +152,44 @@
             <Setter Property="OpacityMask" Value="{StaticResource PersonMask}"/>
         </Style>
 
-        <Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
-            <Setter Property="Margin" Value="0,4,0,4"/>
+
+        <!-- Input definitions -->
+        <Style x:Key="Adaptive.Input.Title" TargetType="FrameworkElement" >
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput" TargetType="FrameworkElement" >
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.Date" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.DateTime" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.Time" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.Month" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.Week" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+        
+        <Style x:Key="Adaptive.Input.TextInput.Range" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.Number" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.Tel" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.Password" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        </Style>
+
+        <Style x:Key="Adaptive.Input.TextInput.Email" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
         </Style>
 
     </Window.Resources>
