@@ -1,4 +1,8 @@
 #include "Enums.h"
+#if defined(__ANDROID__)
+#define _strnicmp strncasecmp
+#endif
+
 
 namespace AdaptiveCards
 {

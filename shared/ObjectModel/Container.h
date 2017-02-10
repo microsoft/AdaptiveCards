@@ -7,7 +7,7 @@
 namespace AdaptiveCards
 {
 class BaseCardElement;
-class Container : public std::enable_shared_from_this<Container>, BaseCardElement
+class Container : public BaseCardElement, std::enable_shared_from_this<Container>
 {
 public:
     Container();
