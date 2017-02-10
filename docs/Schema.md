@@ -116,8 +116,7 @@ Shows an array of Choice objects
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true |  **"ChoiceInput"** |
-| **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
+| **type**| string | true |  **"ChoiceInput"** || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
 | **multiSelect** | boolean | false | allow multiple choices to be selected (Default=false)|
 | **choices** | Choice[] | true | the choice options |
 
@@ -152,7 +151,7 @@ The Container is a CardElement which contains a list of CardElements that are lo
 
 The column group element adds the ability to have a set of coulmn objects.
 | Property | Type | Required | Description |
-|---|---|---|---||
+|---|---|---|---|
 | **type**| string | true | **"ColumnGroup"** |
 | **columns** | Column[] | true | array of columns (each a container of elements)  |
 
