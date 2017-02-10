@@ -4,13 +4,13 @@
     "body": [
         {
             "@type": "TextInput",
-            "id": "123",
+            "id": "SimpleVal",
             "title": "TextInput",
             "placeholder": "placeholder"
         },
         {
             "@type": "TextInput",
-            "id": "123",
+            "id": "MultiLineVal",
             "title": "Multline Text",
             "placeholder": "placeholder",
             "isMultiLine": true
@@ -18,14 +18,14 @@
         {
             "@type": "TextInput",
             "style": "date",
-            "id": "123",
+            "id": "DateVal",
             "title": "Date",
             "placeholder": "placeholder"
         },
         {
             "@type": "TextInput",
             "style": "datetime",
-            "id": "123",
+            "id": "DateTimeVal",
             "title": "DateTime",
             "placeholder": "placeholder"
         },
@@ -33,44 +33,44 @@
             "@type": "TextInput",
             "style": "month",
             "title": "Month",
-            "id": "123",
+            "id": "MonthVal",
             "placeholder": "placeholder"
         },
         {
             "@type": "TextInput",
             "style": "week",
             "title": "Week",
-            "id": "123",
+            "id": "WeekVal",
             "placeholder": "placeholder"
         },
         {
             "@type": "TextInput",
             "style": "password",
-            "id": "123",
+            "id": "PasswordVal",
             "title": "Password",
             "placeholder": "placeholder"
         },
         {
             "@type": "TextInput",
             "style": "range",
-            "id": "123",
-            "min": "-50",
-            "max": "50",
-            "step": 5,
+            "id": "RangeVal",
+            "min": "-5",
+            "max": "5",
+            "step": 1,
             "title": "Range",
             "placeholder": "placeholder"
         },
         {
             "@type": "TextInput",
             "style": "tel",
-            "id": "123",
+            "id": "TelVal",
             "title": "phone",
             "placeholder": "placeholder"
         },
         {
             "@type": "TextInput",
             "style": "number",
-            "id": "123",
+            "id": "NumVal",
             "title": "Number",
             "min": "-5",
             "max": "5",
@@ -80,7 +80,7 @@
         {
             "@type": "ChoiceInput",
             "title": "SingleSelect",
-            "id": "12313",
+            "id": "SingleSelectVal",
             "choices": [
                 {
                     "display": "One",
@@ -100,7 +100,7 @@
         {
             "@type": "ChoiceInput",
             "title": "MultiSelect",
-            "id": "12313",
+            "id": "MultiSelectVal",
             "multiSelect": true,
             "choices": [
                 {
@@ -122,7 +122,7 @@
         {
             "@type": "ChoiceInput",
             "title": "Combo",
-            "id": "12313",
+            "id": "CompactSelectVal",
             "style": "compact",
             "choices": [
                 {
@@ -142,6 +142,127 @@
         }
     ],
     "actions": [
-        
+        {
+            "@type": "OpenUrlAction",
+            "title": "Open Url",
+            "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+            "@type": "SubmitAction",
+            "title": "Submit",
+            "data": {
+                "id": "1234567890"
+            }
+        },
+        {
+            "@type": "CancelAction",
+            "title": "Cancel"
+        },
+        {
+            "@type": "ShowCardAction",
+            "title": "Show Card",
+            "card": {
+                "@type": "AdaptiveCard",
+                "speak": "The Seattle Seahawks beat the Carolina Panters 40-7",
+                "body": [
+                    {
+                        "@type": "Container",
+                        "items": [
+                            {
+                                "@type": "TextBlock",
+                                "text": "Seattle vs Panthers",
+                                "isSubtle": true
+                            }
+                        ]
+                    },
+                    {
+                        "@type": "Container",
+                        "items": [
+                            {
+                                "@type": "ColumnGroup",
+                                "columns": [
+                                    {
+                                        "@type": "Column",
+                                        "size": "auto",
+                                        "items": [
+                                            {
+                                                "@type": "Image",
+                                                "url": "https://www.bing.com/th?id=AR_3934aff63dd6ff941034090a4b9d12e1&w=50&h=50&dpr=2&pid=AppEx",
+                                                "size": "small",
+                                                "horizontalAlignment": "center"
+                                            },
+                                            {
+                                                "@type": "TextBlock",
+                                                "text": "CAR",
+                                                "horizontalAlignment": "center",
+                                                "textSize": "normal",
+                                                "textWeight": "bolder"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "@type": "Column",
+                                        "size": "stretch",
+                                        "items": [
+                                            {
+                                                "@type": "TextBlock",
+                                                "text": "Dec 4",
+                                                "horizontalAlignment": "center"
+                                            },
+                                            {
+                                                "@type": "TextBlock",
+                                                "text": "Final",
+                                                "horizontalAlignment": "center"
+                                            },
+                                            {
+                                                "@type": "TextBlock",
+                                                "text": "7 - 40",
+                                                "textSize": "large",
+                                                "horizontalAlignment": "center"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "@type": "Column",
+                                        "size": "auto",
+                                        "items": [
+                                            {
+                                                "@type": "Image",
+                                                "url": "https://www.bing.com/th?id=AR_95e44d654968e8de2336993a1cf8a3cf&w=50&h=50&dpr=2&pid=AppEx",
+                                                "size": "small",
+                                                "horizontalAlignment": "center"
+                                            },
+                                            {
+                                                "@type": "TextBlock",
+                                                "text": "SEA",
+                                                "horizontalAlignment": "center",
+                                                "textSize": "normal",
+                                                "textWeight": "bolder"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "@type": "TextInput",
+                        "id": "SimpleVal",
+                        "title": "TextInput",
+                        "placeholder": "placeholder"
+                    }
+                ],
+                "actions": [
+                    {
+                        "@type": "SubmitAction",
+                        "title": "OK"
+                    },
+                    {
+                        "@type": "CancelAction",
+                        "title": "Cancel"
+                    }
+                ]
+            }
+        }
     ]
 }

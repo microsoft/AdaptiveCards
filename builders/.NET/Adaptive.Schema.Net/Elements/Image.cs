@@ -31,7 +31,7 @@ namespace Adaptive.Schema.Net
         /// Action for this image (this allows a default action to happen when a click on an image happens)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Action Action { get; set; }
+        public ActionBase Action { get; set; }
 
     }
 }

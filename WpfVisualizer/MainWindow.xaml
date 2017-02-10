@@ -211,6 +211,33 @@
 
         <Style x:Key="Adaptive.Input.ChoiceInput.CheckBox" TargetType="CheckBox"  >
         </Style>
+        <!-- Action Styles -->
+        <Style x:Key="Adaptive.Actions" TargetType="FrameworkElement"  >
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Action" TargetType="Button"  >
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Action.Title" TargetType="TextBlock" >
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+
+        <Style x:Key="Adaptive.Action.OpenUrlAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        </Style>
+
+        <Style x:Key="Adaptive.Action.ShowCardAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        </Style>
+
+        <Style x:Key="Adaptive.Action.SubmitAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        </Style>
+
+        <Style x:Key="Adaptive.Action.CancelAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        </Style>
+
+        <Style x:Key="Adaptive.Action.HttpAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        </Style>
 
     </Window.Resources>
 

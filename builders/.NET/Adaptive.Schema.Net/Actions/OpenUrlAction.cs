@@ -12,7 +12,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// When OpenUrlAction is invoked it will show the given url, either by launching it to an external web browser or showing in-situ with embedded web browser.
     /// </summary>
-    public class OpenUrlAction : Action
+    public class OpenUrlAction : ActionBase
     {
         public OpenUrlAction()
         {

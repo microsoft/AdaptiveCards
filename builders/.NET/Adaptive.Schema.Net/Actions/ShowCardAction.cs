@@ -12,7 +12,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
     /// </summary>
-    public class ShowCardAction : Action
+    public class ShowCardAction : ActionBase
     {
         public ShowCardAction()
         {
