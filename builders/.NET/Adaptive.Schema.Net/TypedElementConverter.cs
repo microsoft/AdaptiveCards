@@ -27,7 +27,7 @@ namespace Adaptive.Schema.Net
         {
             JObject jObject = JObject.Load(reader);
             // Create target object based on JObject
-            string typeName = jObject["@type"]?.Value<string>();
+            string typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             object result = jObject;
             if (typeName != null)
             {

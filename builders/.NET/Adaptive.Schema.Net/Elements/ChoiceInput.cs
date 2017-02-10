@@ -4,13 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Adaptive.Schema.Net
 {
+
+    /// <summary>
+    /// Element which collects choice from the user
+    /// </summary>
+    public class ChoiceInput : Input
+    {
+        public ChoiceInput()
+        {
+        }
+
+        /// <summary>
+        /// Style for choice 
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        ChoiceInputStyle? Style { get; set; }
+
+        /// <summary>
+        /// allow multiple choices to be selected (default false)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        bool? MultiSelect { get; set; }
+
+        /// <summary>
+        ///  the choice options
+        /// </summary>
+        [JsonRequired]
+        Choice[] choices { get; set; }
+    }
+
     /// <summary>
     /// Choice as part of a MultichoiceInput element
     /// </summary>
-    public class Choice 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+    public class Choice
     {
         public Choice()
         { }
@@ -33,4 +64,6 @@ namespace Adaptive.Schema.Net
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Speak { get; set; }
     }
+
+
 }

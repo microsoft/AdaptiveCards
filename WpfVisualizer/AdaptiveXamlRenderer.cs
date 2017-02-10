@@ -81,17 +81,9 @@ namespace WpfVisualizer
             {
                 return Render(element as ADP.Image);
             }
-            else if (element is ADP.Seperator)
-            {
-                return Render(element as ADP.Seperator);
-            }
             else if (element is ADP.Container)
             {
                 return Render(element as ADP.Container);
-            }
-            else if (element is ADP.ActionGroup)
-            {
-                return Render(element as ADP.ActionGroup);
             }
             else if (element is ADP.Action)
             {
@@ -209,14 +201,6 @@ namespace WpfVisualizer
             }
             return uiColumn;
         }
-
-        public UIElement Render(ADP.Seperator seperator)
-        {
-            var uiSeperator = new Separator();
-            uiSeperator.Style = resources["Adaptive.Seperator"] as Style;
-            return uiSeperator;
-        }
-
 
         public UIElement Render(ADP.TextBlock textBlock)
         {
@@ -370,21 +354,6 @@ namespace WpfVisualizer
             return new Grid();
         }
 
-        public UIElement Render(ADP.ActionGroup actionGroup)
-        {
-            var uiActionGroup = new Grid();
-            uiActionGroup.Style = resources["Adaptive.Container"] as Style;
-
-            int iRow = 0;
-            foreach (var action in actionGroup.Actions)
-            {
-                UIElement uiElement = RenderUnknownElement(action);
-                uiActionGroup.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                Grid.SetRow(uiElement, iRow++);
-                uiActionGroup.Children.Add(uiElement);
-            }
-            return uiActionGroup;
-        }
         public UIElement Render(ADP.Action action)
         {
             var uiActionGroup = new Grid();
