@@ -32,39 +32,39 @@
 ## AdaptiveCard
 AdaptiveCard is top level object which represents a card 
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"AdaptiveCard"** |
-| **body** | [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
-| **actions** |[Action](#action)[]| Actions |
+| Property | Type | Required | Description |
+|---|---|---|--|
+| **type**| string | true | **"AdaptiveCard"** |
+| **body** | [CardElement](#cardelement)[] | true | The elements that are to be displayed in this container. |
+| **actions** |[Action](#action)[]| false | Actions |
 
 # Elements
 
 ## CardElement
 CardElement is the base type for all elements that can be used to define an Adaptive Card
 
-> it cannot be added by itself, you can only add derived types
+> NOTE: You cannot add an Input directly, only the derived types.
 
-| Property | Type | Description |
-|---|---|---|
-| **size** | [Size](#size) | Specifies the horizontal size of the element. |
-| **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | Specifies how the element should be aligned horizontally within its container. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
+| Property | Type |  Required |Description |
+|---|---|---|--|
+| **size** | [Size](#size) | false | Specifies the horizontal size of the element. |
+| **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ## TextBlock 
 *Extends [CardElement](#cardelement)*
 
 The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"TextBlock"** |
-| **textSize** | [TextSize](#textsize) | The size of the text |
-| **textWeight** | [TextWeight](#textweight) | The weight of the text |
-| **textColor** | [TextColor](#textcolor) | The color of the text |
-| **isSubtle** | boolean | Indicates whether the color of the text should be slightly toned down to appear less prominent |
-| **text** | string | The actual text to display |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
+| Property | Type | Required | Description |
+|---|---|---|--|
+| **type**| string | true | **"TextBlock"** |
+| **text** | string | true |The actual text to display |
+| **textSize** | [TextSize](#textsize) | false |The size of the text |
+| **textWeight** | [TextWeight](#textweight) | false |The weight of the text |
+| **textColor** | [TextColor](#textcolor) | false |The color of the text |
+| **isSubtle** | boolean |false | Indicates whether the color of the text should be slightly toned down to appear less prominent |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) |false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ## Image 
 
@@ -72,12 +72,12 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 
 The Image element allows for the inclusion of images in an Adaptive Card.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"Image"** |
-| **url** | string | The URL to the image. |
-| **style** | [ImageStyle](#imagestyle) | The style in which the image is displayed. |
-
+| Property | Type | Required |Description |
+|---|---|---| --|
+| **type**| string | true | **"Image"** |
+| **url** | string | true | The URL to the image. |
+| **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
+| **action** | [Action](#action) | false | Action to perform for a tap on this image, (this allows image to act as an action) |
 
 ## Input
 *Extends [CardElement](#cardelement)*
@@ -88,81 +88,84 @@ Input is a base CardElement which describes shared properties for input to colle
 
 >NOTE: You need to define an SubmitAction or HttpAction to gather the information from input and do something with it.
 
-| Property | Type | Description |
-|---|---|---|
-| **id** | string | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
-| **title** | string | Title Description of the input desired|
-| **value** | string | The initial value for a field |
-| **placeholder** | string | Hint of expected value desired *(may be ignored by some clients)*|
+| Property | Type | Required | Description |
+|---|---|---| --|
+| **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
+| **title** | string | true | Title Description of the input desired|
+| **value** | string | false | The initial value for a field |
+| **placeholder** | string | false | Hint of expected value desired *(may be ignored by some clients)*|
 
 ### TextInput
 *Extends [Input](#input)*
 
 TextInput collects text from the user
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"TextInput"** |
-| **style**| [TextInputStyle](#textinputstyle) | Hint of style of input, if client doesn't support the style it will become simple text input |
-| **isMultiline** | bool | true to collect multiple lines of text (default is false)|
-| **maxLength** | number | hint of maximum length characters to collect *(may be ignored by some clients)* |
-| **min** | string | hint of minimum value *(may be ignored by some clients)*|
-| **max** | string | hint of maximum value *(may be ignored by some clients)* |
-| **step** | number | hint of step value *(may be ignored by some clients)* |
+| Property | Type | Required | Description |
+|---|---|---| -- |
+| **type**| string | true | **"TextInput"** |
+| **style**| [TextInputStyle](#textinputstyle) | false | Hint of style of input, if client doesn't support the style it will become simple text input |
+| **isMultiline** | bool | false | true to collect multiple lines of text (default is false)|
+| **maxLength** | number | false | hint of maximum length characters to collect *(may be ignored by some clients)* |
+| **min** | string | false | hint of minimum value *(may be ignored by some clients)*|
+| **max** | string | false | hint of maximum value *(may be ignored by some clients)* |
+| **step** | number | false | hint of step value *(may be ignored by some clients)* |
 
 ## ChoiceInput
 *Extends [Input](#input)*
+
 Shows an array of Choice objects
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"ChoiceInput"** |
-| **style** | [ChoiceInputStyle](#choiceinputstyle) | Style for choice | 
-| **multiSelect** | boolean | allow multiple choices to be selected |
-| **choices** | Choice[] | the choice options |
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true |  **"ChoiceInput"** |
+| **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
+| **multiSelect** | boolean | false | allow multiple choices to be selected (Default=false)|
+| **choices** | Choice[] | true | the choice options |
 
 ### Choice
 Represents a single Choice
 
-| Property | Type | Description |
-|---|---|---|
-| **display** | string | The display text for a choice|
-| **value** | string | the raw value for the choice|
-| **isSelected** | bool | is the choice selected |
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **display** | string | true  | The display text for a choice|
+| **value** | string | true  | the raw value for the choice|
+| **isSelected** | bool |  false |is the choice selected |
 
 # Containers
 
 ## Container 
 *Extends [CardElement](#cardelement)*
+
 The Container is a CardElement which contains a list of CardElements that are logically grouped.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"Container"** |
-| **backgroundImageUrl** | string | The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained. |
-| **backgroundColor** | string | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
-| **items** |  [CardElement](#cardelement)[] | The elements that are to be displayed in this container. |
-| **actions** | [Action](#action)[] | Actions associated with this container |
-| **separator** | [SeparationStyle](#separationstyle) | visually separate this container from preiovus or pending containers (**before**, **after**, **both**) |
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"Container"** |
+| **items** |  [CardElement](#cardelement)[] | true | The elemenXts that are to be displayed in this container. |
+| **backgroundImageUrl** | string | false | The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained. |
+| **backgroundColor** | string | false | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
+| **action** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
+| **actions** | [Action](#action)[] | false | Actions associated with this container |
+| **separation** | [SeparationStyle](#separationstyle) | false | visually separate this container from preiovus or pending containers |
 
 ## ColumnGroup 
 *Extends [CardElement](#cardelement)*
 
 The column group element adds the ability to have a set of coulmn objects.
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"ColumnGroup"** |
-| **columns** | Column[] | array of columns (each a container of elements)  |
+| Property | Type | Required | Description |
+|---|---|---| -- |
+| **type**| string | true | **"ColumnGroup"** |
+| **columns** | Column[] | true | array of columns (each a container of elements)  |
 
 ## Column
 **Extends [Container](#container)**
 
 A Column is a container which contains a list of cardElements that are logically grouped.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"Column"** |
-| **weight** | string | The weight to apply to this column |
+| Property | Type | Required |  Description |
+|---|---|---|--|
+| **type**| string | true |  **"Column"** |
+| **weight** | string | false | The weight to apply to this column |
 
 
 ## ImageGallery 
@@ -170,30 +173,30 @@ A Column is a container which contains a list of cardElements that are logically
 
 The ImageGallery allows for the inclusion of a collection images like a photogallery.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"ImageGallery"** |
-| **images**| [Image](#image)[] | Array of Image objects |
-| **size** | [Size](#size) | Specifies the horizontal size of each image in the gallery. |
+| Property | Type | Required | Description |
+|---|---|---| -- |
+| **type**| string | true | **"ImageGallery"** |
+| **images**| [Image](#image)[] | true | Array of Image objects |
+| **size** | [Size](#size) | false | Specifies the horizontal size of each image in the gallery. |
 
 ## FactGroup 
 *Extends [CardElement](#cardelement)*
 
 The FactGroup element makes it simple to display a se  ries of "facts" (e.g. name/value pairs) in a tabular form.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"FactGroup"** |
-| **facts** | [Fact](#fact)[] | The facts to be displayed. |
+| Property | Type | Required | Description |
+|---|---|---| -- |
+| **type**| string | true | **"FactGroup"** |
+| **facts** | [Fact](#fact)[] | true| The facts to be displayed. |
 
 ### Fact 
 Represents one "fact" in a [FactGroup](#factgroup) element.
 
-| Property | Type | Description |
-|---|---|---|
-| **name** | string | The fact's name. |
-| **value** | string | The fact's value. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | (Optional) Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
+| Property | Type | Required | Description |
+|---|---|---| -- |
+| **name** | string | true | The fact's name. |
+| **value** | string | true |The fact's value. |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 
 # Actions
@@ -204,9 +207,9 @@ Base class for all actions
 
 > NOTE: You cannot add a Action directly, you can only add derived action types
 
-| Property | Type | Description |
-|---|---|---|
-| **title** | string | Label for button or link that represents this action |
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **title** | string | true | Label for button or link that represents this action |
 
 ## OpenUrlAction
 *Extends [Action](#action)*
@@ -214,10 +217,21 @@ Base class for all actions
 When OpenUrlAction is invoked it will show the given url, either by launching it to an external web browser or showing in-situ 
 with embedded web browser.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"OpenUrlAction"** |
-| **url** | url to display |
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"OpenUrlAction"** |
+| **url** | string | true | Default (browser) url to use  |
+| **platformUrls** | [PlatformUrl](#platformurl)[] | false |  candidate array of PlatformUrls 's that can be used |
+
+### PlatformUrl
+
+A PlatformUrl represents a specific url appropriate for different platforms.  For example, you can target a url for the web, for iOS, for Android, etc. allowing deep
+mobile linking to applications.
+
+| Property | Type | Required| Description |
+|---|---|---|---|
+| **os** | string | true | platform filter, If it is "default" or missing then it will simply use browser. Other platforms are: (iOS?, Android?, ...?) |
+| **url** | string | true | url to use on this platform os|
 
 ## HttpAction
 *Extends [Action](#action)*
@@ -226,23 +240,25 @@ HttpAction represents the properties needed to do an Http request. All input pro
 data binding.  Properties can be data bound to the Uri and Body properties, allowing you to send a request
 to an arbitrary url.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"HttpAction"** |
-| **url** | url to use (can have binding information) |
-| **method** | string | Http method (Example: POST) |
-| **headers** | object | Object which represents headers Example: { "content-type":"application/json" }  |
-| **body** | string | content to post (can have binding information) |
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"HttpAction"** |
+| **url** | string | true | url to use (can have binding information) |
+| **method** | string | true | Http method (Example: POST) |
+| **headers** | object | false | Object which represents headers Example: { "content-type":"application/json" }  |
+| **body** | string | false | content to post (can have binding information) |
+| **SuccessMessage** | string | false | Message to show when success (OPTIONAL)|
+| **ErrorMessage** | string | false | Message to show when failed (OPTIONAL)|
 
 ## ShowCardAction
 *Extends [Action](#action)*
 
 ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"ShowCardAction"** |
-| **card** | [AdaptiveCard](#adaptivecard) | inline card defining the card to be shown when this action is invoked. It is up to client to decide how to show this inline card. |
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"ShowCardAction"** |
+| **card** | [AdaptiveCard](#adaptivecard) | true |inline card defining the card to be shown when this action is invoked. It is up to client to decide how to show this inline card. |
 
 ## SubmitAction
 *Extends [Action](#action)*
@@ -251,19 +267,19 @@ Submit action gathers up input fields, merges with optional data field and gener
 client asking for data to be submitted.  It is up to the client to determine how that data is processed.
 For example: With BotFramework bots the client would send an activity through the messaging medium to the bot.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"SubmitAction"** |
-| **data** | object | initial data that input fields will be combined with.  This is essentially 'hidden' properties |
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"SubmitAction"** |
+| **data** | object | false | initial data that input fields will be combined with.  This is essentially 'hidden' properties |
 
 ## CancelAction
 *Extends [Action](#action)*
 
 When CancelAction is invoked it resets any input that is in scope, and closes a card if it is part of a card which was shown via ShowCardAction.
 
-| Property | Type | Description |
-|---|---|---|
-| **type**| string | **"CancelAction"** |
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"CancelAction"** |
 
 
 # Enumerations

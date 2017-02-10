@@ -29,5 +29,17 @@ namespace Adaptive.Schema.Net
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BackgroundColor { get; set; }
+
+        /// <summary>
+        /// Action for this container (this allows a default action at the container level)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public Action Action { get; set; }
+
+        /// <summary>
+        /// Actions for this container
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<Action> Actions { get; set; } = new List<Action>();
     }
 }

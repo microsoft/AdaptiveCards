@@ -10,14 +10,14 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// A container for grouping columns together
     /// </summary>
-    public class ActionGroup : CardElement
+    public class Action : CardElement
     {
-        public ActionGroup() { }
+        public Action() { }
 
         /// <summary>
-        /// Columns that are part of this group
+        /// Title of the action
         /// </summary>
         [JsonRequired]
-        public List<Action> Actions { get; set; } = new List<Action>();
+        public string Title { get; set; } 
     }
 }
