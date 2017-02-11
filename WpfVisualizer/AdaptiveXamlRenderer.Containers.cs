@@ -81,20 +81,23 @@ namespace WpfVisualizer
                         Grid.SetColumnSpan(uiElement, 1);
                         grid.Children.Add(uiTitle);
                     }
-                    // inputControls.Add(input);
                 }
                 grid.Children.Add(uiElement);
             }
 
             if (hasActions)
             {
-                StackPanel uiActionBar = new StackPanel();
-                uiActionBar.Orientation = Orientation.Horizontal;
+                var uiActionBar = new UniformGrid();
+                uiActionBar.Rows = 1;
                 uiActionBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+
+                int iCol = 0;
                 foreach (var action in actions)
                 {
                     // add actions
                     var uiAction = _renderAction(action, inputControls);
+                    Grid.SetColumn(uiAction, iCol++);
                     uiActionBar.Children.Add(uiAction);
                 }
                 uiActionBar.Style = resources["Adaptive.Actions"] as Style;

@@ -26,6 +26,7 @@ namespace WpfVisualizer
     public partial class MainWindow : Window
     {
         private AdaptiveXamlRenderer _renderer;
+        private AC.AdaptiveCard _card;
 
         public MainWindow()
         {
@@ -36,15 +37,15 @@ namespace WpfVisualizer
         {
             try
             {
-                this.card.Children.Clear();
-                var aCard = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
-                var element = this._renderer.Render(aCard);
-                this.card.Children.Add(element);
+                this.cardGrid.Children.Clear();
+                _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
+                var element = this._renderer.Render(_card);
+                this.cardGrid.Children.Add(element);
             }
             catch (Exception err)
             {
-                this.card.Children.Clear();
-                this.card.Children.Add(new TextBlock() { Text = err.Message });
+                this.cardGrid.Children.Clear();
+                this.cardGrid.Children.Add(new TextBlock() { Text = err.Message });
             }
         }
 
@@ -108,6 +109,41 @@ namespace WpfVisualizer
         private void CanGoToPage(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
+        }
+
+        private void viewImage_Click(object sender, RoutedEventArgs e)
+        {
+            //var brush = CreateBrushFromUIElementWithBitmap(cardGrid, BrushMappingMode.Absolute, )
+
+            //var card = this._card.Actions.OfType<AC.ShowCardAction>().First().Card;
+            //var uiCard = (FrameworkElement)_renderer.Render(card);
+            
+            //RenderTargetBitmap renderBitmap = new RenderTargetBitmap(width, height, 1/300, 1/300, PixelFormats.Pbgra32);
+
+            //DrawingVisual visual = new DrawingVisual();
+            //using (DrawingContext context = visual.RenderOpen())
+            //{
+            //    VisualBrush brush = new VisualBrush(c);
+            //    context.DrawRectangle(brush,
+            //                          null,
+            //                          new Rect(new Point(), new Size(c.Width, c.Height)));
+            //}
+
+            //visual.Transform = new ScaleTransform(width / c.ActualWidth, height / c.ActualHeight);
+            //renderBitmap.Render(visual);
+
+            ////RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)uiCard.ActualWidth, (int)uiCard.ActualHeight, 96, 96, PixelFormats.Default);
+            ////bitmapImage.Render(uiCard);
+
+            //var encoder = new PngBitmapEncoder();
+            //encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+
+            //string path = @"c:\scratch\foo.png";
+            //using (FileStream stream = new FileStream(path, FileMode.Create))
+            //{
+            //    encoder.Save(stream);
+            //}
+            //Process.Start(path);
         }
     }
 }

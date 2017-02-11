@@ -195,7 +195,7 @@
 							"items": [
 								{
 									"@type": "TextBlock",
-									"text": "&nbsp;"
+									"text": " "
 								},
 								{
 									"@type": "Image",

@@ -211,13 +211,16 @@
 
         <Style x:Key="Adaptive.Input.ChoiceInput.CheckBox" TargetType="CheckBox"  >
         </Style>
+        
         <!-- Action Styles -->
         <Style x:Key="Adaptive.Actions" TargetType="FrameworkElement"  >
             <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
 
         <Style x:Key="Adaptive.Action" TargetType="Button"  >
             <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
 
         <Style x:Key="Adaptive.Action.Title" TargetType="TextBlock" >
@@ -253,6 +256,7 @@
 
         <StackPanel Orientation="Horizontal">
             <Button Name="loadButton" Click="loadButton_Click" Content="Load" Margin="4"/>
+            <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
         </StackPanel>
 
         <TextBox Grid.Row="1 " AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>
@@ -261,7 +265,7 @@
             <Border.Effect>
                 <DropShadowEffect />
             </Border.Effect >
-            <Grid Name="card" Background="WhiteSmoke" MaxWidth="700"/>
+            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700"/>
         </Border>
     </Grid>
 </Window>
