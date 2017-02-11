@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 namespace Adaptive.Schema.Net
 {
     /// <summary>
-    /// A container for grouping columns together
+    /// Base of Action types
     /// </summary>
-    public class Action : CardElement
+    public class ActionBase : TypedElement
     {
-        public Action() { }
+        public ActionBase() { }
 
         /// <summary>
         /// Title of the action

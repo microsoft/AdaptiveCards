@@ -117,6 +117,7 @@ Shows an array of Choice objects
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true |  **"ChoiceInput"** || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
+| **style**| [ChoiceInputStyle](#choiceinputstyle) | false | Hint of style of input |
 | **multiSelect** | boolean | false | allow multiple choices to be selected (Default=false)|
 | **choices** | Choice[] | true | the choice options |
 

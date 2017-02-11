@@ -13,7 +13,7 @@ namespace Adaptive.Schema.Net
     /// via data binding. Properties can be data bound to the Uri and Body properties, allowing you to send a request 
     /// to an arbitrary url.
     /// </summary>
-    public class HttpAction : Action
+    public class HttpAction : ActionBase
     {
         public HttpAction() : base() { }
 
