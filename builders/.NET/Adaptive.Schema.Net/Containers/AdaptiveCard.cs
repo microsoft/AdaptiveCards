@@ -15,12 +15,25 @@ namespace Adaptive.Schema.Net
     {
         public AdaptiveCard() { }
 
+        public List<CardElement> Body { get; set; } = new List<CardElement>();
+
+        /// <summary>
+        /// Actions for this container
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
+
+        /// <summary>
+        /// Speak annotation for the card
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Speak { get; set; }
 
+        /// <summary>
+        /// Background image for card
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BackgroundImage { get; set; }
 
-        public List<CardElement> Body { get; set; } = new List<CardElement>();
     }
 }

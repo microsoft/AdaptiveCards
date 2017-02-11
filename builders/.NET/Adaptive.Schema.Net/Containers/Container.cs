@@ -15,6 +15,9 @@ namespace Adaptive.Schema.Net
         public Container()
         { }
 
+        /// <summary>
+        /// Elements of the container
+        /// </summary>
         [JsonRequired]
         public List<CardElement> Items { get; set; } = new List<CardElement>();
 
@@ -29,5 +32,23 @@ namespace Adaptive.Schema.Net
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BackgroundColor { get; set; }
+
+        /// <summary>
+        /// Action for this container (this allows a default action at the container level)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ActionBase Action { get; set; }
+
+        /// <summary>
+        /// Actions for this container
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
+
+        /// <summary>
+        /// visually separate this container from preiovus or pending containers
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public SeparationStyle? Separation { get; set; }
     }
 }

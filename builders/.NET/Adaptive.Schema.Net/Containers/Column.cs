@@ -12,10 +12,5 @@ namespace Adaptive.Schema.Net
     public class Column : Container
     {
         public Column() { }
-
-        ///// <summary>
-        ///// Size which is either Auto|Stretch|Small|Medium|Large| or a number
-        ///// </summary>
-        //public string Size { get; set; }
     }
 }
