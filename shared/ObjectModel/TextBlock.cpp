@@ -7,7 +7,16 @@ TextBlock::TextBlock() : BaseCardElement(CardElementType::TextBlock, nullptr, Ho
 {
 }
 
-TextBlock::TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak, std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap) : BaseCardElement(CardElementType::TextBlock, container, horizontalAlignment, size, speak), m_text(text), m_textSize(textSize), m_textWeight(textWeight), m_isSubtle(isSubtle), m_wrap(wrap) {}
+TextBlock::TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak,
+    std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap) : 
+    BaseCardElement(CardElementType::TextBlock, container, horizontalAlignment, size, speak),
+    m_text(text),
+    m_textSize(textSize),
+    m_textWeight(textWeight),
+    m_isSubtle(isSubtle),
+    m_wrap(wrap) 
+{
+}
 
 std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
 {

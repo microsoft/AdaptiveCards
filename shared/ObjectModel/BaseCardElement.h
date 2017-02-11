@@ -31,12 +31,14 @@ public:
 
     virtual std::string Serialize() = 0;
 
+protected:
+    CardElementType m_type;
+
 private:
     std::weak_ptr<Container> m_container;
     HorizontalAlignment m_horizontalAlignment;
     CardElementSize m_size;
     std::string m_speak;
-    CardElementType m_type;
 };
 }
 

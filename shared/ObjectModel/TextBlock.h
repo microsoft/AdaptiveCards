@@ -10,7 +10,8 @@ class TextBlock : public BaseCardElement
 {
 public:
     TextBlock();
-    TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak, std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap);
+    TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak,
+        std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap);
 
     static std::shared_ptr<TextBlock> Deserialize(const Json::Value& root);
 

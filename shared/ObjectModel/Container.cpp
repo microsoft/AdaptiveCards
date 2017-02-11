@@ -6,7 +6,7 @@ using namespace AdaptiveCards;
 
 Container::Container() : BaseCardElement(CardElementType::Container) {}
 
-const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCards::Container::GetItems()
+const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCards::Container::GetItems() const
 {
     return m_items;
 }

@@ -11,6 +11,12 @@
     <ClCompile Include="..\..\shared\ObjectModel\BaseCardElement.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\ParseUtil.cpp" />
+    <ClCompile Include="..\..\Shared\ObjectModel\Image.cpp" />
+    <ClCompile Include="..\..\Shared\ObjectModel\Fact.cpp" />
+    <ClCompile Include="..\..\Shared\ObjectModel\FactGroup.cpp" />
+    <ClCompile Include="..\..\Shared\ObjectModel\ImageGallery.cpp" />
+    <ClCompile Include="..\..\Shared\ObjectModel\ColumGroup.cpp" />
+    <ClCompile Include="..\..\Shared\ObjectModel\Column.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCard.h" />
@@ -27,6 +33,12 @@
     <ClInclude Include="..\..\shared\ObjectModel\pch.h" />
     <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\ObjectModel\ParseUtil.h" />
+    <ClInclude Include="..\..\Shared\ObjectModel\Image.h" />
+    <ClInclude Include="..\..\Shared\ObjectModel\Fact.h" />
+    <ClInclude Include="..\..\Shared\ObjectModel\FactGroup.h" />
+    <ClInclude Include="..\..\Shared\ObjectModel\ImageGallery.h" />
+    <ClInclude Include="..\..\Shared\ObjectModel\ColumnGroup.h" />
+    <ClInclude Include="..\..\Shared\ObjectModel\Column.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

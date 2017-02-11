@@ -76,6 +76,7 @@ enum class CardElementType
     TextBlock,
     Image,
     FactGroup,
+    Fact,
     ColumnGroup,
     ImageGallery,
     ActionGroup,

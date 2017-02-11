@@ -12,7 +12,7 @@ class Container : public std::enable_shared_from_this<Container>, BaseCardElemen
 public:
     Container();
     virtual std::string Serialize();
-    const std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
+    const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
     void AddItem(std::shared_ptr<BaseCardElement>& item);
     std::shared_ptr<BaseCardElement> GetItem(const size_t index) const;
