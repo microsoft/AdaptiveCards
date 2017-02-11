@@ -103,8 +103,7 @@ TextInput collects text from the user
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"TextInput"** |
-| **style**| [TextInputStyle](#textinputstyle) | false | Hint of style of input, if client doesn't support the style it will become simple text input |
-| **isMultiline** | bool | false | true to collect multiple lines of text (default is false)|
+| **style**| [TextInputStyle](#textinputstyle) | false | Hint of style of input, if client doesn't support the style it will become simple text input || **isMultiline** | bool | false | true to collect multiple lines of text (default is false)|
 | **maxLength** | number | false | hint of maximum length characters to collect *(may be ignored by some clients)* |
 | **min** | string | false | hint of minimum value *(may be ignored by some clients)*|
 | **max** | string | false | hint of maximum value *(may be ignored by some clients)* |
