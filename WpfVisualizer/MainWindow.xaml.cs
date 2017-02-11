@@ -111,39 +111,28 @@ namespace WpfVisualizer
             e.CanExecute = true;
         }
 
-        private void viewImage_Click(object sender, RoutedEventArgs e)
+        private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            //var brush = CreateBrushFromUIElementWithBitmap(cardGrid, BrushMappingMode.Absolute, )
+            var card = this._card.Actions.OfType<AC.ShowCardAction>().First().Card;
+            var uiCard = (FrameworkElement)_renderer.Render(card);
+            uiCard.Measure(new Size(1000, 1000));
+            var width = Math.Max(480, uiCard.DesiredSize.Width);
+            uiCard.Arrange(new Rect(new Size(width, uiCard.DesiredSize.Height)));
+            uiCard.UpdateLayout();
 
-            //var card = this._card.Actions.OfType<AC.ShowCardAction>().First().Card;
-            //var uiCard = (FrameworkElement)_renderer.Render(card);
-            
-            //RenderTargetBitmap renderBitmap = new RenderTargetBitmap(width, height, 1/300, 1/300, PixelFormats.Pbgra32);
+            RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)width, (int)uiCard.DesiredSize.Height, 96, 96, PixelFormats.Default);
+            await Task.Delay(1000);
+            bitmapImage.Render(uiCard);
 
-            //DrawingVisual visual = new DrawingVisual();
-            //using (DrawingContext context = visual.RenderOpen())
-            //{
-            //    VisualBrush brush = new VisualBrush(c);
-            //    context.DrawRectangle(brush,
-            //                          null,
-            //                          new Rect(new Point(), new Size(c.Width, c.Height)));
-            //}
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
 
-            //visual.Transform = new ScaleTransform(width / c.ActualWidth, height / c.ActualHeight);
-            //renderBitmap.Render(visual);
-
-            ////RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)uiCard.ActualWidth, (int)uiCard.ActualHeight, 96, 96, PixelFormats.Default);
-            ////bitmapImage.Render(uiCard);
-
-            //var encoder = new PngBitmapEncoder();
-            //encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
-
-            //string path = @"c:\scratch\foo.png";
-            //using (FileStream stream = new FileStream(path, FileMode.Create))
-            //{
-            //    encoder.Save(stream);
-            //}
-            //Process.Start(path);
+            string path = @"c:\scratch\foo.png";
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                encoder.Save(stream);
+            }
+            Process.Start(path);
         }
     }
 }

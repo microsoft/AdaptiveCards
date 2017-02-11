@@ -53,8 +53,8 @@
 
         <!-- adaptive card Styling -->
         <Style x:Key="Adaptive.Card" TargetType="Grid">
-            <Setter Property="Margin" Value="8"/>
             <Setter Property="Background" Value="WhiteSmoke"/>
+            <Setter Property="Margin" Value="8"/>
         </Style>
 
         <!-- Container Styling -->
@@ -265,7 +265,7 @@
             <Border.Effect>
                 <DropShadowEffect />
             </Border.Effect >
-            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700"/>
+            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700" Margin="8"/>
         </Border>
     </Grid>
 </Window>
