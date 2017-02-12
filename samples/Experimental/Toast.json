@@ -3,86 +3,131 @@
 // TODO: Can we go semantic with title, description, etc
 
 {
-	"launch": "action=viewAlarm&alarmId=3",
+    "activation": {
+        "@type": "foreground",
+        "arguments": "action=viewAlarm&alarmId=3",
+        "windowsProtocolActivationTargetApplicationPfn": "Microsoft.Alarms"
+    },
 	"scenario": "alarm",
 	"header": {
 		"id": "alarms",
 		"title": "Alarms",
-		"arguments": "args",
-		"activationType": "foreground"
+		"activation": {
+            "@type": "foreground",
+            "arguments": "action=viewAlarm&alarmId=3",
+            "windowsProtocolActivationTargetApplicationPfn": "Microsoft.Alarms"
+        }
 	},
     "visual": {
         "lang": "en-US",
         "baseUri": "http://images.msn.com/",
-        "branding": "nameAndLogo",
         "addImageQuery": true,
-        "contentId": "548",
-        "displayName": "Wed 28th",
-        "lockDetailedStatus1": "Wednesday 28th",
-        "lockDetailedStatus2": "Backlog Review",
-        "lockDetailedStatus3": "10:00 AM",
-        "arguments": "action=viewEvent&eventId=548",
         
-        "tileSmall": {
-            "lang": "en-US",
-            "baseUri": "http://images.msn.com/",
-            "branding": "logo",
-            "addImageQuery": true,
-            "contentId": "548",
-            "displayName": "Wed 28th",
-            "arguments": "action=viewEventSmall&eventId=548",
-            
-            "contentType": "adaptive",
-            "content": {
-                "peek": {
-                    "backgroundImages": [
-                        {
-                            "src": "flowers.jpg"
-                        }
-                    ],
-                    "children": [
-                        {
-                            "@type": "TextBlock",
-                            "text": "Flowers are great!",
-                            "textSize": "large"
-                        },
-                    ]
+        "bindings": {
+            "generic": {
+                "lang": "en-US",
+                "baseUri": "http://images.msn.com/",
+                "addImageQuery": true,
+                "launch": "action=viewEventSmall&eventId=548",
+
+                "title": {
+                    "text": "Hello world",
+                    "lang": "en-US",
+                    "hintWrap": true,
+                    "hintMaxLines": 2
                 },
-                "body": {
-                    "backgroundImages": [
-                        {
-                            "src": "clouds.jpg"
-                        }
-                    ],
-                    "children": [
-                        {
-                            "@type": "TextBlock",
-                            "text": "Hello world",
-                            "textSize": "large"
-                        },
-                        {
-                            "@type": "TextBlock",
-                            "text": "Good afternoon!",
-                            "textSize": "medium",
-                            "isSubtle": "true"
-                        }
-                    ]
-                }
-            }
-        },
-        
-        "tileMedium": {
-            "contentType": "photos",
-            "content": {
-                "images": [
+                "descriptionLine1": {
+                    "text": "This is the first JSON toast",
+                    "lang": "en-US",
+                    "hintWrap": true,
+                    "hintMaxLines": 2
+                },
+                "descriptionLine2": {
+                    "text": "A brand new species of toast",
+                    "lang": "en-US",
+                    "hintWrap": true,
+                    "hintMaxLines": 2
+                },
+
+                "appLogoOverride": {
+                    "src": "logo.png",
+                    "alt": "MSN logo",
+                    "addImageQuery": true,
+                    "hintCrop": "circle"
+                },
+
+                "heroImage": {
+                    "src": "logo.png",
+                    "alt": "MSN logo",
+                    "addImageQuery": true
+                },
+
+                "attribution": {
+                    "text": "MSN News",
+                    "lang": "en-US"
+                },
+
+                "content": [
                     {
-                        "src": "flowers.jpg"
+                        "@type": "TextBlock",
+                        "text": "Hello world",
+                        "textSize": "large"
                     },
                     {
-                        "src": "clouds.jpg"
+                        "@type": "TextBlock",
+                        "text": "Good afternoon!",
+                        "textSize": "medium",
+                        "isSubtle": "true"
                     },
                     {
-                        "src": "mountains.jpg"
+                        "@type": "ActionGroup",
+                        "speak": "You can set the due date, add a comment or view more information.",
+                        "actions": [
+                            {
+                                "@type": "ActionCard",
+                                "name": "Set due date",
+                                "inputs": [
+                                    {
+                                        "@type": "DateInput",
+                                        "id": "dueDate",
+                                        "title": "Select a date"
+                                    }
+                                ],
+                                "actions": [
+                                    {
+                                        "@type": "background",
+                                        "name": "OK",
+                                        "arguments": "args"
+                                    }
+                                ]
+                            },
+                            {
+                                "@type": "ActionCard",
+                                "name": "Comment",
+                                "inputs": [
+                                    {
+                                        "@type": "TextInput",
+                                        "id": "comment",
+                                        "isMultiline": true,
+                                        "title": "Enter your comment"
+                                    }
+                                ],
+                                "actions": [
+                                    {
+                                        "@type": "background",
+                                        "name": "OK",
+                                        "arguments": "args"
+                                    }
+                                ]
+                            },
+                            {
+                                "@type": "OpenUri",
+                                "name": "View",
+                                "targets": [
+                                    { "os": "default", "uri": "http://...", "windowsTargetPfn": "msn.sports" }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
