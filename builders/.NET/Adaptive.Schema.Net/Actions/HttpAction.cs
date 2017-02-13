@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -21,7 +20,7 @@ namespace Adaptive.Schema.Net
         /// <summary>
         /// HttpMethod to use
         /// </summary>
-        public HttpMethod Method { get; set; } = HttpMethod.Post;
+        public string Method { get; set; } = "POST";
 
         /// <summary>
         /// url to use (can have binding information)

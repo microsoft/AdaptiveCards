@@ -17,11 +17,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using MarkedNet;
-using Xceed.Wpf.Toolkit;
 using Adaptive.Schema.Net;
 using AC = Adaptive.Schema.Net;
 
-namespace WpfVisualizer
+namespace Adaptive.Renderers
 {
     public partial class AdaptiveXamlRenderer
     {
@@ -30,10 +29,10 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="card"></param>
         /// <returns></returns>
-        public UIElement Render(AdaptiveCard card)
+        public virtual UIElement Render(AdaptiveCard card)
         {
             var grid = new Grid();
-            grid.Style = resources["Adaptive.Card"] as Style;
+            grid.Style = this.Resources["Adaptive.Card"] as Style;
             if (card.BackgroundImage != null)
             {
                 Uri uri = new Uri(card.BackgroundImage);
@@ -42,18 +41,18 @@ namespace WpfVisualizer
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
-            var inputControls = new List<Control>();
+            var inputControls = new List<FrameworkElement>();
             _addContainerElements(grid, card.Body, card.Actions, inputControls);
             return grid;
         }
 
-        private void _addContainerElements(Grid grid, List<CardElement> elements, List<ActionBase> actions, List<Control> inputControls)
+        private void _addContainerElements(Grid grid, List<CardElement> elements, List<ActionBase> actions, List<FrameworkElement> inputControls)
         {
             bool hasActions = actions != null && actions.Any();
             if (hasActions)
             {
                 // collect our input controls
-                inputControls = new List<Control>();
+                inputControls = new List<FrameworkElement>();
             }
 
             foreach (var cardElement in elements)
@@ -75,7 +74,7 @@ namespace WpfVisualizer
                         // Add input title as column[0] peer to input element
                         // this is so all input labels line up nicely
                         var uiTitle = new WPF.TextBlock() { Text = input.Title };
-                        uiTitle.Style = resources["Adaptive.Input.Title"] as Style;
+                        uiTitle.Style = this.Resources["Adaptive.Input.Title"] as Style;
                         Grid.SetRow(uiTitle, grid.RowDefinitions.Count - 1);
                         Grid.SetColumn(uiElement, 1);
                         Grid.SetColumnSpan(uiElement, 1);
@@ -100,7 +99,7 @@ namespace WpfVisualizer
                     Grid.SetColumn(uiAction, iCol++);
                     uiActionBar.Children.Add(uiAction);
                 }
-                uiActionBar.Style = resources["Adaptive.Actions"] as Style;
+                uiActionBar.Style = this.Resources["Adaptive.Actions"] as Style;
                 grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, grid.RowDefinitions.Count - 1);
                 Grid.SetColumnSpan(uiActionBar, 2);
@@ -113,7 +112,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        private UIElement _renderCardElement(CardElement element, List<Control> inputControls)
+        private UIElement _renderCardElement(CardElement element, List<FrameworkElement> inputControls)
         {
             if (element is ColumnGroup)
             {
@@ -163,10 +162,10 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="container"></param>
         /// <returns></returns>
-        public UIElement Render(Container container, List<Control> inputControls)
+        public virtual UIElement Render(Container container, List<FrameworkElement> inputControls)
         {
             var uiContainer = new Grid();
-            uiContainer.Style = resources["Adaptive.Container"] as Style;
+            uiContainer.Style = this.Resources["Adaptive.Container"] as Style;
 
             if (container.Separation == SeparationStyle.Before || container.Separation == SeparationStyle.Both)
                 _addSeperator(uiContainer);
@@ -184,7 +183,7 @@ namespace WpfVisualizer
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetRow(sep, uiContainer.RowDefinitions.Count - 1);
             Grid.SetColumnSpan(sep, 2);
-            sep.Style = resources["Adaptive.Separator"] as Style;
+            sep.Style = this.Resources["Adaptive.Separator"] as Style;
             uiContainer.Children.Add(sep);
         }
 
@@ -193,10 +192,10 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="columnGroup"></param>
         /// <returns></returns>
-        public UIElement Render(ColumnGroup columnGroup, List<Control> inputControls)
+        public virtual UIElement Render(ColumnGroup columnGroup, List<FrameworkElement> inputControls)
         {
             var uiColumnGroup = new Grid();
-            uiColumnGroup.Style = resources["Adaptive.ColumnGroup"] as Style;
+            uiColumnGroup.Style = this.Resources["Adaptive.ColumnGroup"] as Style;
 
             int iCol = 0;
             foreach (var column in columnGroup.Columns)
@@ -247,11 +246,11 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="factGroup"></param>
         /// <returns></returns>
-        public UIElement Render(FactGroup factGroup)
+        public virtual UIElement Render(FactGroup factGroup)
         {
             var uiFactGroup = new Grid();
             // grid.Margin = this.Theme.FactGroupMargins;
-            uiFactGroup.Style = resources["Adaptive.FactGroup"] as Style;
+            uiFactGroup.Style = this.Resources["Adaptive.FactGroup"] as Style;
 
             uiFactGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             uiFactGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
@@ -277,17 +276,17 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="fact"></param>
         /// <returns></returns>
-        public Tuple<UIElement, UIElement> Render(Fact fact)
+        public virtual Tuple<UIElement, UIElement> Render(Fact fact)
         {
             return new Tuple<UIElement, UIElement>(new WPF.TextBlock()
             {
                 Text = fact.Name,
-                Style = this.resources["Adaptive.Fact.Name"] as Style
+                Style = this.Resources["Adaptive.Fact.Name"] as Style
             },
             new WPF.TextBlock()
             {
                 Text = fact.Value,
-                Style = this.resources["Adaptive.Fact.Value"] as Style
+                Style = this.Resources["Adaptive.Fact.Value"] as Style
             });
         }
 
@@ -296,10 +295,10 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="imageGallery"></param>
         /// <returns></returns>
-        public UIElement Render(ImageGallery imageGallery)
+        public virtual UIElement Render(ImageGallery imageGallery)
         {
             var uiGallery = new ListBox();
-            uiGallery.Style = resources["Adaptive.ImageGallery"] as Style;
+            uiGallery.Style = this.Resources["Adaptive.ImageGallery"] as Style;
 
             ScrollViewer.SetVerticalScrollBarVisibility(uiGallery, ScrollBarVisibility.Disabled);
             var itemsPanelTemplate = new ItemsPanelTemplate();
@@ -315,7 +314,5 @@ namespace WpfVisualizer
             }
             return uiGallery;
         }
-
-
     }
 }

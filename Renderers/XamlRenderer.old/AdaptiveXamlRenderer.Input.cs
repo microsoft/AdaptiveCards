@@ -1,29 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xml;
-using MarkedNet;
 using Xceed.Wpf.Toolkit;
 using Adaptive.Schema.Net;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
-namespace WpfVisualizer
+namespace AdaptiveXamlRenderer
 {
-    public partial class AdaptiveXamlRenderer
+    public partial class AdaptiveRenderer
     {
 
         /// <summary>
@@ -31,7 +19,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public UIElement Render(TextInput textInput, List<Control> inputControls)
+        public virtual UIElement Render(TextInput textInput, List<Control> inputControls)
         {
             if (textInput.Style.HasValue)
             {

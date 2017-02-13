@@ -35,10 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MarkedNet, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MarkedNet.1.0.5.0\lib\portable-net45+win+wpa81\MarkedNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -87,9 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AdaptiveXamlRenderer.Containers.cs" />
-    <Compile Include="AdaptiveXamlRenderer.Input.cs" />
-    <Compile Include="AdaptiveXamlRenderer.Action.cs" />
+    <Compile Include="MyAdaptiveRenderer.cs" />
     <Compile Include="ShowCardWindow.xaml.cs">
       <DependentUpon>ShowCardWindow.xaml</DependentUpon>
     </Compile>
@@ -97,7 +91,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AdaptiveXamlRenderer.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -113,7 +106,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MarkedXaml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -145,6 +137,10 @@
     <ProjectReference Include="..\builders\.NET\Adaptive.Schema.Net\Adaptive.Schema.Net.csproj">
       <Project>{692311b2-e537-4700-8ef7-a5f83d90383c}</Project>
       <Name>Adaptive.Schema.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Renderers\XamlRenderer\Adaptive.Renderers.Xaml.csproj">
+      <Project>{60619d62-59fa-4864-ba5b-6f6f87997671}</Project>
+      <Name>Adaptive.Renderers.Xaml</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

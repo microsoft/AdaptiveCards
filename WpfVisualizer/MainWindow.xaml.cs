@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Microsoft.Win32;
 using System.IO;
 using System.Diagnostics;
+using Adaptive.Renderers;
 
 namespace WpfVisualizer
 {
@@ -63,7 +64,8 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this._renderer = new AdaptiveXamlRenderer(this.Resources);
+            //this._renderer = new AdaptiveXamlRenderer(this.Resources);
+            this._renderer = new MyAdaptiveRenderer(this.Resources);
             this._renderer.OnAction += _renderer_OnAction;
 
             var binding = new CommandBinding(NavigationCommands.GoToPage, GoToPage, CanGoToPage);
