@@ -115,12 +115,12 @@ namespace Adaptive.Renderers
             if (content == null)
             {
                 WPF.TextBlock uiTitle = new WPF.TextBlock() { Text = action.Title };
-                uiTitle.Style = this.Resources["Adaptive.Action.Title"] as Style;
+                uiTitle.Style = this.GetStyle("Adaptive.Action.Title");
                 uiButton.Content = uiTitle;
             }
             else
                 uiButton.Content = content;
-            uiButton.Style = this.Resources[$"Adaptive.Action.{action.GetType().Name}"] as Style;
+            uiButton.Style = this.GetStyle($"Adaptive.Action.{action.GetType().Name}");
             return uiButton;
         }
 

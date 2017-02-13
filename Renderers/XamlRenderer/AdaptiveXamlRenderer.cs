@@ -45,7 +45,7 @@ namespace Adaptive.Renderers
             StringReader stringReader = new StringReader(xaml);
             XmlReader xmlReader = XmlReader.Create(stringReader);
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
-            uiTextBlock.Style = this.Resources["Adaptive.TextBlock"] as Style;
+            uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock");
 
 
             if (textBlock.HorizontalAlignment.HasValue)
@@ -58,20 +58,20 @@ namespace Adaptive.Renderers
             switch (textBlock.TextSize)
             {
                 case TextSize.Small:
-                    uiTextBlock.Style = this.Resources["Adaptive.TextBlock.Small"] as Style;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Small");;
                     break;
                 case TextSize.Medium:
-                    uiTextBlock.Style = this.Resources["Adaptive.TextBlock.Medium"] as Style;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Medium");;
                     break;
                 case TextSize.Large:
-                    uiTextBlock.Style = this.Resources["Adaptive.TextBlock.Large"] as Style;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Large");;
                     break;
                 case TextSize.ExtraLarge:
-                    uiTextBlock.Style = this.Resources["Adaptive.TextBlock.ExtraLarge"] as Style;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.ExtraLarge");;
                     break;
                 case TextSize.Normal:
                 default:
-                    uiTextBlock.Style = this.Resources["Adaptive.TextBlock.Normal"] as Style;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Normal");;
                     break;
             }
 
@@ -148,8 +148,23 @@ namespace Adaptive.Renderers
 
             if (image.Style == ImageStyle.Person)
                 style += $".{image.Style.ToString()}";
-            uiImage.Style = this.Resources[style] as Style;
+            uiImage.Style = this.GetStyle(style);
             return uiImage;
+        }
+
+        public Style GetStyle(string styleName)
+        {
+            while (true)
+            {
+                Style style = this.GetStyle(styleName);
+                if (style != null)
+                    return style;
+                var iPos = styleName.IndexOf('.');
+                if (iPos == 0)
+                    break;
+                styleName = styleName.Substring(0, iPos - 1);
+            }
+            return null;
         }
 
     }

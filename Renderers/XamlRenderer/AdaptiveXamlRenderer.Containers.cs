@@ -32,7 +32,7 @@ namespace Adaptive.Renderers
         public virtual UIElement Render(AdaptiveCard card)
         {
             var grid = new Grid();
-            grid.Style = this.Resources["Adaptive.Card"] as Style;
+            grid.Style = this.GetStyle("Adaptive.Card");
             if (card.BackgroundImage != null)
             {
                 Uri uri = new Uri(card.BackgroundImage);
@@ -74,7 +74,7 @@ namespace Adaptive.Renderers
                         // Add input title as column[0] peer to input element
                         // this is so all input labels line up nicely
                         var uiTitle = new WPF.TextBlock() { Text = input.Title };
-                        uiTitle.Style = this.Resources["Adaptive.Input.Title"] as Style;
+                        uiTitle.Style = this.GetStyle("Adaptive.Input.Title");
                         Grid.SetRow(uiTitle, grid.RowDefinitions.Count - 1);
                         Grid.SetColumn(uiElement, 1);
                         Grid.SetColumnSpan(uiElement, 1);
@@ -99,7 +99,7 @@ namespace Adaptive.Renderers
                     Grid.SetColumn(uiAction, iCol++);
                     uiActionBar.Children.Add(uiAction);
                 }
-                uiActionBar.Style = this.Resources["Adaptive.Actions"] as Style;
+                uiActionBar.Style = this.GetStyle("Adaptive.Actions");
                 grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, grid.RowDefinitions.Count - 1);
                 Grid.SetColumnSpan(uiActionBar, 2);
@@ -165,7 +165,7 @@ namespace Adaptive.Renderers
         public virtual UIElement Render(Container container, List<FrameworkElement> inputControls)
         {
             var uiContainer = new Grid();
-            uiContainer.Style = this.Resources["Adaptive.Container"] as Style;
+            uiContainer.Style = this.GetStyle("Adaptive.Container");
 
             if (container.Separation == SeparationStyle.Before || container.Separation == SeparationStyle.Both)
                 _addSeperator(uiContainer);
@@ -183,7 +183,7 @@ namespace Adaptive.Renderers
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetRow(sep, uiContainer.RowDefinitions.Count - 1);
             Grid.SetColumnSpan(sep, 2);
-            sep.Style = this.Resources["Adaptive.Separator"] as Style;
+            sep.Style = this.GetStyle("Adaptive.Separator");
             uiContainer.Children.Add(sep);
         }
 
@@ -195,7 +195,7 @@ namespace Adaptive.Renderers
         public virtual UIElement Render(ColumnGroup columnGroup, List<FrameworkElement> inputControls)
         {
             var uiColumnGroup = new Grid();
-            uiColumnGroup.Style = this.Resources["Adaptive.ColumnGroup"] as Style;
+            uiColumnGroup.Style = this.GetStyle("Adaptive.ColumnGroup");
 
             int iCol = 0;
             foreach (var column in columnGroup.Columns)
@@ -250,7 +250,7 @@ namespace Adaptive.Renderers
         {
             var uiFactGroup = new Grid();
             // grid.Margin = this.Theme.FactGroupMargins;
-            uiFactGroup.Style = this.Resources["Adaptive.FactGroup"] as Style;
+            uiFactGroup.Style = this.GetStyle("Adaptive.FactGroup");
 
             uiFactGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             uiFactGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
@@ -281,12 +281,12 @@ namespace Adaptive.Renderers
             return new Tuple<UIElement, UIElement>(new WPF.TextBlock()
             {
                 Text = fact.Name,
-                Style = this.Resources["Adaptive.Fact.Name"] as Style
+                Style = this.GetStyle("Adaptive.Fact.Name")
             },
             new WPF.TextBlock()
             {
                 Text = fact.Value,
-                Style = this.Resources["Adaptive.Fact.Value"] as Style
+                Style = this.GetStyle("Adaptive.Fact.Value")
             });
         }
 
@@ -298,7 +298,7 @@ namespace Adaptive.Renderers
         public virtual UIElement Render(ImageGallery imageGallery)
         {
             var uiGallery = new ListBox();
-            uiGallery.Style = this.Resources["Adaptive.ImageGallery"] as Style;
+            uiGallery.Style = this.GetStyle("Adaptive.ImageGallery");
 
             ScrollViewer.SetVerticalScrollBarVisibility(uiGallery, ScrollBarVisibility.Disabled);
             var itemsPanelTemplate = new ItemsPanelTemplate();

@@ -37,7 +37,7 @@ namespace Adaptive.Renderers
                             DateTime maxValue;
                             if (DateTime.TryParse(textInput.Max, out maxValue))
                                 datePicker.DisplayDateEnd = maxValue;
-                            datePicker.Style = this.Resources["Adaptive.Input.TextInput.Date"] as Style;
+                            datePicker.Style = this.GetStyle("Adaptive.Input.TextInput.Date");
                             datePicker.DataContext = textInput;
                             inputControls.Add(datePicker);
                             return datePicker;
@@ -50,7 +50,7 @@ namespace Adaptive.Renderers
                             if (textInput.MaxLength.HasValue)
                                 passwordBox.MaxLength = textInput.MaxLength.Value;
 
-                            passwordBox.Style = this.Resources["Adaptive.Input.TextInput.Password"] as Style;
+                            passwordBox.Style = this.GetStyle("Adaptive.Input.TextInput.Password");
                             passwordBox.DataContext = textInput;
                             inputControls.Add(passwordBox);
                             return passwordBox;
@@ -61,7 +61,7 @@ namespace Adaptive.Renderers
                             var rangeGrid = new Grid();
                             rangeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                             rangeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                            rangeGrid.Style = this.Resources["Adapative.Input.TextInput.Range"] as Style;
+                            rangeGrid.Style = this.GetStyle("Adapative.Input.TextInput.Range");
 
                             var rangePanel = new StackPanel();
                             rangePanel.Orientation = Orientation.Horizontal;
@@ -89,7 +89,7 @@ namespace Adaptive.Renderers
 
                             TextBox tb = new TextBox();
                             tb.VerticalAlignment = VerticalAlignment.Center;
-                            tb.Style = this.Resources["Adaptive.Input.TextInput.Range.TextBox"] as Style;
+                            tb.Style = this.GetStyle("Adaptive.Input.TextInput.Range.TextBox");
                             tb.DataContext = textInput;
                             inputControls.Add(tb);
                             rangePanel.Children.Add(tb);
@@ -125,7 +125,7 @@ namespace Adaptive.Renderers
             if (textInput.MaxLength.HasValue)
                 textBox.MaxLength = textInput.MaxLength.Value;
 
-            textBox.Style = this.Resources[$"Adaptive.Input.TextInput.{textInput.Style}"] as Style ?? this.Resources[$"Adaptive.Input.TextInput"] as Style;
+            textBox.Style = this.GetStyle($"Adaptive.Input.TextInput.{textInput.Style}");
             textBox.DataContext = textInput;
             inputControls.Add(textBox);
             return textBox;
@@ -139,13 +139,13 @@ namespace Adaptive.Renderers
         public UIElement Render(ChoiceInput choiceInput, List<FrameworkElement> inputControls)
         {
             var uiComboBox = new ComboBox();
-            uiComboBox.Style = this.Resources["Adaptive.Input.ChoiceInput.ComboBox"] as Style;
+            uiComboBox.Style = this.GetStyle("Adaptive.Input.ChoiceInput.ComboBox");
             uiComboBox.DataContext = choiceInput;
 
             var uiStackPanel = new StackPanel();
             uiStackPanel.DataContext = choiceInput;
             uiStackPanel.Orientation = Orientation.Vertical;
-            uiStackPanel.Style = this.Resources["Adaptive.Input.ChoiceInput"] as Style;
+            uiStackPanel.Style = this.GetStyle("Adaptive.Input.ChoiceInput");
 
             foreach (var choice in choiceInput.Choices)
             {
@@ -155,7 +155,7 @@ namespace Adaptive.Renderers
                     uiCheckbox.Content = choice.Display;
                     uiCheckbox.IsChecked = choice.IsSelected;
                     uiCheckbox.DataContext = choice;
-                    uiCheckbox.Style = this.Resources["Adaptive.Input.ChoiceInput.CheckBox"] as Style;
+                    uiCheckbox.Style = this.GetStyle("Adaptive.Input.ChoiceInput.CheckBox");
                     uiStackPanel.Children.Add(uiCheckbox);
                 }
                 else
@@ -163,7 +163,7 @@ namespace Adaptive.Renderers
                     if (choiceInput.Style == ChoiceInputStyle.Compact)
                     {
                         var uiComboItem = new ComboBoxItem();
-                        uiComboItem.Style = this.Resources["Adaptive.Input.ChoiceInput.ComboBoxItem"] as Style;
+                        uiComboItem.Style = this.GetStyle("Adaptive.Input.ChoiceInput.ComboBoxItem");
                         uiComboItem.Content = choice.Display;
                         uiComboItem.DataContext = choice;
                         uiComboBox.Items.Add(uiComboItem);
@@ -177,7 +177,7 @@ namespace Adaptive.Renderers
                         uiRadio.IsChecked = choice.IsSelected;
                         uiRadio.GroupName = choiceInput.Id;
                         uiRadio.DataContext = choice;
-                        uiRadio.Style = this.Resources["Adaptive.Input.ChoiceInput.Radio"] as Style;
+                        uiRadio.Style = this.GetStyle("Adaptive.Input.ChoiceInput.Radio");
                         uiStackPanel.Children.Add(uiRadio);
                     }
                 }
