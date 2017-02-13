@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "AdaptiveTextBlock.h"
-#include "XamlCardRendererComponent.h"
+#include "Util.h"
 #include <windows.foundation.collections.h>
+#include "XamlCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -60,6 +61,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::get_TextColor(ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor)
+    {
+        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextColor>(m_TextBlock->GetTextColor());
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_TextColor(ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor)
+    {
+        m_TextBlock->SetTextColor(static_cast<AdaptiveCards::TextColor>(textColor));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_Wrap(boolean* Wrap)
     {
         *Wrap = m_TextBlock->GetWrap();
@@ -88,8 +103,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveTextBlock::get_ElementType(ElementType* /*elementType*/)
+    IFACEMETHODIMP AdaptiveTextBlock::get_ElementType(ElementType* elementType)
     {
+        *elementType = ElementType::TextBlock;
         return S_OK;
     }
 

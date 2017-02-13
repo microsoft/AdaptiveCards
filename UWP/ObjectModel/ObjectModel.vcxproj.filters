@@ -11,6 +11,7 @@
     <ClCompile Include="..\..\shared\ObjectModel\BaseCardElement.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\ParseUtil.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\Image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCard.h" />
@@ -27,6 +28,7 @@
     <ClInclude Include="..\..\shared\ObjectModel\pch.h" />
     <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\ObjectModel\ParseUtil.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\Image.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

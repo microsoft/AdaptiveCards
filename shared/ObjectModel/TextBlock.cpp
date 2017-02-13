@@ -3,11 +3,29 @@
 
 using namespace AdaptiveCards;
 
-TextBlock::TextBlock() : BaseCardElement(CardElementType::TextBlock, nullptr, HorizontalAlignment::Left, CardElementSize::Auto, "")
+TextBlock::TextBlock() : BaseCardElement(CardElementType::TextBlock)
 {
 }
 
-TextBlock::TextBlock(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak, std::string text, TextSize textSize, TextWeight textWeight, bool isSubtle, bool wrap) : BaseCardElement(CardElementType::TextBlock, container, horizontalAlignment, size, speak), m_text(text), m_textSize(textSize), m_textWeight(textWeight), m_isSubtle(isSubtle), m_wrap(wrap) {}
+TextBlock::TextBlock(std::shared_ptr<Container> container,
+    HorizontalAlignment horizontalAlignment,
+    CardElementSize size,
+    std::string speak,
+    std::string text,
+    TextSize textSize,
+    TextWeight textWeight,
+    TextColor textColor,
+    bool isSubtle,
+    bool wrap) :
+    BaseCardElement(CardElementType::TextBlock, container, horizontalAlignment, size, speak),
+    m_text(text),
+    m_textSize(textSize),
+    m_textWeight(textWeight),
+    m_textColor(textColor),
+    m_isSubtle(isSubtle),
+    m_wrap(wrap)
+{
+}
 
 std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
 {
@@ -25,7 +43,7 @@ std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
     TextWrap textWrap = ParseUtil::GetEnumValue<TextWrap>(json, AdaptiveCardSchemaKey::TextWrap, TextWrap::NoWrap, TextWrapFromString);
     HorizontalAlignment horAlignment = ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString);
 
-    auto textBlock = std::make_shared<TextBlock>(nullptr, horAlignment, size, speak, text, textSize, textWeight, false, textWrap == TextWrap::Wrap);
+    auto textBlock = std::make_shared<TextBlock>(nullptr, horAlignment, size, speak, text, textSize, textWeight, textColor, false, textWrap == TextWrap::Wrap);
     return textBlock;
 }
 
@@ -62,6 +80,16 @@ TextWeight TextBlock::GetTextWeight() const
 void TextBlock::SetTextWeight(const TextWeight value)
 {
     m_textWeight = value;
+}
+
+TextColor TextBlock::GetTextColor() const
+{
+    return m_textColor;
+}
+
+void TextBlock::SetTextColor(const TextColor value)
+{
+    m_textColor = value;
 }
 
 bool TextBlock::GetWrap() const
