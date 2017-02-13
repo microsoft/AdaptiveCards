@@ -263,6 +263,8 @@ sources*
 build*
 **/objfre/*
 **/objchk/*
+makefile.inc
+product.pbxproj
 
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h

@@ -9,7 +9,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     class AdaptiveTextBlock :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            Microsoft::WRL::FtmBase,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
     {

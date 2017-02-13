@@ -39,18 +39,16 @@
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <TargetName>AdaptiveCards.XamlCardRenderer</TargetName>
     <GenerateManifest>false</GenerateManifest>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -112,10 +110,13 @@
     <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\Util.h" />
+    <ClInclude Include="lib\Vector.h" />
+    <ClInclude Include="lib\XamlBuilder.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\Util.cpp" />
+    <ClCompile Include="lib\XamlBuilder.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
     <ClCompile Include="dll\dll.cpp" />
   </ItemGroup>
