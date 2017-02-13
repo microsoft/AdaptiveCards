@@ -194,7 +194,7 @@ namespace Adaptive.Renderers
             }
         }
 
-        private dynamic _fillDataFromInputControls(dynamic data, List<FrameworkElement> inputControls)
+        private dynamic _mergeDataFromControls(dynamic data, List<FrameworkElement> inputControls)
         {
             foreach (var inputControl in inputControls)
             {

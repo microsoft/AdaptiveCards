@@ -1,0 +1,81 @@
+{
+    "@type": "AdaptiveCard",
+    "body": [
+        {
+            "@type": "TextBlock",
+            "text": "Here are some cool photos",
+            "textSize": "Large"
+        },
+        {
+            "@type": "TextBlock",
+            "text": "Sorry some of them are repeats",
+            "textSize": "small"
+        },
+        {
+            "@type": "ImageGallery",
+            "imageSize": "medium",
+            "images": [
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg",
+                    "size": "medium"
+                },
+                {
+                    "@type": "Image",
+                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg",
+                    "size": "medium"
+                }
+            ]
+        }
+    ]
+}

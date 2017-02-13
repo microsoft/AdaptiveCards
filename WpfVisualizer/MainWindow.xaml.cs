@@ -97,7 +97,11 @@ namespace WpfVisualizer
             else if (e.Action is AC.HttpAction)
             {
                 AC.HttpAction action = (AC.HttpAction)e.Action;
-                System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), $"HttpAction {action.Method} {action.Url}");
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"HEADERS={JsonConvert.SerializeObject(action.Headers)}");
+                sb.AppendLine($"BODY={action.Body}");
+                sb.AppendLine($"DATA={e.Data}");
+                System.Windows.MessageBox.Show(this, sb.ToString(), $"HttpAction {action.Method} {action.Url}");
             }
         }
 

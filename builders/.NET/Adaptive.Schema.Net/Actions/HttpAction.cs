@@ -24,6 +24,7 @@ namespace Adaptive.Schema.Net
 
         /// <summary>
         /// url to use (can have binding information)
+        /// NOTE: You can bind to properties from input fields by using {{InputID}} in the string
         /// </summary>
         [JsonRequired]
         public string Url { get; set; }
@@ -34,7 +35,8 @@ namespace Adaptive.Schema.Net
         public object Headers { get; set; }
 
         /// <summary>
-        /// Body with binding to send as content
+        /// Body for payload to http command 
+        /// NOTE: You can bind to properties from input fields by using {{InputID}} in the string
         /// </summary>
         public string Body { get; set; }
 

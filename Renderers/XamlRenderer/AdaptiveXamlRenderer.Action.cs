@@ -5,11 +5,15 @@ using WPF = System.Windows.Controls;
 using Adaptive.Schema.Net;
 using AC = Adaptive.Schema.Net;
 using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
+using System;
+using System.Text;
 
 namespace Adaptive.Renderers
 {
     public partial class AdaptiveXamlRenderer
     {
+        private static Regex _regexBinding = new Regex(@"(?<property>\{\{\w+?\}\})+?", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         private UIElement _renderAction(ActionBase action, List<FrameworkElement> inputControls, object content = null)
         {
@@ -43,11 +47,38 @@ namespace Adaptive.Renderers
             uiButton.Click += (sender, e) =>
             {
                 dynamic data = new JObject();
-                _fillDataFromInputControls(data, inputControls);
+                _mergeDataFromControls(data, inputControls);
 
-                OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = httpAction, Data = data });
+                string body = (string)httpAction.Body?.ToString() ?? String.Empty;
+
+                OnAction?.Invoke(uiButton, new ActionEventArgs()
+                {
+                    Action = new HttpAction()
+                    {
+                        Title = httpAction.Title,
+                        Method = httpAction.Method,
+                        Url = _bindData(data, httpAction.Url, url: true),
+                        Headers = httpAction.Headers,
+                        Body = _bindData(data, body),
+                    },
+                    Data = data
+                });
             };
             return uiButton;
+        }
+
+        private static string _bindData(dynamic data, string body, bool url = false)
+        {
+            foreach (Match match in _regexBinding.Matches(body))
+            {
+                var key = match.Value.Trim('{', '}');
+                var val = data[key]?.ToString() ?? String.Empty;
+                if (url)
+                    val = Uri.EscapeDataString(val);
+                body = body.Replace(match.Value, val);
+            }
+
+            return body;
         }
 
         /// <summary>
@@ -91,7 +122,7 @@ namespace Adaptive.Renderers
             uiButton.Click += (sender, e) =>
             {
                 dynamic data = (submitAction.Data != null) ? ((JToken)submitAction.Data).DeepClone() : new JObject();
-                _fillDataFromInputControls(data, inputControls);
+                _mergeDataFromControls(data, inputControls);
 
                 OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = submitAction, Data = data });
             };
