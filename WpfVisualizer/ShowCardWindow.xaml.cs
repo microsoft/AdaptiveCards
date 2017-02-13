@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using Adaptive.Renderers;
 using Adaptive.Schema.Net;
@@ -16,12 +17,14 @@ namespace WpfVisualizer
         private AdaptiveXamlRenderer _renderer;
         private ResourceDictionary _resources; 
 
-        public ShowCardWindow(AdaptiveCard card, ResourceDictionary resources)
+        public ShowCardWindow(string title, AdaptiveCard card, ResourceDictionary resources)
         {
             _resources = resources;
             _card = card;
 
             InitializeComponent();
+
+            this.Title = title;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -41,13 +44,14 @@ namespace WpfVisualizer
             else if (e.Action is AC.ShowCardAction)
             {
                 AC.ShowCardAction action = (AC.ShowCardAction)e.Action;
-                ShowCardWindow dialog = new ShowCardWindow(action.Card, this.Resources);
+                ShowCardWindow dialog = new ShowCardWindow(action.Title, action.Card, this.Resources);
+                dialog.Owner = this;
                 dialog.ShowDialog();
             }
             else if (e.Action is AC.SubmitAction)
             {
                 AC.SubmitAction action = (AC.SubmitAction)e.Action;
-                System.Windows.MessageBox.Show(JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), action.Title);
+                System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), "SubmitAction");
                 this.Close();
             }
             else if (e.Action is AC.CancelAction)
@@ -57,7 +61,9 @@ namespace WpfVisualizer
             else if (e.Action is AC.HttpAction)
             {
                 AC.HttpAction action = (AC.HttpAction)e.Action;
+                System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), $"HttpAction {action.Method} {action.Url}");
+                this.Close();
             }
         }
-    }
+}
 }

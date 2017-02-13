@@ -162,7 +162,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="container"></param>
         /// <returns></returns>
-        public virtual UIElement Render(Container container, List<FrameworkElement> inputControls)
+        protected virtual UIElement Render(Container container, List<FrameworkElement> inputControls)
         {
             var uiContainer = new Grid();
             uiContainer.Style = this.GetStyle("Adaptive.Container");
@@ -192,7 +192,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="columnGroup"></param>
         /// <returns></returns>
-        public virtual UIElement Render(ColumnGroup columnGroup, List<FrameworkElement> inputControls)
+        protected virtual UIElement Render(ColumnGroup columnGroup, List<FrameworkElement> inputControls)
         {
             var uiColumnGroup = new Grid();
             uiColumnGroup.Style = this.GetStyle("Adaptive.ColumnGroup");
@@ -246,7 +246,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="factGroup"></param>
         /// <returns></returns>
-        public virtual UIElement Render(FactGroup factGroup)
+        protected virtual UIElement Render(FactGroup factGroup)
         {
             var uiFactGroup = new Grid();
             // grid.Margin = this.Theme.FactGroupMargins;
@@ -276,7 +276,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="fact"></param>
         /// <returns></returns>
-        public virtual Tuple<UIElement, UIElement> Render(Fact fact)
+        protected virtual Tuple<UIElement, UIElement> Render(Fact fact)
         {
             return new Tuple<UIElement, UIElement>(new WPF.TextBlock()
             {
@@ -295,15 +295,15 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="imageGallery"></param>
         /// <returns></returns>
-        public virtual UIElement Render(ImageGallery imageGallery)
+        protected virtual UIElement Render(ImageGallery imageGallery)
         {
             var uiGallery = new ListBox();
             uiGallery.Style = this.GetStyle("Adaptive.ImageGallery");
 
-            ScrollViewer.SetVerticalScrollBarVisibility(uiGallery, ScrollBarVisibility.Disabled);
+            ScrollViewer.SetHorizontalScrollBarVisibility(uiGallery, ScrollBarVisibility.Disabled);
             var itemsPanelTemplate = new ItemsPanelTemplate();
-            var factory = new FrameworkElementFactory(typeof(StackPanel));
-            factory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
+            var factory = new FrameworkElementFactory(typeof(WrapPanel));
+            // factory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
             itemsPanelTemplate.VisualTree = factory;
             uiGallery.ItemsPanel = itemsPanelTemplate;
 

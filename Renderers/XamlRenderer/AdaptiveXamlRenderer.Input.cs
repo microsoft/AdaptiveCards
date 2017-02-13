@@ -19,7 +19,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public virtual UIElement Render(TextInput textInput, List<FrameworkElement> inputControls)
+        protected virtual UIElement Render(TextInput textInput, List<FrameworkElement> inputControls)
         {
             if (textInput.Style.HasValue)
             {
@@ -61,7 +61,7 @@ namespace Adaptive.Renderers
                             var rangeGrid = new Grid();
                             rangeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                             rangeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                            rangeGrid.Style = this.GetStyle("Adapative.Input.TextInput.Range");
+                            rangeGrid.Style = this.GetStyle("Adaptive.Input.TextInput.Range");
 
                             var rangePanel = new StackPanel();
                             rangePanel.Orientation = Orientation.Horizontal;
@@ -136,7 +136,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public UIElement Render(ChoiceInput choiceInput, List<FrameworkElement> inputControls)
+        protected UIElement Render(ChoiceInput choiceInput, List<FrameworkElement> inputControls)
         {
             var uiComboBox = new ComboBox();
             uiComboBox.Style = this.GetStyle("Adaptive.Input.ChoiceInput.ComboBox");
@@ -220,7 +220,7 @@ namespace Adaptive.Renderers
             return data;
         }
 
-        public virtual object GetValueFromInputControl(FrameworkElement inputControl)
+        protected virtual object GetValueFromInputControl(FrameworkElement inputControl)
         {
             if (inputControl is TextBox)
             {
@@ -288,7 +288,7 @@ namespace Adaptive.Renderers
             }
         }
 
-        public virtual void ResetInputControl(FrameworkElement control)
+        protected virtual void ResetInputControl(FrameworkElement control)
         {
             if (control is TextBox)
             {

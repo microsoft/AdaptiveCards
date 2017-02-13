@@ -17,7 +17,7 @@
 					"items": [
 						{
 							"@type": "Image",
-							"url": "./assets/closed bug 92x92.png",
+							"url": "https://microsoft.github.io/AdaptiveCards/assets/Closed%20bug%2092x92.png",
 							"size": "medium"
 						}
 					]
@@ -61,20 +61,20 @@
 					"value": "1"
 				}
 			]
+		}
+	],
+	"actions": [
+		{
+			"@type": "HttpAction",
+			"method": "POST",
+			"title": "View more work items",
+			"url": "http://someurl.com"
 		},
 		{
-			"@type": "actionsl",
-			"speak": "",
-			"items": [
-				{
-					"@type": "HttpPOST",
-					"name": "View more work items"
-				},
-				{
-					"@type": "HttpPOST",
-					"name": "View more work items"
-				}
-			]
+			"@type": "HttpAction",
+			"method": "POST",
+			"title": "View more work items",
+			"url": "http://someurl.com"
 		}
 	]
 }

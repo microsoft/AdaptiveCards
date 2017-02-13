@@ -37,13 +37,17 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="httpAction"></param>
         /// <returns></returns>
-        public virtual UIElement Render(HttpAction httpAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(HttpAction httpAction, List<FrameworkElement> inputControls, object content)
         {
-            var uiActionGroup = new Grid();
-            //var actionInstance = new ActionInstance() { Action = httpAction, Inputs = inputControls };
-            //Hyperlink link = new Hyperlink(new Run() { Text = httpAction.Title });
-            //link.Tag = actionInstance;
-            return uiActionGroup;
+            Button uiButton = _createActionButton(httpAction, content);
+            uiButton.Click += (sender, e) =>
+            {
+                dynamic data = new JObject();
+                _fillDataFromInputControls(data, inputControls);
+
+                OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = httpAction, Data = data });
+            };
+            return uiButton;
         }
 
         /// <summary>
@@ -51,7 +55,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="showCardAction"></param>
         /// <returns></returns>
-        public virtual UIElement Render(ShowCardAction showCardAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(ShowCardAction showCardAction, List<FrameworkElement> inputControls, object content)
         {
             Button uiButton = _createActionButton(showCardAction, content);
             uiButton.Click += (sender, e) =>
@@ -66,7 +70,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="openUrlAction"></param>
         /// <returns></returns>
-        public virtual UIElement Render(OpenUrlAction openUrlAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(OpenUrlAction openUrlAction, List<FrameworkElement> inputControls, object content)
         {
             Button uiButton = _createActionButton(openUrlAction, content);
             uiButton.Click += (sender, e) =>
@@ -81,7 +85,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="submitAction"></param>
         /// <returns></returns>
-        public virtual UIElement Render(SubmitAction submitAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(SubmitAction submitAction, List<FrameworkElement> inputControls, object content)
         {
             Button uiButton = _createActionButton(submitAction, content);
             uiButton.Click += (sender, e) =>
@@ -99,7 +103,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="cancelAction"></param>
         /// <returns></returns>
-        public virtual UIElement Render(CancelAction cancelAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(CancelAction cancelAction, List<FrameworkElement> inputControls, object content)
         {
             Button uiButton = _createActionButton(cancelAction, content);
             uiButton.Click += (sender, e) =>
@@ -109,6 +113,7 @@ namespace Adaptive.Renderers
             };
             return uiButton;
         }
+
         private Button _createActionButton(ActionBase action, object content)
         {
             var uiButton = new Button();

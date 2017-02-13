@@ -26,14 +26,14 @@ namespace Adaptive.Renderers
         /// </summary>
         public event ActionEventHandler OnAction;
 
-        public ResourceDictionary Resources { get; set; }
+        protected ResourceDictionary Resources { get; set; }
 
         /// <summary>
         /// TextBlock
         /// </summary>
         /// <param name="textBlock"></param>
         /// <returns></returns>
-        public virtual UIElement Render(AC.TextBlock textBlock)
+        protected virtual UIElement Render(AC.TextBlock textBlock)
         {
             Marked marked = new Marked();
             marked.Options.Renderer = new MarkedXamlRenderer();
@@ -131,7 +131,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        public virtual UIElement Render(Adaptive.Schema.Net.Image image)
+        protected virtual UIElement Render(Adaptive.Schema.Net.Image image)
         {
             var uiImage = new System.Windows.Controls.Image();
             // uiImage.Margin = this.Theme.ImageMargins;
@@ -152,17 +152,17 @@ namespace Adaptive.Renderers
             return uiImage;
         }
 
-        public Style GetStyle(string styleName)
+        protected virtual Style GetStyle(string styleName)
         {
-            while (true)
+            while (!String.IsNullOrEmpty(styleName))
             {
-                Style style = this.GetStyle(styleName);
+                Style style = this.Resources[styleName] as Style;
                 if (style != null)
                     return style;
-                var iPos = styleName.IndexOf('.');
-                if (iPos == 0)
+                var iPos = styleName.LastIndexOf('.');
+                if (iPos <= 0)
                     break;
-                styleName = styleName.Substring(0, iPos - 1);
+                styleName = styleName.Substring(0, iPos);
             }
             return null;
         }

@@ -9,7 +9,10 @@
         Title="MainWindow" Height="1000" Width="1000">
 
     <Window.Resources>
-
+        <Style x:Key="Hidden" TargetType="FrameworkElement">
+            <Setter Property="Visibility" Value="Collapsed"/>
+        </Style>
+        
         <!-- TextBlock definitions -->
         <Style x:Key="Adaptive.TextBlock" TargetType="TextBlock" >
         </Style>
@@ -265,7 +268,7 @@
             <Border.Effect>
                 <DropShadowEffect />
             </Border.Effect >
-            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700" Margin="8"/>
+            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700" />
         </Border>
     </Grid>
 </Window>

@@ -24,7 +24,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public override UIElement Render(TextInput textInput, List<FrameworkElement> inputControls)
+        protected override UIElement Render(TextInput textInput, List<FrameworkElement> inputControls)
         {
             if (textInput.Style.HasValue)
             {
@@ -131,7 +131,7 @@ namespace WpfVisualizer
         }
 
 
-        public override object GetValueFromInputControl(FrameworkElement inputControl)
+        protected override object GetValueFromInputControl(FrameworkElement inputControl)
         {
             if (inputControl is DateTimePicker)
             {
@@ -156,7 +156,7 @@ namespace WpfVisualizer
             return base.GetValueFromInputControl(inputControl);
         }
 
-        public override void ResetInputControl(FrameworkElement control)
+        protected override void ResetInputControl(FrameworkElement control)
         {
             if (control is DateTimePicker)
             {

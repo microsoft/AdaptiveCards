@@ -59,6 +59,7 @@
     <Compile Include="AdaptiveXamlRenderer.cs" />
     <Compile Include="AdaptiveXamlRenderer.Input.cs" />
     <Compile Include="MarkedXamlRenderer.cs" />
+    <Compile Include="AdaptiveImageRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

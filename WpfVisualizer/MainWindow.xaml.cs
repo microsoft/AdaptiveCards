@@ -18,6 +18,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Diagnostics;
 using Adaptive.Renderers;
+using System.Windows.Threading;
 
 namespace WpfVisualizer
 {
@@ -46,7 +47,7 @@ namespace WpfVisualizer
             catch (Exception err)
             {
                 this.cardGrid.Children.Clear();
-                this.cardGrid.Children.Add(new TextBlock() { Text = err.Message });
+                this.cardGrid.Children.Add(new TextBlock() { Text = err.Message, TextWrapping = TextWrapping.Wrap });
             }
         }
 
@@ -84,17 +85,19 @@ namespace WpfVisualizer
             else if (e.Action is AC.ShowCardAction)
             {
                 AC.ShowCardAction action = (AC.ShowCardAction)e.Action;
-                ShowCardWindow dialog = new ShowCardWindow(action.Card, this.Resources);
+                ShowCardWindow dialog = new ShowCardWindow(action.Title, action.Card, this.Resources);
+                dialog.Owner = this;
                 dialog.ShowDialog();
             }
             else if (e.Action is AC.SubmitAction)
             {
                 AC.SubmitAction action = (AC.SubmitAction)e.Action;
-                System.Windows.MessageBox.Show(JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), action.Title);
+                System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), "SubmitAction");
             }
             else if (e.Action is AC.HttpAction)
             {
                 AC.HttpAction action = (AC.HttpAction)e.Action;
+                System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), $"HttpAction {action.Method} {action.Url}");
             }
         }
 
@@ -115,21 +118,14 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            var card = this._card.Actions.OfType<AC.ShowCardAction>().First().Card;
-            var uiCard = (FrameworkElement)_renderer.Render(card);
-            uiCard.Measure(new Size(1000, 1000));
-            var width = Math.Max(480, uiCard.DesiredSize.Width);
-            uiCard.Arrange(new Rect(new Size(width, uiCard.DesiredSize.Height)));
-            uiCard.UpdateLayout();
+            AdaptiveImageRenderer imageRenderer = new AdaptiveImageRenderer(this.Resources);
 
-            RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)width, (int)uiCard.DesiredSize.Height, 96, 96, PixelFormats.Default);
-            await Task.Delay(1000);
-            bitmapImage.Render(uiCard);
-
-            var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+            var bitmap = await imageRenderer.RenderToImageAsync(this._card, 400);
 
             string path = @"c:\scratch\foo.png";
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bitmap));
+
             using (FileStream stream = new FileStream(path, FileMode.Create))
             {
                 encoder.Save(stream);

@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="NoInputRenderer.cs" />
     <Compile Include="MyAdaptiveRenderer.cs" />
     <Compile Include="ShowCardWindow.xaml.cs">
       <DependentUpon>ShowCardWindow.xaml</DependentUpon>
