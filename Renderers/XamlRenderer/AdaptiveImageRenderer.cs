@@ -55,7 +55,6 @@ namespace Adaptive.Renderers
         {
             var uiCard = (FrameworkElement)this.Render(card);
             uiCard.Measure(new System.Windows.Size(width, 4000));
-            // width = Math.Max(width, (int)uiCard.DesiredSize.Width);
             uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));
             uiCard.UpdateLayout();
 
