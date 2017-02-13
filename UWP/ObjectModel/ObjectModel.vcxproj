@@ -87,6 +87,7 @@
     <ClInclude Include="..\..\shared\ObjectModel\Container.h" />
     <ClInclude Include="..\..\shared\ObjectModel\Enums.h" />
     <ClInclude Include="..\..\shared\ObjectModel\BaseCardElement.h" />
+    <ClInclude Include="..\..\shared\ObjectModel\Image.h" />
     <ClInclude Include="..\..\shared\ObjectModel\json\json-forwards.h" />
     <ClInclude Include="..\..\shared\ObjectModel\ParseUtil.h" />
     <ClInclude Include="..\..\shared\ObjectModel\json\json.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="..\..\shared\ObjectModel\Container.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\BaseCardElement.cpp" />
+    <ClCompile Include="..\..\shared\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\jsoncpp.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\ParseUtil.cpp" />
     <ClCompile Include="..\..\shared\ObjectModel\TextBlock.cpp" />

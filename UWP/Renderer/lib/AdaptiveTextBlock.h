@@ -27,6 +27,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_TextWeight(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight* textWeight);
         IFACEMETHODIMP put_TextWeight(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight);
 
+        IFACEMETHODIMP get_TextColor(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor);
+        IFACEMETHODIMP put_TextColor(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor);
+
         IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
         IFACEMETHODIMP put_Wrap(_In_ boolean wrap);
 
