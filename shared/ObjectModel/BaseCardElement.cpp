@@ -3,22 +3,37 @@
 
 using namespace AdaptiveCards;
 
-BaseCardElement::BaseCardElement(CardElementType type, std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak) : m_type(type), m_container(container), m_horizontalAlignment(horizontalAlignment), m_size(size), m_speak(speak) {}
+BaseCardElement::BaseCardElement(
+    CardElementType type,
+    std::shared_ptr<Container> parent,
+    HorizontalAlignment horizontalAlignment,
+    CardElementSize size,
+    std::string speak) :
+    m_type(type),
+    m_parent(parent),
+    m_horizontalAlignment(horizontalAlignment),
+    m_size(size),
+    m_speak(speak)
+{
+}
 
-BaseCardElement::BaseCardElement(CardElementType type) : m_type(type), m_horizontalAlignment(HorizontalAlignment::Left), m_size(CardElementSize::Auto) {}
+BaseCardElement::BaseCardElement(CardElementType type) :
+    m_type(type), m_horizontalAlignment(HorizontalAlignment::Left), m_size(CardElementSize::Auto), m_speak("")
+{
+}
 
 AdaptiveCards::BaseCardElement::~BaseCardElement()
 {
 }
 
-std::shared_ptr<Container> BaseCardElement::GetContainer() const
+std::shared_ptr<Container> BaseCardElement::GetParent() const
 {
-    return m_container.lock();
+    return m_parent.lock();
 }
 
 void BaseCardElement::SetContainer(std::shared_ptr<Container> container)
 {
-    m_container = container;
+    m_parent = container;
 }
 
 HorizontalAlignment BaseCardElement::GetHorizontalAlignment() const

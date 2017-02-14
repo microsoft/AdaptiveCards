@@ -4,7 +4,36 @@
 
 using namespace AdaptiveCards;
 
-Container::Container() : BaseCardElement(CardElementType::Container) {}
+Container::Container() : BaseCardElement(CardElementType::Container)
+{
+}
+
+Container::Container(
+    std::shared_ptr<Container> parent,
+    HorizontalAlignment horizontalAlignment,
+    CardElementSize size,
+    std::string speak,
+    std::string backgroundImageUrl,
+    std::string backgroundColor, std::vector<std::shared_ptr<BaseCardElement>>& items) :
+    BaseCardElement(CardElementType::Container, parent, horizontalAlignment, size, speak),
+    m_backgroundImageUrl(backgroundImageUrl),
+    m_backgroundColor(backgroundColor),
+    m_items(items)
+{
+}
+
+Container::Container(
+    std::shared_ptr<Container> parent,
+    HorizontalAlignment horizontalAlignment,
+    CardElementSize size,
+    std::string speak,
+    std::string backgroundImageUrl,
+    std::string backgroundColor) :
+    BaseCardElement(CardElementType::Container, parent, horizontalAlignment, size, speak),
+    m_backgroundImageUrl(backgroundImageUrl),
+    m_backgroundColor(backgroundColor)
+{
+}
 
 const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCards::Container::GetItems()
 {
@@ -24,6 +53,7 @@ void Container::AddItem(std::shared_ptr<BaseCardElement>& item)
     item->SetContainer(shared_from_this());
     m_items.emplace_back(item);
 }
+
 
 std::string Container::Serialize()
 {
@@ -84,3 +114,22 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
     return container;
 }
 
+std::string Container::GetBackgroundImageUrl() const
+{
+    return m_backgroundImageUrl;
+}
+
+void Container::SetBackgroundImageUrl(const std::string value)
+{
+    m_backgroundImageUrl = value;
+}
+
+std::string Container::GetBackgroundColor() const
+{
+    return m_backgroundColor;
+}
+
+void Container::SetBackgroundColor(const std::string value)
+{
+    m_backgroundColor = value;
+}

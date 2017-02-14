@@ -10,9 +10,11 @@ namespace AdaptiveCards
     {
         runtimeclass AdaptiveTextBlock;
         runtimeclass AdaptiveCard;
+        runtimeclass AdaptiveImage;
         interface IAdaptiveCardElement;
         interface IAdaptiveTextBlock;
         interface IAdaptiveCard;
+        interface IAdaptiveImage;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum CardElementSize
@@ -66,7 +68,14 @@ namespace AdaptiveCards
         typedef [v1_enum] enum ElementType
         {
             TextBlock = 0,
+            Image
         } ElementType;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ImageStyle {
+            Normal = 0,
+            Person
+        } ImageStyle;
 
         declare
         {
@@ -137,6 +146,31 @@ namespace AdaptiveCards
         {
             [default] interface IAdaptiveCard;
         }
+
+        [
+            uuid(16452a2e-1152-47f3-90bd-6e4148b09669),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveImage)
+        ]
+        interface IAdaptiveImage : IInspectable
+        {
+            [propget] HRESULT Uri([out, retval] Windows.Foundation.Uri** value);
+            [propput] HRESULT Uri([in] Windows.Foundation.Uri* value);
+
+            [propget] HRESULT ImageStyle([out, retval] ImageStyle* value);
+            [propput] HRESULT ImageStyle([in] ImageStyle value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveImage
+
+        {
+            [default] interface IAdaptiveImage;
+            interface IAdaptiveCardElement;
+        };
 
         runtimeclass XamlCardRenderer;
         runtimeclass ImageRenderResult;

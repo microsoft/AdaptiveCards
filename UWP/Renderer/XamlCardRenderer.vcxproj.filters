@@ -7,6 +7,7 @@
     <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="dll\dll.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
+    <ClCompile Include="lib\AdaptiveImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\pch.h" />
@@ -17,6 +18,7 @@
     <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
     <ClInclude Include="lib\Vector.h" />
+    <ClInclude Include="lib\AdaptiveImage.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />
