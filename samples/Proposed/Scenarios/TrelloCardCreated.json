@@ -37,7 +37,7 @@
 								},
 								{
 									"@type": "TextBlock",
-									"text": "9/13/2016, 3:34pm",
+									"text": "Created {{DATE(2017-02-14 06:08:39Z,Long)}} {{TIME(2017-02-14 06:08:39Z,Short)}}",
 									"isSubtle": true,
 									"wrap": true
 								}

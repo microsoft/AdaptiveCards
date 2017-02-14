@@ -9,7 +9,8 @@
         {
             "@type": "TextBlock",
             "text": "Sorry some of them are repeats",
-            "textSize": "small"
+            "textSize": "medium",
+            "textWeight": "lighter"
         },
         {
             "@type": "ImageGallery",

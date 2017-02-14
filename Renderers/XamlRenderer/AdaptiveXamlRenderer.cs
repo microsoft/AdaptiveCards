@@ -8,6 +8,7 @@ using System.Xml;
 using MarkedNet;
 using Adaptive.Schema.Net;
 using AC = Adaptive.Schema.Net;
+using System.Text.RegularExpressions;
 
 namespace Adaptive.Renderers
 {
@@ -28,6 +29,12 @@ namespace Adaptive.Renderers
 
         protected ResourceDictionary Resources { get; set; }
 
+        private static Regex _regexDateTime = new Regex(@"\{\{(?<func>DATE|TIME){1}\((?<date>.+?){1}(?:,\s*(?<hint>Short|Long){1}\s*)??\)\}\}", RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
+
+        private enum Functions { DATE, TIME };
+
+        private enum TimeHints { LONG, SHORT };
+
         /// <summary>
         /// TextBlock
         /// </summary>
@@ -40,8 +47,35 @@ namespace Adaptive.Renderers
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
 
+            string text = textBlock.Text;
+            foreach (Match match in _regexDateTime.Matches(text))
+            {
+                Functions function;
+                if (Enum.TryParse<Functions>(match.Groups[1].Value.ToUpper(), out function))
+                {
+                    DateTime date;
+                    if (DateTime.TryParse(match.Groups[2].Value, out date))
+                    {
+                        TimeHints timeHint;
+                        if (!Enum.TryParse<TimeHints>(match.Groups[3].Value.ToUpper(), out timeHint))
+                            timeHint = TimeHints.LONG;
+
+                        string dateTimeFormat = "D";
+                        if (function == Functions.DATE)
+                        {
+                            dateTimeFormat = (timeHint == TimeHints.LONG) ? "D" : "d";
+                        }
+                        else if (function == Functions.TIME)
+                        {
+                            dateTimeFormat = (timeHint == TimeHints.LONG) ? "T" : "t";
+                        }
+                        text = text.Replace(match.Value, date.ToString(dateTimeFormat));
+                    }
+                }
+            }
+
             // uiTextBlock.Text = textBlock.Text;
-            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(textBlock.Text)}</TextBlock>";
+            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
             StringReader stringReader = new StringReader(xaml);
             XmlReader xmlReader = XmlReader.Create(stringReader);
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
@@ -58,20 +92,20 @@ namespace Adaptive.Renderers
             switch (textBlock.TextSize)
             {
                 case TextSize.Small:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Small");;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Small"); ;
                     break;
                 case TextSize.Medium:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Medium");;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Medium"); ;
                     break;
                 case TextSize.Large:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Large");;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Large"); ;
                     break;
                 case TextSize.ExtraLarge:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.ExtraLarge");;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.ExtraLarge"); ;
                     break;
                 case TextSize.Normal:
                 default:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Normal");;
+                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Normal"); ;
                     break;
             }
 
