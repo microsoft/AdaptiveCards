@@ -54,7 +54,7 @@ T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T 
         {
             return defaultEnumValue;
         }
-        
+
         if (!propertyValue.isString())
         {
             throw AdaptiveCardParseException("Enum type was invalid. Expected type string.");

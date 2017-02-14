@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XamlCardRenderer", "UWP\Ren
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlCardVisualizer", "UWP\Visualizer\XamlCardVisualizer.csproj", "{B5DECA6E-D9EA-476D-9B7E-34D3B3044CD8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectModelLib", "shared\ObjectModelLib\ObjectModelLib.vcxproj", "{2D040C7D-757A-4292-BB59-62BC53A83C9F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectModelProjection", "UWP\ObjectModelProjection\ObjectModelProjection.vcxproj", "{2D040C7D-757A-4292-BB59-62BC53A83C9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

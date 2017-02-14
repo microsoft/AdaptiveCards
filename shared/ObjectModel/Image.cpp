@@ -3,11 +3,22 @@
 
 using namespace AdaptiveCards;
 
-Image::Image() : BaseCardElement(CardElementType::Image, nullptr, HorizontalAlignment::Left, CardElementSize::Auto, "")
+Image::Image() : BaseCardElement(CardElementType::Image)
 {
 }
 
-Image::Image(std::shared_ptr<Container> container, HorizontalAlignment horizontalAlignment, CardElementSize size, std::string speak, std::string uri, ImageStyle imageStyle) : BaseCardElement(CardElementType::Image, container, horizontalAlignment, size, speak), m_uri(uri), m_imageStyle(imageStyle) {}
+Image::Image(
+    std::shared_ptr<Container> container,
+    HorizontalAlignment horizontalAlignment,
+    CardElementSize size,
+    std::string speak,
+    std::string uri,
+    ImageStyle imageStyle) :
+    BaseCardElement(CardElementType::Image, container, horizontalAlignment, size, speak),
+    m_uri(uri),
+    m_imageStyle(imageStyle)
+{
+}
 
 std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
 {
