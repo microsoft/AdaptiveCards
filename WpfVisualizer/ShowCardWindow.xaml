@@ -6,6 +6,6 @@
         xmlns:local="clr-namespace:WpfVisualizer" 
         mc:Ignorable="d" Loaded="Window_Loaded" SizeToContent="WidthAndHeight"
         MinWidth="480"  MinHeight="100" WindowStartupLocation="CenterOwner">
-    <Grid x:Name="Body">
+    <Grid x:Name="Body" Margin="4" Background="WhiteSmoke">
     </Grid>
 </Window>

@@ -36,8 +36,8 @@
                     {
                         "@type": "TextBlock",
                         "text": "{Binding Name}",
-                        "textWeight": "bolder",
-                        "textSize": "medium"
+                        "weight": "bolder",
+                        "size": "medium"
                     },
                     {
                         "@type": "TextBlock",

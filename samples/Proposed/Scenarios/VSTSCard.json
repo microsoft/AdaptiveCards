@@ -4,8 +4,8 @@
 		{
 			"@type": "TextBlock",
 			"text": "Title of connector card",
-			"textWeight": "bolder",
-			"textSize": "medium"
+			"weight": "bolder",
+			"size": "medium"
 		},
 		{
 			"@type": "ColumnGroup",

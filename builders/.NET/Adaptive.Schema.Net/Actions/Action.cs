@@ -17,7 +17,6 @@ namespace Adaptive.Schema.Net
         /// <summary>
         /// Title of the action
         /// </summary>
-        [JsonRequired]
         public string Title { get; set; } 
     }
 }

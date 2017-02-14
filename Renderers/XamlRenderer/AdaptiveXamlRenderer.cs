@@ -9,6 +9,8 @@ using MarkedNet;
 using Adaptive.Schema.Net;
 using AC = Adaptive.Schema.Net;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace Adaptive.Renderers
 {
@@ -81,7 +83,6 @@ namespace Adaptive.Renderers
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
             uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock");
 
-
             if (textBlock.HorizontalAlignment.HasValue)
             {
                 System.Windows.HorizontalAlignment alignment;
@@ -89,7 +90,7 @@ namespace Adaptive.Renderers
                     uiTextBlock.HorizontalAlignment = alignment;
             }
 
-            switch (textBlock.TextSize)
+            switch (textBlock.Size)
             {
                 case TextSize.Small:
                     uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Small"); ;
@@ -109,7 +110,7 @@ namespace Adaptive.Renderers
                     break;
             }
 
-            switch (textBlock.TextColor)
+            switch (textBlock.Color)
             {
                 case TextColor.Accent:
                     uiTextBlock.Foreground = this.Resources["Adaptive.AccentBrush"] as Brush;
@@ -135,7 +136,7 @@ namespace Adaptive.Renderers
                     break;
             }
 
-            switch (textBlock.TextWeight)
+            switch (textBlock.Weight)
             {
                 case TextWeight.Bolder:
                     uiTextBlock.FontWeight = (FontWeight)this.Resources["Adaptive.BolderFontWeight"];
@@ -183,6 +184,11 @@ namespace Adaptive.Renderers
             if (image.Style == ImageStyle.Person)
                 style += $".{image.Style.ToString()}";
             uiImage.Style = this.GetStyle(style);
+            if (image.Action != null)
+            {
+                return _renderAction(image.Action, new List<FrameworkElement>(), uiImage);
+            }
+
             return uiImage;
         }
 

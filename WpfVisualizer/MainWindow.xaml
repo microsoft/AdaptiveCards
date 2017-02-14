@@ -12,7 +12,7 @@
         <Style x:Key="Hidden" TargetType="FrameworkElement">
             <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
-        
+
         <!-- TextBlock definitions -->
         <Style x:Key="Adaptive.TextBlock" TargetType="TextBlock" >
         </Style>
@@ -107,18 +107,18 @@
         </Style>
 
         <Style x:Key="Adaptive.Image.Small" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
         </Style>
 
         <Style x:Key="Adaptive.Image.Medium" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
-            <Setter Property="Width" Value="80"/>
-            <Setter Property="Height" Value="80"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="120"/>
         </Style>
 
         <Style x:Key="Adaptive.Image.Large" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Height" Value="100"/>
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="180"/>
         </Style>
 
         <Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
@@ -214,7 +214,7 @@
 
         <Style x:Key="Adaptive.Input.ChoiceInput.CheckBox" TargetType="CheckBox"  >
         </Style>
-        
+
         <!-- Action Styles -->
         <Style x:Key="Adaptive.Actions" TargetType="FrameworkElement"  >
             <Setter Property="Margin" Value="4"/>
@@ -245,6 +245,37 @@
         <Style x:Key="Adaptive.Action.HttpAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
+        <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+                <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="0.7" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="1.0" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+
+            </Style.Triggers>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid Margin="8">

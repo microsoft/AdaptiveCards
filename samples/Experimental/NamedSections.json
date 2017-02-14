@@ -30,7 +30,7 @@
                             {
                                 "@type": "TextBlock",
                                 "horizontalAlignment": "right",
-                                "textSize": "large",
+                                "size": "large",
                                 "text": "DELAYED"
                             }
                         ]

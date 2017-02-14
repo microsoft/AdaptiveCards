@@ -47,7 +47,6 @@ CardElement is the base type for all elements that can be used to define an Adap
 
 | Property | Type |  Required |Description |
 |---|---|---|---|
-| **size** | [Size](#size) | false | Specifies the horizontal size of the element. |
 | **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
@@ -60,9 +59,9 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 |---|---|---|---|
 | **type**| string | true | **"TextBlock"** |
 | **text** | string | true |The actual text to display |
-| **textSize** | [TextSize](#textsize) | false |The size of the text |
-| **textWeight** | [TextWeight](#textweight) | false |The weight of the text |
-| **textColor** | [TextColor](#textcolor) | false |The color of the text |
+| **size** | [TextSize](#textsize) | false |The size of the text |
+| **weight** | [TextWeight](#textweight) | false |The weight of the text |
+| **color** | [TextColor](#textcolor) | false |The color of the text |
 | **isSubtle** | boolean |false | Indicates whether the color of the text should be slightly toned down to appear less prominent |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) |false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
@@ -127,6 +126,7 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 | **url** | string | true | The URL to the image. |
 | **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
 | **action** | [Action](#action) | false | Action to perform for a tap on this image, (this allows image to act as an action) |
+| **imageSize** | [ImageSize](#imagesize) | false | Specifies the suggested size of the image. |
 
 ## Input
 *Extends [CardElement](#cardelement)*
@@ -204,6 +204,7 @@ The column group element adds the ability to have a set of Column objects.
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"ColumnGroup"** |
+| **columnSize** | string | "auto", "stretch", or a number representing relative width of the column in the column group|
 | **columns** | [Column](#column)[] | true | array of columns (each a container of elements)  |
 
 ## Column
@@ -226,7 +227,7 @@ The ImageGallery allows for the inclusion of a collection images like a photogal
 |---|---|---|---|
 | **type**| string | true | **"ImageGallery"** |
 | **images**| [Image](#image)[] | true | Array of Image objects |
-| **size** | [Size](#size) | false | Specifies the horizontal size of each image in the gallery. |
+| **imageSize** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the gallery. |
 
 ## FactGroup 
 *Extends [CardElement](#cardelement)*
@@ -334,7 +335,7 @@ When CancelAction is invoked it resets any input that is in scope, and closes a 
 # Enumerations
 The following enumerations are used by various element types.
 
-## Size
+## ImageSize
 Controls the horizontal size (width) of element.  
 
 | Value | Meaning |

@@ -30,13 +30,13 @@
                                 {
                                     "@type": "TextBlock",
                                     "text": "62.30",
-                                    "textSize": "extraLarge"
+                                    "size": "extraLarge"
                                 },
                                 {
                                     "@type": "TextBlock",
                                     "text": "▼ 0.20 (0.32%)",
-                                    "textSize": "small",
-                                    "textColor": "attention"
+                                    "size": "small",
+                                    "color": "attention"
                                 }
                             ]
                         },

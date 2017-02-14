@@ -4,38 +4,38 @@
         {
             "@type": "TextBlock",
             "text": "Light",
-            "textColor": "light",
-            "textWeight": "bolder"
+            "color": "light",
+            "weight": "bolder"
         },
         {
             "@type": "TextBlock",
             "text": "Dark",
-            "textColor": "dark",
-            "textWeight": "bolder"
+            "color": "dark",
+            "weight": "bolder"
         },
         {
             "@type": "TextBlock",
             "text": "Accent",
-            "textColor": "accent",
-            "textWeight": "bolder"
+            "color": "accent",
+            "weight": "bolder"
         },
         {
             "@type": "TextBlock",
             "text": "Good",
-            "textColor": "good",
-            "textWeight": "bolder"
+            "color": "good",
+            "weight": "bolder"
         },
         {
             "@type": "TextBlock",
             "text": "Warning",
-            "textColor": "warning",
-            "textWeight": "bolder"
+            "color": "warning",
+            "weight": "bolder"
         },
         {
             "@type": "TextBlock",
             "text": "Attention",
-            "textColor": "attention",
-            "textWeight": "bolder"
+            "color": "attention",
+            "weight": "bolder"
         }
     ]
 }

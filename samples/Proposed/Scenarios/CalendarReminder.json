@@ -5,8 +5,8 @@
 		{
 			"@type": "TextBlock",
 			"text": "Adaptive Card design session",
-			"textSize": "Large",
-			"textWeight":"bolder"
+			"size": "Large",
+			"weight":"bolder"
 		},
 		{
 			"@type": "TextBlock",

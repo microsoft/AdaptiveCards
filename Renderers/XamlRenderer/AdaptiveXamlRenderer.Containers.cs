@@ -174,6 +174,12 @@ namespace Adaptive.Renderers
 
             if (container.Separation == SeparationStyle.After || container.Separation == Adaptive.Schema.Net.SeparationStyle.Both)
                 _addSeperator(uiContainer);
+
+            if (container.Action != null)
+            {
+                return _renderAction(container.Action, inputControls, uiContainer);
+            }
+
             return uiContainer;
         }
 
@@ -203,35 +209,18 @@ namespace Adaptive.Renderers
                 UIElement uiElement = Render(column, inputControls);
 
                 // do some sizing magic using the magic GridUnitType.Star
-                switch (column.Size)
+                var size = column.Size?.ToLower();
+                if (size == ColumnSize.Stretch.ToLower())
+                    uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                else if (size == ColumnSize.Auto.ToLower())
+                    uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                else
                 {
-                    case AC.Size.Stretch:
-                        uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                        break;
-
-                    case AC.Size.Small:
-                        uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(.2, GridUnitType.Star) });
-                        break;
-
-                    case AC.Size.Medium:
-                        uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(.5, GridUnitType.Star) });
-                        break;
-
-                    case AC.Size.Large:
-                        uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(.7, GridUnitType.Star) });
-                        break;
-
-                    case AC.Size.Auto:
+                    double val;
+                    if (double.TryParse(size, out val))
+                        uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
+                    else
                         uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                        break;
-
-                    default:
-                        double val;
-                        if (double.TryParse(column.Size.ToString(), out val))
-                            uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
-                        else
-                            uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                        break;
                 }
 
                 Grid.SetColumn(uiElement, iCol++);
@@ -309,6 +298,8 @@ namespace Adaptive.Renderers
 
             foreach (var image in imageGallery.Images)
             {
+                if (imageGallery.Size != null)
+                    image.Size = imageGallery.Size;
                 var uiImage = Render(image);
                 uiGallery.Items.Add(uiImage);
             }

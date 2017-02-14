@@ -13,8 +13,8 @@
         {
             "@type": "TextBlock",
             "text": "Line 1",
-            "textWeight": "bolder",
-            "textSize": "medium"
+            "weight": "bolder",
+            "size": "medium"
         },
         {
             "@type": "FactGroup",

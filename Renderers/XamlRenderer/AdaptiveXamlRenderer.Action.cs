@@ -15,7 +15,7 @@ namespace Adaptive.Renderers
     {
         private static Regex _regexBinding = new Regex(@"(?<property>\{\{\w+?\}\})+?", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-        private UIElement _renderAction(ActionBase action, List<FrameworkElement> inputControls, object content = null)
+        private UIElement _renderAction(ActionBase action, List<FrameworkElement> inputControls, FrameworkElement content = null)
         {
             if (action is OpenUrlAction)
                 return Render((OpenUrlAction)action, inputControls, content);
@@ -41,7 +41,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="httpAction"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(HttpAction httpAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(HttpAction httpAction, List<FrameworkElement> inputControls, FrameworkElement content)
         {
             Button uiButton = _createActionButton(httpAction, content);
             uiButton.Click += (sender, e) =>
@@ -86,7 +86,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="showCardAction"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(ShowCardAction showCardAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(ShowCardAction showCardAction, List<FrameworkElement> inputControls, FrameworkElement content)
         {
             Button uiButton = _createActionButton(showCardAction, content);
             uiButton.Click += (sender, e) =>
@@ -101,7 +101,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="openUrlAction"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(OpenUrlAction openUrlAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(OpenUrlAction openUrlAction, List<FrameworkElement> inputControls, FrameworkElement content)
         {
             Button uiButton = _createActionButton(openUrlAction, content);
             uiButton.Click += (sender, e) =>
@@ -116,7 +116,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="submitAction"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(SubmitAction submitAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(SubmitAction submitAction, List<FrameworkElement> inputControls, FrameworkElement content)
         {
             Button uiButton = _createActionButton(submitAction, content);
             uiButton.Click += (sender, e) =>
@@ -134,7 +134,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="cancelAction"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(CancelAction cancelAction, List<FrameworkElement> inputControls, object content)
+        protected virtual UIElement Render(CancelAction cancelAction, List<FrameworkElement> inputControls, FrameworkElement content)
         {
             Button uiButton = _createActionButton(cancelAction, content);
             uiButton.Click += (sender, e) =>
@@ -145,7 +145,7 @@ namespace Adaptive.Renderers
             return uiButton;
         }
 
-        private Button _createActionButton(ActionBase action, object content)
+        private Button _createActionButton(ActionBase action, FrameworkElement content)
         {
             var uiButton = new Button();
             if (content == null)
@@ -153,10 +153,13 @@ namespace Adaptive.Renderers
                 WPF.TextBlock uiTitle = new WPF.TextBlock() { Text = action.Title };
                 uiTitle.Style = this.GetStyle("Adaptive.Action.Title");
                 uiButton.Content = uiTitle;
+                uiButton.Style = this.GetStyle($"Adaptive.Action.{action.GetType().Name}");
             }
             else
+            {
                 uiButton.Content = content;
-            uiButton.Style = this.GetStyle($"Adaptive.Action.{action.GetType().Name}");
+                uiButton.Style = this.GetStyle($"Adaptive.Action.Tap");
+            }
             return uiButton;
         }
 

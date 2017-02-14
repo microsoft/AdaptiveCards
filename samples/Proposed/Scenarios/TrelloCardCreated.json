@@ -8,8 +8,8 @@
 				{
 					"@type": "TextBlock",
 					"text": "Card created: Publish Adaptive Card schema",
-					"textWeight": "bolder",
-					"textSize": "medium"
+					"weight": "bolder",
+					"size": "medium"
 				},
 				{
 					"@type": "ColumnGroup",

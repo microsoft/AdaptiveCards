@@ -21,7 +21,7 @@ namespace WpfVisualizer
 
         protected override Style GetStyle(string styleName)
         {
-            if (styleName.Contains(".Input") || styleName.Contains(".Action"))
+            if (!styleName.Contains(".Tap") && styleName.Contains(".Input") || styleName.Contains(".Action"))
             {
                 return this.Resources["Hidden"] as Style;
             }
