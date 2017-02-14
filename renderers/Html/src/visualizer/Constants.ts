@@ -1,50 +1,49 @@
 // TOOD: Can I pull this from the samples folder rather than copying it here?
 
 export const defaultPayload: string = `
-
 {
 	"@type": "AdaptiveCard",
 	"body": [
 		{
-		    "@type": "Container",
+			"@type": "Container",
+			"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
 			"items": [
-			    {
-			        "@type": "TextBlock",
-			        "text": "Card created: Publish Adaptive Card schema",
-			        "textWeight": "bolder",
-			        "textSize": "medium"
-			    },
+				{
+					"@type": "TextBlock",
+					"text": "Card created: Publish Adaptive Card schema",
+					"weight": "bolder",
+					"size": "medium"
+				},
 				{
 					"@type": "ColumnGroup",
-					"speak": "<s>Created by Miguel Garcia</s>",
 					"columns": [
 						{
-							"@type":"Column",
+							"@type": "Column",
 							"size": "auto",
 							"items": [
-                				{
-                					"@type": "Image",
-                					"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-                					"size": "small",
-                					"style": "person"
-                				}
+								{
+									"@type": "Image",
+									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+									"size": "small",
+									"style": "person"
+								}
 							]
 						},
 						{
-							"@type":"Column",
+							"@type": "Column",
 							"size": "stretch",
 							"items": [
-							    {
-							        "@type": "TextBlock",
-							        "text": "**Miguel Garcia**",
-							        "wrap": true
-							    },
-							    {
-							        "@type": "TextBlock",
-							        "text": "9/13/2016, 3:34pm",
-							        "isSubtle": true,
-							        "wrap": true
-							    }
+								{
+									"@type": "TextBlock",
+									"text": "**Miguel Garcia**",
+									"wrap": true
+								},
+								{
+									"@type": "TextBlock",
+									"text": "Created {{DATE(2017-02-14 06:08:39Z,Long)}} {{TIME(2017-02-14 06:08:39Z,Short)}}",
+									"isSubtle": true,
+									"wrap": true
+								}
 							]
 						}
 					]
@@ -52,72 +51,92 @@ export const defaultPayload: string = `
 			]
 		},
 		{
-		    "@type": "Container",
-		    "items": [
-			    {
-			        "@type": "TextBlock",
-					"speak": "",
-			        "text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-			        "wrap": true
-			    },
+			"@type": "Container",
+			"items": [
 				{
-				    "@type": "FactGroup",
-				    "facts": [
-				        { "name": "Board:", "value": "Adaptive Card", "speak":"" },
-				        { "name": "List:", "value": "Backlog", "speak":"" },
-				        { "name": "Assigned to:", "value": "David Claux" },
-				        { "name": "Due date:", "value": "Not set", "speak":"" }
-				    ]
+					"@type": "TextBlock",
+					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+					"speak": "",
+					"wrap": true
 				},
 				{
-				    "@type": "ActionGroup",
-					"speak": "You can set the due date, add a comment or view more information.",
-				    "actions": [
-                		{
-                			"@type": "ActionCard",
-                			"name": "Set due date",
-                			"inputs": [
-                				{
-                					"@type": "DateInput",
-                					"id": "dueDate",
-                					"title": "Select a date"
-                				}
-                			],
-                			"actions": [
-                				{
-                					"@type": "HttpPOST",
-                					"name": "OK",
-                					"target": "http://..."
-                				}
-                			]
-                		},
-                		{
-                			"@type": "ActionCard",
-                			"name": "Comment",
-                			"inputs": [
-                				{
-                					"@type": "TextInput",
-                					"id": "comment",
-                					"isMultiline": true,
-                					"title": "Enter your comment"
-                				}
-                			],
-                			"actions": [
-                				{
-                					"@type": "HttpPOST",
-                					"name": "OK",
-                					"target": "http://..."
-                				}
-                			]
-                		},
-                		{
-                			"@type": "OpenUri",
-                			"name": "View",
-                			"targets": [
-                				{ "os": "default", "uri": "http://..." }
-                			]
-                		}
-				    ]
+					"@type": "FactGroup",
+					"speak": "It has been assigned to: David Claux",
+					"facts": [
+						{
+							"name": "Board:",
+							"value": "Adaptive Card"
+						},
+						{
+							"name": "List:",
+							"value": "Backlog"
+						},
+						{
+							"name": "Assigned to:",
+							"value": "David Claux"
+						},
+						{
+							"name": "Due date:",
+							"value": "Not set"
+						}
+					]
+				}
+			],
+			"actions": [
+				{
+					"@type": "ShowCardAction",
+					"title": "Set due date",
+					"card": {
+						"@type": "AdaptiveCard",
+						"body": [
+							{
+								"@type": "TextInput",
+								"style": "date",
+								"id": "dueDate",
+								"title": "Select due date"
+							}
+						],
+						"actions": [
+							{
+								"@type": "HttpAction",
+								"method": "POST",
+								"title": "OK",
+								"url": "http://xyz.com?dueDate={{dueDate}}"
+							}
+						]
+					}
+				},
+				{
+					"@type": "ShowCardAction",
+					"title": "Comment",
+					"card": {
+						"@type": "AdaptiveCard",
+						"body": [
+							{
+								"@type": "TextInput",
+								"id": "comment",
+								"isMultiline": true,
+								"title": "Enter your comment"
+							}
+						],
+						"actions": [
+							{
+								"@type": "HttpAction",
+								"method": "POST",
+								"title": "OK",
+								"url": "http://xyz.com",
+								"headers": {
+									"content-type": "application/json"
+								},
+								"body": "{ 'comment' : '{{comment}}' }"
+							}
+						]
+					}
+				},
+				{
+					"@type": "OpenUrlAction",
+					"title": "View",
+					"url": "http://foo.com"
 				}
 			]
 		}

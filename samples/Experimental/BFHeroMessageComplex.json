@@ -40,8 +40,8 @@
                                     {
                                         "@type": "TextBlock",
                                         "text": "Serious Pie",
-                                        "textWeight": "bolder",
-                                        "textSize": "medium"
+                                        "weight": "bolder",
+                                        "size": "medium"
                                     },
                                     {
                                         "@type": "TextBlock",

@@ -1,31 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using WPF = System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xml;
-using MarkedNet;
-using Xceed.Wpf.Toolkit;
 using Adaptive.Schema.Net;
 using AC = Adaptive.Schema.Net;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
-namespace WpfVisualizer
+namespace AdaptiveXamlRenderer
 {
-    public partial class AdaptiveXamlRenderer
+    public partial class AdaptiveRenderer
     {
 
         private UIElement _renderAction(ActionBase action, List<Control> inputControls, object content = null)
@@ -54,7 +37,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="httpAction"></param>
         /// <returns></returns>
-        public UIElement Render(HttpAction httpAction, List<Control> inputControls, object content)
+        public virtual UIElement Render(HttpAction httpAction, List<Control> inputControls, object content)
         {
             var uiActionGroup = new Grid();
             //var actionInstance = new ActionInstance() { Action = httpAction, Inputs = inputControls };
@@ -68,12 +51,12 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="showCardAction"></param>
         /// <returns></returns>
-        public UIElement Render(ShowCardAction showCardAction, List<Control> inputControls, object content)
+        public virtual UIElement Render(ShowCardAction showCardAction, List<Control> inputControls, object content)
         {
             Button uiButton = _createActionButton(showCardAction, content);
             uiButton.Click += (sender, e) =>
             {
-                OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = showCardAction, Data = null } );
+                OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = showCardAction, Data = null });
             };
             return uiButton;
         }
@@ -83,7 +66,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="openUrlAction"></param>
         /// <returns></returns>
-        public UIElement Render(OpenUrlAction openUrlAction, List<Control> inputControls, object content)
+        public virtual UIElement Render(OpenUrlAction openUrlAction, List<Control> inputControls, object content)
         {
             Button uiButton = _createActionButton(openUrlAction, content);
             uiButton.Click += (sender, e) =>
@@ -98,7 +81,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="submitAction"></param>
         /// <returns></returns>
-        public UIElement Render(SubmitAction submitAction, List<Control> inputControls, object content)
+        public virtual UIElement Render(SubmitAction submitAction, List<Control> inputControls, object content)
         {
             Button uiButton = _createActionButton(submitAction, content);
             uiButton.Click += (sender, e) =>
@@ -116,7 +99,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="cancelAction"></param>
         /// <returns></returns>
-        public UIElement Render(CancelAction cancelAction, List<Control> inputControls, object content)
+        public virtual UIElement Render(CancelAction cancelAction, List<Control> inputControls, object content)
         {
             Button uiButton = _createActionButton(cancelAction, content);
             uiButton.Click += (sender, e) =>

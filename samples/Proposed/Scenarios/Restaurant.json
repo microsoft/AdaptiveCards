@@ -12,8 +12,8 @@
                         {
                             "@type": "TextBlock",
                             "text": "Serious Pie",
-                            "textWeight": "bolder",
-                            "textSize": "medium"
+                            "weight": "bolder",
+                            "size": "medium"
                         },
                         {
                             "@type": "TextBlock",
@@ -39,20 +39,20 @@
                     ]
                 }
             ]
+        }
+    ],
+    "actions": [
+        {
+            "@type": "HttpAction",
+            "method":"POST",
+            "title": "More Info",
+            "url":"http://foo.com"
         },
         {
-		    "@type": "ActionGroup",
-            "speak": "<s>You can view more info or view it on four square</s>",
-		    "actions": [
-		        {
-		            "@type": "HttpPOST",
-		            "name": "More Info"
-		        },
-		        {
-		            "@type": "HttpPOST",
-		            "name": "View on Foursquare"
-		        }
-		    ]
-		}
+            "@type": "HttpAction",
+            "method":"POST",
+            "title": "View on Foursquare",
+            "url":"http://foo.com"
+        }
     ]
 }

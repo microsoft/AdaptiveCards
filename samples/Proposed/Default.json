@@ -7,7 +7,7 @@
 					"@type": "TextBlock",
 					"text": "This is a text element",
 					"style": "sectionTitle",
-					"textSize": "large"
+					"size": "large"
 				},
 				{
 					"@type": "Image",
@@ -222,7 +222,7 @@
 				{
 					"@type": "TextBlock",
 					"text": "Second section",
-					"textSize": "large",
+					"size": "large",
 					"style": "sectionTitle"
 				},
 				{

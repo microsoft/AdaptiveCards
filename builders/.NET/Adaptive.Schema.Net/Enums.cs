@@ -9,11 +9,28 @@ using Newtonsoft.Json.Serialization;
 
 namespace Adaptive.Schema.Net
 {
+
+    /// <summary>
+    /// Controls the horizontal size (width) of Column.
+    /// </summary>
+    public class ColumnSize
+    {
+        /// <summary>
+        /// The width of the Column is optimally chosen depending on the space available in the element's container
+        /// </summary>
+        public const string Auto = "Auto";
+
+        /// <summary>
+        /// The width of the Column adjusts to match that of its container
+        /// </summary>
+        public const string Stretch = "Stretch";
+    }
+
     /// <summary>
     /// Controls the horizontal size (width) of element.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter), true)]
-    public enum Size
+    public enum ImageSize
     {
         /// <summary>
         /// The width of the element is optimally chosen depending on the space available in the element's container

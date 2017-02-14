@@ -4,9 +4,9 @@ import { CardElement, IContainer, ICard } from "./Interfaces";
 import * as Factory from "./Renderer";
 
 export class TextBlock extends CardElement {
-    textSize: TextSize = TextSize.Normal;
-    textWeight: TextWeight = TextWeight.Normal;
-    textColor: TextColor = TextColor.Default;
+    size: TextSize = TextSize.Normal;
+    weight: TextWeight = TextWeight.Normal;
+    color: TextColor = TextColor.Default;
     text: string;
     isSubtle: boolean = false;
     wrap: boolean = true;
@@ -15,9 +15,9 @@ export class TextBlock extends CardElement {
         super.parse(json);
 
         this.text = json["text"];
-        this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
-        this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
-        this.textColor = stringToTextColor(json["textColor"], TextColor.Default);
+        this.size = stringToTextSize(json["size"], TextSize.Normal);
+        this.weight = stringToTextWeight(json["weight"], TextWeight.Normal);
+        this.color = stringToTextColor(json["color"], TextColor.Default);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"];
     }
@@ -28,7 +28,7 @@ export class TextBlock extends CardElement {
 
             let cssStyle = "text ";
 
-            switch (this.textSize) {
+            switch (this.size) {
                 case TextSize.Small:
                     cssStyle += "small ";
                     break;
@@ -46,7 +46,7 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            let actualTextColor = this.textColor == TextColor.Default ? this.container.textColor : this.textColor;
+            let actualTextColor = this.color == TextColor.Default ? this.container.textColor : this.color;
 
             switch (actualTextColor) {
                 case TextColor.Dark:
@@ -76,7 +76,7 @@ export class TextBlock extends CardElement {
                 cssStyle += "subtle ";
             }
 
-            switch (this.textWeight) {
+            switch (this.weight) {
                 case TextWeight.Lighter:
                     cssStyle += "lighter ";
                     break;
@@ -160,8 +160,8 @@ export class FactGroup extends CardElement {
     parse(json: any) {
         super.parse(json);
 
-        if (json["items"] != null) {
-            var factArray = json["items"] as Array<any>;
+        if (json["facts"] != null) {
+            var factArray = json["facts"] as Array<any>;
 
             for (var i = 0; i < factArray.length; i++) {
                 let fact = new Fact();
@@ -188,7 +188,7 @@ export class FactGroup extends CardElement {
 
                 let textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].name;
-                textBlock.textWeight = TextWeight.Bolder;
+                textBlock.weight = TextWeight.Bolder;
 
                 let renderedText = textBlock.internalRender();
 
@@ -201,7 +201,7 @@ export class FactGroup extends CardElement {
 
                 textBlock = new TextBlock(this.container);
                 textBlock.text = this._items[i].value;
-                textBlock.textWeight = TextWeight.Lighter;
+                textBlock.weight = TextWeight.Lighter;
 
                 renderedText = textBlock.internalRender();
 
@@ -580,10 +580,6 @@ export class Container extends CardElement implements IContainer {
 
 export class Column extends Container {
 
-    constructor(container: IContainer, forbiddenItemTypes: string[]) {
-        super(container, forbiddenItemTypes, "columns");
-    }
-
     private get useWeight(): boolean {
         return this.size === undefined;
     }
@@ -635,8 +631,8 @@ export class ColumnGroup extends CardElement {
     parse(json: any) {
         super.parse(json);
 
-        if (json["items"] != null) {
-            let itemArray = json["items"] as Array<any>;
+        if (json["columns"] != null) {
+            let itemArray = json["columns"] as Array<any>;
 
             for (let i = 0; i < itemArray.length; i++) {
                 let column = this.addColumn();

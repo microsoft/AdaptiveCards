@@ -27,6 +27,6 @@ namespace Adaptive.Schema.Net
         /// Specifies the horizontal size of each image in the gallery.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Size? ImageSize { get; set; }
+        public ImageSize? Size { get; set; }
     }
 }

@@ -16,6 +16,12 @@ namespace Adaptive.Schema.Net
         { }
 
         /// <summary>
+        /// Size for the Image
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ImageSize? Size { get; set; }
+
+        /// <summary>
         /// The style in which the image is displayed.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

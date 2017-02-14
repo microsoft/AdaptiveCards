@@ -35,8 +35,8 @@
 									"@type": "TextBlock",
 									"text": "DELAYED",
 									"horizontalAlignment": "right",
-									"textSize": "large",
-									"textColor": "attention"
+									"size": "large",
+									"color": "attention"
 								}
 							]
 						}
@@ -138,8 +138,8 @@
 								{
 									"@type": "TextBlock",
 									"text": "10:10 AM",
-									"textColor": "attention",
-									"textWeight": "bolder"
+									"color": "attention",
+									"weight": "bolder"
 								}
 							]
 						},
@@ -156,9 +156,9 @@
 								{
 									"@type": "TextBlock",
 									"text": "12:00 AM",
-									"textColor": "attention",
+									"color": "attention",
 									"horizontalAlignment": "right",
-									"textWeight": "bolder"
+									"weight": "bolder"
 								}
 							]
 						}
@@ -185,8 +185,8 @@
 								{
 									"@type": "TextBlock",
 									"text": "AMS",
-									"textSize": "extraLarge",
-									"textColor": "accent"
+									"size": "extraLarge",
+									"color": "accent"
 								}
 							]
 						},
@@ -201,7 +201,7 @@
 									"@type": "Image",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
 									"size": "small",
-									"textWeight": "lighter"
+									"weight": "lighter"
 								}
 							]
 						},
@@ -219,8 +219,8 @@
 									"@type": "TextBlock",
 									"text": "SFO",
 									"horizontalAlignment": "right",
-									"textSize": "extraLarge",
-									"textColor": "accent"
+									"size": "extraLarge",
+									"color": "accent"
 								}
 							]
 						}
