@@ -17,6 +17,20 @@ Container::Container(
     std::string backgroundColor, std::vector<std::shared_ptr<BaseCardElement>>& items) :
     BaseCardElement(CardElementType::Container, parent, horizontalAlignment, size, speak),
     m_backgroundImageUrl(backgroundImageUrl),
+    m_backgroundColor(backgroundColor),
+    m_items(items)
+{
+}
+
+Container::Container(
+    std::shared_ptr<Container> parent,
+    HorizontalAlignment horizontalAlignment,
+    CardElementSize size,
+    std::string speak,
+    std::string backgroundImageUrl,
+    std::string backgroundColor) :
+    BaseCardElement(CardElementType::Container, parent, horizontalAlignment, size, speak),
+    m_backgroundImageUrl(backgroundImageUrl),
     m_backgroundColor(backgroundColor)
 {
 }
@@ -63,7 +77,7 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
     }
 
     // Map card type to the proper parser
-    std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> cardElementParsers =
+    std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> cardElementParsers =
     {
         //{ CardElementType::ActionGroupType, ActionGroup::ParseJsonObject },
         //{ CardElementType::AdaptiveCardType, AdaptiveCard::ParseJsonObject },
