@@ -8,6 +8,7 @@ var SkypeContainer_1 = require("./containers/SkypeContainer");
 var SpeechContainer_1 = require("./containers/SpeechContainer");
 var TeamsConnectorContainer_1 = require("./containers/TeamsConnectorContainer");
 var ToastContainer_1 = require("./containers/ToastContainer");
+var CortanaCarContainer_1 = require("./containers/CortanaCarContainer");
 var ace = require("brace");
 require("brace/mode/json");
 require("brace/theme/chrome");
@@ -136,6 +137,7 @@ function setupContainerPicker() {
     hostContainerOptions.push(new HostContainerOption("Large Live Tile", new LiveTileContainer_1.LiveTileContainer(310, 310, "./../../css/liveTile.css")));
     hostContainerOptions.push(new HostContainerOption("Skype", new SkypeContainer_1.SkypeContainer("./../../css/skypeCard.css")));
     hostContainerOptions.push(new HostContainerOption("Bing", new BingContainer_1.BingContainer(285, 150, "./../../css/bing.css")));
+    hostContainerOptions.push(new HostContainerOption("Cortana Car", new CortanaCarContainer_1.CortanaCarContainer("./../../css/cortanaCar.css")));
     hostContainerOptions.push(new HostContainerOption("Speech", new SpeechContainer_1.SpeechContainer("./../../css/bing.css")));
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", function () {

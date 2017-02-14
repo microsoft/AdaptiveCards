@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Adaptive.Schema.Net
 {
-    public class Seperator : CardElement
+    /// <summary>
+    /// A column container inside of a columngroup
+    /// </summary>
+    public class Column : Container
     {
-        public Seperator() 
-        {
-        }
+        public Column() { }
     }
 }

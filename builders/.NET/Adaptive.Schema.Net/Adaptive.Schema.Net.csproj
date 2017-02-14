@@ -34,25 +34,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AdaptiveCard.cs" />
-    <Compile Include="CardElement.cs" />
-    <Compile Include="Choice.cs" />
-    <Compile Include="Column.cs" />
-    <Compile Include="ColumnGroup.cs" />
-    <Compile Include="Container.cs" />
-    <Compile Include="DateInput.cs" />
+    <Compile Include="Actions\Action.cs" />
+    <Compile Include="Actions\CancelAction.cs" />
+    <Compile Include="Actions\SubmitAction.cs" />
+    <Compile Include="Actions\ShowCardAction.cs" />
+    <Compile Include="Containers\AdaptiveCard.cs" />
+    <Compile Include="Elements\CardElement.cs" />
+    <Compile Include="Containers\Column.cs" />
+    <Compile Include="Containers\ColumnGroup.cs" />
+    <Compile Include="Containers\Container.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="Fact.cs" />
-    <Compile Include="FactGroup.cs" />
-    <Compile Include="Image.cs" />
-    <Compile Include="ImageGallery.cs" />
-    <Compile Include="Input.cs" />
-    <Compile Include="MultichoiceInput.cs" />
+    <Compile Include="Containers\FactGroup.cs" />
+    <Compile Include="Actions\HttpAction.cs" />
+    <Compile Include="Elements\Image.cs" />
+    <Compile Include="Containers\ImageGallery.cs" />
+    <Compile Include="Elements\Input.cs" />
+    <Compile Include="Actions\OpenUrlAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Seperator.cs" />
-    <Compile Include="TextBlock.cs" />
-    <Compile Include="TextInput.cs" />
-    <Compile Include="ToggleInput.cs" />
+    <Compile Include="Elements\TextBlock.cs" />
+    <Compile Include="Elements\ChoiceInput.cs" />
+    <Compile Include="Elements\TextInput.cs" />
     <Compile Include="TypedElementConverter.cs" />
     <Compile Include="TypedElement.cs" />
   </ItemGroup>
@@ -65,6 +66,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

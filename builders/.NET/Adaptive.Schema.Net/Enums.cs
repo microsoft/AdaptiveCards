@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Adaptive.Schema.Net
 {
     /// <summary>
     /// Controls the horizontal size (width) of element.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum Size
     {
         /// <summary>
@@ -40,6 +44,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls the relative size of TextBlock elements
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum TextSize
     {
         /// <summary>
@@ -71,6 +76,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls the weight of TextBock Elements
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum TextWeight
     {
         /// <summary>
@@ -92,6 +98,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls the color style of TextBlock Elements
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum TextColor
     {
         /// <summary>
@@ -133,6 +140,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls how elements are horizontally positioned within their container.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum HorizontalAlignment
     {
         /// <summary>
@@ -154,6 +162,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Controls the way Image elements are displayed.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum ImageStyle
     {
         /// <summary>
@@ -165,6 +174,101 @@ namespace Adaptive.Schema.Net
         /// The image is cropped to a circle, a common way to represent people photos.
         /// </summary>
         Person
+    }
+
+    /// <summary>
+    /// Controls the separation style for the current container
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
+    public enum SeparationStyle
+    {
+        /// <summary>
+        /// separate the current container from the previous container
+        /// </summary>
+        Before,
+
+        /// <summary>
+        /// separate the current container from the following container
+        /// </summary>
+        After,
+
+        /// <summary>
+        /// separate the current container from the previous and following container
+        /// </summary>
+        Both
+    }
+
+    [JsonConverter(typeof(StringEnumConverter), true)]
+    public enum TextInputStyle
+    {
+        /// <summary>
+        /// Input is a telephone number and the client may use this information to provide optimized keyboard input for the user.
+        /// </summary>
+        Tel,
+
+        /// <summary>
+        /// Input is a url and the client may use this information to provide optimized keyboard input for the user.
+        /// </summary>
+        Url,
+
+        /// <summary>
+        /// Input is a email and the client may use this information to provide optimized keyboard input for the user.
+        /// </summary>
+        Email,
+
+        /// <summary>
+        /// Input is text but should be hidden to protect the typed information in the textbox.
+        /// </summary>
+        Password,
+
+        /// <summary>
+        /// Input is a number. min, max and step properties expressed as numbers may be used by client to help user input number into text box.
+        /// </summary>
+        Number,
+
+        /// <summary>
+        /// Input is a range. min, max and step properties expressed as numbersmay be used by client to help user input a number on a range into text box
+        /// </summary>
+        Range,
+
+        /// <summary>
+        /// Input is date. min, max properties expressed as Date may be used by client to help user to select a date via a text box
+        /// </summary>
+        Date,
+
+        /// <summary>
+        /// Input is date and time. min, max expressed as DateTime properties may be used by client to help user to select a date and a time via a text box
+        /// </summary>
+        Datetime,
+
+        /// <summary>
+        /// Input is time. min, max properties expressed as time may be used by client to help user to select a time via a text box
+        /// </summary>
+        Time,
+
+        /// <summary>
+        /// Input is month. min, max properties expressed as Date may be used by client to help user to select a month via a text box
+        /// </summary>
+        Month,
+
+        /// <summary>
+        /// Input is week. min, max properties expressed as Date may be used by client to help user to select a week via a text box
+        /// </summary>
+        Week
+    }
+
+    [JsonConverter(typeof(StringEnumConverter), true)]
+    public enum ChoiceInputStyle
+    {
+        /// <summary>
+        /// choices are preffered to be compactly displayed. Example: ComboBox 
+        /// </summary>
+        Compact,
+
+        /// <summary>
+        /// choices are preferred to be displayed for easy input. Example: Checkbox or Radio buttons
+        /// </summary>
+        Expanded
     }
 
 }

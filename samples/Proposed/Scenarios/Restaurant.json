@@ -4,7 +4,7 @@
         {
             "speak": "<s>Serious Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
             "@type": "ColumnGroup",
-            "items": [
+            "columns": [
                 {
                     "@type": "Column",
                     "size": "stretch",
@@ -43,7 +43,7 @@
         {
 		    "@type": "ActionGroup",
             "speak": "<s>You can view more info or view it on four square</s>",
-		    "items": [
+		    "actions": [
 		        {
 		            "@type": "HttpPOST",
 		            "name": "More Info"

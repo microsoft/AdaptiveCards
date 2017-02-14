@@ -579,6 +579,11 @@ export class Container extends CardElement implements IContainer {
 }
 
 export class Column extends Container {
+
+    constructor(container: IContainer, forbiddenItemTypes: string[]) {
+        super(container, forbiddenItemTypes, "columns");
+    }
+
     private get useWeight(): boolean {
         return this.size === undefined;
     }

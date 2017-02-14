@@ -6,7 +6,7 @@ import { AdaptiveCard } from "./AdaptiveCard";
 
 export class Renderer {
 
-    parseCard(json: string): ICard {
+    parseCard(json: string): AdaptiveCard {
         var card = new AdaptiveCard();
         card.parse(json);
         return card;
