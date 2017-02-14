@@ -1,11 +1,12 @@
 {
-    "activation": {
+    "action": {
         "@type": "foreground" | "background" | "OpenUri" | "system",
         "arguments": string,
         "windowsProtocolActivationTargetApplicationPfn": string
     },
-    
+
 	"scenario": "default" | "reminder" | "alarm" | "incomingCall",
+    "displayTimestamp": datetime,
 
 	"header": {
 		"id": string,

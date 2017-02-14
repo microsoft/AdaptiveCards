@@ -3,70 +3,31 @@
 // TODO: Can we go semantic with title, description, etc
 
 {
-    // TODO: Need Adaptive JSON parser to support parsing this, since it parses others in the body content
     "action": {
         "@type": "foreground",
         "arguments": "action=viewAlarm&alarmId=3",
         "windowsProtocolActivationTargetApplicationPfn": "Microsoft.Alarms"
     },
 	"scenario": "alarm",
-    "displayTimestamp": "2016-12-13T20:45:00Z",
-	"header": {
-		"id": "alarms",
-		"title": "Alarms",
-		"action": {
-            "@type": "foreground",
-            "arguments": "action=viewAlarm&alarmId=3",
-            "windowsProtocolActivationTargetApplicationPfn": "Microsoft.Alarms"
-        }
-	},
     "visual": {
-        "lang": "en-US",
-        "baseUri": "http://images.msn.com/",
-        "addImageQuery": true,
-        
         "bindings": {
             "generic": {
-                "lang": "en-US",
-                "baseUri": "http://images.msn.com/",
-                "addImageQuery": true,
-                "launch": "action=viewEventSmall&eventId=548",
 
                 "title": {
-                    "text": "Hello world",
-                    "lang": "en-US",
-                    "hintWrap": true,
-                    "hintMaxLines": 2
-                },
-                "descriptionLine1": {
-                    "text": "This is the first JSON toast",
-                    "lang": "en-US",
-                    "hintWrap": true,
-                    "hintMaxLines": 2
-                },
-                "descriptionLine2": {
-                    "text": "A brand new species of toast",
-                    "lang": "en-US",
-                    "hintWrap": true,
-                    "hintMaxLines": 2
+                    "text": "Hello world"
                 },
 
                 "appLogoOverride": {
                     "src": "logo.png",
-                    "alt": "MSN logo",
-                    "addImageQuery": true,
                     "hintCrop": "circle"
                 },
 
                 "heroImage": {
-                    "src": "logo.png",
-                    "alt": "MSN logo",
-                    "addImageQuery": true
+                    "src": "logo.png"
                 },
 
                 "attribution": {
-                    "text": "MSN News",
-                    "lang": "en-US"
+                    "text": "MSN News"
                 },
 
                 "content": [
