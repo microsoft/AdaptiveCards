@@ -38,7 +38,11 @@ public class Container extends BaseCardElement {
   }
 
   public Container() {
-    this(AdaptiveCardObjectModelJNI.new_Container(), true);
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_0(), true);
+  }
+
+  public Container(Container container, HorizontalAlignment horizontalAlignment, CardElementSize size, String speak, String backgroundImageUrl, String backgroundColor, BaseCardElementVector items) {
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(Container.getCPtr(container), container, horizontalAlignment.swigValue(), size.swigValue(), speak, backgroundImageUrl, backgroundColor, BaseCardElementVector.getCPtr(items), items), true);
   }
 
   public String Serialize() {
@@ -60,6 +64,27 @@ public class Container extends BaseCardElement {
 
   public static Container Deserialize(SWIGTYPE_p_Json__Value root) {
     long cPtr = AdaptiveCardObjectModelJNI.Container_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
+    return (cPtr == 0) ? null : new Container(cPtr, true);
+  }
+
+  public String GetBackgroundImageUrl() {
+    return AdaptiveCardObjectModelJNI.Container_GetBackgroundImageUrl(swigCPtr, this);
+  }
+
+  public void SetBackgroundImageUrl(String value) {
+    AdaptiveCardObjectModelJNI.Container_SetBackgroundImageUrl(swigCPtr, this, value);
+  }
+
+  public String GetBackgroundColor() {
+    return AdaptiveCardObjectModelJNI.Container_GetBackgroundColor(swigCPtr, this);
+  }
+
+  public void SetBackgroundColor(String value) {
+    AdaptiveCardObjectModelJNI.Container_SetBackgroundColor(swigCPtr, this, value);
+  }
+
+  public static Container dynamic_cast(BaseCardElement baseCardElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.Container_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new Container(cPtr, true);
   }
 

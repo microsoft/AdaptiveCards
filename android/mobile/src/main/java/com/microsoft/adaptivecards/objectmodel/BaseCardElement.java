@@ -35,8 +35,8 @@ public class BaseCardElement {
     }
   }
 
-  public Container GetContainer() {
-    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_GetContainer(swigCPtr, this);
+  public Container GetParent() {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_GetParent(swigCPtr, this);
     return (cPtr == 0) ? null : new Container(cPtr, true);
   }
 

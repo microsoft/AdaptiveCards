@@ -1,6 +1,12 @@
 package com.microsoft.adaptivecards.adaptivecardssample;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +15,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.microsoft.adaptivecards.objectmodel.*;
+import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
 
@@ -24,18 +40,116 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        populateSpinnerJSONFileList();
+    }
+
+    protected void populateSpinnerJSONFileList()
+    {
+        File location = getExternalFilesDir(null);
+        List<String> list = new ArrayList<String>();
+        m_jsonFileList.clear();
+        for (File file : location.listFiles())
+        {
+            if (file.getName().toLowerCase().endsWith(".json"))
+            {
+                m_jsonFileList.add(file);
+                list.add(file.getName());
+            }
+        }
+
+        ArrayAdapter<String> adapter  = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Spinner spinnerJSONFileList = (Spinner) findViewById(R.id.spinnerJsonFileList);
+        spinnerJSONFileList.setAdapter(adapter);
+        spinnerJSONFileList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                ((TextView) view).setTextColor(Color.BLACK);
+
+                // Showing selected spinner item
+                Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+
+                renderAdaptiveCard(m_jsonFileList.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
             }
         });
+    }
+
+    private void renderAdaptiveCard(File jsonFile)
+    {
+        String output = "Start";
+        try
+        {
+            /*FileInputStream fis;
+            fis = new FileInputStream(jsonFile.getAbsolutePath());
+            StringBuffer fileContent = new StringBuffer("");
+
+            byte[] buffer = new byte[1024];
+            int n;
+            while ((n = fis.read(buffer)) != -1)
+            {
+                fileContent.append(new String(buffer, 0, n));
+            }
+            String data = fileContent.toString();*/
+
+            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromFile(jsonFile.getAbsolutePath());
+            LinearLayout layout = (LinearLayout) findViewById(R.id.layoutAdaptiveCard);
+            layout.removeAllViews();
+            AdaptiveCardRenderer.getInstance().render(getApplicationContext(), layout, adaptiveCard);
+            /*output += ";parsed";
+            if (adaptiveCard != null)
+            {
+                output += ";adaptiveCard";
+                Container container = adaptiveCard.GetRoot();
+                if (container != null)
+                {
+                    output += ";container";
+                    BaseCardElementVector baseCardElementList = container.GetItems();
+                    if (baseCardElementList != null)
+                    {
+                        output += ";baseCardElementList";
+                        long size = baseCardElementList.size();
+                        output += ";container num elements=" + size;
+                        for (int i = 0; i < size; i++)
+                        {
+                            BaseCardElement cardElement = baseCardElementList.get(i);
+                            String type = cardElement.GetElementType().toString();
+                            String text = TextBlock.dynamic_cast(cardElement).GetText();
+                            output += ";card Element Type=" + type;
+                            output += ";card Element Text=" + text;
+                        }
+                    }
+                    else
+                    {
+                        output += ";baseCardElementList null";
+                    }
+                }
+                else
+                {
+                    output += ";container null";
+                }
+            }
+            else
+            {
+                output += ";adaptiveCard null";
+            }*/
+        }
+        catch (Exception ex)
+        {
+            output += ";" + ex.toString();
+        }
 
         // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
+        //TextView tv = (TextView) findViewById(R.id.sample_text);
+        //tv.setText(output);
+        //tv.setText(stringFromJNI());
     }
 
     @Override
@@ -65,4 +179,6 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
+    private List<File> m_jsonFileList = new ArrayList<File>();
 }

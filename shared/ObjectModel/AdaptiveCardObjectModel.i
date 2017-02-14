@@ -17,6 +17,16 @@ namespace std {
 %include <std_shared_ptr.i>
 %include <std_vector.i>
 
+%{
+#include "pch.h"
+#include <memory>
+#include "Enums.h"
+#include "BaseCardElement.h"
+#include "Container.h"
+#include "TextBlock.h"
+#include "AdaptiveCard.h"
+%}
+
 %shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::Container)
 %shared_ptr(AdaptiveCards::TextBlock)
@@ -25,14 +35,35 @@ namespace std {
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
-%{
-#include "pch.h"
-#include "Enums.h"
-#include "BaseCardElement.h"
-#include "Container.h"
-#include "TextBlock.h"
-#include "AdaptiveCard.h"
-%}
+%exception AdaptiveCards::Container::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::Container {
+    static AdaptiveCards::Container *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::Container *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::TextBlock::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::TextBlock {
+    static AdaptiveCards::TextBlock *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::TextBlock *>(baseCardElement);
+    }
+};
 
 #include "pch.h"
 %include "Enums.h"

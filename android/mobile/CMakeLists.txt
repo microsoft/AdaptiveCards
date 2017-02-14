@@ -9,7 +9,8 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds it for you.
 # Gradle automatically packages shared libraries with your APK.
 
-include_directories(../../shared/ObjectModel)
+include_directories(../../shared/ObjectModel
+                    ../../shared/ObjectModel/json)
 
 add_library( # Sets the name of the library.
              native-lib
@@ -20,13 +21,16 @@ add_library( # Sets the name of the library.
              # Provides a relative path to your source file(s).
              # Associated headers in the same location as their source
              # file are automatically included.
+             ../../shared/ObjectModel/jsoncpp.cpp
+             ../../shared/ObjectModel/AdaptiveCardParseException.cpp
+             ../../shared/ObjectModel/ParseUtil.cpp
              ../../shared/ObjectModel/Enums.cpp
              ../../shared/ObjectModel/BaseCardElement.cpp
              ../../shared/ObjectModel/Container.cpp
              ../../shared/ObjectModel/AdaptiveCard.cpp
              ../../shared/ObjectModel/TextBlock.cpp
-             src/main/cpp/native-lib.cpp
-             src/main/cpp/objectmodel_wrap.cpp)
+             src/main/cpp/objectmodel_wrap.cpp
+             src/main/cpp/native-lib.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by

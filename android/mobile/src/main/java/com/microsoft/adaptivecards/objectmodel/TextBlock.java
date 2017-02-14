@@ -41,8 +41,8 @@ public class TextBlock extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_0(), true);
   }
 
-  public TextBlock(Container container, HorizontalAlignment horizontalAlignment, CardElementSize size, String speak, String text, TextSize textSize, TextWeight textWeight, boolean isSubtle, boolean wrap) {
-    this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_1(Container.getCPtr(container), container, horizontalAlignment.swigValue(), size.swigValue(), speak, text, textSize.swigValue(), textWeight.swigValue(), isSubtle, wrap), true);
+  public TextBlock(Container container, HorizontalAlignment horizontalAlignment, CardElementSize size, String speak, String text, TextSize textSize, TextWeight textWeight, TextColor textColor, boolean isSubtle, boolean wrap) {
+    this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_1(Container.getCPtr(container), container, horizontalAlignment.swigValue(), size.swigValue(), speak, text, textSize.swigValue(), textWeight.swigValue(), textColor.swigValue(), isSubtle, wrap), true);
   }
 
   public static TextBlock Deserialize(SWIGTYPE_p_Json__Value root) {
@@ -78,6 +78,14 @@ public class TextBlock extends BaseCardElement {
     AdaptiveCardObjectModelJNI.TextBlock_SetTextWeight(swigCPtr, this, value.swigValue());
   }
 
+  public TextColor GetTextColor() {
+    return TextColor.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetTextColor(swigCPtr, this));
+  }
+
+  public void SetTextColor(TextColor value) {
+    AdaptiveCardObjectModelJNI.TextBlock_SetTextColor(swigCPtr, this, value.swigValue());
+  }
+
   public boolean GetWrap() {
     return AdaptiveCardObjectModelJNI.TextBlock_GetWrap(swigCPtr, this);
   }
@@ -92,6 +100,11 @@ public class TextBlock extends BaseCardElement {
 
   public void SetIsSubtle(boolean value) {
     AdaptiveCardObjectModelJNI.TextBlock_SetIsSubtle(swigCPtr, this, value);
+  }
+
+  public static TextBlock dynamic_cast(BaseCardElement baseCardElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.TextBlock_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
+    return (cPtr == 0) ? null : new TextBlock(cPtr, true);
   }
 
 }
