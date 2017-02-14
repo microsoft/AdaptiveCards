@@ -1,4 +1,4 @@
-import { Size, TextSize, TextColor, TextWeight, HorizontalAlignment, ImageStyle, stringToHorizontalAlignment, stringToImageStyle, stringToSize, stringToTextColor, stringToTextSize, stringToTextWeight } from "./Enums";
+import { ImageSize, TextSize, TextColor, TextWeight, HorizontalAlignment, ImageStyle, stringToHorizontalAlignment, stringToImageStyle, stringToSize, stringToTextColor, stringToTextSize, stringToTextWeight } from "./Enums";
 import * as Utils from "./Utils";
 import { CardElement, IContainer, ICard } from "./Interfaces";
 import * as Factory from "./Renderer";
@@ -240,6 +240,7 @@ export class FactGroup extends CardElement {
 
 export class Image extends CardElement {
     style: ImageStyle = ImageStyle.Normal;
+    size: ImageSize;
     url: string;
 
     get useDefaultSizing() {
@@ -262,16 +263,16 @@ export class Image extends CardElement {
             let cssStyle = "image";
 
             switch (this.size) {
-                case Size.Auto:
+                case ImageSize.Auto:
                     cssStyle += " autoSize";
                     break;
-                case Size.Stretch:
+                case ImageSize.Stretch:
                     cssStyle += " stretch";
                     break;
-                case Size.Small:
+                case ImageSize.Small:
                     cssStyle += " small";
                     break;
-                case Size.Large:
+                case ImageSize.Large:
                     cssStyle += " large";
                     break;
                 default:
@@ -300,7 +301,7 @@ export class Image extends CardElement {
 
 export class ImageGallery extends CardElement {
     private _items: Array<Image> = [];
-    imageSize: Size = Size.Medium;
+    imageSize: ImageSize = ImageSize.Medium;
 
     get items(): Array<Image> {
         return this._items;
@@ -309,10 +310,10 @@ export class ImageGallery extends CardElement {
     parse(json: any) {
         super.parse(json);
 
-        this.imageSize = stringToSize(json["imageSize"], Size.Medium);
+        this.imageSize = stringToSize(json["imageSize"], ImageSize.Medium);
 
-        if (json["items"] != null) {
-            let imageArray = json["items"] as Array<any>;
+        if (json["images"] != null) {
+            let imageArray = json["images"] as Array<any>;
 
             for (let i = 0; i < imageArray.length; i++) {
                 let image = new Image(this.container);
@@ -398,7 +399,7 @@ export class Container extends CardElement implements IContainer {
             }
         }
 
-        if (this.container != null) {            
+        if (this.container != null) {
             // TODO: support forbidden items
             return this.container.isAllowedItemType(elementType);
         }
@@ -580,11 +581,8 @@ export class Container extends CardElement implements IContainer {
 
 export class Column extends Container {
 
-    private get useWeight(): boolean {
-        return this.size === undefined;
-    }
-
     weight: number = 100;
+    size: string;
 
     protected get cssClassName(): string {
         return "column";
@@ -592,27 +590,18 @@ export class Column extends Container {
 
     parse(json: any) {
         super.parse(json);
-
-        this.size = stringToSize(json["size"], undefined);
-
-        if (this.size === undefined) {
-            this.weight = Number(json["size"]);
-        }
+        this.size = json["size"];
     }
 
     adjustLayout(element: HTMLElement) {
-        if (this.useWeight) {
+        if (isNaN(parseInt(this.size))) {
             element.style.flex = "1 1 " + this.weight + "%";
         }
+        else if (this.size == "stretch") {
+            element.style.flex = "1 1 auto";
+        }
         else {
-            switch (this.size) {
-                case Size.Stretch:
-                    element.style.flex = "1 1 auto";
-                    break;
-                default: // Default to Auto
-                    element.style.flex = "0 0 auto";
-                    break;
-            }
+            element.style.flex = "0 0 auto";
         }
     }
 }

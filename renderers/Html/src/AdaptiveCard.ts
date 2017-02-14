@@ -1,6 +1,6 @@
 ﻿import * as Utils from "./Utils";
 import { ActionBar, Action, ActionButton, ActionButtonStyle } from "./Actions";
-import { Size, TextSize, TextColor, TextWeight, HorizontalAlignment, ImageStyle } from "./Enums";
+import { TextSize, TextColor, TextWeight, HorizontalAlignment, ImageStyle } from "./Enums";
 import { CardElement, IContainer, ICard } from "./Interfaces";
 import { Container } from "./Elements";
 

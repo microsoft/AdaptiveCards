@@ -1,7 +1,6 @@
 import { CardElement, ICard, IContainer } from "./Interfaces";
 import { Renderer } from "./Renderer";
 import { InputBase } from "./Inputs";
-import { Size } from "./Enums";
 import * as Utils from "./Utils";
 
 

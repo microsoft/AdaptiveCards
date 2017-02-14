@@ -1,5 +1,4 @@
 import * as Utils from "./Utils";
-import { Size } from "./Enums";
 import { IContainer, CardElement } from "./Interfaces";
 
 export abstract class InputBase extends CardElement {
@@ -48,8 +47,6 @@ export class TextInput extends InputBase {
 
     constructor(container: IContainer) {
         super(container);
-
-        this.size = Size.Stretch;
     }
 
     parse(json: any) {
@@ -98,7 +95,7 @@ export class MultichoiceInput extends InputBase {
     constructor(container: IContainer) {
         super(container);
 
-        this.size = Size.Medium;
+        //this.size = Size.Medium;
     }
 
     parse(json: any) {
@@ -139,7 +136,7 @@ export class DateInput extends InputBase{
     constructor(container: IContainer) {
         super(container);
 
-        this.size = Size.Medium;
+        //this.size = Size.Medium;
     }
 
     parse(json: any) {
