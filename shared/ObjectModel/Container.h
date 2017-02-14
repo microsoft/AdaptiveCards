@@ -11,13 +11,20 @@ class Container : public std::enable_shared_from_this<Container>, BaseCardElemen
 {
 public:
     Container();
-    Container(std::shared_ptr<Container> container,
+    Container(std::shared_ptr<Container> parent,
+        HorizontalAlignment horizontalAlignment,
+        CardElementSize size,
+        std::string speak,
+        std::string backgroundImageUrl,
+        std::string backgroundColor
+    );
+    Container(std::shared_ptr<Container> parent,
         HorizontalAlignment horizontalAlignment,
         CardElementSize size,
         std::string speak,
         std::string backgroundImageUrl,
         std::string backgroundColor,
-        std::vector<std::shared_ptr<BaseCardElement>> &items = std::vector<std::shared_ptr<BaseCardElement>>()
+        std::vector<std::shared_ptr<BaseCardElement>> &items
     );
 
     virtual std::string Serialize();

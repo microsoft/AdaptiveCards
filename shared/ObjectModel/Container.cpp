@@ -17,6 +17,20 @@ Container::Container(
     std::string backgroundColor, std::vector<std::shared_ptr<BaseCardElement>>& items) :
     BaseCardElement(CardElementType::Container, parent, horizontalAlignment, size, speak),
     m_backgroundImageUrl(backgroundImageUrl),
+    m_backgroundColor(backgroundColor),
+    m_items(items)
+{
+}
+
+Container::Container(
+    std::shared_ptr<Container> parent,
+    HorizontalAlignment horizontalAlignment,
+    CardElementSize size,
+    std::string speak,
+    std::string backgroundImageUrl,
+    std::string backgroundColor) :
+    BaseCardElement(CardElementType::Container, parent, horizontalAlignment, size, speak),
+    m_backgroundImageUrl(backgroundImageUrl),
     m_backgroundColor(backgroundColor)
 {
 }
