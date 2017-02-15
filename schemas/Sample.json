@@ -1,0 +1,37 @@
+{
+  //"$schema": "http://localhost:13406/adaptive-card.json",
+  "$schema": "https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/schemas/adaptive-card.json?token=AQ9yKWPVtqRfcbN2b6xJe3XWyQwEnrKMks5YrdOxwA%3D%3D",
+  "@type": "AdaptiveCard",
+  "body": [
+    {
+      "@type": "Image",
+      "url": "http://"
+    },
+    {
+      "@type": "TextBlock",
+      "text": "tests"
+    },
+    {
+      "@type": "ChoiceInput",
+      "id": "12312",
+      "choices": [
+        {
+          "display": "test",
+          "value": "xys",
+          "isSelected": true
+        }
+      ]
+    },
+    {
+      "@type": "Image",
+      "url": "http://",
+      "size": "large"
+    }
+  ],
+  "actions": [
+    {
+      "@type": "CancelAction",
+      "title": "Submit"
+    }
+  ]
+}
