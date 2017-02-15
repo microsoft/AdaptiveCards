@@ -12,6 +12,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 {
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
+        m_size = CardElementSize::Auto;
+
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
         if (m_items == nullptr)
         {
@@ -39,9 +41,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveCard::Render(IUIElement** element)
+    HRESULT AdaptiveCard::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
     {
-        *element = nullptr;
+        *size = m_size;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
+    {
+        m_size = size;
         return S_OK;
     }
 }}

@@ -12,6 +12,8 @@ using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows::UI::Xaml::Media;
+using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -19,6 +21,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         // Populate the map of element types to their builder methods
         m_adaptiveElementBuilder[ElementType::TextBlock] = std::bind(&XamlBuilder::BuildTextBlock, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::Image] = std::bind(&XamlBuilder::BuildImage, this, std::placeholders::_1, std::placeholders::_2);
     }
 
     _Use_decl_annotations_
@@ -42,6 +45,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         });
 
         THROW_IF_FAILED(rootContainer.CopyTo(xamlTreeRoot));
+
+        // Now that we're returning, make sure any outstanding image loads are no longer tracked
+        // since the tracker is going out of scope.
+        //m_imageLoadTracker.AbandonOutstandingImages();
     }
 
     void XamlBuilder::EnsurePropertyValueStatics()
@@ -94,6 +101,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    ComPtr<IImageSource> XamlBuilder::LoadImageFromUrl(IUriRuntimeClass* imageUri)
+    {
+        ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+        m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+
+        THROW_IF_FAILED(bitmapImage->put_UriSource(imageUri));
+        ComPtr<IImageSource> imageSourceToReturn;
+        THROW_IF_FAILED(bitmapImage.As(&imageSourceToReturn));
+        return imageSourceToReturn;
+    }
+
+    _Use_decl_annotations_
     void XamlBuilder::BuildTextBlock(IAdaptiveCardElement* adaptiveCardElement, IPanel* parentPanel)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -116,4 +135,33 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         XamlHelpers::AppendXamlElementToPanel(xamlTextBlock, parentPanel);
     }
 
+    _Use_decl_annotations_
+    void XamlBuilder::BuildImage(IAdaptiveCardElement* adaptiveCardElement, IPanel* parentPanel)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveImage> adaptiveImage;
+        THROW_IF_FAILED(cardElement.As(&adaptiveImage));
+
+        ComPtr<IImage> xamlImage = XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
+
+        ComPtr<IUriRuntimeClass> imageUri;
+        THROW_IF_FAILED(adaptiveImage->get_Uri(imageUri.GetAddressOf()));
+        ComPtr<IImageSource> imageSource = LoadImageFromUrl(imageUri.Get());
+        THROW_IF_FAILED(xamlImage->put_Source(imageSource.Get()));
+
+        ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size;
+        THROW_IF_FAILED(cardElement->get_Size(&size));
+        THROW_IF_FAILED(xamlImage->put_Stretch(size == ABI::AdaptiveCards::XamlCardRenderer::CardElementSize::Stretch ? Stretch::Stretch_UniformToFill : Stretch::Stretch_None));
+
+        ComPtr<IStyle> style;
+        std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForImage(adaptiveImage.Get());
+        if (SUCCEEDED(TryGetStyleFromResourceDictionaries(styleName, &style)))
+        {
+            ComPtr<IFrameworkElement> imageAsFrameworkElement;
+            THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
+            THROW_IF_FAILED(imageAsFrameworkElement->put_Style(style.Get()));
+        }
+
+        XamlHelpers::AppendXamlElementToPanel(xamlImage, parentPanel);
+    }
 }}

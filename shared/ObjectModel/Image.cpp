@@ -20,7 +20,7 @@ Image::Image(
 {
 }
 
-std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
+std::shared_ptr<Image> Image::Deserialize(const Json::Value& /*json*/)
 {
     return std::make_shared<Image>();
 }

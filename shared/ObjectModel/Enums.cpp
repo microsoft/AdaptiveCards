@@ -48,7 +48,7 @@ static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, Cas
 {
     {"AdaptiveCard", CardElementType::AdaptiveCard},
     {"TextBlock", CardElementType::TextBlock},
-    //{ "Image", CardElementType::Image },
+    { "Image", CardElementType::Image },
     //{ "FactGroup", CardElementType::FactGroup },
     //{ "ColumnGroup", CardElementType::ColumnGroup },
     //{ "ImageGallery", CardElementType::ImageGallery },
@@ -60,7 +60,7 @@ static std::unordered_map<CardElementType, std::string> CardElementTypeEnumToNam
 {
     { CardElementType::AdaptiveCard, "AdaptiveCard" },
     { CardElementType::TextBlock, "TextBlock" },
-    //{ CardElementType::Image, "Image" },
+    { CardElementType::Image, "Image" },
     //{ CardElementType::FactGroup, "FactGroup" },
     //{ CardElementType::ColumnGroup, "ColumnGroup" },
     //{ CardElementType::ImageGallery, "ImageGallery" },

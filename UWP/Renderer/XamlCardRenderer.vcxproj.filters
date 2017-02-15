@@ -8,6 +8,7 @@
     <ClCompile Include="dll\dll.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
     <ClCompile Include="lib\AdaptiveImage.cpp" />
+    <ClCompile Include="lib\ImageLoadTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\pch.h" />
@@ -19,6 +20,7 @@
     <ClInclude Include="lib\XamlBuilder.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
+    <ClInclude Include="lib\ImageLoadTracker.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

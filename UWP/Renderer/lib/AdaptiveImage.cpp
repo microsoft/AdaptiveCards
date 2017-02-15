@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveImage.h"
+
 #include "Util.h"
 #include "XamlCardRendererComponent.h"
 
@@ -12,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    AdaptiveImage::AdaptiveImage() : m_image(std::make_unique<Image>())
+    AdaptiveImage::AdaptiveImage() : m_image(std::make_unique<Image>()),
+                                     m_size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize::Auto)
     {
     }
 
@@ -79,8 +81,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveImage::Render(IUIElement** /*image*/)
+    HRESULT AdaptiveImage::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
     {
+        *size = m_size;
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
+    {
+        m_size = size;
+        return S_OK;
+    }
+
 }}
