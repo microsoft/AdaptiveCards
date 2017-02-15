@@ -46,5 +46,8 @@
     <None Include="TestJsonFiles\textblock_noUnicode.json">
       <Filter>TestJsonFiles</Filter>
     </None>
+    <None Include="TestJsonFiles\imagetest.json">
+      <Filter>TestJsonFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

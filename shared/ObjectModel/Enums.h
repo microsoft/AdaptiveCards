@@ -17,6 +17,7 @@ enum class AdaptiveCardSchemaKey
     Text,
     Speak,
     Type,
+    Uri,
 };
 
 enum class CardElementSize
@@ -106,5 +107,8 @@ CardElementSize SizeFromString(const std::string& type);
 
 const std::string TextWrapToString(TextWrap type);
 TextWrap TextWrapFromString(const std::string& type);
+
+const std::string ImageStyleToString(ImageStyle style);
+ImageStyle ImageStyleFromString(const std::string& style);
 
 }

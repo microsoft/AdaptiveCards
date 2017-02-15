@@ -18,7 +18,8 @@ int main(int argc, const char* argv[])
 {
     std::vector<ParserTest> tests =
     {
-        std::make_tuple("TestJsonFiles\\textblock_noUnicode.json", ""),
+        std::make_tuple("TestJsonFiles\\imagetest.json", ""),
+        //std::make_tuple("TestJsonFiles\\textblock_noUnicode.json", ""),
         //std::make_tuple("TestJsonFiles\\nounicode.json", ""),
         //std::make_tuple("TestJsonFiles\\test1.json", ""),
     };
