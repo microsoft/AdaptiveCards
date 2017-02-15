@@ -502,32 +502,30 @@
       "type": "object"
     },
     "Choice": {
-        "type": "object",
-        "properties": {
-          "display": {
-            "type": "string",
-            "description": "The display text for a choice"
-          },
-          "value": {
-            "type": "string",
-            "description": "the raw value for the choice"
-          },
-          "isSelected": {
-            "type": "boolean",
-            "description": "is the choice selected"
-          },
-          "speak": {
-            "$ref": "#/definitions/Speak",
-            "description": ""
-          }
+      "type": "object",
+      "properties": {
+        "display": {
+          "type": "string",
+          "description": "The display text for a choice"
         },
-        "required": [
-          "name",
-          "value"
-        ],
-        "additionProperties": false
-      }
-
+        "value": {
+          "type": "string",
+          "description": "the raw value for the choice"
+        },
+        "isSelected": {
+          "type": "boolean",
+          "description": "is the choice selected"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak",
+          "description": ""
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "additionProperties": false
     },
     "Action": {
       "type": "object"
@@ -548,4 +546,5 @@
       "type": "object"
     }
   }
+
 }
