@@ -1,36 +1,428 @@
-﻿{
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://microsoft.com/adaptivecard/1.0/schema#",
-    "type": "object",
-    "title": "Microsoft Adaptive Card Schema",
-    "description": "Card schema for the adaptive card.",
-    "additionalProperties": false,
-    "properties": {
-        "@type": {
-            "type": "string",
-            "enum": [
-                "AdaptiveCard"
-            ]
-        },
-        "title": {
-            "type": "string",
-            "description": "Title/caption for the adaptive card."
-        },
-        "imageStyle": {
-            "$ref": "#/definitions/ImageStyle"
-        }
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://microsoft.com/adaptivecard/1.0/schema#",
+  "type": "object",
+  "title": "Microsoft Adaptive Card Schema",
+  "description": "Card schema for the adaptive card.",
+  "additionalProperties": false,
+  "properties": {
+    "@type": {
+      "type": "string",
+      "enum": [
+        "AdaptiveCard"
+      ]
     },
-    "required": [
-        "@type"
-    ],
-    "definitions": {
-        "ImageStyle": {
-            "type": "string",
-            "description": "Controls the way Image elements are displayed",
-            "enum": [
-                "normal",
-                "person"
-            ]
-       }
+    "actions": {
+      "$ref": "#/definitions/Actions"
+    },
+    "body": {
+      "$ref": "#/definitions/CardElements"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title/caption for the adaptive card."
     }
+  },
+  "required": [
+    "@type"
+  ],
+  "definitions": {
+    "Action": {
+      "type": "object"
+    },
+    "Actions": {
+      "additionalItems": false,
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SubmitAction"
+        },
+        {
+          "$ref": "#/definitions/CancelAction"
+        },
+        {
+          "$ref": "#/definitions/ShowCardAction"
+        },
+        {
+          "$ref": "#/definitions/HttpAction"
+        },
+        {
+          "$ref": "#/definitions/OpenUrlAction"
+        }
+      ],
+      "type": "array"
+    },
+    "CancelAction": {
+      "type": "object"
+    },
+    "CardElements": {
+      "additionalItems": true,
+      "anyOf": [
+        {
+          "$ref": "#/definitions/TextBlock"
+        },
+        {
+          "$ref": "#/definitions/Image"
+        },
+        {
+          "$ref": "#/definitions/Container"
+        },
+        {
+          "$ref": "#/definitions/ColumnGroup"
+        },
+        {
+          "$ref": "#/definitions/FactGroup"
+        },
+        {
+          "$ref": "#/definitions/ImageGallery"
+        },
+        {
+          "$ref": "#/definitions/TextInput"
+        },
+        {
+          "$ref": "#/definitions/ChoiceInput"
+        }
+      ],
+      "type": "array"
+    },
+    "ChoiceInput": {
+      "type": "object"
+    },
+    "ChoiceInputStyle": {
+      "type": "string",
+      "description": "Style hint for ChoiceInput.",
+      "enum": [
+        "compact",
+        "expanded"
+      ]
+    },
+    "Column": {
+      "description": "Defines a container that is part of a columnGroup",
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "Must be Column",
+          "enum": [
+            "Column"
+          ]
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "elements": {
+          "$ref": "#/definitions/CardElements"
+        },
+        "action": {
+          "$ref": "#/definitions/Action"
+        },
+        "actions": {
+          "$ref": "#/definitions/Actions"
+        },
+        "backgroundImageUrl": {
+          "type": "string",
+          "description": "The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained."
+        },
+        "backgroundColor": {
+          "type": "string",
+          "description": "The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray."
+        },
+        "size": {
+          "type": "string",
+          "description": "auto, stretch, or a number representing relative width of the column in the column group"
+        }
+      }
+    },
+    "ColumnGroup": {
+      "type": "object",
+      "description": "The column group element adds the ability to have a set of Column objects",
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "Must be ColumnGroup",
+          "enum": [
+            "ColumnGroup"
+          ]
+        },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "columns": {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/Column"
+            }
+          ]
+        }
+      }
+    },
+    "Container": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "Must be Container",
+          "enum": [
+            "Container"
+          ]
+        },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "elements": {
+          "$ref": "#/definitions/CardElements"
+        },
+        "action": {
+          "$ref": "#/definitions/Action"
+        },
+        "actions": {
+          "$ref": "#/definitions/Actions"
+        },
+        "backgroundImageUrl": {
+          "type": "string",
+          "description": "The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained."
+        },
+        "backgroundColor": {
+          "type": "string",
+          "description": "The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray."
+        }
+      }
+    },
+    "Fact": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "additionProperties": false
+    },
+    "FactGroup": {
+      "type": "object",
+      "description": "The FactGroup element makes it simple to display a series of facts (e.g. name/value pairs) in a tabular form.",
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "Must be FactGroup",
+          "enum": [
+            "FactGroup"
+          ]
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "facts": {
+          "type": "array",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Fact"
+            }
+          ]
+        }
+      }
+    },
+    "HorizontalAlignment": {
+      "type": "string",
+      "description": "Controls how elements are horizontally positioned within their container.",
+      "enum": [
+        "left",
+        "center",
+        "right"
+      ]
+    },
+    "HttpAction": {
+      "type": "object"
+    },
+    "Image": {
+      "type": "object",
+      "description": "The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.",
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "Must be Image",
+          "enum": [
+            "Image"
+          ]
+        },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "style": {
+          "$ref": "#/definitions/ImageStyle"
+        },
+        "action": {
+          "$ref": "#/definitions/Action"
+        },
+        "size": {
+          "$ref": "#/definitions/ImageSize"
+        }
+      }
+    },
+    "ImageGallery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "Must be ImageGallery",
+          "enum": [
+            "ImageGallery"
+          ]
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "size": {
+          "$ref": "#/definitions/ImageSize"
+        },
+        "images": {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/Image"
+            }
+          ]
+        }
+      }
+    },
+    "ImageSize": {
+      "type": "string",
+      "description": "Controls the horizontal size (width) of element. ",
+      "enum": [
+        "small",
+        "normal",
+        "medium",
+        "large",
+        "extraLarge"
+      ]
+    },
+    "ImageStyle": {
+      "type": "string",
+      "description": "Controls the way Image elements are displayed",
+      "enum": [
+        "normal",
+        "person"
+      ]
+    },
+    "Input": {
+      "type": "object"
+    },
+    "OpenUrlAction": {
+      "type": "object"
+    },
+    "ShowCardAction": {
+      "type": "object"
+    },
+    "Speak": {
+      "type": "string",
+      "description": "Specifies what should be spoken for this entire element. This is simple text or SSML fragment"
+    },
+    "SubmitAction": {
+      "type": "object"
+    },
+    "TextBlock": {
+      "type": "object",
+      "description": "The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.",
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "Must be TextBlock",
+          "enum": [
+            "TextBlock"
+          ]
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "text": {
+          "type": "string",
+          "description": "The actual text to display"
+        },
+        "size": {
+          "type": "string",
+          "description": "Controls how elements are horizontally positioned within their container.",
+          "enum": [
+            "small",
+            "normal",
+            "medium",
+            "large",
+            "extraLarge"
+          ]
+        },
+        "weight": {
+          "type": "string",
+          "description": "Controls the weight of TextBlock elements",
+          "enum": [
+            "lighter",
+            "normal",
+            "bolder"
+          ]
+        },
+        "color": {
+          "type": "string",
+          "description": "Controls the color of TextBlock elements.",
+          "enum": [
+            "default",
+            "dark",
+            "light",
+            "accent",
+            "good",
+            "warning",
+            "attention"
+          ]
+        },
+        "isSubtle": {
+          "type": "boolean",
+          "description": "Indicates whether the color of the text should be slightly toned down to appear less prominent"
+        },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment"
+        }
+      }
+    },
+    "TextInput": {
+      "type": "object"
+    },
+    "TextInputStyle": {
+      "type": "string",
+      "description": "Style hint for TextInput.",
+      "enum": [
+        "tel",
+        "url",
+        "email",
+        "password",
+        "number",
+        "range",
+        "date",
+        "datetime",
+        "time",
+        "month",
+        "week"
+      ]
+    }
+  }
 }
