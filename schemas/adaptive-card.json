@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://microsoft.com/adaptivecard/1.0/schema#",
   "type": "object",
@@ -736,5 +736,4 @@
       ]
     }
   }
-
 }
