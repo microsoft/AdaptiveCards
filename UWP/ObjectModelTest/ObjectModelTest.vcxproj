@@ -99,6 +99,7 @@
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="TestJsonFiles\imagetest.json" />
     <None Include="TestJsonFiles\nounicode.json" />
     <None Include="TestJsonFiles\test1.json" />
     <None Include="TestJsonFiles\textblock_noUnicode.json" />

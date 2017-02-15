@@ -1,5 +1,6 @@
 #include "Container.h"
 #include "ParseUtil.h"
+#include "Image.h"
 #include "TextBlock.h"
 
 using namespace AdaptiveCards;
@@ -84,7 +85,7 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
         //{ CardElementType::ColumnGroupType, ColumnGroup::ParseJsonObject },
         //{ CardElementType::FactGroupType, FactGroup::ParseJsonObject },
         //{ CardElementType::ImageGalleryType, ImageGallery::ParseJsonObject },
-        //{ CardElementType::ImageType, Image::ParseJsonObject },
+        { CardElementType::Image, Image::Deserialize },
         { CardElementType::TextBlock, TextBlock::Deserialize},
     };
 

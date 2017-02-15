@@ -20,9 +20,18 @@ Image::Image(
 {
 }
 
-std::shared_ptr<Image> Image::Deserialize(const Json::Value& /*json*/)
+std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
 {
-    return std::make_shared<Image>();
+    ParseUtil::ExpectTypeString(json, CardElementType::Image);
+
+    std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
+
+    std::string uri = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Uri);
+    image->SetUri(uri);
+    ImageStyle imageStyle = ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::ImageStyle, ImageStyle::Normal, ImageStyleFromString);
+    image->SetImageStyle(imageStyle);
+
+    return image;
 }
 
 std::string Image::Serialize()
@@ -49,3 +58,4 @@ void AdaptiveCards::Image::SetImageStyle(const ImageStyle value)
 {
     m_imageStyle = value;
 }
+
