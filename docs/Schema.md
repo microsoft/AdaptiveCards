@@ -126,7 +126,7 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 | **url** | string | true | The URL to the image. |
 | **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
 | **action** | [Action](#action) | false | Action to perform for a tap on this image, (this allows image to act as an action) |
-| **imageSize** | [ImageSize](#imagesize) | false | Specifies the suggested size of the image. |
+| **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the image. |
 
 ## Input
 *Extends [CardElement](#cardelement)*
@@ -189,7 +189,7 @@ The Container is a CardElement which contains a list of CardElements that are lo
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"Container"** |
-| **items** |  [CardElement](#cardelement)[] | true | The elemenXts that are to be displayed in this container. |
+| **elements** |  [CardElement](#cardelement)[] | true | The elements that are to be displayed in this container. |
 | **backgroundImageUrl** | string | false | The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained. |
 | **backgroundColor** | string | false | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
 | **action** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
@@ -204,7 +204,6 @@ The column group element adds the ability to have a set of Column objects.
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"ColumnGroup"** |
-| **columnSize** | string | "auto", "stretch", or a number representing relative width of the column in the column group|
 | **columns** | [Column](#column)[] | true | array of columns (each a container of elements)  |
 
 ## Column
@@ -215,7 +214,7 @@ A Column is a container which contains a list of cardElements that are logically
 | Property | Type | Required |  Description |
 |---|---|---|---|
 | **type**| string | true |  **"Column"** |
-| **weight** | string | false | The weight to apply to this column |
+| **size** | string | false | "auto", "stretch", or a number representing relative width of the column in the column group (Default:Auto)|
 
 
 ## ImageGallery 
@@ -227,7 +226,7 @@ The ImageGallery allows for the inclusion of a collection images like a photogal
 |---|---|---|---|
 | **type**| string | true | **"ImageGallery"** |
 | **images**| [Image](#image)[] | true | Array of Image objects |
-| **imageSize** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the gallery. |
+| **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the gallery. |
 
 ## FactGroup 
 *Extends [CardElement](#cardelement)*
@@ -297,8 +296,6 @@ to an arbitrary url.
 | **method** | string | true | Http method (Example: POST) |
 | **headers** | object | false | Object which represents headers Example: { "content-type":"application/json" }  |
 | **body** | string | false | content to post (can have binding information) |
-| **SuccessMessage** | string | false | Message to show when success (OPTIONAL)|
-| **ErrorMessage** | string | false | Message to show when failed (OPTIONAL)|
 
 ## ShowCardAction
 *Extends [Action](#action)*

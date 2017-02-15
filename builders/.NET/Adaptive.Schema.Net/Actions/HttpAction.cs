@@ -24,7 +24,8 @@ namespace Adaptive.Schema.Net
 
         /// <summary>
         /// url to use (can have binding information)
-        /// NOTE: You can bind to properties from input fields by using {{InputID}} in the string
+        /// NOTE: You can bind to properties from input fields by using {{InputID}} in the string where 
+        /// InputID is an id property on an TextInput or ChoiceInput element
         /// </summary>
         [JsonRequired]
         public string Url { get; set; }
@@ -39,15 +40,5 @@ namespace Adaptive.Schema.Net
         /// NOTE: You can bind to properties from input fields by using {{InputID}} in the string
         /// </summary>
         public string Body { get; set; }
-
-        /// <summary>
-        /// Message to display on success
-        /// </summary>
-        public string SuccessMessage { get; set; }
-
-        /// <summary>
-        /// Message to display on error
-        /// </summary>
-        public string ErrorMessage { get; set; }
     }
 }
