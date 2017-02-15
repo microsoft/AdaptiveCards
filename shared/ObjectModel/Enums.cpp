@@ -27,6 +27,7 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "BaseCardElement", AdaptiveCardSchemaKey::BaseCardElement},
     { "text", AdaptiveCardSchemaKey::Text},
     { "speak", AdaptiveCardSchemaKey::Speak },
+    { "uri", AdaptiveCardSchemaKey::Uri },
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchemaKeyEnumToName =
@@ -42,6 +43,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchema
     { AdaptiveCardSchemaKey::BaseCardElement, "BaseCardElement"},
     { AdaptiveCardSchemaKey::Text, "text"},
     { AdaptiveCardSchemaKey::Speak, "speak"},
+    { AdaptiveCardSchemaKey::Uri, "uri"},
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
@@ -68,13 +70,13 @@ static std::unordered_map<CardElementType, std::string> CardElementTypeEnumToNam
     { CardElementType::Container, "body" },
 };
 
-static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageStyleEnumToName =
+static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageStyleNameToEnum =
 {
     {"Normal", ImageStyle::Normal},
     {"Person", ImageStyle::Person},
 };
 
-static std::unordered_map<ImageStyle, std::string> ImageStyleNameToEnum =
+static std::unordered_map<ImageStyle, std::string> ImageStyleEnumToName =
 {
     {ImageStyle::Normal, "Normal"},
     {ImageStyle::Person, "Person"},
@@ -329,5 +331,24 @@ TextWrap TextWrapFromString(const std::string& type)
     }
 
     return TextWrapNameToEnum[type];
+}
+
+const std::string ImageStyleToString(ImageStyle style)
+{
+    if (ImageStyleEnumToName.find(style) == ImageStyleEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ImageStyle style");
+    }
+    return ImageStyleEnumToName[style];
+}
+
+ImageStyle ImageStyleFromString(const std::string& style)
+{
+    if (ImageStyleNameToEnum.find(style) == ImageStyleNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ImageStyle: " + style);
+    }
+
+    return ImageStyleNameToEnum[style];
 }
 }
