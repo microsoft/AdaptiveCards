@@ -109,6 +109,7 @@
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
     <ClInclude Include="lib\ErrorHandling.h" />
+    <ClInclude Include="lib\ImageLoadTracker.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
@@ -117,6 +118,7 @@
     <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveImage.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
+    <ClCompile Include="lib\ImageLoadTracker.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />

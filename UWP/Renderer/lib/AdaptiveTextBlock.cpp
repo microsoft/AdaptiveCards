@@ -13,7 +13,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    AdaptiveTextBlock::AdaptiveTextBlock() : m_TextBlock(std::make_unique<TextBlock>()) 
+    AdaptiveTextBlock::AdaptiveTextBlock() : m_TextBlock(std::make_unique<TextBlock>())
     {
     }
 
@@ -116,26 +116,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::Render(IUIElement** TextBlock)
+    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
     {
-        *TextBlock = nullptr;
-
-        ComPtr<IInspectable> inspectableTextBlock;
-        ComPtr<ITextBlock> textBlock;
-        RETURN_IF_FAILED(RoActivateInstance(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock).Get(), inspectableTextBlock.ReleaseAndGetAddressOf()));
-        RETURN_IF_FAILED(inspectableTextBlock.As(&textBlock));
-
-        HSTRING text;
-        RETURN_IF_FAILED(this->get_Text(&text));
-        RETURN_IF_FAILED(textBlock->put_Text(text));
-
-        boolean wrap;
-        RETURN_IF_FAILED(this->get_Wrap(&wrap));
-        RETURN_IF_FAILED(textBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
-
-        // Fill other properties.
-
-        return textBlock->QueryInterface(TextBlock);
-
+        *size = static_cast<ABI::AdaptiveCards::XamlCardRenderer::CardElementSize>(m_TextBlock->GetSize());
+        return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
+    {
+        m_TextBlock->SetSize(static_cast<AdaptiveCards::CardElementSize>(size));
+        return S_OK;
+    }
+
 }}

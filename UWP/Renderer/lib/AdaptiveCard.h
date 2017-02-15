@@ -23,10 +23,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
         IFACEMETHODIMP put_ElementType(_In_ ABI::AdaptiveCards::XamlCardRenderer::ElementType elementType);
 
-        IFACEMETHODIMP Render(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** element);
+        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size);
+        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_items;
+        ABI::AdaptiveCards::XamlCardRenderer::CardElementSize m_size;
     };
 
     ActivatableClass(AdaptiveCard);

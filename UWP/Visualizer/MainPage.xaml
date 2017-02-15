@@ -33,7 +33,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Text="Rendered As Xaml Output:" Grid.Row="0"/>
-            <ContentPresenter x:Name="renderedXamlPresenter" Height="100" Width="100" Grid.Row="1"/>
+            <ContentPresenter x:Name="renderedXamlPresenter" Grid.Row="1"/>
             <TextBlock Text="Rendered As Image Output:" Grid.Row="2"/>
             <Image x:Name="renderedXamlImage" Grid.Row="3"/>
         </Grid>

@@ -33,12 +33,24 @@ namespace XamlCardVisualizer
             AdaptiveTextBlock textBlock1 = new AdaptiveTextBlock();
             textBlock1.Text = "Hello";
             card.Items.Add(textBlock1);
+            AdaptiveImage image = new AdaptiveImage();
+            image.Uri = new Uri("https://docs.microsoft.com/en-us/_themes/images/microsoft-header.png");
+            card.Items.Add(image);
             AdaptiveTextBlock textBlock2 = new AdaptiveTextBlock();
             textBlock2.Text = "World";
             card.Items.Add(textBlock2);
 
             AdaptiveCards.XamlCardRenderer.XamlCardRenderer renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();
             this.renderedXamlPresenter.Content = renderer.RenderCardAsXaml(card);
+
+            /* TODO MSFT:10826542 - XamlTileRenderer:Delay rendering completion until images are fully available
+            var renderAsyncOperation = renderer.RenderCardAsXamlAsync(card);
+            renderAsyncOperation.Completed = new AsyncOperationCompletedHandler<UIElement>(
+                (op, status) =>
+                {
+                    this.renderedXamlPresenter.Content = op.GetResults();
+                });
+            */
         }
     }
 }

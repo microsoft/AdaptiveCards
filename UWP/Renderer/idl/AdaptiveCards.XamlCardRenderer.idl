@@ -8,6 +8,9 @@ namespace AdaptiveCards
 {
     namespace XamlCardRenderer
     {
+        runtimeclass XamlCardRenderer;
+        runtimeclass ImageRenderResult;
+
         runtimeclass AdaptiveTextBlock;
         runtimeclass AdaptiveCard;
         runtimeclass AdaptiveImage;
@@ -81,6 +84,8 @@ namespace AdaptiveCards
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
+            interface Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>;
+            interface Windows.Foundation.IAsyncOperation<ImageRenderResult*>;
         }
 
         [
@@ -92,7 +97,8 @@ namespace AdaptiveCards
             [propget] HRESULT ElementType([out, retval] ElementType* value);
             [propput] HRESULT ElementType([in] ElementType value);
 
-            HRESULT Render([out, retval] Windows.UI.Xaml.UIElement** uiElement);
+            [propget] HRESULT Size([out, retval] CardElementSize* value);
+            [propput] HRESULT Size([in] CardElementSize value);
         };
 
         [
@@ -172,9 +178,6 @@ namespace AdaptiveCards
             interface IAdaptiveCardElement;
         };
 
-        runtimeclass XamlCardRenderer;
-        runtimeclass ImageRenderResult;
-
         [flags]
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum RenderOptions
@@ -207,7 +210,7 @@ namespace AdaptiveCards
         {
             HRESULT SetRenderOptions([in] RenderOptions options);
             HRESULT SetOverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
-            HRESULT RenderCardAsXaml([in] AdaptiveCard* adaptiveCard,[out, retval] Windows.UI.Xaml.UIElement** root);
+            HRESULT RenderCardAsXaml([in] AdaptiveCard* adaptiveCard,[out, retval] Windows.UI.Xaml.UIElement** result);
             HRESULT RenderCardAsImage([in] AdaptiveCard* adaptiveCard,[out, retval] Windows.Foundation.IAsyncOperation<ImageRenderResult>** result);
         }
 
