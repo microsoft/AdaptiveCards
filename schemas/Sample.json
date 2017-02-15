@@ -1,31 +1,30 @@
 {
-  //"$schema": "http://localhost:13406/adaptive-card.json",
-  "$schema": "https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/schemas/adaptive-card.json?token=AQ9yKWPVtqRfcbN2b6xJe3XWyQwEnrKMks5YrdOxwA%3D%3D",
+  // "$schema": "http://localhost:13406/adaptive-card.json",
+  "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "@type": "AdaptiveCard",
   "body": [
     {
       "@type": "Image",
-      "url": "http://"
+      "url": "http://gianfreda.net/wp-content/uploads/2016/02/cartoon-fire-truck-pictures-clipartsco-sparky-the-fire-dog-coloring-pages-sparky-the-fire-dog-coloring-pages.jpg",
+      "size": "large"
     },
     {
       "@type": "TextBlock",
-      "text": "tests"
+      "size":"large",
+      "text":"asasd"
     },
     {
-      "@type": "ChoiceInput",
-      "id": "12312",
-      "choices": [
+      "@type": "FactGroup",
+      "facts": [
         {
-          "display": "test",
-          "value": "xys",
-          "isSelected": true
+          "name": "test",
+          "value": "value"
         }
       ]
     },
     {
-      "@type": "Image",
-      "url": "http://",
-      "size": "large"
+      "@type": "TextBlock",
+      "text": "tests"
     }
   ],
   "actions": [
