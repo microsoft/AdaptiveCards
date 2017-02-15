@@ -1,0 +1,36 @@
+﻿{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "http://microsoft.com/adaptivecard/1.0/schema#",
+    "type": "object",
+    "title": "Microsoft Adaptive Card Schema",
+    "description": "Card schema for the adaptive card.",
+    "additionalProperties": false,
+    "properties": {
+        "@type": {
+            "type": "string",
+            "enum": [
+                "AdaptiveCard"
+            ]
+        },
+        "title": {
+            "type": "string",
+            "description": "Title/caption for the adaptive card."
+        },
+        "imageStyle": {
+            "$ref": "#/definitions/ImageStyle"
+        }
+    },
+    "required": [
+        "@type"
+    ],
+    "definitions": {
+        "ImageStyle": {
+            "type": "string",
+            "description": "Controls the way Image elements are displayed",
+            "enum": [
+                "normal",
+                "person"
+            ]
+       }
+    }
+}
