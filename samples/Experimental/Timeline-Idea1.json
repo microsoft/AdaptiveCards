@@ -11,7 +11,7 @@
                 "size": "medium"
             },
             {
-                "@type": "FactGroup",
+                "@type": "FactSet",
                 "facts": [
                     {
                         "name": "Work item type:",

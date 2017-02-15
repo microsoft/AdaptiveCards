@@ -10,7 +10,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Input is used as part of a Form CardElement to collect information from a user
     /// </summary>
-    public class Input : CardElement
+    public class Input : CardItem
     {
         public Input()
         { }

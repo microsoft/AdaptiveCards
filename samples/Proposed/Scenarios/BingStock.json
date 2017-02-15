@@ -21,7 +21,7 @@
             "@type": "Container",
             "items": [
                 {
-                    "@type": "ColumnGroup",
+                    "@type": "ColumnSet",
                     "columns": [
                         {
                             "@type": "Column",
@@ -45,7 +45,7 @@
                             "size": "40",
                             "items": [
                                 {
-                                    "@type": "FactGroup",
+                                    "@type": "FactSet",
                                     "facts": [
                                         {
                                             "name": "Open",

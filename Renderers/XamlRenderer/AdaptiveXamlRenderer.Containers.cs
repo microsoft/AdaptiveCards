@@ -46,7 +46,7 @@ namespace Adaptive.Renderers
             return grid;
         }
 
-        private void _addContainerElements(Grid grid, List<CardElement> elements, List<ActionBase> actions, List<FrameworkElement> inputControls)
+        private void _addContainerElements(Grid grid, List<CardItem> elements, List<ActionBase> actions, List<FrameworkElement> inputControls)
         {
             bool hasActions = actions != null && actions.Any();
             if (hasActions)
@@ -112,23 +112,23 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        private UIElement _renderCardElement(CardElement element, List<FrameworkElement> inputControls)
+        private UIElement _renderCardElement(CardItem element, List<FrameworkElement> inputControls)
         {
-            if (element is ColumnGroup)
+            if (element is ColumnSet)
             {
-                return Render(element as ColumnGroup, inputControls);
+                return Render(element as ColumnSet, inputControls);
             }
             else if (element is Column)
             {
                 return Render(element as Container, inputControls);
             }
-            else if (element is ImageGallery)
+            else if (element is ImageSet)
             {
-                return Render(element as ImageGallery);
+                return Render(element as ImageSet);
             }
-            else if (element is FactGroup)
+            else if (element is FactSet)
             {
-                return Render(element as FactGroup);
+                return Render(element as FactSet);
             }
             else if (element is AC.TextBlock)
             {
@@ -175,9 +175,9 @@ namespace Adaptive.Renderers
             if (container.Separation == SeparationStyle.After || container.Separation == Adaptive.Schema.Net.SeparationStyle.Both)
                 _addSeperator(uiContainer);
 
-            if (container.Action != null)
+            if (container.SelectAction != null)
             {
-                return _renderAction(container.Action, inputControls, uiContainer);
+                return _renderAction(container.SelectAction, inputControls, uiContainer);
             }
 
             return uiContainer;
@@ -194,70 +194,70 @@ namespace Adaptive.Renderers
         }
 
         /// <summary>
-        /// ColumnGroup
+        /// ColumnSet
         /// </summary>
-        /// <param name="columnGroup"></param>
+        /// <param name="columnSet"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(ColumnGroup columnGroup, List<FrameworkElement> inputControls)
+        protected virtual UIElement Render(ColumnSet columnSet, List<FrameworkElement> inputControls)
         {
-            var uiColumnGroup = new Grid();
-            uiColumnGroup.Style = this.GetStyle("Adaptive.ColumnGroup");
+            var uiColumnSet = new Grid();
+            uiColumnSet.Style = this.GetStyle("Adaptive.ColumnSet");
 
             int iCol = 0;
-            foreach (var column in columnGroup.Columns)
+            foreach (var column in columnSet.Columns)
             {
                 UIElement uiElement = Render(column, inputControls);
 
                 // do some sizing magic using the magic GridUnitType.Star
                 var size = column.Size?.ToLower();
                 if (size == ColumnSize.Stretch.ToLower())
-                    uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                    uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                 else if (size == ColumnSize.Auto.ToLower())
-                    uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                    uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 else
                 {
                     double val;
                     if (double.TryParse(size, out val))
-                        uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
+                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
                     else
-                        uiColumnGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 }
 
                 Grid.SetColumn(uiElement, iCol++);
-                uiColumnGroup.Children.Add(uiElement);
+                uiColumnSet.Children.Add(uiElement);
             }
 
-            return uiColumnGroup;
+            return uiColumnSet;
         }
 
         /// <summary>
-        /// FactGroup
+        /// FactSet
         /// </summary>
-        /// <param name="factGroup"></param>
+        /// <param name="factSet"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(FactGroup factGroup)
+        protected virtual UIElement Render(FactSet factSet)
         {
-            var uiFactGroup = new Grid();
-            // grid.Margin = this.Theme.FactGroupMargins;
-            uiFactGroup.Style = this.GetStyle("Adaptive.FactGroup");
+            var uiFactSet = new Grid();
+            // grid.Margin = this.Theme.FactSetMargins;
+            uiFactSet.Style = this.GetStyle("Adaptive.FactSet");
 
-            uiFactGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-            uiFactGroup.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+            uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+            uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             int iRow = 0;
-            foreach (var fact in factGroup.Facts)
+            foreach (var fact in factSet.Facts)
             {
                 Tuple<UIElement, UIElement> uiElements = Render(fact as Fact);
-                uiFactGroup.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                uiFactSet.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
                 Grid.SetColumn(uiElements.Item1, 0);
                 Grid.SetRow(uiElements.Item1, iRow);
-                uiFactGroup.Children.Add(uiElements.Item1);
+                uiFactSet.Children.Add(uiElements.Item1);
 
                 Grid.SetColumn(uiElements.Item2, 1);
                 Grid.SetRow(uiElements.Item2, iRow++);
-                uiFactGroup.Children.Add(uiElements.Item2);
+                uiFactSet.Children.Add(uiElements.Item2);
             }
-            return uiFactGroup;
+            return uiFactSet;
         }
 
         /// <summary>
@@ -284,7 +284,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="imageGallery"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(ImageGallery imageGallery)
+        protected virtual UIElement Render(ImageSet imageGallery)
         {
             var uiGallery = new ListBox();
             uiGallery.Style = this.GetStyle("Adaptive.ImageGallery");

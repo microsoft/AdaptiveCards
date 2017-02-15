@@ -84,7 +84,7 @@ export declare class Fact {
     parse(json: any): void;
     renderSpeech(): string;
 }
-export declare class FactGroup extends CardElement {
+export declare class FactSet extends CardElement {
     private _items;
     readonly items: Array<Fact>;
     parse(json: any): void;
@@ -99,7 +99,7 @@ export declare class Image extends CardElement {
     render(): HTMLElement;
     renderSpeech(): string;
 }
-export declare class ImageGallery extends CardElement {
+export declare class ImageSet extends CardElement {
     private _items;
     imageSize: Size;
     readonly items: Array<Image>;
@@ -211,7 +211,7 @@ export declare class ActionButton {
     readonly element: HTMLElement;
     state: ActionButtonState;
 }
-export declare class ActionGroup extends CardElement {
+export declare class ActionSet extends CardElement {
     static buttonStyle: ActionButtonStyle;
     private _actionButtons;
     private _actionCardContainer;
@@ -263,7 +263,7 @@ export declare class Column extends Container {
     parse(json: any): void;
     adjustLayout(element: HTMLElement): void;
 }
-export declare class ColumnGroup extends CardElement {
+export declare class ColumnSet extends CardElement {
     private _items;
     addColumn(): Column;
     parse(json: any): void;

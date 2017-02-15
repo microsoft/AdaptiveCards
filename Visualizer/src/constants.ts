@@ -15,7 +15,7 @@ export const defaultPayload: string = `
 			        "textSize": "medium"
 			    },
 				{
-					"@type": "ColumnGroup",
+					"@type": "ColumnSet",
 					"speak": "<s>Created by Miguel Garcia</s>",
 					"columns": [
 						{
@@ -61,7 +61,7 @@ export const defaultPayload: string = `
 			        "wrap": true
 			    },
 				{
-				    "@type": "FactGroup",
+				    "@type": "FactSet",
 				    "facts": [
 				        { "name": "Board:", "value": "Adaptive Card", "speak":"" },
 				        { "name": "List:", "value": "Backlog", "speak":"" },
@@ -70,7 +70,7 @@ export const defaultPayload: string = `
 				    ]
 				},
 				{
-				    "@type": "ActionGroup",
+				    "@type": "ActionSet",
 					"speak": "You can set the due date, add a comment or view more information.",
 				    "actions": [
                 		{

@@ -11,9 +11,9 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Base class for all elements in a container
     /// </summary>
-    public class CardElement : TypedElement
+    public class CardItem : TypedElement
     {
-        public CardElement() : base()
+        public CardItem() : base()
         {
         }
 

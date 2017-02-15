@@ -14,7 +14,7 @@
                     "text": "You mebbe wanna click on me?"
                 }
             ],
-            "action": {
+            "selectAction": {
                 "@type": "ShowCardAction",
                 "title": "Set due date",
                 "card": {
@@ -39,13 +39,13 @@
             }
         },
         {
-            "@type": "ImageGallery",
+            "@type": "ImageSet",
             "size": "medium",
             "images": [
                 {
                     "@type": "Image",
                     "url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
-                    "action": {
+                    "selectAction": {
                         "@type": "OpenUrlAction",
                         "title": "",
                         "url": "https://www.bing.com/images/search?q=puppies&FORM=HDRSC2"

@@ -13,7 +13,7 @@
                 "size": "medium"
             },
             {
-                "@type": "FactGroup",
+                "@type": "FactSet",
                 "facts": [
                     {
                         "name": "File Type:",
@@ -45,7 +45,7 @@
 //             "size": "medium"
 //         },
 //         {
-//             "@type": "FactGroup",
+//             "@type": "FactSet",
 //             "items": [
 //                 {
 //                     "name": "File Type:",

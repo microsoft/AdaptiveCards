@@ -15,7 +15,7 @@ namespace Adaptive.Schema.Net
     {
         public AdaptiveCard() { }
 
-        public List<CardElement> Body { get; set; } = new List<CardElement>();
+        public List<CardItem> Body { get; set; } = new List<CardItem>();
 
         /// <summary>
         /// Actions for this container

@@ -5,7 +5,7 @@
 			"padding": "narrow",
 			"items": [
 				{
-					"@type": "ColumnGroup",
+					"@type": "ColumnSet",
 					"columns": [
 						{
 							"@type": "Column",

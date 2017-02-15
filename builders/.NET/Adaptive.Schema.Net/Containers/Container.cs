@@ -10,7 +10,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Container for a collection of elements
     /// </summary>
-    public class Container : CardElement
+    public class Container : CardItem
     {
         public Container()
         { }
@@ -19,7 +19,7 @@ namespace Adaptive.Schema.Net
         /// Elements of the container
         /// </summary>
         [JsonRequired]
-        public List<CardElement> Items { get; set; } = new List<CardElement>();
+        public List<CardItem> Items { get; set; } = new List<CardItem>();
 
         /// <summary>
         /// Image to use for the background of a card
@@ -37,7 +37,7 @@ namespace Adaptive.Schema.Net
         /// Action for this container (this allows a default action at the container level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionBase Action { get; set; }
+        public ActionBase SelectAction { get; set; }
 
         /// <summary>
         /// Actions for this container

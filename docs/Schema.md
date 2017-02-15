@@ -3,19 +3,19 @@
 [Cards](#cards)
 * [AdaptiveCard](#adaptivecard) - top level card
 
-[Elements](#elements)
-* [TextBlock](#textblock) - text element
-* [Image](#image) - image element
-* [TextInput](#textinput) - get text input from user    
+[CardItems](#carditems) 
+* [TextBlock](#textblock) - display text
+* [Image](#image) - display an image
+* [TextInput](#textinput) - get text input from user
 * [ChoiceInput](#choiceinput) - get choice input from user
     * [Choice](#choice) - choice object
 
 [Containers](#containers) 
-* [Container](#container) - logical container of elements
-* [ColumnGroup](#columngrup) - logical container of columns
-    * [Column](#column) - container of elements
-* [ImageGallery](#container) - container of Images
-* [FactGroup](#factgroup) - container of facts
+* [Container](#container) - container of items
+* [ColumnSet](#columnset) -  container of columns
+    * [Column](#column) - container of items with column properties
+* [ImageSet](#imageset) - container of Images
+* [FactSet](#factset) - container of facts
     * [Fact](#fact) - fact object
 
 [Actions](#actions)
@@ -25,8 +25,6 @@
 * [CancelAction](#cancelaction) - defines action which resets input fields and if opened card closes the card
 * [ShowCardAction](#showcardaction) - defines action which shows a card to the user
 
-
-
 # Cards
 
 ## AdaptiveCard
@@ -35,13 +33,13 @@ AdaptiveCard is top level object which represents a card
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"AdaptiveCard"** |
-| **body** | [CardElement](#cardelement)[] | true | The elements that are to be displayed in this container. |
+| **body** | [CardItem](#carditem)[] | true | The items that are to be displayed in this container. |
 | **actions** |[Action](#action)[]| false | Actions |
 
-# Elements
+# CardItems
 
-## CardElement
-CardElement is the base type for all elements that can be used to define an Adaptive Card
+## CardItem
+CardItem is the base type for all items that can be used to define an Adaptive Card
 
 > NOTE: You cannot add an Input directly, only the derived types.
 
@@ -51,7 +49,7 @@ CardElement is the base type for all elements that can be used to define an Adap
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ## TextBlock 
-*Extends [CardElement](#cardelement)*
+*Extends [CardItem](#carditem)*
 
 The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.
 
@@ -63,11 +61,10 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 | **weight** | [TextWeight](#textweight) | false |The weight of the text |
 | **color** | [TextColor](#textcolor) | false |The color of the text |
 | **isSubtle** | boolean |false | Indicates whether the color of the text should be slightly toned down to appear less prominent |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) |false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ### Formatting Functions
 
-When sending TextBlock elements with date or time information you need to be able to translate the date or time to the
+When sending TextBlock items with date or time information you need to be able to translate the date or time to the
 recipients timezone using their locale.  This is a task which is almost always way easier for the client to do then
 for the sender.  To make it easy for clients to do this we have the ability to invoke a DATE() and TIME() function
 inside text of the textblock.
@@ -116,7 +113,7 @@ Example for (en-us):
 
 ## Image 
 
-*Extends [CardElement](#cardelement)*
+*Extends [CardItem](#carditem)*
 
 The Image element allows for the inclusion of images in an Adaptive Card.
 
@@ -125,13 +122,14 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 | **type**| string | true | **"Image"** |
 | **url** | string | true | The URL to the image. |
 | **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
-| **action** | [Action](#action) | false | Action to perform for a tap on this image, (this allows image to act as an action) |
+| **selectAction** | [Action](#action) | false | Action to perform for a selection for this image, (this allows image to act as an action) |
 | **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the image. |
+| **altText** | string  | false | Alternate text for the image for accessibility |
 
 ## Input
-*Extends [CardElement](#cardelement)*
+*Extends [CardItem](#carditem)*
 
-Input is a base CardElement which describes shared properties for input to collect information from a user. 
+Input is a base class which describes shared properties for input to collect information from a user. 
 
 >NOTE: You cannot add an Input directly, only the derived types.
 
@@ -140,7 +138,7 @@ Input is a base CardElement which describes shared properties for input to colle
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
-| **title** | string | true | Title Description of the input desired|
+| **title** | string | false | Title Description of the input desired|
 | **value** | string | false | The initial value for a field |
 | **placeholder** | string | false | Hint of expected value desired *(may be ignored by some clients)*|
 
@@ -182,64 +180,64 @@ Represents a single Choice
 # Containers
 
 ## Container 
-*Extends [CardElement](#cardelement)*
+*Extends [CardItem](#carditem)*
 
-The Container is a CardElement which contains a list of CardElements that are logically grouped.
+A  Container is a CardItem which contains a list of CardItems that are logically grouped.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"Container"** |
-| **elements** |  [CardElement](#cardelement)[] | true | The elements that are to be displayed in this container. |
+| **items** |  [CardItem](#carditem)[] | true | The items that are to be displayed in this container. |
 | **backgroundImageUrl** | string | false | The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained. |
 | **backgroundColor** | string | false | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
-| **action** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
+| **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
 | **actions** | [Action](#action)[] | false | Actions associated with this container |
 | **separation** | [SeparationStyle](#separationstyle) | false | visually separate this container from preiovus or pending containers |
 
-## ColumnGroup 
-*Extends [CardElement](#cardelement)*
+## ColumnSet 
+*Extends [CardItem](#carditem)*
 
-The column group element adds the ability to have a set of Column objects.
+The column Set element adds the ability to have a set of Column objects.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"ColumnGroup"** |
-| **columns** | [Column](#column)[] | true | array of columns (each a container of elements)  |
+| **type**| string | true | **"ColumnSet"** |
+| **columns** | [Column](#column)[] | true | array of columns (each a container of items)  |
 
 ## Column
 **Extends [Container](#container)**
 
-A Column is a container which contains a list of cardElements that are logically grouped.
+A Column is a container which contains a list of CardItems that are logically grouped.
 
 | Property | Type | Required |  Description |
 |---|---|---|---|
 | **type**| string | true |  **"Column"** |
-| **size** | string | false | "auto", "stretch", or a number representing relative width of the column in the column group (Default:Auto)|
+| **size** | string | false | "auto", "stretch", or a number representing relative width of the column in the column Set (Default:Auto)|
 
 
-## ImageGallery 
-*Extends [CardElement](#cardelement)*
+## ImageSet 
+*Extends [CardItem](#carditem)*
 
-The ImageGallery allows for the inclusion of a collection images like a photogallery.
+The ImageSet allows for the inclusion of a collection images like a photoSet.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"ImageGallery"** |
+| **type**| string | true | **"ImageSet"** |
 | **images**| [Image](#image)[] | true | Array of Image objects |
-| **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the gallery. |
+| **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the Set. |
 
-## FactGroup 
-*Extends [CardElement](#cardelement)*
+## FactSet 
+*Extends [CardItem](#carditem)*
 
-The FactGroup element makes it simple to display a se  ries of "facts" (e.g. name/value pairs) in a tabular form.
+The FactSet element makes it simple to display a series of "facts" (e.g. name/value pairs) in a tabular form.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"FactGroup"** |
+| **type**| string | true | **"FactSet"** |
 | **facts** | [Fact](#fact)[] | true| The facts to be displayed. |
 
 ### Fact 
-Represents one "fact" in a [FactGroup](#factgroup) element.
+Represents one "fact" in a [FactSet](#factset) element.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
@@ -251,14 +249,6 @@ Represents one "fact" in a [FactGroup](#factgroup) element.
 # Actions
 Actions define clickable targets that do something.
 
-## Action
-Base class for all actions
-
-> NOTE: You cannot add a Action directly, you can only add derived action types
-
-| Property | Type | Required | Description |
-|---|---|---|---|
-| **title** | string | true | Label for button or link that represents this action |
 
 ## OpenUrlAction
 *Extends [Action](#action)*
@@ -268,6 +258,7 @@ with embedded web browser.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
+| **title** | string | true | Label for button or link that represents this action |
 | **type**| string | true | **"OpenUrlAction"** |
 | **url** | string | true | Default (browser) url to use  |
 | **platformUrls** | [PlatformUrl](#platformurl)[] | false |  candidate array of PlatformUrls 's that can be used |
@@ -279,6 +270,7 @@ mobile linking to applications.
 
 | Property | Type | Required| Description |
 |---|---|---|---|
+| **title** | string | true | Label for button or link that represents this action |
 | **os** | string | true | platform filter, If it is "default" or missing then it will simply use browser. Other platforms are: (iOS?, Android?, ...?) |
 | **url** | string | true | url to use on this platform os|
 
@@ -292,6 +284,7 @@ to an arbitrary url.
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"HttpAction"** |
+| **title** | string | true | Label for button or link that represents this action |
 | **url** | string | true | url to use (can have binding information) |
 | **method** | string | true | Http method (Example: POST) |
 | **headers** | object | false | Object which represents headers Example: { "content-type":"application/json" }  |
@@ -305,6 +298,7 @@ ShowCard defines an inline AdaptiveCard which is shown to the user when it is cl
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"ShowCardAction"** |
+| **title** | string | true | Label for button or link that represents this action |
 | **card** | [AdaptiveCard](#adaptivecard) | true |inline card defining the card to be shown when this action is invoked. It is up to client to decide how to show this inline card. |
 
 ## SubmitAction
@@ -317,6 +311,7 @@ For example: With BotFramework bots the client would send an activity through th
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"SubmitAction"** |
+| **title** | string | true | Label for button or link that represents this action |
 | **data** | object | false | initial data that input fields will be combined with.  This is essentially 'hidden' properties |
 
 ## CancelAction
@@ -327,7 +322,7 @@ When CancelAction is invoked it resets any input that is in scope, and closes a 
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"CancelAction"** |
-
+| **title** | string | true | Label for button or link that represents this action |
 
 # Enumerations
 The following enumerations are used by various element types.
@@ -344,7 +339,7 @@ Controls the horizontal size (width) of element.
 | **large** | Large width |
 
 ## HorizontalAlignment
-Controls how elements are horizontally positioned within their container.
+Controls how items are horizontally positioned within their container.
 
 | Value | Meaning |
 |---|---|
@@ -353,7 +348,7 @@ Controls how elements are horizontally positioned within their container.
 | **right** | The element is right aligned |
 
 ## TextSize
-Controls the size of TextBlock elements.
+Controls the size of TextBlock items.
 
 | Value | Meaning |
 |---|---|
@@ -364,7 +359,7 @@ Controls the size of TextBlock elements.
 | **extraLarge** | The maximum text size |
 
 ## TextWeight
-Controls the weight of TextBlock elements.
+Controls the weight of TextBlock items.
 
 | Value | Meaning |
 |---|---|
@@ -373,7 +368,7 @@ Controls the weight of TextBlock elements.
 | **bolder** | Bolder text (wider stroke) |
 
 ## TextColor
-Controls the color of TextBlock elements.
+Controls the color of TextBlock items.
 
 | Value | Meaning |
 |---|---|
@@ -386,7 +381,7 @@ Controls the color of TextBlock elements.
 | **Attention** | Highlight as needing attechment (such as red)|
 
 ## ImageStyle
-Controls the way Image elements are displayed.
+Controls the way Image items are displayed.
 
 | Value | Meaning |
 |---|---|

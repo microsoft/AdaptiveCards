@@ -190,21 +190,21 @@ export abstract class CardElement {
                 return new TextBlock(container);
             case "Image":
                 return new Image(container);
-            case "ImageGallery":
-                return new ImageGallery(container);
-            case "ActionGroup":
-                return new ActionGroup(container);
-            case "FactGroup":
-                return new FactGroup(container);
+            case "ImageSet":
+                return new ImageSet(container);
+            case "ActionSet":
+                return new ActionSet(container);
+            case "FactSet":
+                return new FactSet(container);
             case "Separator":
                 return new Separator(container);
-            case "ColumnGroup":
-                return new ColumnGroup(container);
+            case "ColumnSet":
+                return new ColumnSet(container);
             case "TextInput":
                 return new TextInput(container);
             case "DateInput":
                 return new DateInput(container);
-            case "MultichoiceInput":
+            case "ChoiceInput":
                 return new MultichoiceInput(container);
             case "ToggleInput":
                 return new ToggleInput(container);
@@ -304,9 +304,9 @@ export class TextBlock extends CardElement {
         super.parse(json);
 
         this.text = json["text"];
-        this.textSize = stringToTextSize(json["textSize"], TextSize.Normal);
-        this.textWeight = stringToTextWeight(json["textWeight"], TextWeight.Normal);
-        this.textColor = stringToTextColor(json["textColor"], TextColor.Default);
+        this.textSize = stringToTextSize(json["size"], TextSize.Normal);
+        this.textWeight = stringToTextWeight(json["weight"], TextWeight.Normal);
+        this.textColor = stringToTextColor(json["color"], TextColor.Default);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"];
     }
@@ -438,7 +438,7 @@ export class Fact {
     }
 }
 
-export class FactGroup extends CardElement {
+export class FactSet extends CardElement {
     private _facts: Array<Fact> = [];
 
     get facts(): Array<Fact> {
@@ -466,7 +466,7 @@ export class FactGroup extends CardElement {
 
         if (this._facts.length > 0) {
             element = document.createElement("table");
-            element.className = "factGroup";
+            element.className = "factSet";
 
             let html: string = '';
 
@@ -538,6 +538,9 @@ export class Image extends CardElement {
         super.parse(json);
 
         this.url = json["url"];
+        if (json["size"])
+            this.size = json["size"];
+            
         this.style = stringToImageStyle(json["style"], ImageStyle.Normal);
     }
 
@@ -586,7 +589,7 @@ export class Image extends CardElement {
     }
 }
 
-export class ImageGallery extends CardElement {
+export class ImageSet extends CardElement {
     private _images: Array<Image> = [];
     imageSize: Size = Size.Medium;
 
@@ -597,17 +600,15 @@ export class ImageGallery extends CardElement {
     parse(json: any) {
         super.parse(json);
 
-        this.imageSize = stringToSize(json["imageSize"], Size.Medium);
+        this.imageSize = stringToSize(json["size"], Size.Medium);
 
         if (json["images"] != null) {
             let imageArray = json["images"] as Array<any>;
 
             for (let i = 0; i < imageArray.length; i++) {
                 let image = new Image(this.container);
-
                 image.size = this.imageSize;
-                image.url = imageArray[i];
-
+                image.parse(imageArray[i]);
                 this._images.push(image);
             }
         }
@@ -618,7 +619,7 @@ export class ImageGallery extends CardElement {
 
         if (this._images.length > 0) {
             element = document.createElement("div");
-            element.className = "imageGallery";
+            element.className = "imageSet";
 
             for (var i = 0; i < this._images.length; i++) {
                 let renderedImage = this._images[i].internalRender();
@@ -760,7 +761,7 @@ export abstract class Input extends CardElement {
         switch (typeName) {
             case "TextInput":
                 return new TextInput(container);
-            case "MultichoiceInput":
+            case "ChoiceInput":
                 return new MultichoiceInput(container);
             case "DateInput":
                 return new DateInput(container);
@@ -950,7 +951,7 @@ export class ActionCard extends Action {
         super.parse(json);
 
         if (json["card"] != undefined) {
-            this._card = new Container(this.owner.container, ["ActionGroup"]);
+            this._card = new Container(this.owner.container, ["ActionSet"]);
             this._card.parse(json["card"]);
         }
 
@@ -1118,7 +1119,7 @@ export class ActionButton {
     }
 }
 
-export class ActionGroup extends CardElement {
+export class ActionSet extends CardElement {
     static buttonStyle: ActionButtonStyle = ActionButtonStyle.Push;
 
     private _actionButtons: Array<ActionButton> = [];
@@ -1208,7 +1209,7 @@ export class ActionGroup extends CardElement {
 
     render(): HTMLElement {
         let element = document.createElement("div");
-        element.className = "actionGroup";
+        element.className = "actionSet";
 
         let buttonStrip = document.createElement("div");
         buttonStrip.className = "buttonStrip";
@@ -1226,7 +1227,7 @@ export class ActionGroup extends CardElement {
                 let buttonStripItem = document.createElement("div");
                 buttonStripItem.className = "buttonStripItem";
 
-                let actionButton = new ActionButton(this._actions[i], ActionGroup.buttonStyle);
+                let actionButton = new ActionButton(this._actions[i], ActionSet.buttonStyle);
                 actionButton.text = this._actions[i].name;
 
                 actionButton.onClick.subscribe(
@@ -1526,11 +1527,11 @@ export class Column extends Container {
     }
 }
 
-export class ColumnGroup extends CardElement {
+export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
 
     addColumn(): Column {
-        let column = new Column(this.container, ["ActionGroup"]);
+        let column = new Column(this.container, ["ActionSet"]);
 
         this._columns.push(column);
 
@@ -1553,7 +1554,7 @@ export class ColumnGroup extends CardElement {
     render(): HTMLElement {
         if (this._columns.length > 0) {
             let element = document.createElement("div");
-            element.className = "columnGroup";
+            element.className = "columnSet";
             element.style.display = "flex";
 
             for (let i = 0; i < this._columns.length; i++) {

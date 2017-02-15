@@ -8,7 +8,7 @@
 			"size": "medium"
 		},
 		{
-			"@type": "ColumnGroup",
+			"@type": "ColumnSet",
 			"speak": "",
 			"columns": [
 				{
@@ -36,7 +36,7 @@
 			]
 		},
 		{
-			"@type": "FactGroup",
+			"@type": "FactSet",
 			"facts": [
 				{
 					"name": "Work item type:",
