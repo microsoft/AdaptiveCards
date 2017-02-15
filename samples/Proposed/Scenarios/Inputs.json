@@ -195,8 +195,8 @@
                                                 "@type": "TextBlock",
                                                 "text": "CAR",
                                                 "horizontalAlignment": "center",
-                                                "textSize": "normal",
-                                                "textWeight": "bolder"
+                                                "size": "normal",
+                                                "weight": "bolder"
                                             }
                                         ]
                                     },
@@ -217,7 +217,7 @@
                                             {
                                                 "@type": "TextBlock",
                                                 "text": "7 - 40",
-                                                "textSize": "large",
+                                                "size": "large",
                                                 "horizontalAlignment": "center"
                                             }
                                         ]
@@ -236,8 +236,8 @@
                                                 "@type": "TextBlock",
                                                 "text": "SEA",
                                                 "horizontalAlignment": "center",
-                                                "textSize": "normal",
-                                                "textWeight": "bolder"
+                                                "size": "normal",
+                                                "weight": "bolder"
                                             }
                                         ]
                                     }

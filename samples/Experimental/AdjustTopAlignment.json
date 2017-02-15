@@ -24,7 +24,7 @@
 							"items": [
 								{
 									"@type": "TextBlock",
-									"textSize": "large",
+									"size": "large",
 									"text": "**ADJUST TOP ALIGNMENT**"
 								}
 							]

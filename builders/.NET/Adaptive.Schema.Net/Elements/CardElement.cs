@@ -24,12 +24,6 @@ namespace Adaptive.Schema.Net
         public string Speak { get; set; }
 
         /// <summary>
-        /// Size hint for the element
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Size? Size { get; set; }
-
-        /// <summary>
         /// Horizontal alignment for element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

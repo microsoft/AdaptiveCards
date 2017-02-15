@@ -8,27 +8,27 @@
         {
             "@type": "TextBlock",
             "text": "Small",
-            "textSize": "small"
+            "size": "small"
         },
         {
             "@type": "TextBlock",
             "text": "Normal",
-            "textSize": "normal"
+            "size": "normal"
         },
         {
             "@type": "TextBlock",
             "text": "Medium",
-            "textSize": "medium"
+            "size": "medium"
         },
         {
             "@type": "TextBlock",
             "text": "Large",
-            "textSize": "large"
+            "size": "large"
         },
         {
             "@type": "TextBlock",
             "text": "ExtraLarge",
-            "textSize": "extraLarge"
+            "size": "extraLarge"
         }
     ]
 }

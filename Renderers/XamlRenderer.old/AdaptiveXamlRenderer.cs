@@ -1,33 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using MarkedNet;
-using Xceed.Wpf.Toolkit;
 using Adaptive.Schema.Net;
 using AC = Adaptive.Schema.Net;
 
-namespace WpfVisualizer
+namespace AdaptiveXamlRenderer
 {
 
-    public partial class AdaptiveXamlRenderer
+    public partial class AdaptiveRenderer
     {
         private ResourceDictionary resources;
 
-        public AdaptiveXamlRenderer(ResourceDictionary resources)
+        public AdaptiveRenderer(ResourceDictionary resources)
         {
             this.resources = resources;
         }
@@ -44,7 +33,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="textBlock"></param>
         /// <returns></returns>
-        public UIElement Render(AC.TextBlock textBlock)
+        public virtual UIElement Render(AC.TextBlock textBlock)
         {
             Marked marked = new Marked();
             marked.Options.Renderer = new XamlRenderer();
@@ -142,7 +131,7 @@ namespace WpfVisualizer
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        public UIElement Render(Adaptive.Schema.Net.Image image)
+        public virtual UIElement Render(Adaptive.Schema.Net.Image image)
         {
             var uiImage = new System.Windows.Controls.Image();
             // uiImage.Margin = this.Theme.ImageMargins;

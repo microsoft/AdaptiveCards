@@ -1,39 +1,64 @@
 {
 	"@type": "AdaptiveCard",
-	"title": "Adaptive Card design session",
-	"description1": "Conf Room 112/3377 (10)",
-	"description2": "12:30 PM - 1:30 PM",
-	"speak":"<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at 12:30pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
+	"speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at 12:30pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
 	"body": [
-	    {
-	        "@type": "TextBlock",
-	        "text": "Snooze for"
-	    },
-	    {
-	        "@type": "MultichoiceInput",
-	        "size": "stretch",
-	        "choices": [
-	            { "display": "5 minutes" },
-	            { "display": "15 minutes" },
-	            { "display": "30 minutes" }
-	        ]
-	    },
-	    {
-	        "@type": "ActionGroup",
-	        "actions": [
-	            {
-	                "@type": "HttpPOST",
-	                "name": "Snooze"
-	            },
-	            {
-	                "@type": "HttpPOST",
-	                "name": "I'll be late"
-	            },
-	            {
-	                "@type": "HttpPOST",
-	                "name": "Dismiss"
-	            }
-	        ]
-	    }
+		{
+			"@type": "TextBlock",
+			"text": "Adaptive Card design session",
+			"size": "Large",
+			"weight":"bolder"
+		},
+		{
+			"@type": "TextBlock",
+			"text": "Conf Room 112/3377 (10)"
+		},
+		{
+			"@type": "TextBlock",
+			"text": "12:30 PM - 1:30 PM"
+		},
+		{
+			"@type": "TextBlock",
+			"text": "Snooze for"
+		},
+		{
+			"@type": "ChoiceInput",
+			"id": "snooze",
+			"style":"compact",
+			"choices": [
+				{
+					"display": "5 minutes",
+					"value": "5",
+					"isSelected":true
+				},
+				{
+					"display": "15 minutes",
+					"value": "15"
+				},
+				{
+					"display": "30 minutes",
+					"value": "30"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"@type": "HttpAction",
+			"method": "POST",
+			"url": "http://foo.com",
+			"title": "Snooze"
+		},
+		{
+			"@type": "HttpAction",
+			"method": "POST",
+			"url": "http://foo.com",
+			"title": "I'll be late"
+		},
+		{
+			"@type": "HttpAction",
+			"method": "POST",
+			"url": "http://foo.com",
+			"title": "Dismiss"
+		}
 	]
 }

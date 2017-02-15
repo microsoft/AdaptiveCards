@@ -23,24 +23,24 @@
 						{
 							"@type": "TextBlock",
 							"text": "**Monday**",
-							"textSize": "large"
+							"size": "large"
 						},
 						{
 							"@type": "TextBlock",
 							"text": "63 / 42",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "TextBlock",
 							"isSubtle": true,
 							"text": "20% chance of rain",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "TextBlock",
 							"isSubtle": true,
 							"text": "Winds 5 mph NE",
-							"textSize": "small"
+							"size": "small"
 						}
 					]
 				}
@@ -57,7 +57,7 @@
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"text": "Fri",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "Image",
@@ -67,16 +67,20 @@
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"text": "62",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
 							"text": "52",
-							"textSize": "small"
+							"size": "small"
 						}
-					]
+					],
+					"action": {
+						"@type": "OpenUrlAction",
+						"url": "http://www.accuweather.com/en/us/seattle-wa/98104/weather-forecast/351409"
+					}
 				},
 				{
 					"@type": "Column",
@@ -86,7 +90,7 @@
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"text": "Sat",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "Image",
@@ -96,16 +100,20 @@
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"text": "60",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
 							"text": "48",
-							"textSize": "small"
+							"size": "small"
 						}
-					]
+					],
+					"action": {
+						"@type": "OpenUrlAction",
+						"url": "http://www.accuweather.com/en/us/seattle-wa/98104/weather-forecast/351409"
+					}
 				},
 				{
 					"@type": "Column",
@@ -115,7 +123,7 @@
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"text": "Sun",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "Image",
@@ -125,16 +133,20 @@
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"text": "59",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
 							"text": "49",
-							"textSize": "small"
+							"size": "small"
 						}
-					]
+					],
+					"action": {
+						"@type": "OpenUrlAction",
+						"url": "http://www.accuweather.com/en/us/seattle-wa/98104/weather-forecast/351409"
+					}
 				},
 				{
 					"@type": "Column",
@@ -144,7 +156,7 @@
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"text": "Mon",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "Image",
@@ -154,16 +166,20 @@
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"text": "64",
-							"textSize": "small"
+							"size": "small"
 						},
 						{
 							"@type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
 							"text": "51",
-							"textSize": "small"
+							"size": "small"
 						}
-					]
+					],
+					"action": {
+						"@type": "OpenUrlAction",
+						"url": "http://www.accuweather.com/en/us/seattle-wa/98104/weather-forecast/351409"
+					}
 				}
 			]
 		}
