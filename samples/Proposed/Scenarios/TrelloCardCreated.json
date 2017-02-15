@@ -12,7 +12,7 @@
 					"size": "medium"
 				},
 				{
-					"@type": "ColumnGroup",
+					"@type": "ColumnSet",
 					"columns": [
 						{
 							"@type": "Column",
@@ -57,7 +57,7 @@
 					"wrap": true
 				},
 				{
-					"@type": "FactGroup",
+					"@type": "FactSet",
 					"speak": "It has been assigned to: David Claux",
 					"facts": [
 						{

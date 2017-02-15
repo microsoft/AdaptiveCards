@@ -13,7 +13,7 @@
             "weight": "lighter"
         },
         {
-            "@type": "ImageGallery",
+            "@type": "ImageSet",
             "size": "medium",
             "images": [
                 {

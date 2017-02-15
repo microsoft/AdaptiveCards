@@ -65,8 +65,8 @@
             <Setter Property="Margin" Value="0,4,0,4"/>
         </Style>
 
-        <!-- Column/ColumGroup Styling-->
-        <Style x:Key="Adaptive.ColumnGroup" TargetType="Grid">
+        <!-- Column/ColumnSet Styling-->
+        <Style x:Key="Adaptive.ColumnSet" TargetType="Grid">
             <Setter Property="Margin" Value="0,4,0,4"/>
         </Style>
 
@@ -79,8 +79,8 @@
             <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
-        <!-- Fact/FactGroup Styling -->
-        <Style x:Key="Adaptive.FactGroup" TargetType="Grid">
+        <!-- Fact/FactSet Styling -->
+        <Style x:Key="Adaptive.FactSet" TargetType="Grid">
             <Setter Property="Margin" Value="0,4,0,4"/>
         </Style>
 

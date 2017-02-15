@@ -7,28 +7,49 @@ using Newtonsoft.Json;
 
 namespace Adaptive.Schema.Net
 {
-    public class TextBlock : CardElement
+    /// <summary>
+    /// The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.
+    /// </summary>
+    public class TextBlock : CardItem
     {
         public TextBlock() 
         {
 
         }
 
+        /// <summary>
+        /// The size of the text
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public TextSize? Size { get; set; }
 
+        /// <summary>
+        /// The weight of the text
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public TextWeight? Weight { get; set; }
 
+        /// <summary>
+        /// The color of the text
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public TextColor? Color { get; set; } 
 
+        /// <summary>
+        /// The text to display
+        /// </summary>
         [JsonRequired]
         public string Text { get; set; }
 
+        /// <summary>
+        /// Should it be subtle?
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? IsSubtle { get; set; } 
 
+        /// <summary>
+        /// Is it allowed for the text to wrap
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? Wrap { get; set; } 
 

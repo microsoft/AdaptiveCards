@@ -184,9 +184,9 @@ namespace Adaptive.Renderers
             if (image.Style == ImageStyle.Person)
                 style += $".{image.Style.ToString()}";
             uiImage.Style = this.GetStyle(style);
-            if (image.Action != null)
+            if (image.SelectAction != null)
             {
-                return _renderAction(image.Action, new List<FrameworkElement>(), uiImage);
+                return _renderAction(image.SelectAction, new List<FrameworkElement>(), uiImage);
             }
 
             return uiImage;

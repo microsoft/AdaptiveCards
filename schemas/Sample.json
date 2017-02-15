@@ -14,7 +14,7 @@
       "text":"asasd"
     },
     {
-      "@type": "FactGroup",
+      "@type": "FactSet",
       "facts": [
         {
           "name": "test",

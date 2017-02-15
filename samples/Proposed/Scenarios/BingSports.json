@@ -16,7 +16,7 @@
             "@type": "Container",
             "items": [
                 {
-                    "@type": "ColumnGroup",
+                    "@type": "ColumnSet",
                     "columns": [
                         {
                             "@type": "Column",

@@ -1,4 +1,4 @@
-﻿import { AdaptiveCard, TextColor, ActionGroup, ActionButtonStyle, appendChild, isNullOrEmpty } from "./adaptiveCard";
+﻿import { AdaptiveCard, TextColor, ActionSet, ActionButtonStyle, appendChild, isNullOrEmpty } from "./adaptiveCard";
 import { defaultPayload } from "./constants";
 import * as ace from "brace";
 import "brace/mode/json";
@@ -171,7 +171,7 @@ class LiveTileContainer extends HostContainer {
 
         card.root.textColor = LiveTileContainer.textColor;
 
-        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionSet.buttonStyle = ActionButtonStyle.Push;
 
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
@@ -207,7 +207,7 @@ class BingContainer extends HostContainer {
 
         card.root.textColor = BingContainer.textColor;
 
-        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionSet.buttonStyle = ActionButtonStyle.Push;
 
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
@@ -271,7 +271,7 @@ class ToastContainer extends HostContainer {
 
         card.root.textColor = LiveTileContainer.textColor;
 
-        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionSet.buttonStyle = ActionButtonStyle.Push;
 
         let renderedCard = card.render();
 
@@ -350,7 +350,7 @@ class OutlookConnectorContainer extends ConnectorContainer {
             appendChild(element, headerElement);
         }
 
-        ActionGroup.buttonStyle = ActionButtonStyle.Link;
+        ActionSet.buttonStyle = ActionButtonStyle.Link;
 
         let renderedCard = card.render();
 
@@ -376,7 +376,7 @@ class TeamsConnectorContainer extends ConnectorContainer {
             appendChild(element, headerElement);
         }
 
-        ActionGroup.buttonStyle = ActionButtonStyle.Link;
+        ActionSet.buttonStyle = ActionButtonStyle.Link;
 
         let renderedCard = card.render();
 
@@ -406,7 +406,7 @@ class SkypeCardContainer extends HostContainer {
         botElementIn1.appendChild(botElementIn2);
 
 
-        ActionGroup.buttonStyle = ActionButtonStyle.Push;
+        ActionSet.buttonStyle = ActionButtonStyle.Push;
 
         let renderedCard = card.render();
 
@@ -424,7 +424,7 @@ class CortanaCarContainer extends HostContainer {
     render(card: AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         
-        ActionGroup.buttonStyle = ActionButtonStyle.Link;
+        ActionSet.buttonStyle = ActionButtonStyle.Link;
 
         let renderedCard = card.render();
 

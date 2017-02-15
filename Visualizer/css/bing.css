@@ -150,7 +150,7 @@
     background-repeat: no-repeat;
 }
 
-table.factGroup {
+table.factSet {
     margin: 20px 0px 0px 0px;
     border-width: 0px;
     border-spacing: 0px;
@@ -158,7 +158,7 @@ table.factGroup {
     border-collapse: collapse;
 }
 
-tr.factGroupRowSpacer {
+tr.factSetRowSpacer {
     height: 10px;
 }
 
@@ -188,11 +188,11 @@ td.factValue {
     margin: 5px 0px 5px 0px;
 }
 
-.actionGroup {
+.actionSet {
     margin: 20px 0px 0px 0px;
 }
 
-.columnGroup {
+.columnSet {
     margin: 15px 0px 5px 0px;
 }
 

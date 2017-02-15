@@ -15,7 +15,7 @@
 					"size": "medium"
 				},
 				{
-					"@type": "FactGroup",
+					"@type": "FactSet",
 					"facts": [
 						{
 							"name": "This is a fact name",
@@ -56,7 +56,7 @@
 					]
 				},
 				{
-					"@type": "ImageGallery",
+					"@type": "ImageSet",
 					"imageSize": "medium",
 					"items": [
 						"http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
@@ -73,7 +73,7 @@
 							"card": {
 								"items": [
 									{
-										"@type": "ColumnGroup",
+										"@type": "ColumnSet",
 										"columns": [
 											{
 												"@type": "Column",
@@ -226,7 +226,7 @@
 					"style": "sectionTitle"
 				},
 				{
-					"@type": "ColumnGroup",
+					"@type": "ColumnSet",
 					"columns": [
 						{
 							"@type": "Column",

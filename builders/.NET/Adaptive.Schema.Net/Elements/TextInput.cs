@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace Adaptive.Schema.Net
 {
     /// <summary>
-    /// Element which collects text from the user
+    /// Input which collects text from the user
     /// </summary>
     public class TextInput : Input
     {
