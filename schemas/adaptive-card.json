@@ -16,7 +16,7 @@
       "description": "Title/caption for the adaptive card."
     },
     "body": {
-      "$ref": "#/definitions/CardElements"
+      "$ref": "#/definitions/CardItems"
     },
     "actions": {
       "$ref": "#/definitions/Actions"
@@ -40,7 +40,7 @@
           "description": "Title/caption for the adaptive card."
         },
         "body": {
-          "$ref": "#/definitions/CardElements"
+          "$ref": "#/definitions/CardItems"
         },
         "actions": {
           "$ref": "#/definitions/Actions"
@@ -97,7 +97,7 @@
       ],
       "type": "object"
     },
-    "CardElement": {
+    "CardItem": {
       "oneOf": [
         {
           "$ref": "#/definitions/TextBlock"
@@ -109,13 +109,13 @@
           "$ref": "#/definitions/Container"
         },
         {
-          "$ref": "#/definitions/ColumnGroup"
+          "$ref": "#/definitions/ColumnSet"
         },
         {
-          "$ref": "#/definitions/FactGroup"
+          "$ref": "#/definitions/FactSet"
         },
         {
-          "$ref": "#/definitions/ImageGallery"
+          "$ref": "#/definitions/ImageSet"
         },
         {
           "$ref": "#/definitions/TextInput"
@@ -125,11 +125,11 @@
         }
       ]
     },
-    "CardElements": {
+    "CardItems": {
       "type": "array",
       "additionalItems": true,
       "items": {
-        "$ref": "#/definitions/CardElement"
+        "$ref": "#/definitions/CardItem"
       }
     },
     "Choice": {
@@ -217,7 +217,7 @@
     },
     "Column": {
       "additionalProperties": false,
-      "description": "Defines a container that is part of a columnGroup",
+      "description": "Defines a container that is part of a ColumnSet",
       "properties": {
         "@type": {
           "type": "string",
@@ -226,7 +226,7 @@
             "Column"
           ]
         },
-        "action": {
+        "selectAction": {
           "$ref": "#/definitions/Action"
         },
         "actions": {
@@ -241,7 +241,7 @@
           "description": "The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained."
         },
         "items": {
-          "$ref": "#/definitions/CardElements"
+          "$ref": "#/definitions/CardItems"
         },
         "size": {
           "type": "string",
@@ -257,15 +257,15 @@
       ],
       "type": "object"
     },
-    "ColumnGroup": {
+    "ColumnSet": {
       "additionalProperties": false,
-      "description": "The column group element adds the ability to have a set of Column objects",
+      "description": "The column group Item adds the ability to have a set of Column objects",
       "properties": {
         "@type": {
           "type": "string",
-          "description": "Must be ColumnGroup",
+          "description": "Must be ColumnSet",
           "enum": [
-            "ColumnGroup"
+            "ColumnSet"
           ]
         },
         "columns": {
@@ -289,7 +289,7 @@
     },
     "Container": {
       "additionalProperties": false,
-      "description": "The Container is a CardElement which contains a list of CardElements that are logically grouped",
+      "description": "The Container is a CardItem which contains a list of CardItems that are logically grouped",
       "properties": {
         "@type": {
           "type": "string",
@@ -298,7 +298,7 @@
             "Container"
           ]
         },
-        "action": {
+        "selectAction": {
           "$ref": "#/definitions/Action"
         },
         "actions": {
@@ -316,7 +316,7 @@
           "$ref": "#/definitions/HorizontalAlignment"
         },
         "items": {
-          "$ref": "#/definitions/CardElements"
+          "$ref": "#/definitions/CardItems"
         },
         "speak": {
           "$ref": "#/definitions/Speak"
@@ -347,15 +347,15 @@
       ],
       "type": "object"
     },
-    "FactGroup": {
+    "FactSet": {
       "additionalProperties": false,
-      "description": "The FactGroup element makes it simple to display a series of facts (e.g. name/value pairs) in a tabular form.",
+      "description": "The FactSet Item makes it simple to display a series of facts (e.g. name/value pairs) in a tabular form.",
       "properties": {
         "@type": {
           "type": "string",
-          "description": "Must be FactGroup",
+          "description": "Must be FactSet",
           "enum": [
-            "FactGroup"
+            "FactSet"
           ]
         },
         "speak": {
@@ -377,7 +377,7 @@
     },
     "HorizontalAlignment": {
       "type": "string",
-      "description": "Controls how elements are horizontally positioned within their container.",
+      "description": "Controls how Items are horizontally positioned within their container.",
       "enum": [
         "left",
         "center",
@@ -424,7 +424,7 @@
     },
     "Image": {
       "additionalProperties": false,
-      "description": "The Image element allows for the inclusion of images in an Adaptive Card.",
+      "description": "The Image Item allows for the inclusion of images in an Adaptive Card.",
       "properties": {
         "@type": {
           "type": "string",
@@ -433,7 +433,7 @@
             "Image"
           ]
         },
-        "action": {
+        "selectAction": {
           "$ref": "#/definitions/Action"
         },
         "horizontalAlignment": {
@@ -459,15 +459,15 @@
       ],
       "type": "object"
     },
-    "ImageGallery": {
+    "ImageSet": {
       "additionalProperties": false,
-      "description": "The ImageGallery allows for the inclusion of a collection images like a photogallery.",
+      "description": "The ImageSet allows for the inclusion of a collection images like a photogallery.",
       "properties": {
         "@type": {
           "type": "string",
-          "description": "Must be ImageGallery",
+          "description": "Must be ImageSet",
           "enum": [
-            "ImageGallery"
+            "ImageSet"
           ]
         },
         "images": {
@@ -492,7 +492,7 @@
     },
     "ImageSize": {
       "type": "string",
-      "description": "Controls the horizontal size (width) of element. ",
+      "description": "Controls the horizontal size (width) of Item. ",
       "enum": [
         "small",
         "normal",
@@ -503,7 +503,7 @@
     },
     "ImageStyle": {
       "type": "string",
-      "description": "Controls the way Image elements are displayed",
+      "description": "Controls the way Image Items are displayed",
       "enum": [
         "normal",
         "person"
@@ -574,7 +574,7 @@
     },
     "Speak": {
       "type": "string",
-      "description": "Specifies what should be spoken for this entire element. This is simple text or SSML fragment"
+      "description": "Specifies what should be spoken for this entire Item. This is simple text or SSML fragment"
     },
     "SubmitAction": {
       "additionalProperties": false,
@@ -602,7 +602,7 @@
     },
     "TextBlock": {
       "additionalProperties": false,
-      "description": "The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.",
+      "description": "The TextBlock Item allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.",
       "properties": {
         "@type": {
           "type": "string",
@@ -613,7 +613,7 @@
         },
         "color": {
           "type": "string",
-          "description": "Controls the color of TextBlock elements.",
+          "description": "Controls the color of TextBlock Items.",
           "enum": [
             "default",
             "dark",
@@ -633,7 +633,7 @@
         },
         "size": {
           "type": "string",
-          "description": "Controls how elements are horizontally positioned within their container.",
+          "description": "Controls how Items are horizontally positioned within their container.",
           "enum": [
             "small",
             "normal",
@@ -650,7 +650,7 @@
           "description": "The actual text to display"
         },
         "weight": {
-          "description": "Controls the weight of TextBlock elements",
+          "description": "Controls the weight of TextBlock Items",
           "enum": [
             "lighter",
             "normal",
