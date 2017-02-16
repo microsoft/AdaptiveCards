@@ -274,9 +274,6 @@
             "$ref": "#/definitions/Column"
           }
         },
-        "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment"
-        },
         "speak": {
           "$ref": "#/definitions/Speak"
         }
@@ -311,9 +308,6 @@
         "backgroundImageUrl": {
           "type": "string",
           "description": "The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained."
-        },
-        "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment"
         },
         "items": {
           "$ref": "#/definitions/CardItems"
@@ -626,6 +620,10 @@
         },
         "horizontalAlignment": {
           "$ref": "#/definitions/HorizontalAlignment"
+        },
+        "maxLines": {
+          "type":"number",
+          "description": "When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use."
         },
         "isSubtle": {
           "type": "boolean",
