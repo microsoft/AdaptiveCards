@@ -29,22 +29,21 @@ TextBlock::TextBlock(std::shared_ptr<Container> container,
 
 std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
 {
-    ParseUtil::ThrowIfNotJsonObject(json);
     ParseUtil::ExpectTypeString(json, CardElementType::TextBlock);
 
-    // Parse base class stuff
-    std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
-    CardElementSize size = ParseUtil::GetEnumValue<CardElementSize>(json, AdaptiveCardSchemaKey::CardElementSize, CardElementSize::Auto, SizeFromString);
-    HorizontalAlignment horAlignment = ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString);
+    std::shared_ptr<TextBlock> textBlock = BaseCardElement::Deserialize<TextBlock>(json);
 
-    // Parse derived class stuff
     std::string text = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text);
+    textBlock->SetText(text);
     TextSize textSize = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::TextSize, TextSize::Normal, TextSizeFromString);
+    textBlock->SetTextSize(textSize);
     TextColor textColor = ParseUtil::GetEnumValue<TextColor>(json, AdaptiveCardSchemaKey::TextColor, TextColor::Default, TextColorFromString);
+    textBlock->SetTextColor(textColor);
     TextWeight textWeight = ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Normal, TextWeightFromString);
+    textBlock->SetTextWeight(textWeight);
     TextWrap textWrap = ParseUtil::GetEnumValue<TextWrap>(json, AdaptiveCardSchemaKey::TextWrap, TextWrap::NoWrap, TextWrapFromString);
+    textBlock->SetWrap(textWrap == TextWrap::Wrap);
 
-    auto textBlock = std::make_shared<TextBlock>(nullptr, horAlignment, size, speak, text, textSize, textWeight, textColor, false, textWrap == TextWrap::Wrap);
     return textBlock;
 }
 
