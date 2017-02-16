@@ -39,14 +39,29 @@ AdaptiveCard is top level object which represents a card
 # CardItems
 
 ## CardItem
-CardItem is the base type for all items that can be used to define an Adaptive Card
+A card item is a visual element to add to a container.  CardItem shared properties 
 
-> NOTE: You cannot add an Input directly, only the derived types.
+> NOTE: You cannot create an CardItem directly, only the derived types.
 
 | Property | Type |  Required |Description |
 |---|---|---|---|
-| **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
+
+## Image 
+
+*Extends [CardItem](#carditem)*
+
+The Image element allows for the inclusion of images in an Adaptive Card.
+
+| Property | Type | Required |Description |
+|---|---|---|---|
+| **type**| string | true | **"Image"** |
+| **url** | string | true | The URL to the image. |
+| **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
+| **selectAction** | [Action](#action) | false | Action to perform for a selection for this image, (this allows image to act as an action) |
+| **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the image. |
+| **altText** | string  | false | Alternate text for the image for accessibility |
+| **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
 
 ## TextBlock 
 *Extends [CardItem](#carditem)*
@@ -61,6 +76,9 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 | **weight** | [TextWeight](#textweight) | false |The weight of the text |
 | **color** | [TextColor](#textcolor) | false |The color of the text |
 | **isSubtle** | boolean |false | Indicates whether the color of the text should be slightly toned down to appear less prominent |
+| **wrap** | boolean | false | Indicates whether the text should be allowed to wrap |
+| **maxLines** | number | false | When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use. |
+| **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
 
 ### Formatting Functions
 
@@ -111,25 +129,10 @@ Example for (en-us):
     {{TIME(2017-02-13T20:46:30z)}}
 
 
-## Image 
-
-*Extends [CardItem](#carditem)*
-
-The Image element allows for the inclusion of images in an Adaptive Card.
-
-| Property | Type | Required |Description |
-|---|---|---|---|
-| **type**| string | true | **"Image"** |
-| **url** | string | true | The URL to the image. |
-| **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
-| **selectAction** | [Action](#action) | false | Action to perform for a selection for this image, (this allows image to act as an action) |
-| **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the image. |
-| **altText** | string  | false | Alternate text for the image for accessibility |
-
 ## Input
 *Extends [CardItem](#carditem)*
 
-Input is a base class which describes shared properties for input to collect information from a user. 
+Input  shared properties for input to collect information from a user. 
 
 >NOTE: You cannot add an Input directly, only the derived types.
 
@@ -176,6 +179,7 @@ Represents a single Choice
 | **display** | string | true  | The display text for a choice|
 | **value** | string | true  | the raw value for the choice|
 | **isSelected** | bool |  false |is the choice selected |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 # Containers
 
@@ -249,6 +253,7 @@ Represents one "fact" in a [FactSet](#factset) element.
 # Actions
 Actions define clickable targets that do something.
 
+## Action
 
 ## OpenUrlAction
 *Extends [Action](#action)*
@@ -258,8 +263,9 @@ with embedded web browser.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **title** | string | true | Label for button or link that represents this action |
 | **type**| string | true | **"OpenUrlAction"** |
+| **title** | string | true | Label for button or link that represents this action |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **url** | string | true | Default (browser) url to use  |
 | **platformUrls** | [PlatformUrl](#platformurl)[] | false |  candidate array of PlatformUrls 's that can be used |
 
@@ -270,7 +276,6 @@ mobile linking to applications.
 
 | Property | Type | Required| Description |
 |---|---|---|---|
-| **title** | string | true | Label for button or link that represents this action |
 | **os** | string | true | platform filter, If it is "default" or missing then it will simply use browser. Other platforms are: (iOS?, Android?, ...?) |
 | **url** | string | true | url to use on this platform os|
 
@@ -285,6 +290,7 @@ to an arbitrary url.
 |---|---|---|---|
 | **type**| string | true | **"HttpAction"** |
 | **title** | string | true | Label for button or link that represents this action |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **url** | string | true | url to use (can have binding information) |
 | **method** | string | true | Http method (Example: POST) |
 | **headers** | object | false | Object which represents headers Example: { "content-type":"application/json" }  |
@@ -299,6 +305,7 @@ ShowCard defines an inline AdaptiveCard which is shown to the user when it is cl
 |---|---|---|---|
 | **type**| string | true | **"ShowCardAction"** |
 | **title** | string | true | Label for button or link that represents this action |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **card** | [AdaptiveCard](#adaptivecard) | true |inline card defining the card to be shown when this action is invoked. It is up to client to decide how to show this inline card. |
 
 ## SubmitAction
@@ -312,6 +319,7 @@ For example: With BotFramework bots the client would send an activity through th
 |---|---|---|---|
 | **type**| string | true | **"SubmitAction"** |
 | **title** | string | true | Label for button or link that represents this action |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **data** | object | false | initial data that input fields will be combined with.  This is essentially 'hidden' properties |
 
 ## CancelAction
@@ -323,6 +331,7 @@ When CancelAction is invoked it resets any input that is in scope, and closes a 
 |---|---|---|---|
 | **type**| string | true | **"CancelAction"** |
 | **title** | string | true | Label for button or link that represents this action |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 # Enumerations
 The following enumerations are used by various element types.
