@@ -31,6 +31,9 @@ public:
 
     virtual std::string Serialize() = 0;
 
+    template <typename T>
+    static std::shared_ptr<T> Deserialize(const Json::Value& json);
+
 private:
     std::weak_ptr<Container> m_parent;
     HorizontalAlignment m_horizontalAlignment;
@@ -38,5 +41,27 @@ private:
     std::string m_speak;
     CardElementType m_type;
 };
+
+template <typename T>
+std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
+{
+    std::shared_ptr<T> cardElement = std::make_shared<T>();
+    std::shared_ptr<BaseCardElement> baseCardElement = cardElement;
+
+    ParseUtil::ThrowIfNotJsonObject(json);
+
+    std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
+    baseCardElement->SetSpeak(speak);
+
+    CardElementSize size = ParseUtil::GetEnumValue<CardElementSize>(json, AdaptiveCardSchemaKey::CardElementSize, CardElementSize::Auto, SizeFromString);
+    baseCardElement->SetSize(size);
+
+    HorizontalAlignment horAlignment = ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString);
+    baseCardElement->SetHorizontalAlignment(horAlignment);
+
+    return cardElement;
+}
+
+
 }
 
