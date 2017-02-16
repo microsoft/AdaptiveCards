@@ -18,5 +18,10 @@ namespace Adaptive.Schema.Net
         /// Title of the action
         /// </summary>
         public string Title { get; set; } 
+
+        /// <summary>
+        /// Speak phrase for this action
+        /// </summary>
+        public string Speak { get; set; }
     }
 }

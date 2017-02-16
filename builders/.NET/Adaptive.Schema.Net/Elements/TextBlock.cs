@@ -51,7 +51,12 @@ namespace Adaptive.Schema.Net
         /// Is it allowed for the text to wrap
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Wrap { get; set; } 
+        public bool? Wrap { get; set; }
 
+        /// <summary>
+        /// When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public int? MaxLines { get; set; }
     }
 }
