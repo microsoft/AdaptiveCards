@@ -60,7 +60,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int BaseCardElement_GetElementType(long jarg1, BaseCardElement jarg1_);
   public final static native String BaseCardElement_Serialize(long jarg1, BaseCardElement jarg1_);
   public final static native long new_Container__SWIG_0();
-  public final static native long new_Container__SWIG_1(long jarg1, Container jarg1_, int jarg2, int jarg3, String jarg4, String jarg5, String jarg6, long jarg7, BaseCardElementVector jarg7_);
+  public final static native long new_Container__SWIG_1(long jarg1, Container jarg1_, int jarg2, int jarg3, String jarg4, String jarg5, String jarg6);
+  public final static native long new_Container__SWIG_2(long jarg1, Container jarg1_, int jarg2, int jarg3, String jarg4, String jarg5, String jarg6, long jarg7, BaseCardElementVector jarg7_);
   public final static native String Container_Serialize(long jarg1, Container jarg1_);
   public final static native long Container_GetItems(long jarg1, Container jarg1_);
   public final static native void Container_AddItem(long jarg1, Container jarg1_, long jarg2, BaseCardElement jarg2_);

@@ -41,8 +41,12 @@ public class Container extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_Container__SWIG_0(), true);
   }
 
-  public Container(Container container, HorizontalAlignment horizontalAlignment, CardElementSize size, String speak, String backgroundImageUrl, String backgroundColor, BaseCardElementVector items) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(Container.getCPtr(container), container, horizontalAlignment.swigValue(), size.swigValue(), speak, backgroundImageUrl, backgroundColor, BaseCardElementVector.getCPtr(items), items), true);
+  public Container(Container parent, HorizontalAlignment horizontalAlignment, CardElementSize size, String speak, String backgroundImageUrl, String backgroundColor) {
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(Container.getCPtr(parent), parent, horizontalAlignment.swigValue(), size.swigValue(), speak, backgroundImageUrl, backgroundColor), true);
+  }
+
+  public Container(Container parent, HorizontalAlignment horizontalAlignment, CardElementSize size, String speak, String backgroundImageUrl, String backgroundColor, BaseCardElementVector items) {
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_2(Container.getCPtr(parent), parent, horizontalAlignment.swigValue(), size.swigValue(), speak, backgroundImageUrl, backgroundColor, BaseCardElementVector.getCPtr(items), items), true);
   }
 
   public String Serialize() {

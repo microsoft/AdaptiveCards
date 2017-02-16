@@ -84,72 +84,16 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
 
     private void renderAdaptiveCard(File jsonFile)
     {
-        String output = "Start";
         try
         {
-            /*FileInputStream fis;
-            fis = new FileInputStream(jsonFile.getAbsolutePath());
-            StringBuffer fileContent = new StringBuffer("");
-
-            byte[] buffer = new byte[1024];
-            int n;
-            while ((n = fis.read(buffer)) != -1)
-            {
-                fileContent.append(new String(buffer, 0, n));
-            }
-            String data = fileContent.toString();*/
-
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromFile(jsonFile.getAbsolutePath());
             LinearLayout layout = (LinearLayout) findViewById(R.id.layoutAdaptiveCard);
             layout.removeAllViews();
             AdaptiveCardRenderer.getInstance().render(getApplicationContext(), layout, adaptiveCard);
-            /*output += ";parsed";
-            if (adaptiveCard != null)
-            {
-                output += ";adaptiveCard";
-                Container container = adaptiveCard.GetRoot();
-                if (container != null)
-                {
-                    output += ";container";
-                    BaseCardElementVector baseCardElementList = container.GetItems();
-                    if (baseCardElementList != null)
-                    {
-                        output += ";baseCardElementList";
-                        long size = baseCardElementList.size();
-                        output += ";container num elements=" + size;
-                        for (int i = 0; i < size; i++)
-                        {
-                            BaseCardElement cardElement = baseCardElementList.get(i);
-                            String type = cardElement.GetElementType().toString();
-                            String text = TextBlock.dynamic_cast(cardElement).GetText();
-                            output += ";card Element Type=" + type;
-                            output += ";card Element Text=" + text;
-                        }
-                    }
-                    else
-                    {
-                        output += ";baseCardElementList null";
-                    }
-                }
-                else
-                {
-                    output += ";container null";
-                }
-            }
-            else
-            {
-                output += ";adaptiveCard null";
-            }*/
         }
         catch (Exception ex)
         {
-            output += ";" + ex.toString();
         }
-
-        // Example of a call to a native method
-        //TextView tv = (TextView) findViewById(R.id.sample_text);
-        //tv.setText(output);
-        //tv.setText(stringFromJNI());
     }
 
     @Override

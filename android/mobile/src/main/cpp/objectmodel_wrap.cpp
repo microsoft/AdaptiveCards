@@ -1094,7 +1094,57 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Container_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3, jstring jarg4, jstring jarg5, jstring jarg6, jlong jarg7, jobject jarg7_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Container_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3, jstring jarg4, jstring jarg5, jstring jarg6) {
+  jlong jresult = 0 ;
+  std::shared_ptr< AdaptiveCards::Container > arg1 ;
+  AdaptiveCards::HorizontalAlignment arg2 ;
+  AdaptiveCards::CardElementSize arg3 ;
+  std::string arg4 ;
+  std::string arg5 ;
+  std::string arg6 ;
+  std::shared_ptr< AdaptiveCards::Container > *argp1 ;
+  AdaptiveCards::Container *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  argp1 = *(std::shared_ptr< AdaptiveCards::Container > **)&jarg1; 
+  if (argp1) arg1 = *argp1; 
+  arg2 = (AdaptiveCards::HorizontalAlignment)jarg2; 
+  arg3 = (AdaptiveCards::CardElementSize)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = (const char *)jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  if(!jarg5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg5_pstr = (const char *)jenv->GetStringUTFChars(jarg5, 0); 
+  if (!arg5_pstr) return 0;
+  (&arg5)->assign(arg5_pstr);
+  jenv->ReleaseStringUTFChars(jarg5, arg5_pstr); 
+  if(!jarg6) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg6_pstr = (const char *)jenv->GetStringUTFChars(jarg6, 0); 
+  if (!arg6_pstr) return 0;
+  (&arg6)->assign(arg6_pstr);
+  jenv->ReleaseStringUTFChars(jarg6, arg6_pstr); 
+  result = (AdaptiveCards::Container *)new AdaptiveCards::Container(arg1,arg2,arg3,arg4,arg5,arg6);
+  
+  *(std::shared_ptr<  AdaptiveCards::Container > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::Container >(result SWIG_NO_NULL_DELETER_1) : 0;
+  
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Container_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3, jstring jarg4, jstring jarg5, jstring jarg6, jlong jarg7, jobject jarg7_) {
   jlong jresult = 0 ;
   std::shared_ptr< AdaptiveCards::Container > arg1 ;
   AdaptiveCards::HorizontalAlignment arg2 ;
