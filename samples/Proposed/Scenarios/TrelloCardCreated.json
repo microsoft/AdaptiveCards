@@ -87,8 +87,7 @@
 						"type": "AdaptiveCard",
 						"body": [
 							{
-								"type": "Input.Text",
-								"style": "date",
+								"type": "Input.Date",
 								"id": "dueDate",
 								"title": "Select due date"
 							}
