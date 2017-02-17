@@ -10,7 +10,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// The ImageSet allows for the inclusion of a collection images like a photogallery.
     /// </summary>
-    public class ImageSet : CardItem
+    public class ImageSet : CardElement
     {
         public ImageSet()
         {

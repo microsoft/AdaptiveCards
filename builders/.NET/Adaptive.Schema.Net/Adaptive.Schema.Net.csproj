@@ -52,26 +52,29 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Actions\Action.cs" />
-    <Compile Include="Actions\CancelAction.cs" />
-    <Compile Include="Actions\SubmitAction.cs" />
-    <Compile Include="Actions\ShowCardAction.cs" />
+    <Compile Include="Actions\ActionBase.cs" />
+    <Compile Include="Actions\ActionSubmit.cs" />
+    <Compile Include="Actions\ActionShowCard.cs" />
     <Compile Include="Containers\AdaptiveCard.cs" />
-    <Compile Include="Elements\CardItem.cs" />
+    <Compile Include="Elements\CardElement.cs" />
     <Compile Include="Containers\Column.cs" />
     <Compile Include="Containers\ColumnSet.cs" />
     <Compile Include="Containers\Container.cs" />
+    <Compile Include="Elements\InputToggle.cs" />
+    <Compile Include="Elements\InputNumber.cs" />
+    <Compile Include="Elements\InputTime.cs" />
+    <Compile Include="Elements\InputDate.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Containers\FactSet.cs" />
-    <Compile Include="Actions\HttpAction.cs" />
+    <Compile Include="Actions\ActionHttp.cs" />
     <Compile Include="Elements\Image.cs" />
     <Compile Include="Containers\ImageSet.cs" />
     <Compile Include="Elements\Input.cs" />
-    <Compile Include="Actions\OpenUrlAction.cs" />
+    <Compile Include="Actions\ActionOpenUrl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Elements\TextBlock.cs" />
-    <Compile Include="Elements\ChoiceInput.cs" />
-    <Compile Include="Elements\TextInput.cs" />
+    <Compile Include="Elements\InputChoiceSet.cs" />
+    <Compile Include="Elements\InputText.cs" />
     <Compile Include="TypedElementConverter.cs" />
     <Compile Include="TypedElement.cs" />
   </ItemGroup>

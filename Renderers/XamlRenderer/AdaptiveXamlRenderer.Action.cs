@@ -17,20 +17,17 @@ namespace Adaptive.Renderers
 
         private UIElement _renderAction(ActionBase action, List<FrameworkElement> inputControls, FrameworkElement content = null)
         {
-            if (action is OpenUrlAction)
-                return Render((OpenUrlAction)action, inputControls, content);
+            if (action is ActionOpenUrl)
+                return Render((ActionOpenUrl)action, inputControls, content);
 
-            if (action is SubmitAction)
-                return Render((SubmitAction)action, inputControls, content);
+            if (action is ActionSubmit)
+                return Render((ActionSubmit)action, inputControls, content);
 
-            if (action is CancelAction)
-                return Render((CancelAction)action, inputControls, content);
+            if (action is ActionShowCard)
+                return Render((ActionShowCard)action, inputControls, content);
 
-            if (action is ShowCardAction)
-                return Render((ShowCardAction)action, inputControls, content);
-
-            if (action is HttpAction)
-                return Render((HttpAction)action, inputControls, content);
+            if (action is ActionHttp)
+                return Render((ActionHttp)action, inputControls, content);
 
             return new Grid();
         }
@@ -41,7 +38,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="httpAction"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(HttpAction httpAction, List<FrameworkElement> inputControls, FrameworkElement content)
+        protected virtual UIElement Render(ActionHttp httpAction, List<FrameworkElement> inputControls, FrameworkElement content)
         {
             Button uiButton = _createActionButton(httpAction, content);
             uiButton.Click += (sender, e) =>
@@ -53,7 +50,7 @@ namespace Adaptive.Renderers
 
                 OnAction?.Invoke(uiButton, new ActionEventArgs()
                 {
-                    Action = new HttpAction()
+                    Action = new ActionHttp()
                     {
                         Title = httpAction.Title,
                         Method = httpAction.Method,
@@ -86,7 +83,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="showCardAction"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(ShowCardAction showCardAction, List<FrameworkElement> inputControls, FrameworkElement content)
+        protected virtual UIElement Render(ActionShowCard showCardAction, List<FrameworkElement> inputControls, FrameworkElement content)
         {
             Button uiButton = _createActionButton(showCardAction, content);
             uiButton.Click += (sender, e) =>
@@ -101,7 +98,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="openUrlAction"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(OpenUrlAction openUrlAction, List<FrameworkElement> inputControls, FrameworkElement content)
+        protected virtual UIElement Render(ActionOpenUrl openUrlAction, List<FrameworkElement> inputControls, FrameworkElement content)
         {
             Button uiButton = _createActionButton(openUrlAction, content);
             uiButton.Click += (sender, e) =>
@@ -116,7 +113,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="submitAction"></param>
         /// <returns></returns>
-        protected virtual UIElement Render(SubmitAction submitAction, List<FrameworkElement> inputControls, FrameworkElement content)
+        protected virtual UIElement Render(ActionSubmit submitAction, List<FrameworkElement> inputControls, FrameworkElement content)
         {
             Button uiButton = _createActionButton(submitAction, content);
             uiButton.Click += (sender, e) =>
@@ -129,21 +126,21 @@ namespace Adaptive.Renderers
             return uiButton;
         }
 
-        /// <summary>
-        /// CancelAction
-        /// </summary>
-        /// <param name="cancelAction"></param>
-        /// <returns></returns>
-        protected virtual UIElement Render(CancelAction cancelAction, List<FrameworkElement> inputControls, FrameworkElement content)
-        {
-            Button uiButton = _createActionButton(cancelAction, content);
-            uiButton.Click += (sender, e) =>
-            {
-                _resetInputControls(inputControls);
-                OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = cancelAction });
-            };
-            return uiButton;
-        }
+        ///// <summary>
+        ///// CancelAction
+        ///// </summary>
+        ///// <param name="cancelAction"></param>
+        ///// <returns></returns>
+        //protected virtual UIElement Render(CancelAction cancelAction, List<FrameworkElement> inputControls, FrameworkElement content)
+        //{
+        //    Button uiButton = _createActionButton(cancelAction, content);
+        //    uiButton.Click += (sender, e) =>
+        //    {
+        //        _resetInputControls(inputControls);
+        //        OnAction?.Invoke(uiButton, new ActionEventArgs() { Action = cancelAction });
+        //    };
+        //    return uiButton;
+        //}
 
         private Button _createActionButton(ActionBase action, FrameworkElement content)
         {

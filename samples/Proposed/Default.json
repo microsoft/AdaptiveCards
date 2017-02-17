@@ -1,21 +1,21 @@
 {
-	"@type": "AdaptiveCard",
+	"type": "AdaptiveCard",
 	"sections": [
 		{
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "This is a text element",
 					"style": "sectionTitle",
 					"size": "large"
 				},
 				{
-					"@type": "Image",
+					"type": "Image",
 					"url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
 					"size": "medium"
 				},
 				{
-					"@type": "FactSet",
+					"type": "FactSet",
 					"facts": [
 						{
 							"name": "This is a fact name",
@@ -32,14 +32,14 @@
 					]
 				},
 				{
-					"@type": "DateInput"
+					"type": "DateInput"
 				},
 				{
-					"@type": "TextInput",
+					"type": "Input.Text",
 					"title": "Enter text here"
 				},
 				{
-					"@type": "MultichoiceInput",
+					"type": "MultiInput.ChoiceSet",
 					"choices": [
 						{
 							"display": "Choice 1",
@@ -56,7 +56,7 @@
 					]
 				},
 				{
-					"@type": "ImageSet",
+					"type": "ImageSet",
 					"imageSize": "medium",
 					"items": [
 						"http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
@@ -65,35 +65,35 @@
 					]
 				},
 				{
-					"@type": "ActionGroup",
+					"type": "ActionGroup",
 					"actions": [
 						{
-							"@type": "ActionCard",
+							"type": "ActionCard",
 							"name": "Comment",
 							"card": {
 								"items": [
 									{
-										"@type": "ColumnSet",
+										"type": "ColumnSet",
 										"columns": [
 											{
-												"@type": "Column",
+												"type": "Column",
 												"size": 50,
 												"items": [
 													{
-														"@type": "TextInput"
+														"type": "Input.Text"
 													}
 												]
 											},
 											{
-												"@type": "Column",
+												"type": "Column",
 												"size": 50,
 												"items": [
 													{
-														"@type": "DateInput",
+														"type": "DateInput",
 														"size": "stretch"
 													},
 													{
-														"@type": "MultichoiceInput",
+														"type": "MultiInput.ChoiceSet",
 														"size": "stretch",
 														"id": "list",
 														"title": "Pick an option",
@@ -117,13 +117,13 @@
 										]
 									},
 									{
-										"@type": "TextInput"
+										"type": "Input.Text"
 									}
 								]
 							},
 							"inputs": [
 								{
-									"@type": "TextInput",
+									"type": "Input.Text",
 									"id": "comment",
 									"isMultiline": true,
 									"title": "Input's title property"
@@ -131,7 +131,7 @@
 							],
 							"actions": [
 								{
-									"@type": "HttpPOST",
+									"type": "HttpPOST",
 									"name": "Action's name prop.",
 									"target": "http://...",
 									"successMessage": "This is the action's successMessage property.",
@@ -140,11 +140,11 @@
 							]
 						},
 						{
-							"@type": "ActionCard",
+							"type": "ActionCard",
 							"name": "Move",
 							"inputs": [
 								{
-									"@type": "MultichoiceInput",
+									"type": "MultiInput.ChoiceSet",
 									"id": "list",
 									"title": "Pick an option",
 									"choices": [
@@ -165,7 +165,7 @@
 							],
 							"actions": [
 								{
-									"@type": "HttpPOST",
+									"type": "HttpPOST",
 									"name": "Action's name prop.",
 									"target": "http://...",
 									"successMessage": "This is the action's successMessage property.",
@@ -174,18 +174,18 @@
 							]
 						},
 						{
-							"@type": "ActionCard",
+							"type": "ActionCard",
 							"name": "Due Date",
 							"inputs": [
 								{
-									"@type": "DateInput",
+									"type": "DateInput",
 									"id": "dueDate",
 									"title": "Input's title property"
 								}
 							],
 							"actions": [
 								{
-									"@type": "HttpPOST",
+									"type": "HttpPOST",
 									"name": "Action's name prop.",
 									"target": "http://...",
 									"successMessage": "This is the action's successMessage property.",
@@ -194,14 +194,14 @@
 							]
 						},
 						{
-							"@type": "HttpPOST",
+							"type": "HttpPOST",
 							"name": "Action's name prop.",
 							"target": "http://...",
 							"successMessage": "This is the action's successMessage property.",
 							"errorMessage": "This is the action's errorMessage property."
 						},
 						{
-							"@type": "OpenUri",
+							"type": "OpenUri",
 							"name": "Action's name prop",
 							"targets": [
 								{
@@ -217,45 +217,42 @@
 		{
 			"items": [
 				{
-					"@type": "Separator"
-				},
-				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Second section",
 					"size": "large",
 					"style": "sectionTitle"
 				},
 				{
-					"@type": "ColumnSet",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "Image",
+									"type": "Image",
 									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
 									"size": "small"
 								}
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "stretch",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "This is the activityTitle property",
 									"style": "activityTitle"
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "This is the activitySubtitle property",
 									"style": "activitySubtitle",
 									"topSpacing": "none"
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "This is the activityText property",
 									"style": "activityText",
 									"topSpacing": "none"
@@ -263,19 +260,19 @@
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "large",
 							"items": [
 								{
-									"@type": "DateInput",
+									"type": "DateInput",
 									"size": "stretch"
 								},
 								{
-									"@type": "TextInput",
+									"type": "Input.Text",
 									"title": "Enter text here"
 								},
 								{
-									"@type": "MultichoiceInput",
+									"type": "MultiInput.ChoiceSet",
 									"size": "stretch",
 									"choices": [
 										{

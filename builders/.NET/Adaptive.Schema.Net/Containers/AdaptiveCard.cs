@@ -15,7 +15,7 @@ namespace Adaptive.Schema.Net
     {
         public AdaptiveCard() { }
 
-        public List<CardItem> Body { get; set; } = new List<CardItem>();
+        public List<CardElement> Body { get; set; } = new List<CardElement>();
 
         /// <summary>
         /// Actions for this container
@@ -30,10 +30,9 @@ namespace Adaptive.Schema.Net
         public string Speak { get; set; }
 
         /// <summary>
-        /// Background image for card
+        /// Title for the card (used when displayed in a dialog)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundImage { get; set; }
-
+        public string Title { get; set; }
     }
 }

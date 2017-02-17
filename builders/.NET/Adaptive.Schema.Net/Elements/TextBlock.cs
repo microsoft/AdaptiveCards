@@ -10,7 +10,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.
     /// </summary>
-    public class TextBlock : CardItem
+    public class TextBlock : CardElement
     {
         public TextBlock() 
         {
@@ -33,7 +33,14 @@ namespace Adaptive.Schema.Net
         /// The color of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextColor? Color { get; set; } 
+        public TextColor? Color { get; set; }
+
+        /// <summary>
+        /// Should it be subtle?
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool? IsSubtle { get; set; }
+
 
         /// <summary>
         /// The text to display
@@ -42,10 +49,10 @@ namespace Adaptive.Schema.Net
         public string Text { get; set; }
 
         /// <summary>
-        /// Should it be subtle?
+        /// Horizontal alignment for element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IsSubtle { get; set; } 
+        public HorizontalAlignment? HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Is it allowed for the text to wrap

@@ -1,29 +1,29 @@
 {
-	"@type": "AdaptiveCard",
+	"type": "AdaptiveCard",
 	"speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
 	"body": [
 		{
-			"@type": "Container",
+			"type": "Container",
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Seattle, Washington - January 20, 7:30 AM",
 					"isSubtle": "true"
 				}
 			]
 		},
 		{
-			"@type": "Container",
+			"type": "Container",
 			"items": [
 				{
-					"@type": "ColumnSet",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "Image",
+									"type": "Image",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
 									"size": "small",
 									"horizontalAlignment": "center"
@@ -31,29 +31,29 @@
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "ColumnSet",
+									"type": "ColumnSet",
 									"columns": [
 										{
-											"@type": "Column",
+											"type": "Column",
 											"size": "auto",
 											"items": [
 												{
-													"@type": "TextBlock",
+													"type": "TextBlock",
 													"text": "42",
 													"size": "extraLarge"
 												}
 											]
 										},
 										{
-											"@type": "Column",
+											"type": "Column",
 											"size": "auto",
 											"items": [
 												{
-													"@type": "TextBlock",
+													"type": "TextBlock",
 													"text": "°F",
 													"weight": "bolder"
 												}
@@ -62,22 +62,22 @@
 									]
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Mostly Clear",
 									"isSubtle": "true"
 								}
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Hi 51"
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Lo 40"
 								}
 							]

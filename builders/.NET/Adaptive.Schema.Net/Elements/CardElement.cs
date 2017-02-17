@@ -11,9 +11,9 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Base class for all elements in a container
     /// </summary>
-    public class CardItem : TypedElement
+    public class CardElement : TypedElement
     {
-        public CardItem() : base()
+        public CardElement() : base()
         {
         }
 
@@ -23,11 +23,6 @@ namespace Adaptive.Schema.Net
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Speak { get; set; }
 
-        /// <summary>
-        /// Horizontal alignment for element
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public HorizontalAlignment? HorizontalAlignment { get; set; }
     }
 }
 

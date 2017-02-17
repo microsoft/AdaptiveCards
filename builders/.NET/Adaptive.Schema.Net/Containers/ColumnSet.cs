@@ -10,7 +10,7 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// A set of columns (each column is a container of items)
     /// </summary>
-    public class ColumnSet : CardItem
+    public class ColumnSet : CardElement
     {
         public ColumnSet() { }
 

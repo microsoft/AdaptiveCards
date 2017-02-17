@@ -1,84 +1,39 @@
 {
-    "@type": "AdaptiveCard",
+    "$schema": "http://localhost:13406/adaptive-card.json",
+    "type": "AdaptiveCard",
     "speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
     "body": [
         {
-            "@type": "TextInput",
+            "type": "Input.Text",
             "id": "SimpleVal",
-            "title": "TextInput",
-            "placeholder": "placeholder"
+            "title": "Input.Text"
         },
         {
-            "@type": "TextInput",
+            "type": "Input.Text",
             "id": "MultiLineVal",
             "title": "Multline Text",
-            "placeholder": "placeholder",
-            "isMultiLine": true
+            "isMultiline": true
         },
         {
-            "@type": "TextInput",
-            "style": "date",
+            "type": "Input.Date",
             "id": "DateVal",
-            "title": "Date",
-            "placeholder": "placeholder"
+            "title": "Date"
         },
         {
-            "@type": "TextInput",
-            "style": "datetime",
-            "id": "DateTimeVal",
-            "title": "DateTime",
-            "placeholder": "placeholder"
-        },
-        {
-            "@type": "TextInput",
-            "style": "month",
-            "title": "Month",
-            "id": "MonthVal",
-            "placeholder": "placeholder"
-        },
-        {
-            "@type": "TextInput",
-            "style": "week",
-            "title": "Week",
-            "id": "WeekVal",
-            "placeholder": "placeholder"
-        },
-        {
-            "@type": "TextInput",
-            "style": "password",
-            "id": "PasswordVal",
-            "title": "Password",
-            "placeholder": "placeholder"
-        },
-        {
-            "@type": "TextInput",
-            "style": "range",
-            "id": "RangeVal",
-            "min": "-5",
-            "max": "5",
-            "step": 1,
-            "title": "Range",
-            "placeholder": "placeholder"
-        },
-        {
-            "@type": "TextInput",
+            "type": "Input.Text",
             "style": "tel",
             "id": "TelVal",
-            "title": "phone",
-            "placeholder": "placeholder"
+            "title": "phone"
         },
         {
-            "@type": "TextInput",
-            "style": "number",
+            "type": "Input.Number",
             "id": "NumVal",
             "title": "Number",
             "min": "-5",
-            "max": "5",
-            "step": 2,
-            "placeholder": "placeholder"
+            "max": "5"
         },
         {
-            "@type": "ChoiceInput",
+            "type": "Input.ChoiceSet",
             "title": "SingleSelect",
             "id": "SingleSelectVal",
             "choices": [
@@ -98,7 +53,7 @@
             ]
         },
         {
-            "@type": "ChoiceInput",
+            "type": "Input.ChoiceSet",
             "title": "MultiSelect",
             "id": "MultiSelectVal",
             "multiSelect": true,
@@ -120,7 +75,7 @@
             ]
         },
         {
-            "@type": "ChoiceInput",
+            "type": "Input.ChoiceSet",
             "title": "Combo",
             "id": "CompactSelectVal",
             "style": "compact",
@@ -139,60 +94,65 @@
                     "value": "3"
                 }
             ]
+        },
+        {
+            "type": "Input.Toggle",
+            "id": "GuysOrGals",
+            "title1": "Guys",
+            "value1": "MALE",
+            "title2": "Gals",
+            "value2": "FEMALE",
+            "value": "MALE"
         }
     ],
     "actions": [
         {
-            "@type": "OpenUrlAction",
+            "type": "Action.OpenUrl",
             "title": "Open Url",
             "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         },
         {
-            "@type": "SubmitAction",
+            "type": "Action.Submit",
             "title": "Submit",
             "data": {
                 "id": "1234567890"
             }
         },
         {
-            "@type": "CancelAction",
-            "title": "Cancel"
-        },
-        {
-            "@type": "ShowCardAction",
+            "type": "Action.ShowCard",
             "title": "Show Card",
             "card": {
-                "@type": "AdaptiveCard",
+                "type": "AdaptiveCard",
                 "speak": "The Seattle Seahawks beat the Carolina Panters 40-7",
                 "body": [
                     {
-                        "@type": "Container",
+                        "type": "Container",
                         "items": [
                             {
-                                "@type": "TextBlock",
+                                "type": "TextBlock",
                                 "text": "Seattle vs Panthers",
                                 "isSubtle": true
                             }
                         ]
                     },
                     {
-                        "@type": "Container",
+                        "type": "Container",
                         "items": [
                             {
-                                "@type": "ColumnSet",
+                                "type": "ColumnSet",
                                 "columns": [
                                     {
-                                        "@type": "Column",
+                                        "type": "Column",
                                         "size": "auto",
                                         "items": [
                                             {
-                                                "@type": "Image",
+                                                "type": "Image",
                                                 "url": "https://www.bing.com/th?id=AR_3934aff63dd6ff941034090a4b9d12e1&w=50&h=50&dpr=2&pid=AppEx",
                                                 "size": "small",
                                                 "horizontalAlignment": "center"
                                             },
                                             {
-                                                "@type": "TextBlock",
+                                                "type": "TextBlock",
                                                 "text": "CAR",
                                                 "horizontalAlignment": "center",
                                                 "size": "normal",
@@ -201,21 +161,21 @@
                                         ]
                                     },
                                     {
-                                        "@type": "Column",
+                                        "type": "Column",
                                         "size": "stretch",
                                         "items": [
                                             {
-                                                "@type": "TextBlock",
+                                                "type": "TextBlock",
                                                 "text": "Dec 4",
                                                 "horizontalAlignment": "center"
                                             },
                                             {
-                                                "@type": "TextBlock",
+                                                "type": "TextBlock",
                                                 "text": "Final",
                                                 "horizontalAlignment": "center"
                                             },
                                             {
-                                                "@type": "TextBlock",
+                                                "type": "TextBlock",
                                                 "text": "7 - 40",
                                                 "size": "large",
                                                 "horizontalAlignment": "center"
@@ -223,17 +183,17 @@
                                         ]
                                     },
                                     {
-                                        "@type": "Column",
+                                        "type": "Column",
                                         "size": "auto",
                                         "items": [
                                             {
-                                                "@type": "Image",
+                                                "type": "Image",
                                                 "url": "https://www.bing.com/th?id=AR_95e44d654968e8de2336993a1cf8a3cf&w=50&h=50&dpr=2&pid=AppEx",
                                                 "size": "small",
                                                 "horizontalAlignment": "center"
                                             },
                                             {
-                                                "@type": "TextBlock",
+                                                "type": "TextBlock",
                                                 "text": "SEA",
                                                 "horizontalAlignment": "center",
                                                 "size": "normal",
@@ -246,20 +206,15 @@
                         ]
                     },
                     {
-                        "@type": "TextInput",
+                        "type": "Input.Text",
                         "id": "SimpleVal",
-                        "title": "TextInput",
-                        "placeholder": "placeholder"
+                        "title": "Input.Text"
                     }
                 ],
                 "actions": [
                     {
-                        "@type": "SubmitAction",
+                        "type": "Action.Submit",
                         "title": "OK"
-                    },
-                    {
-                        "@type": "CancelAction",
-                        "title": "Cancel"
                     }
                 ]
             }

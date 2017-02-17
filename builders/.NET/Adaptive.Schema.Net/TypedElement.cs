@@ -18,7 +18,7 @@ namespace Adaptive.Schema.Net
             this.Type = GetType().Name;
         }
 
-        [JsonProperty("@type", Order = -2, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
         [JsonRequired]
         public string Type { get; set; }
     }

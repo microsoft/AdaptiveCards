@@ -1,39 +1,39 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
     "body": [
         {
-            "@type": "Container",
+            "type": "Container",
             "items": [
                 {
-                    "@type": "TextBlock",
+                    "type": "TextBlock",
                     "text": "Microsoft Corp (NASDAQ: MSFT)",
                     "isSubtle": true
                 },
                 {
-                    "@type": "TextBlock",
+                    "type": "TextBlock",
                     "text": "January 19, 4:00 PM EST",
                     "isSubtle": true
                 }
             ]
         },
         {
-            "@type": "Container",
+            "type": "Container",
             "items": [
                 {
-                    "@type": "ColumnSet",
+                    "type": "ColumnSet",
                     "columns": [
                         {
-                            "@type": "Column",
+                            "type": "Column",
                             "size": "60",
                             "items": [
                                 {
-                                    "@type": "TextBlock",
+                                    "type": "TextBlock",
                                     "text": "62.30",
                                     "size": "extraLarge"
                                 },
                                 {
-                                    "@type": "TextBlock",
+                                    "type": "TextBlock",
                                     "text": "▼ 0.20 (0.32%)",
                                     "size": "small",
                                     "color": "attention"
@@ -41,11 +41,11 @@
                             ]
                         },
                         {
-                            "@type": "Column",
+                            "type": "Column",
                             "size": "40",
                             "items": [
                                 {
-                                    "@type": "FactSet",
+                                    "type": "FactSet",
                                     "facts": [
                                         {
                                             "name": "Open",

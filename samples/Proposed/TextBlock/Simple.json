@@ -1,12 +1,12 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "body": [
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "This is the first line"
         },
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "This is the second line"
         }
     ]

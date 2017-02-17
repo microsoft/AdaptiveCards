@@ -157,53 +157,40 @@
 
 
         <!-- Input definitions -->
-        <Style x:Key="Adaptive.Input.Title" TargetType="FrameworkElement" >
+        <Style x:Key="Adaptive.Input" TargetType="FrameworkElement" >
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+        
+        <Style x:Key="Adaptive.Input.ChoiceSet" TargetType="FrameworkElement" >
             <Setter Property="Margin" Value="4"/>
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput" TargetType="FrameworkElement" >
+        <Style x:Key="Adaptive.Input.Text" TargetType="FrameworkElement" BasedOn="{StaticResource Adaptive.Input}">
             <Setter Property="Margin" Value="4"/>
         </Style>
 
-        <Style x:Key="Adaptive.Input.ChoiceInput" TargetType="FrameworkElement" >
-            <Setter Property="Margin" Value="4"/>
+        <Style x:Key="Adaptive.Input.Date" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Date" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Time" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.DateTime" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Number" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Time" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Toggle" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Month" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Text.Tel" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.Text}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Week" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Text.Password" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.Text}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Range" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Text.Email" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.Text}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Range.TextBox" TargetType="TextBox"  >
-            <Setter Property="Margin" Value="4"/>
-        </Style>
-
-        <Style x:Key="Adaptive.Input.TextInput.Number" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
-        </Style>
-
-        <Style x:Key="Adaptive.Input.TextInput.Tel" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
-        </Style>
-
-        <Style x:Key="Adaptive.Input.TextInput.Password" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
-        </Style>
-
-        <Style x:Key="Adaptive.Input.TextInput.Email" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
-        </Style>
-
-        <Style x:Key="Adaptive.Input.ChoiceInput.ComboBox" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.ChoiceInput}">
+        <Style x:Key="Adaptive.Input.ChoiceInput.ComboBox" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.ChoiceSet}">
         </Style>
 
         <Style x:Key="Adaptive.Input.ChoiceInput.ComboBoxItem" TargetType="ComboBoxItem"  >
@@ -299,7 +286,7 @@
             <Border.Effect>
                 <DropShadowEffect />
             </Border.Effect >
-            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700" />
+            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="500" />
         </Border>
     </Grid>
 </Window>

@@ -3,11 +3,15 @@
 [Cards](#cards)
 * [AdaptiveCard](#adaptivecard) - top level card
 
-[CardItems](#carditems) 
+[CardElements](#CardElements) 
 * [TextBlock](#textblock) - display text
 * [Image](#image) - display an image
-* [TextInput](#textinput) - get text input from user
-* [ChoiceInput](#choiceinput) - get choice input from user
+* [Input.Text](#inputtext) - get text input from user
+* [Input.Date](#inputdate) - get date input from user
+* [Input.Time](#inputtime) - get time input from user
+* [Input.Number](#inputnumber) - get number input from user
+* [Input.Toggle](#inputtoggle) - get user to select betweeen two options
+* [Input.ChoiceSet](#inputchoiceset) - display set of choices to the user 
     * [Choice](#choice) - choice object
 
 [Containers](#containers) 
@@ -19,11 +23,10 @@
     * [Fact](#fact) - fact object
 
 [Actions](#actions)
-* [OpenUrlAction](#openurlaction) - defines action which opens a url either in external browser or embedded browser
-* [HttpAction](#httpaction) - defines action which collects input and does raw HTTP call to arbitrary Http endpoint
-* [SubmitAction](#submitaction) - defines action which collects input and sends via client appropriate mechanism (it's up to client)
-* [CancelAction](#cancelaction) - defines action which resets input fields and if opened card closes the card
-* [ShowCardAction](#showcardaction) - defines action which shows a card to the user
+* [Action.Http](#actionhttp) - defines action which collects input and does raw HTTP call to arbitrary Http endpoint
+* [Action.OpenUrl](#actionopenurl) - defines action which opens a url either in external browser or embedded browser
+* [Action.ShowCard](#actionshowcard) - defines action which shows a card to the user
+* [Action.Submit](#actionsubmit) - defines action which collects input and sends via client appropriate mechanism (it's up to client)
 
 # Cards
 
@@ -33,15 +36,14 @@ AdaptiveCard is top level object which represents a card
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"AdaptiveCard"** |
-| **body** | [CardItem](#carditem)[] | true | The items that are to be displayed in this container. |
+| **body** | [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **actions** |[Action](#action)[]| false | Actions |
 
-# CardItems
+# Card Element
 
-## CardItem
-A card item is a visual element to add to a container.  CardItem shared properties 
+A card element is a visual element to add to a container.  Shared properties 
 
-> NOTE: You cannot create an CardItem directly, only the derived types.
+> NOTE: You cannot create an CardElement directly, only the derived types.
 
 | Property | Type |  Required |Description |
 |---|---|---|---|
@@ -49,7 +51,7 @@ A card item is a visual element to add to a container.  CardItem shared properti
 
 ## Image 
 
-*Extends [CardItem](#carditem)*
+*Extends [CardElement](#CardElement)*
 
 The Image element allows for the inclusion of images in an Adaptive Card.
 
@@ -64,7 +66,7 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 | **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
 
 ## TextBlock 
-*Extends [CardItem](#carditem)*
+*Extends [CardElement](#CardElement)*
 
 The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.
 
@@ -91,7 +93,7 @@ These functions can be invoked anywhere in the text of a text block like this:
 
     "Your order was shipped {{DATE(2017-02-13T20:46:30Z, Long)}} and will arrive at {{TIME(2017-02-13T20:00:00Z, Short)}}" 
 
-#### Date Function
+#### Date Formatting Function
 
 The DATE function is passed an ISO-8601 formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing
 how you would like the date to be formatted for the user in the text string.
@@ -110,7 +112,7 @@ Example for (en-us):
     {{DATE(2017-02-13T20:46:30z)}}
 
 
-#### Time Function
+#### Time Formatting Function
 
 The TIME function is passed an ISO-8601 formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing
 how you would like the time to be formatted for the user in the text string.
@@ -130,53 +132,109 @@ Example for (en-us):
 
 
 ## Input
-*Extends [CardItem](#carditem)*
+*Extends [CardElement](#CardElement)*
 
-Input  shared properties for input to collect information from a user. 
+Input has shared properties for input to collect information from a user. 
 
 >NOTE: You cannot add an Input directly, only the derived types.
-
->NOTE: You need to define an SubmitAction or HttpAction to gather the information from input and do something with it.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
-| **title** | string | false | Title Description of the input desired|
 | **value** | string | false | The initial value for a field |
-| **placeholder** | string | false | Hint of expected value desired *(may be ignored by some clients)*|
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
-### TextInput
+### Input.Text
 *Extends [Input](#input)*
 
-TextInput collects text from the user
+Input.Text collects text from the user
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"TextInput"** |
+| **type**| string | true | **"Input.Text"** |
+| **title** | string | false | Title of the input desired |
 | **style**| [TextInputStyle](#textinputstyle) | false | Hint of style of input, if client doesn't support the style it will become simple text input || **isMultiline** | bool | false | true to collect multiple lines of text (default is false)|
 | **maxLength** | number | false | hint of maximum length characters to collect *(may be ignored by some clients)* |
-| **min** | string | false | hint of minimum value *(may be ignored by some clients)*|
-| **max** | string | false | hint of maximum value *(may be ignored by some clients)* |
-| **step** | number | false | hint of step value *(may be ignored by some clients)* |
+| **isMultiline** | boolean | false | Do you want to allow multiple lines of input |
 
-## ChoiceInput
+### Input.Date
 *Extends [Input](#input)*
 
-Shows an array of Choice objects
+Input.Date collects text from the user in form of a date. 
+
+>NOTE: Clients may not be able to validate that the value of this is a valid date.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true |  **"ChoiceInput"** || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
-| **style**| [ChoiceInputStyle](#choiceinputstyle) | false | Hint of style of input |
-| **multiSelect** | boolean | false | allow multiple choices to be selected (Default=false)|
+| **type**| string | true | **"Input.Date"** |
+| **title** | string | false | Title of the input desired |
+| **min** | string | false | Minimum date in ISO-8601 format (Not all clients will be able to honor this)|
+| **max** | string  | false | Maximum date in ISO-8601 format (Not all clients will be able to honor this)|
+
+### Input.Time
+*Extends [Input](#input)*
+
+Input.Time collects text from the user in form of a time of day.
+
+>NOTE: Clients may not be able to validate that the value of this is a valid time expression.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"Input.Time"** |
+| **title** | string | false | Title of the input desired |
+| **min** | string | false | Minimum time (Not all clients will be able to honor this)|
+| **max** | string  | false | Maximum time (Not all clients will be able to honor this)|
+
+### Input.Number
+*Extends [Input](#input)*
+
+Input.Number collects text from the user with a bias towards a number. 
+
+>NOTE: Value collected may not be valid depending on the capabilities of the client.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"Input.Number"** |
+| **title** | string | false | Title of the input desired |
+| **min** | number | false | Minimum number (Not all clients will be able to honor this)|
+| **max** | number | false | Maximum number (Not all clients will be able to honor this)|
+
+### Input.Toggle
+*Extends [Input](#input)*
+
+Input.Toggle collects a selection between two values, with **value** representing the current selected toggle value (either value1 or value2).
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true |  **"Input.ToggleChoice"** || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
+| **title1** | string | true | The title to display for option 1 |
+| **title2** | string | true  | The title to display for option 2 |
+| **value1** | string | true | The value to use when option 1 is selected | 
+| **value2** | string | true | The value to use when option 2 is selected | 
+
+### Input.ChoiceSet
+*Extends [Input](#input)*
+
+Shows an array of choices the to the user.
+
+* If **isMultiSelect** is false, then the result will be the single selected choice value
+* If **isMultiSelect** is true, then the result will be an array of the selected choice values 
+(non-selected choices will be omitted).
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true |  **"Input.ChoiceSet"** || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
+| **title** | string | false | Title of the selection the choiceset represents  |
+| **style**| [ChoiceSetStyle](#choicesetstyle) | false | Hint of style of input |
+| **isMultiSelect** | boolean | false | allow multiple choices to be selected (Default=false)|
 | **choices** | Choice[] | true | the choice options |
 
-### Choice
+#### Choice
 Represents a single Choice
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **display** | string | true  | The display text for a choice|
+| **title** | string | true  | The title label for a choice|
 | **value** | string | true  | the raw value for the choice|
 | **isSelected** | bool |  false |is the choice selected |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
@@ -184,22 +242,20 @@ Represents a single Choice
 # Containers
 
 ## Container 
-*Extends [CardItem](#carditem)*
+*Extends [CardElement](#cardelement)*
 
-A  Container is a CardItem which contains a list of CardItems that are logically grouped.
+A  Container is a CardElement which contains a list of CardElements that are logically grouped.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"Container"** |
-| **items** |  [CardItem](#carditem)[] | true | The items that are to be displayed in this container. |
-| **backgroundImageUrl** | string | false | The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained. |
-| **backgroundColor** | string | false | The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray. |
-| **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
+| **items** |  [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **actions** | [Action](#action)[] | false | Actions associated with this container |
-| **separation** | [SeparationStyle](#separationstyle) | false | visually separate this container from preiovus or pending containers |
+| **startGroup** | boolean | false | visually separate this container from preiovus containers |
+| **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
 
 ## ColumnSet 
-*Extends [CardItem](#carditem)*
+*Extends [CardElement](#CardElement)*
 
 The column Set element adds the ability to have a set of Column objects.
 
@@ -211,7 +267,7 @@ The column Set element adds the ability to have a set of Column objects.
 ## Column
 **Extends [Container](#container)**
 
-A Column is a container which contains a list of CardItems that are logically grouped.
+A Column is a container which contains a list of CardElements that are logically grouped.
 
 | Property | Type | Required |  Description |
 |---|---|---|---|
@@ -220,7 +276,7 @@ A Column is a container which contains a list of CardItems that are logically gr
 
 
 ## ImageSet 
-*Extends [CardItem](#carditem)*
+*Extends [CardElement](#CardElement)*
 
 The ImageSet allows for the inclusion of a collection images like a photoSet.
 
@@ -228,10 +284,10 @@ The ImageSet allows for the inclusion of a collection images like a photoSet.
 |---|---|---|---|
 | **type**| string | true | **"ImageSet"** |
 | **images**| [Image](#image)[] | true | Array of Image objects |
-| **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the Set. |
+| **imageSize** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the Set. |
 
 ## FactSet 
-*Extends [CardItem](#carditem)*
+*Extends [CardElement](#CardElement)*
 
 The FactSet element makes it simple to display a series of "facts" (e.g. name/value pairs) in a tabular form.
 
@@ -245,7 +301,7 @@ Represents one "fact" in a [FactSet](#factset) element.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **name** | string | true | The fact's name. |
+| **title** | string | true | The fact's title. |
 | **value** | string | true |The fact's value. |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
@@ -255,34 +311,10 @@ Actions define clickable targets that do something.
 
 ## Action
 
-## OpenUrlAction
+## Action.Http
 *Extends [Action](#action)*
 
-When OpenUrlAction is invoked it will show the given url, either by launching it to an external web browser or showing in-situ 
-with embedded web browser.
-
-| Property | Type | Required | Description |
-|---|---|---|---|
-| **type**| string | true | **"OpenUrlAction"** |
-| **title** | string | true | Label for button or link that represents this action |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
-| **url** | string | true | Default (browser) url to use  |
-| **platformUrls** | [PlatformUrl](#platformurl)[] | false |  candidate array of PlatformUrls 's that can be used |
-
-### PlatformUrl
-
-A PlatformUrl represents a specific url appropriate for different platforms.  For example, you can target a url for the web, for iOS, for Android, etc. allowing deep
-mobile linking to applications.
-
-| Property | Type | Required| Description |
-|---|---|---|---|
-| **os** | string | true | platform filter, If it is "default" or missing then it will simply use browser. Other platforms are: (iOS?, Android?, ...?) |
-| **url** | string | true | url to use on this platform os|
-
-## HttpAction
-*Extends [Action](#action)*
-
-HttpAction represents the properties needed to do an Http request. All input properties are available for use via 
+Action.Http represents the properties needed to do an Http request. All input properties are available for use via 
 data binding.  Properties can be data bound to the Uri and Body properties, allowing you to send a request
 to an arbitrary url.
 
@@ -296,42 +328,44 @@ to an arbitrary url.
 | **headers** | object | false | Object which represents headers Example: { "content-type":"application/json" }  |
 | **body** | string | false | content to post (can have binding information) |
 
-## ShowCardAction
+## Action.OpenUrl
 *Extends [Action](#action)*
 
-ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
+When Action.OpenUrl is invoked it will show the given url, either by launching it to an external web browser or showing in-situ 
+with embedded web browser
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"ShowCardAction"** |
+| **type**| string | true | **"Action.OpenUrl"** |
+| **title** | string | true | Label for button or link that represents this action |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
+| **url** | string | true | Default (browser) url to use  |
+
+## Action.ShowCard
+*Extends [Action](#action)*
+
+Action.ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **Action.ShowCard"** |
 | **title** | string | true | Label for button or link that represents this action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **card** | [AdaptiveCard](#adaptivecard) | true |inline card defining the card to be shown when this action is invoked. It is up to client to decide how to show this inline card. |
 
-## SubmitAction
+## Action.Submit
 *Extends [Action](#action)*
 
-Submit action gathers up input fields, merges with optional data field and generates event to 
+Action.Submit gathers up input fields, merges with optional data field and generates event to 
 client asking for data to be submitted.  It is up to the client to determine how that data is processed.
 For example: With BotFramework bots the client would send an activity through the messaging medium to the bot.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"SubmitAction"** |
+| **type**| string | true | **"Action.Submit"** |
 | **title** | string | true | Label for button or link that represents this action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **data** | object | false | initial data that input fields will be combined with.  This is essentially 'hidden' properties |
-
-## CancelAction
-*Extends [Action](#action)*
-
-When CancelAction is invoked it resets any input that is in scope, and closes a card if it is part of a card which was shown via ShowCardAction.
-
-| Property | Type | Required | Description |
-|---|---|---|---|
-| **type**| string | true | **"CancelAction"** |
-| **title** | string | true | Label for button or link that represents this action |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 # Enumerations
 The following enumerations are used by various element types.
@@ -387,7 +421,7 @@ Controls the color of TextBlock items.
 | **accent** | The accent color. |
 | **good** | Good (such as green) |
 | **warning** | Warning (such as yellow) |
-| **Attention** | Highlight as needing attechment (such as red)|
+| **attention** | Highlight as needing attechment (such as red)|
 
 ## ImageStyle
 Controls the way Image items are displayed.
@@ -397,34 +431,18 @@ Controls the way Image items are displayed.
 | **normal** | The image is displayed within a rectangle. |
 | **person** | The image is cropped to a circle, a common way to represent people photos. |
 
-## SeparationStyle
-Controls the separation style for the current container
-
-| Value | Meaning |
-|---|---|
-| **before** | separate the current container from the previous container |
-| **after** | separate the current container from the following container |
-| **both** | separate the current container from the previous and following container |
-
 ## TextInputStyle
 Style hint for [TextInput](#textinput).
 
 | Value | Meaning |
 |---|---|
+| **text** | Input is a plain text (Default if not specified)|
 | **tel** | Input is a telephone number and the client may use this information to provide optimized keyboard input for the user.|
 | **url** | Input is a url and the client may use this information to provide optimized keyboard input for the user.|
 | **email** | Input is a email and the client may use this information to provide optimized keyboard input for the user.|
-| **password** | Input is text but should be hidden to protect the typed information in the textbox. |
-| **number** | Input is a number. **min**, **max** and **step** properties expressed as numbers may be used by client to help user input number into text box.|
-| **range** | Input is a range. **min**, **max** and **step** properties expressed as numbersmay be used by client to help user input a number on a range into text box|
-| **date** | Input is date. **min**, **max** properties expressed as Date may be used by client to help user to select a date via a text box|
-| **datetime** | Input is date and time. **min**, **max** expressed as DateTime properties may be used by client to help user to select a date and a time via a text box|
-| **time**  | Input is time. **min**, **max** properties expressed as time may be used by client to help user to select a time via a text box|
-| **month** | Input is month. **min**, **max** properties expressed as Date may be used by client to help user to select a month via a text box|
-| **week**  | Input is week. **min**, **max** properties expressed as Date may be used by client to help user to select a week via a text box|
 
-## ChoiceInputStyle
-Style hint for [ChoiceInput](#choiceinput).
+## ChoiceSetStyle
+Style hint for [Input.ChoiceSet](#input.choiceset).
 
 | Value | Meaning |
 |---|---|

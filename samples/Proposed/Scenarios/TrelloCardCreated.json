@@ -1,25 +1,25 @@
 {
-	"@type": "AdaptiveCard",
+	"type": "AdaptiveCard",
 	"body": [
 		{
-			"@type": "Container",
+			"type": "Container",
 			"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Card created: Publish Adaptive Card schema",
 					"weight": "bolder",
 					"size": "medium"
 				},
 				{
-					"@type": "ColumnSet",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "Image",
+									"type": "Image",
 									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
 									"size": "small",
 									"style": "person"
@@ -27,16 +27,16 @@
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "stretch",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "**Miguel Garcia**",
 									"wrap": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Created {{DATE(2017-02-14 06:08:39Z,Long)}} {{TIME(2017-02-14 06:08:39Z,Short)}}",
 									"isSubtle": true,
 									"wrap": true
@@ -48,16 +48,16 @@
 			]
 		},
 		{
-			"@type": "Container",
+			"type": "Container",
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
 					"speak": "",
 					"wrap": true
 				},
 				{
-					"@type": "FactSet",
+					"type": "FactSet",
 					"speak": "It has been assigned to: David Claux",
 					"facts": [
 						{
@@ -81,13 +81,13 @@
 			],
 			"actions": [
 				{
-					"@type": "ShowCardAction",
+					"type": "Action.ShowCard",
 					"title": "Set due date",
 					"card": {
-						"@type": "AdaptiveCard",
+						"type": "AdaptiveCard",
 						"body": [
 							{
-								"@type": "TextInput",
+								"type": "Input.Text",
 								"style": "date",
 								"id": "dueDate",
 								"title": "Select due date"
@@ -95,7 +95,7 @@
 						],
 						"actions": [
 							{
-								"@type": "HttpAction",
+								"type": "Action.Http",
 								"method": "POST",
 								"title": "OK",
 								"url": "http://xyz.com?dueDate={{dueDate}}"
@@ -104,13 +104,13 @@
 					}
 				},
 				{
-					"@type": "ShowCardAction",
+					"type": "Action.ShowCard",
 					"title": "Comment",
 					"card": {
-						"@type": "AdaptiveCard",
+						"type": "AdaptiveCard",
 						"body": [
 							{
-								"@type": "TextInput",
+								"type": "Input.Text",
 								"id": "comment",
 								"isMultiline": true,
 								"title": "Enter your comment"
@@ -118,7 +118,7 @@
 						],
 						"actions": [
 							{
-								"@type": "HttpAction",
+								"type": "Action.Http",
 								"method": "POST",
 								"title": "OK",
 								"url": "http://xyz.com",
@@ -131,7 +131,7 @@
 					}
 				},
 				{
-					"@type": "OpenUrlAction",
+					"type": "Action.OpenUrl",
 					"title": "View",
 					"url": "http://foo.com"
 				}

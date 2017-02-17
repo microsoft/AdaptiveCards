@@ -1,33 +1,33 @@
 {
-	"@type": "AdaptiveCard",
+	"type": "AdaptiveCard",
 	"body": [
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "Title of connector card",
 			"weight": "bolder",
 			"size": "medium"
 		},
 		{
-			"@type": "ColumnSet",
+			"type": "ColumnSet",
 			"speak": "",
 			"columns": [
 				{
-					"@type": "Column",
+					"type": "Column",
 					"size": "auto",
 					"items": [
 						{
-							"@type": "Image",
+							"type": "Image",
 							"url": "https://microsoft.github.io/AdaptiveCards/assets/Closed%20bug%2092x92.png",
 							"size": "medium"
 						}
 					]
 				},
 				{
-					"@type": "Column",
+					"type": "Column",
 					"size": "stretch",
 					"items": [
 						{
-							"@type": "TextBlock",
+							"type": "TextBlock",
 							"text": "Bug XXXXXX: This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. ",
 							"wrap": true
 						}
@@ -36,7 +36,7 @@
 			]
 		},
 		{
-			"@type": "FactSet",
+			"type": "FactSet",
 			"facts": [
 				{
 					"name": "Work item type:",
@@ -65,13 +65,13 @@
 	],
 	"actions": [
 		{
-			"@type": "HttpAction",
+			"type": "Action.Http",
 			"method": "POST",
 			"title": "View more work items",
 			"url": "http://someurl.com"
 		},
 		{
-			"@type": "HttpAction",
+			"type": "Action.Http",
 			"method": "POST",
 			"title": "View more work items",
 			"url": "http://someurl.com"

@@ -1,38 +1,38 @@
 {
-	"@type": "AdaptiveCard",
+	"type": "AdaptiveCard",
 	"speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
 	"body": [
 		{
-			"@type": "Container",
-			"separator": "bottom",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
-					"@type": "ColumnSet",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"background": "blue",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "Image",
+									"type": "Image",
 									"size": "small",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/Airplane.png"
 								}
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "stretch",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Flight Status",
 									"horizontalAlignment": "right",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "DELAYED",
 									"horizontalAlignment": "right",
 									"size": "large",
@@ -45,57 +45,57 @@
 			]
 		},
 		{
-			"@type": "Container",
-			"separator": "bottom",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
-					"@type": "ColumnSet",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "stretch",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Passengers",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Sarah Hum"
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Jeremy Goldberg"
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Evan Litvak"
 								}
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Seat",
 									"horizontalAlignment": "right",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "14A",
 									"horizontalAlignment": "right"
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "14B",
 									"horizontalAlignment": "right"
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "14C",
 									"horizontalAlignment": "right"
 								}
@@ -106,37 +106,37 @@
 			]
 		},
 		{
-			"@type": "Container",
-			"separator": "bottom",
+			"type": "Container",
+			"startGroup":true,
 			"items": [
 				{
-					"@type": "ColumnSet",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": 1,
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Flight",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "KL0605"
 								}
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Departs",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "10:10 AM",
 									"color": "attention",
 									"weight": "bolder"
@@ -144,17 +144,17 @@
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": 1,
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Arrives",
 									"isSubtle": true,
 									"horizontalAlignment": "right"
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "12:00 AM",
 									"color": "attention",
 									"horizontalAlignment": "right",
@@ -167,23 +167,23 @@
 			]
 		},
 		{
-			"@type": "Container",
-			"separator": "bottom",
+			"type": "Container",
+			"startGroup":true,
 			"items": [
 				{
-					"@type": "ColumnSet",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": 1,
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Amsterdam",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "AMS",
 									"size": "extraLarge",
 									"color": "accent"
@@ -191,14 +191,14 @@
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": " "
 								},
 								{
-									"@type": "Image",
+									"type": "Image",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
 									"size": "small",
 									"weight": "lighter"
@@ -206,17 +206,17 @@
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": 1,
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "San Francisco",
 									"isSubtle": true,
 									"horizontalAlignment": "right"
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "SFO",
 									"horizontalAlignment": "right",
 									"size": "extraLarge",
