@@ -19,6 +19,7 @@ using System.IO;
 using System.Diagnostics;
 using Adaptive.Renderers;
 using System.Windows.Threading;
+using System.Speech.Synthesis;
 
 namespace WpfVisualizer
 {
@@ -29,10 +30,15 @@ namespace WpfVisualizer
     {
         private AdaptiveXamlRenderer _renderer;
         private AC.AdaptiveCard _card;
+        private SpeechSynthesizer _synth;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            _synth = new SpeechSynthesizer();
+            _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+            _synth.SetOutputToDefaultAudioDevice();
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -135,6 +141,35 @@ namespace WpfVisualizer
                 encoder.Save(stream);
             }
             Process.Start(path);
+        }
+
+        private void speak_Click(object sender, RoutedEventArgs e)
+        {
+            var card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
+            _synth.SpeakAsyncCancelAll();
+            if (card.Speak != null)
+                _synth.SpeakSsmlAsync(FixSSML(card.Speak));
+            else
+            {
+                foreach(var element in card.Body)
+                {
+                    if (element.Speak != null)
+                    {
+                        _synth.SpeakSsmlAsync(FixSSML(element.Speak));
+                    }
+                }
+            }
+        }
+
+        private string FixSSML(String speak)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<speak version=\"1.0\"");
+            sb.AppendLine(" xmlns =\"http://www.w3.org/2001/10/synthesis\"");
+            sb.AppendLine(" xml:lang=\"en-US\">");
+            sb.AppendLine(speak);
+            sb.AppendLine("</speak>");
+            return sb.ToString();
         }
     }
 }

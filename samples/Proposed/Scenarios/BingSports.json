@@ -1,6 +1,6 @@
 {
     "type": "AdaptiveCard",
-    "speak": "The Seattle Seahawks beat the Carolina Panters 40-7",
+    "speak": "The Seattle Seahawks beat the Carolina Panthers 40-7",
     "body": [
         {
             "type": "Container",

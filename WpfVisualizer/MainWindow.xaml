@@ -278,6 +278,7 @@
         <StackPanel Orientation="Horizontal">
             <Button Name="loadButton" Click="loadButton_Click" Content="Load" Margin="4"/>
             <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
+            <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/>
         </StackPanel>
 
         <TextBox Grid.Row="1 " AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>
