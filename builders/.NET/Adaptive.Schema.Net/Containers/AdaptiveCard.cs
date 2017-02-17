@@ -34,5 +34,11 @@ namespace Adaptive.Schema.Net
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Title { get; set; }
+
+        /// <summary>
+        /// Background image for card
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string BackgroundImage { get; set; }
     }
 }

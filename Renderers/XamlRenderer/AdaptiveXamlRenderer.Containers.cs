@@ -33,6 +33,11 @@ namespace Adaptive.Renderers
         {
             var grid = new Grid();
             grid.Style = this.GetStyle("Adaptive.Card");
+            if (card.BackgroundImage != null)
+            {
+                Uri uri = new Uri(card.BackgroundImage);
+                grid.Background = new ImageBrush(new BitmapImage(uri));
+            }
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
             var inputControls = new List<FrameworkElement>();

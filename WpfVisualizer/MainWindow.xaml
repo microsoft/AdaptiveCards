@@ -286,7 +286,7 @@
             <Border.Effect>
                 <DropShadowEffect />
             </Border.Effect >
-            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="500" />
+            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700" />
         </Border>
     </Grid>
 </Window>
