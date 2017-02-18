@@ -1,13 +1,13 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "actions": [
         {
-            "@type": "OpenUri", //or OpenWebView
+            "type": "OpenUri", //or OpenWebView
             "title": "View",
             "uri": "http://..."
         },
         {
-            "@type": "Submit",
+            "type": "Submit",
             "title": "Declined",
             "data": {
                 "reportId": "ABC",
@@ -15,10 +15,10 @@
             }
         },
         {
-            "@type": "ShowForm",
+            "type": "ShowForm",
             "title": "Set due date",
             "form": {
-                "@type": "InputForm",
+                "type": "InputForm",
                 "okText": "OK",
                 "cancelText": "Close",
                 "data": {
@@ -26,7 +26,7 @@
                 },
                 "inputs": [
                     {
-                        "@type": "Input",
+                        "type": "Input",
                         "id": "approvalDate",
                         "inputType": "date",
                         "title": "Select a date"
@@ -37,7 +37,7 @@
     ],
     "body": [
         {
-            "@type": "Form",
+            "type": "Form",
             "okText": "OK", // potentially don't add this
             "cancelText": "Cancel",
             "data": {
@@ -45,16 +45,16 @@
             },
             "items": [
                 {
-                    "@type": "TextBlock",
+                    "type": "TextBlock",
                     "text": "Hi there, what is your name?"
                 },
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "id": "firstName",
                     "title": "First Name"
                 },
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "id": "lastName",
                     "title": "Last Name"
                 }

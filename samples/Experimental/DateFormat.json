@@ -1,5 +1,5 @@
 {
-    "@type": "TextBlock",
+    "type": "TextBlock",
     "text": "Your order will arrive at {{DATE(2/13/2017 10:08:39 PM, DateFormat.None, TimeFormat.Short)}}", //      10:08 PM
     "text": "Your order will arrive at {{DATE(2/13/2017 10:08:39 PM, DateFormat.Short, TimeFormat.Short)}}", //     2/13/2017 10:08 PM
     "text": "Your order will arrive at {{DATE(2/13/2017 10:08:39 PM, DateFormat.Long, TimeFormat.Short)}}", //      Monday, Feb 13 2017, 10:08 PM

@@ -20,6 +20,7 @@ export class ToastContainer extends HostContainer {
         element.style.width = this._width + "px";
         element.style.backgroundColor = ToastContainer.backgroundColor;
         element.style.overflow = "hidden";
+        
 
         // TODO: Bring this back once the Toast schema is ready
 

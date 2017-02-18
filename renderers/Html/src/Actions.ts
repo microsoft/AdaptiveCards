@@ -11,14 +11,14 @@ export abstract class Action {
 
     static create(owner: CardElement, typeName: string): Action {
         switch (typeName) {
-            case "OpenUri":
-            case "ViewAction":
-                return new OpenUriAction(owner);
-            case "Submit":
-            case "HttpPOST":
-                return new SubmitAction(owner);
-            case "ShowCard":
-                return new ShowCardAction(owner);
+            case "Action.OpenUri":
+                return new ActionOpenUri(owner);
+            case "Action.Submit":
+                return new ActionSubmit(owner);
+            case "Action.Http":
+                return new ActionHttp(owner);
+            case "Action.ShowCard":
+                return new ActionShowCard(owner);
             default:
                 throw new Error("Unknown action type: " + typeName);
         }
@@ -41,49 +41,18 @@ export abstract class Action {
     }
 }
 
-export class TargetUri {
-    os: string;
-    uri: string;
+export class ActionOpenUri extends Action {
 
-    parse(json: any) {
-        this.os = json["os"];
-        this.uri = json["uri"];
-    }
-}
-
-export class OpenUriAction extends Action {
-    private _targets: Array<TargetUri> = [];
-
-    addTarget(): TargetUri {
-        let targetUri = new TargetUri();
-
-        this._targets.push(targetUri);
-
-        return targetUri;
-    }
+    public url : string;
 
     parse(json: any) {
         super.parse(json);
 
-        if (json["@type"] == "ViewAction") {
-            let target = new TargetUri();
-
-            target.uri = (json["target"] as Array<any>)[0];
-        }
-        else {
-            if (json["targets"] != undefined) {
-                let targetArray = json["targets"] as Array<any>;
-
-                for (let i = 0; i < targetArray.length; i++) {
-                    let target = this.addTarget();
-                    target.parse(targetArray[i]);
-                }
-            }
-        }
+        this.url = json["url"];
     }
 }
 
-export class ShowCardAction extends Action {
+export class ActionShowCard extends Action {
     card: ICard;
 
     parse(json: any) {
@@ -91,7 +60,7 @@ export class ShowCardAction extends Action {
 
         if (json["card"] != undefined) {
             // TODO: UNCOMMENT THIS
-            // TODO: This should inspect the @type to construct the right type of card
+            // TODO: This should inspect the type to construct the right type of card
 
             var renderer = new Renderer();
             this.card = renderer.parseCard(json["card"]);
@@ -100,7 +69,7 @@ export class ShowCardAction extends Action {
 }
 
 
-export class SubmitAction extends Action {
+export class ActionSubmit extends Action {
     data: any;
     inputs: Array<InputBase> = new Array<InputBase>();
 
@@ -112,7 +81,7 @@ export class SubmitAction extends Action {
             let inputArray = json["inputs"] as Array<any>;
 
             for (let i = 0; i < inputArray.length; i++) {
-                //let input = InputBase.createInput(this.owner.container, inputArray[i]["@type"]);
+                //let input = InputBase.createInput(this.owner.container, inputArray[i]["type"]);
 
                 //input.parse(inputArray[i]);
 
@@ -124,21 +93,19 @@ export class SubmitAction extends Action {
 
 
 // TODO: Should we remove this and use SubmitAction?
-export class HttpPOSTAction extends Action {
-    target: string;
+export class ActionHttp extends Action {
+    url: string;
+    method:string;
     body: string;
-    bodyContentType: string;
-    successMessage: string;
-    errorMessage: string;
+    headers: string;
 
     parse(json: any) {
         super.parse(json);
 
-        this.target = json["target"];
+        this.url = json["url"];
         this.body = json["body"];
-        this.bodyContentType = json["bodyContentType"];
-        this.successMessage = json["successMessage"];
-        this.errorMessage = json["errorMessage"];
+        this.method = json["method"];
+        this.headers = json["headers"];
     }
 }
 
@@ -302,14 +269,11 @@ export class ActionBar extends CardElement {
         super.parse(json);
         var actions = json["actions"];
 
-        if (actions == null)
-            actions = json["items"];
-
         if (actions != null) {
             var actionArray = actions as Array<any>;
 
             for (var i = 0; i < actionArray.length; i++) {
-                let action = Action.create(this, actionArray[i]["@type"]);
+                let action = Action.create(this, actionArray[i]["type"]);
 
                 action.parse(actionArray[i]);
 

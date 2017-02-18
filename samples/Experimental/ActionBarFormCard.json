@@ -1,8 +1,8 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "actions": [
         {
-            "@type": "OpenUrlAction", //or OpenWebView
+            "type": "OpenUrlAction", //or OpenWebView
             "title": "View",
             "url": "http://..."
         },
@@ -10,7 +10,7 @@
         // Windows needs new types for Foreground/Background activation
         // OR we can add metadata like URL or foreground/background properties
         {
-            "@type": "SubmitAction", // Submit action
+            "type": "SubmitAction", // Submit action
             "title": "Declined",
             "data": {
                 "reportId": "ABC",
@@ -18,7 +18,7 @@
             }
         },
         {
-            "@type": "HttpAction",
+            "type": "HttpAction",
             "method": "POST",
             "title": "Set due date",
             "uri": "http://mysite/approve/{{reportId}}/",
@@ -34,34 +34,34 @@
             }
         },
         {
-            "@type": "ShowCardAction",
+            "type": "ShowCardAction",
             "title": "View details",
             "card": {
-                "@type": "AdaptiveCard",
+                "type": "AdaptiveCard",
                 "body": [],
                 "actions": []
             }
         },
         {
-            "@type": "CancelAction",
+            "type": "CancelAction",
             "title": "Reset"
         }
     ],
     "body": [
         {
-            "@type": "Container",
+            "type": "Container",
             "items": [
                 {
-                    "@type": "TextBlock",
+                    "type": "TextBlock",
                     "text": "Hi there, what is your name?"
                 },
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "id": "firstName",
                     "title": "First Name"
                 },
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "id": "lastName",
                     "title": "Last Name"
                 }

@@ -2,27 +2,27 @@
 
 export const defaultPayload: string = `
 {
-	"@type": "AdaptiveCard",
+	"type": "AdaptiveCard",
 	"body": [
 		{
-			"@type": "Container",
+			"type": "Container",
 			"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Card created: Publish Adaptive Card schema",
 					"weight": "bolder",
 					"size": "medium"
 				},
 				{
-					"@type": "ColumnGroup",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "Image",
+									"type": "Image",
 									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
 									"size": "small",
 									"style": "person"
@@ -30,16 +30,16 @@ export const defaultPayload: string = `
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "stretch",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "**Miguel Garcia**",
 									"wrap": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Created {{DATE(2017-02-14 06:08:39Z,Long)}} {{TIME(2017-02-14 06:08:39Z,Short)}}",
 									"isSubtle": true,
 									"wrap": true
@@ -51,32 +51,32 @@ export const defaultPayload: string = `
 			]
 		},
 		{
-			"@type": "Container",
+			"type": "Container",
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
 					"speak": "",
 					"wrap": true
 				},
 				{
-					"@type": "FactGroup",
+					"type": "FactSet",
 					"speak": "It has been assigned to: David Claux",
 					"facts": [
 						{
-							"name": "Board:",
+							"title": "Board:",
 							"value": "Adaptive Card"
 						},
 						{
-							"name": "List:",
+							"title": "List:",
 							"value": "Backlog"
 						},
 						{
-							"name": "Assigned to:",
+							"title": "Assigned to:",
 							"value": "David Claux"
 						},
 						{
-							"name": "Due date:",
+							"title": "Due date:",
 							"value": "Not set"
 						}
 					]
@@ -84,13 +84,13 @@ export const defaultPayload: string = `
 			],
 			"actions": [
 				{
-					"@type": "ShowCardAction",
+					"type": "Action.ShowCard",
 					"title": "Set due date",
 					"card": {
-						"@type": "AdaptiveCard",
+						"type": "AdaptiveCard",
 						"body": [
 							{
-								"@type": "TextInput",
+								"type": "Input.Text",
 								"style": "date",
 								"id": "dueDate",
 								"title": "Select due date"
@@ -98,7 +98,7 @@ export const defaultPayload: string = `
 						],
 						"actions": [
 							{
-								"@type": "HttpAction",
+								"type": "Action.Http",
 								"method": "POST",
 								"title": "OK",
 								"url": "http://xyz.com?dueDate={{dueDate}}"
@@ -107,13 +107,13 @@ export const defaultPayload: string = `
 					}
 				},
 				{
-					"@type": "ShowCardAction",
+					"type": "Action.ShowCard",
 					"title": "Comment",
 					"card": {
-						"@type": "AdaptiveCard",
+						"type": "AdaptiveCard",
 						"body": [
 							{
-								"@type": "TextInput",
+								"type": "Input.Text",
 								"id": "comment",
 								"isMultiline": true,
 								"title": "Enter your comment"
@@ -121,7 +121,7 @@ export const defaultPayload: string = `
 						],
 						"actions": [
 							{
-								"@type": "HttpAction",
+								"type": "Action.Http",
 								"method": "POST",
 								"title": "OK",
 								"url": "http://xyz.com",
@@ -134,7 +134,7 @@ export const defaultPayload: string = `
 					}
 				},
 				{
-					"@type": "OpenUrlAction",
+					"type": "Action.OpenUrl",
 					"title": "View",
 					"url": "http://foo.com"
 				}

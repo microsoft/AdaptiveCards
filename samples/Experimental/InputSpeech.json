@@ -1,20 +1,20 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "say": {
         "input": ""
     },
     "body": [
         {
-            "@type": "Form",
+            "type": "Form",
             "title": "Departure Date",
             "inputs": [
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "id": "departureDate",
                     "inputType": "date"
                 },
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "id": "returnDate",
                     "title": "Return Date",
                     "inputType": "date"
@@ -22,7 +22,7 @@
             ],
             "actions": [
                 {
-                    "@type": "Submit",
+                    "type": "Submit",
                     "name": "Find Flights",
                     "value": {}
                 }

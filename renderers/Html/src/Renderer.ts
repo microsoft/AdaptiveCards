@@ -1,7 +1,7 @@
 import { ICard, IContainer, CardElement } from "./Interfaces";
-import { Column, ColumnGroup, Container, Fact, FactGroup, Image, ImageGallery, Separator, TextBlock } from "./Elements";
+import { Column, ColumnSet, Container, Fact, FactSet, Image, ImageSet, TextBlock } from "./Elements";
 import { ActionBar, Action, ActionButton, ActionButtonStyle } from "./Actions";
-import { InputBase, TextInput, DateInput, Choice, MultichoiceInput, ToggleInput } from "./Inputs";
+import { InputBase, InputText, InputDate, Choice, InputChoiceSet, InputToggle } from "./Inputs";
 import { AdaptiveCard } from "./AdaptiveCard";
 
 export class Renderer {
@@ -26,24 +26,22 @@ export function createCardElement(container: IContainer, typeName: string): Card
             return new TextBlock(container);
         case "Image":
             return new Image(container);
-        case "ImageGallery":
-            return new ImageGallery(container);
-        case "ActionBar":
-            return new ActionBar(container);
-        case "FactGroup":
-            return new FactGroup(container);
-        case "Separator":
-            return new Separator(container);
-        case "ColumnGroup":
-            return new ColumnGroup(container);
-        case "TextInput":
-            return new TextInput(container);
-        case "DateInput":
-            return new DateInput(container);
-        case "MultichoiceInput":
-            return new MultichoiceInput(container);
-        case "ToggleInput":
-            return new ToggleInput(container);
+        case "ImageSet":
+            return new ImageSet(container);
+        case "FactSet":
+            return new FactSet(container);
+        case "ColumnSet":
+            return new ColumnSet(container);
+        case "Input.Text":
+            return new InputText(container);
+        case "Input.Number":
+            return new InputText(container);
+        case "Input.Date":
+            return new InputDate(container);
+        case "Input.ChoiceSet":
+            return new InputChoiceSet(container);
+        case "Inpu.Toggle":
+            return new InputToggle(container);
         default:
             throw new Error("Unknown element type: " + typeName);
     }

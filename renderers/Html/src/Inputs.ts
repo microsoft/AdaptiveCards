@@ -8,8 +8,8 @@ export abstract class InputBase extends CardElement {
 
     // static createInput(container: Container, typeName: string): InputBase {
     //     switch (typeName) {
-    //         case "TextInput":
-    //             return new TextInput(container);
+    //         case "InputText":
+    //             return new InputText(container);
     //         case "MultichoiceInput":
     //             return new MultichoiceInput(container);
     //         case "DateInput":
@@ -41,7 +41,7 @@ export abstract class InputBase extends CardElement {
     }
 }
 
-export class TextInput extends InputBase {
+export class InputText extends InputBase {
     maxLength: number;
     isMultiline: boolean;
 
@@ -58,7 +58,7 @@ export class TextInput extends InputBase {
 
     render(): HTMLElement {
         let element = document.createElement("textarea");
-        element.className = "input textInput";
+        element.className = "input InputText";
 
         if (this.isMultiline) {
             element.className += " multiline";
@@ -80,7 +80,7 @@ export class Choice {
     }
 }
 
-export class ToggleInput extends InputBase {
+export class InputToggle extends InputBase {
     render(): HTMLElement {
         let element = document.createElement("div");
         element.innerHTML = '<input type="checkbox" class="input toggleInput"></input><div class="toggleInputLabel">' + this.title + '</div>';
@@ -89,7 +89,7 @@ export class ToggleInput extends InputBase {
     }
 }
 
-export class MultichoiceInput extends InputBase {
+export class InputChoiceSet extends InputBase {
     private _choices: Array<Choice> = [];
 
     constructor(container: IContainer) {
@@ -130,7 +130,7 @@ export class MultichoiceInput extends InputBase {
     }
 }
 
-export class DateInput extends InputBase{
+export class InputDate extends InputBase{
     includeTime: boolean;
 
     constructor(container: IContainer) {

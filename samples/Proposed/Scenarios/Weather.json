@@ -1,6 +1,5 @@
 {
-	"$schema": "http://localhost:13406/adaptive-card.json",
-	//   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
 	"backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Background-Dark.jpg",

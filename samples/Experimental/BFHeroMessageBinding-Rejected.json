@@ -23,7 +23,7 @@
         {
             "contentType": "application/vnd.microsoft.card.adaptive",
             "content": {
-                "@type": "AdaptiveCard",
+                "type": "AdaptiveCard",
                 "targets": {
                     "windows": {
                         // metadata for windows target
@@ -34,39 +34,39 @@
                 },
                 "body": [
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "{Binding Name}",
                         "weight": "bolder",
                         "size": "medium"
                     },
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "{Binding Rating.MaxValue}",
                         "isSubtle": true
                     },
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "{Binding Rating.Average}",
                         "isSubtle": true
                     },
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "{Binding Description}",
                         "wrap": true
                     },
                     {
-                        "@type": "Image",
+                        "type": "Image",
                         "url": "{Binding Thumbnail}",
                         "size": "large"
                     }
                 ],
                 "actions": [
                     {
-                        "@type": "HttpPOST",
+                        "type": "HttpPOST",
                         "name": "More Info"
                     },
                     {
-                        "@type": "HttpPOST",
+                        "type": "HttpPOST",
                         "name": "View on Foursquare"
                     }
                 ]

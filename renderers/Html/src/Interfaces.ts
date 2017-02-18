@@ -1,5 +1,5 @@
 import * as Utils from "./Utils";
-import { TextColor, ImageStyle, TextSize, TextWeight, HorizontalAlignment, stringToSize, stringToHorizontalAlignment } from "./Enums";
+import { TextColor, ImageStyle, TextSize, TextWeight, HorizontalAlignment, stringToImageSize, stringToHorizontalAlignment } from "./Enums";
 
 export interface IAction {
 
@@ -15,7 +15,6 @@ export interface ICard {
 export interface IContainer {
     textColor: TextColor
     speak: string;
-    horizontalAlignment: HorizontalAlignment;
     container: IContainer;
     isAllowedItemType(elementType: string);
 }
@@ -25,7 +24,6 @@ export abstract class CardElement {
     private _container: IContainer;
 
     speak: string;
-    horizontalAlignment: HorizontalAlignment = HorizontalAlignment.Left;
 
     constructor(container: IContainer) {
         this._container = container;
@@ -56,15 +54,6 @@ export abstract class CardElement {
             element.className += " stretch";
         }
 
-        switch (this.horizontalAlignment) {
-            case HorizontalAlignment.Center:
-                element.style.textAlign = "center";
-                break;
-            case HorizontalAlignment.Right:
-                element.style.textAlign = "right";
-                break;
-        }
-
         if (this.hideOverflow) {
             element.style.overflow = "hidden";
         }
@@ -82,6 +71,5 @@ export abstract class CardElement {
 
     parse(json: any) {
         this.speak = json["speak"];
-        this.horizontalAlignment = stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
     }
 }

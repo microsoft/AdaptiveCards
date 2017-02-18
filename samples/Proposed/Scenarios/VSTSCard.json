@@ -1,6 +1,5 @@
 {
-    "$schema": "http://localhost:13406/adaptive-card.json",
-    //   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"body": [
 		{
@@ -41,25 +40,25 @@
 			"type": "FactSet",
 			"facts": [
 				{
-					"name": "Work item type:",
+					"title": "Work item type:",
 					"value": "Bug"
 				},
 				{
-					"name": "State:",
+					"title": "State:",
 					"value": "Closed"
 				},
 				{
-					"name": "Area Path:",
+					"title": "Area Path:",
 					"value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines",
 					"speak": ""
 				},
 				{
-					"name": "Iteration Path:",
+					"title": "Iteration Path:",
 					"value": "t365\\Tabs\\Extensibility\\longer to show",
 					"speak": ""
 				},
 				{
-					"name": "Priority:",
+					"title": "Priority:",
 					"value": "1"
 				}
 			]

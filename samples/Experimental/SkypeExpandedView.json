@@ -21,26 +21,26 @@
             "contentType": "application/vnd.microsoft.card.adaptiveCard.multiview",
             "content": {
                 // Convention-based names identify the views
-                "@type": "AdaptiveCard.MultiView",
+                "type": "AdaptiveCard.MultiView",
                 "views": {
                     "small": {
-                        "@type": "AdaptiveCard",
+                        "type": "AdaptiveCard",
                         "body": [],
                         "actions": [
                             {
-                                "@type": "ShowView", // introduces new action type
+                                "type": "ShowView", // introduces new action type
                                 "name": "View Boarding Pass",
                                 "value": "large"
                             }
                         ]
                     },
                     "large": {
-                        "@type": "AdaptiveCard",
+                        "type": "AdaptiveCard",
                         "defaultIfPossible": true,
                         "body": [],
                         "actions": [ // This is optional, a back button will typically be added by the client
                             {
-                                "@type": "ShowView",
+                                "type": "ShowView",
                                 "name": "Close",
                                 "value": "small" // should we use $ref here?
                             }
