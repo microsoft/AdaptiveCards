@@ -1,5 +1,5 @@
 {
-    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"body": [
 		{
@@ -9,12 +9,12 @@
 				{
 					"type": "TextBlock",
 					"text": "Card created: Publish Adaptive Card schema",
-					"textWeight": "bolder",
-					"textSize": "medium"
+					"weight": "bolder",
+					"size": "medium"
 				},
 				{
-					"type": "ColumnGroup",
-					"items": [
+					"type": "ColumnSet",
+					"columns": [
 						{
 							"size": "auto",
 							"items": [
@@ -56,9 +56,9 @@
 					"wrap": true
 				},
 				{
-					"type": "FactGroup",
+					"type": "FactSet",
 					"speak": "It has been assigned to: David Claux",
-					"items": [
+					"facts": [
 						{
 							"title": "Board:",
 							"value": "Adaptive Card"
@@ -82,38 +82,44 @@
 	],
 	"actions": [
 		{
-			"type": "Submit",
+			"type": "Action.ShowCard",
 			"title": "Set due date",
-			"inputs": [
-				{
-					"type": "TextInput",
-					"inputType": "date",
-					"id": "dueDate",
-					"prompt": "Select a date"
-				}
-			]
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Date",
+						"id": "dueDate",
+						"placeholder": "Select a date"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "OK"
+					}
+				]
+			}
 		},
 		{
-			"type": "Submit",
+			"type": "Action.ShowCard",
 			"title": "Comment",
-			"inputs": [
-				{
-					"type": "TextInput",
-					"id": "comment",
-					"isMultiline": true,
-					"prompt": "Enter your comment"
-				}
-			]
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"isMultiline": true,
+						"placeholder": "Enter your comment"
+					}
+				]
+			}
 		},
 		{
-			"type": "OpenUri",
+			"type": "Action.OpenUrl",
 			"title": "View",
-			"targets": [
-				{
-					"os": "default",
-					"uri": "http://..."
-				}
-			]
+			"url": "http://microsoft.com"
 		}
 	]
 }

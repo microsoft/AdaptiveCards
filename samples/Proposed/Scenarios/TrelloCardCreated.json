@@ -113,7 +113,7 @@
 								"type": "Input.Text",
 								"id": "comment",
 								"isMultiline": true,
-								"title": "Enter your comment"
+								"placeholder": "Enter your comment"
 							}
 						],
 						"actions": [
