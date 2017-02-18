@@ -36,31 +36,31 @@ namespace WpfVisualizer
 
         private void OnAction(object sender, ActionEventArgs e)
         {
-            if (e.Action is AC.OpenUrlAction)
+            if (e.Action is AC.ActionOpenUrl)
             {
-                AC.OpenUrlAction action = (AC.OpenUrlAction)e.Action;
+                AC.ActionOpenUrl action = (AC.ActionOpenUrl)e.Action;
                 Process.Start(action.Url);
             }
-            else if (e.Action is AC.ShowCardAction)
+            else if (e.Action is AC.ActionShowCard)
             {
-                AC.ShowCardAction action = (AC.ShowCardAction)e.Action;
+                AC.ActionShowCard action = (AC.ActionShowCard)e.Action;
                 ShowCardWindow dialog = new ShowCardWindow(action.Title, action.Card, this.Resources);
                 dialog.Owner = this;
                 dialog.ShowDialog();
             }
-            else if (e.Action is AC.SubmitAction)
+            else if (e.Action is AC.ActionSubmit)
             {
-                AC.SubmitAction action = (AC.SubmitAction)e.Action;
+                AC.ActionSubmit action = (AC.ActionSubmit)e.Action;
                 System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), "SubmitAction");
                 this.Close();
             }
-            else if (e.Action is AC.CancelAction)
+            //else if (e.Action is AC.CancelAction)
+            //{
+            //    this.Close();
+            //}
+            else if (e.Action is AC.ActionHttp)
             {
-                this.Close();
-            }
-            else if (e.Action is AC.HttpAction)
-            {
-                AC.HttpAction action = (AC.HttpAction)e.Action;
+                AC.ActionHttp action = (AC.ActionHttp)e.Action;
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine($"HEADERS={JsonConvert.SerializeObject(action.Headers)}");
                 sb.AppendLine($"BODY={action.Body}");

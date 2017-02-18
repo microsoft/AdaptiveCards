@@ -20,23 +20,5 @@ namespace Adaptive.Schema.Net
         /// </summary>
         [JsonRequired]
         public string Id { get; set; }
-
-        /// <summary>
-        /// Title Description of the input desired
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Title { get; set; }
-
-        /// <summary>
-        /// The initial value for the field
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Value { get; set; }
-
-        /// <summary>
-        /// Hint of expected value desired (may be ignored by some clients)
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Placeholder{ get; set; }
     }
 }

@@ -10,11 +10,11 @@ namespace Adaptive.Schema.Net
 {
 
     /// <summary>
-    /// The FactGroup element makes it simple to display a se ries of "facts" (e.g. name/value pairs) in a tabular form.
+    /// The FactSet element makes it simple to display a se ries of "facts" (e.g. name/value pairs) in a tabular form.
     /// </summary>
-    public class FactGroup : CardElement
+    public class FactSet : CardElement
     {
-        public FactGroup()
+        public FactSet()
         { }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Adaptive.Schema.Net
     }
 
     /// <summary>
-    /// Represents one "fact" in a FactGroup element.
+    /// Represents one "fact" in a FactSet element.
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class Fact

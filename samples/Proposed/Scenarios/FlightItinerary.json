@@ -1,50 +1,62 @@
 {
-	"@type": "AdaptiveCard",
+	"$schema": "http://localhost:13406/adaptive-card.json",
+	//   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
 	"speak": "<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>",
 	"body": [
 		{
-			"@type": "Container",
-			"title": "Passengers",
-			"separator": "bottom",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
+					"text": "Passengers",
+					"weight":"bolder",
+					"size":"extraLarge"
+				},
+				{
+					"type": "TextBlock",
 					"text": "Sarah Hum"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Jeremy Goldberg"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Evan Litvak"
 				}
 			]
 		},
 		{
-			"@type": "Container",
-			"title": "2 Stops",
-			"separator": "bottom",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
+					"text": "2 Stops",
+					"weight":"bolder",
+					"size":"extraLarge"
+				},
+				{
+					"type": "TextBlock",
 					"text": "Fri, October 10 8:30 AM",
 					"weight": "bolder"
 				},
 				{
-					"@type": "ColumnGroup",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": 1,
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "San Francisco",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"size": "extraLarge",
 									"color": "accent",
 									"text": "SFO"
@@ -52,32 +64,32 @@
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": " "
 								},
 								{
-									"@type": "Image",
+									"type": "Image",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
 									"size": "small"
 								}
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": 1,
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"horizontalAlignment": "right",
 									"text": "Amsterdam",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"horizontalAlignment": "right",
 									"size": "extraLarge",
 									"color": "accent",
@@ -90,29 +102,33 @@
 			]
 		},
 		{
-			"@type": "Container",
-			"title": "Non-Stop",
+			"type": "Container",
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
+					"text": "Non-Stop",
+					"weight":"bolder",
+					"size":"extraLarge"
+				},
+				{
+					"type": "TextBlock",
 					"text": "Fri, October 18 9:50 PM",
 					"weight": "bolder"
 				},
 				{
-					"@type": "ColumnGroup",
-					"topSpacing": "narrow",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": 1,
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Amsterdam",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"size": "extraLarge",
 									"color": "accent",
 									"text": "AMS"
@@ -120,28 +136,28 @@
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
-									"@type": "Image",
+									"type": "Image",
 									"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
 									"size": "small"
 								}
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": 1,
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"horizontalAlignment": "right",
 									"text": "San Francisco",
 									"isSubtle": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"topSpacing": "none",
 									"horizontalAlignment": "right",
 									"size": "extraLarge",
@@ -155,18 +171,17 @@
 			]
 		},
 		{
-			"@type": "Container",
+			"type": "Container",
 			"items": [
 				{
-					"@type": "ColumnGroup",
-					"topSpacing": "narrow",
+					"type": "ColumnSet",
 					"columns": [
 						{
-							"@type": "Column",
-							"size": 1,
+							"type": "Column",
+							"size": "1",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "Total",
 									"size": "medium",
 									"isSubtle": true
@@ -174,11 +189,11 @@
 							]
 						},
 						{
-							"@type": "Column",
+							"type": "Column",
 							"size": 1,
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"horizontalAlignment": "right",
 									"text": "$4,032.54",
 									"size": "medium",

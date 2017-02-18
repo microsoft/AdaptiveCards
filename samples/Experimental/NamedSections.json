@@ -4,7 +4,7 @@
     "sections": {
         "header": [
             {
-                "@type": "ColumnGroup",
+                "@type": "ColumnSet",
                 "columns": [
                     {
                         "@type": "Column",

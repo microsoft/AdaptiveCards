@@ -11,6 +11,8 @@ using AC = Adaptive.Schema.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using System.Text;
+using System.Windows.Data;
 
 namespace Adaptive.Renderers
 {
@@ -82,6 +84,7 @@ namespace Adaptive.Renderers
             XmlReader xmlReader = XmlReader.Create(stringReader);
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
             uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock");
+            uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
             if (textBlock.HorizontalAlignment.HasValue)
             {
@@ -150,13 +153,44 @@ namespace Adaptive.Renderers
                     break;
             }
 
-            if (textBlock.Wrap.HasValue && textBlock.Wrap == true)
-                uiTextBlock.TextWrapping = TextWrapping.Wrap;
-            else
-                uiTextBlock.TextWrapping = TextWrapping.NoWrap;
-
             if (textBlock.IsSubtle.HasValue && textBlock.IsSubtle == true)
                 uiTextBlock.Opacity = (double)this.Resources["Adaptive.IsSubtleOpacity"];
+
+            if (textBlock.Wrap.HasValue && textBlock.Wrap == true)
+            {
+                uiTextBlock.TextWrapping = TextWrapping.Wrap;
+                if (textBlock.MaxLines.HasValue)
+                {
+                    var uiGrid = new Grid();
+                    // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
+                    // using same style, fontWeight settings as original textblock
+                    var measureBlock = new System.Windows.Controls.TextBlock()
+                    {
+                        Style = uiTextBlock.Style,
+                        FontWeight = uiTextBlock.FontWeight,
+                        Visibility = Visibility.Hidden,
+                        TextWrapping = TextWrapping.Wrap
+                    };
+
+                    for (int i = 1; i < textBlock.MaxLines; i++)
+                        measureBlock.Inlines.Add(new System.Windows.Documents.LineBreak());
+                    
+                    // bind the real textBlock's Height => MeasureBlock.ActualHeight
+                    uiTextBlock.SetBinding(Control.HeightProperty, new Binding()
+                    {
+                        Path = new PropertyPath("ActualHeight"),
+                        Source = measureBlock,
+                        Mode = BindingMode.OneWay
+                    });
+
+                    // Add both to a grid so they go as a unit
+                    uiGrid.Children.Add(measureBlock);
+                    uiGrid.Children.Add(uiTextBlock);
+                    return uiGrid;
+                }
+            }
+            else
+                uiTextBlock.TextWrapping = TextWrapping.NoWrap;
             return uiTextBlock;
         }
 
@@ -184,9 +218,9 @@ namespace Adaptive.Renderers
             if (image.Style == ImageStyle.Person)
                 style += $".{image.Style.ToString()}";
             uiImage.Style = this.GetStyle(style);
-            if (image.Action != null)
+            if (image.SelectAction != null)
             {
-                return _renderAction(image.Action, new List<FrameworkElement>(), uiImage);
+                return _renderAction(image.SelectAction, new List<FrameworkElement>(), uiImage);
             }
 
             return uiImage;

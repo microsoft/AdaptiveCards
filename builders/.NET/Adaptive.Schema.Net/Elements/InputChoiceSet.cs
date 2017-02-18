@@ -12,11 +12,17 @@ namespace Adaptive.Schema.Net
     /// <summary>
     /// Element which collects choice from the user
     /// </summary>
-    public class ChoiceInput : Input
+    public class InputChoiceSet : Input
     {
-        public ChoiceInput()
+        public InputChoiceSet()
         {
         }
+
+        /// <summary>
+        /// The initial value for the field
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string Value { get; set; }
 
         /// <summary>
         /// Style for choice 
@@ -28,7 +34,7 @@ namespace Adaptive.Schema.Net
         /// allow multiple choices to be selected (default false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool? MultiSelect { get; set; }
+        public bool? IsMultiSelect { get; set; }
 
         /// <summary>
         ///  the choice options
@@ -38,7 +44,7 @@ namespace Adaptive.Schema.Net
     }
 
     /// <summary>
-    /// Choice as part of a MultichoiceInput element
+    /// Choice as part of a Input.ChoiceSet element
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class Choice
