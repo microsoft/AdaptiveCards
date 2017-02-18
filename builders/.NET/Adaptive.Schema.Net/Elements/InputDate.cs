@@ -4,41 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Adaptive.Schema.Net
 {
     /// <summary>
-    /// Adaptive card which has flexible container
+    /// Input which collects date from the user
     /// </summary>
-    public class AdaptiveCard : TypedElement
+    public class InputDate: Input
     {
-        public AdaptiveCard() { }
-
-        public List<CardElement> Body { get; set; } = new List<CardElement>();
-
-        /// <summary>
-        /// Actions for this container
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
+        public InputDate()
+        {
+        }
 
         /// <summary>
-        /// Speak annotation for the card
+        /// Placeholder text for the input desired
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Speak { get; set; }
+        public string Placeholder { get; set; }
 
         /// <summary>
-        /// Title for the card (used when displayed in a dialog)
+        /// The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Title { get; set; }
+        public string Value { get; set; }
 
         /// <summary>
-        /// Background image for card
+        /// hint of minimum value(may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundImage { get; set; }
+        public string Min { get; set; }
+
+        /// <summary>
+        /// hint of maximum value(may be ignored by some clients)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string Max { get; set; }
     }
 }

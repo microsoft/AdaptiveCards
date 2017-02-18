@@ -38,7 +38,6 @@ namespace Adaptive.Renderers
                 Uri uri = new Uri(card.BackgroundImage);
                 grid.Background = new ImageBrush(new BitmapImage(uri));
             }
-            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
             var inputControls = new List<FrameworkElement>();
@@ -46,7 +45,7 @@ namespace Adaptive.Renderers
             return grid;
         }
 
-        private void _addContainerElements(Grid grid, List<CardItem> elements, List<ActionBase> actions, List<FrameworkElement> inputControls)
+        private void _addContainerElements(Grid grid, List<CardElement> elements, List<ActionBase> actions, List<FrameworkElement> inputControls)
         {
             bool hasActions = actions != null && actions.Any();
             if (hasActions)
@@ -58,29 +57,21 @@ namespace Adaptive.Renderers
             foreach (var cardElement in elements)
             {
                 // each element has a row
-                grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-
                 UIElement uiElement = _renderCardElement(cardElement, inputControls);
-                Grid.SetRow(uiElement, grid.RowDefinitions.Count - 1);
-                Grid.SetColumnSpan(uiElement, 2);
-
-                // if we have input 
-                if (cardElement is Input)
+                if (cardElement is Container && grid.RowDefinitions.Count > 0)
                 {
-                    var input = cardElement as Input;
-                    // and a title                    
-                    if (input.Title != null)
+                    Container container = (Container)cardElement;
+                    if (container.StartGroup == true)
                     {
-                        // Add input title as column[0] peer to input element
-                        // this is so all input labels line up nicely
-                        var uiTitle = new WPF.TextBlock() { Text = input.Title };
-                        uiTitle.Style = this.GetStyle("Adaptive.Input.Title");
-                        Grid.SetRow(uiTitle, grid.RowDefinitions.Count - 1);
-                        Grid.SetColumn(uiElement, 1);
-                        Grid.SetColumnSpan(uiElement, 1);
-                        grid.Children.Add(uiTitle);
+                        var sep = new Separator();
+                        grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                        Grid.SetRow(sep, grid.RowDefinitions.Count - 1);
+                        sep.Style = this.GetStyle("Adaptive.Separator");
+                        grid.Children.Add(sep);
                     }
                 }
+                grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                Grid.SetRow(uiElement, grid.RowDefinitions.Count - 1);
                 grid.Children.Add(uiElement);
             }
 
@@ -102,7 +93,6 @@ namespace Adaptive.Renderers
                 uiActionBar.Style = this.GetStyle("Adaptive.Actions");
                 grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, grid.RowDefinitions.Count - 1);
-                Grid.SetColumnSpan(uiActionBar, 2);
                 grid.Children.Add(uiActionBar);
             }
         }
@@ -112,7 +102,7 @@ namespace Adaptive.Renderers
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        private UIElement _renderCardElement(CardItem element, List<FrameworkElement> inputControls)
+        private UIElement _renderCardElement(CardElement element, List<FrameworkElement> inputControls)
         {
             if (element is ColumnSet)
             {
@@ -134,13 +124,13 @@ namespace Adaptive.Renderers
             {
                 return Render(element as AC.TextBlock);
             }
-            else if (element is TextInput)
+            else if (element is InputText)
             {
-                return Render(element as TextInput, inputControls);
+                return Render(element as InputText, inputControls);
             }
-            else if (element is ChoiceInput)
+            else if (element is InputChoiceSet)
             {
-                return Render(element as ChoiceInput, inputControls);
+                return Render(element as InputChoiceSet, inputControls);
             }
             else if (element is AC.Image)
             {
@@ -149,6 +139,22 @@ namespace Adaptive.Renderers
             else if (element is Container)
             {
                 return Render(element as Container, inputControls);
+            }
+            else if (element is InputNumber)
+            {
+                return Render(element as InputNumber, inputControls);
+            }
+            else if (element is InputDate)
+            {
+                return Render(element as InputDate, inputControls);
+            }
+            else if (element is InputTime)
+            {
+                return Render(element as InputTime, inputControls);
+            }
+            else if (element is InputToggle)
+            {
+                return Render(element as InputToggle, inputControls);
             }
             else
                 Debug.Print($"Unknown Element type {element.GetType().Name}");
@@ -167,13 +173,7 @@ namespace Adaptive.Renderers
             var uiContainer = new Grid();
             uiContainer.Style = this.GetStyle("Adaptive.Container");
 
-            if (container.Separation == SeparationStyle.Before || container.Separation == SeparationStyle.Both)
-                _addSeperator(uiContainer);
-
             _addContainerElements(uiContainer, container.Items, container.Actions, inputControls);
-
-            if (container.Separation == SeparationStyle.After || container.Separation == Adaptive.Schema.Net.SeparationStyle.Both)
-                _addSeperator(uiContainer);
 
             if (container.SelectAction != null)
             {
@@ -183,15 +183,6 @@ namespace Adaptive.Renderers
             return uiContainer;
         }
 
-        private void _addSeperator(Grid uiContainer)
-        {
-            var sep = new Separator();
-            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-            Grid.SetRow(sep, uiContainer.RowDefinitions.Count - 1);
-            Grid.SetColumnSpan(sep, 2);
-            sep.Style = this.GetStyle("Adaptive.Separator");
-            uiContainer.Children.Add(sep);
-        }
 
         /// <summary>
         /// ColumnSet

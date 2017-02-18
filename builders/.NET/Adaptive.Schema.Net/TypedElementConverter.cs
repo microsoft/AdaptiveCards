@@ -27,10 +27,11 @@ namespace Adaptive.Schema.Net
         {
             JObject jObject = JObject.Load(reader);
             // Create target object based on JObject
-            string typeName = jObject["@type"]?.Value<string>() ?? jObject["type"]?.Value<string>();
+            string typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             object result = jObject;
             if (typeName != null)
             {
+                typeName = typeName.Replace(".", string.Empty);
                 var type = typeof(TypedElement).GetTypeInfo().Assembly.ExportedTypes.FirstOrDefault(t => t.Name.ToLower() == typeName.ToLower());
                 if (type != null)
                 {

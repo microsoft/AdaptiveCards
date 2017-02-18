@@ -8,13 +8,13 @@ using Newtonsoft.Json;
 namespace Adaptive.Schema.Net
 {
     /// <summary>
-    /// HttpAction represents the properties needed to do an Http request. All input properties are available for use 
+    /// Action.Http represents the properties needed to do an Http request. All input properties are available for use 
     /// via data binding. Properties can be data bound to the Uri and Body properties, allowing you to send a request 
     /// to an arbitrary url.
     /// </summary>
-    public class HttpAction : ActionBase
+    public class ActionHttp : ActionBase
     {
-        public HttpAction() : base() { }
+        public ActionHttp() : base() { }
 
 
         /// <summary>

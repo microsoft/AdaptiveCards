@@ -19,6 +19,7 @@ using System.IO;
 using System.Diagnostics;
 using Adaptive.Renderers;
 using System.Windows.Threading;
+using System.Speech.Synthesis;
 
 namespace WpfVisualizer
 {
@@ -29,10 +30,15 @@ namespace WpfVisualizer
     {
         private AdaptiveXamlRenderer _renderer;
         private AC.AdaptiveCard _card;
+        private SpeechSynthesizer _synth;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            _synth = new SpeechSynthesizer();
+            _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+            _synth.SetOutputToDefaultAudioDevice();
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -59,7 +65,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                this.textBox.Text = File.ReadAllText(dlg.FileName);
+                this.textBox.Text = File.ReadAllText(dlg.FileName).Replace("\t","  ");
             }
         }
 
@@ -77,26 +83,26 @@ namespace WpfVisualizer
 
         private void _renderer_OnAction(object sender, ActionEventArgs e)
         {
-            if (e.Action is AC.OpenUrlAction)
+            if (e.Action is AC.ActionOpenUrl)
             {
-                AC.OpenUrlAction action = (AC.OpenUrlAction)e.Action;
+                AC.ActionOpenUrl action = (AC.ActionOpenUrl)e.Action;
                 Process.Start(action.Url);
             }
-            else if (e.Action is AC.ShowCardAction)
+            else if (e.Action is AC.ActionShowCard)
             {
-                AC.ShowCardAction action = (AC.ShowCardAction)e.Action;
+                AC.ActionShowCard action = (AC.ActionShowCard)e.Action;
                 ShowCardWindow dialog = new ShowCardWindow(action.Title, action.Card, this.Resources);
                 dialog.Owner = this;
                 dialog.ShowDialog();
             }
-            else if (e.Action is AC.SubmitAction)
+            else if (e.Action is AC.ActionSubmit)
             {
-                AC.SubmitAction action = (AC.SubmitAction)e.Action;
+                AC.ActionSubmit action = (AC.ActionSubmit)e.Action;
                 System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), "SubmitAction");
             }
-            else if (e.Action is AC.HttpAction)
+            else if (e.Action is AC.ActionHttp)
             {
-                AC.HttpAction action = (AC.HttpAction)e.Action;
+                AC.ActionHttp action = (AC.ActionHttp)e.Action;
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine($"HEADERS={JsonConvert.SerializeObject(action.Headers)}");
                 sb.AppendLine($"BODY={action.Body}");
@@ -135,6 +141,35 @@ namespace WpfVisualizer
                 encoder.Save(stream);
             }
             Process.Start(path);
+        }
+
+        private void speak_Click(object sender, RoutedEventArgs e)
+        {
+            var card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
+            _synth.SpeakAsyncCancelAll();
+            if (card.Speak != null)
+                _synth.SpeakSsmlAsync(FixSSML(card.Speak));
+            else
+            {
+                foreach(var element in card.Body)
+                {
+                    if (element.Speak != null)
+                    {
+                        _synth.SpeakSsmlAsync(FixSSML(element.Speak));
+                    }
+                }
+            }
+        }
+
+        private string FixSSML(String speak)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<speak version=\"1.0\"");
+            sb.AppendLine(" xmlns =\"http://www.w3.org/2001/10/synthesis\"");
+            sb.AppendLine(" xml:lang=\"en-US\">");
+            sb.AppendLine(speak);
+            sb.AppendLine("</speak>");
+            return sb.ToString();
         }
     }
 }

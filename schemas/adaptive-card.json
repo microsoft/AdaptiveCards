@@ -1,11 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id":  "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "id": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "type": "object",
   "title": "Microsoft Adaptive Card Schema",
   "description": "Card schema for the adaptive card.",
   "properties": {
-    "@type": {
+    "type": {
       "type": "string",
       "enum": [
         "AdaptiveCard"
@@ -16,88 +16,184 @@
       "description": "Title/caption for the adaptive card."
     },
     "body": {
-      "$ref": "#/definitions/CardItems"
+      "$ref": "#/definitions/CardElements"
     },
     "actions": {
       "$ref": "#/definitions/Actions"
     }
   },
   "required": [
-    "@type"
+    "type"
   ],
   "definitions": {
-    "AdaptiveCard": {
-      "additionalProperties": false,
-      "properties": {
-        "@type": {
-          "type": "string",
-          "enum": [
-            "AdaptiveCard"
-          ]
-        },
-        "title": {
-          "type": "string",
-          "description": "Title/caption for the adaptive card."
-        },
-        "body": {
-          "$ref": "#/definitions/CardItems"
-        },
-        "actions": {
-          "$ref": "#/definitions/Actions"
-        }
-      },
-      "required": [
-        "@type"
-      ],
-      "type": "object"
-    },
     "Action": {
       "anyOf": [
         {
-          "$ref": "#/definitions/SubmitAction"
+          "$ref": "#/definitions/Action.Submit"
         },
         {
-          "$ref": "#/definitions/CancelAction"
+          "$ref": "#/definitions/Action.ShowCard"
         },
         {
-          "$ref": "#/definitions/ShowCardAction"
+          "$ref": "#/definitions/Action.Http"
         },
         {
-          "$ref": "#/definitions/HttpAction"
-        },
-        {
-          "$ref": "#/definitions/OpenUrlAction"
+          "$ref": "#/definitions/Action.OpenUrl"
         }
       ]
     },
-    "Actions": {
-      "type": "array",
-      "additionalItems": true,
-      "items": {
-        "$ref": "#/definitions/Action"
-      }
-    },
-    "CancelAction": {
+    "Action.Http": {
       "additionalProperties": false,
-      "description": "When CancelAction is invoked it resets any input that is in scope, and closes a card if it is part of a card which was shown via ShowCardAction.",
+      "description": "Action.Http represents the properties needed to do an Http request. All input properties are available for use via data binding. Properties can be data bound to the Uri and Body properties, allowing you to send a request to an arbitrary url.",
       "properties": {
-        "@type": {
+        "type": {
           "type": "string",
           "enum": [
-            "CancelAction"
+            "Action.Http"
+          ]
+        },
+        "body": {
+          "type": "string",
+          "description": "content to post (can have binding information)"
+        },
+        "headers": {
+          "type": "object",
+          "description": "Object which represents headers Example: { \"content-type\":\"application/json\" }"
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "POST",
+            "PUT",
+            "DELETE",
+            "GET"
+          ],
+          "description": "Http method (Default: POST)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Label for button or link that represents this action"
+        },
+        "url": {
+          "type": "string",
+          "description": "url to use (can have binding information)"
+        }
+      },
+      "required": [
+        "type",
+        "url"
+      ],
+      "type": "object"
+    },
+    "Action.OpenUrl": {
+      "additionalProperties": false,
+      "description": "When Action.OpenUrl is invoked it will show the given url, either by launching it to an external web browser or showing in-situ with embedded web browser.",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Label for button or link that represents this action"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Action.OpenUrl"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "description": "Default (browser) url to use"
+        }
+      },
+      "required": [
+        "type",
+        "url"
+      ],
+      "type": "object"
+    },
+    "Action.ShowCard": {
+      "additionalProperties": false,
+      "description": "Action.ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Action.ShowCard"
           ]
         },
         "title": {
           "type": "string",
           "description": "Label for button or link that represents this action"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "card": {
+          "$ref": "#/definitions/AdaptiveCard"
         }
       },
       "required": [
-        "@type"
+        "type",
+        "card"
       ],
       "type": "object"
     },
-    "CardItem": {
+    "Action.Submit": {
+      "additionalProperties": false,
+      "description": "Submit action gathers up input fields, merges with optional data field and generates event to client asking for data to be submitted. It is up to the client to determine how that data is processed. For example: With BotFramework bots the client would send an activity through the messaging medium to the bot.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Action.Submit"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "description": "Label for button or link that represents this action"
+        },
+        "data": {
+          "type": "object",
+          "description": "initial data that input fields will be combined with. This is essentially 'hidden' properties"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "Actions": {
+      "additionalItems": true,
+      "items": {
+        "$ref": "#/definitions/Action"
+      },
+      "type": "array"
+    },
+    "AdaptiveCard": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "$ref": "#/definitions/Actions"
+        },
+        "body": {
+          "$ref": "#/definitions/CardElements"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title/caption for the adaptive card."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "AdaptiveCard"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "CardElement": {
       "oneOf": [
         {
           "$ref": "#/definitions/TextBlock"
@@ -118,19 +214,31 @@
           "$ref": "#/definitions/ImageSet"
         },
         {
-          "$ref": "#/definitions/TextInput"
+          "$ref": "#/definitions/Input.Text"
         },
         {
-          "$ref": "#/definitions/ChoiceInput"
+          "$ref": "#/definitions/Input.Number"
+        },
+        {
+          "$ref": "#/definitions/Input.Date"
+        },
+        {
+          "$ref": "#/definitions/Input.Time"
+        },
+        {
+          "$ref": "#/definitions/Input.Toggle"
+        },
+        {
+          "$ref": "#/definitions/Input.ChoiceSet"
         }
       ]
     },
-    "CardItems": {
-      "type": "array",
+    "CardElements": {
       "additionalItems": true,
       "items": {
-        "$ref": "#/definitions/CardItem"
-      }
+        "$ref": "#/definitions/CardElement"
+      },
+      "type": "array"
     },
     "Choice": {
       "additionalProperties": false,
@@ -158,58 +266,9 @@
       ],
       "type": "object"
     },
-    "ChoiceInput": {
-      "additionalProperties": false,
-      "description": "Shows an array of Choice objects",
-      "properties": {
-        "@type": {
-          "description": "Must be ChoiceInput",
-          "enum": [
-            "ChoiceInput"
-          ],
-          "type": "string"
-        },
-        "choices": {
-          "type": "array",
-          "description": "the choice options",
-          "items": {
-            "$ref": "#/definitions/Choice"
-          }
-        },
-        "id": {
-          "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
-        },
-        "multiSelect": {
-          "type": "boolean",
-          "description": "allow multiple choices to be selected (Default=false)"
-        },
-        "placeholder": {
-          "type": "string",
-          "description": "Hint of expected value desired (may be ignored by some clients)"
-        },
-        "style": {
-          "$ref": "#/definitions/ChoiceInputStyle"
-        },
-        "title": {
-          "type": "string",
-          "description": "Title Description of the input desired"
-        },
-        "value": {
-          "type": "string",
-          "description": "The initial value for a field"
-        }
-      },
-      "required": [
-        "@type",
-        "id",
-        "choices"
-      ],
-      "type": "object"
-    },
     "ChoiceInputStyle": {
       "type": "string",
-      "description": "Style hint for ChoiceInput.",
+      "description": "Style hint for Input.ChoiceSet",
       "enum": [
         "compact",
         "expanded"
@@ -219,16 +278,6 @@
       "additionalProperties": false,
       "description": "Defines a container that is part of a ColumnSet",
       "properties": {
-        "@type": {
-          "type": "string",
-          "description": "Must be Column",
-          "enum": [
-            "Column"
-          ]
-        },
-        "selectAction": {
-          "$ref": "#/definitions/Action"
-        },
         "actions": {
           "$ref": "#/definitions/Actions"
         },
@@ -241,18 +290,28 @@
           "description": "The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained."
         },
         "items": {
-          "$ref": "#/definitions/CardItems"
+          "$ref": "#/definitions/CardElements"
+        },
+        "selectAction": {
+          "$ref": "#/definitions/Action"
         },
         "size": {
-          "type": "string",
+          "type": [ "string", "number" ],
           "description": "auto, stretch, or a number representing relative width of the column in the column group"
         },
         "speak": {
           "$ref": "#/definitions/Speak"
+        },
+        "type": {
+          "type": "string",
+          "description": "Must be Column",
+          "enum": [
+            "Column"
+          ]
         }
       },
       "required": [
-        "@type",
+        "type",
         "items"
       ],
       "type": "object"
@@ -261,13 +320,6 @@
       "additionalProperties": false,
       "description": "The column group Item adds the ability to have a set of Column objects",
       "properties": {
-        "@type": {
-          "type": "string",
-          "description": "Must be ColumnSet",
-          "enum": [
-            "ColumnSet"
-          ]
-        },
         "columns": {
           "type": "array",
           "items": {
@@ -276,10 +328,17 @@
         },
         "speak": {
           "$ref": "#/definitions/Speak"
+        },
+        "type": {
+          "type": "string",
+          "description": "Must be ColumnSet",
+          "enum": [
+            "ColumnSet"
+          ]
         }
       },
       "required": [
-        "@type",
+        "type",
         "columns"
       ],
       "type": "object"
@@ -288,36 +347,32 @@
       "additionalProperties": false,
       "description": "The Container is a CardItem which contains a list of CardItems that are logically grouped",
       "properties": {
-        "@type": {
+        "actions": {
+          "$ref": "#/definitions/Actions"
+        },
+        "items": {
+          "$ref": "#/definitions/CardElements"
+        },
+        "selectAction": {
+          "$ref": "#/definitions/Action"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "startGroup": {
+          "type": "boolean",
+          "description": "visually separate this container from preiovus containers"
+        },
+        "type": {
           "type": "string",
           "description": "Must be Container",
           "enum": [
             "Container"
           ]
-        },
-        "selectAction": {
-          "$ref": "#/definitions/Action"
-        },
-        "actions": {
-          "$ref": "#/definitions/Actions"
-        },
-        "backgroundColor": {
-          "type": "string",
-          "description": "The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray."
-        },
-        "backgroundImageUrl": {
-          "type": "string",
-          "description": "The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained."
-        },
-        "items": {
-          "$ref": "#/definitions/CardItems"
-        },
-        "speak": {
-          "$ref": "#/definitions/Speak"
         }
       },
       "required": [
-        "@type",
+        "type",
         "items"
       ],
       "type": "object"
@@ -345,26 +400,25 @@
       "additionalProperties": false,
       "description": "The FactSet Item makes it simple to display a series of facts (e.g. name/value pairs) in a tabular form.",
       "properties": {
-        "@type": {
-          "type": "string",
-          "description": "Must be FactSet",
-          "enum": [
-            "FactSet"
-          ]
-        },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
         "facts": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Fact"
           }
-
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "type": {
+          "type": "string",
+          "description": "Must be FactSet",
+          "enum": [
+            "FactSet"
+          ]
         }
       },
       "required": [
-        "@type",
+        "type",
         "facts"
       ],
       "type": "object"
@@ -378,60 +432,15 @@
         "right"
       ]
     },
-    "HttpAction": {
-      "additionalProperties": false,
-      "description": "HttpAction represents the properties needed to do an Http request. All input properties are available for use via data binding. Properties can be data bound to the Uri and Body properties, allowing you to send a request to an arbitrary url.",
-      "properties": {
-        "@type": {
-          "type": "string",
-          "enum": [
-            "HttpAction"
-          ]
-        },
-        "body": {
-          "type": "string",
-          "description": "content to post (can have binding information)"
-        },
-        "headers": {
-          "type": "object",
-          "description": "Object which represents headers Example: { \"content-type\":\"application/json\" }"
-        },
-        "method": {
-          "type": "string",
-          "enum": [ "POST", "PUT", "DELETE", "GET" ],
-          "description": "Http method (Default: POST)"
-        },
-        "title": {
-          "type": "string",
-          "description": "Label for button or link that represents this action"
-        },
-        "url": {
-          "type": "string",
-          "description": "url to use (can have binding information)"
-        }
-      },
-      "required": [
-        "@type",
-        "url"
-      ],
-      "type": "object"
-    },
     "Image": {
       "additionalProperties": false,
       "description": "The Image Item allows for the inclusion of images in an Adaptive Card.",
       "properties": {
-        "@type": {
-          "type": "string",
-          "description": "Must be Image",
-          "enum": [
-            "Image"
-          ]
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment"
         },
         "selectAction": {
           "$ref": "#/definitions/Action"
-        },
-        "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment"
         },
         "size": {
           "$ref": "#/definitions/ImageSize"
@@ -442,13 +451,20 @@
         "style": {
           "$ref": "#/definitions/ImageStyle"
         },
+        "type": {
+          "type": "string",
+          "description": "Must be Image",
+          "enum": [
+            "Image"
+          ]
+        },
         "url": {
           "type": "string",
           "description": "The URL to the image."
         }
       },
       "required": [
-        "@type",
+        "type",
         "url"
       ],
       "type": "object"
@@ -457,29 +473,28 @@
       "additionalProperties": false,
       "description": "The ImageSet allows for the inclusion of a collection images like a photogallery.",
       "properties": {
-        "@type": {
-          "type": "string",
-          "description": "Must be ImageSet",
-          "enum": [
-            "ImageSet"
-          ]
-        },
         "images": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Image"
           }
-
         },
-        "size": {
+        "imageSize": {
           "$ref": "#/definitions/ImageSize"
         },
         "speak": {
           "$ref": "#/definitions/Speak"
+        },
+        "type": {
+          "type": "string",
+          "description": "Must be ImageSet",
+          "enum": [
+            "ImageSet"
+          ]
         }
       },
       "required": [
-        "@type",
+        "type",
         "images"
       ],
       "type": "object"
@@ -503,66 +518,253 @@
         "person"
       ]
     },
-    "OpenUrlAction": {
+    "Input.ChoiceSet": {
       "additionalProperties": false,
-      "description": "When OpenUrlAction is invoked it will show the given url, either by launching it to an external web browser or showing in-situ with embedded web browser.",
+      "description": "Shows an array of Choice objects",
       "properties": {
-        "@type": {
-          "type": "string",
-          "enum": [
-            "OpenUrlAction"
-          ]
-        },
-        "title": {
-          "type": "string",
-          "description": "Label for button or link that represents this action"
-        },
-        "url": {
-          "type": "string",
-          "description": "Default (browser) url to use"
-        },
-        "platformUrls": {
+        "choices": {
           "type": "array",
+          "description": "the choice options",
           "items": {
-            "type": "object",
-            "properties": {
-              "os": {
-                "type": "string"
-              },
-              "url": {
-                "type": "string"
-              }
-            }
+            "$ref": "#/definitions/Choice"
           }
+        },
+        "id": {
+          "type": "string",
+          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+        },
+        "isMultiSelect": {
+          "type": "boolean",
+          "description": "allow multiple choices to be selected (Default=false)"
+        },
+        "style": {
+          "$ref": "#/definitions/ChoiceInputStyle"
+        },
+        "type": {
+          "description": "Must be Input.ChoiceInput",
+          "enum": [
+            "Input.ChoiceSet"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "description": "The initial value for a field"
         }
       },
       "required": [
-        "@type",
-        "url"
+        "type",
+        "id",
+        "choices"
       ],
       "type": "object"
     },
-    "ShowCardAction": {
+    "Input.Date": {
       "additionalProperties": false,
-      "description": "ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.",
+      "description": "Input.Date collects Date from the user,",
       "properties": {
-        "@type": {
+        "id": {
           "type": "string",
+          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+        },
+        "max": {
+          "type": "string",
+          "description": "hint of maximum value expressed in iso-8601 format (may be ignored by some clients)"
+        },
+        "min": {
+          "type": "string",
+          "description": "hint of minimum value expressed in iso-8601 format (may be ignored by some clients)"
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Title Description of the input desired"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type must be Input.Date",
           "enum": [
-            "ShowCardAction"
+            "Input.Date"
           ]
         },
-        "title": {
+        "value": {
           "type": "string",
-          "description": "Label for button or link that represents this action"
-        },
-        "card": {
-          "$ref": "#/definitions/AdaptiveCard"
+          "description": "The initial value for a field expressed in iso-8601 format"
         }
       },
       "required": [
-        "@type",
-        "card"
+        "type",
+        "id"
+      ],
+      "type": "object"
+    },
+    "Input.Number": {
+      "additionalProperties": false,
+      "description": "Input.Number collects number from the user,",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+        },
+        "max": {
+          "type": "string",
+          "description": "hint of maximum value (may be ignored by some clients)"
+        },
+        "min": {
+          "type": "string",
+          "description": "hint of minimum value (may be ignored by some clients)"
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Title Description of the input desired"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type must be Input.Number",
+          "enum": [
+            "Input.Number"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "description": "The initial value for a field"
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ],
+      "type": "object"
+    },
+    "Input.Text": {
+      "additionalProperties": false,
+      "description": "Input.Text collects text from the user,",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+        },
+        "isMultiline": {
+          "type": "boolean",
+          "description": "Do you want to allow multiple lines of input"
+        },
+        "maxLength": {
+          "type": "string",
+          "description": "hint of maximum length characters to collect (may be ignored by some clients)"
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Title Description of the input desired"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "style": {
+          "$ref": "#/definitions/TextInputStyle"
+        },
+        "type": {
+          "type": "string",
+          "description": "Input.Text",
+          "enum": [
+            "Input.Text"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "description": "The initial value for a field"
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ],
+      "type": "object"
+    },
+    "Input.Time": {
+      "additionalProperties": false,
+      "description": "Input.Time collects Time from the user,",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+        },
+        "max": {
+          "type": "string",
+          "description": "hint of maximum value (may be ignored by some clients)"
+        },
+        "min": {
+          "type": "string",
+          "description": "hint of minimum value (may be ignored by some clients)"
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Title Description of the input desired"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type must be Input.Time",
+          "enum": [
+            "Input.Time"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "description": "The initial value for a field expressed in iso-8601 format"
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ],
+      "type": "object"
+    },
+    "Input.Toggle": {
+      "additionalProperties": false,
+      "description": "Input.Toggle collects text from the user,",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title for the toggle"
+        },
+        "type": {
+          "type": "string",
+          "description": "Input.Toggle",
+          "enum": [
+            "Input.Toggle"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "description": "The current selected value (default:false)"
+        },
+        "valueOff": {
+          "type": "string",
+          "description": "The value when toggle is off (default:false)"
+        },
+        "valueOn": {
+          "type": "string",
+          "description": "The value when toggle is on (default:true)"
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "title"
       ],
       "type": "object"
     },
@@ -570,41 +772,10 @@
       "type": "string",
       "description": "Specifies what should be spoken for this entire Item. This is simple text or SSML fragment"
     },
-    "SubmitAction": {
-      "additionalProperties": false,
-      "description": "Submit action gathers up input fields, merges with optional data field and generates event to client asking for data to be submitted. It is up to the client to determine how that data is processed. For example: With BotFramework bots the client would send an activity through the messaging medium to the bot.",
-      "properties": {
-        "@type": {
-          "type": "string",
-          "enum": [
-            "SubmitAction"
-          ]
-        },
-        "title": {
-          "type": "string",
-          "description": "Label for button or link that represents this action"
-        },
-        "data": {
-          "type": "object",
-          "description": "initial data that input fields will be combined with. This is essentially 'hidden' properties"
-        }
-      },
-      "required": [
-        "@type"
-      ],
-      "type": "object"
-    },
     "TextBlock": {
       "additionalProperties": false,
       "description": "The TextBlock Item allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.",
       "properties": {
-        "@type": {
-          "type": "string",
-          "description": "Must be TextBlock",
-          "enum": [
-            "TextBlock"
-          ]
-        },
         "color": {
           "type": "string",
           "description": "Controls the color of TextBlock Items.",
@@ -621,13 +792,13 @@
         "horizontalAlignment": {
           "$ref": "#/definitions/HorizontalAlignment"
         },
-        "maxLines": {
-          "type":"number",
-          "description": "When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use."
-        },
         "isSubtle": {
           "type": "boolean",
           "description": "Indicates whether the color of the text should be slightly toned down to appear less prominent"
+        },
+        "maxLines": {
+          "type": "number",
+          "description": "When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use."
         },
         "size": {
           "type": "string",
@@ -647,6 +818,13 @@
           "type": "string",
           "description": "The actual text to display"
         },
+        "type": {
+          "type": "string",
+          "description": "Must be TextBlock",
+          "enum": [
+            "TextBlock"
+          ]
+        },
         "weight": {
           "description": "Controls the weight of TextBlock Items",
           "enum": [
@@ -655,82 +833,26 @@
             "bolder"
           ],
           "type": "string"
+        },
+        "wrap": {
+          "type": "boolean",
+          "description": "True if be is allowed to wrap"
         }
       },
       "required": [
-        "@type",
+        "type",
         "text"
-      ],
-      "type": "object"
-    },
-    "TextInput": {
-      "additionalProperties": false,
-      "description": "TextInput collects text from the user,",
-      "properties": {
-        "@type": {
-          "type": "string",
-          "description": "Must be TextInput",
-          "enum": [
-            "TextInput"
-          ]
-        },
-        "id": {
-          "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
-        },
-        "max": {
-          "type": "string",
-          "description": "hint of maximum value (may be ignored by some clients)"
-        },
-        "maxLength": {
-          "type": "string",
-          "description": "hint of maximum length characters to collect (may be ignored by some clients)"
-        },
-        "min": {
-          "type": "string",
-          "description": "hint of minimum value (may be ignored by some clients)"
-        },
-        "placeholder": {
-          "type": "string",
-          "description": "Hint of expected value desired (may be ignored by some clients)"
-        },
-        "step": {
-          "type": "number",
-          "description": "hint of step value (may be ignored by some clients)"
-        },
-        "style": {
-          "$ref": "#/definitions/TextInputStyle"
-        },
-        "title": {
-          "type": "string",
-          "description": "Title Description of the input desired"
-        },
-        "value": {
-          "type": "string",
-          "description": "The initial value for a field"
-        }
-      },
-      "required": [
-        "@type",
-        "id"
       ],
       "type": "object"
     },
     "TextInputStyle": {
       "type": "string",
-      "description": "Style hint for TextInput.",
+      "description": "Style hint for Input.Text.",
       "enum": [
+        "text",
         "tel",
         "url",
-        "email",
-        "password",
-        "number",
-        "range",
-        "date",
-        "datetime",
-        "time",
-        "month",
-        "week"
+        "email"
       ]
     }
   }

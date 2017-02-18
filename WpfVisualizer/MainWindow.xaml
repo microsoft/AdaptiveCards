@@ -15,6 +15,7 @@
 
         <!-- TextBlock definitions -->
         <Style x:Key="Adaptive.TextBlock" TargetType="TextBlock" >
+            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.TextBlock.Small" TargetType="TextBlock" BasedOn="{StaticResource Adaptive.TextBlock}">
@@ -157,53 +158,43 @@
 
 
         <!-- Input definitions -->
-        <Style x:Key="Adaptive.Input.Title" TargetType="FrameworkElement" >
+        <Style x:Key="Adaptive.Input" TargetType="FrameworkElement" >
             <Setter Property="Margin" Value="4"/>
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput" TargetType="FrameworkElement" >
+        <Style x:Key="Adaptive.Input.ChoiceSet" TargetType="FrameworkElement" >
             <Setter Property="Margin" Value="4"/>
         </Style>
 
-        <Style x:Key="Adaptive.Input.ChoiceInput" TargetType="FrameworkElement" >
-            <Setter Property="Margin" Value="4"/>
+        <Style x:Key="Adaptive.Input.Text" TargetType="FrameworkElement" BasedOn="{StaticResource Adaptive.Input}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Date" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Date" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.DateTime" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Text" Value="{Binding Placeholder}"/>
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Time" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Time" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Month" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Number" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Week" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Toggle" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Range" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Text.Tel" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.Text}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Range.TextBox" TargetType="TextBox"  >
-            <Setter Property="Margin" Value="4"/>
+        <Style x:Key="Adaptive.Input.Text.Password" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.Text}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Number" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
+        <Style x:Key="Adaptive.Input.Text.Email" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.Text}">
         </Style>
 
-        <Style x:Key="Adaptive.Input.TextInput.Tel" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
-        </Style>
-
-        <Style x:Key="Adaptive.Input.TextInput.Password" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
-        </Style>
-
-        <Style x:Key="Adaptive.Input.TextInput.Email" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.TextInput}">
-        </Style>
-
-        <Style x:Key="Adaptive.Input.ChoiceInput.ComboBox" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.ChoiceInput}">
+        <Style x:Key="Adaptive.Input.ChoiceInput.ComboBox" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input.ChoiceSet}">
         </Style>
 
         <Style x:Key="Adaptive.Input.ChoiceInput.ComboBoxItem" TargetType="ComboBoxItem"  >
@@ -224,10 +215,30 @@
         <Style x:Key="Adaptive.Action" TargetType="Button"  >
             <Setter Property="Margin" Value="4"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        
+                    <!-- Content handles within a border -->
+                    <Border x:Name="bdr" CornerRadius="6" Margin="3" BorderThickness="1" BorderBrush="Black" Background="#FF5098FF">
+                        <!-- ContentPresenter properties. Set the content source as the content from each control define below -->
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Content" TextBlock.FontSize="20"  />
+                    </Border>
+                        
+                    <!-- Required triggers define here -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bdr" Property="Opacity" Value=".6"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="Adaptive.Action.Title" TargetType="TextBlock" >
             <Setter Property="Margin" Value="4"/>
+            <Setter Property="Foreground" Value="White"/>
         </Style>
 
         <Style x:Key="Adaptive.Action.OpenUrlAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
@@ -237,9 +248,6 @@
         </Style>
 
         <Style x:Key="Adaptive.Action.SubmitAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
-        </Style>
-
-        <Style x:Key="Adaptive.Action.CancelAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
         <Style x:Key="Adaptive.Action.HttpAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
@@ -291,6 +299,7 @@
         <StackPanel Orientation="Horizontal">
             <Button Name="loadButton" Click="loadButton_Click" Content="Load" Margin="4"/>
             <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
+            <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/>
         </StackPanel>
 
         <TextBox Grid.Row="1 " AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>

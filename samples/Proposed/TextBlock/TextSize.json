@@ -1,32 +1,34 @@
 {
-    "@type": "AdaptiveCard",
+	"$schema": "http://localhost:13406/adaptive-card.json",
+	//   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
     "body": [
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "Default"
         },
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "Small",
             "size": "small"
         },
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "Normal",
             "size": "normal"
         },
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "Medium",
             "size": "medium"
         },
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "Large",
             "size": "large"
         },
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "ExtraLarge",
             "size": "extraLarge"
         }

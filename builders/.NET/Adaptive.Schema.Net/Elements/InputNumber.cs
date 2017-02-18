@@ -8,31 +8,25 @@ using Newtonsoft.Json;
 namespace Adaptive.Schema.Net
 {
     /// <summary>
-    /// Input which collects text from the user
+    /// Input which collects number from the user
     /// </summary>
-    public class TextInput : Input
+    public class InputNumber: Input
     {
-        public TextInput()
+        public InputNumber()
         {
         }
 
         /// <summary>
-        /// Hint of style of input, if client doesn't support the style it will become simple text input
+        /// Placeholder text for the input desired
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextInputStyle? Style { get; set; }
+        public string Placeholder { get; set; }
 
         /// <summary>
-        /// true to collect multiple lines of text(default is false)
+        /// The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IsMultiline { get; set; }
-
-        /// <summary>
-        /// hint of maximum length characters to collect(may be ignored by some clients)
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? MaxLength { get; set; }
+        public string Value { get; set; }
 
         /// <summary>
         /// hint of minimum value(may be ignored by some clients)
@@ -45,11 +39,5 @@ namespace Adaptive.Schema.Net
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Max { get; set; }
-        
-        /// <summary>
-        /// hint of step value(may be ignored by some clients)   
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Step { get; set; }
     }
 }
