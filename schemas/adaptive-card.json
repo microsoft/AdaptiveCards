@@ -380,7 +380,7 @@
     "Fact": {
       "additionalProperties": false,
       "properties": {
-        "name": {
+        "title": {
           "type": "string"
         },
         "speak": {
