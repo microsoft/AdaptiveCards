@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Media;
 using Adaptive.Schema.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -33,7 +35,7 @@ namespace Adaptive.Renderers
             if (inputText.MaxLength.HasValue)
                 textBox.MaxLength = inputText.MaxLength.Value;
 
-            textBox.Watermark = inputText.Title;
+            textBox.Watermark = inputText.Placeholder;
             textBox.Style = this.GetStyle($"Adaptive.Input.Text.{inputText.Style}");
             textBox.DataContext = inputText;
             inputControls.Add(textBox);
@@ -48,7 +50,7 @@ namespace Adaptive.Renderers
         protected virtual UIElement Render(InputDate inputDate, List<FrameworkElement> inputControls)
         {
             var datePicker = new DatePicker();
-            datePicker.Text = inputDate.Title;
+            datePicker.ToolTip = inputDate.Placeholder;
             DateTime value;
             if (DateTime.TryParse(inputDate.Value, out value))
                 datePicker.SelectedDate = value;
@@ -81,7 +83,7 @@ namespace Adaptive.Renderers
             TimeSpan maxValue;
             if (TimeSpan.TryParse(inputTime.Max, out maxValue))
                 timePicker.EndTime = maxValue;
-            timePicker.Watermark = inputTime.Title;
+            timePicker.Watermark = inputTime.Placeholder;
             timePicker.Style = this.GetStyle("Adaptive.Input.Time");
             timePicker.DataContext = inputTime;
             inputControls.Add(timePicker);
@@ -110,7 +112,7 @@ namespace Adaptive.Renderers
             if (float.TryParse(inputNumber.Max, out maxValue))
                 numberPicker.Maximum = Convert.ToInt32(maxValue);
 
-            numberPicker.Watermark = inputNumber.Title;
+            numberPicker.Watermark = inputNumber.Placeholder;
             numberPicker.Style = this.GetStyle("Adaptive.Input.Number");
             numberPicker.DataContext = inputNumber;
             inputControls.Add(numberPicker);
@@ -124,14 +126,21 @@ namespace Adaptive.Renderers
         /// <returns></returns>
         protected virtual UIElement Render(InputToggle inputToggle, List<FrameworkElement> inputControls)
         {
-            var toggleSwitch = new HorizontalToggleSwitch();
-            toggleSwitch.CheckedContent = inputToggle.Title1;
-            toggleSwitch.UncheckedContent = inputToggle.Title2;
-            toggleSwitch.IsChecked = inputToggle.Value == inputToggle.Value1;
-            toggleSwitch.Style = this.GetStyle($"Adaptive.Input.Toggle");
-            toggleSwitch.DataContext = inputToggle;
-            inputControls.Add(toggleSwitch);
-            return toggleSwitch;
+            //var toggleSwitch = new HorizontalToggleSwitch();
+            //toggleSwitch.CheckedContent = inputToggle.Title1;
+            //toggleSwitch.UncheckedContent = inputToggle.Title2;
+            //toggleSwitch.IsChecked = inputToggle.Value == inputToggle.ValueOn;
+            //toggleSwitch.Style = this.GetStyle($"Adaptive.Input.Toggle");
+            //toggleSwitch.DataContext = inputToggle;
+            //inputControls.Add(toggleSwitch);
+            //return toggleSwitch;
+            var uiToggle = new CheckBox();
+            uiToggle.Content = inputToggle.Title;
+            uiToggle.IsChecked = inputToggle.Value == (inputToggle.ValueOn ?? "true");
+            uiToggle.Style = this.GetStyle($"Adaptive.Input.Toggle");
+            uiToggle.DataContext = inputToggle;
+            inputControls.Add(uiToggle);
+            return uiToggle;
         }
 
         /// <summary>
@@ -141,6 +150,17 @@ namespace Adaptive.Renderers
         /// <returns></returns>
         protected UIElement Render(InputChoiceSet choiceSet, List<FrameworkElement> inputControls)
         {
+            var uiGrid = new Grid();
+            //uiGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+            //uiGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star)});
+            uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            uiGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+
+            //if (!String.IsNullOrEmpty(choiceSet.Title))
+            //{
+            //    var uiTitle = new System.Windows.Controls.TextBlock() { Text = choiceSet.Title, Margin= new Thickness(4, 4, 4, 0) };
+            //    uiGrid.Children.Add(uiTitle);
+            //}
             var uiComboBox = new ComboBox();
             uiComboBox.Style = this.GetStyle("Adaptive.Input.ChoiceSet.ComboBox");
             uiComboBox.DataContext = choiceSet;
@@ -157,7 +177,7 @@ namespace Adaptive.Renderers
 
             foreach (var choice in choiceSet.Choices)
             {
-                if (choiceSet.MultiSelect == true)
+                if (choiceSet.IsMultiSelect == true)
                 {
                     var uiCheckbox = new CheckBox();
                     uiCheckbox.Content = choice.Display;
@@ -193,12 +213,18 @@ namespace Adaptive.Renderers
             if (choiceSet.Style == ChoiceInputStyle.Compact)
             {
                 inputControls.Add(uiComboBox);
-                return uiComboBox;
+                // Grid.SetColumn(uiComboBox, 1);
+                Grid.SetRow(uiComboBox, 1);
+                uiGrid.Children.Add(uiComboBox);
+                return uiGrid;
             }
             else
             {
                 inputControls.Add(uiChoices);
-                return uiChoices;
+                // Grid.SetColumn(uiChoices, 1);
+                Grid.SetRow(uiChoices, 1);
+                uiGrid.Children.Add(uiChoices);
+                return uiGrid;
             }
         }
 
@@ -243,13 +269,13 @@ namespace Adaptive.Renderers
             {
                 return ((DatePicker)inputControl).Text;
             }
-            else if (inputControl is HorizontalToggleSwitch)
+            else if (inputControl is CheckBox)
             {
-                var toggleSwitch = (HorizontalToggleSwitch)inputControl;
-                if (toggleSwitch.IsChecked)
-                    return ((InputToggle)toggleSwitch.DataContext).Value1;
+                var toggleSwitch = (CheckBox)inputControl;
+                if (toggleSwitch.IsChecked == true)
+                    return ((InputToggle)toggleSwitch.DataContext).ValueOn;
                 else
-                    return ((InputToggle)toggleSwitch.DataContext).Value2;
+                    return ((InputToggle)toggleSwitch.DataContext).ValueOff;
             }
             else if (inputControl is PasswordBox)
             {
@@ -280,7 +306,7 @@ namespace Adaptive.Renderers
                 if (inputControl is ListBox)
                 {
                     var choices = inputControl as ListBox;
-                    if (choiceInput.MultiSelect == true)
+                    if (choiceInput.IsMultiSelect == true)
                     {
                         List<string> values = new List<string>();
                         foreach (var item in choices.Items)
@@ -347,7 +373,7 @@ namespace Adaptive.Renderers
             else if (control is HorizontalToggleSwitch)
             {
                 InputToggle inputToggle = control.DataContext as InputToggle;
-                ((HorizontalToggleSwitch)control).IsChecked = inputToggle.Value == inputToggle.Value1;
+                ((HorizontalToggleSwitch)control).IsChecked = inputToggle.Value == inputToggle.ValueOn;
             }
             else if (control is PasswordBox)
             {

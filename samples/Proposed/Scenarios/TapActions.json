@@ -1,13 +1,15 @@
 {
+    "$schema": "http://localhost:13406/adaptive-card.json",
+    //   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "body": [
         {
             "type": "TextBlock",
             "text": "Here are some cool photos",
-            "size": "Large"
+            "size": "large"
         },
         {
-            "type": "container",
+            "type": "Container",
             "items": [
                 {
                     "type": "TextBlock",
@@ -23,7 +25,7 @@
                         {
                             "type": "Input.Date",
                             "id": "dueDate",
-                            "title": "Select the due date"
+                            "placeholder": "Select the due date"
                         }
                     ],
                     "actions": [
@@ -39,7 +41,7 @@
         },
         {
             "type": "ImageSet",
-            "size": "medium",
+            "imageSize": "medium",
             "images": [
                 {
                     "type": "Image",

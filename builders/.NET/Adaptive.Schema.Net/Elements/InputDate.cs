@@ -17,11 +17,10 @@ namespace Adaptive.Schema.Net
         }
 
         /// <summary>
-        /// Title Description of the input desired
+        /// Placeholder text for the input desired
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Title { get; set; }
-
+        public string Placeholder { get; set; }
 
         /// <summary>
         /// The initial value for the field

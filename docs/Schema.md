@@ -152,7 +152,7 @@ Input.Text collects text from the user
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"Input.Text"** |
-| **title** | string | false | Title of the input desired |
+| **placeholder** | string | false | initial text descripting the input desired |
 | **style**| [TextInputStyle](#textinputstyle) | false | Hint of style of input, if client doesn't support the style it will become simple text input || **isMultiline** | bool | false | true to collect multiple lines of text (default is false)|
 | **maxLength** | number | false | hint of maximum length characters to collect *(may be ignored by some clients)* |
 | **isMultiline** | boolean | false | Do you want to allow multiple lines of input |
@@ -167,7 +167,7 @@ Input.Date collects text from the user in form of a date.
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"Input.Date"** |
-| **title** | string | false | Title of the input desired |
+| **placeholder** | string | false | initial text descripting the input desired |
 | **min** | string | false | Minimum date in ISO-8601 format (Not all clients will be able to honor this)|
 | **max** | string  | false | Maximum date in ISO-8601 format (Not all clients will be able to honor this)|
 
@@ -181,7 +181,7 @@ Input.Time collects text from the user in form of a time of day.
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"Input.Time"** |
-| **title** | string | false | Title of the input desired |
+| **placeholder** | string | false | initial text descripting the input desired |
 | **min** | string | false | Minimum time (Not all clients will be able to honor this)|
 | **max** | string  | false | Maximum time (Not all clients will be able to honor this)|
 
@@ -195,7 +195,7 @@ Input.Number collects text from the user with a bias towards a number.
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"Input.Number"** |
-| **title** | string | false | Title of the input desired |
+| **placeholder** | string | false | initial text descripting the input desired |
 | **min** | number | false | Minimum number (Not all clients will be able to honor this)|
 | **max** | number | false | Maximum number (Not all clients will be able to honor this)|
 
@@ -207,10 +207,10 @@ Input.Toggle collects a selection between two values, with **value** representin
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true |  **"Input.ToggleChoice"** || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
-| **title1** | string | true | The title to display for option 1 |
-| **title2** | string | true  | The title to display for option 2 |
-| **value1** | string | true | The value to use when option 1 is selected | 
-| **value2** | string | true | The value to use when option 2 is selected | 
+| **title** | string | true | The title for the toggle |
+| **valueOn** | string | false | The value to use when toggle is selected (default:true)| 
+| **valueOff** | string | false  | The value to use when toggle is not selected (default:false)| 
+| **value** | string | false  | The value current value (default:false) | 
 
 ### Input.ChoiceSet
 *Extends [Input](#input)*
@@ -224,7 +224,6 @@ Shows an array of choices the to the user.
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true |  **"Input.ChoiceSet"** || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
-| **title** | string | false | Title of the selection the choiceset represents  |
 | **style**| [ChoiceSetStyle](#choicesetstyle) | false | Hint of style of input |
 | **isMultiSelect** | boolean | false | allow multiple choices to be selected (Default=false)|
 | **choices** | Choice[] | true | the choice options |

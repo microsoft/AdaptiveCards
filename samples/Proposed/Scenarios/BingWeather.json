@@ -1,4 +1,6 @@
 {
+    "$schema": "http://localhost:13406/adaptive-card.json",
+    //   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
 	"body": [
@@ -8,7 +10,7 @@
 				{
 					"type": "TextBlock",
 					"text": "Seattle, Washington - January 20, 7:30 AM",
-					"isSubtle": "true"
+					"isSubtle": true
 				}
 			]
 		},
@@ -64,7 +66,7 @@
 								{
 									"type": "TextBlock",
 									"text": "Mostly Clear",
-									"isSubtle": "true"
+									"isSubtle": true
 								}
 							]
 						},

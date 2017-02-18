@@ -1,4 +1,6 @@
 {
+    "$schema": "http://localhost:13406/adaptive-card.json",
+    //   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
     "body": [
@@ -25,7 +27,7 @@
                     "columns": [
                         {
                             "type": "Column",
-                            "size": "60",
+                            "size": 60,
                             "items": [
                                 {
                                     "type": "TextBlock",
@@ -42,7 +44,7 @@
                         },
                         {
                             "type": "Column",
-                            "size": "40",
+                            "size": 40,
                             "items": [
                                 {
                                     "type": "FactSet",

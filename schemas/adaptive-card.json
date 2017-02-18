@@ -124,6 +124,9 @@
           "type": "string",
           "description": "Label for button or link that represents this action"
         },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
         "card": {
           "$ref": "#/definitions/AdaptiveCard"
         }
@@ -293,7 +296,7 @@
           "$ref": "#/definitions/Action"
         },
         "size": {
-          "type": "string",
+          "type": [ "string", "number" ],
           "description": "auto, stretch, or a number representing relative width of the column in the column group"
         },
         "speak": {
@@ -530,16 +533,12 @@
           "type": "string",
           "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
         },
-        "multiSelect": {
+        "isMultiSelect": {
           "type": "boolean",
           "description": "allow multiple choices to be selected (Default=false)"
         },
         "style": {
           "$ref": "#/definitions/ChoiceInputStyle"
-        },
-        "title": {
-          "type": "string",
-          "description": "Title Description of the input desired"
         },
         "type": {
           "description": "Must be Input.ChoiceInput",
@@ -576,12 +575,12 @@
           "type": "string",
           "description": "hint of minimum value expressed in iso-8601 format (may be ignored by some clients)"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "title": {
+        "placeholder": {
           "type": "string",
           "description": "Title Description of the input desired"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
         },
         "type": {
           "type": "string",
@@ -617,12 +616,12 @@
           "type": "string",
           "description": "hint of minimum value (may be ignored by some clients)"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "title": {
+        "placeholder": {
           "type": "string",
           "description": "Title Description of the input desired"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
         },
         "type": {
           "type": "string",
@@ -658,15 +657,15 @@
           "type": "string",
           "description": "hint of maximum length characters to collect (may be ignored by some clients)"
         },
+        "placeholder": {
+          "type": "string",
+          "description": "Title Description of the input desired"
+        },
         "speak": {
           "$ref": "#/definitions/Speak"
         },
         "style": {
           "$ref": "#/definitions/TextInputStyle"
-        },
-        "title": {
-          "type": "string",
-          "description": "Title Description of the input desired"
         },
         "type": {
           "type": "string",
@@ -702,12 +701,12 @@
           "type": "string",
           "description": "hint of minimum value (may be ignored by some clients)"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "title": {
+        "placeholder": {
           "type": "string",
           "description": "Title Description of the input desired"
+        },
+        "speak": {
+          "$ref": "#/definitions/Speak"
         },
         "type": {
           "type": "string",
@@ -738,13 +737,9 @@
         "speak": {
           "$ref": "#/definitions/Speak"
         },
-        "title1": {
+        "title": {
           "type": "string",
-          "description": "Title for option 1"
-        },
-        "title2": {
-          "type": "string",
-          "description": "Title for option 2"
+          "description": "Title for the toggle"
         },
         "type": {
           "type": "string",
@@ -755,25 +750,21 @@
         },
         "value": {
           "type": "string",
-          "description": "The current selected value (should match value1 or value2)"
+          "description": "The current selected value (default:false)"
         },
-        "value1": {
+        "valueOff": {
           "type": "string",
-          "description": "The value for option 1"
+          "description": "The value when toggle is off (default:false)"
         },
-        "value2": {
+        "valueOn": {
           "type": "string",
-          "description": "The value for option 2 (Default:Null)"
+          "description": "The value when toggle is on (default:true)"
         }
       },
       "required": [
         "type",
         "id",
-        "title1",
-        "title2",
-        "value1",
-        "value2",
-        "value"
+        "title"
       ],
       "type": "object"
     },
@@ -842,6 +833,10 @@
             "bolder"
           ],
           "type": "string"
+        },
+        "wrap": {
+          "type": "boolean",
+          "description": "True if be is allowed to wrap"
         }
       },
       "required": [

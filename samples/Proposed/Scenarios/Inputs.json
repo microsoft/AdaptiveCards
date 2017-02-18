@@ -1,108 +1,172 @@
 {
     "$schema": "http://localhost:13406/adaptive-card.json",
+    //   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
     "body": [
         {
-            "type": "Input.Text",
-            "id": "SimpleVal",
-            "title": "Input.Text"
-        },
-        {
-            "type": "Input.Text",
-            "id": "MultiLineVal",
-            "title": "Multline Text",
-            "isMultiline": true
-        },
-        {
-            "type": "Input.Date",
-            "id": "DateVal",
-            "title": "Date"
-        },
-        {
-            "type": "Input.Text",
-            "style": "tel",
-            "id": "TelVal",
-            "title": "phone"
-        },
-        {
-            "type": "Input.Number",
-            "id": "NumVal",
-            "title": "Number",
-            "min": "-5",
-            "max": "5"
-        },
-        {
-            "type": "Input.ChoiceSet",
-            "title": "SingleSelect",
-            "id": "SingleSelectVal",
-            "choices": [
+            "type": "Container",
+            "startGroup": true,
+            "items": [
                 {
-                    "display": "One",
-                    "value": "1",
-                    "isSelected": true
+                    "type": "TextBlock",
+                    "text": "Input.Text elements",
+                    "horizontalAlignment": "center",
+                    "size": "medium",
+                    "weight": "bolder"
                 },
                 {
-                    "display": "Two",
-                    "value": "2"
+                    "type": "Input.Text",
+                    "id": "SimpleVal",
+                    "placeholder": "Input.Text"
                 },
                 {
-                    "display": "Three",
-                    "value": "3"
+                    "type": "Input.Text",
+                    "style": "url",
+                    "id": "UrlVal",
+                    "placeholder": "Input.Text (url)"
+                },
+                {
+                    "type": "Input.Text",
+                    "style": "email",
+                    "id": "EmailVal",
+                    "placeholder": "Input.Text (email)"
+                },
+                {
+                    "type": "Input.Text",
+                    "style": "tel",
+                    "id": "TelVal",
+                    "placeholder": "Input.Text (phone)"
+                },
+                {
+                    "type": "Input.Text",
+                    "id": "MultiLineVal",
+                    "placeholder": "Input.Text (multiline)",
+                    "isMultiline": true
+                },
+                {
+                    "type": "Input.Number",
+                    "id": "NumVal",
+                    "placeholder": "Input.Number",
+                    "min": "-5",
+                    "max": "5"
+                },
+                {
+                    "type": "Input.Date",
+                    "id": "DateVal",
+                    "placeholder": "Input.Date"
                 }
             ]
         },
         {
-            "type": "Input.ChoiceSet",
-            "title": "MultiSelect",
-            "id": "MultiSelectVal",
-            "multiSelect": true,
-            "choices": [
+            "type": "Container",
+            "startGroup": true,
+            "items": [
                 {
-                    "display": "One",
-                    "value": "1",
-                    "isSelected": true
+                    "type": "TextBlock",
+                    "text": "Input.ChoiceSet",
+                    "horizontalAlignment": "center",
+                    "size": "medium",
+                    "weight": "bolder"
                 },
                 {
-                    "display": "Two",
-                    "value": "2"
+                    "type": "TextBlock",
+                    "text": "Input.ChoiceSet"
                 },
                 {
-                    "display": "Three",
-                    "value": "3",
-                    "isSelected": true
+                    "type": "Input.ChoiceSet",
+                    "id": "SingleSelectVal",
+                    "choices": [
+                        {
+                            "display": "One",
+                            "value": "1",
+                            "isSelected": true
+                        },
+                        {
+                            "display": "Two",
+                            "value": "2"
+                        },
+                        {
+                            "display": "Three",
+                            "value": "3"
+                        }
+                    ]
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Input.ChoiceSet (Compact)"
+                },
+                {
+                    "type": "Input.ChoiceSet",
+                    "id": "CompactSelectVal",
+                    "style": "compact",
+                    "choices": [
+                        {
+                            "display": "One",
+                            "value": "1",
+                            "isSelected": true
+                        },
+                        {
+                            "display": "Two",
+                            "value": "2"
+                        },
+                        {
+                            "display": "Three",
+                            "value": "3"
+                        }
+                    ]
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Input.ChoiceSet (MultiSelect)"
+                },
+                {
+                    "type": "Input.ChoiceSet",
+                    "id": "MultiSelectVal",
+                    "isMultiSelect": true,
+                    "choices": [
+                        {
+                            "display": "One",
+                            "value": "1",
+                            "isSelected": true
+                        },
+                        {
+                            "display": "Two",
+                            "value": "2"
+                        },
+                        {
+                            "display": "Three",
+                            "value": "3",
+                            "isSelected": true
+                        }
+                    ]
                 }
             ]
         },
         {
-            "type": "Input.ChoiceSet",
-            "title": "Combo",
-            "id": "CompactSelectVal",
-            "style": "compact",
-            "choices": [
+            "type": "Container",
+            "startGroup": true,
+            "items": [
                 {
-                    "display": "One",
-                    "value": "1",
-                    "isSelected": true
+                    "type": "TextBlock",
+                    "text": "Input.Toggle",
+                    "horizontalAlignment": "center",
+                    "size": "medium",
+                    "weight": "bolder"
                 },
                 {
-                    "display": "Two",
-                    "value": "2"
+                    "type": "Input.Toggle",
+                    "id": "IsCool",
+                    "title": "isCool (True/False)"
                 },
                 {
-                    "display": "Three",
-                    "value": "3"
+                    "type": "Input.Toggle",
+                    "id": "gender",
+                    "title": "IsMale (valueOn/valueOff)",
+                    "valueOn": "Male",
+                    "valueOff": "Female"
                 }
             ]
-        },
-        {
-            "type": "Input.Toggle",
-            "id": "GuysOrGals",
-            "title1": "Guys",
-            "value1": "MALE",
-            "title2": "Gals",
-            "value2": "FEMALE",
-            "value": "MALE"
         }
     ],
     "actions": [
@@ -208,7 +272,7 @@
                     {
                         "type": "Input.Text",
                         "id": "SimpleVal",
-                        "title": "Input.Text"
+                        "placeholder": "enter comment"
                     }
                 ],
                 "actions": [

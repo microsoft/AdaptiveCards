@@ -1,15 +1,16 @@
-// TODO: Fix this with latest schema changes
 {
+	"$schema": "http://localhost:13406/adaptive-card.json",
+	//   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"body": [
 		{
 			"type": "TextBlock",
 			"text": "**textWeight = lighter**",
-			"size": "ExtraLarge"
+			"size": "extraLarge"
 		},
 		{
-			"type": "container",
-			"separation": "before",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
 					"type": "TextBlock",
@@ -49,8 +50,8 @@
 			"size": "extraLarge"
 		},
 		{
-			"type": "container",
-			"separation": "before",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
 					"type": "TextBlock",
@@ -82,11 +83,11 @@
 		{
 			"type": "TextBlock",
 			"text": "**textWeight = bolder**",
-			"size": "ExtraLarge"
+			"size": "extraLarge"
 		},
 		{
-			"type": "container",
-			"separation": "before",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
 					"type": "TextBlock",
@@ -123,11 +124,11 @@
 		{
 			"type": "TextBlock",
 			"text": "**Text colors**",
-			"size": "ExtraLarge"
+			"size": "extraLarge"
 		},
 		{
-			"type": "container",
-			"separation": "before",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
 					"type": "TextBlock",
@@ -136,7 +137,6 @@
 				},
 				{
 					"type": "TextBlock",
-					"topSpacing": "none",
 					"size": "medium",
 					"isSubtle": true,
 					"text": "The quick brown fox jumps over the lazy dog. (textColor = default, isSubtle = true)"

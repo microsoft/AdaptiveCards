@@ -15,6 +15,7 @@
 
         <!-- TextBlock definitions -->
         <Style x:Key="Adaptive.TextBlock" TargetType="TextBlock" >
+            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.TextBlock.Small" TargetType="TextBlock" BasedOn="{StaticResource Adaptive.TextBlock}">
@@ -160,16 +161,19 @@
         <Style x:Key="Adaptive.Input" TargetType="FrameworkElement" >
             <Setter Property="Margin" Value="4"/>
         </Style>
-        
+
         <Style x:Key="Adaptive.Input.ChoiceSet" TargetType="FrameworkElement" >
             <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.Input.Text" TargetType="FrameworkElement" BasedOn="{StaticResource Adaptive.Input}">
-            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.Input.Date" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
+        </Style>
+
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Text" Value="{Binding Placeholder}"/>
         </Style>
 
         <Style x:Key="Adaptive.Input.Time" TargetType="FrameworkElement"  BasedOn="{StaticResource Adaptive.Input}">
@@ -211,10 +215,30 @@
         <Style x:Key="Adaptive.Action" TargetType="Button"  >
             <Setter Property="Margin" Value="4"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        
+                    <!-- Content handles within a border -->
+                    <Border x:Name="bdr" CornerRadius="6" Margin="3" BorderThickness="1" BorderBrush="Black" Background="#FF5098FF">
+                        <!-- ContentPresenter properties. Set the content source as the content from each control define below -->
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Content" TextBlock.FontSize="20"  />
+                    </Border>
+                        
+                    <!-- Required triggers define here -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bdr" Property="Opacity" Value=".6"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="Adaptive.Action.Title" TargetType="TextBlock" >
             <Setter Property="Margin" Value="4"/>
+            <Setter Property="Foreground" Value="White"/>
         </Style>
 
         <Style x:Key="Adaptive.Action.OpenUrlAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
@@ -224,9 +248,6 @@
         </Style>
 
         <Style x:Key="Adaptive.Action.SubmitAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
-        </Style>
-
-        <Style x:Key="Adaptive.Action.CancelAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
         <Style x:Key="Adaptive.Action.HttpAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">

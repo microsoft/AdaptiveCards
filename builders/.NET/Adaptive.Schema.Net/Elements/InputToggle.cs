@@ -17,38 +17,28 @@ namespace Adaptive.Schema.Net
         }
 
         /// <summary>
-        /// Title text for option1
+        /// Title text for toggle
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonRequired]
-        public string Title1 { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
-        /// Title text for option2
+        /// Value to use for on (Default: true)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonRequired]
-        public string Title2 { get; set; }
+        public string ValueOn { get; set; } = "true";
 
         /// <summary>
-        /// Value text for option1
+        /// Value to use for off (Default: false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonRequired]
-        public string Value1 { get; set; }
-
-        /// <summary>
-        /// Value text for option2
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonRequired]
-        public string Value2 { get; set; }
+        public string ValueOff { get; set; } = "false";
 
         /// <summary>
         /// The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonRequired]
         public string Value { get; set; }
     }
 }

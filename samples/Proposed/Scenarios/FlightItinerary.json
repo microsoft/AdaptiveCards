@@ -1,12 +1,19 @@
 {
+	"$schema": "http://localhost:13406/adaptive-card.json",
+	//   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"speak": "<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>",
 	"body": [
 		{
 			"type": "Container",
-			"title": "Passengers",
 			"startGroup": true,
 			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Passengers",
+					"weight":"bolder",
+					"size":"extraLarge"
+				},
 				{
 					"type": "TextBlock",
 					"text": "Sarah Hum"
@@ -23,9 +30,14 @@
 		},
 		{
 			"type": "Container",
-			"title": "2 Stops",
 			"startGroup": true,
 			"items": [
+				{
+					"type": "TextBlock",
+					"text": "2 Stops",
+					"weight":"bolder",
+					"size":"extraLarge"
+				},
 				{
 					"type": "TextBlock",
 					"text": "Fri, October 10 8:30 AM",
@@ -91,8 +103,13 @@
 		},
 		{
 			"type": "Container",
-			"title": "Non-Stop",
 			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Non-Stop",
+					"weight":"bolder",
+					"size":"extraLarge"
+				},
 				{
 					"type": "TextBlock",
 					"text": "Fri, October 18 9:50 PM",
@@ -158,11 +175,10 @@
 			"items": [
 				{
 					"type": "ColumnSet",
-					"topSpacing": "narrow",
 					"columns": [
 						{
 							"type": "Column",
-							"size": 1,
+							"size": "1",
 							"items": [
 								{
 									"type": "TextBlock",

@@ -1,10 +1,12 @@
 {
+    "$schema": "http://localhost:13406/adaptive-card.json",
+    //   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "body": [
         {
             "type": "TextBlock",
             "text": "Here are some cool photos",
-            "size": "Large"
+            "size": "large"
         },
         {
             "type": "TextBlock",

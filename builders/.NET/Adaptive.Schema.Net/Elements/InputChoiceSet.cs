@@ -25,13 +25,6 @@ namespace Adaptive.Schema.Net
         public string Value { get; set; }
 
         /// <summary>
-        /// Title Description of the input desired
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Title { get; set; }
-
-
-        /// <summary>
         /// Style for choice 
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -41,7 +34,7 @@ namespace Adaptive.Schema.Net
         /// allow multiple choices to be selected (default false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool? MultiSelect { get; set; }
+        public bool? IsMultiSelect { get; set; }
 
         /// <summary>
         ///  the choice options

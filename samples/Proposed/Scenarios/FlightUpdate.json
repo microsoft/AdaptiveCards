@@ -1,4 +1,6 @@
 {
+    "$schema": "http://localhost:13406/adaptive-card.json",
+    //   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
 	"body": [
@@ -11,7 +13,6 @@
 					"columns": [
 						{
 							"type": "Column",
-							"background": "blue",
 							"size": "auto",
 							"items": [
 								{
