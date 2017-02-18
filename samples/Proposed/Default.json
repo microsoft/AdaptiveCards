@@ -18,15 +18,15 @@
 // 					"type": "FactSet",
 // 					"facts": [
 // 						{
-// 							"name": "This is a fact name",
+// 							"title": "This is a fact name",
 // 							"value": "This is a fact value"
 // 						},
 // 						{
-// 							"name": "This is a fact name",
+// 							"title": "This is a fact name",
 // 							"value": "This is a fact value"
 // 						},
 // 						{
-// 							"name": "This is a fact name",
+// 							"title": "This is a fact name",
 // 							"value": "This is a fact value"
 // 						}
 // 					]
@@ -69,7 +69,7 @@
 // 					"actions": [
 // 						{
 // 							"type": "ActionCard",
-// 							"name": "Comment",
+// 							"title": "Comment",
 // 							"card": {
 // 								"items": [
 // 									{
@@ -132,7 +132,7 @@
 // 							"actions": [
 // 								{
 // 									"type": "HttpPOST",
-// 									"name": "Action's name prop.",
+// 									"title": "Action's name prop.",
 // 									"target": "http://...",
 // 									"successMessage": "This is the action's successMessage property.",
 // 									"errorMessage": "This is the action's errorMessage property."
@@ -141,7 +141,7 @@
 // 						},
 // 						{
 // 							"type": "ActionCard",
-// 							"name": "Move",
+// 							"title": "Move",
 // 							"inputs": [
 // 								{
 // 									"type": "MultiInput.ChoiceSet",
@@ -166,7 +166,7 @@
 // 							"actions": [
 // 								{
 // 									"type": "HttpPOST",
-// 									"name": "Action's name prop.",
+// 									"title": "Action's name prop.",
 // 									"target": "http://...",
 // 									"successMessage": "This is the action's successMessage property.",
 // 									"errorMessage": "This is the action's errorMessage property."
@@ -175,7 +175,7 @@
 // 						},
 // 						{
 // 							"type": "ActionCard",
-// 							"name": "Due Date",
+// 							"title": "Due Date",
 // 							"inputs": [
 // 								{
 // 									"type": "DateInput",
@@ -186,7 +186,7 @@
 // 							"actions": [
 // 								{
 // 									"type": "HttpPOST",
-// 									"name": "Action's name prop.",
+// 									"title": "Action's name prop.",
 // 									"target": "http://...",
 // 									"successMessage": "This is the action's successMessage property.",
 // 									"errorMessage": "This is the action's errorMessage property."
@@ -195,14 +195,14 @@
 // 						},
 // 						{
 // 							"type": "HttpPOST",
-// 							"name": "Action's name prop.",
+// 							"title": "Action's name prop.",
 // 							"target": "http://...",
 // 							"successMessage": "This is the action's successMessage property.",
 // 							"errorMessage": "This is the action's errorMessage property."
 // 						},
 // 						{
 // 							"type": "OpenUri",
-// 							"name": "Action's name prop",
+// 							"title": "Action's name prop",
 // 							"targets": [
 // 								{
 // 									"os": "default",

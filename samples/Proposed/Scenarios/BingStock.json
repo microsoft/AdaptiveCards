@@ -49,15 +49,15 @@
                                     "type": "FactSet",
                                     "facts": [
                                         {
-                                            "name": "Open",
+                                            "title": "Open",
                                             "value": "62.24"
                                         },
                                         {
-                                            "name": "High",
+                                            "title": "High",
                                             "value": "62.98"
                                         },
                                         {
-                                            "name": "Low",
+                                            "title": "Low",
                                             "value": "62.20"
                                         }
                                     ]
