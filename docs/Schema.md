@@ -448,4 +448,3 @@ Style hint for [Input.ChoiceSet](#input.choiceset).
 | **compact** | choices are preffered to be compactly displayed. Example: ComboBox ) |
 | **expanded** | choices are preferred to be displayed for easy input. Example: Checkbox or Radio buttons) |
 
-
