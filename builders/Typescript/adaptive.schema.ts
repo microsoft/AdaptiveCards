@@ -130,16 +130,14 @@ export class TypedElement implements ITypedElement {
     type: string;
 }
 
-export class AdaptiveCard extends TypedElement implements ICard {
-    public constructor(el: ICard = null) {
+export class Card extends TypedElement implements ICard {
+    public constructor(init?: Partial<ICard>) {
         super("AdaptiveCard");
-        if (el) {
-            this.actions = (el.actions) ? el.actions : new Array();
-            this.backgroundImage = el.backgroundImage;
-            this.body = (el.body) ? el.body : new Array();
-            this.speak = el.speak;
-            this.title = el.title;
-        }
+        Object.assign(this, init);
+        if (!this.actions)
+            this.actions = [];
+        if (!this.body)
+            this.body = [];
     }
 
     actions?: (IActionHttp | IActionOpenUrl | IActionShowCard | IActionSubmit)[];
@@ -150,12 +148,9 @@ export class AdaptiveCard extends TypedElement implements ICard {
 }
 
 export class ActionBase extends TypedElement implements IActionBase {
-    public constructor(type: string, el: IActionBase = null) {
+    public constructor(type: string, init?: Partial<IActionBase>) {
         super(type);
-        if (el) {
-            this.speak = el.speak;
-            this.title = el.title;
-        }
+        Object.assign(this, init);
     }
 
     speak?: string;
@@ -163,14 +158,9 @@ export class ActionBase extends TypedElement implements IActionBase {
 }
 
 export class ActionHttp extends ActionBase implements IActionHttp {
-    public constructor(el: IActionHttp = null) {
-        super("Action.Http", el);
-        if (el) {
-            this.body = el.body;
-            this.headers = el.headers;
-            this.method = el.method;
-            this.url = el.url;
-        }
+    public constructor(init?: Partial<IActionHttp>) {
+        super("Action.Http", init);
+        Object.assign(this, init);
     }
     body?: string;
     headers?: any;
@@ -179,68 +169,59 @@ export class ActionHttp extends ActionBase implements IActionHttp {
 }
 
 export class ActionOpenUrl extends ActionBase implements IActionOpenUrl {
-    public constructor(el: IActionOpenUrl = null) {
-        super("Action.OpenUrl", el);
-        if (el) {
-            this.url = el.url;
-        }
+    public constructor(init?: Partial<IActionOpenUrl>) {
+        super("Action.OpenUrl", init);
+        Object.assign(this, init);
     }
     url: string;
 }
 
 export class ActionShowCard extends ActionBase implements IActionShowCard {
-    public constructor(el: IActionShowCard = null) {
-        super("Action.ShowCard", el);
-        if (el)
-            this.card = el.card;
-        else
-            this.card = new AdaptiveCard(null);
+    public constructor(init?: Partial<IActionShowCard>) {
+        super("Action.ShowCard", init);
+        Object.assign(this, init);
+        if (!this.card)
+            this.card = new Card(null);
     }
     card: ICard;
 }
 
 export class ActionSubmit extends ActionBase implements IActionSubmit {
-    public constructor(el: IActionSubmit = null) {
-        super("Action.ShowCard", el);
-        if (el)
-            this.data = el.data;
+    public constructor(init?: Partial<IActionSubmit>) {
+        super("Action.ShowCard", init);
+        Object.assign(this, init);
     }
     data?: any;
 }
 
 
 export class CardElement extends TypedElement implements ICardElement {
-    public constructor(type: string, el: ICardElement = null) {
+    public constructor(type: string, init?: Partial<ICardElement>) {
         super(type);
-        if (el) {
-            this.speak = el.speak;
-        }
+        Object.assign(this, init);
     }
     speak?: string;
 }
 
 
 export class ColumnSet extends CardElement implements IColumnSet {
-    public constructor(el: IColumnSet = null) {
-        super("ColumnSet", el);
-        this.columns = [];
-        if (el) {
-            this.columns = el.columns ? el.columns : [];
-        }
+    public constructor(init?: Partial<IColumnSet>) {
+        super("ColumnSet", init);
+        Object.assign(this, init);
+        if (!this.columns)
+            this.columns = [];
     }
     columns: IColumn[];
 }
 
 class ContainerBase extends CardElement implements IContainerBase {
-    public constructor(type:string, el: IContainer = null) {
-        super(type, el);
-        this.items = [];
-        if (el) {
-            this.actions = (el.actions) ? el.actions : [];
-            this.items = el.items ? el.items : [];
-            this.selectAction = el.selectAction
-            this.startGroup = el.startGroup;
-        }
+    public constructor(type: string, init?: Partial<IContainerBase>) {
+        super(type, init);
+        Object.assign(this, init);
+        if (!this.items)
+            this.items = [];
+        if (!this.actions)
+            this.actions = [];
     }
     actions?: (IActionHttp | IActionOpenUrl | IActionShowCard | IActionSubmit)[];
     items?: (ITextBlock | IImage | IImageSet | IFactSet | IContainer | IColumnSet | IInputDate | IInputNumber | IInputText | IInputTime | IInputToggle)[];;
@@ -249,36 +230,24 @@ class ContainerBase extends CardElement implements IContainerBase {
 }
 
 export class Container extends ContainerBase implements IContainer {
-    public constructor(el: IContainer = null) {
-        super("Container", el);
-        this.items = [];
-        if (el) {
-            this.actions = (el.actions) ? el.actions : [];
-            this.items = el.items ? el.items : [];
-            this.selectAction = el.selectAction
-            this.startGroup = el.startGroup;
-        }
+    public constructor(init?: Partial<IContainer>) {
+        super("Container", init);
+        Object.assign(this, init);
     }
 }
 
 export class Column extends ContainerBase implements IColumn {
-    public constructor(el: IColumn = null) {
-        super("Column",el);
-        if (el) {
-            this.size = el.size;
-        }
+    public constructor(init?: Partial<IColumn>) {
+        super("Column", init);
+        Object.assign(this, init);
     }
 
     size?: string;
 }
 
 export class Fact implements IFact {
-    public constructor(el: IFact = null) {
-        if (el) {
-            this.name = el.name;
-            this.speak = el.speak;
-            this.value = el.value;
-        }
+    public constructor(init?: Partial<IFact>) {
+        Object.assign(this, init);
     }
     name: string;
     speak?: string;
@@ -286,28 +255,20 @@ export class Fact implements IFact {
 }
 
 export class FactSet extends CardElement implements IFactSet {
-    public constructor(el: IFactSet = null) {
-        super("FactSet");
-        this.facts = [];
-        if (el) {
-            this.facts = el.facts ? el.facts : [];
-        }
+    public constructor(init?: Partial<IFactSet>) {
+        super("FactSet", init);
+        Object.assign(this, init);
+        if (!this.facts)
+            this.facts = [];
     }
 
     facts: IFact[];
 }
 
 export class Image extends CardElement implements IImage {
-    public constructor(el: IImage = null) {
-        super("Image");
-        if (el) {
-            this.altText = el.altText;
-            this.horizontalAlignment = el.horizontalAlignment;
-            this.selectAction = el.selectAction;
-            this.size = el.size;
-            this.style = el.style;
-            this.url = el.url;
-        }
+    public constructor(init?: Partial<IImage>) {
+        super("Image", init);
+        Object.assign(this, init);
     }
 
     altText?: string;
@@ -319,37 +280,28 @@ export class Image extends CardElement implements IImage {
 }
 
 export class ImageSet extends CardElement implements IImageSet {
-    public constructor(el: IImageSet = null) {
+    public constructor(init?: Partial<IImageSet>) {
         super("ImageSet");
-        this.images = [];
-        if (el) {
-            this.images = el.images ? el.images : [];
-            this.size = el.size;
-        }
+        Object.assign(this, init);
+        if (!this.images)
+            this.images = [];
     }
     images: IImage[];
     size?: ImageSize;
 }
 
 export class Input extends CardElement implements IInput {
-    public constructor(type: string, el: IInput = null) {
+    public constructor(type: string, init?: Partial<IInput>) {
         super(type);
-        if (el) {
-            this.id = el.id;
-        }
+        Object.assign(this, init);
     }
     id: string;
 }
 
 export class InputDate extends Input implements IInputDate {
-    public constructor(el: IInputDate = null) {
-        super("Input.Date", el);
-        if (el) {
-            this.max = el.max;
-            this.min = el.min;
-            this.placeholder = el.placeholder;
-            ; this.value = el.value;
-        }
+    public constructor(init?: Partial<IInputDate>) {
+        super("Input.Date", init);
+        Object.assign(this, init);
     }
     max?: string;
     min?: string;
@@ -358,14 +310,9 @@ export class InputDate extends Input implements IInputDate {
 }
 
 export class InputNumber extends Input implements IInputNumber {
-    public constructor(el: IInputNumber = null) {
-        super("Input.Number");
-        if (el) {
-            this.max = el.max;
-            this.min = el.min;
-            this.placeholder = el.placeholder;
-            this.value = el.value;
-        }
+    public constructor(init?: Partial<IInputNumber>) {
+        super("Input.Number", init);
+        Object.assign(this, init);
     }
     max?: string;
     min?: string;
@@ -374,15 +321,9 @@ export class InputNumber extends Input implements IInputNumber {
 }
 
 export class InputText extends Input implements IInputText {
-    public constructor(el: IInputText = null) {
-        super("Input.Text");
-        if (el) {
-            this.isMultiline = el.isMultiline;
-            this.maxLength = el.maxLength;
-            this.style = el.style;
-            this.placeholder = el.placeholder;
-            this.value = el.value;
-        }
+    public constructor(init?: Partial<IInputText>) {
+        super("Input.Text", init);
+        Object.assign(this, init);
     }
     isMultiline?: boolean;
     maxLength?: number;
@@ -392,14 +333,9 @@ export class InputText extends Input implements IInputText {
 }
 
 export class InputTime extends Input implements IInputTime {
-    public constructor(el: IInputTime = null) {
-        super("Input.Time");
-        if (el) {
-            this.max = el.max;
-            this.min = el.min;
-            this.placeholder = el.placeholder;
-            this.value = el.value;
-        }
+    public constructor(init?: Partial<IInputTime>) {
+        super("Input.Time", init);
+        Object.assign(this, init);
     }
     max?: string;
     min?: string;
@@ -408,33 +344,20 @@ export class InputTime extends Input implements IInputTime {
 }
 
 export class InputToggle extends Input implements IInputToggle {
-    public constructor(el: IInputToggle = null) {
-        super("Input.Toggle");
-        if (el) {
-            this.title = el.title;
-            this.value = el.value;
-            this.valueOn = el.valueOn;
-            this.valueOff = el.valueOff;
-        }
+    public constructor(init?: Partial<IInputToggle>) {
+        super("Input.Toggle",init);
+        Object.assign(this, init);
     }
     title: string;
     value?: string;
     valueOn?: string;
     valueOff?: string;
 }
+
 export class TextBlock extends TypedElement implements ITextBlock {
-    public constructor(tb?: ITextBlock = null) {
+    public constructor(init?:Partial<ITextBlock>) {
         super("TextBlock");
-        this.text = "";
-        if (tb) {
-            this.color = tb.color;
-            this.horizontalAlignment = tb.horizontalAlignment;
-            this.isSubtle = tb.isSubtle;
-            this.size = tb.size;
-            this.maxLines = tb.maxLines;
-            this.text = tb.text;
-            this.wrap = tb.wrap;
-        }
+        Object.assign(this, init);
     }
 
     color?: TextColor;
