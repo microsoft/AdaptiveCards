@@ -1,5 +1,5 @@
 {
-	"@type": "AdaptiveCard",
+	"type": "AdaptiveCard",
 	"targets": {
 		"Windows.Notification": {
 			"appLogo": {
@@ -35,26 +35,28 @@
 			"text": "Something"
 		}
 	],
-	// Find a better name?
 	"body": [
 		{
-			"@type": "TextBlock"
+			"type": "Container"
 		},
 		{
-			"@type": "Image"
+			"type": "TextBlock"
 		},
 		{
-			"@type": "FactSet"
+			"type": "Image"
 		},
 		{
-			"@type": "ColumnSet"
+			"type": "FactSet"
 		},
 		{
-			"@type": "ImageSet"
+			"type": "ColumnSet"
+		},
+		{
+			"type": "ImageSet"
 		},
 		{
 			// Used for Inline Actions
-			"@type": "ActionGroup"
+			"type": "ActionGroup"
 		}
 	]
 }

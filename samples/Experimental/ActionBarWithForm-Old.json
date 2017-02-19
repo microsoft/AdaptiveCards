@@ -1,0 +1,67 @@
+{
+    "type": "AdaptiveCard",
+    "actions": [
+        {
+            "type": "OpenUri", //or OpenWebView
+            "title": "View",
+            "uri": "http://..."
+        },
+        {
+            "type": "Submit",
+            "title": "Declined",
+            "data": {
+                "reportId": "ABC",
+                "approved": "false"
+            }
+        },
+        {
+            "type": "ShowForm",
+            "title": "Set due date",
+            "form": {
+                "type": "InputForm",
+                "okText": "OK",
+                "cancelText": "Close",
+                "data": {
+                    "orderId": "ABC"
+                },
+                "inputs": [
+                    {
+                        "type": "Input",
+                        "id": "approvalDate",
+                        "inputType": "date",
+                        "title": "Select a date"
+                    }
+                ]
+            }
+        }
+    ],
+    "body": [
+        {
+            "type": "Form",
+            "okText": "OK", // potentially don't add this
+            "cancelText": "Cancel",
+            "data": {
+                "orderId": "ABC"
+            },
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Hi there, what is your name?"
+                },
+                {
+                    "type": "Input",
+                    "id": "firstName",
+                    "title": "First Name"
+                },
+                {
+                    "type": "Input",
+                    "id": "lastName",
+                    "title": "Last Name"
+                }
+            ],
+            "actions": [
+                // owner draw the actions bar, user has to add submit
+            ]
+        }
+    ]
+}

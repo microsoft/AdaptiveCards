@@ -1,6 +1,5 @@
 {
-    "$schema": "http://localhost:13406/adaptive-card.json",
-    //   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"body": [
 		{
@@ -63,19 +62,19 @@
 					"speak": "It has been assigned to: David Claux",
 					"facts": [
 						{
-							"name": "Board:",
+							"title": "Board:",
 							"value": "Adaptive Card"
 						},
 						{
-							"name": "List:",
+							"title": "List:",
 							"value": "Backlog"
 						},
 						{
-							"name": "Assigned to:",
+							"title": "Assigned to:",
 							"value": "David Claux"
 						},
 						{
-							"name": "Due date:",
+							"title": "Due date:",
 							"value": "Not set"
 						}
 					]
@@ -114,7 +113,7 @@
 								"type": "Input.Text",
 								"id": "comment",
 								"isMultiline": true,
-								"title": "Enter your comment"
+								"placeholder": "Enter your comment"
 							}
 						],
 						"actions": [

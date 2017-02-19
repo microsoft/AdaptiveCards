@@ -1,6 +1,6 @@
 // Experimenting with view constraints in a multi view
 {
-    "@type": "AdaptiveCard.MultiView",
+    "type": "AdaptiveCard.MultiView",
     "constraints": [
         {
             "startingWView": {
@@ -12,26 +12,26 @@
     ],
     "views": {
         "small": {
-            "@type": "AdaptiveCard",
+            "type": "AdaptiveCard",
             "constraints": {
                 "min-width": "300px"
             },
             "body": [],
             "actions": [
                 {
-                    "@type": "ShowView", // introduces new action type
+                    "type": "ShowView", // introduces new action type
                     "name": "View Boarding Pass",
                     "value": "large"
                 }
             ]
         },
         "large": {
-            "@type": "AdaptiveCard",
+            "type": "AdaptiveCard",
             "defaultIfPossible": true,
             "body": [],
             "actions": [ // This is optional, a
                 {
-                    "@type": "ShowView",
+                    "type": "ShowView",
                     "name": "Close",
                     "value": "small" // should we use $ref here?
                 }

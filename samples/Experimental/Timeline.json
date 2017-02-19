@@ -7,13 +7,13 @@
         "title": "MVP Summit Prep.pptx",
         "body": [
             {
-                "@type": "TextBlock",
+                "type": "TextBlock",
                 "text": "Line 1",
                 "weight": "bolder",
                 "size": "medium"
             },
             {
-                "@type": "FactSet",
+                "type": "FactSet",
                 "facts": [
                     {
                         "name": "File Type:",
@@ -34,18 +34,18 @@
 }
 
 // {
-// 	"@type": "AdaptiveCard",
+// 	"type": "AdaptiveCard",
 // 	"sections": [
 // 		{
 // 			"items": [
 //         {
-//             "@type": "TextBlock",
+//             "type": "TextBlock",
 //             "text": "MVP Summit Prep.pptx",
 //             "weight": "bolder",
 //             "size": "medium"
 //         },
 //         {
-//             "@type": "FactSet",
+//             "type": "FactSet",
 //             "items": [
 //                 {
 //                     "name": "File Type:",
