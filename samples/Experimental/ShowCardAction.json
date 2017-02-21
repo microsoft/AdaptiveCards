@@ -1,18 +1,18 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "actions": [
         {
-            "@type": "ShowCard",
+            "type": "ShowCard",
             "title": "Show a custom card",
             "card": {
-                "@type": "AdaptiveCard",
+                "type": "AdaptiveCard",
                 "body": [
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "Hello"
                     },
                     {
-                        "@type": "Input",
+                        "type": "Input",
                         "id": "approvalDate",
                         "inputType": "date",
                         "title": "Select a date"
@@ -20,7 +20,7 @@
                 ],
                 "actions": [
                     {
-                        "@type": "Submit",
+                        "type": "Submit",
                         "title": "OK",
                         "data": {
                             "orderId": "ABC"
@@ -30,13 +30,13 @@
             }
         },
         {
-            "@type": "ShowCard",
+            "type": "ShowCard",
             "title": "View details",
             "card": {
-                "@type": "AdaptiveCard",
+                "type": "AdaptiveCard",
                 "body": [
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "This is some details"
                     }
                 ]
@@ -45,7 +45,7 @@
     ],
     "body": [
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "Hi there, what is your name?"
         }
     ]

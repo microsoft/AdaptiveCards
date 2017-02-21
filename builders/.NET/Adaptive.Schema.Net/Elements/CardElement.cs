@@ -23,11 +23,6 @@ namespace Adaptive.Schema.Net
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Speak { get; set; }
 
-        /// <summary>
-        /// Horizontal alignment for element
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public HorizontalAlignment? HorizontalAlignment { get; set; }
     }
 }
 

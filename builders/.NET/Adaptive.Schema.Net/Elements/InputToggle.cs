@@ -8,35 +8,37 @@ using Newtonsoft.Json;
 namespace Adaptive.Schema.Net
 {
     /// <summary>
-    /// Container for a collection of elements
+    /// Input which collects a choice between two options from the user
     /// </summary>
-    public class Container : CardElement
+    public class InputToggle: Input
     {
-        public Container()
-        { }
+        public InputToggle()
+        {
+        }
 
         /// <summary>
-        /// Elements of the container
+        /// Title text for toggle
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonRequired]
-        public List<CardElement> Items { get; set; } = new List<CardElement>();
+        public string Title { get; set; }
 
         /// <summary>
-        /// Action for this container (this allows a default action at the container level)
+        /// Value to use for on (Default: true)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionBase SelectAction { get; set; }
+        public string ValueOn { get; set; } = "true";
 
         /// <summary>
-        /// Actions for this container
+        /// Value to use for off (Default: false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
+        public string ValueOff { get; set; } = "false";
 
         /// <summary>
-        /// visually separate this container from previous containers
+        /// The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool? StartGroup { get; set; }
+        public string Value { get; set; }
     }
 }

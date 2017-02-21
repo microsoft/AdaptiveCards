@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 namespace Adaptive.Schema.Net
 {
     /// <summary>
-    /// A container for grouping columns together
+    /// A set of columns (each column is a container of items)
     /// </summary>
-    public class ColumnGroup : CardElement
+    public class ColumnSet : CardElement
     {
-        public ColumnGroup() { }
+        public ColumnSet() { }
 
         /// <summary>
         /// Columns that are part of this group

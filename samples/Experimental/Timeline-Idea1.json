@@ -2,16 +2,16 @@
     "title": "MVP Summit Prep.pptx",
     "appName": "Amazon.com | Edge",
     "visual": {
-        "@type": "AdaptiveBody",
+        "type": "AdaptiveBody",
         "items": [
             {
-                "@type": "TextBlock",
+                "type": "TextBlock",
                 "text": "Line 1",
                 "weight": "bolder",
                 "size": "medium"
             },
             {
-                "@type": "FactGroup",
+                "type": "FactSet",
                 "facts": [
                     {
                         "name": "Work item type:",

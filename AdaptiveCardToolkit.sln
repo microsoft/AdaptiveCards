@@ -17,6 +17,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfVisualizer", "WpfVisuali
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.Renderers.Xaml", "Renderers\XamlRenderer\Adaptive.Renderers.Xaml.csproj", "{60619D62-59FA-4864-BA5B-6F6F87997671}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "schemas", "schemas\", "{A2239944-25C4-4E32-907A-5EED7DA67DFE}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_13406"
+		Debug.AspNetCompiler.PhysicalPath = "schemas\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_13406\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_13406"
+		Release.AspNetCompiler.PhysicalPath = "schemas\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_13406\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "13406"
+		SlnRelativePath = "schemas\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +56,10 @@ Global
 		{60619D62-59FA-4864-BA5B-6F6F87997671}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60619D62-59FA-4864-BA5B-6F6F87997671}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60619D62-59FA-4864-BA5B-6F6F87997671}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2239944-25C4-4E32-907A-5EED7DA67DFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2239944-25C4-4E32-907A-5EED7DA67DFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2239944-25C4-4E32-907A-5EED7DA67DFE}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2239944-25C4-4E32-907A-5EED7DA67DFE}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

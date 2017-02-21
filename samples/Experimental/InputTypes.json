@@ -35,67 +35,28 @@
 
             //Later
             "@type": "Input.Range",
-            "style": "password",
-            
-
-        }
-    ],
-    "actions": [
+            "style": "password"
+        },
         {
-
-
-
-            "@type": "Form",
-            "title": "Set Approval Date",
-            "inputs": [
-                {
-                    "@type": "Input.Text",
-                    "maxLength": 5,
-                    "style": "email"
-                    // email
-                    // date
-                    // datetime
-                    // datetime-local
-                    // number
-                    // tel
-                    // color
-                    // month
-                    // range
-                    // search
-                    // time
-                    // url
-                    // week
-                },
-                {
-                    "@type": "Radio"
-                },
-                {
-                    "@type": "Checkbox"
-                },
-                {
-                    "@type": "Password"
-                },
-                {
-                    "@type": "Select",
-                    "multiple": true
-                },
-                {
-                    "@type": "Input",
-                    "id": "dueDate",
-                    "title": "Select a date",
-                    "inputType": "date",
-                    "min": "1/1/2017",
-                    "max": "21/31/2017"
-                } 
-            ],
-            "actions": [
-                {
-                    "@type": "Submit",
-                    "name": "OK",
-                    "value": {}
-                }
-            ]
-        }
-    ],
-    "body": []
+            "type": "Radio"
+        },
+        {
+            "type": "Checkbox"
+        },
+        {
+            "type": "Password"
+        },
+        {
+            "type": "Select",
+            "multiple": true
+        },
+        {
+            "type": "Input",
+            "id": "dueDate",
+            "title": "Select a date",
+            "inputType": "date",
+            "min": "1/1/2017",
+            "max": "21/31/2017"
+        } 
+   ]     
 }

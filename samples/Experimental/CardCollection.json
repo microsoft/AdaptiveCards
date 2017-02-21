@@ -1,8 +1,8 @@
 {
-    "@type": "CardCollection",
+    "type": "CardCollection",
     "views": [
         {
-            "@type:": "AdaptiveCard",
+            "type:": "AdaptiveCard",
             "targets": {
                 "Windows.Notification": {
                     "appLogo": {
@@ -30,7 +30,7 @@
             "body": "*** WINDOWS TOAST AND TILE CONTENT ***"
         },
         {
-            "@type:": "AdaptiveCard",
+            "type:": "AdaptiveCard",
             "targets": {
                 "GenericSmartWatch": {
                     "Greeting": "Welcome"

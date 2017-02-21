@@ -8,23 +8,23 @@ using Newtonsoft.Json;
 namespace Adaptive.Schema.Net
 {
     /// <summary>
-    /// The ImageGallery allows for the inclusion of a collection images like a photogallery.
+    /// The ImageSet allows for the inclusion of a collection images like a photogallery.
     /// </summary>
-    public class ImageGallery : CardElement
+    public class ImageSet : CardElement
     {
-        public ImageGallery()
+        public ImageSet()
         {
 
         }
 
         /// <summary>
-        /// Collection of images to display together in the gallery
+        /// Collection of images to display together 
         /// </summary>
         [JsonRequired]
         public List<Image> Images { get; set; } = new List<Image>();
 
         /// <summary>
-        /// Specifies the horizontal size of each image in the gallery.
+        /// Specifies the horizontal size of each image in the set
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ImageSize? Size { get; set; }

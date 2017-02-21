@@ -26,7 +26,7 @@ function renderCard() {
     let jsonText = editor.getValue();
     try {
         let json = JSON.parse(jsonText);
-        let cardTypeName = json["@type"];
+        let cardTypeName = json["type"];
 
         let node = document.getElementById('content');
         node.innerHTML = '';

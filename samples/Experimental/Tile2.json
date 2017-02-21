@@ -33,7 +33,7 @@
                     ],
                     "children": [
                         {
-                            "@type": "TextBlock",
+                            "type": "TextBlock",
                             "text": "Flowers are great!",
                             "textSize": "large"
                         }
@@ -48,12 +48,12 @@
                 ],
                 "children": [
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "Hello world",
                         "textSize": "large"
                     },
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "Good afternoon!",
                         "textSize": "medium",
                         "isSubtle": "true"

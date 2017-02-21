@@ -1,5 +1,5 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "targets": {
         "Windows.Activity": {
             "title": "MVP Summit Prep.pptx",
@@ -11,13 +11,13 @@
     },
     "body": [
         {
-            "@type": "TextBlock",
+            "type": "TextBlock",
             "text": "Line 1",
             "weight": "bolder",
             "size": "medium"
         },
         {
-            "@type": "FactGroup",
+            "type": "FactSet",
             "facts": [
                 {
                     "name": "Work item type:",

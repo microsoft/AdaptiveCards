@@ -1,8 +1,8 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "actions": [
         {
-            "@type": "Selection",
+            "type": "Selection",
             "title": "Choose a rating",
             "style": "rating",
             "items": [
@@ -10,7 +10,7 @@
                     "title": "1",
                     "inputs": [
                         {
-                            "@type": "TextInput",
+                            "type": "TextInput",
                             "prompt": "Sorry it sucked, any thoughts on making it bettah'?"
                         }
                     ]
@@ -19,7 +19,7 @@
                     "title": "1",
                     "inputs": [
                         {
-                            "@type": "TextInput",
+                            "type": "TextInput",
                             "prompt": "Sorry it sucked, any thoughts on making it bettah'?"
                         }
                     ]
@@ -27,10 +27,10 @@
             ]
         },
         "card": {
-            "@type": "AdaptiveCard",
+            "type": "AdaptiveCard",
             "body": [
                 {
-                    "@type": "TextInput",
+                    "type": "TextInput",
                     "multiLine": true
                 }
             ]
@@ -39,19 +39,19 @@
 ],
 "body": [
     {
-        "@type": "Container",
+        "type": "Container",
         "items": [
             {
-                "@type": "TextBlock",
+                "type": "TextBlock",
                 "text": "Hi there, what is your name?"
             },
             {
-                "@type": "Input",
+                "type": "Input",
                 "id": "firstName",
                 "title": "First Name"
             },
             {
-                "@type": "Input",
+                "type": "Input",
                 "id": "lastName",
                 "title": "Last Name"
             }

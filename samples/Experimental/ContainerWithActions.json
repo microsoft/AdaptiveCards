@@ -1,33 +1,33 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "actions": [
         {
-            "@type": "Submit",
+            "type": "Submit",
             "title": "Top level Action"
         }
     ],
     "body": [
         {
-            "@type": "Container",
+            "type": "Container",
             "body": [
                 {
-                    "@type": "TextBlock",
+                    "type": "TextBlock",
                     "text": "Hi there, what is your name?"
                 },
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "id": "firstName",
                     "title": "First Name"
                 },
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "id": "lastName",
                     "title": "Last Name"
                 }
             ],
             "actions": [
                 {
-                    "@type": "Submit",
+                    "type": "Submit",
                     "title": "Secondary Action"
                 }
             ]

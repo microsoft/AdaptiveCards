@@ -41,7 +41,7 @@ export enum ImageStyle {
     Person
 }
 
-export function stringToSize(value: string, defaultValue: ImageSize): ImageSize {
+export function stringToImageSize(value: string, defaultValue: ImageSize): ImageSize {
     switch (value) {
         case "auto":
             return ImageSize.Auto;

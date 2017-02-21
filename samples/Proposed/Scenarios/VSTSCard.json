@@ -1,33 +1,34 @@
 {
-	"@type": "AdaptiveCard",
+    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
 	"body": [
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "Title of connector card",
 			"weight": "bolder",
 			"size": "medium"
 		},
 		{
-			"@type": "ColumnGroup",
+			"type": "ColumnSet",
 			"speak": "",
 			"columns": [
 				{
-					"@type": "Column",
+					"type": "Column",
 					"size": "auto",
 					"items": [
 						{
-							"@type": "Image",
+							"type": "Image",
 							"url": "https://microsoft.github.io/AdaptiveCards/assets/Closed%20bug%2092x92.png",
 							"size": "medium"
 						}
 					]
 				},
 				{
-					"@type": "Column",
+					"type": "Column",
 					"size": "stretch",
 					"items": [
 						{
-							"@type": "TextBlock",
+							"type": "TextBlock",
 							"text": "Bug XXXXXX: This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. ",
 							"wrap": true
 						}
@@ -36,28 +37,28 @@
 			]
 		},
 		{
-			"@type": "FactGroup",
+			"type": "FactSet",
 			"facts": [
 				{
-					"name": "Work item type:",
+					"title": "Work item type:",
 					"value": "Bug"
 				},
 				{
-					"name": "State:",
+					"title": "State:",
 					"value": "Closed"
 				},
 				{
-					"name": "Area Path:",
+					"title": "Area Path:",
 					"value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines",
 					"speak": ""
 				},
 				{
-					"name": "Iteration Path:",
+					"title": "Iteration Path:",
 					"value": "t365\\Tabs\\Extensibility\\longer to show",
 					"speak": ""
 				},
 				{
-					"name": "Priority:",
+					"title": "Priority:",
 					"value": "1"
 				}
 			]
@@ -65,13 +66,13 @@
 	],
 	"actions": [
 		{
-			"@type": "HttpAction",
+			"type": "Action.Http",
 			"method": "POST",
 			"title": "View more work items",
 			"url": "http://someurl.com"
 		},
 		{
-			"@type": "HttpAction",
+			"type": "Action.Http",
 			"method": "POST",
 			"title": "View more work items",
 			"url": "http://someurl.com"

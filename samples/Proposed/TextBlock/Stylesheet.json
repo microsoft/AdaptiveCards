@@ -1,119 +1,119 @@
-// TODO: Fix this with latest schema changes
 {
-	"@type": "AdaptiveCard",
+	"$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
 	"body": [
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "**textWeight = lighter**",
-			"size": "ExtraLarge"
+			"size": "extraLarge"
 		},
 		{
-			"@type": "container",
-			"separation": "before",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "small",
 					"weight": "lighter",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = small)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "normal",
 					"weight": "lighter",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = normal)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "medium",
 					"weight": "lighter",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = medium)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "large",
 					"weight": "lighter",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = large)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "extraLarge",
 					"weight": "lighter",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = extraLarge)"
-				},
+				}
 			]
 		},
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "**textWeight = normal**",
 			"size": "extraLarge"
 		},
 		{
-			"@type": "container",
-			"separation": "before",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "small",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = small)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "normal",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = normal)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "medium",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = medium)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "large",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = large)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "extraLarge",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = extraLarge)"
 				}
 			]
 		},
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "**textWeight = bolder**",
-			"size": "ExtraLarge"
+			"size": "extraLarge"
 		},
 		{
-			"@type": "container",
-			"separation": "before",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "small",
 					"weight": "bolder",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = small)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "normal",
 					"weight": "bolder",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = normal)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "medium",
 					"weight": "bolder",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = medium)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "large",
 					"weight": "bolder",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = large)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "extraLarge",
 					"weight": "bolder",
 					"text": "The quick brown fox jumps over the lazy dog. (textSize = extraLarge)"
@@ -121,34 +121,33 @@
 			]
 		},
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "**Text colors**",
-			"size": "ExtraLarge"
+			"size": "extraLarge"
 		},
 		{
-			"@type": "container",
-			"separation": "before",
+			"type": "Container",
+			"startGroup": true,
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "medium",
 					"text": "The quick brown fox jumps over the lazy dog. (textColor = default)"
 				},
 				{
-					"@type": "TextBlock",
-					"topSpacing": "none",
+					"type": "TextBlock",
 					"size": "medium",
 					"isSubtle": true,
 					"text": "The quick brown fox jumps over the lazy dog. (textColor = default, isSubtle = true)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "medium",
 					"color": "accent",
 					"text": "The quick brown fox jumps over the lazy dog. (textColor = accent)"
 				},
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"size": "medium",
 					"color": "accent",
 					"isSubtle": true,

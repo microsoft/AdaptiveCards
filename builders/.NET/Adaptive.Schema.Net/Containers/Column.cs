@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace Adaptive.Schema.Net
 {
     /// <summary>
-    /// A column container inside of a columngroup
+    /// A container inside of a ColumnSet
     /// </summary>
     public class Column : Container
     {

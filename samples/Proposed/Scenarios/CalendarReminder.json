@@ -1,27 +1,28 @@
 {
-	"@type": "AdaptiveCard",
+    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
 	"speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at 12:30pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
 	"body": [
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "Adaptive Card design session",
-			"size": "Large",
+			"size": "large",
 			"weight":"bolder"
 		},
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "Conf Room 112/3377 (10)"
 		},
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "12:30 PM - 1:30 PM"
 		},
 		{
-			"@type": "TextBlock",
+			"type": "TextBlock",
 			"text": "Snooze for"
 		},
 		{
-			"@type": "ChoiceInput",
+			"type": "Input.ChoiceSet",
 			"id": "snooze",
 			"style":"compact",
 			"choices": [
@@ -43,19 +44,19 @@
 	],
 	"actions": [
 		{
-			"@type": "HttpAction",
+			"type": "Action.Http",
 			"method": "POST",
 			"url": "http://foo.com",
 			"title": "Snooze"
 		},
 		{
-			"@type": "HttpAction",
+			"type": "Action.Http",
 			"method": "POST",
 			"url": "http://foo.com",
 			"title": "I'll be late"
 		},
 		{
-			"@type": "HttpAction",
+			"type": "Action.Http",
 			"method": "POST",
 			"url": "http://foo.com",
 			"title": "Dismiss"

@@ -1,24 +1,25 @@
 {
-	"@type": "AdaptiveCard",
+	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
 	"body": [
 		{
-			"@type": "Container",
+			"type": "Container",
 			"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Card created: Publish Adaptive Card schema",
-					"textWeight": "bolder",
-					"textSize": "medium"
+					"weight": "bolder",
+					"size": "medium"
 				},
 				{
-					"@type": "ColumnGroup",
-					"items": [
+					"type": "ColumnSet",
+					"columns": [
 						{
 							"size": "auto",
 							"items": [
 								{
-									"@type": "Image",
+									"type": "Image",
 									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
 									"size": "small",
 									"style": "person"
@@ -29,12 +30,12 @@
 							"size": "stretch",
 							"items": [
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "**Miguel Garcia**",
 									"wrap": true
 								},
 								{
-									"@type": "TextBlock",
+									"type": "TextBlock",
 									"text": "9/13/2016, 3:34pm",
 									"isSubtle": true,
 									"wrap": true
@@ -46,32 +47,32 @@
 			]
 		},
 		{
-			"@type": "Container",
+			"type": "Container",
 			"items": [
 				{
-					"@type": "TextBlock",
+					"type": "TextBlock",
 					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
 					"speak": "",
 					"wrap": true
 				},
 				{
-					"@type": "FactGroup",
+					"type": "FactSet",
 					"speak": "It has been assigned to: David Claux",
-					"items": [
+					"facts": [
 						{
-							"name": "Board:",
+							"title": "Board:",
 							"value": "Adaptive Card"
 						},
 						{
-							"name": "List:",
+							"title": "List:",
 							"value": "Backlog"
 						},
 						{
-							"name": "Assigned to:",
+							"title": "Assigned to:",
 							"value": "David Claux"
 						},
 						{
-							"name": "Due date:",
+							"title": "Due date:",
 							"value": "Not set"
 						}
 					]
@@ -81,38 +82,44 @@
 	],
 	"actions": [
 		{
-			"@type": "Submit",
+			"type": "Action.ShowCard",
 			"title": "Set due date",
-			"inputs": [
-				{
-					"@type": "TextInput",
-					"inputType": "date",
-					"id": "dueDate",
-					"prompt": "Select a date"
-				}
-			]
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Date",
+						"id": "dueDate",
+						"placeholder": "Select a date"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "OK"
+					}
+				]
+			}
 		},
 		{
-			"@type": "Submit",
+			"type": "Action.ShowCard",
 			"title": "Comment",
-			"inputs": [
-				{
-					"@type": "TextInput",
-					"id": "comment",
-					"isMultiline": true,
-					"prompt": "Enter your comment"
-				}
-			]
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"isMultiline": true,
+						"placeholder": "Enter your comment"
+					}
+				]
+			}
 		},
 		{
-			"@type": "OpenUri",
+			"type": "Action.OpenUrl",
 			"title": "View",
-			"targets": [
-				{
-					"os": "default",
-					"uri": "http://..."
-				}
-			]
+			"url": "http://microsoft.com"
 		}
 	]
 }
