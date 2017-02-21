@@ -38,5 +38,4 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     };
 
     ActivatableClass(AdaptiveContainer);
-}
-}
+}}
