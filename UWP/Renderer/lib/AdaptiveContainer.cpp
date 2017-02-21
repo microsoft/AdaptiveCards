@@ -11,57 +11,56 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards {
-namespace XamlCardRenderer
+namespace AdaptiveCards { namespace XamlCardRenderer
 {
-AdaptiveContainer::AdaptiveContainer() : m_container(std::make_unique<Container>())
-{
-}
+    AdaptiveContainer::AdaptiveContainer() : m_container(std::make_unique<Container>())
+    {
+    }
 
-_Use_decl_annotations_
-HRESULT AdaptiveContainer::get_StartGroup(boolean* startGroup)
-{
-    *startGroup = m_container->GetStartGroup();
-    return S_OK;
-}
+    _Use_decl_annotations_
+        HRESULT AdaptiveContainer::get_StartGroup(boolean* startGroup)
+    {
+        *startGroup = m_container->GetStartGroup();
+        return S_OK;
+    }
 
-_Use_decl_annotations_
-HRESULT AdaptiveContainer::put_StartGroup(boolean startGroup)
-{
-    m_container->SetStartGroup(Boolify(startGroup));
-    return S_OK;
-}
+    _Use_decl_annotations_
+        HRESULT AdaptiveContainer::put_StartGroup(boolean startGroup)
+    {
+        m_container->SetStartGroup(Boolify(startGroup));
+        return S_OK;
+    }
 
-_Use_decl_annotations_
-IFACEMETHODIMP AdaptiveContainer::get_ElementType(ElementType* elementType)
-{
-    *elementType = ElementType::Container;
-    return S_OK;
-}
+    _Use_decl_annotations_
+        IFACEMETHODIMP AdaptiveContainer::get_ElementType(ElementType* elementType)
+    {
+        *elementType = ElementType::Container;
+        return S_OK;
+    }
 
-_Use_decl_annotations_
-IFACEMETHODIMP AdaptiveContainer::put_ElementType(ElementType /*elementType*/)
-{
-    return S_OK;
-}
+    _Use_decl_annotations_
+        IFACEMETHODIMP AdaptiveContainer::put_ElementType(ElementType /*elementType*/)
+    {
+        return S_OK;
+    }
 
-_Use_decl_annotations_
-HRESULT AdaptiveContainer::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* /*size*/)
-{
-    return S_OK;
-}
+    _Use_decl_annotations_
+        HRESULT AdaptiveContainer::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* /*size*/)
+    {
+        return S_OK;
+    }
 
-_Use_decl_annotations_
-HRESULT AdaptiveContainer::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize /*size*/)
-{
-    return S_OK;
-}
+    _Use_decl_annotations_
+        HRESULT AdaptiveContainer::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize /*size*/)
+    {
+        return S_OK;
+    }
 
-_Use_decl_annotations_
-IFACEMETHODIMP AdaptiveContainer::get_Items(IVector<IAdaptiveCardElement*>** items)
-{
-    return m_items.CopyTo(items);
-}
+    _Use_decl_annotations_
+        IFACEMETHODIMP AdaptiveContainer::get_Items(IVector<IAdaptiveCardElement*>** items)
+    {
+        return m_items.CopyTo(items);
+    }
 
 }
 }
