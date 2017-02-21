@@ -45,14 +45,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveContainer::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* /*size*/)
+        HRESULT AdaptiveContainer::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
     {
+        *size = static_cast<ABI::AdaptiveCards::XamlCardRenderer::CardElementSize>(m_container->GetSize());
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveContainer::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize /*size*/)
+        HRESULT AdaptiveContainer::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
     {
+        m_container->SetSize(static_cast<AdaptiveCards::CardElementSize>(size));
         return S_OK;
     }
 
