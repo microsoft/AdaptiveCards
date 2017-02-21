@@ -106,6 +106,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
+    <ClInclude Include="lib\AdaptiveContainer.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
     <ClInclude Include="lib\ErrorHandling.h" />
@@ -116,6 +117,7 @@
     <ClInclude Include="lib\XamlBuilder.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClCompile Include="lib\AdaptiveCard.cpp" />
+    <ClCompile Include="lib\AdaptiveContainer.cpp" />
     <ClCompile Include="lib\AdaptiveImage.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\ImageLoadTracker.cpp" />

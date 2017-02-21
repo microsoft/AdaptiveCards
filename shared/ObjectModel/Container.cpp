@@ -14,11 +14,10 @@ Container::Container(
     HorizontalAlignment horizontalAlignment,
     CardElementSize size,
     std::string speak,
-    std::string backgroundImageUrl,
-    std::string backgroundColor, std::vector<std::shared_ptr<BaseCardElement>>& items) :
+    bool startGroup,
+    std::vector<std::shared_ptr<BaseCardElement>>& items) :
     BaseCardElement(CardElementType::Container, parent, horizontalAlignment, size, speak),
-    m_backgroundImageUrl(backgroundImageUrl),
-    m_backgroundColor(backgroundColor),
+    m_startGroup(startGroup),
     m_items(items)
 {
 }
@@ -28,11 +27,9 @@ Container::Container(
     HorizontalAlignment horizontalAlignment,
     CardElementSize size,
     std::string speak,
-    std::string backgroundImageUrl,
-    std::string backgroundColor) :
+    bool startGroup) :
     BaseCardElement(CardElementType::Container, parent, horizontalAlignment, size, speak),
-    m_backgroundImageUrl(backgroundImageUrl),
-    m_backgroundColor(backgroundColor)
+    m_startGroup(startGroup)
 {
 }
 
@@ -115,22 +112,12 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& root)
     return container;
 }
 
-std::string Container::GetBackgroundImageUrl() const
+bool Container::GetStartGroup() const
 {
-    return m_backgroundImageUrl;
+    return m_startGroup;
 }
 
-void Container::SetBackgroundImageUrl(const std::string value)
+void Container::SetStartGroup(bool startGroup)
 {
-    m_backgroundImageUrl = value;
-}
-
-std::string Container::GetBackgroundColor() const
-{
-    return m_backgroundColor;
-}
-
-void Container::SetBackgroundColor(const std::string value)
-{
-    m_backgroundColor = value;
+    m_startGroup = startGroup;
 }
