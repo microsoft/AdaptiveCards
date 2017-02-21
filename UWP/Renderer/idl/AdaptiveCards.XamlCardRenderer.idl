@@ -14,10 +14,12 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTextBlock;
         runtimeclass AdaptiveCard;
         runtimeclass AdaptiveImage;
+        runtimeclass AdaptiveContainer;
         interface IAdaptiveCardElement;
         interface IAdaptiveTextBlock;
         interface IAdaptiveCard;
         interface IAdaptiveImage;
+        interface IAdaptiveContainer;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum CardElementSize
@@ -70,8 +72,9 @@ namespace AdaptiveCards
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ElementType
         {
-            TextBlock = 0,
-            Image
+            Container = 0,
+            TextBlock,
+            Image,
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -176,6 +179,30 @@ namespace AdaptiveCards
         {
             [default] interface IAdaptiveImage;
             interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveContainer)
+        ]
+        interface IAdaptiveContainer : IInspectable
+        {
+            [propget] HRESULT StartGroup([out, retval] boolean* value);
+            [propput] HRESULT StartGroup([in] boolean value);
+
+            [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveContainer
+
+        {
+            [default] interface IAdaptiveContainer;
+            interface IAdaptiveContainer;
         };
 
         [flags]

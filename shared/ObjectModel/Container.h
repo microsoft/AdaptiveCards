@@ -7,7 +7,7 @@
 namespace AdaptiveCards
 {
 class BaseCardElement;
-class Container : public std::enable_shared_from_this<Container>, BaseCardElement
+class Container : public BaseCardElement, public std::enable_shared_from_this<Container>
 {
 public:
     Container();
@@ -15,35 +15,30 @@ public:
         HorizontalAlignment horizontalAlignment,
         CardElementSize size,
         std::string speak,
-        std::string backgroundImageUrl,
-        std::string backgroundColor
+        bool startGroup
     );
+
     Container(std::shared_ptr<Container> parent,
         HorizontalAlignment horizontalAlignment,
         CardElementSize size,
         std::string speak,
-        std::string backgroundImageUrl,
-        std::string backgroundColor,
+        bool startGroup,
         std::vector<std::shared_ptr<BaseCardElement>> &items
     );
 
     virtual std::string Serialize();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
 
+    bool GetStartGroup() const;
+    void SetStartGroup(bool value);
+
     void AddItem(std::shared_ptr<BaseCardElement>& item);
     std::shared_ptr<BaseCardElement> GetItem(const size_t index) const;
 
     static std::shared_ptr<Container> Deserialize(const Json::Value& root);
 
-    std::string GetBackgroundImageUrl() const;
-    void SetBackgroundImageUrl(const std::string value);
-
-    std::string GetBackgroundColor() const;
-    void SetBackgroundColor(const std::string value);
-
 private:
-    std::string m_backgroundImageUrl;
-    std::string m_backgroundColor;
+    bool m_startGroup;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
 };
 }

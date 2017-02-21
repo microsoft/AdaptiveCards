@@ -52,6 +52,11 @@
               threading="Both"
               trustLevel="Base"
               />
+          <class
+              activatableClassId="AdaptiveCards.XamlCardRenderer.AdaptiveContainer"
+              threading="Both"
+              trustLevel="Base"
+              />
         </classes>
       </winRTInProcServer>
     </servers>
