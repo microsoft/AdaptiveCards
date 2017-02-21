@@ -1,14 +1,57 @@
 {
     "@type": "AdaptiveCard",
+    "body":[
+        {
+            "@type": "Input.Text",
+                "style": "email",
+                "style": "telephone",
+                "style": "url",
+                "isMultiLine": true,
+
+
+            "@type": "Input.Date",
+                "min" :"",
+                "max": "",
+
+            "@type": "Input.Time",
+                "min" :"",
+                "max": "",
+
+            "@type": "Input.Number",
+                "min" :"",
+                "max": "",
+
+
+            "@type": "Input.ChoiceSet",
+            "choices": [],
+            "style": "compact|expanded",
+            "isMultiSelect": true,
+
+
+            "@type": "Input.Toggle",
+            "valueOn":"",
+            "valueOff": "",
+            
+
+            //Later
+            "@type": "Input.Range",
+            "style": "password",
+            
+
+        }
+    ],
     "actions": [
         {
+
+
+
             "@type": "Form",
             "title": "Set Approval Date",
             "inputs": [
                 {
-                    "@type": "Input",
+                    "@type": "Input.Text",
                     "maxLength": 5,
-                    "inputType": "email"
+                    "style": "email"
                     // email
                     // date
                     // datetime
