@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Action.Http represents the properties needed to do an Http request. All input properties are available for use 
     /// via data binding. Properties can be data bound to the Uri and Body properties, allowing you to send a request 
     /// to an arbitrary url.
     /// </summary>
-    public class ActionHttp : ActionBase
+    public partial class ActionHttp : ActionBase
     {
         public ActionHttp() : base() { }
 

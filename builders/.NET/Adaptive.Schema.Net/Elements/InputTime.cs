@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Input which collects Time from the user
     /// </summary>
-    public class InputTime : Input
+    public partial class InputTime : Input
     {
         public InputTime()
         {

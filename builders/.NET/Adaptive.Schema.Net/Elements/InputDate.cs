@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Input which collects date from the user
     /// </summary>
-    public class InputDate: Input
+    public partial class InputDate: Input
     {
         public InputDate()
         {

@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.
     /// </summary>
-    public class TextBlock : CardElement
+    public partial class TextBlock : CardElement
     {
         public TextBlock() 
         {

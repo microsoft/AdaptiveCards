@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Input is used as part of a Form CardElement to collect information from a user
     /// </summary>
-    public class Input : CardElement
+    public partial class Input : CardElement
     {
         public Input()
         { }
