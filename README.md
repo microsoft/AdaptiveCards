@@ -36,27 +36,12 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 
 # What's in the Toolkit
 
-* The official Adaptive Card JSON schema (see /schema) *(coming soon)*
-* Documentation of the schema (see /docs)
+* The official Adaptive Card JSON schema (see [/schema/adaptive-card.json](schemas/adaptive-card.json) 
+* Documentation of the schema (see [/schema/readme.md](schemas/readme.md)
 * An [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards/) to preview and design Card payloads
-* Sample Cards (see /samples)
-* Card Renderer libraries for multiple platforms (HTML, iOS, Android, .NET) *(more info on this effort coming soon)*
-* Card Builders for .NET and Node *(coming soon)*
-
-# Schema and Samples
-
-Please see [the full schema](docs/Schema.md) for the list of elements and properties that we support.
-The `/samples` folder also has a list of payloads to get started with.
- 
-# Documentation
-
-Please see the `docs` folder for more information.
-
-# Versioning and fallback
-
-Versioning and Fallback are important topics and have a dedicated page/discussion. 
-
-See the following page for more details on [Versioning and Graceful fallback](docs/GracefulFallback.md)
+* Sample Cards (see [/samples](samples/proposed)
+* Card Renderer libraries for multiple platforms (HTML, iOS, Android, .NET) 
+* Card Builders for .NET and Node 
 
 # Rendering Cards in your App or Web Site
 
