@@ -2,8 +2,10 @@
     "title": "MVP Summit Prep.pptx",
     "appName": "Amazon.com | Edge",
     "visual": {
-        "type": "AdaptiveBody",
-        "items": [
+        "type": "AdaptiveCard",
+        "actions": [],
+        "backgroundImage": {},
+        "body": [
             {
                 "type": "TextBlock",
                 "text": "Line 1",

@@ -13,6 +13,7 @@
     "recipient": {
         "id": "12345"
     },
+    
     "textFormat": "plain",
     "text": "",
     "summary": "Hero Card about bender",
