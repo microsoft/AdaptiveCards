@@ -195,8 +195,6 @@
     <Compile Include="RenderContext.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Actions\ActionSubmit.Xaml.cs" />
-    <Compile Include="Containers\ContainerRenderClasses.cs" />
-    <Compile Include="Elements\ElementRenderClasses.cs" />
     <Compile Include="MarkedXamlRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypedElement.Xaml.cs" />
