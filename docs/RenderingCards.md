@@ -4,12 +4,14 @@ If you have the need to render Adaptive Cards inside your app or web site, the T
 
 The prioritized list of which Renderers will be provided first is still being evaluated, and will continue to expand to additional platforms over time.
 
-* [Html](renderers/Html)
-* React *coming soon*
-* [WPF Xaml](Renderers/XamlRenderer)
-* UWP *coming soon*
-* iOS *coming soon*
-* Android *coming soon*
+* Html 
+** [Native Html](renderers/Html)
+** React *coming*
+* Xaml
+** [WPF](Renderers/XamlRenderer)
+** UWP
+* iOS
+* Android
 * *appropriate xamarin versions*
 
 *MORE INFO COMING SOON*
