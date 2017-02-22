@@ -81,6 +81,10 @@
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>.\dll\AdaptiveCards.XamlCardRenderer.def</ModuleDefinitionFile>
+      <AdditionalDependencies>
+        user32.lib;
+        %(AdditionalDependencies);
+      </AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>mdmerge -partial -i "$(OutDir)$(TargetName).winmd" -o "$(OutDir)Output" -metadata_dir "$(FrameworkSdkDir)UnionMetadata" &amp;&amp; copy /y "$(OutDir)Output\*" "$(OutDir)"</Command>
@@ -101,7 +105,10 @@
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\shared\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+	..\..\shared\ObjectModel;
+	%(AdditionalIncludeDirectories)
+</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -109,9 +116,17 @@
     <ClInclude Include="lib\AdaptiveContainer.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
+    <ClInclude Include="lib\AsyncOperations.h" />
+    <ClInclude Include="lib\DefaultResourceDictionary.h" />
     <ClInclude Include="lib\ErrorHandling.h" />
+    <ClInclude Include="lib\IImageLoadTrackerListener.h" />
     <ClInclude Include="lib\ImageLoadTracker.h" />
+    <ClInclude Include="lib\ImageRenderResult.h" />
+    <ClInclude Include="lib\IRenderXamlToImageExecutionInstance.h" />
+    <ClInclude Include="lib\IXamlBuilderListener.h" />
     <ClInclude Include="lib\pch.h" />
+    <ClInclude Include="lib\RenderXamlToImageExecutionInstance.h" />
+    <ClInclude Include="lib\RenderXamlToImageTask.h" />
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
@@ -121,10 +136,15 @@
     <ClCompile Include="lib\AdaptiveImage.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
+    <ClCompile Include="lib\ImageRenderResult.cpp" />
+    <ClCompile Include="lib\RenderXamlToImageExecutionInstance.cpp" />
+    <ClCompile Include="lib\RenderXamlToImageTask.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
     <ClCompile Include="dll\dll.cpp" />
+    <ClInclude Include="lib\XamlHelpers.h" />
+    <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl">

@@ -8,8 +8,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     class XamlCardRenderer :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            Microsoft::WRL::FtmBase,
-            ABI::AdaptiveCards::XamlCardRenderer::IXamlCardRenderer>
+            Microsoft::WRL::Implements<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardRenderer>,
+            Microsoft::WRL::FtmBase>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_XamlCardRenderer, BaseTrust)
 
@@ -20,9 +20,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP SetRenderOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::RenderOptions options);
         IFACEMETHODIMP SetOverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
         IFACEMETHODIMP RenderCardAsXaml(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** root);
-        IFACEMETHODIMP RenderCardAsImage(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_result_maybenull_ ABI::Windows::Foundation::IAsyncOperation<ABI::AdaptiveCards::XamlCardRenderer::ImageRenderResult*>** result);
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
+        IFACEMETHODIMP RenderCardAsXamlAsync(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
+            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::Windows::UI::Xaml::UIElement*>** result);
+        IFACEMETHODIMP RenderCardAsImageAsync(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
+            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::AdaptiveCards::XamlCardRenderer::ImageRenderResult*>** result);
+
+    private:
     };
 
     ActivatableClass(XamlCardRenderer);

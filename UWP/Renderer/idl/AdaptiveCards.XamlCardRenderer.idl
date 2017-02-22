@@ -88,7 +88,8 @@ namespace AdaptiveCards
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>;
-            interface Windows.Foundation.IAsyncOperation<ImageRenderResult*>;
+            interface Windows.Foundation.IAsyncOperation<AdaptiveCards.XamlCardRenderer.ImageRenderResult*>;
+            interface Windows.Foundation.IReference<Windows.UI.Text.FontWeight>;
         }
 
         [
@@ -116,6 +117,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT TextWeight([out, retval] TextWeight* value);
             [propput] HRESULT TextWeight([in] TextWeight value);
+
+            [propget] HRESULT TextColor([out, retval] TextColor* value);
+            [propput] HRESULT TextColor([in] TextColor value);
 
             [propget] HRESULT Text([out, retval] HSTRING* value);
             [propput] HRESULT Text([in] HSTRING value);
@@ -175,7 +179,6 @@ namespace AdaptiveCards
             activatable(NTDDI_WIN10_RS1)
         ]
         runtimeclass AdaptiveImage
-
         {
             [default] interface IAdaptiveImage;
             interface IAdaptiveCardElement;
@@ -199,10 +202,9 @@ namespace AdaptiveCards
             activatable(NTDDI_WIN10_RS1)
         ]
         runtimeclass AdaptiveContainer
-
         {
             [default] interface IAdaptiveContainer;
-            interface IAdaptiveContainer;
+            interface IAdaptiveCardElement;
         };
 
         [flags]
@@ -238,7 +240,8 @@ namespace AdaptiveCards
             HRESULT SetRenderOptions([in] RenderOptions options);
             HRESULT SetOverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
             HRESULT RenderCardAsXaml([in] AdaptiveCard* adaptiveCard,[out, retval] Windows.UI.Xaml.UIElement** result);
-            HRESULT RenderCardAsImage([in] AdaptiveCard* adaptiveCard,[out, retval] Windows.Foundation.IAsyncOperation<ImageRenderResult>** result);
+            HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
+            HRESULT RenderCardAsImageAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<ImageRenderResult*>** result);
         }
 
         [

@@ -43,6 +43,44 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
     }
 
+    void ImageLoadTracker::AbandonOutstandingImages()
+    {
+        auto exclusiveLock = m_lock.LockExclusive();
+        for (auto& eventRegistration : m_eventRegistrations)
+        {
+            UnsubscribeFromEvents(eventRegistration.first, eventRegistration.second);
+        }
+        m_eventRegistrations.clear();
+    }
+
+    _Use_decl_annotations_
+    HRESULT ImageLoadTracker::AddListener(IImageLoadTrackerListener* listener) try
+    {
+        if (m_listeners.find(listener) == m_listeners.end())
+        {
+            m_listeners.emplace(listener);
+        }
+        else
+        {
+            return E_INVALIDARG;
+        }
+        return S_OK;
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT ImageLoadTracker::RemoveListener(IImageLoadTrackerListener* listener) try
+    {
+        if (m_listeners.find(listener) != m_listeners.end())
+        {
+            m_listeners.erase(listener);
+        }
+        else
+        {
+            return E_INVALIDARG;
+        }
+        return S_OK;
+    } CATCH_RETURN;
+
     _Use_decl_annotations_
     HRESULT ImageLoadTracker::trackedImage_ImageLoaded(IInspectable* sender, IRoutedEventArgs* /*eventArgs*/)
     {
@@ -66,12 +104,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         {
             UnsubscribeFromEvents(sender, m_eventRegistrations[sender]);
         }
+
+        if (m_trackedImageCount == 0)
+        {
+            FireAllImagesLoaded();
+        }
     }
 
     _Use_decl_annotations_
     void ImageLoadTracker::UnsubscribeFromEvents(IInspectable* bitmapImage, TrackedImageDetails& trackedImageDetails)
     {
-        auto exclusiveLock = m_lock.LockExclusive();
         ComPtr<IInspectable> inspectableBitmapImage(bitmapImage);
         ComPtr<IBitmapImage> localBitmapImage;
         inspectableBitmapImage.As(&localBitmapImage);
@@ -81,4 +123,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         localBitmapImage->remove_ImageFailed(trackedImageDetails.imageFailedRegistration);
     }
 
+    void ImageLoadTracker::FireAllImagesLoaded()
+    {
+        for (auto& listener : m_listeners)
+        {
+            listener->AllImagesLoaded();
+        }
+    }
 }}
