@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "AdaptiveContainer.h"
+
 #include "Util.h"
+#include "Vector.h"
 #include <windows.foundation.collections.h>
 #include "XamlCardRendererComponent.h"
 
@@ -15,6 +17,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 {
     AdaptiveContainer::AdaptiveContainer() : m_container(std::make_unique<Container>())
     {
+        m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
     }
 
     _Use_decl_annotations_
