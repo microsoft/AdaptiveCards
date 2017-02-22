@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
 
     /// <summary>
     /// The FactSet element makes it simple to display a se ries of "facts" (e.g. name/value pairs) in a tabular form.
     /// </summary>
-    public class FactSet : CardElement
+    public partial class FactSet : CardElement
     {
         public FactSet()
         { }
@@ -28,11 +28,11 @@ namespace Adaptive.Schema.Net
     /// Represents one "fact" in a FactSet element.
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class Fact
+    public partial class Fact
     {
-        public Fact(string name, string value, string speak = null)
+        public Fact(string title, string value, string speak = null)
         {
-            this.Name = name;
+            this.Title = title;
             this.Value = value;
             this.Speak = speak;
         }
@@ -41,7 +41,7 @@ namespace Adaptive.Schema.Net
         /// The facts label
         /// </summary>
         [JsonRequired]
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// The fact's value

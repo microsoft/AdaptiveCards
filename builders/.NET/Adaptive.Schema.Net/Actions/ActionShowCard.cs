@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
 
     /// <summary>
     /// ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
     /// </summary>
-    public class ActionShowCard: ActionBase
+    public partial class ActionShowCard: ActionBase
     {
         public ActionShowCard()
         {

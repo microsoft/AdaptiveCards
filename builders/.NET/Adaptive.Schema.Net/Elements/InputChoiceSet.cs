@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
 
     /// <summary>
     /// Element which collects choice from the user
     /// </summary>
-    public class InputChoiceSet : Input
+    public partial class InputChoiceSet : Input
     {
         public InputChoiceSet()
         {
@@ -47,7 +47,7 @@ namespace Adaptive.Schema.Net
     /// Choice as part of a Input.ChoiceSet element
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class Choice
+    public partial class Choice
     {
         public Choice()
         { }

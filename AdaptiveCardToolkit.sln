@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builders", "Builders", "{CB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET", ".NET", "{38D9E098-DD38-49B7-B861-917FA527D346}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.Schema.Net", "builders\.NET\Adaptive.Schema.Net\Adaptive.Schema.Net.csproj", "{692311B2-E537-4700-8EF7-A5F83D90383C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.Net", "builders\.NET\Adaptive.Schema.Net\Adaptive.Net.csproj", "{692311B2-E537-4700-8EF7-A5F83D90383C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfVisualizer", "WpfVisualizer\WpfVisualizer.csproj", "{012406C8-BB8F-493B-A3A1-0D02214ADAA1}"
 EndProject

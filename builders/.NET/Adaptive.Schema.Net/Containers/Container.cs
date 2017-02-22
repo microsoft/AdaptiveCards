@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Container for a collection of elements
     /// </summary>
-    public class Container : CardElement
+    public partial class Container : CardElement
     {
         public Container()
         { }

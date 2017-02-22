@@ -218,20 +218,20 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        
-                    <!-- Content handles within a border -->
-                    <Border x:Name="bdr" CornerRadius="6" Margin="3" BorderThickness="1" BorderBrush="Black" Background="#FF5098FF">
-                        <!-- ContentPresenter properties. Set the content source as the content from each control define below -->
-                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Content" TextBlock.FontSize="20"  />
-                    </Border>
-                        
-                    <!-- Required triggers define here -->
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="bdr" Property="Opacity" Value=".6"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+
+                        <!-- Content handles within a border -->
+                        <Border x:Name="bdr" CornerRadius="6" Margin="3" BorderThickness="1" BorderBrush="Black" Background="#FF5098FF">
+                            <!-- ContentPresenter properties. Set the content source as the content from each control define below -->
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Content" TextBlock.FontSize="20"   />
+                        </Border>
+
+                        <!-- Required triggers define here -->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bdr" Property="Opacity" Value=".6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -241,16 +241,16 @@
             <Setter Property="Foreground" Value="White"/>
         </Style>
 
-        <Style x:Key="Adaptive.Action.OpenUrlAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        <Style x:Key="Adaptive.Action.OpenUrl" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
-        <Style x:Key="Adaptive.Action.ShowCardAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        <Style x:Key="Adaptive.Action.ShowCard" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
-        <Style x:Key="Adaptive.Action.SubmitAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        <Style x:Key="Adaptive.Action.Submit" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
-        <Style x:Key="Adaptive.Action.HttpAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        <Style x:Key="Adaptive.Action.Http" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
         <Style x:Key="Adaptive.Action.Tap" TargetType="Button">

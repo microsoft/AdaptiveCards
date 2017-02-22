@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Input which collects number from the user
     /// </summary>
-    public class InputNumber: Input
+    public partial class InputNumber: Input
     {
         public InputNumber()
         {

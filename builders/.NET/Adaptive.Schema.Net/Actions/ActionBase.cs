@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Base of Action types
     /// </summary>
-    public class ActionBase : TypedElement
+    public partial class ActionBase : TypedElement
     {
         public ActionBase() { }
 

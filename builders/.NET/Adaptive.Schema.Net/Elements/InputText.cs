@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Input which collects text from the user
     /// </summary>
-    public class InputText : Input
+    public partial class InputText : Input
     {
         public InputText()
         {

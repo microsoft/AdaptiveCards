@@ -5,17 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Adaptive.Schema.Net;
-using Newtonsoft.Json.Linq;
-using Xceed.Wpf.Toolkit;
 
-namespace WpfVisualizer
+namespace Adaptive
 {
-    public class ActionInstance
+    public partial class TypedElement 
     {
-        public ActionInstance()
+        public virtual FrameworkElement Render(RenderContext context)
         {
-
+            return new Grid();
         }
+
     }
 }

@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// The Image element allows for the inclusion of images in an Adaptive Card.
     /// </summary>
-    public class Image : CardElement
+    public partial class Image : CardElement
     {
         public Image()
         { }

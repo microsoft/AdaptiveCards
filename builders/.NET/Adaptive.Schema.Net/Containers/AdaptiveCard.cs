@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Adaptive card which has flexible container
     /// </summary>
-    public class AdaptiveCard : TypedElement
+    public partial class AdaptiveCard : TypedElement
     {
         public AdaptiveCard() { }
 

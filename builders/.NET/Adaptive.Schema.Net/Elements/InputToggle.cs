@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Input which collects a choice between two options from the user
     /// </summary>
-    public class InputToggle: Input
+    public partial class InputToggle: Input
     {
         public InputToggle()
         {

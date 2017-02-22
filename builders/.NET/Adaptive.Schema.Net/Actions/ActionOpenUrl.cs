@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
 
     /// <summary>
     /// When ActionOpenUrl is invoked it will show the given url, either by launching it to an external web browser or showing in-situ with embedded web browser.
     /// </summary>
-    public class ActionOpenUrl : ActionBase
+    public partial class ActionOpenUrl : ActionBase
     {
         public ActionOpenUrl()
         {

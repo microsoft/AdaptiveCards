@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// The ImageSet allows for the inclusion of a collection images like a photogallery.
     /// </summary>
-    public class ImageSet : CardElement
+    public partial class ImageSet : CardElement
     {
         public ImageSet()
         {
@@ -27,6 +27,6 @@ namespace Adaptive.Schema.Net
         /// Specifies the horizontal size of each image in the set
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ImageSize? Size { get; set; }
+        public ImageSize? ImageSize { get; set; }
     }
 }

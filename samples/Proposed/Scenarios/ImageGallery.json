@@ -15,7 +15,7 @@
         },
         {
             "type": "ImageSet",
-            "size": "medium",
+            "imageSize": "medium",
             "images": [
                 {
                     "type": "Image",
