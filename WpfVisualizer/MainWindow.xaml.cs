@@ -20,6 +20,7 @@ using System.Diagnostics;
 using Adaptive;
 using System.Windows.Threading;
 using System.Speech.Synthesis;
+using ICSharpCode.AvalonEdit.Document;
 
 namespace WpfVisualizer
 {
@@ -46,6 +47,7 @@ namespace WpfVisualizer
             _timer.Tick += _timer_Tick;
             _timer.Start();
         }
+        private DocumentLine errorLine;
 
         private void _timer_Tick(object sender, EventArgs e)
         {
@@ -65,14 +67,45 @@ namespace WpfVisualizer
                 }
                 catch (Exception err)
                 {
-                    this.cardError.Children.Add(new System.Windows.Controls.TextBlock()
+                    var textBlock = new System.Windows.Controls.TextBlock()
                     {
                         Text = err.Message,
                         TextWrapping = TextWrapping.Wrap,
                         Style = this.Resources["Error"] as Style
-                    });
+                    };
+                    var button = new Button() { Content = textBlock };
+                    button.Click += Button_Click;
+                    this.cardError.Children.Add(button);
+
+                    int iPos = err.Message.IndexOf("line ");
+                    if (iPos > 0)
+                    {
+                        iPos += 5;
+                        int iEnd = err.Message.IndexOf(",", iPos);
+
+                        int line = 0;
+                        if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out line))
+                        {
+                            iPos = err.Message.IndexOf("position ");
+                            if (iPos > 0)
+                            {
+                                iPos += 9;
+                                iEnd = err.Message.IndexOf(".", iPos);
+                                int position = 0;
+                                if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out position))
+                                {
+                                    errorLine = this.textBox.Document.GetLineByNumber(Math.Min(line, this.textBox.Document.LineCount));
+                                }
+                            }
+                        }
+                    }
                 }
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.textBox.Select(this.errorLine.Offset, this.errorLine.Length);
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -192,6 +225,11 @@ namespace WpfVisualizer
             sb.AppendLine(speak);
             sb.AppendLine("</speak>");
             return sb.ToString();
+        }
+
+        private void textBox_TextChanged(object sender, EventArgs e)
+        {
+            _dirty = true;
         }
     }
 }
