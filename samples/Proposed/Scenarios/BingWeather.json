@@ -44,7 +44,7 @@
 												{
 													"@type": "TextBlock",
 													"text": "42",
-													"textSize": "extraLarge"
+													"size": "extraLarge"
 												}
 											]
 										},
@@ -55,7 +55,7 @@
 												{
 													"@type": "TextBlock",
 													"text": "°F",
-													"textWeight": "bolder"
+													"weight": "bolder"
 												}
 											]
 										}

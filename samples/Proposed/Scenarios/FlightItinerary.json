@@ -29,7 +29,7 @@
 				{
 					"@type": "TextBlock",
 					"text": "Fri, October 10 8:30 AM",
-					"textWeight": "bolder"
+					"weight": "bolder"
 				},
 				{
 					"@type": "ColumnGroup",
@@ -45,8 +45,8 @@
 								},
 								{
 									"@type": "TextBlock",
-									"textSize": "extraLarge",
-									"textColor": "accent",
+									"size": "extraLarge",
+									"color": "accent",
 									"text": "SFO"
 								}
 							]
@@ -79,8 +79,8 @@
 								{
 									"@type": "TextBlock",
 									"horizontalAlignment": "right",
-									"textSize": "extraLarge",
-									"textColor": "accent",
+									"size": "extraLarge",
+									"color": "accent",
 									"text": "AMS"
 								}
 							]
@@ -96,7 +96,7 @@
 				{
 					"@type": "TextBlock",
 					"text": "Fri, October 18 9:50 PM",
-					"textWeight": "bolder"
+					"weight": "bolder"
 				},
 				{
 					"@type": "ColumnGroup",
@@ -113,8 +113,8 @@
 								},
 								{
 									"@type": "TextBlock",
-									"textSize": "extraLarge",
-									"textColor": "accent",
+									"size": "extraLarge",
+									"color": "accent",
 									"text": "AMS"
 								}
 							]
@@ -144,8 +144,8 @@
 									"@type": "TextBlock",
 									"topSpacing": "none",
 									"horizontalAlignment": "right",
-									"textSize": "extraLarge",
-									"textColor": "accent",
+									"size": "extraLarge",
+									"color": "accent",
 									"text": "SFO"
 								}
 							]
@@ -168,7 +168,7 @@
 								{
 									"@type": "TextBlock",
 									"text": "Total",
-									"textSize": "medium",
+									"size": "medium",
 									"isSubtle": true
 								}
 							]
@@ -181,8 +181,8 @@
 									"@type": "TextBlock",
 									"horizontalAlignment": "right",
 									"text": "$4,032.54",
-									"textSize": "medium",
-									"textWeight": "bolder"
+									"size": "medium",
+									"weight": "bolder"
 								}
 							]
 						}

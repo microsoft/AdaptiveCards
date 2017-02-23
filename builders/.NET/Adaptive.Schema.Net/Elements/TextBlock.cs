@@ -15,13 +15,13 @@ namespace Adaptive.Schema.Net
         }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextSize? TextSize { get; set; }
+        public TextSize? Size { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextWeight? TextWeight { get; set; }
+        public TextWeight? Weight { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextColor? TextColor { get; set; } 
+        public TextColor? Color { get; set; } 
 
         [JsonRequired]
         public string Text { get; set; }

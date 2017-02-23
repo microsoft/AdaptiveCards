@@ -5,19 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using MarkedNet;
 
-namespace WpfVisualizer
+namespace Adaptive.Renderers
 {
 
     /// <summary>
     /// Renderer which renders to pure text environments like SMS
     /// </summary>
-    public class XamlRenderer : Renderer
+    public class MarkedXamlRenderer : Renderer
     {
-        public XamlRenderer() : base()
+        public MarkedXamlRenderer() : base()
         {
         }
 
-        public XamlRenderer(Options options) : base(options)
+        public MarkedXamlRenderer(Options options) : base(options)
         {
         }
 

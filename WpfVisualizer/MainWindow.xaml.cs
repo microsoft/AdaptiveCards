@@ -17,6 +17,8 @@ using Newtonsoft.Json;
 using Microsoft.Win32;
 using System.IO;
 using System.Diagnostics;
+using Adaptive.Renderers;
+using System.Windows.Threading;
 
 namespace WpfVisualizer
 {
@@ -45,7 +47,7 @@ namespace WpfVisualizer
             catch (Exception err)
             {
                 this.cardGrid.Children.Clear();
-                this.cardGrid.Children.Add(new TextBlock() { Text = err.Message });
+                this.cardGrid.Children.Add(new TextBlock() { Text = err.Message, TextWrapping = TextWrapping.Wrap });
             }
         }
 
@@ -63,7 +65,8 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this._renderer = new AdaptiveXamlRenderer(this.Resources);
+            //this._renderer = new AdaptiveXamlRenderer(this.Resources);
+            this._renderer = new MyAdaptiveRenderer(this.Resources);
             this._renderer.OnAction += _renderer_OnAction;
 
             var binding = new CommandBinding(NavigationCommands.GoToPage, GoToPage, CanGoToPage);
@@ -82,17 +85,23 @@ namespace WpfVisualizer
             else if (e.Action is AC.ShowCardAction)
             {
                 AC.ShowCardAction action = (AC.ShowCardAction)e.Action;
-                ShowCardWindow dialog = new ShowCardWindow(action.Card, this.Resources);
+                ShowCardWindow dialog = new ShowCardWindow(action.Title, action.Card, this.Resources);
+                dialog.Owner = this;
                 dialog.ShowDialog();
             }
             else if (e.Action is AC.SubmitAction)
             {
                 AC.SubmitAction action = (AC.SubmitAction)e.Action;
-                System.Windows.MessageBox.Show(JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), action.Title);
+                System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), "SubmitAction");
             }
             else if (e.Action is AC.HttpAction)
             {
                 AC.HttpAction action = (AC.HttpAction)e.Action;
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"HEADERS={JsonConvert.SerializeObject(action.Headers)}");
+                sb.AppendLine($"BODY={action.Body}");
+                sb.AppendLine($"DATA={e.Data}");
+                System.Windows.MessageBox.Show(this, sb.ToString(), $"HttpAction {action.Method} {action.Url}");
             }
         }
 
@@ -111,39 +120,21 @@ namespace WpfVisualizer
             e.CanExecute = true;
         }
 
-        private void viewImage_Click(object sender, RoutedEventArgs e)
+        private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            //var brush = CreateBrushFromUIElementWithBitmap(cardGrid, BrushMappingMode.Absolute, )
+            AdaptiveImageRenderer imageRenderer = new AdaptiveImageRenderer(this.Resources);
 
-            //var card = this._card.Actions.OfType<AC.ShowCardAction>().First().Card;
-            //var uiCard = (FrameworkElement)_renderer.Render(card);
-            
-            //RenderTargetBitmap renderBitmap = new RenderTargetBitmap(width, height, 1/300, 1/300, PixelFormats.Pbgra32);
+            var bitmap = await imageRenderer.RenderToImageAsync(this._card, 400);
 
-            //DrawingVisual visual = new DrawingVisual();
-            //using (DrawingContext context = visual.RenderOpen())
-            //{
-            //    VisualBrush brush = new VisualBrush(c);
-            //    context.DrawRectangle(brush,
-            //                          null,
-            //                          new Rect(new Point(), new Size(c.Width, c.Height)));
-            //}
+            string path = @"c:\scratch\foo.png";
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bitmap));
 
-            //visual.Transform = new ScaleTransform(width / c.ActualWidth, height / c.ActualHeight);
-            //renderBitmap.Render(visual);
-
-            ////RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)uiCard.ActualWidth, (int)uiCard.ActualHeight, 96, 96, PixelFormats.Default);
-            ////bitmapImage.Render(uiCard);
-
-            //var encoder = new PngBitmapEncoder();
-            //encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
-
-            //string path = @"c:\scratch\foo.png";
-            //using (FileStream stream = new FileStream(path, FileMode.Create))
-            //{
-            //    encoder.Save(stream);
-            //}
-            //Process.Start(path);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                encoder.Save(stream);
+            }
+            Process.Start(path);
         }
     }
 }
