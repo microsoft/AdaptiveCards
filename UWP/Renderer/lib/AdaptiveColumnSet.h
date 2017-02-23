@@ -7,22 +7,19 @@
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    class AdaptiveContainer :
+    class AdaptiveColumnSet :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainer,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumnSet,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveContainer, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveColumnSet, BaseTrust)
 
     public:
-        AdaptiveContainer();
+        AdaptiveColumnSet();
 
-        // IAdaptiveContainer
-        IFACEMETHODIMP get_StartGroup(_In_ boolean* startGroup);
-        IFACEMETHODIMP put_StartGroup(_Out_ boolean startGroup);
-
-        IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** items);
+        // IAdaptiveColumnSet
+        IFACEMETHODIMP get_Columns(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn*>** columns);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
@@ -33,9 +30,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     private:
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_items;
-        std::unique_ptr<AdaptiveCards::Container> m_container;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn*>> m_columns;
+
+        // Using Container as a backing element for now.
+        // TODO: MSFT 11016964: Shared Object model: Card Elements
+        std::unique_ptr<AdaptiveCards::Container> m_columnSet;
     };
 
-    ActivatableClass(AdaptiveContainer);
+    ActivatableClass(AdaptiveColumnSet);
 }}
