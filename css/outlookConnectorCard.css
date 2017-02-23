@@ -148,7 +148,7 @@
     background-repeat: no-repeat;
 }
 
-table.factGroup {
+table.factSet {
     margin: 20px 0px 0px 0px;
     border-width: 0px;
     border-spacing: 0px;
@@ -156,11 +156,11 @@ table.factGroup {
     border-collapse: collapse;
 }
 
-tr.factGroupRowSpacer {
+tr.factSetRowSpacer {
     height: 10px;
 }
 
-td.factName {
+td.factTitle {
     border-width: 0px;
     padding: 0px;
     border-style: none;
@@ -177,7 +177,7 @@ td.factValue {
     padding: 0px 0px 0px 10px
 }
 
-.imageGallery {
+.imageSet {
     margin: 20px 0px 0px 0px;
 }
 
@@ -186,11 +186,11 @@ td.factValue {
     margin: 20px 0px 0px 0px;
 }
 
-.actionGroup {
+.actionSet {
     margin: 20px 0px 0px 0px;
 }
 
-.columnGroup {
+.columnSet {
     margin: 20px 0px 0px 0px;
 }
 
