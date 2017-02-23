@@ -9,6 +9,11 @@
         Title="MainWindow" Height="1000" Width="1000">
 
     <Window.Resources>
+        <Style x:Key="Error" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="DarkRed"/>
+        </Style>
+        
         <Style x:Key="Hidden" TargetType="FrameworkElement">
             <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
@@ -290,6 +295,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -302,7 +308,7 @@
             <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/>
         </StackPanel>
 
-        <TextBox Grid.Row="1 " AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>
+        <TextBox Grid.Row="1" AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>
 
         <Border Margin="68,67,60,67"  CornerRadius="20" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" >
             <Border.Effect>
@@ -310,5 +316,8 @@
             </Border.Effect >
             <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700" />
         </Border>
+        
+        <Grid Grid.Row="2" Name="cardError" />
+
     </Grid>
 </Window>

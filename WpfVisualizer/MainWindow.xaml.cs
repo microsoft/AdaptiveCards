@@ -31,6 +31,8 @@ namespace WpfVisualizer
         private RenderContext _renderContext;
         private AC.AdaptiveCard _card;
         private SpeechSynthesizer _synth;
+        private DispatcherTimer _timer;
+        private bool _dirty = false;
 
         public MainWindow()
         {
@@ -39,24 +41,43 @@ namespace WpfVisualizer
             _synth = new SpeechSynthesizer();
             _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             _synth.SetOutputToDefaultAudioDevice();
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += _timer_Tick;
+            _timer.Start();
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            if (_dirty)
+            {
+                _dirty = false;
+                try
+                {
+                    this.cardError.Children.Clear();
+
+                    _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
+                    _renderContext = new RenderContext(this.Resources);
+                    _renderContext.OnAction += _renderer_OnAction;
+                    var element = _card.Render(_renderContext);
+                    this.cardGrid.Children.Clear();
+                    this.cardGrid.Children.Add(element);
+                }
+                catch (Exception err)
+                {
+                    this.cardError.Children.Add(new System.Windows.Controls.TextBlock()
+                    {
+                        Text = err.Message,
+                        TextWrapping = TextWrapping.Wrap,
+                        Style = this.Resources["Error"] as Style
+                    });
+                }
+            }
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
-                this.cardGrid.Children.Clear();
-                _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
-                _renderContext = new RenderContext(this.Resources);
-                _renderContext.OnAction += _renderer_OnAction;
-                var element = _card.Render(_renderContext);
-                this.cardGrid.Children.Add(element);
-            }
-            catch (Exception err)
-            {
-                this.cardGrid.Children.Clear();
-                this.cardGrid.Children.Add(new System.Windows.Controls.TextBlock() { Text = err.Message, TextWrapping = TextWrapping.Wrap });
-            }
+            _dirty = true;
         }
 
         private void loadButton_Click(object sender, RoutedEventArgs e)
@@ -67,7 +88,8 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                this.textBox.Text = File.ReadAllText(dlg.FileName).Replace("\t","  ");
+                this.textBox.Text = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
+                _dirty = true;
             }
         }
 
@@ -151,7 +173,7 @@ namespace WpfVisualizer
                 _synth.SpeakSsmlAsync(FixSSML(card.Speak));
             else
             {
-                foreach(var element in card.Body)
+                foreach (var element in card.Body)
                 {
                     if (element.Speak != null)
                     {
