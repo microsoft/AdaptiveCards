@@ -391,7 +391,7 @@
         }
       },
       "required": [
-        "name",
+        "title",
         "value"
       ],
       "type": "object"
