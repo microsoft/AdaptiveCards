@@ -30,6 +30,9 @@ namespace Adaptive
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public partial class Fact
     {
+        public Fact()
+        { }
+
         public Fact(string title, string value, string speak = null)
         {
             this.Title = title;
