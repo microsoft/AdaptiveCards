@@ -19,6 +19,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     public:
         AdaptiveColumn();
 
+        // IAdaptiveColumn
+        IFACEMETHODIMP get_Size(_In_ HSTRING* size);
+        IFACEMETHODIMP put_Size(_Out_ HSTRING size);
+
         // IAdaptiveContainer
         IFACEMETHODIMP get_StartGroup(_In_ boolean* startGroup);
         IFACEMETHODIMP put_StartGroup(_Out_ boolean startGroup);
@@ -33,6 +37,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
 
     private:
+        // TODO: Remove once Column shared object model type is ready. MSFT 11016964: Shared Object model: Card Elements
+        Microsoft::WRL::Wrappers::HString m_size;
+
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_items;
 

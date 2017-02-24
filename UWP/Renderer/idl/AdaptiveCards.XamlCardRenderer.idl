@@ -76,11 +76,13 @@ namespace AdaptiveCards
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ElementType
         {
-            Container = 0,
+            Unsupported = 0,
+            AdaptiveCard,
             TextBlock,
             Image,
-            ColumnSet,
-            Column
+            Container,
+            Column,
+            ColumnSet
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -220,9 +222,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveColumn : IInspectable
         {
-            // TODO: Add these once IAdaptiveCardElement is updated to match the current schema.
-            // [propget] HRESULT Size([out, retval] CardElementSize* value);
-            // [propput] HRESULT Size([in] CardElementSize value);
+            [propget] HRESULT Size([out, retval] HSTRING* value);
+            [propput] HRESULT Size([in] HSTRING value);
         };
 
         [

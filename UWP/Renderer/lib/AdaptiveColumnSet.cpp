@@ -15,7 +15,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    AdaptiveColumnSet::AdaptiveColumnSet() : m_columnSet(std::make_unique<Container>())
+    AdaptiveColumnSet::AdaptiveColumnSet()
     {
         m_columns = Microsoft::WRL::Make<Vector<IAdaptiveColumn*>>();
     }
@@ -36,14 +36,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveColumnSet::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
     {
-        *size = static_cast<ABI::AdaptiveCards::XamlCardRenderer::CardElementSize>(m_columnSet->GetSize());
+        *size = m_size;
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumnSet::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
     {
-        m_columnSet->SetSize(static_cast<AdaptiveCards::CardElementSize>(size));
+        m_size = size;
         return S_OK;
     }
 

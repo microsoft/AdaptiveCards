@@ -62,6 +62,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_Size(HSTRING* size)
+    {
+        *size = nullptr;
+
+        if (m_size.IsValid())
+        {
+            RETURN_IF_FAILED(m_size.CopyTo(size));
+        }
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_Size(HSTRING size)
+    {
+        RETURN_IF_FAILED(m_size.Set(size));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveColumn::get_Items(IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
