@@ -14,7 +14,7 @@ export abstract class HostContainer {
         this.styleSheet = styleSheet;
     }
 
-    render(card: Adaptive.ICard, showXml: boolean = false): HTMLElement {
+    render(card: Adaptive.AdaptiveCard, showXml: boolean = false): HTMLElement {
 
         // speech visualizer
         let element = document.createElement("div");
@@ -145,6 +145,5 @@ export abstract class HostContainer {
             }
         }
     }
-
 }
 

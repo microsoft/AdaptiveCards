@@ -54,9 +54,9 @@ export class ToastContainer extends HostContainer {
         //     appendChild(element, headerElement);
         // }
 
-        card.body.textColor = ToastContainer.textColor;
+        card.root.textColor = ToastContainer.textColor;
 
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
+        Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
 
         let renderedCard = card.render();
 

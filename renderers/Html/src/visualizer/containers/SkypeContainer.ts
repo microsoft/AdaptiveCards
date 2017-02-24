@@ -20,7 +20,7 @@ export class SkypeContainer extends HostContainer {
         botElementIn1.appendChild(botElementIn2);
 
 
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
+        Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
 
         //card.onAction = (action) => { alert(action.title);}
         let renderedCard = card.render();

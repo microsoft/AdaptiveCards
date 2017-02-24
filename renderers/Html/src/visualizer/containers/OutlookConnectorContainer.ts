@@ -31,7 +31,7 @@ export class OutlookConnectorContainer extends ConnectorContainer {
             Utils.appendChild(element, headerElement);
         }
 
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Link;
+        Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
 
         let renderedCard = card.render();
 

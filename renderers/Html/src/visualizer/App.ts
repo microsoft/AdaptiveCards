@@ -1,4 +1,5 @@
 ﻿import * as Adaptive from "../Adaptive";
+import { JsonParser } from "../JsonParser";
 import * as Constants from "./Constants";
 
 import { BingContainer } from "./containers/BingContainer";
@@ -33,8 +34,7 @@ function renderCard() {
 
         switch (cardTypeName) {
             case "AdaptiveCard":
-                let adaptiveCard = new Adaptive.AdaptiveCard();
-                adaptiveCard.parse(json);
+                var adaptiveCard = JsonParser.parse(json);
 
                 let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
                 let renderedHostContainer = hostContainer.render(adaptiveCard);

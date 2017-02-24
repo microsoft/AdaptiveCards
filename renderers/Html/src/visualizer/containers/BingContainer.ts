@@ -23,9 +23,9 @@ export class BingContainer extends HostContainer {
         element.style.backgroundColor = BingContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        card.body.textColor = BingContainer.textColor;
+        card.root.textColor = BingContainer.textColor;
 
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
+        Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
 
         let renderedCard = card.render();
         renderedCard.style.height = "100%";

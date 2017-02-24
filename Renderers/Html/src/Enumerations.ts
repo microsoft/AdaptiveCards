@@ -1,4 +1,15 @@
-export enum ImageSize {
+export enum ActionButtonStyle {
+    Link,
+    Push
+}
+
+export enum ActionButtonState {
+    Normal,
+    Expanded,
+    Subdued
+}
+
+export enum Size {
     Auto,
     Stretch,
     Small,
@@ -41,18 +52,18 @@ export enum ImageStyle {
     Person
 }
 
-export function stringToImageSize(value: string, defaultValue: ImageSize): ImageSize {
+export function stringToSize(value: string, defaultValue: Size): Size {
     switch (value) {
         case "auto":
-            return ImageSize.Auto;
+            return Size.Auto;
         case "stretch":
-            return ImageSize.Stretch;
+            return Size.Stretch;
         case "small":
-            return ImageSize.Small;
+            return Size.Small;
         case "medium":
-            return ImageSize.Medium;
+            return Size.Medium;
         case "large":
-            return ImageSize.Large;
+            return Size.Large;
         default:
             return defaultValue;
     }

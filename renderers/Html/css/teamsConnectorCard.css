@@ -24,6 +24,10 @@
     font-weight: normal;
 }
 
+.text.startParagraph {
+    padding: 20px 0px 0px 0px;
+}
+
 .text.small {
     font-size: 12px;
     margin: -4px 0px 5px 0px;
@@ -117,6 +121,11 @@
     margin: 20px 0px 0px 0px;
 }
 
+.container.startGroup {
+    border-top: 1px solid #EEEEEE;
+    padding: 20px 0px 0px 0px;
+}
+
 .image {
     margin: 20px 0px 0px 0px;
 }
@@ -147,7 +156,7 @@
     background-repeat: no-repeat;
 }
 
-table.factSet {
+table.factGroup {
     margin: 20px 0px 0px 0px;
     border-width: 0px;
     border-spacing: 0px;
@@ -155,11 +164,11 @@ table.factSet {
     border-collapse: collapse;
 }
 
-tr.factSetRowSpacer {
+tr.factGroupRowSpacer {
     height: 10px;
 }
 
-td.factTitle {
+td.factName {
     border-width: 0px;
     padding: 0px;
     border-style: none;
@@ -176,20 +185,15 @@ td.factValue {
     padding: 0px 0px 0px 10px
 }
 
-.imageSet {
+.imageGallery {
     margin: 20px 0px 0px 0px;
 }
 
-.separator {
-    border-top: 1px solid #EEEEEE;
+.actionGroup {
     margin: 20px 0px 0px 0px;
 }
 
-.actionSet {
-    margin: 20px 0px 0px 0px;
-}
-
-.columnSet {
+.columnGroup {
     margin: 20px 0px 0px 0px;
 }
 
@@ -316,7 +320,7 @@ Other styles that can be specified:
     height: 72px;
 }
 
-.dateInput {
+.input.number {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
     border-width: 1px;
@@ -324,7 +328,15 @@ Other styles that can be specified:
     padding: 4px 8px 5px 8px;
 }
 
-.timeInput {
+.input.date {
+    font-family: 'Segoe UI', sans-serif;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 5px 8px;
+}
+
+.input.time {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
     border-width: 1px;
@@ -340,14 +352,17 @@ Other styles that can be specified:
     padding: 4px 8px 6px 8px;
 }
 
-.input.toggleInput {
-    float: left;
+.toggleInput {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0px;
 }
 
-.input.toggleInputLabel {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    margin-top: -3px;
-    margin-left: 6px;
-    float: left;
+.toggleLabel {
+    margin-left: 6px ! important;
+    margin-right: 0px ! important;
+    margin-bottom: 0px ! important;
+    padding: 0px ! important;
+    display: inline-block;
+    vertical-align: middle;
 }
