@@ -208,6 +208,17 @@ td.factValue {
     width: 10px;    
 }
 
+.columnSpacer.startGroup {
+    width: 20px;    
+}
+
+.columnSeparator {
+    margin: 0 auto;
+    width: 0px;
+    height: 100%;
+    border-left: 1px solid #EEEEEE;
+}
+
 .actionCardContainer {
     margin: 16px -20px 0px -20px;
     padding: 16px 20px 16px 20px;

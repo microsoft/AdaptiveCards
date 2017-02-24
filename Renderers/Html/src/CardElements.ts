@@ -1143,22 +1143,31 @@ export class ColumnSet extends CardElement {
     get columns(): Array<Column> {
         return this._columns;
     }
-    
+
     render(): HTMLElement {
         if (this._columns.length > 0) {
-            let element = document.createElement("div");
+            var element = document.createElement("div");
             element.className = "columnGroup";
             element.style.display = "flex";
 
             for (let i = 0; i < this._columns.length; i++) {
-                let renderedColumn = this._columns[i].internalRender();
+                var renderedColumn = this._columns[i].internalRender();
 
                 Utils.appendChild(element, renderedColumn);
 
                 if (this._columns.length > 1 && i < this._columns.length - 1) {
-                    let spacer = document.createElement("div");
+                    var spacer = document.createElement("div");
                     spacer.className = "columnSpacer";
                     spacer.style.flex = "0 0 auto";
+
+                    if (this._columns[i + 1].isGroupStart) {
+                        spacer.className += " startGroup";
+                        
+                        var separator = document.createElement("div");
+                        separator.className = "columnSeparator";
+
+                        Utils.appendChild(spacer, separator);
+                    }
 
                     Utils.appendChild(element, spacer);
                 }
