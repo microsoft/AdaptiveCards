@@ -30,7 +30,7 @@ namespace Adaptive
 
                 // do some sizing magic using the magic GridUnitType.Star
                 var size = column.Size?.ToLower();
-                if (size == ColumnSize.Stretch.ToLower())
+                if (size == null || size == ColumnSize.Stretch.ToLower())
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                 else if (size == ColumnSize.Auto.ToLower())
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
