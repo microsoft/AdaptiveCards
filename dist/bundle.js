@@ -354,6 +354,7 @@ exports.normalizeReference  = normalizeReference;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
 var EventDispatcher = (function () {
     function EventDispatcher() {
         this._subscriptions = new Array();
@@ -401,6 +402,7 @@ exports.appendChild = appendChild;
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
+Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(18));
 __export(__webpack_require__(14));
 __export(__webpack_require__(15));
@@ -415,6 +417,7 @@ __export(__webpack_require__(7));
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
 var Utils = __webpack_require__(1);
 var vkbeautify = __webpack_require__(93);
 var HostContainer = (function () {
@@ -485,6 +488,7 @@ var HostContainer = (function () {
                 if (node.attributes["strength"]) {
                     var strength = node.attributes["strength"].nodeValue;
                     if (strength == "weak") {
+                        // output.push(50);
                     }
                     else if (strength == "medium") {
                         output.push(50);
@@ -569,6 +573,7 @@ exports.HostContainer = HostContainer;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
 var CardElement = (function () {
     function CardElement(container) {
         this._container = container;
@@ -1189,6 +1194,7 @@ module.exports = Token;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
 var Elements_1 = __webpack_require__(16);
 var Inputs_1 = __webpack_require__(18);
 var AdaptiveCard_1 = __webpack_require__(15);
@@ -1569,11 +1575,17 @@ module.exports.parse  = __webpack_require__(89);
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var Interfaces_1 = __webpack_require__(4);
 var Renderer_1 = __webpack_require__(7);
 var Utils = __webpack_require__(1);
@@ -1656,6 +1668,9 @@ var ActionSubmit = (function (_super) {
         if (json["inputs"] != undefined) {
             var inputArray = json["inputs"];
             for (var i = 0; i < inputArray.length; i++) {
+                //let input = InputBase.createInput(this.owner.container, inputArray[i]["type"]);
+                //input.parse(inputArray[i]);
+                //this.inputs.push(input);
             }
         }
     };
@@ -1892,6 +1907,7 @@ exports.ActionBar = ActionBar;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
 var Utils = __webpack_require__(1);
 var Actions_1 = __webpack_require__(14);
 var Elements_1 = __webpack_require__(16);
@@ -1951,11 +1967,17 @@ exports.AdaptiveCard = AdaptiveCard;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var Enums_1 = __webpack_require__(17);
 var Utils = __webpack_require__(1);
 var Interfaces_1 = __webpack_require__(4);
@@ -2390,11 +2412,17 @@ var Container = (function (_super) {
     Container.prototype.showBottomSpacer = function (requestingElement) {
         if (this.isLastElement(requestingElement)) {
             this._element.style.paddingBottom = null;
+            // if (this.container != null) {
+            //     this.container.showBottomSpacer(this);
+            // }
         }
     };
     Container.prototype.hideBottomSpacer = function (requestingElement) {
         if (this.isLastElement(requestingElement)) {
             this._element.style.paddingBottom = "0px";
+            // if (this.container != null) {
+            //     this.container.hideBottomSpacer(this);
+            // }
         }
     };
     Container.prototype.parse = function (json) {
@@ -2570,6 +2598,7 @@ exports.ColumnSet = ColumnSet;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
 var ImageSize;
 (function (ImageSize) {
     ImageSize[ImageSize["Auto"] = 0] = "Auto";
@@ -2713,11 +2742,17 @@ exports.stringToImageStyle = stringToImageStyle;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var Utils = __webpack_require__(1);
 var Interfaces_1 = __webpack_require__(4);
 var InputBase = (function (_super) {
@@ -2875,11 +2910,17 @@ exports.InputDate = InputDate;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var HostContainer_1 = __webpack_require__(3);
 var ConnectorContainer = (function (_super) {
     __extends(ConnectorContainer, _super);
@@ -22510,6 +22551,7 @@ dom.importCssString(exports.cssText, exports.cssClass);
 "use strict";
 // TOOD: Can I pull this from the samples folder rather than copying it here?
 
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultPayload = "\n{\n\t\"type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"speak\": \"<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Card created: Publish Adaptive Card schema\",\n\t\t\t\t\t\"weight\": \"bolder\",\n\t\t\t\t\t\"size\": \"medium\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"ColumnSet\",\n\t\t\t\t\t\"columns\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"auto\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"Image\",\n\t\t\t\t\t\t\t\t\t\"url\": \"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n\t\t\t\t\t\t\t\t\t\"size\": \"small\",\n\t\t\t\t\t\t\t\t\t\"style\": \"person\"\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"stretch\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"text\": \"**Miguel Garcia**\",\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"text\": \"Created {{DATE(2017-02-14 06:08:39Z,Long)}} {{TIME(2017-02-14 06:08:39Z,Short)}}\",\n\t\t\t\t\t\t\t\t\t\"isSubtle\": true,\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.\",\n\t\t\t\t\t\"speak\": \"\",\n\t\t\t\t\t\"wrap\": true\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"FactSet\",\n\t\t\t\t\t\"speak\": \"It has been assigned to: David Claux\",\n\t\t\t\t\t\"facts\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Board:\",\n\t\t\t\t\t\t\t\"value\": \"Adaptive Card\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"List:\",\n\t\t\t\t\t\t\t\"value\": \"Backlog\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Assigned to:\",\n\t\t\t\t\t\t\t\"value\": \"David Claux\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Due date:\",\n\t\t\t\t\t\t\t\"value\": \"Not set\"\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"actions\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\t\t\"title\": \"Set due date\",\n\t\t\t\t\t\"card\": {\n\t\t\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\t\t\"body\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"type\": \"Input.Text\",\n\t\t\t\t\t\t\t\t\"style\": \"date\",\n\t\t\t\t\t\t\t\t\"id\": \"dueDate\",\n\t\t\t\t\t\t\t\t\"title\": \"Select due date\"\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t],\n\t\t\t\t\t\t\"actions\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"type\": \"Action.Http\",\n\t\t\t\t\t\t\t\t\"method\": \"POST\",\n\t\t\t\t\t\t\t\t\"title\": \"OK\",\n\t\t\t\t\t\t\t\t\"url\": \"http://xyz.com?dueDate={{dueDate}}\"\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\t\t\"title\": \"Comment\",\n\t\t\t\t\t\"card\": {\n\t\t\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\t\t\"body\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"type\": \"Input.Text\",\n\t\t\t\t\t\t\t\t\"id\": \"comment\",\n\t\t\t\t\t\t\t\t\"isMultiline\": true,\n\t\t\t\t\t\t\t\t\"title\": \"Enter your comment\"\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t],\n\t\t\t\t\t\t\"actions\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"type\": \"Action.Http\",\n\t\t\t\t\t\t\t\t\"method\": \"POST\",\n\t\t\t\t\t\t\t\t\"title\": \"OK\",\n\t\t\t\t\t\t\t\t\"url\": \"http://xyz.com\",\n\t\t\t\t\t\t\t\t\"headers\": {\n\t\t\t\t\t\t\t\t\t\"content-type\": \"application/json\"\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\"body\": \"{ 'comment' : '{{comment}}' }\"\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"Action.OpenUrl\",\n\t\t\t\t\t\"title\": \"View\",\n\t\t\t\t\t\"url\": \"http://foo.com\"\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}";
 
 
@@ -22519,11 +22561,17 @@ exports.defaultPayload = "\n{\n\t\"type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var HostContainer_1 = __webpack_require__(3);
 var Adaptive = __webpack_require__(2);
 var Utils = __webpack_require__(1);
@@ -22564,11 +22612,17 @@ exports.BingContainer = BingContainer;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var HostContainer_1 = __webpack_require__(3);
 var Adaptive = __webpack_require__(2);
 var Utils = __webpack_require__(1);
@@ -22605,11 +22659,17 @@ exports.CortanaCarContainer = CortanaCarContainer;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var HostContainer_1 = __webpack_require__(3);
 var Adaptive = __webpack_require__(2);
 var Utils = __webpack_require__(1);
@@ -22650,11 +22710,17 @@ exports.LiveTileContainer = LiveTileContainer;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var ConnectorContainer_1 = __webpack_require__(19);
 var Adaptive = __webpack_require__(2);
 var Utils = __webpack_require__(1);
@@ -22699,11 +22765,17 @@ exports.OutlookConnectorContainer = OutlookConnectorContainer;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var HostContainer_1 = __webpack_require__(3);
 var Adaptive = __webpack_require__(2);
 var Utils = __webpack_require__(1);
@@ -22745,11 +22817,17 @@ exports.SkypeContainer = SkypeContainer;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var HostContainer_1 = __webpack_require__(3);
 var Utils = __webpack_require__(1);
 var SpeechContainer = (function (_super) {
@@ -22773,11 +22851,17 @@ exports.SpeechContainer = SpeechContainer;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var ConnectorContainer_1 = __webpack_require__(19);
 var Adaptive = __webpack_require__(2);
 var Utils = __webpack_require__(1);
@@ -22815,11 +22899,17 @@ exports.TeamsConnectorContainer = TeamsConnectorContainer;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var HostContainer_1 = __webpack_require__(3);
 var Adaptive = __webpack_require__(2);
 var Utils = __webpack_require__(1);
@@ -32495,6 +32585,7 @@ module.exports = function(module) {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
 var Adaptive = __webpack_require__(2);
 var Constants = __webpack_require__(28);
 var BingContainer_1 = __webpack_require__(29);
