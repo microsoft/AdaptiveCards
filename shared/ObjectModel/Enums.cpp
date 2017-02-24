@@ -48,14 +48,15 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchema
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
 {
-    {"AdaptiveCard", CardElementType::AdaptiveCard},
-    {"TextBlock", CardElementType::TextBlock},
+    { "AdaptiveCard", CardElementType::AdaptiveCard },
+    { "TextBlock", CardElementType::TextBlock },
     { "Image", CardElementType::Image },
-    //{ "FactGroup", CardElementType::FactGroup },
-    //{ "ColumnGroup", CardElementType::ColumnGroup },
+    { "ColumnSet", CardElementType::ColumnSet },
+    { "Column", CardElementType::Column },
+    //{ "FactSet", CardElementType::FactSet },
     //{ "ImageGallery", CardElementType::ImageGallery },
-    //{ "ActionGroup", CardElementType::ActionGroup },
-    { "body", CardElementType::Container},
+    //{ "ActionSet", CardElementType::ActionSet },
+    { "body", CardElementType::Container },
 };
 
 static std::unordered_map<CardElementType, std::string> CardElementTypeEnumToName =
@@ -63,10 +64,11 @@ static std::unordered_map<CardElementType, std::string> CardElementTypeEnumToNam
     { CardElementType::AdaptiveCard, "AdaptiveCard" },
     { CardElementType::TextBlock, "TextBlock" },
     { CardElementType::Image, "Image" },
-    //{ CardElementType::FactGroup, "FactGroup" },
-    //{ CardElementType::ColumnGroup, "ColumnGroup" },
+    { CardElementType::Column, "Column" },
+    { CardElementType::ColumnSet, "ColumnSet"},
+    //{ CardElementType::FactSet, "FactSet" },
     //{ CardElementType::ImageGallery, "ImageGallery" },
-    //{ CardElementType::ActionGroup, "ActionGroup" },
+    //{ CardElementType::ActionSet, "ActionSet" },
     { CardElementType::Container, "body" },
 };
 

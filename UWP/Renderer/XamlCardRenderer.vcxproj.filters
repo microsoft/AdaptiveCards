@@ -10,9 +10,9 @@
     <ClCompile Include="lib\AdaptiveImage.cpp" />
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
     <ClCompile Include="lib\ImageRenderResult.cpp" />
-    <ClCompile Include="lib\RenderXamlToImageExecutionInstance.cpp" />
-    <ClCompile Include="lib\RenderXamlToImageTask.cpp" />
     <ClCompile Include="lib\AdaptiveContainer.cpp" />
+    <ClCompile Include="lib\AdaptiveColumn.cpp" />
+    <ClCompile Include="lib\AdaptiveColumnSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\pch.h" />
@@ -27,8 +27,6 @@
     <ClInclude Include="lib\ImageLoadTracker.h" />
     <ClInclude Include="lib\XamlHelpers.h" />
     <ClInclude Include="lib\ImageRenderResult.h" />
-    <ClInclude Include="lib\RenderXamlToImageExecutionInstance.h" />
-    <ClInclude Include="lib\RenderXamlToImageTask.h" />
     <ClInclude Include="lib\IRenderXamlToImageExecutionInstance.h" />
     <ClInclude Include="lib\IImageLoadTrackerListener.h" />
     <ClInclude Include="lib\IXamlBuilderListener.h" />
@@ -36,6 +34,8 @@
     <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
     <ClInclude Include="lib\AsyncOperations.h" />
     <ClInclude Include="lib\AdaptiveContainer.h" />
+    <ClInclude Include="lib\AdaptiveColumn.h" />
+    <ClInclude Include="lib\AdaptiveColumnSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

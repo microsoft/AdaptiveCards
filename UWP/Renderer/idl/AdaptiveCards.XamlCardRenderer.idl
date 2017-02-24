@@ -15,11 +15,15 @@ namespace AdaptiveCards
         runtimeclass AdaptiveCard;
         runtimeclass AdaptiveImage;
         runtimeclass AdaptiveContainer;
+        runtimeclass AdaptiveColumn;
+        runtimeclass AdaptiveColumnSet;
         interface IAdaptiveCardElement;
         interface IAdaptiveTextBlock;
         interface IAdaptiveCard;
         interface IAdaptiveImage;
         interface IAdaptiveContainer;
+        interface IAdaptiveColumn;
+        interface IAdaptiveColumnSet;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum CardElementSize
@@ -72,9 +76,13 @@ namespace AdaptiveCards
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ElementType
         {
-            Container = 0,
+            Unsupported = 0,
+            AdaptiveCard,
             TextBlock,
             Image,
+            Container,
+            Column,
+            ColumnSet
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -86,7 +94,9 @@ namespace AdaptiveCards
         declare
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
+            interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
+            interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
             interface Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>;
             interface Windows.Foundation.IAsyncOperation<AdaptiveCards.XamlCardRenderer.ImageRenderResult*>;
             interface Windows.Foundation.IReference<Windows.UI.Text.FontWeight>;
@@ -186,8 +196,7 @@ namespace AdaptiveCards
 
         [
             uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveContainer)
+            version(NTDDI_WIN10_RS1)
         ]
         interface IAdaptiveContainer : IInspectable
         {
@@ -204,6 +213,47 @@ namespace AdaptiveCards
         runtimeclass AdaptiveContainer
         {
             [default] interface IAdaptiveContainer;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(91e03800-d239-43bc-b5fb-2ccfe0cc7fcb),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveColumn : IInspectable
+        {
+            [propget] HRESULT Size([out, retval] HSTRING* value);
+            [propput] HRESULT Size([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveColumn
+        {
+            [default] interface IAdaptiveColumn;
+            interface IAdaptiveContainer;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(4e3e1cd1-906b-4718-96ea-0a6e16bf0199),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveColumnSet)
+        ]
+        interface IAdaptiveColumnSet: IInspectable
+        {
+            [propget] HRESULT Columns([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveColumn*>** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveColumnSet
+        {
+            [default] interface IAdaptiveColumnSet;
             interface IAdaptiveCardElement;
         };
 

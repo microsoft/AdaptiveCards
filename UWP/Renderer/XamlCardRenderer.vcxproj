@@ -113,6 +113,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
+    <ClInclude Include="lib\AdaptiveColumn.h" />
+    <ClInclude Include="lib\AdaptiveColumnSet.h" />
     <ClInclude Include="lib\AdaptiveContainer.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
@@ -125,20 +127,18 @@
     <ClInclude Include="lib\IRenderXamlToImageExecutionInstance.h" />
     <ClInclude Include="lib\IXamlBuilderListener.h" />
     <ClInclude Include="lib\pch.h" />
-    <ClInclude Include="lib\RenderXamlToImageExecutionInstance.h" />
-    <ClInclude Include="lib\RenderXamlToImageTask.h" />
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClCompile Include="lib\AdaptiveCard.cpp" />
+    <ClCompile Include="lib\AdaptiveColumn.cpp" />
+    <ClCompile Include="lib\AdaptiveColumnSet.cpp" />
     <ClCompile Include="lib\AdaptiveContainer.cpp" />
     <ClCompile Include="lib\AdaptiveImage.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
     <ClCompile Include="lib\ImageRenderResult.cpp" />
-    <ClCompile Include="lib\RenderXamlToImageExecutionInstance.cpp" />
-    <ClCompile Include="lib\RenderXamlToImageTask.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />

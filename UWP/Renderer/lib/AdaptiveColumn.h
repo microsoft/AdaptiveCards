@@ -7,16 +7,21 @@
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    class AdaptiveContainer :
+    class AdaptiveColumn :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainer,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveContainer, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveColumn, BaseTrust)
 
     public:
-        AdaptiveContainer();
+        AdaptiveColumn();
+
+        // IAdaptiveColumn
+        IFACEMETHODIMP get_Size(_In_ HSTRING* size);
+        IFACEMETHODIMP put_Size(_Out_ HSTRING size);
 
         // IAdaptiveContainer
         IFACEMETHODIMP get_StartGroup(_In_ boolean* startGroup);
@@ -32,10 +37,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
 
     private:
+        // TODO: Remove once Column shared object model type is ready. MSFT 11016964: Shared Object model: Card Elements
+        Microsoft::WRL::Wrappers::HString m_size;
+
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_items;
-        std::unique_ptr<AdaptiveCards::Container> m_container;
+
+        // Using Container as a backing element for now.
+        // TODO: MSFT 11016964: Shared Object model: Card Elements
+        std::unique_ptr<AdaptiveCards::Container> m_column;
     };
 
-    ActivatableClass(AdaptiveContainer);
+    ActivatableClass(AdaptiveColumn);
 }}
