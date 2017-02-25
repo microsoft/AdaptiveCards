@@ -16,6 +16,10 @@ export class BingContainer extends HostContainer {
         this._height = height;
     }
 
+    applyOptions() {
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+    }
+
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.width = this._width + "px";

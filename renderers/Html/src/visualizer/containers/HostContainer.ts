@@ -14,38 +14,50 @@ export abstract class HostContainer {
         this.styleSheet = styleSheet;
     }
 
-    render(card: Adaptive.AdaptiveCard, showXml: boolean = false): HTMLElement {
+    abstract applyOptions();
 
+    render(card: Adaptive.AdaptiveCard, showXml: boolean = false): HTMLElement {
         // speech visualizer
         let element = document.createElement("div");
         element.className = "speechContainer";
 
         let button = document.createElement("button");
+        button.className = "button";
+        button.innerText = "Speak this card";
+
         let t = document.createTextNode("Speak");
         let text = card.renderSpeech();
         let output = new Array<any>();
+
         if (text[0] == '<') {
-            if (text.indexOf("<speak") != 0)
+            if (text.indexOf("<speak") != 0) {
                 text = '<speak>\n' + text + '\n</speak>\n';
+            }
+
             let parser = new DOMParser();
             let dom = parser.parseFromString(text, "text/xml");
             let nodes = dom.documentElement.childNodes;
+
             this.processNodes(nodes, output);
+
             let serializer = new XMLSerializer();
+            
             text = vkbeautify.xml(serializer.serializeToString(dom));;
         }
         else {
             output.push(text);
             text = vkbeautify.xml(text);
         }
-        button.appendChild(t);
+
+        // button.appendChild(t);
         button.addEventListener("click", function () {
             HostContainer.playNextTTS(output, 0);
         });
 
         Utils.appendChild(element, document.createElement("br"));
         Utils.appendChild(element, document.createElement("br"));
-        Utils.appendChild(element, document.createElement("hr"));
+        // Utils.appendChild(element, document.createElement("hr"));
+        
         Utils.appendChild(element, button);
 
         if (showXml) {
@@ -58,6 +70,7 @@ export abstract class HostContainer {
         let audio = document.createElement("audio");
         audio.id = 'player';
         audio.autoplay = true;
+
         Utils.appendChild(element, audio);
 
         return element;

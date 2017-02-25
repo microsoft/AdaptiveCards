@@ -9,7 +9,7 @@ export class JsonParser {
         action.name = json["title"];        
     }
 
-    private parseExternalAction(json: any, action: Adaptive.ExternalAction) {
+    private parseExternalAction(json: any, action: Adaptive.ActionExternal) {
         this.parseBaseAction(json, action);
 
         action.onExecute.subscribe(
@@ -126,7 +126,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            image.selectAction = <Adaptive.ExternalAction>this.createAction(json, image.container);
+            image.selectAction = <Adaptive.ActionExternal>this.createAction(json, image.container);
         }
     }
 
@@ -216,7 +216,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            container.selectAction = <Adaptive.ExternalAction>this.createAction(selectActionJson["type"], container);
+            container.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson["type"], container);
         }
     }
 

@@ -23,14 +23,21 @@ let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
 function renderCard() {
-
     let jsonText = editor.getValue();
+
     try {
         let json = JSON.parse(jsonText);
         let cardTypeName = json["type"];
 
         let node = document.getElementById('content');
         node.innerHTML = '';
+
+        Adaptive.AdaptiveCard.onShowPopupCard = (action, element) => {
+            var popupContainer = document.getElementById("popupCardContainer");
+            popupContainer.innerHTML = "";
+
+            popupContainer.appendChild(element);
+        }
 
         switch (cardTypeName) {
             case "AdaptiveCard":
@@ -43,6 +50,18 @@ function renderCard() {
                 )
 
                 let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+                hostContainer.applyOptions();
+
+                var popupContainer = document.getElementById("popupCardContainer");
+
+                if (Adaptive.AdaptiveCard.options.actionShowCardInPopup) {
+                    popupContainer.innerText = "ActionShowCard popups will appear in this box, according to container settings";
+                    popupContainer.hidden = false;
+                }
+                else {
+                    popupContainer.hidden = true;
+                }
+
                 let renderedHostContainer = hostContainer.render(adaptiveCard);
 
                 node.appendChild(renderedHostContainer);
@@ -67,7 +86,7 @@ function renderCard() {
         }
     }
     catch (e) {
-        document.getElementById('content').innerHTML = "Error: " + e.toString();
+        document.getElementById('content').innerHTML = e.toString();
         console.log(e.toString() + '\n' + jsonText);
     }
 }

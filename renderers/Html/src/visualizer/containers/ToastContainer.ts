@@ -14,6 +14,10 @@ export class ToastContainer extends HostContainer {
         this._width = width;
     }
 
+    applyOptions() {
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+    }
+
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.border = "#474747 1px solid";

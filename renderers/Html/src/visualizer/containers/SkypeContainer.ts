@@ -3,6 +3,10 @@ import * as Adaptive from "../../Adaptive";
 import * as Utils from "../../Utils";
 
 export class SkypeContainer extends HostContainer {
+    applyOptions() {
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = true;
+    }
+
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.className = "skypeContainer";

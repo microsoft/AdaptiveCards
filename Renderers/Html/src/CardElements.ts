@@ -294,7 +294,7 @@ export class Image extends CardElement {
     style: Enums.ImageStyle = Enums.ImageStyle.Normal;
     url: string;
     size: Enums.Size = Enums.Size.Medium;
-    selectAction: ExternalAction;
+    selectAction: ActionExternal;
 
     get useDefaultSizing() {
         return false;
@@ -774,23 +774,23 @@ export abstract class Action {
     }
 }
 
-export abstract class ExternalAction extends Action {
-    private _onExecute: Eventing.EventDispatcher<ExternalAction, any> = new Eventing.EventDispatcher<ExternalAction, any>();
+export abstract class ActionExternal extends Action {
+    private _onExecute: Eventing.EventDispatcher<ActionExternal, any> = new Eventing.EventDispatcher<ActionExternal, any>();
 
     execute() {
         this._onExecute.dispatch(this, null);
     }
 
-    get onExecute(): Eventing.IEvent<ExternalAction, any> {
+    get onExecute(): Eventing.IEvent<ActionExternal, any> {
         return this._onExecute;
     }
 }
 
-export class ActionSubmit extends ExternalAction {
+export class ActionSubmit extends ActionExternal {
     static TypeName: string = "Action.Submit";
 }
 
-export class ActionOpenUrl extends ExternalAction {
+export class ActionOpenUrl extends ActionExternal {
     static TypeName: string = "Action.OpenUrl";
 
     url: string;
@@ -801,7 +801,7 @@ export class HttpHeader {
     value: string;
 }
 
-export class ActionHttp extends ExternalAction {
+export class ActionHttp extends ActionExternal {
     static TypeName: string = "Action.Http";
     
     private _headers: Array<HttpHeader> = [];
@@ -879,7 +879,10 @@ export class ActionCollection {
             actionButton.action.execute();
         }
         else {
-            if (actionButton.action === this._expandedAction) {
+            if (AdaptiveCard.options.actionShowCardInPopup) {
+                AdaptiveCard.showPopupCard(<ActionShowCard>actionButton.action, actionButton.action.renderUi());
+            }
+            else if (actionButton.action === this._expandedAction) {
                 for (var i = 0; i < this._actionButtons.length; i++) {
                     this._actionButtons[i].state = Enums.ActionButtonState.Normal;
                 }
@@ -984,7 +987,7 @@ export class Container extends CardElement {
     backgroundColor: string;
     actionButtonStyle: Enums.ActionButtonStyle = Container.defaultActionButtonStyle;
     actions: ActionCollection;
-    selectAction: ExternalAction;
+    selectAction: ActionExternal;
     isGroupStart: boolean;
 
     constructor(
@@ -1218,17 +1221,35 @@ export class ColumnSet extends CardElement {
     }
 }
 
+export interface IAdaptiveCardOptions {
+    actionShowCardInPopup: boolean;
+}
+
 export class AdaptiveCard {
-    private _onExecuteAction: Eventing.EventDispatcher<ExternalAction, any> = new Eventing.EventDispatcher<ExternalAction, any>();
+    private static _options: IAdaptiveCardOptions;
+
+    static onShowPopupCard: (action: ActionShowCard, renderedCard: HTMLElement) => void = null;
+
+    static showPopupCard(action: ActionShowCard, renderedCard: HTMLElement) {
+        if (AdaptiveCard.onShowPopupCard != null) {
+            AdaptiveCard.onShowPopupCard(action, renderedCard);
+        }
+    }
+
+    static options: IAdaptiveCardOptions = {
+        actionShowCardInPopup: false
+    };
+
+    private _onExecuteAction: Eventing.EventDispatcher<ActionExternal, any> = new Eventing.EventDispatcher<ActionExternal, any>();
 
     allInputs: Array<Input> = [];
     root = new Container(null, "body");
 
-    get onExecuteAction(): Eventing.IEvent<ExternalAction, any> {
+    get onExecuteAction(): Eventing.IEvent<ActionExternal, any> {
         return this._onExecuteAction;
     }
 
-    executeAction(action: ExternalAction) {
+    executeAction(action: ActionExternal) {
         this._onExecuteAction.dispatch(action, null);
     }
 
