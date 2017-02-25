@@ -1,5 +1,3 @@
-import { Size, TextSize, TextWeight, TextColor, HorizontalAlignment, ImageStyle } from "./Enumerations";
-
 import markdownIt = require("markdown-it");
 let markdownProcessor = new markdownIt();
 

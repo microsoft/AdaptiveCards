@@ -34,7 +34,13 @@ function renderCard() {
 
         switch (cardTypeName) {
             case "AdaptiveCard":
-                var adaptiveCard = JsonParser.parse(json);
+                var jsonParser = new JsonParser();
+                var adaptiveCard = jsonParser.parse(json);
+                adaptiveCard.onExecuteAction.subscribe(
+                    (a, args) => {
+                        alert("Action executed: " + a.name);
+                    }
+                )
 
                 let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
                 let renderedHostContainer = hostContainer.render(adaptiveCard);

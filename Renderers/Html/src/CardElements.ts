@@ -1,6 +1,7 @@
 ﻿import * as Enums from "./Enumerations";
 import * as Eventing from "./Eventing";
 import * as Utils from "./Utils";
+import * as TextFormatters from "./TextFormatters";
 
 export abstract class CardElement {
     private _container: Container;
@@ -64,7 +65,7 @@ export abstract class CardElement {
 
 export class TextBlock extends CardElement {
     static TypeName: string = "TextBlock";
-
+    
     textSize: Enums.TextSize = Enums.TextSize.Normal;
     textWeight: Enums.TextWeight = Enums.TextWeight.Normal;
     textColor: Enums.TextColor = Enums.TextColor.Default;
@@ -143,7 +144,9 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            element.innerHTML = Utils.processMarkdown(this.text);
+            var formattedText = TextFormatters.formatText(this.text);
+
+            element.innerHTML = Utils.processMarkdown(formattedText);
             element.className = cssStyle;
 
             if (element.firstElementChild instanceof (HTMLElement)) {
@@ -688,7 +691,7 @@ export class InputTime extends Input {
 export class ActionButton {
     private _action: Action;
     private _style: Enums.ActionButtonStyle;
-    private _onClick: Eventing.EventDispatcher<ActionButton> = new Eventing.EventDispatcher<ActionButton>();
+    private _onClick: Eventing.EventDispatcher<ActionButton, any> = new Eventing.EventDispatcher<ActionButton, any>();
     private _element: HTMLElement = null;
     private _state: Enums.ActionButtonState = Enums.ActionButtonState.Normal;
     private _text: string;
@@ -725,7 +728,7 @@ export class ActionButton {
         return this._action;
     }
 
-    get onClick(): Eventing.IEvent<ActionButton> {
+    get onClick(): Eventing.IEvent<ActionButton, any> {
         return this._onClick;
     }
 
@@ -756,6 +759,8 @@ export class ActionButton {
 export abstract class Action {
     name: string;
 
+    abstract execute();
+
     parse(json: any) {
         this.name = json["title"];
     }
@@ -770,6 +775,15 @@ export abstract class Action {
 }
 
 export abstract class ExternalAction extends Action {
+    private _onExecute: Eventing.EventDispatcher<ExternalAction, any> = new Eventing.EventDispatcher<ExternalAction, any>();
+
+    execute() {
+        this._onExecute.dispatch(this, null);
+    }
+
+    get onExecute(): Eventing.IEvent<ExternalAction, any> {
+        return this._onExecute;
+    }
 }
 
 export class ActionSubmit extends ExternalAction {
@@ -807,12 +821,18 @@ export class ActionShowCard extends Action {
     card: Container;
     name: string;
 
-    get hasUi(): boolean {
-        return true;
-    }
-
+    /*
     private actionClicked(actionButton: ActionButton) {
         alert('Now executing "' + actionButton.text + '"');
+    }
+    */
+
+    execute() {
+        // TODO
+    }
+
+    get hasUi(): boolean {
+        return true;
     }
 
     renderUi(): HTMLElement {
@@ -856,7 +876,7 @@ export class ActionCollection {
 
             this.hideActionCardPane();
 
-            alert("Executing action " + actionButton.text)
+            actionButton.action.execute();
         }
         else {
             if (actionButton.action === this._expandedAction) {
@@ -1162,7 +1182,7 @@ export class ColumnSet extends CardElement {
 
                     if (this._columns[i + 1].isGroupStart) {
                         spacer.className += " startGroup";
-                        
+
                         var separator = document.createElement("div");
                         separator.className = "columnSeparator";
 
@@ -1196,11 +1216,21 @@ export class ColumnSet extends CardElement {
 
         return speak;
     }
-
 }
 
 export class AdaptiveCard {
+    private _onExecuteAction: Eventing.EventDispatcher<ExternalAction, any> = new Eventing.EventDispatcher<ExternalAction, any>();
+
+    allInputs: Array<Input> = [];
     root = new Container(null, "body");
+
+    get onExecuteAction(): Eventing.IEvent<ExternalAction, any> {
+        return this._onExecuteAction;
+    }
+
+    executeAction(action: ExternalAction) {
+        this._onExecuteAction.dispatch(action, null);
+    }
 
     render(): HTMLElement {
         let renderedContainer = this.root.internalRender();
