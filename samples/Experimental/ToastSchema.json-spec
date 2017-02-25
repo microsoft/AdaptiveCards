@@ -62,7 +62,9 @@
                     "lang": string
                 },
 
-                "adaptiveCard": (adaptiveCard object)
+                "body": (array of adaptive CardElement),
+
+                "actions": (array of adaptive CardElement)
             }
         }
     },

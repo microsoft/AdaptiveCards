@@ -22,20 +22,44 @@ The visual portion of toasts contains the text, images, inputs, and actions.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **title** | [ToastTextBlock](#toasttextblock) | true | The title string to be displayed on the toast notification. Note that only the text, lang, and maxLines properties are supported. |
-| **descriptionLine1** | [ToastTextBlock](#toasttextblock) | false | The first line of description text to be displayed on the toast notification. Note that only the text, lang, and maxLines properties are supported. |
-| **descriptionLine2** | [ToastTextBlock](#toasttextblock) | false | The second line of description text to be displayed on the toast notification. Note that only the text, lang, and maxLines properties are supported. |
-| **appLogoOverride** | [ToastAppLogo](#toastapplogo) | false | An optional logo to override the app logo. |
-| **heroImage** | [ToastHeroImage](#toastheroimage) | false | An optional featured "hero" image that is displayed on the toast and within Action Center. |
-| **attribution** | [ToastAttributionText](#toastattributiontext) | false | Optional attribution text which will be displayed at the bottom of the toast notification. |
-| **adaptiveCard** | [AdaptiveCard](Schema.md#adaptivecard) | false | An optional adaptive card to be displayed after the title and description. This is also where the buttons and inputs are specified. |
+| **title** | [ToastGenericTextBlock](#toastgenerictextblock) | true | The title string to be displayed on the toast notification. Note that only the text, lang, and maxLines properties are supported. |
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **bindings** | [ToastBindings](#toastbindings) | true | A set of bindings that represent the various visual layouts of the toast notification. |
+| **baseUri** | uri | false | A default base URI that is combined with relative URIs in image source attributes. |
+| **addImageQuery** | boolean | false | Set to "true" to allow Windows to append a query string to the image URI supplied in the toast notification. Use this attribute if your server hosts images and can handle query strings, either by retrieving an image variant based on the query strings or by ignoring the query string and returning the image as specified without the query string. This query string specifies scale, contrast setting, and language; for instance, a value of "www.website.com/images/hello.png" given in the notification becomes "www.website.com/images/hello.png?ms-scale=100&ms-contrast=standard&ms-lang=en-us" |
+| **lang**| string | false | The target locale of the visual payload when using localized resources, specified as BCP-47 language tags such as "en-US" or "fr-FR". This locale is overridden by any locale specified in binding or text. If not provided, the system locale will be used instead. |
+
+
+## ToastBindings
+A set of bindings that represent the various visual layouts of the toast notification.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **generic** | [ToastBindingGeneric](#toastbindinggeneric) | true | The generic toast binding, which is used across various UI surfaces. |
+
+
+## ToastBindingGeneric
+The generic toast binding, which is used across various UI surfaces.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **title** | [ToastGenericTextBlock](#toastgenerictextblock) | true | The title string to be displayed on the toast notification. Note that only the text, lang, and maxLines properties are supported. |
+| **descriptionLine1** | [ToastGenericTextBlock](#toastgenerictextblock) | false | The first line of description text to be displayed on the toast notification. Note that only the text, lang, and maxLines properties are supported. |
+| **descriptionLine2** | [ToastGenericTextBlock](#toastgenerictextblock) | false | The second line of description text to be displayed on the toast notification. Note that only the text, lang, and maxLines properties are supported. |
+| **appLogoOverride** | [ToastGenericAppLogo](#toastgenericapplogo) | false | An optional logo to override the app logo. |
+| **heroImage** | [ToastGenericHeroImage](#toastgenericheroimage) | false | An optional featured "hero" image that is displayed on the toast and within Action Center. |
+| **attribution** | [ToastGenericAttributionText](#toastgenericattributiontext) | false | Optional attribution text which will be displayed at the bottom of the toast notification. |
+| **body** | [CardElement](Schema.md#cardelement)[] | false | An optional array of adaptive CardElement objects to be displayed after the title and description. |
+| **actions** | [CardElement](Schema.md#cardelement)[] | false | An optional array of adaptive CardElement objects displayed in the action bar of the toast notification, where you can take inputs, provide buttons, and more. |
 | **audio** | [ToastAudio](#toastaudio) | false | Specify custom audio options. |
 | **baseUri** | uri | false | A default base URI that is combined with relative URIs in image source attributes. |
 | **addImageQuery** | boolean | false | Set to "true" to allow Windows to append a query string to the image URI supplied in the toast notification. Use this attribute if your server hosts images and can handle query strings, either by retrieving an image variant based on the query strings or by ignoring the query string and returning the image as specified without the query string. This query string specifies scale, contrast setting, and language; for instance, a value of "www.website.com/images/hello.png" given in the notification becomes "www.website.com/images/hello.png?ms-scale=100&ms-contrast=standard&ms-lang=en-us" |
 | **lang**| string | false | The target locale of the visual payload when using localized resources, specified as BCP-47 language tags such as "en-US" or "fr-FR". This locale is overridden by any locale specified in binding or text. If not provided, the system locale will be used instead. |
 
 
-## ToastTextBlock
+## ToastGenericTextBlock
 A title or description line of text that is displayed in both the collapsed and expanded portion of the toast notification.
 
 | Property | Type | Required | Description |
@@ -46,7 +70,7 @@ A title or description line of text that is displayed in both the collapsed and 
 | **maxLines** | number | false | You can specify the maximum number of lines allowed. If not provided, the default value is determined by Action Center. |
 
 
-## ToastAppLogo
+## ToastGenericAppLogo
 A logo to be displayed instead of the app logo.
 
 | Property | Type | Required |Description |
@@ -57,7 +81,7 @@ A logo to be displayed instead of the app logo.
 | **addImageQuery** | boolean | false | Set to "true" to allow Windows to append a query string to the image URI supplied in the toast notification. Use this attribute if your server hosts images and can handle query strings, either by retrieving an image variant based on the query strings or by ignoring the query string and returning the image as specified without the query string. This query string specifies scale, contrast setting, and language; for instance, a value of "www.website.com/images/hello.png" given in the notification becomes "www.website.com/images/hello.png?ms-scale=100&ms-contrast=standard&ms-lang=en-us" |
 
 
-## ToastHeroImage
+## ToastGenericHeroImage
 A featured "hero" image that is displayed on the toast and within Action Center.
 | Property | Type | Required |Description |
 |---|---|---|---|
@@ -66,7 +90,7 @@ A featured "hero" image that is displayed on the toast and within Action Center.
 | **addImageQuery** | boolean | false | Set to "true" to allow Windows to append a query string to the image URI supplied in the toast notification. Use this attribute if your server hosts images and can handle query strings, either by retrieving an image variant based on the query strings or by ignoring the query string and returning the image as specified without the query string. This query string specifies scale, contrast setting, and language; for instance, a value of "www.website.com/images/hello.png" given in the notification becomes "www.website.com/images/hello.png?ms-scale=100&ms-contrast=standard&ms-lang=en-us" |
 
 
-## ToastAttributionText
+## ToastGenericAttributionText
 Attribution text displayed at the bottom of the toast notification.
 
 | Property | Type | Required | Description |
