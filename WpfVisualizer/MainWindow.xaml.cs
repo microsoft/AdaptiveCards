@@ -21,6 +21,8 @@ using Adaptive;
 using System.Windows.Threading;
 using System.Speech.Synthesis;
 using ICSharpCode.AvalonEdit.Document;
+using System.Xml.Serialization;
+using System.Reflection;
 
 namespace WpfVisualizer
 {
@@ -58,7 +60,17 @@ namespace WpfVisualizer
                 {
                     this.cardError.Children.Clear();
 
-                    _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
+                    if (this.textBox.Text.Trim().StartsWith("<"))
+                    {
+                        var types = Assembly.GetAssembly(typeof(AdaptiveCard)).ExportedTypes.Where(t => t.IsAssignableFrom(typeof(TypedElement))).ToArray();
+                        XmlSerializer ser = new XmlSerializer(typeof(AdaptiveCard), extraTypes: types);
+                        _card = (AdaptiveCard)ser.Deserialize(new StringReader(this.textBox.Text));
+                    }
+                    else
+                    {
+
+                        _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
+                    }
                     _renderContext = new RenderContext(this.Resources);
                     _renderContext.OnAction += _renderer_OnAction;
                     var element = _card.Render(_renderContext);
@@ -67,36 +79,41 @@ namespace WpfVisualizer
                 }
                 catch (Exception err)
                 {
-                    var textBlock = new System.Windows.Controls.TextBlock()
-                    {
-                        Text = err.Message,
-                        TextWrapping = TextWrapping.Wrap,
-                        Style = this.Resources["Error"] as Style
-                    };
-                    var button = new Button() { Content = textBlock };
-                    button.Click += Button_Click;
-                    this.cardError.Children.Add(button);
+                    HandleParseError(err);
+                }
+            }
+        }
 
-                    int iPos = err.Message.IndexOf("line ");
+        private void HandleParseError(Exception err)
+        {
+            var textBlock = new System.Windows.Controls.TextBlock()
+            {
+                Text = err.Message,
+                TextWrapping = TextWrapping.Wrap,
+                Style = this.Resources["Error"] as Style
+            };
+            var button = new Button() { Content = textBlock };
+            button.Click += Button_Click;
+            this.cardError.Children.Add(button);
+
+            int iPos = err.Message.IndexOf("line ");
+            if (iPos > 0)
+            {
+                iPos += 5;
+                int iEnd = err.Message.IndexOf(",", iPos);
+
+                int line = 0;
+                if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out line))
+                {
+                    iPos = err.Message.IndexOf("position ");
                     if (iPos > 0)
                     {
-                        iPos += 5;
-                        int iEnd = err.Message.IndexOf(",", iPos);
-
-                        int line = 0;
-                        if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out line))
+                        iPos += 9;
+                        iEnd = err.Message.IndexOf(".", iPos);
+                        int position = 0;
+                        if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out position))
                         {
-                            iPos = err.Message.IndexOf("position ");
-                            if (iPos > 0)
-                            {
-                                iPos += 9;
-                                iEnd = err.Message.IndexOf(".", iPos);
-                                int position = 0;
-                                if (int.TryParse(err.Message.Substring(iPos, iEnd - iPos), out position))
-                                {
-                                    errorLine = this.textBox.Document.GetLineByNumber(Math.Min(line, this.textBox.Document.LineCount));
-                                }
-                            }
+                            errorLine = this.textBox.Document.GetLineByNumber(Math.Min(line, this.textBox.Document.LineCount));
                         }
                     }
                 }
@@ -105,7 +122,8 @@ namespace WpfVisualizer
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.textBox.Select(this.errorLine.Offset, this.errorLine.Length);
+            if (this.errorLine != null)
+                this.textBox.Select(this.errorLine.Offset, this.errorLine.Length);
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -230,6 +248,43 @@ namespace WpfVisualizer
         private void textBox_TextChanged(object sender, EventArgs e)
         {
             _dirty = true;
+        }
+
+        private void toJson_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.textBox.Text.Trim().StartsWith("<"))
+            {
+                try
+                {
+                    this.textBox.Text = JsonConvert.SerializeObject(_card, Formatting.Indented);
+                }
+                catch (Exception err)
+                {
+                    Debug.Print(err.ToString());
+                    HandleParseError(err);
+                }
+            }
+        }
+
+        private void toXml_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.textBox.Text.Trim().StartsWith("{"))
+            {
+                try
+                {
+
+                    var types = Assembly.GetAssembly(typeof(AdaptiveCard)).ExportedTypes.Where(t => t.IsAssignableFrom(typeof(TypedElement))).ToArray();
+                    XmlSerializer ser = new XmlSerializer(typeof(AdaptiveCard), extraTypes: types);
+                    StringWriter writer = new StringWriter();
+                    ser.Serialize(writer, _card);
+                    this.textBox.Text = writer.ToString();
+                }
+                catch (Exception err)
+                {
+                    Debug.Print(err.ToString());
+                    HandleParseError(err);
+                }
+            }
         }
     }
 }

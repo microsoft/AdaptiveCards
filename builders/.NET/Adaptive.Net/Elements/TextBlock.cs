@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Adaptive
@@ -21,49 +22,64 @@ namespace Adaptive
         /// The size of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextSize? Size { get; set; }
+        [XmlAttribute]
+        public TextSize Size { get; set; }
 
         /// <summary>
         /// The weight of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextWeight? Weight { get; set; }
+        [XmlAttribute]
+        public TextWeight Weight { get; set; }
 
         /// <summary>
         /// The color of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextColor? Color { get; set; }
+        [XmlAttribute]
+        public TextColor Color { get; set; }
 
         /// <summary>
         /// Should it be subtle?
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IsSubtle { get; set; }
-
+        [XmlAttribute]
+        public bool IsSubtle { get; set; }
 
         /// <summary>
         /// The text to display
         /// </summary>
         [JsonRequired]
+        [XmlAttribute]
         public string Text { get; set; }
 
         /// <summary>
         /// Horizontal alignment for element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public HorizontalAlignment? HorizontalAlignment { get; set; }
+        [XmlAttribute]
+        public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Is it allowed for the text to wrap
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Wrap { get; set; }
+        [XmlAttribute]
+        public bool Wrap { get; set; }
 
         /// <summary>
         /// When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? MaxLines { get; set; }
+        [XmlAttribute]
+        public int MaxLines { get; set; }
+
+        public bool ShouldSerializeSize() { return this.Size != TextSize.Default; }
+        public bool ShouldSerializeColor() { return this.Color != TextColor.Default; }
+        public bool ShouldSerializeHorizontalAlignment() { return this.HorizontalAlignment != HorizontalAlignment.Default; }
+        public bool ShouldSerializeWeight() { return this.Weight != TextWeight.Default; }
+        public bool ShouldSerializeWrap() { return this.Wrap != false; }
+        public bool ShouldSerializeIsSubtle() { return this.IsSubtle; }
+        public bool ShouldSerializeMaxLines() { return this.MaxLines > 0; }
     }
 }

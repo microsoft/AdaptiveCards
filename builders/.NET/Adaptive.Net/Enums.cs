@@ -10,6 +10,20 @@ using Newtonsoft.Json.Serialization;
 namespace Adaptive
 {
 
+    public class MyStringEnumConverter : StringEnumConverter
+    {
+        public MyStringEnumConverter() { }
+
+        public MyStringEnumConverter(bool camelCaseText) : base(camelCaseText) { }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            if (value?.ToString() == "Default")
+                value = null;
+            base.WriteJson(writer, value, serializer);
+        }
+    }
+
     /// <summary>
     /// Controls the horizontal size (width) of Column.
     /// </summary>
@@ -29,9 +43,11 @@ namespace Adaptive
     /// <summary>
     /// Controls the horizontal size (width) of element.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(MyStringEnumConverter), true)]
     public enum ImageSize
     {
+        Default,
+
         /// <summary>
         /// The width of the element is optimally chosen depending on the space available in the element's container
         /// </summary>
@@ -61,9 +77,11 @@ namespace Adaptive
     /// <summary>
     /// Controls the relative size of TextBlock elements
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(MyStringEnumConverter), true)]
     public enum TextSize
     {
+        Default,
+
         /// <summary>
         /// Smallest text size
         /// </summary>
@@ -93,9 +111,11 @@ namespace Adaptive
     /// <summary>
     /// Controls the weight of TextBock Elements
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(MyStringEnumConverter), true)]
     public enum TextWeight
     {
+        Default,
+
         /// <summary>
         /// Lighter text (thinner stroke)
         /// </summary>
@@ -160,6 +180,8 @@ namespace Adaptive
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum HorizontalAlignment
     {
+        Default,
+
         /// <summary>
         /// The element is left aligned
         /// </summary>
@@ -182,6 +204,8 @@ namespace Adaptive
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum ImageStyle
     {
+        Default,
+
         /// <summary>
         /// The image is displayed within a rectangle.
         /// </summary>
@@ -196,6 +220,8 @@ namespace Adaptive
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum TextInputStyle
     {
+        Default,
+
         /// <summary>
         /// plain text
         /// </summary>
@@ -220,6 +246,8 @@ namespace Adaptive
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum ChoiceInputStyle
     {
+        Default,
+
         /// <summary>
         /// choices are preffered to be compactly displayed. Example: ComboBox 
         /// </summary>

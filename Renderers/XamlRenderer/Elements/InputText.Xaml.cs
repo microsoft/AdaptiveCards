@@ -28,8 +28,8 @@ namespace Adaptive
                 textBox.TextWrapping = TextWrapping.Wrap;
                 textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
             }
-            if (this.MaxLength.HasValue)
-                textBox.MaxLength = this.MaxLength.Value;
+            if (this.MaxLength > 0)
+                textBox.MaxLength = this.MaxLength;
 
             textBox.Watermark = this.Placeholder;
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.{this.Style}");

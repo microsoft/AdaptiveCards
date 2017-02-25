@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Adaptive
@@ -18,6 +19,7 @@ namespace Adaptive
         /// Columns that are part of this group
         /// </summary>
         [JsonRequired]
+        [XmlElement(typeof(Column))]
         public List<Column> Columns { get; set; } = new List<Column>();
     }
 }
