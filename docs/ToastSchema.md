@@ -103,3 +103,14 @@ Specify audio to be played when the Toast notification is received.
 | **src** | uri | false | The media file to play in place of the default sound. Only ms-appx and ms-appdata are supported. |
 | **loop** | boolean | false | Set to true if the sound should repeat as long as the Toast is shown; false to play only once (default). |
 | **silent** | boolean | false | True to mute the sound; false to allow the toast notification sound to play (default). |
+
+
+## ToastScenario
+Specifies what scenario the toast represents.
+
+| Value | Meaning |
+|---|---|
+| **Default** | The normal toast behavior. |
+| **Reminder** | A reminder notification. This will be displayed pre-expanded and stay on the user's screen till dismissed. |
+| **Alarm** | An alarm notification. This will be displayed pre-expanded and stay on the user's screen till dismissed. Audio will loop by default and will use alarm audio. |
+| **IncomingCall** | An incoming call notification. This will be displayed pre-expanded in a special call format and stay on the user's screen till dismissed. Audio will loop by default and will use ringtone audio. |
