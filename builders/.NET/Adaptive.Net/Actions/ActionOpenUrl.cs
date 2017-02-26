@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -23,6 +24,7 @@ namespace Adaptive
         /// Url to open using default operating system browser
         /// </summary>
         [JsonRequired]
+        [XmlAttribute]
         public string Url { get; set; }
     }
 }

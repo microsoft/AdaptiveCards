@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Adaptive
@@ -19,26 +20,29 @@ namespace Adaptive
         /// <summary>
         /// Title text for toggle
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonRequired]
+        [XmlAttribute]
         public string Title { get; set; }
 
         /// <summary>
         /// Value to use for on (Default: true)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
         public string ValueOn { get; set; } = "true";
 
         /// <summary>
         /// Value to use for off (Default: false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
         public string ValueOff { get; set; } = "false";
 
         /// <summary>
         /// The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
         public string Value { get; set; }
     }
 }

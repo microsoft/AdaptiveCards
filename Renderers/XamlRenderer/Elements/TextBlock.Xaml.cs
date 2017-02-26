@@ -37,7 +37,7 @@ namespace Adaptive
             uiTextBlock.Style = context.GetStyle("Adaptive.TextBlock");
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
-            if (this.HorizontalAlignment.HasValue)
+            if (this.HorizontalAlignment != HorizontalAlignment.Left)
             {
                 System.Windows.HorizontalAlignment alignment;
                 if (Enum.TryParse<System.Windows.HorizontalAlignment>(this.HorizontalAlignment.ToString(), out alignment))
@@ -104,13 +104,13 @@ namespace Adaptive
                     break;
             }
 
-            if (this.IsSubtle.HasValue && this.IsSubtle == true)
+            if (this.IsSubtle == true)
                 uiTextBlock.Opacity = (double)context.Resources["Adaptive.IsSubtleOpacity"];
 
-            if (this.Wrap.HasValue && this.Wrap == true)
+            if (this.Wrap == true)
             {
                 uiTextBlock.TextWrapping = TextWrapping.Wrap;
-                if (this.MaxLines.HasValue)
+                if (this.MaxLines > 0)
                 {
                     var uiGrid = new Grid();
                     // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight

@@ -10,6 +10,20 @@ using Newtonsoft.Json.Serialization;
 namespace Adaptive
 {
 
+    public class MyStringEnumConverter : StringEnumConverter
+    {
+        public MyStringEnumConverter() { }
+
+        public MyStringEnumConverter(bool camelCaseText) : base(camelCaseText) { }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            if (value?.ToString() == "Default")
+                value = null;
+            base.WriteJson(writer, value, serializer);
+        }
+    }
+
     /// <summary>
     /// Controls the horizontal size (width) of Column.
     /// </summary>
@@ -29,7 +43,7 @@ namespace Adaptive
     /// <summary>
     /// Controls the horizontal size (width) of element.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(MyStringEnumConverter), true)]
     public enum ImageSize
     {
         /// <summary>
@@ -61,18 +75,18 @@ namespace Adaptive
     /// <summary>
     /// Controls the relative size of TextBlock elements
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(MyStringEnumConverter), true)]
     public enum TextSize
     {
-        /// <summary>
-        /// Smallest text size
-        /// </summary>
-        Small,
-
         /// <summary>
         /// Default text size
         /// </summary>
         Normal,
+
+        /// <summary>
+        /// Smallest text size
+        /// </summary>
+        Small,
 
         /// <summary>
         /// Slightly larger than normal
@@ -93,18 +107,18 @@ namespace Adaptive
     /// <summary>
     /// Controls the weight of TextBock Elements
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(MyStringEnumConverter), true)]
     public enum TextWeight
     {
-        /// <summary>
-        /// Lighter text (thinner stroke)
-        /// </summary>
-        Lighter,
-
         /// <summary>
         /// The default text weight
         /// </summary>
         Normal,
+
+        /// <summary>
+        /// Lighter text (thinner stroke)
+        /// </summary>
+        Lighter,
 
         /// <summary>
         /// Bolder text (wider stroke)
@@ -221,14 +235,14 @@ namespace Adaptive
     public enum ChoiceInputStyle
     {
         /// <summary>
-        /// choices are preffered to be compactly displayed. Example: ComboBox 
-        /// </summary>
-        Compact,
-
-        /// <summary>
         /// choices are preferred to be displayed for easy input. Example: Checkbox or Radio buttons
         /// </summary>
-        Expanded
+        Expanded,
+
+        /// <summary>
+        /// choices are preffered to be compactly displayed. Example: ComboBox 
+        /// </summary>
+        Compact
     }
 
 }

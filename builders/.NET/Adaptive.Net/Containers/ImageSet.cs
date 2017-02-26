@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Adaptive
@@ -21,12 +22,16 @@ namespace Adaptive
         /// Collection of images to display together 
         /// </summary>
         [JsonRequired]
+        [XmlElement(typeof(Image))]
         public List<Image> Images { get; set; } = new List<Image>();
 
         /// <summary>
         /// Specifies the horizontal size of each image in the set
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ImageSize? ImageSize { get; set; }
+        [XmlAttribute]
+        public ImageSize ImageSize { get; set; }
+
+        public bool ShouldSerializeImageSize() { return this.ImageSize != ImageSize.Auto; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -22,6 +23,27 @@ namespace Adaptive
         /// <summary>
         /// initial data that input fields will be combined with. This is essentially 'hidden' properties, Example: {"id":"123123123"}
         /// </summary>
+        [XmlIgnore]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public object Data { get; set; }
+
+        [XmlElement("Data")]
+        [JsonIgnore]
+        public string DataJson
+        {
+            get
+            {
+                if (this.Data != null)
+                    return JsonConvert.SerializeObject(this.Data, Formatting.Indented);
+                return null;
+            }
+            set
+            {
+                if (value == null)
+                    this.Data = null;
+                else
+                    this.Data = JsonConvert.DeserializeObject(value);
+            }
+        }
     }
 }
