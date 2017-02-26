@@ -1,4 +1,5 @@
 ﻿import * as Adaptive from "../Adaptive";
+import { JsonParser } from "../JsonParser";
 import * as Constants from "./Constants";
 
 import { BingContainer } from "./containers/BingContainer";
@@ -22,8 +23,8 @@ let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
 function renderCard() {
-
     let jsonText = editor.getValue();
+
     try {
         let json = JSON.parse(jsonText);
         let cardTypeName = json["type"];
@@ -31,12 +32,37 @@ function renderCard() {
         let node = document.getElementById('content');
         node.innerHTML = '';
 
+        Adaptive.AdaptiveCard.onShowPopupCard = (action, element) => {
+            var popupContainer = document.getElementById("popupCardContainer");
+            popupContainer.innerHTML = "";
+
+            popupContainer.appendChild(element);
+        }
+
         switch (cardTypeName) {
             case "AdaptiveCard":
-                let adaptiveCard = new Adaptive.AdaptiveCard();
-                adaptiveCard.parse(json);
-
                 let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+                hostContainer.applyOptions();
+
+                var jsonParser = new JsonParser();
+                var adaptiveCard = jsonParser.parse(json);
+
+                adaptiveCard.onExecuteAction.subscribe(
+                    (a, args) => {
+                        alert("Action executed: " + a.name);
+                    }
+                )
+
+                var popupContainer = document.getElementById("popupCardContainer");
+
+                if (Adaptive.AdaptiveCard.options.actionShowCardInPopup) {
+                    popupContainer.innerText = "ActionShowCard popups will appear in this box, according to container settings";
+                    popupContainer.hidden = false;
+                }
+                else {
+                    popupContainer.hidden = true;
+                }
+
                 let renderedHostContainer = hostContainer.render(adaptiveCard);
 
                 node.appendChild(renderedHostContainer);
@@ -61,7 +87,7 @@ function renderCard() {
         }
     }
     catch (e) {
-        document.getElementById('content').innerHTML = "Error: " + e.toString();
+        document.getElementById('content').innerHTML = e.toString();
         console.log(e.toString() + '\n' + jsonText);
     }
 }

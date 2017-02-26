@@ -14,6 +14,12 @@ export class ToastContainer extends HostContainer {
         this._width = width;
     }
 
+    applyOptions() {
+        super.applyOptions();
+        
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+    }
+
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.border = "#474747 1px solid";
@@ -54,9 +60,9 @@ export class ToastContainer extends HostContainer {
         //     appendChild(element, headerElement);
         // }
 
-        card.body.textColor = ToastContainer.textColor;
+        card.root.textColor = ToastContainer.textColor;
 
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
+        Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
 
         let renderedCard = card.render();
 

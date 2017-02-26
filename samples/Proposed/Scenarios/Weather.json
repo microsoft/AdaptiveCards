@@ -29,19 +29,20 @@
 						{
 							"type": "TextBlock",
 							"text": "63 / 42",
-							"size": "small"
+							"size": "medium",
+							"isParagraphStart": false
 						},
 						{
 							"type": "TextBlock",
 							"isSubtle": true,
 							"text": "20% chance of rain",
-							"size": "small"
+							"isParagraphStart": false
 						},
 						{
 							"type": "TextBlock",
 							"isSubtle": true,
 							"text": "Winds 5 mph NE",
-							"size": "small"
+							"isParagraphStart": false
 						}
 					]
 				}
@@ -57,30 +58,30 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"text": "Fri",
-							"size": "small"
+							"text": "Fri"
 						},
 						{
 							"type": "Image",
+							"size": "auto",
 							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"text": "62",
-							"size": "small"
+							"text": "62"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"text": "52",
-							"size": "small"
+							"isParagraphStart": false,
+							"text": "523"
 						}
 					],
-					"selectAction": {
-						"type": "Action.OpenUrl",
-						"url": "http://www.accuweather.com/en/us/seattle-wa/98104/weather-forecast/351409"
+					"selectAction":
+					{
+					    "type": "Action.OpenUrl",
+					    "url": "http://www.microsoft.com"
 					}
 				},
 				{
@@ -90,30 +91,30 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"text": "Sat",
-							"size": "small"
+							"text": "Sat"
 						},
 						{
 							"type": "Image",
+							"size": "auto",
 							"url": "http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"text": "60",
-							"size": "small"
+							"text": "60"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"text": "48",
-							"size": "small"
+							"isParagraphStart": false,
+							"text": "48"
 						}
 					],
-					"selectAction": {
-						"type": "Action.OpenUrl",
-						"url": "http://www.accuweather.com/en/us/seattle-wa/98104/weather-forecast/351409"
+					"selectAction":
+					{
+					    "type": "Action.OpenUrl",
+					    "url": "http://www.microsoft.com"
 					}
 				},
 				{
@@ -123,30 +124,30 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"text": "Sun",
-							"size": "small"
+							"text": "Sun"
 						},
 						{
 							"type": "Image",
+							"size": "auto",
 							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"text": "59",
-							"size": "small"
+							"text": "59"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"text": "49",
-							"size": "small"
+							"isParagraphStart": false,
+							"text": "49"
 						}
 					],
-					"selectAction": {
-						"type": "Action.OpenUrl",
-						"url": "http://www.accuweather.com/en/us/seattle-wa/98104/weather-forecast/351409"
+					"selectAction":
+					{
+					    "type": "Action.OpenUrl",
+					    "url": "http://www.microsoft.com"
 					}
 				},
 				{
@@ -156,30 +157,30 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"text": "Mon",
-							"size": "small"
+							"text": "Mon"
 						},
 						{
 							"type": "Image",
+							"size": "auto",
 							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"text": "64",
-							"size": "small"
+							"text": "64"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"text": "51",
-							"size": "small"
+							"isParagraphStart": false,
+							"text": "51"
 						}
 					],
-					"selectAction": {
-						"type": "Action.OpenUrl",
-						"url": "http://www.accuweather.com/en/us/seattle-wa/98104/weather-forecast/351409"
+					"selectAction":
+					{
+					    "type": "Action.OpenUrl",
+					    "url": "http://www.microsoft.com"
 					}
 				}
 			]

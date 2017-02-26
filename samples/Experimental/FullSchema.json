@@ -53,10 +53,6 @@
 		},
 		{
 			"type": "ImageSet"
-		},
-		{
-			// Used for Inline Actions
-			"type": "ActionGroup"
 		}
 	]
 }

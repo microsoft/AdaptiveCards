@@ -27,11 +27,7 @@
                     "content-type": "application/json"
                 }
             ],
-            "body": "{ 'status':'approved', 'reportId':{{reportId}} }",
-            "bodyObj": {
-                "status": "approved",
-                "reportId": "{{reportId}}"
-            }
+            "body": "{ 'status':'approved', 'reportId':{{reportId}} }"
         },
         {
             "type": "ShowCardAction",

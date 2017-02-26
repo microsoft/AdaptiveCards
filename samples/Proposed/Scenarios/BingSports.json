@@ -15,6 +15,10 @@
         },
         {
             "type": "Container",
+            "selectAction": {
+                "type": "Action.OpenUrl",
+                "title": "Container action"
+            },
             "items": [
                 {
                     "type": "ColumnSet",
@@ -27,7 +31,11 @@
                                     "type": "Image",
                                     "url": "https://www.bing.com/th?id=AR_3934aff63dd6ff941034090a4b9d12e1&w=50&h=50&dpr=2&pid=AppEx",
                                     "size": "small",
-                                    "horizontalAlignment": "center"
+                                    "horizontalAlignment": "center",
+                                    "selectAction": {
+                                        "type": "Action.OpenUrl",
+                                        "title": "Image action"
+                                    }
                                 },
                                 {
                                     "type": "TextBlock",
@@ -36,7 +44,11 @@
                                     "size": "normal",
                                     "weight": "bolder"
                                 }
-                            ]
+                            ],
+                            "selectAction": {
+                                "type": "Action.OpenUrl",
+                                "title": "Column action"
+                            }
                         },
                         {
                             "type": "Column",

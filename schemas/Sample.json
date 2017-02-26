@@ -4,32 +4,32 @@
   "@type": "AdaptiveCard",
   "body": [
     {
-      "@type": "Image",
+      "type": "Image",
       "url": "http://gianfreda.net/wp-content/uploads/2016/02/cartoon-fire-truck-pictures-clipartsco-sparky-the-fire-dog-coloring-pages-sparky-the-fire-dog-coloring-pages.jpg",
       "size": "large"
     },
     {
-      "@type": "TextBlock",
+      "type": "TextBlock",
       "size":"large",
       "text":"asasd"
     },
     {
-      "@type": "FactSet",
+      "type": "FactSet",
       "facts": [
         {
-          "name": "test",
+          "title": "test",
           "value": "value"
         }
       ]
     },
     {
-      "@type": "TextBlock",
+      "type": "TextBlock",
       "text": "tests"
     }
   ],
   "actions": [
     {
-      "@type": "CancelAction",
+      "type": "Action.Submit",
       "title": "Submit"
     }
   ]

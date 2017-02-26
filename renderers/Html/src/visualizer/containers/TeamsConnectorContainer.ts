@@ -17,8 +17,6 @@ export class TeamsConnectorContainer extends ConnectorContainer {
             Utils.appendChild(element, headerElement);
         }
 
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Link;
-
         let renderedCard = card.render();
 
         Utils.appendChild(element, renderedCard);

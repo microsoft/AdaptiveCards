@@ -3,10 +3,16 @@ import * as Adaptive from "../../Adaptive";
 import * as Utils from "../../Utils";
 
 export class CortanaCarContainer extends HostContainer {
+    applyOptions() {
+        super.applyOptions();
+        
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = true;
+    }
+
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Link;
+        Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
 
         let renderedCard = card.render();
 

@@ -17,6 +17,12 @@ export class LiveTileContainer extends HostContainer {
         this.supportsActionBar = false;
     }
 
+    applyOptions() {
+        super.applyOptions();
+        
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+    }
+
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.width = this._width + "px";
@@ -24,7 +30,7 @@ export class LiveTileContainer extends HostContainer {
         element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        card.body.textColor = LiveTileContainer.textColor;
+        card.root.textColor = LiveTileContainer.textColor;
 
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
