@@ -129,13 +129,29 @@
     margin: 20px 0px 0px 0px;
 }
 
+.container.selectable {
+    padding: 5px;
+}
+
+.container.selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.container.selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
 .container.startGroup {
-    border-top: 1px solid #EEEEEE;
-    padding: 20px 0px 0px 0px;
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    padding-top: 20px;
 }
 
 .image {
     margin: 0px 0px 0px 0px;
+}
+
+.image.selectable {
+    cursor: pointer;
 }
 
 .image.autoSize {
@@ -206,6 +222,18 @@ td.factValue {
 }*/
 
 .column {
+}
+
+.column.selectable {
+    padding: 5px;
+}
+
+.column.selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.column.selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
 }
 
 .columnSpacer {

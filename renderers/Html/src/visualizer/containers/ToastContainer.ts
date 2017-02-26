@@ -15,6 +15,8 @@ export class ToastContainer extends HostContainer {
     }
 
     applyOptions() {
+        super.applyOptions();
+        
         Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
     }
 

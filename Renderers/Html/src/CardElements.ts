@@ -72,7 +72,7 @@ export class TextBlock extends CardElement {
     text: string;
     isSubtle: boolean = false;
     wrap: boolean = true;
-    startParagraph: boolean = true;
+    isParagraphStart: boolean = true;
 
     render(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
@@ -80,7 +80,7 @@ export class TextBlock extends CardElement {
 
             let cssStyle = "text ";
 
-            if (this.startParagraph) {
+            if (this.isParagraphStart) {
                 cssStyle += "startParagraph ";
             }
             
@@ -228,7 +228,7 @@ export class FactSet extends CardElement {
                 let textBlock = new TextBlock(this.container);
                 textBlock.text = this._facts[i].name;
                 textBlock.textWeight = Enums.TextWeight.Bolder;
-                textBlock.startParagraph = false;
+                textBlock.isParagraphStart = false;
 
                 let renderedText = textBlock.internalRender();
 
@@ -242,7 +242,7 @@ export class FactSet extends CardElement {
                 textBlock = new TextBlock(this.container);
                 textBlock.text = this._facts[i].value;
                 textBlock.textWeight = Enums.TextWeight.Lighter;
-                textBlock.startParagraph = false;
+                textBlock.isParagraphStart = false;
 
                 renderedText = textBlock.internalRender();
 
@@ -305,8 +305,18 @@ export class Image extends CardElement {
 
         if (!Utils.isNullOrEmpty(this.url)) {
             imageElement = document.createElement("img");
+            imageElement.onclick = (e) => {
+                if (this.selectAction != null) {
+                    this.selectAction.execute();
+                    e.cancelBubble = true;
+                }
+            }
 
             let cssStyle = "image";
+
+            if (this.selectAction != null) {
+                cssStyle += " selectable";
+            }
 
             switch (this.size) {
                 case Enums.Size.Auto:
@@ -821,14 +831,8 @@ export class ActionShowCard extends Action {
     card: Container;
     name: string;
 
-    /*
-    private actionClicked(actionButton: ActionButton) {
-        alert('Now executing "' + actionButton.text + '"');
-    }
-    */
-
     execute() {
-        // TODO
+        AdaptiveCard.showPopupCard(this, this.renderUi());
     }
 
     get hasUi(): boolean {
@@ -880,7 +884,7 @@ export class ActionCollection {
         }
         else {
             if (AdaptiveCard.options.actionShowCardInPopup) {
-                AdaptiveCard.showPopupCard(<ActionShowCard>actionButton.action, actionButton.action.renderUi());
+                actionButton.action.execute();
             }
             else if (actionButton.action === this._expandedAction) {
                 for (var i = 0; i < this._actionButtons.length; i++) {
@@ -972,7 +976,6 @@ export class ActionCollection {
 
 export class Container extends CardElement {
     static TypeName: string = "Container";
-    static defaultActionButtonStyle: Enums.ActionButtonStyle = Enums.ActionButtonStyle.Push;
 
     private _items: Array<CardElement> = [];
     private _element: HTMLDivElement;
@@ -980,12 +983,18 @@ export class Container extends CardElement {
     private _itemsCollectionPropertyName: string;
 
     protected get cssClassName(): string {
-        return "container";
+        var className = "container";
+
+        if (this.selectAction != null) {
+            className += " selectable";
+        }
+
+        return className;
     }
 
     backgroundImageUrl: string;
     backgroundColor: string;
-    actionButtonStyle: Enums.ActionButtonStyle = Container.defaultActionButtonStyle;
+    actionButtonStyle: Enums.ActionButtonStyle = AdaptiveCard.options.defaultActionButtonStyle;
     actions: ActionCollection;
     selectAction: ActionExternal;
     isGroupStart: boolean;
@@ -1064,6 +1073,12 @@ export class Container extends CardElement {
         if (this.elementCount > 0) {
             this._element = document.createElement("div");
             this._element.className = this.cssClassName;
+            this._element.onclick = (e) => {
+                if (this.selectAction != null) {
+                    this.selectAction.execute();
+                    e.cancelBubble = true;
+                }
+            }
 
             if (this.isGroupStart) {
                 this._element.className += " startGroup";
@@ -1142,7 +1157,13 @@ export class Column extends Container {
     weight: number = 100;
 
     protected get cssClassName(): string {
-        return "column";
+        var className = "column";
+
+        if (this.selectAction != null) {
+            className += " selectable";
+        }
+
+        return className;
     }
 
     adjustLayout(element: HTMLElement) {
@@ -1223,6 +1244,7 @@ export class ColumnSet extends CardElement {
 
 export interface IAdaptiveCardOptions {
     actionShowCardInPopup: boolean;
+    defaultActionButtonStyle: Enums.ActionButtonStyle;
 }
 
 export class AdaptiveCard {
@@ -1237,7 +1259,8 @@ export class AdaptiveCard {
     }
 
     static options: IAdaptiveCardOptions = {
-        actionShowCardInPopup: false
+        actionShowCardInPopup: false,
+        defaultActionButtonStyle: Enums.ActionButtonStyle.Push
     };
 
     private _onExecuteAction: Eventing.EventDispatcher<ActionExternal, any> = new Eventing.EventDispatcher<ActionExternal, any>();

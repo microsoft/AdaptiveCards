@@ -18,6 +18,8 @@ export class LiveTileContainer extends HostContainer {
     }
 
     applyOptions() {
+        super.applyOptions();
+        
         Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
     }
 

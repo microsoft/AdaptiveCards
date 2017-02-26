@@ -4,7 +4,10 @@ import * as Utils from "../../Utils";
 
 export class SkypeContainer extends HostContainer {
     applyOptions() {
+        super.applyOptions();
+        
         Adaptive.AdaptiveCard.options.actionShowCardInPopup = true;
+        Adaptive.AdaptiveCard.options.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {
@@ -22,9 +25,6 @@ export class SkypeContainer extends HostContainer {
         var botElementIn2 = document.createElement("div");
         botElementIn2.className = "hexagon-in2";
         botElementIn1.appendChild(botElementIn2);
-
-
-        Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
 
         //card.onAction = (action) => { alert(action.title);}
         let renderedCard = card.render();

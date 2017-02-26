@@ -4,6 +4,8 @@ import * as Utils from "../../Utils";
 
 export class SpeechContainer extends HostContainer {
     applyOptions() {
+        super.applyOptions();
+        
         Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
     }
 

@@ -17,6 +17,8 @@ export class BingContainer extends HostContainer {
     }
 
     applyOptions() {
+        super.applyOptions();
+        
         Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
     }
 

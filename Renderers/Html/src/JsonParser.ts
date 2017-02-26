@@ -109,10 +109,10 @@ export class JsonParser {
         textBlock.isSubtle = json["isSubtle"];
         textBlock.wrap = json["wrap"];
 
-        var startParagraphJson = json["startParagraph"];
+        var isParagraphStartJson = json["isParagraphStart"];
         
-        if (startParagraphJson != undefined) {
-            textBlock.startParagraph = startParagraphJson;
+        if (isParagraphStartJson != undefined) {
+            textBlock.isParagraphStart = isParagraphStartJson;
         }
     }
 
@@ -126,7 +126,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            image.selectAction = <Adaptive.ActionExternal>this.createAction(json, image.container);
+            image.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson, image.container);
         }
     }
 
@@ -216,7 +216,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            container.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson["type"], container);
+            container.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson, container);
         }
     }
 

@@ -14,7 +14,9 @@ export abstract class HostContainer {
         this.styleSheet = styleSheet;
     }
 
-    abstract applyOptions();
+    applyOptions() {
+        Adaptive.AdaptiveCard.options.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
+    }
 
     render(card: Adaptive.AdaptiveCard, showXml: boolean = false): HTMLElement {
         // speech visualizer
