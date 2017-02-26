@@ -36,10 +36,11 @@ namespace Adaptive
         /// Actions for this container
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [XmlElement(typeof(ActionSubmit))]
-        [XmlElement(typeof(ActionShowCard))]
-        [XmlElement(typeof(ActionOpenUrl))]
-        [XmlElement(typeof(ActionHttp))]
+        [XmlArray("Actions")]
+        [XmlArrayItem(typeof(ActionOpenUrl))]
+        [XmlArrayItem(typeof(ActionShowCard))]
+        [XmlArrayItem(typeof(ActionSubmit))]
+        [XmlArrayItem(typeof(ActionHttp))]
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
 
         /// <summary>

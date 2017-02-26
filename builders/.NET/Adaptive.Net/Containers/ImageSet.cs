@@ -32,6 +32,6 @@ namespace Adaptive
         [XmlAttribute]
         public ImageSize ImageSize { get; set; }
 
-        public bool ShouldSerializeImageSize() { return this.ImageSize != ImageSize.Default; }
+        public bool ShouldSerializeImageSize() { return this.ImageSize != ImageSize.Auto; }
     }
 }

@@ -66,7 +66,7 @@ namespace Adaptive
         /// NOTE: You can bind to properties from input fields by using {{InputID}} in the string
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [XmlAttribute]
+        [XmlElement]
         public string Body { get; set; }
     }
 }

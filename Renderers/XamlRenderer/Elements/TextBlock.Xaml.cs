@@ -37,7 +37,7 @@ namespace Adaptive
             uiTextBlock.Style = context.GetStyle("Adaptive.TextBlock");
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
-            if (this.HorizontalAlignment != HorizontalAlignment.Default)
+            if (this.HorizontalAlignment != HorizontalAlignment.Left)
             {
                 System.Windows.HorizontalAlignment alignment;
                 if (Enum.TryParse<System.Windows.HorizontalAlignment>(this.HorizontalAlignment.ToString(), out alignment))

@@ -46,8 +46,6 @@ namespace Adaptive
     [JsonConverter(typeof(MyStringEnumConverter), true)]
     public enum ImageSize
     {
-        Default,
-
         /// <summary>
         /// The width of the element is optimally chosen depending on the space available in the element's container
         /// </summary>
@@ -80,17 +78,15 @@ namespace Adaptive
     [JsonConverter(typeof(MyStringEnumConverter), true)]
     public enum TextSize
     {
-        Default,
+        /// <summary>
+        /// Default text size
+        /// </summary>
+        Normal,
 
         /// <summary>
         /// Smallest text size
         /// </summary>
         Small,
-
-        /// <summary>
-        /// Default text size
-        /// </summary>
-        Normal,
 
         /// <summary>
         /// Slightly larger than normal
@@ -114,17 +110,15 @@ namespace Adaptive
     [JsonConverter(typeof(MyStringEnumConverter), true)]
     public enum TextWeight
     {
-        Default,
+        /// <summary>
+        /// The default text weight
+        /// </summary>
+        Normal,
 
         /// <summary>
         /// Lighter text (thinner stroke)
         /// </summary>
         Lighter,
-
-        /// <summary>
-        /// The default text weight
-        /// </summary>
-        Normal,
 
         /// <summary>
         /// Bolder text (wider stroke)
@@ -180,8 +174,6 @@ namespace Adaptive
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum HorizontalAlignment
     {
-        Default,
-
         /// <summary>
         /// The element is left aligned
         /// </summary>
@@ -204,8 +196,6 @@ namespace Adaptive
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum ImageStyle
     {
-        Default,
-
         /// <summary>
         /// The image is displayed within a rectangle.
         /// </summary>
@@ -220,8 +210,6 @@ namespace Adaptive
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum TextInputStyle
     {
-        Default,
-
         /// <summary>
         /// plain text
         /// </summary>
@@ -246,17 +234,15 @@ namespace Adaptive
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum ChoiceInputStyle
     {
-        Default,
+        /// <summary>
+        /// choices are preferred to be displayed for easy input. Example: Checkbox or Radio buttons
+        /// </summary>
+        Expanded,
 
         /// <summary>
         /// choices are preffered to be compactly displayed. Example: ComboBox 
         /// </summary>
-        Compact,
-
-        /// <summary>
-        /// choices are preferred to be displayed for easy input. Example: Checkbox or Radio buttons
-        /// </summary>
-        Expanded
+        Compact
     }
 
 }

@@ -57,8 +57,8 @@ namespace Adaptive
         [XmlAttribute]
         public string AltText { get; set; }
 
-        public bool ShouldSerializeSize() { return this.Size != ImageSize.Default; }
-        public bool ShouldSerializeStyle() { return this.Style != ImageStyle.Default; }
-        public bool ShouldSerializeHorizontalAlignment() { return this.HorizontalAlignment != HorizontalAlignment.Default; }
+        public bool ShouldSerializeSize() { return this.Size != ImageSize.Auto; }
+        public bool ShouldSerializeStyle() { return this.Style != ImageStyle.Normal; }
+        public bool ShouldSerializeHorizontalAlignment() { return this.HorizontalAlignment != HorizontalAlignment.Left; }
     }
 }

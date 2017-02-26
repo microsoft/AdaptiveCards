@@ -74,10 +74,10 @@ namespace Adaptive
         [XmlAttribute]
         public int MaxLines { get; set; }
 
-        public bool ShouldSerializeSize() { return this.Size != TextSize.Default; }
+        public bool ShouldSerializeSize() { return this.Size != TextSize.Normal; }
         public bool ShouldSerializeColor() { return this.Color != TextColor.Default; }
-        public bool ShouldSerializeHorizontalAlignment() { return this.HorizontalAlignment != HorizontalAlignment.Default; }
-        public bool ShouldSerializeWeight() { return this.Weight != TextWeight.Default; }
+        public bool ShouldSerializeHorizontalAlignment() { return this.HorizontalAlignment != HorizontalAlignment.Left; }
+        public bool ShouldSerializeWeight() { return this.Weight != TextWeight.Normal; }
         public bool ShouldSerializeWrap() { return this.Wrap != false; }
         public bool ShouldSerializeIsSubtle() { return this.IsSubtle; }
         public bool ShouldSerializeMaxLines() { return this.MaxLines > 0; }

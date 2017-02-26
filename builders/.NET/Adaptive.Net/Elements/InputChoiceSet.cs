@@ -47,7 +47,7 @@ namespace Adaptive
         [XmlElement(typeof(Choice))]
         public List<Choice> Choices { get; set; } = new List<Choice>();
 
-        public bool ShouldSerializeStyle() { return this.Style != ChoiceInputStyle.Default; }
+        public bool ShouldSerializeStyle() { return this.Style != ChoiceInputStyle.Expanded; }
     }
 
     /// <summary>
