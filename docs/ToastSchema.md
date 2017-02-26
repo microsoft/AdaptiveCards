@@ -4,20 +4,20 @@ TODO
 
 # Windows Toast notifications
 
-## Toast
-Toast is the top level object that describes a notification's content, including visuals, actions, and audio.
+## ToastContent
+ToastContent is the top level object that describes a notification's content, including visuals, actions, and audio.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **action**| [Action](#action) | false | Declares what action to take when the toast is clicked by the user. |
-| **scenario** | [Scenario](#scenario) | false | Declares the scenario your toast is used for, like an alarm or reminder. |
+| **scenario** | [ToastScenario](#toastscenario) | false | Declares the scenario your toast is used for, like an alarm or reminder. |
 | **displayTimestamp** | datetime | false | Override the default timestamp with a custom timestamp representing when your notification content was actually delivered, rather than the time the notification was received by the Windows platform. |
-| **header** | [Header](#header) | false | Add a custom header to your notification to group multiple notifications together within Action Center. |
-| **visual** | [Visual](#visual) | true | Describes the visual portion of the toast notification |
-| **audio** | [Audio](#audio) | false | Describes the audio portion of the toast notification |
+| **header** | [ToastHeader](#toastheader) | false | Add a custom header to your notification to group multiple notifications together within Action Center. |
+| **visual** | [ToastVisual](#toastvisual) | true | Describes the visual portion of the toast notification |
+| **audio** | [ToastAudio](#toastaudio) | false | Describes the audio portion of the toast notification |
 
 
-## Visual
+## ToastVisual
 The visual portion of toasts contains the text, images, inputs, and actions.
 
 | Property | Type | Required | Description |
