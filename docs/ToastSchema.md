@@ -22,10 +22,6 @@ The visual portion of toasts contains the text, images, inputs, and actions.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **title** | [ToastGenericTextBlock](#toastgenerictextblock) | true | The title string to be displayed on the toast notification. Note that only the text, lang, and maxLines properties are supported. |
-
-| Property | Type | Required | Description |
-|---|---|---|---|
 | **bindings** | [ToastBindings](#toastbindings) | true | A set of bindings that represent the various visual layouts of the toast notification. |
 | **baseUri** | uri | false | A default base URI that is combined with relative URIs in image source attributes. |
 | **addImageQuery** | boolean | false | Set to "true" to allow Windows to append a query string to the image URI supplied in the toast notification. Use this attribute if your server hosts images and can handle query strings, either by retrieving an image variant based on the query strings or by ignoring the query string and returning the image as specified without the query string. This query string specifies scale, contrast setting, and language; for instance, a value of "www.website.com/images/hello.png" given in the notification becomes "www.website.com/images/hello.png?ms-scale=100&ms-contrast=standard&ms-lang=en-us" |
@@ -83,6 +79,7 @@ A logo to be displayed instead of the app logo.
 
 ## ToastGenericHeroImage
 A featured "hero" image that is displayed on the toast and within Action Center.
+
 | Property | Type | Required |Description |
 |---|---|---|---|
 | **url** | string | true | The URL to the image. ms-appx, ms-appdata, and http are supported. |
