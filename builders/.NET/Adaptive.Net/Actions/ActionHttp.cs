@@ -39,25 +39,27 @@ namespace Adaptive
         /// Object which represents headers Example: { "content-type":"application/json" }
         /// </summary>
         [XmlIgnore]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public object Headers { get; set; }
 
-        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        //public KeyValuePair<string, string>[] HeadersXml
-        //{
-        //    get
-        //    {
-        //        return ((JObject)this.Headers).Properties().Select(p => new KeyValuePair<string, string>(p.Name, (string)p.Value)).ToArray();
-        //    }
-        //    set
-        //    {
-        //        dynamic obj = new JObject();
-        //        foreach(var pair in value)
-        //        {
-        //            obj[pair.Key] = pair.Value;
-        //        }
-        //        this.Headers = obj;
-        //    }
-        //}
+        [JsonIgnore]
+        [XmlElement("Headers")]
+        public string HeadersJson
+        {
+            get
+            {
+                if (this.Headers != null)
+                    return JsonConvert.SerializeObject(this.Headers, Formatting.Indented);
+                return null;
+            }
+            set
+            {
+                if (value == null)
+                    this.Headers = null;
+                else
+                    this.Headers = JsonConvert.DeserializeObject(value);
+            }
+        }
 
         /// <summary>
         /// Body for payload to http command 
