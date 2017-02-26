@@ -10,11 +10,11 @@ ToastContent is the top level object that describes a notification's content, in
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **action**| [Action](Schema.md#action) | false | Declares what action to take when the toast is clicked by the user. |
+| **visual** | [ToastVisual](#toastvisual) | true | Describes the visual portion of the toast notification |
+| **audio** | [ToastAudio](#toastaudio) | false | Describes the audio portion of the toast notification |
 | **scenario** | [ToastScenario](#toastscenario) | false | Declares the scenario your toast is used for, like an alarm or reminder. |
 | **displayTimestamp** | datetime | false | Override the default timestamp with a custom timestamp representing when your notification content was actually delivered, rather than the time the notification was received by the Windows platform. |
 | **header** | [ToastHeader](#toastheader) | false | Add a custom header to your notification to group multiple notifications together within Action Center. |
-| **visual** | [ToastVisual](#toastvisual) | true | Describes the visual portion of the toast notification |
-| **audio** | [ToastAudio](#toastaudio) | false | Describes the audio portion of the toast notification |
 
 
 ## ToastVisual
