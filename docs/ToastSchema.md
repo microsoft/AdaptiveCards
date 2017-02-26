@@ -9,7 +9,7 @@ ToastContent is the top level object that describes a notification's content, in
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **action**| [Action](#action) | false | Declares what action to take when the toast is clicked by the user. |
+| **action**| [Action](Schema.md#action) | false | Declares what action to take when the toast is clicked by the user. |
 | **scenario** | [ToastScenario](#toastscenario) | false | Declares the scenario your toast is used for, like an alarm or reminder. |
 | **displayTimestamp** | datetime | false | Override the default timestamp with a custom timestamp representing when your notification content was actually delivered, rather than the time the notification was received by the Windows platform. |
 | **header** | [ToastHeader](#toastheader) | false | Add a custom header to your notification to group multiple notifications together within Action Center. |
@@ -114,3 +114,13 @@ Specifies what scenario the toast represents.
 | **Reminder** | A reminder notification. This will be displayed pre-expanded and stay on the user's screen till dismissed. |
 | **Alarm** | An alarm notification. This will be displayed pre-expanded and stay on the user's screen till dismissed. Audio will loop by default and will use alarm audio. |
 | **IncomingCall** | An incoming call notification. This will be displayed pre-expanded in a special call format and stay on the user's screen till dismissed. Audio will loop by default and will use ringtone audio. |
+
+
+## ToastHeader
+A custom header that groups multiple notifications together within Action Center.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **id** | string | true | A developer-created identifier that uniquely identifies this header. If two notifications have the same header id, they will be displayed underneath the same header in Action Center. |
+| **title** | string | true | A title for the header. |
+| **action**| [Action](Schema.md#action) | false | Declares what action to take when the toast is clicked by the user. |
