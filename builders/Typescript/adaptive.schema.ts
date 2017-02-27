@@ -46,7 +46,7 @@ export interface IContainer extends IContainerBase {
 }
 
 export interface IFact {
-    name: string;
+    title: string;
     speak?: string;
     value: string;
 }
@@ -249,7 +249,7 @@ export class Fact implements IFact {
     public constructor(init?: Partial<IFact>) {
         Object.assign(this, init);
     }
-    name: string;
+    title: string;
     speak?: string;
     value: string;
 }
