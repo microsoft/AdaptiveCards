@@ -14,6 +14,10 @@ namespace Adaptive
 {
     public partial class InputChoiceSet
     {
+        /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<InputChoiceSet, RenderContext, FrameworkElement> AlternateRenderer;
 
         /// <summary>
         /// Input.ChoiceSet
@@ -22,6 +26,9 @@ namespace Adaptive
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var uiGrid = new Grid();
             uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             uiGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });

@@ -12,7 +12,10 @@ namespace Adaptive
 {
     public partial class Container
     {
-      
+        /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<Container, RenderContext, FrameworkElement> AlternateRenderer;
 
         /// <summary>
         /// Container
@@ -21,6 +24,9 @@ namespace Adaptive
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Container");
 

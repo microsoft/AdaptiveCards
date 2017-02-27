@@ -14,12 +14,20 @@ namespace Adaptive
     {
 
         /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<ColumnSet, RenderContext, FrameworkElement> AlternateRenderer;
+
+        /// <summary>
         /// ColumnSet
         /// </summary>
         /// <param name="columnSet"></param>
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle("Adaptive.ColumnSet");
 

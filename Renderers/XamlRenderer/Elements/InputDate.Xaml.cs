@@ -15,12 +15,20 @@ namespace Adaptive
     public partial class InputDate
     {
         /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<InputDate, RenderContext, FrameworkElement> AlternateRenderer;
+
+        /// <summary>
         /// Input.Date
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var datePicker = new DatePicker();
             datePicker.ToolTip = this.Placeholder;
             DateTime value;

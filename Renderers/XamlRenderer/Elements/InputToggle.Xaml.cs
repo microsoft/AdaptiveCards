@@ -15,12 +15,20 @@ namespace Adaptive
     public partial class InputToggle
     {
         /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<InputToggle, RenderContext, FrameworkElement> AlternateRenderer;
+
+        /// <summary>
         /// TextInput
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var uiToggle = new CheckBox();
             uiToggle.Content = this.Title;
             uiToggle.IsChecked = this.Value == (this.ValueOn ?? "true");

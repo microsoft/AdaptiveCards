@@ -14,6 +14,10 @@ namespace Adaptive
 {
     public partial class TextBlock
     {
+        /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<TextBlock, RenderContext, FrameworkElement> AlternateRenderer;
 
         /// <summary>
         /// TextBlock
@@ -22,6 +26,9 @@ namespace Adaptive
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             Marked marked = new Marked();
             marked.Options.Renderer = new MarkedXamlRenderer();
             marked.Options.Mangle = false;

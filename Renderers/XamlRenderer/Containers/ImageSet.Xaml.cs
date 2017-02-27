@@ -12,6 +12,10 @@ namespace Adaptive
 {
     public partial class ImageSet
     {
+        /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<ImageSet, RenderContext, FrameworkElement> AlternateRenderer;
 
         /// <summary>
         /// ImageGallery
@@ -20,6 +24,9 @@ namespace Adaptive
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var uiGallery = new ListBox();
             uiGallery.Style = context.GetStyle("Adaptive.ImageGallery");
 
