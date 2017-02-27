@@ -115,7 +115,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
     </xs:sequence>
-    <xs:attribute name="Display" type="xs:string" />
+    <xs:attribute name="Title" type="xs:string" />
     <xs:attribute name="Value" type="xs:string" />
     <xs:attribute name="IsSelected" type="xs:boolean" use="required" />
   </xs:complexType>

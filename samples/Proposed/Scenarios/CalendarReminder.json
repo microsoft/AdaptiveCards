@@ -27,16 +27,16 @@
 			"style":"compact",
 			"choices": [
 				{
-					"display": "5 minutes",
+					"title": "5 minutes",
 					"value": "5",
 					"isSelected":true
 				},
 				{
-					"display": "15 minutes",
+					"title": "15 minutes",
 					"value": "15"
 				},
 				{
-					"display": "30 minutes",
+					"title": "30 minutes",
 					"value": "30"
 				}
 			]
