@@ -22,6 +22,38 @@ let editor: ace.Editor;
 let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
+function actionExecuted(action: Adaptive.Action, args: any) {
+    var message: string = "Action executed\n";
+    message += "    Title: " + action.title + "\n";
+
+    if (action instanceof Adaptive.ActionOpenUrl) {
+        message += "    Type: OpenUrl\n";
+        message += "    Url: " + (<Adaptive.ActionOpenUrl>action).url + "\n";
+    }
+    else if (action instanceof Adaptive.ActionSubmit) {
+        message += "    Type: Submit";
+        message += "    Url: " + (<Adaptive.ActionSubmit>action).data;
+    }
+    else if (action instanceof Adaptive.ActionHttp) {
+        var httpAction = <Adaptive.ActionHttp>action;
+        message += "    Type: Http\n";
+        message += "    Url: " + httpAction.url + "\n";
+        message += "    Methid: " + httpAction.method + "\n";
+        message += "    Headers:\n";
+
+        for (var i = 0; i < httpAction.headers.length; i++) {
+            message += "        " + httpAction.headers[i].name + ": " + httpAction.headers[i].value + "\n";
+        }
+
+        message += "    Body: " + httpAction.body + "\n";
+    }
+    else {
+        message += "    Type: <unknown>";
+    }
+
+    alert(message);
+}
+
 function renderCard() {
     let jsonText = editor.getValue();
 
@@ -47,11 +79,7 @@ function renderCard() {
                 var jsonParser = new JsonParser();
                 var adaptiveCard = jsonParser.parse(json);
 
-                adaptiveCard.onExecuteAction.subscribe(
-                    (a, args) => {
-                        alert("Action executed: " + a.name);
-                    }
-                )
+                adaptiveCard.onExecuteAction.subscribe(actionExecuted);
 
                 var popupContainer = document.getElementById("popupCardContainer");
 

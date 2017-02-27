@@ -70,7 +70,7 @@
                 },
                 {
                     "type": "TextBlock",
-                    "text": "Input.ChoiceSet"
+                    "text": "Input.ChoiceSet  (Compact)"
                 },
                 {
                     "type": "Input.ChoiceSet",
@@ -93,12 +93,13 @@
                 },
                 {
                     "type": "TextBlock",
-                    "text": "Input.ChoiceSet (Compact)"
+                    "text": "Input.ChoiceSet (Expanded)",
+                    "isParagraphStart": true
                 },
                 {
                     "type": "Input.ChoiceSet",
                     "id": "CompactSelectVal",
-                    "style": "compact",
+                    "style": "expanded",
                     "choices": [
                         {
                             "display": "One",
@@ -117,7 +118,8 @@
                 },
                 {
                     "type": "TextBlock",
-                    "text": "Input.ChoiceSet (MultiSelect)"
+                    "text": "Input.ChoiceSet (MultiSelect)",
+                    "isParagraphStart": true
                 },
                 {
                     "type": "Input.ChoiceSet",

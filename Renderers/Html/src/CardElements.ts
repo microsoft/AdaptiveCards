@@ -72,7 +72,13 @@ export class TextBlock extends CardElement {
     text: string;
     isSubtle: boolean = false;
     wrap: boolean = true;
-    isParagraphStart: boolean = true;
+    isParagraphStart: boolean;
+
+    constructor(container: Container) {
+        super(container);
+
+        this.isParagraphStart = AdaptiveCard.options.defaultTextBlockIsParagraphStart;
+    }
 
     render(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
@@ -504,6 +510,7 @@ export class InputToggle extends Input {
 export class Choice {
     display: string;
     value: string;
+    isSelected: boolean;
 }
 
 export class InputChoiceSet extends Input {
@@ -522,7 +529,35 @@ export class InputChoiceSet extends Input {
     }
 
     get value(): string {
-        return "";
+        if (!this.isMultiSelect) {
+            if (this.isCompact) {
+                return this._selectElement.value;
+            }
+            else {
+                for (var i = 0; i < this._toggleInputs.length; i++) {
+                    if (this._toggleInputs[i].checked) {
+                        return this._toggleInputs[i].value;
+                    }
+                }
+
+                return null;
+            }
+        }
+        else {
+            var result: string = "";
+
+            for (var i = 0; i < this._toggleInputs.length; i++) {
+                if (this._toggleInputs[i].checked) {
+                    if (result != "") {
+                        result += ";";
+                    }
+
+                    result += this._toggleInputs[i].value;
+                }
+            }
+
+            return result == "" ? null : result;
+        }
     }
 
     render(): HTMLElement {
@@ -544,6 +579,7 @@ export class InputChoiceSet extends Input {
                     var option = document.createElement("option");
                     option.value = this.choices[i].value;
                     option.text = this.choices[i].display;
+                    option.selected = this.choices[i].isSelected;
 
                     Utils.appendChild(this._selectElement, option);
                 }
@@ -563,10 +599,7 @@ export class InputChoiceSet extends Input {
                     radioInput.type = "radio";
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
-
-                    if (this.defaultValue == this.choices[i].value) {
-                        radioInput.checked = true;
-                    }
+                    radioInput.checked = this.choices[i].isSelected;
 
                     this._toggleInputs.push(radioInput);
 
@@ -599,8 +632,7 @@ export class InputChoiceSet extends Input {
                 checkboxInput.className = "toggleInput";
                 checkboxInput.type = "checkbox";
                 checkboxInput.value = this.choices[i].value;
-
-                // TODO: handle default value
+                checkboxInput.checked = this.choices[i].isSelected;
 
                 this._toggleInputs.push(checkboxInput);
 
@@ -767,12 +799,12 @@ export class ActionButton {
 }
 
 export abstract class Action {
-    name: string;
+    title: string;
 
     abstract execute();
 
     parse(json: any) {
-        this.name = json["title"];
+        this.title = json["title"];
     }
 
     renderUi(): HTMLElement {
@@ -798,6 +830,8 @@ export abstract class ActionExternal extends Action {
 
 export class ActionSubmit extends ActionExternal {
     static TypeName: string = "Action.Submit";
+
+    data: string;
 }
 
 export class ActionOpenUrl extends ActionExternal {
@@ -829,7 +863,7 @@ export class ActionShowCard extends Action {
     static TypeName: string = "Action.ShowCard";
 
     card: Container;
-    name: string;
+    title: string;
 
     execute() {
         AdaptiveCard.showPopupCard(this, this.renderUi());
@@ -948,7 +982,7 @@ export class ActionCollection {
                 buttonStripItem.className = "buttonStripItem";
 
                 let actionButton = new ActionButton(this._items[i], this._container.actionButtonStyle);
-                actionButton.text = this._items[i].name;
+                actionButton.text = this._items[i].title;
 
                 actionButton.onClick.subscribe(
                     (ab, args) => {
@@ -1245,6 +1279,11 @@ export class ColumnSet extends CardElement {
 export interface IAdaptiveCardOptions {
     actionShowCardInPopup: boolean;
     defaultActionButtonStyle: Enums.ActionButtonStyle;
+    defaultTextBlockIsParagraphStart: boolean;
+    forbiddenElementTypes: string[];
+    forbiddenActionTypes: string[];
+    forbiddenActionTypesInContainers: string[];
+    ignoreForbiddenElementsAndActions: boolean;
 }
 
 export class AdaptiveCard {
@@ -1260,7 +1299,12 @@ export class AdaptiveCard {
 
     static options: IAdaptiveCardOptions = {
         actionShowCardInPopup: false,
-        defaultActionButtonStyle: Enums.ActionButtonStyle.Push
+        defaultActionButtonStyle: Enums.ActionButtonStyle.Push,
+        defaultTextBlockIsParagraphStart: false,
+        forbiddenElementTypes: [],
+        forbiddenActionTypes: [],
+        forbiddenActionTypesInContainers: [ ActionShowCard.TypeName ],
+        ignoreForbiddenElementsAndActions: false
     };
 
     private _onExecuteAction: Eventing.EventDispatcher<ActionExternal, any> = new Eventing.EventDispatcher<ActionExternal, any>();

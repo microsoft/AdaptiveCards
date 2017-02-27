@@ -21,6 +21,7 @@ export class LiveTileContainer extends HostContainer {
         super.applyOptions();
         
         Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+        Adaptive.AdaptiveCard.options.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {

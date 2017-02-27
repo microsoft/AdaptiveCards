@@ -402,10 +402,8 @@ Other styles that can be specified:
 }
 
 .toggleLabel {
-    margin-left: 6px ! important;
-    margin-right: 0px ! important;
-    margin-bottom: 0px ! important;
-    padding: 0px ! important;
+    margin: 0px 0px 0px 6px !important;
+    padding: 0px !important;
     display: inline-block;
     vertical-align: middle;
 }

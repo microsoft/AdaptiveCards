@@ -129,17 +129,20 @@
 						},
 						{
 							"type": "Column",
+							"size": "auto",
 							"items": [
 								{
 									"type": "TextBlock",
 									"text": "Departs",
-									"isSubtle": true
+									"isSubtle": true,
+									"horizontalAlignment": "center"
 								},
 								{
 									"type": "TextBlock",
 									"text": "10:10 AM",
 									"color": "attention",
-									"weight": "bolder"
+									"weight": "bolder",
+									"horizontalAlignment": "center"
 								}
 							]
 						},
@@ -192,6 +195,7 @@
 						},
 						{
 							"type": "Column",
+							"size": "auto",
 							"items": [
 								{
 									"type": "TextBlock",
