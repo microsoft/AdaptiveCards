@@ -9,7 +9,7 @@ ToastContent is the top level object that describes a notification's content, in
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **action**| [Action](Schema.md#action) | false | Declares what action to take when the toast is clicked by the user. |
+| **action**| [ToastAction](#toastaction) | false | Declares what action to take when the toast is clicked by the user. |
 | **visual** | [ToastVisual](#toastvisual) | true | Describes the visual portion of the toast notification |
 | **audio** | [ToastAudio](#toastaudio) | false | Describes the audio portion of the toast notification |
 | **scenario** | [ToastScenario](#toastscenario) | false | Declares the scenario your toast is used for, like an alarm or reminder. |
@@ -93,6 +93,90 @@ Attribution text displayed at the bottom of the toast notification.
 |---|---|---|---|
 | **text** | string | true | The text to display. |
 | **lang** | string | false | The target locale of the visual payload when using localized resources, specified as BCP-47 language tags such as "en-US" or "fr-FR". If not provided, the system locale will be used instead. |
+
+
+## ToastAction
+*Extends [Action](Schema.md#action)*
+
+Base class for all toast actions
+
+> NOTE: You cannot add a ToastAction directly, you can only add derived action types
+
+
+## ToastOpenUrlAction
+*Extends [ToastAction](#toastaction)*
+
+When ToastOpenUrlAction is invoked it will protocol activate the given url. Can be a https url, or an app link like settings:storage.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"ToastOpenUrlAction"** |
+| **url** | string | true | The protocol url to launch.  |
+| **targetApplicationPfn** | string | false | You can optionally specify the target PFN of the app you want to protocol launch, so that regardless of whether multiple apps are registered to handle the same protocol uri, your desired app will always be launched. |
+
+
+## ToastForegroundAction
+*Extends [ToastAction](#toastaction)*
+
+Gathers up input fields, merges with optional data field and performs a foreground launch of the app.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"ToastForegroundAction"** |
+| **data** | object | false | Initial data that input fields will be combined with.  This is essentially 'hidden' properties |
+
+
+## ToastBackgroundAction
+*Extends [ToastAction](#toastaction)*
+
+Gathers up input fields, merges with optional data field and performs a background task launch of the app.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"ToastBackgroundAction"** |
+| **data** | object | false | Initial data that input fields will be combined with.  This is essentially 'hidden' properties |
+| **afterActivationBehavior** | [ToastAfterActivationBehavior](#toastafteractivationbehavior) | false | New in RS3. Specifies the behavior that the toast should use when the user invokes this action. |
+
+
+## ToastSnoozeAction
+*Extends [ToastAction](#toastaction)*
+
+This action automatically handles snoozing the toast notification.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"ToastSnoozeAction"** |
+| **snoozeTimeInputId** | string | false | Optionally specify the ID of an existing input in order to allow the user to pick a custom snooze time. The value of the input must represent the snooze interval in minutes. For example, if the user selects an item that has a value of "120", then the notification will be snoozed for 2 hours. When the user clicks this button, If you don't specify this ID, the system will snooze by the default system snooze time. |
+
+
+## ToastDismissAction
+*Extends [ToastAction](#toastaction)*
+
+This action simply dismisses the toast notification without any further action being performed.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"ToastDismissAction"** |
+
+
+## ToastShowCardAction
+*Extends [ToastAction](#toastaction)*
+
+ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **type**| string | true | **"ToastShowCardAction"** |
+| **card** | [AdaptiveCard](#adaptivecard) | true | Inline card defining the card to be shown when this action is invoked. The card will be displayed below the associated action. |
+
+
+## ToastAfterActivationBehavior
+New in RS3. Specifies the behavior that the toast should use when the user takes action on the toast.
+
+| Value | Meaning |
+|---|---|
+| **Default** | Default behavior. The toast will be dismissed when the user takes action on the toast. |
+| **PendingUpdate** | After the user clicks a button on your toast, the notification will remain present, in a "pending update" visual state. You should immediately update your toast from a background task so that the user does not see this "pending update" visual state for too long. |
 
 
 ## ToastAudio
