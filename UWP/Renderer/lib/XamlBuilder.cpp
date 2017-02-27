@@ -421,5 +421,4 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         THROW_IF_FAILED(xamlStackPanel.CopyTo(containerControl));
     }
-    
 }}

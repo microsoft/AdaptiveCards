@@ -21,7 +21,7 @@ HRESULT UTF8ToHString(const string& in, HSTRING* out)
     }
     wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
     wstring wide = converter.from_bytes(in);
-    return WindowsCreateString(wide.c_str(), wide.length(), out);
+    return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
 }
 
 HRESULT HStringToUTF8(const HSTRING& in, string& out)

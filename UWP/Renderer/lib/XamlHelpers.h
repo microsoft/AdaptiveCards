@@ -24,11 +24,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             C iterationCallback)
         {
             Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
-
             ComPtr<IIterable<T*>> vectorIterable;
             THROW_IF_FAILED(localVector.As<IIterable<T*>>(&vectorIterable));
 
-            ComPtr<IIterator<T*>> vectorIterator;
+            Microsoft::WRL::ComPtr<IIterator<T*>> vectorIterator;
             if (FAILED(vectorIterable->First(&vectorIterator)))
             {
                 return;
@@ -63,7 +62,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IVector<UIElement*>> panelChildren;
             THROW_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
 
-            THROW_IF_FAILED(panelChildren->Append(elementToAppend.Get()));
+            THROW_IF_FAILED(panelChildren->Append(xamlElement));
         }
     };
 
