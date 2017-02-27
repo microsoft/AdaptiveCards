@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "AdaptiveCard.h"
 
+#include <json.h>
+#include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
 
@@ -10,9 +12,29 @@ using namespace ABI::Windows::UI::Xaml;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::CreateCardFromJson(HSTRING adaptiveJson, IAdaptiveCard** card) noexcept try
+    {
+        *card = nullptr;
+
+        std::string adaptiveJsonString;
+        RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
+
+        Json::Value adaptiveJsonRoot;
+        Json::Reader jsonRreader;
+        bool parsingSuccessful = jsonRreader.parse(adaptiveJsonString, adaptiveJsonRoot);
+        if (!parsingSuccessful)
+        {
+            return E_FAIL;
+        }
+
+        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::Deserialize(adaptiveJsonRoot);
+        return MakeAndInitialize<AdaptiveCard>(card, sharedAdaptiveCard);
+    } CATCH_RETURN;
+
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
-        m_size = CardElementSize::Auto;
+        m_size = ABI::AdaptiveCards::XamlCardRenderer::CardElementSize::Auto;
 
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
         if (m_items == nullptr)
@@ -23,19 +45,29 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveCard::get_Items(IVector<IAdaptiveCardElement*>** items)
+    HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard)
+    {
+        RETURN_IF_FAILED(RuntimeClassInitialize());
+        m_sharedAdaptiveCard = sharedAdaptiveCard;
+
+        return GenerateProjectionOfContainedElements(m_sharedAdaptiveCard->GetRoot()->GetItems(),
+            m_items.Get());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Items(IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveCard::get_ElementType(ElementType* /*elementType*/)
+    HRESULT AdaptiveCard::get_ElementType(ElementType* /*elementType*/)
     {
         return S_OK;
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveCard::put_ElementType(ElementType /*elementType*/)
+    HRESULT AdaptiveCard::put_ElementType(ElementType /*elementType*/)
     {
         return S_OK;
     }

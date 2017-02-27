@@ -61,6 +61,23 @@ std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey 
     return propertyValue.asString();
 }
 
+bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue)
+{
+    std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+    auto propertyValue = json.get(propertyName, Json::Value());
+    if (propertyValue.empty())
+    {
+        return defaultValue;
+    }
+
+    if (!propertyValue.isBool())
+    {
+        throw AdaptiveCardParseException("Value was invalid. Expected type bool.");
+    }
+
+    return propertyValue.asBool();
+}
+
 void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyType)
 {
     std::string actualType = GetTypeAsString(json);

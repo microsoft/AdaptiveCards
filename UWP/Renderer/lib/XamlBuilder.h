@@ -35,8 +35,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         void InitializeDefaultResourceDictionary();
         template<typename T>
-        bool TryGetResoureFromResourceDictionaries(
-            _In_ std::wstring styleName,
+        HRESULT TryGetResoureFromResourceDictionaries(
+            _In_ std::wstring resourceName,
             _COM_Outptr_result_maybenull_ T** resource);
         template<typename T>
         bool TryGetValueResoureFromResourceDictionaries(

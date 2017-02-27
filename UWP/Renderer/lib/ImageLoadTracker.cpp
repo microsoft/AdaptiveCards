@@ -40,6 +40,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             // If we haven't registered for this image events yet, do so
             m_eventRegistrations[inspectableBitmapImage.Get()] = trackedImageDetails;
             m_trackedImageCount++;
+            m_totalImageCount++;
         }
     }
 
@@ -80,6 +81,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
         return S_OK;
     } CATCH_RETURN;
+
+    int ImageLoadTracker::GetTotalImagesTracked()
+    {
+        return m_totalImageCount;
+    }
 
     _Use_decl_annotations_
     HRESULT ImageLoadTracker::trackedImage_ImageLoaded(IInspectable* sender, IRoutedEventArgs* /*eventArgs*/)

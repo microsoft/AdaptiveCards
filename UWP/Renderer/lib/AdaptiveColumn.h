@@ -20,8 +20,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         AdaptiveColumn();
 
         // IAdaptiveColumn
-        IFACEMETHODIMP get_Size(_In_ HSTRING* size);
-        IFACEMETHODIMP put_Size(_Out_ HSTRING size);
+        IFACEMETHODIMP get_ColumnSize(_In_ HSTRING* size);
+        IFACEMETHODIMP put_ColumnSize(_Out_ HSTRING size);
 
         // IAdaptiveContainer
         IFACEMETHODIMP get_StartGroup(_In_ boolean* startGroup);

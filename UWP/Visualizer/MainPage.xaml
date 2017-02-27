@@ -6,6 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.Resources>
+        <Style x:Key="CommandButton" TargetType="Button">
+            <Setter Property="Margin" Value="5,0,0,0"/>
+        </Style>  
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
@@ -18,10 +23,15 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="5"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="JSON:" HorizontalAlignment="Left" Grid.Row="0"/>
-            <RichEditBox Grid.Row="1"/>
+            <TextBlock Text="JSON:" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0">
+                <Button Content="Load File..." Click="loadFileButton_Clicked" Style="{StaticResource CommandButton}"/>
+                <Button Content="Generate" Click="generateButton_Clicked" Style="{StaticResource CommandButton}"/>
+            </StackPanel>
+            <RichEditBox x:Name="adaptiveJson" Grid.Row="2"/>
         </Grid>
 
         <!-- Render outputs-->

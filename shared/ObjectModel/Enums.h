@@ -18,6 +18,7 @@ enum class AdaptiveCardSchemaKey
     Speak,
     Type,
     Uri,
+    isSubtle
 };
 
 enum class CardElementSize

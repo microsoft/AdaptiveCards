@@ -20,10 +20,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         void AbandonOutstandingImages();
         HRESULT AddListener(_In_ IImageLoadTrackerListener* listener);
         HRESULT RemoveListener(_In_ IImageLoadTrackerListener* listener);
+        int GetTotalImagesTracked();
 
     private:
         Microsoft::WRL::Wrappers::SRWLock m_lock;
         int m_trackedImageCount = 0;
+        int m_totalImageCount = 0;
         std::unordered_map<IInspectable*, TrackedImageDetails> m_eventRegistrations;
         std::set<Microsoft::WRL::ComPtr<IImageLoadTrackerListener>> m_listeners;
 

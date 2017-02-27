@@ -13,9 +13,22 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    AdaptiveImage::AdaptiveImage() : m_image(std::make_unique<Image>()),
-                                     m_size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize::Auto)
+    AdaptiveImage::AdaptiveImage()
     {
+        m_size = ABI::AdaptiveCards::XamlCardRenderer::CardElementSize::Auto;
+    }
+
+    HRESULT AdaptiveImage::RuntimeClassInitialize() noexcept try
+    {
+        m_sharedImage = std::make_shared<Image>();
+        return S_OK;
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Image>& sharedImage)
+    {
+        m_sharedImage = sharedImage;
+        return S_OK;
     }
 
     _Use_decl_annotations_
@@ -29,7 +42,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             &uriActivationFactory));
 
         HSTRING imageUri;
-        RETURN_IF_FAILED(UTF8ToHString(m_image->GetUri(), &imageUri));
+        RETURN_IF_FAILED(UTF8ToHString(m_sharedImage->GetUri(), &imageUri));
         RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, uri));
 
         return S_OK;
@@ -48,7 +61,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         std::string uriString;
         RETURN_IF_FAILED(HStringToUTF8(uriTemp.Get(), uriString));
-        m_image->SetUri(uriString);
+        m_sharedImage->SetUri(uriString);
 
         return S_OK;
     } CATCH_RETURN;
@@ -56,14 +69,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveImage::get_ImageStyle(ABI::AdaptiveCards::XamlCardRenderer::ImageStyle* ImageStyle)
     {
-        *ImageStyle = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ImageStyle>(m_image->GetImageStyle());
+        *ImageStyle = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ImageStyle>(m_sharedImage->GetImageStyle());
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveImage::put_ImageStyle(ABI::AdaptiveCards::XamlCardRenderer::ImageStyle ImageStyle)
     {
-        m_image->SetImageStyle(static_cast<AdaptiveCards::ImageStyle>(ImageStyle));
+        m_sharedImage->SetImageStyle(static_cast<AdaptiveCards::ImageStyle>(ImageStyle));
         return S_OK;
     }
 

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -76,7 +78,50 @@ namespace XamlCardVisualizer
 
         private async void PopulateImageContent(AdaptiveCard card)
         {
+            ImageRenderResult imageRenderResult = await m_renderer.RenderCardAsImageAsync(card);
+        }
+
+        private async void loadFileButton_Clicked(object sender, RoutedEventArgs args)
+        {
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.List;
+            openPicker.FileTypeFilter.Add(".json");
+
+            StorageFile file = await openPicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                this.adaptiveJson.Document.SetText(Windows.UI.Text.TextSetOptions.None, await FileIO.ReadTextAsync(file));
+            }
+            else
+            {
+            }
+        }
+
+        private async void generateButton_Clicked(object sender, RoutedEventArgs args)
+        {
+            renderedXamlPresenter.Content = null;
+
+            string adaptiveJsonText;
+            this.adaptiveJson.Document.GetText(Windows.UI.Text.TextGetOptions.None, out adaptiveJsonText);
+
+            try
+            {
+                renderedXamlPresenter.Content = await m_renderer.RenderAdaptiveJsonAsXamlAsync(adaptiveJsonText);
+            }
+            catch (Exception)
+            {
+                GenerateErrorUI();
+            }
             //ImageRenderResult imageRenderResult = await m_renderer.RenderCardAsImageAsync(card);
+        }
+
+        private void GenerateErrorUI()
+        {
+            Grid errorGrid = new Grid();
+            TextBlock errorText = new TextBlock();
+            errorText.Text = "An error occurred attempting to generate a visual from this Json";
+            errorGrid.Children.Add(errorText);
+            renderedXamlPresenter.Content = errorGrid;
         }
 
         private AdaptiveCards.XamlCardRenderer.XamlCardRenderer m_renderer;

@@ -19,7 +19,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
             std::wstring styleKey = GetElementTypeAsString(CardElementType::TextBlock);
             styleKey.append(c_StyleSeparator);
-            styleKey.append(GetSizeFromCard(adaptiveCardElement.Get()).c_str());
+            styleKey.append(GetTextSizeFromTextBlock(adaptiveTextBlock.Get()).c_str());
 
             return styleKey;
         }
@@ -84,6 +84,15 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             std::string elementTypeString = AdaptiveCards::CardElementTypeToString(elementType);
             std::wstring elementTypeWideString(elementTypeString.begin(), elementTypeString.end());
             return elementTypeWideString;
+        }
+
+        static std::wstring GetTextSizeFromTextBlock(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* adaptiveTextBlock)
+        {
+            ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize;
+            THROW_IF_FAILED(adaptiveTextBlock->get_TextSize(&textSize));
+            std::string sizeString = AdaptiveCards::TextSizeToString(static_cast<AdaptiveCards::TextSize>(textSize));
+            std::wstring sizeWideString(sizeString.begin(), sizeString.end());
+            return sizeWideString;
         }
 
         static std::wstring GetSizeFromCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement)

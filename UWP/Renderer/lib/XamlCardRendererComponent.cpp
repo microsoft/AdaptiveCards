@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "XamlCardRendererComponent.h"
 
+#include "AdaptiveCard.h"
 #include "AsyncOperations.h"
 #include <windows.foundation.collections.h>
 #include <Windows.UI.Xaml.h>
@@ -60,15 +61,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             *result = xamlTreeRoot.Detach();
         }
 
-        // TODO MSFT:10826542 - XamlTileRenderer:Delay rendering completion until images are fully available
-        
-        //*result = 
-
         return S_OK;
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderCardAsXamlAsync(IAdaptiveCard* adaptiveCard,
+    HRESULT XamlCardRenderer::RenderCardAsXamlAsync(
+        IAdaptiveCard* adaptiveCard,
         IAsyncOperation<UIElement*>** result)
     {
         *result = Make<RenderCardAsXamlAsyncOperation>(adaptiveCard).Detach();
@@ -83,4 +81,46 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *result = Make<RenderCardAsImageAsyncOperation>(adaptiveCard).Detach();
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::RenderAdaptiveJsonAsXaml(
+        HSTRING adaptiveJson,
+        IUIElement** result)
+    {
+        ComPtr<IAdaptiveCard> adaptiveCard;
+        RETURN_IF_FAILED(CreateAdaptiveCardFromJson(adaptiveJson, &adaptiveCard));
+
+        return RenderCardAsXaml(adaptiveCard.Get(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::RenderAdaptiveJsonAsXamlAsync(
+        HSTRING adaptiveJson,
+        IAsyncOperation<UIElement*>** result)
+    {
+        ComPtr<IAdaptiveCard> adaptiveCard;
+        RETURN_IF_FAILED(CreateAdaptiveCardFromJson(adaptiveJson, &adaptiveCard));
+
+        return RenderCardAsXamlAsync(adaptiveCard.Get(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::RenderAdaptiveJsonAsImageAsync(HSTRING adaptiveJson,
+        IAsyncOperation<ImageRenderResult*>** result)
+    {
+        ComPtr<IAdaptiveCard> adaptiveCard;
+        RETURN_IF_FAILED(CreateAdaptiveCardFromJson(adaptiveJson, &adaptiveCard));
+
+        return RenderCardAsImageAsync(adaptiveCard.Get(), result);
+    }
+
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::CreateAdaptiveCardFromJson(HSTRING adaptiveJson, ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** adaptiveCard)
+    {
+        ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
+        RETURN_IF_FAILED(adaptiveCardStatics->CreateCardFromJson(adaptiveJson, adaptiveCard));
+        return S_OK;
+    }
+
 }}

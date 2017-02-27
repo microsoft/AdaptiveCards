@@ -162,8 +162,19 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(C312AD20-DFE3-4418-819F-E3CB7A0CD2FE),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveCard),
+        ]
+        interface IAdaptiveCardStatics : IInspectable
+        {
+            HRESULT CreateCardFromJson([in] HSTRING adaptiveJson, [out, retval] AdaptiveCard** card);
+        };
+
+        [
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1),
+            static(IAdaptiveCardStatics, NTDDI_WIN10_RS1)
         ]
         runtimeclass AdaptiveCard
         {
@@ -222,8 +233,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveColumn : IInspectable
         {
-            [propget] HRESULT Size([out, retval] HSTRING* value);
-            [propput] HRESULT Size([in] HSTRING value);
+            [propget] HRESULT ColumnSize([out, retval] HSTRING* value);
+            [propput] HRESULT ColumnSize([in] HSTRING value);
         };
 
         [
@@ -289,9 +300,14 @@ namespace AdaptiveCards
         {
             HRESULT SetRenderOptions([in] RenderOptions options);
             HRESULT SetOverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
+            
             HRESULT RenderCardAsXaml([in] AdaptiveCard* adaptiveCard,[out, retval] Windows.UI.Xaml.UIElement** result);
             HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
             HRESULT RenderCardAsImageAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<ImageRenderResult*>** result);
+
+            HRESULT RenderAdaptiveJsonAsXaml([in] HSTRING adaptiveJson, [out, retval] Windows.UI.Xaml.UIElement** result);
+            HRESULT RenderAdaptiveJsonAsXamlAsync([in] HSTRING adaptiveJson, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
+            HRESULT RenderAdaptiveJsonAsImageAsync([in] HSTRING adaptiveJson, [out, retval] Windows.Foundation.IAsyncOperation<ImageRenderResult*>** result);
         }
 
         [

@@ -26,6 +26,8 @@ using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 using namespace ABI::Windows::Web::Http;
 using namespace ABI::Windows::Web::Http::Filters;
 
+const PCWSTR c_TextBlockSubtleOpacityKey = L"TextBlock.SubtleOpacity";
+
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
     XamlBuilder::XamlBuilder()
@@ -68,6 +70,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             // If we're done and no one's listening for the images to load, make sure 
             // any outstanding image loads are no longer tracked.
             m_imageLoadTracker.AbandonOutstandingImages();
+        }
+        else if (m_imageLoadTracker.GetTotalImagesTracked() == 0)
+        {
+            // If there are no images to track, fire the all images loaded
+            // event to signal the xaml is ready
+            FireAllImagesLoaded();
         }
     }
 
@@ -113,14 +121,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     _Use_decl_annotations_
     template<typename T>
-    bool XamlBuilder::TryGetResoureFromResourceDictionaries(std::wstring styleName, T** style)
+    HRESULT XamlBuilder::TryGetResoureFromResourceDictionaries(std::wstring resourceName, T** style)
     {
         *style = nullptr;
         try
         {
             // Get a resource key for the requested style that we can use for ResourceDistionary Lookups
             ComPtr<IInspectable> resourceKey;
-            THROW_IF_FAILED(m_propertyValueStatics->CreateString(HStringReference(styleName.c_str()).Get(), resourceKey.GetAddressOf()));
+            THROW_IF_FAILED(m_propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(), resourceKey.GetAddressOf()));
 
             // Search for the named resource in all known distionaries
             ComPtr<IInspectable> dictionaryValue;
@@ -134,7 +142,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                     if (SUCCEEDED(dictionaryValue.As(&resourceToReturn)))
                     {
                         THROW_IF_FAILED(resourceToReturn.CopyTo(style));
-                        return true;
+                        return S_OK;
                     }
                 }
             }
@@ -142,7 +150,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         catch (...)
         {
         }
-        return false;
+        return E_FAIL;
     }
 
     template<typename T>
@@ -285,6 +293,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         adaptiveTextBlock->get_Text(text.GetAddressOf());
         xamlTextBlock->put_Text(text.Get());
 
+        // Generate the style name from the adaptive element and apply it to the xaml
+        // element it it exists in the resource dictionaries
         ComPtr<IStyle> style;
         std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForTextBlock(adaptiveTextBlock.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
@@ -294,18 +304,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(textBlockAsFrameworkElement->put_Style(style.Get()));
         }
 
+        // Translate the font weight into a resource key and apply the value if it exists
         ComPtr<IInspectable> fontWeightInspectable;
         std::wstring fontWeightResourceName = XamlStyleKeyGenerators::GenerateKeyForTextBlockWeight(adaptiveTextBlock.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IInspectable>(fontWeightResourceName, &fontWeightInspectable)))
         {
             ComPtr<IReference<FontWeight>> fontWeightReference;
-            fontWeightInspectable.As(&fontWeightReference);
-            FontWeight fontWeight;
-            fontWeightReference.Get()->get_Value(&fontWeight);
-
-            THROW_IF_FAILED(xamlTextBlock->put_FontWeight(fontWeight));
+            if (SUCCEEDED(fontWeightInspectable.As(&fontWeightReference)))
+            {
+                FontWeight fontWeight;
+                fontWeightReference.Get()->get_Value(&fontWeight);
+                THROW_IF_FAILED(xamlTextBlock->put_FontWeight(fontWeight));
+            }
         }
 
+        // Translate the font color into a resource key and apply the value if it exists
         ComPtr<IBrush> fontColorBrush;
         std::wstring fontColorResourceName = XamlStyleKeyGenerators::GenerateKeyForTextBlockColor(adaptiveTextBlock.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IBrush>(fontColorResourceName, &fontColorBrush)))
@@ -313,6 +326,29 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(xamlTextBlock->put_Foreground(fontColorBrush.Get()));
         }
 
+        // The subtle boolean is rendered by setting the opacity on the text block, so retrieve
+        // that value from the resource dictionary and set the Opacity
+        boolean isSubtle = false;
+        THROW_IF_FAILED(adaptiveTextBlock->get_IsSubtle(&isSubtle));
+        if (isSubtle)
+        {
+            ComPtr<IInspectable> subtleOpacityInspectable;
+            if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IInspectable>(c_TextBlockSubtleOpacityKey, &subtleOpacityInspectable)))
+            {
+                ComPtr<IReference<double>> subtleOpacityReference;
+                if (SUCCEEDED(subtleOpacityInspectable.As(&subtleOpacityReference)))
+                {
+                    double subtleOpacity;
+                    subtleOpacityReference.Get()->get_Value(&subtleOpacity);
+
+                    ComPtr<IUIElement> textBlockAsUIElement;
+                    THROW_IF_FAILED(xamlTextBlock.As(&textBlockAsUIElement));
+                    textBlockAsUIElement->put_Opacity(subtleOpacity);
+                }
+            }
+        }
+
+        // Apply the wrap value to the xaml element
         boolean shouldWrap = false;
         THROW_IF_FAILED(adaptiveTextBlock->get_Wrap(&shouldWrap));
         THROW_IF_FAILED(xamlTextBlock->put_TextWrapping(shouldWrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
@@ -337,10 +373,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveImage->get_Uri(imageUri.GetAddressOf()));
         PopulateImageFromUrlAsync(imageUri.Get(), xamlImage.Get());
 
+        // Set the image to UniformToFill if the card element's size is stretch
         ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size;
         THROW_IF_FAILED(cardElement->get_Size(&size));
         THROW_IF_FAILED(xamlImage->put_Stretch(size == ABI::AdaptiveCards::XamlCardRenderer::CardElementSize::Stretch ? Stretch::Stretch_UniformToFill : Stretch::Stretch_None));
 
+        // Generate the style name from the adaptive element and apply it to the xaml
+        // element it it exists in the resource dictionaries
         ComPtr<IStyle> style;
         std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForImage(adaptiveImage.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
@@ -382,5 +421,4 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         THROW_IF_FAILED(xamlStackPanel.CopyTo(containerControl));
     }
-
 }}

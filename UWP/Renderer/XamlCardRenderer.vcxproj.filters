@@ -34,8 +34,16 @@
     <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
     <ClInclude Include="lib\AsyncOperations.h" />
     <ClInclude Include="lib\AdaptiveContainer.h" />
+<<<<<<< HEAD
+    <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
+    <ClInclude Include="lib\IImageLoadTrackerListener.h" />
+    <ClInclude Include="lib\asyncoperations.h" />
+    <ClInclude Include="lib\IXamlBuilderListener.h" />
+    <ClInclude Include="lib\XamlHelpers.h" />
+=======
     <ClInclude Include="lib\AdaptiveColumn.h" />
     <ClInclude Include="lib\AdaptiveColumnSet.h" />
+>>>>>>> refs/remotes/origin/dev
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

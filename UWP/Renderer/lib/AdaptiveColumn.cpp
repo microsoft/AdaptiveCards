@@ -62,7 +62,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Size(HSTRING* size)
+    HRESULT AdaptiveColumn::get_ColumnSize(HSTRING* size)
     {
         *size = nullptr;
 
@@ -74,7 +74,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Size(HSTRING size)
+    HRESULT AdaptiveColumn::put_ColumnSize(HSTRING size)
     {
         RETURN_IF_FAILED(m_size.Set(size));
         return S_OK;

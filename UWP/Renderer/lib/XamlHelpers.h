@@ -23,8 +23,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ABI::Windows::Foundation::Collections::IVector<T*>* vector,
             C iterationCallback)
         {
-            Microsoft::WRL::ComPtr<IVector<T*>> localVector(vector);
-            Microsoft::WRL::ComPtr<IIterable<T*>> vectorIterable;
+            Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
+            ComPtr<IIterable<T*>> vectorIterable;
             THROW_IF_FAILED(localVector.As<IIterable<T*>>(&vectorIterable));
 
             Microsoft::WRL::ComPtr<IIterator<T*>> vectorIterator;
@@ -49,11 +49,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             }
         }
 
+        template<typename T>
         static void AppendXamlElementToPanel(
-            ABI::Windows::UI::Xaml::IUIElement* xamlElement,
+            T* xamlElement,
             ABI::Windows::UI::Xaml::Controls::IPanel* panel)
         {
-            Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::UIElement*>> panelChildren;
+            Microsoft::WRL::ComPtr<T> localXamlElement(xamlElement);
+
+            ComPtr<IUIElement> elementToAppend;
+            THROW_IF_FAILED(localXamlElement.As(&elementToAppend));
+
+            ComPtr<IVector<UIElement*>> panelChildren;
             THROW_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
 
             THROW_IF_FAILED(panelChildren->Append(xamlElement));
