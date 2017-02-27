@@ -64,7 +64,7 @@ namespace Adaptive
         /// </summary>
         [JsonRequired]
         [XmlAttribute]
-        public string Display { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Internal value which will be collected as input if the choice is selected

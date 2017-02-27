@@ -77,16 +77,16 @@
                     "id": "SingleSelectVal",
                     "choices": [
                         {
-                            "display": "One",
+                            "title": "One",
                             "value": "1",
                             "isSelected": true
                         },
                         {
-                            "display": "Two",
+                            "title": "Two",
                             "value": "2"
                         },
                         {
-                            "display": "Three",
+                            "title": "Three",
                             "value": "3"
                         }
                     ]
@@ -101,16 +101,16 @@
                     "style": "compact",
                     "choices": [
                         {
-                            "display": "One",
+                            "title": "One",
                             "value": "1",
                             "isSelected": true
                         },
                         {
-                            "display": "Two",
+                            "title": "Two",
                             "value": "2"
                         },
                         {
-                            "display": "Three",
+                            "title": "Three",
                             "value": "3"
                         }
                     ]
@@ -125,16 +125,16 @@
                     "isMultiSelect": true,
                     "choices": [
                         {
-                            "display": "One",
+                            "title": "One",
                             "value": "1",
                             "isSelected": true
                         },
                         {
-                            "display": "Two",
+                            "title": "Two",
                             "value": "2"
                         },
                         {
-                            "display": "Three",
+                            "title": "Three",
                             "value": "3",
                             "isSelected": true
                         }

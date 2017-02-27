@@ -44,7 +44,7 @@ namespace Adaptive
                 if (this.IsMultiSelect == true)
                 {
                     var uiCheckbox = new CheckBox();
-                    uiCheckbox.Content = choice.Display;
+                    uiCheckbox.Content = choice.Title;
                     uiCheckbox.IsChecked = choice.IsSelected;
                     uiCheckbox.DataContext = choice;
                     uiCheckbox.Style = context.GetStyle("Adaptive.Input.ChoiceSet.CheckBox");
@@ -56,7 +56,7 @@ namespace Adaptive
                     {
                         var uiComboItem = new ComboBoxItem();
                         uiComboItem.Style = context.GetStyle("Adaptive.Input.ChoiceSet.ComboBoxItem");
-                        uiComboItem.Content = choice.Display;
+                        uiComboItem.Content = choice.Title;
                         uiComboItem.DataContext = choice;
                         uiComboBox.Items.Add(uiComboItem);
                         if (choice.IsSelected)
@@ -65,7 +65,7 @@ namespace Adaptive
                     else
                     {
                         var uiRadio = new RadioButton();
-                        uiRadio.Content = choice.Display;
+                        uiRadio.Content = choice.Title;
                         uiRadio.IsChecked = choice.IsSelected;
                         uiRadio.GroupName = this.Id;
                         uiRadio.DataContext = choice;
