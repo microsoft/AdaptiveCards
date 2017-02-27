@@ -28,6 +28,7 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "text", AdaptiveCardSchemaKey::Text},
     { "speak", AdaptiveCardSchemaKey::Speak },
     { "uri", AdaptiveCardSchemaKey::Uri },
+    { "isSubtle", AdaptiveCardSchemaKey::isSubtle },
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchemaKeyEnumToName =
@@ -44,6 +45,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchema
     { AdaptiveCardSchemaKey::Text, "text"},
     { AdaptiveCardSchemaKey::Speak, "speak"},
     { AdaptiveCardSchemaKey::Uri, "uri"},
+    { AdaptiveCardSchemaKey::isSubtle, "isSubtle" },
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =

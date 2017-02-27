@@ -27,7 +27,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::Container> sharedContainer)
+    HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Container>& sharedContainer)
     {
         m_sharedContainer = sharedContainer;
         return S_OK;

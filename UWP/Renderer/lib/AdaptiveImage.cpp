@@ -25,7 +25,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::Image> sharedImage)
+    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Image>& sharedImage)
     {
         m_sharedImage = sharedImage;
         return S_OK;

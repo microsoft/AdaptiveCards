@@ -16,7 +16,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<AdaptiveCards::TextBlock> sharedTextBlock);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock);
 
         // IAdaptiveTextBlock
         IFACEMETHODIMP get_Text(HSTRING *text);

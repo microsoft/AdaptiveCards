@@ -18,7 +18,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     public:
         AdaptiveImage();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<AdaptiveCards::Image> sharedImage);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Image>& sharedImage);
 
         // IAdaptiveImage
         IFACEMETHODIMP get_Uri(_In_ ABI::Windows::Foundation::IUriRuntimeClass** uri);

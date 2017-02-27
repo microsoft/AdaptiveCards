@@ -18,7 +18,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     public:
         AdaptiveContainer();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<AdaptiveCards::Container> sharedcontainer);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Container>& sharedcontainer);
 
         // IAdaptiveContainer
         IFACEMETHODIMP get_StartGroup(_In_ boolean* startGroup);

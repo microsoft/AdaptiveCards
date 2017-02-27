@@ -20,7 +20,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::TextBlock> sharedTextBlock)
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock)
     {
         m_sharedTextBlock = sharedTextBlock;
         return S_OK;
