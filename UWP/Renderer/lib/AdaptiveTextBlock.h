@@ -15,7 +15,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveTextBlock, BaseTrust)
 
     public:
-        AdaptiveTextBlock();
+        HRESULT RuntimeClassInitialize() noexcept;
+        HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<AdaptiveCards::TextBlock> sharedTextBlock);
 
         // IAdaptiveTextBlock
         IFACEMETHODIMP get_Text(HSTRING *text);
@@ -44,7 +45,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
 
     private:
-        std::unique_ptr<AdaptiveCards::TextBlock> m_TextBlock;
+        std::shared_ptr<AdaptiveCards::TextBlock> m_sharedTextBlock;
     };
 
     ActivatableClass(AdaptiveTextBlock);

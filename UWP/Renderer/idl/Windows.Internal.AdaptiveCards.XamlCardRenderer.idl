@@ -1,0 +1,71 @@
+import "inspectable.idl";
+import "Windows.Foundation.idl";
+import "Windows.UI.Xaml.idl";
+
+#include <sdkddkver.h>
+
+namespace Windows{ namespace Internal { namespace AdaptiveCards { namespace XamlCardRenderer
+{
+    runtimeclass XamlCardRenderer;
+    runtimeclass ImageRenderResult;
+
+    declare
+    {
+        interface Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>;
+        interface Windows.Foundation.IAsyncOperation<Windows.Internal.AdaptiveCards.XamlCardRenderer.ImageRenderResult*>;
+    }
+
+    [flags]
+    [version(NTDDI_WIN10_RS1)]
+    typedef [v1_enum] enum RenderOptions
+    {
+        None = 0x0,
+        SupportsActionBar = 0x1,
+        SupportsInlineActions = 0x2,
+    }RenderOptions;
+
+    [
+        uuid(D6C7C240-53AF-4F34-87BE-301D9C68465D),
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(ImageRenderResult),
+    ]
+    interface IImageRenderResult : IInspectable
+    {
+        [propget] HRESULT AltText([out, retval] HSTRING *altText);
+        [propget] HRESULT ImageBuffer([out, retval] Windows.Storage.Streams.IBuffer** imageBuffer);
+        [propget] HRESULT IsAllContentClippedOut([out, retval] boolean *allContentClipped);
+        [propget] HRESULT ImageWidthPixels([out, retval] int *width);
+        [propget] HRESULT ImageHeightPixels([out, retval] int *height);
+    }
+
+    [
+        uuid(DB7C7BB8-C313-440A-A421-B52620107F8B),
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(XamlCardRenderer),
+    ]
+    interface IXamlCardRenderer : IInspectable
+    {
+        HRESULT SetRenderOptions([in] RenderOptions options);
+        HRESULT SetOverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
+        HRESULT RenderCardAsXamlAsync([in] HSTRING adaptiveCardJson, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
+        HRESULT RenderCardAsImageAsync([in] HSTRING adaptiveCardJson, [out, retval] Windows.Foundation.IAsyncOperation<ImageRenderResult*>** result);
+    }
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+    ]
+    runtimeclass ImageRenderResult
+    {
+        [default] interface IImageRenderResult;
+    }
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+    ]
+    runtimeclass XamlCardRenderer
+    {
+        [default] interface IXamlCardRenderer;
+    }
+}}}}

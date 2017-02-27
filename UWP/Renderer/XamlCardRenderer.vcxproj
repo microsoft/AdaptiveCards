@@ -101,7 +101,11 @@
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\shared\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+        ..\..\shared\ObjectModel;
+        ..\..\shared\ObjectModel\json;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -109,8 +113,11 @@
     <ClInclude Include="lib\AdaptiveContainer.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
+    <ClInclude Include="lib\asyncoperations.h" />
     <ClInclude Include="lib\ErrorHandling.h" />
+    <ClInclude Include="lib\IImageLoadTrackerListener.h" />
     <ClInclude Include="lib\ImageLoadTracker.h" />
+    <ClInclude Include="lib\IXamlBuilderListener.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
@@ -125,6 +132,8 @@
     <ClCompile Include="lib\XamlBuilder.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
     <ClCompile Include="dll\dll.cpp" />
+    <ClInclude Include="lib\XamlHelpers.h" />
+    <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl">

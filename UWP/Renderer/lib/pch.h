@@ -13,6 +13,7 @@
 #endif
 
 #include <unordered_map>
+#include <set>
 
 #include "ErrorHandling.h"
 

@@ -3,7 +3,13 @@
 
 using namespace AdaptiveCards;
 
-TextBlock::TextBlock() : BaseCardElement(CardElementType::TextBlock)
+TextBlock::TextBlock() : 
+    BaseCardElement(CardElementType::TextBlock),
+    m_textSize(TextSize::Normal),
+    m_textWeight(TextWeight::Normal),
+    m_textColor(TextColor::Default),
+    m_isSubtle(false),
+    m_wrap(false)
 {
 }
 
@@ -43,7 +49,7 @@ std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
     textBlock->SetTextWeight(textWeight);
     TextWrap textWrap = ParseUtil::GetEnumValue<TextWrap>(json, AdaptiveCardSchemaKey::TextWrap, TextWrap::NoWrap, TextWrapFromString);
     textBlock->SetWrap(textWrap == TextWrap::Wrap);
-
+    textBlock->SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::isSubtle, false));
     return textBlock;
 }
 

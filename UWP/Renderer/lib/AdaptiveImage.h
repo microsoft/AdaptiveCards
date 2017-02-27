@@ -17,6 +17,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     public:
         AdaptiveImage();
+        HRESULT RuntimeClassInitialize() noexcept;
+        HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<AdaptiveCards::Image> sharedImage);
 
         // IAdaptiveImage
         IFACEMETHODIMP get_Uri(_In_ ABI::Windows::Foundation::IUriRuntimeClass** uri);
@@ -33,7 +35,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
 
     private:
-        std::unique_ptr<AdaptiveCards::Image> m_image;
+        std::shared_ptr<AdaptiveCards::Image> m_sharedImage;
         ABI::AdaptiveCards::XamlCardRenderer::CardElementSize m_size;
     };
 

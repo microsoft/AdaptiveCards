@@ -11,12 +11,55 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     class XamlStyleKeyGenerators
     {
     public:
-        static std::wstring GenerateKeyForTextBlock(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* /*textBlock*/)
+        static std::wstring GenerateKeyForTextBlock(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* textBlock)
         {
+            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock> adaptiveTextBlock(textBlock);
+            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement> adaptiveCardElement;
+            THROW_IF_FAILED(adaptiveTextBlock.As(&adaptiveCardElement));
+
             std::wstring styleKey = GetElementTypeAsString(CardElementType::TextBlock);
+            styleKey.append(c_StyleSeparator);
+            styleKey.append(GetTextSizeFromTextBlock(adaptiveTextBlock.Get()).c_str());
 
-            // TODO: MSFT:10826544 - Programmatic xaml style generation
+            return styleKey;
+        }
 
+        static std::wstring GenerateKeyForTextBlockWeight(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* textBlock)
+        {
+            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock> adaptiveTextBlock(textBlock);
+
+            std::wstring styleKey = L"TextWeight";
+            styleKey.append(c_StyleSeparator);
+            styleKey.append(GetWeightFromTextBlock(adaptiveTextBlock.Get()).c_str());
+
+            return styleKey;
+        }
+
+        static std::wstring GenerateKeyForTextBlockColor(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* textBlock)
+        {
+            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock> adaptiveTextBlock(textBlock);
+
+            std::wstring styleKey = L"TextColor";
+            styleKey.append(c_StyleSeparator);
+            styleKey.append(GetColorFromTextBlock(adaptiveTextBlock.Get()).c_str());
+
+            return styleKey;
+        }
+
+        static std::wstring GenerateKeyForContainer(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainer* container)
+        {
+            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainer> adaptiveContainer(container);
+
+            // TODO: Use GetElementTypeAsString once MSFT:11028246 is fixed
+            std::wstring styleKey = L"Container"; 
+
+            boolean isStartGroup;
+            THROW_IF_FAILED(adaptiveContainer->get_StartGroup(&isStartGroup));
+            if (isStartGroup)
+            {
+                styleKey.append(c_StyleSeparator);
+                styleKey.append(L"StartGroup");
+            }
             return styleKey;
         }
 
@@ -43,6 +86,15 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             return elementTypeWideString;
         }
 
+        static std::wstring GetTextSizeFromTextBlock(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* adaptiveTextBlock)
+        {
+            ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize;
+            THROW_IF_FAILED(adaptiveTextBlock->get_TextSize(&textSize));
+            std::string sizeString = AdaptiveCards::TextSizeToString(static_cast<AdaptiveCards::TextSize>(textSize));
+            std::wstring sizeWideString(sizeString.begin(), sizeString.end());
+            return sizeWideString;
+        }
+
         static std::wstring GetSizeFromCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement)
         {
             ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size;
@@ -50,6 +102,24 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             std::string sizeString = AdaptiveCards::SizeToString(static_cast<AdaptiveCards::CardElementSize>(size));
             std::wstring sizeWideString(sizeString.begin(), sizeString.end());
             return sizeWideString;
+        }
+
+        static std::wstring GetWeightFromTextBlock(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* adaptiveTextBlock)
+        {
+            ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight;
+            THROW_IF_FAILED(adaptiveTextBlock->get_TextWeight(&textWeight));
+            std::string weightString = AdaptiveCards::TextWeightToString(static_cast<AdaptiveCards::TextWeight>(textWeight));
+            std::wstring weightWideString(weightString.begin(), weightString.end());
+            return weightWideString;
+        }
+
+        static std::wstring GetColorFromTextBlock(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* adaptiveTextBlock)
+        {
+            ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor;
+            THROW_IF_FAILED(adaptiveTextBlock->get_TextColor(&textColor));
+            std::string colorString = AdaptiveCards::TextColorToString(static_cast<AdaptiveCards::TextColor>(textColor));
+            std::wstring colorWideString(colorString.begin(), colorString.end());
+            return colorWideString;
         }
     };
 

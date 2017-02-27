@@ -17,10 +17,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     public:
         AdaptiveContainer();
+        HRESULT RuntimeClassInitialize() noexcept;
+        HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<AdaptiveCards::Container> sharedcontainer);
 
         // IAdaptiveContainer
-        IFACEMETHODIMP get_StartGroup(_In_ boolean* uri);
-        IFACEMETHODIMP put_StartGroup(_Out_ boolean uri);
+        IFACEMETHODIMP get_StartGroup(_In_ boolean* startGroup);
+        IFACEMETHODIMP put_StartGroup(_Out_ boolean startGroup);
 
         IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** items);
 
@@ -32,9 +34,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
 
     private:
-        // TODO: MSTF 11015796: Sync UWP Projection containers to Shared object model.
+        // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_items;
-        std::unique_ptr<AdaptiveCards::Container> m_container;
+        std::shared_ptr<AdaptiveCards::Container> m_sharedContainer;
     };
 
     ActivatableClass(AdaptiveContainer);

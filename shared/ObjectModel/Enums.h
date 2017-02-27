@@ -18,6 +18,7 @@ enum class AdaptiveCardSchemaKey
     Speak,
     Type,
     Uri,
+    isSubtle
 };
 
 enum class CardElementSize
@@ -76,11 +77,12 @@ enum class CardElementType
     AdaptiveCard,
     TextBlock,
     Image,
-    FactGroup,
-    ColumnGroup,
-    ImageGallery,
-    ActionGroup,
     Container,
+    Column,
+    ColumnSet,
+    FactGroup,
+    ImageGallery,
+    ActionGroup
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);

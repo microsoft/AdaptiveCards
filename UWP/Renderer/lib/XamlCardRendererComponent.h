@@ -17,12 +17,26 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         XamlCardRenderer();
         HRESULT RuntimeClassInitialize();
 
+        // IXamlCardRenderer
         IFACEMETHODIMP SetRenderOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::RenderOptions options);
         IFACEMETHODIMP SetOverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
+
         IFACEMETHODIMP RenderCardAsXaml(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** root);
-        IFACEMETHODIMP RenderCardAsImage(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_result_maybenull_ ABI::Windows::Foundation::IAsyncOperation<ABI::AdaptiveCards::XamlCardRenderer::ImageRenderResult*>** result);
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
+        IFACEMETHODIMP RenderCardAsXamlAsync(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
+            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::Windows::UI::Xaml::UIElement*>** result);
+        IFACEMETHODIMP RenderCardAsImageAsync(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
+            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::AdaptiveCards::XamlCardRenderer::ImageRenderResult*>** result);
+
+        IFACEMETHODIMP RenderAdaptiveJsonAsXaml(_In_ HSTRING adaptiveJson, 
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
+        IFACEMETHODIMP RenderAdaptiveJsonAsXamlAsync(_In_ HSTRING adaptiveJson,
+            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::Windows::UI::Xaml::UIElement*>** result);
+        IFACEMETHODIMP RenderAdaptiveJsonAsImageAsync(_In_ HSTRING adaptiveJson, 
+            _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::AdaptiveCards::XamlCardRenderer::ImageRenderResult*>** result);
+
+    private:
+        HRESULT CreateAdaptiveCardFromJson(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** adaptiveCard);
     };
 
     ActivatableClass(XamlCardRenderer);
