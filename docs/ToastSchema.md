@@ -117,55 +117,55 @@ Base class for all toast actions
 | **imageUrl**| url | false | An optional image (ms-appx or ms-appdata) that is displayed on the button in addition to the button text. |
 
 
-## ToastOpenUrlAction
+## ToastAction.OpenUrl
 *Extends [ToastAction](#toastaction)*
 
 When ToastOpenUrlAction is invoked it will protocol activate the given url. Can be a https url, or an app link like settings:storage.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"ToastOpenUrlAction"** |
+| **type**| string | true | **"ToastAction.OpenUrl"** |
 | **url** | string | true | The protocol url to launch.  |
 | **targetApplicationPfn** | string | false | You can optionally specify the target PFN of the app you want to protocol launch, so that regardless of whether multiple apps are registered to handle the same protocol url, your desired app will always be launched. |
 
 
-## ToastForegroundAction
+## ToastAction.Foreground
 *Extends [ToastAction](#toastaction)*
 
 Gathers up input fields, merges with optional data field and performs a foreground launch of the app.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"ToastForegroundAction"** |
+| **type**| string | true | **"ToastAction.Foreground"** |
 | **arguments** | string | false | A string of developer-defined arguments which are passed back to your app when the action is activated. Include any information required to perform your activation inside here. You will likely want to use query-string formatting to serialize your data into a string. |
 | **data** | object | false | Initial data that input fields will be combined with.  This is essentially 'hidden' properties |
 
 
-## ToastBackgroundAction
+## ToastAction.Background
 *Extends [ToastAction](#toastaction)*
 
 Gathers up input fields, merges with optional data field and performs a background task launch of the app.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"ToastBackgroundAction"** |
+| **type**| string | true | **"ToastAction.Background"** |
 | **arguments** | string | false | A string of developer-defined arguments which are passed back to your app when the action is activated. Include any information required to perform your activation inside here. You will likely want to use query-string formatting to serialize your data into a string. |
 | **data** | object | false | Initial data that input fields will be combined with.  This is essentially 'hidden' properties |
 | **afterActivationBehavior** | [ToastAfterActivationBehavior](#toastafteractivationbehavior) | false | New in RS3. Specifies the behavior that the toast should use when the user invokes this action. |
 
 
-## ToastSnoozeAction
+## ToastAction.Snooze
 *Extends [ToastAction](#toastaction)*
 
 This action automatically handles snoozing the toast notification.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"ToastSnoozeAction"** |
+| **type**| string | true | **"ToastAction.Snooze"** |
 | **snoozeTimeInputId** | string | false | Optionally specify the ID of an existing input in order to allow the user to pick a custom snooze time. The value of the input must represent the snooze interval in minutes. For example, if the user selects an item that has a value of "120", then the notification will be snoozed for 2 hours. When the user clicks this button, If you don't specify this ID, the system will snooze by the default system snooze time. |
 
 
-## ToastDismissAction
+## ToastAction.Dismiss
 *Extends [ToastAction](#toastaction)*
 
 This action simply dismisses the toast notification without any further action being performed.
@@ -175,7 +175,7 @@ This action simply dismisses the toast notification without any further action b
 | **type**| string | true | **"ToastDismissAction"** |
 
 
-## ToastShowCardAction
+## ToastAction.ShowCard
 *Extends [ToastAction](#toastaction)*
 
 ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
