@@ -137,6 +137,7 @@ Gathers up input fields, merges with optional data field and performs a foregrou
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"ToastForegroundAction"** |
+| **arguments** | string | false | A string of developer-defined arguments which are passed back to your app when the action is activated. Include any information required to perform your activation inside here. You will likely want to use query-string formatting to serialize your data into a string. |
 | **data** | object | false | Initial data that input fields will be combined with.  This is essentially 'hidden' properties |
 
 
@@ -148,6 +149,7 @@ Gathers up input fields, merges with optional data field and performs a backgrou
 | Property | Type | Required | Description |
 |---|---|---|---|
 | **type**| string | true | **"ToastBackgroundAction"** |
+| **arguments** | string | false | A string of developer-defined arguments which are passed back to your app when the action is activated. Include any information required to perform your activation inside here. You will likely want to use query-string formatting to serialize your data into a string. |
 | **data** | object | false | Initial data that input fields will be combined with.  This is essentially 'hidden' properties |
 | **afterActivationBehavior** | [ToastAfterActivationBehavior](#toastafteractivationbehavior) | false | New in RS3. Specifies the behavior that the toast should use when the user invokes this action. |
 
