@@ -29,7 +29,7 @@ export class OutlookConnectorContainer extends ConnectorContainer {
 
         if (headerElement != null) {
             Utils.appendChild(element, headerElement);
-        }
+        }``
 
         let renderedCard = card.render();
 
