@@ -112,6 +112,10 @@ Base class for all toast actions
 
 > NOTE: You cannot add a ToastAction directly, you can only add derived action types
 
+| Property | Type | Required | Description |
+|---|---|---|---|
+| **imageUrl**| url | false | An optional image (ms-appx or ms-appdata) that is displayed on the button in addition to the button text. |
+
 
 ## ToastOpenUrlAction
 *Extends [ToastAction](#toastaction)*
