@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -120,6 +121,8 @@ namespace Adaptive
                 if (this.MaxLines > 0)
                 {
                     var uiGrid = new Grid();
+                    uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
                     // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
                     // using same style, fontWeight settings as original textblock
                     var measureBlock = new System.Windows.Controls.TextBlock()
@@ -127,18 +130,21 @@ namespace Adaptive
                         Style = uiTextBlock.Style,
                         FontWeight = uiTextBlock.FontWeight,
                         Visibility = Visibility.Hidden,
-                        TextWrapping = TextWrapping.Wrap
+                        TextWrapping = TextWrapping.NoWrap,
+                        HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        DataContext = this.MaxLines
                     };
 
-                    for (int i = 1; i < this.MaxLines; i++)
-                        measureBlock.Inlines.Add(new System.Windows.Documents.LineBreak());
+                    measureBlock.Inlines.Add(uiTextBlock.Text);
 
                     // bind the real textBlock's Height => MeasureBlock.ActualHeight
-                    uiTextBlock.SetBinding(Control.HeightProperty, new Binding()
+                    uiTextBlock.SetBinding(Control.MaxHeightProperty, new Binding()
                     {
                         Path = new PropertyPath("ActualHeight"),
                         Source = measureBlock,
-                        Mode = BindingMode.OneWay
+                        Mode = BindingMode.OneWay,
+                        Converter = new MultiplyConverter(this.MaxLines)
                     });
 
                     // Add both to a grid so they go as a unit
@@ -150,6 +156,26 @@ namespace Adaptive
             else
                 uiTextBlock.TextWrapping = TextWrapping.NoWrap;
             return uiTextBlock;
+        }
+    }
+
+    class MultiplyConverter : IValueConverter
+    {
+        private int multiplier;
+
+        public MultiplyConverter(int multiplier)
+        {
+            this.multiplier = multiplier;
+        }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (double)value * this.multiplier;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (double)value * this.multiplier;
         }
     }
 }
