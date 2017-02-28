@@ -19,7 +19,7 @@ namespace Adaptive
         /// Columns that are part of this group
         /// </summary>
         [JsonRequired]
-        [XmlElement(typeof(Column))]
+        [XmlElement(ElementName="Column", Type=typeof(Column))]
         public List<Column> Columns { get; set; } = new List<Column>();
     }
 }

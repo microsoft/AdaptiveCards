@@ -22,7 +22,7 @@ namespace Adaptive
         /// The facts to be displayed.
         /// </summary>
         [JsonRequired]
-        [XmlElement(typeof(Fact))]
+        [XmlElement(ElementName="Fact", Type=typeof(Fact))]
         public List<Fact> Facts { get; set; } = new List<Fact>();
     }
 

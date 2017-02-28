@@ -15,12 +15,20 @@ namespace Adaptive
     public partial class InputNumber
     {
         /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<InputNumber, RenderContext, FrameworkElement> AlternateRenderer;
+
+        /// <summary>
         /// Input.Number
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             IntegerUpDown numberPicker = new IntegerUpDown();
             // numberPicker.ShowButtonSpinner = true;
 

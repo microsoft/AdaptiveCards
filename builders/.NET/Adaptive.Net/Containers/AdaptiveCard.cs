@@ -37,10 +37,10 @@ namespace Adaptive
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlArray("Actions")]
-        [XmlArrayItem(typeof(ActionOpenUrl))]
-        [XmlArrayItem(typeof(ActionShowCard))]
-        [XmlArrayItem(typeof(ActionSubmit))]
-        [XmlArrayItem(typeof(ActionHttp))]
+        [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(ActionOpenUrl))]
+        [XmlArrayItem(ElementName = "ShowCard", Type = typeof(ActionShowCard))]
+        [XmlArrayItem(ElementName = "Submit", Type = typeof(ActionSubmit))]
+        [XmlArrayItem(ElementName = "Http", Type = typeof(ActionHttp))]
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
 
         /// <summary>
@@ -63,5 +63,7 @@ namespace Adaptive
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlAttribute]
         public string BackgroundImage { get; set; }
+
+        public bool ShouldSerializeActions() { return Actions.Any(); }
     }
 }

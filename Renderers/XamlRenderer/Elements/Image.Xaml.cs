@@ -15,12 +15,20 @@ namespace Adaptive
     public partial class Image
     {
         /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<Image, RenderContext, FrameworkElement> AlternateRenderer;
+
+        /// <summary>
         /// Image
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var uiImage = new System.Windows.Controls.Image();
             // uiImage.Margin = this.Theme.ImageMargins;
 

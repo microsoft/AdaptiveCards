@@ -44,7 +44,7 @@ namespace Adaptive
         ///  the choice options
         /// </summary>
         [JsonRequired]
-        [XmlElement(typeof(Choice))]
+        [XmlElement(ElementName="Choice", Type=typeof(Choice))]
         public List<Choice> Choices { get; set; } = new List<Choice>();
 
         public bool ShouldSerializeStyle() { return this.Style != ChoiceInputStyle.Expanded; }

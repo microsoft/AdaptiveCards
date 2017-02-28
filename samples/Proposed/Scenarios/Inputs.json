@@ -182,6 +182,13 @@
             }
         },
         {
+            "type": "Action.Http",
+            "method":"POST",
+            "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "title": "POST",
+            "body": "This is the body with Gender={{gender}}"
+        },
+        {
             "type": "Action.ShowCard",
             "title": "Show Card",
             "card": {
