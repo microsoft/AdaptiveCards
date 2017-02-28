@@ -103,7 +103,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="Input">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Choices" type="Choice" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Choice" type="Choice" />
         </xs:sequence>
         <xs:attribute name="Value" type="xs:string" />
         <xs:attribute name="Style" type="ChoiceInputStyle" />
@@ -188,7 +188,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="CardElement">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Images" type="Image" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Image" type="Image" />
         </xs:sequence>
         <xs:attribute name="ImageSize" type="ImageSize" />
       </xs:extension>
@@ -234,7 +234,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="CardElement">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Facts" type="Fact" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Fact" type="Fact" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -250,7 +250,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="CardElement">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Columns" type="Column" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Column" type="Column" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -290,10 +290,10 @@
   <xs:complexType name="ArrayOfActionBase">
     <xs:sequence>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element minOccurs="0" maxOccurs="1" name="ActionSubmit" type="ActionSubmit" />
-        <xs:element minOccurs="0" maxOccurs="1" name="ActionShowCard" type="ActionShowCard" />
-        <xs:element minOccurs="0" maxOccurs="1" name="ActionHttp" type="ActionHttp" />
-        <xs:element minOccurs="0" maxOccurs="1" name="ActionOpenUrl" type="ActionOpenUrl" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Submit" type="ActionSubmit" />
+        <xs:element minOccurs="0" maxOccurs="1" name="ShowCard" type="ActionShowCard" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Http" type="ActionHttp" />
+        <xs:element minOccurs="0" maxOccurs="1" name="OpenUrl" type="ActionOpenUrl" />
       </xs:choice>
     </xs:sequence>
   </xs:complexType>
