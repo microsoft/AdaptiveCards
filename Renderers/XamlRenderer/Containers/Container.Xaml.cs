@@ -56,16 +56,22 @@ namespace Adaptive
             {
                 // each element has a row
                 FrameworkElement uiElement = cardElement.Render(context);
-                if (cardElement is Container && grid.RowDefinitions.Count > 0)
+                if (grid.RowDefinitions.Count > 0)
                 {
-                    Container container = (Container)cardElement;
-                    if (container.StartGroup == true)
+                    switch (cardElement.Separation)
                     {
-                        var sep = new Separator();
-                        grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                        Grid.SetRow(sep, grid.RowDefinitions.Count - 1);
-                        sep.Style = context.GetStyle("Adaptive.Separator");
-                        grid.Children.Add(sep);
+                        case SeparationStyle.None:
+                            break;
+                        case SeparationStyle.Subtle:
+                        case SeparationStyle.Strong:
+                            {
+                                var sep = new Separator();
+                                sep.Style = context.GetStyle($"Adaptive.Separator.{cardElement.Separation}.{cardElement.Type}");
+                                grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                                Grid.SetRow(sep, grid.RowDefinitions.Count - 1);
+                                grid.Children.Add(sep);
+                            }
+                            break;
                     }
                 }
                 grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });

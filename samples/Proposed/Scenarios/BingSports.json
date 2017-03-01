@@ -17,6 +17,7 @@
             "type": "Container",
             "selectAction": {
                 "type": "Action.OpenUrl",
+                "url": "http://msn.com",
                 "title": "Container action"
             },
             "items": [
@@ -34,6 +35,7 @@
                                     "horizontalAlignment": "center",
                                     "selectAction": {
                                         "type": "Action.OpenUrl",
+                                        "url":"http://so.cl",
                                         "title": "Image action"
                                     }
                                 },
@@ -47,7 +49,8 @@
                             ],
                             "selectAction": {
                                 "type": "Action.OpenUrl",
-                                "title": "Column action"
+                                "title": "Column action",
+                                "url":"http://msnbc.com"
                             }
                         },
                         {

@@ -9,7 +9,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup": true,
+			"separation":"strong",
 			"items": [
 				{
 					"type": "TextBlock",
@@ -50,7 +50,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup": true,
+			"separation":"strong",
 			"items": [
 				{
 					"type": "TextBlock",
@@ -86,7 +86,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup": true,
+			"separation":"strong",
 			"items": [
 				{
 					"type": "TextBlock",
@@ -127,7 +127,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup": true,
+			"separation":"strong",
 			"items": [
 				{
 					"type": "TextBlock",

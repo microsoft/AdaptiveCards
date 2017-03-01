@@ -89,6 +89,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
         </xs:sequence>
+        <xs:attribute name="Separation" type="SeparationStyle" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -283,7 +284,6 @@
           <xs:element minOccurs="0" maxOccurs="1" name="SelectAction" type="ActionBase" />
           <xs:element minOccurs="0" maxOccurs="1" name="Actions" type="ArrayOfActionBase" />
         </xs:sequence>
-        <xs:attribute name="StartGroup" type="xs:boolean" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -297,6 +297,13 @@
       </xs:choice>
     </xs:sequence>
   </xs:complexType>
+  <xs:simpleType name="SeparationStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Subtle" />
+      <xs:enumeration value="Strong" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="TextSize">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Normal" />

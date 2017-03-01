@@ -5,7 +5,7 @@
     "body": [
         {
             "type": "Container",
-            "startGroup": true,
+            "separation": "strong",
             "items": [
                 {
                     "type": "TextBlock",
@@ -59,7 +59,7 @@
         },
         {
             "type": "Container",
-            "startGroup": true,
+            "separation": "strong",
             "items": [
                 {
                     "type": "TextBlock",
@@ -144,7 +144,7 @@
         },
         {
             "type": "Container",
-            "startGroup": true,
+            "seperation": "strong",
             "items": [
                 {
                     "type": "TextBlock",
@@ -183,7 +183,7 @@
         },
         {
             "type": "Action.Http",
-            "method":"POST",
+            "method": "POST",
             "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             "title": "POST",
             "body": "This is the body with Gender={{gender}}"
