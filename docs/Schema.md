@@ -40,6 +40,7 @@ AdaptiveCard is top level object which represents a card
 | **actions** |[Action](#action)[]| false | Actions |
 | **version** | string| false | version of schema that this card was authored |
 | **minVersion** | string|false| if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore|
+| **fallbackText** | string|false| if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. |
 
 # Card Element
 

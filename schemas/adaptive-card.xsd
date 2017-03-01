@@ -21,7 +21,7 @@
           <xs:element minOccurs="0" maxOccurs="1" name="Body" type="xs:string" />
         </xs:sequence>
         <xs:attribute name="Method" type="xs:string" />
-        <xs:attribute name="Url" type="xs:string" />
+        <xs:attribute name="Url" type="xs:string"  use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -29,7 +29,7 @@
   <xs:complexType name="ActionOpenUrl">
     <xs:complexContent mixed="false">
       <xs:extension base="ActionBase">
-        <xs:attribute name="Url" type="xs:string" />
+        <xs:attribute name="Url" type="xs:string"  use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -66,8 +66,9 @@
         </xs:sequence>
         <xs:attribute name="Title" type="xs:string" />
         <xs:attribute name="BackgroundImage" type="xs:string" />
-        <xs:attribute name="Version" type="xs:string" >
-        <xs:attribute name="MinVersion" type="xs:string" >
+        <xs:attribute name="Version" type="xs:string" use="required"/>
+        <xs:attribute name="MinVersion" type="xs:string" />
+        <xs:attribute name="FallbackText" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -78,7 +79,7 @@
         <xs:attribute name="Weight" type="TextWeight" />
         <xs:attribute name="Color" type="TextColor" />
         <xs:attribute name="IsSubtle" type="xs:boolean" />
-        <xs:attribute name="Text" type="xs:string" />
+        <xs:attribute name="Text" type="xs:string"  use="required"/>
         <xs:attribute name="HorizontalAlignment" type="HorizontalAlignment" />
         <xs:attribute name="Wrap" type="xs:boolean" />
         <xs:attribute name="MaxLines" type="xs:int" />
@@ -98,7 +99,7 @@
   <xs:complexType name="Input">
     <xs:complexContent mixed="false">
       <xs:extension base="CardElement">
-        <xs:attribute name="Id" type="xs:string" />
+        <xs:attribute name="Id" type="xs:string"  use="required" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -118,8 +119,8 @@
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
     </xs:sequence>
-    <xs:attribute name="Title" type="xs:string" />
-    <xs:attribute name="Value" type="xs:string" />
+    <xs:attribute name="Title" type="xs:string"  use="required"/>
+    <xs:attribute name="Value" type="xs:string" use="required" />
     <xs:attribute name="IsSelected" type="xs:boolean" use="required" />
   </xs:complexType>
   <xs:simpleType name="ChoiceInputStyle">
@@ -131,7 +132,7 @@
   <xs:complexType name="InputToggle">
     <xs:complexContent mixed="false">
       <xs:extension base="Input">
-        <xs:attribute name="Title" type="xs:string" />
+        <xs:attribute name="Title" type="xs:string"  use="required" />
         <xs:attribute name="ValueOn" type="xs:string" />
         <xs:attribute name="ValueOff" type="xs:string" />
         <xs:attribute name="Value" type="xs:string" />
@@ -205,7 +206,7 @@
         </xs:sequence>
         <xs:attribute name="Size" type="ImageSize" />
         <xs:attribute name="Style" type="ImageStyle" />
-        <xs:attribute name="Url" type="xs:string" />
+        <xs:attribute name="Url" type="xs:string"  use="required"/>
         <xs:attribute name="HorizontalAlignment" type="HorizontalAlignment" />
         <xs:attribute name="AltText" type="xs:string" />
       </xs:extension>
@@ -246,8 +247,8 @@
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
     </xs:sequence>
-    <xs:attribute name="Title" type="xs:string" />
-    <xs:attribute name="Value" type="xs:string" />
+    <xs:attribute name="Title" type="xs:string" use="required" />
+    <xs:attribute name="Value" type="xs:string" use="required" />
   </xs:complexType>
   <xs:complexType name="ColumnSet">
     <xs:complexContent mixed="false">
