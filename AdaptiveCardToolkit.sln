@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET", ".NET", "{38D9E098-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfVisualizer", "WpfVisualizer\WpfVisualizer.csproj", "{012406C8-BB8F-493B-A3A1-0D02214ADAA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.Renderers.Xaml", "renderers\xaml\Adaptive.Renderers.Xaml.csproj", "{60619D62-59FA-4864-BA5B-6F6F87997671}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.Renderers.Xaml", "Renderers\XamlRenderer\Adaptive.Renderers.Xaml.csproj", "{60619D62-59FA-4864-BA5B-6F6F87997671}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "schemas", "schemas\", "{A2239944-25C4-4E32-907A-5EED7DA67DFE}"
 	ProjectSection(WebsiteProperties) = preProject
