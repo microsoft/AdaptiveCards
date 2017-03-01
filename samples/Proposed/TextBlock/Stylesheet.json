@@ -1,6 +1,7 @@
 {
-	"$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
+	"version": "1.0",
 	"body": [
 		{
 			"type": "TextBlock",
@@ -9,7 +10,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup": true,
+			"separation": "strong",
 			"items": [
 				{
 					"type": "TextBlock",
@@ -50,7 +51,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup": true,
+			"separation": "strong",
 			"items": [
 				{
 					"type": "TextBlock",
@@ -86,7 +87,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup": true,
+			"separation": "strong",
 			"items": [
 				{
 					"type": "TextBlock",
@@ -127,7 +128,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup": true,
+			"separation": "strong",
 			"items": [
 				{
 					"type": "TextBlock",

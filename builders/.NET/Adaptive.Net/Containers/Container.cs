@@ -51,14 +51,6 @@ namespace Adaptive
         [XmlArrayItem(ElementName = "Http", Type = typeof(ActionHttp))]
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
 
-        /// <summary>
-        /// visually separate this container from previous containers
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [XmlAttribute]
-        public bool StartGroup { get; set; }
-
-        public bool ShouldSerializeStartGroup() { return this.StartGroup; }
 
         public bool ShouldSerializeActions() { return Actions.Any(); }
 

@@ -69,12 +69,12 @@
 
         <!-- Container Styling -->
         <Style x:Key="Adaptive.Container" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <!-- Column/ColumnSet Styling-->
         <Style x:Key="Adaptive.ColumnSet" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <Style x:Key="Adaptive.Column" TargetType="Grid">
@@ -82,13 +82,24 @@
         </Style>
 
         <!-- Separator Styling -->
-        <Style x:Key="Adaptive.Separator" TargetType="Separator">
+        <Style x:Key="Adaptive.Separator.Subtle" TargetType="Separator">
+            <Setter Property="Margin" Value="0,2,0,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Separator}">
+                        <Border BorderBrush="Transparent" BorderThickness="0" Height="1" SnapsToDevicePixels="true" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Adaptive.Separator.Strong" TargetType="Separator">
             <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <!-- Fact/FactSet Styling -->
         <Style x:Key="Adaptive.FactSet" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <Style x:Key="Adaptive.Fact.Name" TargetType="TextBlock">
@@ -102,7 +113,7 @@
 
         <!-- Image/ImageGallery Styling -->
         <Style x:Key="Adaptive.Image" TargetType="Image">
-            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <Style x:Key="Adaptive.Image.Auto" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
