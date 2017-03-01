@@ -1,5 +1,5 @@
 # Rendering Cards
-  
+
 If you want to render Adaptive Cards inside your app or web site, the Toolkit provides native platform Renderers to achieve this.
 
 # Platforms 
