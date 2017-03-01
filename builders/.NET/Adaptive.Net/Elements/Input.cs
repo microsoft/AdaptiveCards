@@ -22,5 +22,13 @@ namespace Adaptive
         [JsonRequired]
         [XmlAttribute]
         public string Id { get; set; }
+
+        /// <summary>
+        /// The input must have a value for it to be part of a Submit or Http action 
+        /// </summary>
+        [XmlAttribute]
+        public bool IsRequired { get; set; }
+
+        public bool ShouldSerializeIsRequired() { return this.IsRequired; }
     }
 }

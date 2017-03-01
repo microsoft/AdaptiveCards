@@ -51,5 +51,8 @@ namespace Adaptive
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlAttribute]
         public int MaxLength { get; set; }
+
+        public bool ShouldSerializeIsMultiline() { return this.IsMultiline; }
+
     }
 }

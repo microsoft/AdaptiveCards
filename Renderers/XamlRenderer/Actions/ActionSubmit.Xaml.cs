@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using WPF = System.Windows.Controls;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 
 namespace Adaptive
 {
@@ -26,9 +27,17 @@ namespace Adaptive
             Button uiButton = this.CreateActionButton(context); // content
             uiButton.Click += (sender, e) =>
             {
-                dynamic data = (this.Data != null) ? ((JToken)this.Data).DeepClone() : new JObject();
-                data = context.MergeInputData(data);
-                context.Invoke(uiButton, new ActionEventArgs() { Action = this, Data = data });
+                try
+                {
+
+                    dynamic data = (this.Data != null) ? ((JToken)this.Data).DeepClone() : new JObject();
+                    data = context.MergeInputData(data);
+                    context.Action(uiButton, new ActionEventArgs() { Action = this, Data = data });
+                }
+                catch (MissingInputException err)
+                {
+                    context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
+                }
             };
             return uiButton;
         }

@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using WPF = System.Windows.Controls;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 
 namespace Adaptive
 {
@@ -29,22 +30,30 @@ namespace Adaptive
             uiButton.Click += (sender, e) =>
             {
                 dynamic data = new JObject();
-                data = context.MergeInputData(data);
-
-                string body = (string)this.Body?.ToString() ?? String.Empty;
-
-                context.Invoke(uiButton, new ActionEventArgs()
+                try
                 {
-                    Action = new ActionHttp()
+
+                    data = context.MergeInputData(data);
+
+                    string body = (string)this.Body?.ToString() ?? String.Empty;
+
+                    context.Action(uiButton, new ActionEventArgs()
                     {
-                        Title = this.Title,
-                        Method = this.Method,
-                        Url = Utilities.BindData(data, this.Url, url: true),
-                        Headers = this.Headers,
-                        Body = Utilities.BindData(data, body),
-                    },
-                    Data = data
-                });
+                        Action = new ActionHttp()
+                        {
+                            Title = this.Title,
+                            Method = this.Method,
+                            Url = Utilities.BindData(data, this.Url, url: true),
+                            Headers = this.Headers,
+                            Body = Utilities.BindData(data, body),
+                        },
+                        Data = data
+                    });
+                }
+                catch (MissingInputException err)
+                {
+                    context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
+                }
             };
             return uiButton;
         }
