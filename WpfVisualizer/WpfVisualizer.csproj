@@ -160,7 +160,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\renderers\xaml\Adaptive.Renderers.Xaml.csproj">
+    <ProjectReference Include="..\Renderers\XamlRenderer\Adaptive.Renderers.Xaml.csproj">
       <Project>{60619d62-59fa-4864-ba5b-6f6f87997671}</Project>
       <Name>Adaptive.Renderers.Xaml</Name>
     </ProjectReference>
