@@ -12,6 +12,12 @@ namespace Adaptive
 {
     public partial class AdaptiveCard
     {
+
+        /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<AdaptiveCard, RenderContext, FrameworkElement> AlternateRenderer;
+
         /// <summary>
         /// AdaptiveCard
         /// </summary>
@@ -19,6 +25,9 @@ namespace Adaptive
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.Card");
             if (this.BackgroundImage != null)
@@ -32,5 +41,7 @@ namespace Adaptive
             Container.AddContainerElements(grid, this.Body, this.Actions, context);
             return grid;
         }
+
+
     }
 }

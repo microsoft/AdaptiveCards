@@ -24,7 +24,18 @@ namespace Adaptive
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlElement]
         public string Speak { get; set; }
+
+        /// <summary>
+        /// How should this element be emphasized relative to previous element
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
+        public SeparationStyle Separation { get; set; }
+
+        public bool ShouldSerializeSeparation() { return this.Separation != SeparationStyle.None; }
     }
+
 }
+
 
 

@@ -13,12 +13,20 @@ namespace Adaptive
     public partial class FactSet
     {
         /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<FactSet, RenderContext, FrameworkElement> AlternateRenderer;
+
+        /// <summary>
         /// FactSet
         /// </summary>
         /// <param name="factSet"></param>
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var uiFactSet = new Grid();
             // grid.Margin = this.Theme.FactSetMargins;
             uiFactSet.Style = context.GetStyle("Adaptive.FactSet");

@@ -37,10 +37,10 @@ namespace Adaptive
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlArray("Actions")]
-        [XmlArrayItem(typeof(ActionOpenUrl))]
-        [XmlArrayItem(typeof(ActionShowCard))]
-        [XmlArrayItem(typeof(ActionSubmit))]
-        [XmlArrayItem(typeof(ActionHttp))]
+        [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(ActionOpenUrl))]
+        [XmlArrayItem(ElementName = "ShowCard", Type = typeof(ActionShowCard))]
+        [XmlArrayItem(ElementName = "Submit", Type = typeof(ActionSubmit))]
+        [XmlArrayItem(ElementName = "Http", Type = typeof(ActionHttp))]
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
 
         /// <summary>
@@ -63,5 +63,22 @@ namespace Adaptive
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlAttribute]
         public string BackgroundImage { get; set; }
+
+        /// <summary>
+        /// version of schema that this card was authored
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
+        public string Version { get; set; }
+
+        /// <summary>
+        /// if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
+        public string MinVersion { get; set; }
+
+
+        public bool ShouldSerializeActions() { return Actions.Any(); }
     }
 }

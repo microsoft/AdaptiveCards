@@ -22,7 +22,7 @@ namespace Adaptive
         /// Collection of images to display together 
         /// </summary>
         [JsonRequired]
-        [XmlElement(typeof(Image))]
+        [XmlElement(ElementName="Image", Type=typeof(Image))]
         public List<Image> Images { get; set; } = new List<Image>();
 
         /// <summary>

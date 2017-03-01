@@ -1,36 +1,10 @@
 {
-  // "$schema": "http://localhost:13406/adaptive-card.json",
   "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-  "@type": "AdaptiveCard",
+  "type": "AdaptiveCard",
   "body": [
     {
-      "type": "Image",
-      "url": "http://gianfreda.net/wp-content/uploads/2016/02/cartoon-fire-truck-pictures-clipartsco-sparky-the-fire-dog-coloring-pages-sparky-the-fire-dog-coloring-pages.jpg",
-      "size": "large"
-    },
-    {
       "type": "TextBlock",
-      "size":"large",
-      "text":"asasd"
-    },
-    {
-      "type": "FactSet",
-      "facts": [
-        {
-          "title": "test",
-          "value": "value"
-        }
-      ]
-    },
-    {
-      "type": "TextBlock",
-      "text": "tests"
-    }
-  ],
-  "actions": [
-    {
-      "type": "Action.Submit",
-      "title": "Submit"
+      "text": "This is a sentence."
     }
   ]
 }

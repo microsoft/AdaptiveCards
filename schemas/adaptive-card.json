@@ -20,10 +20,19 @@
     },
     "actions": {
       "$ref": "#/definitions/Actions"
+    },
+    "version":{
+      "type":"string",
+      "description": "version of schema that this card was authored "
+    },
+    "minVersion":{
+      "type":"string",
+      "description": "if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore"
     }
   },
   "required": [
-    "type"
+    "type",
+    "version"
   ],
   "definitions": {
     "Action": {
@@ -126,6 +135,9 @@
         },
         "speak": {
           "$ref": "#/definitions/Speak"
+        },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
         },
         "card": {
           "$ref": "#/definitions/AdaptiveCard"
@@ -252,8 +264,10 @@
           "description": "is the choice selected"
         },
         "speak": {
-          "$ref": "#/definitions/Speak",
-          "description": ""
+          "$ref": "#/definitions/Speak"
+        },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
         },
         "value": {
           "type": "string",
@@ -302,6 +316,9 @@
         "speak": {
           "$ref": "#/definitions/Speak"
         },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
+        },
         "type": {
           "type": "string",
           "description": "Must be Column",
@@ -328,6 +345,9 @@
         },
         "speak": {
           "$ref": "#/definitions/Speak"
+        },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
         },
         "type": {
           "type": "string",
@@ -359,9 +379,8 @@
         "speak": {
           "$ref": "#/definitions/Speak"
         },
-        "startGroup": {
-          "type": "boolean",
-          "description": "visually separate this container from preiovus containers"
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
         },
         "type": {
           "type": "string",
@@ -409,6 +428,9 @@
         "speak": {
           "$ref": "#/definitions/Speak"
         },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
+        },
         "type": {
           "type": "string",
           "description": "Must be FactSet",
@@ -448,6 +470,9 @@
         "speak": {
           "$ref": "#/definitions/Speak"
         },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
+        },
         "style": {
           "$ref": "#/definitions/ImageStyle"
         },
@@ -484,6 +509,9 @@
         },
         "speak": {
           "$ref": "#/definitions/Speak"
+        },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
         },
         "type": {
           "type": "string",
@@ -582,6 +610,9 @@
         "speak": {
           "$ref": "#/definitions/Speak"
         },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
+        },
         "type": {
           "type": "string",
           "description": "The type must be Input.Date",
@@ -623,6 +654,9 @@
         "speak": {
           "$ref": "#/definitions/Speak"
         },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
+        },
         "type": {
           "type": "string",
           "description": "The type must be Input.Number",
@@ -663,6 +697,9 @@
         },
         "speak": {
           "$ref": "#/definitions/Speak"
+        },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
         },
         "style": {
           "$ref": "#/definitions/TextInputStyle"
@@ -708,6 +745,9 @@
         "speak": {
           "$ref": "#/definitions/Speak"
         },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
+        },
         "type": {
           "type": "string",
           "description": "The type must be Input.Time",
@@ -736,6 +776,9 @@
         },
         "speak": {
           "$ref": "#/definitions/Speak"
+        },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
         },
         "title": {
           "type": "string",
@@ -814,6 +857,9 @@
         "speak": {
           "$ref": "#/definitions/Speak"
         },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
+        },
         "text": {
           "type": "string",
           "description": "The actual text to display"
@@ -844,6 +890,15 @@
         "text"
       ],
       "type": "object"
+    },
+    "SeparationStyle": {
+      "type": "string",
+      "description": "Controls how Items are rendered relative to previous elements.",
+      "enum": [
+        "none",
+        "subtle",
+        "strong"
+      ]
     },
     "TextInputStyle": {
       "type": "string",

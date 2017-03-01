@@ -1,11 +1,12 @@
 {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
+    "version": "1.0",
     "speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
     "body": [
         {
             "type": "Container",
-            "startGroup": true,
+            "separation": "strong",
             "items": [
                 {
                     "type": "TextBlock",
@@ -59,7 +60,7 @@
         },
         {
             "type": "Container",
-            "startGroup": true,
+            "separation": "strong",
             "items": [
                 {
                     "type": "TextBlock",
@@ -144,7 +145,7 @@
         },
         {
             "type": "Container",
-            "startGroup": true,
+            "seperation": "strong",
             "items": [
                 {
                     "type": "TextBlock",
@@ -180,6 +181,13 @@
             "data": {
                 "id": "1234567890"
             }
+        },
+        {
+            "type": "Action.Http",
+            "method": "POST",
+            "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "title": "POST",
+            "body": "This is the body with Gender={{gender}}"
         },
         {
             "type": "Action.ShowCard",

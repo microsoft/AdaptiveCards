@@ -73,6 +73,28 @@ namespace Adaptive
     }
 
     /// <summary>
+    /// Controls the emphasize of an element to the previous element
+    /// </summary>
+    [JsonConverter(typeof(MyStringEnumConverter), true)]
+    public enum SeparationStyle
+    {
+        /// <summary>
+        /// No emphasis
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Subtly disassociate the element from the previous element
+        /// </summary>
+        Subtle,
+
+        /// <summary>
+        /// Strongly distance the element fromthe previous element
+        /// </summary>
+        Strong
+    }
+
+    /// <summary>
     /// Controls the relative size of TextBlock elements
     /// </summary>
     [JsonConverter(typeof(MyStringEnumConverter), true)]

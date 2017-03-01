@@ -66,6 +66,8 @@
         </xs:sequence>
         <xs:attribute name="Title" type="xs:string" />
         <xs:attribute name="BackgroundImage" type="xs:string" />
+        <xs:attribute name="Version" type="xs:string" >
+        <xs:attribute name="MinVersion" type="xs:string" >
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -89,6 +91,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
         </xs:sequence>
+        <xs:attribute name="Separation" type="SeparationStyle" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -103,7 +106,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="Input">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Choices" type="Choice" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Choice" type="Choice" />
         </xs:sequence>
         <xs:attribute name="Value" type="xs:string" />
         <xs:attribute name="Style" type="ChoiceInputStyle" />
@@ -188,7 +191,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="CardElement">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Images" type="Image" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Image" type="Image" />
         </xs:sequence>
         <xs:attribute name="ImageSize" type="ImageSize" />
       </xs:extension>
@@ -234,7 +237,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="CardElement">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Facts" type="Fact" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Fact" type="Fact" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -250,7 +253,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="CardElement">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Columns" type="Column" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Column" type="Column" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -283,20 +286,26 @@
           <xs:element minOccurs="0" maxOccurs="1" name="SelectAction" type="ActionBase" />
           <xs:element minOccurs="0" maxOccurs="1" name="Actions" type="ArrayOfActionBase" />
         </xs:sequence>
-        <xs:attribute name="StartGroup" type="xs:boolean" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="ArrayOfActionBase">
     <xs:sequence>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element minOccurs="0" maxOccurs="1" name="ActionSubmit" type="ActionSubmit" />
-        <xs:element minOccurs="0" maxOccurs="1" name="ActionShowCard" type="ActionShowCard" />
-        <xs:element minOccurs="0" maxOccurs="1" name="ActionHttp" type="ActionHttp" />
-        <xs:element minOccurs="0" maxOccurs="1" name="ActionOpenUrl" type="ActionOpenUrl" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Submit" type="ActionSubmit" />
+        <xs:element minOccurs="0" maxOccurs="1" name="ShowCard" type="ActionShowCard" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Http" type="ActionHttp" />
+        <xs:element minOccurs="0" maxOccurs="1" name="OpenUrl" type="ActionOpenUrl" />
       </xs:choice>
     </xs:sequence>
   </xs:complexType>
+  <xs:simpleType name="SeparationStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Subtle" />
+      <xs:enumeration value="Strong" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="TextSize">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Normal" />

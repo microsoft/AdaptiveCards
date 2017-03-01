@@ -15,12 +15,20 @@ namespace Adaptive
     public partial class InputTime
     {
         /// <summary>
+        /// Override the renderer for this element
+        /// </summary>
+        public static Func<InputTime, RenderContext, FrameworkElement> AlternateRenderer;
+
+        /// <summary>
         /// Input.Time
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         public override FrameworkElement Render(RenderContext context)
         {
+            if (AlternateRenderer != null)
+                return AlternateRenderer(this, context);
+
             var timePicker = new TimePicker();
             DateTime value;
             if (DateTime.TryParse(this.Value, out value))
