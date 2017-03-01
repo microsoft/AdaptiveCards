@@ -1,6 +1,7 @@
 {
-    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
+    "version": "1.0",
     "body": [
         {
             "speak": "<s>Serious Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
@@ -45,15 +46,15 @@
     "actions": [
         {
             "type": "Action.Http",
-            "method":"POST",
+            "method": "POST",
             "title": "More Info",
-            "url":"http://foo.com"
+            "url": "http://foo.com"
         },
         {
             "type": "Action.Http",
-            "method":"POST",
+            "method": "POST",
             "title": "View on Foursquare",
-            "url":"http://foo.com"
+            "url": "http://foo.com"
         }
     ]
 }

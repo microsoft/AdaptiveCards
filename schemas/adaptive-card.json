@@ -31,7 +31,8 @@
     }
   },
   "required": [
-    "type"
+    "type",
+    "version"
   ],
   "definitions": {
     "Action": {

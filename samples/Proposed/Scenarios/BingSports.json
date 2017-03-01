@@ -1,6 +1,7 @@
 {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
+    "version": "1.0",
     "speak": "The Seattle Seahawks beat the Carolina Panthers 40-7",
     "body": [
         {
@@ -35,7 +36,7 @@
                                     "horizontalAlignment": "center",
                                     "selectAction": {
                                         "type": "Action.OpenUrl",
-                                        "url":"http://so.cl",
+                                        "url": "http://so.cl",
                                         "title": "Image action"
                                     }
                                 },
@@ -50,7 +51,7 @@
                             "selectAction": {
                                 "type": "Action.OpenUrl",
                                 "title": "Column action",
-                                "url":"http://msnbc.com"
+                                "url": "http://msnbc.com"
                             }
                         },
                         {
