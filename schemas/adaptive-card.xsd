@@ -66,6 +66,8 @@
         </xs:sequence>
         <xs:attribute name="Title" type="xs:string" />
         <xs:attribute name="BackgroundImage" type="xs:string" />
+        <xs:attribute name="Version" type="xs:string" >
+        <xs:attribute name="MinVersion" type="xs:string" >
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

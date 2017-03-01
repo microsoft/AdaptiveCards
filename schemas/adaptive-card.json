@@ -20,6 +20,14 @@
     },
     "actions": {
       "$ref": "#/definitions/Actions"
+    },
+    "version":{
+      "type":"string",
+      "description": "version of schema that this card was authored "
+    },
+    "minVersion":{
+      "type":"string",
+      "description": "if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore"
     }
   },
   "required": [

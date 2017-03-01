@@ -38,6 +38,8 @@ AdaptiveCard is top level object which represents a card
 | **type**| string | true | **"AdaptiveCard"** |
 | **body** | [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **actions** |[Action](#action)[]| false | Actions |
+| **version** | string| false | version of schema that this card was authored |
+| **minVersion** | string|false| if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore|
 
 # Card Element
 

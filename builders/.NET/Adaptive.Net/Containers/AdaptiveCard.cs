@@ -64,6 +64,21 @@ namespace Adaptive
         [XmlAttribute]
         public string BackgroundImage { get; set; }
 
+        /// <summary>
+        /// version of schema that this card was authored
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
+        public string Version { get; set; }
+
+        /// <summary>
+        /// if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
+        public string MinVersion { get; set; }
+
+
         public bool ShouldSerializeActions() { return Actions.Any(); }
     }
 }
