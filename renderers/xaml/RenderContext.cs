@@ -39,16 +39,26 @@ namespace Adaptive
 
         public delegate void ActionEventHandler(object sender, ActionEventArgs e);
 
+
         /// <summary>
         /// Event fires when action is invoked
         /// </summary>
         public event ActionEventHandler OnAction;
 
-        public void Invoke(FrameworkElement ui, ActionEventArgs args)
+        public void Action(FrameworkElement ui, ActionEventArgs args)
         {
             this.OnAction?.Invoke(ui, args);
         }
 
+        public delegate void MissingInputEventHandler(object sender, MissingInputEventArgs e);
+
+        public event MissingInputEventHandler OnMissingInput;
+
+        public void MissingInput(ActionBase sender, MissingInputEventArgs args)
+        {
+            this.OnMissingInput?.Invoke(sender, args);
+        }
+        
         public virtual Style GetStyle(string styleName)
         {
             if (!styleName.Contains(".Tap"))
@@ -95,9 +105,20 @@ namespace Adaptive
                 {
                     Input input = inputControl.DataContext as Input;
                     var value = GetValueFromInputControl(inputControl);
+                    bool hasValue = false;
                     if (value != null)
                     {
+                        if (value is string && !String.IsNullOrEmpty((string)value))
+                            hasValue = true;
+                    }
+                            
+                    if (hasValue)
+                    {
                         data[input.Id] = JToken.FromObject(value);
+                    }
+                    else if (input.IsRequired)
+                    {
+                        throw new MissingInputException($"You are missing a required value.", input, inputControl);
                     }
                 }
 
@@ -105,7 +126,12 @@ namespace Adaptive
             return data;
         }
 
-        protected virtual object GetValueFromInputControl(FrameworkElement inputControl)
+        /// <summary>
+        /// Override this to look at inputControl and return value for it
+        /// </summary>
+        /// <param name="inputControl"></param>
+        /// <returns></returns>
+        public virtual object GetValueFromInputControl(FrameworkElement inputControl)
         {
             if (inputControl is WatermarkTextBox)
             {
@@ -276,4 +302,31 @@ namespace Adaptive
         public object Data { get; set; }
     }
 
+    public class MissingInputEventArgs : EventArgs
+    {
+        public MissingInputEventArgs(Input input, FrameworkElement frameworkElement)
+        {
+            this.FrameworkElement = frameworkElement;
+            this.Input = input;
+        }
+
+        public FrameworkElement FrameworkElement { get; private set; }
+
+        public Input Input { get; private set; }
+    }
+
+
+    public class MissingInputException : Exception
+    {
+        public MissingInputException(string message, Input input, FrameworkElement frameworkElement)
+            :base(message)
+        {
+            this.FrameworkElement = frameworkElement;
+            this.Input = input;
+        }
+
+        public FrameworkElement FrameworkElement { get; set; }
+
+        public Input Input { get; set; }
+    }
 }

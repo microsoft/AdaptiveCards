@@ -48,6 +48,8 @@ namespace Adaptive
         public List<Choice> Choices { get; set; } = new List<Choice>();
 
         public bool ShouldSerializeStyle() { return this.Style != ChoiceInputStyle.Expanded; }
+        public bool ShouldSerializeIsMultiSelect() { return this.IsMultiSelect; }
+
     }
 
     /// <summary>
@@ -85,6 +87,8 @@ namespace Adaptive
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlElement]
         public string Speak { get; set; }
+
+        public bool ShouldSerializeIsSelected() { return this.IsSelected; }
     }
 
 

@@ -21,17 +21,22 @@
     "actions": {
       "$ref": "#/definitions/Actions"
     },
-    "version":{
-      "type":"string",
+    "version": {
+      "type": "string",
       "description": "version of schema that this card was authored "
     },
-    "minVersion":{
-      "type":"string",
+    "minVersion": {
+      "type": "string",
       "description": "if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore"
+    },
+    "fallbackText": {
+      "type": "string",
+      "description": "if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. "
     }
   },
   "required": [
     "type",
+    "body",
     "version"
   ],
   "definitions": {
@@ -198,10 +203,23 @@
           "enum": [
             "AdaptiveCard"
           ]
+        },
+        "version": {
+          "type": "string",
+          "description": "version of schema that this card was authored "
+        },
+        "minVersion": {
+          "type": "string",
+          "description": "if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore"
+        },
+        "fallbackText": {
+          "type": "string",
+          "description": "if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. "
         }
       },
       "required": [
-        "type"
+        "type",
+        "version"
       ],
       "type": "object"
     },
@@ -310,7 +328,10 @@
           "$ref": "#/definitions/Action"
         },
         "size": {
-          "type": [ "string", "number" ],
+          "type": [
+            "string",
+            "number"
+          ],
           "description": "auto, stretch, or a number representing relative width of the column in the column group"
         },
         "speak": {

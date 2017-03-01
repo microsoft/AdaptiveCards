@@ -26,7 +26,7 @@ namespace Adaptive
             Button uiButton = this.CreateActionButton(context);
             uiButton.Click += (sender, e) =>
             {
-                context.Invoke(uiButton, new ActionEventArgs() { Action = this, Data = null });
+                context.Action(uiButton, new ActionEventArgs() { Action = this, Data = null });
             };
             return uiButton;
         }
