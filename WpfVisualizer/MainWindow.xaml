@@ -69,12 +69,12 @@
 
         <!-- Container Styling -->
         <Style x:Key="Adaptive.Container" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <!-- Column/ColumnSet Styling-->
         <Style x:Key="Adaptive.ColumnSet" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <Style x:Key="Adaptive.Column" TargetType="Grid">
@@ -99,7 +99,7 @@
 
         <!-- Fact/FactSet Styling -->
         <Style x:Key="Adaptive.FactSet" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <Style x:Key="Adaptive.Fact.Name" TargetType="TextBlock">
@@ -113,7 +113,7 @@
 
         <!-- Image/ImageGallery Styling -->
         <Style x:Key="Adaptive.Image" TargetType="Image">
-            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <Style x:Key="Adaptive.Image.Auto" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
