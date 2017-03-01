@@ -207,8 +207,8 @@ namespace WpfVisualizer
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
             RenderContext renderContext = new RenderContext(this.Resources);
-            renderContext.ShowAction = false;
-            renderContext.ShowInput = false;
+            renderContext.Options.ShowAction = false;
+            renderContext.Options.ShowInput = false;
             var uiCard = this._card.Render(renderContext);
             var bitmap = await Utilities.XamlToImageAsync(uiCard, 400);
 

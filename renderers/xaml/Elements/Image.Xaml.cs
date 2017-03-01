@@ -37,7 +37,7 @@ namespace Adaptive
             if (Enum.TryParse<System.Windows.HorizontalAlignment>(this.HorizontalAlignment.ToString(), out alignment))
                 uiImage.HorizontalAlignment = alignment;
             string style = $"Adaptive.Image";
-            if (this.Size != null)
+            if (this.Size != ImageSize.Auto)
                 style += $".{this.Size.ToString()}";
 
             if (this.Style == ImageStyle.Person)

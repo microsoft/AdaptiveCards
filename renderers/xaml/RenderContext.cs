@@ -11,6 +11,12 @@ using Xceed.Wpf.Toolkit;
 
 namespace Adaptive
 {
+    public class RenderOptions
+    {
+        public bool ShowInput { get; set; } = true;
+        public bool ShowAction { get; set; } = true;
+    }
+
 
     public class RenderContext
     {
@@ -23,21 +29,30 @@ namespace Adaptive
         {
             return new RenderContext(this.Resources)
             {
-                ShowInput = this.ShowInput,
-                ShowAction = this.ShowAction,
-                OnAction = this.OnAction
+                Options = new RenderOptions()
+                {
+                    ShowAction = this.Options.ShowAction,
+                    ShowInput  = this.Options.ShowInput
+                },
+                OnAction = this.OnAction,
+                OnMissingInput = this.OnMissingInput
             };
         }
 
-        public bool ShowInput = true;
+        public delegate void ActionEventHandler(object sender, ActionEventArgs e);
+        public delegate void MissingInputEventHandler(object sender, MissingInputEventArgs e);
 
-        public bool ShowAction = true;
+        public RenderOptions Options { get; set; } = new RenderOptions();
 
+        /// <summary>
+        /// Input Controls in scope for actions array
+        /// </summary>
         public List<FrameworkElement> InputControls = new List<FrameworkElement>();
 
+        /// <summary>
+        /// Resource dictionary to use when rendering
+        /// </summary>
         public ResourceDictionary Resources;
-
-        public delegate void ActionEventHandler(object sender, ActionEventArgs e);
 
 
         /// <summary>
@@ -45,14 +60,15 @@ namespace Adaptive
         /// </summary>
         public event ActionEventHandler OnAction;
 
+        /// <summary>
+        /// Event fires when missing input for submit/http actions
+        /// </summary>
+        public event MissingInputEventHandler OnMissingInput;
+
         public void Action(FrameworkElement ui, ActionEventArgs args)
         {
             this.OnAction?.Invoke(ui, args);
         }
-
-        public delegate void MissingInputEventHandler(object sender, MissingInputEventArgs e);
-
-        public event MissingInputEventHandler OnMissingInput;
 
         public void MissingInput(ActionBase sender, MissingInputEventArgs args)
         {
@@ -63,12 +79,12 @@ namespace Adaptive
         {
             if (!styleName.Contains(".Tap"))
             {
-                if (styleName.Contains(".Input") && !this.ShowInput)
+                if (styleName.Contains(".Input") && !this.Options.ShowInput)
                 {
                     return this.Resources["Hidden"] as Style;
                 }
 
-                if (styleName.Contains(".Action") && !this.ShowAction)
+                if (styleName.Contains(".Action") && !this.Options.ShowAction)
                 {
                     return this.Resources["Hidden"] as Style;
                 }
@@ -88,7 +104,7 @@ namespace Adaptive
         }
 
 
-        public dynamic MergeInputData(dynamic data)
+        public virtual dynamic MergeInputData(dynamic data)
         {
             foreach (var inputControl in this.InputControls)
             {
@@ -219,7 +235,11 @@ namespace Adaptive
             }
         }
 
-        protected void ResetInputControl(FrameworkElement control)
+        /// <summary>
+        /// Override to reset a control back to default state
+        /// </summary>
+        /// <param name="control"></param>
+        public virtual void ResetInputControl(FrameworkElement control)
         {
             if (control is TextBox)
             {
