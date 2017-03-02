@@ -4,18 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfVisualizer"
+        xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" Loaded="Window_Loaded" 
         Title="MainWindow" Height="1000" Width="1000">
 
     <Window.Resources>
+        <Style x:Key="Error" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="DarkRed"/>
+        </Style>
+
         <Style x:Key="Hidden" TargetType="FrameworkElement">
             <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
 
         <!-- TextBlock definitions -->
         <Style x:Key="Adaptive.TextBlock" TargetType="TextBlock" >
-            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.TextBlock.Small" TargetType="TextBlock" BasedOn="{StaticResource Adaptive.TextBlock}">
@@ -63,26 +68,51 @@
 
         <!-- Container Styling -->
         <Style x:Key="Adaptive.Container" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
         </Style>
 
         <!-- Column/ColumnSet Styling-->
         <Style x:Key="Adaptive.ColumnSet" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
         </Style>
 
         <Style x:Key="Adaptive.Column" TargetType="Grid">
-            <Setter Property="Margin" Value="4,0,4,0"/>
         </Style>
 
         <!-- Separator Styling -->
         <Style x:Key="Adaptive.Separator" TargetType="Separator">
             <Setter Property="Margin" Value="0,2,0,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Separator}">
+                        <Border BorderBrush="Transparent" BorderThickness="0" Height="1" SnapsToDevicePixels="true" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- you can define per element seperator styles like this -->
+        <Style x:Key="Adaptive.Separator.TextBlock" TargetType="Separator" BasedOn="{StaticResource Adaptive.Separator}">
+        </Style>
+
+        <Style x:Key="Adaptive.Separator.Strong" TargetType="Separator">
+            <Setter Property="Margin" Value="0,3,0,3"/>
+        </Style>
+
+        <!-- VerticalSeparator Styling -->
+        <Style x:Key="Adaptive.VerticalSeparator"  TargetType="{x:Type Rectangle}" >
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Margin" Value="8,0,8,0"/>
+            <Setter Property="Fill" Value="Transparent"/>
+        </Style>
+
+        <Style x:Key="Adaptive.VerticalSeparator.Strong" TargetType="{x:Type Rectangle}" >
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Margin" Value="10,0,10,0"/>
+            <Setter Property="Fill" Value="Gray"/>
         </Style>
 
         <!-- Fact/FactSet Styling -->
         <Style x:Key="Adaptive.FactSet" TargetType="Grid">
-            <Setter Property="Margin" Value="0,4,0,4"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <Style x:Key="Adaptive.Fact.Name" TargetType="TextBlock">
@@ -96,7 +126,6 @@
 
         <!-- Image/ImageGallery Styling -->
         <Style x:Key="Adaptive.Image" TargetType="Image">
-            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.Image.Auto" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
@@ -123,7 +152,6 @@
         </Style>
 
         <Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
-            <Setter Property="Margin" Value="0,4,0,4"/>
         </Style>
 
         <!-- Circular Person mask -->
@@ -159,11 +187,9 @@
 
         <!-- Input definitions -->
         <Style x:Key="Adaptive.Input" TargetType="FrameworkElement" >
-            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.Input.ChoiceSet" TargetType="FrameworkElement" >
-            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.Input.Text" TargetType="FrameworkElement" BasedOn="{StaticResource Adaptive.Input}">
@@ -218,20 +244,20 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        
-                    <!-- Content handles within a border -->
-                    <Border x:Name="bdr" CornerRadius="6" Margin="3" BorderThickness="1" BorderBrush="Black" Background="#FF5098FF">
-                        <!-- ContentPresenter properties. Set the content source as the content from each control define below -->
-                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Content" TextBlock.FontSize="20"  />
-                    </Border>
-                        
-                    <!-- Required triggers define here -->
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="bdr" Property="Opacity" Value=".6"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+
+                        <!-- Content handles within a border -->
+                        <Border x:Name="bdr" CornerRadius="6" Margin="3" BorderThickness="1" BorderBrush="Black" Background="#FF5098FF">
+                            <!-- ContentPresenter properties. Set the content source as the content from each control define below -->
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Content" TextBlock.FontSize="20"   />
+                        </Border>
+
+                        <!-- Required triggers define here -->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bdr" Property="Opacity" Value=".6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -241,16 +267,16 @@
             <Setter Property="Foreground" Value="White"/>
         </Style>
 
-        <Style x:Key="Adaptive.Action.OpenUrlAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        <Style x:Key="Adaptive.Action.OpenUrl" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
-        <Style x:Key="Adaptive.Action.ShowCardAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        <Style x:Key="Adaptive.Action.ShowCard" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
-        <Style x:Key="Adaptive.Action.SubmitAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        <Style x:Key="Adaptive.Action.Submit" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
-        <Style x:Key="Adaptive.Action.HttpAction" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
+        <Style x:Key="Adaptive.Action.Http" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
         </Style>
 
         <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
@@ -290,6 +316,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -300,9 +327,13 @@
             <Button Name="loadButton" Click="loadButton_Click" Content="Load" Margin="4"/>
             <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
             <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/>
+            <Button Name="toJson" Content="To JSON" Margin="4" Click="toJson_Click"/>
+            <Button Name="toXml" Content="To XML" Margin="4" Click="toXml_Click"/>
         </StackPanel>
 
-        <TextBox Grid.Row="1 " AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>
+        <!--<TextBox Grid.Row="1" AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>-->
+        <avalon:TextEditor Grid.Row="1" Name="textBox" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
+                            ShowLineNumbers="true" TextChanged="textBox_TextChanged"/>
 
         <Border Margin="68,67,60,67"  CornerRadius="20" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" >
             <Border.Effect>
@@ -310,5 +341,8 @@
             </Border.Effect >
             <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700" />
         </Border>
+
+        <Grid Grid.Row="2" Name="cardError" />
+
     </Grid>
 </Window>

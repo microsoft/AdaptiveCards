@@ -1,11 +1,12 @@
 {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
+    "version": "1.0",
     "speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
     "body": [
         {
             "type": "Container",
-            "startGroup": true,
+            "separation": "strong",
             "items": [
                 {
                     "type": "TextBlock",
@@ -59,7 +60,7 @@
         },
         {
             "type": "Container",
-            "startGroup": true,
+            "separation": "strong",
             "items": [
                 {
                     "type": "TextBlock",
@@ -77,16 +78,16 @@
                     "id": "SingleSelectVal",
                     "choices": [
                         {
-                            "display": "One",
+                            "title": "One",
                             "value": "1",
                             "isSelected": true
                         },
                         {
-                            "display": "Two",
+                            "title": "Two",
                             "value": "2"
                         },
                         {
-                            "display": "Three",
+                            "title": "Three",
                             "value": "3"
                         }
                     ]
@@ -102,16 +103,16 @@
                     "style": "expanded",
                     "choices": [
                         {
-                            "display": "One",
+                            "title": "One",
                             "value": "1",
                             "isSelected": true
                         },
                         {
-                            "display": "Two",
+                            "title": "Two",
                             "value": "2"
                         },
                         {
-                            "display": "Three",
+                            "title": "Three",
                             "value": "3"
                         }
                     ]
@@ -127,16 +128,16 @@
                     "isMultiSelect": true,
                     "choices": [
                         {
-                            "display": "One",
+                            "title": "One",
                             "value": "1",
                             "isSelected": true
                         },
                         {
-                            "display": "Two",
+                            "title": "Two",
                             "value": "2"
                         },
                         {
-                            "display": "Three",
+                            "title": "Three",
                             "value": "3",
                             "isSelected": true
                         }
@@ -146,7 +147,7 @@
         },
         {
             "type": "Container",
-            "startGroup": true,
+            "seperation": "strong",
             "items": [
                 {
                     "type": "TextBlock",
@@ -184,10 +185,17 @@
             }
         },
         {
+            "type": "Action.Http",
+            "method": "POST",
+            "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "title": "POST",
+            "body": "This is the body with Gender={{gender}}"
+        },
+        {
             "type": "Action.ShowCard",
             "title": "Show Card",
             "card": {
-                "type": "AdaptiveCard",
+                "type": "Container",
                 "speak": "The Seattle Seahawks beat the Carolina Panters 40-7",
                 "body": [
                     {

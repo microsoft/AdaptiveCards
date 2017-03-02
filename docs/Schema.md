@@ -38,6 +38,9 @@ AdaptiveCard is top level object which represents a card
 | **type**| string | true | **"AdaptiveCard"** |
 | **body** | [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **actions** |[Action](#action)[]| false | Actions |
+| **version** | string| false | version of schema that this card was authored |
+| **minVersion** | string|false| if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore|
+| **fallbackText** | string|false| if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. |
 
 # Card Element
 
@@ -47,6 +50,7 @@ A card element is a visual element to add to a container.  Shared properties
 
 | Property | Type |  Required |Description |
 |---|---|---|---|
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from preiovus element |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ## Image 
@@ -142,6 +146,7 @@ Input has shared properties for input to collect information from a user.
 |---|---|---|---|
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **value** | string | false | The initial value for a field |
+| **isRequired** | bool | false | The input must have a value for it to be part of a Submit or Http action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 
 ### Input.Text
@@ -250,7 +255,6 @@ A  Container is a CardElement which contains a list of CardElements that are log
 | **type**| string | true | **"Container"** |
 | **items** |  [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **actions** | [Action](#action)[] | false | Actions associated with this container |
-| **startGroup** | boolean | false | visually separate this container from preiovus containers |
 | **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
 
 ## ColumnSet 
@@ -388,6 +392,15 @@ Controls how items are horizontally positioned within their container.
 | **left** | The element is left aligned |
 | **center** | The element is centered inside its container |
 | **right** | The element is right aligned |
+
+## SeparationStyle
+Controls how items are rendered relative to previous element.
+
+| Value | Meaning |
+|---|---|
+| **default** | The element is spaced relative to previous element using default style|
+| **none** | The element is tightly associated with previous element |
+| **strong** | The element is strongly and visually disassociated with previous element |
 
 ## TextSize
 Controls the size of TextBlock items.

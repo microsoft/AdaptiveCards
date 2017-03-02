@@ -1,6 +1,7 @@
 {
 	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
+	"version": "1.0",
 	"body": [
 		{
 			"type": "Container",
@@ -16,6 +17,7 @@
 					"type": "ColumnSet",
 					"columns": [
 						{
+							"type": "Column",
 							"size": "auto",
 							"items": [
 								{
@@ -27,6 +29,7 @@
 							]
 						},
 						{
+							"type": "Column",
 							"size": "stretch",
 							"items": [
 								{
@@ -85,7 +88,7 @@
 			"type": "Action.ShowCard",
 			"title": "Set due date",
 			"card": {
-				"type": "AdaptiveCard",
+				"type": "Container",
 				"body": [
 					{
 						"type": "Input.Date",
@@ -105,7 +108,7 @@
 			"type": "Action.ShowCard",
 			"title": "Comment",
 			"card": {
-				"type": "AdaptiveCard",
+				"type": "Container",
 				"body": [
 					{
 						"type": "Input.Text",
