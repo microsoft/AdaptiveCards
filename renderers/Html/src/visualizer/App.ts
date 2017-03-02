@@ -182,8 +182,14 @@ function setupEditor() {
     editor.getSession().on(
         "change",
         function (e) {
-            updateStyleSheet();
-            renderCard();
+            try
+            {
+                updateStyleSheet();
+                renderCard();
+            }
+            catch (e) {
+                // Ignore errors
+            }
         });
 
     // Load the cached payload if the user had one
