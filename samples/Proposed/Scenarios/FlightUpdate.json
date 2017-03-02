@@ -6,7 +6,6 @@
 	"body": [
 		{
 			"type": "ColumnSet",
-			"separation": "strong",
 			"columns": [
 				{
 					"type": "Column",
@@ -25,16 +24,16 @@
 					"items": [
 						{
 							"type": "TextBlock",
+							"isSubtle": true,
 							"text": "Flight Status",
-							"horizontalAlignment": "right",
-							"isSubtle": true
+							"horizontalAlignment": "right"
 						},
 						{
 							"type": "TextBlock",
-							"text": "DELAYED",
-							"horizontalAlignment": "right",
 							"size": "large",
-							"color": "attention"
+							"color": "attention",
+							"text": "DELAYED",
+							"horizontalAlignment": "right"
 						}
 					]
 				}
@@ -46,12 +45,12 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": "stretch",
+					"size": "4",
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Passengers",
-							"isSubtle": true
+							"isSubtle": true,
+							"text": "Passengers"
 						},
 						{
 							"type": "TextBlock",
@@ -69,13 +68,13 @@
 				},
 				{
 					"type": "Column",
-					"size": "auto",
+					"size": "1",
 					"items": [
 						{
 							"type": "TextBlock",
+							"isSubtle": true,
 							"text": "Seat",
-							"horizontalAlignment": "right",
-							"isSubtle": true
+							"horizontalAlignment": "right"
 						},
 						{
 							"type": "TextBlock",
@@ -92,7 +91,13 @@
 							"text": "14C",
 							"horizontalAlignment": "right"
 						}
-					]
+					],
+					"separation": "strong"
+				},
+				{
+					"type": "Column",
+					"size": ".5",
+					"items": []
 				}
 			]
 		},
@@ -102,12 +107,12 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": 1,
+					"size": "1",
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Flight",
-							"isSubtle": true
+							"isSubtle": true,
+							"text": "Flight"
 						},
 						{
 							"type": "TextBlock",
@@ -120,33 +125,35 @@
 					"items": [
 						{
 							"type": "TextBlock",
+							"isSubtle": true,
 							"text": "Departs",
-							"isSubtle": true
+							"horizontalAlignment": "center"							
 						},
 						{
 							"type": "TextBlock",
-							"text": "10:10 AM",
+							"weight": "bolder",
 							"color": "attention",
-							"weight": "bolder"
+							"text": "10:10 AM",
+							"horizontalAlignment": "center"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": 1,
+					"size": "1",
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Arrives",
 							"isSubtle": true,
+							"text": "Arrives",
 							"horizontalAlignment": "right"
 						},
 						{
 							"type": "TextBlock",
-							"text": "12:00 AM",
+							"weight": "bolder",
 							"color": "attention",
-							"horizontalAlignment": "right",
-							"weight": "bolder"
+							"text": "12:00 AM",
+							"horizontalAlignment": "right"
 						}
 					]
 				}
@@ -158,52 +165,49 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": 1,
+					"size": "1",
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Amsterdam",
-							"isSubtle": true
+							"isSubtle": true,
+							"text": "Amsterdam"
 						},
 						{
 							"type": "TextBlock",
-							"text": "AMS",
 							"size": "extraLarge",
-							"color": "accent"
+							"color": "accent",
+							"text": "AMS"
 						}
 					]
 				},
 				{
 					"type": "Column",
+					"size": "1",
 					"items": [
-						{
-							"type": "TextBlock",
-							"text": " "
-						},
 						{
 							"type": "Image",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
 							"size": "small",
-							"weight": "lighter"
+							"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
+							"horizontalAlignment": "center"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": 1,
+					"size": "1",
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "San Francisco",
 							"isSubtle": true,
+							"text": "San Francisco",
 							"horizontalAlignment": "right"
 						},
 						{
 							"type": "TextBlock",
-							"text": "SFO",
-							"horizontalAlignment": "right",
 							"size": "extraLarge",
-							"color": "accent"
+							"color": "accent",
+							"text": "SFO",
+							"horizontalAlignment": "right"
 						}
 					]
 				}

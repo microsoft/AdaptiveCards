@@ -12,10 +12,10 @@ namespace WpfVisualizer
     /// </summary>
     public partial class ShowCardWindow : Window
     {
-        private AdaptiveCard _card;
+        private Container _card;
         private ResourceDictionary _resources;
 
-        public ShowCardWindow(string title, AdaptiveCard card, ResourceDictionary resources)
+        public ShowCardWindow(string title, Container card, ResourceDictionary resources)
         {
             _resources = resources;
             _card = card;

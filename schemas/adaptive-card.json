@@ -145,7 +145,7 @@
           "$ref": "#/definitions/SeparationStyle"
         },
         "card": {
-          "$ref": "#/definitions/AdaptiveCard"
+          "$ref": "#/definitions/Container"
         }
       },
       "required": [
@@ -916,8 +916,8 @@
       "type": "string",
       "description": "Controls how Items are rendered relative to previous elements.",
       "enum": [
+        "default",
         "none",
-        "subtle",
         "strong"
       ]
     },

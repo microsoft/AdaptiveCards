@@ -38,7 +38,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="ActionBase">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="1" name="Card" type="AdaptiveCard" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Card" type="Container" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -302,8 +302,8 @@
   </xs:complexType>
   <xs:simpleType name="SeparationStyle">
     <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
       <xs:enumeration value="None" />
-      <xs:enumeration value="Subtle" />
       <xs:enumeration value="Strong" />
     </xs:restriction>
   </xs:simpleType>
