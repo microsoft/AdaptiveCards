@@ -52,6 +52,19 @@ export enum ImageStyle {
     Person
 }
 
+export enum Separation  {
+    None,
+    Default,
+    Strong
+}
+
+export enum RenderError {
+    ElementTypeNotAllowed,
+    ActionTypeNotAllowed,
+    NestedActionNotAllowed,
+    TooManyActions
+}
+
 export function stringToSize(value: string, defaultValue: Size): Size {
     switch (value) {
         case "auto":
@@ -139,6 +152,19 @@ export function stringToImageStyle(value: string, defaultValue: ImageStyle): Ima
             return ImageStyle.Person;
         case "normal":
             return ImageStyle.Normal;
+        default:
+            return defaultValue;
+    }
+}
+
+export function stringToSeparation(value: string, defaultValue: Separation): Separation {
+    switch (value) {
+        case "none":
+            return Separation.None;
+        case "default":
+            return Separation.Default;
+        case "strong":
+            return Separation.Strong;
         default:
             return defaultValue;
     }

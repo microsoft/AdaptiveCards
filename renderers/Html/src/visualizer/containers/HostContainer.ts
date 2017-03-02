@@ -15,7 +15,7 @@ export abstract class HostContainer {
     }
 
     applyOptions() {
-        Adaptive.AdaptiveCard.options.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
+        Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
     }
 
     render(card: Adaptive.AdaptiveCard, showXml: boolean = false): HTMLElement {

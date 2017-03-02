@@ -2,6 +2,12 @@
     box-sizing: border-box;
 }
 
+.separator {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 20px 0px 0px 0px;
+    padding: 20px 0px 0px 0px;
+}
+
 .stretch {
     width: 100%;
 }
@@ -232,19 +238,14 @@ td.factValue {
     background-color: rgba(0, 0, 0, 0.15);
 }
 
-.columnSpacer {
+.defaultColumnSeparator {
     width: 10px;    
 }
 
-.columnSpacer.startGroup {
-    width: 20px;    
-}
-
-.columnSeparator {
-    margin: 0 auto;
-    width: 0px;
-    height: 100%;
+.strongColumnSeparator {
     border-left: 1px solid #EEEEEE;
+    margin-left: 10px;
+    padding-left: 10px;
 }
 
 .actionCardContainer {

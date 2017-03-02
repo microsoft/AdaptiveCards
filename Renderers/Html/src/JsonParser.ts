@@ -65,26 +65,13 @@ export class JsonParser {
         this.parseContainer(
             json["card"],
             action.card,
-            "body",
-            Adaptive.AdaptiveCard.options.forbiddenActionTypesInContainers.concat([ Adaptive.ActionShowCard.TypeName ]));
+            "body");
     }
 
-    private createAction(
-        json: any,
-        container: Adaptive.Container,
-        forbiddenActionTypes: string[]): Adaptive.Action {
+    private createAction(json: any, container: Adaptive.Container): Adaptive.Action {
         var result: Adaptive.Action;
 
         var actionType = json["type"];
-
-        if (Adaptive.AdaptiveCard.options.forbiddenActionTypes.indexOf(actionType) >= 0 || forbiddenActionTypes.indexOf(actionType) >= 0) {
-            if (Adaptive.AdaptiveCard.options.ignoreForbiddenElementsAndActions) {
-                return null;
-            }
-            else {
-                throw new Error("Action type " + actionType + " is forbidden in this context.");
-            }
-        }
 
         switch (actionType) {
             case Adaptive.ActionOpenUrl.TypeName:
@@ -120,23 +107,18 @@ export class JsonParser {
     private parseCardElement(json: any, cardElement: Adaptive.CardElement) {
         cardElement.speak = json["speak"];
         cardElement.horizontalAlignment = Enums.stringToHorizontalAlignment(json["horizontalAlignment"], Enums.HorizontalAlignment.Left);
+        cardElement.separation = Enums.stringToSeparation(json["separation"], Adaptive.AdaptiveCard.renderOptions.defaultSeparation);
     }
 
     private parseTextBlock(json: any, textBlock: Adaptive.TextBlock) {
         this.parseCardElement(json, textBlock);
 
         textBlock.text = json["text"];
-        textBlock.textSize = Enums.stringToTextSize(json["size"], Enums.TextSize.Normal);
-        textBlock.textWeight = Enums.stringToTextWeight(json["weight"], Enums.TextWeight.Normal);
-        textBlock.textColor = Enums.stringToTextColor(json["color"], Enums.TextColor.Default);
+        textBlock.size = Enums.stringToTextSize(json["size"], Enums.TextSize.Normal);
+        textBlock.weight = Enums.stringToTextWeight(json["weight"], Enums.TextWeight.Normal);
+        textBlock.color = Enums.stringToTextColor(json["color"], Enums.TextColor.Default);
         textBlock.isSubtle = json["isSubtle"];
         textBlock.wrap = json["wrap"];
-
-        var isParagraphStartJson = json["isParagraphStart"];
-        
-        if (isParagraphStartJson != undefined) {
-            textBlock.isParagraphStart = isParagraphStartJson;
-        }
     }
 
     private parseImage(json: any, image: Adaptive.Image) {
@@ -149,10 +131,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            image.selectAction = <Adaptive.ActionExternal>this.createAction(
-                selectActionJson,
-                image.container,
-                [ Adaptive.ActionShowCard.TypeName ]);
+            image.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson, image.container);
         }
     }
 
@@ -193,17 +172,11 @@ export class JsonParser {
         }
     }
 
-    private parseActionCollection(
-        json: any,
-        actions: Adaptive.ActionCollection,
-        forbiddenActionTypes: string[]) {
+    private parseActionCollection(json: any, actions: Adaptive.ActionCollection) {
         var jsonActions = json as Array<any>;
 
         for (var i = 0; i < jsonActions.length; i++) {
-            var action = this.createAction(
-                jsonActions[i],
-                actions.container,
-                forbiddenActionTypes);
+            var action = this.createAction(jsonActions[i], actions.container);
 
             if (action != null) {
                 actions.items.push(action);
@@ -214,13 +187,11 @@ export class JsonParser {
     private parseContainer(
         json: any,
         container: Adaptive.Container,
-        itemsCollectionPropertyName: string,
-        forbiddenActionTypes: string[]) {
+        itemsCollectionPropertyName: string) {
         this.parseCardElement(json, container);
 
         container.backgroundImageUrl = json["backgroundImage"];
         container.backgroundColor = json["backgroundColor"];
-        container.isGroupStart = json["isGroupStart"];
 
         container.textColor = Enums.stringToTextColor(json["textColor"], Enums.TextColor.Default);
 
@@ -230,11 +201,10 @@ export class JsonParser {
             for (var i = 0; i < items.length; i++) {
                 var element = this.createCardElement(
                     items[i],
-                    container,
-                    []);
+                    container);
 
                 if (element != null) {
-                    container.addElement(element);
+                    container.addItem(element);
                 }
             }
         }
@@ -242,19 +212,13 @@ export class JsonParser {
         if (json["actions"] != undefined) {
             container.actions = new Adaptive.ActionCollection(container);
 
-            this.parseActionCollection(
-                json["actions"],
-                container.actions,
-                forbiddenActionTypes);
+            this.parseActionCollection(json["actions"], container.actions);
         }
 
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            container.selectAction = <Adaptive.ActionExternal>this.createAction(
-                selectActionJson,
-                container,
-                forbiddenActionTypes);
+            container.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson, container);
         }
     }
 
@@ -262,8 +226,7 @@ export class JsonParser {
         this.parseContainer(
             json,
             column,
-            "items",
-            Adaptive.AdaptiveCard.options.forbiddenActionTypesInContainers);
+            "items");
 
         if (json["size"] === "auto") {
             column.weight = 0;
@@ -356,22 +319,10 @@ export class JsonParser {
         }
     }
 
-    private createCardElement(
-        json: any,
-        container: Adaptive.Container,
-        forbiddenActionTypes: string[]): Adaptive.CardElement {
+    private createCardElement(json: any, container: Adaptive.Container): Adaptive.CardElement {
         var result: Adaptive.CardElement;
 
         var elementType = json["type"];
-
-        if (Adaptive.AdaptiveCard.options.forbiddenElementTypes.indexOf(elementType) >= 0) {
-            if (Adaptive.AdaptiveCard.options.ignoreForbiddenElementsAndActions) {
-                return null;
-            }
-            else {
-                throw new Error("Element type " + elementType + " is forbidden in this context.");
-            }
-        }
 
         switch (elementType) {
             case Adaptive.Container.TypeName:
@@ -379,8 +330,7 @@ export class JsonParser {
                 this.parseContainer(
                     json,
                     <Adaptive.Container>result,
-                    "items",
-                    forbiddenActionTypes);
+                    "items");
 
                 break;
             case Adaptive.TextBlock.TypeName:
@@ -450,11 +400,23 @@ export class JsonParser {
     parse(json: any): Adaptive.AdaptiveCard {
         this._card = new Adaptive.AdaptiveCard();
 
+        var minVersion = json["minVersion"];
+
+        var regEx = /(\d+).(\d+)/gi;
+
+        var matches = regEx.exec(minVersion);
+
+        if (matches != null && matches.length == 3) {
+            this._card.minVersion.major = parseInt(matches[1]);
+            this._card.minVersion.minor = parseInt(matches[2]);
+        }
+
+        this._card.fallbackText = json["fallbackText"];
+
         this.parseContainer(
             json,
             this._card.root,
-            "body",
-            [] /* forbiddenActionTypes - defaults to AdaptiveCard.options.forbiddenActionTypes */);
+            "body");
 
         return this._card;
     }

@@ -71,6 +71,10 @@ function renderCard() {
             popupContainer.appendChild(element);
         }
 
+        Adaptive.AdaptiveCard.onRenderError = (error, data) => {
+            throw new Error(error.toString() + " - " + data);
+        }
+
         switch (cardTypeName) {
             case "AdaptiveCard":
                 let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
@@ -83,7 +87,7 @@ function renderCard() {
 
                 var popupContainer = document.getElementById("popupCardContainer");
 
-                if (Adaptive.AdaptiveCard.options.actionShowCardInPopup) {
+                if (Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup) {
                     popupContainer.innerText = "ActionShowCard popups will appear in this box, according to container settings";
                     popupContainer.hidden = false;
                 }
