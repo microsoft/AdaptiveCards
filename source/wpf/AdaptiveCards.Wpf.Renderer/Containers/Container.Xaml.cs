@@ -62,11 +62,14 @@ namespace Adaptive
                     {
                         case SeparationStyle.None:
                             break;
-                        case SeparationStyle.Subtle:
+                        case SeparationStyle.Default:
                         case SeparationStyle.Strong:
                             {
                                 var sep = new Separator();
-                                sep.Style = context.GetStyle($"Adaptive.Separator.{cardElement.Separation}.{cardElement.Type}");
+                                if (cardElement.Separation == SeparationStyle.Default)
+                                    sep.Style = context.GetStyle($"Adaptive.Separator.{cardElement.Type}");
+                                else
+                                    sep.Style = context.GetStyle($"Adaptive.Separator.Strong");
                                 grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                                 Grid.SetRow(sep, grid.RowDefinitions.Count - 1);
                                 grid.Children.Add(sep);

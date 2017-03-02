@@ -32,7 +32,7 @@ namespace Adaptive
         [XmlAttribute]
         public SeparationStyle Separation { get; set; }
 
-        public bool ShouldSerializeSeparation() { return this.Separation != SeparationStyle.None; }
+        public bool ShouldSerializeSeparation() { return this.Separation != SeparationStyle.Default; }
     }
 
 }

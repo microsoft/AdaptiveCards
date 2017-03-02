@@ -6,14 +6,12 @@ export class CortanaCarContainer extends HostContainer {
     applyOptions() {
         super.applyOptions();
         
-        Adaptive.AdaptiveCard.options.actionShowCardInPopup = true;
+        Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = true;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         
-        //Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
-
         let renderedCard = card.render();
 
         let imgDiv = document.createElement("div");

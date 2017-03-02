@@ -1,7 +1,7 @@
 module.exports = {
     entry: "./src/visualizer/app.ts",
     output: {
-        filename: "./dist/bundle.js"
+        filename: "./dist/adaptiveCards.js"
     },
 
     // Enable sourcemaps for debugging webpack's output.

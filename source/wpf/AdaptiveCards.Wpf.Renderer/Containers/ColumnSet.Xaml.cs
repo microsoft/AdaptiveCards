@@ -7,6 +7,7 @@ using WPF = System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace Adaptive
 {
@@ -31,9 +32,38 @@ namespace Adaptive
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle("Adaptive.ColumnSet");
 
-            int iCol = 0;
             foreach (var column in this.Columns)
             {
+                // Add vertical Seperator
+                if (uiColumnSet.ColumnDefinitions.Count > 0)
+                {
+                    switch (column.Separation)
+                    {
+                        case SeparationStyle.None:
+                            break;
+                        case SeparationStyle.Default:
+                            {
+                                var sep = new Rectangle();
+                                sep.Style = context.GetStyle($"Adaptive.VerticalSeparator");
+                                uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                                Grid.SetColumn(sep, uiColumnSet.ColumnDefinitions.Count - 1);
+                                uiColumnSet.Children.Add(sep);
+                            }
+                            break;
+
+                        case SeparationStyle.Strong:
+                            {
+                                var sep = new Rectangle();
+                                sep.VerticalAlignment = VerticalAlignment.Stretch;
+                                sep.Style = context.GetStyle($"Adaptive.VerticalSeparator.Strong");
+                                uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                                Grid.SetColumn(sep, uiColumnSet.ColumnDefinitions.Count - 1);
+                                uiColumnSet.Children.Add(sep);
+                            }
+                            break;
+                    }
+                }
+
                 FrameworkElement uiElement = column.Render(context);
 
                 // do some sizing magic using the magic GridUnitType.Star
@@ -51,7 +81,7 @@ namespace Adaptive
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 }
 
-                Grid.SetColumn(uiElement, iCol++);
+                Grid.SetColumn(uiElement, uiColumnSet.ColumnDefinitions.Count - 1);
                 uiColumnSet.Children.Add(uiElement);
             }
 

@@ -5,7 +5,7 @@ export abstract class ConnectorContainer extends HostContainer {
     applyOptions() {
         super.applyOptions();
         
-        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+        Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = false;
     }
 
     renderHeader(card: Adaptive.AdaptiveCard): HTMLElement {

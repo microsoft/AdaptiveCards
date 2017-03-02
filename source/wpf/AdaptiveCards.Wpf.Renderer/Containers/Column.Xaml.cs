@@ -13,11 +13,6 @@ namespace Adaptive
     public partial class Column
     {
         /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<Column, RenderContext, FrameworkElement> AlternateRenderer;
-
-        /// <summary>
         /// Render this element
         /// </summary>
         /// <param name="context"></param>

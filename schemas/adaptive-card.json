@@ -145,7 +145,7 @@
           "$ref": "#/definitions/SeparationStyle"
         },
         "card": {
-          "$ref": "#/definitions/AdaptiveCard"
+          "$ref": "#/definitions/Container"
         }
       },
       "required": [
@@ -552,6 +552,7 @@
       "type": "string",
       "description": "Controls the horizontal size (width) of Item. ",
       "enum": [
+        "auto",
         "small",
         "normal",
         "medium",
@@ -860,20 +861,13 @@
           "type": "boolean",
           "description": "Indicates whether the color of the text should be slightly toned down to appear less prominent"
         },
+        "isParagraphStart": {
+          "type": "boolean",
+          "description": "Indicates whether the text start a new paragraph, which typically results in increased spacing from the previous element"
+        },
         "maxLines": {
           "type": "number",
           "description": "When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use."
-        },
-        "size": {
-          "type": "string",
-          "description": "Controls how Items are horizontally positioned within their container.",
-          "enum": [
-            "small",
-            "normal",
-            "medium",
-            "large",
-            "extraLarge"
-          ]
         },
         "speak": {
           "$ref": "#/definitions/Speak"
@@ -916,8 +910,8 @@
       "type": "string",
       "description": "Controls how Items are rendered relative to previous elements.",
       "enum": [
+        "default",
         "none",
-        "subtle",
         "strong"
       ]
     },
