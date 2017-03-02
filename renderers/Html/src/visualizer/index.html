@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Adaptive Card Visualizer</title>
+
+    <link rel="stylesheet" href="../../css/app.css" type="text/css" />
+
+    <script src="../../dist/bundle.js"></script>
+</head>
+<body>
+    <div class="uiRoot">
+        <div class="uiHeader" style="display: flex;">
+            <div style="margin:4px;">Samples:</div>
+            <a href="https://github.com/Microsoft/AdaptiveCards/tree/master/samples/Proposed/TextBlock" target="_blank" style="margin:4px">TextBlock</a>
+            <a href="https://github.com/Microsoft/AdaptiveCards/tree/master/samples/Proposed/Scenarios" target="_blank" style="margin:4px">Scenarios</a>
+            
+			<div class="leftPane">
+				<div style="width: 0px; height: 0px; overflow: hidden">
+					<input type="file" id="filePicker" />
+				</div>
+            	<div id="loadSample" class="button" style="height: 100%; float:left; display: table;">Load sample from file...</div>
+			</div>
+			<div class="rightPane">
+                <span style="margin-right: 6px;">Select a container:</span>
+				<select id="hostContainerPicker" style="height: 100%;"></select>
+			</div>
+        </div>
+        <div class="cardEditor">
+            <div class="leftPane">
+                <div id="editor">
+
+                </div>
+            </div>
+            <div class="rightPane">
+                <div id="content" class="markupRender"></div>
+                <div id="popupCardContainer" style="margin-top: 30px; padding: 10px; border: 1px solid #EEEEEE;">
+                    <div>ActionShowCard popups will appear in this box, according to container settings</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
