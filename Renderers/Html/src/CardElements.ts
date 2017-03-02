@@ -500,7 +500,6 @@ export class InputToggle extends Input {
 export class Choice {
     title: string;
     value: string;
-    isSelected: boolean;
 }
 
 export class InputChoiceSet extends Input {
@@ -569,7 +568,6 @@ export class InputChoiceSet extends Input {
                     var option = document.createElement("option");
                     option.value = this.choices[i].value;
                     option.text = this.choices[i].title;
-                    option.selected = this.choices[i].isSelected;
 
                     Utils.appendChild(this._selectElement, option);
                 }
@@ -589,7 +587,6 @@ export class InputChoiceSet extends Input {
                     radioInput.type = "radio";
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
-                    radioInput.checked = this.choices[i].isSelected;
 
                     this._toggleInputs.push(radioInput);
 
@@ -622,7 +619,6 @@ export class InputChoiceSet extends Input {
                 checkboxInput.className = "toggleInput";
                 checkboxInput.type = "checkbox";
                 checkboxInput.value = this.choices[i].value;
-                checkboxInput.checked = this.choices[i].isSelected;
 
                 this._toggleInputs.push(checkboxInput);
 
