@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 96);
+/******/ 	return __webpack_require__(__webpack_require__.s = 94);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -150,7 +150,7 @@ var UNESCAPE_ALL_RE = new RegExp(UNESCAPE_MD_RE.source + '|' + ENTITY_RE.source,
 
 var DIGITAL_ENTITY_TEST_RE = /^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))/i;
 
-var entities = __webpack_require__(9);
+var entities = __webpack_require__(8);
 
 function replaceEntityPattern(match, name) {
   var code = 0;
@@ -256,7 +256,7 @@ function isWhiteSpace(code) {
 ////////////////////////////////////////////////////////////////////////////////
 
 /*eslint-disable max-len*/
-var UNICODE_PUNCT_RE = __webpack_require__(8);
+var UNICODE_PUNCT_RE = __webpack_require__(7);
 
 // Currently without astral characters support.
 function isPunctChar(ch) {
@@ -327,8 +327,8 @@ function normalizeReference(str) {
 // bundled size (e.g. a browser build).
 //
 exports.lib                 = {};
-exports.lib.mdurl           = __webpack_require__(13);
-exports.lib.ucmicro         = __webpack_require__(92);
+exports.lib.mdurl           = __webpack_require__(12);
+exports.lib.ucmicro         = __webpack_require__(90);
 
 exports.assign              = assign;
 exports.isString            = isString;
@@ -355,39 +355,19 @@ exports.normalizeReference  = normalizeReference;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var EventDispatcher = (function () {
-    function EventDispatcher() {
-        this._subscriptions = new Array();
-    }
-    EventDispatcher.prototype.subscribe = function (fn) {
-        if (fn) {
-            this._subscriptions.push(fn);
-        }
-    };
-    EventDispatcher.prototype.unsubscribe = function (fn) {
-        var i = this._subscriptions.indexOf(fn);
-        if (i > -1) {
-            this._subscriptions.splice(i, 1);
-        }
-    };
-    EventDispatcher.prototype.dispatch = function (sender, args) {
-        for (var _i = 0, _a = this._subscriptions; _i < _a.length; _i++) {
-            var handler = _a[_i];
-            handler(sender, args);
-        }
-    };
-    return EventDispatcher;
-}());
-exports.EventDispatcher = EventDispatcher;
+var markdownIt = __webpack_require__(38);
+var markdownProcessor = new markdownIt();
+function processMarkdown(text) {
+    return markdownProcessor.render(text);
+}
+exports.processMarkdown = processMarkdown;
 function isNullOrEmpty(value) {
     return value === undefined || value === null || value === "";
 }
 exports.isNullOrEmpty = isNullOrEmpty;
 function appendChild(node, child) {
-    if (node) {
-        if (child != null && child != undefined) {
-            node.appendChild(child);
-        }
+    if (child != null && child != undefined) {
+        node.appendChild(child);
     }
 }
 exports.appendChild = appendChild;
@@ -403,12 +383,9 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(18));
+__export(__webpack_require__(13));
+__export(__webpack_require__(6));
 __export(__webpack_require__(14));
-__export(__webpack_require__(15));
-__export(__webpack_require__(17));
-__export(__webpack_require__(4));
-__export(__webpack_require__(7));
 
 
 /***/ }),
@@ -418,25 +395,32 @@ __export(__webpack_require__(7));
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Adaptive = __webpack_require__(2);
 var Utils = __webpack_require__(1);
-var vkbeautify = __webpack_require__(93);
+var vkbeautify = __webpack_require__(91);
 var HostContainer = (function () {
     function HostContainer(styleSheet) {
         this.supportsActionBar = false;
         this.styleSheet = styleSheet;
     }
+    HostContainer.prototype.applyOptions = function () {
+        Adaptive.AdaptiveCard.options.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
+    };
     HostContainer.prototype.render = function (card, showXml) {
         if (showXml === void 0) { showXml = false; }
         // speech visualizer
         var element = document.createElement("div");
         element.className = "speechContainer";
         var button = document.createElement("button");
+        button.className = "button";
+        button.innerText = "Speak this card";
         var t = document.createTextNode("Speak");
         var text = card.renderSpeech();
         var output = new Array();
         if (text[0] == '<') {
-            if (text.indexOf("<speak") != 0)
+            if (text.indexOf("<speak") != 0) {
                 text = '<speak>\n' + text + '\n</speak>\n';
+            }
             var parser = new DOMParser();
             var dom = parser.parseFromString(text, "text/xml");
             var nodes = dom.documentElement.childNodes;
@@ -449,13 +433,13 @@ var HostContainer = (function () {
             output.push(text);
             text = vkbeautify.xml(text);
         }
-        button.appendChild(t);
+        // button.appendChild(t);
         button.addEventListener("click", function () {
             HostContainer.playNextTTS(output, 0);
         });
         Utils.appendChild(element, document.createElement("br"));
         Utils.appendChild(element, document.createElement("br"));
-        Utils.appendChild(element, document.createElement("hr"));
+        // Utils.appendChild(element, document.createElement("hr"));
         Utils.appendChild(element, button);
         if (showXml) {
             var pre = document.createElement("pre");
@@ -569,64 +553,6 @@ exports.HostContainer = HostContainer;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var CardElement = (function () {
-    function CardElement(container) {
-        this._container = container;
-    }
-    Object.defineProperty(CardElement.prototype, "container", {
-        get: function () {
-            return this._container;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CardElement.prototype, "hideOverflow", {
-        get: function () {
-            return true;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(CardElement.prototype, "useDefaultSizing", {
-        get: function () {
-            return true;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    CardElement.prototype.removeTopSpacing = function (element) {
-        element.style.marginTop = "0px";
-    };
-    CardElement.prototype.adjustLayout = function (element) {
-        if (this.useDefaultSizing) {
-            element.className += " stretch";
-        }
-        if (this.hideOverflow) {
-            element.style.overflow = "hidden";
-        }
-    };
-    CardElement.prototype.internalRender = function () {
-        var renderedElement = this.render();
-        if (renderedElement != null) {
-            this.adjustLayout(renderedElement);
-        }
-        return renderedElement;
-    };
-    CardElement.prototype.parse = function (json) {
-        this.speak = json["speak"];
-    };
-    return CardElement;
-}());
-exports.CardElement = CardElement;
-
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -985,7 +911,7 @@ module.exports = Ruler;
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1189,68 +1115,168 @@ module.exports = Token;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Elements_1 = __webpack_require__(16);
-var Inputs_1 = __webpack_require__(18);
-var AdaptiveCard_1 = __webpack_require__(15);
-var Renderer = (function () {
-    function Renderer() {
-    }
-    Renderer.prototype.parseCard = function (json) {
-        var card = new AdaptiveCard_1.AdaptiveCard();
-        card.parse(json);
-        return card;
-    };
-    Renderer.prototype.render = function (card) {
-        return card.render();
-    };
-    return Renderer;
-}());
-exports.Renderer = Renderer;
-function createCardElement(container, typeName) {
-    switch (typeName) {
-        case "Container":
-            return new Elements_1.Container(container);
-        case "TextBlock":
-            return new Elements_1.TextBlock(container);
-        case "Image":
-            return new Elements_1.Image(container);
-        case "ImageSet":
-            return new Elements_1.ImageSet(container);
-        case "FactSet":
-            return new Elements_1.FactSet(container);
-        case "ColumnSet":
-            return new Elements_1.ColumnSet(container);
-        case "Input.Text":
-            return new Inputs_1.InputText(container);
-        case "Input.Number":
-            return new Inputs_1.InputText(container);
-        case "Input.Date":
-            return new Inputs_1.InputDate(container);
-        case "Input.ChoiceSet":
-            return new Inputs_1.InputChoiceSet(container);
-        case "Inpu.Toggle":
-            return new Inputs_1.InputToggle(container);
+var ActionButtonStyle;
+(function (ActionButtonStyle) {
+    ActionButtonStyle[ActionButtonStyle["Link"] = 0] = "Link";
+    ActionButtonStyle[ActionButtonStyle["Push"] = 1] = "Push";
+})(ActionButtonStyle = exports.ActionButtonStyle || (exports.ActionButtonStyle = {}));
+var ActionButtonState;
+(function (ActionButtonState) {
+    ActionButtonState[ActionButtonState["Normal"] = 0] = "Normal";
+    ActionButtonState[ActionButtonState["Expanded"] = 1] = "Expanded";
+    ActionButtonState[ActionButtonState["Subdued"] = 2] = "Subdued";
+})(ActionButtonState = exports.ActionButtonState || (exports.ActionButtonState = {}));
+var Size;
+(function (Size) {
+    Size[Size["Auto"] = 0] = "Auto";
+    Size[Size["Stretch"] = 1] = "Stretch";
+    Size[Size["Small"] = 2] = "Small";
+    Size[Size["Medium"] = 3] = "Medium";
+    Size[Size["Large"] = 4] = "Large";
+})(Size = exports.Size || (exports.Size = {}));
+var TextSize;
+(function (TextSize) {
+    TextSize[TextSize["Small"] = 0] = "Small";
+    TextSize[TextSize["Normal"] = 1] = "Normal";
+    TextSize[TextSize["Medium"] = 2] = "Medium";
+    TextSize[TextSize["Large"] = 3] = "Large";
+    TextSize[TextSize["ExtraLarge"] = 4] = "ExtraLarge";
+})(TextSize = exports.TextSize || (exports.TextSize = {}));
+var TextWeight;
+(function (TextWeight) {
+    TextWeight[TextWeight["Lighter"] = 0] = "Lighter";
+    TextWeight[TextWeight["Normal"] = 1] = "Normal";
+    TextWeight[TextWeight["Bolder"] = 2] = "Bolder";
+})(TextWeight = exports.TextWeight || (exports.TextWeight = {}));
+var TextColor;
+(function (TextColor) {
+    TextColor[TextColor["Default"] = 0] = "Default";
+    TextColor[TextColor["Dark"] = 1] = "Dark";
+    TextColor[TextColor["Light"] = 2] = "Light";
+    TextColor[TextColor["Accent"] = 3] = "Accent";
+    TextColor[TextColor["Good"] = 4] = "Good";
+    TextColor[TextColor["Warning"] = 5] = "Warning";
+    TextColor[TextColor["Attention"] = 6] = "Attention";
+})(TextColor = exports.TextColor || (exports.TextColor = {}));
+var HorizontalAlignment;
+(function (HorizontalAlignment) {
+    HorizontalAlignment[HorizontalAlignment["Left"] = 0] = "Left";
+    HorizontalAlignment[HorizontalAlignment["Center"] = 1] = "Center";
+    HorizontalAlignment[HorizontalAlignment["Right"] = 2] = "Right";
+})(HorizontalAlignment = exports.HorizontalAlignment || (exports.HorizontalAlignment = {}));
+var ImageStyle;
+(function (ImageStyle) {
+    ImageStyle[ImageStyle["Normal"] = 0] = "Normal";
+    ImageStyle[ImageStyle["Person"] = 1] = "Person";
+})(ImageStyle = exports.ImageStyle || (exports.ImageStyle = {}));
+function stringToSize(value, defaultValue) {
+    switch (value) {
+        case "auto":
+            return Size.Auto;
+        case "stretch":
+            return Size.Stretch;
+        case "small":
+            return Size.Small;
+        case "medium":
+            return Size.Medium;
+        case "large":
+            return Size.Large;
         default:
-            throw new Error("Unknown element type: " + typeName);
+            return defaultValue;
     }
 }
-exports.createCardElement = createCardElement;
+exports.stringToSize = stringToSize;
+function stringToTextSize(value, defaultValue) {
+    switch (value) {
+        case "small":
+            return TextSize.Small;
+        case "normal":
+            return TextSize.Normal;
+        case "medium":
+            return TextSize.Medium;
+        case "large":
+            return TextSize.Large;
+        case "extraLarge":
+            return TextSize.ExtraLarge;
+        default:
+            return defaultValue;
+    }
+}
+exports.stringToTextSize = stringToTextSize;
+function stringToTextWeight(value, defaultValue) {
+    switch (value) {
+        case "lighter":
+            return TextWeight.Lighter;
+        case "normal":
+            return TextWeight.Normal;
+        case "bolder":
+            return TextWeight.Bolder;
+        default:
+            return defaultValue;
+    }
+}
+exports.stringToTextWeight = stringToTextWeight;
+function stringToTextColor(value, defaultValue) {
+    switch (value) {
+        case "default":
+            return TextColor.Default;
+        case "dark":
+            return TextColor.Dark;
+        case "light":
+            return TextColor.Light;
+        case "accent":
+            return TextColor.Accent;
+        case "good":
+            return TextColor.Good;
+        case "warning":
+            return TextColor.Warning;
+        case "attention":
+            return TextColor.Attention;
+        default:
+            return defaultValue;
+    }
+}
+exports.stringToTextColor = stringToTextColor;
+function stringToHorizontalAlignment(value, defaultValue) {
+    switch (value) {
+        case "left":
+            return HorizontalAlignment.Left;
+        case "center":
+            return HorizontalAlignment.Center;
+        case "right":
+            return HorizontalAlignment.Right;
+        default:
+            return defaultValue;
+    }
+}
+exports.stringToHorizontalAlignment = stringToHorizontalAlignment;
+function stringToImageStyle(value, defaultValue) {
+    switch (value) {
+        case "person":
+            return ImageStyle.Person;
+        case "normal":
+            return ImageStyle.Normal;
+        default:
+            return defaultValue;
+    }
+}
+exports.stringToImageStyle = stringToImageStyle;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports=/[!-#%-\*,-/:;\?@\[-\]_\{\}\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E44\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD807[\uDC41-\uDC45\uDC70\uDC71]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1259,11 +1285,11 @@ module.exports=/[!-#%-\*,-/:;\?@\[-\]_\{\}\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u03
 
 
 /*eslint quotes:0*/
-module.exports = __webpack_require__(38);
+module.exports = __webpack_require__(35);
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1298,7 +1324,7 @@ module.exports.HTML_OPEN_CLOSE_TAG_RE = HTML_OPEN_CLOSE_TAG_RE;
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1432,7 +1458,7 @@ module.exports.postProcess = function emphasis(state) {
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1556,21 +1582,21 @@ module.exports.postProcess = function strikethrough(state) {
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-module.exports.encode = __webpack_require__(87);
-module.exports.decode = __webpack_require__(86);
-module.exports.format = __webpack_require__(88);
-module.exports.parse  = __webpack_require__(89);
+module.exports.encode = __webpack_require__(84);
+module.exports.decode = __webpack_require__(83);
+module.exports.format = __webpack_require__(85);
+module.exports.parse  = __webpack_require__(86);
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1586,130 +1612,626 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Interfaces_1 = __webpack_require__(4);
-var Renderer_1 = __webpack_require__(7);
+var Enums = __webpack_require__(6);
+var Eventing = __webpack_require__(14);
 var Utils = __webpack_require__(1);
-var Action = (function () {
-    function Action(owner) {
-        this._owner = owner;
+var TextFormatters = __webpack_require__(88);
+var CardElement = (function () {
+    function CardElement(container) {
+        this.horizontalAlignment = Enums.HorizontalAlignment.Left;
+        this._container = container;
     }
-    Action.create = function (owner, typeName) {
-        switch (typeName) {
-            case "Action.OpenUri":
-                return new ActionOpenUri(owner);
-            case "Action.Submit":
-                return new ActionSubmit(owner);
-            case "Action.Http":
-                return new ActionHttp(owner);
-            case "Action.ShowCard":
-                return new ActionShowCard(owner);
-            default:
-                throw new Error("Unknown action type: " + typeName);
-        }
-    };
-    Object.defineProperty(Action.prototype, "owner", {
+    Object.defineProperty(CardElement.prototype, "container", {
         get: function () {
-            return this._owner;
+            return this._container;
         },
         enumerable: true,
         configurable: true
     });
-    Action.prototype.parse = function (json) {
-        this.title = json["title"];
+    Object.defineProperty(CardElement.prototype, "hideOverflow", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CardElement.prototype, "useDefaultSizing", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    CardElement.prototype.removeTopSpacing = function (element) {
+        element.style.marginTop = "0px";
     };
-    Object.defineProperty(Action.prototype, "hasUi", {
+    CardElement.prototype.adjustLayout = function (element) {
+        if (this.useDefaultSizing) {
+            element.className += " stretch";
+        }
+        switch (this.horizontalAlignment) {
+            case Enums.HorizontalAlignment.Center:
+                element.style.textAlign = "center";
+                break;
+            case Enums.HorizontalAlignment.Right:
+                element.style.textAlign = "right";
+                break;
+        }
+        if (this.hideOverflow) {
+            element.style.overflow = "hidden";
+        }
+    };
+    CardElement.prototype.internalRender = function () {
+        var renderedElement = this.render();
+        if (renderedElement != null) {
+            this.adjustLayout(renderedElement);
+        }
+        return renderedElement;
+    };
+    return CardElement;
+}());
+exports.CardElement = CardElement;
+var TextBlock = (function (_super) {
+    __extends(TextBlock, _super);
+    function TextBlock() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.textSize = Enums.TextSize.Normal;
+        _this.textWeight = Enums.TextWeight.Normal;
+        _this.textColor = Enums.TextColor.Default;
+        _this.isSubtle = false;
+        _this.wrap = true;
+        _this.isParagraphStart = true;
+        return _this;
+    }
+    TextBlock.prototype.render = function () {
+        if (!Utils.isNullOrEmpty(this.text)) {
+            var element = document.createElement("div");
+            var cssStyle = "text ";
+            if (this.isParagraphStart) {
+                cssStyle += "startParagraph ";
+            }
+            switch (this.textSize) {
+                case Enums.TextSize.Small:
+                    cssStyle += "small ";
+                    break;
+                case Enums.TextSize.Medium:
+                    cssStyle += "medium ";
+                    break;
+                case Enums.TextSize.Large:
+                    cssStyle += "large ";
+                    break;
+                case Enums.TextSize.ExtraLarge:
+                    cssStyle += "extraLarge ";
+                    break;
+                default:
+                    cssStyle += "defaultSize ";
+                    break;
+            }
+            var actualTextColor = this.textColor == Enums.TextColor.Default ? this.container.textColor : this.textColor;
+            switch (actualTextColor) {
+                case Enums.TextColor.Dark:
+                    cssStyle += "darkColor ";
+                    break;
+                case Enums.TextColor.Light:
+                    cssStyle += "lightColor ";
+                    break;
+                case Enums.TextColor.Accent:
+                    cssStyle += "accentColor ";
+                    break;
+                case Enums.TextColor.Good:
+                    cssStyle += "goodColor ";
+                    break;
+                case Enums.TextColor.Warning:
+                    cssStyle += "warningColor ";
+                    break;
+                case Enums.TextColor.Attention:
+                    cssStyle += "attentionColor ";
+                    break;
+                default:
+                    cssStyle += "defaultColor ";
+                    break;
+            }
+            if (this.isSubtle) {
+                cssStyle += "subtle ";
+            }
+            switch (this.textWeight) {
+                case Enums.TextWeight.Lighter:
+                    cssStyle += "lighter ";
+                    break;
+                case Enums.TextWeight.Bolder:
+                    cssStyle += "bolder ";
+                    break;
+                default:
+                    cssStyle += "defaultWeight ";
+                    break;
+            }
+            var formattedText = TextFormatters.formatText(this.text);
+            element.innerHTML = Utils.processMarkdown(formattedText);
+            element.className = cssStyle;
+            if (element.firstElementChild instanceof (HTMLElement)) {
+                element.firstElementChild.style.marginTop = "0px";
+            }
+            if (element.lastElementChild instanceof (HTMLElement)) {
+                element.lastElementChild.style.marginBottom = "0px";
+            }
+            var anchors = element.getElementsByTagName("a");
+            for (var i = 0; i < anchors.length; i++) {
+                anchors[i].target = "_blank";
+            }
+            if (!this.wrap) {
+                element.style.whiteSpace = "nowrap";
+                element.style.textOverflow = "ellipsis";
+            }
+            return element;
+        }
+        else {
+            return null;
+        }
+    };
+    TextBlock.prototype.renderSpeech = function () {
+        if (this.speak != null)
+            return this.speak + '\n';
+        if (this.text)
+            return '<s>' + this.text + '</s>\n';
+        return null;
+    };
+    TextBlock.prototype.removeTopSpacing = function (element) {
+        element.style.paddingTop = "0px";
+    };
+    return TextBlock;
+}(CardElement));
+TextBlock.TypeName = "TextBlock";
+exports.TextBlock = TextBlock;
+var Fact = (function () {
+    function Fact() {
+    }
+    Fact.prototype.renderSpeech = function () {
+        if (this.speak != null) {
+            return this.speak + '\n';
+        }
+        return '<s>' + this.name + ' ' + this.value + '</s>\n';
+    };
+    return Fact;
+}());
+exports.Fact = Fact;
+var FactSet = (function (_super) {
+    __extends(FactSet, _super);
+    function FactSet() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._facts = [];
+        return _this;
+    }
+    Object.defineProperty(FactSet.prototype, "facts", {
+        get: function () {
+            return this._facts;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    FactSet.prototype.render = function () {
+        var element = null;
+        if (this._facts.length > 0) {
+            element = document.createElement("table");
+            element.className = "factGroup";
+            var html = '';
+            for (var i = 0; i < this._facts.length; i++) {
+                html += '<tr>';
+                html += '    <td class="factName">';
+                var textBlock = new TextBlock(this.container);
+                textBlock.text = this._facts[i].name;
+                textBlock.textWeight = Enums.TextWeight.Bolder;
+                textBlock.isParagraphStart = false;
+                var renderedText = textBlock.internalRender();
+                if (renderedText != null) {
+                    html += renderedText.outerHTML;
+                }
+                html += '    </td>';
+                html += '    <td class="factValue">';
+                textBlock = new TextBlock(this.container);
+                textBlock.text = this._facts[i].value;
+                textBlock.textWeight = Enums.TextWeight.Lighter;
+                textBlock.isParagraphStart = false;
+                renderedText = textBlock.internalRender();
+                if (renderedText != null) {
+                    html += renderedText.outerHTML;
+                }
+                html += '    </td>';
+                html += '</tr>';
+            }
+            element.innerHTML = html;
+        }
+        return element;
+    };
+    FactSet.prototype.renderSpeech = function () {
+        if (this.speak != null) {
+            return this.speak + '\n';
+        }
+        // render each fact 
+        var speak = null;
+        if (this._facts.length > 0) {
+            speak = '';
+            for (var i = 0; i < this._facts.length; i++) {
+                var speech = this._facts[i].renderSpeech();
+                if (speech) {
+                    speak += speech;
+                }
+            }
+        }
+        return '<p>' + speak + '\n</p>\n';
+    };
+    Object.defineProperty(FactSet.prototype, "useDefaultSizing", {
         get: function () {
             return false;
         },
         enumerable: true,
         configurable: true
     });
-    return Action;
-}());
-exports.Action = Action;
-var ActionOpenUri = (function (_super) {
-    __extends(ActionOpenUri, _super);
-    function ActionOpenUri() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ActionOpenUri.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.url = json["url"];
-    };
-    return ActionOpenUri;
-}(Action));
-exports.ActionOpenUri = ActionOpenUri;
-var ActionShowCard = (function (_super) {
-    __extends(ActionShowCard, _super);
-    function ActionShowCard() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ActionShowCard.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        if (json["card"] != undefined) {
-            // TODO: UNCOMMENT THIS
-            // TODO: This should inspect the type to construct the right type of card
-            var renderer = new Renderer_1.Renderer();
-            this.card = renderer.parseCard(json["card"]);
-        }
-    };
-    return ActionShowCard;
-}(Action));
-exports.ActionShowCard = ActionShowCard;
-var ActionSubmit = (function (_super) {
-    __extends(ActionSubmit, _super);
-    function ActionSubmit() {
+    return FactSet;
+}(CardElement));
+FactSet.TypeName = "FactSet";
+exports.FactSet = FactSet;
+var Image = (function (_super) {
+    __extends(Image, _super);
+    function Image() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.inputs = new Array();
+        _this.style = Enums.ImageStyle.Normal;
+        _this.size = Enums.Size.Medium;
         return _this;
     }
-    ActionSubmit.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        if (json["inputs"] != undefined) {
-            var inputArray = json["inputs"];
-            for (var i = 0; i < inputArray.length; i++) {
-                //let input = InputBase.createInput(this.owner.container, inputArray[i]["type"]);
-                //input.parse(inputArray[i]);
-                //this.inputs.push(input);
+    Object.defineProperty(Image.prototype, "useDefaultSizing", {
+        get: function () {
+            return false;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Image.prototype.render = function () {
+        var _this = this;
+        var imageElement = null;
+        if (!Utils.isNullOrEmpty(this.url)) {
+            imageElement = document.createElement("img");
+            imageElement.onclick = function (e) {
+                if (_this.selectAction != null) {
+                    _this.selectAction.execute();
+                    e.cancelBubble = true;
+                }
+            };
+            var cssStyle = "image";
+            if (this.selectAction != null) {
+                cssStyle += " selectable";
+            }
+            switch (this.size) {
+                case Enums.Size.Auto:
+                    cssStyle += " autoSize";
+                    break;
+                case Enums.Size.Stretch:
+                    cssStyle += " stretch";
+                    break;
+                case Enums.Size.Small:
+                    cssStyle += " small";
+                    break;
+                case Enums.Size.Large:
+                    cssStyle += " large";
+                    break;
+                default:
+                    cssStyle += " medium";
+                    break;
+            }
+            if (this.style == Enums.ImageStyle.Person) {
+                cssStyle += " person";
+            }
+            imageElement.className = cssStyle;
+            imageElement.src = this.url;
+        }
+        return imageElement;
+    };
+    Image.prototype.renderSpeech = function () {
+        if (this.speak != null) {
+            return this.speak + '\n';
+        }
+        return null;
+    };
+    return Image;
+}(CardElement));
+Image.TypeName = "Image";
+exports.Image = Image;
+var ImageSet = (function (_super) {
+    __extends(ImageSet, _super);
+    function ImageSet() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._images = [];
+        _this.imageSize = Enums.Size.Medium;
+        return _this;
+    }
+    Object.defineProperty(ImageSet.prototype, "images", {
+        get: function () {
+            return this._images;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ImageSet.prototype.render = function () {
+        var element = null;
+        if (this._images.length > 0) {
+            element = document.createElement("div");
+            element.className = "imageGallery";
+            for (var i = 0; i < this._images.length; i++) {
+                var renderedImage = this._images[i].internalRender();
+                renderedImage.style.margin = "0px";
+                renderedImage.style.marginRight = "10px";
+                Utils.appendChild(element, renderedImage);
             }
         }
+        return element;
     };
-    return ActionSubmit;
-}(Action));
-exports.ActionSubmit = ActionSubmit;
-// TODO: Should we remove this and use SubmitAction?
-var ActionHttp = (function (_super) {
-    __extends(ActionHttp, _super);
-    function ActionHttp() {
+    ImageSet.prototype.renderSpeech = function () {
+        if (this.speak != null) {
+            return this.speak;
+        }
+        var speak = null;
+        if (this._images.length > 0) {
+            speak = '';
+            for (var i = 0; i < this._images.length; i++) {
+                speak += this._images[i].renderSpeech();
+            }
+        }
+        return speak;
+    };
+    return ImageSet;
+}(CardElement));
+ImageSet.TypeName = "ImageSet";
+exports.ImageSet = ImageSet;
+var Input = (function (_super) {
+    __extends(Input, _super);
+    function Input() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    ActionHttp.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.url = json["url"];
-        this.body = json["body"];
-        this.method = json["method"];
-        this.headers = json["headers"];
+    Input.prototype.renderSpeech = function () {
+        if (this.speak != null) {
+            return this.speak;
+        }
+        if (this.title) {
+            return '<s>' + this.title + '</s>\n';
+        }
+        return null;
     };
-    return ActionHttp;
-}(Action));
-exports.ActionHttp = ActionHttp;
-var ActionButtonStyle;
-(function (ActionButtonStyle) {
-    ActionButtonStyle[ActionButtonStyle["Link"] = 0] = "Link";
-    ActionButtonStyle[ActionButtonStyle["Push"] = 1] = "Push";
-})(ActionButtonStyle = exports.ActionButtonStyle || (exports.ActionButtonStyle = {}));
-var ActionButtonState;
-(function (ActionButtonState) {
-    ActionButtonState[ActionButtonState["Normal"] = 0] = "Normal";
-    ActionButtonState[ActionButtonState["Expanded"] = 1] = "Expanded";
-    ActionButtonState[ActionButtonState["Subdued"] = 2] = "Subdued";
-})(ActionButtonState = exports.ActionButtonState || (exports.ActionButtonState = {}));
+    return Input;
+}(CardElement));
+exports.Input = Input;
+var InputText = (function (_super) {
+    __extends(InputText, _super);
+    function InputText(container) {
+        return _super.call(this, container) || this;
+    }
+    Object.defineProperty(InputText.prototype, "value", {
+        get: function () {
+            return this._textareaElement.textContent;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    InputText.prototype.render = function () {
+        this._textareaElement = document.createElement("textarea");
+        this._textareaElement.className = "input textInput";
+        if (this.isMultiline) {
+            this._textareaElement.className += " multiline";
+        }
+        this._textareaElement.placeholder = this.placeholder;
+        if (!Utils.isNullOrEmpty(this.defaultValue)) {
+            this._textareaElement.textContent = this.defaultValue;
+        }
+        return this._textareaElement;
+    };
+    return InputText;
+}(Input));
+InputText.TypeName = "Input.Text";
+exports.InputText = InputText;
+var InputToggle = (function (_super) {
+    __extends(InputToggle, _super);
+    function InputToggle() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(InputToggle.prototype, "value", {
+        get: function () {
+            return this._checkboxInputElement.checked ? this.valueOn : this.valueOff;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    InputToggle.prototype.render = function () {
+        var element = document.createElement("div");
+        element.className = "input";
+        this._checkboxInputElement = document.createElement("input");
+        this._checkboxInputElement.className = "toggleInput";
+        this._checkboxInputElement.type = "checkbox";
+        if (this.defaultValue == this.valueOn) {
+            this._checkboxInputElement.checked = true;
+        }
+        var label = new TextBlock(this.container);
+        label.text = this.title;
+        var labelElement = label.render();
+        labelElement.className += " toggleLabel";
+        var compoundInput = document.createElement("div");
+        Utils.appendChild(element, this._checkboxInputElement);
+        Utils.appendChild(element, labelElement);
+        return element;
+    };
+    return InputToggle;
+}(Input));
+InputToggle.TypeName = "Input.Toggle";
+exports.InputToggle = InputToggle;
+var Choice = (function () {
+    function Choice() {
+    }
+    return Choice;
+}());
+exports.Choice = Choice;
+var InputChoiceSet = (function (_super) {
+    __extends(InputChoiceSet, _super);
+    function InputChoiceSet(container) {
+        var _this = _super.call(this, container) || this;
+        _this.choices = [];
+        return _this;
+    }
+    Object.defineProperty(InputChoiceSet.prototype, "value", {
+        get: function () {
+            return "";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    InputChoiceSet.prototype.render = function () {
+        if (!this.isMultiSelect) {
+            if (this.isCompact) {
+                // Render as a combo box
+                this._selectElement = document.createElement("select");
+                this._selectElement.className = "input multichoiceInput";
+                var option = document.createElement("option");
+                option.selected = true;
+                option.disabled = true;
+                option.hidden = true;
+                option.text = this.placeholder;
+                Utils.appendChild(this._selectElement, option);
+                for (var i = 0; i < this.choices.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = this.choices[i].value;
+                    option.text = this.choices[i].title;
+                    Utils.appendChild(this._selectElement, option);
+                }
+                return this._selectElement;
+            }
+            else {
+                // Render as a series of radio buttons
+                var element = document.createElement("div");
+                element.className = "input";
+                this._toggleInputs = [];
+                for (var i = 0; i < this.choices.length; i++) {
+                    var radioInput = document.createElement("input");
+                    radioInput.className = "toggleInput";
+                    radioInput.type = "radio";
+                    radioInput.name = this.id;
+                    radioInput.value = this.choices[i].value;
+                    if (this.defaultValue == this.choices[i].value) {
+                        radioInput.checked = true;
+                    }
+                    this._toggleInputs.push(radioInput);
+                    var label = new TextBlock(this.container);
+                    label.text = this.choices[i].title;
+                    var labelElement = label.render();
+                    labelElement.className += " toggleLabel";
+                    var compoundInput = document.createElement("div");
+                    Utils.appendChild(compoundInput, radioInput);
+                    Utils.appendChild(compoundInput, labelElement);
+                    Utils.appendChild(element, compoundInput);
+                }
+                return element;
+            }
+        }
+        else {
+            // Render as a list of toggle inputs
+            var element = document.createElement("div");
+            element.className = "input";
+            this._toggleInputs = [];
+            for (var i = 0; i < this.choices.length; i++) {
+                var checkboxInput = document.createElement("input");
+                checkboxInput.className = "toggleInput";
+                checkboxInput.type = "checkbox";
+                checkboxInput.value = this.choices[i].value;
+                // TODO: handle default value
+                this._toggleInputs.push(checkboxInput);
+                var label = new TextBlock(this.container);
+                label.text = this.choices[i].title;
+                var labelElement = label.render();
+                labelElement.className += " toggleLabel";
+                var compoundInput = document.createElement("div");
+                Utils.appendChild(compoundInput, checkboxInput);
+                Utils.appendChild(compoundInput, labelElement);
+                Utils.appendChild(element, compoundInput);
+            }
+            return element;
+        }
+    };
+    return InputChoiceSet;
+}(Input));
+InputChoiceSet.TypeName = "Input.ChoiceSet";
+exports.InputChoiceSet = InputChoiceSet;
+var InputNumber = (function (_super) {
+    __extends(InputNumber, _super);
+    function InputNumber(container) {
+        return _super.call(this, container) || this;
+    }
+    Object.defineProperty(InputNumber.prototype, "value", {
+        get: function () {
+            return this._numberInputElement.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    InputNumber.prototype.render = function () {
+        this._numberInputElement = document.createElement("input");
+        this._numberInputElement.type = "number";
+        this._numberInputElement.className = "input number";
+        this._numberInputElement.min = this.min;
+        this._numberInputElement.max = this.max;
+        if (!Utils.isNullOrEmpty(this.defaultValue)) {
+            this._numberInputElement.value = this.defaultValue;
+        }
+        return this._numberInputElement;
+    };
+    return InputNumber;
+}(Input));
+InputNumber.TypeName = "Input.Number";
+exports.InputNumber = InputNumber;
+var InputDate = (function (_super) {
+    __extends(InputDate, _super);
+    function InputDate(container) {
+        return _super.call(this, container) || this;
+    }
+    Object.defineProperty(InputDate.prototype, "value", {
+        get: function () {
+            return this._dateInputElement.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    InputDate.prototype.render = function () {
+        this._dateInputElement = document.createElement("input");
+        this._dateInputElement.type = "date";
+        this._dateInputElement.className = "input date";
+        return this._dateInputElement;
+    };
+    return InputDate;
+}(Input));
+InputDate.TypeName = "Input.Date";
+exports.InputDate = InputDate;
+var InputTime = (function (_super) {
+    __extends(InputTime, _super);
+    function InputTime(container) {
+        return _super.call(this, container) || this;
+    }
+    Object.defineProperty(InputTime.prototype, "value", {
+        get: function () {
+            return this._timeInputElement.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    InputTime.prototype.render = function () {
+        this._timeInputElement = document.createElement("input");
+        this._timeInputElement.type = "time";
+        this._timeInputElement.className = "input time";
+        return this._timeInputElement;
+    };
+    return InputTime;
+}(Input));
+InputTime.TypeName = "Input.Time";
+exports.InputTime = InputTime;
 var ActionButton = (function () {
     function ActionButton(action, style) {
         var _this = this;
-        this._onClick = new Utils.EventDispatcher();
+        this._onClick = new Eventing.EventDispatcher();
         this._element = null;
-        this._state = ActionButtonState.Normal;
+        this._state = Enums.ActionButtonState.Normal;
         this._action = action;
         this._style = style;
         this._element = document.createElement("div");
@@ -1720,12 +2242,12 @@ var ActionButton = (function () {
         this._onClick.dispatch(this, null);
     };
     ActionButton.prototype.updateCssStyle = function () {
-        var cssStyle = this._style == ActionButtonStyle.Link ? "linkButton " : "pushButton ";
+        var cssStyle = this._style == Enums.ActionButtonStyle.Link ? "linkButton " : "pushButton ";
         switch (this._state) {
-            case ActionButtonState.Expanded:
+            case Enums.ActionButtonState.Expanded:
                 cssStyle += " expanded";
                 break;
-            case ActionButtonState.Subdued:
+            case Enums.ActionButtonState.Subdued:
                 cssStyle += " subdued";
                 break;
         }
@@ -1777,85 +2299,185 @@ var ActionButton = (function () {
     return ActionButton;
 }());
 exports.ActionButton = ActionButton;
-var ActionBar = (function (_super) {
-    __extends(ActionBar, _super);
-    function ActionBar(container) {
-        var _this = _super.call(this, container) || this;
-        _this._actionButtons = [];
-        _this._actions = [];
-        _this._expandedAction = null;
-        return _this;
+var Action = (function () {
+    function Action() {
     }
-    Object.defineProperty(ActionBar.prototype, "actions", {
-        // private hideActionCardPane() {
-        //     this._actionCardContainer.innerHTML = '';
-        //     this._actionCardContainer.style.padding = "0px";
-        //     this._actionCardContainer.style.marginTop = "0px";
-        //     this.container.showBottomSpacer(this);
-        // }
-        // private showActionCardPane(action: Action) {
-        //     this.container.hideBottomSpacer(this);
-        //     this._actionCardContainer.innerHTML = '';
-        //     this._actionCardContainer.style.padding = null;
-        //     this._actionCardContainer.style.marginTop = this._actions.length > 1 ? null : "0px";
-        //     Utils.appendChild(
-        //         this._actionCardContainer,
-        //         action.renderUi(this.container, this._actions.length > 1));
-        // }
-        // private actionClicked(actionButton: ActionButton) {
-        //     if (!actionButton.action.hasUi) {
-        //         for (var i = 0; i < this._actionButtons.length; i++) {
-        //             this._actionButtons[i].state = ActionButtonState.Normal;
-        //         }
-        //         this.hideActionCardPane();
-        //         alert("Executing action " + actionButton.text)
-        //     }
-        //     else {
-        //         if (actionButton.action === this._expandedAction) {
-        //             for (var i = 0; i < this._actionButtons.length; i++) {
-        //                 this._actionButtons[i].state = ActionButtonState.Normal;
-        //             }
-        //             this._expandedAction = null;
-        //             this.hideActionCardPane();
-        //         }
-        //         else {
-        //             for (var i = 0; i < this._actionButtons.length; i++) {
-        //                 if (this._actionButtons[i] !== actionButton) {
-        //                     this._actionButtons[i].state = ActionButtonState.Subdued;
-        //                 }
-        //             }
-        //             actionButton.state = ActionButtonState.Expanded;
-        //             this._expandedAction = actionButton.action;
-        //             this.showActionCardPane(actionButton.action);
-        //         }
-        //     }
-        // }
-        get: function () {
-            return this._actions;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ActionBar.prototype, "hideOverflow", {
+    Action.prototype.parse = function (json) {
+        this.name = json["title"];
+    };
+    Action.prototype.renderUi = function () {
+        return null;
+    };
+    Object.defineProperty(Action.prototype, "hasUi", {
         get: function () {
             return false;
         },
         enumerable: true,
         configurable: true
     });
-    ActionBar.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        var actions = json["actions"];
-        if (actions != null) {
-            var actionArray = actions;
-            for (var i = 0; i < actionArray.length; i++) {
-                var action = Action.create(this, actionArray[i]["type"]);
-                action.parse(actionArray[i]);
-                this._actions.push(action);
+    return Action;
+}());
+exports.Action = Action;
+var ActionExternal = (function (_super) {
+    __extends(ActionExternal, _super);
+    function ActionExternal() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._onExecute = new Eventing.EventDispatcher();
+        return _this;
+    }
+    ActionExternal.prototype.execute = function () {
+        this._onExecute.dispatch(this, null);
+    };
+    Object.defineProperty(ActionExternal.prototype, "onExecute", {
+        get: function () {
+            return this._onExecute;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ActionExternal;
+}(Action));
+exports.ActionExternal = ActionExternal;
+var ActionSubmit = (function (_super) {
+    __extends(ActionSubmit, _super);
+    function ActionSubmit() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return ActionSubmit;
+}(ActionExternal));
+ActionSubmit.TypeName = "Action.Submit";
+exports.ActionSubmit = ActionSubmit;
+var ActionOpenUrl = (function (_super) {
+    __extends(ActionOpenUrl, _super);
+    function ActionOpenUrl() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return ActionOpenUrl;
+}(ActionExternal));
+ActionOpenUrl.TypeName = "Action.OpenUrl";
+exports.ActionOpenUrl = ActionOpenUrl;
+var HttpHeader = (function () {
+    function HttpHeader() {
+    }
+    return HttpHeader;
+}());
+exports.HttpHeader = HttpHeader;
+var ActionHttp = (function (_super) {
+    __extends(ActionHttp, _super);
+    function ActionHttp() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._headers = [];
+        return _this;
+    }
+    Object.defineProperty(ActionHttp.prototype, "headers", {
+        get: function () {
+            return this._headers;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ActionHttp;
+}(ActionExternal));
+ActionHttp.TypeName = "Action.Http";
+exports.ActionHttp = ActionHttp;
+var ActionShowCard = (function (_super) {
+    __extends(ActionShowCard, _super);
+    function ActionShowCard() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ActionShowCard.prototype.execute = function () {
+        AdaptiveCard.showPopupCard(this, this.renderUi());
+    };
+    Object.defineProperty(ActionShowCard.prototype, "hasUi", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ActionShowCard.prototype.renderUi = function () {
+        var renderedCard = this.card.internalRender();
+        renderedCard.style.marginTop = "0px";
+        return renderedCard;
+    };
+    return ActionShowCard;
+}(Action));
+ActionShowCard.TypeName = "Action.ShowCard";
+exports.ActionShowCard = ActionShowCard;
+var ActionCollection = (function () {
+    function ActionCollection(container) {
+        this._actionButtons = [];
+        this._items = [];
+        this._expandedAction = null;
+        this._container = container;
+    }
+    ActionCollection.prototype.hideActionCardPane = function () {
+        this._actionCardContainer.innerHTML = '';
+        this._actionCardContainer.style.padding = "0px";
+        this._actionCardContainer.style.marginTop = "0px";
+        this._container.showBottomSpacer();
+    };
+    ActionCollection.prototype.showActionCardPane = function (action) {
+        this._container.hideBottomSpacer();
+        this._actionCardContainer.innerHTML = '';
+        this._actionCardContainer.style.padding = null;
+        this._actionCardContainer.style.marginTop = this._items.length > 1 ? null : "0px";
+        Utils.appendChild(this._actionCardContainer, action.renderUi());
+    };
+    ActionCollection.prototype.actionClicked = function (actionButton) {
+        if (!actionButton.action.hasUi) {
+            for (var i = 0; i < this._actionButtons.length; i++) {
+                this._actionButtons[i].state = Enums.ActionButtonState.Normal;
+            }
+            this.hideActionCardPane();
+            actionButton.action.execute();
+        }
+        else {
+            if (AdaptiveCard.options.actionShowCardInPopup) {
+                actionButton.action.execute();
+            }
+            else if (actionButton.action === this._expandedAction) {
+                for (var i = 0; i < this._actionButtons.length; i++) {
+                    this._actionButtons[i].state = Enums.ActionButtonState.Normal;
+                }
+                this._expandedAction = null;
+                this.hideActionCardPane();
+            }
+            else {
+                for (var i = 0; i < this._actionButtons.length; i++) {
+                    if (this._actionButtons[i] !== actionButton) {
+                        this._actionButtons[i].state = Enums.ActionButtonState.Subdued;
+                    }
+                }
+                actionButton.state = Enums.ActionButtonState.Expanded;
+                this._expandedAction = actionButton.action;
+                this.showActionCardPane(actionButton.action);
             }
         }
     };
-    ActionBar.prototype.render = function () {
+    Object.defineProperty(ActionCollection.prototype, "container", {
+        get: function () {
+            return this._container;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ActionCollection.prototype, "items", {
+        get: function () {
+            return this._items;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ActionCollection.prototype, "hideOverflow", {
+        get: function () {
+            return false;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ActionCollection.prototype.render = function () {
+        var _this = this;
         var element = document.createElement("div");
         element.className = "actionGroup";
         var buttonStrip = document.createElement("div");
@@ -1864,22 +2486,20 @@ var ActionBar = (function (_super) {
         this._actionCardContainer.className = "actionCardContainer";
         this._actionCardContainer.style.padding = "0px";
         this._actionCardContainer.style.marginTop = "0px";
-        // if (this._actions.length == 1 && this._actions[0] instanceof ActionCard) {
-        //     this.showActionCardPane(this._actions[0]);
-        // }
-        if (false) {
+        if (this._items.length == 1 && this._items[0] instanceof ActionShowCard) {
+            this.showActionCardPane(this._items[0]);
         }
         else {
-            for (var i = 0; i < this._actions.length; i++) {
+            for (var i = 0; i < this._items.length; i++) {
                 var buttonStripItem = document.createElement("div");
                 buttonStripItem.className = "buttonStripItem";
-                var actionButton = new ActionButton(this._actions[i], ActionBar.buttonStyle);
-                actionButton.text = this._actions[i].title;
+                var actionButton = new ActionButton(this._items[i], this._container.actionButtonStyle);
+                actionButton.text = this._items[i].name;
                 actionButton.onClick.subscribe(function (ab, args) {
-                    //this.actionClicked(ab);
+                    _this.actionClicked(ab);
                 });
                 this._actionButtons.push(actionButton);
-                if (i < this._actions.length - 1) {
+                if (i < this._items.length - 1) {
                     buttonStripItem.className += " buttonStripItemSpacer";
                 }
                 Utils.appendChild(buttonStripItem, actionButton.element);
@@ -1890,473 +2510,27 @@ var ActionBar = (function (_super) {
         Utils.appendChild(element, this._actionCardContainer);
         return element;
     };
-    ActionBar.prototype.renderSpeech = function () {
-        if (this.speak != null)
-            return this.speak + '\n';
-        return null;
-    };
-    return ActionBar;
-}(Interfaces_1.CardElement));
-ActionBar.buttonStyle = ActionButtonStyle.Push;
-exports.ActionBar = ActionBar;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils = __webpack_require__(1);
-var Actions_1 = __webpack_require__(14);
-var Elements_1 = __webpack_require__(16);
-var markdownIt = __webpack_require__(41);
-var markdownProcessor = new markdownIt();
-function processMarkdown(text) {
-    return markdownProcessor.render(text);
-}
-exports.processMarkdown = processMarkdown;
-var AdaptiveCard = (function () {
-    function AdaptiveCard() {
-        this._body = new Elements_1.Container(null, null, "body");
-        this._actions = new Actions_1.ActionBar(this.body);
-        this._onClick = new Utils.EventDispatcher();
-    }
-    AdaptiveCard.prototype.OnAction = function () {
-        return this._onClick;
-    };
-    Object.defineProperty(AdaptiveCard.prototype, "body", {
-        get: function () {
-            return this._body;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AdaptiveCard.prototype, "actions", {
-        get: function () {
-            return this._actions;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    AdaptiveCard.prototype.parse = function (json) {
-        this.body.parse(json);
-        this.actions.parse(json);
-    };
-    AdaptiveCard.prototype.render = function () {
-        var renderedContainer = this.body.internalRender();
-        renderedContainer.className = "rootContainer";
-        if (this.actions) {
-            var actionsBar = this.actions.render();
-            Utils.appendChild(renderedContainer, actionsBar);
-        }
-        return renderedContainer;
-    };
-    AdaptiveCard.prototype.renderSpeech = function () {
-        return this.body.renderSpeech();
-    };
-    return AdaptiveCard;
+    return ActionCollection;
 }());
-exports.AdaptiveCard = AdaptiveCard;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Enums_1 = __webpack_require__(17);
-var Utils = __webpack_require__(1);
-var Interfaces_1 = __webpack_require__(4);
-var Factory = __webpack_require__(7);
-var TextBlock = (function (_super) {
-    __extends(TextBlock, _super);
-    function TextBlock() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.size = Enums_1.TextSize.Normal;
-        _this.weight = Enums_1.TextWeight.Normal;
-        _this.color = Enums_1.TextColor.Default;
-        _this.isSubtle = false;
-        _this.wrap = true;
-        _this.horizontalAlignment = Enums_1.HorizontalAlignment.Left;
-        return _this;
-    }
-    TextBlock.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.text = json["text"];
-        this.size = Enums_1.stringToTextSize(json["size"], Enums_1.TextSize.Normal);
-        this.weight = Enums_1.stringToTextWeight(json["weight"], Enums_1.TextWeight.Normal);
-        this.color = Enums_1.stringToTextColor(json["color"], Enums_1.TextColor.Default);
-        this.isSubtle = json["isSubtle"];
-        this.wrap = json["wrap"];
-        this.horizontalAlignment = Enums_1.stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
-    };
-    TextBlock.prototype.render = function () {
-        if (!Utils.isNullOrEmpty(this.text)) {
-            var element = document.createElement("div");
-            var cssStyle = "text ";
-            switch (this.size) {
-                case Enums_1.TextSize.Small:
-                    cssStyle += "small ";
-                    break;
-                case Enums_1.TextSize.Medium:
-                    cssStyle += "medium ";
-                    break;
-                case Enums_1.TextSize.Large:
-                    cssStyle += "large ";
-                    break;
-                case Enums_1.TextSize.ExtraLarge:
-                    cssStyle += "extraLarge ";
-                    break;
-                default:
-                    cssStyle += "defaultSize ";
-                    break;
-            }
-            var actualTextColor = this.color;
-            switch (actualTextColor) {
-                case Enums_1.TextColor.Dark:
-                    cssStyle += "darkColor ";
-                    break;
-                case Enums_1.TextColor.Light:
-                    cssStyle += "lightColor ";
-                    break;
-                case Enums_1.TextColor.Accent:
-                    cssStyle += "accentColor ";
-                    break;
-                case Enums_1.TextColor.Good:
-                    cssStyle += "goodColor ";
-                    break;
-                case Enums_1.TextColor.Warning:
-                    cssStyle += "warningColor ";
-                    break;
-                case Enums_1.TextColor.Attention:
-                    cssStyle += "attentionColor ";
-                    break;
-                default:
-                    cssStyle += "defaultColor ";
-                    break;
-            }
-            if (this.isSubtle) {
-                cssStyle += "subtle ";
-            }
-            switch (this.weight) {
-                case Enums_1.TextWeight.Lighter:
-                    cssStyle += "lighter ";
-                    break;
-                case Enums_1.TextWeight.Bolder:
-                    cssStyle += "bolder ";
-                    break;
-                default:
-                    cssStyle += "defaultWeight ";
-                    break;
-            }
-            switch (this.horizontalAlignment) {
-                case Enums_1.HorizontalAlignment.Center:
-                    element.style.textAlign = "center";
-                    break;
-                case Enums_1.HorizontalAlignment.Right:
-                    element.style.textAlign = "right";
-                    break;
-            }
-            // TODO: Fix processMarkdown
-            element.innerHTML = this.text;
-            element.className = cssStyle;
-            if (element.firstElementChild instanceof (HTMLElement)) {
-                element.firstElementChild.style.marginTop = "0px";
-            }
-            if (element.lastElementChild instanceof (HTMLElement)) {
-                element.lastElementChild.style.marginBottom = "0px";
-            }
-            var anchors = element.getElementsByTagName("a");
-            for (var i = 0; i < anchors.length; i++) {
-                anchors[i].target = "_blank";
-            }
-            if (!this.wrap) {
-                element.style.whiteSpace = "nowrap";
-                element.style.textOverflow = "ellipsis";
-            }
-            return element;
-        }
-        else {
-            return null;
-        }
-    };
-    TextBlock.prototype.renderSpeech = function () {
-        if (this.speak != null)
-            return this.speak + '\n';
-        if (this.text)
-            return '<s>' + this.text + '</s>\n';
-        return null;
-    };
-    TextBlock.prototype.removeTopSpacing = function (element) {
-        element.style.paddingTop = "0px";
-    };
-    return TextBlock;
-}(Interfaces_1.CardElement));
-exports.TextBlock = TextBlock;
-var Fact = (function () {
-    function Fact() {
-    }
-    Fact.prototype.parse = function (json) {
-        this.title = json["title"];
-        this.value = json["value"];
-        this.speak = json["speak"];
-    };
-    Fact.prototype.renderSpeech = function () {
-        if (this.speak != null)
-            return this.speak + '\n';
-        return '<s>' + this.title + ' ' + this.value + '</s>\n';
-    };
-    return Fact;
-}());
-exports.Fact = Fact;
-var FactSet = (function (_super) {
-    __extends(FactSet, _super);
-    function FactSet() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this._facts = [];
-        return _this;
-    }
-    Object.defineProperty(FactSet.prototype, "facts", {
-        get: function () {
-            return this._facts;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    FactSet.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        if (json["facts"] != null) {
-            var factArray = json["facts"];
-            for (var i = 0; i < factArray.length; i++) {
-                var fact = new Fact();
-                fact.parse(factArray[i]);
-                this._facts.push(fact);
-            }
-        }
-    };
-    FactSet.prototype.render = function () {
-        var element = null;
-        if (this._facts.length > 0) {
-            element = document.createElement("table");
-            element.className = "factSet";
-            var html = '';
-            for (var i = 0; i < this._facts.length; i++) {
-                html += '<tr>';
-                html += '    <td class="factTitle">';
-                var textBlock = new TextBlock(this.container);
-                textBlock.text = this._facts[i].title;
-                textBlock.weight = Enums_1.TextWeight.Bolder;
-                var renderedText = textBlock.internalRender();
-                if (renderedText != null) {
-                    html += renderedText.outerHTML;
-                }
-                html += '    </td>';
-                html += '    <td class="factValue">';
-                textBlock = new TextBlock(this.container);
-                textBlock.text = this._facts[i].value;
-                textBlock.weight = Enums_1.TextWeight.Lighter;
-                renderedText = textBlock.internalRender();
-                if (renderedText != null) {
-                    html += renderedText.outerHTML;
-                }
-                html += '    </td>';
-                html += '</tr>';
-            }
-            element.innerHTML = html;
-        }
-        return element;
-    };
-    FactSet.prototype.renderSpeech = function () {
-        if (this.speak != null)
-            return this.speak + '\n';
-        // render each fact 
-        var speak = null;
-        if (this._facts.length > 0) {
-            speak = '';
-            for (var i = 0; i < this._facts.length; i++) {
-                var speech = this._facts[i].renderSpeech();
-                if (speech)
-                    speak += speech;
-            }
-        }
-        return '<p>' + speak + '\n</p>\n';
-    };
-    return FactSet;
-}(Interfaces_1.CardElement));
-exports.FactSet = FactSet;
-var Image = (function (_super) {
-    __extends(Image, _super);
-    function Image() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.style = Enums_1.ImageStyle.Normal;
-        _this.horizontalAlignment = Enums_1.HorizontalAlignment.Left;
-        return _this;
-    }
-    Object.defineProperty(Image.prototype, "useDefaultSizing", {
-        get: function () {
-            return false;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Image.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.url = json["url"];
-        this.style = Enums_1.stringToImageStyle(json["style"], Enums_1.ImageStyle.Normal);
-        this.size = Enums_1.stringToImageSize(json["size"], Enums_1.ImageSize.Auto);
-        this.selectAction = json["selectAction"];
-        this.horizontalAlignment = Enums_1.stringToHorizontalAlignment(json["horizontalAlignment"], this.horizontalAlignment);
-    };
-    Image.prototype.render = function () {
-        var imageElement = null;
-        if (!Utils.isNullOrEmpty(this.url)) {
-            imageElement = document.createElement("img");
-            var cssStyle = "image";
-            switch (this.size) {
-                case Enums_1.ImageSize.Auto:
-                    cssStyle += " autoSize";
-                    break;
-                case Enums_1.ImageSize.Stretch:
-                    cssStyle += " stretch";
-                    break;
-                case Enums_1.ImageSize.Small:
-                    cssStyle += " small";
-                    break;
-                case Enums_1.ImageSize.Large:
-                    cssStyle += " large";
-                    break;
-                default:
-                    cssStyle += " medium";
-                    break;
-            }
-            if (this.style == Enums_1.ImageStyle.Person) {
-                cssStyle += " person";
-            }
-            switch (this.horizontalAlignment) {
-                case Enums_1.HorizontalAlignment.Center:
-                    imageElement.style.textAlign = "center";
-                    break;
-                case Enums_1.HorizontalAlignment.Right:
-                    imageElement.style.textAlign = "right";
-                    break;
-            }
-            imageElement.className = cssStyle;
-            imageElement.src = this.url;
-        }
-        return imageElement;
-    };
-    Image.prototype.renderSpeech = function () {
-        if (this.speak != null)
-            return this.speak + '\n';
-        return null;
-    };
-    return Image;
-}(Interfaces_1.CardElement));
-exports.Image = Image;
-var ImageSet = (function (_super) {
-    __extends(ImageSet, _super);
-    function ImageSet() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this._images = [];
-        _this.imageSize = Enums_1.ImageSize.Medium;
-        return _this;
-    }
-    Object.defineProperty(ImageSet.prototype, "images", {
-        get: function () {
-            return this._images;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ImageSet.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.imageSize = Enums_1.stringToImageSize(json["imageSize"], Enums_1.ImageSize.Medium);
-        if (json["images"] != null) {
-            var imageArray = json["images"];
-            for (var i = 0; i < imageArray.length; i++) {
-                var image = new Image(this.container);
-                image.parse(imageArray[i]);
-                if (this.imageSize)
-                    image.size = this.imageSize;
-                this._images.push(image);
-            }
-        }
-    };
-    ImageSet.prototype.render = function () {
-        var element = null;
-        if (this._images.length > 0) {
-            element = document.createElement("div");
-            element.className = "imageSet";
-            for (var i = 0; i < this._images.length; i++) {
-                var renderedImage = this._images[i].internalRender();
-                renderedImage.style.margin = "0px";
-                renderedImage.style.marginRight = "10px";
-                Utils.appendChild(element, renderedImage);
-            }
-        }
-        return element;
-    };
-    ImageSet.prototype.renderSpeech = function () {
-        if (this.speak != null)
-            return this.speak;
-        var speak = null;
-        if (this._images.length > 0) {
-            speak = '';
-            for (var i = 0; i < this._images.length; i++) {
-                speak += this._images[i].renderSpeech();
-            }
-        }
-        return speak;
-    };
-    return ImageSet;
-}(Interfaces_1.CardElement));
-exports.ImageSet = ImageSet;
+exports.ActionCollection = ActionCollection;
 var Container = (function (_super) {
     __extends(Container, _super);
-    function Container(container, forbiddenItemTypes, itemsCollectionPropertyName) {
-        if (forbiddenItemTypes === void 0) { forbiddenItemTypes = null; }
+    function Container(container, itemsCollectionPropertyName) {
         if (itemsCollectionPropertyName === void 0) { itemsCollectionPropertyName = "items"; }
         var _this = _super.call(this, container) || this;
         _this._items = [];
-        _this._textColor = Enums_1.TextColor.Default;
+        _this._textColor = Enums.TextColor.Default;
+        _this.actionButtonStyle = AdaptiveCard.options.defaultActionButtonStyle;
         _this._itemsCollectionPropertyName = itemsCollectionPropertyName;
-        _this._forbiddenItemTypes = forbiddenItemTypes;
         return _this;
     }
-    Container.prototype.isAllowedItemType = function (elementType) {
-        if (this._forbiddenItemTypes == null) {
-            return true;
-        }
-        for (var i = 0; i < this._forbiddenItemTypes.length; i++) {
-            if (elementType == this._forbiddenItemTypes[i]) {
-                return false;
-            }
-        }
-        if (this.container != null) {
-            // TODO: support forbidden items
-            return this.container.isAllowedItemType(elementType);
-        }
-        else {
-            return true;
-        }
-    };
     Object.defineProperty(Container.prototype, "cssClassName", {
         get: function () {
-            return "container";
+            var className = "container";
+            if (this.selectAction != null) {
+                className += " selectable";
+            }
+            return className;
         },
         enumerable: true,
         configurable: true
@@ -2385,9 +2559,9 @@ var Container = (function (_super) {
     Object.defineProperty(Container.prototype, "textColor", {
         get: function () {
             if (this.container == null) {
-                return this._textColor == Enums_1.TextColor.Default ? Enums_1.TextColor.Dark : this._textColor;
+                return this._textColor == Enums.TextColor.Default ? Enums.TextColor.Dark : this._textColor;
             }
-            if (this._textColor == Enums_1.TextColor.Default) {
+            if (this._textColor == Enums.TextColor.Default) {
                 return this.container.textColor;
             }
             return this._textColor;
@@ -2410,55 +2584,42 @@ var Container = (function (_super) {
         return this._items[index];
     };
     Container.prototype.showBottomSpacer = function (requestingElement) {
-        if (this.isLastElement(requestingElement)) {
+        if (requestingElement === void 0) { requestingElement = null; }
+        if (requestingElement == null || this.isLastElement(requestingElement)) {
             this._element.style.paddingBottom = null;
-            // if (this.container != null) {
-            //     this.container.showBottomSpacer(this);
-            // }
+            if (this.container != null) {
+                this.container.showBottomSpacer(this);
+            }
         }
     };
     Container.prototype.hideBottomSpacer = function (requestingElement) {
-        if (this.isLastElement(requestingElement)) {
+        if (requestingElement === void 0) { requestingElement = null; }
+        if (requestingElement == null || this.isLastElement(requestingElement)) {
             this._element.style.paddingBottom = "0px";
-            // if (this.container != null) {
-            //     this.container.hideBottomSpacer(this);
-            // }
-        }
-    };
-    Container.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.backgroundImageUrl = json["backgroundImage"];
-        this.backgroundColor = json["backgroundColor"];
-        this._textColor = Enums_1.stringToTextColor(json["textColor"], Enums_1.TextColor.Default);
-        this.startGroup = json["startGroup"];
-        if (json[this._itemsCollectionPropertyName] != null) {
-            var items = json[this._itemsCollectionPropertyName];
-            for (var i = 0; i < items.length; i++) {
-                var elementType = items[i]["type"];
-                if (this.isAllowedItemType(elementType)) {
-                    var element = Factory.createCardElement(this, elementType);
-                    element.parse(items[i]);
-                    if (elementType == "Container" && i == 0)
-                        element.startGroup = false;
-                    this.addElement(element);
-                }
-                else {
-                    throw new Error("Elements of type " + elementType + " are not allowed in this container.");
-                }
+            if (this.container != null) {
+                this.container.hideBottomSpacer(this);
             }
         }
     };
     Container.prototype.render = function () {
+        var _this = this;
         if (this.elementCount > 0) {
             this._element = document.createElement("div");
             this._element.className = this.cssClassName;
+            this._element.onclick = function (e) {
+                if (_this.selectAction != null) {
+                    _this.selectAction.execute();
+                    e.cancelBubble = true;
+                }
+            };
+            if (this.isGroupStart) {
+                this._element.className += " startGroup";
+            }
             if (!Utils.isNullOrEmpty(this.backgroundColor)) {
                 this._element.style.backgroundColor = this.backgroundColor;
             }
             var html = '';
             var previousElement = null;
-            if (this.startGroup)
-                Utils.appendChild(this._element, document.createElement("hr"));
             for (var i = 0; i < this.elementCount; i++) {
                 var renderedElement = this.getElement(i).internalRender();
                 if (renderedElement != null) {
@@ -2474,20 +2635,25 @@ var Container = (function (_super) {
                 this._element.style.backgroundRepeat = "no-repeat";
                 this._element.style.backgroundSize = "cover";
             }
+            if (this.actions != null) {
+                Utils.appendChild(this._element, this.actions.render());
+            }
         }
         return this._element;
     };
     Container.prototype.renderSpeech = function () {
-        if (this.speak != null)
+        if (this.speak != null) {
             return this.speak;
+        }
         // render each item
         var speak = null;
         if (this._items.length > 0) {
             speak = '';
             for (var i = 0; i < this._items.length; i++) {
                 var result = this._items[i].renderSpeech();
-                if (result)
+                if (result) {
                     speak += result;
+                }
             }
         }
         return speak;
@@ -2500,33 +2666,36 @@ var Container = (function (_super) {
         return currentContainer;
     };
     return Container;
-}(Interfaces_1.CardElement));
+}(CardElement));
+Container.TypeName = "Container";
 exports.Container = Container;
 var Column = (function (_super) {
     __extends(Column, _super);
     function Column() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.weight = 100;
+        return _this;
     }
     Object.defineProperty(Column.prototype, "cssClassName", {
         get: function () {
-            return "column";
+            var className = "column";
+            if (this.selectAction != null) {
+                className += " selectable";
+            }
+            return className;
         },
         enumerable: true,
         configurable: true
     });
-    Column.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.size = json["size"];
-    };
     Column.prototype.adjustLayout = function (element) {
-        if (!isNaN(parseInt(this.size))) {
-            element.style.flex = "1 1 " + this.size + "%";
+        if (this.weight > 0) {
+            element.style.flex = "1 1 " + this.weight + "%";
         }
-        else if (this.size == "stretch") {
-            element.style.flex = "1 1 auto";
+        else if (this.weight == 0) {
+            element.style.flex = "0 0 auto";
         }
         else {
-            element.style.flex = "0 0 auto";
+            element.style.flex = "1 1 auto";
         }
     };
     return Column;
@@ -2539,25 +2708,17 @@ var ColumnSet = (function (_super) {
         _this._columns = [];
         return _this;
     }
-    ColumnSet.prototype.addColumn = function () {
-        var column = new Column(this.container, ["ActionBar"]);
-        this._columns.push(column);
-        return column;
-    };
-    ColumnSet.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        if (json["columns"] != null) {
-            var itemArray = json["columns"];
-            for (var i = 0; i < itemArray.length; i++) {
-                var column = this.addColumn();
-                column.parse(itemArray[i]);
-            }
-        }
-    };
+    Object.defineProperty(ColumnSet.prototype, "columns", {
+        get: function () {
+            return this._columns;
+        },
+        enumerable: true,
+        configurable: true
+    });
     ColumnSet.prototype.render = function () {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
-            element.className = "columnSet";
+            element.className = "columnGroup";
             element.style.display = "flex";
             for (var i = 0; i < this._columns.length; i++) {
                 var renderedColumn = this._columns[i].internalRender();
@@ -2566,6 +2727,12 @@ var ColumnSet = (function (_super) {
                     var spacer = document.createElement("div");
                     spacer.className = "columnSpacer";
                     spacer.style.flex = "0 0 auto";
+                    if (this._columns[i + 1].isGroupStart) {
+                        spacer.className += " startGroup";
+                        var separator = document.createElement("div");
+                        separator.className = "columnSeparator";
+                        Utils.appendChild(spacer, separator);
+                    }
                     Utils.appendChild(element, spacer);
                 }
             }
@@ -2576,8 +2743,9 @@ var ColumnSet = (function (_super) {
         }
     };
     ColumnSet.prototype.renderSpeech = function () {
-        if (this.speak != null)
+        if (this.speak != null) {
             return this.speak;
+        }
         // render each item
         var speak = '';
         if (this._columns.length > 0) {
@@ -2588,324 +2756,83 @@ var ColumnSet = (function (_super) {
         return speak;
     };
     return ColumnSet;
-}(Interfaces_1.CardElement));
+}(CardElement));
+ColumnSet.TypeName = "ColumnSet";
 exports.ColumnSet = ColumnSet;
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ImageSize;
-(function (ImageSize) {
-    ImageSize[ImageSize["Auto"] = 0] = "Auto";
-    ImageSize[ImageSize["Stretch"] = 1] = "Stretch";
-    ImageSize[ImageSize["Small"] = 2] = "Small";
-    ImageSize[ImageSize["Medium"] = 3] = "Medium";
-    ImageSize[ImageSize["Large"] = 4] = "Large";
-})(ImageSize = exports.ImageSize || (exports.ImageSize = {}));
-var TextSize;
-(function (TextSize) {
-    TextSize[TextSize["Small"] = 0] = "Small";
-    TextSize[TextSize["Normal"] = 1] = "Normal";
-    TextSize[TextSize["Medium"] = 2] = "Medium";
-    TextSize[TextSize["Large"] = 3] = "Large";
-    TextSize[TextSize["ExtraLarge"] = 4] = "ExtraLarge";
-})(TextSize = exports.TextSize || (exports.TextSize = {}));
-var TextWeight;
-(function (TextWeight) {
-    TextWeight[TextWeight["Lighter"] = 0] = "Lighter";
-    TextWeight[TextWeight["Normal"] = 1] = "Normal";
-    TextWeight[TextWeight["Bolder"] = 2] = "Bolder";
-})(TextWeight = exports.TextWeight || (exports.TextWeight = {}));
-var TextColor;
-(function (TextColor) {
-    TextColor[TextColor["Default"] = 0] = "Default";
-    TextColor[TextColor["Dark"] = 1] = "Dark";
-    TextColor[TextColor["Light"] = 2] = "Light";
-    TextColor[TextColor["Accent"] = 3] = "Accent";
-    TextColor[TextColor["Good"] = 4] = "Good";
-    TextColor[TextColor["Warning"] = 5] = "Warning";
-    TextColor[TextColor["Attention"] = 6] = "Attention";
-})(TextColor = exports.TextColor || (exports.TextColor = {}));
-var HorizontalAlignment;
-(function (HorizontalAlignment) {
-    HorizontalAlignment[HorizontalAlignment["Left"] = 0] = "Left";
-    HorizontalAlignment[HorizontalAlignment["Center"] = 1] = "Center";
-    HorizontalAlignment[HorizontalAlignment["Right"] = 2] = "Right";
-})(HorizontalAlignment = exports.HorizontalAlignment || (exports.HorizontalAlignment = {}));
-var ImageStyle;
-(function (ImageStyle) {
-    ImageStyle[ImageStyle["Normal"] = 0] = "Normal";
-    ImageStyle[ImageStyle["Person"] = 1] = "Person";
-})(ImageStyle = exports.ImageStyle || (exports.ImageStyle = {}));
-function stringToImageSize(value, defaultValue) {
-    switch (value) {
-        case "auto":
-            return ImageSize.Auto;
-        case "stretch":
-            return ImageSize.Stretch;
-        case "small":
-            return ImageSize.Small;
-        case "medium":
-            return ImageSize.Medium;
-        case "large":
-            return ImageSize.Large;
-        default:
-            return defaultValue;
+var AdaptiveCard = (function () {
+    function AdaptiveCard() {
+        this._onExecuteAction = new Eventing.EventDispatcher();
+        this.allInputs = [];
+        this.root = new Container(null, "body");
     }
-}
-exports.stringToImageSize = stringToImageSize;
-function stringToTextSize(value, defaultValue) {
-    switch (value) {
-        case "small":
-            return TextSize.Small;
-        case "normal":
-            return TextSize.Normal;
-        case "medium":
-            return TextSize.Medium;
-        case "large":
-            return TextSize.Large;
-        case "extraLarge":
-            return TextSize.ExtraLarge;
-        default:
-            return defaultValue;
-    }
-}
-exports.stringToTextSize = stringToTextSize;
-function stringToTextWeight(value, defaultValue) {
-    switch (value) {
-        case "lighter":
-            return TextWeight.Lighter;
-        case "normal":
-            return TextWeight.Normal;
-        case "bolder":
-            return TextWeight.Bolder;
-        default:
-            return defaultValue;
-    }
-}
-exports.stringToTextWeight = stringToTextWeight;
-function stringToTextColor(value, defaultValue) {
-    switch (value) {
-        case "default":
-            return TextColor.Default;
-        case "dark":
-            return TextColor.Dark;
-        case "light":
-            return TextColor.Light;
-        case "accent":
-            return TextColor.Accent;
-        case "good":
-            return TextColor.Good;
-        case "warning":
-            return TextColor.Warning;
-        case "attention":
-            return TextColor.Attention;
-        default:
-            return defaultValue;
-    }
-}
-exports.stringToTextColor = stringToTextColor;
-function stringToHorizontalAlignment(value, defaultValue) {
-    switch (value) {
-        case "left":
-            return HorizontalAlignment.Left;
-        case "center":
-            return HorizontalAlignment.Center;
-        case "right":
-            return HorizontalAlignment.Right;
-        default:
-            return defaultValue;
-    }
-}
-exports.stringToHorizontalAlignment = stringToHorizontalAlignment;
-function stringToImageStyle(value, defaultValue) {
-    switch (value) {
-        case "person":
-            return ImageStyle.Person;
-        case "normal":
-            return ImageStyle.Normal;
-        default:
-            return defaultValue;
-    }
-}
-exports.stringToImageStyle = stringToImageStyle;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils = __webpack_require__(1);
-var Interfaces_1 = __webpack_require__(4);
-var InputBase = (function (_super) {
-    __extends(InputBase, _super);
-    function InputBase() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    // static createInput(container: Container, typeName: string): InputBase {
-    //     switch (typeName) {
-    //         case "InputText":
-    //             return new InputText(container);
-    //         case "MultichoiceInput":
-    //             return new MultichoiceInput(container);
-    //         case "DateInput":
-    //             return new DateInput(container);
-    //         case "ToggleInput":
-    //             return new ToggleInput(container);
-    //         default:
-    //             throw new Error("Unknown input type: " + typeName);
-    //     }
-    // }
-    InputBase.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.id = json["id"];
-        this.title = json["title"];
-        this.value = json["value"];
-    };
-    InputBase.prototype.renderSpeech = function () {
-        if (this.speak != null)
-            return this.speak;
-        if (this.title)
-            return '<s>' + this.title + '</s>\n';
-        return null;
-    };
-    return InputBase;
-}(Interfaces_1.CardElement));
-exports.InputBase = InputBase;
-var InputText = (function (_super) {
-    __extends(InputText, _super);
-    function InputText(container) {
-        return _super.call(this, container) || this;
-    }
-    InputText.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.maxLength = json["maxLength"];
-        this.isMultiline = json["isMultiline"];
-    };
-    InputText.prototype.render = function () {
-        var element = document.createElement("textarea");
-        element.className = "input InputText";
-        if (this.isMultiline) {
-            element.className += " multiline";
+    AdaptiveCard.showPopupCard = function (action, renderedCard) {
+        if (AdaptiveCard.onShowPopupCard != null) {
+            AdaptiveCard.onShowPopupCard(action, renderedCard);
         }
-        element.placeholder = this.title;
-        return element;
     };
-    return InputText;
-}(InputBase));
-exports.InputText = InputText;
-var Choice = (function () {
-    function Choice() {
-    }
-    Choice.prototype.parse = function (json) {
-        this.display = json["display"];
-        this.value = json["value"];
+    Object.defineProperty(AdaptiveCard.prototype, "onExecuteAction", {
+        get: function () {
+            return this._onExecuteAction;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AdaptiveCard.prototype.executeAction = function (action) {
+        this._onExecuteAction.dispatch(action, null);
     };
-    return Choice;
+    AdaptiveCard.prototype.render = function () {
+        var renderedContainer = this.root.internalRender();
+        renderedContainer.className = "rootContainer";
+        return renderedContainer;
+    };
+    AdaptiveCard.prototype.renderSpeech = function () {
+        return this.root.renderSpeech();
+    };
+    return AdaptiveCard;
 }());
-exports.Choice = Choice;
-var InputToggle = (function (_super) {
-    __extends(InputToggle, _super);
-    function InputToggle() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    InputToggle.prototype.render = function () {
-        var element = document.createElement("div");
-        element.innerHTML = '<input type="checkbox" class="input toggleInput"></input><div class="toggleInputLabel">' + this.title + '</div>';
-        return element;
-    };
-    return InputToggle;
-}(InputBase));
-exports.InputToggle = InputToggle;
-var InputChoiceSet = (function (_super) {
-    __extends(InputChoiceSet, _super);
-    function InputChoiceSet(container) {
-        var _this = _super.call(this, container) || this;
-        _this._choices = [];
-        return _this;
-        //this.size = Size.Medium;
-    }
-    InputChoiceSet.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        if (json["choices"] != undefined) {
-            var choiceArray = json["choices"];
-            for (var i = 0; i < choiceArray.length; i++) {
-                var choice = new Choice();
-                choice.parse(choiceArray[i]);
-                this._choices.push(choice);
-            }
-        }
-    };
-    InputChoiceSet.prototype.render = function () {
-        var selectElement = document.createElement("select");
-        selectElement.className = "input multichoiceInput";
-        for (var i = 0; i < this._choices.length; i++) {
-            var option = document.createElement("option");
-            option.value = this._choices[i].value;
-            option.text = this._choices[i].display;
-            Utils.appendChild(selectElement, option);
-        }
-        return selectElement;
-    };
-    return InputChoiceSet;
-}(InputBase));
-exports.InputChoiceSet = InputChoiceSet;
-var InputDate = (function (_super) {
-    __extends(InputDate, _super);
-    function InputDate(container) {
-        return _super.call(this, container) || this;
-        //this.size = Size.Medium;
-    }
-    InputDate.prototype.parse = function (json) {
-        _super.prototype.parse.call(this, json);
-        this.includeTime = json["includeTime"];
-    };
-    InputDate.prototype.render = function () {
-        var container = document.createElement("div");
-        container.className = "input";
-        container.style.display = "flex";
-        var datePicker = document.createElement("input");
-        datePicker.type = "date";
-        datePicker.className = "dateInput";
-        Utils.appendChild(container, datePicker);
-        if (this.includeTime) {
-            datePicker.style.flex = "1 1 67%";
-            var timePicker = document.createElement("input");
-            timePicker.type = "time";
-            timePicker.className = "timeInput";
-            timePicker.style.flex = "1 1 33%";
-            Utils.appendChild(container, timePicker);
-        }
-        else {
-            datePicker.style.flex = "1 1 100%";
-        }
-        return container;
-    };
-    return InputDate;
-}(InputBase));
-exports.InputDate = InputDate;
+AdaptiveCard.onShowPopupCard = null;
+AdaptiveCard.options = {
+    actionShowCardInPopup: false,
+    defaultActionButtonStyle: Enums.ActionButtonStyle.Push
+};
+exports.AdaptiveCard = AdaptiveCard;
 
 
 /***/ }),
-/* 19 */
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventDispatcher = (function () {
+    function EventDispatcher() {
+        this._subscriptions = new Array();
+    }
+    EventDispatcher.prototype.subscribe = function (fn) {
+        if (fn) {
+            this._subscriptions.push(fn);
+        }
+    };
+    EventDispatcher.prototype.unsubscribe = function (fn) {
+        var i = this._subscriptions.indexOf(fn);
+        if (i > -1) {
+            this._subscriptions.splice(i, 1);
+        }
+    };
+    EventDispatcher.prototype.dispatch = function (sender, args) {
+        for (var _i = 0, _a = this._subscriptions; _i < _a.length; _i++) {
+            var handler = _a[_i];
+            handler(sender, args);
+        }
+    };
+    return EventDispatcher;
+}());
+exports.EventDispatcher = EventDispatcher;
+
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2922,11 +2849,16 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var HostContainer_1 = __webpack_require__(3);
+var Adaptive = __webpack_require__(2);
 var ConnectorContainer = (function (_super) {
     __extends(ConnectorContainer, _super);
     function ConnectorContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    ConnectorContainer.prototype.applyOptions = function () {
+        _super.prototype.applyOptions.call(this);
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+    };
     ConnectorContainer.prototype.renderHeader = function (card) {
         var headerElement = null;
         // if (card.title != undefined || card.description1 != undefined) {
@@ -2959,25 +2891,25 @@ exports.ConnectorContainer = ConnectorContainer;
 
 
 /***/ }),
-/* 20 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports=/[\0-\x1F\x7F-\x9F]/
 
 /***/ }),
-/* 21 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports=/[ \xA0\u1680\u2000-\u200A\u202F\u205F\u3000]/
 
 /***/ }),
-/* 22 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports=/[\0-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/
 
 /***/ }),
-/* 23 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -2986,7 +2918,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 24 */
+/* 20 */
 /***/ (function(module, exports) {
 
 var g;
@@ -3013,7 +2945,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 25 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* ***** BEGIN LICENSE BLOCK *****
@@ -6729,7 +6661,7 @@ init(true);function init(packaged) {
     if (!global || !global.document)
         return;
     
-    options.packaged = packaged || acequire.packaged || module.packaged || (global.define && __webpack_require__(23).packaged);
+    options.packaged = packaged || acequire.packaged || module.packaged || (global.define && __webpack_require__(19).packaged);
 
     var scriptOptions = {};
     var scriptUrl = "";
@@ -19813,7 +19745,7 @@ var WorkerClient = function(topLevelNamespaces, mod, classname, workerUrl) {
 
     try {
             var workerSrc = mod.src;
-    var Blob = __webpack_require__(94);
+    var Blob = __webpack_require__(92);
     var blob = new Blob([ workerSrc ], { type: 'application/javascript' });
     var blobUrl = (window.URL || window.webkitURL).createObjectURL(blob);
 
@@ -22027,7 +21959,7 @@ exports.config = acequire("./config");
 exports.acequire = acequire;
 
 if (true)
-    exports.define = __webpack_require__(23);
+    exports.define = __webpack_require__(19);
 exports.edit = function(el) {
     if (typeof el == "string") {
         var _id = el;
@@ -22094,7 +22026,7 @@ exports.version = "1.2.6";
 module.exports = window.ace.acequire("ace/ace");
 
 /***/ }),
-/* 26 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ace.define("ace/mode/json_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(acequire, exports, module) {
@@ -22388,7 +22320,7 @@ oop.inherits(Mode, TextMode);
     };
 
     this.createWorker = function(session) {
-        var worker = new WorkerClient(["ace"], __webpack_require__(37), "JsonWorker");
+        var worker = new WorkerClient(["ace"], __webpack_require__(34), "JsonWorker");
         worker.attachToDocument(session.getDocument());
 
         worker.on("annotate", function(e) {
@@ -22411,7 +22343,7 @@ exports.Mode = Mode;
 
 
 /***/ }),
-/* 27 */
+/* 23 */
 /***/ (function(module, exports) {
 
 ace.define("ace/theme/chrome",["require","exports","module","ace/lib/dom"], function(acequire, exports, module) {
@@ -22545,7 +22477,309 @@ dom.importCssString(exports.cssText, exports.cssClass);
 
 
 /***/ }),
-/* 28 */
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Adaptive = __webpack_require__(13);
+var Enums = __webpack_require__(6);
+var Utils = __webpack_require__(1);
+var JsonParser = (function () {
+    function JsonParser() {
+    }
+    JsonParser.prototype.parseBaseAction = function (json, action) {
+        action.name = json["title"];
+    };
+    JsonParser.prototype.parseExternalAction = function (json, action) {
+        var _this = this;
+        this.parseBaseAction(json, action);
+        action.onExecute.subscribe(function (a, args) {
+            _this._card.executeAction(a);
+        });
+    };
+    JsonParser.prototype.parseActionOpenUrl = function (json, action) {
+        this.parseExternalAction(json, action);
+        action.url = json["url"];
+    };
+    JsonParser.prototype.parseActionHttp = function (json, action) {
+        this.parseExternalAction(json, action);
+        action.url = json["url"];
+        action.method = json["method"];
+        action.body = json["body"];
+        if (json["headers"] != null) {
+            var jsonHeaders = json["headers"];
+            for (var i = 0; i < jsonHeaders.length; i++) {
+                var httpHeader = new Adaptive.HttpHeader();
+                httpHeader.name = jsonHeaders[i]["name"];
+                httpHeader.value = jsonHeaders[i]["value"];
+                action.headers.push(httpHeader);
+            }
+        }
+    };
+    JsonParser.prototype.parseActionSubmit = function (json, action) {
+        this.parseExternalAction(json, action);
+    };
+    JsonParser.prototype.parseActionShowCard = function (json, action, parentContainer) {
+        this.parseBaseAction(json, action);
+        action.card = new Adaptive.Container(parentContainer, "body");
+        action.card.actionButtonStyle = Enums.ActionButtonStyle.Push;
+        this.parseContainer(json["card"], action.card, "body");
+    };
+    JsonParser.prototype.createAction = function (json, container) {
+        var result;
+        var actionType = json["type"];
+        switch (actionType) {
+            case Adaptive.ActionOpenUrl.TypeName:
+                result = new Adaptive.ActionOpenUrl();
+                this.parseActionOpenUrl(json, result);
+                break;
+            case Adaptive.ActionHttp.TypeName:
+                result = new Adaptive.ActionHttp();
+                this.parseActionHttp(json, result);
+                break;
+            case Adaptive.ActionSubmit.TypeName:
+                result = new Adaptive.ActionSubmit();
+                this.parseActionSubmit(json, result);
+                break;
+            case Adaptive.ActionShowCard.TypeName:
+                result = new Adaptive.ActionShowCard();
+                this.parseActionShowCard(json, result, container);
+                break;
+            default:
+                throw new Error("Unknown action type: " + actionType);
+        }
+        return result;
+    };
+    JsonParser.prototype.parseCardElement = function (json, cardElement) {
+        cardElement.speak = json["speak"];
+        cardElement.horizontalAlignment = Enums.stringToHorizontalAlignment(json["horizontalAlignment"], Enums.HorizontalAlignment.Left);
+    };
+    JsonParser.prototype.parseTextBlock = function (json, textBlock) {
+        this.parseCardElement(json, textBlock);
+        textBlock.text = json["text"];
+        textBlock.textSize = Enums.stringToTextSize(json["size"], Enums.TextSize.Normal);
+        textBlock.textWeight = Enums.stringToTextWeight(json["weight"], Enums.TextWeight.Normal);
+        textBlock.textColor = Enums.stringToTextColor(json["color"], Enums.TextColor.Default);
+        textBlock.isSubtle = json["isSubtle"];
+        textBlock.wrap = json["wrap"];
+        var isParagraphStartJson = json["isParagraphStart"];
+        if (isParagraphStartJson != undefined) {
+            textBlock.isParagraphStart = isParagraphStartJson;
+        }
+    };
+    JsonParser.prototype.parseImage = function (json, image) {
+        this.parseCardElement(json, image);
+        image.url = json["url"];
+        image.style = Enums.stringToImageStyle(json["style"], Enums.ImageStyle.Normal);
+        image.size = Enums.stringToSize(json["size"], Enums.Size.Medium);
+        var selectActionJson = json["selectAction"];
+        if (selectActionJson != undefined) {
+            image.selectAction = this.createAction(selectActionJson, image.container);
+        }
+    };
+    JsonParser.prototype.parseImageSet = function (json, imageSet) {
+        this.parseCardElement(json, imageSet);
+        imageSet.imageSize = Enums.stringToSize(json["imageSize"], Enums.Size.Medium);
+        if (json["images"] != null) {
+            var jsonImages = json["images"];
+            for (var i = 0; i < jsonImages.length; i++) {
+                var image = new Adaptive.Image(imageSet.container);
+                image.size = imageSet.imageSize;
+                image.url = jsonImages[i]["url"];
+                imageSet.images.push(image);
+            }
+        }
+    };
+    JsonParser.prototype.parseFactSet = function (json, factSet) {
+        this.parseCardElement(json, factSet);
+        if (json["facts"] != null) {
+            var jsonFacts = json["facts"];
+            for (var i = 0; i < jsonFacts.length; i++) {
+                var fact = new Adaptive.Fact();
+                fact.name = jsonFacts[i]["title"];
+                fact.value = jsonFacts[i]["value"];
+                fact.speak = jsonFacts[i]["speak"];
+                factSet.facts.push(fact);
+            }
+        }
+    };
+    JsonParser.prototype.parseActionCollection = function (json, actions) {
+        var jsonActions = json;
+        for (var i = 0; i < jsonActions.length; i++) {
+            var action = this.createAction(jsonActions[i], actions.container);
+            actions.items.push(action);
+        }
+    };
+    JsonParser.prototype.parseContainer = function (json, container, itemsCollectionPropertyName, forbiddenItemTypes) {
+        if (itemsCollectionPropertyName === void 0) { itemsCollectionPropertyName = "items"; }
+        if (forbiddenItemTypes === void 0) { forbiddenItemTypes = null; }
+        this.parseCardElement(json, container);
+        container.backgroundImageUrl = json["backgroundImage"];
+        container.backgroundColor = json["backgroundColor"];
+        container.isGroupStart = json["isGroupStart"];
+        container.textColor = Enums.stringToTextColor(json["textColor"], Enums.TextColor.Default);
+        if (json[itemsCollectionPropertyName] != null) {
+            var items = json[itemsCollectionPropertyName];
+            for (var i = 0; i < items.length; i++) {
+                var elementType = items[i]["type"];
+                if (forbiddenItemTypes == null || forbiddenItemTypes.indexOf(elementType) == 0) {
+                    var element = this.createElement(items[i], container);
+                    container.addElement(element);
+                }
+                else {
+                    throw new Error("Elements of type " + elementType + " are not allowed in this container.");
+                }
+            }
+        }
+        if (json["actions"] != undefined) {
+            container.actions = new Adaptive.ActionCollection(container);
+            this.parseActionCollection(json["actions"], container.actions);
+        }
+        var selectActionJson = json["selectAction"];
+        if (selectActionJson != undefined) {
+            container.selectAction = this.createAction(selectActionJson, container);
+        }
+    };
+    JsonParser.prototype.parseColumn = function (json, column) {
+        this.parseContainer(json, column);
+        if (json["size"] === "auto") {
+            column.weight = 0;
+        }
+        else if (json["size"] === "stretch") {
+            column.weight = -1;
+        }
+        else {
+            column.weight = Number(json["size"]);
+        }
+    };
+    JsonParser.prototype.parseColumnSet = function (json, columnSet) {
+        this.parseCardElement(json, columnSet);
+        if (json["columns"] != null) {
+            var jsonColumns = json["columns"];
+            for (var i = 0; i < jsonColumns.length; i++) {
+                var column = new Adaptive.Column(columnSet.container);
+                this.parseColumn(jsonColumns[i], column);
+                columnSet.columns.push(column);
+            }
+        }
+    };
+    JsonParser.prototype.parseInput = function (json, input) {
+        this.parseCardElement(json, input);
+        if (!Utils.isNullOrEmpty(input.id)) {
+            this._card.allInputs.push(input);
+        }
+        input.id = json["id"];
+        input.defaultValue = json["value"];
+    };
+    JsonParser.prototype.parseInputText = function (json, input) {
+        this.parseCardElement(json, input);
+        input.maxLength = json["maxLength"];
+        input.isMultiline = json["isMultiline"];
+        input.placeholder = json["placeholder"];
+    };
+    JsonParser.prototype.parseInputNumber = function (json, input) {
+        this.parseCardElement(json, input);
+        input.min = json["min"];
+        input.max = json["max"];
+    };
+    JsonParser.prototype.parseInputDate = function (json, input) {
+        this.parseCardElement(json, input);
+    };
+    JsonParser.prototype.parseInputTime = function (json, input) {
+        this.parseCardElement(json, input);
+    };
+    JsonParser.prototype.parseInputToggle = function (json, input) {
+        this.parseCardElement(json, input);
+        input.title = json["title"];
+        input.valueOn = json["valueOn"];
+        input.valueOff = json["valueOff"];
+    };
+    JsonParser.prototype.parseInputChoiceSet = function (json, input) {
+        this.parseCardElement(json, input);
+        input.isCompact = !(json["style"] === "expanded");
+        input.isMultiSelect = json["isMultiSelect"];
+        input.placeholder = json["placeholder"];
+        if (json["choices"] != undefined) {
+            var choiceArray = json["choices"];
+            for (var i = 0; i < choiceArray.length; i++) {
+                var choice = new Adaptive.Choice();
+                choice.title = choiceArray[i]["title"];
+                choice.value = choiceArray[i]["value"];
+                input.choices.push(choice);
+            }
+        }
+    };
+    JsonParser.prototype.createElement = function (json, container) {
+        var result;
+        var elementType = json["type"];
+        switch (elementType) {
+            case Adaptive.Container.TypeName:
+                result = new Adaptive.Container(container);
+                this.parseContainer(json, result);
+                break;
+            case Adaptive.TextBlock.TypeName:
+                result = new Adaptive.TextBlock(container);
+                this.parseTextBlock(json, result);
+                break;
+            case Adaptive.Image.TypeName:
+                result = new Adaptive.Image(container);
+                this.parseImage(json, result);
+                break;
+            case Adaptive.ImageSet.TypeName:
+                result = new Adaptive.ImageSet(container);
+                this.parseImageSet(json, result);
+                break;
+            case Adaptive.FactSet.TypeName:
+                result = new Adaptive.FactSet(container);
+                this.parseFactSet(json, result);
+                break;
+            case Adaptive.ColumnSet.TypeName:
+                result = new Adaptive.ColumnSet(container);
+                this.parseColumnSet(json, result);
+                break;
+            case Adaptive.InputText.TypeName:
+                result = new Adaptive.InputText(container);
+                this.parseInputText(json, result);
+                break;
+            case Adaptive.InputNumber.TypeName:
+                result = new Adaptive.InputNumber(container);
+                this.parseInputNumber(json, result);
+                break;
+            case Adaptive.InputDate.TypeName:
+                result = new Adaptive.InputDate(container);
+                this.parseInputDate(json, result);
+                break;
+            case Adaptive.InputTime.TypeName:
+                result = new Adaptive.InputTime(container);
+                this.parseInputTime(json, result);
+                break;
+            case Adaptive.InputToggle.TypeName:
+                result = new Adaptive.InputToggle(container);
+                this.parseInputToggle(json, result);
+                break;
+            case Adaptive.InputChoiceSet.TypeName:
+                result = new Adaptive.InputChoiceSet(container);
+                this.parseInputChoiceSet(json, result);
+                break;
+            default:
+                throw new Error("Unknown element type: " + elementType);
+        }
+        return result;
+    };
+    JsonParser.prototype.parse = function (json) {
+        this._card = new Adaptive.AdaptiveCard();
+        this.parseContainer(json, this._card.root, "body");
+        return this._card;
+    };
+    return JsonParser;
+}());
+exports.JsonParser = JsonParser;
+
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22556,7 +22790,7 @@ exports.defaultPayload = "\n{\n\t\"type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\
 
 
 /***/ }),
-/* 29 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22583,14 +22817,17 @@ var BingContainer = (function (_super) {
         _this._height = height;
         return _this;
     }
+    BingContainer.prototype.applyOptions = function () {
+        _super.prototype.applyOptions.call(this);
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+    };
     BingContainer.prototype.render = function (card) {
         var element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
         element.style.backgroundColor = BingContainer.backgroundColor;
         element.style.overflow = "hidden";
-        card.body.textColor = BingContainer.textColor;
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
+        card.root.textColor = BingContainer.textColor;
         var renderedCard = card.render();
         renderedCard.style.height = "100%";
         Utils.appendChild(element, renderedCard);
@@ -22607,7 +22844,7 @@ exports.BingContainer = BingContainer;
 
 
 /***/ }),
-/* 30 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22631,9 +22868,12 @@ var CortanaCarContainer = (function (_super) {
     function CortanaCarContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    CortanaCarContainer.prototype.applyOptions = function () {
+        _super.prototype.applyOptions.call(this);
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = true;
+    };
     CortanaCarContainer.prototype.render = function (card) {
         var element = document.createElement("div");
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Link;
         var renderedCard = card.render();
         var imgDiv = document.createElement("div");
         imgDiv.classList.add("title");
@@ -22654,7 +22894,7 @@ exports.CortanaCarContainer = CortanaCarContainer;
 
 
 /***/ }),
-/* 31 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22682,13 +22922,17 @@ var LiveTileContainer = (function (_super) {
         _this.supportsActionBar = false;
         return _this;
     }
+    LiveTileContainer.prototype.applyOptions = function () {
+        _super.prototype.applyOptions.call(this);
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+    };
     LiveTileContainer.prototype.render = function (card) {
         var element = document.createElement("div");
         element.style.width = this._width + "px";
         element.style.height = this._height + "px";
         element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
-        card.body.textColor = LiveTileContainer.textColor;
+        card.root.textColor = LiveTileContainer.textColor;
         var renderedCard = card.render();
         renderedCard.style.height = "100%";
         Utils.appendChild(element, renderedCard);
@@ -22705,7 +22949,7 @@ exports.LiveTileContainer = LiveTileContainer;
 
 
 /***/ }),
-/* 32 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22721,8 +22965,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ConnectorContainer_1 = __webpack_require__(19);
-var Adaptive = __webpack_require__(2);
+var ConnectorContainer_1 = __webpack_require__(15);
 var Utils = __webpack_require__(1);
 var OutlookConnectorContainer = (function (_super) {
     __extends(OutlookConnectorContainer, _super);
@@ -22746,7 +22989,6 @@ var OutlookConnectorContainer = (function (_super) {
         if (headerElement != null) {
             Utils.appendChild(element, headerElement);
         }
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Link;
         var renderedCard = card.render();
         Utils.appendChild(element, renderedCard);
         var hostDiv = document.createElement("div");
@@ -22760,7 +23002,7 @@ exports.OutlookConnectorContainer = OutlookConnectorContainer;
 
 
 /***/ }),
-/* 33 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22784,6 +23026,11 @@ var SkypeContainer = (function (_super) {
     function SkypeContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    SkypeContainer.prototype.applyOptions = function () {
+        _super.prototype.applyOptions.call(this);
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = true;
+        Adaptive.AdaptiveCard.options.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
+    };
     SkypeContainer.prototype.render = function (card) {
         var element = document.createElement("div");
         element.className = "skypeContainer";
@@ -22796,7 +23043,6 @@ var SkypeContainer = (function (_super) {
         var botElementIn2 = document.createElement("div");
         botElementIn2.className = "hexagon-in2";
         botElementIn1.appendChild(botElementIn2);
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
         //card.onAction = (action) => { alert(action.title);}
         var renderedCard = card.render();
         Utils.appendChild(element, botElement);
@@ -22812,7 +23058,7 @@ exports.SkypeContainer = SkypeContainer;
 
 
 /***/ }),
-/* 34 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22829,12 +23075,17 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var HostContainer_1 = __webpack_require__(3);
+var Adaptive = __webpack_require__(2);
 var Utils = __webpack_require__(1);
 var SpeechContainer = (function (_super) {
     __extends(SpeechContainer, _super);
     function SpeechContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    SpeechContainer.prototype.applyOptions = function () {
+        _super.prototype.applyOptions.call(this);
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+    };
     SpeechContainer.prototype.render = function (card) {
         var hostDiv = document.createElement("div");
         Utils.appendChild(hostDiv, _super.prototype.render.call(this, card, true));
@@ -22846,7 +23097,7 @@ exports.SpeechContainer = SpeechContainer;
 
 
 /***/ }),
-/* 35 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22862,8 +23113,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ConnectorContainer_1 = __webpack_require__(19);
-var Adaptive = __webpack_require__(2);
+var ConnectorContainer_1 = __webpack_require__(15);
 var Utils = __webpack_require__(1);
 var TeamsConnectorContainer = (function (_super) {
     __extends(TeamsConnectorContainer, _super);
@@ -22880,7 +23130,6 @@ var TeamsConnectorContainer = (function (_super) {
         if (headerElement != null) {
             Utils.appendChild(element, headerElement);
         }
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Link;
         var renderedCard = card.render();
         Utils.appendChild(element, renderedCard);
         var hostDiv = document.createElement("div");
@@ -22894,7 +23143,7 @@ exports.TeamsConnectorContainer = TeamsConnectorContainer;
 
 
 /***/ }),
-/* 36 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22920,6 +23169,10 @@ var ToastContainer = (function (_super) {
         _this._width = width;
         return _this;
     }
+    ToastContainer.prototype.applyOptions = function () {
+        _super.prototype.applyOptions.call(this);
+        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+    };
     ToastContainer.prototype.render = function (card) {
         var element = document.createElement("div");
         element.style.border = "#474747 1px solid";
@@ -22948,8 +23201,7 @@ var ToastContainer = (function (_super) {
         //     headerElement.innerHTML = html;
         //     appendChild(element, headerElement);
         // }
-        card.body.textColor = ToastContainer.textColor;
-        Adaptive.ActionBar.buttonStyle = Adaptive.ActionButtonStyle.Push;
+        card.root.textColor = ToastContainer.textColor;
         var renderedCard = card.render();
         Utils.appendChild(element, renderedCard);
         var hostDiv = document.createElement("div");
@@ -22965,14 +23217,14 @@ exports.ToastContainer = ToastContainer;
 
 
 /***/ }),
-/* 37 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports.id = 'ace/mode/json_worker';
 module.exports.src = "\"no use strict\";(function(window){function resolveModuleId(id,paths){for(var testPath=id,tail=\"\";testPath;){var alias=paths[testPath];if(\"string\"==typeof alias)return alias+tail;if(alias)return alias.location.replace(/\\/*$/,\"/\")+(tail||alias.main||alias.name);if(alias===!1)return\"\";var i=testPath.lastIndexOf(\"/\");if(-1===i)break;tail=testPath.substr(i)+tail,testPath=testPath.slice(0,i)}return id}if(!(void 0!==window.window&&window.document||window.acequire&&window.define)){window.console||(window.console=function(){var msgs=Array.prototype.slice.call(arguments,0);postMessage({type:\"log\",data:msgs})},window.console.error=window.console.warn=window.console.log=window.console.trace=window.console),window.window=window,window.ace=window,window.onerror=function(message,file,line,col,err){postMessage({type:\"error\",data:{message:message,data:err.data,file:file,line:line,col:col,stack:err.stack}})},window.normalizeModule=function(parentId,moduleName){if(-1!==moduleName.indexOf(\"!\")){var chunks=moduleName.split(\"!\");return window.normalizeModule(parentId,chunks[0])+\"!\"+window.normalizeModule(parentId,chunks[1])}if(\".\"==moduleName.charAt(0)){var base=parentId.split(\"/\").slice(0,-1).join(\"/\");for(moduleName=(base?base+\"/\":\"\")+moduleName;-1!==moduleName.indexOf(\".\")&&previous!=moduleName;){var previous=moduleName;moduleName=moduleName.replace(/^\\.\\//,\"\").replace(/\\/\\.\\//,\"/\").replace(/[^\\/]+\\/\\.\\.\\//,\"\")}}return moduleName},window.acequire=function acequire(parentId,id){if(id||(id=parentId,parentId=null),!id.charAt)throw Error(\"worker.js acequire() accepts only (parentId, id) as arguments\");id=window.normalizeModule(parentId,id);var module=window.acequire.modules[id];if(module)return module.initialized||(module.initialized=!0,module.exports=module.factory().exports),module.exports;if(!window.acequire.tlns)return console.log(\"unable to load \"+id);var path=resolveModuleId(id,window.acequire.tlns);return\".js\"!=path.slice(-3)&&(path+=\".js\"),window.acequire.id=id,window.acequire.modules[id]={},importScripts(path),window.acequire(parentId,id)},window.acequire.modules={},window.acequire.tlns={},window.define=function(id,deps,factory){if(2==arguments.length?(factory=deps,\"string\"!=typeof id&&(deps=id,id=window.acequire.id)):1==arguments.length&&(factory=id,deps=[],id=window.acequire.id),\"function\"!=typeof factory)return window.acequire.modules[id]={exports:factory,initialized:!0},void 0;deps.length||(deps=[\"require\",\"exports\",\"module\"]);var req=function(childId){return window.acequire(id,childId)};window.acequire.modules[id]={exports:{},factory:function(){var module=this,returnExports=factory.apply(this,deps.map(function(dep){switch(dep){case\"require\":return req;case\"exports\":return module.exports;case\"module\":return module;default:return req(dep)}}));return returnExports&&(module.exports=returnExports),module}}},window.define.amd={},acequire.tlns={},window.initBaseUrls=function(topLevelNamespaces){for(var i in topLevelNamespaces)acequire.tlns[i]=topLevelNamespaces[i]},window.initSender=function(){var EventEmitter=window.acequire(\"ace/lib/event_emitter\").EventEmitter,oop=window.acequire(\"ace/lib/oop\"),Sender=function(){};return function(){oop.implement(this,EventEmitter),this.callback=function(data,callbackId){postMessage({type:\"call\",id:callbackId,data:data})},this.emit=function(name,data){postMessage({type:\"event\",name:name,data:data})}}.call(Sender.prototype),new Sender};var main=window.main=null,sender=window.sender=null;window.onmessage=function(e){var msg=e.data;if(msg.event&&sender)sender._signal(msg.event,msg.data);else if(msg.command)if(main[msg.command])main[msg.command].apply(main,msg.args);else{if(!window[msg.command])throw Error(\"Unknown command:\"+msg.command);window[msg.command].apply(window,msg.args)}else if(msg.init){window.initBaseUrls(msg.tlns),acequire(\"ace/lib/es5-shim\"),sender=window.sender=window.initSender();var clazz=acequire(msg.module)[msg.classname];main=window.main=new clazz(sender)}}}})(this),ace.define(\"ace/lib/oop\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";exports.inherits=function(ctor,superCtor){ctor.super_=superCtor,ctor.prototype=Object.create(superCtor.prototype,{constructor:{value:ctor,enumerable:!1,writable:!0,configurable:!0}})},exports.mixin=function(obj,mixin){for(var key in mixin)obj[key]=mixin[key];return obj},exports.implement=function(proto,mixin){exports.mixin(proto,mixin)}}),ace.define(\"ace/range\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";var comparePoints=function(p1,p2){return p1.row-p2.row||p1.column-p2.column},Range=function(startRow,startColumn,endRow,endColumn){this.start={row:startRow,column:startColumn},this.end={row:endRow,column:endColumn}};(function(){this.isEqual=function(range){return this.start.row===range.start.row&&this.end.row===range.end.row&&this.start.column===range.start.column&&this.end.column===range.end.column},this.toString=function(){return\"Range: [\"+this.start.row+\"/\"+this.start.column+\"] -> [\"+this.end.row+\"/\"+this.end.column+\"]\"},this.contains=function(row,column){return 0==this.compare(row,column)},this.compareRange=function(range){var cmp,end=range.end,start=range.start;return cmp=this.compare(end.row,end.column),1==cmp?(cmp=this.compare(start.row,start.column),1==cmp?2:0==cmp?1:0):-1==cmp?-2:(cmp=this.compare(start.row,start.column),-1==cmp?-1:1==cmp?42:0)},this.comparePoint=function(p){return this.compare(p.row,p.column)},this.containsRange=function(range){return 0==this.comparePoint(range.start)&&0==this.comparePoint(range.end)},this.intersects=function(range){var cmp=this.compareRange(range);return-1==cmp||0==cmp||1==cmp},this.isEnd=function(row,column){return this.end.row==row&&this.end.column==column},this.isStart=function(row,column){return this.start.row==row&&this.start.column==column},this.setStart=function(row,column){\"object\"==typeof row?(this.start.column=row.column,this.start.row=row.row):(this.start.row=row,this.start.column=column)},this.setEnd=function(row,column){\"object\"==typeof row?(this.end.column=row.column,this.end.row=row.row):(this.end.row=row,this.end.column=column)},this.inside=function(row,column){return 0==this.compare(row,column)?this.isEnd(row,column)||this.isStart(row,column)?!1:!0:!1},this.insideStart=function(row,column){return 0==this.compare(row,column)?this.isEnd(row,column)?!1:!0:!1},this.insideEnd=function(row,column){return 0==this.compare(row,column)?this.isStart(row,column)?!1:!0:!1},this.compare=function(row,column){return this.isMultiLine()||row!==this.start.row?this.start.row>row?-1:row>this.end.row?1:this.start.row===row?column>=this.start.column?0:-1:this.end.row===row?this.end.column>=column?0:1:0:this.start.column>column?-1:column>this.end.column?1:0},this.compareStart=function(row,column){return this.start.row==row&&this.start.column==column?-1:this.compare(row,column)},this.compareEnd=function(row,column){return this.end.row==row&&this.end.column==column?1:this.compare(row,column)},this.compareInside=function(row,column){return this.end.row==row&&this.end.column==column?1:this.start.row==row&&this.start.column==column?-1:this.compare(row,column)},this.clipRows=function(firstRow,lastRow){if(this.end.row>lastRow)var end={row:lastRow+1,column:0};else if(firstRow>this.end.row)var end={row:firstRow,column:0};if(this.start.row>lastRow)var start={row:lastRow+1,column:0};else if(firstRow>this.start.row)var start={row:firstRow,column:0};return Range.fromPoints(start||this.start,end||this.end)},this.extend=function(row,column){var cmp=this.compare(row,column);if(0==cmp)return this;if(-1==cmp)var start={row:row,column:column};else var end={row:row,column:column};return Range.fromPoints(start||this.start,end||this.end)},this.isEmpty=function(){return this.start.row===this.end.row&&this.start.column===this.end.column},this.isMultiLine=function(){return this.start.row!==this.end.row},this.clone=function(){return Range.fromPoints(this.start,this.end)},this.collapseRows=function(){return 0==this.end.column?new Range(this.start.row,0,Math.max(this.start.row,this.end.row-1),0):new Range(this.start.row,0,this.end.row,0)},this.toScreenRange=function(session){var screenPosStart=session.documentToScreenPosition(this.start),screenPosEnd=session.documentToScreenPosition(this.end);return new Range(screenPosStart.row,screenPosStart.column,screenPosEnd.row,screenPosEnd.column)},this.moveBy=function(row,column){this.start.row+=row,this.start.column+=column,this.end.row+=row,this.end.column+=column}}).call(Range.prototype),Range.fromPoints=function(start,end){return new Range(start.row,start.column,end.row,end.column)},Range.comparePoints=comparePoints,Range.comparePoints=function(p1,p2){return p1.row-p2.row||p1.column-p2.column},exports.Range=Range}),ace.define(\"ace/apply_delta\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";exports.applyDelta=function(docLines,delta){var row=delta.start.row,startColumn=delta.start.column,line=docLines[row]||\"\";switch(delta.action){case\"insert\":var lines=delta.lines;if(1===lines.length)docLines[row]=line.substring(0,startColumn)+delta.lines[0]+line.substring(startColumn);else{var args=[row,1].concat(delta.lines);docLines.splice.apply(docLines,args),docLines[row]=line.substring(0,startColumn)+docLines[row],docLines[row+delta.lines.length-1]+=line.substring(startColumn)}break;case\"remove\":var endColumn=delta.end.column,endRow=delta.end.row;row===endRow?docLines[row]=line.substring(0,startColumn)+line.substring(endColumn):docLines.splice(row,endRow-row+1,line.substring(0,startColumn)+docLines[endRow].substring(endColumn))}}}),ace.define(\"ace/lib/event_emitter\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";var EventEmitter={},stopPropagation=function(){this.propagationStopped=!0},preventDefault=function(){this.defaultPrevented=!0};EventEmitter._emit=EventEmitter._dispatchEvent=function(eventName,e){this._eventRegistry||(this._eventRegistry={}),this._defaultHandlers||(this._defaultHandlers={});var listeners=this._eventRegistry[eventName]||[],defaultHandler=this._defaultHandlers[eventName];if(listeners.length||defaultHandler){\"object\"==typeof e&&e||(e={}),e.type||(e.type=eventName),e.stopPropagation||(e.stopPropagation=stopPropagation),e.preventDefault||(e.preventDefault=preventDefault),listeners=listeners.slice();for(var i=0;listeners.length>i&&(listeners[i](e,this),!e.propagationStopped);i++);return defaultHandler&&!e.defaultPrevented?defaultHandler(e,this):void 0}},EventEmitter._signal=function(eventName,e){var listeners=(this._eventRegistry||{})[eventName];if(listeners){listeners=listeners.slice();for(var i=0;listeners.length>i;i++)listeners[i](e,this)}},EventEmitter.once=function(eventName,callback){var _self=this;callback&&this.addEventListener(eventName,function newCallback(){_self.removeEventListener(eventName,newCallback),callback.apply(null,arguments)})},EventEmitter.setDefaultHandler=function(eventName,callback){var handlers=this._defaultHandlers;if(handlers||(handlers=this._defaultHandlers={_disabled_:{}}),handlers[eventName]){var old=handlers[eventName],disabled=handlers._disabled_[eventName];disabled||(handlers._disabled_[eventName]=disabled=[]),disabled.push(old);var i=disabled.indexOf(callback);-1!=i&&disabled.splice(i,1)}handlers[eventName]=callback},EventEmitter.removeDefaultHandler=function(eventName,callback){var handlers=this._defaultHandlers;if(handlers){var disabled=handlers._disabled_[eventName];if(handlers[eventName]==callback)handlers[eventName],disabled&&this.setDefaultHandler(eventName,disabled.pop());else if(disabled){var i=disabled.indexOf(callback);-1!=i&&disabled.splice(i,1)}}},EventEmitter.on=EventEmitter.addEventListener=function(eventName,callback,capturing){this._eventRegistry=this._eventRegistry||{};var listeners=this._eventRegistry[eventName];return listeners||(listeners=this._eventRegistry[eventName]=[]),-1==listeners.indexOf(callback)&&listeners[capturing?\"unshift\":\"push\"](callback),callback},EventEmitter.off=EventEmitter.removeListener=EventEmitter.removeEventListener=function(eventName,callback){this._eventRegistry=this._eventRegistry||{};var listeners=this._eventRegistry[eventName];if(listeners){var index=listeners.indexOf(callback);-1!==index&&listeners.splice(index,1)}},EventEmitter.removeAllListeners=function(eventName){this._eventRegistry&&(this._eventRegistry[eventName]=[])},exports.EventEmitter=EventEmitter}),ace.define(\"ace/anchor\",[\"require\",\"exports\",\"module\",\"ace/lib/oop\",\"ace/lib/event_emitter\"],function(acequire,exports){\"use strict\";var oop=acequire(\"./lib/oop\"),EventEmitter=acequire(\"./lib/event_emitter\").EventEmitter,Anchor=exports.Anchor=function(doc,row,column){this.$onChange=this.onChange.bind(this),this.attach(doc),column===void 0?this.setPosition(row.row,row.column):this.setPosition(row,column)};(function(){function $pointsInOrder(point1,point2,equalPointsInOrder){var bColIsAfter=equalPointsInOrder?point1.column<=point2.column:point1.column<point2.column;return point1.row<point2.row||point1.row==point2.row&&bColIsAfter}function $getTransformedPoint(delta,point,moveIfEqual){var deltaIsInsert=\"insert\"==delta.action,deltaRowShift=(deltaIsInsert?1:-1)*(delta.end.row-delta.start.row),deltaColShift=(deltaIsInsert?1:-1)*(delta.end.column-delta.start.column),deltaStart=delta.start,deltaEnd=deltaIsInsert?deltaStart:delta.end;return $pointsInOrder(point,deltaStart,moveIfEqual)?{row:point.row,column:point.column}:$pointsInOrder(deltaEnd,point,!moveIfEqual)?{row:point.row+deltaRowShift,column:point.column+(point.row==deltaEnd.row?deltaColShift:0)}:{row:deltaStart.row,column:deltaStart.column}}oop.implement(this,EventEmitter),this.getPosition=function(){return this.$clipPositionToDocument(this.row,this.column)},this.getDocument=function(){return this.document},this.$insertRight=!1,this.onChange=function(delta){if(!(delta.start.row==delta.end.row&&delta.start.row!=this.row||delta.start.row>this.row)){var point=$getTransformedPoint(delta,{row:this.row,column:this.column},this.$insertRight);this.setPosition(point.row,point.column,!0)}},this.setPosition=function(row,column,noClip){var pos;if(pos=noClip?{row:row,column:column}:this.$clipPositionToDocument(row,column),this.row!=pos.row||this.column!=pos.column){var old={row:this.row,column:this.column};this.row=pos.row,this.column=pos.column,this._signal(\"change\",{old:old,value:pos})}},this.detach=function(){this.document.removeEventListener(\"change\",this.$onChange)},this.attach=function(doc){this.document=doc||this.document,this.document.on(\"change\",this.$onChange)},this.$clipPositionToDocument=function(row,column){var pos={};return row>=this.document.getLength()?(pos.row=Math.max(0,this.document.getLength()-1),pos.column=this.document.getLine(pos.row).length):0>row?(pos.row=0,pos.column=0):(pos.row=row,pos.column=Math.min(this.document.getLine(pos.row).length,Math.max(0,column))),0>column&&(pos.column=0),pos}}).call(Anchor.prototype)}),ace.define(\"ace/document\",[\"require\",\"exports\",\"module\",\"ace/lib/oop\",\"ace/apply_delta\",\"ace/lib/event_emitter\",\"ace/range\",\"ace/anchor\"],function(acequire,exports){\"use strict\";var oop=acequire(\"./lib/oop\"),applyDelta=acequire(\"./apply_delta\").applyDelta,EventEmitter=acequire(\"./lib/event_emitter\").EventEmitter,Range=acequire(\"./range\").Range,Anchor=acequire(\"./anchor\").Anchor,Document=function(textOrLines){this.$lines=[\"\"],0===textOrLines.length?this.$lines=[\"\"]:Array.isArray(textOrLines)?this.insertMergedLines({row:0,column:0},textOrLines):this.insert({row:0,column:0},textOrLines)};(function(){oop.implement(this,EventEmitter),this.setValue=function(text){var len=this.getLength()-1;this.remove(new Range(0,0,len,this.getLine(len).length)),this.insert({row:0,column:0},text)},this.getValue=function(){return this.getAllLines().join(this.getNewLineCharacter())},this.createAnchor=function(row,column){return new Anchor(this,row,column)},this.$split=0===\"aaa\".split(/a/).length?function(text){return text.replace(/\\r\\n|\\r/g,\"\\n\").split(\"\\n\")}:function(text){return text.split(/\\r\\n|\\r|\\n/)},this.$detectNewLine=function(text){var match=text.match(/^.*?(\\r\\n|\\r|\\n)/m);this.$autoNewLine=match?match[1]:\"\\n\",this._signal(\"changeNewLineMode\")},this.getNewLineCharacter=function(){switch(this.$newLineMode){case\"windows\":return\"\\r\\n\";case\"unix\":return\"\\n\";default:return this.$autoNewLine||\"\\n\"}},this.$autoNewLine=\"\",this.$newLineMode=\"auto\",this.setNewLineMode=function(newLineMode){this.$newLineMode!==newLineMode&&(this.$newLineMode=newLineMode,this._signal(\"changeNewLineMode\"))},this.getNewLineMode=function(){return this.$newLineMode},this.isNewLine=function(text){return\"\\r\\n\"==text||\"\\r\"==text||\"\\n\"==text},this.getLine=function(row){return this.$lines[row]||\"\"},this.getLines=function(firstRow,lastRow){return this.$lines.slice(firstRow,lastRow+1)},this.getAllLines=function(){return this.getLines(0,this.getLength())},this.getLength=function(){return this.$lines.length},this.getTextRange=function(range){return this.getLinesForRange(range).join(this.getNewLineCharacter())},this.getLinesForRange=function(range){var lines;if(range.start.row===range.end.row)lines=[this.getLine(range.start.row).substring(range.start.column,range.end.column)];else{lines=this.getLines(range.start.row,range.end.row),lines[0]=(lines[0]||\"\").substring(range.start.column);var l=lines.length-1;range.end.row-range.start.row==l&&(lines[l]=lines[l].substring(0,range.end.column))}return lines},this.insertLines=function(row,lines){return console.warn(\"Use of document.insertLines is deprecated. Use the insertFullLines method instead.\"),this.insertFullLines(row,lines)},this.removeLines=function(firstRow,lastRow){return console.warn(\"Use of document.removeLines is deprecated. Use the removeFullLines method instead.\"),this.removeFullLines(firstRow,lastRow)},this.insertNewLine=function(position){return console.warn(\"Use of document.insertNewLine is deprecated. Use insertMergedLines(position, ['', '']) instead.\"),this.insertMergedLines(position,[\"\",\"\"])},this.insert=function(position,text){return 1>=this.getLength()&&this.$detectNewLine(text),this.insertMergedLines(position,this.$split(text))},this.insertInLine=function(position,text){var start=this.clippedPos(position.row,position.column),end=this.pos(position.row,position.column+text.length);return this.applyDelta({start:start,end:end,action:\"insert\",lines:[text]},!0),this.clonePos(end)},this.clippedPos=function(row,column){var length=this.getLength();void 0===row?row=length:0>row?row=0:row>=length&&(row=length-1,column=void 0);var line=this.getLine(row);return void 0==column&&(column=line.length),column=Math.min(Math.max(column,0),line.length),{row:row,column:column}},this.clonePos=function(pos){return{row:pos.row,column:pos.column}},this.pos=function(row,column){return{row:row,column:column}},this.$clipPosition=function(position){var length=this.getLength();return position.row>=length?(position.row=Math.max(0,length-1),position.column=this.getLine(length-1).length):(position.row=Math.max(0,position.row),position.column=Math.min(Math.max(position.column,0),this.getLine(position.row).length)),position},this.insertFullLines=function(row,lines){row=Math.min(Math.max(row,0),this.getLength());var column=0;this.getLength()>row?(lines=lines.concat([\"\"]),column=0):(lines=[\"\"].concat(lines),row--,column=this.$lines[row].length),this.insertMergedLines({row:row,column:column},lines)},this.insertMergedLines=function(position,lines){var start=this.clippedPos(position.row,position.column),end={row:start.row+lines.length-1,column:(1==lines.length?start.column:0)+lines[lines.length-1].length};return this.applyDelta({start:start,end:end,action:\"insert\",lines:lines}),this.clonePos(end)},this.remove=function(range){var start=this.clippedPos(range.start.row,range.start.column),end=this.clippedPos(range.end.row,range.end.column);return this.applyDelta({start:start,end:end,action:\"remove\",lines:this.getLinesForRange({start:start,end:end})}),this.clonePos(start)},this.removeInLine=function(row,startColumn,endColumn){var start=this.clippedPos(row,startColumn),end=this.clippedPos(row,endColumn);return this.applyDelta({start:start,end:end,action:\"remove\",lines:this.getLinesForRange({start:start,end:end})},!0),this.clonePos(start)},this.removeFullLines=function(firstRow,lastRow){firstRow=Math.min(Math.max(0,firstRow),this.getLength()-1),lastRow=Math.min(Math.max(0,lastRow),this.getLength()-1);var deleteFirstNewLine=lastRow==this.getLength()-1&&firstRow>0,deleteLastNewLine=this.getLength()-1>lastRow,startRow=deleteFirstNewLine?firstRow-1:firstRow,startCol=deleteFirstNewLine?this.getLine(startRow).length:0,endRow=deleteLastNewLine?lastRow+1:lastRow,endCol=deleteLastNewLine?0:this.getLine(endRow).length,range=new Range(startRow,startCol,endRow,endCol),deletedLines=this.$lines.slice(firstRow,lastRow+1);return this.applyDelta({start:range.start,end:range.end,action:\"remove\",lines:this.getLinesForRange(range)}),deletedLines},this.removeNewLine=function(row){this.getLength()-1>row&&row>=0&&this.applyDelta({start:this.pos(row,this.getLine(row).length),end:this.pos(row+1,0),action:\"remove\",lines:[\"\",\"\"]})},this.replace=function(range,text){if(range instanceof Range||(range=Range.fromPoints(range.start,range.end)),0===text.length&&range.isEmpty())return range.start;if(text==this.getTextRange(range))return range.end;this.remove(range);var end;return end=text?this.insert(range.start,text):range.start},this.applyDeltas=function(deltas){for(var i=0;deltas.length>i;i++)this.applyDelta(deltas[i])},this.revertDeltas=function(deltas){for(var i=deltas.length-1;i>=0;i--)this.revertDelta(deltas[i])},this.applyDelta=function(delta,doNotValidate){var isInsert=\"insert\"==delta.action;(isInsert?1>=delta.lines.length&&!delta.lines[0]:!Range.comparePoints(delta.start,delta.end))||(isInsert&&delta.lines.length>2e4&&this.$splitAndapplyLargeDelta(delta,2e4),applyDelta(this.$lines,delta,doNotValidate),this._signal(\"change\",delta))},this.$splitAndapplyLargeDelta=function(delta,MAX){for(var lines=delta.lines,l=lines.length,row=delta.start.row,column=delta.start.column,from=0,to=0;;){from=to,to+=MAX-1;var chunk=lines.slice(from,to);if(to>l){delta.lines=chunk,delta.start.row=row+from,delta.start.column=column;break}chunk.push(\"\"),this.applyDelta({start:this.pos(row+from,column),end:this.pos(row+to,column=0),action:delta.action,lines:chunk},!0)}},this.revertDelta=function(delta){this.applyDelta({start:this.clonePos(delta.start),end:this.clonePos(delta.end),action:\"insert\"==delta.action?\"remove\":\"insert\",lines:delta.lines.slice()})},this.indexToPosition=function(index,startRow){for(var lines=this.$lines||this.getAllLines(),newlineLength=this.getNewLineCharacter().length,i=startRow||0,l=lines.length;l>i;i++)if(index-=lines[i].length+newlineLength,0>index)return{row:i,column:index+lines[i].length+newlineLength};return{row:l-1,column:lines[l-1].length}},this.positionToIndex=function(pos,startRow){for(var lines=this.$lines||this.getAllLines(),newlineLength=this.getNewLineCharacter().length,index=0,row=Math.min(pos.row,lines.length),i=startRow||0;row>i;++i)index+=lines[i].length+newlineLength;return index+pos.column}}).call(Document.prototype),exports.Document=Document}),ace.define(\"ace/lib/lang\",[\"require\",\"exports\",\"module\"],function(acequire,exports){\"use strict\";exports.last=function(a){return a[a.length-1]},exports.stringReverse=function(string){return string.split(\"\").reverse().join(\"\")},exports.stringRepeat=function(string,count){for(var result=\"\";count>0;)1&count&&(result+=string),(count>>=1)&&(string+=string);return result};var trimBeginRegexp=/^\\s\\s*/,trimEndRegexp=/\\s\\s*$/;exports.stringTrimLeft=function(string){return string.replace(trimBeginRegexp,\"\")},exports.stringTrimRight=function(string){return string.replace(trimEndRegexp,\"\")},exports.copyObject=function(obj){var copy={};for(var key in obj)copy[key]=obj[key];return copy},exports.copyArray=function(array){for(var copy=[],i=0,l=array.length;l>i;i++)copy[i]=array[i]&&\"object\"==typeof array[i]?this.copyObject(array[i]):array[i];return copy},exports.deepCopy=function deepCopy(obj){if(\"object\"!=typeof obj||!obj)return obj;var copy;if(Array.isArray(obj)){copy=[];for(var key=0;obj.length>key;key++)copy[key]=deepCopy(obj[key]);return copy}if(\"[object Object]\"!==Object.prototype.toString.call(obj))return obj;copy={};for(var key in obj)copy[key]=deepCopy(obj[key]);return copy},exports.arrayToMap=function(arr){for(var map={},i=0;arr.length>i;i++)map[arr[i]]=1;return map},exports.createMap=function(props){var map=Object.create(null);for(var i in props)map[i]=props[i];return map},exports.arrayRemove=function(array,value){for(var i=0;array.length>=i;i++)value===array[i]&&array.splice(i,1)},exports.escapeRegExp=function(str){return str.replace(/([.*+?^${}()|[\\]\\/\\\\])/g,\"\\\\$1\")},exports.escapeHTML=function(str){return str.replace(/&/g,\"&#38;\").replace(/\"/g,\"&#34;\").replace(/'/g,\"&#39;\").replace(/</g,\"&#60;\")},exports.getMatchOffsets=function(string,regExp){var matches=[];return string.replace(regExp,function(str){matches.push({offset:arguments[arguments.length-2],length:str.length})}),matches},exports.deferredCall=function(fcn){var timer=null,callback=function(){timer=null,fcn()},deferred=function(timeout){return deferred.cancel(),timer=setTimeout(callback,timeout||0),deferred};return deferred.schedule=deferred,deferred.call=function(){return this.cancel(),fcn(),deferred},deferred.cancel=function(){return clearTimeout(timer),timer=null,deferred},deferred.isPending=function(){return timer},deferred},exports.delayedCall=function(fcn,defaultTimeout){var timer=null,callback=function(){timer=null,fcn()},_self=function(timeout){null==timer&&(timer=setTimeout(callback,timeout||defaultTimeout))};return _self.delay=function(timeout){timer&&clearTimeout(timer),timer=setTimeout(callback,timeout||defaultTimeout)},_self.schedule=_self,_self.call=function(){this.cancel(),fcn()},_self.cancel=function(){timer&&clearTimeout(timer),timer=null},_self.isPending=function(){return timer},_self}}),ace.define(\"ace/worker/mirror\",[\"require\",\"exports\",\"module\",\"ace/range\",\"ace/document\",\"ace/lib/lang\"],function(acequire,exports){\"use strict\";acequire(\"../range\").Range;var Document=acequire(\"../document\").Document,lang=acequire(\"../lib/lang\"),Mirror=exports.Mirror=function(sender){this.sender=sender;var doc=this.doc=new Document(\"\"),deferredUpdate=this.deferredUpdate=lang.delayedCall(this.onUpdate.bind(this)),_self=this;sender.on(\"change\",function(e){var data=e.data;if(data[0].start)doc.applyDeltas(data);else for(var i=0;data.length>i;i+=2){if(Array.isArray(data[i+1]))var d={action:\"insert\",start:data[i],lines:data[i+1]};else var d={action:\"remove\",start:data[i],end:data[i+1]};doc.applyDelta(d,!0)}return _self.$timeout?deferredUpdate.schedule(_self.$timeout):(_self.onUpdate(),void 0)})};(function(){this.$timeout=500,this.setTimeout=function(timeout){this.$timeout=timeout},this.setValue=function(value){this.doc.setValue(value),this.deferredUpdate.schedule(this.$timeout)},this.getValue=function(callbackId){this.sender.callback(this.doc.getValue(),callbackId)},this.onUpdate=function(){},this.isPending=function(){return this.deferredUpdate.isPending()}}).call(Mirror.prototype)}),ace.define(\"ace/mode/json/json_parse\",[\"require\",\"exports\",\"module\"],function(){\"use strict\";var at,ch,text,value,escapee={'\"':'\"',\"\\\\\":\"\\\\\",\"/\":\"/\",b:\"\\b\",f:\"\\f\",n:\"\\n\",r:\"\\r\",t:\"\t\"},error=function(m){throw{name:\"SyntaxError\",message:m,at:at,text:text}},next=function(c){return c&&c!==ch&&error(\"Expected '\"+c+\"' instead of '\"+ch+\"'\"),ch=text.charAt(at),at+=1,ch},number=function(){var number,string=\"\";for(\"-\"===ch&&(string=\"-\",next(\"-\"));ch>=\"0\"&&\"9\">=ch;)string+=ch,next();if(\".\"===ch)for(string+=\".\";next()&&ch>=\"0\"&&\"9\">=ch;)string+=ch;if(\"e\"===ch||\"E\"===ch)for(string+=ch,next(),(\"-\"===ch||\"+\"===ch)&&(string+=ch,next());ch>=\"0\"&&\"9\">=ch;)string+=ch,next();return number=+string,isNaN(number)?(error(\"Bad number\"),void 0):number},string=function(){var hex,i,uffff,string=\"\";if('\"'===ch)for(;next();){if('\"'===ch)return next(),string;if(\"\\\\\"===ch)if(next(),\"u\"===ch){for(uffff=0,i=0;4>i&&(hex=parseInt(next(),16),isFinite(hex));i+=1)uffff=16*uffff+hex;string+=String.fromCharCode(uffff)}else{if(\"string\"!=typeof escapee[ch])break;string+=escapee[ch]}else string+=ch}error(\"Bad string\")},white=function(){for(;ch&&\" \">=ch;)next()},word=function(){switch(ch){case\"t\":return next(\"t\"),next(\"r\"),next(\"u\"),next(\"e\"),!0;case\"f\":return next(\"f\"),next(\"a\"),next(\"l\"),next(\"s\"),next(\"e\"),!1;case\"n\":return next(\"n\"),next(\"u\"),next(\"l\"),next(\"l\"),null}error(\"Unexpected '\"+ch+\"'\")},array=function(){var array=[];if(\"[\"===ch){if(next(\"[\"),white(),\"]\"===ch)return next(\"]\"),array;for(;ch;){if(array.push(value()),white(),\"]\"===ch)return next(\"]\"),array;next(\",\"),white()}}error(\"Bad array\")},object=function(){var key,object={};if(\"{\"===ch){if(next(\"{\"),white(),\"}\"===ch)return next(\"}\"),object;for(;ch;){if(key=string(),white(),next(\":\"),Object.hasOwnProperty.call(object,key)&&error('Duplicate key \"'+key+'\"'),object[key]=value(),white(),\"}\"===ch)return next(\"}\"),object;next(\",\"),white()}}error(\"Bad object\")};return value=function(){switch(white(),ch){case\"{\":return object();case\"[\":return array();case'\"':return string();case\"-\":return number();default:return ch>=\"0\"&&\"9\">=ch?number():word()}},function(source,reviver){var result;return text=source,at=0,ch=\" \",result=value(),white(),ch&&error(\"Syntax error\"),\"function\"==typeof reviver?function walk(holder,key){var k,v,value=holder[key];if(value&&\"object\"==typeof value)for(k in value)Object.hasOwnProperty.call(value,k)&&(v=walk(value,k),void 0!==v?value[k]=v:delete value[k]);return reviver.call(holder,key,value)}({\"\":result},\"\"):result}}),ace.define(\"ace/mode/json_worker\",[\"require\",\"exports\",\"module\",\"ace/lib/oop\",\"ace/worker/mirror\",\"ace/mode/json/json_parse\"],function(acequire,exports){\"use strict\";var oop=acequire(\"../lib/oop\"),Mirror=acequire(\"../worker/mirror\").Mirror,parse=acequire(\"./json/json_parse\"),JsonWorker=exports.JsonWorker=function(sender){Mirror.call(this,sender),this.setTimeout(200)};oop.inherits(JsonWorker,Mirror),function(){this.onUpdate=function(){var value=this.doc.getValue(),errors=[];try{value&&parse(value)}catch(e){var pos=this.doc.indexToPosition(e.at-1);errors.push({row:pos.row,column:pos.column,text:e.message,type:\"error\"})}this.sender.emit(\"annotate\",errors)}}.call(JsonWorker.prototype)}),ace.define(\"ace/lib/es5-shim\",[\"require\",\"exports\",\"module\"],function(){function Empty(){}function doesDefinePropertyWork(object){try{return Object.defineProperty(object,\"sentinel\",{}),\"sentinel\"in object}catch(exception){}}function toInteger(n){return n=+n,n!==n?n=0:0!==n&&n!==1/0&&n!==-(1/0)&&(n=(n>0||-1)*Math.floor(Math.abs(n))),n}Function.prototype.bind||(Function.prototype.bind=function(that){var target=this;if(\"function\"!=typeof target)throw new TypeError(\"Function.prototype.bind called on incompatible \"+target);var args=slice.call(arguments,1),bound=function(){if(this instanceof bound){var result=target.apply(this,args.concat(slice.call(arguments)));return Object(result)===result?result:this}return target.apply(that,args.concat(slice.call(arguments)))};return target.prototype&&(Empty.prototype=target.prototype,bound.prototype=new Empty,Empty.prototype=null),bound});var defineGetter,defineSetter,lookupGetter,lookupSetter,supportsAccessors,call=Function.prototype.call,prototypeOfArray=Array.prototype,prototypeOfObject=Object.prototype,slice=prototypeOfArray.slice,_toString=call.bind(prototypeOfObject.toString),owns=call.bind(prototypeOfObject.hasOwnProperty);if((supportsAccessors=owns(prototypeOfObject,\"__defineGetter__\"))&&(defineGetter=call.bind(prototypeOfObject.__defineGetter__),defineSetter=call.bind(prototypeOfObject.__defineSetter__),lookupGetter=call.bind(prototypeOfObject.__lookupGetter__),lookupSetter=call.bind(prototypeOfObject.__lookupSetter__)),2!=[1,2].splice(0).length)if(function(){function makeArray(l){var a=Array(l+2);return a[0]=a[1]=0,a}var lengthBefore,array=[];return array.splice.apply(array,makeArray(20)),array.splice.apply(array,makeArray(26)),lengthBefore=array.length,array.splice(5,0,\"XXX\"),lengthBefore+1==array.length,lengthBefore+1==array.length?!0:void 0\n}()){var array_splice=Array.prototype.splice;Array.prototype.splice=function(start,deleteCount){return arguments.length?array_splice.apply(this,[void 0===start?0:start,void 0===deleteCount?this.length-start:deleteCount].concat(slice.call(arguments,2))):[]}}else Array.prototype.splice=function(pos,removeCount){var length=this.length;pos>0?pos>length&&(pos=length):void 0==pos?pos=0:0>pos&&(pos=Math.max(length+pos,0)),length>pos+removeCount||(removeCount=length-pos);var removed=this.slice(pos,pos+removeCount),insert=slice.call(arguments,2),add=insert.length;if(pos===length)add&&this.push.apply(this,insert);else{var remove=Math.min(removeCount,length-pos),tailOldPos=pos+remove,tailNewPos=tailOldPos+add-remove,tailCount=length-tailOldPos,lengthAfterRemove=length-remove;if(tailOldPos>tailNewPos)for(var i=0;tailCount>i;++i)this[tailNewPos+i]=this[tailOldPos+i];else if(tailNewPos>tailOldPos)for(i=tailCount;i--;)this[tailNewPos+i]=this[tailOldPos+i];if(add&&pos===lengthAfterRemove)this.length=lengthAfterRemove,this.push.apply(this,insert);else for(this.length=lengthAfterRemove+add,i=0;add>i;++i)this[pos+i]=insert[i]}return removed};Array.isArray||(Array.isArray=function(obj){return\"[object Array]\"==_toString(obj)});var boxedString=Object(\"a\"),splitString=\"a\"!=boxedString[0]||!(0 in boxedString);if(Array.prototype.forEach||(Array.prototype.forEach=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,thisp=arguments[1],i=-1,length=self.length>>>0;if(\"[object Function]\"!=_toString(fun))throw new TypeError;for(;length>++i;)i in self&&fun.call(thisp,self[i],i,object)}),Array.prototype.map||(Array.prototype.map=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0,result=Array(length),thisp=arguments[1];if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");for(var i=0;length>i;i++)i in self&&(result[i]=fun.call(thisp,self[i],i,object));return result}),Array.prototype.filter||(Array.prototype.filter=function(fun){var value,object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0,result=[],thisp=arguments[1];if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");for(var i=0;length>i;i++)i in self&&(value=self[i],fun.call(thisp,value,i,object)&&result.push(value));return result}),Array.prototype.every||(Array.prototype.every=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0,thisp=arguments[1];if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");for(var i=0;length>i;i++)if(i in self&&!fun.call(thisp,self[i],i,object))return!1;return!0}),Array.prototype.some||(Array.prototype.some=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0,thisp=arguments[1];if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");for(var i=0;length>i;i++)if(i in self&&fun.call(thisp,self[i],i,object))return!0;return!1}),Array.prototype.reduce||(Array.prototype.reduce=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0;if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");if(!length&&1==arguments.length)throw new TypeError(\"reduce of empty array with no initial value\");var result,i=0;if(arguments.length>=2)result=arguments[1];else for(;;){if(i in self){result=self[i++];break}if(++i>=length)throw new TypeError(\"reduce of empty array with no initial value\")}for(;length>i;i++)i in self&&(result=fun.call(void 0,result,self[i],i,object));return result}),Array.prototype.reduceRight||(Array.prototype.reduceRight=function(fun){var object=toObject(this),self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):object,length=self.length>>>0;if(\"[object Function]\"!=_toString(fun))throw new TypeError(fun+\" is not a function\");if(!length&&1==arguments.length)throw new TypeError(\"reduceRight of empty array with no initial value\");var result,i=length-1;if(arguments.length>=2)result=arguments[1];else for(;;){if(i in self){result=self[i--];break}if(0>--i)throw new TypeError(\"reduceRight of empty array with no initial value\")}do i in this&&(result=fun.call(void 0,result,self[i],i,object));while(i--);return result}),Array.prototype.indexOf&&-1==[0,1].indexOf(1,2)||(Array.prototype.indexOf=function(sought){var self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):toObject(this),length=self.length>>>0;if(!length)return-1;var i=0;for(arguments.length>1&&(i=toInteger(arguments[1])),i=i>=0?i:Math.max(0,length+i);length>i;i++)if(i in self&&self[i]===sought)return i;return-1}),Array.prototype.lastIndexOf&&-1==[0,1].lastIndexOf(0,-3)||(Array.prototype.lastIndexOf=function(sought){var self=splitString&&\"[object String]\"==_toString(this)?this.split(\"\"):toObject(this),length=self.length>>>0;if(!length)return-1;var i=length-1;for(arguments.length>1&&(i=Math.min(i,toInteger(arguments[1]))),i=i>=0?i:length-Math.abs(i);i>=0;i--)if(i in self&&sought===self[i])return i;return-1}),Object.getPrototypeOf||(Object.getPrototypeOf=function(object){return object.__proto__||(object.constructor?object.constructor.prototype:prototypeOfObject)}),!Object.getOwnPropertyDescriptor){var ERR_NON_OBJECT=\"Object.getOwnPropertyDescriptor called on a non-object: \";Object.getOwnPropertyDescriptor=function(object,property){if(\"object\"!=typeof object&&\"function\"!=typeof object||null===object)throw new TypeError(ERR_NON_OBJECT+object);if(owns(object,property)){var descriptor,getter,setter;if(descriptor={enumerable:!0,configurable:!0},supportsAccessors){var prototype=object.__proto__;object.__proto__=prototypeOfObject;var getter=lookupGetter(object,property),setter=lookupSetter(object,property);if(object.__proto__=prototype,getter||setter)return getter&&(descriptor.get=getter),setter&&(descriptor.set=setter),descriptor}return descriptor.value=object[property],descriptor}}}if(Object.getOwnPropertyNames||(Object.getOwnPropertyNames=function(object){return Object.keys(object)}),!Object.create){var createEmpty;createEmpty=null===Object.prototype.__proto__?function(){return{__proto__:null}}:function(){var empty={};for(var i in empty)empty[i]=null;return empty.constructor=empty.hasOwnProperty=empty.propertyIsEnumerable=empty.isPrototypeOf=empty.toLocaleString=empty.toString=empty.valueOf=empty.__proto__=null,empty},Object.create=function(prototype,properties){var object;if(null===prototype)object=createEmpty();else{if(\"object\"!=typeof prototype)throw new TypeError(\"typeof prototype[\"+typeof prototype+\"] != 'object'\");var Type=function(){};Type.prototype=prototype,object=new Type,object.__proto__=prototype}return void 0!==properties&&Object.defineProperties(object,properties),object}}if(Object.defineProperty){var definePropertyWorksOnObject=doesDefinePropertyWork({}),definePropertyWorksOnDom=\"undefined\"==typeof document||doesDefinePropertyWork(document.createElement(\"div\"));if(!definePropertyWorksOnObject||!definePropertyWorksOnDom)var definePropertyFallback=Object.defineProperty}if(!Object.defineProperty||definePropertyFallback){var ERR_NON_OBJECT_DESCRIPTOR=\"Property description must be an object: \",ERR_NON_OBJECT_TARGET=\"Object.defineProperty called on non-object: \",ERR_ACCESSORS_NOT_SUPPORTED=\"getters & setters can not be defined on this javascript engine\";Object.defineProperty=function(object,property,descriptor){if(\"object\"!=typeof object&&\"function\"!=typeof object||null===object)throw new TypeError(ERR_NON_OBJECT_TARGET+object);if(\"object\"!=typeof descriptor&&\"function\"!=typeof descriptor||null===descriptor)throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR+descriptor);if(definePropertyFallback)try{return definePropertyFallback.call(Object,object,property,descriptor)}catch(exception){}if(owns(descriptor,\"value\"))if(supportsAccessors&&(lookupGetter(object,property)||lookupSetter(object,property))){var prototype=object.__proto__;object.__proto__=prototypeOfObject,delete object[property],object[property]=descriptor.value,object.__proto__=prototype}else object[property]=descriptor.value;else{if(!supportsAccessors)throw new TypeError(ERR_ACCESSORS_NOT_SUPPORTED);owns(descriptor,\"get\")&&defineGetter(object,property,descriptor.get),owns(descriptor,\"set\")&&defineSetter(object,property,descriptor.set)}return object}}Object.defineProperties||(Object.defineProperties=function(object,properties){for(var property in properties)owns(properties,property)&&Object.defineProperty(object,property,properties[property]);return object}),Object.seal||(Object.seal=function(object){return object}),Object.freeze||(Object.freeze=function(object){return object});try{Object.freeze(function(){})}catch(exception){Object.freeze=function(freezeObject){return function(object){return\"function\"==typeof object?object:freezeObject(object)}}(Object.freeze)}if(Object.preventExtensions||(Object.preventExtensions=function(object){return object}),Object.isSealed||(Object.isSealed=function(){return!1}),Object.isFrozen||(Object.isFrozen=function(){return!1}),Object.isExtensible||(Object.isExtensible=function(object){if(Object(object)===object)throw new TypeError;for(var name=\"\";owns(object,name);)name+=\"?\";object[name]=!0;var returnValue=owns(object,name);return delete object[name],returnValue}),!Object.keys){var hasDontEnumBug=!0,dontEnums=[\"toString\",\"toLocaleString\",\"valueOf\",\"hasOwnProperty\",\"isPrototypeOf\",\"propertyIsEnumerable\",\"constructor\"],dontEnumsLength=dontEnums.length;for(var key in{toString:null})hasDontEnumBug=!1;Object.keys=function(object){if(\"object\"!=typeof object&&\"function\"!=typeof object||null===object)throw new TypeError(\"Object.keys called on a non-object\");var keys=[];for(var name in object)owns(object,name)&&keys.push(name);if(hasDontEnumBug)for(var i=0,ii=dontEnumsLength;ii>i;i++){var dontEnum=dontEnums[i];owns(object,dontEnum)&&keys.push(dontEnum)}return keys}}Date.now||(Date.now=function(){return(new Date).getTime()});var ws=\"\t\\n\u000b\\f\\r   ᠎             　\\u2028\\u2029﻿\";if(!String.prototype.trim||ws.trim()){ws=\"[\"+ws+\"]\";var trimBeginRegexp=RegExp(\"^\"+ws+ws+\"*\"),trimEndRegexp=RegExp(ws+ws+\"*$\");String.prototype.trim=function(){return(this+\"\").replace(trimBeginRegexp,\"\").replace(trimEndRegexp,\"\")}}var toObject=function(o){if(null==o)throw new TypeError(\"can't convert \"+o+\" to object\");return Object(o)}});";
 
 /***/ }),
-/* 38 */
+/* 35 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -25104,7 +25356,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 39 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25260,7 +25512,7 @@ function createNormalizer() {
 function compile(self) {
 
   // Load & clone RE patterns.
-  var re = self.re = __webpack_require__(40)(self.__opts__);
+  var re = self.re = __webpack_require__(37)(self.__opts__);
 
   // Define dynamic patterns
   var tlds = self.__tlds__.slice();
@@ -25748,7 +26000,7 @@ module.exports = LinkifyIt;
 
 
 /***/ }),
-/* 40 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25759,10 +26011,10 @@ module.exports = function (opts) {
   var re = {};
 
   // Use direct extract instead of `regenerate` to reduse browserified size
-  re.src_Any = __webpack_require__(22).source;
-  re.src_Cc  = __webpack_require__(20).source;
-  re.src_Z   = __webpack_require__(21).source;
-  re.src_P   = __webpack_require__(8).source;
+  re.src_Any = __webpack_require__(18).source;
+  re.src_Cc  = __webpack_require__(16).source;
+  re.src_Z   = __webpack_require__(17).source;
+  re.src_P   = __webpack_require__(7).source;
 
   // \p{\Z\P\Cc\CF} (white spaces + control + format + punctuation)
   re.src_ZPCc = [ re.src_Z, re.src_P, re.src_Cc ].join('|');
@@ -25932,18 +26184,18 @@ module.exports = function (opts) {
 
 
 /***/ }),
-/* 41 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-module.exports = __webpack_require__(47);
+module.exports = __webpack_require__(44);
 
 
 /***/ }),
-/* 42 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26023,7 +26275,7 @@ module.exports = [
 
 
 /***/ }),
-/* 43 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26031,13 +26283,13 @@ module.exports = [
 
 
 
-exports.parseLinkLabel       = __webpack_require__(45);
-exports.parseLinkDestination = __webpack_require__(44);
-exports.parseLinkTitle       = __webpack_require__(46);
+exports.parseLinkLabel       = __webpack_require__(42);
+exports.parseLinkDestination = __webpack_require__(41);
+exports.parseLinkTitle       = __webpack_require__(43);
 
 
 /***/ }),
-/* 44 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26124,7 +26376,7 @@ module.exports = function parseLinkDestination(str, pos, max) {
 
 
 /***/ }),
-/* 45 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26179,7 +26431,7 @@ module.exports = function parseLinkLabel(state, start, disableNested) {
 
 
 /***/ }),
-/* 46 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26239,7 +26491,7 @@ module.exports = function parseLinkTitle(str, pos, max) {
 
 
 /***/ }),
-/* 47 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26249,20 +26501,20 @@ module.exports = function parseLinkTitle(str, pos, max) {
 
 
 var utils        = __webpack_require__(0);
-var helpers      = __webpack_require__(43);
-var Renderer     = __webpack_require__(54);
-var ParserCore   = __webpack_require__(49);
-var ParserBlock  = __webpack_require__(48);
-var ParserInline = __webpack_require__(50);
-var LinkifyIt    = __webpack_require__(39);
-var mdurl        = __webpack_require__(13);
-var punycode     = __webpack_require__(90);
+var helpers      = __webpack_require__(40);
+var Renderer     = __webpack_require__(51);
+var ParserCore   = __webpack_require__(46);
+var ParserBlock  = __webpack_require__(45);
+var ParserInline = __webpack_require__(47);
+var LinkifyIt    = __webpack_require__(36);
+var mdurl        = __webpack_require__(12);
+var punycode     = __webpack_require__(87);
 
 
 var config = {
-  'default': __webpack_require__(52),
-  zero: __webpack_require__(53),
-  commonmark: __webpack_require__(51)
+  'default': __webpack_require__(49),
+  zero: __webpack_require__(50),
+  commonmark: __webpack_require__(48)
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -26827,7 +27079,7 @@ module.exports = MarkdownIt;
 
 
 /***/ }),
-/* 48 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26839,23 +27091,23 @@ module.exports = MarkdownIt;
 
 
 
-var Ruler           = __webpack_require__(5);
+var Ruler           = __webpack_require__(4);
 
 
 var _rules = [
   // First 2 params - rule name & source. Secondary array - list of rules,
   // which can be terminated by this one.
-  [ 'table',      __webpack_require__(66),      [ 'paragraph', 'reference' ] ],
-  [ 'code',       __webpack_require__(56) ],
-  [ 'fence',      __webpack_require__(57),      [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
-  [ 'blockquote', __webpack_require__(55), [ 'paragraph', 'reference', 'list' ] ],
-  [ 'hr',         __webpack_require__(59),         [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
-  [ 'list',       __webpack_require__(62),       [ 'paragraph', 'reference', 'blockquote' ] ],
-  [ 'reference',  __webpack_require__(64) ],
-  [ 'heading',    __webpack_require__(58),    [ 'paragraph', 'reference', 'blockquote' ] ],
-  [ 'lheading',   __webpack_require__(61) ],
-  [ 'html_block', __webpack_require__(60), [ 'paragraph', 'reference', 'blockquote' ] ],
-  [ 'paragraph',  __webpack_require__(63) ]
+  [ 'table',      __webpack_require__(63),      [ 'paragraph', 'reference' ] ],
+  [ 'code',       __webpack_require__(53) ],
+  [ 'fence',      __webpack_require__(54),      [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
+  [ 'blockquote', __webpack_require__(52), [ 'paragraph', 'reference', 'list' ] ],
+  [ 'hr',         __webpack_require__(56),         [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
+  [ 'list',       __webpack_require__(59),       [ 'paragraph', 'reference', 'blockquote' ] ],
+  [ 'reference',  __webpack_require__(61) ],
+  [ 'heading',    __webpack_require__(55),    [ 'paragraph', 'reference', 'blockquote' ] ],
+  [ 'lheading',   __webpack_require__(58) ],
+  [ 'html_block', __webpack_require__(57), [ 'paragraph', 'reference', 'blockquote' ] ],
+  [ 'paragraph',  __webpack_require__(60) ]
 ];
 
 
@@ -26949,14 +27201,14 @@ ParserBlock.prototype.parse = function (src, md, env, outTokens) {
 };
 
 
-ParserBlock.prototype.State = __webpack_require__(65);
+ParserBlock.prototype.State = __webpack_require__(62);
 
 
 module.exports = ParserBlock;
 
 
 /***/ }),
-/* 49 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26969,16 +27221,16 @@ module.exports = ParserBlock;
 
 
 
-var Ruler  = __webpack_require__(5);
+var Ruler  = __webpack_require__(4);
 
 
 var _rules = [
-  [ 'normalize',      __webpack_require__(70)      ],
-  [ 'block',          __webpack_require__(67)          ],
-  [ 'inline',         __webpack_require__(68)         ],
-  [ 'linkify',        __webpack_require__(69)        ],
-  [ 'replacements',   __webpack_require__(71)   ],
-  [ 'smartquotes',    __webpack_require__(72)    ]
+  [ 'normalize',      __webpack_require__(67)      ],
+  [ 'block',          __webpack_require__(64)          ],
+  [ 'inline',         __webpack_require__(65)         ],
+  [ 'linkify',        __webpack_require__(66)        ],
+  [ 'replacements',   __webpack_require__(68)   ],
+  [ 'smartquotes',    __webpack_require__(69)    ]
 ];
 
 
@@ -27014,14 +27266,14 @@ Core.prototype.process = function (state) {
   }
 };
 
-Core.prototype.State = __webpack_require__(73);
+Core.prototype.State = __webpack_require__(70);
 
 
 module.exports = Core;
 
 
 /***/ }),
-/* 50 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27033,31 +27285,31 @@ module.exports = Core;
 
 
 
-var Ruler           = __webpack_require__(5);
+var Ruler           = __webpack_require__(4);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Parser rules
 
 var _rules = [
-  [ 'text',            __webpack_require__(84) ],
-  [ 'newline',         __webpack_require__(82) ],
-  [ 'escape',          __webpack_require__(78) ],
-  [ 'backticks',       __webpack_require__(75) ],
-  [ 'strikethrough',   __webpack_require__(12).tokenize ],
-  [ 'emphasis',        __webpack_require__(11).tokenize ],
-  [ 'link',            __webpack_require__(81) ],
-  [ 'image',           __webpack_require__(80) ],
-  [ 'autolink',        __webpack_require__(74) ],
-  [ 'html_inline',     __webpack_require__(79) ],
-  [ 'entity',          __webpack_require__(77) ]
+  [ 'text',            __webpack_require__(81) ],
+  [ 'newline',         __webpack_require__(79) ],
+  [ 'escape',          __webpack_require__(75) ],
+  [ 'backticks',       __webpack_require__(72) ],
+  [ 'strikethrough',   __webpack_require__(11).tokenize ],
+  [ 'emphasis',        __webpack_require__(10).tokenize ],
+  [ 'link',            __webpack_require__(78) ],
+  [ 'image',           __webpack_require__(77) ],
+  [ 'autolink',        __webpack_require__(71) ],
+  [ 'html_inline',     __webpack_require__(76) ],
+  [ 'entity',          __webpack_require__(74) ]
 ];
 
 var _rules2 = [
-  [ 'balance_pairs',   __webpack_require__(76) ],
-  [ 'strikethrough',   __webpack_require__(12).postProcess ],
-  [ 'emphasis',        __webpack_require__(11).postProcess ],
-  [ 'text_collapse',   __webpack_require__(85) ]
+  [ 'balance_pairs',   __webpack_require__(73) ],
+  [ 'strikethrough',   __webpack_require__(11).postProcess ],
+  [ 'emphasis',        __webpack_require__(10).postProcess ],
+  [ 'text_collapse',   __webpack_require__(82) ]
 ];
 
 
@@ -27198,14 +27450,14 @@ ParserInline.prototype.parse = function (str, md, env, outTokens) {
 };
 
 
-ParserInline.prototype.State = __webpack_require__(83);
+ParserInline.prototype.State = __webpack_require__(80);
 
 
 module.exports = ParserInline;
 
 
 /***/ }),
-/* 51 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27292,7 +27544,7 @@ module.exports = {
 
 
 /***/ }),
-/* 52 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27340,7 +27592,7 @@ module.exports = {
 
 
 /***/ }),
-/* 53 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27409,7 +27661,7 @@ module.exports = {
 
 
 /***/ }),
-/* 54 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27751,7 +28003,7 @@ module.exports = Renderer;
 
 
 /***/ }),
-/* 55 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28022,7 +28274,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
 
 
 /***/ }),
-/* 56 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28063,7 +28315,7 @@ module.exports = function code(state, startLine, endLine/*, silent*/) {
 
 
 /***/ }),
-/* 57 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28161,7 +28413,7 @@ module.exports = function fence(state, startLine, endLine, silent) {
 
 
 /***/ }),
-/* 58 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28220,7 +28472,7 @@ module.exports = function heading(state, startLine, endLine, silent) {
 
 
 /***/ }),
-/* 59 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28269,7 +28521,7 @@ module.exports = function hr(state, startLine, endLine, silent) {
 
 
 /***/ }),
-/* 60 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28278,8 +28530,8 @@ module.exports = function hr(state, startLine, endLine, silent) {
 
 
 
-var block_names = __webpack_require__(42);
-var HTML_OPEN_CLOSE_TAG_RE = __webpack_require__(10).HTML_OPEN_CLOSE_TAG_RE;
+var block_names = __webpack_require__(39);
+var HTML_OPEN_CLOSE_TAG_RE = __webpack_require__(9).HTML_OPEN_CLOSE_TAG_RE;
 
 // An array of opening and corresponding closing sequences for html tags,
 // last argument defines whether it can terminate a paragraph or not
@@ -28347,7 +28599,7 @@ module.exports = function html_block(state, startLine, endLine, silent) {
 
 
 /***/ }),
-/* 61 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28434,7 +28686,7 @@ module.exports = function lheading(state, startLine, endLine/*, silent*/) {
 
 
 /***/ }),
-/* 62 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28776,7 +29028,7 @@ module.exports = function list(state, startLine, endLine, silent) {
 
 
 /***/ }),
-/* 63 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28835,7 +29087,7 @@ module.exports = function paragraph(state, startLine/*, endLine*/) {
 
 
 /***/ }),
-/* 64 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29037,7 +29289,7 @@ module.exports = function reference(state, startLine, _endLine, silent) {
 
 
 /***/ }),
-/* 65 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29045,7 +29297,7 @@ module.exports = function reference(state, startLine, _endLine, silent) {
 
 
 
-var Token = __webpack_require__(6);
+var Token = __webpack_require__(5);
 var isSpace = __webpack_require__(0).isSpace;
 
 
@@ -29274,7 +29526,7 @@ module.exports = StateBlock;
 
 
 /***/ }),
-/* 66 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29477,7 +29729,7 @@ module.exports = function table(state, startLine, endLine, silent) {
 
 
 /***/ }),
-/* 67 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29500,7 +29752,7 @@ module.exports = function block(state) {
 
 
 /***/ }),
-/* 68 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29520,7 +29772,7 @@ module.exports = function inline(state) {
 
 
 /***/ }),
-/* 69 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29660,7 +29912,7 @@ module.exports = function linkify(state) {
 
 
 /***/ }),
-/* 70 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29687,7 +29939,7 @@ module.exports = function inline(state) {
 
 
 /***/ }),
-/* 71 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29801,7 +30053,7 @@ module.exports = function replace(state) {
 
 
 /***/ }),
-/* 72 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30001,7 +30253,7 @@ module.exports = function smartquotes(state) {
 
 
 /***/ }),
-/* 73 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30009,7 +30261,7 @@ module.exports = function smartquotes(state) {
 //
 
 
-var Token = __webpack_require__(6);
+var Token = __webpack_require__(5);
 
 
 function StateCore(src, md, env) {
@@ -30028,7 +30280,7 @@ module.exports = StateCore;
 
 
 /***/ }),
-/* 74 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30107,7 +30359,7 @@ module.exports = function autolink(state, silent) {
 
 
 /***/ }),
-/* 75 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30157,7 +30409,7 @@ module.exports = function backtick(state, silent) {
 
 
 /***/ }),
-/* 76 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30208,7 +30460,7 @@ module.exports = function link_pairs(state) {
 
 
 /***/ }),
-/* 77 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30216,7 +30468,7 @@ module.exports = function link_pairs(state) {
 
 
 
-var entities          = __webpack_require__(9);
+var entities          = __webpack_require__(8);
 var has               = __webpack_require__(0).has;
 var isValidEntityCode = __webpack_require__(0).isValidEntityCode;
 var fromCodePoint     = __webpack_require__(0).fromCodePoint;
@@ -30263,7 +30515,7 @@ module.exports = function entity(state, silent) {
 
 
 /***/ }),
-/* 78 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30322,7 +30574,7 @@ module.exports = function escape(state, silent) {
 
 
 /***/ }),
-/* 79 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30331,7 +30583,7 @@ module.exports = function escape(state, silent) {
 
 
 
-var HTML_TAG_RE = __webpack_require__(10).HTML_TAG_RE;
+var HTML_TAG_RE = __webpack_require__(9).HTML_TAG_RE;
 
 
 function isLetter(ch) {
@@ -30376,7 +30628,7 @@ module.exports = function html_inline(state, silent) {
 
 
 /***/ }),
-/* 80 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30535,7 +30787,7 @@ module.exports = function image(state, silent) {
 
 
 /***/ }),
-/* 81 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30692,7 +30944,7 @@ module.exports = function link(state, silent) {
 
 
 /***/ }),
-/* 82 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30741,7 +30993,7 @@ module.exports = function newline(state, silent) {
 
 
 /***/ }),
-/* 83 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30750,7 +31002,7 @@ module.exports = function newline(state, silent) {
 
 
 
-var Token          = __webpack_require__(6);
+var Token          = __webpack_require__(5);
 var isWhiteSpace   = __webpack_require__(0).isWhiteSpace;
 var isPunctChar    = __webpack_require__(0).isPunctChar;
 var isMdAsciiPunct = __webpack_require__(0).isMdAsciiPunct;
@@ -30878,7 +31130,7 @@ module.exports = StateInline;
 
 
 /***/ }),
-/* 84 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30974,7 +31226,7 @@ module.exports = function text(state, silent) {
 
 
 /***/ }),
-/* 85 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31014,7 +31266,7 @@ module.exports = function text_collapse(state) {
 
 
 /***/ }),
-/* 86 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31143,7 +31395,7 @@ module.exports = decode;
 
 
 /***/ }),
-/* 87 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31248,7 +31500,7 @@ module.exports = encode;
 
 
 /***/ }),
-/* 88 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31280,7 +31532,7 @@ module.exports = function format(url) {
 
 
 /***/ }),
-/* 89 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31599,7 +31851,7 @@ module.exports = urlParse;
 
 
 /***/ }),
-/* 90 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.1 by @mathias */
@@ -32135,30 +32387,104 @@ module.exports = urlParse;
 
 }(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(95)(module), __webpack_require__(24)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(93)(module), __webpack_require__(20)))
 
 /***/ }),
-/* 91 */
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var AbstractTextFormatter = (function () {
+    function AbstractTextFormatter(regularExpression) {
+        this._regularExpression = regularExpression;
+    }
+    AbstractTextFormatter.prototype.format = function (input) {
+        var matches;
+        var result = input;
+        while ((matches = this._regularExpression.exec(input)) != null) {
+            result = result.replace(matches[0], this.internalFormat(matches));
+        }
+        ;
+        return result;
+    };
+    return AbstractTextFormatter;
+}());
+var DateFormatter = (function (_super) {
+    __extends(DateFormatter, _super);
+    function DateFormatter() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    DateFormatter.prototype.internalFormat = function (matches) {
+        var date = new Date(Date.parse(matches[1]));
+        if (matches[2] != undefined) {
+            var longOrShort = matches[2].toLowerCase();
+            return date.toLocaleDateString(undefined, { day: "numeric", weekday: longOrShort, month: longOrShort, year: "numeric" });
+        }
+        else {
+            return date.toLocaleDateString();
+        }
+    };
+    return DateFormatter;
+}(AbstractTextFormatter));
+var TimeFormatter = (function (_super) {
+    __extends(TimeFormatter, _super);
+    function TimeFormatter() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TimeFormatter.prototype.internalFormat = function (matches) {
+        var date = new Date(Date.parse(matches[1]));
+        return date.toLocaleTimeString();
+    };
+    return TimeFormatter;
+}(AbstractTextFormatter));
+function formatText(text) {
+    var formatters = [
+        new DateFormatter(/\{{2}date\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:z|Z|-\d{1,2}))(?:,(long|short))?\)\}{2}/gi),
+        new TimeFormatter(/\{{2}time\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:z|Z|-\d{1,2}))\)\}{2}/gi)
+    ];
+    var result = text;
+    for (var i = 0; i < formatters.length; i++) {
+        result = formatters[i].format(result);
+    }
+    return result;
+}
+exports.formatText = formatText;
+
+
+/***/ }),
+/* 89 */
 /***/ (function(module, exports) {
 
 module.exports=/[\xAD\u0600-\u0605\u061C\u06DD\u070F\u08E2\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF\uFFF9-\uFFFB]|\uD804\uDCBD|\uD82F[\uDCA0-\uDCA3]|\uD834[\uDD73-\uDD7A]|\uDB40[\uDC01\uDC20-\uDC7F]/
 
 /***/ }),
-/* 92 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.Any = __webpack_require__(22);
-exports.Cc  = __webpack_require__(20);
-exports.Cf  = __webpack_require__(91);
-exports.P   = __webpack_require__(8);
-exports.Z   = __webpack_require__(21);
+exports.Any = __webpack_require__(18);
+exports.Cc  = __webpack_require__(16);
+exports.Cf  = __webpack_require__(89);
+exports.P   = __webpack_require__(7);
+exports.Z   = __webpack_require__(17);
 
 
 /***/ }),
-/* 93 */
+/* 91 */
 /***/ (function(module, exports) {
 
 /**
@@ -32517,7 +32843,7 @@ module.exports = new vkbeautify();
 
 
 /***/ }),
-/* 94 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {module.exports = get_blob()
@@ -32549,10 +32875,10 @@ function get_blob() {
   }
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
-/* 95 */
+/* 93 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -32580,25 +32906,26 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 96 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Adaptive = __webpack_require__(2);
-var Constants = __webpack_require__(28);
-var BingContainer_1 = __webpack_require__(29);
-var LiveTileContainer_1 = __webpack_require__(31);
-var OutlookConnectorContainer_1 = __webpack_require__(32);
-var SkypeContainer_1 = __webpack_require__(33);
-var SpeechContainer_1 = __webpack_require__(34);
-var TeamsConnectorContainer_1 = __webpack_require__(35);
-var ToastContainer_1 = __webpack_require__(36);
-var CortanaCarContainer_1 = __webpack_require__(30);
-var ace = __webpack_require__(25);
-__webpack_require__(26);
-__webpack_require__(27);
+var JsonParser_1 = __webpack_require__(24);
+var Constants = __webpack_require__(25);
+var BingContainer_1 = __webpack_require__(26);
+var LiveTileContainer_1 = __webpack_require__(28);
+var OutlookConnectorContainer_1 = __webpack_require__(29);
+var SkypeContainer_1 = __webpack_require__(30);
+var SpeechContainer_1 = __webpack_require__(31);
+var TeamsConnectorContainer_1 = __webpack_require__(32);
+var ToastContainer_1 = __webpack_require__(33);
+var CortanaCarContainer_1 = __webpack_require__(27);
+var ace = __webpack_require__(21);
+__webpack_require__(22);
+__webpack_require__(23);
 var editor;
 var hostContainerOptions = [];
 var hostContainerPicker;
@@ -32609,11 +32936,28 @@ function renderCard() {
         var cardTypeName = json["type"];
         var node = document.getElementById('content');
         node.innerHTML = '';
+        Adaptive.AdaptiveCard.onShowPopupCard = function (action, element) {
+            var popupContainer = document.getElementById("popupCardContainer");
+            popupContainer.innerHTML = "";
+            popupContainer.appendChild(element);
+        };
         switch (cardTypeName) {
             case "AdaptiveCard":
-                var adaptiveCard = new Adaptive.AdaptiveCard();
-                adaptiveCard.parse(json);
                 var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+                hostContainer.applyOptions();
+                var jsonParser = new JsonParser_1.JsonParser();
+                var adaptiveCard = jsonParser.parse(json);
+                adaptiveCard.onExecuteAction.subscribe(function (a, args) {
+                    alert("Action executed: " + a.name);
+                });
+                var popupContainer = document.getElementById("popupCardContainer");
+                if (Adaptive.AdaptiveCard.options.actionShowCardInPopup) {
+                    popupContainer.innerText = "ActionShowCard popups will appear in this box, according to container settings";
+                    popupContainer.hidden = false;
+                }
+                else {
+                    popupContainer.hidden = true;
+                }
                 var renderedHostContainer = hostContainer.render(adaptiveCard);
                 node.appendChild(renderedHostContainer);
                 try {
@@ -32635,7 +32979,7 @@ function renderCard() {
         }
     }
     catch (e) {
-        document.getElementById('content').innerHTML = "Error: " + e.toString();
+        document.getElementById('content').innerHTML = e.toString();
         console.log(e.toString() + '\n' + jsonText);
     }
 }

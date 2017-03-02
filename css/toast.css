@@ -24,6 +24,10 @@
     font-weight: normal;
 }
 
+.text.startParagraph {
+    padding: 10px 0px 0px 0px;
+}
+
 .text.small {
     font-size: 12px;
     margin: -4px 0px 5px 0px;
@@ -118,8 +122,29 @@
     margin: 15px 0px 0px 0px;
 }
 
+.container.selectable {
+    padding: 5px;
+}
+
+.container.selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.container.selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.container.startGroup {
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    padding-top: 15px;
+}
+
 .image {
     margin: 5px 0px 0px 0px;
+}
+
+.image.selectable {
+    cursor: pointer;
 }
 
 .image.autoSize {
@@ -148,7 +173,7 @@
     background-repeat: no-repeat;
 }
 
-table.factSet {
+table.factGroup {
     margin: 10px 0px 0px 0px;
     border-width: 0px;
     border-spacing: 0px;
@@ -156,11 +181,11 @@ table.factSet {
     border-collapse: collapse;
 }
 
-tr.factSetRowSpacer {
+tr.factGroupRowSpacer {
     height: 10px;
 }
 
-td.factTitle {
+td.factName {
     border-width: 0px;
     padding: 0px;
     border-style: none;
@@ -178,28 +203,46 @@ td.factValue {
     padding: 4px 0px 0px 10px;
 }
 
-.imageSet {
+.imageGallery {
     margin: 20px 0px 0px 0px;
 }
 
-.separator {
-    border-top: 1px solid #464646;
-    margin: 20px 0px 0px 0px;
-}
-
-.actionSet {
+.actionGroup {
     margin: 10px 0px 0px 0px;
 }
 
-.columnSet {
+.columnGroup {
     margin: 20px 0px 0px 0px;
 }
 
 .column {
 }
 
+.column.selectable {
+    padding: 5px;
+}
+
+.column.selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.column.selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
 .columnSpacer {
     width: 10px;    
+}
+
+.columnSpacer.startGroup {
+    width: 20px;    
+}
+
+.columnSeparator {
+    margin: 0 auto;
+    width: 0px;
+    height: 100%;
+    border-left: 1px solid #EEEEEE;
 }
 
 .actionCardContainer {
@@ -342,7 +385,7 @@ Other styles that can be specified:
     background-color: #0C0C0C;
 }
 
-.dateInput {
+.input.number {
     font-family: 'Segoe UI', sans-serif;
     border: 2px solid #797979;
     padding: 4px 8px 5px 8px;
@@ -350,12 +393,12 @@ Other styles that can be specified:
     color: white;
 }
 
-.dateInput:hover {
+.input.number:hover {
     border: 2px solid #A5A5A5;
     background-color: #0C0C0C;
 }
 
-.timeInput {
+.input.date {
     font-family: 'Segoe UI', sans-serif;
     border: 2px solid #797979;
     padding: 4px 8px 5px 8px;
@@ -363,7 +406,20 @@ Other styles that can be specified:
     color: white;
 }
 
-.timeInput:hover {
+.input.date:hover {
+    border: 2px solid #A5A5A5;
+    background-color: #0C0C0C;
+}
+
+.input.time {
+    font-family: 'Segoe UI', sans-serif;
+    border: 2px solid #797979;
+    padding: 4px 8px 5px 8px;
+    background-color: #131313;
+    color: white;
+}
+
+.input.time:hover {
     border: 2px solid #A5A5A5;
     background-color: #0C0C0C;
 }
@@ -381,14 +437,27 @@ Other styles that can be specified:
     background-color: #0C0C0C;
 }
 
-.input.toggleInput {
-    float: left;
+.toggleInput {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0px;
 }
 
-.input.toggleInputLabel {
+.toggleInputLabel {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     margin-top: -3px;
     margin-left: 6px;
-    float: left;
+
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.toggleLabel {
+    margin-left: 6px ! important;
+    margin-right: 0px ! important;
+    margin-bottom: 0px ! important;
+    padding: 0px ! important;
+    display: inline-block;
+    vertical-align: middle;
 }

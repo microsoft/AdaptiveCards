@@ -24,34 +24,33 @@
     font-weight: normal;
 }
 
+.text.startParagraph {
+    padding: 10px 0px 0px 0px;
+}
+
 .text.defaultSize {
     font-size: 14px;
     margin: -5px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.small {
     font-size: 12px;
     margin: -4px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.medium {
     font-size: 20px;
     margin: -8px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.large {
     font-size: 24px;
     margin: -9px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.extraLarge {
     font-size: 30px;
     margin: -11px 0px 5px 0px;
-    padding: 0px 0px 0px 0px;
 }
 
 .text.lighter {
@@ -118,8 +117,29 @@
     margin: 20px 0px 0px 0px;
 }
 
+.container.selectable {
+    padding: 5px;
+}
+
+.container.selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.container.selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.container.startGroup {
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    padding-top: 20px;
+}
+
 .image {
     margin: 5px 0px 0px 0px;
+}
+
+.image.selectable {
+    cursor: pointer;
 }
 
 .image.autoSize {
@@ -148,7 +168,7 @@
     background-repeat: no-repeat;
 }
 
-table.factSet {
+table.factGroup {
     margin: 20px 0px 0px 0px;
     border-width: 0px;
     border-spacing: 0px;
@@ -156,11 +176,11 @@ table.factSet {
     border-collapse: collapse;
 }
 
-tr.factSetRowSpacer {
+tr.factGroupRowSpacer {
     height: 10px;
 }
 
-td.factTitle {
+td.factName {
     border-width: 0px;
     padding: 0px;
     border-style: none;
@@ -177,28 +197,46 @@ td.factValue {
     padding: 0px 0px 0px 10px
 }
 
-.imageSet {
+.imageGallery {
     margin: 20px 0px 0px 0px;
 }
 
-.separator {
-    border-top: 1px solid #EEEEEE;
-    margin: 5px 0px 5px 0px;
-}
-
-.actionSet {
+.actionGroup {
     margin: 20px 0px 0px 0px;
 }
 
-.columnSet {
+.columnGroup {
     margin: 15px 0px 5px 0px;
 }
 
 .column {
 }
 
+.column.selectable {
+    padding: 5px;
+}
+
+.column.selectable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.column.selectable:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
 .columnSpacer {
     width: 10px;    
+}
+
+.columnSpacer.startGroup {
+    width: 20px;    
+}
+
+.columnSeparator {
+    margin: 0 auto;
+    width: 0px;
+    height: 100%;
+    border-left: 1px solid #EEEEEE;
 }
 
 .actionCardContainer {
@@ -325,7 +363,7 @@ Other styles that can be specified:
     height: 72px;
 }
 
-.dateInput {
+.input.number {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
     border-width: 1px;
@@ -333,7 +371,15 @@ Other styles that can be specified:
     padding: 4px 8px 5px 8px;
 }
 
-.timeInput {
+.input.date {
+    font-family: 'Segoe UI', sans-serif;
+    border-color: #EAEAEA;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 8px 5px 8px;
+}
+
+.input.time {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
     border-width: 1px;
@@ -349,14 +395,17 @@ Other styles that can be specified:
     padding: 4px 8px 6px 8px;
 }
 
-.input.toggleInput {
-    float: left;
+.toggleInput {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0px;
 }
 
-.input.toggleInputLabel {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    margin-top: -3px;
-    margin-left: 6px;
-    float: left;
+.toggleLabel {
+    margin-left: 6px ! important;
+    margin-right: 0px ! important;
+    margin-bottom: 0px ! important;
+    padding: 0px ! important;
+    display: inline-block;
+    vertical-align: middle;
 }
