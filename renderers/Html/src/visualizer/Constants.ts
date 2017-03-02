@@ -40,7 +40,7 @@ export const defaultPayload: string = `
 								},
 								{
 									"type": "TextBlock",
-									"text": "Created {{DATE(2017-02-14 06:08:39Z,Long)}} {{TIME(2017-02-14 06:08:39Z,Short)}}",
+									"text": "Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}",
 									"isSubtle": true,
 									"wrap": true
 								}

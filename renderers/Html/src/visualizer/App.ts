@@ -54,78 +54,50 @@ function actionExecuted(action: Adaptive.Action, args: any) {
     alert(message);
 }
 
-function renderCard() {
-    let jsonText = editor.getValue();
+function setContent(element) {
+    let contentContainer = document.getElementById("content");
 
-    try {
-        let json = JSON.parse(jsonText);
-        let cardTypeName = json["type"];
-
-        let node = document.getElementById('content');
-        node.innerHTML = '';
-
-        Adaptive.AdaptiveCard.onShowPopupCard = (action, element) => {
-            var popupContainer = document.getElementById("popupCardContainer");
-            popupContainer.innerHTML = "";
-
-            popupContainer.appendChild(element);
-        }
-
-        Adaptive.AdaptiveCard.onRenderError = (error, data) => {
-            throw new Error(error.toString() + " - " + data);
-        }
-
-        switch (cardTypeName) {
-            case "AdaptiveCard":
-                let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
-                hostContainer.applyOptions();
-
-                var jsonParser = new JsonParser();
-                var adaptiveCard = jsonParser.parse(json);
-
-                adaptiveCard.onExecuteAction.subscribe(actionExecuted);
-
-                var popupContainer = document.getElementById("popupCardContainer");
-
-                if (Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup) {
-                    popupContainer.innerText = "ActionShowCard popups will appear in this box, according to container settings";
-                    popupContainer.hidden = false;
-                }
-                else {
-                    popupContainer.hidden = true;
-                }
-
-                let renderedHostContainer = hostContainer.render(adaptiveCard);
-
-                node.appendChild(renderedHostContainer);
-
-                try {
-                    sessionStorage.setItem("AdaptivePayload", editor.getValue());
-                }
-                catch (e2) {
-                    console.log("Unable to cache payload")
-                }
-
-                break;
-            default:
-                // TODO: Fix this
-                //if (isNullOrEmpty(cardTypeName)) {
-                if(!false) {
-                    throw new Error("The card's type must be specified.");
-                }
-                else {
-                    throw new Error("Unknown card type: " + cardTypeName);
-                }
-        }
-    }
-    catch (e) {
-        document.getElementById('content').innerHTML = e.toString();
-        console.log(e.toString() + '\n' + jsonText);
-    }
+    contentContainer.innerHTML = '';
+    contentContainer.appendChild(element);
 }
 
-function textareaChange() {
-    renderCard();
+function renderCard() {
+    let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    hostContainer.applyOptions();
+
+    var jsonPayload = editor.getValue();
+    var json = JSON.parse(jsonPayload);
+    var cardTypeName = json["type"];
+
+    var jsonParser = new JsonParser();
+    var adaptiveCard = jsonParser.parse(json);
+
+    adaptiveCard.onExecuteAction.subscribe(actionExecuted);
+
+    var popupContainer = document.getElementById("popupCardContainer");
+
+    if (Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup) {
+        popupContainer.innerText = "ActionShowCard popups will appear in this box, according to container settings";
+        popupContainer.hidden = false;
+    }
+    else {
+        popupContainer.hidden = true;
+    }
+
+    document.getElementById("errorContainer").hidden = true;
+
+    var renderedContainer = hostContainer.render(adaptiveCard);
+
+    var contentContainer = document.getElementById("content");
+    contentContainer.innerHTML = '';
+    contentContainer.appendChild(renderedContainer);
+
+    try {
+        sessionStorage.setItem("AdaptivePayload", jsonPayload);
+    }
+    catch (e) {
+        console.log("Unable to cache JSON payload.")
+    }
 }
 
 function openFilePicker() {
@@ -157,9 +129,8 @@ function updateStyleSheet() {
     if (styleSheetLinkElement == null) {
         styleSheetLinkElement = document.createElement("link");
         styleSheetLinkElement.id = "adaptiveCardStylesheet";
-        // TODO: Is this a bug? Won't previous style sheets stick around then?
-        let headElement = document.getElementsByTagName("head")[0];
-        headElement.appendChild(styleSheetLinkElement);
+
+        document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
     }
 
     styleSheetLinkElement.rel = "stylesheet";
@@ -171,12 +142,19 @@ function getParameterByName(name, url) {
     if (!url) {
         url = window.location.href;
     }
+
     name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+    
+    var results = regex.exec(url);
+
+    if (results && results[2]) {
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    else {
+        return "";
+    }
 }
 
 class HostContainerOption {
@@ -201,22 +179,27 @@ function setupEditor() {
             "fontSize": "14px",
         });
     editor.getSession().setMode("ace/mode/json");
-    editor.getSession().on("change", function (e) { renderCard(); });
+    editor.getSession().on(
+        "change",
+        function (e) {
+            updateStyleSheet();
+            renderCard();
+        });
 
     // Load the cached payload if the user had one
     try {
         let cachedPayload = sessionStorage.getItem("AdaptivePayload");
+
         if (cachedPayload) {
             editor.session.setValue(cachedPayload);
         }
         else {
-             editor.session.setValue(Constants.defaultPayload);
+            editor.session.setValue(Constants.defaultPayload);
         }
     }
     catch (e) {
-         editor.session.setValue(Constants.defaultPayload);
+        editor.session.setValue(Constants.defaultPayload);
     }
-
 }
 
 function setupContainerPicker() {
@@ -225,14 +208,17 @@ function setupContainerPicker() {
         new HostContainerOption(
             "Outlook Connector",
             new OutlookConnectorContainer("red", "./../../css/outlookConnectorCard.css")));
+
     hostContainerOptions.push(
         new HostContainerOption(
             "Microsoft Teams Connector",
             new TeamsConnectorContainer("./../../css/teamsConnectorCard.css")));
+
     hostContainerOptions.push(
         new HostContainerOption(
             "Windows Toast Notification",
             new ToastContainer(362, "./../../css/toast.css")));
+
     hostContainerOptions.push(
         new HostContainerOption(
             "Large Live Tile",
@@ -259,12 +245,14 @@ function setupContainerPicker() {
             new SpeechContainer("./../../css/bing.css")));
 
     if (hostContainerPicker) {
-        hostContainerPicker.addEventListener("change", () => {
-            // update the query string
-            history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
+        hostContainerPicker.addEventListener(
+            "change", () => {
+                // update the query string
+                history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
 
-            renderSelectedHostApp();
-        });
+                updateStyleSheet();
+                renderCard();
+            });
 
         for (let i = 0; i < hostContainerOptions.length; i++) {
             let option = document.createElement("option");
@@ -274,23 +262,16 @@ function setupContainerPicker() {
             hostContainerPicker.appendChild(option);
         }
     }
-
-    setContainerAppFromUrl();
 }
 
 function setContainerAppFromUrl() {
-    let requestedHostApp = getParameterByName("hostApp", null);
+    var requestedHostApp = getParameterByName("hostApp", null);
+
     if (requestedHostApp) {
         console.log(`Setting host app to ${requestedHostApp}`);
+
         hostContainerPicker.value = requestedHostApp;
     }
-
-    renderSelectedHostApp();
-}
-
-function renderSelectedHostApp() {
-    updateStyleSheet();
-    renderCard();
 }
 
 function setupFilePicker() {
@@ -299,21 +280,31 @@ function setupFilePicker() {
 }
 
 window.onload = () => {
+    Adaptive.AdaptiveCard.onShowPopupCard = (action, element) => {
+        var popupContainer = document.getElementById("popupCardContainer");
+        popupContainer.innerHTML = "";
+        popupContainer.appendChild(action.card.render());
+    }
+
+    Adaptive.AdaptiveCard.onRenderError = (error, message) => {
+        var errorContainer = document.getElementById("errorContainer");
+        errorContainer.innerText = message;
+        errorContainer.hidden = false;
+    }
+
     hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
+    setupContainerPicker();
+    setContainerAppFromUrl();
+    setupFilePicker();
+    updateStyleSheet();
     setupEditor();
 
-     setupContainerPicker();
-
-    setupFilePicker();
-
-    updateStyleSheet();
-
-     renderCard();
-
     // handle Back and Forward after the Container app drop down is changed
-    window.addEventListener('popstate', function (e) {
-        setContainerAppFromUrl();
-    });
+    window.addEventListener(
+        "popstate",
+        function (e) {
+            setContainerAppFromUrl();
+        });
 };
 

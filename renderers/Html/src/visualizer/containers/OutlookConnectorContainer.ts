@@ -12,12 +12,6 @@ export class OutlookConnectorContainer extends ConnectorContainer {
         this._themeColor = themeColor;
     }
 
-    applyOptions() {
-        super.applyOptions();
-
-        // Adaptive.AdaptiveCard.options.forbiddenActionTypes = [ Adaptive.ActionShowCard.TypeName ];
-    }
-
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";

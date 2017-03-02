@@ -59,6 +59,8 @@ export enum Separation  {
 }
 
 export enum RenderError {
+    MissingCardType,
+    UnsupportedVersion,
     ElementTypeNotAllowed,
     ActionTypeNotAllowed,
     NestedActionNotAllowed,

@@ -936,17 +936,17 @@ export class ActionCollection {
     }
 
     private static checkActionTypeIsAllowed(action: Action): boolean {
-        var className = action.constructor.toString();
+        var className = Utils.getClassNameFromInstance(action);
 
         for (var i = 0; i < AdaptiveCard.renderOptions.supportedActionTypes.length; i++) {
-            if (className.indexOf(AdaptiveCard.renderOptions.supportedActionTypes[i].name) >= 0) {
+            if (className === Utils.getClassNameFromConstructor(AdaptiveCard.renderOptions.supportedActionTypes[i])) {
                 return true;
             }
         }
 
         AdaptiveCard.raiseRenderError(
             Enums.RenderError.ActionTypeNotAllowed,
-            "Actions of type " + typeof(action) + " are not allowed.");
+            "Actions of type " + className + " are not allowed.");
 
         return false;
     }
@@ -1048,18 +1048,18 @@ export class Container extends CardElement {
     private _textColor: Enums.TextColor = Enums.TextColor.Default;
     private _itemsCollectionPropertyName: string;
 
-    private static checkElementTypeIsAllowed(element: CardElement): boolean {
-        var className = element.constructor.toString();
+    private static checkElementTypeIsAllowed(element: CardElement) {
+        var className = Utils.getClassNameFromInstance(element);
 
         for (var i = 0; i < AdaptiveCard.renderOptions.supportedElementTypes.length; i++) {
-            if (className.indexOf(AdaptiveCard.renderOptions.supportedElementTypes[i].name) >= 0) {
+            if (className === Utils.getClassNameFromConstructor(AdaptiveCard.renderOptions.supportedElementTypes[i])) {
                 return true;
             }
         }
 
         AdaptiveCard.raiseRenderError(
             Enums.RenderError.ElementTypeNotAllowed,
-            "Actions of type " + typeof(element) + " are not allowed.");
+            "Elements of type " + className + " are not allowed.");
 
         return false;
     }
@@ -1292,29 +1292,35 @@ export class ColumnSet extends CardElement {
             element.className = "columnGroup";
             element.style.display = "flex";
 
+            var renderedColumnCount: number = 0;
+
             for (let i = 0; i < this._columns.length; i++) {
                 var renderedColumn = this._columns[i].internalRender();
 
-                Utils.appendChild(element, renderedColumn);
+                if (renderedColumn != null) {
+                    Utils.appendChild(element, renderedColumn);
 
-                if (this._columns.length > 1 && i < this._columns.length - 1 && this._columns[i + 1].separation != Enums.Separation.None) {
-                    var separator = document.createElement("div");
-                    separator.style.flex = "0 0 auto";
+                    if (this._columns.length > 1 && i < this._columns.length - 1 && this._columns[i + 1].separation != Enums.Separation.None) {
+                        var separator = document.createElement("div");
+                        separator.style.flex = "0 0 auto";
 
-                    switch (this._columns[i + 1].separation) {
-                        case Enums.Separation.Default:
-                            separator.className = "defaultColumnSeparator";
-                            break;
-                        case Enums.Separation.Strong:
-                            separator.className = "strongColumnSeparator";
-                            break;
+                        switch (this._columns[i + 1].separation) {
+                            case Enums.Separation.Default:
+                                separator.className = "defaultColumnSeparator";
+                                break;
+                            case Enums.Separation.Strong:
+                                separator.className = "strongColumnSeparator";
+                                break;
+                        }
+
+                        Utils.appendChild(element, separator);
                     }
 
-                    Utils.appendChild(element, separator);
+                    renderedColumnCount++;
                 }
             }
 
-            return element;
+            return renderedColumnCount > 0 ? element : null;
         }
         else {
             return null;
@@ -1358,7 +1364,7 @@ export class AdaptiveCard {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
 
     static onShowPopupCard: (action: ActionShowCard, renderedCard: HTMLElement) => void = null;
-    static onRenderError: (error: Enums.RenderError, data: string) => void = null;
+    static onRenderError: (error: Enums.RenderError, message: string) => void = null;
 
     static showPopupCard(action: ActionShowCard, renderedCard: HTMLElement) {
         if (AdaptiveCard.onShowPopupCard != null) {
@@ -1371,12 +1377,15 @@ export class AdaptiveCard {
         defaultActionButtonStyle: Enums.ActionButtonStyle.Push,
         defaultSeparation: Enums.Separation.Default,
         supportedElementTypes: [
+            Container,
             TextBlock,
             Image,
             ImageSet,
-            // FactSet,
-            // ColumnSet,
-            Container
+            FactSet,
+            ColumnSet,
+            InputText,
+            InputDate,
+            InputChoiceSet
         ],
         supportedActionTypes: [
             ActionHttp,
@@ -1384,7 +1393,7 @@ export class AdaptiveCard {
             ActionSubmit,
             ActionShowCard
         ],
-        supportsNestedActions: false
+        supportsNestedActions: true
     };
 
     static raiseRenderError(error: Enums.RenderError, data: string) {
@@ -1422,7 +1431,9 @@ export class AdaptiveCard {
             (AdaptiveCard.currentVersion.major == this.minVersion.major && AdaptiveCard.currentVersion.minor < this.minVersion.minor);
 
         if (unsupportedVersion) {
-            throw new Error("The requested version of the card format isn't supported.");
+            AdaptiveCard.raiseRenderError(
+                Enums.RenderError.UnsupportedVersion,
+                "The requested version of the card format isn't supported.");
         }
 
         let renderedContainer = this.root.internalRender();
@@ -1435,3 +1446,4 @@ export class AdaptiveCard {
         return this.root.renderSpeech();
     }
 }
+

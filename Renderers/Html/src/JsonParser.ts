@@ -398,6 +398,14 @@ export class JsonParser {
     }
 
     parse(json: any): Adaptive.AdaptiveCard {
+        var cardTypeName = json["type"];
+
+        if (cardTypeName != "AdaptiveCard") {
+            Adaptive.AdaptiveCard.raiseRenderError(
+                Enums.RenderError.MissingCardType,
+                "Invalid card type. Make sure the card's type property is set to \"AdaptiveCard\".");
+        }
+
         this._card = new Adaptive.AdaptiveCard();
 
         var minVersion = json["minVersion"];
