@@ -398,9 +398,9 @@ Controls how items are rendered relative to previous element.
 
 | Value | Meaning |
 |---|---|
+| **default** | The element is spaced relative to previous element using default style|
 | **none** | The element is tightly associated with previous element |
-| **subtle** | The element is subtly disassociated with previous element |
-| **strong** | The element is strongly disassociated with previous element |
+| **strong** | The element is strongly and visually disassociated with previous element |
 
 ## TextSize
 Controls the size of TextBlock items.

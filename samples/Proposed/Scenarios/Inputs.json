@@ -193,7 +193,7 @@
             "type": "Action.ShowCard",
             "title": "Show Card",
             "card": {
-                "type": "AdaptiveCard",
+                "type": "Container",
                 "speak": "The Seattle Seahawks beat the Carolina Panters 40-7",
                 "body": [
                     {

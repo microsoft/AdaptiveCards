@@ -88,7 +88,7 @@
 			"type": "Action.ShowCard",
 			"title": "Set due date",
 			"card": {
-				"type": "AdaptiveCard",
+				"type": "Container",
 				"body": [
 					{
 						"type": "Input.Date",
@@ -108,7 +108,7 @@
 			"type": "Action.ShowCard",
 			"title": "Comment",
 			"card": {
-				"type": "AdaptiveCard",
+				"type": "Container",
 				"body": [
 					{
 						"type": "Input.Text",

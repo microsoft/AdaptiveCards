@@ -20,9 +20,9 @@ namespace Adaptive
         }
 
         /// <summary>
-        /// Card to show when the action is invoked
+        /// Container card to show when the action is invoked
         /// </summary>
         [JsonRequired]
-        public AdaptiveCard Card { get; set; }
+        public Container Card { get; set; }
     }
 }

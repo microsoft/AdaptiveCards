@@ -21,7 +21,6 @@
 
         <!-- TextBlock definitions -->
         <Style x:Key="Adaptive.TextBlock" TargetType="TextBlock" >
-            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.TextBlock.Small" TargetType="TextBlock" BasedOn="{StaticResource Adaptive.TextBlock}">
@@ -69,20 +68,17 @@
 
         <!-- Container Styling -->
         <Style x:Key="Adaptive.Container" TargetType="Grid">
-            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <!-- Column/ColumnSet Styling-->
         <Style x:Key="Adaptive.ColumnSet" TargetType="Grid">
-            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <Style x:Key="Adaptive.Column" TargetType="Grid">
-            <Setter Property="Margin" Value="4,0,4,0"/>
         </Style>
 
         <!-- Separator Styling -->
-        <Style x:Key="Adaptive.Separator.Subtle" TargetType="Separator">
+        <Style x:Key="Adaptive.Separator" TargetType="Separator">
             <Setter Property="Margin" Value="0,2,0,2"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -93,8 +89,25 @@
             </Setter>
         </Style>
 
+        <!-- you can define per element seperator styles like this -->
+        <Style x:Key="Adaptive.Separator.TextBlock" TargetType="Separator" BasedOn="{StaticResource Adaptive.Separator}">
+        </Style>
+
         <Style x:Key="Adaptive.Separator.Strong" TargetType="Separator">
-            <Setter Property="Margin" Value="0,2,0,2"/>
+            <Setter Property="Margin" Value="0,3,0,3"/>
+        </Style>
+
+        <!-- VerticalSeparator Styling -->
+        <Style x:Key="Adaptive.VerticalSeparator"  TargetType="{x:Type Rectangle}" >
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Margin" Value="8,0,8,0"/>
+            <Setter Property="Fill" Value="Transparent"/>
+        </Style>
+
+        <Style x:Key="Adaptive.VerticalSeparator.Strong" TargetType="{x:Type Rectangle}" >
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Margin" Value="10,0,10,0"/>
+            <Setter Property="Fill" Value="Gray"/>
         </Style>
 
         <!-- Fact/FactSet Styling -->
@@ -113,7 +126,6 @@
 
         <!-- Image/ImageGallery Styling -->
         <Style x:Key="Adaptive.Image" TargetType="Image">
-            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
         <Style x:Key="Adaptive.Image.Auto" TargetType="Image" BasedOn="{StaticResource Adaptive.Image}">
@@ -140,7 +152,6 @@
         </Style>
 
         <Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
-            <Setter Property="Margin" Value="0,4,0,4"/>
         </Style>
 
         <!-- Circular Person mask -->
@@ -176,11 +187,9 @@
 
         <!-- Input definitions -->
         <Style x:Key="Adaptive.Input" TargetType="FrameworkElement" >
-            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.Input.ChoiceSet" TargetType="FrameworkElement" >
-            <Setter Property="Margin" Value="4"/>
         </Style>
 
         <Style x:Key="Adaptive.Input.Text" TargetType="FrameworkElement" BasedOn="{StaticResource Adaptive.Input}">

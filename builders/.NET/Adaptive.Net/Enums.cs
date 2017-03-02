@@ -79,17 +79,17 @@ namespace Adaptive
     public enum SeparationStyle
     {
         /// <summary>
-        /// No emphasis
+        /// Default element spacing is applied from style
+        /// </summary>
+        Default,
+
+        /// <summary>
+        /// No spacing is applied between elements
         /// </summary>
         None,
 
         /// <summary>
-        /// Subtly disassociate the element from the previous element
-        /// </summary>
-        Subtle,
-
-        /// <summary>
-        /// Strongly distance the element fromthe previous element
+        /// Strongly separate the element from the previous element
         /// </summary>
         Strong
     }

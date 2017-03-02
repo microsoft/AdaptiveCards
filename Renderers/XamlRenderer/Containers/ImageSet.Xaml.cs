@@ -39,7 +39,7 @@ namespace Adaptive
 
             foreach (var image in this.Images)
             {
-                if (this.ImageSize != null)
+                if (this.ImageSize != ImageSize.Auto)
                     image.Size = this.ImageSize;
                 var uiImage = image.Render(context);
                 uiGallery.Items.Add(uiImage);
