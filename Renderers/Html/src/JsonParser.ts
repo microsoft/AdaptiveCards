@@ -6,7 +6,7 @@ export class JsonParser {
     private _card: Adaptive.AdaptiveCard;
 
     private parseBaseAction(json: any, action: Adaptive.Action) {
-        action.name = json["title"];        
+        action.title = json["title"];        
     }
 
     private parseExternalAction(json: any, action: Adaptive.ActionExternal) {
@@ -47,6 +47,8 @@ export class JsonParser {
 
     private parseActionSubmit(json: any, action: Adaptive.ActionSubmit) {
         this.parseExternalAction(json, action);
+
+        action.data = json["data"];
     }
 
     private parseActionShowCard(
@@ -58,7 +60,12 @@ export class JsonParser {
         action.card = new Adaptive.Container(parentContainer, "body");
         action.card.actionButtonStyle = Enums.ActionButtonStyle.Push;
         
-        this.parseContainer(json["card"], action.card, "body");
+        var s: string[] =  [];
+
+        this.parseContainer(
+            json["card"],
+            action.card,
+            "body");
     }
 
     private createAction(json: any, container: Adaptive.Container): Adaptive.Action {
@@ -84,7 +91,10 @@ export class JsonParser {
                 break;
             case Adaptive.ActionShowCard.TypeName:
                 result = new Adaptive.ActionShowCard();
-                this.parseActionShowCard(json, <Adaptive.ActionShowCard>result, container);
+                this.parseActionShowCard(
+                    json,
+                    <Adaptive.ActionShowCard>result,
+                    container);
 
                 break;
             default:
@@ -97,23 +107,18 @@ export class JsonParser {
     private parseCardElement(json: any, cardElement: Adaptive.CardElement) {
         cardElement.speak = json["speak"];
         cardElement.horizontalAlignment = Enums.stringToHorizontalAlignment(json["horizontalAlignment"], Enums.HorizontalAlignment.Left);
+        cardElement.separation = Enums.stringToSeparation(json["separation"], Adaptive.AdaptiveCard.renderOptions.defaultSeparation);
     }
 
     private parseTextBlock(json: any, textBlock: Adaptive.TextBlock) {
         this.parseCardElement(json, textBlock);
 
         textBlock.text = json["text"];
-        textBlock.textSize = Enums.stringToTextSize(json["size"], Enums.TextSize.Normal);
-        textBlock.textWeight = Enums.stringToTextWeight(json["weight"], Enums.TextWeight.Normal);
-        textBlock.textColor = Enums.stringToTextColor(json["color"], Enums.TextColor.Default);
+        textBlock.size = Enums.stringToTextSize(json["size"], Enums.TextSize.Normal);
+        textBlock.weight = Enums.stringToTextWeight(json["weight"], Enums.TextWeight.Normal);
+        textBlock.color = Enums.stringToTextColor(json["color"], Enums.TextColor.Default);
         textBlock.isSubtle = json["isSubtle"];
         textBlock.wrap = json["wrap"];
-
-        var isParagraphStartJson = json["isParagraphStart"];
-        
-        if (isParagraphStartJson != undefined) {
-            textBlock.isParagraphStart = isParagraphStartJson;
-        }
     }
 
     private parseImage(json: any, image: Adaptive.Image) {
@@ -173,36 +178,33 @@ export class JsonParser {
         for (var i = 0; i < jsonActions.length; i++) {
             var action = this.createAction(jsonActions[i], actions.container);
 
-            actions.items.push(action);
+            if (action != null) {
+                actions.items.push(action);
+            }
         }
     }
 
     private parseContainer(
         json: any,
         container: Adaptive.Container,
-        itemsCollectionPropertyName: string = "items",
-        forbiddenItemTypes: string[] = null) {
+        itemsCollectionPropertyName: string) {
         this.parseCardElement(json, container);
 
         container.backgroundImageUrl = json["backgroundImage"];
         container.backgroundColor = json["backgroundColor"];
-        container.isGroupStart = json["isGroupStart"];
 
         container.textColor = Enums.stringToTextColor(json["textColor"], Enums.TextColor.Default);
 
         if (json[itemsCollectionPropertyName] != null) {
-            let items = json[itemsCollectionPropertyName] as Array<any>;
+            var items = json[itemsCollectionPropertyName] as Array<any>;
 
-            for (let i = 0; i < items.length; i++) {
-                let elementType = items[i]["type"];
+            for (var i = 0; i < items.length; i++) {
+                var element = this.createCardElement(
+                    items[i],
+                    container);
 
-                if (forbiddenItemTypes == null || forbiddenItemTypes.indexOf(elementType) == 0) {
-                    let element = this.createElement(items[i], container);
-
-                    container.addElement(element);
-                }
-                else {
-                    throw new Error("Elements of type " + elementType + " are not allowed in this container.");
+                if (element != null) {
+                    container.addItem(element);
                 }
             }
         }
@@ -221,7 +223,10 @@ export class JsonParser {
     }
 
     private parseColumn(json: any, column: Adaptive.Column) {
-        this.parseContainer(json, column);
+        this.parseContainer(
+            json,
+            column,
+            "items");
 
         if (json["size"] === "auto") {
             column.weight = 0;
@@ -313,7 +318,7 @@ export class JsonParser {
         }
     }
 
-    private createElement(json: any, container: Adaptive.Container): Adaptive.CardElement {
+    private createCardElement(json: any, container: Adaptive.Container): Adaptive.CardElement {
         var result: Adaptive.CardElement;
 
         var elementType = json["type"];
@@ -321,7 +326,10 @@ export class JsonParser {
         switch (elementType) {
             case Adaptive.Container.TypeName:
                 result = new Adaptive.Container(container);
-                this.parseContainer(json, <Adaptive.Container>result);
+                this.parseContainer(
+                    json,
+                    <Adaptive.Container>result,
+                    "items");
 
                 break;
             case Adaptive.TextBlock.TypeName:
@@ -346,7 +354,9 @@ export class JsonParser {
                 break;
             case Adaptive.ColumnSet.TypeName:
                 result = new Adaptive.ColumnSet(container);
-                this.parseColumnSet(json, <Adaptive.ColumnSet>result);
+                this.parseColumnSet(
+                    json,
+                    <Adaptive.ColumnSet>result);
 
                 break;
             case Adaptive.InputText.TypeName:
@@ -387,9 +397,33 @@ export class JsonParser {
     }
 
     parse(json: any): Adaptive.AdaptiveCard {
+        var cardTypeName = json["type"];
+
+        if (cardTypeName != "AdaptiveCard") {
+            Adaptive.AdaptiveCard.raiseRenderError(
+                Enums.RenderError.MissingCardType,
+                "Invalid card type. Make sure the card's type property is set to \"AdaptiveCard\".");
+        }
+
         this._card = new Adaptive.AdaptiveCard();
 
-        this.parseContainer(json, this._card.root, "body");
+        var minVersion = json["minVersion"];
+
+        var regEx = /(\d+).(\d+)/gi;
+
+        var matches = regEx.exec(minVersion);
+
+        if (matches != null && matches.length == 3) {
+            this._card.minVersion.major = parseInt(matches[1]);
+            this._card.minVersion.minor = parseInt(matches[2]);
+        }
+
+        this._card.fallbackText = json["fallbackText"];
+
+        this.parseContainer(
+            json,
+            this._card.root,
+            "body");
 
         return this._card;
     }

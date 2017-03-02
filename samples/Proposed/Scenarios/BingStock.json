@@ -27,7 +27,7 @@
                     "columns": [
                         {
                             "type": "Column",
-                            "size": 60,
+                            "size": 1,
                             "items": [
                                 {
                                     "type": "TextBlock",
@@ -44,7 +44,7 @@
                         },
                         {
                             "type": "Column",
-                            "size": 40,
+                            "size": "auto",
                             "items": [
                                 {
                                     "type": "FactSet",

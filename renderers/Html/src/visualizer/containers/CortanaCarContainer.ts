@@ -6,7 +6,7 @@ export class CortanaCarContainer extends HostContainer {
     applyOptions() {
         super.applyOptions();
         
-        Adaptive.AdaptiveCard.options.actionShowCardInPopup = true;
+        Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = true;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {

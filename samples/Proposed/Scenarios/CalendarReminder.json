@@ -12,7 +12,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Conf Room 112/3377 (10)"
+			"text": "Conf Room 112/3377 (10)",
+			"isParagraphStart": true
 		},
 		{
 			"type": "TextBlock",
@@ -25,7 +26,9 @@
 		{
 			"type": "Input.ChoiceSet",
 			"id": "snooze",
-			"style": "compact",
+			"style":"compact",
+			"placeholder": "Pick a value",
+			"value": "5",
 			"choices": [
 				{
 					"title": "5 minutes",
