@@ -1,6 +1,7 @@
 {
-    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
@@ -19,7 +20,7 @@
                 "type": "Action.ShowCard",
                 "title": "Set due date",
                 "card": {
-                    "type": "AdaptiveCard",
+                    "type": "Container",
                     "body": [
                         {
                             "type": "Input.Date",
