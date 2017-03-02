@@ -498,7 +498,7 @@ export class InputToggle extends Input {
 }
 
 export class Choice {
-    display: string;
+    title: string;
     value: string;
     isSelected: boolean;
 }
@@ -568,7 +568,7 @@ export class InputChoiceSet extends Input {
                 for (var i = 0; i < this.choices.length; i++) {
                     var option = document.createElement("option");
                     option.value = this.choices[i].value;
-                    option.text = this.choices[i].display;
+                    option.text = this.choices[i].title;
                     option.selected = this.choices[i].isSelected;
 
                     Utils.appendChild(this._selectElement, option);
@@ -594,7 +594,7 @@ export class InputChoiceSet extends Input {
                     this._toggleInputs.push(radioInput);
 
                     var label = new TextBlock(this.container);
-                    label.text = this.choices[i].display;
+                    label.text = this.choices[i].title;
 
                     var labelElement = label.render();
                     labelElement.className += " toggleLabel";
@@ -627,7 +627,7 @@ export class InputChoiceSet extends Input {
                 this._toggleInputs.push(checkboxInput);
 
                 var label = new TextBlock(this.container);
-                label.text = this.choices[i].display;
+                label.text = this.choices[i].title;
 
                 var labelElement = label.render();
                 labelElement.className += " toggleLabel";

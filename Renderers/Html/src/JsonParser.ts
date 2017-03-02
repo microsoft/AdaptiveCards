@@ -310,7 +310,7 @@ export class JsonParser {
             for (var i = 0; i < choiceArray.length; i++) {
                 var choice = new Adaptive.Choice();
 
-                choice.display = choiceArray[i]["display"];
+                choice.title = choiceArray[i]["display"];
                 choice.value = choiceArray[i]["value"];
                 choice.isSelected = choiceArray[i]["isSelected"];
 
