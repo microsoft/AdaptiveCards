@@ -12,8 +12,6 @@ export class CortanaCarContainer extends HostContainer {
     render(card: Adaptive.AdaptiveCard): HTMLElement {
         let element = document.createElement("div");
         
-        Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
-
         let renderedCard = card.render();
 
         let imgDiv = document.createElement("div");
