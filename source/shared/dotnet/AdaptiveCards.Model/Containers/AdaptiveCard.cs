@@ -78,6 +78,12 @@ namespace Adaptive
         [XmlAttribute]
         public string MinVersion { get; set; }
 
+        /// <summary>
+        /// if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. 
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [XmlAttribute]
+        public string FallbackText { get; set; }
 
         public bool ShouldSerializeActions() { return Actions.Any(); }
     }

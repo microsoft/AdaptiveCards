@@ -73,6 +73,7 @@ namespace WpfVisualizer
                     }
                     _renderContext = new RenderContext(this.Resources);
                     _renderContext.OnAction += _renderer_OnAction;
+                    _renderContext.OnMissingInput += _renderer_OnMissingInput;
                     var element = _card.Render(_renderContext);
                     this.cardGrid.Children.Clear();
                     this.cardGrid.Children.Add(element);
@@ -82,6 +83,12 @@ namespace WpfVisualizer
                     HandleParseError(err);
                 }
             }
+        }
+
+        private void _renderer_OnMissingInput(object sender, MissingInputEventArgs args)
+        {
+            MessageBox.Show($"Required input is missing.");
+            args.FrameworkElement.Focus();
         }
 
         private void HandleParseError(Exception err)
