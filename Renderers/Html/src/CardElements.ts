@@ -1,5 +1,4 @@
 ﻿import * as Enums from "./Enumerations";
-import * as Eventing from "./Eventing";
 import * as Utils from "./Utils";
 import * as TextFormatters from "./TextFormatters";
 
@@ -719,13 +718,14 @@ export class InputTime extends Input {
 export class ActionButton {
     private _action: Action;
     private _style: Enums.ActionButtonStyle;
-    private _onClick: Eventing.EventDispatcher<ActionButton, any> = new Eventing.EventDispatcher<ActionButton, any>();
     private _element: HTMLElement = null;
     private _state: Enums.ActionButtonState = Enums.ActionButtonState.Normal;
     private _text: string;
 
     private click() {
-        this._onClick.dispatch(this, null);
+        if (this.onClick != null) {
+            this.onClick(this);
+        }
     }
 
     private updateCssStyle() {
@@ -752,12 +752,10 @@ export class ActionButton {
         this.updateCssStyle();
     }
 
+    onClick: (actionButton: ActionButton) => void = null;
+
     get action() {
         return this._action;
-    }
-
-    get onClick(): Eventing.IEvent<ActionButton, any> {
-        return this._onClick;
     }
 
     get text(): string {
@@ -803,14 +801,12 @@ export abstract class Action {
 }
 
 export abstract class ActionExternal extends Action {
-    private _onExecute: Eventing.EventDispatcher<ActionExternal, any> = new Eventing.EventDispatcher<ActionExternal, any>();
+    onExecute: (action: ActionExternal) => void = null;
 
     execute() {
-        this._onExecute.dispatch(this, null);
-    }
-
-    get onExecute(): Eventing.IEvent<ActionExternal, any> {
-        return this._onExecute;
+        if (this.onExecute != null) {
+            this.onExecute(this);
+        }
     }
 }
 
@@ -1009,10 +1005,7 @@ export class ActionCollection {
                     let actionButton = new ActionButton(this._items[i], this._container.actionButtonStyle);
                     actionButton.text = this._items[i].title;
 
-                    actionButton.onClick.subscribe(
-                        (ab, args) => {
-                            this.actionClicked(ab);
-                        });
+                    actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                     this._actionButtons.push(actionButton);
 
@@ -1108,6 +1101,32 @@ export class Container extends CardElement {
         return this._items.length;
     }
 
+    getAllInputs(output: Array<Input>) {
+        for (var i = 0; i < this.itemCount; i++) {
+            var item: CardElement = this.getItem(i);
+
+            if (item instanceof Input) {
+                output.push(<Input>item);
+            }
+
+            if (item instanceof Container) {
+                (<Container>item).getAllInputs(output);
+            }
+        }
+
+        for (var i = 0; i < this.actions.items.length; i++) {
+            var action = this.actions.items[i];
+
+            if (action instanceof ActionShowCard) {
+                var actionShowCard = <ActionShowCard>action;
+
+                if (actionShowCard.card) {
+                    actionShowCard.card.getAllInputs(output);
+                }
+            }
+        }
+    }
+
     addItem(element: CardElement) {
         if (element != null) {
             this._items.push(element);
@@ -1143,20 +1162,20 @@ export class Container extends CardElement {
     }
 
     render(): HTMLElement {
+        this._element = document.createElement("div");
+        this._element.className = this.cssClassName;
+        this._element.onclick = (e) => {
+            if (this.selectAction != null) {
+                this.selectAction.execute();
+                e.cancelBubble = true;
+            }
+        }
+
+        if (!Utils.isNullOrEmpty(this.backgroundColor)) {
+            this._element.style.backgroundColor = this.backgroundColor;
+        }
+
         if (this.itemCount > 0) {
-            this._element = document.createElement("div");
-            this._element.className = this.cssClassName;
-            this._element.onclick = (e) => {
-                if (this.selectAction != null) {
-                    this.selectAction.execute();
-                    e.cancelBubble = true;
-                }
-            }
-
-            if (!Utils.isNullOrEmpty(this.backgroundColor)) {
-                this._element.style.backgroundColor = this.backgroundColor;
-            }
-
             var renderedElementCount: number = 0;
 
             for (var i = 0; i < this.itemCount; i++) {
@@ -1399,9 +1418,8 @@ export class AdaptiveCard {
     }
 
     private _root: Container = new Container(null, "body");
-    private _allInputs: Array<Input> = [];
-    private _onExecuteAction: Eventing.EventDispatcher<ActionExternal, any> = new Eventing.EventDispatcher<ActionExternal, any>();
-
+    
+    onExecuteAction: (action: ActionExternal) => void = null;
     minVersion: IVersion = { major: 1, minor: 0 };
     fallbackText: string;
 
@@ -1409,16 +1427,10 @@ export class AdaptiveCard {
         return this._root;
     }
 
-    get allInputs(): Array<Input> {
-        return this._allInputs;
-    }
-
-    get onExecuteAction(): Eventing.IEvent<ActionExternal, any> {
-        return this._onExecuteAction;
-    }
-
     executeAction(action: ActionExternal) {
-        this._onExecuteAction.dispatch(action, null);
+        if (this.onExecuteAction != null) {
+            this.onExecuteAction(action);
+        }
     }
 
     render(): HTMLElement {

@@ -12,10 +12,7 @@ export class JsonParser {
     private parseExternalAction(json: any, action: Adaptive.ActionExternal) {
         this.parseBaseAction(json, action);
 
-        action.onExecute.subscribe(
-            (a, args) => {
-                this._card.executeAction(a);
-            });
+        action.onExecute = (a) => { this._card.executeAction(a); };
     }
 
     private parseActionOpenUrl(json: any, action: Adaptive.ActionOpenUrl) {
@@ -65,7 +62,7 @@ export class JsonParser {
         this.parseContainer(
             json["card"],
             action.card,
-            "body");
+            "items");
     }
 
     private createAction(json: any, container: Adaptive.Container): Adaptive.Action {
@@ -257,10 +254,6 @@ export class JsonParser {
 
     private parseInput(json: any, input: Adaptive.Input) {
         this.parseCardElement(json, input);
-
-        if (!Utils.isNullOrEmpty(input.id)) {
-            this._card.allInputs.push(input);
-        }
 
         input.id = json["id"];
         input.defaultValue = json["value"];

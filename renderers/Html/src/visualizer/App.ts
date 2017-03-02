@@ -22,7 +22,7 @@ let editor: ace.Editor;
 let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
-function actionExecuted(action: Adaptive.Action, args: any) {
+function actionExecuted(action: Adaptive.Action) {
     var message: string = "Action executed\n";
     message += "    Title: " + action.title + "\n";
 
@@ -72,7 +72,7 @@ function renderCard() {
     var jsonParser = new JsonParser();
     var adaptiveCard = jsonParser.parse(json);
 
-    adaptiveCard.onExecuteAction.subscribe(actionExecuted);
+    adaptiveCard.onExecuteAction = actionExecuted;
 
     var popupContainer = document.getElementById("popupCardContainer");
 
