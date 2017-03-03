@@ -2,6 +2,12 @@
     box-sizing: border-box;
 }
 
+.separator {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 20px 0px 0px 0px;
+    padding: 20px 0px 0px 0px;
+}
+
 .stretch {
     width: 100%;
 }
@@ -232,19 +238,14 @@ td.factValue {
     background-color: rgba(0, 0, 0, 0.15);
 }
 
-.columnSpacer {
+.defaultColumnSeparator {
     width: 10px;    
 }
 
-.columnSpacer.startGroup {
-    width: 20px;    
-}
-
-.columnSeparator {
-    margin: 0 auto;
-    width: 0px;
-    height: 100%;
+.strongColumnSeparator {
     border-left: 1px solid #EEEEEE;
+    margin-left: 10px;
+    padding-left: 10px;
 }
 
 .actionCardContainer {
@@ -410,10 +411,8 @@ Other styles that can be specified:
 }
 
 .toggleLabel {
-    margin-left: 6px ! important;
-    margin-right: 0px ! important;
-    margin-bottom: 0px ! important;
-    padding: 0px ! important;
+    margin: 0px 0px 0px 6px !important;
+    padding: 0px !important;
     display: inline-block;
     vertical-align: middle;
 }

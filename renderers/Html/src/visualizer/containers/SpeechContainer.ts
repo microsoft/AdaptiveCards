@@ -6,7 +6,7 @@ export class SpeechContainer extends HostContainer {
     applyOptions() {
         super.applyOptions();
         
-        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+        Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = false;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {

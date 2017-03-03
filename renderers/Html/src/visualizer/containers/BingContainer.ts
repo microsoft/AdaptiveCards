@@ -19,7 +19,8 @@ export class BingContainer extends HostContainer {
     applyOptions() {
         super.applyOptions();
         
-        Adaptive.AdaptiveCard.options.actionShowCardInPopup = false;
+        Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = false;
+        Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {
@@ -30,9 +31,6 @@ export class BingContainer extends HostContainer {
         element.style.overflow = "hidden";
 
         card.root.textColor = BingContainer.textColor;
-
-        Adaptive.Container.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
-
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
 
