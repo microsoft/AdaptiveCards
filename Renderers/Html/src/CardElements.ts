@@ -5,6 +5,14 @@ import * as TextFormatters from "./TextFormatters";
 export abstract class CardElement {
     private _container: Container;
 
+    protected get hideOverflow(): boolean {
+        return true;
+    }
+
+    protected get useDefaultSizing(): boolean {
+        return true;
+    }
+
     speak: string;
     horizontalAlignment: Enums.HorizontalAlignment = Enums.HorizontalAlignment.Left;
     separation: Enums.Separation;
@@ -17,23 +25,11 @@ export abstract class CardElement {
         return this._container;
     }
 
-    get hideOverflow(): boolean {
-        return true;
-    }
-
-    get useDefaultSizing(): boolean {
-        return true;
-    }
-
     abstract render(): HTMLElement;
 
     abstract renderSpeech(): string;
 
-    removeTopSpacing(element: HTMLElement) {
-        element.style.marginTop = "0px";
-    }
-
-    adjustLayout(element: HTMLElement) {
+    protected adjustLayout(element: HTMLElement) {
         if (this.useDefaultSizing) {
             element.className += " stretch";
         }
@@ -178,10 +174,6 @@ export class TextBlock extends CardElement {
             return '<s>' + this.text + '</s>\n';
         return null;
     }
-
-    removeTopSpacing(element: HTMLElement) {
-        element.style.paddingTop = "0px";
-    }
 }
 
 export class Fact {
@@ -201,27 +193,23 @@ export class Fact {
 export class FactSet extends CardElement {
     static TypeName: string = "FactSet";
 
-    private _facts: Array<Fact> = [];
-
-    get facts(): Array<Fact> {
-        return this._facts;
-    }
+    facts: Array<Fact> = [];
 
     render(): HTMLElement {
         let element: HTMLElement = null;
 
-        if (this._facts.length > 0) {
+        if (this.facts.length > 0) {
             element = document.createElement("table");
             element.className = "factGroup";
 
             let html: string = '';
 
-            for (var i = 0; i < this._facts.length; i++) {
+            for (var i = 0; i < this.facts.length; i++) {
                 html += '<tr>';
                 html += '    <td class="factName">';
 
                 let textBlock = new TextBlock(this.container);
-                textBlock.text = this._facts[i].name;
+                textBlock.text = this.facts[i].name;
                 textBlock.weight = Enums.TextWeight.Bolder;
                 textBlock.separation = Enums.Separation.None;
 
@@ -235,7 +223,7 @@ export class FactSet extends CardElement {
                 html += '    <td class="factValue">';
 
                 textBlock = new TextBlock(this.container);
-                textBlock.text = this._facts[i].value;
+                textBlock.text = this.facts[i].value;
                 textBlock.weight = Enums.TextWeight.Lighter;
                 textBlock.separation = Enums.Separation.None;
 
@@ -263,11 +251,11 @@ export class FactSet extends CardElement {
         // render each fact 
         let speak = null;
 
-        if (this._facts.length > 0) {
+        if (this.facts.length > 0) {
             speak = '';
 
-            for (var i = 0; i < this._facts.length; i++) {
-                let speech = this._facts[i].renderSpeech();
+            for (var i = 0; i < this.facts.length; i++) {
+                let speech = this.facts[i].renderSpeech();
 
                 if (speech) {
                     speak += speech;
@@ -286,14 +274,14 @@ export class FactSet extends CardElement {
 export class Image extends CardElement {
     static TypeName: string = "Image";
     
+    protected get useDefaultSizing() {
+        return false;
+    }
+
     style: Enums.ImageStyle = Enums.ImageStyle.Normal;
     url: string;
     size: Enums.Size = Enums.Size.Medium;
     selectAction: ActionExternal;
-
-    get useDefaultSizing() {
-        return false;
-    }
 
     render(): HTMLElement {
         let imageElement: HTMLImageElement = null;
@@ -355,23 +343,18 @@ export class Image extends CardElement {
 export class ImageSet extends CardElement {
     static TypeName: string = "ImageSet";
 
-    private _images: Array<Image> = [];
-
+    images: Array<Image> = [];
     imageSize: Enums.Size = Enums.Size.Medium;
-
-    get images(): Array<Image> {
-        return this._images;
-    }
 
     render(): HTMLElement {
         let element: HTMLElement = null;
 
-        if (this._images.length > 0) {
+        if (this.images.length > 0) {
             element = document.createElement("div");
             element.className = "imageGallery";
 
-            for (var i = 0; i < this._images.length; i++) {
-                let renderedImage = this._images[i].internalRender();
+            for (var i = 0; i < this.images.length; i++) {
+                let renderedImage = this.images[i].internalRender();
                 renderedImage.style.margin = "0px";
                 renderedImage.style.marginRight = "10px";
 
@@ -389,11 +372,11 @@ export class ImageSet extends CardElement {
 
         var speak = null;
 
-        if (this._images.length > 0) {
+        if (this.images.length > 0) {
             speak = '';
 
-            for (var i = 0; i < this._images.length; i++) {
-                speak += this._images[i].renderSpeech();
+            for (var i = 0; i < this.images.length; i++) {
+                speak += this.images[i].renderSpeech();
             }
         }
 
@@ -470,7 +453,7 @@ export class InputToggle extends Input {
     }
 
     render(): HTMLElement {
-        let element = document.createElement("div");
+        var element = document.createElement("div");
         element.className = "input";
 
         this._checkboxInputElement = document.createElement("input");
@@ -715,7 +698,7 @@ export class InputTime extends Input {
     }
 }
 
-export class ActionButton {
+class ActionButton {
     private _action: Action;
     private _style: Enums.ActionButtonStyle;
     private _element: HTMLElement = null;
@@ -794,10 +777,6 @@ export abstract class Action {
     renderUi(): HTMLElement {
         return null;
     }
-
-    get hasUi(): boolean {
-        return false;
-    }
 }
 
 export abstract class ActionExternal extends Action {
@@ -851,10 +830,6 @@ export class ActionShowCard extends Action {
         AdaptiveCard.showPopupCard(this, this.renderUi());
     }
 
-    get hasUi(): boolean {
-        return true;
-    }
-
     renderUi(): HTMLElement {
         var renderedCard = this.card.internalRender();
         renderedCard.style.marginTop = "0px";
@@ -863,11 +838,10 @@ export class ActionShowCard extends Action {
     }
 }
 
-export class ActionCollection {
+class ActionCollection {
     private _container: Container;
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
-    private _items: Array<Action> = [];
     private _expandedAction: Action = null;
 
     private hideActionCardPane() {
@@ -883,13 +857,13 @@ export class ActionCollection {
 
         this._actionCardContainer.innerHTML = '';
         this._actionCardContainer.style.padding = null;
-        this._actionCardContainer.style.marginTop = this._items.length > 1 ? null : "0px";
+        this._actionCardContainer.style.marginTop = this.items.length > 1 ? null : "0px";
 
         Utils.appendChild(this._actionCardContainer, action.renderUi());
     }
 
     private actionClicked(actionButton: ActionButton) {
-        if (!actionButton.action.hasUi) {
+        if (!(actionButton.action instanceof ActionShowCard)) {
             for (var i = 0; i < this._actionButtons.length; i++) {
                 this._actionButtons[i].state = Enums.ActionButtonState.Normal;
             }
@@ -947,16 +921,10 @@ export class ActionCollection {
         this._container = container;
     }
 
+    items: Array<Action> = [];
+
     get container(): Container {
         return this._container;
-    }
-
-    get items(): Array<Action> {
-        return this._items;
-    }
-
-    get hideOverflow(): boolean {
-        return false;
     }
 
     render(): HTMLElement {
@@ -968,10 +936,10 @@ export class ActionCollection {
             return null;
         }
 
-        if (AdaptiveCard.renderOptions.maxActions != null && AdaptiveCard.renderOptions.maxActions < this._items.length) {
+        if (AdaptiveCard.renderOptions.maxActions != null && AdaptiveCard.renderOptions.maxActions < this.items.length) {
             AdaptiveCard.raiseRenderError(
                 Enums.RenderError.TooManyActions,
-                "There are " + this._items.length.toString() + " in the actions collection, but only " + AdaptiveCard.renderOptions.maxActions.toString() + " are allowed.");
+                "There are " + this.items.length.toString() + " in the actions collection, but only " + AdaptiveCard.renderOptions.maxActions.toString() + " are allowed.");
 
             return null;
         }
@@ -989,27 +957,27 @@ export class ActionCollection {
 
         var renderedActions: number = 0;
 
-        if (this._items.length == 1 && this._items[0] instanceof ActionShowCard) {
-            if (ActionCollection.checkActionTypeIsAllowed(this._items[0])) {
-                this.showActionCardPane(this._items[0]);
+        if (this.items.length == 1 && this.items[0] instanceof ActionShowCard) {
+            if (ActionCollection.checkActionTypeIsAllowed(this.items[0])) {
+                this.showActionCardPane(this.items[0]);
 
                 renderedActions++;
             }
         }
         else {
-            for (let i = 0; i < this._items.length; i++) {
-                if (ActionCollection.checkActionTypeIsAllowed(this._items[i])) {
+            for (let i = 0; i < this.items.length; i++) {
+                if (ActionCollection.checkActionTypeIsAllowed(this.items[i])) {
                     let buttonStripItem = document.createElement("div");
                     buttonStripItem.className = "buttonStripItem";
 
-                    let actionButton = new ActionButton(this._items[i], this._container.actionButtonStyle);
-                    actionButton.text = this._items[i].title;
+                    let actionButton = new ActionButton(this.items[i], this._container.actionButtonStyle);
+                    actionButton.text = this.items[i].title;
 
                     actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                     this._actionButtons.push(actionButton);
 
-                    if (i < this._items.length - 1) {
+                    if (i < this.items.length - 1) {
                         buttonStripItem.className += " buttonStripItemSpacer";
                     }
 
@@ -1032,10 +1000,10 @@ export class ActionCollection {
 export class Container extends CardElement {
     static TypeName: string = "Container";
 
-    private _items: Array<CardElement> = [];
     private _element: HTMLDivElement;
     private _textColor: Enums.TextColor = Enums.TextColor.Default;
     private _itemsCollectionPropertyName: string;
+    private _actionCollection: ActionCollection;
 
     private static checkElementTypeIsAllowed(element: CardElement) {
         var className = Utils.getClassNameFromInstance(element);
@@ -1053,6 +1021,18 @@ export class Container extends CardElement {
         return false;
     }
 
+    private removeTopSpacing(element: HTMLElement) {
+        element.className += " removeTopSpacing";
+    }
+
+    private isLastItem(element: CardElement): boolean {
+        return this.items.indexOf(element) == this.items.length - 1;
+    }
+
+    protected get hideOverflow() {
+        return false;
+    }
+
     protected get cssClassName(): string {
         var className = "container";
 
@@ -1063,10 +1043,10 @@ export class Container extends CardElement {
         return className;
     }
 
+    items: Array<CardElement> = [];
     backgroundImageUrl: string;
     backgroundColor: string;
     actionButtonStyle: Enums.ActionButtonStyle = AdaptiveCard.renderOptions.defaultActionButtonStyle;
-    actions: ActionCollection;
     selectAction: ActionExternal;
 
     constructor(
@@ -1075,10 +1055,7 @@ export class Container extends CardElement {
         super(container);
 
         this._itemsCollectionPropertyName = itemsCollectionPropertyName;
-    }
-
-    get hideOverflow() {
-        return false;
+        this._actionCollection = new ActionCollection(this);
     }
 
     get textColor(): Enums.TextColor {
@@ -1097,13 +1074,13 @@ export class Container extends CardElement {
         this._textColor = value;
     }
 
-    get itemCount(): number {
-        return this._items.length;
+    get actions(): Array<Action> {
+        return this._actionCollection.items;
     }
 
     getAllInputs(output: Array<Input>) {
-        for (var i = 0; i < this.itemCount; i++) {
-            var item: CardElement = this.getItem(i);
+        for (var i = 0; i < this.items.length; i++) {
+            var item: CardElement = this.items[i];
 
             if (item instanceof Input) {
                 output.push(<Input>item);
@@ -1114,8 +1091,8 @@ export class Container extends CardElement {
             }
         }
 
-        for (var i = 0; i < this.actions.items.length; i++) {
-            var action = this.actions.items[i];
+        for (var i = 0; i < this.actions.length; i++) {
+            var action = this.actions[i];
 
             if (action instanceof ActionShowCard) {
                 var actionShowCard = <ActionShowCard>action;
@@ -1125,20 +1102,6 @@ export class Container extends CardElement {
                 }
             }
         }
-    }
-
-    addItem(element: CardElement) {
-        if (element != null) {
-            this._items.push(element);
-        }
-    }
-
-    isLastItem(element: CardElement): boolean {
-        return this._items.indexOf(element) == this.itemCount - 1;
-    }
-
-    getItem(index: number): CardElement {
-        return this._items[index];
     }
 
     showBottomSpacer(requestingElement: CardElement = null) {
@@ -1175,19 +1138,19 @@ export class Container extends CardElement {
             this._element.style.backgroundColor = this.backgroundColor;
         }
 
-        if (this.itemCount > 0) {
+        if (this.items.length > 0) {
             var renderedElementCount: number = 0;
 
-            for (var i = 0; i < this.itemCount; i++) {
-                if (Container.checkElementTypeIsAllowed(this.getItem(i))) {
-                    var renderedElement = this.getItem(i).internalRender();
+            for (var i = 0; i < this.items.length; i++) {
+                if (Container.checkElementTypeIsAllowed(this.items[i])) {
+                    var renderedElement = this.items[i].internalRender();
 
                     if (renderedElement != null) {
                         if (renderedElementCount == 0) {
-                            this.getItem(i).removeTopSpacing(renderedElement);
+                            this.removeTopSpacing(renderedElement);
                         }
                         else {
-                            switch (this.getItem(i).separation) {
+                            switch (this.items[i].separation) {
                                 case Enums.Separation.None:
                                     this.removeTopSpacing(renderedElement);
 
@@ -1212,11 +1175,9 @@ export class Container extends CardElement {
             }
         }
 
-        if (this.actions != null) {
-            var renderedActions = this.actions.render();
+        var renderedActions = this._actionCollection.render();
 
-            Utils.appendChild(this._element, renderedActions);
-        }
+        Utils.appendChild(this._element, renderedActions);
 
         if (renderedElementCount > 0 || renderedActions != null) {
             if (!Utils.isNullOrEmpty(this.backgroundImageUrl)) {
@@ -1240,11 +1201,11 @@ export class Container extends CardElement {
         // render each item
         let speak = null;
 
-        if (this._items.length > 0) {
+        if (this.items.length > 0) {
             speak = '';
 
-            for (var i = 0; i < this._items.length; i++) {
-                var result = this._items[i].renderSpeech();
+            for (var i = 0; i < this.items.length; i++) {
+                var result = this.items[i].renderSpeech();
 
                 if (result) {
                     speak += result;
@@ -1253,16 +1214,6 @@ export class Container extends CardElement {
         }
 
         return speak;
-    }
-
-    getRootContainer(): Container {
-        let currentContainer: Container = this;
-
-        while (currentContainer.container != null) {
-            currentContainer = currentContainer.container;
-        }
-
-        return currentContainer;
     }
 }
 

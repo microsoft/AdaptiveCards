@@ -2,12 +2,12 @@
     box-sizing: border-box;
 }
 
-.subtleSeparation {
-    padding: 20px 0px 0px 0px;
+.removeTopSpacing {
+    margin-top: 0px !important;
 }
 
-.strongSeparation {
-    border-top: 1px solid rgba(0, 0, 0, 0.25);
+.separator {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin: 20px 0px 0px 0px;
     padding: 20px 0px 0px 0px;
 }

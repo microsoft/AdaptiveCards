@@ -11,12 +11,6 @@ export class TeamsConnectorContainer extends ConnectorContainer {
         element.style.borderBottom = "1px solid #F1F1F1";
         element.style.border = "1px solid #F1F1F1"
 
-        let headerElement = this.renderHeader(card);
-
-        if (headerElement != null) {
-            Utils.appendChild(element, headerElement);
-        }
-
         let renderedCard = card.render();
 
         Utils.appendChild(element, renderedCard);

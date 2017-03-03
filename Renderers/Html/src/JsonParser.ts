@@ -169,18 +169,18 @@ export class JsonParser {
         }
     }
 
-    private parseActionCollection(json: any, actions: Adaptive.ActionCollection) {
+    private parseContainerActions(json: any, container: Adaptive.Container) {
         var jsonActions = json as Array<any>;
 
         for (var i = 0; i < jsonActions.length; i++) {
-            var action = this.createAction(jsonActions[i], actions.container);
+            var action = this.createAction(jsonActions[i], container);
 
             if (action != null) {
-                actions.items.push(action);
+                container.actions.push(action);
             }
         }
     }
-
+    
     private parseContainer(
         json: any,
         container: Adaptive.Container,
@@ -201,15 +201,13 @@ export class JsonParser {
                     container);
 
                 if (element != null) {
-                    container.addItem(element);
+                    container.items.push(element);
                 }
             }
         }
 
         if (json["actions"] != undefined) {
-            container.actions = new Adaptive.ActionCollection(container);
-
-            this.parseActionCollection(json["actions"], container.actions);
+            this.parseContainerActions(json["actions"], container);
         }
 
         var selectActionJson = json["selectAction"];
