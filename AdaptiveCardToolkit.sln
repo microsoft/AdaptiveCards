@@ -36,7 +36,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "schemas", "schemas\", "{A22
 		SlnRelativePath = "schemas\"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.Net", "builders\.NET\Adaptive.Net\Adaptive.Net.csproj", "{1B1D0934-2B03-42A5-8322-D480CDFDD55B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.NET", "builders\.NET\Adaptive.Net\Adaptive.NET.csproj", "{1B1D0934-2B03-42A5-8322-D480CDFDD55B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
