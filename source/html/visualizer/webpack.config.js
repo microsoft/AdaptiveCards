@@ -29,7 +29,6 @@ module.exports = {
 
     externals: {
         "adaptive-card-html-renderer/Adaptive": 'adaptiveCardHtmlRenderer',
-        //"adaptive-card-html-renderer/Adaptive": 'adaptiveCardHtmlRenderer.AdaptiveCard',
         "adaptive-card-html-renderer/Utils": 'adaptiveCardHtmlRenderer.Utils',
         "adaptive-card-html-renderer/JsonParser": 'adaptiveCardHtmlRenderer.JsonParser'
     }
