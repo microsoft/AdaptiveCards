@@ -2,8 +2,8 @@
   "name": "adaptive-card-html-renderer",
   "version": "0.1.0",
   "description": "adaptive card toolkit html rendering library",
-  "main": "adaptiveCard.js",
-  "types": "adaptiveCard.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "private": true,
   "scripts": {
     "build": "webpack",
@@ -18,8 +18,7 @@
     "url": "git://git@github.com/microsoft/AdaptiveCards.git"
   },
   "dependencies": {
-    "markdown-it": "^8.2.2",
-    "vkbeautify": "^0.99.1"
+    "markdown-it": "^8.2.2"
   },
   "devDependencies": {
     "@types/markdown-it": "0.0.1",
