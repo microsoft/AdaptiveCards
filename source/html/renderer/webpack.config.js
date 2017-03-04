@@ -1,7 +1,8 @@
 module.exports = {
-    entry: "./src/visualizer/app.ts",
+    entry: "./src/Adaptive.ts",
     output: {
-        filename: "./dist/adaptiveCards.js"
+        filename: "./index.js",
+        library: 'adaptiveCardHtmlRenderer'
     },
 
     // Enable sourcemaps for debugging webpack's output.

@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "target": "es5",
+        "rootDir": "src",
+        "outDir": "built"
+    },
+    "files": [
+        "../renderer/index.d.ts"
+    ],
+    "include": [
+        "./src/**/*"
+    ]
+}
