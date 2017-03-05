@@ -8,6 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Threading.Tasks;
 
 namespace Adaptive
 {
@@ -87,5 +88,16 @@ namespace Adaptive
 
             return uiColumnSet;
         }
+
+
+        public override async Task PreRender()
+        {
+            List<Task> tasks = new List<Task>();
+            foreach (var item in this.Columns)
+                tasks.Add(item.PreRender());
+
+            await Task.WhenAll(tasks.ToArray());
+        }
+
     }
 }

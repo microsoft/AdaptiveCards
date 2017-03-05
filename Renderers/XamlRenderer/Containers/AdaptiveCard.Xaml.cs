@@ -7,11 +7,15 @@ using WPF = System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Threading.Tasks;
+using System.IO;
+using System.Net;
 
 namespace Adaptive
 {
     public partial class AdaptiveCard
     {
+        private MemoryStream _backgroundImage;
 
         /// <summary>
         /// Override the renderer for this element
@@ -33,7 +37,18 @@ namespace Adaptive
             if (this.BackgroundImage != null)
             {
                 Uri uri = new Uri(this.BackgroundImage);
-                grid.Background = new ImageBrush(new BitmapImage(uri));
+                BitmapImage backgroundSource;
+                if (_backgroundImage!= null)
+                {
+                    backgroundSource = new BitmapImage();
+                    backgroundSource.BeginInit();
+                    backgroundSource.StreamSource = _backgroundImage;
+                    backgroundSource.EndInit();
+                }
+                else
+                    backgroundSource = new BitmapImage(uri);
+
+                grid.Background = new ImageBrush(backgroundSource);
             }
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
@@ -42,6 +57,28 @@ namespace Adaptive
             return grid;
         }
 
+        public override async Task PreRender()
+        {
+            List<Task> tasks = new List<Task>();
+
+            if (this.BackgroundImage != null && _backgroundImage == null)
+            {
+                tasks.Add(Task.Run(async () =>
+                {
+                    MemoryStream stream = new MemoryStream();
+                    using (WebClient client = new WebClient())
+                    {
+                        var data = await client.DownloadDataTaskAsync(this.BackgroundImage).ConfigureAwait(false);
+                        _backgroundImage = new MemoryStream(data);
+                    }
+                }));
+            }
+
+            foreach (var item in this.Body)
+                tasks.Add(item.PreRender());
+
+            await Task.WhenAll(tasks.ToArray());
+        }
 
     }
 }

@@ -32,12 +32,14 @@ namespace Adaptive
                 Options = new RenderOptions()
                 {
                     ShowAction = this.Options.ShowAction,
-                    ShowInput  = this.Options.ShowInput
+                    ShowInput = this.Options.ShowInput
                 },
                 OnAction = this.OnAction,
                 OnMissingInput = this.OnMissingInput
             };
         }
+
+        private HashSet<string> LoadingElements = new HashSet<string>();
 
         public delegate void ActionEventHandler(object sender, ActionEventArgs e);
         public delegate void MissingInputEventHandler(object sender, MissingInputEventArgs e);
@@ -48,6 +50,17 @@ namespace Adaptive
         /// Input Controls in scope for actions array
         /// </summary>
         public List<FrameworkElement> InputControls = new List<FrameworkElement>();
+
+
+        /// <summary>
+        /// Event which fires when tree is ready to be snapshoted
+        /// </summary>
+        public event RoutedEventHandler OnLoaded;
+
+        /// <summary>
+        /// Is everything loaded
+        /// </summary>
+        public bool IsLoaded { get { return this.LoadingElements.Count == 0; } }
 
         /// <summary>
         /// Resource dictionary to use when rendering
@@ -74,7 +87,7 @@ namespace Adaptive
         {
             this.OnMissingInput?.Invoke(sender, args);
         }
-        
+
         public virtual Style GetStyle(string styleName)
         {
             if (!styleName.Contains(".Tap"))
@@ -127,7 +140,7 @@ namespace Adaptive
                         if (value is string && !String.IsNullOrEmpty((string)value))
                             hasValue = true;
                     }
-                            
+
                     if (hasValue)
                     {
                         data[input.Id] = JToken.FromObject(value);
@@ -303,6 +316,25 @@ namespace Adaptive
             }
         }
 
+        public void AddLoadingElement(string id)
+        {
+            this.LoadingElements.Add(id);
+        }
+
+        public void LoadingElementCompleted(string id)
+        {
+            lock (this.LoadingElements)
+            {
+                this.LoadingElements.Remove(id);
+            }
+            Debug.Print($"{id} finished");
+
+            if (this.LoadingElements.Count == 0)
+            {
+                Debug.Print($"Loaded");
+                this.OnLoaded?.Invoke(this, null);
+            }
+        }
     }
 
 
@@ -339,7 +371,7 @@ namespace Adaptive
     public class MissingInputException : Exception
     {
         public MissingInputException(string message, Input input, FrameworkElement frameworkElement)
-            :base(message)
+            : base(message)
         {
             this.FrameworkElement = frameworkElement;
             this.Input = input;

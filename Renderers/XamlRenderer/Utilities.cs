@@ -87,15 +87,14 @@ namespace Adaptive
         /// <param name="card">card to render</param>
         /// <param name="width">desired width of image</param>
         /// <returns>BitmapSource of the card</returns>
-        public static async Task<BitmapSource> XamlToImageAsync(UIElement uiElement, int width)
+        public static async Task<BitmapSource> XamlToImageAsync(RenderContext context, UIElement uiElement, int width)
         {
             uiElement.Measure(new System.Windows.Size(width, 4000));
             uiElement.Arrange(new Rect(new System.Windows.Size(width, uiElement.DesiredSize.Height)));
             uiElement.UpdateLayout();
 
             RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)width, (int)uiElement.DesiredSize.Height, 96, 96, PixelFormats.Default);
-            await Task.Delay(1000);
-            // Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
+
             bitmapImage.Render(uiElement);
             return bitmapImage;
         }

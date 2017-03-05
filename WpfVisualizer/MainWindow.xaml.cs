@@ -209,8 +209,12 @@ namespace WpfVisualizer
             RenderContext renderContext = new RenderContext(this.Resources);
             renderContext.Options.ShowAction = false;
             renderContext.Options.ShowInput = false;
+
+            await this._card.PreRender();
+
             var uiCard = this._card.Render(renderContext);
-            var bitmap = await Utilities.XamlToImageAsync(uiCard, 400);
+
+            var bitmap = await Utilities.XamlToImageAsync(renderContext, uiCard, 400);
 
             string path = @"c:\scratch\foo.png";
             var encoder = new PngBitmapEncoder();
