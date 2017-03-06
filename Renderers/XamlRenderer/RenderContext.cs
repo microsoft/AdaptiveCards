@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit;
 
@@ -20,20 +22,21 @@ namespace Adaptive
 
     public class RenderContext
     {
-        public RenderContext(ResourceDictionary resources)
+        public RenderContext()
         {
-            this.Resources = resources;
         }
 
         public RenderContext NewActionContext()
         {
-            return new RenderContext(this.Resources)
+            return new RenderContext()
             {
                 Options = new RenderOptions()
                 {
                     ShowAction = this.Options.ShowAction,
                     ShowInput = this.Options.ShowInput
                 },
+                _stylePath = this.StylePath,
+                _resources = this.Resources,
                 OnAction = this.OnAction,
                 OnMissingInput = this.OnMissingInput
             };
@@ -45,6 +48,20 @@ namespace Adaptive
         public delegate void MissingInputEventHandler(object sender, MissingInputEventArgs e);
 
         public RenderOptions Options { get; set; } = new RenderOptions();
+
+        /// <summary>
+        /// Path to Xaml resource dictionary
+        /// </summary>
+        private string _stylePath;
+        public string StylePath
+        {
+            get { return _stylePath; }
+            set
+            {
+                this._stylePath = value;
+                this._resources = null;
+            }
+        }
 
         /// <summary>
         /// Input Controls in scope for actions array
@@ -65,8 +82,25 @@ namespace Adaptive
         /// <summary>
         /// Resource dictionary to use when rendering
         /// </summary>
-        public ResourceDictionary Resources;
+        private ResourceDictionary _resources;
+        public ResourceDictionary Resources
+        {
+            get
+            {
+                if (_resources != null)
+                    return _resources;
 
+                using (var styleStream = File.OpenRead(this.StylePath))
+                {
+                    _resources = (ResourceDictionary)XamlReader.Load(styleStream);
+                }
+                return _resources;
+            }
+            set
+            {
+                this._resources = value;
+            }
+        }
 
         /// <summary>
         /// Event fires when action is invoked
@@ -87,6 +121,7 @@ namespace Adaptive
         {
             this.OnMissingInput?.Invoke(sender, args);
         }
+
 
         public virtual Style GetStyle(string styleName)
         {
