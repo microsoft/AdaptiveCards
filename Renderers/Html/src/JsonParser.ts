@@ -48,13 +48,9 @@ export class JsonParser {
         action.data = json["data"];
     }
 
-    private parseActionShowCard(
-        json: any,
-        action: Adaptive.ActionShowCard,
-        parentContainer: Adaptive.Container) {
+    private parseActionShowCard(json: any, action: Adaptive.ActionShowCard) {
         this.parseBaseAction(json, action);
         
-        action.card = new Adaptive.Container(parentContainer, "body");
         action.card.actionButtonStyle = Enums.ActionButtonStyle.Push;
         
         var s: string[] =  [];
@@ -62,7 +58,7 @@ export class JsonParser {
         this.parseContainer(
             json["card"],
             action.card,
-            "items");
+            "body");
     }
 
     private createAction(json: any, container: Adaptive.Container): Adaptive.Action {
@@ -72,26 +68,23 @@ export class JsonParser {
 
         switch (actionType) {
             case Adaptive.ActionOpenUrl.TypeName:
-                result = new Adaptive.ActionOpenUrl();
+                result = new Adaptive.ActionOpenUrl(container);
                 this.parseActionOpenUrl(json, <Adaptive.ActionOpenUrl>result);
 
                 break;
             case Adaptive.ActionHttp.TypeName:
-                result = new Adaptive.ActionHttp();
+                result = new Adaptive.ActionHttp(container);
                 this.parseActionHttp(json, <Adaptive.ActionHttp>result);
 
                 break;
             case Adaptive.ActionSubmit.TypeName:
-                result = new Adaptive.ActionSubmit();
+                result = new Adaptive.ActionSubmit(container);
                 this.parseActionSubmit(json, <Adaptive.ActionSubmit>result);
 
                 break;
             case Adaptive.ActionShowCard.TypeName:
-                result = new Adaptive.ActionShowCard();
-                this.parseActionShowCard(
-                    json,
-                    <Adaptive.ActionShowCard>result,
-                    container);
+                result = new Adaptive.ActionShowCard(container);
+                this.parseActionShowCard(json, <Adaptive.ActionShowCard>result);
 
                 break;
             default:
