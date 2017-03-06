@@ -3,8 +3,6 @@ import * as Utils from "./Utils";
 import * as TextFormatters from "./TextFormatters";
 
 export abstract class CardElement {
-    private _container: Container;
-
     protected get hideOverflow(): boolean {
         return true;
     }
@@ -12,22 +10,6 @@ export abstract class CardElement {
     protected get useDefaultSizing(): boolean {
         return true;
     }
-
-    speak: string;
-    horizontalAlignment: Enums.HorizontalAlignment = Enums.HorizontalAlignment.Left;
-    separation: Enums.Separation;
-
-    constructor(container: Container) {
-        this._container = container;
-    }
-
-    get container(): Container {
-        return this._container;
-    }
-
-    abstract render(): HTMLElement;
-
-    abstract renderSpeech(): string;
 
     protected adjustLayout(element: HTMLElement) {
         if (this.useDefaultSizing) {
@@ -48,8 +30,22 @@ export abstract class CardElement {
         }
     }
 
-    internalRender(): HTMLElement {
-        let renderedElement = this.render();
+    protected abstract internalRender(): HTMLElement;
+
+    readonly container: Container;
+    
+    speak: string;
+    horizontalAlignment: Enums.HorizontalAlignment = Enums.HorizontalAlignment.Left;
+    separation: Enums.Separation;
+
+    constructor(container: Container) {
+        this.container = container;
+    }
+
+    abstract renderSpeech(): string;
+
+    render(): HTMLElement {
+        let renderedElement = this.internalRender();
 
         if (renderedElement != null) {
             this.adjustLayout(renderedElement);
@@ -61,7 +57,7 @@ export abstract class CardElement {
 
 export class TextBlock extends CardElement {
     static TypeName: string = "TextBlock";
-    
+
     size: Enums.TextSize = Enums.TextSize.Normal;
     weight: Enums.TextWeight = Enums.TextWeight.Normal;
     color: Enums.TextColor = Enums.TextColor.Default;
@@ -69,7 +65,7 @@ export class TextBlock extends CardElement {
     isSubtle: boolean = false;
     wrap: boolean = true;
 
-    render(): HTMLElement {
+    protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             let element = document.createElement("div");
 
@@ -193,9 +189,11 @@ export class Fact {
 export class FactSet extends CardElement {
     static TypeName: string = "FactSet";
 
-    facts: Array<Fact> = [];
+    protected get useDefaultSizing(): boolean {
+        return false;
+    }
 
-    render(): HTMLElement {
+    protected internalRender(): HTMLElement {
         let element: HTMLElement = null;
 
         if (this.facts.length > 0) {
@@ -213,7 +211,7 @@ export class FactSet extends CardElement {
                 textBlock.weight = Enums.TextWeight.Bolder;
                 textBlock.separation = Enums.Separation.None;
 
-                let renderedText = textBlock.internalRender();
+                let renderedText = textBlock.render();
 
                 if (renderedText != null) {
                     html += renderedText.outerHTML;
@@ -227,7 +225,7 @@ export class FactSet extends CardElement {
                 textBlock.weight = Enums.TextWeight.Lighter;
                 textBlock.separation = Enums.Separation.None;
 
-                renderedText = textBlock.internalRender();
+                renderedText = textBlock.render();
 
                 if (renderedText != null) {
                     html += renderedText.outerHTML;
@@ -242,6 +240,8 @@ export class FactSet extends CardElement {
 
         return element;
     }
+
+    facts: Array<Fact> = [];
 
     renderSpeech(): string {
         if (this.speak != null) {
@@ -265,25 +265,16 @@ export class FactSet extends CardElement {
 
         return '<p>' + speak + '\n</p>\n';
     }
-
-    get useDefaultSizing(): boolean {
-        return false;
-    }
 }
 
 export class Image extends CardElement {
     static TypeName: string = "Image";
-    
+
     protected get useDefaultSizing() {
         return false;
     }
 
-    style: Enums.ImageStyle = Enums.ImageStyle.Normal;
-    url: string;
-    size: Enums.Size = Enums.Size.Medium;
-    selectAction: ActionExternal;
-
-    render(): HTMLElement {
+    protected internalRender(): HTMLElement {
         let imageElement: HTMLImageElement = null;
 
         if (!Utils.isNullOrEmpty(this.url)) {
@@ -331,6 +322,11 @@ export class Image extends CardElement {
         return imageElement;
     }
 
+    style: Enums.ImageStyle = Enums.ImageStyle.Normal;
+    url: string;
+    size: Enums.Size = Enums.Size.Medium;
+    selectAction: ActionExternal;
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak + '\n';
@@ -343,10 +339,7 @@ export class Image extends CardElement {
 export class ImageSet extends CardElement {
     static TypeName: string = "ImageSet";
 
-    images: Array<Image> = [];
-    imageSize: Enums.Size = Enums.Size.Medium;
-
-    render(): HTMLElement {
+    protected internalRender(): HTMLElement {
         let element: HTMLElement = null;
 
         if (this.images.length > 0) {
@@ -354,7 +347,7 @@ export class ImageSet extends CardElement {
             element.className = "imageGallery";
 
             for (var i = 0; i < this.images.length; i++) {
-                let renderedImage = this.images[i].internalRender();
+                let renderedImage = this.images[i].render();
                 renderedImage.style.margin = "0px";
                 renderedImage.style.marginRight = "10px";
 
@@ -364,6 +357,9 @@ export class ImageSet extends CardElement {
 
         return element;
     }
+
+    images: Array<Image> = [];
+    imageSize: Enums.Size = Enums.Size.Medium;
 
     renderSpeech(): string {
         if (this.speak != null) {
@@ -409,19 +405,7 @@ export class InputText extends Input {
 
     private _textareaElement: HTMLTextAreaElement;
 
-    maxLength: number;
-    isMultiline: boolean;
-    placeholder: string;
-
-    constructor(container: Container) {
-        super(container);
-    }
-
-    get value(): string {
-        return this._textareaElement.textContent;
-    }
-
-    render(): HTMLElement {
+    protected internalRender(): HTMLElement {
         this._textareaElement = document.createElement("textarea");
         this._textareaElement.className = "input textInput";
 
@@ -437,6 +421,14 @@ export class InputText extends Input {
 
         return this._textareaElement;
     }
+
+    maxLength: number;
+    isMultiline: boolean;
+    placeholder: string;
+
+    get value(): string {
+        return this._textareaElement.textContent;
+    }
 }
 
 export class InputToggle extends Input {
@@ -444,15 +436,7 @@ export class InputToggle extends Input {
 
     private _checkboxInputElement: HTMLInputElement;
 
-    title: string;
-    valueOn: string;
-    valueOff: string;
-
-    get value(): string {
-        return this._checkboxInputElement.checked ? this.valueOn : this.valueOff;
-    }
-
-    render(): HTMLElement {
+    protected internalRender(): HTMLElement {
         var element = document.createElement("div");
         element.className = "input";
 
@@ -477,6 +461,14 @@ export class InputToggle extends Input {
 
         return element;
     }
+
+    title: string;
+    valueOn: string;
+    valueOff: string;
+
+    get value(): string {
+        return this._checkboxInputElement.checked ? this.valueOn : this.valueOff;
+    }
 }
 
 export class Choice {
@@ -490,48 +482,7 @@ export class InputChoiceSet extends Input {
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: Array<HTMLInputElement>;
 
-    choices: Array<Choice> = [];
-    isCompact: boolean;
-    isMultiSelect: boolean;
-    placeholder: string;
-
-    constructor(container: Container) {
-        super(container);
-    }
-
-    get value(): string {
-        if (!this.isMultiSelect) {
-            if (this.isCompact) {
-                return this._selectElement.value;
-            }
-            else {
-                for (var i = 0; i < this._toggleInputs.length; i++) {
-                    if (this._toggleInputs[i].checked) {
-                        return this._toggleInputs[i].value;
-                    }
-                }
-
-                return null;
-            }
-        }
-        else {
-            var result: string = "";
-
-            for (var i = 0; i < this._toggleInputs.length; i++) {
-                if (this._toggleInputs[i].checked) {
-                    if (result != "") {
-                        result += ";";
-                    }
-
-                    result += this._toggleInputs[i].value;
-                }
-            }
-
-            return result == "" ? null : result;
-        }
-    }
-
-    render(): HTMLElement {
+    protected internalRender(): HTMLElement {
         if (!this.isMultiSelect) {
             if (this.isCompact) {
                 // Render as a combo box
@@ -621,6 +572,47 @@ export class InputChoiceSet extends Input {
             return element;
         }
     }
+
+    choices: Array<Choice> = [];
+    isCompact: boolean;
+    isMultiSelect: boolean;
+    placeholder: string;
+
+    constructor(container: Container) {
+        super(container);
+    }
+
+    get value(): string {
+        if (!this.isMultiSelect) {
+            if (this.isCompact) {
+                return this._selectElement.value;
+            }
+            else {
+                for (var i = 0; i < this._toggleInputs.length; i++) {
+                    if (this._toggleInputs[i].checked) {
+                        return this._toggleInputs[i].value;
+                    }
+                }
+
+                return null;
+            }
+        }
+        else {
+            var result: string = "";
+
+            for (var i = 0; i < this._toggleInputs.length; i++) {
+                if (this._toggleInputs[i].checked) {
+                    if (result != "") {
+                        result += ";";
+                    }
+
+                    result += this._toggleInputs[i].value;
+                }
+            }
+
+            return result == "" ? null : result;
+        }
+    }
 }
 
 export class InputNumber extends Input {
@@ -628,18 +620,7 @@ export class InputNumber extends Input {
 
     private _numberInputElement: HTMLInputElement;
 
-    min: string;
-    max: string;
-
-    constructor(container: Container) {
-        super(container);
-    }
-
-    get value(): string {
-        return this._numberInputElement.value;
-    }
-
-    render(): HTMLElement {
+    protected internalRender(): HTMLElement {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.type = "number";
         this._numberInputElement.className = "input number";
@@ -652,12 +633,31 @@ export class InputNumber extends Input {
 
         return this._numberInputElement;
     }
+
+    min: string;
+    max: string;
+
+    constructor(container: Container) {
+        super(container);
+    }
+
+    get value(): string {
+        return this._numberInputElement.value;
+    }
 }
 
 export class InputDate extends Input {
     static TypeName: string = "Input.Date";
 
     private _dateInputElement: HTMLInputElement;
+
+    protected internalRender(): HTMLElement {
+        this._dateInputElement = document.createElement("input");
+        this._dateInputElement.type = "date";
+        this._dateInputElement.className = "input date";
+
+        return this._dateInputElement;
+    }
 
     constructor(container: Container) {
         super(container);
@@ -666,14 +666,6 @@ export class InputDate extends Input {
     get value(): string {
         return this._dateInputElement.value;
     }
-
-    render(): HTMLElement {
-        this._dateInputElement = document.createElement("input");
-        this._dateInputElement.type = "date";
-        this._dateInputElement.className = "input date";
-
-        return this._dateInputElement;
-    }
 }
 
 export class InputTime extends Input {
@@ -681,20 +673,20 @@ export class InputTime extends Input {
 
     private _timeInputElement: HTMLInputElement;
 
+    protected internalRender(): HTMLElement {
+        this._timeInputElement = document.createElement("input");
+        this._timeInputElement.type = "time";
+        this._timeInputElement.className = "input time";
+
+        return this._timeInputElement;
+    }
+
     constructor(container: Container) {
         super(container);
     }
 
     get value(): string {
         return this._timeInputElement.value;
-    }
-
-    render(): HTMLElement {
-        this._timeInputElement = document.createElement("input");
-        this._timeInputElement.type = "time";
-        this._timeInputElement.className = "input time";
-
-        return this._timeInputElement;
     }
 }
 
@@ -766,13 +758,15 @@ class ActionButton {
 }
 
 export abstract class Action {
+    readonly container: Container;
+
     title: string;
 
-    abstract execute();
-
-    parse(json: any) {
-        this.title = json["title"];
+    constructor(container: Container) {
+        this.container = container;
     }
+
+    abstract execute();
 
     renderUi(): HTMLElement {
         return null;
@@ -808,7 +802,7 @@ export class HttpHeader {
 
 export class ActionHttp extends ActionExternal {
     static TypeName: string = "Action.Http";
-    
+
     private _headers: Array<HttpHeader> = [];
 
     url: string;
@@ -823,18 +817,18 @@ export class ActionHttp extends ActionExternal {
 export class ActionShowCard extends Action {
     static TypeName: string = "Action.ShowCard";
 
-    card: Container;
+    readonly card: Container;
+
     title: string;
 
-    execute() {
-        AdaptiveCard.showPopupCard(this, this.renderUi());
+    constructor(container: Container) {
+        super(container);
+
+        this.card = new ActionShowCardContainer(container);
     }
 
-    renderUi(): HTMLElement {
-        var renderedCard = this.card.internalRender();
-        renderedCard.style.marginTop = "0px";
-
-        return renderedCard;
+    execute() {
+        AdaptiveCard.showPopupCard(this, this.card.render());
     }
 }
 
@@ -849,17 +843,21 @@ class ActionCollection {
         this._actionCardContainer.style.padding = "0px";
         this._actionCardContainer.style.marginTop = "0px";
 
-        this._container.showBottomSpacer();
+        if (this.onHideActionCardPane) {
+            this.onHideActionCardPane();
+        }
     }
 
-    private showActionCardPane(action: Action) {
-        this._container.hideBottomSpacer();
+    private showActionCardPane(action: ActionShowCard) {
+        if (this.onShowActionCardPane) {
+            this.onShowActionCardPane(action);
+        }
 
         this._actionCardContainer.innerHTML = '';
         this._actionCardContainer.style.padding = null;
         this._actionCardContainer.style.marginTop = this.items.length > 1 ? null : "0px";
 
-        Utils.appendChild(this._actionCardContainer, action.renderUi());
+        Utils.appendChild(this._actionCardContainer, action.card.render());
     }
 
     private actionClicked(actionButton: ActionButton) {
@@ -920,15 +918,13 @@ class ActionCollection {
     constructor(container: Container) {
         this._container = container;
     }
-
+    
     items: Array<Action> = [];
-
-    get container(): Container {
-        return this._container;
-    }
+    onHideActionCardPane: () => void = null;
+    onShowActionCardPane: (action: ActionShowCard) => void = null;
 
     render(): HTMLElement {
-        if (this.container.container != null && !AdaptiveCard.renderOptions.supportsNestedActions) {
+        if (this._container.container != null && !AdaptiveCard.renderOptions.supportsNestedActions) {
             AdaptiveCard.raiseRenderError(
                 Enums.RenderError.NestedActionNotAllowed,
                 "Nested actions are not allowed.");
@@ -959,7 +955,7 @@ class ActionCollection {
 
         if (this.items.length == 1 && this.items[0] instanceof ActionShowCard) {
             if (ActionCollection.checkActionTypeIsAllowed(this.items[0])) {
-                this.showActionCardPane(this.items[0]);
+                this.showActionCardPane(<ActionShowCard>this.items[0]);
 
                 renderedActions++;
             }
@@ -985,7 +981,7 @@ class ActionCollection {
                     Utils.appendChild(buttonStrip, buttonStripItem);
 
                     renderedActions++;
-                }                
+                }
             }
 
             Utils.appendChild(element, buttonStrip);
@@ -1002,7 +998,6 @@ export class Container extends CardElement {
 
     private _element: HTMLDivElement;
     private _textColor: Enums.TextColor = Enums.TextColor.Default;
-    private _itemsCollectionPropertyName: string;
     private _actionCollection: ActionCollection;
 
     private static checkElementTypeIsAllowed(element: CardElement) {
@@ -1029,6 +1024,95 @@ export class Container extends CardElement {
         return this.items.indexOf(element) == this.items.length - 1;
     }
 
+    private showBottomSpacer(requestingElement: CardElement = null) {
+        if (requestingElement == null || this.isLastItem(requestingElement)) {
+            this._element.style.paddingBottom = null;
+
+            if (this.container != null) {
+                this.container.showBottomSpacer(this);
+            }
+        }
+    }
+
+    private hideBottomSpacer(requestingElement: CardElement = null) {
+        if (requestingElement == null || this.isLastItem(requestingElement)) {
+            this._element.style.paddingBottom = "0px";
+
+            if (this.container != null) {
+                this.container.hideBottomSpacer(this);
+            }
+        }
+    }
+
+    protected internalRender(): HTMLElement {
+        this._element = document.createElement("div");
+        this._element.className = this.cssClassName;
+        this._element.onclick = (e) => {
+            if (this.selectAction != null) {
+                this.selectAction.execute();
+                e.cancelBubble = true;
+            }
+        }
+
+        if (!Utils.isNullOrEmpty(this.backgroundColor)) {
+            this._element.style.backgroundColor = this.backgroundColor;
+        }
+
+        if (this.items.length > 0) {
+            var renderedElementCount: number = 0;
+
+            for (var i = 0; i < this.items.length; i++) {
+                if (Container.checkElementTypeIsAllowed(this.items[i])) {
+                    var renderedElement = this.items[i].render();
+
+                    if (renderedElement != null) {
+                        if (renderedElementCount == 0) {
+                            this.removeTopSpacing(renderedElement);
+                        }
+                        else {
+                            switch (this.items[i].separation) {
+                                case Enums.Separation.None:
+                                    this.removeTopSpacing(renderedElement);
+
+                                    break;
+                                case Enums.Separation.Strong:
+                                    this.removeTopSpacing(renderedElement);
+
+                                    var separator = document.createElement("div");
+                                    separator.className = "separator";
+
+                                    Utils.appendChild(this._element, separator);
+
+                                    break;
+                            }
+                        }
+
+                        Utils.appendChild(this._element, renderedElement);
+
+                        renderedElementCount++;
+                    }
+                }
+            }
+        }
+
+        var renderedActions = this._actionCollection.render();
+
+        Utils.appendChild(this._element, renderedActions);
+
+        if (renderedElementCount > 0 || renderedActions != null) {
+            if (!Utils.isNullOrEmpty(this.backgroundImageUrl)) {
+                this._element.style.backgroundImage = 'url("' + this.backgroundImageUrl + '")';
+                this._element.style.backgroundRepeat = "no-repeat";
+                this._element.style.backgroundSize = "cover";
+            }
+
+            return this._element;
+        }
+        else {
+            return null;
+        }
+    }
+
     protected get hideOverflow() {
         return false;
     }
@@ -1049,13 +1133,12 @@ export class Container extends CardElement {
     actionButtonStyle: Enums.ActionButtonStyle = AdaptiveCard.renderOptions.defaultActionButtonStyle;
     selectAction: ActionExternal;
 
-    constructor(
-        container: Container,
-        itemsCollectionPropertyName: string = "items") {
+    constructor(container: Container) {
         super(container);
 
-        this._itemsCollectionPropertyName = itemsCollectionPropertyName;
         this._actionCollection = new ActionCollection(this);
+        this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer() };
+        this._actionCollection.onShowActionCardPane = (action: ActionShowCard) => { this.hideBottomSpacer() };
     }
 
     get textColor(): Enums.TextColor {
@@ -1104,95 +1187,6 @@ export class Container extends CardElement {
         }
     }
 
-    showBottomSpacer(requestingElement: CardElement = null) {
-        if (requestingElement == null || this.isLastItem(requestingElement)) {
-            this._element.style.paddingBottom = null;
-
-            if (this.container != null) {
-                this.container.showBottomSpacer(this);
-            }
-        }
-    }
-
-    hideBottomSpacer(requestingElement: CardElement = null) {
-        if (requestingElement == null || this.isLastItem(requestingElement)) {
-            this._element.style.paddingBottom = "0px";
-
-            if (this.container != null) {
-                this.container.hideBottomSpacer(this);
-            }
-        }
-    }
-
-    render(): HTMLElement {
-        this._element = document.createElement("div");
-        this._element.className = this.cssClassName;
-        this._element.onclick = (e) => {
-            if (this.selectAction != null) {
-                this.selectAction.execute();
-                e.cancelBubble = true;
-            }
-        }
-
-        if (!Utils.isNullOrEmpty(this.backgroundColor)) {
-            this._element.style.backgroundColor = this.backgroundColor;
-        }
-
-        if (this.items.length > 0) {
-            var renderedElementCount: number = 0;
-
-            for (var i = 0; i < this.items.length; i++) {
-                if (Container.checkElementTypeIsAllowed(this.items[i])) {
-                    var renderedElement = this.items[i].internalRender();
-
-                    if (renderedElement != null) {
-                        if (renderedElementCount == 0) {
-                            this.removeTopSpacing(renderedElement);
-                        }
-                        else {
-                            switch (this.items[i].separation) {
-                                case Enums.Separation.None:
-                                    this.removeTopSpacing(renderedElement);
-
-                                    break;
-                                case Enums.Separation.Strong:
-                                    this.removeTopSpacing(renderedElement);
-                                    
-                                    var separator = document.createElement("div");
-                                    separator.className = "separator";
-
-                                    Utils.appendChild(this._element, separator);
-
-                                    break;
-                            }
-                        }
-
-                        Utils.appendChild(this._element, renderedElement);
-
-                        renderedElementCount++;
-                    }
-                }
-            }
-        }
-
-        var renderedActions = this._actionCollection.render();
-
-        Utils.appendChild(this._element, renderedActions);
-
-        if (renderedElementCount > 0 || renderedActions != null) {
-            if (!Utils.isNullOrEmpty(this.backgroundImageUrl)) {
-                this._element.style.backgroundImage = 'url("' + this.backgroundImageUrl + '")';
-                this._element.style.backgroundRepeat = "no-repeat";
-                this._element.style.backgroundSize = "cover";
-            }
-
-            return this._element;
-        }
-        else {
-            return null;
-        }
-    }
-
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak;
@@ -1217,6 +1211,12 @@ export class Container extends CardElement {
     }
 }
 
+class ActionShowCardContainer extends Container {
+    protected get cssClassName(): string {
+        return "";
+    }
+}
+
 export class Column extends Container {
     weight: number = 100;
 
@@ -1230,7 +1230,7 @@ export class Column extends Container {
         return className;
     }
 
-    adjustLayout(element: HTMLElement) {
+    protected adjustLayout(element: HTMLElement) {
         if (this.weight > 0) {
             element.style.flex = "1 1 " + this.weight + "%";
         }
@@ -1248,11 +1248,7 @@ export class ColumnSet extends CardElement {
 
     private _columns: Array<Column> = [];
 
-    get columns(): Array<Column> {
-        return this._columns;
-    }
-
-    render(): HTMLElement {
+    protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
             element.className = "columnGroup";
@@ -1261,7 +1257,7 @@ export class ColumnSet extends CardElement {
             var renderedColumnCount: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
-                var renderedColumn = this._columns[i].internalRender();
+                var renderedColumn = this._columns[i].render();
 
                 if (renderedColumn != null) {
                     Utils.appendChild(element, renderedColumn);
@@ -1291,6 +1287,10 @@ export class ColumnSet extends CardElement {
         else {
             return null;
         }
+    }
+
+    get columns(): Array<Column> {
+        return this._columns;
     }
 
     renderSpeech(): string {
@@ -1368,15 +1368,11 @@ export class AdaptiveCard {
         }
     }
 
-    private _root: Container = new Container(null, "body");
-    
+    readonly root: Container = new Container(null);
+
     onExecuteAction: (action: ActionExternal) => void = null;
     minVersion: IVersion = { major: 1, minor: 0 };
     fallbackText: string;
-
-    get root() {
-        return this._root;
-    }
 
     executeAction(action: ActionExternal) {
         if (this.onExecuteAction != null) {
@@ -1386,7 +1382,7 @@ export class AdaptiveCard {
 
     render(): HTMLElement {
         var unsupportedVersion: boolean =
-            (AdaptiveCard.currentVersion.major < this.minVersion.major) || 
+            (AdaptiveCard.currentVersion.major < this.minVersion.major) ||
             (AdaptiveCard.currentVersion.major == this.minVersion.major && AdaptiveCard.currentVersion.minor < this.minVersion.minor);
 
         if (unsupportedVersion) {
@@ -1395,7 +1391,7 @@ export class AdaptiveCard {
                 "The requested version of the card format isn't supported.");
         }
 
-        let renderedContainer = this.root.internalRender();
+        let renderedContainer = this.root.render();
         renderedContainer.className = "rootContainer";
 
         return renderedContainer;
