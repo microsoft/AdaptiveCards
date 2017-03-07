@@ -36,6 +36,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::TextBlock] = std::bind(&XamlBuilder::BuildTextBlock, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::Image] = std::bind(&XamlBuilder::BuildImage, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::Container] = std::bind(&XamlBuilder::BuildContainer, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
 
         m_imageLoadTracker.AddListener(this);
 
@@ -420,5 +421,73 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), [](IUIElement*) {});
 
         THROW_IF_FAILED(xamlStackPanel.CopyTo(containerControl));
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::BuildColumnSet(
+         IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** columnSetControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveColumnSet> adaptiveColumnSet;
+        THROW_IF_FAILED(cardElement.As(&adaptiveColumnSet));
+
+        ComPtr<IGrid> xamlGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+        ComPtr<IGridStatics> gridStatics;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
+
+        // Create 
+        ComPtr<IVector<IAdaptiveColumn*>> columns;
+        THROW_IF_FAILED(adaptiveColumnSet->get_Columns(&columns));
+        int currentColumn = 0;
+        XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [this, xamlGrid, gridStatics, &currentColumn](IAdaptiveColumn* column)
+        {
+            HString adaptiveColumnSize;
+            THROW_IF_FAILED(column->get_ColumnSize(adaptiveColumnSize.GetAddressOf()));
+            INT32 isAutoResult;
+            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"Auto").Get(), &isAutoResult));
+
+            // Determine if the column is auto or percentage width, and set the column width appropriately
+            ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+            GridLength columnWidth;
+            columnWidth.GridUnitType = (isAutoResult == 0) ? GridUnitType::GridUnitType_Auto : GridUnitType::GridUnitType_Star;
+            if (isAutoResult != 0)
+            {
+                columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+            }
+            THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
+            ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
+            THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
+            THROW_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
+
+            // The column is a container, so build it
+            ComPtr<IAdaptiveCardElement> columnAsCardElement;
+            ComPtr<IAdaptiveColumn> localColumn(column);
+            THROW_IF_FAILED(localColumn.As(&columnAsCardElement));
+            ComPtr<IUIElement> xamlColumn;
+            BuildContainer(columnAsCardElement.Get(), &xamlColumn);
+
+            // Mark the column container with the current column
+            ComPtr<IFrameworkElement> columnAsFrameworkElement;
+            THROW_IF_FAILED(xamlColumn.As(&columnAsFrameworkElement));
+            gridStatics->SetColumn(columnAsFrameworkElement.Get(), currentColumn);
+
+            // Finally add the column container to the grid, and increment the column count
+            ComPtr<IPanel> gridAsPanel;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+            XamlHelpers::AppendXamlElementToPanel(xamlColumn.Get(), gridAsPanel.Get());
+            ++currentColumn;
+        });
+
+        ComPtr<IStyle> style;
+        std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForColumnSet(adaptiveColumnSet.Get());
+        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
+        {
+            ComPtr<IFrameworkElement> gridAsFrameworkElement;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsFrameworkElement));
+            THROW_IF_FAILED(gridAsFrameworkElement->put_Style(style.Get()));
+        }
+
+        THROW_IF_FAILED(xamlGrid.CopyTo(columnSetControl));
     }
 }}

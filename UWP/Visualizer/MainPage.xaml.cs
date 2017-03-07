@@ -62,7 +62,7 @@ namespace XamlCardVisualizer
             card.Items.Add(container2);
 
             AdaptiveImage image = new AdaptiveImage();
-            image.Uri = new Uri("https://docs.microsoft.com/en-us/_themes/images/microsoft-header.png");
+            image.Uri = new Uri("https://unsplash.it/360/202?image=883");
             card.Items.Add(image);
 
             m_renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();

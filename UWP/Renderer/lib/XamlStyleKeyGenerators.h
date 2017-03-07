@@ -73,8 +73,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             styleKey.append(c_StyleSeparator);
             styleKey.append(GetSizeFromCard(adaptiveCardElement.Get()).c_str());
 
-            // TODO: MSFT:10826544 - Programmatic xaml style generation
+            return styleKey;
+        }
 
+        static std::wstring GenerateKeyForColumnSet(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumnSet* columnSet)
+        {
+            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumnSet> adaptiveColumnSet(columnSet);
+            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement> adaptiveCardElement;
+            THROW_IF_FAILED(adaptiveColumnSet.As(&adaptiveCardElement));
+
+            std::wstring styleKey = GetElementTypeAsString(CardElementType::Image);
             return styleKey;
         }
 
