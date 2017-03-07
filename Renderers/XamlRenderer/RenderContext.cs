@@ -314,11 +314,6 @@ namespace Adaptive
                 InputText input = control.DataContext as InputText;
                 ((WatermarkTextBox)control).Text = input.Value;
             }
-            //else if (control is HorizontalToggleSwitch)
-            //{
-            //    InputToggle inputToggle = control.DataContext as InputToggle;
-            //    ((HorizontalToggleSwitch)control).IsChecked = inputToggle.Value == inputToggle.ValueOn;
-            //}
             else if (control is PasswordBox)
             {
                 InputText input = control.DataContext as InputText;
