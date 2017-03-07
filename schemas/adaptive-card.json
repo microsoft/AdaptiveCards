@@ -273,9 +273,9 @@
     "Choice": {
       "additionalProperties": false,
       "properties": {
-        "display": {
+        "title": {
           "type": "string",
-          "description": "The display text for a choice"
+          "description": "The text for a choice"
         },
         "isSelected": {
           "type": "boolean",
@@ -552,6 +552,7 @@
       "type": "string",
       "description": "Controls the horizontal size (width) of Item. ",
       "enum": [
+        "auto",
         "small",
         "normal",
         "medium",
@@ -863,17 +864,6 @@
         "maxLines": {
           "type": "number",
           "description": "When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use."
-        },
-        "size": {
-          "type": "string",
-          "description": "Controls how Items are horizontally positioned within their container.",
-          "enum": [
-            "small",
-            "normal",
-            "medium",
-            "large",
-            "extraLarge"
-          ]
         },
         "speak": {
           "$ref": "#/definitions/Speak"
