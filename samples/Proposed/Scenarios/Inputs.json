@@ -94,8 +94,7 @@
                 },
                 {
                     "type": "TextBlock",
-                    "text": "Input.ChoiceSet (Expanded)",
-                    "isParagraphStart": true
+                    "text": "Input.ChoiceSet (Expanded)"
                 },
                 {
                     "type": "Input.ChoiceSet",
@@ -197,7 +196,7 @@
             "card": {
                 "type": "Container",
                 "speak": "The Seattle Seahawks beat the Carolina Panters 40-7",
-                "body": [
+                "items": [
                     {
                         "type": "Container",
                         "items": [

@@ -273,9 +273,9 @@
     "Choice": {
       "additionalProperties": false,
       "properties": {
-        "display": {
+        "title": {
           "type": "string",
-          "description": "The display text for a choice"
+          "description": "The text for a choice"
         },
         "isSelected": {
           "type": "boolean",
@@ -860,10 +860,6 @@
         "isSubtle": {
           "type": "boolean",
           "description": "Indicates whether the color of the text should be slightly toned down to appear less prominent"
-        },
-        "isParagraphStart": {
-          "type": "boolean",
-          "description": "Indicates whether the text start a new paragraph, which typically results in increased spacing from the previous element"
         },
         "maxLines": {
           "type": "number",

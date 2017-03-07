@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using WPF = System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Threading.Tasks;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks.Schedulers;
+using Adaptive.Threading.Tasks.Schedulers;
 using System.Threading;
 
 namespace Adaptive
