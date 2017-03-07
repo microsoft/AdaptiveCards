@@ -273,9 +273,9 @@
     "Choice": {
       "additionalProperties": false,
       "properties": {
-        "display": {
+        "title": {
           "type": "string",
-          "description": "The display text for a choice"
+          "description": "The text for a choice"
         },
         "isSelected": {
           "type": "boolean",
