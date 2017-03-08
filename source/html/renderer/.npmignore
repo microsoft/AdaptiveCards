@@ -1,5 +1,5 @@
-./built/
-./src/
+.npmignore
+src/
 tsconfig.json
 tslint.json
 webpack.config.js
