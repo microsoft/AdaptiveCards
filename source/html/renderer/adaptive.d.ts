@@ -345,11 +345,6 @@ declare module 'adaptive-card-html-renderer/CardElements' {
 	}
 
 }
-declare module 'adaptive-card-html-renderer/Adaptive' {
-	export * from 'adaptive-card-html-renderer/CardElements';
-	export * from 'adaptive-card-html-renderer/Enumerations';
-
-}
 declare module 'adaptive-card-html-renderer/JsonParser' {
 	import * as Adaptive from 'adaptive-card-html-renderer/CardElements';
 	export class JsonParser {
@@ -380,6 +375,14 @@ declare module 'adaptive-card-html-renderer/JsonParser' {
 	    private createCardElement(json, container);
 	    parse(json: any): Adaptive.AdaptiveCard;
 	}
+
+}
+declare module 'adaptive-card-html-renderer/Adaptive' {
+	import * as JsonParser from 'adaptive-card-html-renderer/JsonParser';
+	import * as Utils from 'adaptive-card-html-renderer/Utils';
+	export * from 'adaptive-card-html-renderer/CardElements';
+	export * from 'adaptive-card-html-renderer/Enumerations';
+	export { JsonParser, Utils };
 
 }
 declare module 'adaptive-card-html-renderer/Schema' {

@@ -2,15 +2,13 @@
   "name": "adaptive-card-html-renderer",
   "version": "0.1.0",
   "description": "adaptive card toolkit html rendering library",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "built/Adaptive.js",
   "private": true,
   "scripts": {
-    "build": "webpack",
-    "dts": "dts-generator --name adaptive-card-html-renderer --project . --out index.d.ts",
-    "watch": "tsc -p . -w",
-    "bundle": "webpack --watch",
-    "start": "http-server -c-1 -o -a localhost",
+    "build-cdn": "webpack",
+    "build-npm": "tsc -p ./src",
+    "build": "npm run build-cdn && npm run build-npm && npm run dts",
+    "dts": "dts-generator --name adaptive-card-html-renderer --project . --out adaptive.d.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

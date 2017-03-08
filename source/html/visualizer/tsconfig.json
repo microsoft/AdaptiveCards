@@ -9,11 +9,14 @@
         "sourceMap": true,
         "target": "es5",
         "rootDir": "src",
-        "outDir": "built"
+        "outDir": "built",
+        "baseUrl": ".",
+        "paths": {
+            "adaptive-card-html-renderer/*": [
+                "node_modules/adaptive-card-html-renderer/built/*"
+            ]
+        }
     },
-    "files": [
-        "../renderer/index.d.ts"
-    ],
     "include": [
         "./src/**/*"
     ]
