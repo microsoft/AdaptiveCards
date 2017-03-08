@@ -68,17 +68,11 @@ namespace XamlCardVisualizer
             m_renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();
 
             PopulateXamlContent(card);
-            PopulateImageContent(card);
         }
 
         private async void PopulateXamlContent(AdaptiveCard card)
         {
             renderedXamlPresenter.Content = await m_renderer.RenderCardAsXamlAsync(card);
-        }
-
-        private async void PopulateImageContent(AdaptiveCard card)
-        {
-            ImageRenderResult imageRenderResult = await m_renderer.RenderCardAsImageAsync(card);
         }
 
         private async void loadFileButton_Clicked(object sender, RoutedEventArgs args)
@@ -112,7 +106,6 @@ namespace XamlCardVisualizer
             {
                 GenerateErrorUI();
             }
-            //ImageRenderResult imageRenderResult = await m_renderer.RenderCardAsImageAsync(card);
         }
 
         private void GenerateErrorUI()
