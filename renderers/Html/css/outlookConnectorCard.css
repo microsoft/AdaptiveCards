@@ -166,10 +166,6 @@
     padding-top: 20px;
 }
 
-.actionCardContainer {
-    margin: 0px;
-}
-
 .image {
     margin: 20px 0px 0px 0px;
 }
@@ -271,8 +267,9 @@ td.factValue {
 }
 
 .actionCardContainer {
-    margin: 16px -20px 0px -20px;
-    padding: 16px 20px 16px 20px;
+    margin-top: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     background-color: #F8F8F8;
 }
 

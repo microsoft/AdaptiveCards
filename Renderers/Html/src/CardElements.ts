@@ -854,8 +854,16 @@ class ActionCollection {
         }
 
         this._actionCardContainer.innerHTML = '';
+
+        var padding = Utils.getActualPadding(this._actionCardContainer);
+
         this._actionCardContainer.style.padding = null;
+        this._actionCardContainer.style.paddingLeft = padding.left + "px";
+        this._actionCardContainer.style.paddingRight = padding.right + "px";
+
         this._actionCardContainer.style.marginTop = this.items.length > 1 ? null : "0px";
+        this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
+        this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
 
         Utils.appendChild(this._actionCardContainer, action.card.render());
     }
@@ -996,10 +1004,6 @@ class ActionCollection {
 export class Container extends CardElement {
     static TypeName: string = "Container";
 
-    private _element: HTMLDivElement;
-    private _textColor: Enums.TextColor = Enums.TextColor.Default;
-    private _actionCollection: ActionCollection;
-
     private static checkElementTypeIsAllowed(element: CardElement) {
         var className = Utils.getClassNameFromInstance(element);
 
@@ -1016,6 +1020,11 @@ export class Container extends CardElement {
         return false;
     }
 
+    private _element: HTMLDivElement;
+    private _hasBottomPadding?: boolean;
+    private _textColor: Enums.TextColor = Enums.TextColor.Default;
+    private _actionCollection: ActionCollection;
+
     private removeTopSpacing(element: HTMLElement) {
         element.className += " removeTopSpacing";
     }
@@ -1024,26 +1033,38 @@ export class Container extends CardElement {
         return this.items.indexOf(element) == this.items.length - 1;
     }
 
-    private showBottomSpacer(requestingElement: CardElement = null) {
-        if (requestingElement == null || this.isLastItem(requestingElement)) {
-            this._element.style.paddingBottom = null;
+    private static showBottomSpacer(element: HTMLElement, requestingElement: HTMLElement = null) {
+        var elementIsRootContainer = element.className.indexOf("rootContainer") >= 0;
+        var elementIsContainer = element.className.indexOf("container") >= 0 || elementIsRootContainer;
+        var children = Array.prototype.slice.call(element.children);
 
-            if (this.container != null) {
-                this.container.showBottomSpacer(this);
+        if (requestingElement == null || children.indexOf(requestingElement) == (children.length - 1)) {
+            if (!elementIsRootContainer && element.parentElement) {
+                Container.showBottomSpacer(element.parentElement, element);
+            }
+
+            if (elementIsContainer) {
+                element.style.paddingBottom = null;
             }
         }
     }
 
-    private hideBottomSpacer(requestingElement: CardElement = null) {
-        if (requestingElement == null || this.isLastItem(requestingElement)) {
-            this._element.style.paddingBottom = "0px";
+    private static hideBottomSpacer(element: HTMLElement, requestingElement: HTMLElement = null) {
+        var elementIsRootContainer = element.className.indexOf("rootContainer") >= 0;
+        var elementIsContainer = element.className.indexOf("container") >= 0 || elementIsRootContainer;
+        var children = Array.prototype.slice.call(element.children);
 
-            if (this.container != null) {
-                this.container.hideBottomSpacer(this);
+        if (requestingElement == null || children.indexOf(requestingElement) == (children.length - 1)) {
+            if (!elementIsRootContainer && element.parentElement && !Utils.getHasBottomPadding(element)) {
+                Container.hideBottomSpacer(element.parentElement, element);
+            }
+
+            if (elementIsContainer) {
+                element.style.paddingBottom = "0px";
             }
         }
     }
-
+    
     protected internalRender(): HTMLElement {
         this._element = document.createElement("div");
         this._element.className = this.cssClassName;
@@ -1137,8 +1158,8 @@ export class Container extends CardElement {
         super(container);
 
         this._actionCollection = new ActionCollection(this);
-        this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer() };
-        this._actionCollection.onShowActionCardPane = (action: ActionShowCard) => { this.hideBottomSpacer() };
+        this._actionCollection.onHideActionCardPane = () => { Container.showBottomSpacer(this._element) };
+        this._actionCollection.onShowActionCardPane = (action: ActionShowCard) => { Container.hideBottomSpacer(this._element) };
     }
 
     get textColor(): Enums.TextColor {
