@@ -28,7 +28,7 @@ namespace WpfVisualizer
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var renderContext = new RenderContext();
-            renderContext.Resources = this.Resources;
+            renderContext.Resources = this._resources;
             renderContext.OnAction += OnAction;
             var element = _card.Render(renderContext);
 
