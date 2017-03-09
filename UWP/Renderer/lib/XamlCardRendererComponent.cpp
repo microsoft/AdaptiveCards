@@ -74,15 +74,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderCardAsImageAsync(
-        IAdaptiveCard* adaptiveCard,
-        IAsyncOperation<ImageRenderResult*>** result)
-    {
-        *result = Make<RenderCardAsImageAsyncOperation>(adaptiveCard).Detach();
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT XamlCardRenderer::RenderAdaptiveJsonAsXaml(
         HSTRING adaptiveJson,
         IUIElement** result)
@@ -102,16 +93,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         RETURN_IF_FAILED(CreateAdaptiveCardFromJson(adaptiveJson, &adaptiveCard));
 
         return RenderCardAsXamlAsync(adaptiveCard.Get(), result);
-    }
-
-    _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderAdaptiveJsonAsImageAsync(HSTRING adaptiveJson,
-        IAsyncOperation<ImageRenderResult*>** result)
-    {
-        ComPtr<IAdaptiveCard> adaptiveCard;
-        RETURN_IF_FAILED(CreateAdaptiveCardFromJson(adaptiveJson, &adaptiveCard));
-
-        return RenderCardAsImageAsync(adaptiveCard.Get(), result);
     }
 
     _Use_decl_annotations_

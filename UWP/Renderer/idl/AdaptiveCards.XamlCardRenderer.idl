@@ -1,15 +1,14 @@
+#include <sdkddkver.h>
+
 import "inspectable.idl";
 import "Windows.Foundation.idl";
 import "Windows.UI.Xaml.idl";
-
-#include <sdkddkver.h>
 
 namespace AdaptiveCards
 {
     namespace XamlCardRenderer
     {
         runtimeclass XamlCardRenderer;
-        runtimeclass ImageRenderResult;
 
         runtimeclass AdaptiveTextBlock;
         runtimeclass AdaptiveCard;
@@ -98,7 +97,6 @@ namespace AdaptiveCards
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
             interface Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>;
-            interface Windows.Foundation.IAsyncOperation<AdaptiveCards.XamlCardRenderer.ImageRenderResult*>;
             interface Windows.Foundation.IReference<Windows.UI.Text.FontWeight>;
         }
 
@@ -278,20 +276,6 @@ namespace AdaptiveCards
         }RenderOptions;
 
         [
-            uuid(D6C7C240-53AF-4F34-87BE-301D9C68465D),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(ImageRenderResult),
-        ]
-        interface IImageRenderResult : IInspectable
-        {
-            [propget] HRESULT AltText([out, retval] HSTRING *altText);
-            [propget] HRESULT ImageBuffer([out, retval] Windows.Storage.Streams.IBuffer** imageBuffer);
-            [propget] HRESULT IsAllContentClippedOut([out, retval] boolean *allContentClipped);
-            [propget] HRESULT ImageWidthPixels([out, retval] int *width);
-            [propget] HRESULT ImageHeightPixels([out, retval] int *height);
-        }
-
-        [
             uuid(DB7C7BB8-C313-440A-A421-B52620107F8B),
             version(NTDDI_WIN10_RS1),
             exclusiveto(XamlCardRenderer),
@@ -303,21 +287,10 @@ namespace AdaptiveCards
             
             HRESULT RenderCardAsXaml([in] AdaptiveCard* adaptiveCard,[out, retval] Windows.UI.Xaml.UIElement** result);
             HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
-            HRESULT RenderCardAsImageAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<ImageRenderResult*>** result);
 
             HRESULT RenderAdaptiveJsonAsXaml([in] HSTRING adaptiveJson, [out, retval] Windows.UI.Xaml.UIElement** result);
             HRESULT RenderAdaptiveJsonAsXamlAsync([in] HSTRING adaptiveJson, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
-            HRESULT RenderAdaptiveJsonAsImageAsync([in] HSTRING adaptiveJson, [out, retval] Windows.Foundation.IAsyncOperation<ImageRenderResult*>** result);
-        }
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1),
-        ]
-        runtimeclass ImageRenderResult
-        {
-            [default] interface IImageRenderResult;
-        }
+        };
 
         [
             version(NTDDI_WIN10_RS1),
@@ -326,6 +299,6 @@ namespace AdaptiveCards
         runtimeclass XamlCardRenderer
         {
             [default] interface IXamlCardRenderer;
-        }
+        };
     }
 }

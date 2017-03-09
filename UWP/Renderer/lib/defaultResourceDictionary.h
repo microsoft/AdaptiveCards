@@ -46,4 +46,8 @@ const PCWSTR c_defaultResourceDictionary = L"\
     <Style TargetType=\"StackPanel\" x:Key=\"Container.StartGroup\"> \
         <Setter Property=\"Margin\" Value=\"0,10,0,0\"/> \
     </Style> \
+\
+    <Style TargetType=\"Grid\" x:Key=\"ColumnSet\"> \
+        <Setter Property=\"Margin\" Value=\"0,0,0,0\"/> \
+    </Style> \
 </ResourceDictionary>";

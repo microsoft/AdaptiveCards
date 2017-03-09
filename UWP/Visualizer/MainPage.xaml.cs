@@ -62,23 +62,17 @@ namespace XamlCardVisualizer
             card.Items.Add(container2);
 
             AdaptiveImage image = new AdaptiveImage();
-            image.Uri = new Uri("https://docs.microsoft.com/en-us/_themes/images/microsoft-header.png");
+            image.Uri = new Uri("https://unsplash.it/360/202?image=883");
             card.Items.Add(image);
 
             m_renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();
 
             PopulateXamlContent(card);
-            PopulateImageContent(card);
         }
 
         private async void PopulateXamlContent(AdaptiveCard card)
         {
             renderedXamlPresenter.Content = await m_renderer.RenderCardAsXamlAsync(card);
-        }
-
-        private async void PopulateImageContent(AdaptiveCard card)
-        {
-            ImageRenderResult imageRenderResult = await m_renderer.RenderCardAsImageAsync(card);
         }
 
         private async void loadFileButton_Clicked(object sender, RoutedEventArgs args)
@@ -112,7 +106,6 @@ namespace XamlCardVisualizer
             {
                 GenerateErrorUI();
             }
-            //ImageRenderResult imageRenderResult = await m_renderer.RenderCardAsImageAsync(card);
         }
 
         private void GenerateErrorUI()
