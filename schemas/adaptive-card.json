@@ -710,7 +710,7 @@
           "description": "Do you want to allow multiple lines of input"
         },
         "maxLength": {
-          "type": "string",
+          "type": "number",
           "description": "hint of maximum length characters to collect (may be ignored by some clients)"
         },
         "placeholder": {
@@ -864,6 +864,17 @@
         "maxLines": {
           "type": "number",
           "description": "When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use."
+        },
+        "size": {
+          "type": "string",
+          "description": "controls size of the text.",
+          "enum": [
+            "small",
+            "normal",
+            "medium",
+            "large",
+            "extraLarge"
+          ]
         },
         "speak": {
           "$ref": "#/definitions/Speak"

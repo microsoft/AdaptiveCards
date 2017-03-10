@@ -29,21 +29,31 @@ namespace Adaptive
             if (AlternateRenderer != null)
                 return AlternateRenderer(this, context);
 
-            var textBox = new WatermarkTextBox() { Text = this.Value };
-            if (this.IsMultiline == true)
+            if (context.Options.SupportInteraction)
             {
-                textBox.AcceptsReturn = true;
-                textBox.TextWrapping = TextWrapping.Wrap;
-                textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
-            }
-            if (this.MaxLength > 0)
-                textBox.MaxLength = this.MaxLength;
+                var textBox = new WatermarkTextBox() { Text = this.Value };
+                if (this.IsMultiline == true)
+                {
+                    textBox.AcceptsReturn = true;
+                    textBox.TextWrapping = TextWrapping.Wrap;
+                    textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+                }
+                if (this.MaxLength > 0)
+                    textBox.MaxLength = this.MaxLength;
 
-            textBox.Watermark = this.Placeholder;
-            textBox.Style = context.GetStyle($"Adaptive.Input.Text.{this.Style}");
-            textBox.DataContext = this;
-            context.InputControls.Add(textBox);
-            return textBox;
+                textBox.Watermark = this.Placeholder;
+                textBox.Style = context.GetStyle($"Adaptive.Input.Text.{this.Style}");
+                textBox.DataContext = this;
+                context.InputControls.Add(textBox);
+                return textBox;
+            }
+            else
+            {
+
+                var textBlock = new TextBlock() { Text = GetFallbackText() ?? this.Placeholder };
+                return textBlock.Render(context);
+            }
+
         }
     }
 }

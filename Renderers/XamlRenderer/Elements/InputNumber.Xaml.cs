@@ -28,27 +28,36 @@ namespace Adaptive
         {
             if (AlternateRenderer != null)
                 return AlternateRenderer(this, context);
+            if (context.Options.SupportInteraction)
+            {
 
-            IntegerUpDown numberPicker = new IntegerUpDown();
-            // numberPicker.ShowButtonSpinner = true;
+                IntegerUpDown numberPicker = new IntegerUpDown();
+                // numberPicker.ShowButtonSpinner = true;
 
-            float value;
-            if (float.TryParse(this.Value, out value))
-                numberPicker.Value = Convert.ToInt32(value);
+                float value;
+                if (float.TryParse(this.Value, out value))
+                    numberPicker.Value = Convert.ToInt32(value);
 
-            float minValue;
-            if (float.TryParse(this.Min, out minValue))
-                numberPicker.Minimum = Convert.ToInt32(minValue);
+                float minValue;
+                if (float.TryParse(this.Min, out minValue))
+                    numberPicker.Minimum = Convert.ToInt32(minValue);
 
-            float maxValue;
-            if (float.TryParse(this.Max, out maxValue))
-                numberPicker.Maximum = Convert.ToInt32(maxValue);
+                float maxValue;
+                if (float.TryParse(this.Max, out maxValue))
+                    numberPicker.Maximum = Convert.ToInt32(maxValue);
 
-            numberPicker.Watermark = this.Placeholder;
-            numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
-            numberPicker.DataContext = this;
-            context.InputControls.Add(numberPicker);
-            return numberPicker;
+                numberPicker.Watermark = this.Placeholder;
+                numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
+                numberPicker.DataContext = this;
+                context.InputControls.Add(numberPicker);
+                return numberPicker;
+            }
+            else
+            {
+                var textBlock = new TextBlock() { Text = GetFallbackText() ?? this.Placeholder };
+                return textBlock.Render(context);
+            }
+
         }
     }
 }
