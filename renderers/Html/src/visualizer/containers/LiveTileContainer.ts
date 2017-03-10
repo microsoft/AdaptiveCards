@@ -4,7 +4,6 @@ import * as Utils from "../../Utils";
 
 export class LiveTileContainer extends HostContainer {
     static backgroundColor: string = "#0078D7";
-    static textColor: Adaptive.TextColor = Adaptive.TextColor.Light;
 
     private _width: number;
     private _height: number;

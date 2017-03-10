@@ -11,6 +11,9 @@ export abstract class CardElement {
         return true;
     }
 
+    protected initialize(container: Container) {
+    }
+
     protected removeTopSpacing(element: HTMLElement) {
         element.className += " removeTopSpacing";
     }
@@ -91,7 +94,7 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            let actualTextColor = this.color ? this.color : container.textColor;
+            let actualTextColor = this.color ? this.color : (container.textColor ? container.textColor : AdaptiveCard.renderOptions.defaultTextColor);
 
             switch (actualTextColor) {
                 case Enums.TextColor.Dark:
@@ -1019,7 +1022,6 @@ export abstract class ContainerBase extends CardElement {
     
     private _items: Array<CardElement> = [];
     private _hasBottomPadding?: boolean;
-    private _textColor?: Enums.TextColor;
 
     protected _actionCollection: ActionCollection;
     protected _element: HTMLDivElement;
@@ -1061,24 +1063,6 @@ export abstract class ContainerBase extends CardElement {
                                 Utils.appendChild(this._element, separator);
                             }
                         }
-                        /*
-                            switch (this._items[i].separation) {
-                                case Enums.Separation.None:
-                                    this.removeTopSpacing(renderedElement);
-
-                                    break;
-                                case Enums.Separation.Strong:
-                                    this.removeTopSpacing(renderedElement);
-
-                                    var separator = document.createElement("div");
-                                    separator.className = "separator";
-
-                                    Utils.appendChild(this._element, separator);
-
-                                    break;
-                            }
-                        }
-                        */
 
                         Utils.appendChild(this._element, renderedElement);
 
@@ -1131,13 +1115,7 @@ export abstract class ContainerBase extends CardElement {
         this._actionCollection = new ActionCollection(this, this.getForbiddenActionTypes());
     }
 
-    get textColor(): Enums.TextColor {
-        return this._textColor ? this._textColor : AdaptiveCard.renderOptions.defaultTextColor;
-    }
-
-    set textColor(value: Enums.TextColor) {
-        this._textColor = value;
-    }
+    textColor?: Enums.TextColor;
 
     addItem(item: CardElement) {
         this._items.push(item);
