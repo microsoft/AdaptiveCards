@@ -5,20 +5,16 @@ using namespace AdaptiveCards;
 
 BaseCardElement::BaseCardElement(
     CardElementType type,
-    std::shared_ptr<Container> parent,
-    HorizontalAlignment horizontalAlignment,
-    CardElementSize size,
+    SeparationStyle separationStyle,
     std::string speak) :
     m_type(type),
-    m_parent(parent),
-    m_horizontalAlignment(horizontalAlignment),
-    m_size(size),
+    m_separationStyle(separationStyle),
     m_speak(speak)
 {
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
-    m_type(type), m_horizontalAlignment(HorizontalAlignment::Left), m_size(CardElementSize::Auto), m_speak("")
+    m_type(type), m_separationStyle(SeparationStyle::Default), m_speak("")
 {
 }
 
@@ -26,34 +22,14 @@ AdaptiveCards::BaseCardElement::~BaseCardElement()
 {
 }
 
-std::shared_ptr<Container> BaseCardElement::GetParent() const
+SeparationStyle BaseCardElement::GetSeparationStyle() const
 {
-    return m_parent.lock();
+    return m_separationStyle;
 }
 
-void BaseCardElement::SetContainer(std::shared_ptr<Container> container)
+void BaseCardElement::SetSeparationStyle(const SeparationStyle value)
 {
-    m_parent = container;
-}
-
-HorizontalAlignment BaseCardElement::GetHorizontalAlignment() const
-{
-    return m_horizontalAlignment;
-}
-
-void BaseCardElement::SetHorizontalAlignment(const HorizontalAlignment value)
-{
-    m_horizontalAlignment = value;
-}
-
-CardElementSize BaseCardElement::GetSize() const
-{
-    return m_size;
-}
-
-void BaseCardElement::SetSize(const CardElementSize value)
-{
-    m_size = value;
+    m_separationStyle = value;
 }
 
 std::string BaseCardElement::GetSpeak() const

@@ -10,25 +10,38 @@ class Image : public BaseCardElement
 {
 public:
     Image();
-    Image(std::shared_ptr<Container> container,
-        HorizontalAlignment horizontalAlignment,
-        CardElementSize size,
+    Image(SeparationStyle separationStyle,
         std::string speak,
         std::string uri,
-        ImageStyle imageStyle);
+        ImageStyle imageStyle,
+        ImageSize imageSize,
+        std::string altText,
+        HorizontalAlignment hAlignment);
 
     static std::shared_ptr<Image> Deserialize(const Json::Value& root);
 
     virtual std::string Serialize();
 
-    std::string GetUri() const;
-    void SetUri(const std::string value);
+    std::string GetUrl() const;
+    void SetUrl(const std::string value);
 
     ImageStyle GetImageStyle() const;
     void SetImageStyle(const ImageStyle value);
 
+    ImageSize GetImageSize() const;
+    void SetImageSize(const ImageSize value);
+
+    std::string GetAltText() const;
+    void SetAltText(const std::string value);
+
+    HorizontalAlignment GetHorizontalAlignment() const;
+    void SetHorizontalAlignment(const HorizontalAlignment value);
+
 private:
-    std::string m_uri;
+    std::string m_url;
     ImageStyle m_imageStyle;
+    ImageSize m_imageSize;
+    std::string m_altText;
+    HorizontalAlignment m_hAlignment;
 };
 }

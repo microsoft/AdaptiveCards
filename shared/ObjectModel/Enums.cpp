@@ -16,36 +16,58 @@ struct CaseInsensitiveHash {
 
 static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHash, CaseInsensitiveEqualTo> AdaptiveCardSchemaKeyNameToEnum =
 {
-    { "@type", AdaptiveCardSchemaKey::Type },
-    { "size", AdaptiveCardSchemaKey::CardElementSize },
-    { "textSize", AdaptiveCardSchemaKey::TextSize },
-    { "textWeight", AdaptiveCardSchemaKey::TextWeight },
-    { "textWrap", AdaptiveCardSchemaKey::TextWrap },
-    { "textColor", AdaptiveCardSchemaKey::TextColor },
-    { "horizontalAlignment", AdaptiveCardSchemaKey::HorizontalAlignment },
-    { "imageStyle", AdaptiveCardSchemaKey::ImageStyle},
-    { "BaseCardElement", AdaptiveCardSchemaKey::BaseCardElement},
-    { "text", AdaptiveCardSchemaKey::Text},
+    { "type", AdaptiveCardSchemaKey::Type },
+    { "body", AdaptiveCardSchemaKey::Body },
+    { "version", AdaptiveCardSchemaKey::Version },
+    { "minVersion", AdaptiveCardSchemaKey::MinVersion },
+    { "fallbackText", AdaptiveCardSchemaKey::FallbackText },
+    { "baseCardElement", AdaptiveCardSchemaKey::BaseCardElement },
+    { "separation", AdaptiveCardSchemaKey::Separation },
     { "speak", AdaptiveCardSchemaKey::Speak },
-    { "uri", AdaptiveCardSchemaKey::Uri },
-    { "isSubtle", AdaptiveCardSchemaKey::isSubtle },
+    { "type", AdaptiveCardSchemaKey::Type },
+    { "url", AdaptiveCardSchemaKey::Url },
+    { "imageStyle", AdaptiveCardSchemaKey::ImageStyle },
+    { "imageSize", AdaptiveCardSchemaKey::ImageSize },
+    { "altText", AdaptiveCardSchemaKey::AltText },
+    { "horizontalAlignment", AdaptiveCardSchemaKey::HorizontalAlignment },
+    { "text", AdaptiveCardSchemaKey::Text },
+    { "size", AdaptiveCardSchemaKey::TextSize },
+    { "weight", AdaptiveCardSchemaKey::TextWeight },
+    { "color", AdaptiveCardSchemaKey::TextColor },
+    { "isSubtle", AdaptiveCardSchemaKey::IsSubtle },
+    { "wrap", AdaptiveCardSchemaKey::Wrap },
+    { "maxLines", AdaptiveCardSchemaKey::MaxLines },
+    { "items", AdaptiveCardSchemaKey::Items },
+    { "columns", AdaptiveCardSchemaKey::Columns },
+    { "size", AdaptiveCardSchemaKey::Size },
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchemaKeyEnumToName =
 {
-    { AdaptiveCardSchemaKey::Type, "@type"},
-    { AdaptiveCardSchemaKey::CardElementSize, "size"},
-    { AdaptiveCardSchemaKey::TextSize, "textSize"},
-    { AdaptiveCardSchemaKey::TextWeight, "textWeight"},
-    { AdaptiveCardSchemaKey::TextWrap, "textWrap"},
-    { AdaptiveCardSchemaKey::TextColor, "textColor"},
-    { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment"},
-    { AdaptiveCardSchemaKey::ImageStyle, "imageStyle"},
-    { AdaptiveCardSchemaKey::BaseCardElement, "BaseCardElement"},
-    { AdaptiveCardSchemaKey::Text, "text"},
-    { AdaptiveCardSchemaKey::Speak, "speak"},
-    { AdaptiveCardSchemaKey::Uri, "uri"},
-    { AdaptiveCardSchemaKey::isSubtle, "isSubtle" },
+    { AdaptiveCardSchemaKey::Type, "type" },
+    { AdaptiveCardSchemaKey::Body, "body" },
+    { AdaptiveCardSchemaKey::Version, "version" },
+    { AdaptiveCardSchemaKey::MinVersion, "minVersion" },
+    { AdaptiveCardSchemaKey::FallbackText, "fallbackText" },
+    { AdaptiveCardSchemaKey::BaseCardElement, "baseCardElement" },
+    { AdaptiveCardSchemaKey::Separation, "separation" },
+    { AdaptiveCardSchemaKey::Speak, "speak" },
+    { AdaptiveCardSchemaKey::Type, "type" },
+    { AdaptiveCardSchemaKey::Url, "url" },
+    { AdaptiveCardSchemaKey::ImageStyle, "imageStyle" },
+    { AdaptiveCardSchemaKey::ImageSize, "imageSize" },
+    { AdaptiveCardSchemaKey::AltText, "altText" },
+    { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment" },
+    { AdaptiveCardSchemaKey::Text, "text" },
+    { AdaptiveCardSchemaKey::TextSize, "size" },
+    { AdaptiveCardSchemaKey::TextWeight, "weight" },
+    { AdaptiveCardSchemaKey::TextColor, "color" },
+    { AdaptiveCardSchemaKey::IsSubtle, "isSubtle" },
+    { AdaptiveCardSchemaKey::Wrap, "wrap" },
+    { AdaptiveCardSchemaKey::MaxLines, "maxLines" },
+    { AdaptiveCardSchemaKey::Items, "items" },
+    { AdaptiveCardSchemaKey::Columns, "columns" },
+    { AdaptiveCardSchemaKey::Size, "size" },
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
@@ -58,7 +80,8 @@ static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, Cas
     //{ "FactSet", CardElementType::FactSet },
     //{ "ImageGallery", CardElementType::ImageGallery },
     //{ "ActionSet", CardElementType::ActionSet },
-    { "body", CardElementType::Container },
+    { "Container", CardElementType::Container }
+
 };
 
 static std::unordered_map<CardElementType, std::string> CardElementTypeEnumToName =
@@ -71,19 +94,51 @@ static std::unordered_map<CardElementType, std::string> CardElementTypeEnumToNam
     //{ CardElementType::FactSet, "FactSet" },
     //{ CardElementType::ImageGallery, "ImageGallery" },
     //{ CardElementType::ActionSet, "ActionSet" },
-    { CardElementType::Container, "body" },
+    { CardElementType::Container, "Container" }
+};
+
+static std::unordered_map<std::string, SeparationStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> SeparationStyleNameToEnum =
+{
+    { "default", SeparationStyle::Default },
+    { "none", SeparationStyle::None },
+    { "strong", SeparationStyle::Strong},
+};
+
+static std::unordered_map<SeparationStyle, std::string> SeparationStyleEnumToName =
+{
+    { SeparationStyle::Default, "default" },
+    { SeparationStyle::None, "none" },
+    { SeparationStyle::Strong, "strong" },
 };
 
 static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageStyleNameToEnum =
 {
-    {"Normal", ImageStyle::Normal},
-    {"Person", ImageStyle::Person},
+    {"normal", ImageStyle::Normal},
+    {"person", ImageStyle::Person},
 };
 
 static std::unordered_map<ImageStyle, std::string> ImageStyleEnumToName =
 {
-    {ImageStyle::Normal, "Normal"},
-    {ImageStyle::Person, "Person"},
+    {ImageStyle::Normal, "normal"},
+    {ImageStyle::Person, "person"},
+};
+
+static std::unordered_map<std::string, ImageSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageSizeNameToEnum =
+{
+    { "Auto", ImageSize::Auto },
+    { "Stretch", ImageSize::Stretch },
+    { "Small", ImageSize::Small },
+    { "Medium", ImageSize::Medium },
+    { "Large", ImageSize::Large }
+};
+
+static std::unordered_map<ImageSize, std::string> ImageSizeEnumToName =
+{
+    { ImageSize::Auto, "Auto" },
+    { ImageSize::Stretch, "Stretch" },
+    { ImageSize::Small, "Small" },
+    { ImageSize::Medium, "Medium" },
+    { ImageSize::Large, "Large" }
 };
 
 static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> HorizontalAlignmentNameToEnum =
@@ -122,18 +177,6 @@ static std::unordered_map<TextColor, std::string> TextColorEnumToName =
     {TextColor::Attention, "Attention"},
 };
 
-static std::unordered_map<std::string, TextWrap, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextWrapNameToEnum =
-{
-    { "NoWrap", TextWrap::NoWrap },
-    { "Wrap", TextWrap::Wrap },
-};
-
-static std::unordered_map<TextWrap, std::string> TextWrapEnumToName =
-{
-    { TextWrap::NoWrap, "NoWrap"},
-    { TextWrap::Wrap, "Wrap"},
-};
-
 static std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextWeightNameToEnum =
 {
     {"Lighter", TextWeight::Lighter},
@@ -163,24 +206,6 @@ static std::unordered_map<TextSize, std::string> TextSizeEnumToName =
     {TextSize::Medium, "Medium"},
     {TextSize::Large, "Large"},
     {TextSize::ExtraLarge, "ExtraLarge"},
-};
-
-static std::unordered_map<std::string, CardElementSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> SizeNameToEnum =
-{
-    {"Auto", CardElementSize::Auto},
-    {"Stretch", CardElementSize::Stretch},
-    {"Small", CardElementSize::Small},
-    {"Medium", CardElementSize::Medium},
-    {"Large", CardElementSize::Large},
-};
-
-static std::unordered_map<CardElementSize, std::string> SizeEnumToName =
-{
-    {CardElementSize::Auto, "Auto"},
-    {CardElementSize::Stretch, "Stretch"},
-    {CardElementSize::Small, "Small"},
-    {CardElementSize::Medium, "Medium"},
-    {CardElementSize::Large, "Large"},
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
@@ -299,42 +324,42 @@ TextSize TextSizeFromString(const std::string& type)
     return TextSizeNameToEnum[type];
 }
 
-const std::string SizeToString(CardElementSize type)
+const std::string ImageSizeToString(ImageSize type)
 {
-    if (SizeEnumToName.find(type) == SizeEnumToName.end())
+    if (ImageSizeEnumToName.find(type) == ImageSizeEnumToName.end())
     {
-        throw std::out_of_range("Invalid CardElementSize type");
+        throw std::out_of_range("Invalid ImageSize type");
     }
-    return SizeEnumToName[type];
+    return ImageSizeEnumToName[type];
 }
 
-CardElementSize SizeFromString(const std::string& type)
+ImageSize ImageSizeFromString(const std::string& type)
 {
-    if (SizeNameToEnum.find(type) == SizeNameToEnum.end())
+    if (ImageSizeNameToEnum.find(type) == ImageSizeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid CardElementSize: " + type);
+        throw std::out_of_range("Invalid ImageSize: " + type);
     }
 
-    return SizeNameToEnum[type];
+    return ImageSizeNameToEnum[type];
 }
 
-const std::string TextWrapToString(TextWrap type)
+const std::string SeparationStyleToString(SeparationStyle type)
 {
-    if (TextWrapEnumToName.find(type) == TextWrapEnumToName.end())
+    if (SeparationStyleEnumToName.find(type) == SeparationStyleEnumToName.end())
     {
-        throw std::out_of_range("Invalid TextWrap type");
+        throw std::out_of_range("Invalid SeparationStyle type");
     }
-    return TextWrapEnumToName[type];
+    return SeparationStyleEnumToName[type];
 }
 
-TextWrap TextWrapFromString(const std::string& type)
+SeparationStyle SeparationStyleFromString(const std::string& type)
 {
-    if (TextWrapNameToEnum.find(type) == TextWrapNameToEnum.end())
+    if (SeparationStyleNameToEnum.find(type) == SeparationStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextWrap: " + type);
+        throw std::out_of_range("Invalid SeparationStyle: " + type);
     }
 
-    return TextWrapNameToEnum[type];
+    return SeparationStyleNameToEnum[type];
 }
 
 const std::string ImageStyleToString(ImageStyle style)

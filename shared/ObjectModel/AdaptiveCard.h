@@ -13,16 +13,18 @@ class AdaptiveCard
 {
 public:
     AdaptiveCard();
-    AdaptiveCard(std::string title, std::string description1, std::string description2, std::shared_ptr<Container> root);
+    AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText);
+    AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::vector<std::shared_ptr<BaseCardElement>>& body);
 
-    std::string GetTitle() const;
-    void SetTitle(const std::string value);
-    std::string GetDescription1() const;
-    void SetDescription1(const std::string value);
-    std::string GetDescription2() const;
-    void SetDescription2(const std::string value);
-    std::shared_ptr<Container> GetRoot();
-    void SetRoot(std::shared_ptr<Container> value);
+    std::string GetVersion() const;
+    void SetVersion(const std::string value);
+    std::string GetMinVersion() const;
+    void SetMinVersion(const std::string value);
+    std::string GetFallbackText() const;
+    void SetFallbackText(const std::string value);
+
+    std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
+    const std::vector<std::shared_ptr<BaseCardElement>>& GetBody() const;
 
     const CardElementType GetElementType() const;
 
@@ -31,11 +33,11 @@ public:
 
 private:
 
-    std::string m_title;
-    std::string m_description1;
-    std::string m_description2;
-    // TODO: Task 10886212 Change Adaptive Card root type from Container to its own type.
-    std::shared_ptr<Container> m_root;
+    std::string m_version;
+    std::string m_minVersion;
+    std::string m_fallbackText;
+
+    std::vector<std::shared_ptr<BaseCardElement>> m_body;
 
 };
 }

@@ -10,15 +10,16 @@ class TextBlock : public BaseCardElement
 {
 public:
     TextBlock();
-    TextBlock(std::shared_ptr<Container> container,
-        HorizontalAlignment horizontalAlignment,
-        CardElementSize size, std::string speak,
+    TextBlock(SeparationStyle separationStyle,
+        std::string speak,
         std::string text,
         TextSize textSize,
         TextWeight textWeight,
         TextColor textColor,
         bool isSubtle,
-        bool wrap);
+        bool wrap,
+        int maxLines,
+        HorizontalAlignment hAlignment);
 
     static std::shared_ptr<TextBlock> Deserialize(const Json::Value& root);
 
@@ -42,6 +43,12 @@ public:
     bool GetIsSubtle() const;
     void SetIsSubtle(const bool value);
 
+    unsigned int GetMaxLines() const;
+    void SetMaxLines(const unsigned int value);
+
+    HorizontalAlignment GetHorizontalAlignment() const;
+    void SetHorizontalAlignment(const HorizontalAlignment value);
+
 private:
     std::string m_text;
     TextSize m_textSize;
@@ -49,5 +56,7 @@ private:
     TextColor m_textColor;
     bool m_isSubtle;
     bool m_wrap;
+    int m_maxLines;
+    HorizontalAlignment m_hAlignment;
 };
 }
