@@ -1,9 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Model", "..\shared\dotnet\AdaptiveCards.Model\AdaptiveCards.Model.csproj", "{1B1D0934-2B03-42A5-8322-D480CDFDD55B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Model", "AdaptiveCards.Model\AdaptiveCards.Model.csproj", "{1B1D0934-2B03-42A5-8322-D480CDFDD55B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{8BBA6A36-9482-44CB-A330-E54DF571E997}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\Adaptive.NET.nuspec = nuget\Adaptive.NET.nuspec
+		nuget\createpackage.cmd = nuget\createpackage.cmd
+		nuget\pushpackage.cmd = nuget\pushpackage.cmd
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Wpf.Renderer", "AdaptiveCards.Wpf.Renderer\AdaptiveCards.Wpf.Renderer.csproj", "{60619D62-59FA-4864-BA5B-6F6F87997671}"
 EndProject

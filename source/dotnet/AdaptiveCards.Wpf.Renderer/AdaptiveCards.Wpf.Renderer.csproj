@@ -91,76 +91,76 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Actions\ActionBase.cs">
+    <Compile Include="..\AdaptiveCards.Model\Actions\ActionBase.cs">
       <Link>Actions\ActionBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Actions\ActionHttp.cs">
+    <Compile Include="..\AdaptiveCards.Model\Actions\ActionHttp.cs">
       <Link>Actions\ActionHttp.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Actions\ActionOpenUrl.cs">
+    <Compile Include="..\AdaptiveCards.Model\Actions\ActionOpenUrl.cs">
       <Link>Actions\ActionOpenUrl.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Actions\ActionShowCard.cs">
+    <Compile Include="..\AdaptiveCards.Model\Actions\ActionShowCard.cs">
       <Link>Actions\ActionShowCard.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Actions\ActionSubmit.cs">
+    <Compile Include="..\AdaptiveCards.Model\Actions\ActionSubmit.cs">
       <Link>Actions\ActionSubmit.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Containers\AdaptiveCard.cs">
+    <Compile Include="..\AdaptiveCards.Model\Containers\AdaptiveCard.cs">
       <Link>Containers\AdaptiveCard.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Containers\Column.cs">
+    <Compile Include="..\AdaptiveCards.Model\Containers\Column.cs">
       <Link>Containers\Column.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Containers\ColumnSet.cs">
+    <Compile Include="..\AdaptiveCards.Model\Containers\ColumnSet.cs">
       <Link>Containers\ColumnSet.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Containers\Container.cs">
+    <Compile Include="..\AdaptiveCards.Model\Containers\Container.cs">
       <Link>Containers\Container.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Containers\FactSet.cs">
+    <Compile Include="..\AdaptiveCards.Model\Containers\FactSet.cs">
       <Link>Containers\FactSet.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Containers\ImageSet.cs">
+    <Compile Include="..\AdaptiveCards.Model\Containers\ImageSet.cs">
       <Link>Containers\ImageSet.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\CardElement.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\CardElement.cs">
       <Link>Elements\CardElement.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\Image.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\Image.cs">
       <Link>Elements\Image.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\Input.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\Input.cs">
       <Link>Elements\Input.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\InputChoiceSet.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\InputChoiceSet.cs">
       <Link>Elements\InputChoiceSet.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\InputDate.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\InputDate.cs">
       <Link>Elements\InputDate.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\InputNumber.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\InputNumber.cs">
       <Link>Elements\InputNumber.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\InputText.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\InputText.cs">
       <Link>Elements\InputText.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\InputTime.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\InputTime.cs">
       <Link>Elements\InputTime.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\InputToggle.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\InputToggle.cs">
       <Link>Elements\InputToggle.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Elements\TextBlock.cs">
+    <Compile Include="..\AdaptiveCards.Model\Elements\TextBlock.cs">
       <Link>Elements\TextBlock.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\Enums.cs">
+    <Compile Include="..\AdaptiveCards.Model\Enums.cs">
       <Link>Enums.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\TypedElement.cs">
+    <Compile Include="..\AdaptiveCards.Model\TypedElement.cs">
       <Link>TypedElement.cs</Link>
     </Compile>
-    <Compile Include="..\..\shared\dotnet\AdaptiveCards.Model\TypedElementConverter.cs">
+    <Compile Include="..\AdaptiveCards.Model\TypedElementConverter.cs">
       <Link>TypedElementConverter.cs</Link>
     </Compile>
     <Compile Include="Actions\ActionHttp.Xaml.cs" />
