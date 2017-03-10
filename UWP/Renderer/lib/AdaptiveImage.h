@@ -21,22 +21,32 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Image>& sharedImage);
 
         // IAdaptiveImage
-        IFACEMETHODIMP get_Uri(_In_ ABI::Windows::Foundation::IUriRuntimeClass** uri);
-        IFACEMETHODIMP put_Uri(_Out_ ABI::Windows::Foundation::IUriRuntimeClass* uri);
+        IFACEMETHODIMP get_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass** url);
+        IFACEMETHODIMP put_Url(_Out_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
-        IFACEMETHODIMP get_ImageStyle(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageStyle* imageStyle);
-        IFACEMETHODIMP put_ImageStyle(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageStyle imageStyle);
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageStyle* imageStyle);
+        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageStyle imageStyle);
+
+        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize);
+        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize);
+
+        IFACEMETHODIMP get_AltText(HSTRING *text);
+        IFACEMETHODIMP put_AltText(HSTRING text);
+
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment* hAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment hAlignment);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
-        IFACEMETHODIMP put_ElementType(_In_ ABI::AdaptiveCards::XamlCardRenderer::ElementType elementType);
 
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size);
-        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
+        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
+        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+
+        IFACEMETHODIMP get_Speak(HSTRING *text);
+        IFACEMETHODIMP put_Speak(HSTRING text);
 
     private:
         std::shared_ptr<AdaptiveCards::Image> m_sharedImage;
-        ABI::AdaptiveCards::XamlCardRenderer::CardElementSize m_size;
     };
 
     ActivatableClass(AdaptiveImage);

@@ -42,99 +42,136 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize* textSize)
+    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveCards::XamlCardRenderer::TextSize* textSize)
     {
         *textSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextSize>(m_sharedTextBlock->GetTextSize());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_TextSize(ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize)
+    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize)
     {
         m_sharedTextBlock->SetTextSize(static_cast<AdaptiveCards::TextSize>(textSize));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight* textWeight)
+    HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight* textWeight)
     {
         *textWeight = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextWeight>(m_sharedTextBlock->GetTextWeight());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_TextWeight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight)
+    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight)
     {
         m_sharedTextBlock->SetTextWeight(static_cast<AdaptiveCards::TextWeight>(textWeight));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_TextColor(ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor)
+    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor)
     {
         *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextColor>(m_sharedTextBlock->GetTextColor());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_TextColor(ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor)
+    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor)
     {
         m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::TextColor>(textColor));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Wrap(boolean* Wrap)
+    HRESULT AdaptiveTextBlock::get_Wrap(boolean* wrap)
     {
-        *Wrap = m_sharedTextBlock->GetWrap();
+        *wrap = m_sharedTextBlock->GetWrap();
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Wrap(boolean Wrap)
+    HRESULT AdaptiveTextBlock::put_Wrap(boolean wrap)
     {
-        m_sharedTextBlock->SetWrap(Boolify(Wrap));
+        m_sharedTextBlock->SetWrap(Boolify(wrap));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_IsSubtle(boolean* IsSubtle)
+    HRESULT AdaptiveTextBlock::get_IsSubtle(boolean* isSubtle)
     {
-        *IsSubtle = m_sharedTextBlock->GetIsSubtle();
+        *isSubtle = m_sharedTextBlock->GetIsSubtle();
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_IsSubtle(boolean IsSubtle)
+    HRESULT AdaptiveTextBlock::put_IsSubtle(boolean isSubtle)
     {
-        m_sharedTextBlock->SetIsSubtle(Boolify(IsSubtle));
+        m_sharedTextBlock->SetIsSubtle(Boolify(isSubtle));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveTextBlock::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveTextBlock::get_MaxLines(UINT32* maxLines)
+    {
+        *maxLines = m_sharedTextBlock->GetMaxLines();
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_MaxLines(UINT32 maxLines)
+    {
+        m_sharedTextBlock->SetMaxLines(maxLines);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveCards::XamlCardRenderer::HAlignment* alignment)
+    {
+        *alignment = static_cast<ABI::AdaptiveCards::XamlCardRenderer::HAlignment>(m_sharedTextBlock->GetHorizontalAlignment());
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::XamlCardRenderer::HAlignment alignment)
+    {
+        m_sharedTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(alignment));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::TextBlock;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveTextBlock::put_ElementType(ElementType /*elementType*/)
+    HRESULT AdaptiveTextBlock::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* size)
     {
+        *size = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedTextBlock->GetSeparationStyle());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
+    HRESULT AdaptiveTextBlock::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle size)
     {
-        *size = static_cast<ABI::AdaptiveCards::XamlCardRenderer::CardElementSize>(m_sharedTextBlock->GetSize());
+        m_sharedTextBlock->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(size));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
+    HRESULT AdaptiveTextBlock::get_Speak(HSTRING* speak)
     {
-        m_sharedTextBlock->SetSize(static_cast<AdaptiveCards::CardElementSize>(size));
+        return UTF8ToHString(m_sharedTextBlock->GetSpeak(), speak);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_Speak(HSTRING speak)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(speak, out));
+        m_sharedTextBlock->SetSpeak(out);
         return S_OK;
     }
 

@@ -22,14 +22,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Text(HSTRING *text);
         IFACEMETHODIMP put_Text(HSTRING text);
 
-        IFACEMETHODIMP get_TextSize(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextSize* textSize);
-        IFACEMETHODIMP put_TextSize(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize);
+        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextSize* textSize);
+        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize);
 
-        IFACEMETHODIMP get_TextWeight(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight* textWeight);
-        IFACEMETHODIMP put_TextWeight(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight);
+        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight* textWeight);
+        IFACEMETHODIMP put_Weight(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight);
 
-        IFACEMETHODIMP get_TextColor(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor);
-        IFACEMETHODIMP put_TextColor(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor);
+        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor);
+        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor);
 
         IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
         IFACEMETHODIMP put_Wrap(_In_ boolean wrap);
@@ -37,12 +37,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle);
         IFACEMETHODIMP put_IsSubtle(_In_ boolean isSubtle);
 
+        IFACEMETHODIMP get_MaxLines(UINT32 *text);
+        IFACEMETHODIMP put_MaxLines(UINT32 text);
+
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment* hAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment hAlignment);
+
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
-        IFACEMETHODIMP put_ElementType(_In_ ABI::AdaptiveCards::XamlCardRenderer::ElementType elementType);
 
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size);
-        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
+        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
+        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+
+        IFACEMETHODIMP get_Speak(HSTRING *text);
+        IFACEMETHODIMP put_Speak(HSTRING text);
 
     private:
         std::shared_ptr<AdaptiveCards::TextBlock> m_sharedTextBlock;
