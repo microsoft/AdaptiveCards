@@ -26,36 +26,41 @@ namespace Adaptive
             if (AlternateRenderer != null)
                 return AlternateRenderer(this, context);
 
-            Button uiButton = this.CreateActionButton(context);
-            uiButton.Click += (sender, e) =>
+            if (context.Options.SupportInteraction)
             {
-                dynamic data = new JObject();
-                try
+
+                Button uiButton = this.CreateActionButton(context);
+                uiButton.Click += (sender, e) =>
                 {
-
-                    data = context.MergeInputData(data);
-
-                    string body = (string)this.Body?.ToString() ?? String.Empty;
-
-                    context.Action(uiButton, new ActionEventArgs()
+                    dynamic data = new JObject();
+                    try
                     {
-                        Action = new ActionHttp()
+
+                        data = context.MergeInputData(data);
+
+                        string body = (string)this.Body?.ToString() ?? String.Empty;
+
+                        context.Action(uiButton, new ActionEventArgs()
                         {
-                            Title = this.Title,
-                            Method = this.Method,
-                            Url = Utilities.BindData(data, this.Url, url: true),
-                            Headers = this.Headers,
-                            Body = Utilities.BindData(data, body),
-                        },
-                        Data = data
-                    });
-                }
-                catch (MissingInputException err)
-                {
-                    context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
-                }
-            };
-            return uiButton;
+                            Action = new ActionHttp()
+                            {
+                                Title = this.Title,
+                                Method = this.Method,
+                                Url = Utilities.BindData(data, this.Url, url: true),
+                                Headers = this.Headers,
+                                Body = Utilities.BindData(data, body),
+                            },
+                            Data = data
+                        });
+                    }
+                    catch (MissingInputException err)
+                    {
+                        context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
+                    }
+                };
+                return uiButton;
+            }
+            return null;
         }
 
     }

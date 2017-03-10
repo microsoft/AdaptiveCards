@@ -24,22 +24,26 @@ namespace Adaptive
             if (AlternateRenderer != null)
                 return AlternateRenderer(this, context);
 
-            Button uiButton = this.CreateActionButton(context); // content
-            uiButton.Click += (sender, e) =>
+            if (context.Options.SupportInteraction)
             {
-                try
+                Button uiButton = this.CreateActionButton(context); // content
+                uiButton.Click += (sender, e) =>
                 {
+                    try
+                    {
 
-                    dynamic data = (this.Data != null) ? ((JToken)this.Data).DeepClone() : new JObject();
-                    data = context.MergeInputData(data);
-                    context.Action(uiButton, new ActionEventArgs() { Action = this, Data = data });
-                }
-                catch (MissingInputException err)
-                {
-                    context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
-                }
-            };
-            return uiButton;
+                        dynamic data = (this.Data != null) ? ((JToken)this.Data).DeepClone() : new JObject();
+                        data = context.MergeInputData(data);
+                        context.Action(uiButton, new ActionEventArgs() { Action = this, Data = data });
+                    }
+                    catch (MissingInputException err)
+                    {
+                        context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
+                    }
+                };
+                return uiButton;
+            }
+            return null;
         }
     }
 }

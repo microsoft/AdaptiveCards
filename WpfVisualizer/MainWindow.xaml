@@ -19,6 +19,7 @@
             <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
 
+
         <!-- TextBlock definitions -->
         <Style x:Key="Adaptive.TextBlock" TargetType="TextBlock" >
         </Style>
@@ -63,6 +64,9 @@
         <!-- adaptive card Styling -->
         <Style x:Key="Adaptive.Card" TargetType="Grid">
             <Setter Property="Background" Value="WhiteSmoke"/>
+        </Style>
+        
+        <Style x:Key="Adaptive.InnerCard" TargetType="Grid">
             <Setter Property="Margin" Value="8"/>
         </Style>
 

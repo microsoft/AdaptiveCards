@@ -29,21 +29,29 @@ namespace Adaptive
             if (AlternateRenderer != null)
                 return AlternateRenderer(this, context);
 
-            var datePicker = new DatePicker();
-            datePicker.ToolTip = this.Placeholder;
-            DateTime value;
-            if (DateTime.TryParse(this.Value, out value))
-                datePicker.SelectedDate = value;
-            DateTime minValue;
-            if (DateTime.TryParse(this.Min, out minValue))
-                datePicker.DisplayDateStart = minValue;
-            DateTime maxValue;
-            if (DateTime.TryParse(this.Max, out maxValue))
-                datePicker.DisplayDateEnd = maxValue;
-            datePicker.Style = context.GetStyle("Adaptive.Input.Date");
-            datePicker.DataContext = this;
-            context.InputControls.Add(datePicker);
-            return datePicker;
+            if (context.Options.SupportInteraction)
+            {
+                var datePicker = new DatePicker();
+                datePicker.ToolTip = this.Placeholder;
+                DateTime value;
+                if (DateTime.TryParse(this.Value, out value))
+                    datePicker.SelectedDate = value;
+                DateTime minValue;
+                if (DateTime.TryParse(this.Min, out minValue))
+                    datePicker.DisplayDateStart = minValue;
+                DateTime maxValue;
+                if (DateTime.TryParse(this.Max, out maxValue))
+                    datePicker.DisplayDateEnd = maxValue;
+                datePicker.Style = context.GetStyle("Adaptive.Input.Date");
+                datePicker.DataContext = this;
+                context.InputControls.Add(datePicker);
+                return datePicker;
+            }
+            else
+            {
+                var textBlock = new TextBlock() { Text = GetFallbackText() ?? this.Placeholder };
+                return textBlock.Render(context);
+            }
         }
     }
 }

@@ -29,13 +29,22 @@ namespace Adaptive
             if (AlternateRenderer != null)
                 return AlternateRenderer(this, context);
 
-            var uiToggle = new CheckBox();
-            uiToggle.Content = this.Title;
-            uiToggle.IsChecked = this.Value == (this.ValueOn ?? "true");
-            uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
-            uiToggle.DataContext = this;
-            context.InputControls.Add(uiToggle);
-            return uiToggle;
+            if (context.Options.SupportInteraction)
+            {
+                var uiToggle = new CheckBox();
+                uiToggle.Content = this.Title;
+                uiToggle.IsChecked = this.Value == (this.ValueOn ?? "true");
+                uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
+                uiToggle.DataContext = this;
+                context.InputControls.Add(uiToggle);
+                return uiToggle;
+            }
+            else
+            {
+                var textBlock = new TextBlock() { Text = GetFallbackText() ?? this.Title };
+                return textBlock.Render(context);
+            }
+
         }
     }
 

@@ -15,8 +15,7 @@ namespace Adaptive
 {
     public class RenderOptions
     {
-        public bool ShowInput { get; set; } = true;
-        public bool ShowAction { get; set; } = true;
+        public bool SupportInteraction { get; set; } = true;
     }
 
 
@@ -32,8 +31,7 @@ namespace Adaptive
             {
                 Options = new RenderOptions()
                 {
-                    ShowAction = this.Options.ShowAction,
-                    ShowInput = this.Options.ShowInput
+                    SupportInteraction = this.Options.SupportInteraction
                 },
                 _stylePath = this.StylePath,
                 _resources = this.Resources,
@@ -125,18 +123,18 @@ namespace Adaptive
 
         public virtual Style GetStyle(string styleName)
         {
-            if (!styleName.Contains(".Tap"))
-            {
-                if (styleName.Contains(".Input") && !this.Options.ShowInput)
-                {
-                    return this.Resources["Hidden"] as Style;
-                }
+            //if (!styleName.Contains(".Tap"))
+            //{
+            //    //if (styleName.Contains(".Input") && !this.Options.SupportInteration)
+            //    //{
+            //    //    return this.Resources["Hidden"] as Style;
+            //    //}
 
-                if (styleName.Contains(".Action") && !this.Options.ShowAction)
-                {
-                    return this.Resources["Hidden"] as Style;
-                }
-            }
+            //    //if (styleName.Contains(".Action") && !this.Options.ShowAction)
+            //    //{
+            //    //    return this.Resources["Hidden"] as Style;
+            //    //}
+            //}
 
             while (!String.IsNullOrEmpty(styleName))
             {

@@ -29,21 +29,30 @@ namespace Adaptive
             if (AlternateRenderer != null)
                 return AlternateRenderer(this, context);
 
-            var timePicker = new TimePicker();
-            DateTime value;
-            if (DateTime.TryParse(this.Value, out value))
-                timePicker.Value = value;
-            TimeSpan minValue;
-            if (TimeSpan.TryParse(this.Min, out minValue))
-                timePicker.EndTime = minValue;
-            TimeSpan maxValue;
-            if (TimeSpan.TryParse(this.Max, out maxValue))
-                timePicker.EndTime = maxValue;
-            timePicker.Watermark = this.Placeholder;
-            timePicker.Style = context.GetStyle("Adaptive.Input.Time");
-            timePicker.DataContext = this;
-            context.InputControls.Add(timePicker);
-            return timePicker;
+            if (context.Options.SupportInteraction)
+            {
+                var timePicker = new TimePicker();
+                DateTime value;
+                if (DateTime.TryParse(this.Value, out value))
+                    timePicker.Value = value;
+                TimeSpan minValue;
+                if (TimeSpan.TryParse(this.Min, out minValue))
+                    timePicker.EndTime = minValue;
+                TimeSpan maxValue;
+                if (TimeSpan.TryParse(this.Max, out maxValue))
+                    timePicker.EndTime = maxValue;
+                timePicker.Watermark = this.Placeholder;
+                timePicker.Style = context.GetStyle("Adaptive.Input.Time");
+                timePicker.DataContext = this;
+                context.InputControls.Add(timePicker);
+                return timePicker;
+            }
+            else
+            {
+                var textBlock = new TextBlock() { Text = GetFallbackText() ?? this.Placeholder };
+                return textBlock.Render(context);
+            }
+
         }
     }
 }

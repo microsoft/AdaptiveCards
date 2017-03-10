@@ -31,9 +31,8 @@ namespace Adaptive
         {
             if (AlternateRenderer != null)
                 return AlternateRenderer(this, context);
-
-            var grid = new Grid();
-            grid.Style = context.GetStyle("Adaptive.Card");
+            var outerGrid = new Grid();
+            outerGrid.Style = context.GetStyle("Adaptive.Card");
             if (this.BackgroundImage != null)
             {
                 Uri uri = new Uri(this.BackgroundImage);
@@ -48,13 +47,18 @@ namespace Adaptive
                 else
                     backgroundSource = new BitmapImage(uri);
 
-                grid.Background = new ImageBrush(backgroundSource);
+                outerGrid.Background = new ImageBrush(backgroundSource);
             }
+
+            var grid = new Grid();
+            grid.Style = context.GetStyle("Adaptive.InnerCard");
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
             var inputControls = new List<FrameworkElement>();
             Container.AddContainerElements(grid, this.Body, this.Actions, context);
-            return grid;
+
+            outerGrid.Children.Add(grid);
+            return outerGrid;
         }
 
         /// <summary>

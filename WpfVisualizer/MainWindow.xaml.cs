@@ -209,8 +209,7 @@ namespace WpfVisualizer
         {
             RenderContext renderContext = new RenderContext();
             renderContext.Resources = this.Resources;
-            renderContext.Options.ShowAction = false;
-            renderContext.Options.ShowInput = false;
+            renderContext.Options.SupportInteraction = false;
 
             var imageStream = this._card.RenderToImageStream(renderContext, 480);
 
