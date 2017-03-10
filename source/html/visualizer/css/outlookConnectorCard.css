@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+.removeTopSpacing {
+    margin-top: 0px !important;
+}
+
 .separator {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin: 20px 0px 0px 0px;
@@ -30,10 +34,7 @@
     font-weight: normal;
 }
 
-.text.startParagraph {
-    padding: 20px 0px 0px 0px;
-}
-
+/*
 .text.small {
     font-size: 12px;
     margin: -4px 0px 5px 0px;
@@ -57,6 +58,27 @@
 .text.extraLarge {
     font-size: 30px;
     margin: -11px 0px 5px 0px;
+}
+*/
+
+.text.small {
+    font-size: 12px;
+}
+
+.text.defaultSize {
+    font-size: 14px;
+}
+
+.text.medium {
+    font-size: 20px;
+}
+
+.text.large {
+    font-size: 24px;
+}
+
+.text.extraLarge {
+    font-size: 30px;
 }
 
 .text.lighter {

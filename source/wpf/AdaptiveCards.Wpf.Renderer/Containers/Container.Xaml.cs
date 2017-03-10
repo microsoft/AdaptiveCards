@@ -7,6 +7,7 @@ using WPF = System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Threading.Tasks;
 
 namespace Adaptive
 {
@@ -102,6 +103,15 @@ namespace Adaptive
                 Grid.SetRow(uiActionBar, grid.RowDefinitions.Count - 1);
                 grid.Children.Add(uiActionBar);
             }
+        }
+
+        public override async Task PreRender()
+        {
+            List<Task> tasks = new List<Task>();
+            foreach (var item in this.Items)
+                tasks.Add(item.PreRender());
+
+            await Task.WhenAll(tasks.ToArray());
         }
 
     }

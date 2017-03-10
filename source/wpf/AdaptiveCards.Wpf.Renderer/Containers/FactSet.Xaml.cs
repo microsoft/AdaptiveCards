@@ -7,6 +7,7 @@ using WPF = System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Threading.Tasks;
 
 namespace Adaptive
 {
@@ -49,6 +50,13 @@ namespace Adaptive
             }
             return uiFactSet;
         }
+
+
+        public override Task PreRender()
+        {
+            return Task.Delay(0);
+        }
+
     }
 
     public partial class Fact

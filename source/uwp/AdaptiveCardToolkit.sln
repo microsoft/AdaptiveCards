@@ -36,7 +36,28 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "schemas", "schemas\", "{A22
 		SlnRelativePath = "schemas\"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.Net", "builders\.NET\Adaptive.Net\Adaptive.Net.csproj", "{1B1D0934-2B03-42A5-8322-D480CDFDD55B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.NET", "builders\.NET\Adaptive.Net\Adaptive.NET.csproj", "{1B1D0934-2B03-42A5-8322-D480CDFDD55B}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "samples", "samples\", "{E96AB14C-D2E6-4D92-8DE9-9BE90D72D41B}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_2069"
+		Debug.AspNetCompiler.PhysicalPath = "samples\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_2069\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_2069"
+		Release.AspNetCompiler.PhysicalPath = "samples\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_2069\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "2069"
+		SlnRelativePath = "samples\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +81,10 @@ Global
 		{1B1D0934-2B03-42A5-8322-D480CDFDD55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B1D0934-2B03-42A5-8322-D480CDFDD55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B1D0934-2B03-42A5-8322-D480CDFDD55B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E96AB14C-D2E6-4D92-8DE9-9BE90D72D41B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E96AB14C-D2E6-4D92-8DE9-9BE90D72D41B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E96AB14C-D2E6-4D92-8DE9-9BE90D72D41B}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{E96AB14C-D2E6-4D92-8DE9-9BE90D72D41B}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

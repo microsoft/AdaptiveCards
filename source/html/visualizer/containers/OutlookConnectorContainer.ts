@@ -25,12 +25,6 @@ export class OutlookConnectorContainer extends ConnectorContainer {
             element.style.borderLeft = "3px solid " + this._themeColor;
         }
 
-        let headerElement = this.renderHeader(card);
-
-        if (headerElement != null) {
-            Utils.appendChild(element, headerElement);
-        }``
-
         let renderedCard = card.render();
 
         Utils.appendChild(element, renderedCard);

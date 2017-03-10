@@ -71,7 +71,8 @@ namespace WpfVisualizer
 
                         _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
                     }
-                    _renderContext = new RenderContext(this.Resources);
+                    _renderContext = new RenderContext();
+                    _renderContext.Resources = this.Resources;
                     _renderContext.OnAction += _renderer_OnAction;
                     _renderContext.OnMissingInput += _renderer_OnMissingInput;
                     var element = _card.Render(_renderContext);
@@ -206,19 +207,18 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            RenderContext renderContext = new RenderContext(this.Resources);
+            RenderContext renderContext = new RenderContext();
+            renderContext.Resources = this.Resources;
             renderContext.Options.ShowAction = false;
             renderContext.Options.ShowInput = false;
-            var uiCard = this._card.Render(renderContext);
-            var bitmap = await Utilities.XamlToImageAsync(uiCard, 400);
 
-            string path = @"c:\scratch\foo.png";
-            var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bitmap));
+            var imageStream = this._card.RenderToImageStream(renderContext, 480);
 
-            using (FileStream stream = new FileStream(path, FileMode.Create))
+            string path = System.IO.Path.GetRandomFileName() + ".png";
+
+            using (FileStream fileStream = new FileStream(path, FileMode.Create))
             {
-                encoder.Save(stream);
+                await imageStream.CopyToAsync(fileStream);
             }
             Process.Start(path);
         }

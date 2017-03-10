@@ -1,299 +1,127 @@
-// {
-// 	"type": "AdaptiveCard",
-// 	"sections": [
-// 		{
-// 			"items": [
-// 				{
-// 					"type": "TextBlock",
-// 					"text": "This is a text element",
-// 					"style": "sectionTitle",
-// 					"size": "large"
-// 				},
-// 				{
-// 					"type": "Image",
-// 					"url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
-// 					"size": "medium"
-// 				},
-// 				{
-// 					"type": "FactSet",
-// 					"facts": [
-// 						{
-// 							"title": "This is a fact name",
-// 							"value": "This is a fact value"
-// 						},
-// 						{
-// 							"title": "This is a fact name",
-// 							"value": "This is a fact value"
-// 						},
-// 						{
-// 							"title": "This is a fact name",
-// 							"value": "This is a fact value"
-// 						}
-// 					]
-// 				},
-// 				{
-// 					"type": "DateInput"
-// 				},
-// 				{
-// 					"type": "Input.Text",
-// 					"title": "Enter text here"
-// 				},
-// 				{
-// 					"type": "MultiInput.ChoiceSet",
-// 					"choices": [
-// 						{
-// 							"display": "Choice 1",
-// 							"value": "1"
-// 						},
-// 						{
-// 							"display": "Choice 2",
-// 							"value": "2"
-// 						},
-// 						{
-// 							"display": "Choice 3",
-// 							"value": "3"
-// 						}
-// 					]
-// 				},
-// 				{
-// 					"type": "ImageSet",
-// 					"imageSize": "medium",
-// 					"items": [
-// 						"http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
-// 						"http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg",
-// 						"http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg"
-// 					]
-// 				},
-// 				{
-// 					"type": "ActionGroup",
-// 					"actions": [
-// 						{
-// 							"type": "ActionCard",
-// 							"title": "Comment",
-// 							"card": {
-// 								"items": [
-// 									{
-// 										"type": "ColumnSet",
-// 										"columns": [
-// 											{
-// 												"type": "Column",
-// 												"size": 50,
-// 												"items": [
-// 													{
-// 														"type": "Input.Text"
-// 													}
-// 												]
-// 											},
-// 											{
-// 												"type": "Column",
-// 												"size": 50,
-// 												"items": [
-// 													{
-// 														"type": "DateInput",
-// 														"size": "stretch"
-// 													},
-// 													{
-// 														"type": "MultiInput.ChoiceSet",
-// 														"size": "stretch",
-// 														"id": "list",
-// 														"title": "Pick an option",
-// 														"choices": [
-// 															{
-// 																"display": "Choice 1",
-// 																"value": "1"
-// 															},
-// 															{
-// 																"display": "Choice 2",
-// 																"value": "2"
-// 															},
-// 															{
-// 																"display": "Choice 3",
-// 																"value": "3"
-// 															}
-// 														]
-// 													}
-// 												]
-// 											}
-// 										]
-// 									},
-// 									{
-// 										"type": "Input.Text"
-// 									}
-// 								]
-// 							},
-// 							"inputs": [
-// 								{
-// 									"type": "Input.Text",
-// 									"id": "comment",
-// 									"isMultiline": true,
-// 									"title": "Input's title property"
-// 								}
-// 							],
-// 							"actions": [
-// 								{
-// 									"type": "HttpPOST",
-// 									"title": "Action's name prop.",
-// 									"target": "http://...",
-// 									"successMessage": "This is the action's successMessage property.",
-// 									"errorMessage": "This is the action's errorMessage property."
-// 								}
-// 							]
-// 						},
-// 						{
-// 							"type": "ActionCard",
-// 							"title": "Move",
-// 							"inputs": [
-// 								{
-// 									"type": "MultiInput.ChoiceSet",
-// 									"id": "list",
-// 									"title": "Pick an option",
-// 									"choices": [
-// 										{
-// 											"display": "Choice 1",
-// 											"value": "1"
-// 										},
-// 										{
-// 											"display": "Choice 2",
-// 											"value": "2"
-// 										},
-// 										{
-// 											"display": "Choice 3",
-// 											"value": "3"
-// 										}
-// 									]
-// 								}
-// 							],
-// 							"actions": [
-// 								{
-// 									"type": "HttpPOST",
-// 									"title": "Action's name prop.",
-// 									"target": "http://...",
-// 									"successMessage": "This is the action's successMessage property.",
-// 									"errorMessage": "This is the action's errorMessage property."
-// 								}
-// 							]
-// 						},
-// 						{
-// 							"type": "ActionCard",
-// 							"title": "Due Date",
-// 							"inputs": [
-// 								{
-// 									"type": "DateInput",
-// 									"id": "dueDate",
-// 									"title": "Input's title property"
-// 								}
-// 							],
-// 							"actions": [
-// 								{
-// 									"type": "HttpPOST",
-// 									"title": "Action's name prop.",
-// 									"target": "http://...",
-// 									"successMessage": "This is the action's successMessage property.",
-// 									"errorMessage": "This is the action's errorMessage property."
-// 								}
-// 							]
-// 						},
-// 						{
-// 							"type": "HttpPOST",
-// 							"title": "Action's name prop.",
-// 							"target": "http://...",
-// 							"successMessage": "This is the action's successMessage property.",
-// 							"errorMessage": "This is the action's errorMessage property."
-// 						},
-// 						{
-// 							"type": "OpenUri",
-// 							"title": "Action's name prop",
-// 							"targets": [
-// 								{
-// 									"os": "default",
-// 									"uri": "http://..."
-// 								}
-// 							]
-// 						}
-// 					]
-// 				}
-// 			]
-// 		},
-// 		{
-// 			"items": [
-// 				{
-// 					"type": "TextBlock",
-// 					"text": "Second section",
-// 					"size": "large",
-// 					"style": "sectionTitle"
-// 				},
-// 				{
-// 					"type": "ColumnSet",
-// 					"columns": [
-// 						{
-// 							"type": "Column",
-// 							"size": "auto",
-// 							"items": [
-// 								{
-// 									"type": "Image",
-// 									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-// 									"size": "small"
-// 								}
-// 							]
-// 						},
-// 						{
-// 							"type": "Column",
-// 							"size": "stretch",
-// 							"items": [
-// 								{
-// 									"type": "TextBlock",
-// 									"text": "This is the activityTitle property",
-// 									"style": "activityTitle"
-// 								},
-// 								{
-// 									"type": "TextBlock",
-// 									"text": "This is the activitySubtitle property",
-// 									"style": "activitySubtitle",
-// 									"topSpacing": "none"
-// 								},
-// 								{
-// 									"type": "TextBlock",
-// 									"text": "This is the activityText property",
-// 									"style": "activityText",
-// 									"topSpacing": "none"
-// 								}
-// 							]
-// 						},
-// 						{
-// 							"type": "Column",
-// 							"size": "large",
-// 							"items": [
-// 								{
-// 									"type": "DateInput",
-// 									"size": "stretch"
-// 								},
-// 								{
-// 									"type": "Input.Text",
-// 									"title": "Enter text here"
-// 								},
-// 								{
-// 									"type": "MultiInput.ChoiceSet",
-// 									"size": "stretch",
-// 									"choices": [
-// 										{
-// 											"display": "Choice 1",
-// 											"value": "1"
-// 										},
-// 										{
-// 											"display": "Choice 2",
-// 											"value": "2"
-// 										},
-// 										{
-// 											"display": "Choice 3",
-// 											"value": "3"
-// 										}
-// 									]
-// 								}
-// 							]
-// 						}
-// 					]
-// 				}
-// 			]
-// 		}
-// 	]
-// }
+{
+  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "This is a text element",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
+      "size": "medium"
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        {
+          "title": "This is a fact name",
+          "value": "This is a fact value"
+        },
+        {
+          "title": "This is a fact name",
+          "value": "This is a fact value"
+        },
+        {
+          "title": "This is a fact name",
+          "value": "This is a fact value"
+        }
+      ]
+    },
+    {
+      "type": "Input.Date",
+      "id": "myDate"
+    },
+    {
+      "type": "Input.Text",
+      "placeholder": "Enter text here",
+      "id": "myText"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myChoices",
+      "title":"More choices",
+      "choices": [
+        {
+          "title": "Choice 1",
+          "value": "1"
+        },
+        {
+          "title": "Choice 2",
+          "value": "2"
+        },
+        {
+          "title": "Choice 3",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "type": "ImageSet",
+      "imageSize": "medium",
+      "images": [
+        {
+          "type": "Image",
+          "url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg"
+        },
+        {
+          "type": "Image",
+          "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg"
+        },
+
+        {
+          "type": "Image",
+          "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Second section",
+          "size": "large"
+        },
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "size": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+                  "size": "small"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "size": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "This is the activityTitle property"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "This is the activitySubtitle property",
+                  "separation": "none"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "This is the activityText property",
+                  "separation": "none"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
+}

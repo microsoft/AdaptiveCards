@@ -89,7 +89,7 @@
 			"title": "Set due date",
 			"card": {
 				"type": "Container",
-				"body": [
+				"items": [
 					{
 						"type": "Input.Date",
 						"id": "dueDate",
@@ -109,7 +109,7 @@
 			"title": "Comment",
 			"card": {
 				"type": "Container",
-				"body": [
+				"items": [
 					{
 						"type": "Input.Text",
 						"id": "comment",
