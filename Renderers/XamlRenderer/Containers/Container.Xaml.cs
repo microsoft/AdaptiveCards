@@ -57,30 +57,33 @@ namespace Adaptive
             {
                 // each element has a row
                 FrameworkElement uiElement = cardElement.Render(context);
-                if (grid.RowDefinitions.Count > 0)
+                if (uiElement != null)
                 {
-                    switch (cardElement.Separation)
+                    if (grid.RowDefinitions.Count > 0)
                     {
-                        case SeparationStyle.None:
-                            break;
-                        case SeparationStyle.Default:
-                        case SeparationStyle.Strong:
-                            {
-                                var sep = new Separator();
-                                if (cardElement.Separation == SeparationStyle.Default)
-                                    sep.Style = context.GetStyle($"Adaptive.Separator.{cardElement.Type}");
-                                else
-                                    sep.Style = context.GetStyle($"Adaptive.Separator.Strong");
-                                grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                                Grid.SetRow(sep, grid.RowDefinitions.Count - 1);
-                                grid.Children.Add(sep);
-                            }
-                            break;
+                        switch (cardElement.Separation)
+                        {
+                            case SeparationStyle.None:
+                                break;
+                            case SeparationStyle.Default:
+                            case SeparationStyle.Strong:
+                                {
+                                    var sep = new Separator();
+                                    if (cardElement.Separation == SeparationStyle.Default)
+                                        sep.Style = context.GetStyle($"Adaptive.Separator.{cardElement.Type}");
+                                    else
+                                        sep.Style = context.GetStyle($"Adaptive.Separator.Strong");
+                                    grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                                    Grid.SetRow(sep, grid.RowDefinitions.Count - 1);
+                                    grid.Children.Add(sep);
+                                }
+                                break;
+                        }
                     }
+                    grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                    Grid.SetRow(uiElement, grid.RowDefinitions.Count - 1);
+                    grid.Children.Add(uiElement);
                 }
-                grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                Grid.SetRow(uiElement, grid.RowDefinitions.Count - 1);
-                grid.Children.Add(uiElement);
             }
 
             if (hasActions)
@@ -95,8 +98,11 @@ namespace Adaptive
                 {
                     // add actions
                     var uiAction = action.Render(context);
-                    Grid.SetColumn(uiAction, iCol++);
-                    uiActionBar.Children.Add(uiAction);
+                    if (uiAction != null)
+                    {
+                        Grid.SetColumn(uiAction, iCol++);
+                        uiActionBar.Children.Add(uiAction);
+                    }
                 }
                 uiActionBar.Style = context.GetStyle("Adaptive.Actions");
                 grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
