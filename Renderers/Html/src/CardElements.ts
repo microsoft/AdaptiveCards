@@ -11,6 +11,10 @@ export abstract class CardElement {
         return true;
     }
 
+    protected removeTopSpacing(element: HTMLElement) {
+        element.className += " removeTopSpacing";
+    }
+
     protected adjustLayout(element: HTMLElement) {
         if (this.useDefaultSizing) {
             element.className += " stretch";
@@ -23,6 +27,10 @@ export abstract class CardElement {
             case Enums.HorizontalAlignment.Right:
                 element.style.textAlign = "right";
                 break;
+        }
+
+        if (this.separation != Enums.Separation.Default) {
+            this.removeTopSpacing(element);
         }
 
         if (this.hideOverflow) {
@@ -166,6 +174,12 @@ export class TextBlock extends CardElement {
     }
 }
 
+class InternalTextBlock extends TextBlock {
+    get useDefaultSizing(): boolean {
+        return false;
+    }
+}
+
 export class Fact {
     name: string;
     value: string;
@@ -200,7 +214,7 @@ export class FactSet extends CardElement {
                 html += '<tr>';
                 html += '    <td class="factName">';
 
-                let textBlock = new TextBlock();
+                let textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].name;
                 textBlock.weight = Enums.TextWeight.Bolder;
                 textBlock.separation = Enums.Separation.None;
@@ -214,7 +228,7 @@ export class FactSet extends CardElement {
                 html += '    </td>';
                 html += '    <td class="factValue">';
 
-                textBlock = new TextBlock();
+                textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].value;
                 textBlock.weight = Enums.TextWeight.Lighter;
                 textBlock.separation = Enums.Separation.None;
@@ -442,7 +456,7 @@ export class InputToggle extends Input {
             this._checkboxInputElement.checked = true;
         }
 
-        var label = new TextBlock();
+        var label = new InternalTextBlock();
         label.text = this.title;
 
         var labelElement = label.render(container);
@@ -517,7 +531,7 @@ export class InputChoiceSet extends Input {
 
                     this._toggleInputs.push(radioInput);
 
-                    var label = new TextBlock();
+                    var label = new InternalTextBlock();
                     label.text = this.choices[i].title;
 
                     var labelElement = label.render(container);
@@ -549,7 +563,7 @@ export class InputChoiceSet extends Input {
 
                 this._toggleInputs.push(checkboxInput);
 
-                var label = new TextBlock();
+                var label = new InternalTextBlock();
                 label.text = this.choices[i].title;
 
                 var labelElement = label.render(container);
@@ -1007,10 +1021,6 @@ export abstract class ContainerBase extends CardElement {
     private _hasBottomPadding?: boolean;
     private _textColor?: Enums.TextColor;
 
-    private removeTopSpacing(element: HTMLElement) {
-        element.className += " removeTopSpacing";
-    }
-
     protected _actionCollection: ActionCollection;
     protected _element: HTMLDivElement;
 
@@ -1044,6 +1054,14 @@ export abstract class ContainerBase extends CardElement {
                             this.removeTopSpacing(renderedElement);
                         }
                         else {
+                            if (this._items[i].separation == Enums.Separation.Strong) {
+                                var separator = document.createElement("div");
+                                separator.className = "separator";
+
+                                Utils.appendChild(this._element, separator);
+                            }
+                        }
+                        /*
                             switch (this._items[i].separation) {
                                 case Enums.Separation.None:
                                     this.removeTopSpacing(renderedElement);
@@ -1060,6 +1078,7 @@ export abstract class ContainerBase extends CardElement {
                                     break;
                             }
                         }
+                        */
 
                         Utils.appendChild(this._element, renderedElement);
 
@@ -1380,7 +1399,9 @@ export class AdaptiveCard {
             ColumnSet,
             InputText,
             InputDate,
-            InputChoiceSet
+            InputNumber,
+            InputChoiceSet,
+            InputToggle
         ],
         supportedActionTypes: [
             ActionHttp,

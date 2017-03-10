@@ -7,7 +7,7 @@
 }
 
 .separator {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
     margin: 20px 0px 0px 0px;
     padding: 20px 0px 0px 0px;
 }
@@ -36,27 +36,22 @@
 
 .text.small {
     font-size: 12px;
-    margin: -4px 0px 5px 0px;
 }
 
 .text.defaultSize {
     font-size: 15px;
-    margin: -5px 0px 5px 0px;
 }
 
 .text.medium {
     font-size: 20px;
-    margin: -6px 0px 5px 0px;
 }
 
 .text.large {
     font-size: 24px;
-    margin: -9px 0px 5px 0px;
 }
 
 .text.extraLarge {
     font-size: 30px;
-    margin: -11px 0px 5px 0px;
 }
 
 .text.lighter {
