@@ -25,16 +25,6 @@ namespace AdaptiveCards
         interface IAdaptiveColumnSet;
 
         [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum CardElementSize
-        {
-            Auto = 0,
-            Stretch,
-            Small,
-            Medium,
-            Large
-        } CardElementSize;
-
-        [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
         {
             Small = 0,
@@ -90,6 +80,22 @@ namespace AdaptiveCards
             Person
         } ImageStyle;
 
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ImageSize {
+            Auto = 0,
+            Stretch,
+            Small,
+            Medium,
+            Large
+        } ImageSize;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum SeparationStyle {
+            Default = 0,
+            None,
+            Strong,
+        } SeparationStyle;
+
         declare
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -107,10 +113,12 @@ namespace AdaptiveCards
         interface IAdaptiveCardElement : IInspectable
         {
             [propget] HRESULT ElementType([out, retval] ElementType* value);
-            [propput] HRESULT ElementType([in] ElementType value);
 
-            [propget] HRESULT Size([out, retval] CardElementSize* value);
-            [propput] HRESULT Size([in] CardElementSize value);
+            [propget] HRESULT Speak([out, retval] HSTRING* value);
+            [propput] HRESULT Speak([in] HSTRING value);
+
+            [propget] HRESULT Separation([out, retval] SeparationStyle* value);
+            [propput] HRESULT Separation([in] SeparationStyle value);
         };
 
         [
@@ -120,14 +128,14 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveTextBlock : IInspectable
         {
-            [propget] HRESULT TextSize([out, retval] TextSize* value);
-            [propput] HRESULT TextSize([in] TextSize value);
+            [propget] HRESULT Size([out, retval] TextSize* value);
+            [propput] HRESULT Size([in] TextSize value);
 
-            [propget] HRESULT TextWeight([out, retval] TextWeight* value);
-            [propput] HRESULT TextWeight([in] TextWeight value);
+            [propget] HRESULT Weight([out, retval] TextWeight* value);
+            [propput] HRESULT Weight([in] TextWeight value);
 
-            [propget] HRESULT TextColor([out, retval] TextColor* value);
-            [propput] HRESULT TextColor([in] TextColor value);
+            [propget] HRESULT Color([out, retval] TextColor* value);
+            [propput] HRESULT Color([in] TextColor value);
 
             [propget] HRESULT Text([out, retval] HSTRING* value);
             [propput] HRESULT Text([in] HSTRING value);
@@ -137,6 +145,12 @@ namespace AdaptiveCards
 
             [propget] HRESULT Wrap([out, retval] boolean* value);
             [propput] HRESULT Wrap([in] boolean value);
+
+            [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
+            [propput] HRESULT HorizontalAlignment([in] HAlignment value);
+
+            [propget] HRESULT MaxLines([out, retval] UINT32 *value);
+            [propput] HRESULT MaxLines([in] UINT32 value);
         };
 
         [
@@ -156,7 +170,19 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveCard : IInspectable
         {
-            [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+            [propget] HRESULT Body([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+
+            [propget] HRESULT ElementType([out, retval] ElementType* value);
+
+            [propget] HRESULT Version([out, retval] HSTRING* value);
+            [propput] HRESULT Version([in] HSTRING value);
+
+            [propget] HRESULT MinVersion([out, retval] HSTRING* value);
+            [propput] HRESULT MinVersion([in] HSTRING value);
+
+            [propget] HRESULT FallbackText([out, retval] HSTRING* value);
+            [propput] HRESULT FallbackText([in] HSTRING value);
+
         };
 
         [
@@ -186,11 +212,20 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveImage : IInspectable
         {
-            [propget] HRESULT Uri([out, retval] Windows.Foundation.Uri** value);
-            [propput] HRESULT Uri([in] Windows.Foundation.Uri* value);
+            [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
+            [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
 
-            [propget] HRESULT ImageStyle([out, retval] ImageStyle* value);
-            [propput] HRESULT ImageStyle([in] ImageStyle value);
+            [propget] HRESULT Style([out, retval] ImageStyle* value);
+            [propput] HRESULT Style([in] ImageStyle value);
+
+            [propget] HRESULT Size([out, retval] ImageSize* value);
+            [propput] HRESULT Size([in] ImageSize value);
+
+            [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
+            [propput] HRESULT HorizontalAlignment([in] HAlignment value);
+
+            [propget] HRESULT AltText([out, retval] HSTRING* value);
+            [propput] HRESULT AltText([in] HSTRING value);
         };
 
         [
@@ -209,9 +244,6 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveContainer : IInspectable
         {
-            [propget] HRESULT StartGroup([out, retval] boolean* value);
-            [propput] HRESULT StartGroup([in] boolean value);
-
             [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
         };
 
@@ -231,8 +263,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveColumn : IInspectable
         {
-            [propget] HRESULT ColumnSize([out, retval] HSTRING* value);
-            [propput] HRESULT ColumnSize([in] HSTRING value);
+            [propget] HRESULT Size([out, retval] HSTRING* value);
+            [propput] HRESULT Size([in] HSTRING value);
         };
 
         [
