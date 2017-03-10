@@ -3,15 +3,18 @@ import * as Utils from "./Utils";
 import * as TextFormatters from "./TextFormatters";
 
 export abstract class CardElement {
+    private _container?: Container;
+
+    protected get container(): Container {
+        return this._container;
+    }
+
     protected get hideOverflow(): boolean {
         return true;
     }
 
     protected get useDefaultSizing(): boolean {
         return true;
-    }
-
-    protected initialize(container: Container) {
     }
 
     protected removeTopSpacing(element: HTMLElement) {
@@ -41,7 +44,7 @@ export abstract class CardElement {
         }
     }
 
-    protected abstract internalRender(container: Container): HTMLElement;
+    protected abstract internalRender(): HTMLElement;
 
     speak: string;
     horizontalAlignment: Enums.HorizontalAlignment = Enums.HorizontalAlignment.Left;
@@ -50,7 +53,9 @@ export abstract class CardElement {
     abstract renderSpeech(): string;
 
     render(container?: Container): HTMLElement {
-        let renderedElement = this.internalRender(container);
+        this._container = container;
+
+        let renderedElement = this.internalRender();
 
         if (renderedElement != null) {
             this.adjustLayout(renderedElement);
@@ -70,7 +75,7 @@ export class TextBlock extends CardElement {
     isSubtle: boolean = false;
     wrap: boolean = true;
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             let element = document.createElement("div");
 
@@ -94,7 +99,8 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            let actualTextColor = this.color ? this.color : (container.textColor ? container.textColor : AdaptiveCard.renderOptions.defaultTextColor);
+            /// let actualTextColor = this.color ? this.color : (container.textColor ? container.textColor : AdaptiveCard.renderOptions.defaultTextColor);
+            let actualTextColor = this.color ? this.color : this.container.textColor;
 
             switch (actualTextColor) {
                 case Enums.TextColor.Dark:
@@ -204,7 +210,7 @@ export class FactSet extends CardElement {
         return false;
     }
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         let element: HTMLElement = null;
 
         if (this.facts.length > 0) {
@@ -222,7 +228,7 @@ export class FactSet extends CardElement {
                 textBlock.weight = Enums.TextWeight.Bolder;
                 textBlock.separation = Enums.Separation.None;
 
-                let renderedText = textBlock.render(container);
+                let renderedText = textBlock.render(this.container);
 
                 if (renderedText != null) {
                     html += renderedText.outerHTML;
@@ -236,7 +242,7 @@ export class FactSet extends CardElement {
                 textBlock.weight = Enums.TextWeight.Lighter;
                 textBlock.separation = Enums.Separation.None;
 
-                renderedText = textBlock.render(container);
+                renderedText = textBlock.render(this.container);
 
                 if (renderedText != null) {
                     html += renderedText.outerHTML;
@@ -285,7 +291,7 @@ export class Image extends CardElement {
         return false;
     }
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         let imageElement: HTMLImageElement = null;
 
         if (!Utils.isNullOrEmpty(this.url)) {
@@ -350,7 +356,7 @@ export class Image extends CardElement {
 export class ImageSet extends CardElement {
     static TypeName: string = "ImageSet";
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         let element: HTMLElement = null;
 
         if (this.images.length > 0) {
@@ -358,7 +364,7 @@ export class ImageSet extends CardElement {
             element.className = "imageGallery";
 
             for (var i = 0; i < this.images.length; i++) {
-                let renderedImage = this.images[i].render(container);
+                let renderedImage = this.images[i].render(this.container);
                 renderedImage.style.margin = "0px";
                 renderedImage.style.marginRight = "10px";
 
@@ -416,7 +422,7 @@ export class InputText extends Input {
 
     private _textareaElement: HTMLTextAreaElement;
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         this._textareaElement = document.createElement("textarea");
         this._textareaElement.className = "input textInput";
 
@@ -447,7 +453,7 @@ export class InputToggle extends Input {
 
     private _checkboxInputElement: HTMLInputElement;
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         var element = document.createElement("div");
         element.className = "input";
 
@@ -462,7 +468,7 @@ export class InputToggle extends Input {
         var label = new InternalTextBlock();
         label.text = this.title;
 
-        var labelElement = label.render(container);
+        var labelElement = label.render(this.container);
         labelElement.className += " toggleLabel";
 
         var compoundInput = document.createElement("div");
@@ -493,7 +499,7 @@ export class InputChoiceSet extends Input {
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: Array<HTMLInputElement>;
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         if (!this.isMultiSelect) {
             if (this.isCompact) {
                 // Render as a combo box
@@ -537,7 +543,7 @@ export class InputChoiceSet extends Input {
                     var label = new InternalTextBlock();
                     label.text = this.choices[i].title;
 
-                    var labelElement = label.render(container);
+                    var labelElement = label.render(this.container);
                     labelElement.className += " toggleLabel";
 
                     var compoundInput = document.createElement("div");
@@ -569,7 +575,7 @@ export class InputChoiceSet extends Input {
                 var label = new InternalTextBlock();
                 label.text = this.choices[i].title;
 
-                var labelElement = label.render(container);
+                var labelElement = label.render(this.container);
                 labelElement.className += " toggleLabel";
 
                 var compoundInput = document.createElement("div");
@@ -627,7 +633,7 @@ export class InputNumber extends Input {
 
     private _numberInputElement: HTMLInputElement;
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.type = "number";
         this._numberInputElement.className = "input number";
@@ -654,7 +660,7 @@ export class InputDate extends Input {
 
     private _dateInputElement: HTMLInputElement;
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.type = "date";
         this._dateInputElement.className = "input date";
@@ -672,7 +678,7 @@ export class InputTime extends Input {
 
     private _timeInputElement: HTMLInputElement;
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.type = "time";
         this._timeInputElement.className = "input time";
@@ -803,7 +809,7 @@ export class ActionHttp extends ActionExternal {
 export class ActionShowCard extends Action {
     static TypeName: string = "Action.ShowCard";
 
-    readonly card: Container;
+    readonly card: ActionShowCardContainer;
 
     title: string;
 
@@ -1001,7 +1007,7 @@ class ActionCollection {
     }
 }
 
-export abstract class ContainerBase extends CardElement {
+export class Container extends CardElement {
     static TypeName: string = "Container";
 
     private static checkElementTypeIsAllowed(element: CardElement) {
@@ -1020,17 +1026,41 @@ export abstract class ContainerBase extends CardElement {
         return false;
     }
     
+    private showBottomSpacer(requestingElement: CardElement = null) {
+        if (requestingElement == null || this.isLastItem(requestingElement)) {
+            if (this.container) {
+                this.container.showBottomSpacer(this);
+            }
+
+            this._element.style.paddingBottom = null;
+        }
+    }
+
+    private hideBottomSpacer(requestingElement: CardElement = null) {
+        if (requestingElement == null || this.isLastItem(requestingElement)) {
+            if (this.container) {
+                this.container.hideBottomSpacer(this);
+            }
+
+            this._element.style.paddingBottom = "0px";
+        }
+    }
+
     private _items: Array<CardElement> = [];
     private _hasBottomPadding?: boolean;
 
     protected _actionCollection: ActionCollection;
     protected _element: HTMLDivElement;
 
+    protected isLastItem(element: CardElement): boolean {
+        return this._items.indexOf(element) == (this._items.length - 1);
+    }
+
     protected getForbiddenActionTypes(): Array<any> {
         return null;
     }
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         this._element = document.createElement("div");
         this._element.className = this.cssClassName;
         this._element.onclick = (e) => {
@@ -1048,7 +1078,7 @@ export abstract class ContainerBase extends CardElement {
             var renderedElementCount: number = 0;
 
             for (var i = 0; i < this._items.length; i++) {
-                if (ContainerBase.checkElementTypeIsAllowed(this._items[i])) {
+                if (Container.checkElementTypeIsAllowed(this._items[i])) {
                     var renderedElement = this._items[i].render(this);
 
                     if (renderedElement != null) {
@@ -1113,20 +1143,32 @@ export abstract class ContainerBase extends CardElement {
         super();
 
         this._actionCollection = new ActionCollection(this, this.getForbiddenActionTypes());
+        this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer() };
+        this._actionCollection.onShowActionCardPane = (action: ActionShowCard) => { this.hideBottomSpacer() };
     }
 
-    textColor?: Enums.TextColor;
+    private _textColor?: Enums.TextColor;
+
+    get textColor(): Enums.TextColor {
+        if (!this._textColor) {
+            if (this.container) {
+                return this.container.textColor;
+            }
+            else {
+                return AdaptiveCard.renderOptions.defaultTextColor;
+            }
+        }
+        else {
+            return this._textColor;
+        }
+    }
+
+    set textColor(value: Enums.TextColor) {
+        this._textColor = value;
+    }
 
     addItem(item: CardElement) {
         this._items.push(item);
-
-        if (item instanceof Container) {
-            var c = <Container>item;
-            
-            if (!c.textColor) {
-                c.textColor = this.textColor;
-            }
-        }
     }
 
     addAction(action: Action) {
@@ -1183,48 +1225,7 @@ export abstract class ContainerBase extends CardElement {
     }
 }
 
-export class Container extends ContainerBase {
-    constructor() {
-        super();
-
-        this._actionCollection.onHideActionCardPane = () => { Container.showBottomSpacer(this._element) };
-        this._actionCollection.onShowActionCardPane = (action: ActionShowCard) => { Container.hideBottomSpacer(this._element) };
-    }
-
-    private static showBottomSpacer(element: HTMLElement, requestingElement: HTMLElement = null) {
-        var elementIsRootContainer = element.className.indexOf("rootContainer") >= 0;
-        var elementIsContainer = element.className.indexOf("container") >= 0 || elementIsRootContainer;
-        var children = Array.prototype.slice.call(element.children);
-
-        if (requestingElement == null || children.indexOf(requestingElement) == (children.length - 1)) {
-            if (!elementIsRootContainer && element.parentElement) {
-                Container.showBottomSpacer(element.parentElement, element);
-            }
-
-            if (elementIsContainer) {
-                element.style.paddingBottom = null;
-            }
-        }
-    }
-
-    private static hideBottomSpacer(element: HTMLElement, requestingElement: HTMLElement = null) {
-        var elementIsRootContainer = element.className.indexOf("rootContainer") >= 0;
-        var elementIsContainer = element.className.indexOf("container") >= 0 || elementIsRootContainer;
-        var children = Array.prototype.slice.call(element.children);
-
-        if (requestingElement == null || children.indexOf(requestingElement) == (children.length - 1)) {
-            if (!elementIsRootContainer && element.parentElement && !Utils.getHasBottomPadding(element)) {
-                Container.hideBottomSpacer(element.parentElement, element);
-            }
-
-            if (elementIsContainer) {
-                element.style.paddingBottom = "0px";
-            }
-        }
-    }
-}
-
-class ActionShowCardContainer extends ContainerBase {
+class ActionShowCardContainer extends Container {
     protected getForbiddenActionTypes(): Array<any> {
         return [ ActionShowCard ];
     }
@@ -1265,7 +1266,7 @@ export class ColumnSet extends CardElement {
 
     private _columns: Array<Column> = [];
 
-    protected internalRender(container: Container): HTMLElement {
+    protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
             element.className = "columnGroup";
@@ -1274,7 +1275,7 @@ export class ColumnSet extends CardElement {
             var renderedColumnCount: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
-                var renderedColumn = this._columns[i].render(this._columns[i]);
+                var renderedColumn = this._columns[i].render(this.container);
 
                 if (renderedColumn != null) {
                     Utils.appendChild(element, renderedColumn);

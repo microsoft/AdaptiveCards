@@ -62,8 +62,6 @@ export class ToastContainer extends HostContainer {
         //     appendChild(element, headerElement);
         // }
 
-        card.root.textColor = ToastContainer.textColor;
-
         let renderedCard = card.render();
 
         Utils.appendChild(element, renderedCard);

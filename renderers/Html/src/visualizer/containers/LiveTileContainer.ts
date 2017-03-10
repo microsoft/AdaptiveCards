@@ -31,8 +31,6 @@ export class LiveTileContainer extends HostContainer {
         element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        card.root.textColor = LiveTileContainer.textColor;
-
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
 
