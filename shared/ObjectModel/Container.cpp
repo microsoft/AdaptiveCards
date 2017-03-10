@@ -5,6 +5,17 @@
 
 using namespace AdaptiveCards;
 
+const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> Container::CardElementParsers =
+{
+    //{ CardElementType::ActionGroupType, ActionGroup::ParseJsonObject },
+    //{ CardElementType::AdaptiveCardType, AdaptiveCard::ParseJsonObject },
+    //{ CardElementType::FactGroupType, FactGroup::ParseJsonObject },
+    //{ CardElementType::ImageGalleryType, ImageGallery::ParseJsonObject },
+    { CardElementType::Container, Container::Deserialize },
+    { CardElementType::Image, Image::Deserialize },
+    { CardElementType::TextBlock, TextBlock::Deserialize },
+};
+
 Container::Container() : BaseCardElement(CardElementType::Container)
 {
 }
@@ -46,20 +57,8 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
 
     auto container = BaseCardElement::Deserialize<Container>(value);
 
-    // Map card type to the proper parser
-    std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> cardElementParsers =
-    {
-        //{ CardElementType::ActionGroupType, ActionGroup::ParseJsonObject },
-        //{ CardElementType::AdaptiveCardType, AdaptiveCard::ParseJsonObject },
-        //{ CardElementType::FactGroupType, FactGroup::ParseJsonObject },
-        //{ CardElementType::ImageGalleryType, ImageGallery::ParseJsonObject },
-        { CardElementType::Container, Container::Deserialize },
-        { CardElementType::Image, Image::Deserialize },
-        { CardElementType::TextBlock, TextBlock::Deserialize },
-    };
-
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, cardElementParsers);
+    auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, Container::CardElementParsers);
     container->m_items = std::move(cardElements);
     return container;
 }

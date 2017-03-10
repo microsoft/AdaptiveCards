@@ -36,7 +36,7 @@ public:
     static T GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, std::function<T(const std::string& name)> enumConverter);
 
     template <typename T>
-    static std::vector<std::shared_ptr<T>> GetElementCollection(const Json::Value& json, AdaptiveCardSchemaKey key, std::unordered_map<CardElementType, std::function<std::shared_ptr<T>(const Json::Value&)>> &parsers);
+    static std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(const Json::Value& json, AdaptiveCardSchemaKey key, const std::unordered_map<CardElementType, std::function<std::shared_ptr<T>(const Json::Value&)>>& parsers);
 
     static void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
 
@@ -81,7 +81,7 @@ template <typename T>
 std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
-    std::unordered_map<CardElementType, std::function<std::shared_ptr<T>(const Json::Value&)>> &parsers)
+    const std::unordered_map<CardElementType, std::function<std::shared_ptr<T>(const Json::Value&)>>& parsers)
 {
     std::string propertyName = AdaptiveCardSchemaKeyToString(key);
     auto elementArray = json.get(propertyName, Json::Value());
@@ -109,7 +109,7 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(
         if (parsers.find(curElementType) != parsers.end())
         {
             // Use the parser that maps to the type
-            std::shared_ptr<T> element = parsers[curElementType](cur);
+            std::shared_ptr<T> element = parsers.at(curElementType)(cur);
             return element;
         }
         return std::shared_ptr<T>();

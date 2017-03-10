@@ -33,6 +33,8 @@ public:
 
 private:
 
+    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> CardElementParsers;
+
     std::string m_version;
     std::string m_minVersion;
     std::string m_fallbackText;
