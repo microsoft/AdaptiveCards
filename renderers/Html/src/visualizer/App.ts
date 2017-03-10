@@ -73,8 +73,6 @@ function renderCard(): HTMLElement {
     var jsonParser = new JsonParser();
     var adaptiveCard = jsonParser.parse(json);
 
-    adaptiveCard.onExecuteAction = actionExecuted;
-
     var popupContainer = document.getElementById("popupCardContainer");
 
     if (Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup) {
@@ -292,6 +290,8 @@ function setupFilePicker() {
 }
 
 window.onload = () => {
+    Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
+
     Adaptive.AdaptiveCard.onShowPopupCard = (action, element) => {
         var popupContainer = document.getElementById("popupCardContainer");
         popupContainer.innerHTML = "";

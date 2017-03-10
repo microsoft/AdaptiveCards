@@ -106,7 +106,7 @@ export class JsonParser {
         textBlock.text = json["text"];
         textBlock.size = Enums.stringToTextSize(json["size"], Enums.TextSize.Normal);
         textBlock.weight = Enums.stringToTextWeight(json["weight"], Enums.TextWeight.Normal);
-        textBlock.color = Enums.stringToTextColor(json["color"], Enums.TextColor.Default);
+        textBlock.color = Enums.stringToTextColor(json["color"], null);
         textBlock.isSubtle = json["isSubtle"];
         textBlock.wrap = json["wrap"];
     }
@@ -169,7 +169,7 @@ export class JsonParser {
             var action = this.createAction(jsonActions[i], container);
 
             if (action != null) {
-                container.actions.push(action);
+                container.addAction(action);
             }
         }
     }
@@ -183,7 +183,7 @@ export class JsonParser {
         container.backgroundImageUrl = json["backgroundImage"];
         container.backgroundColor = json["backgroundColor"];
 
-        container.textColor = Enums.stringToTextColor(json["textColor"], Enums.TextColor.Default);
+        container.textColor = Enums.stringToTextColor(json["textColor"], null);
 
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName] as Array<any>;
@@ -194,7 +194,7 @@ export class JsonParser {
                     container);
 
                 if (element != null) {
-                    container.items.push(element);
+                    container.addItem(element);
                 }
             }
         }

@@ -22,6 +22,7 @@ export class LiveTileContainer extends HostContainer {
         
         Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = false;
         Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
+        Adaptive.AdaptiveCard.renderOptions.defaultTextColor = Adaptive.TextColor.Light;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {
