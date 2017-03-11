@@ -293,7 +293,7 @@
         }
       },
       "required": [
-        "display",
+        "title",
         "value"
       ],
       "type": "object"
