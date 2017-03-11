@@ -15,6 +15,7 @@ namespace Adaptive
     {
         public InputText()
         {
+            this.Type = "Input.Text";
         }
 
         /// <summary>

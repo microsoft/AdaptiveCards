@@ -16,7 +16,10 @@ namespace Adaptive
     [ContentProperty("Body")]
     public partial class AdaptiveCard : TypedElement
     {
-        public AdaptiveCard() { }
+        public AdaptiveCard()
+        {
+            this.Type = "AdaptiveCard";
+        }
 
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]

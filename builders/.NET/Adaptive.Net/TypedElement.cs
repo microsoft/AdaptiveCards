@@ -16,7 +16,6 @@ namespace Adaptive
     {
         public TypedElement()
         {
-            this.Type = GetType().Name;
         }
 
         [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]

@@ -17,7 +17,7 @@ namespace Adaptive
     {
         public ActionOpenUrl()
         {
-
+            this.Type = "Action.OpenUrl";
         }
 
         /// <summary>
