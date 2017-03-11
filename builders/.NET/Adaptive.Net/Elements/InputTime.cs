@@ -15,6 +15,7 @@ namespace Adaptive
     {
         public InputTime()
         {
+            this.Type = "Input.Time";
         }
 
         /// <summary>

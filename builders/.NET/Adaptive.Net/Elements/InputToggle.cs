@@ -11,10 +11,11 @@ namespace Adaptive
     /// <summary>
     /// Input which collects a choice between two options from the user
     /// </summary>
-    public partial class InputToggle: Input
+    public partial class InputToggle : Input
     {
         public InputToggle()
         {
+            this.Type = "Input.Toggle";
         }
 
         /// <summary>

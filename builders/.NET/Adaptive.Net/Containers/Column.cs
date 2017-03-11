@@ -13,7 +13,10 @@ namespace Adaptive
     /// </summary>
     public partial class Column : Container
     {
-        public Column() { }
+        public Column()
+        {
+            this.Type = "Column";
+        }
 
         /// <summary>
         /// Size for the column (either ColumnSize string or number which is relative size of the column)
