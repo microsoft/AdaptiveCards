@@ -6,5 +6,6 @@ export abstract class ConnectorContainer extends HostContainer {
         super.applyOptions();
         
         Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = false;
+        Adaptive.AdaptiveCard.renderOptions.defaultSeparation = Adaptive.Separation.Default;
     }
 }

@@ -4,7 +4,6 @@ import * as Utils from "../../Utils";
 
 export class BingContainer extends HostContainer {
     static backgroundColor: string = "#fff";
-    static textColor: Adaptive.TextColor = Adaptive.TextColor.Dark;
 
     private _width: number;
     private _height: number;
@@ -30,7 +29,6 @@ export class BingContainer extends HostContainer {
         element.style.backgroundColor = BingContainer.backgroundColor;
         element.style.overflow = "hidden";
 
-        card.root.textColor = BingContainer.textColor;
         let renderedCard = card.render();
         renderedCard.style.height = "100%";
 

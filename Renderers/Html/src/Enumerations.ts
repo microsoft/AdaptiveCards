@@ -32,7 +32,6 @@ export enum TextWeight {
 }
 
 export enum TextColor {
-    Default,
     Dark,
     Light,
     Accent,
@@ -116,8 +115,6 @@ export function stringToTextWeight(value: string, defaultValue: TextWeight): Tex
 
 export function stringToTextColor(value: string, defaultValue: TextColor): TextColor {
     switch (value) {
-        case "default":
-            return TextColor.Default;
         case "dark":
             return TextColor.Dark;
         case "light":
