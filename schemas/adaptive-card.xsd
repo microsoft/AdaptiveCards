@@ -12,8 +12,8 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="TypedElement" />
-  <xs:element name="ActionHttp" nillable="true" type="ActionHttp" />
-  <xs:complexType name="ActionHttp">
+  <xs:element name="Action.Http" nillable="true" type="Action.Http" />
+  <xs:complexType name="Action.Http">
     <xs:complexContent mixed="false">
       <xs:extension base="ActionBase">
         <xs:sequence>
@@ -21,24 +21,24 @@
           <xs:element minOccurs="0" maxOccurs="1" name="Body" type="xs:string" />
         </xs:sequence>
         <xs:attribute name="Method" type="xs:string" />
-        <xs:attribute name="Url" type="xs:string" />
+        <xs:attribute name="Url" type="xs:string"  use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="ActionOpenUrl" nillable="true" type="ActionOpenUrl" />
-  <xs:complexType name="ActionOpenUrl">
+  <xs:element name="Action.OpenUrl" nillable="true" type="Action.OpenUrl" />
+  <xs:complexType name="Action.OpenUrl">
     <xs:complexContent mixed="false">
       <xs:extension base="ActionBase">
-        <xs:attribute name="Url" type="xs:string" />
+        <xs:attribute name="Url" type="xs:string"  use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="ActionShowCard" nillable="true" type="ActionShowCard" />
-  <xs:complexType name="ActionShowCard">
+  <xs:element name="Action.ShowCard" nillable="true" type="Action.ShowCard" />
+  <xs:complexType name="Action.ShowCard">
     <xs:complexContent mixed="false">
       <xs:extension base="ActionBase">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="1" name="Card" type="AdaptiveCard" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Card" type="Container" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -54,18 +54,21 @@
             <xs:element minOccurs="0" maxOccurs="1" name="ColumnSet" type="ColumnSet" />
             <xs:element minOccurs="0" maxOccurs="1" name="ImageSet" type="ImageSet" />
             <xs:element minOccurs="0" maxOccurs="1" name="FactSet" type="FactSet" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputText" type="InputText" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputDate" type="InputDate" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputTime" type="InputTime" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputNumber" type="InputNumber" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputToggle" type="InputToggle" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputChoiceSet" type="InputChoiceSet" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Text" type="Input.Text" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Date" type="Input.Date" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Time" type="Input.Time" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Number" type="Input.Number" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Toggle" type="Input.Toggle" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.ChoiceSet" type="Input.ChoiceSet" />
           </xs:choice>
           <xs:element minOccurs="0" maxOccurs="1" name="Actions" type="ArrayOfActionBase" />
           <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
         </xs:sequence>
         <xs:attribute name="Title" type="xs:string" />
         <xs:attribute name="BackgroundImage" type="xs:string" />
+        <xs:attribute name="Version" type="xs:string" use="required"/>
+        <xs:attribute name="MinVersion" type="xs:string" />
+        <xs:attribute name="FallbackText" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -76,7 +79,7 @@
         <xs:attribute name="Weight" type="TextWeight" />
         <xs:attribute name="Color" type="TextColor" />
         <xs:attribute name="IsSubtle" type="xs:boolean" />
-        <xs:attribute name="Text" type="xs:string" />
+        <xs:attribute name="Text" type="xs:string"  use="required"/>
         <xs:attribute name="HorizontalAlignment" type="HorizontalAlignment" />
         <xs:attribute name="Wrap" type="xs:boolean" />
         <xs:attribute name="MaxLines" type="xs:int" />
@@ -89,25 +92,26 @@
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
         </xs:sequence>
+        <xs:attribute name="Separation" type="SeparationStyle" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="Input">
+  <xs:complexType name="Input.">
     <xs:complexContent mixed="false">
       <xs:extension base="CardElement">
-        <xs:attribute name="Id" type="xs:string" />
+        <xs:attribute name="Id" type="xs:string"  use="required" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="InputChoiceSet">
+  <xs:complexType name="Input.ChoiceSet">
     <xs:complexContent mixed="false">
-      <xs:extension base="Input">
+      <xs:extension base="Input.">
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="unbounded" name="Choice" type="Choice" />
         </xs:sequence>
         <xs:attribute name="Value" type="xs:string" />
         <xs:attribute name="Style" type="ChoiceInputStyle" />
-        <xs:attribute name="IsMultiSelect" type="xs:boolean" use="required" />
+        <xs:attribute name="IsMultiSelect" type="xs:boolean" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -115,9 +119,9 @@
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
     </xs:sequence>
-    <xs:attribute name="Title" type="xs:string" />
-    <xs:attribute name="Value" type="xs:string" />
-    <xs:attribute name="IsSelected" type="xs:boolean" use="required" />
+    <xs:attribute name="Title" type="xs:string"  use="required"/>
+    <xs:attribute name="Value" type="xs:string" use="required" />
+    <xs:attribute name="IsSelected" type="xs:boolean" />
   </xs:complexType>
   <xs:simpleType name="ChoiceInputStyle">
     <xs:restriction base="xs:string">
@@ -125,19 +129,19 @@
       <xs:enumeration value="Compact" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="InputToggle">
+  <xs:complexType name="Input.Toggle">
     <xs:complexContent mixed="false">
-      <xs:extension base="Input">
-        <xs:attribute name="Title" type="xs:string" />
+      <xs:extension base="Input.">
+        <xs:attribute name="Title" type="xs:string"  use="required" />
         <xs:attribute name="ValueOn" type="xs:string" />
         <xs:attribute name="ValueOff" type="xs:string" />
         <xs:attribute name="Value" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="InputNumber">
+  <xs:complexType name="Input.Number">
     <xs:complexContent mixed="false">
-      <xs:extension base="Input">
+      <xs:extension base="Input.">
         <xs:attribute name="Placeholder" type="xs:string" />
         <xs:attribute name="Value" type="xs:string" />
         <xs:attribute name="Min" type="xs:string" />
@@ -145,9 +149,9 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="InputTime">
+  <xs:complexType name="Input.Time">
     <xs:complexContent mixed="false">
-      <xs:extension base="Input">
+      <xs:extension base="Input.">
         <xs:attribute name="Placeholder" type="xs:string" />
         <xs:attribute name="Value" type="xs:string" />
         <xs:attribute name="Min" type="xs:string" />
@@ -155,9 +159,9 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="InputDate">
+  <xs:complexType name="Input.Date">
     <xs:complexContent mixed="false">
-      <xs:extension base="Input">
+      <xs:extension base="Input.">
         <xs:attribute name="Placeholder" type="xs:string" />
         <xs:attribute name="Value" type="xs:string" />
         <xs:attribute name="Min" type="xs:string" />
@@ -165,14 +169,14 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="InputText">
+  <xs:complexType name="Input.Text">
     <xs:complexContent mixed="false">
-      <xs:extension base="Input">
+      <xs:extension base="Input.">
         <xs:attribute name="Placeholder" type="xs:string" />
         <xs:attribute name="Value" type="xs:string" />
-        <xs:attribute name="Style" type="TextInputStyle" use="required" />
-        <xs:attribute name="IsMultiline" type="xs:boolean" use="required" />
-        <xs:attribute name="MaxLength" type="xs:int" use="required" />
+        <xs:attribute name="Style" type="TextInputStyle"  />
+        <xs:attribute name="IsMultiline" type="xs:boolean" />
+        <xs:attribute name="MaxLength" type="xs:int" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -202,7 +206,7 @@
         </xs:sequence>
         <xs:attribute name="Size" type="ImageSize" />
         <xs:attribute name="Style" type="ImageStyle" />
-        <xs:attribute name="Url" type="xs:string" />
+        <xs:attribute name="Url" type="xs:string"  use="required"/>
         <xs:attribute name="HorizontalAlignment" type="HorizontalAlignment" />
         <xs:attribute name="AltText" type="xs:string" />
       </xs:extension>
@@ -243,8 +247,8 @@
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
     </xs:sequence>
-    <xs:attribute name="Title" type="xs:string" />
-    <xs:attribute name="Value" type="xs:string" />
+    <xs:attribute name="Title" type="xs:string" use="required" />
+    <xs:attribute name="Value" type="xs:string" use="required" />
   </xs:complexType>
   <xs:complexType name="ColumnSet">
     <xs:complexContent mixed="false">
@@ -273,30 +277,36 @@
             <xs:element minOccurs="0" maxOccurs="1" name="ColumnSet" type="ColumnSet" />
             <xs:element minOccurs="0" maxOccurs="1" name="FactSet" type="FactSet" />
             <xs:element minOccurs="0" maxOccurs="1" name="ImageSet" type="ImageSet" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputText" type="InputText" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputDate" type="InputDate" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputTime" type="InputTime" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputNumber" type="InputNumber" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputToggle" type="InputToggle" />
-            <xs:element minOccurs="0" maxOccurs="1" name="InputChoiceSet" type="InputChoiceSet" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Text" type="Input.Text" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Date" type="Input.Date" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Time" type="Input.Time" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Number" type="Input.Number" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Toggle" type="Input.Toggle" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.ChoiceSet" type="Input.ChoiceSet" />
           </xs:choice>
           <xs:element minOccurs="0" maxOccurs="1" name="SelectAction" type="ActionBase" />
           <xs:element minOccurs="0" maxOccurs="1" name="Actions" type="ArrayOfActionBase" />
         </xs:sequence>
-        <xs:attribute name="StartGroup" type="xs:boolean" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="ArrayOfActionBase">
     <xs:sequence>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element minOccurs="0" maxOccurs="1" name="Submit" type="ActionSubmit" />
-        <xs:element minOccurs="0" maxOccurs="1" name="ShowCard" type="ActionShowCard" />
-        <xs:element minOccurs="0" maxOccurs="1" name="Http" type="ActionHttp" />
-        <xs:element minOccurs="0" maxOccurs="1" name="OpenUrl" type="ActionOpenUrl" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Action.Submit" type="Action.Submit" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Action.ShowCard" type="Action.ShowCard" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Action.Http" type="Action.Http" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Action.OpenUrl" type="Action.OpenUrl" />
       </xs:choice>
     </xs:sequence>
   </xs:complexType>
+  <xs:simpleType name="SeparationStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Strong" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="TextSize">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Normal" />
@@ -324,8 +334,8 @@
       <xs:enumeration value="Attention" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="ActionSubmit" nillable="true" type="ActionSubmit" />
-  <xs:complexType name="ActionSubmit">
+  <xs:element name="Action.Submit" nillable="true" type="Action.Submit" />
+  <xs:complexType name="Action.Submit">
     <xs:complexContent mixed="false">
       <xs:extension base="ActionBase">
         <xs:sequence>
@@ -343,14 +353,14 @@
   <xs:element name="ImageSet" nillable="true" type="ImageSet" />
   <xs:element name="CardElement" nillable="true" type="CardElement" />
   <xs:element name="Image" nillable="true" type="Image" />
-  <xs:element name="Input" nillable="true" type="Input" />
-  <xs:element name="InputChoiceSet" nillable="true" type="InputChoiceSet" />
+  <xs:element name="Input." nillable="true" type="Input." />
+  <xs:element name="Input.ChoiceSet" nillable="true" type="Input.ChoiceSet" />
   <xs:element name="Choice" nillable="true" type="Choice" />
-  <xs:element name="InputDate" nillable="true" type="InputDate" />
-  <xs:element name="InputNumber" nillable="true" type="InputNumber" />
-  <xs:element name="InputText" nillable="true" type="InputText" />
-  <xs:element name="InputTime" nillable="true" type="InputTime" />
-  <xs:element name="InputToggle" nillable="true" type="InputToggle" />
+  <xs:element name="Input.Date" nillable="true" type="Input.Date" />
+  <xs:element name="Input.Number" nillable="true" type="Input.Number" />
+  <xs:element name="Input.Text" nillable="true" type="Input.Text" />
+  <xs:element name="Input.Time" nillable="true" type="Input.Time" />
+  <xs:element name="Input.Toggle" nillable="true" type="Input.Toggle" />
   <xs:element name="TextBlock" nillable="true" type="TextBlock" />
   <xs:element name="MyStringEnumConverter" nillable="true" type="MyStringEnumConverter" />
   <xs:complexType name="MyStringEnumConverter">
