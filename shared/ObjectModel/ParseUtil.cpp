@@ -2,8 +2,6 @@
 #include "Image.h"
 #include "TextBlock.h"
 #include "Container.h"
-#include "Column.h"
-#include "ColumnSet.h"
 #include "AdaptiveCardParseException.h"
 
 namespace AdaptiveCards

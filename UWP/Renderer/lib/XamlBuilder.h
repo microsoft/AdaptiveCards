@@ -39,7 +39,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _In_ std::wstring resourceName,
             _COM_Outptr_result_maybenull_ T** resource);
         template<typename T>
-        bool TryGetValueResoureFromResourceDictionaries(
+        bool TryGetValueResourceFromResourceDictionaries(
             _In_ std::wstring styleName,
             _Out_ T* valueResource);
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IPanel> CreateRootPanelFromAdaptiveCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard);

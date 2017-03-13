@@ -19,8 +19,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock);
 
         // IAdaptiveTextBlock
-        IFACEMETHODIMP get_Text(HSTRING *text);
-        IFACEMETHODIMP put_Text(HSTRING text);
+        IFACEMETHODIMP get_Text(_In_ HSTRING *text);
+        IFACEMETHODIMP put_Text(_Out_ HSTRING text);
 
         IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextSize* textSize);
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize);
@@ -37,8 +37,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle);
         IFACEMETHODIMP put_IsSubtle(_In_ boolean isSubtle);
 
-        IFACEMETHODIMP get_MaxLines(UINT32 *text);
-        IFACEMETHODIMP put_MaxLines(UINT32 text);
+        IFACEMETHODIMP get_MaxLines(_In_ UINT32 *value);
+        IFACEMETHODIMP put_MaxLines(_Out_ UINT32 value);
 
         IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment* hAlignment);
         IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment hAlignment);
@@ -49,8 +49,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
         IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
 
-        IFACEMETHODIMP get_Speak(HSTRING *text);
-        IFACEMETHODIMP put_Speak(HSTRING text);
+        IFACEMETHODIMP get_Speak(_In_ HSTRING *speak);
+        IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
 
     private:
         std::shared_ptr<AdaptiveCards::TextBlock> m_sharedTextBlock;

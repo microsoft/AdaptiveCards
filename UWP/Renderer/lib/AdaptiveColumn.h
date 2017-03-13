@@ -33,8 +33,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
         IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
 
-        IFACEMETHODIMP get_Speak(HSTRING *text);
-        IFACEMETHODIMP put_Speak(HSTRING text);
+        IFACEMETHODIMP get_Speak(_In_ HSTRING *speak);
+        IFACEMETHODIMP put_Speak(_Out_ HSTRING speak);
 
     private:
         // TODO: Remove once Column shared object model type is ready. MSFT 11016964: Shared Object model: Card Elements

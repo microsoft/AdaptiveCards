@@ -60,9 +60,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IPanel> rootContainer = CreateRootPanelFromAdaptiveCard(adaptiveCard);
 
         // Enumerate the child items of the card and build xaml for them
-        ComPtr<IVector<IAdaptiveCardElement*>> items;
-        THROW_IF_FAILED(adaptiveCard->get_Items(&items));
-        BuildPanelChildren(items.Get(), rootContainer.Get(), [](IUIElement*) {});
+        ComPtr<IVector<IAdaptiveCardElement*>> body;
+        THROW_IF_FAILED(adaptiveCard->get_Body(&body));
+        BuildPanelChildren(body.Get(), rootContainer.Get(), [](IUIElement*) {});
 
         THROW_IF_FAILED(rootContainer.CopyTo(xamlTreeRoot));
 
@@ -155,17 +155,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     template<typename T>
-    bool XamlBuilder::TryGetValueResoureFromResourceDictionaries(
+    bool XamlBuilder::TryGetValueResourceFromResourceDictionaries(
         _In_ std::wstring styleName,
         _Out_ T* valueResource)
     {
         try
         {
-            // Get a resource key for the requested style that we can use for ResourceDistionary Lookups
+            // Get a resource key for the requested style that we can use for ResourceDictionary Lookups
             ComPtr<IInspectable> resourceKey;
             THROW_IF_FAILED(m_propertyValueStatics->CreateString(HStringReference(styleName.c_str()).Get(), resourceKey.GetAddressOf()));
 
-            // Search for the named resource in all known distionaries
+            // Search for the named resource in all known dictionaries
             ComPtr<IInspectable> dictionaryValue;
             for (auto& resourceDictionary : m_resourceDictionaries)
             {
@@ -371,13 +371,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IImage> xamlImage = XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
 
         ComPtr<IUriRuntimeClass> imageUri;
-        THROW_IF_FAILED(adaptiveImage->get_Uri(imageUri.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveImage->get_Url(imageUri.GetAddressOf()));
         PopulateImageFromUrlAsync(imageUri.Get(), xamlImage.Get());
 
         // Set the image to UniformToFill if the card element's size is stretch
-        ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size;
-        THROW_IF_FAILED(cardElement->get_Size(&size));
-        THROW_IF_FAILED(xamlImage->put_Stretch(size == ABI::AdaptiveCards::XamlCardRenderer::CardElementSize::Stretch ? Stretch::Stretch_UniformToFill : Stretch::Stretch_None));
+        ABI::AdaptiveCards::XamlCardRenderer::ImageSize size;
+        THROW_IF_FAILED(adaptiveImage->get_Size(&size));
+        THROW_IF_FAILED(xamlImage->put_Stretch(size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch ? Stretch::Stretch_UniformToFill : Stretch::Stretch_None));
 
         // Generate the style name from the adaptive element and apply it to the xaml
         // element it it exists in the resource dictionaries
@@ -443,7 +443,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [this, xamlGrid, gridStatics, &currentColumn](IAdaptiveColumn* column)
         {
             HString adaptiveColumnSize;
-            THROW_IF_FAILED(column->get_ColumnSize(adaptiveColumnSize.GetAddressOf()));
+            THROW_IF_FAILED(column->get_Size(adaptiveColumnSize.GetAddressOf()));
             INT32 isAutoResult;
             THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"Auto").Get(), &isAutoResult));
 

@@ -18,7 +18,7 @@ Image::Image(SeparationStyle separationStyle,
     ImageSize imageSize,
     std::string altText,
     HorizontalAlignment hAlignment) :
-    BaseCardElement(CardElementType::Image, SeparationStyle::Default, speak),
+    BaseCardElement(CardElementType::Image, separationStyle, speak),
     m_url(url),
     m_imageStyle(imageStyle),
     m_imageSize(imageSize),

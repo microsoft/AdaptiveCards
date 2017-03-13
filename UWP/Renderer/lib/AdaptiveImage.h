@@ -30,8 +30,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize);
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize);
 
-        IFACEMETHODIMP get_AltText(HSTRING *text);
-        IFACEMETHODIMP put_AltText(HSTRING text);
+        IFACEMETHODIMP get_AltText(_In_ HSTRING *text);
+        IFACEMETHODIMP put_AltText(_Out_ HSTRING text);
 
         IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment* hAlignment);
         IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment hAlignment);
@@ -42,8 +42,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
         IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
 
-        IFACEMETHODIMP get_Speak(HSTRING *text);
-        IFACEMETHODIMP put_Speak(HSTRING text);
+        IFACEMETHODIMP get_Speak(_In_ HSTRING *text);
+        IFACEMETHODIMP put_Speak(_Out_ HSTRING text);
 
     private:
         std::shared_ptr<AdaptiveCards::Image> m_sharedImage;

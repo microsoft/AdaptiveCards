@@ -36,34 +36,31 @@ namespace XamlCardVisualizer
 
             AdaptiveTextBlock textBlock1 = new AdaptiveTextBlock();
             textBlock1.Text = "Hello";
-            textBlock1.Size = CardElementSize.Medium;
-            textBlock1.TextWeight = TextWeight.Normal;
-            textBlock1.TextColor = TextColor.Default;
+            textBlock1.Weight = TextWeight.Normal;
+            textBlock1.Color = TextColor.Warning;
+            textBlock1.Size = TextSize.Large;
             container1.Items.Add(textBlock1);
             AdaptiveTextBlock textBlock2 = new AdaptiveTextBlock();
             textBlock2.Text = "World";
-            textBlock2.Size = CardElementSize.Medium;
-            textBlock2.TextWeight = TextWeight.Normal;
-            textBlock2.TextColor = TextColor.Accent;
+            textBlock2.Weight = TextWeight.Normal;
+            textBlock2.Color = TextColor.Accent;
             container1.Items.Add(textBlock2);
 
-            card.Items.Add(container1);
+            card.Body.Add(container1);
 
             AdaptiveContainer container2 = new AdaptiveContainer();
-            container2.StartGroup = true;
 
             AdaptiveTextBlock textBlock3 = new AdaptiveTextBlock();
             textBlock3.Text = "In new container";
-            textBlock3.Size = CardElementSize.Medium;
-            textBlock3.TextWeight = TextWeight.Normal;
-            textBlock3.TextColor = TextColor.Default;
+            textBlock3.Weight = TextWeight.Normal;
+            textBlock3.Color = TextColor.Default;
             container2.Items.Add(textBlock3);
 
-            card.Items.Add(container2);
+            card.Body.Add(container2);
 
             AdaptiveImage image = new AdaptiveImage();
-            image.Uri = new Uri("https://unsplash.it/360/202?image=883");
-            card.Items.Add(image);
+            image.Url = new Uri("https://unsplash.it/360/202?image=883");
+            card.Body.Add(image);
 
             m_renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();
 
