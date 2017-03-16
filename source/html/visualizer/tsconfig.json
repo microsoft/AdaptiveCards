@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "target": "es5",
+        "rootDir": "src",
+        "outDir": "built",
+        "baseUrl": ".",
+        "paths": {
+            "adaptive-card-html-renderer/*": [
+                "node_modules/adaptive-card-html-renderer/built/*"
+            ]
+        }
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

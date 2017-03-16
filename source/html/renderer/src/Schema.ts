@@ -214,7 +214,7 @@ export class ColumnSet extends CardElement implements IColumnSet {
     columns: IColumn[];
 }
 
-class ContainerBase extends CardElement implements IContainerBase {
+export class ContainerBase extends CardElement implements IContainerBase {
     public constructor(type: string, init?: Partial<IContainerBase>) {
         super(type, init);
         Object.assign(this, init);

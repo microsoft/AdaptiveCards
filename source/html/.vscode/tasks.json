@@ -8,7 +8,7 @@
     "tasks": [
         {
             "showOutput": "always",
-            "taskName": "bundle",
+            "taskName": "build-all",
             "isBuildCommand": true,
             "isBackground": true,
             "problemMatcher": "$tsc-watch"

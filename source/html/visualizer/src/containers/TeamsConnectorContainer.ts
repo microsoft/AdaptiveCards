@@ -1,7 +1,7 @@
 import { HostContainer} from "./HostContainer";
 import { ConnectorContainer } from "./ConnectorContainer";
-import * as Adaptive from "../../Adaptive";
-import * as Utils from "../../Utils";
+import * as Adaptive from "adaptive-card-html-renderer/Adaptive";
+import * as Utils from "adaptive-card-html-renderer/Utils";
 
 export class TeamsConnectorContainer extends ConnectorContainer {
     render(card: Adaptive.AdaptiveCard): HTMLElement {

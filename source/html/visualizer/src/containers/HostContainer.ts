@@ -1,6 +1,5 @@
-import * as Adaptive from "../../Adaptive";
-import * as Utils from "../../Utils";
-
+import * as Adaptive from "adaptive-card-html-renderer/Adaptive";
+import * as Utils from "adaptive-card-html-renderer/Utils";
 import * as vkbeautify from "vkbeautify";
 
 declare var SpeechSynthesisUtterance: any;

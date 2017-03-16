@@ -1,6 +1,6 @@
 import { HostContainer} from "./HostContainer";
-import * as Adaptive from "../../Adaptive";
-import * as Utils from "../../Utils";
+import * as Adaptive from "adaptive-card-html-renderer/Adaptive";
+import * as Utils from "adaptive-card-html-renderer/Utils";
 
 export class CortanaCarContainer extends HostContainer {
     applyOptions() {
@@ -19,7 +19,7 @@ export class CortanaCarContainer extends HostContainer {
         
         let img = document.createElement("img");
         img.classList.add("image", "cortanaLogo");
-        img.src = "./../../assets/cortana-logo.png";
+        img.src = "assets/cortana-logo.png";
         Utils.appendChild(imgDiv, img);
         renderedCard.insertBefore(imgDiv, renderedCard.firstChild);
 
