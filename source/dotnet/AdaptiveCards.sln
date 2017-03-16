@@ -7,7 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Model", "Adap
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{8BBA6A36-9482-44CB-A330-E54DF571E997}"
 	ProjectSection(SolutionItems) = preProject
-		nuget\Adaptive.NET.nuspec = nuget\Adaptive.NET.nuspec
 		nuget\createpackage.cmd = nuget\createpackage.cmd
 		nuget\pushpackage.cmd = nuget\pushpackage.cmd
 	EndProjectSection

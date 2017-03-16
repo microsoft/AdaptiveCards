@@ -73,6 +73,7 @@
     <Compile Include="TypedElementConverter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AdaptiveCards.Model.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

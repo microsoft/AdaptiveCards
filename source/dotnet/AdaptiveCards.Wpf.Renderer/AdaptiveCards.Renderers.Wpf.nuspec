@@ -6,8 +6,8 @@
     <authors>Microsoft</authors>
     <iconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Adaptive Card renderer for Xaml</summary>
-    <description>This library provides XAML rendering object model for adaptive cards</description>
+    <summary>Adaptive Card renderer for WPF</summary>
+    <description>This library provides WPF rendering object model for adaptive cards</description>
     <language>en-US</language>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="9.0.1" />

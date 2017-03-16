@@ -192,10 +192,8 @@
     <Compile Include="TypedElement.Xaml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Adaptive.Renderers.Xaml.nuspec" />
-    <None Include="createpackage.cmd" />
+    <None Include="AdaptiveCards.Renderers.Wpf.nuspec" />
     <None Include="packages.config" />
-    <None Include="pushpackage.cmd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
