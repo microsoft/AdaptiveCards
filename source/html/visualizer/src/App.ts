@@ -1,5 +1,5 @@
-﻿import * as Adaptive from "../Adaptive";
-import { JsonParser } from "../JsonParser";
+﻿import * as Adaptive from "adaptive-card-html-renderer/Adaptive";
+import { JsonParser } from "adaptive-card-html-renderer/JsonParser";
 import * as Constants from "./Constants";
 
 import { BingContainer } from "./containers/BingContainer";
@@ -213,42 +213,42 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Outlook Connector",
-            new OutlookConnectorContainer("red", "./../../css/outlookConnectorCard.css")));
+            new OutlookConnectorContainer("red", "css/outlookConnectorCard.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Microsoft Teams Connector",
-            new TeamsConnectorContainer("./../../css/teamsConnectorCard.css")));
+            new TeamsConnectorContainer("css/teamsConnectorCard.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Windows Toast Notification",
-            new ToastContainer(362, "./../../css/toast.css")));
+            new ToastContainer(362, "css/toast.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Large Live Tile",
-            new LiveTileContainer(310, 310, "./../../css/liveTile.css")));
+            new LiveTileContainer(310, 310, "css/liveTile.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Skype",
-            new SkypeContainer("./../../css/skypeCard.css")));
+            new SkypeContainer("css/skypeCard.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Bing",
-            new BingContainer(285, 150, "./../../css/bing.css")));
+            new BingContainer(285, 150, "css/bing.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Cortana Car",
-            new CortanaCarContainer("./../../css/cortanaCar.css")));
+            new CortanaCarContainer("css/cortanaCar.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Speech",
-            new SpeechContainer("./../../css/bing.css")));
+            new SpeechContainer("css/bing.css")));
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(

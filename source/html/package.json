@@ -1,0 +1,11 @@
+{
+  "name": "adaptive-card-html",
+  "version": "1.0.0",
+  "description": "adaptive card toolkit html",
+  "main": "index.js",
+  "scripts": {
+    "build-all": "cd renderer && npm run build && cd ../visualizer && npm run build && cd .."
+  },
+  "author": "",
+  "license": "MIT"
+}

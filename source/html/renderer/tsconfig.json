@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "target": "es5",
+        "outDir": "built"
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
