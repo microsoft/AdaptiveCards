@@ -21,6 +21,8 @@ namespace Adaptive
             this.Type = "AdaptiveCard";
         }
 
+        public const string ContentType = "application/vnd.microsoft.adaptive-card";
+
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
