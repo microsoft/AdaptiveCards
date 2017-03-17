@@ -36,9 +36,12 @@ namespace Adaptive
             if (this.SelectAction != null)
             {
                 var uiButton = (Button)this.SelectAction.Render(context.NewActionContext());
-                uiButton.Content = uiContainer;
-                uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
-                return uiButton;
+                if (uiButton != null)
+                {
+                    uiButton.Content = uiContainer;
+                    uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
+                    return uiButton;
+                }
             }
 
             return uiContainer;
