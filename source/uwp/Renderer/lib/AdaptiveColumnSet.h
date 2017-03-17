@@ -2,7 +2,7 @@
 
 #include "AdaptiveCards.XamlCardRenderer.h"
 #include "Enums.h"
-#include "Container.h"
+#include "ColumnSet.h"
 #include <windows.foundation.h>
 
 namespace AdaptiveCards { namespace XamlCardRenderer
@@ -17,6 +17,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     public:
         AdaptiveColumnSet();
+        HRESULT RuntimeClassInitialize() noexcept;
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ColumnSet>& sharedColumnSet);
 
         // IAdaptiveColumnSet
         IFACEMETHODIMP get_Columns(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn*>** columns);
@@ -34,8 +36,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn*>> m_columns;
 
-        //Using a Container as backing element for now
-        std::shared_ptr<AdaptiveCards::Container> m_sharedColumnSet;
+        std::shared_ptr<AdaptiveCards::ColumnSet> m_sharedColumnSet;
     };
 
     ActivatableClass(AdaptiveColumnSet);

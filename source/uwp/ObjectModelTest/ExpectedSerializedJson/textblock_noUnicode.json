@@ -1,53 +1,53 @@
 {
-  "@type": "AdaptiveCard",
+  "type": "AdaptiveCard",
   "body": [
     {
-      "@type": "TextBlock",
+      "type": "TextBlock",
       "text": "Light Test",
-      "textColor": "light",
-      "textWeight": "bolder",
-      "textSize": "small",
-      "textWrap": "noWrap"
+      "color": "light",
+      "weight": "bolder",
+      "size": "small",
+      "wrap": false
     },
     {
-      "@type": "TextBlock",
+      "type": "TextBlock",
       "text": "Dark Test",
-      "textColor": "dark",
-      "textWeight": "bolder",
-      "textWrap": "noWrap"
+      "color": "dark",
+      "weight": "bolder",
+      "wrap": false
     },
     {
-      "@type": "TextBlock",
+      "type": "TextBlock",
       "text": "Accent Test",
-      "textColor": "accent",
-      "textWeight": "bolder",
-      "textWrap": "noWrap"
+      "color": "accent",
+      "weight": "bolder",
+      "wrap": false
     },
     {
-      "@type": "TextBlock",
+      "type": "TextBlock",
       "text": "Good Test",
-      "textColor": "good",
-      "textWeight": "bolder",
-      "textWrap": "noWrap"
+      "color": "good",
+      "weight": "bolder",
+      "wrap": false
     },
     {
-      "@type": "TextBlock",
-      "textColor": "warning"
+      "type": "TextBlock",
+      "color": "warning"
     },
     {
-      "@type": "TextBlock",
-      "textWeight": "bolder"
+      "type": "TextBlock",
+      "weight": "bolder"
     },
     {
-      "@type": "TextBlock",
-      "textWrap": "noWrap"
+      "type": "TextBlock",
+      "wrap": false
     },
     {
-      "@type": "TextBlock",
+      "type": "TextBlock",
       "text": "Attention Test",
-      "textColor": "attention",
-      "textWeight": "bolder",
-      "textWrap": "noWrap"
+      "color": "attention",
+      "weight": "bolder",
+      "wrap": false
     }
   ]
 }
