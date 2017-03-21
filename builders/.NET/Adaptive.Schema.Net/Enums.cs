@@ -7,13 +7,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
 
     /// <summary>
     /// Controls the horizontal size (width) of Column.
     /// </summary>
-    public class ColumnSize
+    public partial class ColumnSize
     {
         /// <summary>
         /// The width of the Column is optimally chosen depending on the space available in the element's container
@@ -193,31 +193,14 @@ namespace Adaptive.Schema.Net
         Person
     }
 
-    /// <summary>
-    /// Controls the separation style for the current container
-    /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
-    public enum SeparationStyle
-    {
-        /// <summary>
-        /// separate the current container from the previous container
-        /// </summary>
-        Before,
-
-        /// <summary>
-        /// separate the current container from the following container
-        /// </summary>
-        After,
-
-        /// <summary>
-        /// separate the current container from the previous and following container
-        /// </summary>
-        Both
-    }
-
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum TextInputStyle
     {
+        /// <summary>
+        /// plain text
+        /// </summary>
+        Text, 
+
         /// <summary>
         /// Input is a telephone number and the client may use this information to provide optimized keyboard input for the user.
         /// </summary>
@@ -231,47 +214,7 @@ namespace Adaptive.Schema.Net
         /// <summary>
         /// Input is a email and the client may use this information to provide optimized keyboard input for the user.
         /// </summary>
-        Email,
-
-        /// <summary>
-        /// Input is text but should be hidden to protect the typed information in the textbox.
-        /// </summary>
-        Password,
-
-        /// <summary>
-        /// Input is a number. min, max and step properties expressed as numbers may be used by client to help user input number into text box.
-        /// </summary>
-        Number,
-
-        /// <summary>
-        /// Input is a range. min, max and step properties expressed as numbersmay be used by client to help user input a number on a range into text box
-        /// </summary>
-        Range,
-
-        /// <summary>
-        /// Input is date. min, max properties expressed as Date may be used by client to help user to select a date via a text box
-        /// </summary>
-        Date,
-
-        /// <summary>
-        /// Input is date and time. min, max expressed as DateTime properties may be used by client to help user to select a date and a time via a text box
-        /// </summary>
-        Datetime,
-
-        /// <summary>
-        /// Input is time. min, max properties expressed as time may be used by client to help user to select a time via a text box
-        /// </summary>
-        Time,
-
-        /// <summary>
-        /// Input is month. min, max properties expressed as Date may be used by client to help user to select a month via a text box
-        /// </summary>
-        Month,
-
-        /// <summary>
-        /// Input is week. min, max properties expressed as Date may be used by client to help user to select a week via a text box
-        /// </summary>
-        Week
+        Email
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]

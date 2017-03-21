@@ -63,6 +63,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -105,8 +106,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="NoInputRenderer.cs" />
-    <Compile Include="MyAdaptiveRenderer.cs" />
     <Compile Include="ShowCardWindow.xaml.cs">
       <DependentUpon>ShowCardWindow.xaml</DependentUpon>
     </Compile>
@@ -118,7 +117,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ActionInstance.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -145,6 +143,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -157,10 +156,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\builders\.NET\Adaptive.Schema.Net\Adaptive.Schema.Net.csproj">
-      <Project>{692311b2-e537-4700-8ef7-a5f83d90383c}</Project>
-      <Name>Adaptive.Schema.Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Renderers\XamlRenderer\Adaptive.Renderers.Xaml.csproj">
       <Project>{60619d62-59fa-4864-ba5b-6f6f87997671}</Project>
       <Name>Adaptive.Renderers.Xaml</Name>

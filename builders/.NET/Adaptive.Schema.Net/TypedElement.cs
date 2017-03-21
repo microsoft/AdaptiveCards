@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
-    [JsonConverter(typeof(TypeConverter))]
+    [JsonConverter(typeof(TypedElementConverter))]
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class TypedElement
+    public partial class TypedElement
     {
         public TypedElement()
         {
             this.Type = GetType().Name;
         }
 
-        [JsonProperty("@type", Order = -2, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
         [JsonRequired]
         public string Type { get; set; }
     }

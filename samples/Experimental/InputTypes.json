@@ -1,12 +1,12 @@
 {
-    "@type": "AdaptiveCard",
+    "type": "AdaptiveCard",
     "actions": [
         {
-            "@type": "Form",
+            "type": "Form",
             "title": "Set Approval Date",
             "inputs": [
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "maxLength": 5,
                     "inputType": "email"
                     // email
@@ -24,20 +24,20 @@
                     // week
                 },
                 {
-                    "@type": "Radio"
+                    "type": "Radio"
                 },
                 {
-                    "@type": "Checkbox"
+                    "type": "Checkbox"
                 },
                 {
-                    "@type": "Password"
+                    "type": "Password"
                 },
                 {
-                    "@type": "Select",
+                    "type": "Select",
                     "multiple": true
                 },
                 {
-                    "@type": "Input",
+                    "type": "Input",
                     "id": "dueDate",
                     "title": "Select a date",
                     "inputType": "date",
@@ -47,7 +47,7 @@
             ],
             "actions": [
                 {
-                    "@type": "Submit",
+                    "type": "Submit",
                     "name": "OK",
                     "value": {}
                 }

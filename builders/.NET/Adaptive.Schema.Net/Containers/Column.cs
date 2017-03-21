@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
-    /// A column container inside of a columngroup
+    /// A container inside of a ColumnSet
     /// </summary>
-    public class Column : Container
+    public partial class Column : Container
     {
         public Column() { }
 

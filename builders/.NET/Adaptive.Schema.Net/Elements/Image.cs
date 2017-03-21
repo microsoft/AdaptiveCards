@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// The Image element allows for the inclusion of images in an Adaptive Card.
     /// </summary>
-    public class Image : CardElement
+    public partial class Image : CardElement
     {
         public Image()
         { }
@@ -34,10 +34,21 @@ namespace Adaptive.Schema.Net
         public string Url { get; set; }
 
         /// <summary>
+        /// Horizontal alignment for element
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public HorizontalAlignment? HorizontalAlignment { get; set; }
+
+        /// <summary>
         /// Action for this image (this allows a default action to happen when a click on an image happens)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionBase Action { get; set; }
+        public ActionBase SelectAction { get; set; }
 
+        /// <summary>
+        /// Alternate text to display for this image
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string AltText { get; set; }
     }
 }

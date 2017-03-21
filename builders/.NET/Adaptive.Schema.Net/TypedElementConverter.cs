@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// This handles using @type field to instantiate strongly typed object on deserialization
     /// </summary>
-    public class TypeConverter : JsonConverter
+    public partial class TypedElementConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
@@ -27,10 +27,11 @@ namespace Adaptive.Schema.Net
         {
             JObject jObject = JObject.Load(reader);
             // Create target object based on JObject
-            string typeName = jObject["@type"]?.Value<string>() ?? jObject["type"]?.Value<string>();
+            string typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             object result = jObject;
             if (typeName != null)
             {
+                typeName = typeName.Replace(".", string.Empty);
                 var type = typeof(TypedElement).GetTypeInfo().Assembly.ExportedTypes.FirstOrDefault(t => t.Name.ToLower() == typeName.ToLower());
                 if (type != null)
                 {

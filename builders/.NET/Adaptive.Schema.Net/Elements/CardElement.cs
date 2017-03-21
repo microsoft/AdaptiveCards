@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Base class for all elements in a container
     /// </summary>
-    public class CardElement : TypedElement
+    public partial class CardElement : TypedElement
     {
         public CardElement() : base()
         {
@@ -23,11 +23,6 @@ namespace Adaptive.Schema.Net
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Speak { get; set; }
 
-        /// <summary>
-        /// Horizontal alignment for element
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public HorizontalAlignment? HorizontalAlignment { get; set; }
     }
 }
 

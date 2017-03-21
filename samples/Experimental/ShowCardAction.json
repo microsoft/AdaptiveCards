@@ -1,0 +1,52 @@
+{
+    "type": "AdaptiveCard",
+    "actions": [
+        {
+            "type": "ShowCard",
+            "title": "Show a custom card",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Hello"
+                    },
+                    {
+                        "type": "Input",
+                        "id": "approvalDate",
+                        "inputType": "date",
+                        "title": "Select a date"
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Submit",
+                        "title": "OK",
+                        "data": {
+                            "orderId": "ABC"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "ShowCard",
+            "title": "View details",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "This is some details"
+                    }
+                ]
+            }
+        }
+    ],
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Hi there, what is your name?"
+        }
+    ]
+}

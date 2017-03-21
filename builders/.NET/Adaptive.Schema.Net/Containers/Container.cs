@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Adaptive.Schema.Net
+namespace Adaptive
 {
     /// <summary>
     /// Container for a collection of elements
     /// </summary>
-    public class Container : CardElement
+    public partial class Container : CardElement
     {
         public Container()
         { }
@@ -22,22 +22,10 @@ namespace Adaptive.Schema.Net
         public List<CardElement> Items { get; set; } = new List<CardElement>();
 
         /// <summary>
-        /// Image to use for the background of a card
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundImageUrl { get; set; }
-
-        /// <summary>
-        /// Background color to use for the card as RGB string
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string BackgroundColor { get; set; }
-
-        /// <summary>
         /// Action for this container (this allows a default action at the container level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionBase Action { get; set; }
+        public ActionBase SelectAction { get; set; }
 
         /// <summary>
         /// Actions for this container
@@ -46,9 +34,9 @@ namespace Adaptive.Schema.Net
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
 
         /// <summary>
-        /// visually separate this container from preiovus or pending containers
+        /// visually separate this container from previous containers
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public SeparationStyle? Separation { get; set; }
+        public bool? StartGroup { get; set; }
     }
 }
