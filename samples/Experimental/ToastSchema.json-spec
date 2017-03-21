@@ -24,7 +24,6 @@
                 "lang": string,
                 "baseUri": uri,
                 "addImageQuery": boolean,
-                "launch": string,
 
                 "title": {
                     "text": string,
@@ -63,8 +62,16 @@
                     "lang": string
                 },
 
-                "content": (array of adaptive body)
+                "body": (array of adaptive CardElement),
+
+                "actions": (array of adaptive CardElement)
             }
         }
+    },
+
+    "audio": {
+        "src": uri,
+        "loop": boolean,
+        "silent": boolean
     }
 }
