@@ -6,28 +6,29 @@ namespace AdaptiveCards
 
 enum class AdaptiveCardSchemaKey
 {
-    CardElementSize = 0,
+    Type = 0,
+    Body,
+    Version,
+    MinVersion,
+    FallbackText,
+    BaseCardElement,
+    Separation,
+    Speak,
+    Url,
+    ImageStyle,
+    ImageSize,
+    AltText,
+    HorizontalAlignment,
+    Text,
     TextSize,
     TextWeight,
-    TextWrap,
     TextColor,
-    HorizontalAlignment,
-    ImageStyle,
-    BaseCardElement,
-    Text,
-    Speak,
-    Type,
-    Uri,
-    isSubtle
-};
-
-enum class CardElementSize
-{
-    Auto = 0,
-    Stretch,
-    Small,
-    Medium,
-    Large
+    IsSubtle,
+    Wrap,
+    MaxLines,
+    Items,
+    Columns,
+    Size
 };
 
 enum class TextSize
@@ -43,11 +44,6 @@ enum class TextWeight {
     Lighter = 0,
     Normal,
     Bolder
-};
-
-enum class TextWrap {
-    NoWrap = 0,
-    Wrap,
 };
 
 enum class TextColor {
@@ -71,6 +67,14 @@ enum class ImageStyle {
     Person
 };
 
+enum class ImageSize {
+    Auto = 0,
+    Stretch,
+    Small,
+    Medium,
+    Large
+};
+
 enum class CardElementType
 {
     Unsupported = 0,
@@ -83,6 +87,12 @@ enum class CardElementType
     FactGroup,
     ImageGallery,
     ActionGroup
+};
+
+enum class SeparationStyle {
+    Default = 0,
+    None,
+    Strong,
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
@@ -103,11 +113,11 @@ TextWeight TextWeightFromString(const std::string& type);
 const std::string TextSizeToString(TextSize type);
 TextSize TextSizeFromString(const std::string& type);
 
-const std::string SizeToString(CardElementSize type);
-CardElementSize SizeFromString(const std::string& type);
+const std::string ImageSizeToString(ImageSize type);
+ImageSize ImageSizeFromString(const std::string& type);
 
-const std::string TextWrapToString(TextWrap type);
-TextWrap TextWrapFromString(const std::string& type);
+const std::string SeparationStyleToString(SeparationStyle type);
+SeparationStyle SeparationStyleFromString(const std::string& type);
 
 const std::string ImageStyleToString(ImageStyle style);
 ImageStyle ImageStyleFromString(const std::string& style);

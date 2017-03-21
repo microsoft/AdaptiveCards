@@ -3,20 +3,27 @@
 
 using namespace AdaptiveCards;
 
-Image::Image() : BaseCardElement(CardElementType::Image)
+Image::Image() :
+    BaseCardElement(CardElementType::Image),
+    m_imageStyle(ImageStyle::Normal),
+    m_imageSize(ImageSize::Auto),
+    m_hAlignment(HorizontalAlignment::Left)
 {
 }
 
-Image::Image(
-    std::shared_ptr<Container> container,
-    HorizontalAlignment horizontalAlignment,
-    CardElementSize size,
+Image::Image(SeparationStyle separationStyle,
     std::string speak,
-    std::string uri,
-    ImageStyle imageStyle) :
-    BaseCardElement(CardElementType::Image, container, horizontalAlignment, size, speak),
-    m_uri(uri),
-    m_imageStyle(imageStyle)
+    std::string url,
+    ImageStyle imageStyle,
+    ImageSize imageSize,
+    std::string altText,
+    HorizontalAlignment hAlignment) :
+    BaseCardElement(CardElementType::Image, SeparationStyle::Default, speak),
+    m_url(url),
+    m_imageStyle(imageStyle),
+    m_imageSize(imageSize),
+    m_altText(altText),
+    m_hAlignment(hAlignment)
 {
 }
 
@@ -26,11 +33,11 @@ std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
 
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
-    std::string uri = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Uri);
-    image->SetUri(uri);
-    ImageStyle imageStyle = ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::ImageStyle, ImageStyle::Normal, ImageStyleFromString);
-    image->SetImageStyle(imageStyle);
-
+    image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url));
+    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::ImageStyle, ImageStyle::Normal, ImageStyleFromString));
+    image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::ImageSize, ImageSize::Auto, ImageSizeFromString));
+    image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
+    image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
     return image;
 }
 
@@ -39,14 +46,14 @@ std::string Image::Serialize()
     return "";
 }
 
-std::string AdaptiveCards::Image::GetUri() const
+std::string AdaptiveCards::Image::GetUrl() const
 {
-    return m_uri;
+    return m_url;
 }
 
-void AdaptiveCards::Image::SetUri(const std::string value)
+void AdaptiveCards::Image::SetUrl(const std::string value)
 {
-    m_uri = value;
+    m_url = value;
 }
 
 ImageStyle AdaptiveCards::Image::GetImageStyle() const
@@ -57,5 +64,35 @@ ImageStyle AdaptiveCards::Image::GetImageStyle() const
 void AdaptiveCards::Image::SetImageStyle(const ImageStyle value)
 {
     m_imageStyle = value;
+}
+
+ImageSize AdaptiveCards::Image::GetImageSize() const
+{
+    return m_imageSize;
+}
+
+void AdaptiveCards::Image::SetImageSize(const ImageSize value)
+{
+    m_imageSize = value;
+}
+
+std::string AdaptiveCards::Image::GetAltText() const
+{
+    return m_altText;
+}
+
+void AdaptiveCards::Image::SetAltText(const std::string value)
+{
+    m_altText = value;
+}
+
+HorizontalAlignment AdaptiveCards::Image::GetHorizontalAlignment() const
+{
+    return m_hAlignment;
+}
+
+void AdaptiveCards::Image::SetHorizontalAlignment(const HorizontalAlignment value)
+{
+    m_hAlignment = value;
 }
 

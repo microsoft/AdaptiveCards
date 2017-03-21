@@ -7,38 +7,23 @@
 namespace AdaptiveCards
 {
 class BaseCardElement;
-class Container : public BaseCardElement, public std::enable_shared_from_this<Container>
+class Container : public BaseCardElement
 {
 public:
     Container();
-    Container(std::shared_ptr<Container> parent,
-        HorizontalAlignment horizontalAlignment,
-        CardElementSize size,
-        std::string speak,
-        bool startGroup
-    );
-
-    Container(std::shared_ptr<Container> parent,
-        HorizontalAlignment horizontalAlignment,
-        CardElementSize size,
-        std::string speak,
-        bool startGroup,
-        std::vector<std::shared_ptr<BaseCardElement>> &items
-    );
+    Container(SeparationStyle separation, std::string speak);
+    Container(SeparationStyle separation, std::string speak, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual std::string Serialize();
-    const std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
 
-    bool GetStartGroup() const;
-    void SetStartGroup(bool value);
-
-    void AddItem(std::shared_ptr<BaseCardElement>& item);
-    std::shared_ptr<BaseCardElement> GetItem(const size_t index) const;
-
+    std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
+    const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
     static std::shared_ptr<Container> Deserialize(const Json::Value& root);
 
+protected:
+    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> CardElementParsers;
+
 private:
-    bool m_startGroup;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
 };
 }

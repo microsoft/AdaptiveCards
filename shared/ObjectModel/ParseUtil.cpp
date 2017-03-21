@@ -1,4 +1,9 @@
 #include "ParseUtil.h"
+#include "Image.h"
+#include "TextBlock.h"
+#include "Container.h"
+#include "Column.h"
+#include "ColumnSet.h"
 #include "AdaptiveCardParseException.h"
 
 namespace AdaptiveCards
@@ -22,7 +27,7 @@ void ParseUtil::ExpectString(const Json::Value& json)
 // TODO: Remove? This code path might not be desirable going forward depending on how we decide to support forward compat. Task 10893205
 std::string ParseUtil::GetTypeAsString(const Json::Value& json)
 {
-    std::string typeKey = "@type";
+    std::string typeKey = "type";
     if (!json.isMember(typeKey))
     {
         throw AdaptiveCardParseException("The JSON element is missing the following value: " + typeKey);
@@ -76,6 +81,23 @@ bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool
     }
 
     return propertyValue.asBool();
+}
+
+unsigned int ParseUtil::GetUInt(const Json::Value & json, AdaptiveCardSchemaKey key, unsigned int defaultValue)
+{
+    std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+    auto propertyValue = json.get(propertyName, Json::Value());
+    if (propertyValue.empty())
+    {
+        return defaultValue;
+    }
+
+    if (!propertyValue.isUInt())
+    {
+        throw AdaptiveCardParseException("Value was invalid. Expected type uInt.");
+    }
+
+    return propertyValue.asUInt();
 }
 
 void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyType)
