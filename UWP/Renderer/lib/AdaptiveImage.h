@@ -21,8 +21,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Image>& sharedImage);
 
         // IAdaptiveImage
-        IFACEMETHODIMP get_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass** url);
-        IFACEMETHODIMP put_Url(_Out_ ABI::Windows::Foundation::IUriRuntimeClass* url);
+        IFACEMETHODIMP get_Url(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
+        IFACEMETHODIMP put_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageStyle* imageStyle);
         IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageStyle imageStyle);
@@ -30,8 +30,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize);
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize);
 
-        IFACEMETHODIMP get_AltText(_In_ HSTRING *text);
-        IFACEMETHODIMP put_AltText(_Out_ HSTRING text);
+        IFACEMETHODIMP get_AltText(_Out_ HSTRING *text);
+        IFACEMETHODIMP put_AltText(_In_ HSTRING text);
 
         IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment* hAlignment);
         IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment hAlignment);
@@ -42,8 +42,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
         IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
 
-        IFACEMETHODIMP get_Speak(_In_ HSTRING *text);
-        IFACEMETHODIMP put_Speak(_Out_ HSTRING text);
+        IFACEMETHODIMP get_Speak(_Out_ HSTRING *text);
+        IFACEMETHODIMP put_Speak(_In_ HSTRING text);
 
     private:
         std::shared_ptr<AdaptiveCards::Image> m_sharedImage;
