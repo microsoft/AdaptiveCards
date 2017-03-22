@@ -3,31 +3,82 @@
 // TODO: LTR and RTL
 // TODO: Should we add TileGeneric?
 // TODO: Narrator support
-
 {
-    "branding": "none",
-    "TileSmall": {
-        "branding": {},
-        "visual": [
+    "visual": {
+        "lang": "en-US",
+        "baseUri": "http://images.msn.com/",
+        "branding": "nameAndLogo",
+        "addImageQuery": true,
+        "contentId": "548",
+        "displayName": "Wed 28th",
+        "lockDetailedStatus1": "Wednesday 28th",
+        "lockDetailedStatus2": "Backlog Review",
+        "lockDetailedStatus3": "10:00 AM",
+        "arguments": "action=viewEvent&eventId=548",
+        
+        "tileSmall": {
+            "lang": "en-US",
+            "baseUri": "http://images.msn.com/",
+            "branding": "logo",
+            "addImageQuery": true,
+            "contentId": "548",
+            "displayName": "Wed 28th",
+            "arguments": "action=viewEventSmall&eventId=548",
             
-        ]
-    },
-    "TileMedium": {
-        "branding": {},
-        "visual": [
-
-        ]
-    },
-     "TileWide": {
-        "branding": {},
-        "visual": [
-            
-        ]
-    },
-    "TileLarge": {
-        "branding": {},
-        "visual": [
-            
-        ]
+            "contentType": "adaptive",
+            "content": {
+                "peek": {
+                    "backgroundImages": [
+                        {
+                            "src": "flowers.jpg"
+                        }
+                    ],
+                    "children": [
+                        {
+                            "@type": "TextBlock",
+                            "text": "Flowers are great!",
+                            "textSize": "large"
+                        },
+                    ]
+                },
+                "body": {
+                    "backgroundImages": [
+                        {
+                            "src": "clouds.jpg"
+                        }
+                    ],
+                    "children": [
+                        {
+                            "@type": "TextBlock",
+                            "text": "Hello world",
+                            "textSize": "large"
+                        },
+                        {
+                            "@type": "TextBlock",
+                            "text": "Good afternoon!",
+                            "textSize": "medium",
+                            "isSubtle": "true"
+                        }
+                    ]
+                }
+            }
+        },
+        
+        "tileMedium": {
+            "contentType": "photos",
+            "content": {
+                "images": [
+                    {
+                        "src": "flowers.jpg"
+                    },
+                    {
+                        "src": "clouds.jpg"
+                    },
+                    {
+                        "src": "mountains.jpg"
+                    }
+                ]
+            }
+        }
     }
 }
