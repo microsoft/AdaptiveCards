@@ -1,0 +1,77 @@
+{
+    "action": {
+        "@type": "foreground" | "background" | "OpenUri" | "system",
+        "arguments": string,
+        "windowsProtocolActivationTargetApplicationPfn": string
+    },
+
+	"scenario": "default" | "reminder" | "alarm" | "incomingCall",
+    "displayTimestamp": datetime,
+
+	"header": {
+		"id": string,
+		"title": string,
+		"activation": (same as top level)
+	},
+
+    "visual": {
+        "lang": string,
+        "baseUri": uri,
+        "addImageQuery": boolean,
+        
+        "bindings": {
+            "generic": {
+                "lang": string,
+                "baseUri": uri,
+                "addImageQuery": boolean,
+
+                "title": {
+                    "text": string,
+                    "lang": string,
+                    "hintWrap": boolean,
+                    "hintMaxLines": int
+                },
+                "descriptionLine1": {
+                    "text": string,
+                    "lang": string,
+                    "hintWrap": boolean,
+                    "hintMaxLines": int
+                },
+                "descriptionLine2": {
+                    "text": string,
+                    "lang": string,
+                    "hintWrap": boolean,
+                    "hintMaxLines": int
+                },
+
+                "appLogoOverride": {
+                    "src": string,
+                    "alt": string,
+                    "addImageQuery": boolean,
+                    "hintCrop": "default" | "none" | "circle"
+                },
+
+                "heroImage": {
+                    "src": string,
+                    "alt": string,
+                    "addImageQuery": boolean
+                },
+
+                "attribution": {
+                    "text": string,
+                    "lang": string
+                },
+
+                "body": (array of adaptive CardElement),
+
+                "actions": (array of adaptive CardElement)
+            }
+        }
+    },
+
+    "audio": {
+        "src": uri,
+        "loop": boolean,
+        "silent": boolean
+    }
+}
