@@ -7,6 +7,13 @@
     padding: 0;
 }
 
+.errorContainer {
+    background-color: red;
+    color: white;
+    padding: 4px 8px 4px 8px;
+    margin-bottom: 20px;
+}
+
 .uiRoot {
     display: flex;
     flex-flow: column;

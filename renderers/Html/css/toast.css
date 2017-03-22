@@ -2,6 +2,16 @@
     box-sizing: border-box;
 }
 
+.removeTopSpacing {
+    margin-top: 0px !important;
+}
+
+.separator {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 20px 0px 0px 0px;
+    padding: 20px 0px 0px 0px;
+}
+
 .stretch {
     width: 100%;
 }
@@ -24,33 +34,24 @@
     font-weight: normal;
 }
 
-.text.startParagraph {
-    padding: 10px 0px 0px 0px;
-}
-
 .text.small {
     font-size: 12px;
-    margin: -4px 0px 5px 0px;
 }
 
 .text.defaultSize {
     font-size: 15px;
-    margin: -5px 0px 5px 0px;
 }
 
 .text.medium {
     font-size: 20px;
-    margin: -6px 0px 5px 0px;
 }
 
 .text.large {
     font-size: 24px;
-    margin: -9px 0px 5px 0px;
 }
 
 .text.extraLarge {
     font-size: 30px;
-    margin: -11px 0px 5px 0px;
 }
 
 .text.lighter {
@@ -107,11 +108,6 @@
 
 .text.attentionColor {
     color: darkred;
-}
-
-.headerContainer {
-    padding: 12px 12px 0px 12px;
-    display: flex;
 }
 
 .rootContainer {
@@ -230,19 +226,14 @@ td.factValue {
     background-color: rgba(0, 0, 0, 0.15);
 }
 
-.columnSpacer {
+.defaultColumnSeparator {
     width: 10px;    
 }
 
-.columnSpacer.startGroup {
-    width: 20px;    
-}
-
-.columnSeparator {
-    margin: 0 auto;
-    width: 0px;
-    height: 100%;
+.strongColumnSeparator {
     border-left: 1px solid #EEEEEE;
+    margin-left: 10px;
+    padding-left: 10px;
 }
 
 .actionCardContainer {
@@ -454,10 +445,8 @@ Other styles that can be specified:
 }
 
 .toggleLabel {
-    margin-left: 6px ! important;
-    margin-right: 0px ! important;
-    margin-bottom: 0px ! important;
-    padding: 0px ! important;
+    margin: 0px 0px 0px 6px !important;
+    padding: 0px !important;
     display: inline-block;
     vertical-align: middle;
 }
