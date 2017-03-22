@@ -33,16 +33,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveImage::get_Url(IUriRuntimeClass** url)
     {
-        *url= nullptr;
+        *url = nullptr;
 
-        ComPtr<IUriRuntimeClassFactory> urlActivationFactory;
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
         RETURN_IF_FAILED(GetActivationFactory(
             HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-            &urlActivationFactory));
+            &uriActivationFactory));
 
         HSTRING imageUri;
         RETURN_IF_FAILED(UTF8ToHString(m_sharedImage->GetUrl(), &imageUri));
-        RETURN_IF_FAILED(urlActivationFactory->CreateUri(imageUri, url));
+        RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, url));
 
         return S_OK;
     }
@@ -130,16 +130,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* size)
+    HRESULT AdaptiveImage::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
     {
-        *size = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedImage->GetSeparationStyle());
+        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedImage->GetSeparationStyle());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle size)
+    HRESULT AdaptiveImage::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
     {
-        m_sharedImage->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(size));
+        m_sharedImage->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
         return S_OK;
     }
 
