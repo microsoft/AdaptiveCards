@@ -21,11 +21,7 @@ export abstract class CardElement {
         element.className += " removeTopSpacing";
     }
 
-    protected adjustLayout(element: HTMLElement) {
-        if (this.useDefaultSizing) {
-            element.className += " stretch";
-        }
-
+    protected adjustAlignment(element: HTMLElement) {
         switch (this.horizontalAlignment) {
             case Enums.HorizontalAlignment.Center:
                 element.style.textAlign = "center";
@@ -34,6 +30,14 @@ export abstract class CardElement {
                 element.style.textAlign = "right";
                 break;
         }
+    }
+
+    protected adjustLayout(element: HTMLElement) {
+        if (this.useDefaultSizing) {
+            element.className += " stretch";
+        }
+
+        this.adjustAlignment(element);
 
         if (this.separation != Enums.Separation.Default) {
             this.removeTopSpacing(element);
@@ -291,11 +295,26 @@ export class Image extends CardElement {
         return false;
     }
 
+    protected adjustAlignment(element: HTMLElement) {
+        switch (this.horizontalAlignment) {
+            case Enums.HorizontalAlignment.Center:
+                element.style.marginLeft = "auto";
+                element.style.marginRight = "auto";
+
+                break;
+            case Enums.HorizontalAlignment.Right:
+                element.style.marginLeft = "auto";
+
+                break;
+        }
+    }
+
     protected internalRender(): HTMLElement {
         let imageElement: HTMLImageElement = null;
 
         if (!Utils.isNullOrEmpty(this.url)) {
             imageElement = document.createElement("img");
+            imageElement.style.display = "block";
             imageElement.onclick = (e) => {
                 if (this.selectAction != null) {
                     AdaptiveCard.executeAction(this.selectAction);
