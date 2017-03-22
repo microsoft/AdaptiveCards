@@ -1,5 +1,5 @@
 {
-    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
 	"body": [
@@ -45,7 +45,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup": true,
+			"separation": "strong",
 			"items": [
 				{
 					"type": "ColumnSet",
@@ -106,7 +106,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup":true,
+			"separation": "strong",
 			"items": [
 				{
 					"type": "ColumnSet",
@@ -170,7 +170,7 @@
 		},
 		{
 			"type": "Container",
-			"startGroup":true,
+			"separation": "strong",
 			"items": [
 				{
 					"type": "ColumnSet",

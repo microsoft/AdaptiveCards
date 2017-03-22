@@ -1,5 +1,8 @@
-# Interactive Visualizer
+# Install and Build
 
-The HTML Visualizer will allow previewing of Cards and will be available in early November.
+To build and test the HTML Renderer / Visualizer
 
-![Coming soon](../../docs/images/visualizer.png)
+1. cd source\html
+1. npm install
+1. npm run build (to build on every change do npm run watch)
+1. npm start

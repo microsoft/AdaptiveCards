@@ -8,16 +8,22 @@
         "moduleResolution": "node",
         "sourceMap": true,
         "target": "es5",
+        "allowJs": true,
         "rootDir": "src",
         "outDir": "built",
         "baseUrl": ".",
         "paths": {
-            "adaptive-card-html-renderer/*": [
-                "node_modules/adaptive-card-html-renderer/built/*"
+            "adaptive-cards": [
+                "../renderer/",
+                "../../renderer/"
             ]
         }
     },
     "include": [
-        "./src/**/*"
+        "src/**/*",
+        "src/containers/host-container.ts"
+    ],
+    "exclude": [
+        "src/containers/*"
     ]
 }

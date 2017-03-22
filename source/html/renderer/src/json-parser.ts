@@ -1,6 +1,6 @@
-import * as Adaptive from "./CardElements";
-import * as Enums from "./Enumerations";
-import * as Utils from "./Utils";
+import * as Adaptive from "./card-elements";
+import * as Enums from "./enumerations";
+import * as Utils from "./utils";
 
 export class JsonParser {
     private _card: Adaptive.AdaptiveCard;

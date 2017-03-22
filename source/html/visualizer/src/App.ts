@@ -1,17 +1,17 @@
-﻿import * as Adaptive from "adaptive-card-html-renderer/Adaptive";
-import { JsonParser } from "adaptive-card-html-renderer/JsonParser";
-import * as Constants from "./Constants";
+﻿import * as Adaptive from "adaptive-cards";
+import * as Constants from "./constants";
 
-import { BingContainer } from "./containers/BingContainer";
-import { HostContainer } from "./containers/HostContainer";
-import { ConnectorContainer } from "./containers/ConnectorContainer";
-import { LiveTileContainer } from "./containers/LiveTileContainer";
-import { OutlookConnectorContainer } from "./containers/OutlookConnectorContainer";
-import { SkypeContainer } from "./containers/SkypeContainer";
-import { SpeechContainer } from "./containers/SpeechContainer";
-import { TeamsConnectorContainer } from "./containers/TeamsConnectorContainer";
-import { ToastContainer } from "./containers/ToastContainer";
-import { CortanaCarContainer } from "./containers/CortanaCarContainer";
+ import { HostContainer } from "./containers/host-container";
+
+// import { BingContainer } from "./containers/bing";
+// import { ConnectorContainer } from "./containers/ConnectorContainer";
+// import { LiveTileContainer } from "./containers/LiveTileContainer";
+// import { OutlookConnectorContainer } from "./containers/OutlookConnectorContainer";
+// import { SkypeContainer } from "./containers/SkypeContainer";
+// import { SpeechContainer } from "./containers/SpeechContainer";
+// import { TeamsConnectorContainer } from "./containers/TeamsConnectorContainer";
+// import { ToastContainer } from "./containers/ToastContainer";
+// import { CortanaCarContainer } from "./containers/CortanaCarContainer";
 
 import * as ace from "brace";
 import "brace/mode/json";
@@ -23,6 +23,7 @@ let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
 function actionExecuted(action: Adaptive.Action) {
+    
     var message: string = "Action executed\n";
     message += "    Title: " + action.title + "\n";
 
@@ -69,7 +70,7 @@ function renderCard() {
     var json = JSON.parse(jsonPayload);
     var cardTypeName = json["type"];
 
-    var jsonParser = new JsonParser();
+    var jsonParser = new Adaptive.JsonParser();
     var adaptiveCard = jsonParser.parse(json);
 
     adaptiveCard.onExecuteAction = actionExecuted;
@@ -210,45 +211,45 @@ function setupEditor() {
 
 function setupContainerPicker() {
 
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Outlook Connector",
-            new OutlookConnectorContainer("red", "css/outlookConnectorCard.css")));
+    // hostContainerOptions.push(
+    //     new HostContainerOption(
+    //         "Outlook Connector",
+    //         new OutlookConnectorContainer("red", "css/outlookConnectorCard.css")));
 
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Microsoft Teams Connector",
-            new TeamsConnectorContainer("css/teamsConnectorCard.css")));
+    // hostContainerOptions.push(
+    //     new HostContainerOption(
+    //         "Microsoft Teams Connector",
+    //         new TeamsConnectorContainer("css/teamsConnectorCard.css")));
 
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Windows Toast Notification",
-            new ToastContainer(362, "css/toast.css")));
+    // hostContainerOptions.push(
+    //     new HostContainerOption(
+    //         "Windows Toast Notification",
+    //         new ToastContainer(362, "css/toast.css")));
 
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Large Live Tile",
-            new LiveTileContainer(310, 310, "css/liveTile.css")));
+    // hostContainerOptions.push(
+    //     new HostContainerOption(
+    //         "Large Live Tile",
+    //         new LiveTileContainer(310, 310, "css/liveTile.css")));
 
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Skype",
-            new SkypeContainer("css/skypeCard.css")));
+    // hostContainerOptions.push(
+    //     new HostContainerOption(
+    //         "Skype",
+    //         new SkypeContainer("css/skypeCard.css")));
 
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Bing",
-            new BingContainer(285, 150, "css/bing.css")));
+    // hostContainerOptions.push(
+    //     new HostContainerOption(
+    //         "Bing",
+    //         new BingContainer(285, 150, "css/bing.css")));
 
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Cortana Car",
-            new CortanaCarContainer("css/cortanaCar.css")));
+    // hostContainerOptions.push(
+    //     new HostContainerOption(
+    //         "Cortana Car",
+    //         new CortanaCarContainer("css/cortanaCar.css")));
 
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Speech",
-            new SpeechContainer("css/bing.css")));
+    // hostContainerOptions.push(
+    //     new HostContainerOption(
+    //         "Speech",
+    //         new SpeechContainer("css/bing.css")));
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(

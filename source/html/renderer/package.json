@@ -1,14 +1,15 @@
 {
-  "name": "adaptive-card-html-renderer",
+  "name": "adaptive-cards",
   "version": "0.1.0",
-  "description": "adaptive card toolkit html rendering library",
-  "main": "built/Adaptive.js",
+  "description": "Adaptive Card toolkit for javascript",
+  "main": "built/adaptive-cards",
   "private": true,
   "scripts": {
     "build-cdn": "webpack",
-    "build-npm": "tsc -p ./src",
+    "build-npm": "tsc -p .",
     "build": "npm run build-cdn && npm run build-npm && npm run dts",
-    "dts": "dts-generator --name adaptive-card-html-renderer --project . --out adaptive.d.ts",
+    "watch": "webpack --watch",    
+    "dts": "dts-generator --name adaptive-cards --project . --out packed/adaptive-cards.d.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -1,17 +1,16 @@
 module.exports = {
-    entry: "./src/Adaptive.ts",
+    entry: "./src/adaptive-cards.ts",
     output: {
-        filename: "./adaptive.js",
-        library: 'adaptiveCardHtmlRenderer'
+        filename: "./packed/adaptive-cards.js",
+        library: 'AdaptiveCardsLib'
     },
 
     resolve: {
-        // Add '.ts' as resolvable extensions.
         extensions: [".webpack.js", ".web.js", ".ts", ".js"]
     },
 
     module: {
-        loaders: [
+        rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             {
                 test: /\.ts$/,

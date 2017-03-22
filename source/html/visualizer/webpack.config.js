@@ -1,7 +1,7 @@
-var bundle = {
+var visualizer = {
     entry: "./src/App.ts",
     output: {
-        filename: "./visualizer-bundle.js"
+        filename: "./visualizer.js"
     },
 
     // Enable sourcemaps for debugging webpack's output.
@@ -9,7 +9,7 @@ var bundle = {
 
     resolve: {
         alias: {
-            "adaptive-card-html-renderer": "adaptive-card-html-renderer/built"
+            "adaptive-cards": "renderer"
         },
 
         // Add '.ts' as resolvable extensions.
@@ -17,42 +17,7 @@ var bundle = {
     },
 
     module: {
-        loaders: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            {
-                test: /\.ts$/,
-                loader: "ts-loader",
-            },
-            {
-                test: /\.json$/,
-                loader: "json-loader",
-            }
-
-        ]
-    },
-
-};
-
-var cdn = {
-    entry: "./src/App.ts",
-    output: {
-        filename: "./visualizer-use-cdn.js"
-    },
-
-    // Enable sourcemaps for debugging webpack's output.
-    //devtool: "source-map",
-
-    resolve: {
-        alias: {
-            "adaptive-card-html-renderer": "adaptive-card-html-renderer/built"
-        },
-
-        // Add '.ts' as resolvable extensions.
-        extensions: [".webpack.js", ".web.js", ".ts", ".js"]
-    },
-
-    module: {
-        loaders: [
+        rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             {
                 test: /\.ts$/,
@@ -67,11 +32,48 @@ var cdn = {
     },
 
     externals: {
-        "adaptive-card-html-renderer/Adaptive": 'adaptiveCardHtmlRenderer',
-        "adaptive-card-html-renderer/Utils": 'adaptiveCardHtmlRenderer.Utils',
-        "adaptive-card-html-renderer/JsonParser": 'adaptiveCardHtmlRenderer.JsonParser'
+        "adaptive-cards": "AdaptiveCardsLib"
+        // "adaptive-cards/Utils": 'adaptiveCardHtmlRenderer.Utils',
+        // "adaptive-cards/JsonParser": 'adaptiveCardHtmlRenderer.JsonParser'
     }
 
 };
 
-module.exports = [bundle, cdn];
+var visualizerWithRenderer = {
+    entry: "./src/App.ts",
+    output: {
+        filename: "./visualizer-with-renderer.js"
+    },
+
+    // Enable sourcemaps for debugging webpack's output.
+    //devtool: "source-map",
+
+    resolve: {
+        alias: {
+            "adaptive-cards": "renderer"
+        },
+
+        // Add '.ts' as resolvable extensions.
+        extensions: [".webpack.js", ".web.js", ".ts", ".js"],
+
+         modules: ["node_modules", ".."]
+    },
+
+    module: {
+        loaders: [
+            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+            {
+                test: /\.ts$/,
+                loader: "ts-loader",
+            },
+            {
+                test: /\.json$/,
+                loader: "json-loader",
+            }
+
+        ]
+    },
+
+};
+
+module.exports = [visualizerWithRenderer];

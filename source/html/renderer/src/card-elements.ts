@@ -1,6 +1,6 @@
-﻿import * as Enums from "./Enumerations";
-import * as Utils from "./Utils";
-import * as TextFormatters from "./TextFormatters";
+﻿import * as Enums from "./enumerations";
+import * as Utils from "./utils";
+import * as TextFormatters from "./text-formatter";
 
 export abstract class CardElement {
     protected get hideOverflow(): boolean {

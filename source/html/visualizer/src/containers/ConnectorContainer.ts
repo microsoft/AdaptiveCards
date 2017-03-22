@@ -1,5 +1,5 @@
 import { HostContainer} from "./HostContainer";
-import * as Adaptive from "adaptive-card-html-renderer/Adaptive";
+import * as Adaptive from "adaptive-cards";
 
 export abstract class ConnectorContainer extends HostContainer {
     applyOptions() {
