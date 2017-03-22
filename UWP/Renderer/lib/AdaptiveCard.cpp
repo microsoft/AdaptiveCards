@@ -34,10 +34,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
-        m_size = ABI::AdaptiveCards::XamlCardRenderer::CardElementSize::Auto;
-
-        m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
-        if (m_items == nullptr)
+        m_body = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
+        if (m_body == nullptr)
         {
             return E_FAIL;
         }
@@ -50,39 +48,64 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         RETURN_IF_FAILED(RuntimeClassInitialize());
         m_sharedAdaptiveCard = sharedAdaptiveCard;
 
-        return GenerateProjectionOfContainedElements(m_sharedAdaptiveCard->GetBody()->GetItems(),
-            m_items.Get());
+        return GenerateProjectionOfContainedElements(m_sharedAdaptiveCard->GetBody(), m_body.Get());
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Items(IVector<IAdaptiveCardElement*>** items)
+    HRESULT AdaptiveCard::get_Version(HSTRING* version)
     {
-        return m_items.CopyTo(items);
+        return UTF8ToHString(m_sharedAdaptiveCard->GetVersion(), version);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_ElementType(ElementType* /*elementType*/)
+    HRESULT AdaptiveCard::put_Version(HSTRING version)
     {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(version, out));
+        m_sharedAdaptiveCard->SetVersion(out);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_ElementType(ElementType /*elementType*/)
+    HRESULT AdaptiveCard::get_MinVersion(HSTRING* minVersion)
     {
+        return UTF8ToHString(m_sharedAdaptiveCard->GetMinVersion(), minVersion);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_MinVersion(HSTRING minVersion)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(minVersion, out));
+        m_sharedAdaptiveCard->SetMinVersion(out);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
+    HRESULT AdaptiveCard::get_FallbackText(HSTRING* fallbackText)
     {
-        *size = m_size;
+        return UTF8ToHString(m_sharedAdaptiveCard->GetFallbackText(), fallbackText);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_FallbackText(HSTRING fallbackText)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(fallbackText, out));
+        m_sharedAdaptiveCard->SetFallbackText(out);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
+    HRESULT AdaptiveCard::get_Body(IVector<IAdaptiveCardElement*>** body)
     {
-        m_size = size;
+        return m_body.CopyTo(body);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_ElementType(ElementType* elementType)
+    {
+        *elementType = ElementType::AdaptiveCard;
         return S_OK;
     }
 }}

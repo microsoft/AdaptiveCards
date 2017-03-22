@@ -23,15 +23,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
-        IFACEMETHODIMP put_ElementType(_In_ ABI::AdaptiveCards::XamlCardRenderer::ElementType elementType);
 
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size);
-        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
+        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
+        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+
+        IFACEMETHODIMP get_Speak(_In_ HSTRING *speak);
+        IFACEMETHODIMP put_Speak(_Out_ HSTRING speak);
 
     private:
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn*>> m_columns;
-        ABI::AdaptiveCards::XamlCardRenderer::CardElementSize m_size;
+
+        //Using a Container as backing element for now
+        std::shared_ptr<AdaptiveCards::Container> m_sharedColumnSet;
     };
 
     ActivatableClass(AdaptiveColumnSet);

@@ -34,50 +34,45 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_StartGroup(boolean* startGroup)
+    HRESULT AdaptiveContainer::get_Items(IVector<IAdaptiveCardElement*>** items)
     {
-        *startGroup = m_sharedContainer->GetStartGroup();
-        return S_OK;
+        return m_items.CopyTo(items);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_StartGroup(boolean startGroup)
-    {
-        m_sharedContainer->SetStartGroup(Boolify(startGroup));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveContainer::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveContainer::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::Container;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveContainer::put_ElementType(ElementType /*elementType*/)
+    HRESULT AdaptiveContainer::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
     {
+        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedContainer->GetSeparationStyle());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
+    HRESULT AdaptiveContainer::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
     {
-        *size = static_cast<ABI::AdaptiveCards::XamlCardRenderer::CardElementSize>(m_sharedContainer->GetSize());
+        m_sharedContainer->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
+    HRESULT AdaptiveContainer::get_Speak(HSTRING* speak)
     {
-        m_sharedContainer->SetSize(static_cast<AdaptiveCards::CardElementSize>(size));
-        return S_OK;
+        return UTF8ToHString(m_sharedContainer->GetSpeak(), speak);
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveContainer::get_Items(IVector<IAdaptiveCardElement*>** items)
+    HRESULT AdaptiveContainer::put_Speak(HSTRING speak)
     {
-        return m_items.CopyTo(items);
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(speak, out));
+        m_sharedContainer->SetSpeak(out);
+        return S_OK;
     }
 
 }

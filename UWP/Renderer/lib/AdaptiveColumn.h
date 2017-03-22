@@ -20,21 +20,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         AdaptiveColumn();
 
         // IAdaptiveColumn
-        IFACEMETHODIMP get_ColumnSize(_In_ HSTRING* size);
-        IFACEMETHODIMP put_ColumnSize(_Out_ HSTRING size);
+        IFACEMETHODIMP get_Size(_In_ HSTRING* size);
+        IFACEMETHODIMP put_Size(_Out_ HSTRING size);
 
         // IAdaptiveContainer
-        IFACEMETHODIMP get_StartGroup(_In_ boolean* startGroup);
-        IFACEMETHODIMP put_StartGroup(_Out_ boolean startGroup);
 
         IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** items);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
-        IFACEMETHODIMP put_ElementType(_In_ ABI::AdaptiveCards::XamlCardRenderer::ElementType elementType);
 
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size);
-        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size);
+        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
+        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+
+        IFACEMETHODIMP get_Speak(_In_ HSTRING *speak);
+        IFACEMETHODIMP put_Speak(_Out_ HSTRING speak);
 
     private:
         // TODO: Remove once Column shared object model type is ready. MSFT 11016964: Shared Object model: Card Elements
@@ -45,7 +45,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // Using Container as a backing element for now.
         // TODO: MSFT 11016964: Shared Object model: Card Elements
-        std::unique_ptr<AdaptiveCards::Container> m_column;
+        std::unique_ptr<AdaptiveCards::Container> m_sharedColumn;
     };
 
     ActivatableClass(AdaptiveColumn);

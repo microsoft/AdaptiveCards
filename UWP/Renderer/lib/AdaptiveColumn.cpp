@@ -15,54 +15,13 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    AdaptiveColumn::AdaptiveColumn() : m_column(std::make_unique<Container>())
+    AdaptiveColumn::AdaptiveColumn() : m_sharedColumn(std::make_unique<Container>())
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_StartGroup(boolean* startGroup)
-    {
-        *startGroup = m_column->GetStartGroup();
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_StartGroup(boolean startGroup)
-    {
-        m_column->SetStartGroup(Boolify(startGroup));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveColumn::get_ElementType(ElementType* elementType)
-    {
-        *elementType = ElementType::Column;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveColumn::put_ElementType(ElementType /*elementType*/)
-    {
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
-    {
-        *size = static_cast<ABI::AdaptiveCards::XamlCardRenderer::CardElementSize>(m_column->GetSize());
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
-    {
-        m_column->SetSize(static_cast<AdaptiveCards::CardElementSize>(size));
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_ColumnSize(HSTRING* size)
+    HRESULT AdaptiveColumn::get_Size(HSTRING* size)
     {
         *size = nullptr;
 
@@ -74,15 +33,50 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_ColumnSize(HSTRING size)
+    HRESULT AdaptiveColumn::put_Size(HSTRING size)
     {
         RETURN_IF_FAILED(m_size.Set(size));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveColumn::get_Items(IVector<IAdaptiveCardElement*>** items)
+    HRESULT AdaptiveColumn::get_Items(IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
+    }
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_ElementType(ElementType* elementType)
+    {
+        *elementType = ElementType::Column;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    {
+        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedColumn->GetSeparationStyle());
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    {
+        m_sharedColumn->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_Speak(HSTRING* speak)
+    {
+        return UTF8ToHString(m_sharedColumn->GetSpeak(), speak);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_Speak(HSTRING text)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(text, out));
+        m_sharedColumn->SetSpeak(out);
+        return S_OK;
     }
 }}

@@ -21,6 +21,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveColumnSet::get_Columns(IVector<IAdaptiveColumn*>** columns)
+    {
+        return m_columns.CopyTo(columns);
+    }
+
+    _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveColumnSet::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::ColumnSet;
@@ -28,29 +34,32 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveColumnSet::put_ElementType(ElementType /*elementType*/)
+    HRESULT AdaptiveColumnSet::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
     {
+        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedColumnSet->GetSeparationStyle());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize* size)
+    HRESULT AdaptiveColumnSet::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
     {
-        *size = m_size;
+        m_sharedColumnSet->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Size(ABI::AdaptiveCards::XamlCardRenderer::CardElementSize size)
+    HRESULT AdaptiveColumnSet::get_Speak(HSTRING* speak)
     {
-        m_size = size;
-        return S_OK;
+        return UTF8ToHString(m_sharedColumnSet->GetSpeak(), speak);
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveColumnSet::get_Columns(IVector<IAdaptiveColumn*>** columns)
+    HRESULT AdaptiveColumnSet::put_Speak(HSTRING speak)
     {
-        return m_columns.CopyTo(columns);
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(speak, out));
+        m_sharedColumnSet->SetSpeak(out);
+        return S_OK;
     }
 
 }}
