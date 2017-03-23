@@ -11,18 +11,8 @@
         "allowJs": true,
         "outDir": "built",
         "baseUrl": "."
-        // "paths": {
-        //     "adaptive-cards": [
-        //         "../renderer/built/adaptive-cards",
-        //         "../../renderer/built/adaptive-cards"
-        //     ]
-        // }
     },
     "include": [
-        "src/**/*",
-        "src/containers/host-container.ts"
-    ],
-    "exclude": [
-        "src/containers/*"
+        "src/**/*"
     ]
 }

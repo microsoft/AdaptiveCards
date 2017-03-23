@@ -1,6 +1,6 @@
-import { HostContainer} from "./HostContainer";
-import * as Adaptive from "adaptive-cards/Adaptive";
-import * as Utils from "adaptive-cards/Utils";
+import { HostContainer} from "./host-container";
+import * as Adaptive from "adaptive-cards";
+import * as Utils from "../utils";
 
 export class CortanaCarContainer extends HostContainer {
     applyOptions() {

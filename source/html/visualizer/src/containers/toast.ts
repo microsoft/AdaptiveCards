@@ -1,6 +1,6 @@
-import { HostContainer} from "./HostContainer";
-import * as Adaptive from "adaptive-cards/Adaptive";
-import * as Utils from "adaptive-cards/Utils";
+import { HostContainer} from "./host-container";
+import * as Adaptive from "adaptive-cards";
+import * as Utils from "../utils";
 
 export class ToastContainer extends HostContainer {
     static backgroundColor: string = "#1F1F1F";
