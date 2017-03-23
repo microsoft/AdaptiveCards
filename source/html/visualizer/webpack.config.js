@@ -1,3 +1,9 @@
+// `CheckerPlugin` is optional. Use it if you want async error reporting.
+// We need this plugin to detect a `--watch` mode. It may be removed later
+// after https://github.com/webpack/webpack/issues/3460 will be resolved.
+const { CheckerPlugin } = require('awesome-typescript-loader')
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+
 var visualizer = {
     entry: "./src/App.ts",
     output: {
@@ -8,9 +14,9 @@ var visualizer = {
     //devtool: "source-map",
 
     resolve: {
-        alias: {
-            "adaptive-cards": "renderer"
-        },
+        // alias: {
+        //     "adaptive-cards": "../renderer/built/adaptive-cards"
+        // },
 
         // Add '.ts' as resolvable extensions.
         extensions: [".webpack.js", ".web.js", ".ts", ".js"]
@@ -20,8 +26,8 @@ var visualizer = {
         rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             {
-                test: /\.ts$/,
-                loader: "ts-loader",
+                test: /\.tsx?$/,
+                loader: "awesome-typescript-loader",
             },
             {
                 test: /\.json$/,
@@ -30,9 +36,13 @@ var visualizer = {
 
         ]
     },
+     plugins: [
+      new CheckerPlugin(),
+      new TsConfigPathsPlugin(tsconfig: ngAppResolve('../renderer/tsconfig.json'))
+  ],
 
     externals: {
-        "adaptive-cards": "AdaptiveCardsLib"
+        //"adaptive-cards": "adaptive-cards"
         // "adaptive-cards/Utils": 'adaptiveCardHtmlRenderer.Utils',
         // "adaptive-cards/JsonParser": 'adaptiveCardHtmlRenderer.JsonParser'
     }
@@ -76,4 +86,4 @@ var visualizerWithRenderer = {
 
 };
 
-module.exports = [visualizerWithRenderer];
+module.exports = [visualizer];

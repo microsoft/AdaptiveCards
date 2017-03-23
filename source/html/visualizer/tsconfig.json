@@ -9,13 +9,12 @@
         "sourceMap": true,
         "target": "es5",
         "allowJs": true,
-        "rootDir": "src",
         "outDir": "built",
         "baseUrl": ".",
         "paths": {
             "adaptive-cards": [
-                "../renderer/",
-                "../../renderer/"
+                "../renderer/built/adaptive-cards",
+                "../../renderer/built/adaptive-cards"
             ]
         }
     },
