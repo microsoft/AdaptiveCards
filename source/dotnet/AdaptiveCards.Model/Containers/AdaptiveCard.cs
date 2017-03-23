@@ -16,7 +16,12 @@ namespace Adaptive
     [ContentProperty("Body")]
     public partial class AdaptiveCard : TypedElement
     {
-        public AdaptiveCard() { }
+        public AdaptiveCard()
+        {
+            this.Type = "AdaptiveCard";
+        }
+
+        public const string ContentType = "application/vnd.microsoft.card.adaptive";
 
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
@@ -24,12 +29,12 @@ namespace Adaptive
         [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(FactSet))]
-        [XmlElement(typeof(InputText))]
-        [XmlElement(typeof(InputDate))]
-        [XmlElement(typeof(InputTime))]
-        [XmlElement(typeof(InputNumber))]
-        [XmlElement(typeof(InputToggle))]
-        [XmlElement(typeof(InputChoiceSet))]
+        [XmlElement(typeof(InputText), ElementName = "Input.Text")]
+        [XmlElement(typeof(InputDate), ElementName = "Input.Date")]
+        [XmlElement(typeof(InputTime), ElementName = "Input.Time")]
+        [XmlElement(typeof(InputNumber), ElementName = "Input.Number")]
+        [XmlElement(typeof(InputToggle), ElementName = "Input.Toggle")]
+        [XmlElement(typeof(InputChoiceSet), ElementName = "Input.ChoiceSet")]
         public List<CardElement> Body { get; set; } = new List<CardElement>();
 
         /// <summary>
@@ -37,10 +42,10 @@ namespace Adaptive
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlArray("Actions")]
-        [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(ActionOpenUrl))]
-        [XmlArrayItem(ElementName = "ShowCard", Type = typeof(ActionShowCard))]
-        [XmlArrayItem(ElementName = "Submit", Type = typeof(ActionSubmit))]
-        [XmlArrayItem(ElementName = "Http", Type = typeof(ActionHttp))]
+        [XmlArrayItem(ElementName = "Action.OpenUrl", Type = typeof(ActionOpenUrl))]
+        [XmlArrayItem(ElementName = "Action.ShowCard", Type = typeof(ActionShowCard))]
+        [XmlArrayItem(ElementName = "Action.Submit", Type = typeof(ActionSubmit))]
+        [XmlArrayItem(ElementName = "Action.Http", Type = typeof(ActionHttp))]
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
 
         /// <summary>

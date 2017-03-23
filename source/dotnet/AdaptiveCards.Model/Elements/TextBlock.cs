@@ -13,9 +13,9 @@ namespace Adaptive
     /// </summary>
     public partial class TextBlock : CardElement
     {
-        public TextBlock() 
+        public TextBlock()
         {
-
+            this.Type = "TextBlock";
         }
 
         /// <summary>

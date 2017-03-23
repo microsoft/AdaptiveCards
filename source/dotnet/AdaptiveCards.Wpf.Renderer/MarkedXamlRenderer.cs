@@ -83,19 +83,16 @@ namespace Adaptive
 
         public override string List(string body, bool ordered)
         {
-            // not supported
-            return String.Empty;
+            return body;
         }
 
         public override string ListItem(string text)
         {
-            // not supported
-            return String.Empty;
+            return $"   • {text}<LineBreak/>";
         }
 
         public override string Paragraph(string text)
         {
-            // not supported
             return text;
         }
 

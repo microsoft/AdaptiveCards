@@ -15,7 +15,7 @@ namespace Adaptive
     {
         public ImageSet()
         {
-
+            this.Type = "ImageSet";
         }
 
         /// <summary>

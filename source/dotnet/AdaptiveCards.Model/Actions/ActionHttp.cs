@@ -16,8 +16,10 @@ namespace Adaptive
     /// </summary>
     public partial class ActionHttp : ActionBase
     {
-        public ActionHttp() : base() { }
-
+        public ActionHttp() : base()
+        {
+            this.Type = "Action.Http";
+        }
 
         /// <summary>
         /// HttpMethod to use

@@ -1,7 +1,6 @@
+
 {
-    "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
 	"body": [
 		{
 			"type": "Container",
@@ -39,7 +38,8 @@
 								},
 								{
 									"type": "TextBlock",
-									"text": "Created {{DATE(2017-02-14T06:08:39Z,Long)}} at {{TIME(2017-02-14T06:08:39Z)}}",
+									"separation": "none",
+									"text": "Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}",
 									"isSubtle": true,
 									"wrap": true
 								}
@@ -86,10 +86,11 @@
 					"type": "Action.ShowCard",
 					"title": "Set due date",
 					"card": {
-						"type": "Container",
-						"items": [
+						"type": "AdaptiveCard",
+						"body": [
 							{
-								"type": "Input.Date",
+								"type": "Input.Text",
+								"style": "date",
 								"id": "dueDate",
 								"title": "Select due date"
 							}
@@ -108,13 +109,13 @@
 					"type": "Action.ShowCard",
 					"title": "Comment",
 					"card": {
-						"type": "Container",
-						"items": [
+						"type": "AdaptiveCard",
+						"body": [
 							{
 								"type": "Input.Text",
 								"id": "comment",
 								"isMultiline": true,
-								"placeholder": "Enter your comment"
+								"title": "Enter your comment"
 							}
 						],
 						"actions": [

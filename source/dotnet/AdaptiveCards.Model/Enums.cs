@@ -257,12 +257,12 @@ namespace Adaptive
     public enum ChoiceInputStyle
     {
         /// <summary>
-        /// choices are preferred to be displayed for easy input. Example: Checkbox or Radio buttons
+        /// choices are prefered to be displayed for easy input. Example: Checkbox or Radio buttons
         /// </summary>
         Expanded,
 
         /// <summary>
-        /// choices are preffered to be compactly displayed. Example: ComboBox 
+        /// choices are prefered to be compactly displayed. Example: ComboBox 
         /// </summary>
         Compact
     }

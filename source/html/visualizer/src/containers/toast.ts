@@ -19,6 +19,7 @@ export class ToastContainer extends HostContainer {
         
         Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = false;
         Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
+        Adaptive.AdaptiveCard.renderOptions.defaultTextColor = Adaptive.TextColor.Light;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {
@@ -60,8 +61,6 @@ export class ToastContainer extends HostContainer {
 
         //     appendChild(element, headerElement);
         // }
-
-        card.root.textColor = ToastContainer.textColor;
 
         let renderedCard = card.render();
 

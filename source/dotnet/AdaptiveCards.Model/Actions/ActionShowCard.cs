@@ -16,7 +16,7 @@ namespace Adaptive
     {
         public ActionShowCard()
         {
-
+            this.Type = "Action.ShowCard";
         }
 
         /// <summary>

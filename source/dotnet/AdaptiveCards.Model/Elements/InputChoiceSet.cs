@@ -17,6 +17,7 @@ namespace Adaptive
     {
         public InputChoiceSet()
         {
+            this.Type = "Input.ChoiceSet";
         }
 
         /// <summary>

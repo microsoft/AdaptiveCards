@@ -16,7 +16,9 @@ namespace Adaptive
     public partial class FactSet : CardElement
     {
         public FactSet()
-        { }
+        {
+            this.Type = "FactSet";
+        }
 
         /// <summary>
         /// The facts to be displayed.

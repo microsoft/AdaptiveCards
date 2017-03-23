@@ -32,34 +32,8 @@
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     font-weight: normal;
+    margin-top: 20px;
 }
-
-/*
-.text.small {
-    font-size: 12px;
-    margin: -4px 0px 5px 0px;
-}
-
-.text.defaultSize {
-    font-size: 14px;
-    margin: -5px 0px 5px 0px;
-}
-
-.text.medium {
-    font-size: 20px;
-    margin: -6px 0px 5px 0px;
-}
-
-.text.large {
-    font-size: 24px;
-    margin: -9px 0px 5px 0px;
-}
-
-.text.extraLarge {
-    font-size: 30px;
-    margin: -11px 0px 5px 0px;
-}
-*/
 
 .text.small {
     font-size: 12px;
@@ -166,10 +140,6 @@
     padding-top: 20px;
 }
 
-.actionCardContainer {
-    margin: 0px;
-}
-
 .image {
     margin: 20px 0px 0px 0px;
 }
@@ -271,8 +241,9 @@ td.factValue {
 }
 
 .actionCardContainer {
-    margin: 16px -20px 0px -20px;
-    padding: 16px 20px 16px 20px;
+    margin-top: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     background-color: #F8F8F8;
 }
 

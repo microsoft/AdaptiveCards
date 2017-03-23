@@ -14,7 +14,9 @@ namespace Adaptive
     public partial class Image : CardElement
     {
         public Image()
-        { }
+        {
+            this.Type = "Image";
+        }
 
         /// <summary>
         /// Size for the Image

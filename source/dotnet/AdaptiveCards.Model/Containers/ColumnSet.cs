@@ -13,13 +13,16 @@ namespace Adaptive
     /// </summary>
     public partial class ColumnSet : CardElement
     {
-        public ColumnSet() { }
+        public ColumnSet()
+        {
+            this.Type = "ColumnSet";
+        }
 
         /// <summary>
         /// Columns that are part of this group
         /// </summary>
         [JsonRequired]
-        [XmlElement(ElementName="Column", Type=typeof(Column))]
+        [XmlElement(ElementName = "Column", Type = typeof(Column))]
         public List<Column> Columns { get; set; } = new List<Column>();
     }
 }

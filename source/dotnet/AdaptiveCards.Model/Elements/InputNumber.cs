@@ -11,10 +11,11 @@ namespace Adaptive
     /// <summary>
     /// Input which collects number from the user
     /// </summary>
-    public partial class InputNumber: Input
+    public partial class InputNumber : Input
     {
         public InputNumber()
         {
+            this.Type = "Input.Number";
         }
 
         /// <summary>

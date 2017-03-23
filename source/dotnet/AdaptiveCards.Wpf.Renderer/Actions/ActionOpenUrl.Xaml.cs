@@ -23,13 +23,16 @@ namespace Adaptive
         {
             if (AlternateRenderer != null)
                 return AlternateRenderer(this, context);
-
-            Button uiButton = this.CreateActionButton(context); // content);
-            uiButton.Click += (sender, e) =>
+            if (context.Options.SupportInteraction)
             {
-                context.Action(uiButton, new ActionEventArgs() { Action = this });
-            };
-            return uiButton;
+                Button uiButton = this.CreateActionButton(context); // content);
+                uiButton.Click += (sender, e) =>
+                {
+                    context.Action(uiButton, new ActionEventArgs() { Action = this });
+                };
+                return uiButton;
+            }
+            return null;
         }
     }
 }

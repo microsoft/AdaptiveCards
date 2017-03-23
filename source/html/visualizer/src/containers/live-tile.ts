@@ -4,7 +4,6 @@ import * as Utils from "../utils";
 
 export class LiveTileContainer extends HostContainer {
     static backgroundColor: string = "#0078D7";
-    static textColor: Adaptive.TextColor = Adaptive.TextColor.Light;
 
     private _width: number;
     private _height: number;
@@ -22,6 +21,7 @@ export class LiveTileContainer extends HostContainer {
         
         Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = false;
         Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
+        Adaptive.AdaptiveCard.renderOptions.defaultTextColor = Adaptive.TextColor.Light;
     }
 
     render(card: Adaptive.AdaptiveCard): HTMLElement {
@@ -30,8 +30,6 @@ export class LiveTileContainer extends HostContainer {
         element.style.height = this._height + "px";
         element.style.backgroundColor = LiveTileContainer.backgroundColor;
         element.style.overflow = "hidden";
-
-        card.root.textColor = LiveTileContainer.textColor;
 
         let renderedCard = card.render();
         renderedCard.style.height = "100%";

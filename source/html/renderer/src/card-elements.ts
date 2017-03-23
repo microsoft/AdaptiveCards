@@ -3,6 +3,12 @@ import * as Utils from "./utils";
 import * as TextFormatters from "./text-formatter";
 
 export abstract class CardElement {
+    private _container?: Container;
+
+    protected get container(): Container {
+        return this._container;
+    }
+
     protected get hideOverflow(): boolean {
         return true;
     }
@@ -11,11 +17,11 @@ export abstract class CardElement {
         return true;
     }
 
-    protected adjustLayout(element: HTMLElement) {
-        if (this.useDefaultSizing) {
-            element.className += " stretch";
-        }
+    protected removeTopSpacing(element: HTMLElement) {
+        element.className += " removeTopSpacing";
+    }
 
+    protected adjustAlignment(element: HTMLElement) {
         switch (this.horizontalAlignment) {
             case Enums.HorizontalAlignment.Center:
                 element.style.textAlign = "center";
@@ -23,6 +29,18 @@ export abstract class CardElement {
             case Enums.HorizontalAlignment.Right:
                 element.style.textAlign = "right";
                 break;
+        }
+    }
+
+    protected adjustLayout(element: HTMLElement) {
+        if (this.useDefaultSizing) {
+            element.className += " stretch";
+        }
+
+        this.adjustAlignment(element);
+
+        if (this.separation != Enums.Separation.Default) {
+            this.removeTopSpacing(element);
         }
 
         if (this.hideOverflow) {
@@ -32,19 +50,15 @@ export abstract class CardElement {
 
     protected abstract internalRender(): HTMLElement;
 
-    readonly container: Container;
-    
     speak: string;
     horizontalAlignment: Enums.HorizontalAlignment = Enums.HorizontalAlignment.Left;
     separation: Enums.Separation;
 
-    constructor(container: Container) {
-        this.container = container;
-    }
-
     abstract renderSpeech(): string;
 
-    render(): HTMLElement {
+    render(container?: Container): HTMLElement {
+        this._container = container;
+
         let renderedElement = this.internalRender();
 
         if (renderedElement != null) {
@@ -60,7 +74,7 @@ export class TextBlock extends CardElement {
 
     size: Enums.TextSize = Enums.TextSize.Normal;
     weight: Enums.TextWeight = Enums.TextWeight.Normal;
-    color: Enums.TextColor = Enums.TextColor.Default;
+    color?: Enums.TextColor;
     text: string;
     isSubtle: boolean = false;
     wrap: boolean = true;
@@ -89,7 +103,8 @@ export class TextBlock extends CardElement {
                     break;
             }
 
-            let actualTextColor = this.color == Enums.TextColor.Default ? this.container.textColor : this.color;
+            /// let actualTextColor = this.color ? this.color : (container.textColor ? container.textColor : AdaptiveCard.renderOptions.defaultTextColor);
+            let actualTextColor = this.color ? this.color : this.container.textColor;
 
             switch (actualTextColor) {
                 case Enums.TextColor.Dark:
@@ -172,6 +187,12 @@ export class TextBlock extends CardElement {
     }
 }
 
+class InternalTextBlock extends TextBlock {
+    get useDefaultSizing(): boolean {
+        return false;
+    }
+}
+
 export class Fact {
     name: string;
     value: string;
@@ -206,12 +227,12 @@ export class FactSet extends CardElement {
                 html += '<tr>';
                 html += '    <td class="factName">';
 
-                let textBlock = new TextBlock(this.container);
+                let textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].name;
                 textBlock.weight = Enums.TextWeight.Bolder;
                 textBlock.separation = Enums.Separation.None;
 
-                let renderedText = textBlock.render();
+                let renderedText = textBlock.render(this.container);
 
                 if (renderedText != null) {
                     html += renderedText.outerHTML;
@@ -220,12 +241,12 @@ export class FactSet extends CardElement {
                 html += '    </td>';
                 html += '    <td class="factValue">';
 
-                textBlock = new TextBlock(this.container);
+                textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].value;
                 textBlock.weight = Enums.TextWeight.Lighter;
                 textBlock.separation = Enums.Separation.None;
 
-                renderedText = textBlock.render();
+                renderedText = textBlock.render(this.container);
 
                 if (renderedText != null) {
                     html += renderedText.outerHTML;
@@ -274,14 +295,29 @@ export class Image extends CardElement {
         return false;
     }
 
+    protected adjustAlignment(element: HTMLElement) {
+        switch (this.horizontalAlignment) {
+            case Enums.HorizontalAlignment.Center:
+                element.style.marginLeft = "auto";
+                element.style.marginRight = "auto";
+
+                break;
+            case Enums.HorizontalAlignment.Right:
+                element.style.marginLeft = "auto";
+
+                break;
+        }
+    }
+
     protected internalRender(): HTMLElement {
         let imageElement: HTMLImageElement = null;
 
         if (!Utils.isNullOrEmpty(this.url)) {
             imageElement = document.createElement("img");
+            imageElement.style.display = "block";
             imageElement.onclick = (e) => {
                 if (this.selectAction != null) {
-                    this.selectAction.execute();
+                    AdaptiveCard.executeAction(this.selectAction);
                     e.cancelBubble = true;
                 }
             }
@@ -347,7 +383,7 @@ export class ImageSet extends CardElement {
             element.className = "imageGallery";
 
             for (var i = 0; i < this.images.length; i++) {
-                let renderedImage = this.images[i].render();
+                let renderedImage = this.images[i].render(this.container);
                 renderedImage.style.margin = "0px";
                 renderedImage.style.marginRight = "10px";
 
@@ -448,10 +484,10 @@ export class InputToggle extends Input {
             this._checkboxInputElement.checked = true;
         }
 
-        var label = new TextBlock(this.container);
+        var label = new InternalTextBlock();
         label.text = this.title;
 
-        var labelElement = label.render();
+        var labelElement = label.render(this.container);
         labelElement.className += " toggleLabel";
 
         var compoundInput = document.createElement("div");
@@ -523,10 +559,10 @@ export class InputChoiceSet extends Input {
 
                     this._toggleInputs.push(radioInput);
 
-                    var label = new TextBlock(this.container);
+                    var label = new InternalTextBlock();
                     label.text = this.choices[i].title;
 
-                    var labelElement = label.render();
+                    var labelElement = label.render(this.container);
                     labelElement.className += " toggleLabel";
 
                     var compoundInput = document.createElement("div");
@@ -555,10 +591,10 @@ export class InputChoiceSet extends Input {
 
                 this._toggleInputs.push(checkboxInput);
 
-                var label = new TextBlock(this.container);
+                var label = new InternalTextBlock();
                 label.text = this.choices[i].title;
 
-                var labelElement = label.render();
+                var labelElement = label.render(this.container);
                 labelElement.className += " toggleLabel";
 
                 var compoundInput = document.createElement("div");
@@ -577,10 +613,6 @@ export class InputChoiceSet extends Input {
     isCompact: boolean;
     isMultiSelect: boolean;
     placeholder: string;
-
-    constructor(container: Container) {
-        super(container);
-    }
 
     get value(): string {
         if (!this.isMultiSelect) {
@@ -637,10 +669,6 @@ export class InputNumber extends Input {
     min: string;
     max: string;
 
-    constructor(container: Container) {
-        super(container);
-    }
-
     get value(): string {
         return this._numberInputElement.value;
     }
@@ -659,10 +687,6 @@ export class InputDate extends Input {
         return this._dateInputElement;
     }
 
-    constructor(container: Container) {
-        super(container);
-    }
-
     get value(): string {
         return this._dateInputElement.value;
     }
@@ -679,10 +703,6 @@ export class InputTime extends Input {
         this._timeInputElement.className = "input time";
 
         return this._timeInputElement;
-    }
-
-    constructor(container: Container) {
-        super(container);
     }
 
     get value(): string {
@@ -758,15 +778,13 @@ class ActionButton {
 }
 
 export abstract class Action {
-    readonly container: Container;
+    private _container: Container;
 
     title: string;
 
-    constructor(container: Container) {
-        this.container = container;
+    get container() {
+        return this._container;
     }
-
-    abstract execute();
 
     renderUi(): HTMLElement {
         return null;
@@ -774,13 +792,6 @@ export abstract class Action {
 }
 
 export abstract class ActionExternal extends Action {
-    onExecute: (action: ActionExternal) => void = null;
-
-    execute() {
-        if (this.onExecute != null) {
-            this.onExecute(this);
-        }
-    }
 }
 
 export class ActionSubmit extends ActionExternal {
@@ -817,23 +828,20 @@ export class ActionHttp extends ActionExternal {
 export class ActionShowCard extends Action {
     static TypeName: string = "Action.ShowCard";
 
-    readonly card: Container;
+    readonly card: ActionShowCardContainer;
 
     title: string;
 
-    constructor(container: Container) {
-        super(container);
+    constructor() {
+        super();
 
-        this.card = new ActionShowCardContainer(container);
-    }
-
-    execute() {
-        AdaptiveCard.showPopupCard(this, this.card.render());
+        this.card = new ActionShowCardContainer();
     }
 }
 
 class ActionCollection {
     private _container: Container;
+    private _forbiddenActionTypes: Array<any>;
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
     private _expandedAction: Action = null;
@@ -854,10 +862,18 @@ class ActionCollection {
         }
 
         this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.padding = null;
-        this._actionCardContainer.style.marginTop = this.items.length > 1 ? null : "0px";
 
-        Utils.appendChild(this._actionCardContainer, action.card.render());
+        var padding = Utils.getActualPadding(this._actionCardContainer);
+
+        this._actionCardContainer.style.padding = null;
+        this._actionCardContainer.style.paddingLeft = padding.left + "px";
+        this._actionCardContainer.style.paddingRight = padding.right + "px";
+
+        this._actionCardContainer.style.marginTop = this.items.length > 1 ? null : "0px";
+        this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
+        this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
+
+        Utils.appendChild(this._actionCardContainer, action.card.render(this._container));
     }
 
     private actionClicked(actionButton: ActionButton) {
@@ -868,11 +884,13 @@ class ActionCollection {
 
             this.hideActionCardPane();
 
-            actionButton.action.execute();
+            AdaptiveCard.executeAction(<ActionExternal>actionButton.action);
         }
         else {
             if (AdaptiveCard.renderOptions.actionShowCardInPopup) {
-                actionButton.action.execute();
+                var actionShowCard = <ActionShowCard>actionButton.action;
+
+                AdaptiveCard.onShowPopupCard(actionShowCard, actionShowCard.card.render(this._container));
             }
             else if (actionButton.action === this._expandedAction) {
                 for (var i = 0; i < this._actionButtons.length; i++) {
@@ -899,12 +917,24 @@ class ActionCollection {
         }
     }
 
-    private static checkActionTypeIsAllowed(action: Action): boolean {
+    private checkActionTypeIsAllowed(action: Action): boolean {
         var className = Utils.getClassNameFromInstance(action);
+        var typeIsForbidden = false;
 
-        for (var i = 0; i < AdaptiveCard.renderOptions.supportedActionTypes.length; i++) {
-            if (className === Utils.getClassNameFromConstructor(AdaptiveCard.renderOptions.supportedActionTypes[i])) {
-                return true;
+        if (this._forbiddenActionTypes) {
+            for (var i = 0; i < this._forbiddenActionTypes.length; i++) {
+                if (className === Utils.getClassNameFromConstructor(this._forbiddenActionTypes[i])) {
+                    typeIsForbidden = true;
+                    break;
+                }
+            }
+        }
+
+        if (!typeIsForbidden) {
+            for (var i = 0; i < AdaptiveCard.renderOptions.supportedActionTypes.length; i++) {
+                if (className === Utils.getClassNameFromConstructor(AdaptiveCard.renderOptions.supportedActionTypes[i])) {
+                    return true;
+                }
             }
         }
 
@@ -915,8 +945,9 @@ class ActionCollection {
         return false;
     }
 
-    constructor(container: Container) {
+    constructor(container: Container, forbiddenActionTypes?: Array<any>) {
         this._container = container;
+        this._forbiddenActionTypes = forbiddenActionTypes;
     }
     
     items: Array<Action> = [];
@@ -924,6 +955,7 @@ class ActionCollection {
     onShowActionCardPane: (action: ActionShowCard) => void = null;
 
     render(): HTMLElement {
+        /*
         if (this._container.container != null && !AdaptiveCard.renderOptions.supportsNestedActions) {
             AdaptiveCard.raiseRenderError(
                 Enums.RenderError.NestedActionNotAllowed,
@@ -931,6 +963,7 @@ class ActionCollection {
 
             return null;
         }
+        */
 
         if (AdaptiveCard.renderOptions.maxActions != null && AdaptiveCard.renderOptions.maxActions < this.items.length) {
             AdaptiveCard.raiseRenderError(
@@ -954,7 +987,7 @@ class ActionCollection {
         var renderedActions: number = 0;
 
         if (this.items.length == 1 && this.items[0] instanceof ActionShowCard) {
-            if (ActionCollection.checkActionTypeIsAllowed(this.items[0])) {
+            if (this.checkActionTypeIsAllowed(this.items[0])) {
                 this.showActionCardPane(<ActionShowCard>this.items[0]);
 
                 renderedActions++;
@@ -962,7 +995,7 @@ class ActionCollection {
         }
         else {
             for (let i = 0; i < this.items.length; i++) {
-                if (ActionCollection.checkActionTypeIsAllowed(this.items[i])) {
+                if (this.checkActionTypeIsAllowed(this.items[i])) {
                     let buttonStripItem = document.createElement("div");
                     buttonStripItem.className = "buttonStripItem";
 
@@ -996,10 +1029,6 @@ class ActionCollection {
 export class Container extends CardElement {
     static TypeName: string = "Container";
 
-    private _element: HTMLDivElement;
-    private _textColor: Enums.TextColor = Enums.TextColor.Default;
-    private _actionCollection: ActionCollection;
-
     private static checkElementTypeIsAllowed(element: CardElement) {
         var className = Utils.getClassNameFromInstance(element);
 
@@ -1015,33 +1044,39 @@ export class Container extends CardElement {
 
         return false;
     }
-
-    private removeTopSpacing(element: HTMLElement) {
-        element.className += " removeTopSpacing";
-    }
-
-    private isLastItem(element: CardElement): boolean {
-        return this.items.indexOf(element) == this.items.length - 1;
-    }
-
+    
     private showBottomSpacer(requestingElement: CardElement = null) {
         if (requestingElement == null || this.isLastItem(requestingElement)) {
-            this._element.style.paddingBottom = null;
-
-            if (this.container != null) {
+            if (this.container) {
                 this.container.showBottomSpacer(this);
             }
+
+            this._element.style.paddingBottom = null;
         }
     }
 
     private hideBottomSpacer(requestingElement: CardElement = null) {
         if (requestingElement == null || this.isLastItem(requestingElement)) {
-            this._element.style.paddingBottom = "0px";
-
-            if (this.container != null) {
+            if (this.container) {
                 this.container.hideBottomSpacer(this);
             }
+
+            this._element.style.paddingBottom = "0px";
         }
+    }
+
+    private _items: Array<CardElement> = [];
+    private _hasBottomPadding?: boolean;
+
+    protected _actionCollection: ActionCollection;
+    protected _element: HTMLDivElement;
+
+    protected isLastItem(element: CardElement): boolean {
+        return this._items.indexOf(element) == (this._items.length - 1);
+    }
+
+    protected getForbiddenActionTypes(): Array<any> {
+        return null;
     }
 
     protected internalRender(): HTMLElement {
@@ -1049,7 +1084,7 @@ export class Container extends CardElement {
         this._element.className = this.cssClassName;
         this._element.onclick = (e) => {
             if (this.selectAction != null) {
-                this.selectAction.execute();
+                AdaptiveCard.executeAction(this.selectAction);
                 e.cancelBubble = true;
             }
         }
@@ -1058,32 +1093,23 @@ export class Container extends CardElement {
             this._element.style.backgroundColor = this.backgroundColor;
         }
 
-        if (this.items.length > 0) {
+        if (this._items.length > 0) {
             var renderedElementCount: number = 0;
 
-            for (var i = 0; i < this.items.length; i++) {
-                if (Container.checkElementTypeIsAllowed(this.items[i])) {
-                    var renderedElement = this.items[i].render();
+            for (var i = 0; i < this._items.length; i++) {
+                if (Container.checkElementTypeIsAllowed(this._items[i])) {
+                    var renderedElement = this._items[i].render(this);
 
                     if (renderedElement != null) {
                         if (renderedElementCount == 0) {
                             this.removeTopSpacing(renderedElement);
                         }
                         else {
-                            switch (this.items[i].separation) {
-                                case Enums.Separation.None:
-                                    this.removeTopSpacing(renderedElement);
+                            if (this._items[i].separation == Enums.Separation.Strong) {
+                                var separator = document.createElement("div");
+                                separator.className = "separator";
 
-                                    break;
-                                case Enums.Separation.Strong:
-                                    this.removeTopSpacing(renderedElement);
-
-                                    var separator = document.createElement("div");
-                                    separator.className = "separator";
-
-                                    Utils.appendChild(this._element, separator);
-
-                                    break;
+                                Utils.appendChild(this._element, separator);
                             }
                         }
 
@@ -1127,43 +1153,50 @@ export class Container extends CardElement {
         return className;
     }
 
-    items: Array<CardElement> = [];
     backgroundImageUrl: string;
     backgroundColor: string;
     actionButtonStyle: Enums.ActionButtonStyle = AdaptiveCard.renderOptions.defaultActionButtonStyle;
     selectAction: ActionExternal;
 
-    constructor(container: Container) {
-        super(container);
+    constructor() {
+        super();
 
-        this._actionCollection = new ActionCollection(this);
+        this._actionCollection = new ActionCollection(this, this.getForbiddenActionTypes());
         this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer() };
         this._actionCollection.onShowActionCardPane = (action: ActionShowCard) => { this.hideBottomSpacer() };
     }
 
+    private _textColor?: Enums.TextColor;
+
     get textColor(): Enums.TextColor {
-        if (this.container == null) {
-            return this._textColor == Enums.TextColor.Default ? Enums.TextColor.Dark : this._textColor;
+        if (!this._textColor) {
+            if (this.container) {
+                return this.container.textColor;
+            }
+            else {
+                return AdaptiveCard.renderOptions.defaultTextColor;
+            }
         }
-
-        if (this._textColor == Enums.TextColor.Default) {
-            return this.container.textColor;
+        else {
+            return this._textColor;
         }
-
-        return this._textColor;
     }
 
     set textColor(value: Enums.TextColor) {
         this._textColor = value;
     }
 
-    get actions(): Array<Action> {
-        return this._actionCollection.items;
+    addItem(item: CardElement) {
+        this._items.push(item);
+    }
+
+    addAction(action: Action) {
+        this._actionCollection.items.push(action);
     }
 
     getAllInputs(output: Array<Input>) {
-        for (var i = 0; i < this.items.length; i++) {
-            var item: CardElement = this.items[i];
+        for (var i = 0; i < this._items.length; i++) {
+            var item: CardElement = this._items[i];
 
             if (item instanceof Input) {
                 output.push(<Input>item);
@@ -1174,8 +1207,8 @@ export class Container extends CardElement {
             }
         }
 
-        for (var i = 0; i < this.actions.length; i++) {
-            var action = this.actions[i];
+        for (var i = 0; i < this._actionCollection.items.length; i++) {
+            var action = this._actionCollection.items[i];
 
             if (action instanceof ActionShowCard) {
                 var actionShowCard = <ActionShowCard>action;
@@ -1195,11 +1228,11 @@ export class Container extends CardElement {
         // render each item
         let speak = null;
 
-        if (this.items.length > 0) {
+        if (this._items.length > 0) {
             speak = '';
 
-            for (var i = 0; i < this.items.length; i++) {
-                var result = this.items[i].renderSpeech();
+            for (var i = 0; i < this._items.length; i++) {
+                var result = this._items[i].renderSpeech();
 
                 if (result) {
                     speak += result;
@@ -1212,6 +1245,10 @@ export class Container extends CardElement {
 }
 
 class ActionShowCardContainer extends Container {
+    protected getForbiddenActionTypes(): Array<any> {
+        return [ ActionShowCard ];
+    }
+
     protected get cssClassName(): string {
         return "";
     }
@@ -1257,7 +1294,7 @@ export class ColumnSet extends CardElement {
             var renderedColumnCount: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
-                var renderedColumn = this._columns[i].render();
+                var renderedColumn = this._columns[i].render(this.container);
 
                 if (renderedColumn != null) {
                     Utils.appendChild(element, renderedColumn);
@@ -1319,6 +1356,7 @@ export interface IVersion {
 export interface IRenderOptions {
     actionShowCardInPopup: boolean;
     defaultActionButtonStyle: Enums.ActionButtonStyle;
+    defaultTextColor: Enums.TextColor;
     defaultSeparation: Enums.Separation;
     supportedElementTypes: any[];
     supportedActionTypes: any[];
@@ -1329,8 +1367,15 @@ export interface IRenderOptions {
 export class AdaptiveCard {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
 
+    static onExecuteAction: (action: ActionExternal) => void = null;
     static onShowPopupCard: (action: ActionShowCard, renderedCard: HTMLElement) => void = null;
     static onRenderError: (error: Enums.RenderError, message: string) => void = null;
+
+    static executeAction(action: ActionExternal) {
+        if (AdaptiveCard.onExecuteAction != null) {
+            AdaptiveCard.onExecuteAction(action);
+        }
+    }
 
     static showPopupCard(action: ActionShowCard, renderedCard: HTMLElement) {
         if (AdaptiveCard.onShowPopupCard != null) {
@@ -1341,6 +1386,7 @@ export class AdaptiveCard {
     static renderOptions: IRenderOptions = {
         actionShowCardInPopup: false,
         defaultActionButtonStyle: Enums.ActionButtonStyle.Push,
+        defaultTextColor: Enums.TextColor.Dark,
         defaultSeparation: Enums.Separation.Default,
         supportedElementTypes: [
             Container,
@@ -1351,7 +1397,9 @@ export class AdaptiveCard {
             ColumnSet,
             InputText,
             InputDate,
-            InputChoiceSet
+            InputNumber,
+            InputChoiceSet,
+            InputToggle
         ],
         supportedActionTypes: [
             ActionHttp,
@@ -1368,17 +1416,10 @@ export class AdaptiveCard {
         }
     }
 
-    readonly root: Container = new Container(null);
+    readonly root: Container = new Container();
 
-    onExecuteAction: (action: ActionExternal) => void = null;
     minVersion: IVersion = { major: 1, minor: 0 };
     fallbackText: string;
-
-    executeAction(action: ActionExternal) {
-        if (this.onExecuteAction != null) {
-            this.onExecuteAction(action);
-        }
-    }
 
     render(): HTMLElement {
         var unsupportedVersion: boolean =
