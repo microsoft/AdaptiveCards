@@ -1,4 +1,4 @@
 export * from "./card-elements";
-export * from "./enumerations";
+export * from "./enums";
 export * from "./json-parser";
 

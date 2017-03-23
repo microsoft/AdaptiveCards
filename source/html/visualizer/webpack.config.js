@@ -38,7 +38,6 @@ var visualizer = {
     },
      plugins: [
       new CheckerPlugin(),
-      new TsConfigPathsPlugin(tsconfig: ngAppResolve('../renderer/tsconfig.json'))
   ],
 
     externals: {

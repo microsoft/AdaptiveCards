@@ -10,13 +10,13 @@
         "target": "es5",
         "allowJs": true,
         "outDir": "built",
-        "baseUrl": ".",
-        "paths": {
-            "adaptive-cards": [
-                "../renderer/built/adaptive-cards",
-                "../../renderer/built/adaptive-cards"
-            ]
-        }
+        "baseUrl": "."
+        // "paths": {
+        //     "adaptive-cards": [
+        //         "../renderer/built/adaptive-cards",
+        //         "../../renderer/built/adaptive-cards"
+        //     ]
+        // }
     },
     "include": [
         "src/**/*",

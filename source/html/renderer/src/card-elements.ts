@@ -1,4 +1,4 @@
-﻿import * as Enums from "./enumerations";
+﻿import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as TextFormatters from "./text-formatter";
 

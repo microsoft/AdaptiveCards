@@ -1,5 +1,5 @@
 import * as Adaptive from "./card-elements";
-import * as Enums from "./enumerations";
+import * as Enums from "./enums";
 import * as Utils from "./utils";
 
 export class JsonParser {
