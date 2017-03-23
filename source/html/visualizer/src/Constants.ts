@@ -1,6 +1,7 @@
 // TOOD: Can I pull this from the samples folder rather than copying it here?
 
 export const defaultPayload: string = `
+
 {
 	"type": "AdaptiveCard",
 	"body": [
@@ -40,6 +41,7 @@ export const defaultPayload: string = `
 								},
 								{
 									"type": "TextBlock",
+									"separation": "none",
 									"text": "Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}",
 									"isSubtle": true,
 									"wrap": true

@@ -17,6 +17,7 @@
     "@types/markdown-it": "0.0.1",
     "@types/node": "0.0.2",
     "@types/vkbeautify": "^0.99.0",
+    "adaptive-cards": "^0.1.0",
     "ajv-cli": "1.1.1",
     "brace": "^0.9.1",
     "http-server": "0.9.0",
@@ -26,12 +27,8 @@
     "tslint": "^4.4.2",
     "typescript": "^2.1.5",
     "vkbeautify": "^0.99.1",
-    "webpack": "^2.3.1",
-    "adaptive-cards": "0.1.0"
+    "webpack": "^2.3.1"
   },
   "author": "Microsoft",
-  "license": "MIT",
-  "devDependencies": {
-    "awesome-typescript-loader": "^3.1.2"
-  }
+  "license": "MIT"
 }

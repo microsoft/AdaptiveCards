@@ -839,7 +839,7 @@ export class ActionShowCard extends Action {
     }
 }
 
-class ActionCollection {
+export class ActionCollection {
     private _container: Container;
     private _forbiddenActionTypes: Array<any>;
     private _actionButtons: Array<ActionButton> = [];
@@ -1244,7 +1244,7 @@ export class Container extends CardElement {
     }
 }
 
-class ActionShowCardContainer extends Container {
+export class ActionShowCardContainer extends Container {
     protected getForbiddenActionTypes(): Array<any> {
         return [ ActionShowCard ];
     }

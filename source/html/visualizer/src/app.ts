@@ -60,18 +60,17 @@ function setContent(element) {
     contentContainer.appendChild(element);
 }
 
-function renderCard() {
+function renderCard(): HTMLElement {
     let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
     hostContainer.applyOptions();
 
     var jsonPayload = editor.getValue();
     var json = JSON.parse(jsonPayload);
+
     var cardTypeName = json["type"];
 
     var jsonParser = new Adaptive.JsonParser();
     var adaptiveCard = jsonParser.parse(json);
-
-    adaptiveCard.onExecuteAction = actionExecuted;
 
     var popupContainer = document.getElementById("popupCardContainer");
 
@@ -85,14 +84,26 @@ function renderCard() {
 
     document.getElementById("errorContainer").hidden = true;
 
-    var renderedContainer = hostContainer.render(adaptiveCard);
+    return hostContainer.render(adaptiveCard);
+}
+
+function tryRenderCard() {
+    var renderedCard: HTMLElement;
+
+    try {
+        renderedCard = renderCard();
+    }
+    catch (ex) {
+        renderedCard = document.createElement("div");
+        renderedCard.innerText = ex.message;
+    }
 
     var contentContainer = document.getElementById("content");
     contentContainer.innerHTML = '';
-    contentContainer.appendChild(renderedContainer);
+    contentContainer.appendChild(renderedCard);
 
     try {
-        sessionStorage.setItem("AdaptivePayload", jsonPayload);
+        sessionStorage.setItem("AdaptivePayload", editor.getValue());
     }
     catch (e) {
         console.log("Unable to cache JSON payload.")
@@ -181,13 +192,7 @@ function setupEditor() {
     editor.getSession().on(
         "change",
         function (e) {
-            try {
-                updateStyleSheet();
-                renderCard();
-            }
-            catch (e) {
-                // Ignore errors
-            }
+            tryRenderCard();
         });
 
     // Load the cached payload if the user had one
@@ -255,7 +260,7 @@ function setupContainerPicker() {
                 history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
 
                 updateStyleSheet();
-                renderCard();
+                tryRenderCard();
             });
 
         for (let i = 0; i < hostContainerOptions.length; i++) {
@@ -284,6 +289,8 @@ function setupFilePicker() {
 }
 
 window.onload = () => {
+    Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
+
     Adaptive.AdaptiveCard.onShowPopupCard = (action, element) => {
         var popupContainer = document.getElementById("popupCardContainer");
         popupContainer.innerHTML = "";
