@@ -2,11 +2,12 @@
   "name": "adaptive-cards",
   "version": "0.1.0",
   "description": "Adaptive Card toolkit for javascript",
-  "main": "built/adaptive-cards",
+  "main": "built/adaptive-cards.js",
   "private": true,
   "scripts": {
-    "build-cdn": "webpack",
-    "build": "npm run build-cdn && npm run dts",
+    "build-dist": "webpack",
+    "tsc": "tsc -p .",
+    "build": "npm run tsc && npm run build-dist && npm run dts",
     "watch": "webpack --watch",    
     "dts": "dts-generator --name adaptive-cards --project . --out dist/adaptive-cards.d.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

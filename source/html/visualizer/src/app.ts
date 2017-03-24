@@ -21,7 +21,7 @@ let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
 function actionExecuted(action: Adaptive.Action) {
-
+    
     var message: string = "Action executed\n";
     message += "    Title: " + action.title + "\n";
 
