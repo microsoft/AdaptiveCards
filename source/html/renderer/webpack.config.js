@@ -1,7 +1,7 @@
 module.exports = {
     entry: "./src/adaptive-cards.ts",
     output: {
-        filename: "./packed/adaptive-cards.js",
+        filename: "./dist/adaptive-cards.js",
         library: 'AdaptiveCards'
     },
 

@@ -6,10 +6,9 @@
   "private": true,
   "scripts": {
     "build-cdn": "webpack",
-    "build-npm": "tsc -p .",
-    "build": "npm run build-cdn && npm run build-npm && npm run dts",
+    "build": "npm run build-cdn && npm run dts",
     "watch": "webpack --watch",    
-    "dts": "dts-generator --name adaptive-cards --project . --out packed/adaptive-cards.d.ts",
+    "dts": "dts-generator --name adaptive-cards --project . --out dist/adaptive-cards.d.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
