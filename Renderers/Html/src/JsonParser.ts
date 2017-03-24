@@ -11,8 +11,6 @@ export class JsonParser {
 
     private parseExternalAction(json: any, action: Adaptive.ActionExternal) {
         this.parseBaseAction(json, action);
-
-        action.onExecute = (a) => { this._card.executeAction(a); };
     }
 
     private parseActionOpenUrl(json: any, action: Adaptive.ActionOpenUrl) {
@@ -61,29 +59,29 @@ export class JsonParser {
             "body");
     }
 
-    private createAction(json: any, container: Adaptive.Container): Adaptive.Action {
+    private createAction(json: any): Adaptive.Action {
         var result: Adaptive.Action;
 
         var actionType = json["type"];
 
         switch (actionType) {
             case Adaptive.ActionOpenUrl.TypeName:
-                result = new Adaptive.ActionOpenUrl(container);
+                result = new Adaptive.ActionOpenUrl();
                 this.parseActionOpenUrl(json, <Adaptive.ActionOpenUrl>result);
 
                 break;
             case Adaptive.ActionHttp.TypeName:
-                result = new Adaptive.ActionHttp(container);
+                result = new Adaptive.ActionHttp();
                 this.parseActionHttp(json, <Adaptive.ActionHttp>result);
 
                 break;
             case Adaptive.ActionSubmit.TypeName:
-                result = new Adaptive.ActionSubmit(container);
+                result = new Adaptive.ActionSubmit();
                 this.parseActionSubmit(json, <Adaptive.ActionSubmit>result);
 
                 break;
             case Adaptive.ActionShowCard.TypeName:
-                result = new Adaptive.ActionShowCard(container);
+                result = new Adaptive.ActionShowCard();
                 this.parseActionShowCard(json, <Adaptive.ActionShowCard>result);
 
                 break;
@@ -121,7 +119,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            image.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson, image.container);
+            image.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson);
         }
     }
 
@@ -134,7 +132,7 @@ export class JsonParser {
             let jsonImages = json["images"] as Array<any>;
 
             for (let i = 0; i < jsonImages.length; i++) {
-                var image = new Adaptive.Image(imageSet.container);
+                var image = new Adaptive.Image();
 
                 image.size = imageSet.imageSize;
                 image.url = jsonImages[i]["url"];
@@ -166,7 +164,7 @@ export class JsonParser {
         var jsonActions = json as Array<any>;
 
         for (var i = 0; i < jsonActions.length; i++) {
-            var action = this.createAction(jsonActions[i], container);
+            var action = this.createAction(jsonActions[i]);
 
             if (action != null) {
                 container.addAction(action);
@@ -206,7 +204,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            container.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson, container);
+            container.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson);
         }
     }
 
@@ -234,7 +232,7 @@ export class JsonParser {
             let jsonColumns = json["columns"] as Array<any>;
 
             for (let i = 0; i < jsonColumns.length; i++) {
-                var column = new Adaptive.Column(columnSet.container);
+                var column = new Adaptive.Column();
 
                 this.parseColumn(jsonColumns[i], column);
 
@@ -309,7 +307,7 @@ export class JsonParser {
 
         switch (elementType) {
             case Adaptive.Container.TypeName:
-                result = new Adaptive.Container(container);
+                result = new Adaptive.Container();
                 this.parseContainer(
                     json,
                     <Adaptive.Container>result,
@@ -317,59 +315,59 @@ export class JsonParser {
 
                 break;
             case Adaptive.TextBlock.TypeName:
-                result = new Adaptive.TextBlock(container);
+                result = new Adaptive.TextBlock();
                 this.parseTextBlock(json, <Adaptive.TextBlock>result);
 
                 break;
             case Adaptive.Image.TypeName:
-                result = new Adaptive.Image(container);
+                result = new Adaptive.Image();
                 this.parseImage(json, <Adaptive.Image>result);
 
                 break;
             case Adaptive.ImageSet.TypeName:
-                result = new Adaptive.ImageSet(container);
+                result = new Adaptive.ImageSet();
                 this.parseImageSet(json, <Adaptive.ImageSet>result);
 
                 break;
             case Adaptive.FactSet.TypeName:
-                result = new Adaptive.FactSet(container);
+                result = new Adaptive.FactSet();
                 this.parseFactSet(json, <Adaptive.FactSet>result);
 
                 break;
             case Adaptive.ColumnSet.TypeName:
-                result = new Adaptive.ColumnSet(container);
+                result = new Adaptive.ColumnSet();
                 this.parseColumnSet(
                     json,
                     <Adaptive.ColumnSet>result);
 
                 break;
             case Adaptive.InputText.TypeName:
-                result = new Adaptive.InputText(container);
+                result = new Adaptive.InputText();
                 this.parseInputText(json, <Adaptive.InputText>result);
 
                 break;
             case Adaptive.InputNumber.TypeName:
-                result = new Adaptive.InputNumber(container);
+                result = new Adaptive.InputNumber();
                 this.parseInputNumber(json, <Adaptive.InputNumber>result);
 
                 break;
             case Adaptive.InputDate.TypeName:
-                result = new Adaptive.InputDate(container);
+                result = new Adaptive.InputDate();
                 this.parseInputDate(json, <Adaptive.InputDate>result);
 
                 break;
             case Adaptive.InputTime.TypeName:
-                result = new Adaptive.InputTime(container);
+                result = new Adaptive.InputTime();
                 this.parseInputTime(json, <Adaptive.InputTime>result);
 
                 break;
             case Adaptive.InputToggle.TypeName:
-                result = new Adaptive.InputToggle(container);
+                result = new Adaptive.InputToggle();
                 this.parseInputToggle(json, <Adaptive.InputToggle>result);
 
                 break;
             case Adaptive.InputChoiceSet.TypeName:
-                result = new Adaptive.InputChoiceSet(container);
+                result = new Adaptive.InputChoiceSet();
                 this.parseInputChoiceSet(json, <Adaptive.InputChoiceSet>result);
 
                 break;
