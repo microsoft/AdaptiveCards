@@ -192,7 +192,7 @@
     <Compile Include="TypedElement.Xaml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AdaptiveCards.Renderers.Wpf.nuspec" />
+    <None Include="AdaptiveCards.Wpf.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

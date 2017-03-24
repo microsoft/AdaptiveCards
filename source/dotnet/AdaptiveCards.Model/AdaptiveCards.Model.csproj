@@ -68,6 +68,7 @@
     <Compile Include="Elements\InputToggle.cs" />
     <Compile Include="Elements\TextBlock.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Interfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypedElement.cs" />
     <Compile Include="TypedElementConverter.cs" />
