@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive
+namespace AdaptiveCards
 {
 
     /// <summary>
@@ -24,7 +24,9 @@ namespace Adaptive
         /// Url to open using default operating system browser
         /// </summary>
         [JsonRequired]
+#if DESKTOP
         [XmlAttribute]
+#endif
         public string Url { get; set; }
     }
 }

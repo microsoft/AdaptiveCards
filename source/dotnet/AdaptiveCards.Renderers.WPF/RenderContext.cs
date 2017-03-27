@@ -1,113 +1,82 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+#if Xamarin
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml.Internals;
+#elif WPF
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
-using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit;
+#endif
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public class RenderOptions
+
+    public static class DictionaryHelper
     {
-        public bool SupportInteraction { get; set; } = true;
+        public static T TryGetValue<T>(this IDictionary dictionary, string key)
+        {
+            if (dictionary == null)
+                throw new ArgumentNullException(nameof(dictionary));
+
+            if (dictionary.Contains(key))
+            {
+                return (T)dictionary[key];
+            }
+
+            return default(T);
+        }
+
+        public static T TryGetValue<T>(this IDictionary<string, object> dictionary, string key)
+        {
+            if (dictionary == null)
+                throw new ArgumentNullException(nameof(dictionary));
+
+            if (dictionary.ContainsKey(key))
+            {
+                return (T)dictionary[key];
+            }
+
+            return default(T);
+        }
     }
 
 
     public class RenderContext
     {
-        public RenderContext()
+
+        public RenderContext(Action<object, ActionEventArgs> actionCallback, Action<object, MissingInputEventArgs> missingDataCallback)
         {
+            if (actionCallback != null)
+                this.OnAction += (obj, args) => actionCallback(obj, args);
+
+            if (missingDataCallback != null)
+                this.OnMissingInput += (obj, args) => missingDataCallback(obj, args);
         }
 
-        public RenderContext NewActionContext()
-        {
-            return new RenderContext()
-            {
-                Options = new RenderOptions()
-                {
-                    SupportInteraction = this.Options.SupportInteraction
-                },
-                _stylePath = this.StylePath,
-                _resources = this.Resources,
-                OnAction = this.OnAction,
-                OnMissingInput = this.OnMissingInput
-            };
-        }
+        public Dictionary<string, MemoryStream> Images { get; private set; } = new Dictionary<string, MemoryStream>();
 
-        private HashSet<string> LoadingElements = new HashSet<string>();
-
-        public delegate void ActionEventHandler(object sender, ActionEventArgs e);
-        public delegate void MissingInputEventHandler(object sender, MissingInputEventArgs e);
-
-        public RenderOptions Options { get; set; } = new RenderOptions();
-
-        /// <summary>
-        /// Path to Xaml resource dictionary
-        /// </summary>
-        private string _stylePath;
-        public string StylePath
-        {
-            get { return _stylePath; }
-            set
-            {
-                this._stylePath = value;
-                this._resources = null;
-            }
-        }
 
         /// <summary>
         /// Input Controls in scope for actions array
         /// </summary>
         public List<FrameworkElement> InputControls = new List<FrameworkElement>();
 
-
-        /// <summary>
-        /// Event which fires when tree is ready to be snapshoted
-        /// </summary>
-        public event RoutedEventHandler OnLoaded;
-
-        /// <summary>
-        /// Is everything loaded
-        /// </summary>
-        public bool IsLoaded { get { return this.LoadingElements.Count == 0; } }
-
-        /// <summary>
-        /// Resource dictionary to use when rendering
-        /// </summary>
-        private ResourceDictionary _resources;
-        public ResourceDictionary Resources
-        {
-            get
-            {
-                if (_resources != null)
-                    return _resources;
-
-                using (var styleStream = File.OpenRead(this.StylePath))
-                {
-                    _resources = (ResourceDictionary)XamlReader.Load(styleStream);
-                }
-                return _resources;
-            }
-            set
-            {
-                this._resources = value;
-            }
-        }
-
         /// <summary>
         /// Event fires when action is invoked
         /// </summary>
+        public delegate void ActionEventHandler(object sender, ActionEventArgs e);
         public event ActionEventHandler OnAction;
 
         /// <summary>
         /// Event fires when missing input for submit/http actions
         /// </summary>
+        public delegate void MissingInputEventHandler(object sender, MissingInputEventArgs e);
         public event MissingInputEventHandler OnMissingInput;
 
         public void Action(FrameworkElement ui, ActionEventArgs args)
@@ -119,36 +88,6 @@ namespace Adaptive
         {
             this.OnMissingInput?.Invoke(sender, args);
         }
-
-
-        public virtual Style GetStyle(string styleName)
-        {
-            //if (!styleName.Contains(".Tap"))
-            //{
-            //    //if (styleName.Contains(".Input") && !this.Options.SupportInteration)
-            //    //{
-            //    //    return this.Resources["Hidden"] as Style;
-            //    //}
-
-            //    //if (styleName.Contains(".Action") && !this.Options.ShowAction)
-            //    //{
-            //    //    return this.Resources["Hidden"] as Style;
-            //    //}
-            //}
-
-            while (!String.IsNullOrEmpty(styleName))
-            {
-                Style style = this.Resources[styleName] as Style;
-                if (style != null)
-                    return style;
-                var iPos = styleName.LastIndexOf('.');
-                if (iPos <= 0)
-                    break;
-                styleName = styleName.Substring(0, iPos);
-            }
-            return null;
-        }
-
 
         public virtual dynamic MergeInputData(dynamic data)
         {
@@ -195,6 +134,8 @@ namespace Adaptive
         /// <returns></returns>
         public virtual object GetValueFromInputControl(FrameworkElement inputControl)
         {
+#if WPF
+            // TODO: Enable
             if (inputControl is WatermarkTextBox)
             {
                 return ((WatermarkTextBox)inputControl).Text;
@@ -270,6 +211,7 @@ namespace Adaptive
                 }
             }
             Debug.Print($"Unknown control {inputControl.GetType().Name}");
+#endif
             return null;
         }
 
@@ -287,6 +229,7 @@ namespace Adaptive
         /// <param name="control"></param>
         public virtual void ResetInputControl(FrameworkElement control)
         {
+#if WPF
             if (control is TextBox)
             {
                 InputText input = control.DataContext as InputText;
@@ -342,27 +285,10 @@ namespace Adaptive
                 InputChoiceSet choiceInput = comboBox.DataContext as InputChoiceSet;
                 comboBox.SelectedIndex = 0;
             }
+#endif
+
         }
 
-        public void AddLoadingElement(string id)
-        {
-            this.LoadingElements.Add(id);
-        }
-
-        public void LoadingElementCompleted(string id)
-        {
-            lock (this.LoadingElements)
-            {
-                this.LoadingElements.Remove(id);
-            }
-            Debug.Print($"{id} finished");
-
-            if (this.LoadingElements.Count == 0)
-            {
-                Debug.Print($"Loaded");
-                this.OnLoaded?.Invoke(this, null);
-            }
-        }
     }
 
 

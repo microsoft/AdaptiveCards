@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Adaptive
+namespace AdaptiveCards
 {
     /// <summary>
     /// This handles using @type field to instantiate strongly typed object on deserialization
     /// </summary>
-    public partial class TypedElementConverter : JsonConverter
+    public class TypedElementConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
@@ -32,7 +29,9 @@ namespace Adaptive
             if (typeName != null)
             {
                 typeName = typeName.Replace(".", string.Empty);
-                var type = typeof(TypedElement).GetTypeInfo().Assembly.ExportedTypes.FirstOrDefault(t => t.Name.ToLower() == typeName.ToLower());
+                var type = typeof(TypedElement).GetTypeInfo().Assembly.ExportedTypes
+                    .Where(t => t.Namespace.Contains("AdaptiveCards"))
+                    .FirstOrDefault(t => string.Equals(t.Name, typeName, StringComparison.CurrentCultureIgnoreCase));
                 if (type != null)
                 {
                     result = Activator.CreateInstance(type);
@@ -44,9 +43,9 @@ namespace Adaptive
             return result;
         }
 
-        public override bool CanRead { get { return true; } }
+        public override bool CanRead => true;
 
-        public override bool CanWrite { get { return false; } }
+        public override bool CanWrite => false;
     }
 
 }

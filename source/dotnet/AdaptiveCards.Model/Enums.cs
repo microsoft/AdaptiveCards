@@ -7,18 +7,26 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive
+namespace AdaptiveCards
 {
 
-    public class MyStringEnumConverter : StringEnumConverter
+    public class IgnoreDefaultStringEnumConverter<EnumT> : StringEnumConverter
     {
-        public MyStringEnumConverter() { }
+        string defaultValue;
 
-        public MyStringEnumConverter(bool camelCaseText) : base(camelCaseText) { }
+        public IgnoreDefaultStringEnumConverter()
+        {
+            defaultValue = Enum.Parse(typeof(EnumT), "0").ToString();
+        }
+
+        public IgnoreDefaultStringEnumConverter(bool camelCaseText) : base(camelCaseText)
+        {
+            defaultValue = Enum.Parse(typeof(EnumT), "0").ToString();
+        }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value?.ToString() == "Default")
+            if (value?.ToString() == defaultValue)
                 value = null;
             base.WriteJson(writer, value, serializer);
         }
@@ -43,7 +51,7 @@ namespace Adaptive
     /// <summary>
     /// Controls the horizontal size (width) of element.
     /// </summary>
-    [JsonConverter(typeof(MyStringEnumConverter), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<ImageSize>), true)]
     public enum ImageSize
     {
         /// <summary>
@@ -75,7 +83,7 @@ namespace Adaptive
     /// <summary>
     /// Controls the emphasize of an element to the previous element
     /// </summary>
-    [JsonConverter(typeof(MyStringEnumConverter), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<SeparationStyle>), true)]
     public enum SeparationStyle
     {
         /// <summary>
@@ -97,7 +105,7 @@ namespace Adaptive
     /// <summary>
     /// Controls the relative size of TextBlock elements
     /// </summary>
-    [JsonConverter(typeof(MyStringEnumConverter), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<TextSize>), true)]
     public enum TextSize
     {
         /// <summary>
@@ -129,7 +137,7 @@ namespace Adaptive
     /// <summary>
     /// Controls the weight of TextBock Elements
     /// </summary>
-    [JsonConverter(typeof(MyStringEnumConverter), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<TextWeight>), true)]
     public enum TextWeight
     {
         /// <summary>
@@ -151,7 +159,7 @@ namespace Adaptive
     /// <summary>
     /// Controls the color style of TextBlock Elements
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<TextColor>), true)]
     public enum TextColor
     {
         /// <summary>
@@ -215,7 +223,7 @@ namespace Adaptive
     /// <summary>
     /// Controls the way Image elements are displayed.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<ImageStyle>), true)]
     public enum ImageStyle
     {
         /// <summary>
@@ -235,7 +243,7 @@ namespace Adaptive
         /// <summary>
         /// plain text
         /// </summary>
-        Text, 
+        Text,
 
         /// <summary>
         /// Input is a telephone number and the client may use this information to provide optimized keyboard input for the user.

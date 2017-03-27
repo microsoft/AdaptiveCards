@@ -1,46 +1,41 @@
 ﻿using System.Windows;
+#if WPF
 using System.Windows.Controls;
-using WPF = System.Windows.Controls;
+using xaml = System.Windows.Controls;
+#elif Xamarin
+using Xamarin.Forms;
+using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
+#endif
 using Newtonsoft.Json.Linq;
 using System;
-using System.Xml;
+using AdaptiveCards;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
 
-    public partial class ActionBase
+    public partial class XamlRenderer 
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        protected Button CreateActionButton(RenderContext renderContext)
+
+        protected Button CreateActionButton(ActionBase action, RenderContext renderContext)
         {
+#if Xamarin
             var uiButton = new Button();
-            WPF.TextBlock uiTitle = new WPF.TextBlock() { Text = this.Title };
-            uiTitle.Style = renderContext.GetStyle($"Adaptive.Action.Title");
+            var uiTitle = new Label { Text = this.Title };
+            uiTitle.Style = this.GetStyle($"Adaptive.Action.Title");
             uiButton.Content = uiTitle;
             string name = this.GetType().Name.Replace("Action", String.Empty);
-            uiButton.Style = renderContext.GetStyle($"Adaptive.Action.{name}");
+            uiButton.Style = this.GetStyle($"Adaptive.Action.{name}");
             return uiButton;
+#elif WPF
+            var uiButton = new Button();
+            xaml.TextBlock uiTitle = new xaml.TextBlock() { Text = action.Title };
+            uiTitle.Style = this.GetStyle($"Adaptive.Action.Title");
+            uiButton.Content = uiTitle;
+            string name = this.GetType().Name.Replace("Action", String.Empty);
+            uiButton.Style = this.GetStyle($"Adaptive.Action.{name}");
+            return uiButton;
+#endif
         }
-
-        /// <summary>
-        /// Get fallback text from the speech element 
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public string GetFallbackText()
-        {
-            if (!string.IsNullOrEmpty(this.Speak))
-            {
-                XmlDocument doc = new XmlDocument();
-                var xml = this.Speak;
-                if (!xml.Trim().StartsWith("<"))
-                    xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Speak>{xml}</Speak>";
-                else if (!xml.StartsWith("<?xml "))
-                    xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n{xml}";
-                doc.LoadXml(xml);
-                return doc.InnerText;
-            }
-            return null;
-        }
-
     }
 }

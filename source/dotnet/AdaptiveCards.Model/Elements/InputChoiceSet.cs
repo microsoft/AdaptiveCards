@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive
+namespace AdaptiveCards
 {
 
     /// <summary>
@@ -24,28 +24,36 @@ namespace Adaptive
         /// The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if DESKTOP
         [XmlAttribute]
+#endif
         public string Value { get; set; }
 
         /// <summary>
         /// Style for choice 
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if DESKTOP
         [XmlAttribute]
+#endif
         public ChoiceInputStyle Style { get; set; }
 
         /// <summary>
         /// allow multiple choices to be selected (default false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if DESKTOP
         [XmlAttribute]
+#endif
         public bool IsMultiSelect { get; set; }
 
         /// <summary>
         ///  the choice options
         /// </summary>
         [JsonRequired]
+#if DESKTOP
         [XmlElement(ElementName="Choice", Type=typeof(Choice))]
+#endif
         public List<Choice> Choices { get; set; } = new List<Choice>();
 
         public bool ShouldSerializeStyle() { return this.Style != ChoiceInputStyle.Expanded; }
@@ -66,27 +74,35 @@ namespace Adaptive
         /// Display text for the choice
         /// </summary>
         [JsonRequired]
+#if DESKTOP
         [XmlAttribute]
+#endif
         public string Title { get; set; }
 
         /// <summary>
         /// Internal value which will be collected as input if the choice is selected
         /// </summary>
         [JsonRequired]
+#if DESKTOP
         [XmlAttribute]
+#endif
         public string Value { get; set; }
 
         /// <summary>
         /// Is this choice selected?
         /// </summary>
+#if DESKTOP
         [XmlAttribute]
+#endif
         public bool IsSelected { get; set; } = false;
 
         /// <summary>
         /// (OPTIONAL) Speech description of the choice
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if DESKTOP
         [XmlElement]
+#endif
         public string Speak { get; set; }
 
         public bool ShouldSerializeIsSelected() { return this.IsSelected; }

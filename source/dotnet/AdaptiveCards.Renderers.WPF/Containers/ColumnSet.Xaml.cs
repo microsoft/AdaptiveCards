@@ -1,39 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using WPF = System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Threading.Tasks;
+using System.Windows;
+#if WPF
+using System.Windows.Controls;
+using System.Windows.Shapes;
+#elif Xamarin
+using Xamarin.Forms;
+#endif
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class ColumnSet
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-
-        /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<ColumnSet, RenderContext, FrameworkElement> AlternateRenderer;
 
         /// <summary>
         /// ColumnSet
         /// </summary>
         /// <param name="columnSet"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+        protected override FrameworkElement Render(ColumnSet columnSet, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
-
             var uiColumnSet = new Grid();
-            uiColumnSet.Style = context.GetStyle("Adaptive.ColumnSet");
+            uiColumnSet.Style = this.GetStyle("Adaptive.ColumnSet");
 
-            foreach (var column in this.Columns)
+            foreach (var column in columnSet.Columns)
             {
                 // Add vertical Seperator
                 if (uiColumnSet.ColumnDefinitions.Count > 0)
@@ -42,10 +34,11 @@ namespace Adaptive
                     {
                         case SeparationStyle.None:
                             break;
+
                         case SeparationStyle.Default:
                             {
                                 var sep = new Rectangle();
-                                sep.Style = context.GetStyle($"Adaptive.VerticalSeparator");
+                                sep.Style = this.GetStyle($"Adaptive.VerticalSeparator");
                                 uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                                 Grid.SetColumn(sep, uiColumnSet.ColumnDefinitions.Count - 1);
                                 uiColumnSet.Children.Add(sep);
@@ -56,7 +49,7 @@ namespace Adaptive
                             {
                                 var sep = new Rectangle();
                                 sep.VerticalAlignment = VerticalAlignment.Stretch;
-                                sep.Style = context.GetStyle($"Adaptive.VerticalSeparator.Strong");
+                                sep.Style = this.GetStyle($"Adaptive.VerticalSeparator.Strong");
                                 uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                                 Grid.SetColumn(sep, uiColumnSet.ColumnDefinitions.Count - 1);
                                 uiColumnSet.Children.Add(sep);
@@ -65,7 +58,7 @@ namespace Adaptive
                     }
                 }
 
-                FrameworkElement uiElement = column.Render(context);
+                FrameworkElement uiElement = this.Render(column, context);
 
                 // do some sizing magic using the magic GridUnitType.Star
                 var size = column.Size?.ToLower();
@@ -87,16 +80,6 @@ namespace Adaptive
             }
 
             return uiColumnSet;
-        }
-
-
-        public override async Task PreRender()
-        {
-            List<Task> tasks = new List<Task>();
-            foreach (var item in this.Columns)
-                tasks.Add(item.PreRender());
-
-            await Task.WhenAll(tasks.ToArray());
         }
 
     }

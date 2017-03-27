@@ -9,54 +9,36 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Threading.Tasks;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class ImageSet
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
         /// <summary>
-        /// Override the renderer for this element
+        /// ImageSet
         /// </summary>
-        public static Func<ImageSet, RenderContext, FrameworkElement> AlternateRenderer;
-
-        /// <summary>
-        /// ImageGallery
-        /// </summary>
-        /// <param name="imageGallery"></param>
+        /// <param name="imageSet"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+        protected override FrameworkElement Render(ImageSet imageSet, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
+            var uiImageSet = new ListBox();
+            uiImageSet.Style = this.GetStyle("Adaptive.ImageSet");
 
-            var uiGallery = new ListBox();
-            uiGallery.Style = context.GetStyle("Adaptive.ImageGallery");
-
-            ScrollViewer.SetHorizontalScrollBarVisibility(uiGallery, ScrollBarVisibility.Disabled);
+            ScrollViewer.SetHorizontalScrollBarVisibility(uiImageSet, ScrollBarVisibility.Disabled);
             var itemsPanelTemplate = new ItemsPanelTemplate();
             var factory = new FrameworkElementFactory(typeof(WrapPanel));
             // factory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
             itemsPanelTemplate.VisualTree = factory;
-            uiGallery.ItemsPanel = itemsPanelTemplate;
+            uiImageSet.ItemsPanel = itemsPanelTemplate;
 
-            foreach (var image in this.Images)
+            foreach (var image in imageSet.Images)
             {
-                if (this.ImageSize != ImageSize.Auto)
-                    image.Size = this.ImageSize;
-                var uiImage = image.Render(context);
-                uiGallery.Items.Add(uiImage);
+                if (imageSet.ImageSize != ImageSize.Auto)
+                    image.Size = imageSet.ImageSize;
+                var uiImage = this.Render(image, context);
+                uiImageSet.Items.Add(uiImage);
             }
-            return uiGallery;
+            return uiImageSet;
         }
-
-
-        public override async Task PreRender()
-        {
-            List<Task> tasks = new List<Task>();
-            foreach (var item in this.Images)
-                tasks.Add(item.PreRender());
-
-            await Task.WhenAll(tasks.ToArray());
-        }
-
     }
 }

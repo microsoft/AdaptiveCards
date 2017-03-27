@@ -1,39 +1,20 @@
-﻿using System;
+﻿using System.Windows;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using WPF = System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Threading.Tasks;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class Column
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
         /// <summary>
         /// Render this element
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+        protected override FrameworkElement Render(Column column, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
-
-            return base.Render(context);
+            return this.Render((Container)column, context);
         }
-
-        public override async Task PreRender()
-        {
-            List<Task> tasks = new List<Task>();
-            foreach (var item in this.Items)
-                tasks.Add(item.PreRender());
-
-            await Task.WhenAll(tasks.ToArray());
-        }
-
     }
 }

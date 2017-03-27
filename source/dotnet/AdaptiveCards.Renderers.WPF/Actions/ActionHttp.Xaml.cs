@@ -1,35 +1,32 @@
 ﻿using System.Windows;
+#if WPF
 using System.Windows.Controls;
 using WPF = System.Windows.Controls;
+#elif Xamarin
+using Xamarin.Forms;
+using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
+
+#endif
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-
-
-    public partial class ActionHttp : ActionBase
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<ActionHttp, RenderContext, FrameworkElement> AlternateRenderer;
-
         /// <summary>
         /// HttpAction
         /// </summary>
         /// <param name="httpAction"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+
+        protected override FrameworkElement Render(ActionHttp action, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
-
-            if (context.Options.SupportInteraction)
+            if (this.Options.SupportInteraction)
             {
-
-                Button uiButton = this.CreateActionButton(context);
+                Button uiButton = this.CreateActionButton(action, context);
                 uiButton.Click += (sender, e) =>
                 {
                     dynamic data = new JObject();
@@ -38,24 +35,24 @@ namespace Adaptive
 
                         data = context.MergeInputData(data);
 
-                        string body = (string)this.Body?.ToString() ?? String.Empty;
+                        string body = (string)action.Body?.ToString() ?? String.Empty;
 
                         context.Action(uiButton, new ActionEventArgs()
                         {
                             Action = new ActionHttp()
                             {
-                                Title = this.Title,
-                                Method = this.Method,
-                                Url = Utilities.BindData(data, this.Url, url: true),
-                                Headers = this.Headers,
-                                Body = Utilities.BindData(data, body),
+                                Title = action.Title,
+                                Method = action.Method,
+                                Url = RendererUtilities.BindData(data, action.Url, url: true),
+                                Headers = action.Headers,
+                                Body = RendererUtilities.BindData(data, body),
                             },
                             Data = data
                         });
                     }
                     catch (MissingInputException err)
                     {
-                        context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
+                        context.MissingInput(action, new MissingInputEventArgs(err.Input, err.FrameworkElement));
                     }
                 };
                 return uiButton;

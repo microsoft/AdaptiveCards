@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="AdaptiveCards.XamarinForms.Renderer.ContentButton">
+  <ContentView.GestureRecognizers>
+    <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" Command="{Binding Source={x:Reference ContentButtonView}, Path=Command}"></TapGestureRecognizer>
+  </ContentView.GestureRecognizers>
+</ContentView>

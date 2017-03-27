@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>$id$</id>
+    <version>$version$-alpha</version>
+    <authors>Microsoft</authors>
+    <iconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Adaptive Card renderer for genering HTML markup</summary>
+    <description>This library generates HTML markup from adaptive card payloads, suitable for server side generation of html</description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="AdaptiveCards.Model" version="0.9.0" />
+      <dependency id="HtmlTags" version="4.2.0" />
+      <dependency id="MarkedNet" version="1.0.5.0" />
+    </dependencies>
+  </metadata>
+</package>

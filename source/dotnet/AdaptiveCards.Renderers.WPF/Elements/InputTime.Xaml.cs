@@ -10,49 +10,45 @@ using System.Xml;
 using MarkedNet;
 using Xceed.Wpf.Toolkit;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class InputTime
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<InputTime, RenderContext, FrameworkElement> AlternateRenderer;
 
         /// <summary>
         /// Input.Time
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+        protected override FrameworkElement Render(InputTime input, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
 
-            if (context.Options.SupportInteraction)
+            if (this.Options.SupportInteraction)
             {
-                var timePicker = new TimePicker();
-                DateTime value;
-                if (DateTime.TryParse(this.Value, out value))
-                    timePicker.Value = value;
-                TimeSpan minValue;
-                if (TimeSpan.TryParse(this.Min, out minValue))
-                    timePicker.EndTime = minValue;
-                TimeSpan maxValue;
-                if (TimeSpan.TryParse(this.Max, out maxValue))
-                    timePicker.EndTime = maxValue;
-                timePicker.Watermark = this.Placeholder;
-                timePicker.Style = context.GetStyle("Adaptive.Input.Time");
-                timePicker.DataContext = this;
-                context.InputControls.Add(timePicker);
-                return timePicker;
+                var textBox = new TextBox() { Text = input.Value };
+                textBox.Text = input.Placeholder;
+                textBox.Style = this.GetStyle($"Adaptive.Input.Text.Time");
+                textBox.DataContext = input;
+                context.InputControls.Add(textBox);
+                return textBox;
             }
             else
             {
-                var textBlock = new TextBlock() { Text = GetFallbackText() ?? this.Placeholder };
-                return textBlock.Render(context);
-            }
+                Container container = new Container() { Separation = input.Separation };
+                container.Items.Add(new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder });
+                if (input.Value != null)
+                {
 
+                    container.Items.Add(new TextBlock()
+                    {
+                        Text = input.Value,
+                        Color = TextColor.Accent,
+                        Wrap = true
+                    });
+                }
+                return Render(container, context);
+            }
         }
     }
 }

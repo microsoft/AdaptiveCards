@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
-namespace Adaptive
+namespace AdaptiveCards
 {
     /// <summary>
     /// Base of Action types
@@ -20,14 +20,18 @@ namespace Adaptive
         /// </summary>
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if DESKTOP
         [XmlAttribute]
+#endif
         public string Title { get; set; }
 
         /// <summary>
         /// Speak phrase for this action
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if DESKTOP
         [XmlElement]
+#endif
         public string Speak { get; set; }
     }
 }

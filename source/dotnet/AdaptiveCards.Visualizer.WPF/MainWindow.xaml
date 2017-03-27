@@ -65,7 +65,7 @@
         <Style x:Key="Adaptive.Card" TargetType="Grid">
             <Setter Property="Background" Value="WhiteSmoke"/>
         </Style>
-        
+
         <Style x:Key="Adaptive.InnerCard" TargetType="Grid">
             <Setter Property="Margin" Value="8"/>
         </Style>

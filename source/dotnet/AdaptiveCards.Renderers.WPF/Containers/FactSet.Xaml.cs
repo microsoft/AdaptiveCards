@@ -1,43 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using WPF = System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Threading.Tasks;
+#if WPF
+using System.Windows.Controls;
+using UI = System.Windows.Controls;
+#elif Xamarin
+using Xamarin.Forms;
+using UI = Xamarin.Forms;
+#endif
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class FactSet
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<FactSet, RenderContext, FrameworkElement> AlternateRenderer;
-
         /// <summary>
         /// FactSet
         /// </summary>
         /// <param name="factSet"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+        protected override FrameworkElement Render(FactSet factSet, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
-
             var uiFactSet = new Grid();
             // grid.Margin = this.Theme.FactSetMargins;
-            uiFactSet.Style = context.GetStyle("Adaptive.FactSet");
+            uiFactSet.Style = this.GetStyle("Adaptive.FactSet");
 
             uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             int iRow = 0;
-            foreach (var fact in this.Facts)
+            foreach (var fact in factSet.Facts)
             {
-                Tuple<FrameworkElement, FrameworkElement> uiElements = fact.Render(context);
+                Tuple<FrameworkElement, FrameworkElement> uiElements = Render(fact, context);
                 uiFactSet.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
                 Grid.SetColumn(uiElements.Item1, 0);
@@ -52,32 +45,25 @@ namespace Adaptive
         }
 
 
-        public override Task PreRender()
-        {
-            return Task.Delay(0);
-        }
-
-    }
-
-    public partial class Fact
-    {
         /// <summary>
         /// Fact
         /// </summary>
         /// <param name="fact"></param>
         /// <returns></returns>
-        public virtual Tuple<FrameworkElement, FrameworkElement> Render(RenderContext context)
+        protected override Tuple<FrameworkElement, FrameworkElement> Render(Fact fact, RenderContext context)
         {
-            return new Tuple<FrameworkElement, FrameworkElement>(new WPF.TextBlock()
-            {
-                Text = this.Title,
-                Style = context.GetStyle("Adaptive.Fact.Name")
-            },
-            new WPF.TextBlock()
-            {
-                Text = this.Value,
-                Style = context.GetStyle("Adaptive.Fact.Value")
-            });
+            return new Tuple<FrameworkElement, FrameworkElement>(
+                new UI.TextBlock()
+                {
+                    Text = fact.Title,
+                    Style = this.GetStyle("Adaptive.Fact.Name")
+                },
+                new UI.TextBlock()
+                {
+                    Text = fact.Value,
+                    Style = this.GetStyle("Adaptive.Fact.Value")
+                }
+            );
         }
     }
 }

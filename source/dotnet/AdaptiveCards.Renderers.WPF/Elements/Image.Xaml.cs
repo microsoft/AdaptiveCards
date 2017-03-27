@@ -1,97 +1,54 @@
 ﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Markup;
-using System.Windows.Media;
+
+#if WPF
+using System.Windows;
+using UI = System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Xml;
-using MarkedNet;
-using Xceed.Wpf.Toolkit;
 
-namespace Adaptive
+#elif Xamarin
+using Xamarin.Forms;
+using UI = Xamarin.Forms;
+#endif
+
+namespace AdaptiveCards.Renderers
 {
-    public partial class Image
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        private MemoryStream _image;
-
-        /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<Image, RenderContext, FrameworkElement> AlternateRenderer;
-
-
         /// <summary>
         /// Image
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+        protected override FrameworkElement Render(Image image, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
+            var uiImage = new UI.Image();
 
-            var uiImage = new System.Windows.Controls.Image();
-            BitmapImage source;
-            if (_image != null)
-            {
-                source = new BitmapImage();
-                source.BeginInit();
-                source.StreamSource = _image;
-                source.EndInit();
-            }
-            else
-                source = new BitmapImage(new Uri(this.Url));
-
-            if (source.IsDownloading)
-            {
-                string id = Guid.NewGuid().ToString("n");
-                context.AddLoadingElement(id);
-                source.DownloadCompleted += (sender, e) =>
-                {
-                    context.LoadingElementCompleted(id);
-                };
-            }
-
-            uiImage.Source = source;
-            System.Windows.HorizontalAlignment alignment;
-            if (Enum.TryParse<System.Windows.HorizontalAlignment>(this.HorizontalAlignment.ToString(), out alignment))
-                uiImage.HorizontalAlignment = alignment;
+            uiImage.Source = new BitmapImage(new Uri(image.Url));
+            System.Windows.HorizontalAlignment alignement;
+            if (Enum.TryParse(image.HorizontalAlignment.ToString(), out alignement))
+                uiImage.HorizontalAlignment = alignement;
 
             string style = $"Adaptive.Image";
-            if (this.Size != ImageSize.Auto)
-                style += $".{this.Size.ToString()}";
+            if (image.Size != ImageSize.Auto)
+                style += $".{image.Size}";
 
-            if (this.Style == ImageStyle.Person)
-                style += $".{this.Style.ToString()}";
-            uiImage.Style = context.GetStyle(style);
-            if (this.SelectAction != null)
+            if (image.Style == ImageStyle.Person)
+                style += $".{image.Style}";
+            uiImage.Style = this.GetStyle(style);
+
+            if (image.SelectAction != null)
             {
-                var uiButton = (Button)this.SelectAction.Render(context.NewActionContext());
+                var uiButton = (Button)RenderAction(image.SelectAction, context);
                 if (uiButton != null)
                 {
                     uiButton.Content = uiImage;
-                    uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
+                    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
                     return uiButton;
                 }
             }
             return uiImage;
-        }
-
-        public override async Task PreRender()
-        {
-            if (_image == null)
-            {
-                MemoryStream stream = new MemoryStream();
-                using (WebClient client = new WebClient())
-                {
-                    var data = await client.DownloadDataTaskAsync(this.Url).ConfigureAwait(false);
-                    _image = new MemoryStream(data);
-                }
-            }
         }
     }
 }

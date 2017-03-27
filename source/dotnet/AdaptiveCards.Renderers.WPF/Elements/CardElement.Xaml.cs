@@ -1,31 +1,27 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xml;
-using MarkedNet;
-using Xceed.Wpf.Toolkit;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class CardElement
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
+
+
         /// <summary>
         /// Get fallback text from the speech element 
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public string GetFallbackText()
+        protected string GetFallbackText(CardElement cardElement)
         {
-            if (!string.IsNullOrEmpty(this.Speak))
+#if WPF
+            if (!string.IsNullOrEmpty(cardElement.Speak))
             {
-                XmlDocument doc = new XmlDocument();
-                var xml = this.Speak;
+
+                // TODO: Fix xamarin fallback
+                var doc = new System.Xml.XmlDocument();
+                var xml = cardElement.Speak;
                 if (!xml.Trim().StartsWith("<"))
                     xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Speak>{xml}</Speak>";
                 else if (!xml.StartsWith("<?xml "))
@@ -33,6 +29,8 @@ namespace Adaptive
                 doc.LoadXml(xml);
                 return doc.InnerText;
             }
+#endif
+
             return null;
         }
 

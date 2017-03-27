@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WpfVisualizer</RootNamespace>
     <AssemblyName>WpfVisualizer</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -29,6 +29,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -78,7 +79,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -172,12 +172,22 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdaptiveCards.Wpf.Renderer\AdaptiveCards.Wpf.Renderer.csproj">
+    <ProjectReference Include="..\AdaptiveCards.Model\AdaptiveCards.Model.csproj">
+      <Project>{359961bf-84cd-4e33-a86d-9ed708729e07}</Project>
+      <Name>AdaptiveCards.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AdaptiveCards.Renderers.WPF.Extended\AdaptiveCards.Renderers.WPF.Extended.csproj">
+      <Project>{e4bd01cf-4b8b-491c-a6fe-9a8bf6550111}</Project>
+      <Name>AdaptiveCards.Renderers.WPF.Extended</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AdaptiveCards.Renderers.Wpf\AdaptiveCards.Renderers.WPF.csproj">
       <Project>{60619d62-59fa-4864-ba5b-6f6f87997671}</Project>
-      <Name>AdaptiveCards.Renderer</Name>
+      <Name>AdaptiveCards.Renderers.WPF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

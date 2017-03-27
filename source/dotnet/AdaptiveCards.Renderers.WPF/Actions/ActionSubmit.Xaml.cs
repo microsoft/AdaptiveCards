@@ -1,44 +1,36 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using WPF = System.Windows.Controls;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class ActionSubmit
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<ActionSubmit, RenderContext, FrameworkElement> AlternateRenderer;
-
         /// <summary>
         /// SubmitAction
         /// </summary>
         /// <param name="submitAction"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+        protected override FrameworkElement Render(ActionSubmit action, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
 
-            if (context.Options.SupportInteraction)
+            if (this.Options.SupportInteraction)
             {
-                Button uiButton = this.CreateActionButton(context); // content
+                Button uiButton = this.CreateActionButton(action, context); // content
                 uiButton.Click += (sender, e) =>
                 {
                     try
                     {
 
-                        dynamic data = (this.Data != null) ? ((JToken)this.Data).DeepClone() : new JObject();
+                        dynamic data = (action.Data != null) ? ((JToken)action.Data).DeepClone() : new JObject();
                         data = context.MergeInputData(data);
-                        context.Action(uiButton, new ActionEventArgs() { Action = this, Data = data });
+                        context.Action(uiButton, new ActionEventArgs() { Action = action, Data = data });
                     }
                     catch (MissingInputException err)
                     {
-                        context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
+                        context.MissingInput(action, new MissingInputEventArgs(err.Input, err.FrameworkElement));
                     }
                 };
                 return uiButton;

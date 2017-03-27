@@ -10,54 +10,44 @@ using System.Xml;
 using MarkedNet;
 using Xceed.Wpf.Toolkit;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class InputNumber
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<InputNumber, RenderContext, FrameworkElement> AlternateRenderer;
 
         /// <summary>
         /// Input.Number
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+        protected override FrameworkElement Render(InputNumber input, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
-            if (context.Options.SupportInteraction)
+            if (this.Options.SupportInteraction)
             {
-
-                IntegerUpDown numberPicker = new IntegerUpDown();
-                // numberPicker.ShowButtonSpinner = true;
-
-                float value;
-                if (float.TryParse(this.Value, out value))
-                    numberPicker.Value = Convert.ToInt32(value);
-
-                float minValue;
-                if (float.TryParse(this.Min, out minValue))
-                    numberPicker.Minimum = Convert.ToInt32(minValue);
-
-                float maxValue;
-                if (float.TryParse(this.Max, out maxValue))
-                    numberPicker.Maximum = Convert.ToInt32(maxValue);
-
-                numberPicker.Watermark = this.Placeholder;
-                numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
-                numberPicker.DataContext = this;
-                context.InputControls.Add(numberPicker);
-                return numberPicker;
+                var textBox = new TextBox() { Text = input.Value };
+                textBox.Text = input.Placeholder;
+                textBox.Style = this.GetStyle($"Adaptive.Input.Text.Number");
+                textBox.DataContext = input;
+                context.InputControls.Add(textBox);
+                return textBox;
             }
             else
             {
-                var textBlock = new TextBlock() { Text = GetFallbackText() ?? this.Placeholder };
-                return textBlock.Render(context);
-            }
+                Container container = new Container() { Separation = input.Separation };
+                container.Items.Add(new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder });
+                if (input.Value != null)
+                {
 
+                    container.Items.Add(new TextBlock()
+                    {
+                        Text = input.Value,
+                        Color = TextColor.Accent,
+                        Wrap = true
+                    });
+                }
+                return Render(container, context);
+            }
         }
     }
 }

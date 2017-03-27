@@ -1,34 +1,26 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using WPF = System.Windows.Controls;
-using Newtonsoft.Json.Linq;
 using System;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class ActionShowCard
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<ActionShowCard, RenderContext, FrameworkElement> AlternateRenderer;
-
         /// <summary>
         /// ShowCard
         /// </summary>
         /// <param name="showCardAction"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context) // , FrameworkElement content)
+        protected override FrameworkElement Render(ActionShowCard action, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
 
-            if (context.Options.SupportInteraction)
+            if (this.Options.SupportInteraction)
             {
-                Button uiButton = this.CreateActionButton(context);
+                Button uiButton = this.CreateActionButton(action, context);
                 uiButton.Click += (sender, e) =>
                 {
-                    context.Action(uiButton, new ActionEventArgs() { Action = this, Data = null });
+                    context.Action(uiButton, new ActionEventArgs() { Action = action, Data = null });
                 };
                 return uiButton;
             }

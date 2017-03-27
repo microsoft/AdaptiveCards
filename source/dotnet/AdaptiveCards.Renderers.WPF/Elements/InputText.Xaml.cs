@@ -8,50 +8,53 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using MarkedNet;
-using Xceed.Wpf.Toolkit;
 
-namespace Adaptive
+namespace AdaptiveCards.Renderers
 {
-    public partial class InputText
+    public partial class XamlRenderer
+        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// Override the renderer for this element
-        /// </summary>
-        public static Func<InputText, RenderContext, FrameworkElement> AlternateRenderer;
 
         /// <summary>
         /// Input.Text
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public override FrameworkElement Render(RenderContext context)
+        protected override FrameworkElement Render(InputText input, RenderContext context)
         {
-            if (AlternateRenderer != null)
-                return AlternateRenderer(this, context);
-
-            if (context.Options.SupportInteraction)
+            if (this.Options.SupportInteraction)
             {
-                var textBox = new WatermarkTextBox() { Text = this.Value };
-                if (this.IsMultiline == true)
+                var textBox = new TextBox() { Text = input.Value };
+                if (input.IsMultiline == true)
                 {
                     textBox.AcceptsReturn = true;
                     textBox.TextWrapping = TextWrapping.Wrap;
                     textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
                 }
-                if (this.MaxLength > 0)
-                    textBox.MaxLength = this.MaxLength;
+                if (input.MaxLength > 0)
+                    textBox.MaxLength = input.MaxLength;
 
-                textBox.Watermark = this.Placeholder;
-                textBox.Style = context.GetStyle($"Adaptive.Input.Text.{this.Style}");
-                textBox.DataContext = this;
+                textBox.Text = input.Placeholder;
+                textBox.Style = this.GetStyle($"Adaptive.Input.Text.{input.Style}");
+                textBox.DataContext = input;
                 context.InputControls.Add(textBox);
                 return textBox;
             }
             else
             {
+                Container container = new Container() { Separation = input.Separation };
+                container.Items.Add(new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder });
+                if (input.Value != null)
+                {
 
-                var textBlock = new TextBlock() { Text = GetFallbackText() ?? this.Placeholder };
-                return textBlock.Render(context);
+                    container.Items.Add(new TextBlock()
+                    {
+                        Text = input.Value,
+                        Color = TextColor.Accent,
+                        Wrap = true
+                    });
+                }
+                return Render(container, context);
             }
 
         }

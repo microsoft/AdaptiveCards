@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive
+namespace AdaptiveCards
 {
 
     /// <summary>
@@ -24,7 +24,9 @@ namespace Adaptive
         /// The facts to be displayed.
         /// </summary>
         [JsonRequired]
+#if DESKTOP
         [XmlElement(ElementName="Fact", Type=typeof(Fact))]
+#endif
         public List<Fact> Facts { get; set; } = new List<Fact>();
     }
 
@@ -48,21 +50,27 @@ namespace Adaptive
         /// The facts label
         /// </summary>
         [JsonRequired]
+#if DESKTOP
         [XmlAttribute]
+#endif
         public string Title { get; set; }
 
         /// <summary>
         /// The fact's value
         /// </summary>
         [JsonRequired]
+#if DESKTOP
         [XmlAttribute]
+#endif
         public string Value { get; set; }
 
         /// <summary>
         /// (Optional) Specifies what should be spoken for this entire element. This is simple text or SSML fragment
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if DESKTOP
         [XmlElement]
+#endif
         public string Speak { get; set; }
     }
 

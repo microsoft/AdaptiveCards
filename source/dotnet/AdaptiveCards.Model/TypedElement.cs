@@ -8,19 +8,22 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Adaptive
+namespace AdaptiveCards
 {
     [JsonConverter(typeof(TypedElementConverter))]
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public partial class TypedElement
     {
-        public TypedElement()
+        protected TypedElement()
         {
+            this.Type = GetType().Name;
         }
 
         [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
         [JsonRequired]
+#if DESKTOP
         [XmlIgnore]
+#endif
         public string Type { get; set; }
 
         protected EnumT? GetEnum<EnumT>(string value)

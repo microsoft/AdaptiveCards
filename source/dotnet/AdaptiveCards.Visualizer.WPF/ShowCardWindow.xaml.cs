@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using System.Windows;
-using Adaptive;
+using AdaptiveCards;
 using Newtonsoft.Json;
-using AC = Adaptive;
+using AC = AdaptiveCards;
+using AdaptiveCards.Renderers;
 
 namespace WpfVisualizer
 {
@@ -12,13 +13,13 @@ namespace WpfVisualizer
     /// </summary>
     public partial class ShowCardWindow : Window
     {
-        private Container _card;
+        private ActionShowCard _card;
         private ResourceDictionary _resources;
 
-        public ShowCardWindow(string title, Container card, ResourceDictionary resources)
+        public ShowCardWindow(string title, ActionShowCard showCardAction, ResourceDictionary resources)
         {
             _resources = resources;
-            _card = card;
+            _card = showCardAction;
 
             InitializeComponent();
 
@@ -27,12 +28,10 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var renderContext = new RenderContext();
-            renderContext.Resources = this._resources;
-            renderContext.OnAction += OnAction;
-            var element = _card.Render(renderContext);
+            XamlRenderer renderer = new XamlRenderer(new RenderOptions(), this._resources, OnAction);
+            var element = renderer.RenderShowCard(_card);
 
-            this.Body.Children.Add(_card.Render(renderContext));
+            this.Body.Children.Add(element);
         }
 
         private void OnAction(object sender, ActionEventArgs e)
@@ -45,7 +44,7 @@ namespace WpfVisualizer
             else if (e.Action is AC.ActionShowCard)
             {
                 AC.ActionShowCard action = (AC.ActionShowCard)e.Action;
-                ShowCardWindow dialog = new ShowCardWindow(action.Title, action.Card, this.Resources);
+                ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this._resources);
                 dialog.Owner = this;
                 dialog.ShowDialog();
             }

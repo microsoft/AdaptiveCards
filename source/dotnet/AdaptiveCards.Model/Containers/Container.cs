@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
-namespace Adaptive
+namespace AdaptiveCards
 {
     /// <summary>
     /// Container for a collection of elements
@@ -22,6 +22,7 @@ namespace Adaptive
         /// Elements of the container
         /// </summary>
         [JsonRequired]
+#if DESKTOP
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
@@ -34,6 +35,7 @@ namespace Adaptive
         [XmlElement(typeof(InputNumber), ElementName = "Input.Number")]
         [XmlElement(typeof(InputToggle), ElementName = "Input.Toggle")]
         [XmlElement(typeof(InputChoiceSet), ElementName = "Input.ChoiceSet")]
+#endif
         public List<CardElement> Items { get; set; } = new List<CardElement>();
 
         /// <summary>
@@ -46,11 +48,13 @@ namespace Adaptive
         /// Actions for this container
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if DESKTOP
         [XmlArray("Actions")]
         [XmlArrayItem(ElementName = "Action.OpenUrl", Type = typeof(ActionOpenUrl))]
         [XmlArrayItem(ElementName = "Action.ShowCard", Type = typeof(ActionShowCard))]
         [XmlArrayItem(ElementName = "Action.Submit", Type = typeof(ActionSubmit))]
         [XmlArrayItem(ElementName = "Action.Http", Type = typeof(ActionHttp))]
+#endif
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
 
 
