@@ -35,7 +35,6 @@
     <Compile Include="..\AdaptiveCards.Renderers.WPF\Elements\TextBlock.Xaml.cs" Link="Elements\TextBlock.Xaml.cs" />
     <Compile Include="..\AdaptiveCards.Renderers.WPF\MarkedXamlRenderer.cs" Link="MarkedXamlRenderer.cs" />
     <Compile Include="..\AdaptiveCards.Renderers.WPF\RenderContext.cs" Link="RenderContext.cs" />
-    <Compile Include="..\AdaptiveCards.Renderers.WPF\TypedElement.Xaml.cs" Link="TypedElement.Xaml.cs" />
     <Compile Include="..\AdaptiveCards.Renderers.WPF\Utilities.cs" Link="Utilities.cs" />
     <Compile Include="..\AdaptiveCards.Renderers.WPF\XamlRenderer.cs" Link="XamlRenderer.cs" />
   </ItemGroup>

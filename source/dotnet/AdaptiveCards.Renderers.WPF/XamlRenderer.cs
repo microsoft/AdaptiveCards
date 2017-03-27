@@ -1,18 +1,15 @@
-﻿using AdaptiveCards;
-using AdaptiveCards.Renderers;
+﻿using AdaptiveCards.Renderers;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 #if WPF
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
+#elif Xamarin
+using Xamarin.Forms;
 #endif
+
 
 namespace AdaptiveCards.Renderers
 {
@@ -57,7 +54,8 @@ namespace AdaptiveCards.Renderers
 
                 using (var styleStream = File.OpenRead(this.StylePath))
                 {
-                    _resources = (ResourceDictionary)XamlReader.Load(styleStream);
+                    // TODO: fix resources
+                    //_resources = (ResourceDictionary)XamlReader.Load(styleStream);
                 }
                 return _resources;
             }

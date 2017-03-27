@@ -73,13 +73,13 @@ namespace AdaptiveCards.Renderers
                 uiTextBlock.TextWrapping = TextWrapping.Wrap;
 
 #elif Xamarin
-            var uiTextBlock = new Label();
-            uiTextBlock.Text = Text;
+            var uiTextBlock = new Xamarin.Forms.TextBlock();
+            uiTextBlock.Text = textBlock.Text;
             uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock");
             // TODO: confirm text trimming
             uiTextBlock.LineBreakMode = LineBreakMode.TailTruncation;
 
-            switch (HorizontalAlignment)
+            switch (textBlock.HorizontalAlignment)
             {
                 case HorizontalAlignment.Left:
                     uiTextBlock.HorizontalTextAlignment = TextAlignment.Start;
@@ -95,15 +95,14 @@ namespace AdaptiveCards.Renderers
             }
 
 
-            if (this.Resources[$"Adaptive.{Color}"] != null)
-                uiTextBlock.TextColor = (Color)this.Resources[$"Adaptive.{Color}"];
+            if (this.Resources[$"Adaptive.{textBlock.Color}"] != null)
+                uiTextBlock.TextColor = (Color)this.Resources[$"Adaptive.{textBlock.Color}"];
 
-            if (Weight == TextWeight.Bolder)
+            if (textBlock.Weight == TextWeight.Bolder)
                 uiTextBlock.FontAttributes = FontAttributes.Bold;
 
             if (textBlock.Wrap == true)
                 uiTextBlock.LineBreakMode = LineBreakMode.WordWrap;
-
 #endif
 
 

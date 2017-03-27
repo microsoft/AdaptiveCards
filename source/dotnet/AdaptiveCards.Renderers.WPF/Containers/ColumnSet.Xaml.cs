@@ -48,7 +48,12 @@ namespace AdaptiveCards.Renderers
                         case SeparationStyle.Strong:
                             {
                                 var sep = new Rectangle();
+#if WPF
                                 sep.VerticalAlignment = VerticalAlignment.Stretch;
+#elif Xamarin
+                                // TOOD: check xamarin separator visual
+                                //sep.VerticalAlignment = VerticalAlignment.Stretch;
+#endif
                                 sep.Style = this.GetStyle($"Adaptive.VerticalSeparator.Strong");
                                 uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                                 Grid.SetColumn(sep, uiColumnSet.ColumnDefinitions.Count - 1);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Threading.Tasks;
 #if WPF
+using System.Windows.Shapes;
 using System.Windows.Controls;
 using WPF = System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -63,7 +64,8 @@ namespace AdaptiveCards.Renderers
                             case SeparationStyle.Default:
                             case SeparationStyle.Strong:
                                 {
-                                    var sep = new Separator();
+                                    // TODO: WPF had this as Separator, but I changed to Rectangle -- did I break anything?
+                                    var sep = new Rectangle();
                                     if (cardElement.Separation == SeparationStyle.Default)
                                         sep.Style = this.GetStyle($"Adaptive.Separator.{cardElement.Type}");
                                     else

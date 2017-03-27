@@ -1,17 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xml;
-using MarkedNet;
+﻿using System.Linq;
 using System.Text;
-using System.Windows.Documents;
 using System.Collections.Generic;
+using System.Windows;
+#if WPF
+using System.Windows.Controls;
+#elif Xamarin
+using Xamarin.Forms;
+#endif
 
 namespace AdaptiveCards.Renderers
 {
@@ -25,7 +20,7 @@ namespace AdaptiveCards.Renderers
         /// <returns></returns>
         protected override FrameworkElement Render(InputChoiceSet choiceSet, RenderContext context)
         {
-     
+#if WPF
             if (this.Options.SupportInteraction)
             {
                 var uiGrid = new Grid();
@@ -95,43 +90,42 @@ namespace AdaptiveCards.Renderers
                     return uiGrid;
                 }
             }
-            else
+            
+#endif
+
+            string choiceText = this.GetFallbackText(choiceSet);
+            if (choiceText == null)
             {
-                string choiceText = this.GetFallbackText(choiceSet);
-                if (choiceText == null)
+                List<string> choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
+                if (choiceSet.Style == ChoiceInputStyle.Compact)
                 {
-                    List<string> choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
-                    if (choiceSet.Style == ChoiceInputStyle.Compact)
+                    if (choiceSet.IsMultiSelect)
                     {
-                        if (choiceSet.IsMultiSelect)
-                        {
-                            choiceText = $"Choices: {JoinString(choices, ", ", " and ")}";
-                        }
-                        else
-                        {
-                            choiceText = $"Choices: {JoinString(choices, ", ", " or ")}";
-                        }
+                        choiceText = $"Choices: {JoinString(choices, ", ", " and ")}";
                     }
-                    else // if (this.Style == ChoiceInputStyle.Expanded)
+                    else
                     {
-                        choiceText = $"* {JoinString(choices, "\n* ", "\n* ")}";
+                        choiceText = $"Choices: {JoinString(choices, ", ", " or ")}";
                     }
                 }
-                Container container = new Container() { Separation = choiceSet.Separation };
-                container.Items.Add(new TextBlock()
+                else // if (this.Style == ChoiceInputStyle.Expanded)
                 {
-                    Text = choiceText,
-                    Wrap = true
-                });
-                container.Items.Add(new TextBlock()
-                {
-                    Text = JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
-                return Render(container, context);
+                    choiceText = $"* {JoinString(choices, "\n* ", "\n* ")}";
+                }
             }
+            Container container = new Container() { Separation = choiceSet.Separation };
+            container.Items.Add(new TextBlock()
+            {
+                Text = choiceText,
+                Wrap = true
+            });
+            container.Items.Add(new TextBlock()
+            {
+                Text = JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
+                Color = TextColor.Accent,
+                Wrap = true
+            });
+            return Render(container, context);
         }
-
     }
 }

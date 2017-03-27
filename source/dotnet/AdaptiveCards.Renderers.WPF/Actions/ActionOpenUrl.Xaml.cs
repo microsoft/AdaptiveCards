@@ -1,6 +1,10 @@
 ﻿using System.Windows;
+#if WPF
 using System.Windows.Controls;
-using System;
+#elif Xamarin
+using Xamarin.Forms;
+using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
+#endif
 
 namespace AdaptiveCards.Renderers
 {

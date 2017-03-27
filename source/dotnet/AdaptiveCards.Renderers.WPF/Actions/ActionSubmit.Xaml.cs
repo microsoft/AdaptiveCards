@@ -1,7 +1,11 @@
-﻿using System.Windows;
+﻿using Newtonsoft.Json.Linq;
+using System.Windows;
+#if WPF
 using System.Windows.Controls;
-using Newtonsoft.Json.Linq;
-using System;
+#elif Xamarin
+using Xamarin.Forms;
+using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
+#endif
 
 namespace AdaptiveCards.Renderers
 {

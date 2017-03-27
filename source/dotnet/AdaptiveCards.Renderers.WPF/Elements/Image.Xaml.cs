@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Windows.Controls;
-
 #if WPF
 using System.Windows;
+using System.Windows.Controls;
 using UI = System.Windows.Controls;
-using System.Windows.Media.Imaging;
-
 #elif Xamarin
 using Xamarin.Forms;
 using UI = Xamarin.Forms;
+using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
 #endif
 
 namespace AdaptiveCards.Renderers
@@ -24,11 +22,8 @@ namespace AdaptiveCards.Renderers
         protected override FrameworkElement Render(Image image, RenderContext context)
         {
             var uiImage = new UI.Image();
-
-            uiImage.Source = new BitmapImage(new Uri(image.Url));
-            System.Windows.HorizontalAlignment alignement;
-            if (Enum.TryParse(image.HorizontalAlignment.ToString(), out alignement))
-                uiImage.HorizontalAlignment = alignement;
+            uiImage.SetSource(new Uri(image.Url));
+            uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.Image";
             if (image.Size != ImageSize.Auto)

@@ -19,17 +19,18 @@ namespace AdaptiveCards.Renderers
 
         protected Button CreateActionButton(ActionBase action, RenderContext renderContext)
         {
-#if Xamarin
+#if WPF
             var uiButton = new Button();
-            var uiTitle = new Label { Text = this.Title };
+            xaml.TextBlock uiTitle = new xaml.TextBlock() { Text = action.Title };
             uiTitle.Style = this.GetStyle($"Adaptive.Action.Title");
             uiButton.Content = uiTitle;
             string name = this.GetType().Name.Replace("Action", String.Empty);
             uiButton.Style = this.GetStyle($"Adaptive.Action.{name}");
             return uiButton;
-#elif WPF
+
+#elif Xamarin
             var uiButton = new Button();
-            xaml.TextBlock uiTitle = new xaml.TextBlock() { Text = action.Title };
+            var uiTitle = new Label { Text = action.Title };
             uiTitle.Style = this.GetStyle($"Adaptive.Action.Title");
             uiButton.Content = uiTitle;
             string name = this.GetType().Name.Replace("Action", String.Empty);

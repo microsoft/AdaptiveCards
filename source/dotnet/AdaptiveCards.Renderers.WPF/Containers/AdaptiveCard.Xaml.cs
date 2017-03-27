@@ -26,9 +26,7 @@ namespace AdaptiveCards.Renderers
             outerGrid.Style = this.GetStyle("Adaptive.Card");
             if (card.BackgroundImage != null)
             {
-                //#if WPF 
-                Uri uri = new Uri(card.BackgroundImage);
-                BitmapImage backgroundSource;
+#if WPF
                 //                if (context._backgroundImage != null)
                 //                {
                 //                    backgroundSource = new BitmapImage();
@@ -37,8 +35,8 @@ namespace AdaptiveCards.Renderers
                 //                    backgroundSource.EndInit();
                 //                }
                 //                else
-                backgroundSource = new BitmapImage(uri);
-                outerGrid.Background = new ImageBrush(backgroundSource);
+#endif
+                outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));
             }
 
             var grid = new Grid();

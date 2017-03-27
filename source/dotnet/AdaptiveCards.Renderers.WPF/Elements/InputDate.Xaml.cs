@@ -1,5 +1,9 @@
 ﻿using System.Windows;
+#if WPF
 using System.Windows.Controls;
+#elif Xamarin
+using Xamarin.Forms;
+#endif
 
 namespace AdaptiveCards.Renderers
 {

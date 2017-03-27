@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
+#if WPF
 using System.Windows.Controls;
-using WPF = System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Threading.Tasks;
+#elif Xamarin
+using Xamarin.Forms;
+#endif
 
 namespace AdaptiveCards.Renderers
 {
@@ -21,6 +17,7 @@ namespace AdaptiveCards.Renderers
         /// <returns></returns>
         protected override FrameworkElement Render(ImageSet imageSet, RenderContext context)
         {
+#if WPF
             var uiImageSet = new ListBox();
             uiImageSet.Style = this.GetStyle("Adaptive.ImageSet");
 
@@ -39,6 +36,11 @@ namespace AdaptiveCards.Renderers
                 uiImageSet.Items.Add(uiImage);
             }
             return uiImageSet;
+
+#endif
+
+            // TODO: xamarin imageset support
+            return new Grid();
         }
     }
 }

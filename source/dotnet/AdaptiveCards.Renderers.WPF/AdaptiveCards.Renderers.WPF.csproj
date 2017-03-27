@@ -166,6 +166,7 @@
     <Compile Include="Elements\TextBlock.Xaml.cs" />
     <Compile Include="ImageRenderer.cs" />
     <Compile Include="RenderContext.cs" />
+    <Compile Include="RenderHelper.Wpf.cs" />
     <Compile Include="StaTaskSchedule.cs" />
     <Compile Include="Actions\ActionSubmit.Xaml.cs" />
     <Compile Include="MarkedXamlRenderer.cs" />

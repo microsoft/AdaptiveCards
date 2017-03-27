@@ -1,14 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
+#if WPF
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xml;
-using MarkedNet;
-using Xceed.Wpf.Toolkit;
+#elif Xamarin
+using Xamarin.Forms;
+#endif
 
 namespace AdaptiveCards.Renderers
 {
@@ -25,6 +20,7 @@ namespace AdaptiveCards.Renderers
 
             if (this.Options.SupportInteraction)
             {
+#if WPF
                 var uiToggle = new CheckBox();
                 uiToggle.Content = input.Title;
                 uiToggle.IsChecked = input.Value == (input.ValueOn ?? "true");
@@ -32,6 +28,18 @@ namespace AdaptiveCards.Renderers
                 uiToggle.DataContext = input;
                 context.InputControls.Add(uiToggle);
                 return uiToggle;
+#endif
+
+#if Xamarin
+                var uiToggle = new Switch();
+                // TODO: Finish switch
+                //uiToggle.Content = input.Title;
+                uiToggle.IsToggled = input.Value == (input.ValueOn ?? "true");
+                uiToggle.Style = this.GetStyle($"Adaptive.Input.Toggle");
+                uiToggle.BindingContext = input;
+                context.InputControls.Add(uiToggle);
+                return uiToggle;
+#endif
             }
             else
             {

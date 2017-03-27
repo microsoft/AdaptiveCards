@@ -1,13 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
+#if WPF
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xml;
-using MarkedNet;
+#elif Xamarin
+using Xamarin.Forms;
+#endif
 
 namespace AdaptiveCards.Renderers
 {
@@ -28,11 +24,12 @@ namespace AdaptiveCards.Renderers
                 if (input.IsMultiline == true)
                 {
                     textBox.AcceptsReturn = true;
-                    textBox.TextWrapping = TextWrapping.Wrap;
-                    textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+                    // TODO: Fix text input for WPF/Xamarin
+                    //textBox.TextWrapping = TextWrapping.Wrap;
+                    //textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
                 }
-                if (input.MaxLength > 0)
-                    textBox.MaxLength = input.MaxLength;
+                //if (input.MaxLength > 0)
+                //   textBox.MaxLength = input.MaxLength;
 
                 textBox.Text = input.Placeholder;
                 textBox.Style = this.GetStyle($"Adaptive.Input.Text.{input.Style}");
