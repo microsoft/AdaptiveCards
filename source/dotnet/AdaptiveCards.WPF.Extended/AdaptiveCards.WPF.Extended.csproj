@@ -7,8 +7,8 @@
     <ProjectGuid>{E4BD01CF-4B8B-491C-A6FE-9A8BF6550111}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AdaptiveCards.Renderers.WPF.Extended</RootNamespace>
-    <AssemblyName>AdaptiveCards.Renderers.WPF.Extended</AssemblyName>
+    <RootNamespace>AdaptiveCards.Renderers</RootNamespace>
+    <AssemblyName>AdaptiveCards.WPF.Extended</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

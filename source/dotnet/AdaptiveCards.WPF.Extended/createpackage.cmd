@@ -1,2 +1,2 @@
 erase /s *.nupkg
-NuGet.exe pack AdaptiveCards.Renderers.WPF.Extended.csproj -Prop Configuration=Release -Build
+NuGet.exe pack AdaptiveCards.WPF.Extended.csproj -Prop Configuration=Debug -Build

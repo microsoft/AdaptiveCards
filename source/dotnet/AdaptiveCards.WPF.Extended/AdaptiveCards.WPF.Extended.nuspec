@@ -12,7 +12,7 @@
     <dependencies>
       <dependency id="Newtonsoft.Json" version="9.0.1" />
       <dependency id="Extended.Wpf.Toolkit" version="3.0" />
-      <dependency id="AdaptiveCards.Renderers.WPF" version="0.9.0.37144-alpha" />
+      <dependency id="AdaptiveCards.WPF" version="1.0.0.0" />
     </dependencies>
   </metadata>
 </package>

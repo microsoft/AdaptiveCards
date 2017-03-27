@@ -1,2 +1,2 @@
 erase /s *.nupkg
-NuGet.exe pack AdaptiveCards.Renderers.Html.csproj -Prop Configuration=Release -Build
+NuGet.exe pack AdaptiveCards.Html.csproj -Prop Configuration=Debug -Build
