@@ -24,13 +24,19 @@ namespace AdaptiveCards.Renderers
                 if (input.IsMultiline == true)
                 {
                     textBox.AcceptsReturn = true;
-                    // TODO: Fix text input for WPF/Xamarin
-                    //textBox.TextWrapping = TextWrapping.Wrap;
-                    //textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+#if WPF
+                    textBox.TextWrapping = TextWrapping.Wrap;
+                    textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+#elif Xamarin 
+                    // TODO 
+#endif
                 }
-                //if (input.MaxLength > 0)
-                //   textBox.MaxLength = input.MaxLength;
-
+#if WPF
+                if (input.MaxLength > 0)
+                    textBox.MaxLength = input.MaxLength;
+#elif Xamarin 
+                    // TODO 
+#endif
                 textBox.Text = input.Placeholder;
                 textBox.Style = this.GetStyle($"Adaptive.Input.Text.{input.Style}");
                 textBox.DataContext = input;

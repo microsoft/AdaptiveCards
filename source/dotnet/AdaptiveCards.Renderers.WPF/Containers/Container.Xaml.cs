@@ -64,7 +64,6 @@ namespace AdaptiveCards.Renderers
                             case SeparationStyle.Default:
                             case SeparationStyle.Strong:
                                 {
-                                    // TODO: WPF had this as Separator, but I changed to Rectangle -- did I break anything?
                                     var sep = new Grid();
                                     if (cardElement.Separation == SeparationStyle.Default)
                                         sep.Style = this.GetStyle($"Adaptive.Separator.{cardElement.Type}");

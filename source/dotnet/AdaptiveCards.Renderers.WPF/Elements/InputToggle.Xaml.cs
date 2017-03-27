@@ -28,9 +28,7 @@ namespace AdaptiveCards.Renderers
                 uiToggle.DataContext = input;
                 context.InputControls.Add(uiToggle);
                 return uiToggle;
-#endif
-
-#if Xamarin
+#elif Xamarin
                 var uiToggle = new Switch();
                 // TODO: Finish switch
                 //uiToggle.Content = input.Title;

@@ -135,7 +135,6 @@ namespace AdaptiveCards.Renderers
         public virtual object GetValueFromInputControl(FrameworkElement inputControl)
         {
 #if WPF
-            // TODO: Enable
             if (inputControl is WatermarkTextBox)
             {
                 return ((WatermarkTextBox)inputControl).Text;
