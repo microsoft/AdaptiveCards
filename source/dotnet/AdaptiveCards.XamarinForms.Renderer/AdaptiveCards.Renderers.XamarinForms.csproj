@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{67F9D3A8-F71E-4428-913F-C37AE82CDB24}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AdaptiveCards</RootNamespace>
+    <AssemblyName>AdaptiveCards</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile49</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Xamarin</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Actions\ActionBase.Xaml.cs">
+      <Link>Actions\ActionBase.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Actions\ActionHttp.Xaml.cs">
+      <Link>Actions\ActionHttp.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Actions\ActionOpenUrl.Xaml.cs">
+      <Link>Actions\ActionOpenUrl.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Actions\ActionShowCard.Xaml.cs">
+      <Link>Actions\ActionShowCard.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Actions\ActionSubmit.Xaml.cs">
+      <Link>Actions\ActionSubmit.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Containers\AdaptiveCard.Xaml.cs">
+      <Link>Containers\AdaptiveCard.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Containers\Column.Xaml.cs">
+      <Link>Containers\Column.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Containers\ColumnSet.Xaml.cs">
+      <Link>Containers\ColumnSet.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Containers\Container.Xaml.cs">
+      <Link>Containers\Container.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Containers\FactSet.Xaml.cs">
+      <Link>Containers\FactSet.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Containers\ImageSet.Xaml.cs">
+      <Link>Containers\ImageSet.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Elements\CardElement.Xaml.cs">
+      <Link>Elements\CardElement.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Elements\Image.Xaml.cs">
+      <Link>Elements\Image.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Elements\InputChoiceSet.Xaml.cs">
+      <Link>Elements\InputChoiceSet.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Elements\InputDate.Xaml.cs">
+      <Link>Elements\InputDate.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Elements\InputNumber.Xaml.cs">
+      <Link>Elements\InputNumber.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Elements\InputText.Xaml.cs">
+      <Link>Elements\InputText.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Elements\InputTime.Xaml.cs">
+      <Link>Elements\InputTime.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Elements\InputToggle.Xaml.cs">
+      <Link>Elements\InputToggle.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Elements\TextBlock.Xaml.cs">
+      <Link>Elements\TextBlock.Xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\MarkedXamlRenderer.cs">
+      <Link>MarkedXamlRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\RenderContext.cs">
+      <Link>RenderContext.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\Utilities.cs">
+      <Link>Utilities.cs</Link>
+    </Compile>
+    <Compile Include="..\AdaptiveCards.Wpf.Renderer\XamlRenderer.cs">
+      <Link>XamlRenderer.cs</Link>
+    </Compile>
+    <Compile Include="XamarinHelpers\ContentButton.xaml.cs">
+      <DependentUpon>ContentButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XamarinHelpers\FrameworkElement.cs" />
+    <Compile Include="XamarinHelpers\RenderHelper.Xamarin.cs" />
+    <Compile Include="XamarinHelpers\Separator.cs" />
+    <Compile Include="XamarinHelpers\TextBlock.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="XamarinHelpers\ContentButton.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards.Model\AdaptiveCards.Model.csproj">
+      <Project>{359961bf-84cd-4e33-a86d-9ed708729e07}</Project>
+      <Name>AdaptiveCards.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\portable-net45+win8+wpa81+wp8\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

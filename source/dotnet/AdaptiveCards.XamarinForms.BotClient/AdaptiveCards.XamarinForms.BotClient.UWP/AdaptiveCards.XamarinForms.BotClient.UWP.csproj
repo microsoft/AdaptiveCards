@@ -127,12 +127,6 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AdaptiveCards.XamarinForms.BotClient\AdaptiveCards.XamarinForms.BotClient.csproj">
-      <Project>{62bc72a3-e347-4ef9-b054-66b0ae13fc00}</Project>
-      <Name>AdaptiveCards.XamarinForms.BotClient</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
