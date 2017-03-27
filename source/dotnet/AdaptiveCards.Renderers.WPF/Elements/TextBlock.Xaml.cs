@@ -74,7 +74,7 @@ namespace AdaptiveCards.Renderers
 
 #elif Xamarin
             var uiTextBlock = new Xamarin.Forms.TextBlock();
-            uiTextBlock.Text = textBlock.Text;
+            uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
             uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock");
             // TODO: confirm text trimming
             uiTextBlock.LineBreakMode = LineBreakMode.TailTruncation;
