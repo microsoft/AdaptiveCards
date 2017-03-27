@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Model", "AdaptiveCards.Model\AdaptiveCards.Model.csproj", "{1B1D0934-2B03-42A5-8322-D480CDFDD55B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards", "AdaptiveCards\AdaptiveCards.csproj", "{1B1D0934-2B03-42A5-8322-D480CDFDD55B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Renderers.WPF.Extended", "AdaptiveCards.Renderers.WPF.Extended\AdaptiveCards.Renderers.WPF.Extended.csproj", "{E4BD01CF-4B8B-491C-A6FE-9A8BF6550111}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.WPF.Extended", "AdaptiveCards.WPF.Extended\AdaptiveCards.WPF.Extended.csproj", "{E4BD01CF-4B8B-491C-A6FE-9A8BF6550111}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Visualizer.WPF", "AdaptiveCards.Wpf.Visualizer\AdaptiveCards.Visualizer.WPF.csproj", "{012406C8-BB8F-493B-A3A1-0D02214ADAA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.WPF.Visualizer", "AdaptiveCards.WPF.Visualizer\AdaptiveCards.WPF.Visualizer.csproj", "{012406C8-BB8F-493B-A3A1-0D02214ADAA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Renderers.WPF", "AdaptiveCards.Renderers.Wpf\AdaptiveCards.Renderers.WPF.csproj", "{60619D62-59FA-4864-BA5B-6F6F87997671}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.WPF", "AdaptiveCards.Wpf\AdaptiveCards.WPF.csproj", "{60619D62-59FA-4864-BA5B-6F6F87997671}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Renderers.Html", "AdaptiveCards.Renderers.Html\AdaptiveCards.Renderers.Html.csproj", "{89A0873B-EF21-4DAE-AB84-485C7A644B4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Html", "AdaptiveCards.Html\AdaptiveCards.Html.csproj", "{89A0873B-EF21-4DAE-AB84-485C7A644B4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

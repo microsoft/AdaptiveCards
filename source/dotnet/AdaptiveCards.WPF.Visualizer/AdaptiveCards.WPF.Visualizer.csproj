@@ -177,17 +177,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdaptiveCards.Model\AdaptiveCards.Model.csproj">
+    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj">
       <Project>{359961bf-84cd-4e33-a86d-9ed708729e07}</Project>
-      <Name>AdaptiveCards.Model</Name>
+      <Name>AdaptiveCards</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AdaptiveCards.Renderers.WPF.Extended\AdaptiveCards.Renderers.WPF.Extended.csproj">
+    <ProjectReference Include="..\AdaptiveCards.WPF.Extended\AdaptiveCards.WPF.Extended.csproj">
       <Project>{e4bd01cf-4b8b-491c-a6fe-9a8bf6550111}</Project>
-      <Name>AdaptiveCards.Renderers.WPF.Extended</Name>
+      <Name>AdaptiveCards.WPF.Extended</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AdaptiveCards.Renderers.Wpf\AdaptiveCards.Renderers.WPF.csproj">
+    <ProjectReference Include="..\AdaptiveCards.Wpf\AdaptiveCards.WPF.csproj">
       <Project>{60619d62-59fa-4864-ba5b-6f6f87997671}</Project>
-      <Name>AdaptiveCards.Renderers.WPF</Name>
+      <Name>AdaptiveCards.WPF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

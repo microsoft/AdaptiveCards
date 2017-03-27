@@ -130,20 +130,20 @@
     <Compile Include="XamlRendererExtended.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AdaptiveCards.Renderers.WPF.Extended.nuspec" />
+    <None Include="AdaptiveCards.WPF.Extended.nuspec" />
     <None Include="app.config" />
     <None Include="createpackage.cmd" />
     <None Include="packages.config" />
     <None Include="pushpackage.cmd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdaptiveCards.Model\AdaptiveCards.Model.csproj">
-      <Project>{359961bf-84cd-4e33-a86d-9ed708729e07}</Project>
-      <Name>AdaptiveCards.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AdaptiveCards.Renderers.Wpf\AdaptiveCards.Renderers.WPF.csproj">
+    <ProjectReference Include="..\AdaptiveCards.Wpf\AdaptiveCards.WPF.csproj">
       <Project>{60619d62-59fa-4864-ba5b-6f6f87997671}</Project>
-      <Name>AdaptiveCards.Renderers.WPF</Name>
+      <Name>AdaptiveCards.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj">
+      <Project>{359961bf-84cd-4e33-a86d-9ed708729e07}</Project>
+      <Name>AdaptiveCards</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
