@@ -76,37 +76,40 @@
     </Style>
 
     <!-- Separator Styling -->
-    <!--<Style x:Key="Adaptive.Separator" TargetType="Separator">
+    <Style x:Key="Adaptive.Separator" TargetType="Grid">
       <Setter Property="Margin" Value="0,2,0,2"/>
-      <Setter Property="Template">
+                <!--<Setter Property="TextColor" Value="Transparent" />-->
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <!--<Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="{x:Type Separator}">
             <Border BorderBrush="Transparent" BorderThickness="0" HeightRequest="1" SnapsToDevicePixels="true" />
           </ControlTemplate>
         </Setter.Value>
-      </Setter>
-    </Style>-->
+      </Setter>-->
+    </Style>
+    <Style x:Key="Adaptive.Separator.Strong" TargetType="Grid">
+        <Setter Property="Margin" Value="0,3,0,3"/>
+    </Style>
 
-    <!-- you can define per View seperator styles like this -->
+            <!-- you can define per View seperator styles like this -->
     <!--<Style x:Key="Adaptive.Separator.Label" TargetType="Separator" BasedOn="{StaticResource Adaptive.Separator}">
     </Style>
 
-    <Style x:Key="Adaptive.Separator.Strong" TargetType="Separator">
-      <Setter Property="Margin" Value="0,3,0,3"/>
-    </Style>-->
+   -->
 
     <!-- VerticalSeparator Styling -->
-    <!--<Style x:Key="Adaptive.VerticalSeparator"  TargetType="{x:Type Rectangle}" >
+    <Style x:Key="Adaptive.VerticalSeparator"  TargetType="Grid" >
       <Setter Property="WidthRequest" Value="1"/>
       <Setter Property="Margin" Value="8,0,8,0"/>
-      <Setter Property="Fill" Value="Transparent"/>
+      <Setter Property="BackgroundColor" Value="Transparent"/>
     </Style>
 
-    <Style x:Key="Adaptive.VerticalSeparator.Strong" TargetType="{x:Type Rectangle}" >
+    <Style x:Key="Adaptive.VerticalSeparator.Strong" TargetType="Grid" >
       <Setter Property="WidthRequest" Value="1"/>
       <Setter Property="Margin" Value="10,0,10,0"/>
-      <Setter Property="Fill" Value="Gray"/>
-    </Style>-->
+      <Setter Property="BackgroundColor" Value="Gray"/>
+    </Style>
 
     <!-- Fact/FactSet Styling -->
     <Style x:Key="Adaptive.FactSet" TargetType="Grid">

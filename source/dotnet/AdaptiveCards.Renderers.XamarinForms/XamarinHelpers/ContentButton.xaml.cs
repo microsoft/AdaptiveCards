@@ -25,11 +25,7 @@ namespace AdaptiveCards.XamarinForms.Renderer
             set { SetValue(CommandProperty, value); }
         }
 
-        public event EventHandler<EventArgs> Click
-        {
-            add { throw new NotImplementedException(); }
-            remove { throw new NotImplementedException(); }
-        }
+        public event EventHandler<EventArgs> Click;
 
         private void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
         {

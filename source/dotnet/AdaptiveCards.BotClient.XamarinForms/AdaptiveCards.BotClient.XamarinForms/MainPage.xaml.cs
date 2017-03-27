@@ -102,7 +102,6 @@ namespace AdaptiveCards.XamarinForms.BotClient
             try
             {
                 await _client.Conversations.PostActivityAsync(_conversation.ConversationId, activity);
-                await Task.Delay(2000);
                 await GetMessages();
 
             }
@@ -117,6 +116,8 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
         public async Task<IList<Activity>> GetMessages()
         {
+            await Task.Delay(2000);
+
             var response = await _client.Conversations
                 .GetActivitiesAsync(_conversation.ConversationId, _watermark)
                 .ConfigureAwait(false);
@@ -124,7 +125,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
             var cardAttachments = response.Activities
                 .Where(m => m.Attachments != null)
                 .SelectMany(m => m.Attachments)
-                .Where(m => m.ContentType == "application/adaptive-card");
+                .Where(m => m.ContentType == "application/vnd.microsoft.card.adaptive");
 
             foreach (var attachment in cardAttachments)
             {
