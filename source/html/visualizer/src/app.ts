@@ -20,7 +20,7 @@ let editor: ace.Editor;
 let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
-function actionExecuted(action: Adaptive.Action) {
+function actionExecuted(container: Adaptive.Container, action: Adaptive.Action) {
     
     var message: string = "Action executed\n";
     message += "    Title: " + action.title + "\n";
@@ -50,6 +50,20 @@ function actionExecuted(action: Adaptive.Action) {
         message += "    Type: <unknown>";
     }
 
+    var localInputs = container.getAllInputs();
+    var allInputs = container.getRootContainer().getAllInputs();
+
+    message += "Local inputs:\n";
+
+    for (var i = 0; i < localInputs.length; i++) {
+        message += "    " + localInputs[i].id + "\n";
+    }
+
+    message += "All inputs:\n";
+
+    for (var i = 0; i < allInputs.length; i++) {
+        message += "    " + allInputs[i].id + "\n";
+    }
     alert(message);
 }
 

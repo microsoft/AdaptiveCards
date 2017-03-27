@@ -249,7 +249,7 @@ export class JsonParser {
     }
 
     private parseInputText(json: any, input: Adaptive.InputText) {
-        this.parseCardElement(json, input);
+        this.parseInput(json, input);
 
         input.maxLength = json["maxLength"];
         input.isMultiline = json["isMultiline"];
@@ -257,22 +257,22 @@ export class JsonParser {
     }
 
     private parseInputNumber(json: any, input: Adaptive.InputNumber) {
-        this.parseCardElement(json, input);
+        this.parseInput(json, input);
 
         input.min = json["min"];
         input.max = json["max"];
     }
 
     private parseInputDate(json: any, input: Adaptive.InputDate) {
-        this.parseCardElement(json, input);
+        this.parseInput(json, input);
     }
 
     private parseInputTime(json: any, input: Adaptive.InputTime) {
-        this.parseCardElement(json, input);
+        this.parseInput(json, input);
     }
 
     private parseInputToggle(json: any, input: Adaptive.InputToggle) {
-        this.parseCardElement(json, input);
+        this.parseInput(json, input);
 
         input.title = json["title"];
         input.valueOn = json["valueOn"];
@@ -280,7 +280,7 @@ export class JsonParser {
     }
 
     private parseInputChoiceSet(json: any, input: Adaptive.InputChoiceSet) {
-        this.parseCardElement(json, input);
+        this.parseInput(json, input);
 
         input.isCompact = !(json["style"] === "expanded");
         input.isMultiSelect = json["isMultiSelect"];

@@ -3,10 +3,14 @@ import * as Utils from "./utils";
 import * as TextFormatters from "./text-formatter";
 
 export abstract class CardElement {
-    private _container?: Container;
+    private _container: Container = null;
 
-    protected get container(): Container {
-        return this._container;
+    private getRootElement(): CardElement {
+        if (!this._container) {
+            return this;
+        }
+
+        return this._container.getRootElement();
     }
 
     protected get hideOverflow(): boolean {
@@ -56,7 +60,7 @@ export abstract class CardElement {
 
     abstract renderSpeech(): string;
 
-    render(container?: Container): HTMLElement {
+    render(container: Container = null): HTMLElement {
         this._container = container;
 
         let renderedElement = this.internalRender();
@@ -66,6 +70,21 @@ export abstract class CardElement {
         }
 
         return renderedElement;
+    }
+
+    getRootContainer(): Container {
+        var rootElement = this.getRootElement();
+
+        if (rootElement instanceof Container) {
+            return <Container>rootElement;
+        }
+        else {
+            return null;
+        }
+    }
+
+    get container(): Container {
+        return this._container;
     }
 }
 
@@ -317,7 +336,7 @@ export class Image extends CardElement {
             imageElement.style.display = "block";
             imageElement.onclick = (e) => {
                 if (this.selectAction != null) {
-                    AdaptiveCard.executeAction(this.selectAction);
+                    AdaptiveCard.executeAction(this.container, this.selectAction);
                     e.cancelBubble = true;
                 }
             }
@@ -785,10 +804,6 @@ export abstract class Action {
     get container() {
         return this._container;
     }
-
-    renderUi(): HTMLElement {
-        return null;
-    }
 }
 
 export abstract class ActionExternal extends Action {
@@ -884,13 +899,13 @@ export class ActionCollection {
 
             this.hideActionCardPane();
 
-            AdaptiveCard.executeAction(<ActionExternal>actionButton.action);
+            AdaptiveCard.executeAction(this._container, <ActionExternal>actionButton.action);
         }
         else {
             if (AdaptiveCard.renderOptions.actionShowCardInPopup) {
                 var actionShowCard = <ActionShowCard>actionButton.action;
 
-                AdaptiveCard.onShowPopupCard(actionShowCard, actionShowCard.card.render(this._container));
+                AdaptiveCard.onShowPopupCard(this._container, actionShowCard, actionShowCard.card.render(this._container));
             }
             else if (actionButton.action === this._expandedAction) {
                 for (var i = 0; i < this._actionButtons.length; i++) {
@@ -1084,7 +1099,7 @@ export class Container extends CardElement {
         this._element.className = this.cssClassName;
         this._element.onclick = (e) => {
             if (this.selectAction != null) {
-                AdaptiveCard.executeAction(this.selectAction);
+                AdaptiveCard.executeAction(this.container, this.selectAction);
                 e.cancelBubble = true;
             }
         }
@@ -1194,16 +1209,18 @@ export class Container extends CardElement {
         this._actionCollection.items.push(action);
     }
 
-    getAllInputs(output: Array<Input>) {
+    getAllInputs(): Array<Input> {
+        var result: Array<Input> = [];
+
         for (var i = 0; i < this._items.length; i++) {
             var item: CardElement = this._items[i];
 
             if (item instanceof Input) {
-                output.push(<Input>item);
+                result.push(<Input>item);
             }
 
             if (item instanceof Container) {
-                (<Container>item).getAllInputs(output);
+                result = result.concat((<Container>item).getAllInputs());
             }
         }
 
@@ -1214,10 +1231,12 @@ export class Container extends CardElement {
                 var actionShowCard = <ActionShowCard>action;
 
                 if (actionShowCard.card) {
-                    actionShowCard.card.getAllInputs(output);
+                    result = result.concat(actionShowCard.card.getAllInputs());
                 }
             }
         }
+
+        return result;
     }
 
     renderSpeech(): string {
@@ -1367,19 +1386,19 @@ export interface IRenderOptions {
 export class AdaptiveCard {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
 
-    static onExecuteAction: (action: ActionExternal) => void = null;
-    static onShowPopupCard: (action: ActionShowCard, renderedCard: HTMLElement) => void = null;
+    static onExecuteAction: (container: Container, action: ActionExternal) => void = null;
+    static onShowPopupCard: (container: Container, action: ActionShowCard, renderedCard: HTMLElement) => void = null;
     static onRenderError: (error: Enums.RenderError, message: string) => void = null;
 
-    static executeAction(action: ActionExternal) {
+    static executeAction(container: Container, action: ActionExternal) {
         if (AdaptiveCard.onExecuteAction != null) {
-            AdaptiveCard.onExecuteAction(action);
+            AdaptiveCard.onExecuteAction(container, action);
         }
     }
 
-    static showPopupCard(action: ActionShowCard, renderedCard: HTMLElement) {
+    static showPopupCard(container: Container, action: ActionShowCard, renderedCard: HTMLElement) {
         if (AdaptiveCard.onShowPopupCard != null) {
-            AdaptiveCard.onShowPopupCard(action, renderedCard);
+            AdaptiveCard.onShowPopupCard(container, action, renderedCard);
         }
     }
 
