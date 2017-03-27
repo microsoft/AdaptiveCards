@@ -162,7 +162,9 @@ namespace AdaptiveCards.Renderers
 
                 // Add both to a grid so they go as a unit
                 uiGrid.Children.Add(measureBlock);
-#endif 
+#elif Xamarin
+                // TODO 
+#endif
                 uiGrid.Children.Add(uiTextBlock);
                 return uiGrid;
 
