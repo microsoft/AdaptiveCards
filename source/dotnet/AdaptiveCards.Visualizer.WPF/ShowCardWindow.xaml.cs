@@ -28,7 +28,7 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            XamlRenderer renderer = new XamlRenderer(new RenderOptions(), this._resources, OnAction);
+            XamlRenderer renderer = new XamlRendererExtended(new RenderOptions(), this._resources, OnAction);
             var element = renderer.RenderShowCard(_card);
 
             this.Body.Children.Add(element);
