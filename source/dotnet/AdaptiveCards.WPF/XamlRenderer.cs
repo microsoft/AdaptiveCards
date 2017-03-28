@@ -19,6 +19,7 @@ namespace AdaptiveCards.Renderers
     {
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
+        protected Func<string, MemoryStream> getImageFunc;
 
         public XamlRenderer(RenderOptions options,
             ResourceDictionary resources,
@@ -33,6 +34,7 @@ namespace AdaptiveCards.Renderers
 
 #if WPF
         public XamlRenderer(RenderOptions options, string stylePath,
+            Func<string, MemoryStream> getImageFunc,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
             : base(options)
@@ -40,6 +42,9 @@ namespace AdaptiveCards.Renderers
             this.StylePath = stylePath;
             this.actionCallback = actionCallback;
             this.missingDataCallback = missingDataCallback;
+            if (getImageFunc == null)
+                throw new ArgumentNullException("Expected getImagefunc");
+            this.getImageFunc = getImageFunc;
         }
 #endif
         /// <summary>
@@ -53,11 +58,14 @@ namespace AdaptiveCards.Renderers
                 if (_resources != null)
                     return _resources;
 
+#if WPF
                 using (var styleStream = File.OpenRead(this.StylePath))
                 {
-                    // TODO: fix resources
-                    //_resources = (ResourceDictionary)XamlReader.Load(styleStream);
+                    _resources = (ResourceDictionary)XamlReader.Load(styleStream);
                 }
+#elif Xamarin
+                    // TODO
+#endif
                 return _resources;
             }
             set

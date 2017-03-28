@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,11 +18,14 @@ namespace AdaptiveCards.Renderers
         {
         }
 
+#if WPF
         public XamlRendererExtended(RenderOptions options, string stylePath,
+            Func<string, MemoryStream> getImageFunc,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(options, stylePath, actionCallback, missingDataCallback)
+            : base(options, stylePath, getImageFunc, actionCallback, missingDataCallback)
         {
         }
+#endif
     }
 }

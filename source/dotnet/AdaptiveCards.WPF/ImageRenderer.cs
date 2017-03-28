@@ -21,6 +21,7 @@ namespace AdaptiveCards.Renderers
     public class ImageRenderer
     {
         private XamlRenderer _xamlRenderer;
+        private string _stylePath;
 
         /// <summary>
         /// You can use this from within a WPF app, passing in resource dictionary directly
@@ -29,7 +30,8 @@ namespace AdaptiveCards.Renderers
         /// <param name="resources"></param>
         public ImageRenderer(RenderOptions options, ResourceDictionary resources)
         {
-            options.SupportInteraction = false;
+            Options = options;
+            Options.SupportInteraction = false;
             _xamlRenderer = new XamlRenderer(options, resources);
         }
 
@@ -40,11 +42,23 @@ namespace AdaptiveCards.Renderers
         /// <param name="stylePath"></param>
         public ImageRenderer(RenderOptions options, string stylePath)
         {
-            options.SupportInteraction = false;
-            _xamlRenderer = new XamlRenderer(options, stylePath);
+            Options = options;
+            Options.SupportInteraction = false;
+            this._stylePath = stylePath;
         }
 
-        public RenderOptions Options {  get { return _xamlRenderer.Options; } }
+        public RenderOptions Options { get; set; }
+
+        /// <summary>
+        /// render the card to an png image stream (must be called on STA thread)
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
+        public Stream RenderAdaptiveCard(AdaptiveCard card, int width)
+        {
+            return _renderAdaptiveCard(_xamlRenderer, card, width);
+        }
 
         /// <summary>
         /// Render the card as a PNG image in a STA compliant way suitable for running on servers 
@@ -55,24 +69,20 @@ namespace AdaptiveCards.Renderers
         public async Task<Stream> RenderAdaptiveCardAsync(AdaptiveCard card, int width = 480)
         {
             ImageVisitor visitor = new ImageVisitor();
+            
             // prefetch images
             await visitor.GetAllImages(card);
 
             return await Task.Factory.StartNewSTA(() =>
             {
-                return RenderAdaptiveCard(card, width);
+                var xamlRenderer = new XamlRenderer(Options, this._stylePath, getImageFunc: (url) => visitor.GetCachedImageStream(url));
+                return _renderAdaptiveCard(xamlRenderer, card, width);
             }).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// render the card to an png image stream (must be called on STA thread)
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="width"></param>
-        /// <returns></returns>
-        public Stream RenderAdaptiveCard(AdaptiveCard card, int width)
+        protected Stream _renderAdaptiveCard(XamlRenderer renderer, AdaptiveCard card, int width)
         {
-            var bitmapImage = RenderToBitmapSource(card, width);
+            var bitmapImage = _renderToBitmapSource(renderer, card, width);
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
 
@@ -88,9 +98,9 @@ namespace AdaptiveCards.Renderers
         /// <param name="context"></param>
         /// <param name="width"></param>
         /// <returns></returns>
-        protected BitmapSource RenderToBitmapSource(AdaptiveCard card, int width)
+        protected BitmapSource _renderToBitmapSource(XamlRenderer renderer, AdaptiveCard card, int width)
         {
-            var uiCard = _xamlRenderer.RenderAdaptiveCard(card);
+            var uiCard = renderer.RenderAdaptiveCard(card);
 
             uiCard.Measure(new System.Windows.Size(width, 4000));
             uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));
@@ -123,7 +133,18 @@ namespace AdaptiveCards.Renderers
         public async Task GetAllImages(AdaptiveCard card)
         {
             Visit(card);
+
             await Task.WhenAll(tasks.ToArray()).ConfigureAwait(false);
+        }
+
+        public MemoryStream GetCachedImageStream(String url)
+        {
+            if (this.Images.TryGetValue(url, out var imageStream))
+            {
+                imageStream.Position = 0;
+                return imageStream;
+            }
+            return null;
         }
 
         protected async Task GetImage(string url)

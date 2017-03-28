@@ -18,8 +18,6 @@ namespace AdaptiveCards.Renderers
 #if WPF
             if (!string.IsNullOrEmpty(cardElement.Speak))
             {
-
-                // TODO: Fix xamarin fallback
                 var doc = new System.Xml.XmlDocument();
                 var xml = cardElement.Speak;
                 if (!xml.Trim().StartsWith("<"))
@@ -29,6 +27,8 @@ namespace AdaptiveCards.Renderers
                 doc.LoadXml(xml);
                 return doc.InnerText;
             }
+#elif Xamarin 
+            // TODO: Xamarin fallback
 #endif
 
             return null;

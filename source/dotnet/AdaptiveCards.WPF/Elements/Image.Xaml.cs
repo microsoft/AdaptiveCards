@@ -2,6 +2,7 @@
 #if WPF
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using UI = System.Windows.Controls;
 #elif Xamarin
 using Xamarin.Forms;
@@ -22,7 +23,11 @@ namespace AdaptiveCards.Renderers
         protected override FrameworkElement Render(Image image, RenderContext context)
         {
             var uiImage = new UI.Image();
+#if WPF
+            uiImage.Source = GetImageSource(image.Url);
+#elif Xamarin
             uiImage.SetSource(new Uri(image.Url));
+#endif
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.Image";
@@ -45,5 +50,25 @@ namespace AdaptiveCards.Renderers
             }
             return uiImage;
         }
+
+#if WPF
+        protected BitmapImage GetImageSource(string url)
+        {
+            BitmapImage source = null;
+            if (this.getImageFunc != null)
+            {
+                // off screen rendering can pass already loaded image to us so we can render immediately
+                var stream = getImageFunc(url);
+                if (stream != null)
+                {
+                    source = new BitmapImage();
+                    source.BeginInit();
+                    source.StreamSource = stream;
+                    source.EndInit();
+                }
+            }
+            return source ?? new BitmapImage(new Uri(url));
+        }
+#endif
     }
 }
