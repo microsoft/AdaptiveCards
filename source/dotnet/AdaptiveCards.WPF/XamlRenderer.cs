@@ -1,4 +1,5 @@
-﻿using AdaptiveCards.Renderers;
+﻿using AdaptiveCards;
+using AdaptiveCards.Renderers;
 using System;
 using System.Diagnostics;
 using System.IO;
