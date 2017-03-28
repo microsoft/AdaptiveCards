@@ -27,7 +27,7 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 * All content flows top-down in the order specified. 
 * `TextBlocks` takes up a single line (by default) and will be truncated as necessary. 
 * `Images` expand to the width of their container, while maintaining aspect ratio.
-* `ColumnGroups` allow developers to create rows and columns to partition elements
+* `Columns` allow developers to create rows and columns to partition elements
 * `Actions` align horizontally if they fit; otherwise stack vertically.
 * `Input` includes text, multi-line, selections, dates, etc.
 
