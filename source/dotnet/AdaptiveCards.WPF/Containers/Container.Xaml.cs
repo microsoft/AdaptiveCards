@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Threading.Tasks;
 #if WPF
 using System.Windows.Shapes;
 using System.Windows.Controls;
@@ -11,6 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 #elif Xamarin
+using AsNum.XFControls;
 using Xamarin.Forms;
 using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
 #endif
@@ -107,7 +106,26 @@ namespace AdaptiveCards.Renderers
                 Grid.SetRow(uiActionBar, grid.RowDefinitions.Count - 1);
                 grid.Children.Add(uiActionBar);
 #elif Xamarin
-                // TODO: Action bar
+                var uiActionBar = new UniformGrid();
+                //uiActionBar.Rows = 1;
+                //uiActionBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                //uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+
+                int iCol = 0;
+                foreach (var action in actions)
+                {
+                    // add actions
+                    var uiAction = this.RenderAction(action, context);
+                    if (uiAction != null)
+                    {
+                        Grid.SetColumn(uiAction, iCol++);
+                        uiActionBar.Children.Add(uiAction);
+                    }
+                }
+                uiActionBar.Style = this.GetStyle("Adaptive.Actions");
+                grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                Grid.SetRow(uiActionBar, grid.RowDefinitions.Count - 1);
+                grid.Children.Add(uiActionBar);
 #endif
             }
         }

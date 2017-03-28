@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
     <PackageTargetFallback>$(PackageTargetFallback);portable-win+net45+wp8+win81+wpa8</PackageTargetFallback>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81</PackageTargetFallback>
     <RootNamespace>AdaptiveCards</RootNamespace>
@@ -43,6 +43,7 @@
     <PackageReference Include="MarkedNet" Version="1.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
     <PackageReference Include="Xamarin.Forms" Version="2.3.4.221-pre6" />
+    <PackageReference Include="XFControls" Version="1.0.0.6" />
   </ItemGroup>
 
   <ItemGroup>
