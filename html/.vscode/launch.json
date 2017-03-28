@@ -1,0 +1,12 @@
+{
+    "version": "0.1.0",
+    "configurations": [
+        {
+            "name": "Launch Visualizer",
+            "type": "chrome",
+            "request": "launch",
+            "file": "${workspaceRoot}/Visualizer/index.html",
+            "sourceMaps": true
+        }
+    ]
+}

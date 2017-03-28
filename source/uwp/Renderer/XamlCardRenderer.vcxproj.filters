@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="lib\AdaptiveCard.cpp" />
+    <ClCompile Include="lib\AdaptiveColumn.cpp" />
+    <ClCompile Include="lib\AdaptiveColumnSet.cpp" />
+    <ClCompile Include="lib\AdaptiveContainer.cpp" />
+    <ClCompile Include="lib\AdaptiveImage.cpp" />
+    <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
+    <ClCompile Include="lib\ImageLoadTracker.cpp" />
+    <ClCompile Include="lib\Util.cpp" />
+    <ClCompile Include="lib\XamlBuilder.cpp" />
+    <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
+    <ClCompile Include="dll\dll.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\AdaptiveCard.h" />
+    <ClInclude Include="lib\AdaptiveColumn.h" />
+    <ClInclude Include="lib\AdaptiveColumnSet.h" />
+    <ClInclude Include="lib\AdaptiveContainer.h" />
+    <ClInclude Include="lib\AdaptiveImage.h" />
+    <ClInclude Include="lib\AdaptiveTextBlock.h" />
+    <ClInclude Include="lib\AsyncOperations.h" />
+    <ClInclude Include="lib\DefaultResourceDictionary.h" />
+    <ClInclude Include="lib\ErrorHandling.h" />
+    <ClInclude Include="lib\IImageLoadTrackerListener.h" />
+    <ClInclude Include="lib\ImageLoadTracker.h" />
+    <ClInclude Include="lib\IXamlBuilderListener.h" />
+    <ClInclude Include="lib\pch.h" />
+    <ClInclude Include="lib\Util.h" />
+    <ClInclude Include="lib\Vector.h" />
+    <ClInclude Include="lib\XamlBuilder.h" />
+    <ClInclude Include="lib\XamlCardRendererComponent.h" />
+    <ClInclude Include="lib\XamlHelpers.h" />
+    <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />
+  </ItemGroup>
+</Project>
