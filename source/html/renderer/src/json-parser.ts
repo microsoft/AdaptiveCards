@@ -381,8 +381,8 @@ export class JsonParser {
     parse(json: any): Adaptive.AdaptiveCard {
         var cardTypeName = json["type"];
 
-        if (cardTypeName != "AdaptiveCard") {
-            Adaptive.AdaptiveCard.raiseRenderError(
+        if (cardTypeName != "AdaptiveCard" && Adaptive.AdaptiveCard.onRenderError) {
+            Adaptive.AdaptiveCard.onRenderError(
                 Enums.RenderError.MissingCardType,
                 "Invalid card type. Make sure the card's type property is set to \"AdaptiveCard\".");
         }

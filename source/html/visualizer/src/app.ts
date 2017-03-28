@@ -20,7 +20,7 @@ let editor: ace.Editor;
 let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
-function actionExecuted(container: Adaptive.Container, action: Adaptive.Action) {
+function actionExecuted(action: Adaptive.Action) {
     
     var message: string = "Action executed\n";
     message += "    Title: " + action.title + "\n";
@@ -31,7 +31,7 @@ function actionExecuted(container: Adaptive.Container, action: Adaptive.Action) 
     }
     else if (action instanceof Adaptive.ActionSubmit) {
         message += "    Type: Submit";
-        message += "    Url: " + (<Adaptive.ActionSubmit>action).data;
+        message += "    Data: " + JSON.stringify((<Adaptive.ActionSubmit>action).data);
     }
     else if (action instanceof Adaptive.ActionHttp) {
         var httpAction = <Adaptive.ActionHttp>action;
@@ -50,20 +50,6 @@ function actionExecuted(container: Adaptive.Container, action: Adaptive.Action) 
         message += "    Type: <unknown>";
     }
 
-    var localInputs = container.getAllInputs();
-    var allInputs = container.getRootContainer().getAllInputs();
-
-    message += "Local inputs:\n";
-
-    for (var i = 0; i < localInputs.length; i++) {
-        message += "    " + localInputs[i].id + "\n";
-    }
-
-    message += "All inputs:\n";
-
-    for (var i = 0; i < allInputs.length; i++) {
-        message += "    " + allInputs[i].id + "\n";
-    }
     alert(message);
 }
 

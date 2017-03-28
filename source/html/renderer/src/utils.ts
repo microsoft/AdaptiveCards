@@ -73,3 +73,65 @@ export function getActualPadding(element: HTMLElement): IPadding {
 
     return padding;
 }
+
+export interface IInput {
+    id: string;
+    value: string;
+}
+
+export class StringWithSubstitutions {
+    private _isProcessed: boolean = false;
+    private _original: string = null;
+    private _processed: string = null;
+
+    substituteInputValues(inputs: Array<IInput>) {
+        this._processed = this._original;
+
+        var regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
+        var matches;
+
+        while ((matches = regEx.exec(this._original)) != null) {
+            var matchedInput: IInput = null;
+
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].id.toLowerCase() == matches[1].toLowerCase()) {
+                    matchedInput = inputs[i];
+                    break;
+                }
+            }
+
+            if (matchedInput) {
+                this._processed = this._processed.replace(matches[0], matchedInput.value ? matchedInput.value : "");
+            }
+        };
+
+        this._isProcessed = true;
+    }
+
+    get(): string {
+        if (!this._isProcessed) {
+            return this._original;
+        }
+        else {
+            return this._processed;
+        }
+    }
+
+    set(value: string) {
+        this._original = value;
+        this._isProcessed = false;
+    }
+}
+
+export function substituteInputValues(o: any, inputs: Array<IInput>) {
+    for (var field in o) {
+        var fieldValue = o[field];
+
+        if (fieldValue instanceof StringWithSubstitutions) {
+            (<StringWithSubstitutions>fieldValue).substituteInputValues(inputs);
+        }
+        else if (typeof(fieldValue) == "object" && fieldValue) {
+            substituteInputValues(fieldValue, inputs);
+        }
+    }
+}

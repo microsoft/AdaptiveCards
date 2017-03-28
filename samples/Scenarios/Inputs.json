@@ -185,7 +185,7 @@
       "type": "Action.Http",
       "method": "POST",
       "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "body": "This is the body with Gender={{gender}}",
+      "body": "This is the body with Gender={{gender.value}}",
       "title": "POST"
     },
     {
