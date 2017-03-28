@@ -21,13 +21,13 @@
             "type": "HttpAction",
             "method": "POST",
             "title": "Set due date",
-            "uri": "http://mysite/approve/{{reportId}}/",
+            "uri": "http://mysite/approve/{{reportId.value}}/",
             "headers": [
                 {
                     "content-type": "application/json"
                 }
             ],
-            "body": "{ 'status':'approved', 'reportId':{{reportId}} }"
+            "body": "{ 'status':'approved', 'reportId':{{reportId.value}} }"
         },
         {
             "type": "ShowCardAction",

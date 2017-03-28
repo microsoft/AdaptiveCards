@@ -31,7 +31,7 @@ function actionExecuted(action: Adaptive.Action) {
     }
     else if (action instanceof Adaptive.ActionSubmit) {
         message += "    Type: Submit";
-        message += "    Url: " + (<Adaptive.ActionSubmit>action).data;
+        message += "    Data: " + JSON.stringify((<Adaptive.ActionSubmit>action).data);
     }
     else if (action instanceof Adaptive.ActionHttp) {
         var httpAction = <Adaptive.ActionHttp>action;
