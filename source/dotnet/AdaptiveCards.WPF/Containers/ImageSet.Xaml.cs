@@ -36,11 +36,11 @@ namespace AdaptiveCards.Renderers
                 uiImageSet.Items.Add(uiImage);
             }
             return uiImageSet;
-
-#endif
-
+#elif Xamarin
             // TODO: xamarin imageset support
             return new Grid();
+#endif
+
         }
     }
 }

@@ -27,16 +27,16 @@ namespace AdaptiveCards.Renderers
             if (card.BackgroundImage != null)
             {
 #if WPF
-                //                if (context._backgroundImage != null)
-                //                {
-                //                    backgroundSource = new BitmapImage();
-                //                    backgroundSource.BeginInit();
-                //                    backgroundSource.StreamSource = _backgroundImage;
-                //                    backgroundSource.EndInit();
-                //                }
-                //                else
+                if (card.BackgroundImage != null)
+                {
+                    outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
+                }
+#elif Xamarin
+                if (card.BackgroundImage != null)
+                {
+                    outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));
+                }
 #endif
-                outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));
             }
 
             var grid = new Grid();

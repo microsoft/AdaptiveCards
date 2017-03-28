@@ -2,6 +2,7 @@
 #if WPF
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using UI = System.Windows.Controls;
 #elif Xamarin
 using Xamarin.Forms;
@@ -22,7 +23,11 @@ namespace AdaptiveCards.Renderers
         protected override FrameworkElement Render(Image image, RenderContext context)
         {
             var uiImage = new UI.Image();
+#if WPF
+            uiImage.Source = context.ResolveImageSource(image.Url);
+#elif Xamarin
             uiImage.SetSource(new Uri(image.Url));
+#endif
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.Image";
@@ -45,5 +50,6 @@ namespace AdaptiveCards.Renderers
             }
             return uiImage;
         }
+
     }
 }

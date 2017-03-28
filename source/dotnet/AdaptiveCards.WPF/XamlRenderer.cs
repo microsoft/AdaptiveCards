@@ -53,11 +53,14 @@ namespace AdaptiveCards.Renderers
                 if (_resources != null)
                     return _resources;
 
+#if WPF
                 using (var styleStream = File.OpenRead(this.StylePath))
                 {
-                    // TODO: fix resources
-                    //_resources = (ResourceDictionary)XamlReader.Load(styleStream);
+                    _resources = (ResourceDictionary)XamlReader.Load(styleStream);
                 }
+#elif Xamarin
+                    // TODO
+#endif
                 return _resources;
             }
             set
@@ -85,18 +88,17 @@ namespace AdaptiveCards.Renderers
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card)
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null)
         {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback);
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
             return Render(card, context);
         }
 
-        public FrameworkElement RenderShowCard(ActionShowCard showCard)
+        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null)
         {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback);
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
             return Render(showCard.Card, context);
         }
-
 
         public virtual Style GetStyle(string styleName)
         {

@@ -44,7 +44,18 @@ namespace AdaptiveCards.Renderers
             _xamlRenderer = new XamlRenderer(options, stylePath);
         }
 
-        public RenderOptions Options {  get { return _xamlRenderer.Options; } }
+        public RenderOptions Options { get { return _xamlRenderer.Options; } set { _xamlRenderer.Options = value; } }
+
+        /// <summary>
+        /// render the card to an png image stream (must be called on STA thread)
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
+        public Stream RenderAdaptiveCard(AdaptiveCard card, int width)
+        {
+            return _renderAdaptiveCard(card, width);
+        }
 
         /// <summary>
         /// Render the card as a PNG image in a STA compliant way suitable for running on servers 
@@ -55,24 +66,19 @@ namespace AdaptiveCards.Renderers
         public async Task<Stream> RenderAdaptiveCardAsync(AdaptiveCard card, int width = 480)
         {
             ImageVisitor visitor = new ImageVisitor();
+            
             // prefetch images
             await visitor.GetAllImages(card);
 
             return await Task.Factory.StartNewSTA(() =>
             {
-                return RenderAdaptiveCard(card, width);
+                return _renderAdaptiveCard(card, width, (url) => visitor.GetCachedImageStream(url));
             }).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// render the card to an png image stream (must be called on STA thread)
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="width"></param>
-        /// <returns></returns>
-        public Stream RenderAdaptiveCard(AdaptiveCard card, int width)
+        protected Stream _renderAdaptiveCard(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
         {
-            var bitmapImage = RenderToBitmapSource(card, width);
+            var bitmapImage = _renderToBitmapSource(card, width, imageResolver);
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
 
@@ -88,9 +94,9 @@ namespace AdaptiveCards.Renderers
         /// <param name="context"></param>
         /// <param name="width"></param>
         /// <returns></returns>
-        protected BitmapSource RenderToBitmapSource(AdaptiveCard card, int width)
+        protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
         {
-            var uiCard = _xamlRenderer.RenderAdaptiveCard(card);
+            var uiCard = this._xamlRenderer.RenderAdaptiveCard(card, imageResolver);
 
             uiCard.Measure(new System.Windows.Size(width, 4000));
             uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));
@@ -123,7 +129,18 @@ namespace AdaptiveCards.Renderers
         public async Task GetAllImages(AdaptiveCard card)
         {
             Visit(card);
+
             await Task.WhenAll(tasks.ToArray()).ConfigureAwait(false);
+        }
+
+        public MemoryStream GetCachedImageStream(String url)
+        {
+            if (this.Images.TryGetValue(url, out var imageStream))
+            {
+                imageStream.Position = 0;
+                return imageStream;
+            }
+            return null;
         }
 
         protected async Task GetImage(string url)

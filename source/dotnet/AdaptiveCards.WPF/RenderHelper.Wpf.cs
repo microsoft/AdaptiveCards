@@ -8,16 +8,6 @@ namespace AdaptiveCards.Renderers
 {
     public static class RenderHelper
     {
-        public static void SetBackgroundImage(this Grid grid, Uri uri)
-        {
-            grid.Background = new ImageBrush(new BitmapImage(uri));
-        }
-
-        public static void SetSource(this UI.Image image, Uri uri)
-        {
-            image.Source = new BitmapImage(uri);
-        }
-
         public static void SetHorizontalAlignment(this UI.Image image, HorizontalAlignment alignment)
         {
             System.Windows.HorizontalAlignment a;
