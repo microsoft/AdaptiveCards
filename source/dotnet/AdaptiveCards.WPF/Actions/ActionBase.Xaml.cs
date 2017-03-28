@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 #if WPF
 using System.Windows.Controls;
 using xaml = System.Windows.Controls;
@@ -6,9 +7,6 @@ using xaml = System.Windows.Controls;
 using Xamarin.Forms;
 using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
 #endif
-using Newtonsoft.Json.Linq;
-using System;
-using AdaptiveCards;
 
 namespace AdaptiveCards.Renderers
 {
@@ -30,9 +28,8 @@ namespace AdaptiveCards.Renderers
 
 #elif Xamarin
             var uiButton = new Button();
-            var uiTitle = new Label { Text = action.Title };
-            uiTitle.Style = this.GetStyle($"Adaptive.Action.Title");
-            uiButton.Content = uiTitle;
+            // TODO: button styling
+            uiButton.Text = action.Title;
             string name = this.GetType().Name.Replace("Action", String.Empty);
             uiButton.Style = this.GetStyle($"Adaptive.Action.{name}");
             return uiButton;

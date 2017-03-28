@@ -1,35 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace AdaptiveCards.XamarinForms.Renderer
 {
-    public partial class ContentButton : ContentView
+    public partial class ContentButton : Button
     {
         public ContentButton()
         {
-            //InitializeComponent();
+
         }
 
-        public event EventHandler Tapped;
-
-        public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(ContentButton));
-
-        public ICommand Command
+        public object Content
         {
-            get { return (ICommand)GetValue(CommandProperty); }
-            set { SetValue(CommandProperty, value); }
+            get { return Text; }
+            set { Text = value?.ToString(); }
         }
 
-        public event EventHandler<EventArgs> Click;
-
-        private void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        public event EventHandler Click
         {
-            Tapped?.Invoke(this, new EventArgs());
+            add { Clicked += value; }
+            remove { Clicked -= value; }
         }
     }
 }

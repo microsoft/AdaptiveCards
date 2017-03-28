@@ -95,6 +95,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
         private async Task Send(string message)
         {
             message = message.Replace('"', '\'');
+            Message.Text = "";
 
             var fromProperty = new ChannelAccount("Matt");
 
@@ -102,8 +103,8 @@ namespace AdaptiveCards.XamarinForms.BotClient
             try
             {
                 await _client.Conversations.PostActivityAsync(_conversation.ConversationId, activity);
+                await Task.Delay(2000);            
                 await GetMessages();
-
             }
             catch (Exception ex)
             {
@@ -111,13 +112,10 @@ namespace AdaptiveCards.XamarinForms.BotClient
                 Debugger.Break();
             }
 
-            Message.Text = "";
         }
 
         public async Task<IList<Activity>> GetMessages()
         {
-            await Task.Delay(2000);
-
             var response = await _client.Conversations
                 .GetActivitiesAsync(_conversation.ConversationId, _watermark)
                 .ConfigureAwait(false);
@@ -136,7 +134,8 @@ namespace AdaptiveCards.XamarinForms.BotClient
                 {
                     var xaml = (View)_renderer.RenderAdaptiveCard(card);
                     xaml.WidthRequest = 350;
-                    xaml.BackgroundColor = Color.Teal;
+                    xaml.Margin = new Thickness(8);
+                    xaml.BackgroundColor = Color.LightGray;
 
                     Items.Children.Add(xaml);
                 });
