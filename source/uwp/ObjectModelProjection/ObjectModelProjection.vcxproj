@@ -27,27 +27,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCardParseException.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\Image.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\ParseUtil.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCard.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\BaseCardElement.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\Container.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\Enums.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\jsoncpp.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Image.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseUtil.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseCardElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Container.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Enums.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\jsoncpp.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCardParseException.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\Image.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\ParseUtil.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCard.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\BaseCardElement.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\Container.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\Enums.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\json\json-forwards.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\json\json.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseUtil.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseCardElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Enums.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\json\json-forwards.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\json\json.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2d040c7d-757a-4292-bb59-62bc53a83c9f}</ProjectGuid>
@@ -94,7 +94,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\cpp\ObjectModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

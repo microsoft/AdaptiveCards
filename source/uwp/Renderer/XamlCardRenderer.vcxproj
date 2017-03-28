@@ -107,8 +107,8 @@
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>
         ..\..;
-        ..\..\shared\ObjectModel;
-        ..\..\shared\ObjectModel\json;
+        ..\..\shared\cpp\ObjectModel;
+        ..\..\shared\cpp\ObjectModel\json;
         %(AdditionalIncludeDirectories)
       </AdditionalIncludeDirectories>
     </ClCompile>

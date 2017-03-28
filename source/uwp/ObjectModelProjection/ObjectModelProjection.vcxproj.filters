@@ -1,33 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCard.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\Container.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\Enums.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\TextBlock.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\BaseCardElement.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\jsoncpp.cpp">
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Container.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Enums.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseCardElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\jsoncpp.cpp">
       <Filter>json</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\ObjectModel\AdaptiveCardParseException.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\ParseUtil.cpp" />
-    <ClCompile Include="..\..\shared\ObjectModel\Image.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseUtil.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCard.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\Container.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\Enums.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\TextBlock.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\BaseCardElement.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\json\json.h">
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Enums.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseCardElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\json\json.h">
       <Filter>json</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\ObjectModel\json\json-forwards.h">
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\json\json-forwards.h">
       <Filter>json</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\ObjectModel\AdaptiveCardParseException.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\ParseUtil.h" />
-    <ClInclude Include="..\..\shared\ObjectModel\Image.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseUtil.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

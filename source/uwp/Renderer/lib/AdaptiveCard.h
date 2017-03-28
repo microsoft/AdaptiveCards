@@ -2,7 +2,7 @@
 
 #include "AdaptiveCards.XamlCardRenderer.h"
 //TODO: MSFT:11054344 - remove the relative pathing once this is fixed
-#include "shared\ObjectModel\AdaptiveCard.h"
+#include "shared\cpp\ObjectModel\AdaptiveCard.h"
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {

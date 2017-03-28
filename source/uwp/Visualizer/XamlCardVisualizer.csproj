@@ -85,8 +85,7 @@
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Universal</Name>
     </SDKReference>
     <Reference Include="AdaptiveCards.XamlCardRenderer">
-      <HintPath>..\..\$(Platform)\$(Configuration)\XamlCardRenderer\AdaptiveCards.XamlCardRenderer.winmd</HintPath>
-      <IsWinMDFile>true</IsWinMDFile>
+      <HintPath>..\$(Platform)\$(Configuration)\XamlCardRenderer\AdaptiveCards.XamlCardRenderer.winmd</HintPath>      <IsWinMDFile>true</IsWinMDFile>
       <Implementation>AdaptiveCards.XamlCardRenderer.dll</Implementation>
     </Reference>
   </ItemGroup>
