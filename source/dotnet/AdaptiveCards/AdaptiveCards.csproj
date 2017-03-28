@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <PackageId>AdaptiveCards</PackageId>
+    <PackageVersion>1.0.0.2</PackageVersion>
+    <Authors>Microsoft</Authors>
+    <summary>Adaptive Card object model for .NET</summary>
+    <Description>This .NET Standard library implements classes for building and serializing adaptive card objects</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageTags>adaptivecards</PackageTags>
+    <iconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</iconUrl>
+    <language>en-US</language>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>
