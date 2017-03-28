@@ -49,9 +49,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdaptiveCards, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AdaptiveCards.1.0.0.2\lib\netstandard1.3\AdaptiveCards.dll</HintPath>
-    </Reference>
     <Reference Include="MarkedNet, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MarkedNet.1.0.5.0\lib\portable-net45+win+wpa81\MarkedNet.dll</HintPath>
     </Reference>
@@ -181,6 +178,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="pushpackage.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj">
+      <Project>{359961bf-84cd-4e33-a86d-9ed708729e07}</Project>
+      <Name>AdaptiveCards</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
