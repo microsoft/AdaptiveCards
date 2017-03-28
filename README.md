@@ -12,12 +12,9 @@ For example:
 
 ## Install and build
 
-To build and run the Visualizer:
+Since we build for multiple platforms they each have slightly different build mechanisms.
 
-1. Clone this repo
-1. `npm install`
-1. `npm run build` (to build on every change do `npm run watch`)
-1. `npm start`
+See the `source` dir for a `README` in each platform for instructions.
 
 # How it works
 
@@ -37,9 +34,9 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 # What's in the Toolkit
 
 * Documentation of the schema (see [docs/Schema.md](docs/Schema.md))
-* The official Adaptive Card JSON schema (see [schemas/adaptive-card.json](schemas/adaptive-card.json) )
+* The official Adaptive Card JSON schema (see [schemas/adaptive-card.json](schemas/adaptive-card.json))
 * An [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards/html/visualizer/) to preview and design Card payloads
-* Sample Cards (see [samples](samples/Proposed)
+* Sample Cards (see [samples](samples/Scenarios))
 * Card Renderer libraries for multiple platforms (HTML, iOS, Android, .NET) 
 * Card Builders for .NET and Node 
 
