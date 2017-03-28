@@ -33,7 +33,7 @@
                             "type": "Action.Http",
                             "method": "POST",
                             "title": "OK",
-                            "url": "http://google.com?dueDate={{dueDate}}"
+                            "url": "http://google.com?dueDate={{dueDate.value}}"
                         }
                     ]
                 }

@@ -103,7 +103,7 @@ export const defaultPayload: string = `
 								"type": "Action.Http",
 								"method": "POST",
 								"title": "OK",
-								"url": "http://xyz.com?dueDate={{dueDate}}"
+								"url": "http://xyz.com?dueDate={{dueDate.value}}"
 							}
 						]
 					}
@@ -130,7 +130,7 @@ export const defaultPayload: string = `
 								"headers": {
 									"content-type": "application/json"
 								},
-								"body": "{ 'comment' : '{{comment}}' }"
+								"body": "{ 'comment' : '{{comment.value}}' }"
 							}
 						]
 					}
