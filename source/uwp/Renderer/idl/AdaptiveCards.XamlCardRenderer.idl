@@ -1,0 +1,336 @@
+#include <sdkddkver.h>
+
+import "inspectable.idl";
+import "Windows.Foundation.idl";
+import "Windows.UI.Xaml.idl";
+
+namespace AdaptiveCards
+{
+    namespace XamlCardRenderer
+    {
+        runtimeclass XamlCardRenderer;
+
+        runtimeclass AdaptiveTextBlock;
+        runtimeclass AdaptiveCard;
+        runtimeclass AdaptiveImage;
+        runtimeclass AdaptiveContainer;
+        runtimeclass AdaptiveColumn;
+        runtimeclass AdaptiveColumnSet;
+        interface IAdaptiveCardElement;
+        interface IAdaptiveTextBlock;
+        interface IAdaptiveCard;
+        interface IAdaptiveImage;
+        interface IAdaptiveContainer;
+        interface IAdaptiveColumn;
+        interface IAdaptiveColumnSet;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum TextSize
+        {
+            Small = 0,
+            Normal,
+            Medium,
+            Large,
+            ExtraLarge
+        } TextSize;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum TextWeight
+        {
+            Lighter = 0,
+            Normal,
+            Bolder
+        } TextWeight;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum TextColor
+        {
+            Default = 0,
+            Dark,
+            Light,
+            Accent,
+            Good,
+            Warning,
+            Attention
+        } TextColor;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum HAlignment
+        {
+            Left = 0,
+            Center,
+            Right
+        } HAlignment;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ElementType
+        {
+            Unsupported = 0,
+            AdaptiveCard,
+            TextBlock,
+            Image,
+            Container,
+            Column,
+            ColumnSet
+        } ElementType;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ImageStyle {
+            Normal = 0,
+            Person
+        } ImageStyle;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ImageSize {
+            Auto = 0,
+            Stretch,
+            Small,
+            Medium,
+            Large
+        } ImageSize;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum SeparationStyle {
+            Default = 0,
+            None,
+            Strong,
+        } SeparationStyle;
+
+        declare
+        {
+            interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
+            interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
+            interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
+            interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
+            interface Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>;
+            interface Windows.Foundation.IReference<Windows.UI.Text.FontWeight>;
+        }
+
+        [
+            uuid(74D69C2F-7F1C-47FD-A319-F4B4E7F72EE9),
+            version(NTDDI_WIN10_RS1),
+        ]
+        interface IAdaptiveCardElement : IInspectable
+        {
+            [propget] HRESULT ElementType([out, retval] ElementType* value);
+
+            [propget] HRESULT Speak([out, retval] HSTRING* value);
+            [propput] HRESULT Speak([in] HSTRING value);
+
+            [propget] HRESULT Separation([out, retval] SeparationStyle* value);
+            [propput] HRESULT Separation([in] SeparationStyle value);
+        };
+
+        [
+            uuid(f3b844da-2d6a-4003-8a57-4e5541fcd078),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveTextBlock)
+        ]
+        interface IAdaptiveTextBlock : IInspectable
+        {
+            [propget] HRESULT Size([out, retval] TextSize* value);
+            [propput] HRESULT Size([in] TextSize value);
+
+            [propget] HRESULT Weight([out, retval] TextWeight* value);
+            [propput] HRESULT Weight([in] TextWeight value);
+
+            [propget] HRESULT Color([out, retval] TextColor* value);
+            [propput] HRESULT Color([in] TextColor value);
+
+            [propget] HRESULT Text([out, retval] HSTRING* value);
+            [propput] HRESULT Text([in] HSTRING value);
+
+            [propget] HRESULT IsSubtle([out, retval] boolean* value);
+            [propput] HRESULT IsSubtle([in] boolean value);
+
+            [propget] HRESULT Wrap([out, retval] boolean* value);
+            [propput] HRESULT Wrap([in] boolean value);
+
+            [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
+            [propput] HRESULT HorizontalAlignment([in] HAlignment value);
+
+            [propget] HRESULT MaxLines([out, retval] UINT32 *value);
+            [propput] HRESULT MaxLines([in] UINT32 value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveTextBlock
+        {
+            [default] interface IAdaptiveTextBlock;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(9F68A612-9DCB-4710-8121-A116BD33B69B),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveCard),
+        ]
+        interface IAdaptiveCard : IInspectable
+        {
+            [propget] HRESULT Body([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+
+            [propget] HRESULT ElementType([out, retval] ElementType* value);
+
+            [propget] HRESULT Version([out, retval] HSTRING* value);
+            [propput] HRESULT Version([in] HSTRING value);
+
+            [propget] HRESULT MinVersion([out, retval] HSTRING* value);
+            [propput] HRESULT MinVersion([in] HSTRING value);
+
+            [propget] HRESULT FallbackText([out, retval] HSTRING* value);
+            [propput] HRESULT FallbackText([in] HSTRING value);
+
+        };
+
+        [
+            uuid(C312AD20-DFE3-4418-819F-E3CB7A0CD2FE),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveCard),
+        ]
+        interface IAdaptiveCardStatics : IInspectable
+        {
+            HRESULT CreateCardFromJson([in] HSTRING adaptiveJson, [out, retval] AdaptiveCard** card);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+            static(IAdaptiveCardStatics, NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveCard
+        {
+            [default] interface IAdaptiveCard;
+        }
+
+        [
+            uuid(16452a2e-1152-47f3-90bd-6e4148b09669),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveImage)
+        ]
+        interface IAdaptiveImage : IInspectable
+        {
+            [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
+            [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
+
+            [propget] HRESULT Style([out, retval] ImageStyle* value);
+            [propput] HRESULT Style([in] ImageStyle value);
+
+            [propget] HRESULT Size([out, retval] ImageSize* value);
+            [propput] HRESULT Size([in] ImageSize value);
+
+            [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
+            [propput] HRESULT HorizontalAlignment([in] HAlignment value);
+
+            [propget] HRESULT AltText([out, retval] HSTRING* value);
+            [propput] HRESULT AltText([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveImage
+        {
+            [default] interface IAdaptiveImage;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveContainer : IInspectable
+        {
+            [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveContainer
+        {
+            [default] interface IAdaptiveContainer;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(91e03800-d239-43bc-b5fb-2ccfe0cc7fcb),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveColumn : IInspectable
+        {
+            [propget] HRESULT Size([out, retval] HSTRING* value);
+            [propput] HRESULT Size([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveColumn
+        {
+            [default] interface IAdaptiveColumn;
+            interface IAdaptiveContainer;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(4e3e1cd1-906b-4718-96ea-0a6e16bf0199),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveColumnSet)
+        ]
+        interface IAdaptiveColumnSet: IInspectable
+        {
+            [propget] HRESULT Columns([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveColumn*>** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveColumnSet
+        {
+            [default] interface IAdaptiveColumnSet;
+            interface IAdaptiveCardElement;
+        };
+
+        [flags]
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum RenderOptions
+        {
+            None = 0x0,
+            SupportsActionBar = 0x1,
+            SupportsInlineActions = 0x2,
+        }RenderOptions;
+
+        [
+            uuid(DB7C7BB8-C313-440A-A421-B52620107F8B),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(XamlCardRenderer),
+        ]
+        interface IXamlCardRenderer : IInspectable
+        {
+            HRESULT SetRenderOptions([in] RenderOptions options);
+            HRESULT SetOverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
+            
+            HRESULT RenderCardAsXaml([in] AdaptiveCard* adaptiveCard,[out, retval] Windows.UI.Xaml.UIElement** result);
+            HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
+
+            HRESULT RenderAdaptiveJsonAsXaml([in] HSTRING adaptiveJson, [out, retval] Windows.UI.Xaml.UIElement** result);
+            HRESULT RenderAdaptiveJsonAsXamlAsync([in] HSTRING adaptiveJson, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+        ]
+        runtimeclass XamlCardRenderer
+        {
+            [default] interface IXamlCardRenderer;
+        };
+    }
+}

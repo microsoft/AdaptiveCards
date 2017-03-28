@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFrameworks>netstandard1.3;net452</TargetFrameworks>
     <PackageId>AdaptiveCards</PackageId>
     <PackageVersion>1.0.0.3</PackageVersion>
     <Authors>Microsoft</Authors>
@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
 
