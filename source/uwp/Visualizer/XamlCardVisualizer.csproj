@@ -84,11 +84,12 @@
     <SDKReference Include="Microsoft.VCLibs.120, Version=14.0">
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Universal</Name>
     </SDKReference>
-    <Reference Include="AdaptiveCards.XamlCardRenderer">
-      <HintPath>..\$(Platform)\$(Configuration)\XamlCardRenderer\AdaptiveCards.XamlCardRenderer.winmd</HintPath>
-      <IsWinMDFile>true</IsWinMDFile>
-      <Implementation>AdaptiveCards.XamlCardRenderer.dll</Implementation>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Renderer\XamlCardRenderer.vcxproj">
+      <Project>{cf169157-f487-420c-8b9b-ca3abe2bb209}</Project>
+      <Name>XamlCardRenderer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
