@@ -10,10 +10,10 @@
     <description>This library provides WPF rendering object model for adaptive cards</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="9.0.1" />
-      <dependency id="Extended.Wpf.Toolkit" version="3.0" />
-      <dependency id="MarkedNet" version="1.0.5.0" />
-      <dependency id="AdaptiveCards" version="1.0.0.4" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Extended.Wpf.Toolkit" version="3.0" />
+        <dependency id="MarkedNet" version="1.0.5.0" />
+        <dependency id="AdaptiveCards" version="1.0.0.4" />
     </dependencies>
   </metadata>
 </package>
