@@ -5,29 +5,36 @@
 // TODO: Narrator support
 
 {
+    "minAdaptiveVersion": 1,
+    "fallbackText": "New tile",
     "branding": "none",
     "TileSmall": {
         "branding": {},
-        "visual": [
-            
-        ]
+        "tileVerticalAlignment": "center",
+        "container": {
+            "items": [
+                {
+                    "type": "TextBlock"
+                }
+            ]
+        }
     },
     "TileMedium": {
         "branding": {},
-        "visual": [
+        "container": {
 
-        ]
+        }
     },
      "TileWide": {
         "branding": {},
-        "visual": [
-            
-        ]
+        "container": {
+
+        }
     },
     "TileLarge": {
         "branding": {},
-        "visual": [
-            
-        ]
+        "container": {
+
+        }
     }
 }

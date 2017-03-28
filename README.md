@@ -12,12 +12,9 @@ For example:
 
 ## Install and build
 
-To build and run the Visualizer:
+Since we build for multiple platforms they each have slightly different build mechanisms.
 
-1. Clone this repo
-1. `npm install`
-1. `npm run build` (to build on every change do `npm run watch`)
-1. `npm start`
+See the `source` dir for a `README` in each platform for instructions.
 
 # How it works
 
@@ -30,33 +27,18 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 * All content flows top-down in the order specified. 
 * `TextBlocks` takes up a single line (by default) and will be truncated as necessary. 
 * `Images` expand to the width of their container, while maintaining aspect ratio.
-* `ColumnGroups` allow developers to create rows and columns to partition elements
+* `Columns` allow developers to create rows and columns to partition elements
 * `Actions` align horizontally if they fit; otherwise stack vertically.
 * `Input` includes text, multi-line, selections, dates, etc.
 
 # What's in the Toolkit
 
-* The official Adaptive Card JSON schema (see /schema) *(coming soon)*
-* Documentation of the schema (see /docs)
-* An [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards/) to preview and design Card payloads
-* Sample Cards (see /samples)
-* Card Renderer libraries for multiple platforms (HTML, iOS, Android, .NET) *(more info on this effort coming soon)*
-* Card Builders for .NET and Node *(coming soon)*
-
-# Schema and Samples
-
-Please see [the full schema](docs/Schema.md) for the list of elements and properties that we support.
-The `/samples` folder also has a list of payloads to get started with.
- 
-# Documentation
-
-Please see the `docs` folder for more information.
-
-# Versioning and fallback
-
-Versioning and Fallback are important topics and have a dedicated page/discussion. 
-
-See the following page for more details on [Versioning and Graceful fallback](docs/GracefulFallback.md)
+* Documentation of the schema (see [docs/Schema.md](docs/Schema.md))
+* The official Adaptive Card JSON schema (see [schemas/adaptive-card.json](schemas/adaptive-card.json))
+* An [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards/html/visualizer/) to preview and design Card payloads
+* Sample Cards (see [samples](samples/Scenarios))
+* Card Renderer libraries for multiple platforms (HTML, iOS, Android, .NET) 
+* Card Builders for .NET and Node 
 
 # Rendering Cards in your App or Web Site
 

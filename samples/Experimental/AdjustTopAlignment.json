@@ -1,36 +1,37 @@
-
 {
-	"@type": "AdaptiveCard",
+	"type": "AdaptiveCard",
 	"sections": [
 		{
-		    "padding": "narrow",
-		    "items": [
-		        {
-		            "@type": "ColumnGroup",
-		            "items": [
-		                {
-		                    "size": "auto",
-		                    "items": [
-		                        {
-		                            "@type": "Image",
-		                            "size": "medium",
-		                            "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg"
-		                        }
-		                    ]
-		                },
-		                {
-		                    "size": "stretch",
-		                    "items": [
-		                        {
-		                            "@type": "TextBlock",
-		                            "textSize": "large",
-		                            "text": "**ADJUST TOP ALIGNMENT**"
-		                        }
-		                    ]
-		                }
-		            ]
-		        }
-		    ]
+			"padding": "narrow",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"size": "auto",
+							"items": [
+								{
+									"type": "Image",
+									"size": "medium",
+									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"size": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"size": "large",
+									"text": "**ADJUST TOP ALIGNMENT**"
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 	]
 }

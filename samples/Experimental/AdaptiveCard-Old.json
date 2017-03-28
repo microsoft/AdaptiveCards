@@ -15,8 +15,8 @@
 					"size": "medium"
 				},
 				{
-					"type": "FactGroup",
-					"items": [
+					"type": "FactSet",
+					"facts": [
 						{
 							"name": "This is a fact name",
 							"value": "This is a fact value"
@@ -49,7 +49,7 @@
 				    ]
 				},
 				{
-					"type": "ImageGallery",
+					"type": "ImageSet",
 					"imageSize": "medium",
 					"items": [
 						"http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
@@ -59,7 +59,7 @@
 				},
 				{
 					"type": "ActionGroup",
-					"items": [
+					"actions": [
 						{
 							"type": "ActionCard",
 							"name": "Comment",

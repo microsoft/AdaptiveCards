@@ -13,6 +13,7 @@
     "recipient": {
         "id": "12345"
     },
+    
     "textFormat": "plain",
     "text": "",
     "summary": "Hero Card about bender",
@@ -20,7 +21,7 @@
         {
             "contentType": "application/vnd.microsoft.card.adaptive",
             "content": {
-                "@type": "AdaptiveCard",
+                "type": "AdaptiveCard",
                 "targets": {
                     "windows": {
                         // metadata for windows target
@@ -31,38 +32,38 @@
                 },
                 "body": [
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "Serious Pie",
-                        "textWeight": "bolder",
-                        "textSize": "medium"
+                        "weight": "bolder",
+                        "size": "medium"
                     },
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "9.3 · $$ · Pizza",
                         "isSubtle": true
                     },
                     {
-                        "@type": "TextBlock",
+                        "type": "TextBlock",
                         "text": "The BEST artisan pizza in Seattle!",
                         "wrap": true
                     },
                     {
-                        "@type": "Image",
+                        "type": "Image",
                         "url": "http://res.cloudinary.com/sagacity/image/upload/c_crop,h_670,w_635,x_0,y_0/c_scale,w_640/v1397425743/Untitled-4_lviznp.jpg",
                         "size": "large"
                     },
                     {
-                        "@type":"ProgressBar",
+                        "type":"ProgressBar",
                         "Value": "{Binding XYZ}"
                     }
                 ],
                 "actions": [
                     {
-                        "@type": "HttpPOST",
+                        "type": "HttpPOST",
                         "name": "More Info"
                     },
                     {
-                        "@type": "HttpPOST",
+                        "type": "HttpPOST",
                         "name": "View on Foursquare"
                     }
                 ]

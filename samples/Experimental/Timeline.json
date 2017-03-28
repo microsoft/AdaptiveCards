@@ -2,19 +2,19 @@
     "appName": "Amazon.com | Edge",
     "activationUri": "",
     "visual": {
-        "backgroundColor": "",
+        "backgroundImage": "",
         "icon": "",
         "title": "MVP Summit Prep.pptx",
         "body": [
             {
-                "@type": "TextBlock",
+                "type": "TextBlock",
                 "text": "Line 1",
-                "textWeight": "bolder",
-                "textSize": "medium"
+                "weight": "bolder",
+                "size": "medium"
             },
             {
-                "@type": "FactGroup",
-                "items": [
+                "type": "FactSet",
+                "facts": [
                     {
                         "name": "File Type:",
                         "value": "pptx"
@@ -34,18 +34,18 @@
 }
 
 // {
-// 	"@type": "AdaptiveCard",
+// 	"type": "AdaptiveCard",
 // 	"sections": [
 // 		{
 // 			"items": [
 //         {
-//             "@type": "TextBlock",
+//             "type": "TextBlock",
 //             "text": "MVP Summit Prep.pptx",
-//             "textWeight": "bolder",
-//             "textSize": "medium"
+//             "weight": "bolder",
+//             "size": "medium"
 //         },
 //         {
-//             "@type": "FactGroup",
+//             "type": "FactSet",
 //             "items": [
 //                 {
 //                     "name": "File Type:",

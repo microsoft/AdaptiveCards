@@ -1,0 +1,43 @@
+{
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Light",
+            "color": "light",
+            "weight": "bolder"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Dark",
+            "color": "dark",
+            "weight": "bolder"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Accent",
+            "color": "accent",
+            "weight": "bolder"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Good",
+            "color": "good",
+            "weight": "bolder"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Warning",
+            "color": "warning",
+            "weight": "bolder"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Attention",
+            "color": "attention",
+            "weight": "bolder"
+        }
+    ]
+}

@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-win+net45+wp8+win81+wpa8</PackageTargetFallback>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81</PackageTargetFallback>
+    <RootNamespace>AdaptiveCards</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;Xamarin</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\AdaptiveCards.WPF\Actions\ActionBase.Xaml.cs" Link="Actions\ActionBase.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Actions\ActionHttp.Xaml.cs" Link="Actions\ActionHttp.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Actions\ActionOpenUrl.Xaml.cs" Link="Actions\ActionOpenUrl.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Actions\ActionShowCard.Xaml.cs" Link="Actions\ActionShowCard.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Actions\ActionSubmit.Xaml.cs" Link="Actions\ActionSubmit.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Containers\AdaptiveCard.Xaml.cs" Link="Containers\AdaptiveCard.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Containers\Column.Xaml.cs" Link="Containers\Column.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Containers\ColumnSet.Xaml.cs" Link="Containers\ColumnSet.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Containers\Container.Xaml.cs" Link="Containers\Container.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Containers\FactSet.Xaml.cs" Link="Containers\FactSet.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Containers\ImageSet.Xaml.cs" Link="Containers\ImageSet.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\CardElement.Xaml.cs" Link="Elements\CardElement.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\Image.Xaml.cs" Link="Elements\Image.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\Input.Xaml.cs" Link="Elements\Input.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\InputChoiceSet.Xaml.cs" Link="Elements\InputChoiceSet.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\InputDate.Xaml.cs" Link="Elements\InputDate.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\InputNumber.Xaml.cs" Link="Elements\InputNumber.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\InputText.Xaml.cs" Link="Elements\InputText.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\InputTime.Xaml.cs" Link="Elements\InputTime.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\InputToggle.Xaml.cs" Link="Elements\InputToggle.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Elements\TextBlock.Xaml.cs" Link="Elements\TextBlock.Xaml.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\MarkedXamlRenderer.cs" Link="MarkedXamlRenderer.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\RenderContext.cs" Link="RenderContext.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\Utilities.cs" Link="Utilities.cs" />
+    <Compile Include="..\AdaptiveCards.WPF\XamlRenderer.cs" Link="XamlRenderer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MarkedNet" Version="1.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
+    <PackageReference Include="Xamarin.Forms" Version="2.3.4.221-pre6" />
+    <PackageReference Include="XFControls" Version="1.0.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Actions\" />
+    <Folder Include="Containers\" />
+    <Folder Include="Elements\" />
+  </ItemGroup>
+
+</Project>
