@@ -24,7 +24,7 @@ namespace AdaptiveCards.Renderers
         {
             var uiImage = new UI.Image();
 #if WPF
-            uiImage.Source = GetImageSource(image.Url);
+            uiImage.Source = context.ResolveImageSource(image.Url);
 #elif Xamarin
             uiImage.SetSource(new Uri(image.Url));
 #endif
@@ -51,24 +51,5 @@ namespace AdaptiveCards.Renderers
             return uiImage;
         }
 
-#if WPF
-        protected BitmapImage GetImageSource(string url)
-        {
-            BitmapImage source = null;
-            if (this.getImageFunc != null)
-            {
-                // off screen rendering can pass already loaded image to us so we can render immediately
-                var stream = getImageFunc(url);
-                if (stream != null)
-                {
-                    source = new BitmapImage();
-                    source.BeginInit();
-                    source.StreamSource = stream;
-                    source.EndInit();
-                }
-            }
-            return source ?? new BitmapImage(new Uri(url));
-        }
-#endif
     }
 }

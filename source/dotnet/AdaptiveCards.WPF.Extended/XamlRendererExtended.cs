@@ -20,10 +20,9 @@ namespace AdaptiveCards.Renderers
 
 #if WPF
         public XamlRendererExtended(RenderOptions options, string stylePath,
-            Func<string, MemoryStream> getImageFunc,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(options, stylePath, getImageFunc, actionCallback, missingDataCallback)
+            : base(options, stylePath, actionCallback, missingDataCallback)
         {
         }
 #endif

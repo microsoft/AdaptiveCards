@@ -11,6 +11,7 @@ using Xamarin.Forms.Xaml.Internals;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Windows.Media.Imaging;
 using Xceed.Wpf.Toolkit;
 #endif
 
@@ -49,18 +50,38 @@ namespace AdaptiveCards.Renderers
 
     public class RenderContext
     {
+        private Func<string, MemoryStream> _imageResolver = null;
 
-        public RenderContext(Action<object, ActionEventArgs> actionCallback, Action<object, MissingInputEventArgs> missingDataCallback)
+        public RenderContext(Action<object, ActionEventArgs> actionCallback, Action<object, MissingInputEventArgs> missingDataCallback, Func<string, MemoryStream> imageResolver = null)
         {
             if (actionCallback != null)
                 this.OnAction += (obj, args) => actionCallback(obj, args);
 
             if (missingDataCallback != null)
                 this.OnMissingInput += (obj, args) => missingDataCallback(obj, args);
+
+            this._imageResolver = imageResolver;
         }
 
-        public Dictionary<string, MemoryStream> Images { get; private set; } = new Dictionary<string, MemoryStream>();
-
+#if WPF
+        public BitmapImage ResolveImageSource(string url)
+        {
+            BitmapImage source = null;
+            if (this._imageResolver != null)
+            {
+                // off screen rendering can pass already loaded image to us so we can render immediately
+                var stream = this._imageResolver(url);
+                if (stream != null)
+                {
+                    source = new BitmapImage();
+                    source.BeginInit();
+                    source.StreamSource = stream;
+                    source.EndInit();
+                }
+            }
+            return source ?? new BitmapImage(new Uri(url));
+        }
+#endif
 
         /// <summary>
         /// Input Controls in scope for actions array

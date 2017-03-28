@@ -29,7 +29,7 @@ namespace AdaptiveCards.Renderers
 #if WPF
                 if (card.BackgroundImage != null)
                 {
-                    outerGrid.Background = new ImageBrush(this.GetImageSource(card.BackgroundImage));
+                    outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
                 }
 #elif Xamarin
                 if (card.BackgroundImage != null)

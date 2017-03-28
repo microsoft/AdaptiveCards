@@ -19,7 +19,6 @@ namespace AdaptiveCards.Renderers
     {
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
-        protected Func<string, MemoryStream> getImageFunc;
 
         public XamlRenderer(RenderOptions options,
             ResourceDictionary resources,
@@ -34,7 +33,6 @@ namespace AdaptiveCards.Renderers
 
 #if WPF
         public XamlRenderer(RenderOptions options, string stylePath,
-            Func<string, MemoryStream> getImageFunc,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
             : base(options)
@@ -42,9 +40,6 @@ namespace AdaptiveCards.Renderers
             this.StylePath = stylePath;
             this.actionCallback = actionCallback;
             this.missingDataCallback = missingDataCallback;
-            if (getImageFunc == null)
-                throw new ArgumentNullException("Expected getImagefunc");
-            this.getImageFunc = getImageFunc;
         }
 #endif
         /// <summary>
@@ -93,18 +88,17 @@ namespace AdaptiveCards.Renderers
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card)
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null)
         {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback);
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
             return Render(card, context);
         }
 
-        public FrameworkElement RenderShowCard(ActionShowCard showCard)
+        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null)
         {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback);
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
             return Render(showCard.Card, context);
         }
-
 
         public virtual Style GetStyle(string styleName)
         {

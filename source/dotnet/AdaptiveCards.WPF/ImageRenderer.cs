@@ -21,7 +21,6 @@ namespace AdaptiveCards.Renderers
     public class ImageRenderer
     {
         private XamlRenderer _xamlRenderer;
-        private string _stylePath;
 
         /// <summary>
         /// You can use this from within a WPF app, passing in resource dictionary directly
@@ -30,8 +29,7 @@ namespace AdaptiveCards.Renderers
         /// <param name="resources"></param>
         public ImageRenderer(RenderOptions options, ResourceDictionary resources)
         {
-            Options = options;
-            Options.SupportInteraction = false;
+            options.SupportInteraction = false;
             _xamlRenderer = new XamlRenderer(options, resources);
         }
 
@@ -42,12 +40,11 @@ namespace AdaptiveCards.Renderers
         /// <param name="stylePath"></param>
         public ImageRenderer(RenderOptions options, string stylePath)
         {
-            Options = options;
-            Options.SupportInteraction = false;
-            this._stylePath = stylePath;
+            options.SupportInteraction = false;
+            _xamlRenderer = new XamlRenderer(options, stylePath);
         }
 
-        public RenderOptions Options { get; set; }
+        public RenderOptions Options { get { return _xamlRenderer.Options; } set { _xamlRenderer.Options = value; } }
 
         /// <summary>
         /// render the card to an png image stream (must be called on STA thread)
@@ -57,7 +54,7 @@ namespace AdaptiveCards.Renderers
         /// <returns></returns>
         public Stream RenderAdaptiveCard(AdaptiveCard card, int width)
         {
-            return _renderAdaptiveCard(_xamlRenderer, card, width);
+            return _renderAdaptiveCard(card, width);
         }
 
         /// <summary>
@@ -75,14 +72,13 @@ namespace AdaptiveCards.Renderers
 
             return await Task.Factory.StartNewSTA(() =>
             {
-                var xamlRenderer = new XamlRenderer(Options, this._stylePath, getImageFunc: (url) => visitor.GetCachedImageStream(url));
-                return _renderAdaptiveCard(xamlRenderer, card, width);
+                return _renderAdaptiveCard(card, width, (url) => visitor.GetCachedImageStream(url));
             }).ConfigureAwait(false);
         }
 
-        protected Stream _renderAdaptiveCard(XamlRenderer renderer, AdaptiveCard card, int width)
+        protected Stream _renderAdaptiveCard(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
         {
-            var bitmapImage = _renderToBitmapSource(renderer, card, width);
+            var bitmapImage = _renderToBitmapSource(card, width, imageResolver);
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
 
@@ -98,9 +94,9 @@ namespace AdaptiveCards.Renderers
         /// <param name="context"></param>
         /// <param name="width"></param>
         /// <returns></returns>
-        protected BitmapSource _renderToBitmapSource(XamlRenderer renderer, AdaptiveCard card, int width)
+        protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
         {
-            var uiCard = renderer.RenderAdaptiveCard(card);
+            var uiCard = this._xamlRenderer.RenderAdaptiveCard(card, imageResolver);
 
             uiCard.Measure(new System.Windows.Size(width, 4000));
             uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));
