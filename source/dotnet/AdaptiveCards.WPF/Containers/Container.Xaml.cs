@@ -8,7 +8,7 @@ using WPF = System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-#elif Xamarin
+#elif XAMARIN
 using AsNum.XFControls;
 using Xamarin.Forms;
 using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
@@ -105,7 +105,7 @@ namespace AdaptiveCards.Renderers
                 grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, grid.RowDefinitions.Count - 1);
                 grid.Children.Add(uiActionBar);
-#elif Xamarin
+#elif XAMARIN
                 var uiActionBar = new UniformGrid();
                 //uiActionBar.Rows = 1;
                 //uiActionBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;

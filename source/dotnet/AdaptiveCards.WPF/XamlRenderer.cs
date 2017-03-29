@@ -7,7 +7,7 @@ using System.Windows;
 #if WPF
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 #endif
 
@@ -58,7 +58,7 @@ namespace AdaptiveCards.Renderers
                 {
                     _resources = (ResourceDictionary)XamlReader.Load(styleStream);
                 }
-#elif Xamarin
+#elif XAMARIN
                     // TODO
 #endif
                 return _resources;

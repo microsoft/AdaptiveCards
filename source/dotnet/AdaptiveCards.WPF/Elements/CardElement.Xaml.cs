@@ -27,7 +27,7 @@ namespace AdaptiveCards.Renderers
                 doc.LoadXml(xml);
                 return doc.InnerText;
             }
-#elif Xamarin 
+#elif XAMARIN 
             // TODO: Xamarin fallback
 #endif
 

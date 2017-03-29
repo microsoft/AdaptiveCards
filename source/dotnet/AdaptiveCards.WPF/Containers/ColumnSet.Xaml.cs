@@ -5,7 +5,7 @@ using System.Windows;
 #if WPF
 using System.Windows.Controls;
 using System.Windows.Shapes;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 #endif
 
@@ -50,7 +50,7 @@ namespace AdaptiveCards.Renderers
                                 var sep = new Grid();
 #if WPF
                                 sep.VerticalAlignment = VerticalAlignment.Stretch;
-#elif Xamarin
+#elif XAMARIN
                                 // TOOD: check xamarin separator visual
                                 //sep.VerticalAlignment = VerticalAlignment.Stretch;
 #endif

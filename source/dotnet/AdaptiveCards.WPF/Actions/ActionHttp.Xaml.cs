@@ -2,7 +2,7 @@
 #if WPF
 using System.Windows.Controls;
 using WPF = System.Windows.Controls;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
 #endif

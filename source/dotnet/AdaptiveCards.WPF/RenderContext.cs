@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-#if Xamarin
+#if XAMARIN
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml.Internals;
 #elif WPF

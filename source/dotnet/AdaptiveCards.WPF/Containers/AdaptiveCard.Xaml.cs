@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 // using Adaptive.Threading.Tasks.Schedulers;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 #endif
 
@@ -31,7 +31,7 @@ namespace AdaptiveCards.Renderers
                 {
                     outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
                 }
-#elif Xamarin
+#elif XAMARIN
                 if (card.BackgroundImage != null)
                 {
                     outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));

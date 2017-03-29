@@ -9,7 +9,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
 using MarkedNet;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 #endif
 
@@ -72,7 +72,7 @@ namespace AdaptiveCards.Renderers
             if (textBlock.Wrap)
                 uiTextBlock.TextWrapping = TextWrapping.Wrap;
 
-#elif Xamarin
+#elif XAMARIN
             var uiTextBlock = new Xamarin.Forms.TextBlock();
             uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
             uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock");
@@ -162,7 +162,7 @@ namespace AdaptiveCards.Renderers
 
                 // Add both to a grid so they go as a unit
                 uiGrid.Children.Add(measureBlock);
-#elif Xamarin
+#elif XAMARIN
                 // TODO 
 #endif
                 uiGrid.Children.Add(uiTextBlock);

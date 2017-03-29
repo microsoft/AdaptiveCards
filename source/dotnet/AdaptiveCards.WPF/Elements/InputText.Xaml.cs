@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 #if WPF
 using System.Windows.Controls;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 #endif
 
@@ -27,14 +27,14 @@ namespace AdaptiveCards.Renderers
 #if WPF
                     textBox.TextWrapping = TextWrapping.Wrap;
                     textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
-#elif Xamarin 
+#elif XAMARIN 
                     // TODO 
 #endif
                 }
 #if WPF
                 if (input.MaxLength > 0)
                     textBox.MaxLength = input.MaxLength;
-#elif Xamarin 
+#elif XAMARIN 
                     // TODO 
 #endif
                 textBox.Text = input.Placeholder;

@@ -3,7 +3,7 @@ using System.Windows;
 #if WPF
 using System.Windows.Controls;
 using xaml = System.Windows.Controls;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
 #endif
@@ -26,7 +26,7 @@ namespace AdaptiveCards.Renderers
             uiButton.Style = this.GetStyle($"Adaptive.Action.{name}");
             return uiButton;
 
-#elif Xamarin
+#elif XAMARIN
             var uiButton = new Button();
             // TODO: button styling
             uiButton.Text = action.Title;

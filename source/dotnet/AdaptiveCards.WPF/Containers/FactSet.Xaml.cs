@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 #if WPF
 using System.Windows.Controls;
 using UI = System.Windows.Controls;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 using UI = Xamarin.Forms;
 #endif

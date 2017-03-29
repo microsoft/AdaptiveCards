@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 #if WPF
 using System.Windows.Controls;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 #endif
 
@@ -36,7 +36,7 @@ namespace AdaptiveCards.Renderers
                 uiImageSet.Items.Add(uiImage);
             }
             return uiImageSet;
-#elif Xamarin
+#elif XAMARIN
             // TODO: xamarin imageset support
             return new Grid();
 #endif

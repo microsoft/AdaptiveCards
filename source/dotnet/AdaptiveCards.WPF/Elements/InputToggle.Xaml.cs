@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 #if WPF
 using System.Windows.Controls;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 #endif
 
@@ -28,7 +28,7 @@ namespace AdaptiveCards.Renderers
                 uiToggle.DataContext = input;
                 context.InputControls.Add(uiToggle);
                 return uiToggle;
-#elif Xamarin
+#elif XAMARIN
                 var uiToggle = new Switch();
                 // TODO: Finish switch
                 //uiToggle.Content = input.Title;

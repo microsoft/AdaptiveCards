@@ -1,11 +1,11 @@
-﻿#if Xamarin
+﻿#if XAMARIN
 using System;
 using Xamarin.Forms;
 #endif
 
 namespace AdaptiveCards.Renderers
 {
-#if Xamarin
+#if XAMARIN
 
     public class FrameworkElement
     {

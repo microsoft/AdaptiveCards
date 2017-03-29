@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using UI = System.Windows.Controls;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 using UI = Xamarin.Forms;
 using Button = AdaptiveCards.XamarinForms.Renderer.ContentButton;
@@ -25,7 +25,7 @@ namespace AdaptiveCards.Renderers
             var uiImage = new UI.Image();
 #if WPF
             uiImage.Source = context.ResolveImageSource(image.Url);
-#elif Xamarin
+#elif XAMARIN
             uiImage.SetSource(new Uri(image.Url));
 #endif
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);

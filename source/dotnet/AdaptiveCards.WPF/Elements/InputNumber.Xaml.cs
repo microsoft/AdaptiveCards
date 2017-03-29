@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 #if WPF
 using System.Windows.Controls;
-#elif Xamarin
+#elif XAMARIN
 using Xamarin.Forms;
 #endif
 
