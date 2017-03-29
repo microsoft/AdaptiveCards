@@ -117,7 +117,6 @@ namespace AdaptiveCards.Renderers
                 var uiActions = new DivTag()
                     .AddClass("Container");
 
-                int iCol = 0;
                 foreach (var action in actions)
                 {
                     // add actions

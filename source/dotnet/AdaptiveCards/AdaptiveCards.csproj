@@ -6,7 +6,7 @@
     <PackageVersion>1.0.0.4</PackageVersion>
     <Authors>Microsoft</Authors>
     <summary>Adaptive Card object model for .NET</summary>
-    <Description>This .NET Standard library implements classes for building and serializing adaptive card objects</Description>
+    <Description>This library implements classes for building and serializing adaptive card objects</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>First release</PackageReleaseNotes>
     <PackageTags>adaptivecards</PackageTags>
@@ -17,10 +17,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
