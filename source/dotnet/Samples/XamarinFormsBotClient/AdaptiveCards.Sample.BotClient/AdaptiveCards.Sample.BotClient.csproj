@@ -30,8 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AdaptiveCards.XamarinForms\AdaptiveCards.XamarinForms.csproj" />
-    <ProjectReference Include="..\..\AdaptiveCards\AdaptiveCards.csproj" />
+    <ProjectReference Include="..\..\..\Library\AdaptiveCards.Xaml.XamarinForms\AdaptiveCards.Xaml.XamarinForms.csproj" />
   </ItemGroup>
 
 </Project>

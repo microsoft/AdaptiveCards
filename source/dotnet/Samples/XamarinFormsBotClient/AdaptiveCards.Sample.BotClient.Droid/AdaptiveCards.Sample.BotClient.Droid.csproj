@@ -152,9 +152,9 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdaptiveCards.BotClient.XamarinForms\AdaptiveCards.BotClient.XamarinForms.csproj">
-      <Project>{d0467fdd-f5dd-4625-b6e7-94cae267b33b}</Project>
-      <Name>AdaptiveCards.BotClient.XamarinForms</Name>
+    <ProjectReference Include="..\AdaptiveCards.Sample.BotClient\AdaptiveCards.Sample.BotClient.csproj">
+      <Project>{ac638ff4-8e90-44e1-9f6d-9089f6d14dd4}</Project>
+      <Name>AdaptiveCards.Sample.BotClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
