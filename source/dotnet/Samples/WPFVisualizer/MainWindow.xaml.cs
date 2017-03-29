@@ -16,7 +16,6 @@ using ICSharpCode.AvalonEdit.Document;
 using System.Xml.Serialization;
 using System.Reflection;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering;
 
 namespace WpfVisualizer
 {

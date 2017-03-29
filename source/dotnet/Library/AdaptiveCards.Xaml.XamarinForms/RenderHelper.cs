@@ -4,7 +4,7 @@ using UI = Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public static class RenderHelper
+    internal static class RenderHelper
     {
         public static void SetBackgroundImage(this Grid grid, Uri uri)
         {

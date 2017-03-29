@@ -18,7 +18,7 @@ using Xceed.Wpf.Toolkit;
 namespace AdaptiveCards.Rendering
 {
 
-    public static class DictionaryHelper
+    internal static class DictionaryHelper
     {
         public static T TryGetValue<T>(this IDictionary dictionary, string key)
         {

@@ -150,13 +150,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\AdaptiveCards.Xaml.WPF\AdaptiveCards.Rendering.Xaml.Wpf.csproj">
-      <Project>{60619d62-59fa-4864-ba5b-6f6f87997671}</Project>
-      <Name>AdaptiveCards.Rendering.Xaml.Wpf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Library\AdaptiveCards.Xaml.WPF.RichInput\AdaptiveCards.Rendering.Xaml.Wpf.RichInput.csproj">
       <Project>{e4bd01cf-4b8b-491c-a6fe-9a8bf6550111}</Project>
       <Name>AdaptiveCards.Rendering.Xaml.Wpf.RichInput</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Library\AdaptiveCards.Xaml.WPF\AdaptiveCards.Rendering.Xaml.Wpf.csproj">
+      <Project>{60619d62-59fa-4864-ba5b-6f6f87997671}</Project>
+      <Name>AdaptiveCards.Rendering.Xaml.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\AdaptiveCards\AdaptiveCards.csproj">
       <Project>{fc4a3527-05a2-4297-98d3-cb1cb512ffda}</Project>

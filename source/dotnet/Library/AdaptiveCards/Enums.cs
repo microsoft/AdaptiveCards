@@ -4,18 +4,18 @@ using Newtonsoft.Json.Converters;
 
 namespace AdaptiveCards
 {
-    public class IgnoreDefaultStringEnumConverter<EnumT> : StringEnumConverter
+    internal class IgnoreDefaultStringEnumConverter<TEnum> : StringEnumConverter
     {
         private readonly string defaultValue;
 
         public IgnoreDefaultStringEnumConverter()
         {
-            defaultValue = Enum.Parse(typeof(EnumT), "0").ToString();
+            defaultValue = Enum.Parse(typeof(TEnum), "0").ToString();
         }
 
         public IgnoreDefaultStringEnumConverter(bool camelCaseText) : base(camelCaseText)
         {
-            defaultValue = Enum.Parse(typeof(EnumT), "0").ToString();
+            defaultValue = Enum.Parse(typeof(TEnum), "0").ToString();
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

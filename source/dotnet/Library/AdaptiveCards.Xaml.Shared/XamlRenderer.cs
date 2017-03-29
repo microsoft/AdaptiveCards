@@ -81,6 +81,8 @@ namespace AdaptiveCards.Rendering
             }
         }
 
+
+#if WPF
         /// <summary>
         /// AdaptiveCard
         /// </summary>
@@ -97,6 +99,25 @@ namespace AdaptiveCards.Rendering
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
             return Render(showCard.Card, context);
         }
+#elif XAMARIN
+        /// <summary>
+        /// AdaptiveCard
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public View RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null)
+        {
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
+            return Render(card, context);
+        }
+
+        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null)
+        {
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
+            return Render(showCard.Card, context);
+        }
+
+#endif
 
         public virtual Style GetStyle(string styleName)
         {

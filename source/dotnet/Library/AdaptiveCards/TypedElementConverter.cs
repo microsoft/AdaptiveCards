@@ -9,7 +9,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     This handles using @type field to instantiate strongly typed object on deserialization
     /// </summary>
-    public class TypedElementConverter : JsonConverter
+    internal class TypedElementConverter : JsonConverter
     {
         public override bool CanRead => true;
 
