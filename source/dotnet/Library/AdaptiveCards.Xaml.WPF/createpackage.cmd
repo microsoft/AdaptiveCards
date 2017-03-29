@@ -1,2 +1,3 @@
 erase *.nupkg
-NuGet.exe pack AdaptiveCards.WPF.csproj -Prop Configuration=Debug -Build
+NuGet.exe pack AdaptiveCards.Xaml.WPF.csproj -Prop Configuration=Debug -Build
+copy *.nupkg ..\bin

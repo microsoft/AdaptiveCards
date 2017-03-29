@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AdaptiveCards.Renderers</RootNamespace>
-    <AssemblyName>AdaptiveCards.WPF.Extended</AssemblyName>
+    <AssemblyName>AdaptiveCards.WPF.RichInput</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
