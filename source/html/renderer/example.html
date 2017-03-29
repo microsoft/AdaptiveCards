@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Adaptive Cards - Basic Example</title>
+
+    <script src="dist/adaptive-cards.js"></script>
+
+    <script>
+        var json = {
+            "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+            "type": "AdaptiveCard",
+            "version": "1.0",
+            "speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
+            "body": [{
+                    "type": "Container",
+                    "items": [{
+                        "type": "TextBlock",
+                        "text": "Seattle, Washington - January 20, 7:30 AM",
+                        "isSubtle": true
+                    }]
+                },
+                {
+                    "type": "Container",
+                    "items": [{
+                        "type": "ColumnSet",
+                        "columns": [{
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [{
+                                    "type": "Image",
+                                    "url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
+                                    "size": "small",
+                                    "horizontalAlignment": "center"
+                                }]
+                            },
+                            {
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [{
+                                        "type": "ColumnSet",
+                                        "columns": [{
+                                                "type": "Column",
+                                                "size": "auto",
+                                                "items": [{
+                                                    "type": "TextBlock",
+                                                    "text": "42",
+                                                    "size": "extraLarge"
+                                                }]
+                                            },
+                                            {
+                                                "type": "Column",
+                                                "size": "auto",
+                                                "items": [{
+                                                    "type": "TextBlock",
+                                                    "text": "°F",
+                                                    "weight": "bolder"
+                                                }]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Mostly Clear",
+                                        "isSubtle": true
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [{
+                                        "type": "TextBlock",
+                                        "text": "Hi 51"
+                                    },
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Lo 40"
+                                    }
+                                ]
+                            }
+                        ]
+                    }],
+                    "actions": [{
+                            "type": "Action.ShowCard",
+                            "title": "Comment",
+                            "card": {
+                                "type": "AdaptiveCard",
+                                "body": [{
+                                    "type": "Input.Text",
+                                    "id": "comment",
+                                    "isMultiline": true,
+                                    "title": "Enter your comment"
+                                }],
+                                "actions": [{
+                                    "type": "Action.Http",
+                                    "method": "POST",
+                                    "title": "OK",
+                                    "url": "http://xyz.com",
+                                    "headers": {
+                                        "content-type": "application/json"
+                                    },
+                                    "body": "{ 'comment' : '{{comment.value}}' }"
+                                }]
+                            }
+                        },
+                        {
+                            "type": "Action.OpenUrl",
+                            "title": "View",
+                            "url": "http://foo.com"
+                        }
+                    ]
+                }
+            ]
+        };
+    </script>
+
+    <style type="text/css">
+        .rootContainer {
+            border: 1px solid #ccc;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 40px;
+            padding: 12px;
+            width: 360px;
+        }
+
+        .container {
+            margin: 15px 0px 0px 0px;
+        }
+
+        .removeTopSpacing {
+            margin-top: 0px !important;
+        }
+
+        .text.defaultSize {
+            font-size: 15px;
+        }
+
+        .text.extraLarge {
+            font-size: 30px;
+        }
+
+        .text.bolder {
+            font-weight: 600;
+        }
+
+        .text.subtle {
+            color: #999;
+        }
+
+        .image.small {
+            max-width: 40px;
+        }
+
+        .defaultColumnSeparator {
+            width: 10px;
+        }
+
+        .buttonStrip {
+            display: flex;
+            margin: 10px;
+        }
+
+        .buttonStripItemSpacer {
+            margin-right: 20px;
+        }
+
+        .pushButton {
+            color: #00F;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Adaptive Cards - Basic Example</h1>
+
+    <div id="exampleDiv"></div>
+
+    <script>
+        var jsonParser = new AdaptiveCards.JsonParser();
+        var adaptiveCard = jsonParser.parse(json);
+        var renderedCard = adaptiveCard.render();
+
+        var exampleDiv = document.getElementById('exampleDiv');
+        exampleDiv.appendChild(renderedCard);
+
+        AdaptiveCards.AdaptiveCard.onExecuteAction = function(action) {
+            alert(JSON.stringify(action));
+        };
+    </script>
+
+    <p>
+        This example requires a build of the Adaptive Cards library. From the command line, enter "npm run build" which will put the built files in the /dist folder. Then refresh this page.
+    </p>
+
+</body>
+
+</html>
