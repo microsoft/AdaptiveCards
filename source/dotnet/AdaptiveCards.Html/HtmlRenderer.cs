@@ -2,7 +2,9 @@
 using MarkedNet;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,6 +29,25 @@ namespace AdaptiveCards.Renderers
         {
             return Render(showCard.Card, null);
         }
+
+        /// <summary>
+        /// Stock CSS you can use with the generated html
+        /// </summary>
+        public static string StockCss { get { return _stockCss.Value; } }
+
+        
+        // ---------------- INTERNAL METHODS -----------------------------
+
+        private static Lazy<string> _stockCss = new Lazy<string>(() =>
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream("AdaptiveCards.Renderers.AdaptiveCard.css"))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
+        });
+
 
         protected override HtmlTag Render(ActionHttp action, object context)
         {
