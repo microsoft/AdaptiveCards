@@ -10,7 +10,7 @@ For example:
 
 ![Diagram](docs/images/AdaptiveCardsDiagram.png)
 
-## Install and build
+e## Install and build
 
 Since we build for multiple platforms they each have slightly different build mechanisms.
 
@@ -84,7 +84,7 @@ To install:
         {
             "type":"TextBlock",
             "text":"Hello World",
-            "size":"ExtraLarge"
+            "size":"extraLarge"
         }
     ]
 }
