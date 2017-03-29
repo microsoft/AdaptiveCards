@@ -72,8 +72,7 @@ Visual Studio Code preview extension allows you to see in real-time the card you
 To install:
 1. Download AdaptiveCards.vsix
 2. from command line run: `code --install-extension adaptivecards.vsix`
-3. Hit **Ctrl+Shift+V** A to see previewer
-4. In editor create new Json file with following in it:
+3. In editor create and save a new Json file (helloworld.json)  with following in it:
 
 ```javascript
 {
@@ -89,3 +88,5 @@ To install:
     ]
 }
 ```
+4. Hit **Ctrl+Shift+V** A to see previewer
+
