@@ -35,13 +35,57 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 
 * Documentation of the schema (see [docs/Schema.md](docs/Schema.md))
 * The official Adaptive Card JSON schema (see [schemas/adaptive-card.json](schemas/adaptive-card.json))
-* An [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards/html/visualizer/) to preview and design Card payloads
+* The official Adaptive Card XML schema (see [schemas/adaptive-card.xsd](schemas/adaptive-card.xsd))
+* A Visual Code Live Preview Extension so you can see edits as you type (see [docs/vscode.md](docs/vscode.md))
+* An online live previerer  [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards/html/visualizer/) to preview and design Card payloads
 * Sample Cards (see [samples](samples/Scenarios))
-* Card Renderer libraries for multiple platforms (HTML, iOS, Android, .NET) 
-* Card Builders for .NET and Node 
+* Nuget and NPM libraries
 
 # Rendering Cards in your App or Web Site
 
 If you have the need to render Adaptive Cards inside your app or web site, the Toolkit provides a couple Renderers to help achieve this.
 
+## Shared Libraries
+* **AdaptiveCards** -> Defines Adaptive card object model for creating and serializing/deserializing adaptive cards
+* **AdaptiveCards.Html** -> Defines HTML markup generator (suitable for server side html generation)
+* **AdaptiveCards.WPF** -> defines stock XAML/WPF renderer
+* **AdaptiveCards.WPF.Extended** -> Defines Enhanced XAML/WPF renderer which uses WPF Extended Control set
+* **Android** -> Coming soon
+* **iOS** -> Coming soon
+* **UWP** -> Coming soon
+* **AdaptiveCards.HtmlDom** -> TypeScript in browser renderer for html canvases
+
+All of the .NET libraries are available on nuget 
+> NOTE: Currently internal microsoft package feed only.
+> https://fuselabs.visualstudio.com/Intercom/_packaging?feedName=packages&protocolType=NuGet&packageName=adaptivecards&packageVersion=1.0.0.4&_a=view
+
+Typescript package is available via NPM
+> NOTE: Currently internal microsoft npm feed only
+> https://fuselabs.visualstudio.com/Intercom/_packaging?feedName=FuseNPM&protocolType=Npm&packageName=%40angular%2Fcli&packageVersion=1.0.0&_a=view
+
 We plan to cover this in greater detail on the [Rendering Cards page](docs/RenderingCards.md)
+
+## Tools
+
+Visual Studio Code preview extension allows you to see in real-time the card you are building
+
+To install:
+1. Download AdaptiveCards.vsix
+2. from command line run: `code --install-extension adaptivecards.vsix`
+3. Hit **Ctrl+Shift+V** A to see previewer
+4. In editor create new Json file with following in it:
+
+```javascript
+{
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type":"TextBlock",
+            "text":"Hello World",
+            "size":"ExtraLarge"
+        }
+    ]
+}
+```
