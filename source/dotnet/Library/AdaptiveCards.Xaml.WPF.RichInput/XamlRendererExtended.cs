@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using AdaptiveCards.Rendering;
 
-namespace AdaptiveCards.Renderers
+namespace AdaptiveCards.Rendering
 {
     public partial class XamlRendererExtended : XamlRenderer
     {

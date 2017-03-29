@@ -15,7 +15,8 @@ using System.Speech.Synthesis;
 using ICSharpCode.AvalonEdit.Document;
 using System.Xml.Serialization;
 using System.Reflection;
-using AdaptiveCards.Renderers;
+using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering;
 
 namespace WpfVisualizer
 {

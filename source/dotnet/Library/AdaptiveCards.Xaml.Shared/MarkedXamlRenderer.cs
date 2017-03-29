@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MarkedNet;
 
-namespace AdaptiveCards.Renderers
+namespace AdaptiveCards.Rendering
 {
 
     /// <summary>

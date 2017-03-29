@@ -1,18 +1,16 @@
-﻿using AdaptiveCards;
-using AdaptiveCards.Renderers;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows.Markup;
-using System.Windows.Media.Imaging;
 #elif XAMARIN
 using Xamarin.Forms;
 #endif
 
 
-namespace AdaptiveCards.Renderers
+namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
         : AdaptiveRenderer<FrameworkElement, RenderContext>

@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
-
     public class IgnoreDefaultStringEnumConverter<EnumT> : StringEnumConverter
     {
-        string defaultValue;
+        private readonly string defaultValue;
 
         public IgnoreDefaultStringEnumConverter()
         {
@@ -33,206 +27,206 @@ namespace AdaptiveCards
     }
 
     /// <summary>
-    /// Controls the horizontal size (width) of Column.
+    ///     Controls the horizontal size (width) of Column.
     /// </summary>
-    public partial class ColumnSize
+    public class ColumnSize
     {
         /// <summary>
-        /// The width of the Column is optimally chosen depending on the space available in the element's container
+        ///     The width of the Column is optimally chosen depending on the space available in the element's container
         /// </summary>
         public const string Auto = "Auto";
 
         /// <summary>
-        /// The width of the Column adjusts to match that of its container
+        ///     The width of the Column adjusts to match that of its container
         /// </summary>
         public const string Stretch = "Stretch";
     }
 
     /// <summary>
-    /// Controls the horizontal size (width) of element.
+    ///     Controls the horizontal size (width) of element.
     /// </summary>
     [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<ImageSize>), true)]
     public enum ImageSize
     {
         /// <summary>
-        /// The width of the element is optimally chosen depending on the space available in the element's container
+        ///     The width of the element is optimally chosen depending on the space available in the element's container
         /// </summary>
         Auto,
 
         /// <summary>
-        /// The width of the element adjusts to match that of its container
+        ///     The width of the element adjusts to match that of its container
         /// </summary>
         Stretch,
 
         /// <summary>
-        /// Small width
+        ///     Small width
         /// </summary>
         Small,
 
         /// <summary>
-        /// Medium width
+        ///     Medium width
         /// </summary>
         Medium,
 
         /// <summary>
-        /// Large width
+        ///     Large width
         /// </summary>
         Large
     }
 
     /// <summary>
-    /// Controls the emphasize of an element to the previous element
+    ///     Controls the emphasize of an element to the previous element
     /// </summary>
     [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<SeparationStyle>), true)]
     public enum SeparationStyle
     {
         /// <summary>
-        /// Default element spacing is applied from style
+        ///     Default element spacing is applied from style
         /// </summary>
         Default,
 
         /// <summary>
-        /// No spacing is applied between elements
+        ///     No spacing is applied between elements
         /// </summary>
         None,
 
         /// <summary>
-        /// Strongly separate the element from the previous element
+        ///     Strongly separate the element from the previous element
         /// </summary>
         Strong
     }
 
     /// <summary>
-    /// Controls the relative size of TextBlock elements
+    ///     Controls the relative size of TextBlock elements
     /// </summary>
     [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<TextSize>), true)]
     public enum TextSize
     {
         /// <summary>
-        /// Default text size
+        ///     Default text size
         /// </summary>
         Normal,
 
         /// <summary>
-        /// Smallest text size
+        ///     Smallest text size
         /// </summary>
         Small,
 
         /// <summary>
-        /// Slightly larger than normal
+        ///     Slightly larger than normal
         /// </summary>
         Medium,
 
         /// <summary>
-        /// Slightly larger then medium
+        ///     Slightly larger then medium
         /// </summary>
         Large,
 
         /// <summary>
-        /// The largest text size
+        ///     The largest text size
         /// </summary>
         ExtraLarge
     }
 
     /// <summary>
-    /// Controls the weight of TextBock Elements
+    ///     Controls the weight of TextBock Elements
     /// </summary>
     [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<TextWeight>), true)]
     public enum TextWeight
     {
         /// <summary>
-        /// The default text weight
+        ///     The default text weight
         /// </summary>
         Normal,
 
         /// <summary>
-        /// Lighter text (thinner stroke)
+        ///     Lighter text (thinner stroke)
         /// </summary>
         Lighter,
 
         /// <summary>
-        /// Bolder text (wider stroke)
+        ///     Bolder text (wider stroke)
         /// </summary>
         Bolder
     }
 
     /// <summary>
-    /// Controls the color style of TextBlock Elements
+    ///     Controls the color style of TextBlock Elements
     /// </summary>
     [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<TextColor>), true)]
     public enum TextColor
     {
         /// <summary>
-        /// The default color which guarentees appropriate contrast 
+        ///     The default color which guarentees appropriate contrast
         /// </summary>
         Default,
 
         /// <summary>
-        /// Forces the text to be rendered in a dark color which is suitable when displayed over a light background
+        ///     Forces the text to be rendered in a dark color which is suitable when displayed over a light background
         /// </summary>
         Dark,
 
         /// <summary>
-        /// Forces the text to be rendered in a light color which is suitable when displayed over a dark background
+        ///     Forces the text to be rendered in a light color which is suitable when displayed over a dark background
         /// </summary>
         Light,
 
         /// <summary>
-        /// Accent the text
+        ///     Accent the text
         /// </summary>
         Accent,
 
         /// <summary>
-        /// Good (such as green)
+        ///     Good (such as green)
         /// </summary>
         Good,
 
         /// <summary>
-        /// Warning (such as yellow)
+        ///     Warning (such as yellow)
         /// </summary>
         Warning,
 
         /// <summary>
-        /// Highlight as needing attention (such as red)
+        ///     Highlight as needing attention (such as red)
         /// </summary>
         Attention
     }
 
     /// <summary>
-    /// Controls how elements are horizontally positioned within their container.
+    ///     Controls how elements are horizontally positioned within their container.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum HorizontalAlignment
     {
         /// <summary>
-        /// The element is left aligned
+        ///     The element is left aligned
         /// </summary>
         Left,
 
         /// <summary>
-        /// The element is centered inside its container
+        ///     The element is centered inside its container
         /// </summary>
         Center,
 
         /// <summary>
-        /// The element is right aligned
+        ///     The element is right aligned
         /// </summary>
         Right
     }
 
     /// <summary>
-    /// Controls the way Image elements are displayed.
+    ///     Controls the way Image elements are displayed.
     /// </summary>
     [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<ImageStyle>), true)]
     public enum ImageStyle
     {
         /// <summary>
-        /// The image is displayed within a rectangle.
+        ///     The image is displayed within a rectangle.
         /// </summary>
         Normal,
 
         /// <summary>
-        /// The image is cropped to a circle, a common way to represent people photos.
+        ///     The image is cropped to a circle, a common way to represent people photos.
         /// </summary>
         Person
     }
@@ -241,22 +235,23 @@ namespace AdaptiveCards
     public enum TextInputStyle
     {
         /// <summary>
-        /// plain text
+        ///     plain text
         /// </summary>
         Text,
 
         /// <summary>
-        /// Input is a telephone number and the client may use this information to provide optimized keyboard input for the user.
+        ///     Input is a telephone number and the client may use this information to provide optimized keyboard input for the
+        ///     user.
         /// </summary>
         Tel,
 
         /// <summary>
-        /// Input is a url and the client may use this information to provide optimized keyboard input for the user.
+        ///     Input is a url and the client may use this information to provide optimized keyboard input for the user.
         /// </summary>
         Url,
 
         /// <summary>
-        /// Input is a email and the client may use this information to provide optimized keyboard input for the user.
+        ///     Input is a email and the client may use this information to provide optimized keyboard input for the user.
         /// </summary>
         Email
     }
@@ -265,14 +260,13 @@ namespace AdaptiveCards
     public enum ChoiceInputStyle
     {
         /// <summary>
-        /// choices are prefered to be displayed for easy input. Example: Checkbox or Radio buttons
+        ///     choices are prefered to be displayed for easy input. Example: Checkbox or Radio buttons
         /// </summary>
         Expanded,
 
         /// <summary>
-        /// choices are prefered to be compactly displayed. Example: ComboBox 
+        ///     choices are prefered to be compactly displayed. Example: ComboBox
         /// </summary>
         Compact
     }
-
 }

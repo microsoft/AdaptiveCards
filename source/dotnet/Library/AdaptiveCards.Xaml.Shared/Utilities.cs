@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace AdaptiveCards
+namespace AdaptiveCards.Rendering
 {
     /// <summary>
     /// Renderer of AdaptiveCard schema into ElementT types 

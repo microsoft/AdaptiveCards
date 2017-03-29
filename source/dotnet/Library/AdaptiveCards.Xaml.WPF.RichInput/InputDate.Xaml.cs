@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AdaptiveCards.Renderers
+namespace AdaptiveCards.Rendering
 {
     public partial class XamlRendererExtended : XamlRenderer
     {

@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -12,11 +6,11 @@ namespace AdaptiveCards
 {
     [JsonConverter(typeof(TypedElementConverter))]
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public partial class TypedElement
+    public class TypedElement
     {
         protected TypedElement()
         {
-            this.Type = GetType().Name;
+            Type = GetType().Name;
         }
 
         [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
@@ -27,10 +21,10 @@ namespace AdaptiveCards
         public string Type { get; set; }
 
         protected EnumT? GetEnum<EnumT>(string value)
-            where EnumT :struct
+            where EnumT : struct
         {
             EnumT val;
-            if (Enum.TryParse<EnumT>(value, out val))
+            if (Enum.TryParse(value, out val))
                 return val;
             return null;
         }
@@ -42,6 +36,7 @@ namespace AdaptiveCards
                 return val;
             return null;
         }
+
         protected bool? GetBool(string value)
         {
             bool val;

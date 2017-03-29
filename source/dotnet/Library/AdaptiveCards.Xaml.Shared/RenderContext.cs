@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using Xceed.Wpf.Toolkit;
 #endif
 
-namespace AdaptiveCards.Renderers
+namespace AdaptiveCards.Rendering
 {
 
     public static class DictionaryHelper

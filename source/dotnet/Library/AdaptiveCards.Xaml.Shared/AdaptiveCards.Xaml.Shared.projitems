@@ -6,30 +6,30 @@
     <SharedGUID>d4e691c8-f685-4e48-83d8-a063868e5e51</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>AdaptiveCards.Xaml</Import_RootNamespace>
+    <Import_RootNamespace>AdaptiveCards.Rendering</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Actions\ActionBase.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Actions\ActionHttp.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Actions\ActionOpenUrl.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Actions\ActionShowCard.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Actions\ActionSubmit.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Containers\AdaptiveCard.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Containers\Column.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Containers\ColumnSet.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Containers\Container.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Containers\FactSet.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Containers\ImageSet.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\CardElement.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\Image.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\Input.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\InputChoiceSet.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\InputDate.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\InputNumber.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\InputText.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\InputTime.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\InputToggle.Xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\TextBlock.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionBase.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionHttp.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionOpenUrl.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionShowCard.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionSubmit.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AdaptiveCard.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Column.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ColumnSet.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Container.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FactSet.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImageSet.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CardElement.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Image.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputChoiceSet.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputDate.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputNumber.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputText.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputTime.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputToggle.Xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextBlock.Xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MarkedXamlRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />

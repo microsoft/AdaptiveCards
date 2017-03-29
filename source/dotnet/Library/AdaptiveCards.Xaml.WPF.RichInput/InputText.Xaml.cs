@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Xceed.Wpf.Toolkit;
 
-namespace AdaptiveCards.Renderers
+namespace AdaptiveCards.Rendering
 {
     public partial class XamlRendererExtended : XamlRenderer
     {

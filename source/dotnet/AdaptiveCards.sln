@@ -9,17 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BotClient", "BotClient", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{C7727147-4AD9-4005-A8D0-EEEED82347D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Xaml.WPF.RichInput", "Library\AdaptiveCards.Xaml.WPF.RichInput\AdaptiveCards.Xaml.WPF.RichInput.csproj", "{E4BD01CF-4B8B-491C-A6FE-9A8BF6550111}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xaml.Wpf.RichInput", "Library\AdaptiveCards.Xaml.WPF.RichInput\AdaptiveCards.Rendering.Xaml.Wpf.RichInput.csproj", "{E4BD01CF-4B8B-491C-A6FE-9A8BF6550111}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AdaptiveCards.Xaml.Shared", "Library\AdaptiveCards.Xaml.Shared\AdaptiveCards.Xaml.Shared.shproj", "{D4E691C8-F685-4E48-83D8-A063868E5E51}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AdaptiveCards.Rendering.Xaml.Shared", "Library\AdaptiveCards.Xaml.Shared\AdaptiveCards.Rendering.Xaml.Shared.shproj", "{D4E691C8-F685-4E48-83D8-A063868E5E51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Xaml.WPF", "Library\AdaptiveCards.Xaml.WPF\AdaptiveCards.Xaml.WPF.csproj", "{60619D62-59FA-4864-BA5B-6F6F87997671}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xaml.Wpf", "Library\AdaptiveCards.Xaml.WPF\AdaptiveCards.Rendering.Xaml.Wpf.csproj", "{60619D62-59FA-4864-BA5B-6F6F87997671}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Xaml.XamarinForms", "Library\AdaptiveCards.Xaml.XamarinForms\AdaptiveCards.Xaml.XamarinForms.csproj", "{DB82345E-F623-4C55-89F5-CD9709A0AF44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Rendering.Xaml.XamarinForms", "Library\AdaptiveCards.Xaml.XamarinForms\AdaptiveCards.Rendering.Xaml.XamarinForms.csproj", "{DB82345E-F623-4C55-89F5-CD9709A0AF44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards", "Library\AdaptiveCards\AdaptiveCards.csproj", "{FC4A3527-05A2-4297-98D3-CB1CB512FFDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Html", "Library\AdaptiveCards.Html\AdaptiveCards.Html.csproj", "{13F4F606-87AA-4543-A37E-7118FD72C39B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Html", "Library\AdaptiveCards.Html\AdaptiveCards.Rendering.Html.csproj", "{13F4F606-87AA-4543-A37E-7118FD72C39B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Sample.WPFVisualizer", "Samples\WPFVisualizer\AdaptiveCards.Sample.WPFVisualizer.csproj", "{96144C6C-2E37-4A84-95AB-7F01D9222F2F}"
 EndProject

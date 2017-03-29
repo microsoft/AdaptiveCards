@@ -1,6 +1,5 @@
 ﻿using AdaptiveCards;
-using AdaptiveCards.Renderers;
-using AdaptiveCards.Renderers.Threading.Tasks.Schedulers;
+using AdaptiveCards.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +12,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace AdaptiveCards.Renderers
+namespace AdaptiveCards.Rendering
 {
     /// <summary>
     /// Renderer which renders adaptive card to an image

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AdaptiveCards.Renderers.Threading.Tasks.Schedulers
+namespace AdaptiveCards.Rendering
 {
     /// <summary>Provides a scheduler that uses STA threads.</summary>
     public sealed class StaTaskScheduler : TaskScheduler, IDisposable

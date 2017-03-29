@@ -7,10 +7,14 @@ using Newtonsoft.Json.Linq;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// This handles using @type field to instantiate strongly typed object on deserialization
+    ///     This handles using @type field to instantiate strongly typed object on deserialization
     /// </summary>
     public class TypedElementConverter : JsonConverter
     {
+        public override bool CanRead => true;
+
+        public override bool CanWrite => false;
+
         public override bool CanConvert(Type objectType)
         {
             return typeof(TypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
@@ -20,11 +24,12 @@ namespace AdaptiveCards
         {
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
-            JObject jObject = JObject.Load(reader);
+            var jObject = JObject.Load(reader);
             // Create target object based on JObject
-            string typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
+            var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             object result = jObject;
             if (typeName != null)
             {
@@ -33,19 +38,12 @@ namespace AdaptiveCards
                     .Where(t => t.Namespace.Contains("AdaptiveCards"))
                     .FirstOrDefault(t => string.Equals(t.Name, typeName, StringComparison.CurrentCultureIgnoreCase));
                 if (type != null)
-                {
                     result = Activator.CreateInstance(type);
-                }
                 // Populate the object properties
                 serializer.Populate(jObject.CreateReader(), result);
             }
 
             return result;
         }
-
-        public override bool CanRead => true;
-
-        public override bool CanWrite => false;
     }
-
 }

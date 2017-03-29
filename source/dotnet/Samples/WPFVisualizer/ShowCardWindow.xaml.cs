@@ -4,7 +4,8 @@ using System.Windows;
 using AdaptiveCards;
 using Newtonsoft.Json;
 using AC = AdaptiveCards;
-using AdaptiveCards.Renderers;
+using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering;
 
 namespace WpfVisualizer
 {
