@@ -257,7 +257,7 @@ td.factValue {
     margin-right: 5px;
 }
 
-.pushButton {
+.pushButton, .linkButton {
     font-family: 'Segoe UI', sans-serif;
     font-size: 15px;
     font-weight: 500;
@@ -276,25 +276,14 @@ td.factValue {
     user-select: none;
 }
 
-.pushButton:hover {
+.pushButton:hover, .linkbutton:hover {
     border: 2px solid #A9A9A9;
 }
 
-.pushButton:active {
+.pushButton:active, .linkbutton:active {
     background-color: #828282;
 }
 
-.pushButton.expanded {
-    background-color: #0078D7;
-}
-
-.pushButton.expanded:hover {
-    background-color: #005A9E;
-}
-
-.pushButton.expanded:active {
-    background-color: #004D84;
-}
 
 /*
 Other styles that can be specified:
@@ -307,43 +296,6 @@ Other styles that can be specified:
     .pushButton.subdued:active
 */
 
-.linkButton {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    cursor: pointer;
-    border: none;
-    padding: none;
-    color: #0078D7;
-    background-color: transparent;
-    -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -moz-user-select: none;      /* Firefox */
-    -ms-user-select: none;       /* Internet Explorer/Edge */
-    user-select: none;
-}
-
-.linkButton:hover {
-    color: #005A9E;
-}
-
-.linkButton:active {
-    color: #004D84;
-}
-
-.linkButton.subdued {
-    color: #666666;
-    font-weight: 500;
-}
-
-.linkButton.subdued:hover {
-    color: #005A9E;
-}
-
-.linkButton.subdued:active {
-    color: #004D84;
-}
 
 /*
 Other styles that can be specified:
