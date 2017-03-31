@@ -15,8 +15,8 @@ export function appendChild(node: Node, child: Node) {
     }
 }
 
-export function getClassNameFromInstance(object: any) {
-    return getClassNameFromConstructor(object.constructor);
+export function getClassNameFromInstance(instance: any) {
+    return getClassNameFromConstructor(instance.constructor);
 }
 
 export function getClassNameFromConstructor(constructor: any) {

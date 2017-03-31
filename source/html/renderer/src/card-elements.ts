@@ -824,8 +824,8 @@ export class ActionSubmit extends ActionExternal {
     static TypeName: string = "Action.Submit";
 
     private _isPrepared: boolean = false;
-    private _originalData: object;
-    private _processedData: object;
+    private _originalData: Object;
+    private _processedData: Object;
 
     prepare(inputs: Array<Input>) {
         if (this._originalData) {
@@ -846,11 +846,11 @@ export class ActionSubmit extends ActionExternal {
         this._isPrepared = true;
     }
 
-    get data(): object {
+    get data(): Object {
         return this._isPrepared ? this._processedData : this._originalData;
     }
 
-    set data(value: object) {
+    set data(value: Object) {
         this._originalData = value;
         this._isPrepared = false;
     }
