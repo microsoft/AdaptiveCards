@@ -13,6 +13,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         Microsoft::WRL::FtmBase,
         AdaptiveCards::XamlCardRenderer::IImageLoadTrackerListener>
     {
+        InspectableClass(L"AdaptiveCards.XamlCardRenderer.XamlBuilder", BaseTrust)
     public:
         XamlBuilder();
 
@@ -20,18 +21,33 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         STDMETHODIMP AllImagesLoaded();
 
         void BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard, _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot);
-        HRESULT AddListener(IXamlBuilderListener* listener);
-        HRESULT RemoveListener(IXamlBuilderListener* listener);
+        HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
+        HRESULT RemoveListener(_In_ IXamlBuilderListener* listener) noexcept;
+        HRESULT SetFixedDimensions(_In_ UINT width, _In_ UINT height) noexcept;
+        HRESULT SetRenderOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::RenderOptions renderOptions) noexcept;
+        HRESULT SetEnableXamlImageHandling(_In_ bool enableXamlImageHandling) noexcept;
+        HRESULT SetBackgroundImageUri(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri) noexcept;
+        HRESULT SetOverrideDictionary(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) noexcept;
 
     private:
         std::unordered_map<ABI::AdaptiveCards::XamlCardRenderer::ElementType, 
             std::function<void(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*,
                 ABI::Windows::UI::Xaml::IUIElement**)>> m_adaptiveElementBuilder;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IPropertyValueStatics> m_propertyValueStatics;
-        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary>> m_resourceDictionaries;
         ImageLoadTracker m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
         Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;
+std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
+        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT64, UINT64>>> m_copyStreamOperations;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_backgroundImageUri;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
+
+        UINT m_fixedWidth = 0;
+        UINT m_fixedHeight = 0;
+        bool m_fixedDimensions = false;
+        ABI::AdaptiveCards::XamlCardRenderer::RenderOptions m_renderOptions = ABI::AdaptiveCards::XamlCardRenderer::RenderOptions::None;
+        bool m_enableXamlImageHandling = false;
 
         void InitializeDefaultResourceDictionary();
         template<typename T>
@@ -42,7 +58,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         bool TryGetValueResourceFromResourceDictionaries(
             _In_ std::wstring styleName,
             _Out_ T* valueResource);
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IPanel> CreateRootPanelFromAdaptiveCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard);
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateRootCardElement(_COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** childElementContainer);
+        void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel);
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, ABI::Windows::UI::Xaml::Controls::IImage* imageControl);
         void FireAllImagesLoaded();
         void BuildPanelChildren(

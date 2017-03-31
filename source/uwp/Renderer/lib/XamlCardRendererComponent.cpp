@@ -40,8 +40,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::SetOverrideStyles(ABI::Windows::UI::Xaml::IResourceDictionary* /*overrideDictionary*/)
+    HRESULT XamlCardRenderer::SetOverrideStyles(ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary)
     {
+        m_overrideDictionary = overrideDictionary;
         return S_OK;
     }
 
@@ -56,8 +57,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         {
             XamlBuilder builder;
             ComPtr<IUIElement> xamlTreeRoot;
-            builder.BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot);
+            
+            if (m_overrideDictionary != nullptr)
+            {
+                builder.SetOverrideDictionary(m_overrideDictionary.Get());
+            }
 
+            // This path is used for synchronous Xaml card rendering, so we don't want
+            // to manually download the image assets and instead just want xaml to do
+            // that automatically
+            builder.SetEnableXamlImageHandling(true);
+
+            builder.BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot);
             *result = xamlTreeRoot.Detach();
         }
 

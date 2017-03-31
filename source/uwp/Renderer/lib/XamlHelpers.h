@@ -62,7 +62,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IVector<UIElement*>> panelChildren;
             THROW_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
 
-            THROW_IF_FAILED(panelChildren->Append(xamlElement));
+            THROW_IF_FAILED(panelChildren->Append(elementToAppend.Get()));
         }
     };
 

@@ -1,10 +1,10 @@
 erase /q bin\*.*
-cd adaptivecards
+cd Library/AdaptiveCards
 call createpackage
-cd ..\adaptivecards.html
+cd ..\AdaptiveCards.Html
 call createpackage
-cd ..\adaptivecards.wpf
+cd ..\AdaptiveCards.Xaml.Wpf
 call createpackage
-cd ..\adaptivecards.wpf.extended
+cd ..\AdaptiveCards.Xaml.Wpf.RichInput
 call createpackage
 cd ..

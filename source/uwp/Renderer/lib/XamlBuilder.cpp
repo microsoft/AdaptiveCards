@@ -1,14 +1,16 @@
 #include "pch.h"
 #include "XamlBuilder.h"
 
+#include "AdaptiveImage.h"
 #include "DefaultResourceDictionary.h"
-#include "XamlHelpers.h"
-#include "XamlStyleKeyGenerators.h"
 #include <windows.foundation.collections.h>
 #include <windows.storage.h>
 #include <windows.ui.xaml.markup.h>
+#include <windows.ui.xaml.shapes.h>
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
+#include "XamlHelpers.h"
+#include "XamlStyleKeyGenerators.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -23,10 +25,12 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
+using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::Web::Http;
 using namespace ABI::Windows::Web::Http::Filters;
 
 const PCWSTR c_TextBlockSubtleOpacityKey = L"TextBlock.SubtleOpacity";
+const PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -38,7 +42,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::Container] = std::bind(&XamlBuilder::BuildContainer, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
 
-        m_imageLoadTracker.AddListener(this);
+        m_imageLoadTracker.AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
 
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_RandomAccessStream).Get(), &m_randomAccessStreamStatics));
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &m_propertyValueStatics));
@@ -57,14 +61,15 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         *xamlTreeRoot = nullptr;
 
-        ComPtr<IPanel> rootContainer = CreateRootPanelFromAdaptiveCard(adaptiveCard);
+        ComPtr<IPanel> childElementContainer;
+        ComPtr<IUIElement> rootElement = CreateRootCardElement(&childElementContainer);
 
         // Enumerate the child items of the card and build xaml for them
         ComPtr<IVector<IAdaptiveCardElement*>> body;
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
-        BuildPanelChildren(body.Get(), rootContainer.Get(), [](IUIElement*) {});
+        BuildPanelChildren(body.Get(), childElementContainer.Get(), [](IUIElement*) {});
 
-        THROW_IF_FAILED(rootContainer.CopyTo(xamlTreeRoot));
+        THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
 
         if (m_listeners.size() == 0)
         {
@@ -80,7 +85,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
     }
 
-    HRESULT XamlBuilder::AddListener(IXamlBuilderListener* listener) try
+    _Use_decl_annotations_
+    HRESULT XamlBuilder::AddListener(IXamlBuilderListener* listener) noexcept try
     {
         if (m_listeners.find(listener) == m_listeners.end())
         {
@@ -93,7 +99,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     } CATCH_RETURN;
 
-    HRESULT XamlBuilder::RemoveListener(IXamlBuilderListener* listener) try
+    _Use_decl_annotations_
+    HRESULT XamlBuilder::RemoveListener(IXamlBuilderListener* listener) noexcept try
     {
         if (m_listeners.find(listener) != m_listeners.end())
         {
@@ -102,6 +109,44 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         else
         {
             return E_INVALIDARG;
+        }
+        return S_OK;
+    } CATCH_RETURN;
+
+    HRESULT XamlBuilder::SetFixedDimensions(_In_ UINT width, _In_ UINT height) noexcept
+    {
+        m_fixedDimensions = true;
+        m_fixedWidth = width;
+        m_fixedHeight = height;
+        return S_OK;
+    }
+
+    HRESULT XamlBuilder::SetRenderOptions(_In_ RenderOptions renderOptions) noexcept
+    {
+        m_renderOptions = renderOptions;
+        return S_OK;
+    }
+
+    HRESULT XamlBuilder::SetEnableXamlImageHandling(_In_ bool enableXamlImageHandling) noexcept
+    {
+        m_enableXamlImageHandling = enableXamlImageHandling;
+        return S_OK;
+    }
+
+    HRESULT XamlBuilder::SetBackgroundImageUri(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri) noexcept
+    {
+        m_backgroundImageUri = imageUri;
+        return S_OK;
+    }
+
+    HRESULT XamlBuilder::SetOverrideDictionary(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) noexcept try
+    {
+        if (overrideDictionary != nullptr)
+        {
+            m_mergedResourceDictionary = overrideDictionary;
+            ComPtr<IVector<ResourceDictionary*>> mergedDictionaries;
+            m_mergedResourceDictionary->get_MergedDictionaries(&mergedDictionaries);
+            mergedDictionaries->Append(m_defaultResourceDictionary.Get());
         }
         return S_OK;
     } CATCH_RETURN;
@@ -117,7 +162,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IResourceDictionary> resourceDictionary;
         THROW_IF_FAILED(resourceDictionaryInspectable.As(&resourceDictionary));
 
-        m_resourceDictionaries.push_back(resourceDictionary);
+        m_defaultResourceDictionary = resourceDictionary;
+        m_mergedResourceDictionary = resourceDictionary;
     }
 
     _Use_decl_annotations_
@@ -131,20 +177,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IInspectable> resourceKey;
             THROW_IF_FAILED(m_propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(), resourceKey.GetAddressOf()));
 
-            // Search for the named resource in all known distionaries
+            // Search for the named resource
             ComPtr<IInspectable> dictionaryValue;
-            for (auto& resourceDictionary : m_resourceDictionaries)
+            ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
+            if (SUCCEEDED(m_mergedResourceDictionary.As(&resourceDictionaryMap)) &&
+                SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
             {
-                ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
-                if (SUCCEEDED(resourceDictionary.As(&resourceDictionaryMap)) &&
-                    SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
+                ComPtr<T> resourceToReturn;
+                if (SUCCEEDED(dictionaryValue.As(&resourceToReturn)))
                 {
-                    ComPtr<T> resourceToReturn;
-                    if (SUCCEEDED(dictionaryValue.As(&resourceToReturn)))
-                    {
-                        THROW_IF_FAILED(resourceToReturn.CopyTo(style));
-                        return S_OK;
-                    }
+                    THROW_IF_FAILED(resourceToReturn.CopyTo(style));
+                    return S_OK;
                 }
             }
         }
@@ -165,20 +208,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IInspectable> resourceKey;
             THROW_IF_FAILED(m_propertyValueStatics->CreateString(HStringReference(styleName.c_str()).Get(), resourceKey.GetAddressOf()));
 
-            // Search for the named resource in all known dictionaries
+            // Search for the named resource
             ComPtr<IInspectable> dictionaryValue;
-            for (auto& resourceDictionary : m_resourceDictionaries)
+            ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
+            if (SUCCEEDED(m_mergedResourceDictionary.As(&resourceDictionaryMap)) &&
+                SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
             {
-                ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
-                if (SUCCEEDED(resourceDictionary.As(&resourceDictionaryMap)) &&
-                    SUCCEEDED(resourceDictionaryMap->Lookup(resourceKey.Get(), dictionaryValue.GetAddressOf())))
+                ComPtr<T> resourceToReturn;
+                if (SUCCEEDED(dictionaryValue.As(&styleToReturn)))
                 {
-                    ComPtr<T> resourceToReturn;
-                    if (SUCCEEDED(dictionaryValue.As(&styleToReturn)))
-                    {
-                        THROW_IF_FAILED(styleToReturn.CopyTo(style));
-                        return true;
-                    }
+                    THROW_IF_FAILED(styleToReturn.CopyTo(style));
+                    return true;
                 }
             }
         }
@@ -189,14 +229,72 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    ComPtr<IPanel> XamlBuilder::CreateRootPanelFromAdaptiveCard(IAdaptiveCard* /*adaptiveCard*/)
+    ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(IPanel** childElementContainer)
     {
-        // We use a StackPanel as the panel type for the root adaptive card
-        ComPtr<IStackPanel> stackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        // The root of an adaptive card is a composite of several elements, depending on the card
+        // properties.  From back to fron these are:
+        // Grid - Root element, used to enable children to stack above each other and size to fit
+        // Image (optional) - Holds the background image if one is set
+        // Shape (optional) - Provides the background image overlay, if one is set
+        // StackPanel - The container for all the card's body elements
+        ComPtr<IGrid> rootElement = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
 
-        ComPtr<IPanel> stackPanelAsPanel;
-        THROW_IF_FAILED(stackPanel.As(&stackPanelAsPanel));
-        return stackPanelAsPanel;
+
+        ComPtr<IPanel> rootAsPanel;
+        THROW_IF_FAILED(rootElement.As(&rootAsPanel));
+        if (m_backgroundImageUri != nullptr)
+        {
+            ApplyBackgroundToRoot(rootAsPanel.Get());
+        }
+
+        // Now create the inner stack panel to serve as the root host for all the 
+        // body elements
+        ComPtr<IStackPanel> bodyElementHost = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get());
+        THROW_IF_FAILED(bodyElementHost.CopyTo(childElementContainer));
+
+        if (m_fixedDimensions)
+        {
+            ComPtr<IFrameworkElement> rootAsFrameworkElement;
+            THROW_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
+            rootAsFrameworkElement->put_Width(m_fixedWidth);
+            rootAsFrameworkElement->put_Height(m_fixedHeight);
+            rootAsFrameworkElement->put_MaxHeight(m_fixedHeight);
+        }
+        
+        ComPtr<IUIElement> rootAsUIElement;
+        THROW_IF_FAILED(rootElement.As(&rootAsUIElement));
+        return rootAsUIElement;
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::ApplyBackgroundToRoot(ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel)
+    {
+        // In order to reuse the image creation code paths, we simply create an adaptive card
+        // image element and then build that into xaml and apply to the root.
+        ComPtr<IAdaptiveImage> adaptiveImage;
+        THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
+        adaptiveImage->put_Url(m_backgroundImageUri.Get());
+        adaptiveImage->put_Size(ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch);
+
+        ComPtr<IAdaptiveCardElement> adaptiveCardElement;
+        THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
+        ComPtr<IUIElement> backgroundImage;
+        BuildImage(adaptiveCardElement.Get(), &backgroundImage);
+        XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
+
+        // The overlay applied to the background image is determined by a resouce, so create
+        // the overlay if that resources exists
+        ComPtr<IBrush> backgroundOverlayBrush;
+        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IBrush>(c_BackgroundImageOverlayBrushKey, &backgroundOverlayBrush)))
+        {
+            ComPtr<IShape> overlayRectangle = XamlHelpers::CreateXamlClass<IShape>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
+            THROW_IF_FAILED(overlayRectangle->put_Fill(backgroundOverlayBrush.Get()));
+
+            ComPtr<IUIElement> overlayRectangleAsUIElement;
+            THROW_IF_FAILED(overlayRectangle.As(&overlayRectangleAsUIElement));
+            XamlHelpers::AppendXamlElementToPanel(overlayRectangle.Get(), rootPanel);
+        }
     }
 
     _Use_decl_annotations_
@@ -223,32 +321,42 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IAsyncOperationWithProgress<IInputStream*, HttpProgress>> getStreamOperation;
         httpClient->GetInputStreamAsync(imageUri, &getStreamOperation);
 
+        ComPtr<XamlBuilder> strongThis(this);
         getStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>
-            ([this, bitmapSource, imageControl](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus /*status*/) -> HRESULT
+            ([strongThis, this, bitmapSource, imageControl](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
         {
-            // Load the image stream into an in memory random access stream, which is what
-            // SetSource needs
-            ComPtr<IInputStream> imageStream;
-            RETURN_IF_FAILED(operation->GetResults(&imageStream));
-            ComPtr<IRandomAccessStream> randomAccessStream = 
-            XamlHelpers::CreateXamlClass<IRandomAccessStream>(HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
-            ComPtr<IOutputStream> outputStream;
-            RETURN_IF_FAILED(randomAccessStream.As(&outputStream));
-            ComPtr<IAsyncOperationWithProgress<UINT64, UINT64>> copyStreamOperation;
-            RETURN_IF_FAILED(m_randomAccessStreamStatics->CopyAsync(imageStream.Get(), outputStream.Get(), &copyStreamOperation));
-
-            return copyStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT64, UINT64>>>
-                ([this, bitmapSource, randomAccessStream, imageControl](IAsyncOperationWithProgress<UINT64, UINT64>* /*operation*/, AsyncStatus /*status*/) -> HRESULT
+            if (status == AsyncStatus::Completed)
             {
-                randomAccessStream->Seek(0);
-                RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+                // Load the image stream into an in memory random access stream, which is what
+                // SetSource needs
+                ComPtr<IInputStream> imageStream;
+                RETURN_IF_FAILED(operation->GetResults(&imageStream));
+                ComPtr<IRandomAccessStream> randomAccessStream =
+                    XamlHelpers::CreateXamlClass<IRandomAccessStream>(HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
+                ComPtr<IOutputStream> outputStream;
+                RETURN_IF_FAILED(randomAccessStream.As(&outputStream));
+                ComPtr<IAsyncOperationWithProgress<UINT64, UINT64>> copyStreamOperation;
+                RETURN_IF_FAILED(m_randomAccessStreamStatics->CopyAsync(imageStream.Get(), outputStream.Get(), &copyStreamOperation));
 
-                ComPtr<IImageSource> imageSource;
-                RETURN_IF_FAILED(bitmapSource.As(&imageSource));
-                imageControl->put_Source(imageSource.Get());
-                return S_OK;
-            }).Get());
+                return copyStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT64, UINT64>>>
+                    ([strongThis, this, bitmapSource, randomAccessStream, imageControl](IAsyncOperationWithProgress<UINT64, UINT64>* /*operation*/, AsyncStatus /*status*/) -> HRESULT
+                {
+                    randomAccessStream->Seek(0);
+                    RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+
+                    ComPtr<IImageSource> imageSource;
+                    RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+                    imageControl->put_Source(imageSource.Get());
+                    return S_OK;
+                }).Get());
+                m_copyStreamOperations.push_back(copyStreamOperation);
+            }
+            else
+            {
+                return E_FAIL;
+            }
         }).Get());
+        m_getStreamOperations.push_back(getStreamOperation);
     }
 
     void XamlBuilder::FireAllImagesLoaded()
@@ -372,7 +480,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         ComPtr<IUriRuntimeClass> imageUri;
         THROW_IF_FAILED(adaptiveImage->get_Url(imageUri.GetAddressOf()));
-        PopulateImageFromUrlAsync(imageUri.Get(), xamlImage.Get());
+        if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
+        {
+            // If we've been explicitly told to let Xaml handle the image loading, or there are
+            // no listeners waiting on the image load callbacks, use Xaml to load the images
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+            THROW_IF_FAILED(bitmapImage->put_UriSource(imageUri.Get()));
+
+            ComPtr<IImageSource> bitmapImageSource;
+            THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
+            THROW_IF_FAILED(xamlImage->put_Source(bitmapImageSource.Get()));
+        }
+        else
+        {
+            PopulateImageFromUrlAsync(imageUri.Get(), xamlImage.Get());
+        }
 
         // Set the image to UniformToFill if the card element's size is stretch
         ABI::AdaptiveCards::XamlCardRenderer::ImageSize size;

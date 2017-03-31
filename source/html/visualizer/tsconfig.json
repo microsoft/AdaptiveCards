@@ -9,8 +9,7 @@
         "sourceMap": true,
         "target": "es5",
         "allowJs": true,
-        "outDir": "built",
-        "baseUrl": "."
+        "outDir": "built"
     },
     "include": [
         "src/**/*"
