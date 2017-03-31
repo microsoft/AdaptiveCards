@@ -26,7 +26,7 @@ For example, Live Tiles show read-only content, so they set `SupportsInteractivi
 | **ContainerMaxActions** | int | max number of actions to support inside Containers
 | **Styling**| object | This property varies per platform, and influences the styling of the rendered UI. E.g., using the HTML Renderer you pass a link to a CSS stylesheet
 
-	notep
+
 ## Events
 
 | Event | Description |
