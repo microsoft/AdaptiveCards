@@ -189,7 +189,7 @@
       "title": "POST"
     },
     {
-      "type": "ActionShowCard",
+      "type": "Action.ShowCard",
       "card": {
         "type": "Container",
         "items": [
