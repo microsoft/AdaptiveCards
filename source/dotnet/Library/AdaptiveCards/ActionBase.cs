@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -11,7 +12,7 @@ namespace AdaptiveCards
         ///     Title of the action
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Title { get; set; }
@@ -20,7 +21,7 @@ namespace AdaptiveCards
         ///     Speak phrase for this action
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlElement]
 #endif
         public string Speak { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -18,7 +19,7 @@ namespace AdaptiveCards
         ///     HttpMethod to use
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Method { get; set; } = "POST";
@@ -29,7 +30,7 @@ namespace AdaptiveCards
         ///     InputID is an id property on an TextInput or ChoiceInput element
         /// </summary>
         [JsonRequired]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Url { get; set; }
@@ -37,14 +38,14 @@ namespace AdaptiveCards
         /// <summary>
         ///     Object which represents headers Example: { "content-type":"application/json" }
         /// </summary>
-#if DESKTOP
+#if NET45
         [XmlIgnore]
 #endif
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public object Headers { get; set; }
 
         [JsonIgnore]
-#if DESKTOP
+#if NET45
         [XmlElement("Headers")]
 #endif
         public string HeadersJson
@@ -69,7 +70,7 @@ namespace AdaptiveCards
         ///     NOTE: You can bind to properties from input fields by using {{InputID}} in the string
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlElement]
 #endif
         public string Body { get; set; }

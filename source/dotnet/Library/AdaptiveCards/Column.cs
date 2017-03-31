@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -16,7 +17,7 @@ namespace AdaptiveCards
         ///     Size for the column (either ColumnSize string or number which is relative size of the column)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Size { get; set; }

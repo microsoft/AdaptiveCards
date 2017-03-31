@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -16,7 +17,7 @@ namespace AdaptiveCards
         ///     Size for the Image
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public ImageSize Size { get; set; }
@@ -25,7 +26,7 @@ namespace AdaptiveCards
         ///     The style in which the image is displayed.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public ImageStyle Style { get; set; }
@@ -34,7 +35,7 @@ namespace AdaptiveCards
         ///     A url pointing to an image to display
         /// </summary>
         [JsonRequired]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Url { get; set; }
@@ -43,7 +44,7 @@ namespace AdaptiveCards
         ///     Horizontal alignment for element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public HorizontalAlignment HorizontalAlignment { get; set; }
@@ -58,7 +59,7 @@ namespace AdaptiveCards
         ///     Alternate text to display for this image
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string AltText { get; set; }

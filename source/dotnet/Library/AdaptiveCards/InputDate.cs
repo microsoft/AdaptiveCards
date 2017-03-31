@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -16,7 +17,7 @@ namespace AdaptiveCards
         ///     Placeholder text for the input desired
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Placeholder { get; set; }
@@ -25,7 +26,7 @@ namespace AdaptiveCards
         ///     The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Value { get; set; }
@@ -34,7 +35,7 @@ namespace AdaptiveCards
         ///     hint of minimum value(may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Min { get; set; }
@@ -43,7 +44,7 @@ namespace AdaptiveCards
         ///     hint of maximum value(may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Max { get; set; }

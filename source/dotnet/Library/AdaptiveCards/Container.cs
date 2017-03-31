@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -18,7 +19,7 @@ namespace AdaptiveCards
         ///     Elements of the container
         /// </summary>
         [JsonRequired]
-#if DESKTOP
+#if NET45
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
@@ -44,7 +45,7 @@ namespace AdaptiveCards
         ///     Actions for this container
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlArray("Actions")]
         [XmlArrayItem(ElementName = "Action.OpenUrl", Type = typeof(ActionOpenUrl))]
         [XmlArrayItem(ElementName = "Action.ShowCard", Type = typeof(ActionShowCard))]

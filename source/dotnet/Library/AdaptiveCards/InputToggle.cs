@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -16,7 +17,7 @@ namespace AdaptiveCards
         ///     Title text for toggle
         /// </summary>
         [JsonRequired]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Title { get; set; }
@@ -25,7 +26,7 @@ namespace AdaptiveCards
         ///     Value to use for on (Default: true)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string ValueOn { get; set; } = "true";
@@ -34,7 +35,7 @@ namespace AdaptiveCards
         ///     Value to use for off (Default: false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string ValueOff { get; set; } = "false";
@@ -43,7 +44,7 @@ namespace AdaptiveCards
         ///     The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Value { get; set; }

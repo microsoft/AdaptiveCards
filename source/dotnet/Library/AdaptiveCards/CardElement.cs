@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -11,7 +12,7 @@ namespace AdaptiveCards
         ///     SSML fragment for spoken interaction
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlElement]
 #endif
         public string Speak { get; set; }
@@ -20,7 +21,7 @@ namespace AdaptiveCards
         ///     How should this element be emphasized relative to previous element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public SeparationStyle Separation { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -16,7 +17,7 @@ namespace AdaptiveCards
         ///     Placeholder text for the input desired
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Placeholder { get; set; }
@@ -25,7 +26,7 @@ namespace AdaptiveCards
         ///     The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Value { get; set; }
@@ -34,7 +35,7 @@ namespace AdaptiveCards
         ///     Hint of style of input, if client doesn't support the style it will become simple text input
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public TextInputStyle Style { get; set; }
@@ -43,7 +44,7 @@ namespace AdaptiveCards
         ///     true to collect multiple lines of text(default is false)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public bool IsMultiline { get; set; }
@@ -52,7 +53,7 @@ namespace AdaptiveCards
         ///     hint of maximum length characters to collect(may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public int MaxLength { get; set; }

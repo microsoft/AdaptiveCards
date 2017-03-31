@@ -31,18 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlTags, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlTags.4.2.0\lib\net45\HtmlTags.dll</HintPath>
-    </Reference>
     <Reference Include="MarkedNet, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MarkedNet.1.0.5.0\lib\portable-net45+win+wpa81\MarkedNet.dll</HintPath>
+      <HintPath>..\..\packages\MarkedNet.1.0.5.0\lib\portable-net45+win+wpa81\MarkedNet.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -55,17 +53,22 @@
   <ItemGroup>
     <None Include="AdaptiveCards.Html.nuspec" />
     <None Include="createpackage.cmd" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="pushpackage.cmd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj">
-      <Project>{359961bf-84cd-4e33-a86d-9ed708729e07}</Project>
-      <Name>AdaptiveCards</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="AdaptiveCard.css" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AdaptiveCard.css" />
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj">
+      <Project>{fc4a3527-05a2-4297-98d3-cb1cb512ffda}</Project>
+      <Name>AdaptiveCards</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

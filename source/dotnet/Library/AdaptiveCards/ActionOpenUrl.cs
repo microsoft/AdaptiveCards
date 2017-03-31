@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -17,7 +18,7 @@ namespace AdaptiveCards
         ///     Url to open using default operating system browser
         /// </summary>
         [JsonRequired]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Url { get; set; }

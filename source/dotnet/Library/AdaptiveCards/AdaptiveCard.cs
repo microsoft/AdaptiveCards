@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Adaptive card which has flexible container
     /// </summary>
-#if DESKTOP && !XAMARIN
-    [ContentProperty("Body")]
-#endif
     public class AdaptiveCard : TypedElement
     {
         public AdaptiveCard()
@@ -19,7 +17,7 @@ namespace AdaptiveCards
 
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
 
-#if DESKTOP
+#if NET45
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
@@ -39,7 +37,7 @@ namespace AdaptiveCards
         ///     Actions for this container
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlArray("Actions")]
         [XmlArrayItem(ElementName = "Action.OpenUrl", Type = typeof(ActionOpenUrl))]
         [XmlArrayItem(ElementName = "Action.ShowCard", Type = typeof(ActionShowCard))]
@@ -52,7 +50,7 @@ namespace AdaptiveCards
         ///     Speak annotation for the card
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlElement]
 #endif
         public string Speak { get; set; }
@@ -61,7 +59,7 @@ namespace AdaptiveCards
         ///     Title for the card (used when displayed in a dialog)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Title { get; set; }
@@ -70,7 +68,7 @@ namespace AdaptiveCards
         ///     Background image for card
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string BackgroundImage { get; set; }
@@ -79,7 +77,7 @@ namespace AdaptiveCards
         ///     version of schema that this card was authored
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Version { get; set; }
@@ -89,7 +87,7 @@ namespace AdaptiveCards
         ///     supported are safe to ignore
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string MinVersion { get; set; }
@@ -98,7 +96,7 @@ namespace AdaptiveCards
         ///     if a client is not able to show the card, show fallbackText to the user. This can be in markdown format.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string FallbackText { get; set; }

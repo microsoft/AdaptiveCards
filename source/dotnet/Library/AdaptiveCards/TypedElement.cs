@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -15,7 +16,7 @@ namespace AdaptiveCards
 
         [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
         [JsonRequired]
-#if DESKTOP
+#if NET45
         [XmlIgnore]
 #endif
         public string Type { get; set; }

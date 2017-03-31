@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -18,13 +19,13 @@ namespace AdaptiveCards
         ///     initial data that input fields will be combined with. This is essentially 'hidden' properties, Example:
         ///     {"id":"123123123"}
         /// </summary>
-#if DESKTOP
+#if NET45
         [XmlIgnore]
 #endif
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public object Data { get; set; }
 
-#if DESKTOP
+#if NET45
         [XmlElement("Data")]
 #endif
 

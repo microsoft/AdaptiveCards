@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -17,7 +18,7 @@ namespace AdaptiveCards
         ///     The size of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public TextSize Size { get; set; }
@@ -26,7 +27,7 @@ namespace AdaptiveCards
         ///     The weight of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public TextWeight Weight { get; set; }
@@ -35,7 +36,7 @@ namespace AdaptiveCards
         ///     The color of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public TextColor Color { get; set; }
@@ -44,7 +45,7 @@ namespace AdaptiveCards
         ///     Should it be subtle?
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public bool IsSubtle { get; set; }
@@ -53,7 +54,7 @@ namespace AdaptiveCards
         ///     The text to display
         /// </summary>
         [JsonRequired]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public string Text { get; set; }
@@ -62,7 +63,7 @@ namespace AdaptiveCards
         ///     Horizontal alignment for element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public HorizontalAlignment HorizontalAlignment { get; set; }
@@ -71,7 +72,7 @@ namespace AdaptiveCards
         ///     Is it allowed for the text to wrap
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public bool Wrap { get; set; }
@@ -80,7 +81,7 @@ namespace AdaptiveCards
         ///     When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if DESKTOP
+#if NET45
         [XmlAttribute]
 #endif
         public int MaxLines { get; set; }
