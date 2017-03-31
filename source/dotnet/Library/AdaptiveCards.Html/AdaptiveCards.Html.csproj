@@ -7,8 +7,8 @@
     <ProjectGuid>{13F4F606-87AA-4543-A37E-7118FD72C39B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AdaptiveCards.Rendering</RootNamespace>
-    <AssemblyName>AdaptiveCards.Rendering.Html</AssemblyName>
+    <RootNamespace>AdaptiveCards</RootNamespace>
+    <AssemblyName>AdaptiveCards.Html</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -49,11 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HtmlRenderer.cs" />
+    <Compile Include="Rendering\HtmlRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AdaptiveCards.Rendering.Html.nuspec" />
+    <None Include="AdaptiveCards.Html.nuspec" />
     <None Include="createpackage.cmd" />
     <None Include="packages.config" />
     <None Include="pushpackage.cmd" />

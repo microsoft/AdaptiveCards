@@ -9,6 +9,8 @@ using AdaptiveCards.Rendering;
 
 namespace AdaptiveCards.Rendering
 {
+    // TODO: give this a better name
+
     public partial class XamlRendererExtended : XamlRenderer
     {
         public XamlRendererExtended(RenderOptions options,

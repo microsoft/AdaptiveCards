@@ -4,8 +4,8 @@
     <TargetFramework>netstandard1.3</TargetFramework>
     <PackageTargetFallback>$(PackageTargetFallback);portable-win+net45+wp8+win81+wpa8</PackageTargetFallback>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81</PackageTargetFallback>
-    <RootNamespace>AdaptiveCards.Rendering</RootNamespace>
-    <AssemblyName>AdaptiveCards.Rendering.XamarinForms</AssemblyName>
+    <RootNamespace>AdaptiveCards</RootNamespace>
+    <AssemblyName>AdaptiveCards.Xaml.XamarinForms</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

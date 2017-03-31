@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace AdaptiveCards.Rendering
 {
@@ -7,7 +9,7 @@ namespace AdaptiveCards.Rendering
     /// Renderer of AdaptiveCard schema into ElementT types 
     /// </summary>
     /// <typeparam name="ElementT">the base type of rendered elements</typeparam>
-    public static class Utilities
+    internal static class Utilities
     {
         private static Regex TextFunctionRegex = new Regex(@"\{\{(?<func>DATE|TIME){1}\((?<date>.+?){1}(?:,\s*(?<hint>Short|Long){1}\s*)??\)\}\}", RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
         private static Regex _regexBinding = new Regex(@"(?<property>\{\{\w+?\}\})+?", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
@@ -16,12 +18,39 @@ namespace AdaptiveCards.Rendering
 
         private enum TimeHints { LONG, SHORT };
 
+        internal static T TryGetValue<T>(this IDictionary dictionary, string key)
+        {
+            if (dictionary == null)
+                throw new ArgumentNullException(nameof(dictionary));
+
+            if (dictionary.Contains(key))
+            {
+                return (T)dictionary[key];
+            }
+
+            return default(T);
+        }
+
+        internal static T TryGetValue<T>(this IDictionary<string, object> dictionary, string key)
+        {
+            if (dictionary == null)
+                throw new ArgumentNullException(nameof(dictionary));
+
+            if (dictionary.ContainsKey(key))
+            {
+                return (T)dictionary[key];
+            }
+
+            return default(T);
+        }
+
+
         /// <summary>
         /// This funct will return modified text replacing {{DATE|TIME()}} style functions as the formatted text
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string ApplyTextFunctions(string text)
+        internal static string ApplyTextFunctions(string text)
         {
             foreach (Match match in TextFunctionRegex.Matches(text))
             {
@@ -58,7 +87,7 @@ namespace AdaptiveCards.Rendering
         /// <param name="text"></param>
         /// <param name="url">true if url text is a url (escaping will be applied to the vaue of the binding)</param>
         /// <returns></returns>
-        public static string BindData(dynamic data, string text, bool url = false)
+        internal static string BindData(dynamic data, string text, bool url = false)
         {
             foreach (Match match in _regexBinding.Matches(text))
             {
@@ -71,6 +100,6 @@ namespace AdaptiveCards.Rendering
 
             return text;
         }
-         
+
     }
 }

@@ -17,42 +17,13 @@ using Xceed.Wpf.Toolkit;
 
 namespace AdaptiveCards.Rendering
 {
-
-    internal static class DictionaryHelper
-    {
-        public static T TryGetValue<T>(this IDictionary dictionary, string key)
-        {
-            if (dictionary == null)
-                throw new ArgumentNullException(nameof(dictionary));
-
-            if (dictionary.Contains(key))
-            {
-                return (T)dictionary[key];
-            }
-
-            return default(T);
-        }
-
-        public static T TryGetValue<T>(this IDictionary<string, object> dictionary, string key)
-        {
-            if (dictionary == null)
-                throw new ArgumentNullException(nameof(dictionary));
-
-            if (dictionary.ContainsKey(key))
-            {
-                return (T)dictionary[key];
-            }
-
-            return default(T);
-        }
-    }
-
-
     public class RenderContext
     {
         private Func<string, MemoryStream> _imageResolver = null;
 
-        public RenderContext(Action<object, ActionEventArgs> actionCallback, Action<object, MissingInputEventArgs> missingDataCallback, Func<string, MemoryStream> imageResolver = null)
+        public RenderContext(Action<object, ActionEventArgs> actionCallback,
+            Action<object, MissingInputEventArgs> missingDataCallback,
+            Func<string, MemoryStream> imageResolver = null)
         {
             if (actionCallback != null)
                 this.OnAction += (obj, args) => actionCallback(obj, args);
@@ -92,12 +63,14 @@ namespace AdaptiveCards.Rendering
         /// Event fires when action is invoked
         /// </summary>
         public delegate void ActionEventHandler(object sender, ActionEventArgs e);
+
         public event ActionEventHandler OnAction;
 
         /// <summary>
         /// Event fires when missing input for submit/http actions
         /// </summary>
         public delegate void MissingInputEventHandler(object sender, MissingInputEventArgs e);
+
         public event MissingInputEventHandler OnMissingInput;
 
         public void Action(FrameworkElement ui, ActionEventArgs args)
@@ -232,6 +205,7 @@ namespace AdaptiveCards.Rendering
             }
             Debug.Print($"Unknown control {inputControl.GetType().Name}");
 #endif
+            // TODO: Xamarin inputs
             return null;
         }
 
@@ -315,7 +289,8 @@ namespace AdaptiveCards.Rendering
     public class ActionEventArgs : EventArgs
     {
         public ActionEventArgs()
-        { }
+        {
+        }
 
         /// <summary>
         /// The action that fired
