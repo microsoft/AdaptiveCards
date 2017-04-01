@@ -1,3 +1,4 @@
-erase /s *.nupkg
-NuGet.exe pack AdaptiveCards.Rendering.Html.csproj -Prop Configuration=Debug -Build
-copy *.nupkg ..\bin
+erase bin\debug\*.nupkg
+erase bin\release\*.nupkg
+msbuild /t:pack /p:Configuration=Debug
+copy bin\debug\*.nupkg ..\bin

@@ -18,12 +18,16 @@ namespace AdaptiveCards.Rendering
 
         private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
         {
+#if NET46
             var assembly = Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.Rendering.AdaptiveCard.css"))
             using (var reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();
             }
+#else
+            return null;
+#endif
         });
 
         public HtmlRenderer(RenderOptions options) : base(options)
@@ -487,6 +491,7 @@ namespace AdaptiveCards.Rendering
         {
             if (!string.IsNullOrEmpty(cardElement.Speak))
             {
+#if NET46
                 // TODO: Fix xamarin fallback
                 var doc = new XmlDocument();
                 var xml = cardElement.Speak;
@@ -496,6 +501,7 @@ namespace AdaptiveCards.Rendering
                     xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n{xml}";
                 doc.LoadXml(xml);
                 return doc.InnerText;
+#endif
             }
             return null;
         }
