@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering
         {
             if (this.Options.SupportInteraction)
             {
-                var textBox = new TextBox() { Text = input.Value };
+                var textBox = new TextBox() { Text = input.Value.ToString() };
                 textBox.Text = input.Placeholder;
                 textBox.Style = this.GetStyle($"Adaptive.Input.Text.Number");
                 textBox.DataContext = input;
@@ -34,10 +34,9 @@ namespace AdaptiveCards.Rendering
                 container.Items.Add(new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder });
                 if (input.Value != null)
                 {
-
                     container.Items.Add(new TextBlock()
                     {
-                        Text = input.Value,
+                        Text = input.Value.ToString(),
                         Color = TextColor.Accent,
                         Wrap = true
                     });

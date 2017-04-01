@@ -155,7 +155,7 @@ namespace AdaptiveCards.Rendering
             var uiColumn = new DivTag()
                 .AddClass(column.Type);
 
-            AddContainerElements(uiColumn, column.Items, column.Actions, context);
+            AddContainerElements(uiColumn, column.Items, null, context);
 
             if (Options.SupportInteraction && column.SelectAction != null)
             {
@@ -433,12 +433,14 @@ namespace AdaptiveCards.Rendering
             var container = new Container {Separation = input.Separation};
             container.Items.Add(new TextBlock {Text = GetFallbackText(input) ?? input.Placeholder});
             if (input.Value != null)
+            {
                 container.Items.Add(new TextBlock
                 {
-                    Text = input.Value,
+                    Text = input.Value.ToString(),
                     Color = TextColor.Accent,
                     Wrap = true
                 });
+            }
             return Render(container, context);
         }
 

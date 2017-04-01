@@ -25,28 +25,29 @@ namespace AdaptiveCards
         /// <summary>
         ///     The initial value for the field
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET46
         [XmlAttribute]
 #endif
-        public string Value { get; set; }
+        public double Value { get; set; } = double.NaN;
 
         /// <summary>
         ///     hint of minimum value(may be ignored by some clients)
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET46
         [XmlAttribute]
 #endif
-        public string Min { get; set; }
+        public double Min { get; set; } = double.NaN;
 
         /// <summary>
         ///     hint of maximum value(may be ignored by some clients)
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET46
         [XmlAttribute]
 #endif
-        public string Max { get; set; }
+        public double Max { get; set; } = double.NaN;
+
+        bool ShouldSerializeMin() { return Min != double.NaN; }
+        bool ShouldSerializeMax() { return Max != double.NaN; }
+        bool ShouldSerializeValue() { return Max != double.NaN; }
     }
 }
