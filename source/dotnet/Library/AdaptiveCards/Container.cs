@@ -19,7 +19,7 @@ namespace AdaptiveCards
         ///     Elements of the container
         /// </summary>
         [JsonRequired]
-#if NET45
+#if NET46
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
@@ -45,7 +45,7 @@ namespace AdaptiveCards
         ///     Actions for this container
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET45
+#if NET46
         [XmlArray("Actions")]
         [XmlArrayItem(ElementName = "Action.OpenUrl", Type = typeof(ActionOpenUrl))]
         [XmlArrayItem(ElementName = "Action.ShowCard", Type = typeof(ActionShowCard))]

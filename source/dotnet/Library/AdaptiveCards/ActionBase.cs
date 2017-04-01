@@ -12,7 +12,7 @@ namespace AdaptiveCards
         ///     Title of the action
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET45
+#if NET46
         [XmlAttribute]
 #endif
         public string Title { get; set; }
@@ -21,7 +21,7 @@ namespace AdaptiveCards
         ///     Speak phrase for this action
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET45
+#if NET46
         [XmlElement]
 #endif
         public string Speak { get; set; }

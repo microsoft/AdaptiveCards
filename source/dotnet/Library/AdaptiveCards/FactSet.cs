@@ -19,7 +19,7 @@ namespace AdaptiveCards
         ///     The facts to be displayed.
         /// </summary>
         [JsonRequired]
-#if NET45
+#if NET46
         [XmlElement(ElementName="Fact", Type=typeof(Fact))]
 #endif
         public List<Fact> Facts { get; set; } = new List<Fact>();
@@ -46,7 +46,7 @@ namespace AdaptiveCards
         ///     The facts label
         /// </summary>
         [JsonRequired]
-#if NET45
+#if NET46
         [XmlAttribute]
 #endif
         public string Title { get; set; }
@@ -55,7 +55,7 @@ namespace AdaptiveCards
         ///     The fact's value
         /// </summary>
         [JsonRequired]
-#if NET45
+#if NET46
         [XmlAttribute]
 #endif
         public string Value { get; set; }
@@ -64,7 +64,7 @@ namespace AdaptiveCards
         ///     (Optional) Specifies what should be spoken for this entire element. This is simple text or SSML fragment
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET45
+#if NET46
         [XmlElement]
 #endif
         public string Speak { get; set; }

@@ -18,7 +18,7 @@ namespace AdaptiveCards
         ///     Collection of images to display together
         /// </summary>
         [JsonRequired]
-#if NET45
+#if NET46
         [XmlElement(ElementName="Image", Type=typeof(Image))]
 #endif
         public List<Image> Images { get; set; } = new List<Image>();
@@ -27,7 +27,7 @@ namespace AdaptiveCards
         ///     Specifies the horizontal size of each image in the set
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET45
+#if NET46
         [XmlAttribute]
 #endif
         public ImageSize ImageSize { get; set; }

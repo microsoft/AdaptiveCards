@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.5;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net4.6;netstandard1.3</TargetFrameworks>
     <PackageId>AdaptiveCards</PackageId>
     <PackageVersion>1.0.0.4</PackageVersion>
     <Authors>Microsoft</Authors>

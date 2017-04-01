@@ -19,13 +19,13 @@ namespace AdaptiveCards
         ///     initial data that input fields will be combined with. This is essentially 'hidden' properties, Example:
         ///     {"id":"123123123"}
         /// </summary>
-#if NET45
+#if NET46
         [XmlIgnore]
 #endif
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public object Data { get; set; }
 
-#if NET45
+#if NET46
         [XmlElement("Data")]
 #endif
 
