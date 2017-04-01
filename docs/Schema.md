@@ -271,7 +271,7 @@ The column Set element adds the ability to have a set of Column objects.
 | **columns** | [Column](#column)[] | true | array of columns (each a container of items)  |
 
 ## Column
-**Extends [Container](#container)**
+*Extends [CardElement](#cardelement)*
 
 A Column is a container which contains a list of CardElements that are logically grouped.
 
@@ -279,7 +279,8 @@ A Column is a container which contains a list of CardElements that are logically
 |---|---|---|---|
 | **type**| string | true |  **"Column"** |
 | **size** | string | false | "auto", "stretch", or a number representing relative width of the column in the column Set (Default:Auto)|
-
+| **items** |  [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
+| **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
 
 ## ImageSet 
 *Extends [CardElement](#CardElement)*
