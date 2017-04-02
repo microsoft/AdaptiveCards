@@ -39,6 +39,11 @@ A Renderer should expose certain events to allow the container app to handle as 
 ### ActionExecuted
 Raise this event when an action is tapped. You should pass along the properties that the action contained.
 
+## Data binding
+For a submit action you should gather all inputs on the card and retrieve their values.
+
+Regex to get input values `/\{{2}([a-z0-9_$@]+).value\}{2}/gi;`
+
 ### RenderUnknownType
 Raise this event when an unknown `type` is encountered, allowing the host to handle the event and return UI as they see fit.
 
