@@ -141,6 +141,8 @@ namespace AdaptiveCards.Rendering
                     break;
             }
 
+            
+
 
             if (this.Resources[$"Adaptive.{textBlock.Color}"] != null)
                 uiTextBlock.TextColor = (Color)this.Resources[$"Adaptive.{textBlock.Color}"];
