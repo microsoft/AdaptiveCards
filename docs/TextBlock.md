@@ -1,3 +1,4 @@
+
 The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.
 
 | Property | Type | Required | Description |

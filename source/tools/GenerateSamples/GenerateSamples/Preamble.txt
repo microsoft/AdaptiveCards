@@ -35,17 +35,20 @@ h3 {
             alert(JSON.stringify(action));
         };
 
-    function renderCard(id)
+    function renderCardById(id)
     {
         var obj = JSON.parse(document.getElementById(id).innerText);
+		renderCard(obj);
+	}
+
+	function renderCard(targetDiv, card)
+	{
         var jsonParser = new AdaptiveCards.JsonParser();
-        var adaptiveCard = jsonParser.parse(obj);
+        var adaptiveCard = jsonParser.parse(card);
         var renderedCard = adaptiveCard.render();
-        var targetDiv = id + 'Render';
         var div = document.getElementById(targetDiv).appendChild(renderedCard);
     }
-
-			
+				
 	function toggleContent(id) {
 	  // Get the DOM reference
 	  var contentId = document.getElementById(id);

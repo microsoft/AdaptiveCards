@@ -27,7 +27,12 @@ namespace GenerateSamples
 
             Marked marked = new Marked();
 
-            string[] elements = new string[] { "TextBlock", "Image", "Container", "ColumnSet", "Column", "FactSet", "ImageSet", "Input", "Action" };
+            string[] elements = new string[] {
+                "TextBlock", "Image",
+                "Container", "ColumnSet", "Column", "FactSet", "ImageSet",
+                "Input.Text", "Input.Number", "Input.Date", "Input.Time", "Input.Toggle", "Input.ChoiceSet",
+                "ActionOpenUrl", "ActionSubmit", "ActionHttp","ActionShowCard"
+            };
             using (TextWriter writer = new StreamWriter(File.Open(Path.Combine(@"c:\\source\personal\AdaptiveTryMe", "Elements.html"), FileMode.Create)))
             {
                 writer.WriteLine(preamble);
@@ -42,21 +47,15 @@ namespace GenerateSamples
                         string markdown = File.ReadAllText(path);
                         writer.WriteLine(marked.Parse(markdown));
                     }
-                    foreach (var file in Directory.GetFiles(args[0], element + "*.json").Where(f => f.Contains(element+".")))
+                    foreach (var file in Directory.GetFiles(args[0], element + "*.json").Where(f => f.Contains(element + ".")))
                     {
                         var name = Path.GetFileNameWithoutExtension(file);
-                        writer.WriteLine($"<h3 onclick='toggleContent(\"{name}Content\")'>Example: {name.Split('.').Last()}</h3>");
-                        writer.WriteLine($"<div id='{name}Content' style='display:none'>");
-                        writer.WriteLine("<table>");
+                        writer.WriteLine($"<h3 onclick='toggleContent(\"{name}Content\")'>{element}.{name.Split('.').Last()}</h3>");
+                        writer.WriteLine($"<div id='{name}Content' style='display:block'>");
                         var json = File.ReadAllText(file, Encoding.UTF8);
-                        writer.WriteLine("<tr>");
-                        writer.WriteLine($"<td><div id='{name}Render' class='card' ></div></td>");
-                        writer.WriteLine($"<td><button onclick=\"toggleContent('{name}');\">view</button></td>");
-                        writer.WriteLine($"<td><pre id='{name}' style='display:none'>\n{json}\n</pre></td>");
-                        writer.WriteLine("</tr>");
-                        writer.WriteLine("</table>");
-                        writer.WriteLine("</div>");
-                        writer.WriteLine($"<script>renderCard('{name}');</script>");
+                        writer.WriteLine($"<div id='{name}Card' class='card' ></div>");
+                        writer.WriteLine($"<a target='_blank' href='/AdaptiveCards/?card=/AdaptiveCards/{file.Substring(file.IndexOf("samples")).Replace('\\', '/')}'>Try it</a>");
+                        writer.WriteLine($"</div><script>renderCard('{name}Card', {json});</script>");
                     }
                     writer.WriteLine($"</div>");
 
