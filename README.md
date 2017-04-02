@@ -10,7 +10,7 @@ For example:
 
 ![Diagram](docs/images/AdaptiveCardsDiagram.png)
 
-e## Install and build
+## Install and build
 
 Since we build for multiple platforms they each have slightly different build mechanisms.
 
@@ -36,14 +36,15 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 * Documentation of the schema (see [docs/Schema.md](docs/Schema.md))
 * The official Adaptive Card JSON schema (see [schemas/adaptive-card.json](schemas/adaptive-card.json))
 * The official Adaptive Card XML schema (see [schemas/adaptive-card.xsd](schemas/adaptive-card.xsd))
-* A Visual Code Live Preview Extension so you can see edits as you type (see [docs/vscode.md](docs/vscode.md))
-* An online live previerer  [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards/html/visualizer/) to preview and design Card payloads
+* A Visual Code Live Preview Extension so you can see edits as you type (see [source/vscode](source/vscode))
+* An online live previerer  [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards) to preview and design Card payloads
 * Sample Cards (see [samples](samples/Scenarios))
 * Nuget and NPM libraries
 
 # Rendering Cards in your App or Web Site
 
 If you have the need to render Adaptive Cards inside your app or web site, the Toolkit provides a couple Renderers to help achieve this.
+
 
 ## Shared Libraries
 * **AdaptiveCards** -> Defines Adaptive card object model for creating and serializing/deserializing adaptive cards
