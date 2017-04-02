@@ -144,8 +144,7 @@ namespace AdaptiveCards.Rendering
             
 
 
-            if (this.Resources[$"Adaptive.{textBlock.Color}"] != null)
-                uiTextBlock.TextColor = (Color)this.Resources[$"Adaptive.{textBlock.Color}"];
+            uiTextBlock.TextColor = this.Resources.TryGetValue<Color>($"Adaptive.{textBlock.Color}");
 
             if (textBlock.Weight == TextWeight.Bolder)
                 uiTextBlock.FontAttributes = FontAttributes.Bold;
