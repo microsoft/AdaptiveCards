@@ -33,7 +33,7 @@ namespace GenerateSamples
                 "Input.Text", "Input.Number", "Input.Date", "Input.Time", "Input.Toggle", "Input.ChoiceSet",
                 "ActionOpenUrl", "ActionSubmit", "ActionHttp","ActionShowCard"
             };
-            using (TextWriter writer = new StreamWriter(File.Open(Path.Combine(@"c:\\source\personal\AdaptiveTryMe", "Elements.html"), FileMode.Create)))
+            using (TextWriter writer = new StreamWriter(File.Open(Path.Combine(@"c:\\source\github\AdaptiveCards", "explorer.html"), FileMode.Create)))
             {
                 writer.WriteLine(preamble);
                 writer.WriteLine("<h1>AdaptiveCard Element Explorer</h1>");

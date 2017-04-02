@@ -2,8 +2,10 @@
 <head>
     <meta charset = "utf-8" />
     <title> Adaptive Cards - Basic Example </title>
-    <link rel = "stylesheet" type = "text/css" href = "export.css">
-    <script src = "node_modules/adaptive-cards/dist/adaptive-cards.js"></script>
+    <link rel = "stylesheet" type = "text/css" href = "css/outlookConnectorCard.css">
+  <!--  <script src = "node_modules/adaptive-cards/dist/adaptive-cards.js"></script> -->
+    <script src="built/visualizer-with-renderer.js"></script>
+
 <style type = "text/css">
 h1 { 
 	font-size: xx-large;
