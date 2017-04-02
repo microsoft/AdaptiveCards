@@ -41,7 +41,7 @@ namespace GenerateSamples
                 {
                     writer.WriteLine($"<h2 onclick='toggleContent(\"{element}Content\")'>{element}</h2>");
                     writer.WriteLine($"<div id='{element}Content' style='display:none'>");
-                    string path = Path.Combine(args[0], $"..\\..\\docs\\{element}.md");
+                    string path = Path.Combine(args[0], $"..\\..\\docs\\schema\\{element}.md");
                     if (File.Exists(path))
                     {
                         string markdown = File.ReadAllText(path);
