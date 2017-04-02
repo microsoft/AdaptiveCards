@@ -54,7 +54,7 @@ namespace GenerateSamples
                         writer.WriteLine($"<div id='{name}Content' style='display:block'>");
                         var json = File.ReadAllText(file, Encoding.UTF8);
                         writer.WriteLine($"<div id='{name}Card' class='card' ></div>");
-                        writer.WriteLine($"<a target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/{file.Substring(file.IndexOf("samples")).Replace('\\', '/')}'>Try it</a>");
+                        writer.WriteLine($"<a target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/{file.Substring(file.IndexOf("samples")).Replace('\\', '/').Replace("/elements", "/Elements")}'>Try it</a>");
                         writer.WriteLine($"</div><script>renderCard('{name}Card', {json});</script>");
                     }
                     writer.WriteLine($"</div>");
