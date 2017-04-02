@@ -32,7 +32,7 @@ namespace AdaptiveCards.Rendering
             {
                 Container container = new Container() { Separation = input.Separation };
                 container.Items.Add(new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder });
-                if (input.Value != null)
+                if (!double.IsNaN(input.Value))
                 {
                     container.Items.Add(new TextBlock()
                     {

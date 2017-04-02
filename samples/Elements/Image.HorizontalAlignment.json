@@ -10,6 +10,7 @@
     {
       "type": "Image",
       "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "size":"medium",
       "horizontalAlignment": "left"
     },
     {
@@ -21,6 +22,7 @@
     {
       "type": "Image",
       "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "size":"medium",
       "horizontalAlignment": "center"
     },
     {
@@ -32,6 +34,7 @@
     {
       "type": "Image",
       "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "size":"medium",
       "horizontalAlignment": "right"
     }
   ]

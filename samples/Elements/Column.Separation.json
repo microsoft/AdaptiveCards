@@ -8,7 +8,6 @@
             "columns": [
                 {
                     "type": "Column",
-                    "size":"auto",
                     "items": [
                         {
                             "type": "TextBlock",
@@ -23,7 +22,6 @@
                 {
                     "type": "Column",
                     "separation": "none",
-                    "size":"auto",
                     "items": [
                         {
                             "type": "TextBlock",
@@ -38,7 +36,6 @@
                 {
                     "type": "Column",
                     "separation": "default",
-                    "size":"auto",
                     "items": [
                         {
                             "type": "TextBlock",
@@ -52,7 +49,6 @@
                 },
                                 {
                     "type": "Column",
-                    "size":"auto",
                     "separation": "strong",
                     "items": [
                         {

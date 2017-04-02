@@ -28,43 +28,49 @@ namespace AdaptiveCards.Rendering
 
             foreach (var column in columnSet.Columns)
             {
+                FrameworkElement uiColumn = this.Render(column, context);
+
                 // Add vertical Seperator
                 if (uiColumnSet.ColumnDefinitions.Count > 0)
                 {
-                    switch (column.Separation)
-                    {
-                        case SeparationStyle.None:
-                            break;
-
-                        case SeparationStyle.Default:
-                            {
-                                var sep = new Grid();
-                                sep.Style = this.GetStyle($"Adaptive.VerticalSeparator");
-                                uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                                Grid.SetColumn(sep, uiColumnSet.ColumnDefinitions.Count - 1);
-                                uiColumnSet.Children.Add(sep);
-                            }
-                            break;
-
-                        case SeparationStyle.Strong:
-                            {
-                                var sep = new Grid();
+                    var uiSep = new Grid();
+                    uiSep.Style = this.GetStyle($"Adaptive.VerticalSeparator");
 #if WPF
-                                sep.VerticalAlignment = VerticalAlignment.Stretch;
+                    uiSep.VerticalAlignment = VerticalAlignment.Stretch;
 #elif XAMARIN
                                 // TOOD: check xamarin separator visual
                                 //sep.VerticalAlignment = VerticalAlignment.Stretch;
 #endif
-                                sep.Style = this.GetStyle($"Adaptive.VerticalSeparator.Strong");
-                                uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                                Grid.SetColumn(sep, uiColumnSet.ColumnDefinitions.Count - 1);
-                                uiColumnSet.Children.Add(sep);
-                            }
+                    SeparationStyling sepStyle;
+                    switch (column.Separation)
+                    {
+                        case SeparationStyle.None:
+                            sepStyle = context.Styling.Column.SeparationNone;
                             break;
+
+                        case SeparationStyle.Default:
+                            sepStyle = context.Styling.Column.SeparationDefault;
+                            break;
+
+                        case SeparationStyle.Strong:
+                            sepStyle = context.Styling.Column.SeparationStrong;
+                            break;
+
                     }
+                    uiSep.Margin = new Thickness(context.Styling.Column.SeparationNone.Spacing / 2, 0, context.Styling.Column.SeparationNone.Spacing / 2, 0);
+#if WPF
+                    uiSep.Width = context.Styling.Column.SeparationNone.Thickness;
+                    if (context.Styling.Column.SeparationNone.Color != null)
+                        uiSep.Background = this.GetColorBrush(context.Styling.Column.SeparationNone.Color);
+#elif XAMARIN
+                            // TODO
+#endif
+                    uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                    Grid.SetColumn(uiSep, uiColumnSet.ColumnDefinitions.Count - 1);
+                    uiColumnSet.Children.Add(uiSep);
+
                 }
 
-                FrameworkElement uiElement = this.Render(column, context);
 
                 // do some sizing magic using the magic GridUnitType.Star
                 var size = column.Size?.ToLower();
@@ -81,8 +87,8 @@ namespace AdaptiveCards.Rendering
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 }
 
-                Grid.SetColumn(uiElement, uiColumnSet.ColumnDefinitions.Count - 1);
-                uiColumnSet.Children.Add(uiElement);
+                Grid.SetColumn(uiColumn, uiColumnSet.ColumnDefinitions.Count - 1);
+                uiColumnSet.Children.Add(uiColumn);
             }
 
             return uiColumnSet;

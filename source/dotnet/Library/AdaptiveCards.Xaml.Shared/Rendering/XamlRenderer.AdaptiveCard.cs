@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows;
@@ -42,6 +43,11 @@ namespace AdaptiveCards.Rendering
 
             var grid = new Grid();
             grid.Style = this.GetStyle("Adaptive.InnerCard");
+            if (context.Styling.Margin.Length == 4)
+                grid.Margin = new Thickness(context.Styling.Margin[0], context.Styling.Margin[1], context.Styling.Margin[2], context.Styling.Margin[3]);
+            else
+                grid.Margin = new Thickness(context.Styling.Margin.First());
+            
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
             var inputControls = new List<FrameworkElement>();

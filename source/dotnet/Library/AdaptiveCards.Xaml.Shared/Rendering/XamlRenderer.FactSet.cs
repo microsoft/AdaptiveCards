@@ -57,12 +57,14 @@ namespace AdaptiveCards.Rendering
                 new UI.TextBlock()
                 {
                     Text = fact.Title,
-                    Style = this.GetStyle("Adaptive.Fact.Name")
+                    Style = this.GetStyle("Adaptive.Fact.Title"),
+                    Margin = new Thickness(0, 0, 0, 0)
                 },
                 new UI.TextBlock()
                 {
                     Text = fact.Value,
-                    Style = this.GetStyle("Adaptive.Fact.Value")
+                    Style = this.GetStyle("Adaptive.Fact.Value"),
+                    Margin = new Thickness(20, 0, 0, 0)
                 }
             );
         }

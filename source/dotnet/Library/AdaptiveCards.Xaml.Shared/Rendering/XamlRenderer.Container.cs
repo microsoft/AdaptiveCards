@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using AdaptiveCards.Rendering;
+using System;
 #if WPF
 using System.Windows.Shapes;
 using System.Windows.Controls;
@@ -57,25 +58,34 @@ namespace AdaptiveCards.Rendering
                 {
                     if (grid.RowDefinitions.Count > 0)
                     {
+                        var uiSep = new Grid();
+                        uiSep.Style = this.GetStyle($"Adaptive.Separator");
+                        SeparationStyling sepStyle = null;
                         switch (cardElement.Separation)
                         {
                             case SeparationStyle.None:
+                                sepStyle = context.Styling.GetElementStyling(cardElement).SeparationNone;
                                 break;
                             case SeparationStyle.Default:
+                                sepStyle = context.Styling.GetElementStyling(cardElement).SeparationDefault;
+                                break;
+
                             case SeparationStyle.Strong:
-                                {
-                                    var sep = new Grid();
-                                    if (cardElement.Separation == SeparationStyle.Default)
-                                        sep.Style = this.GetStyle($"Adaptive.Separator.{cardElement.Type}");
-                                    else
-                                        sep.Style = this.GetStyle($"Adaptive.Separator.Strong");
-                                    grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                                    Grid.SetRow(sep, grid.RowDefinitions.Count - 1);
-                                    grid.Children.Add(sep);
-                                }
+                                sepStyle = context.Styling.GetElementStyling(cardElement).SeparationStrong;
                                 break;
                         }
 
+                        uiSep.Margin = new Thickness(0, sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2);
+#if WPF
+                        uiSep.Height = sepStyle.Thickness;
+                        if (sepStyle.Color != null)
+                            uiSep.Background = this.GetColorBrush(sepStyle.Color);
+#elif XAMARIN
+                            // TODO
+#endif
+                        grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                        Grid.SetRow(uiSep, grid.RowDefinitions.Count - 1);
+                        grid.Children.Add(uiSep);
                     }
                     grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     Grid.SetRow(uiElement, grid.RowDefinitions.Count - 1);
@@ -88,7 +98,7 @@ namespace AdaptiveCards.Rendering
 #if WPF
                 var uiActionBar = new UniformGrid();
                 uiActionBar.Rows = 1;
-                uiActionBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                uiActionBar.HorizontalAlignment = (System.Windows.HorizontalAlignment)Enum.Parse(typeof(System.Windows.HorizontalAlignment), context.Styling.ActionAlignment.ToString());
                 uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
 
                 int iCol = 0;

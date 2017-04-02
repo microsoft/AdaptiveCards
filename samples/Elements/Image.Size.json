@@ -15,17 +15,6 @@
     },
     {
       "type": "TextBlock",
-      "text": "size:normal",
-      "weight": "bolder",
-      "size": "large"
-    },
-    {
-      "type": "Image",
-      "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
-      "size": "normal"
-    },
-    {
-      "type": "TextBlock",
       "text": "size:medium",
       "weight": "bolder",
       "size": "large"
@@ -33,7 +22,7 @@
     {
       "type": "Image",
       "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
-      "size": "medium" 
+      "size": "medium"
     },
     {
       "type": "TextBlock",
@@ -44,20 +33,9 @@
     {
       "type": "Image",
       "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
-      "size": "large"
+      "size": "large" 
     },
     {
-      "type": "TextBlock",
-      "text": "size:extraLarge",
-      "weight": "bolder",
-      "size": "large"
-    },
-    {
-      "type": "Image",
-      "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
-      "size": "extraLarge"
-    },
-        {
       "type": "TextBlock",
       "text": "size:auto",
       "weight": "bolder",
@@ -67,6 +45,17 @@
       "type": "Image",
       "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
       "size": "auto"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:stretch",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "size": "stretch"
     }
   ]
 }

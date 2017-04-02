@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using MarkedNet;
+using System.Collections.Generic;
 #if WPF
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +20,27 @@ namespace AdaptiveCards.Rendering
     public partial class XamlRenderer
         : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
+#if WPF
+        private static Dictionary<string, SolidColorBrush> colors = new Dictionary<string, SolidColorBrush>();
 
+        public SolidColorBrush GetColorBrush(string color)
+        {
+            lock(colors)
+            {
+                if (colors.TryGetValue(color, out var brush))
+                    return brush;
+                brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                colors[color] = brush;
+                return brush;
+            }
+        }
+#elif XAMARIN
+        // TODO
+        public object GetColorBrush(string color)
+        {
+            return null;
+        }
+#endif
 
         /// <summary>
         /// TextBlock
@@ -42,21 +63,47 @@ namespace AdaptiveCards.Rendering
 
             XmlReader xmlReader = XmlReader.Create(stringReader);
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
+            uiTextBlock.Style = this.GetStyle($"Adaptive.{textBlock.Type}");
 
-            uiTextBlock.Foreground = this.Resources[$"Adaptive.{textBlock.Color}Brush"] as Brush;
+            uiTextBlock.FontFamily = new FontFamily(context.Styling.TextBlock.FontFamily);
+
+            switch (textBlock.Color)
+            {
+                case TextColor.Accent:
+                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorAccent);
+                    break;
+                case TextColor.Attention:
+                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorAttention);
+                    break;
+                case TextColor.Dark:
+                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorDark);
+                    break;
+                case TextColor.Default:
+                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorDefault);
+                    break;
+                case TextColor.Good:
+                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorGood);
+                    break;
+                case TextColor.Light:
+                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorLight);
+                    break;
+                case TextColor.Warning:
+                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorWarning);
+                    break;
+            }
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
             switch (textBlock.Weight)
             {
                 case TextWeight.Bolder:
-                    uiTextBlock.FontWeight = (FontWeight)this.Resources["Adaptive.BolderFontWeight"];
+                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Styling.TextBlock.FontWeightBolder);
                     break;
                 case TextWeight.Lighter:
-                    uiTextBlock.FontWeight = (FontWeight)this.Resources["Adaptive.LighterFontWeight"];
+                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Styling.TextBlock.FontWeightLighter);
                     break;
                 case TextWeight.Normal:
                 default:
-                    uiTextBlock.FontWeight = (FontWeight)this.Resources["Adaptive.NormalFontWeight"];
+                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Styling.TextBlock.FontWeightNormal);
                     break;
             }
 
@@ -109,25 +156,25 @@ namespace AdaptiveCards.Rendering
             switch (textBlock.Size)
             {
                 case TextSize.Small:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Small");
+                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeSmall;
                     break;
                 case TextSize.Medium:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Medium");
+                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeMedium;
                     break;
                 case TextSize.Large:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Large");
+                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeLarge;
                     break;
                 case TextSize.ExtraLarge:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.ExtraLarge");
+                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeExtraLarge;
                     break;
                 case TextSize.Normal:
                 default:
-                    uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock.Normal");
+                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeNormal;
                     break;
             }
 
             if (textBlock.IsSubtle == true)
-                uiTextBlock.Opacity = (double)this.Resources["Adaptive.IsSubtleOpacity"];
+                uiTextBlock.Opacity = context.Styling.TextBlock.IsSubtleOpacity;
 
 
             if (textBlock.MaxLines > 0)
