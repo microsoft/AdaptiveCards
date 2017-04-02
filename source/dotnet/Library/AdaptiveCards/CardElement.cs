@@ -12,7 +12,7 @@ namespace AdaptiveCards
         ///     SSML fragment for spoken interaction
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET45
+#if NET46
         [XmlElement]
 #endif
         public string Speak { get; set; }
@@ -21,7 +21,7 @@ namespace AdaptiveCards
         ///     How should this element be emphasized relative to previous element
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET45
+#if NET46
         [XmlAttribute]
 #endif
         public SeparationStyle Separation { get; set; }

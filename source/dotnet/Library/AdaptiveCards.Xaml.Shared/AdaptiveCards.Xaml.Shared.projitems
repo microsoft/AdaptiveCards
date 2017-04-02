@@ -34,7 +34,4 @@
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\Utilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Rendering\" />
-  </ItemGroup>
 </Project>

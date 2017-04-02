@@ -17,6 +17,7 @@ namespace AdaptiveCards.Rendering
     {
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
+        protected CardStyling _defaultCardStyling;
 
         public XamlRenderer(RenderOptions options,
             ResourceDictionary resources,
@@ -30,7 +31,8 @@ namespace AdaptiveCards.Rendering
         }
 
 #if WPF
-        public XamlRenderer(RenderOptions options, string stylePath,
+        public XamlRenderer(RenderOptions options,
+            string stylePath,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
             : base(options)
@@ -40,6 +42,9 @@ namespace AdaptiveCards.Rendering
             this.missingDataCallback = missingDataCallback;
         }
 #endif
+
+        public CardStyling DefaultStyling { get; set; } = new CardStyling();
+
         /// <summary>
         /// Resource dictionary to use when rendering
         /// </summary>
@@ -57,7 +62,7 @@ namespace AdaptiveCards.Rendering
                     _resources = (ResourceDictionary)XamlReader.Load(styleStream);
                 }
 #elif XAMARIN
-                    // TODO
+                // TODO
 #endif
                 return _resources;
             }
@@ -88,32 +93,46 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null)
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
         {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
+            {
+                Styling = styling ?? this.DefaultStyling
+            };
             return Render(card, context);
         }
 
-        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null)
+        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
         {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
+            {
+                Styling = styling ?? this.DefaultStyling
+            };
+
             return Render(showCard.Card, context);
         }
+
 #elif XAMARIN
         /// <summary>
         /// AdaptiveCard
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public View RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null)
+        public View RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
         {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
+            {
+                Styling = styling ?? this.DefaultStyling
+            };
             return Render(card, context);
         }
 
-        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null)
+        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
         {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver);
+            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
+            {
+                Styling = styling ?? this.DefaultStyling
+            };
             return Render(showCard.Card, context);
         }
 

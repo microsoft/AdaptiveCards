@@ -20,17 +20,14 @@ namespace AdaptiveCards.Rendering
                 IntegerUpDown numberPicker = new IntegerUpDown();
                 // numberPicker.ShowButtonSpinner = true;
 
-                float value;
-                if (float.TryParse(input.Value, out value))
-                    numberPicker.Value = Convert.ToInt32(value);
+                if (!Double.IsNaN(input.Value))
+                    numberPicker.Value = Convert.ToInt32(input.Value);
 
-                float minValue;
-                if (float.TryParse(input.Min, out minValue))
-                    numberPicker.Minimum = Convert.ToInt32(minValue);
+                if (!Double.IsNaN(input.Min))
+                    numberPicker.Minimum = Convert.ToInt32(input.Min);
 
-                float maxValue;
-                if (float.TryParse(input.Max, out maxValue))
-                    numberPicker.Maximum = Convert.ToInt32(maxValue);
+                if (!Double.IsNaN(input.Max))
+                    numberPicker.Minimum = Convert.ToInt32(input.Max);
 
                 numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = this.GetStyle("Adaptive.Input.Number");

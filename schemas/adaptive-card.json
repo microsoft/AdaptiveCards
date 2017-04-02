@@ -138,12 +138,6 @@
           "type": "string",
           "description": "Label for button or link that represents this action"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
-        },
         "card": {
           "$ref": "#/definitions/Container"
         }
@@ -281,12 +275,6 @@
           "type": "boolean",
           "description": "is the choice selected"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
-        },
         "value": {
           "type": "string",
           "description": "the raw value for the choice"
@@ -310,17 +298,6 @@
       "additionalProperties": false,
       "description": "Defines a container that is part of a ColumnSet",
       "properties": {
-        "actions": {
-          "$ref": "#/definitions/Actions"
-        },
-        "backgroundColor": {
-          "type": "string",
-          "description": "The color of the container's background. This can be any color, and must be expressed in the RGB format with each color component expressed as a 2 digit hexadecimal number. Example: FFFFFF for white, 000000 for black, and 8C8C8C for a shade of gray."
-        },
-        "backgroundImageUrl": {
-          "type": "string",
-          "description": "The URL of an image to be used to fill the background of the container. The image is strached horizontally so it fills the entire available width of the container, and its original aspect ratio is maintained."
-        },
         "items": {
           "$ref": "#/definitions/CardElements"
         },
@@ -479,6 +456,10 @@
       "additionalProperties": false,
       "description": "The Image Item allows for the inclusion of images in an Adaptive Card.",
       "properties": {
+        "altText": {
+          "type": "string",
+          "description": "Alternate text for the image for accessibility"
+        },
         "horizontalAlignment": {
           "$ref": "#/definitions/HorizontalAlignment"
         },
@@ -590,16 +571,18 @@
         "style": {
           "$ref": "#/definitions/ChoiceInputStyle"
         },
+        "speak": {
+          "$ref": "#/definitions/Speak"
+        },
+        "separation": {
+          "$ref": "#/definitions/SeparationStyle"
+        },
         "type": {
           "description": "Must be Input.ChoiceInput",
           "enum": [
             "Input.ChoiceSet"
           ],
           "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "description": "The initial value for a field"
         }
       },
       "required": [
@@ -658,15 +641,15 @@
       "description": "Input.Number collects number from the user,",
       "properties": {
         "id": {
-          "type": "string",
+          "type": "number",
           "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
         },
         "max": {
-          "type": "string",
+          "type": "number",
           "description": "hint of maximum value (may be ignored by some clients)"
         },
         "min": {
-          "type": "string",
+          "type": "number",
           "description": "hint of minimum value (may be ignored by some clients)"
         },
         "placeholder": {
@@ -687,7 +670,7 @@
           ]
         },
         "value": {
-          "type": "string",
+          "type": "number",
           "description": "The initial value for a field"
         }
       },

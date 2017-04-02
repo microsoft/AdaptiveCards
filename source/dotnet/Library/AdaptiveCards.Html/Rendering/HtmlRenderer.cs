@@ -18,12 +18,16 @@ namespace AdaptiveCards.Rendering
 
         private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
         {
+#if NET46
             var assembly = Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.Rendering.AdaptiveCard.css"))
             using (var reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();
             }
+#else
+            return null;
+#endif
         });
 
         public HtmlRenderer(RenderOptions options) : base(options)
@@ -151,7 +155,7 @@ namespace AdaptiveCards.Rendering
             var uiColumn = new DivTag()
                 .AddClass(column.Type);
 
-            AddContainerElements(uiColumn, column.Items, column.Actions, context);
+            AddContainerElements(uiColumn, column.Items, null, context);
 
             if (Options.SupportInteraction && column.SelectAction != null)
             {
@@ -429,12 +433,14 @@ namespace AdaptiveCards.Rendering
             var container = new Container {Separation = input.Separation};
             container.Items.Add(new TextBlock {Text = GetFallbackText(input) ?? input.Placeholder});
             if (input.Value != null)
+            {
                 container.Items.Add(new TextBlock
                 {
-                    Text = input.Value,
+                    Text = input.Value.ToString(),
                     Color = TextColor.Accent,
                     Wrap = true
                 });
+            }
             return Render(container, context);
         }
 
@@ -487,6 +493,7 @@ namespace AdaptiveCards.Rendering
         {
             if (!string.IsNullOrEmpty(cardElement.Speak))
             {
+#if NET46
                 // TODO: Fix xamarin fallback
                 var doc = new XmlDocument();
                 var xml = cardElement.Speak;
@@ -496,6 +503,7 @@ namespace AdaptiveCards.Rendering
                     xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n{xml}";
                 doc.LoadXml(xml);
                 return doc.InnerText;
+#endif
             }
             return null;
         }

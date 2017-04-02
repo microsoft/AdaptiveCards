@@ -16,7 +16,7 @@
                 <Setter Property="IsVisible" Value="False"/>
             </Style>
 
-            <!-- Label definitions -->
+            <!-- Label definitions --><!--
             <Style x:Key="Adaptive.TextBlock" TargetType="Label" >
             </Style>
 
@@ -40,7 +40,7 @@
                 <Setter Property="FontSize" Value="20"/>
             </Style>
 
-            <!-- color definitions -->
+            --><!-- color definitions --><!--
             <Color x:Key="Adaptive.Default">Black</Color>
             <Color x:Key="Adaptive.Accent">Blue</Color>
             <Color x:Key="Adaptive.Dark">Black</Color>
@@ -50,15 +50,15 @@
             <Color x:Key="Adaptive.Attention">Maroon</Color>
 
 
-            <!-- textWeight definitions -->
+            --><!-- textWeight definitions -->
             <!--<FontWeight x:Key="Adaptive.BolderFontWeight">Bold</FontWeight>
             <FontWeight x:Key="Adaptive.NormalFontWeight">Normal</FontWeight>
             <FontWeight x:Key="Adaptive.LighterFontWeight">Thin</FontWeight>-->
 
-            <!-- Text IsSubtle Opacity -->
+            <!-- Text IsSubtle Opacity --><!--
             <system:Double x:Key="Adaptive.IsSubtleOpacity">.50</system:Double>
 
-            <!-- adaptive card Styling -->
+            --><!-- adaptive card Styling --><!--
             <Style x:Key="Adaptive.Card" TargetType="Grid">
                 <Setter Property="BackgroundColor" Value="LightGray"/>
             </Style>
@@ -67,41 +67,41 @@
                 <Setter Property="Margin" Value="8"/>
             </Style>
 
-            <!-- Container Styling -->
+            --><!-- Container Styling --><!--
             <Style x:Key="Adaptive.Container" TargetType="Grid">
             </Style>
 
-            <!-- Column/ColumnSet Styling-->
+            --><!-- Column/ColumnSet Styling--><!--
             <Style x:Key="Adaptive.ColumnSet" TargetType="Grid">
             </Style>
 
             <Style x:Key="Adaptive.Column" TargetType="Grid">
             </Style>
 
-            <!-- Separator Styling -->
+            --><!-- Separator Styling --><!--
             <Style x:Key="Adaptive.Separator" TargetType="Grid">
                 <Setter Property="Margin" Value="0,2,0,2"/>
-                <!--<Setter Property="TextColor" Value="Transparent" />-->
+                --><!--<Setter Property="TextColor" Value="Transparent" />--><!--
                 <Setter Property="BackgroundColor" Value="Transparent" />
-                <!--<Setter Property="Template">
+                --><!--<Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="{x:Type Separator}">
             <Border BorderBrush="Transparent" BorderThickness="0" HeightRequest="1" SnapsToDevicePixels="true" />
           </ControlTemplate>
         </Setter.Value>
-      </Setter>-->
+      </Setter>--><!--
             </Style>
             <Style x:Key="Adaptive.Separator.Strong" TargetType="Grid">
                 <Setter Property="Margin" Value="0,3,0,3"/>
             </Style>
 
-            <!-- you can define per View seperator styles like this -->
+            --><!-- you can define per View seperator styles like this -->
             <!--<Style x:Key="Adaptive.Separator.Label" TargetType="Separator" BasedOn="{StaticResource Adaptive.Separator}">
     </Style>
 
    -->
 
-            <!-- VerticalSeparator Styling -->
+            <!-- VerticalSeparator Styling --><!--
             <Style x:Key="Adaptive.VerticalSeparator"  TargetType="Grid" >
                 <Setter Property="WidthRequest" Value="1"/>
                 <Setter Property="Margin" Value="8,0,8,0"/>
@@ -114,7 +114,7 @@
                 <Setter Property="BackgroundColor" Value="Gray"/>
             </Style>
 
-            <!-- Fact/FactSet Styling -->
+            --><!-- Fact/FactSet Styling --><!--
             <Style x:Key="Adaptive.FactSet" TargetType="Grid">
                 <Setter Property="Margin" Value="0,2,0,2"/>
             </Style>
@@ -128,7 +128,7 @@
                 <Setter Property="Margin" Value="2"/>
             </Style>
 
-            <!-- Image/ImageGallery Styling -->
+            --><!-- Image/ImageGallery Styling --><!--
             <Style x:Key="Adaptive.Image" TargetType="Image">
             </Style>
 
@@ -155,7 +155,7 @@
                 <Setter Property="HeightRequest" Value="180"/>
             </Style>
 
-            <!--<Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
+            --><!--<Style x:Key="Adaptive.ImageGallery" TargetType="ListBox">
     </Style>-->
 
             <!-- Circular Person mask -->
@@ -189,7 +189,7 @@
     </Style>-->
 
 
-            <!-- Input definitions -->
+            <!-- Input definitions --><!--
             <Style x:Key="Adaptive.Input" TargetType="View" >
             </Style>
 
@@ -202,9 +202,9 @@
             <Style x:Key="Adaptive.Input.Date" TargetType="View"  BasedOn="{StaticResource Adaptive.Input}">
             </Style>
 
-            <!--<Style TargetType="DatePickerTextBox">
+            --><!--<Style TargetType="DatePickerTextBox">
       <Setter Property="Text" Value="{Binding Placeholder}"/>
-    </Style>-->
+    </Style>--><!--
 
             <Style x:Key="Adaptive.Input.Time" TargetType="View"  BasedOn="{StaticResource Adaptive.Input}">
             </Style>
@@ -227,7 +227,7 @@
             <Style x:Key="Adaptive.Input.ChoiceInput.ComboBox" TargetType="View"  BasedOn="{StaticResource Adaptive.Input.ChoiceSet}">
             </Style>
 
-            <!--<Style x:Key="Adaptive.Input.ChoiceInput.ComboBoxItem" TargetType="ComboBoxItem"  >
+            --><!--<Style x:Key="Adaptive.Input.ChoiceInput.ComboBoxItem" TargetType="ComboBoxItem"  >
     </Style>
 
     <Style x:Key="Adaptive.Input.ChoiceInput.Radio" TargetType="RadioButton"  >
@@ -236,13 +236,13 @@
     <Style x:Key="Adaptive.Input.ChoiceInput.CheckBox" TargetType="CheckBox"  >
     </Style>-->
 
-            <!-- Action Styles -->
+            <!-- Action Styles --><!--
             <Style x:Key="Adaptive.Actions" TargetType="View">
                 <Setter Property="Margin" Value="4"/>
                 <Setter Property="HorizontalOptions" Value="End"/>
             </Style>
 
-            <!--<Style x:Key="Adaptive.Action" TargetType="Button">
+            --><!--<Style x:Key="Adaptive.Action" TargetType="Button">
       <Setter Property="Margin" Value="4"/>
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
       <Setter Property="Template">
@@ -270,12 +270,12 @@
           </ControlTemplate>
         </Setter.Value>
       </Setter>
-    </Style>-->
+    </Style>--><!--
 
             <Style x:Key="Adaptive.Action.Title" TargetType="Label" >
                 <Setter Property="Margin" Value="4"/>
                 <Setter Property="TextColor" Value="White"/>
-            </Style>
+            </Style>-->
 
             <!--<Style x:Key="Adaptive.Action.OpenUrl" TargetType="Button"  BasedOn="{StaticResource Adaptive.Action}">
     </Style>

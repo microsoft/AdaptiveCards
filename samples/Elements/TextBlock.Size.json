@@ -5,31 +5,31 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "Default"
+            "text": "size:default"
         },
         {
             "type": "TextBlock",
-            "text": "Small",
+            "text": "size:small",
             "size": "small"
         },
         {
             "type": "TextBlock",
-            "text": "Normal",
+            "text": "size:normal",
             "size": "normal"
         },
         {
             "type": "TextBlock",
-            "text": "Medium",
+            "text": "size:medium",
             "size": "medium"
         },
         {
             "type": "TextBlock",
-            "text": "Large",
+            "text": "size:large",
             "size": "large"
         },
         {
             "type": "TextBlock",
-            "text": "ExtraLarge",
+            "text": "size:extraLarge",
             "size": "extraLarge"
         }
     ]

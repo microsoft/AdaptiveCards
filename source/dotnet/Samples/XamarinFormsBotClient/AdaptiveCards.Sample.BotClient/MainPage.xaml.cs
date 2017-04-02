@@ -133,6 +133,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     var xaml = _renderer.RenderAdaptiveCard(card);
+                    
                     xaml.WidthRequest = 350;
                     xaml.Margin = new Thickness(8);
                     xaml.BackgroundColor = Color.LightGray;

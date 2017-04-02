@@ -1,0 +1,15 @@
+{
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Input.Number",
+            "id": "1234",
+            "placeholder": "Enter a number",
+            "min": "1",
+            "max": "10",
+            "value": "3"
+        }
+    ]
+}
