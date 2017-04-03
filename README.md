@@ -1,25 +1,26 @@
 # Introducing Adaptive Cards
 
-Adaptive Cards is an open source universal card format which allows developers to deliver great looking static and interactive cards to any device or client.
+Adaptive Cards is an open JSON schema which gives developers the ability to deliver great looking static and interactive cards to any device or client.
+
+## Developer Features
+* Simple but expresive JSON layout gives developers ability to easily create rich great looking cards across any device or client!
+* Support for Rich Input controls (text, date, time, etc.) allows developer to send forms 
+* Speech enabled from day one!
+* Nuget and NPM libraries to make it easy to build cards in code
+
+## Client application Features
+* Client controls the rendered style, so cards from multiple sources look great together and like they were designed for the application.
+* Client doesn't have to keep updating itself to support new cards
+
+Open source libraries as nuget and npm modules to target multiple platforms and frameworks: 
+* Browser renderers: HtmlDom, React, etc.
+* Client renderers: iOS, Android, WPF, UWP, XamarinForms
+* Server renderers: Image, Html Markup
 
 ![outlook](docs/images/outlook.png) 
 ![windows](docs/images/windows.png) 
 ![weather](docs/images/weather.png) 
 ![flightupdate](docs/images/flightupdate.png) 
-
-## Developer Features
-* Simple but rich JSON layout gives developers ability to easily create rich great looking cards across any device or client!
-* Support for Rich Input controls (text, date, time, etc.) allows you to send forms 
-* Speech enabled from day one!
-* Nuget and NPM libraries to make it easy to build cards in code
-
-## Client application Features
-* Client controled cards style, so cards from multiple sources look great together and like they were designed for the application.
-* Client doesn't have to keep updating itself to support new cards
-* Open source libraries to target multiple platforms and frameworks 
-* Browser: HtmlDom, React, etc.
-* Client: iOS, Android, WPF, UWP, XamarinForms
-* Server: Image, Html Markup
 
 ## Install and build
 
