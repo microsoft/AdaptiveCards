@@ -1,14 +1,20 @@
 # Introducing Adaptive Cards
 
-Adaptive Cards allow developers to describe a light-weight user experience that can be interpreted natively on multiple platforms and hosting applications.
+Adaptive Cards is an open source universal card format which allows developers to deliver great looking static and interactive cards to any device or client.
 
-For example:
+## Developer Features
+* Simple but rich JSON layout gives developers ability to easily create rich great looking cards across any device or client!
+* Support for Rich Input controls (text, date, time, etc.) allows you to send forms 
+* Speech enabled from day one!
+* Nuget and NPM libraries to make it easy to build cards in code
 
-* A Bot Framework developer can send an Adaptive Card to a Skype user, which would render beautifully on iOS, Android, Windows, and the web.
-* An Outlook Connector developer can describe a rich Connector visualization with complex layout
-* A Windows developer can create a rich Live Tile or Toast Notification on PC, Mobile, Xbox, and HoloLens
-
-![Diagram](docs/images/AdaptiveCardsDiagram.png)
+## Client application Features
+* Client controled cards style, so cards from multiple sources look great together and like they were designed for the application.
+* Client doesn't have to keep updating itself to support new cards
+* Open source libraries to target multiple platforms and frameworks 
+* Browser: HtmlDom, React, etc.
+* Client: iOS, Android, WPF, UWP, XamarinForms
+* Server: Image, Html Markup
 
 ## Install and build
 
