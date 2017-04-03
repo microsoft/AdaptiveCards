@@ -3,7 +3,7 @@
 Adaptive Cards is an open source universal card format which allows developers to deliver great looking static and interactive cards to any device or client.
 
 ![outlook](docs/images/outlook.png) 
-![windows](docs/images/windows.png=200) 
+![windows](docs/images/windows.png) 
 ![weather](docs/images/weather.png) 
 ![flightupdate](docs/images/flightupdate.png) 
 
