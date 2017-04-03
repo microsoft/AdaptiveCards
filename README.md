@@ -22,12 +22,6 @@ Open source libraries as nuget and npm modules to target multiple platforms and 
 ![weather](docs/images/weather.png) 
 ![flightupdate](docs/images/flightupdate.png) 
 
-## Install and build
-
-Since we build for multiple platforms they each have slightly different build mechanisms.
-
-See the `source` dir for a `README` in each platform for instructions.
-
 # How it works
 
 Developers describe the experience they want using a generic yet powerful JSON payload. With a properly described payload we take on the burden of presenting the best experience to a user wherever they are.
@@ -77,6 +71,13 @@ Typescript package is available via NPM
 > https://fuselabs.visualstudio.com/Intercom/_packaging?feedName=FuseNPM&protocolType=Npm&packageName=%40angular%2Fcli&packageVersion=1.0.0&_a=view
 
 We plan to cover this in greater detail on the [Rendering Cards page](docs/RenderingCards.md)
+
+## Install and build
+
+Since we build for multiple platforms they each have slightly different build mechanisms.
+
+See the `source` dir for a `README` in each platform for instructions.
+
 
 ## Tools
 
