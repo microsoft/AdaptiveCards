@@ -23,7 +23,6 @@ public:
     void SetSize(const std::string value);
 
 private:
-    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
     std::string m_size;
 };
 }

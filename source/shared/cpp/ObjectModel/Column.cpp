@@ -51,10 +51,10 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::Column);
 
-    auto container = BaseCardElement::Deserialize<Column>(value);
+    auto column = BaseCardElement::Deserialize<Column>(value);
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, Container::CardElementParsers);
-    container->m_items = std::move(cardElements);
-    return container;
+    column->SetItems(std::move(cardElements));
+    return column;
 }

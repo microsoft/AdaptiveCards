@@ -7,6 +7,8 @@
 #include "AdaptiveTextBlock.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveContainer.h"
+#include "AdaptiveColumn.h"
+#include "AdaptiveColumnSet.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -61,10 +63,29 @@ HRESULT GenerateProjectionOfContainedElements(
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveContainer>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::Container>(containedElement)));
             break;
+        case CardElementType::ColumnSet:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveColumnSet>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::ColumnSet>(containedElement)));
+            break;
         default:
             return E_UNEXPECTED;
             break;
         }
+        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateProjectionOfColumns(
+    const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn*>* projectedParentContainer) noexcept try
+{
+    for (auto& containedElement : containedElements)
+    {
+        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveColumn>(&projectedContainedElement,
+            std::static_pointer_cast<AdaptiveCards::Column>(containedElement)));
+
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }
     return S_OK;

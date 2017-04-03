@@ -30,6 +30,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn)
     {
         m_sharedColumn = sharedColumn;
+        GenerateProjectionOfContainedElements(m_sharedColumn->GetItems(), m_items.Get());
         return S_OK;
     }
 

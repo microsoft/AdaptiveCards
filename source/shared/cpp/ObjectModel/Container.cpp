@@ -44,6 +44,12 @@ std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
     return m_items;
 }
 
+void Container::SetItems(std::vector<std::shared_ptr<BaseCardElement>>& items)
+{
+    m_items = items;
+}
+
+
 std::string Container::Serialize()
 {
     return "";

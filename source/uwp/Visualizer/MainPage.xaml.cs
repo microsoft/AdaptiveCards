@@ -58,30 +58,6 @@ namespace XamlCardVisualizer
 
             card.Body.Add(container2);
 
-            AdaptiveColumnSet columnSet = new AdaptiveColumnSet();
-            AdaptiveColumn column1 = new AdaptiveColumn();
-            column1.Size = "30";
-
-            AdaptiveTextBlock textBlock4 = new AdaptiveTextBlock();
-            textBlock4.Text = "In Column 1";
-            textBlock4.Weight = TextWeight.Bolder;
-            textBlock4.Color = TextColor.Good;
-            column1.Items.Add(textBlock4);
-            AdaptiveColumn column2 = new AdaptiveColumn();
-            column2.Size = "15";
-
-            AdaptiveTextBlock textBlock5 = new AdaptiveTextBlock();
-            textBlock5.Text = "In Column 2";
-            textBlock5.Weight = TextWeight.Normal;
-            textBlock5.Color = TextColor.Attention;
-            column2.Items.Add(textBlock5);
-
-            card.Body.Add(columnSet);
-            columnSet.Columns.Add(column1);
-            columnSet.Columns.Add(column2);
-
-            //container1.Items.Add(columnSet);
-
             AdaptiveImage image = new AdaptiveImage();
             image.Url = new Uri("https://unsplash.it/360/202?image=883");
             card.Body.Add(image);
