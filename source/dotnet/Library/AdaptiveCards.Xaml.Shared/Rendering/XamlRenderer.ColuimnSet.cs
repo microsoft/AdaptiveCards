@@ -49,6 +49,7 @@ namespace AdaptiveCards.Rendering
                             break;
 
                         case SeparationStyle.Default:
+                        default:
                             sepStyle = context.Styling.Column.SeparationDefault;
                             break;
 
@@ -57,11 +58,11 @@ namespace AdaptiveCards.Rendering
                             break;
 
                     }
-                    uiSep.Margin = new Thickness(context.Styling.Column.SeparationNone.Spacing / 2, 0, context.Styling.Column.SeparationNone.Spacing / 2, 0);
+                    uiSep.Margin = new Thickness(sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2, 0);
 #if WPF
-                    uiSep.Width = context.Styling.Column.SeparationNone.Thickness;
-                    if (context.Styling.Column.SeparationNone.Color != null)
-                        uiSep.Background = this.GetColorBrush(context.Styling.Column.SeparationNone.Color);
+                    uiSep.Width = sepStyle.Thickness;
+                    if (sepStyle.Color != null)
+                        uiSep.Background = this.GetColorBrush(sepStyle.Color);
 #elif XAMARIN
                             // TODO
 #endif
