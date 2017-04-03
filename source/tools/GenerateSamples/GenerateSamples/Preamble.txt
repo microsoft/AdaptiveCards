@@ -2,9 +2,23 @@
 <head>
     <meta charset = "utf-8" />
     <title> Adaptive Cards - Basic Example </title>
-    <link rel = "stylesheet" type = "text/css" href = "export.css">
-    <script src = "node_modules/adaptive-cards/dist/adaptive-cards.js"></script>
+    <link rel = "stylesheet" type = "text/css" href = "/css/outlookConnectorCard.css">
+    <script src = "https://microsoft.github.com/AdaptiveCards/explorer/adaptive-cards.js"></script> 
+
 <style type = "text/css">
+
+body {
+	margin: 20px;
+}
+
+table {
+	border-spacing: 10px;
+}
+
+th {
+	text-align: left
+}
+
 h1 { 
 	font-size: xx-large;
 	cursor:pointer;
@@ -28,6 +42,14 @@ h3 {
         padding: 12px;
         width: 500px;
     }
+
+.trymelink {
+	background-color: #4caf50;
+	color: #ffffff;
+	padding: 6px 16px;
+	margin: 20px;
+	text-decoration: none !important;
+}
 </style>
 
 <script>

@@ -33,7 +33,7 @@ namespace GenerateSamples
                 "Input.Text", "Input.Number", "Input.Date", "Input.Time", "Input.Toggle", "Input.ChoiceSet",
                 "ActionOpenUrl", "ActionSubmit", "ActionHttp","ActionShowCard"
             };
-            using (TextWriter writer = new StreamWriter(File.Open(Path.Combine(@"c:\\source\personal\AdaptiveTryMe", "Elements.html"), FileMode.Create)))
+            using (TextWriter writer = new StreamWriter(File.Open(Path.Combine(@"c:\\scratch\\dog", "explorer.html"), FileMode.Create)))
             {
                 writer.WriteLine(preamble);
                 writer.WriteLine("<h1>AdaptiveCard Element Explorer</h1>");
@@ -54,7 +54,7 @@ namespace GenerateSamples
                         writer.WriteLine($"<div id='{name}Content' style='display:block'>");
                         var json = File.ReadAllText(file, Encoding.UTF8);
                         writer.WriteLine($"<div id='{name}Card' class='card' ></div>");
-                        writer.WriteLine($"<a target='_blank' href='/AdaptiveCards/?card=/AdaptiveCards/{file.Substring(file.IndexOf("samples")).Replace('\\', '/')}'>Try it</a>");
+                        writer.WriteLine($"<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/{file.Substring(file.IndexOf("samples")).Replace('\\', '/').Replace("/elements", "/Elements")}'>Try it Yourself »</a>");
                         writer.WriteLine($"</div><script>renderCard('{name}Card', {json});</script>");
                     }
                     writer.WriteLine($"</div>");
