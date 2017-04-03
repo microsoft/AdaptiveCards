@@ -40,11 +40,12 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 # What's in the Toolkit
 
 * Documentation of the schema (see [docs/Schema.md](docs/Schema.md))
+* Learn about the elements with the [Element Explorer](explorer)
+* An online live previewer  [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards) to preview and design Card payloads
+* Sample Cards (see [samples](samples/Scenarios))
 * The official Adaptive Card JSON schema (see [schemas/adaptive-card.json](schemas/adaptive-card.json))
 * The official Adaptive Card XML schema (see [schemas/adaptive-card.xsd](schemas/adaptive-card.xsd))
 * A Visual Code Live Preview Extension so you can see edits as you type (see [source/vscode](source/vscode))
-* An online live previerer  [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards) to preview and design Card payloads
-* Sample Cards (see [samples](samples/Scenarios))
 * Nuget and NPM libraries
 
 # Rendering Cards in your App or Web Site
