@@ -257,7 +257,7 @@ td.factValue {
     margin-right: 5px;
 }
 
-.pushButton, .linkButton {
+.pushButton {
     font-family: 'Segoe UI', sans-serif;
     font-size: 15px;
     font-weight: 500;
@@ -276,14 +276,13 @@ td.factValue {
     user-select: none;
 }
 
-.pushButton:hover, .linkbutton:hover {
+.pushButton:hover {
     border: 2px solid #A9A9A9;
 }
 
-.pushButton:active, .linkbutton:active {
+.pushButton:active {
     background-color: #828282;
 }
-
 
 /*
 Other styles that can be specified:
@@ -296,7 +295,32 @@ Other styles that can be specified:
     .pushButton.subdued:active
 */
 
+.linkButton {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 2px solid transparent;
+    padding: 4px 10px 5px 10px;
+    text-align: center;
+    vertical-align: middle;  
+    cursor: default;
+    background-color: #464646;
+    color: white;    
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
+}
 
+.linkbutton:hover {
+    border: 2px solid #A9A9A9;
+}
+
+.linkbutton:active {
+    background-color: #828282;
+}
 /*
 Other styles that can be specified:
     .linkButton.expanded
