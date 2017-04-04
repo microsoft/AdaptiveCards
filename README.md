@@ -1,10 +1,10 @@
 # Introducing Adaptive Cards
 
-Adaptive Cards is an open JSON schema which gives developers the ability to deliver great looking static and interactive cards to any device or client.
+Adaptive Cards is a JSON format which gives developers the ability to deliver great looking cards to any device or client.
 
 ## Developer Features
 * Simple but expresive JSON layout gives developers ability to easily create rich great looking cards across any device or client!
-* Support for Rich Input controls (text, date, time, etc.) allows developer to send forms 
+* Rich Input controls (text, date, time, etc.) allows developer to collect information 
 * Speech enabled from day one!
 * Nuget and NPM libraries to make it easy to build cards in code
 

@@ -30,6 +30,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Container>& sharedContainer)
     {
         m_sharedContainer = sharedContainer;
+        GenerateProjectionOfContainedElements(m_sharedContainer->GetItems(), m_items.Get());
         return S_OK;
     }
 
