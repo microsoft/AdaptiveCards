@@ -2,8 +2,8 @@
 <head>
     <meta charset = "utf-8" />
     <title> Adaptive Cards - Basic Example </title>
-    <link rel = "stylesheet" type = "text/css" href = "/css/outlookConnectorCard.css">
-    <script src = "https://microsoft.github.com/AdaptiveCards/explorer/adaptive-cards.js"></script> 
+	<link rel="stylesheet" type="text/css" href="/AdaptiveCards/css/outlookConnectorCard.css">  
+    <script src = "adaptive-cards.js"></script> 
 
 <style type = "text/css">
 
