@@ -20,6 +20,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_columns = Microsoft::WRL::Make<Vector<IAdaptiveColumn*>>();
     }
 
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept try
+    {
+        m_sharedColumnSet = std::make_shared<ColumnSet>();
+        return S_OK;
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ColumnSet>& sharedColumnSet)
+    {
+        m_sharedColumnSet = sharedColumnSet;
+        GenerateProjectionOfColumns(m_sharedColumnSet->GetColumns(), m_columns.Get());
+        return S_OK;
+    }
+
     _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveColumnSet::get_Columns(IVector<IAdaptiveColumn*>** columns)
     {

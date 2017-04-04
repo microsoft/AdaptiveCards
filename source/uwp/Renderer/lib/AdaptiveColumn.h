@@ -2,7 +2,7 @@
 
 #include "AdaptiveCards.XamlCardRenderer.h"
 #include "Enums.h"
-#include "Container.h"
+#include "Column.h"
 #include <windows.foundation.h>
 
 namespace AdaptiveCards { namespace XamlCardRenderer
@@ -18,6 +18,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     public:
         AdaptiveColumn();
+        HRESULT RuntimeClassInitialize() noexcept;
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Column>& sharedColumn);
 
         // IAdaptiveColumn
         IFACEMETHODIMP get_Size(_Out_ HSTRING* size);
@@ -37,15 +39,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
 
     private:
-        // TODO: Remove once Column shared object model type is ready. MSFT 11016964: Shared Object model: Card Elements
-        Microsoft::WRL::Wrappers::HString m_size;
 
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_items;
 
-        // Using Container as a backing element for now.
-        // TODO: MSFT 11016964: Shared Object model: Card Elements
-        std::unique_ptr<AdaptiveCards::Container> m_sharedColumn;
+        std::shared_ptr<AdaptiveCards::Column> m_sharedColumn;
     };
 
     ActivatableClass(AdaptiveColumn);

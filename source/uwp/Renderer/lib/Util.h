@@ -5,6 +5,7 @@
 
 #include "AdaptiveCards.XamlCardRenderer.h"
 #include <BaseCardElement.h>
+#include <Column.h>
 #include <windows.foundation.collections.h>
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
@@ -20,3 +21,7 @@ bool Boolify(const boolean value);
 HRESULT GenerateProjectionOfContainedElements(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
+
+HRESULT GenerateProjectionOfColumns(
+    const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn*>* projectedParentContainer) noexcept;

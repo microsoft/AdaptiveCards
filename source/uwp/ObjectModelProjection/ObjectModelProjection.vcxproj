@@ -28,6 +28,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Column.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseUtil.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.cpp" />
@@ -39,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseUtil.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />

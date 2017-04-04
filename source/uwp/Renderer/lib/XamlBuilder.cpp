@@ -547,7 +547,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     _Use_decl_annotations_
     void XamlBuilder::BuildColumnSet(
-         IAdaptiveCardElement* adaptiveCardElement,
+        IAdaptiveCardElement* adaptiveCardElement,
         IUIElement** columnSetControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -573,10 +573,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
             GridLength columnWidth;
             columnWidth.GridUnitType = (isAutoResult == 0) ? GridUnitType::GridUnitType_Auto : GridUnitType::GridUnitType_Star;
-            if (isAutoResult != 0)
-            {
-                columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
-            }
+            columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
             ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
             THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
