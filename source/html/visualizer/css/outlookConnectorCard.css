@@ -35,12 +35,12 @@
     margin-top: 20px;
 }
 
-.text.small {
-    font-size: 12px;
-}
-
 .text.defaultSize {
     font-size: 14px;
+}
+
+.text.small {
+    font-size: 12px;
 }
 
 .text.medium {
@@ -286,9 +286,11 @@ td.factValue {
     background-color: #005A9E;
 }
 
+
 .pushButton:active {
     background-color: #004D84;
 }
+
 
 /*
 Other styles that can be specified:
@@ -365,6 +367,11 @@ Other styles that can be specified:
     height: 72px;
 }
 
+
+
+
+
+
 .input.number {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
@@ -372,6 +379,11 @@ Other styles that can be specified:
     border-style: solid;
     padding: 4px 8px 5px 8px;
 }
+
+
+
+
+
 
 .input.date {
     font-family: 'Segoe UI', sans-serif;
@@ -381,6 +393,11 @@ Other styles that can be specified:
     padding: 4px 8px 5px 8px;
 }
 
+
+
+
+
+
 .input.time {
     font-family: 'Segoe UI', sans-serif;
     border-color: #EAEAEA;
@@ -388,6 +405,11 @@ Other styles that can be specified:
     border-style: solid;
     padding: 4px 8px 5px 8px;
 }
+
+
+
+
+
 
 .input.multichoiceInput {
     font-family: 'Segoe UI', sans-serif;
@@ -397,11 +419,26 @@ Other styles that can be specified:
     padding: 4px 8px 6px 8px;
 }
 
+
+
+
+
+
 .toggleInput {
     display: inline-block;
     vertical-align: middle;
     margin: 0px;
 }
+
+
+
+
+
+
+
+
+
+
 
 .toggleLabel {
     margin: 0px 0px 0px 6px !important;

@@ -34,12 +34,12 @@
     font-weight: normal;
 }
 
-.text.small {
-    font-size: 12px;
-}
-
 .text.defaultSize {
     font-size: 15px;
+}
+
+.text.small {
+    font-size: 12px;
 }
 
 .text.medium {
@@ -311,7 +311,9 @@ Other styles that can be specified:
 .input.textInput {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
-    border: 2px solid #797979;
+    border-color: #797979;
+    border-width: 2px;
+    border-style: solid;
     padding: 4px 8px 4px 8px;
     background-color: #131313;
     color: white;
@@ -330,7 +332,9 @@ Other styles that can be specified:
 
 .input.number {
     font-family: 'Segoe UI', sans-serif;
-    border: 2px solid #797979;
+    border-color: #797979;
+    border-width: 2px;
+    border-style: solid;
     padding: 4px 8px 5px 8px;
     background-color: #131313;
     color: white;
@@ -343,7 +347,9 @@ Other styles that can be specified:
 
 .input.date {
     font-family: 'Segoe UI', sans-serif;
-    border: 2px solid #797979;
+    border-color: #797979;
+    border-width: 2px;
+    border-style: solid;  
     padding: 4px 8px 5px 8px;
     background-color: #131313;
     color: white;
@@ -356,7 +362,9 @@ Other styles that can be specified:
 
 .input.time {
     font-family: 'Segoe UI', sans-serif;
-    border: 2px solid #797979;
+    border-color: #797979;
+    border-width: 2px;
+    border-style: solid;  
     padding: 4px 8px 5px 8px;
     background-color: #131313;
     color: white;
@@ -369,7 +377,9 @@ Other styles that can be specified:
 
 .input.multichoiceInput {
     font-family: 'Segoe UI', sans-serif;
-    border: 2px solid #797979;
+    border-color: #797979;
+    border-width: 2px;
+    border-style: solid;  
     padding: 4px 8px 6px 8px;
     background-color: #131313;
     color: white;

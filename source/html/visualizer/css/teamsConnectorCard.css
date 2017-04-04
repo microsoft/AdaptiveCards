@@ -34,12 +34,12 @@
     font-weight: normal;
 }
 
-.text.small {
-    font-size: 12px;
-}
-
 .text.defaultSize {
     font-size: 14px;
+}
+
+.text.small {
+    font-size: 12px;
 }
 
 .text.medium {
