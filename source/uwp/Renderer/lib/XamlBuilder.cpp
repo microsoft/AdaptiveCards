@@ -564,16 +564,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         int currentColumn = 0;
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [this, xamlGrid, gridStatics, &currentColumn](IAdaptiveColumn* column)
         {
+            // Determine if the column is auto or percentage width, and set the column width appropriately
             HString adaptiveColumnSize;
             THROW_IF_FAILED(column->get_Size(adaptiveColumnSize.GetAddressOf()));
-            INT32 isAutoResult;
-            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"Auto").Get(), &isAutoResult));
+            bool isSizeAuto = _wcsicmp(L"auto", adaptiveColumnSize.GetRawBuffer(nullptr)) == 0;
+            bool isSizeStretch = _wcsicmp(L"stretch", adaptiveColumnSize.GetRawBuffer(nullptr)) == 0;
 
-            // Determine if the column is auto or percentage width, and set the column width appropriately
             ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-            GridLength columnWidth;
-            columnWidth.GridUnitType = (isAutoResult == 0) ? GridUnitType::GridUnitType_Auto : GridUnitType::GridUnitType_Star;
-            columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+            GridLength columnWidth = { 1, GridUnitType::GridUnitType_Star };
+            columnWidth.GridUnitType = isSizeAuto? GridUnitType::GridUnitType_Auto : GridUnitType::GridUnitType_Star;
+            if (!isSizeAuto && !isSizeStretch)
+            {
+                columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+            }
 
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
             ComPtr<IVector<ColumnDefinition*>> columnDefinitions;

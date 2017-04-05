@@ -52,6 +52,7 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
     ParseUtil::ExpectTypeString(value, CardElementType::Column);
 
     auto column = BaseCardElement::Deserialize<Column>(value);
+    column->SetSize(ParseUtil::GetString(value, AdaptiveCardSchemaKey::Size));
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, Container::CardElementParsers);
