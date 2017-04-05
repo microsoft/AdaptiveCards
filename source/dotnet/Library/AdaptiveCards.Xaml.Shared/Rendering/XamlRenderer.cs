@@ -43,8 +43,6 @@ namespace AdaptiveCards.Rendering
         }
 #endif
 
-        public RendererOptions DefaultOptions { get; set; } = new RendererOptions();
-
         /// <summary>
         /// Resource dictionary to use when rendering
         /// </summary>
