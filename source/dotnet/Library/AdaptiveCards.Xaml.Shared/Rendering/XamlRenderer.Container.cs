@@ -32,7 +32,7 @@ namespace AdaptiveCards.Rendering
             var uiContainer = new Grid();
             uiContainer.Style = this.GetStyle("Adaptive.Container");
 
-            AddContainerElements(uiContainer, container.Items, container.Actions, context);
+            AddContainerElements(uiContainer, container.Items, container.Actions, context, context.Options.Container.SupportedActions, context.Options.Container.MaxActions);
 
             if (container.SelectAction != null)
             {
@@ -48,7 +48,7 @@ namespace AdaptiveCards.Rendering
             return uiContainer;
         }
 
-        protected void AddContainerElements(Grid grid, List<CardElement> elements, List<ActionBase> actions, RenderContext context)
+        protected void AddContainerElements(Grid grid, List<CardElement> elements, List<ActionBase> actions, RenderContext context, string[] supportedActions, int maxActions)
         {
             foreach (var cardElement in elements)
             {
@@ -93,7 +93,7 @@ namespace AdaptiveCards.Rendering
                 }
             }
 
-            if (actions?.Where(a => context.Options.AdaptiveCard.SupportedActions.Contains(a.Type)).Any() == true)
+            if (supportedActions != null && actions?.Where(a => supportedActions.Contains(a.Type)).Any() == true)
             {
 #if WPF
                 var uiActionBar = new UniformGrid();
@@ -103,8 +103,8 @@ namespace AdaptiveCards.Rendering
 
                 int iCol = 0;
                 foreach (var action in actions
-                    .Where(a => context.Options.AdaptiveCard.SupportedActions?.Contains(a.Type) == true)
-                    .Take(context.Options.AdaptiveCard.MaxActions))
+                    .Where(a => supportedActions?.Contains(a.Type) == true)
+                    .Take(maxActions))
                 {
                     // add actions
                     var uiAction = this.RenderAction(action, context);
@@ -126,8 +126,8 @@ namespace AdaptiveCards.Rendering
 
                 int iCol = 0;
                 foreach (var action in actions
-                    .Where(a => context.Options.AdaptiveCard.SupportedActions?.Contains(a.Type) == true)
-                    .Take(context.Options.AdaptiveCard.MaxActions))
+                    .Where(a => supportedActions?.Contains(a.Type) == true)
+                    .Take(maxActions))
                 {
                     // add actions
                     var uiAction = this.RenderAction(action, context);

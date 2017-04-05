@@ -30,7 +30,7 @@ namespace AdaptiveCards.Rendering
             var uiColumn = new Grid();
             uiColumn.Style = this.GetStyle("Adaptive.Column");
 
-            AddContainerElements(uiColumn, column.Items, null, context);
+            AddContainerElements(uiColumn, column.Items, null, context, null, 0);
 
             if (column.SelectAction != null)
             {

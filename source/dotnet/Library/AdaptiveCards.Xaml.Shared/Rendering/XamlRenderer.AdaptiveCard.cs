@@ -50,7 +50,7 @@ namespace AdaptiveCards.Rendering
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
             var inputControls = new List<FrameworkElement>();
-            AddContainerElements(grid, card.Body, card.Actions, context);
+            AddContainerElements(grid, card.Body, card.Actions, context, context.Options.AdaptiveCard.SupportedActions, context.Options.AdaptiveCard.MaxActions);
 
             outerGrid.Children.Add(grid);
             return outerGrid;
