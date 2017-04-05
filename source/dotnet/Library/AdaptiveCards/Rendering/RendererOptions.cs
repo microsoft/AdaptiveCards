@@ -21,9 +21,9 @@ namespace AdaptiveCards.Rendering
         // ------ Containers ------
         public ContainerOptions Container { get; set; } = new ContainerOptions();
 
-        public CardElementOptions ColumnSet { get; set; } = new CardElementOptions();
+        public ColumnSetOptions ColumnSet { get; set; } = new ColumnSetOptions();
 
-        public CardElementOptions Column { get; set; } = new CardElementOptions();
+        public ColumnOptions Column { get; set; } = new ColumnOptions();
 
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
@@ -361,5 +361,13 @@ namespace AdaptiveCards.Rendering
         public InputOptions() { }
     }
 
+    public class ColumnSetOptions : CardElementOptions
+    {
+        public ColumnSetOptions() { }
+    }
 
+    public class ColumnOptions : CardElementOptions
+    {
+        public ColumnOptions() { }
+    }
 }
