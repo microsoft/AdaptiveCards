@@ -26,20 +26,19 @@ namespace AdaptiveCards.Rendering
         {
             var outerGrid = new Grid();
             outerGrid.Style = this.GetStyle("Adaptive.Card");
+#if WPF
+            outerGrid.Background = this.GetColorBrush(context.Styling.BackgroundColor);
             if (card.BackgroundImage != null)
             {
-#if WPF
-                if (card.BackgroundImage != null)
-                {
-                    outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
-                }
-#elif XAMARIN
-                if (card.BackgroundImage != null)
-                {
-                    outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));
-                }
-#endif
+                outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
             }
+#elif XAMARIN
+            // TODO outerGrid.Background = this.GetColorBrush(context.Styling.BackgroundColor);
+            if (card.BackgroundImage != null)
+            {
+                outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));
+            }
+#endif
 
             var grid = new Grid();
             grid.Style = this.GetStyle("Adaptive.InnerCard");
@@ -47,7 +46,7 @@ namespace AdaptiveCards.Rendering
                 grid.Margin = new Thickness(context.Styling.Margin[0], context.Styling.Margin[1], context.Styling.Margin[2], context.Styling.Margin[3]);
             else
                 grid.Margin = new Thickness(context.Styling.Margin.First());
-            
+
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
             var inputControls = new List<FrameworkElement>();
