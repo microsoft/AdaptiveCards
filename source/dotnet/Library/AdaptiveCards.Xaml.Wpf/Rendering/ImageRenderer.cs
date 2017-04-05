@@ -46,6 +46,7 @@ namespace AdaptiveCards.Rendering
         public RendererOptions Options { get { return _xamlRenderer.DefaultOptions; } set { _xamlRenderer.DefaultOptions = value; } }
 
 
+
         /// <summary>
         /// render the card to an png image stream (must be called on STA thread)
         /// </summary>
