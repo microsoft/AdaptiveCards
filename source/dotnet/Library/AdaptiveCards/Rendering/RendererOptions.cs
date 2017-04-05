@@ -99,7 +99,7 @@ namespace AdaptiveCards.Rendering
         public ActionsOrientation ActionsOrientation { get; set; } = ActionsOrientation.Horizontal;
 
         /// <summary>
-        /// For horizontally aligned actions, should they be aligned Left, Center or Right
+        /// should they be aligned Left, Center or Right
         /// </summary>
         public HorizontalAlignment ActionAlignment { get; set; } = HorizontalAlignment.Center;
 
@@ -281,7 +281,7 @@ namespace AdaptiveCards.Rendering
 
         public string BorderColor { get; set; } = "#FF000000";
 
-        public string TextColor { get; set; } = "#FF90FFFF";
+        public string TextColor { get; set; } = "#FFFFFFFF";
 
         public int BorderThickness { get; set; } = 1;
 
@@ -292,7 +292,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Space between actions
         /// </summary>
-        public int[] Margin { get; set; } = new int[] { 4 };
+        public int[] Margin { get; set; } = new int[] { 4, 10, 4, 0 };
 
         /// <summary>
         /// space between title and button edge
