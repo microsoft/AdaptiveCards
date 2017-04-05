@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d4e691c8-f685-4e48-83d8-a063868e5e51</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AdaptiveCards</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionHttp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionOpenUrl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionShowCard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionSubmit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.AdaptiveCard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.Column.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ColuimnSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.Container.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.FactSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ImageSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.CardElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.Image.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.InputChoiceSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.InputDate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.InputNumber.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.InputText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.InputTime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.InputToggle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.TextBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\MarkedXamlRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Utilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.cs" />
+  </ItemGroup>
+</Project>

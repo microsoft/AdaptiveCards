@@ -1,5 +1,4 @@
 {
-	//"$schema": "http://localhost:13406/adaptive-card.json",
 	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"version": "1.0",
 	"type": "AdaptiveCard",
@@ -9,11 +8,12 @@
 			"type": "TextBlock",
 			"text": "Passengers",
 			"weight": "bolder",
-			"size": "extraLarge"
+			"size": "extraLarge",
+			"isSubtle": false
 		},
 		{
 			"type": "TextBlock",
-			"text": "Sarah Hum"
+			"text": "Sarah sadf lskfj lkj sdfjkl slkdjf lkjdsflkj  Hum"
 		},
 		{
 			"type": "TextBlock",

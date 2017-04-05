@@ -1,0 +1,70 @@
+{
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "previous element"
+        },
+        {
+            "type": "TextBlock",
+            "text": "separation:none",
+            "weight": "bolder",
+            "size": "large"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "This is some text"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "separation:default",
+            "weight": "bolder",
+            "size": "large"
+        },
+        {
+            "type": "Container",
+            "separation": "default",            
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "This is some text"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "separation:strong",
+            "weight": "bolder",
+            "size": "large"
+        },
+        {
+            "type": "Container",
+            "separation": "strong",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "This is some text"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                }
+            ]
+        }
+    ]
+}

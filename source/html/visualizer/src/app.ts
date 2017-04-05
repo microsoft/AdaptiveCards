@@ -198,8 +198,18 @@ function setupEditor() {
     // Load the cached payload if the user had one
     try {
         let cachedPayload = sessionStorage.getItem("AdaptivePayload");
-
-        if (cachedPayload) {
+        var cardUrl = document.location.search.substring(1).split('card=')[1];
+        if (cardUrl) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    editor.session.setValue(xhttp.responseText);
+                }
+            };
+            xhttp.open("GET", cardUrl, true);
+            xhttp.send(); 
+        }
+        else if (cachedPayload) {
             editor.session.setValue(cachedPayload);
         }
         else {

@@ -1,0 +1,57 @@
+{
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "This is some text"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                }
+            ],
+            "actions": [
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "cool link 1",
+                    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                },
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "cool link 2",
+                    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "This is some text"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                }
+            ],
+            "actions": [
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "cool link 3",
+                    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                },
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "cool link 4",
+                    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                }
+            ]
+        }
+    ]
+}

@@ -9,7 +9,7 @@
     "build": "webpack",
     "build-verbose": "webpack --display-error-details",
     "watch": "webpack --watch",
-    "start": "http-server ./dev.html -c-1 -o -a localhost",
+    "start": "http-server -c-1 -o",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

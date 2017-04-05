@@ -1,0 +1,61 @@
+{
+  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "size:small",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "size": "small"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:medium",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "size": "medium"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:large",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "size": "large" 
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:auto",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "size": "auto"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:stretch",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "size": "stretch"
+    }
+  ]
+}

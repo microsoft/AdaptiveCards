@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-win+net45+wp8+win81+wpa8</PackageTargetFallback>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81</PackageTargetFallback>
+    <RootNamespace>AdaptiveCards</RootNamespace>
+    <AssemblyName>AdaptiveCards.Xaml.XamarinForms</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;XAMARIN;NETSTANDARD1_3</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Actions\**" />
+    <Compile Remove="Containers\**" />
+    <Compile Remove="Elements\**" />
+    <EmbeddedResource Remove="Actions\**" />
+    <EmbeddedResource Remove="Containers\**" />
+    <EmbeddedResource Remove="Elements\**" />
+    <None Remove="Actions\**" />
+    <None Remove="Containers\**" />
+    <None Remove="Elements\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MarkedNet" Version="1.0.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Xamarin.Forms" Version="2.3.4.221-pre6" />
+    <PackageReference Include="XFControls" Version="1.0.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\AdaptiveCards.Xaml.Shared\AdaptiveCards.Xaml.Shared.projitems" Label="Shared" />
+
+</Project>

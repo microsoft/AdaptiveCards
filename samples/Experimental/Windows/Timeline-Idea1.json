@@ -1,0 +1,86 @@
+{
+    "title": "MVP Summit Prep.pptx",
+    "appName": "Amazon.com | Edge",
+    "visual": {
+        "displayText": "",
+        "description": "", 
+
+        "baseImage": {
+            "type": "ImageSource",
+            "uri": "",
+            "altText": "",
+            "addImageQuery": true
+        },
+        "iconImage": {
+            "type": "ImageSource",
+            "uri": "",
+            "altText": "",
+            "includeQueryParams": true
+        },
+        "backgroundColor": "",
+        "backgroundImage": {
+            "type": "BackgroundImage",
+            "uri": "",
+            "altText": "",
+            "includeQueryParams": true,
+            "overlay": 0.7,
+            "overlayColor": "light|dark"
+        },
+        "contentType": "application/vnd.microsoft.card.adaptive",
+        "content": {
+            "type": "AdaptiveCard",
+            "speak": "",
+            "actions": [],
+            "backgroundImage": {
+                "uri": "",
+                "altText": "",
+                "includeQueryParams": true
+            },
+            "body": [
+                {
+                    "type": "Image",
+                    "source": {
+                        "uri": "",
+                        "altText": "",
+                        "includeQueryParams": true
+                    },
+                    "uri": "",
+                    "altText": "bolder",
+                    "size": "medium",
+                    "includeQueryParams": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Line 1",
+                    "weight": "bolder",
+                    "size": "medium"
+                },
+                {
+                    "type": "FactSet",
+                    "facts": [
+                        {
+                            "name": "Work item type:",
+                            "value": "Bug"
+                        },
+                        {
+                            "name": "State:",
+                            "value": "Closed"
+                        },
+                        {
+                            "name": "Area Path:",
+                            "value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines"
+                        },
+                        {
+                            "name": "Iteration Path:",
+                            "value": "t365\\Tabs\\Extensibility\\longer to show"
+                        },
+                        {
+                            "name": "Priority:",
+                            "value": "1"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

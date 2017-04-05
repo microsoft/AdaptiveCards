@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net4.6;netstandard1.6</TargetFrameworks>
+    <PackageId>AdaptiveCards.Html</PackageId>
+    <PackageVersion>1.0.2.0</PackageVersion>
+    <Authors>Microsoft</Authors>
+    <summary>Adaptive Card HTML Rednobject model for .NET</summary>
+    <Description>This library implements classes rendering to html adaptive card objects</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageTags>adaptivecards</PackageTags>
+    <iconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</iconUrl>
+    <language>en-US</language>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlTags.AspNetCore" Version="4.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="MarkedNet" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
+  </ItemGroup>
+
+</Project>

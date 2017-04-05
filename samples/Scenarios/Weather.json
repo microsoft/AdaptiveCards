@@ -14,7 +14,8 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
+							"size":"stretch"
 						}
 					]
 				},
@@ -24,26 +25,26 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "**Monday**",
+							"text": "**Monday April 1**",
 							"size": "large"
 						},
 						{
 							"type": "TextBlock",
 							"text": "63 / 42",
 							"size": "medium",
-							"isParagraphStart": false
+							"separation": "none"
 						},
 						{
 							"type": "TextBlock",
 							"isSubtle": true,
 							"text": "20% chance of rain",
-							"isParagraphStart": false
+							"separation": "none"
 						},
 						{
 							"type": "TextBlock",
 							"isSubtle": true,
 							"text": "Winds 5 mph NE",
-							"isParagraphStart": false
+							"separation": "none"
 						}
 					]
 				}

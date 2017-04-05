@@ -83,6 +83,7 @@
         <xs:attribute name="HorizontalAlignment" type="HorizontalAlignment" />
         <xs:attribute name="Wrap" type="xs:boolean" />
         <xs:attribute name="MaxLines" type="xs:int" />
+        
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -261,7 +262,7 @@
   </xs:complexType>
   <xs:complexType name="Column">
     <xs:complexContent mixed="false">
-      <xs:extension base="Container">
+      <xs:extension base="CardElement">
         <xs:attribute name="Size" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
