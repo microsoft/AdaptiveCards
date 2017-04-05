@@ -32,7 +32,7 @@ namespace AdaptiveCards.Rendering
             var uiContainer = new Grid();
             uiContainer.Style = this.GetStyle("Adaptive.Container");
 
-            AddContainerElements(uiContainer, container.Items, container.Actions, context);
+            AddContainerElements(uiContainer, container.Items, container.Actions, context, context.Options.Container.SupportedActions, context.Options.Container.MaxActions);
 
             if (container.SelectAction != null)
             {
@@ -48,7 +48,7 @@ namespace AdaptiveCards.Rendering
             return uiContainer;
         }
 
-        protected void AddContainerElements(Grid grid, List<CardElement> elements, List<ActionBase> actions, RenderContext context)
+        protected void AddContainerElements(Grid grid, List<CardElement> elements, List<ActionBase> actions, RenderContext context, string[] supportedActions, int maxActions)
         {
             foreach (var cardElement in elements)
             {
@@ -60,18 +60,18 @@ namespace AdaptiveCards.Rendering
                     {
                         var uiSep = new Grid();
                         uiSep.Style = this.GetStyle($"Adaptive.Separator");
-                        SeparationStyling sepStyle = null;
+                        SeparationOptions sepStyle = null;
                         switch (cardElement.Separation)
                         {
                             case SeparationStyle.None:
-                                sepStyle = context.Styling.GetElementStyling(cardElement).SeparationNone;
+                                sepStyle = context.Options.GetElementStyling(cardElement).SeparationNone;
                                 break;
                             case SeparationStyle.Default:
-                                sepStyle = context.Styling.GetElementStyling(cardElement).SeparationDefault;
+                                sepStyle = context.Options.GetElementStyling(cardElement).SeparationDefault;
                                 break;
 
                             case SeparationStyle.Strong:
-                                sepStyle = context.Styling.GetElementStyling(cardElement).SeparationStrong;
+                                sepStyle = context.Options.GetElementStyling(cardElement).SeparationStrong;
                                 break;
                         }
 
@@ -93,16 +93,18 @@ namespace AdaptiveCards.Rendering
                 }
             }
 
-            if (actions?.Any() == true)
+            if (supportedActions != null && actions?.Where(a => supportedActions.Contains(a.Type)).Any() == true)
             {
 #if WPF
                 var uiActionBar = new UniformGrid();
                 uiActionBar.Rows = 1;
-                uiActionBar.HorizontalAlignment = (System.Windows.HorizontalAlignment)Enum.Parse(typeof(System.Windows.HorizontalAlignment), context.Styling.ActionAlignment.ToString());
+                uiActionBar.HorizontalAlignment = (System.Windows.HorizontalAlignment)Enum.Parse(typeof(System.Windows.HorizontalAlignment), context.Options.AdaptiveCard.ActionAlignment.ToString());
                 uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
 
                 int iCol = 0;
-                foreach (var action in actions)
+                foreach (var action in actions
+                    .Where(a => supportedActions?.Contains(a.Type) == true)
+                    .Take(maxActions))
                 {
                     // add actions
                     var uiAction = this.RenderAction(action, context);
@@ -123,7 +125,9 @@ namespace AdaptiveCards.Rendering
                 //uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
 
                 int iCol = 0;
-                foreach (var action in actions)
+                foreach (var action in actions
+                    .Where(a => supportedActions?.Contains(a.Type) == true)
+                    .Take(maxActions))
                 {
                     // add actions
                     var uiAction = this.RenderAction(action, context);

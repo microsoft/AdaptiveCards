@@ -20,7 +20,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected override FrameworkElement Render(ActionOpenUrl action, RenderContext context)
         {
-            if (this.Options.SupportInteraction)
+            if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 Button uiButton = this.CreateActionButton(action, context); // content);
                 uiButton.Click += (sender, e) =>

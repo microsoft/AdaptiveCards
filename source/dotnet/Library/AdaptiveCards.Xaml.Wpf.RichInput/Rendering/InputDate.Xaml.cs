@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected override FrameworkElement Render(InputDate input, RenderContext context)
         {
-            if (this.Options.SupportInteraction)
+            if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var datePicker = new DatePicker();
                 datePicker.ToolTip = input.Placeholder;

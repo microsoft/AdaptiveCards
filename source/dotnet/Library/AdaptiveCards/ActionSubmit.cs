@@ -10,9 +10,11 @@ namespace AdaptiveCards
     /// </summary>
     public class ActionSubmit : ActionBase
     {
+        public const string TYPE = "Action.Submit";
+
         public ActionSubmit()
         {
-            Type = "Action.Submit";
+            Type = TYPE;
         }
 
         /// <summary>
