@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using AsNum.XFControls;
 using Xamarin.Forms;
 using Button = AdaptiveCards.Rendering.ContentButton;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering

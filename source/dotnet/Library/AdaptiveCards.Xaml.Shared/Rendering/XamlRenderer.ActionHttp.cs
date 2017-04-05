@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using WPF = System.Windows.Controls;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 using Button = AdaptiveCards.Rendering.ContentButton;
 #endif
 using Newtonsoft.Json.Linq;

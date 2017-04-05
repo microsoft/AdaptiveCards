@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering

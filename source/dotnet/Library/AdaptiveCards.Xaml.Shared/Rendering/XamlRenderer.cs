@@ -7,6 +7,7 @@ using AdaptiveCards.Rendering;
 using System.Windows.Markup;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 

@@ -12,6 +12,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering

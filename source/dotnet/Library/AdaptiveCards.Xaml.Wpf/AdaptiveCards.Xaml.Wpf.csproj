@@ -72,6 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Rendering\ContextExtension.cs" />
     <Compile Include="Rendering\ImageRenderer.cs" />
     <Compile Include="Rendering\RenderHelper.cs" />
     <Compile Include="Rendering\StaTaskSchedule.cs" />

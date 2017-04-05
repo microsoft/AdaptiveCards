@@ -1,6 +1,9 @@
 ﻿
 using System.Windows;
 using AdaptiveCards.Rendering;
+#if XAMARIN
+using FrameworkElement = Xamarin.Forms.View;
+#endif
 
 namespace AdaptiveCards.Rendering
 {

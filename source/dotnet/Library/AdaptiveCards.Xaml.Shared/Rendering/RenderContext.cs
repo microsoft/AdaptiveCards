@@ -7,6 +7,7 @@ using System.IO;
 #if XAMARIN
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml.Internals;
+using FrameworkElement = Xamarin.Forms.View;
 #elif WPF
 using System.Windows;
 using System.Windows.Controls;
@@ -89,9 +90,9 @@ namespace AdaptiveCards.Rendering
         {
             foreach (var inputControl in this.InputControls)
             {
-                if (inputControl.DataContext is InputChoiceSet)
+                if (inputControl.GetContext() is InputChoiceSet)
                 {
-                    InputChoiceSet choiceInput = (InputChoiceSet)inputControl.DataContext;
+                    InputChoiceSet choiceInput = (InputChoiceSet)inputControl.GetContext();
                     var value = GetValueFromInputControl(inputControl);
                     if (value != null)
                     {
@@ -100,7 +101,7 @@ namespace AdaptiveCards.Rendering
                 }
                 else
                 {
-                    Input input = inputControl.DataContext as Input;
+                    Input input = inputControl.GetContext() as Input;
                     var value = GetValueFromInputControl(inputControl);
                     bool hasValue = false;
                     if (value != null)
