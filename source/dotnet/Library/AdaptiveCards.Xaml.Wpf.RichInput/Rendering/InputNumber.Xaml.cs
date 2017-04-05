@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected override FrameworkElement Render(InputNumber input, RenderContext context)
         {
-            if (this.Options.SupportInteraction)
+            if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
 
                 IntegerUpDown numberPicker = new IntegerUpDown();

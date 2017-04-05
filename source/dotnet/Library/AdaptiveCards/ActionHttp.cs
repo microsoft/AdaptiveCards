@@ -10,9 +10,11 @@ namespace AdaptiveCards
     /// </summary>
     public class ActionHttp : ActionBase
     {
+        public const string TYPE = "Action.Http";
+
         public ActionHttp()
         {
-            Type = "Action.Http";
+            Type = TYPE;
         }
 
         /// <summary>

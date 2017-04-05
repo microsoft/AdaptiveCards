@@ -22,7 +22,7 @@ namespace AdaptiveCards.Rendering
         protected override FrameworkElement Render(InputChoiceSet choiceSet, RenderContext context)
         {
 #if WPF
-            if (this.Options.SupportInteraction)
+            if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var uiGrid = new Grid();
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });

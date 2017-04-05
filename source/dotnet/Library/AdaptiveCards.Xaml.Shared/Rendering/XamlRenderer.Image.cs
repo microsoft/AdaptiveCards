@@ -64,16 +64,16 @@ namespace AdaptiveCards.Rendering
                     uiImage.Stretch = System.Windows.Media.Stretch.Uniform;
                     break;
                 case ImageSize.Small:
-                    uiImage.Width = context.Styling.Image.SizeSmall;
-                    uiImage.Height = context.Styling.Image.SizeSmall;
+                    uiImage.Width = context.Options.Image.Size.Small;
+                    uiImage.Height = context.Options.Image.Size.Small;
                     break;
                 case ImageSize.Medium:
-                    uiImage.Width = context.Styling.Image.SizeMedium;
-                    uiImage.Height = context.Styling.Image.SizeMedium;
+                    uiImage.Width = context.Options.Image.Size.Medium;
+                    uiImage.Height = context.Options.Image.Size.Medium;
                     break;
                 case ImageSize.Large:
-                    uiImage.Width = context.Styling.Image.SizeLarge;
-                    uiImage.Height = context.Styling.Image.SizeLarge;
+                    uiImage.Width = context.Options.Image.Size.Large;
+                    uiImage.Height = context.Options.Image.Size.Large;
                     break;
             }
 #elif XAMARIN

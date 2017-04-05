@@ -19,7 +19,7 @@ namespace AdaptiveCards.Rendering
         protected override FrameworkElement Render(InputToggle input, RenderContext context)
         {
 
-            if (this.Options.SupportInteraction)
+            if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
 #if WPF
                 var uiToggle = new CheckBox();
