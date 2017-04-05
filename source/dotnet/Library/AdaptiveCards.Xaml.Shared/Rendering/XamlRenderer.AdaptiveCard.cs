@@ -33,6 +33,7 @@ namespace AdaptiveCards.Rendering
                 outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
             }
 #elif XAMARIN
+            // TODO outerGrid.Background = this.GetColorBrush(context.Styling.BackgroundColor);
             if (card.BackgroundImage != null)
             {
                 outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));

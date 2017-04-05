@@ -7,6 +7,7 @@
             "type": "Input.Date",
             "id": "1234",
             "placeholder": "Enter a date",
+            "speak":"What is the due date?",
             "min": "1/1/2017",
             "max": "6/1/2017",
             "value": "3/1/2017"
