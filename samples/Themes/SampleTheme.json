@@ -1,0 +1,219 @@
+{
+  "AdaptiveCard": {
+    "Margin": [
+      8,
+      8,
+      8,
+      8
+    ],
+    "FontFamily": "Calibri",
+    "BackgroundColor": "#FFFFFFFF",
+    "TextColor": "#FF000000",
+    "ActionsOrientation": "horizontal",
+    "ActionAlignment": "center",
+    "SupportsInteractivity": true,
+    "SupportedActions": [
+      "Action.OpenUrl",
+      "Action.Submit",
+      "Action.Http",
+      "Action.ShowCard"
+    ],
+    "MaxActions": 5
+  },
+  "TextBlock": {
+    "Color": {
+      "Default": "#FF000000",
+      "Accent": "#FF0000FF",
+      "Dark": "#FF101010",
+      "Light": "#FFFFFFFF",
+      "Good": "#FF008000",
+      "Warning": "#FFFFD700",
+      "Attention": "#FF8B0000"
+    },
+    "FontSize": {
+      "Small": 10,
+      "Normal": 12,
+      "Medium": 14,
+      "Large": 17,
+      "ExtraLarge": 20
+    },
+    "IsSubtleOpacity": 0.5,
+    "SeparationNone": {
+      "Spacing": 0,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationDefault": {
+      "Spacing": 10,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationStrong": {
+      "Spacing": 20,
+      "Thickness": 1,
+      "Color": "#FF707070"
+    }
+  },
+  "Image": {
+    "Size": {
+      "Small": 60,
+      "Medium": 120,
+      "Large": 180
+    },
+    "SeparationNone": {
+      "Spacing": 0,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationDefault": {
+      "Spacing": 10,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationStrong": {
+      "Spacing": 20,
+      "Thickness": 1,
+      "Color": "#FF707070"
+    }
+  },
+  "Container": {
+    "MaxActions": 5,
+    "SupportedActions": [
+      "Action.OpenUrl",
+      "Action.Submit",
+      "Action.Http",
+      "Action.ShowCard"
+    ],
+    "SeparationNone": {
+      "Spacing": 0,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationDefault": {
+      "Spacing": 10,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationStrong": {
+      "Spacing": 20,
+      "Thickness": 1,
+      "Color": "#FF707070"
+    }
+  },
+  "ColumnSet": {
+    "SeparationNone": {
+      "Spacing": 0,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationDefault": {
+      "Spacing": 10,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationStrong": {
+      "Spacing": 20,
+      "Thickness": 1,
+      "Color": "#FF707070"
+    }
+  },
+  "Column": {
+    "SeparationNone": {
+      "Spacing": 0,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationDefault": {
+      "Spacing": 10,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationStrong": {
+      "Spacing": 20,
+      "Thickness": 1,
+      "Color": "#FF707070"
+    }
+  },
+  "ImageSet": {
+    "Wrap": true,
+    "SeparationNone": {
+      "Spacing": 0,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationDefault": {
+      "Spacing": 10,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationStrong": {
+      "Spacing": 20,
+      "Thickness": 1,
+      "Color": "#FF707070"
+    }
+  },
+  "FactSet": {
+    "Title": {
+      "type": "TextBlock",
+      "weight": "bolder",
+      "text": ""
+    },
+    "Value": {
+      "type": "TextBlock",
+      "text": ""
+    },
+    "SeparationNone": {
+      "Spacing": 0,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationDefault": {
+      "Spacing": 10,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationStrong": {
+      "Spacing": 20,
+      "Thickness": 1,
+      "Color": "#FF707070"
+    }
+  },
+  "Input": {
+    "SeparationNone": {
+      "Spacing": 0,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationDefault": {
+      "Spacing": 10,
+      "Thickness": 0,
+      "Color": null
+    },
+    "SeparationStrong": {
+      "Spacing": 20,
+      "Thickness": 1,
+      "Color": "#FF707070"
+    }
+  },
+  "Actions": {
+    "ShowCard": {
+      "ActionMode": "popup"
+    },
+    "BackgroundColor": "#FF5098FF",
+    "BorderColor": "#FF000000",
+    "TextColor": "#FFFFFFFF",
+    "BorderThickness": 1,
+    "FontWeight": 400,
+    "FontSize": 12,
+    "Margin": [
+      4,
+      10,
+      4,
+      0
+    ],
+    "Padding": [
+      4
+    ]
+  }
+}
+
