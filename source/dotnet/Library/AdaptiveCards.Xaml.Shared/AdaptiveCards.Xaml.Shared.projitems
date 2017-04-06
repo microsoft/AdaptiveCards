@@ -16,7 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionSubmit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.AdaptiveCard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.Column.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ColuimnSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ColumnSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.Container.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.FactSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ImageSet.cs" />
