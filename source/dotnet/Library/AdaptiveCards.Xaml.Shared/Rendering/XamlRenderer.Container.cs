@@ -93,24 +93,29 @@ namespace AdaptiveCards.Rendering
                 }
             }
 
-            if (supportedActions != null && actions?.Where(a => supportedActions.Contains(a.Type)).Any() == true)
+            var actionsToProcess = actions
+                .Where(a => supportedActions?.Contains(a.Type) == true)
+                .Take(maxActions).ToList();
+            if (supportedActions != null && actionsToProcess.Any() == true)
             {
 #if WPF
+
                 var uiActionBar = new UniformGrid();
-                uiActionBar.Rows = 1;
+                if (context.Options.AdaptiveCard.ActionsOrientation == ActionsOrientation.Horizontal)
+                    uiActionBar.Columns = actionsToProcess.Count();
+                else
+                    uiActionBar.Rows = actionsToProcess.Count();
                 uiActionBar.HorizontalAlignment = (System.Windows.HorizontalAlignment)Enum.Parse(typeof(System.Windows.HorizontalAlignment), context.Options.AdaptiveCard.ActionAlignment.ToString());
                 uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
 
-                int iCol = 0;
-                foreach (var action in actions
-                    .Where(a => supportedActions?.Contains(a.Type) == true)
-                    .Take(maxActions))
+                int iPos = 0;
+                foreach (var action in actionsToProcess)
                 {
                     // add actions
                     var uiAction = this.RenderAction(action, context);
                     if (uiAction != null)
                     {
-                        Grid.SetColumn(uiAction, iCol++);
+                        Grid.SetColumn(uiAction, iPos++);
                         uiActionBar.Children.Add(uiAction);
                     }
                 }
@@ -125,9 +130,7 @@ namespace AdaptiveCards.Rendering
                 //uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
 
                 int iCol = 0;
-                foreach (var action in actions
-                    .Where(a => supportedActions?.Contains(a.Type) == true)
-                    .Take(maxActions))
+                foreach (var action in actionsToProcess)
                 {
                     // add actions
                     var uiAction = this.RenderAction(action, context);
