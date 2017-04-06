@@ -19,7 +19,7 @@
             <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
 
-        <!--<Style x:Key="Adaptive.Action.Tap" TargetType="Button">
+        <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Cursor" Value="Hand" />
@@ -49,10 +49,10 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>-->
+        </Style>
     </Window.Resources>
 
-    <Grid Margin="8">
+    <Grid Margin="8" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -75,12 +75,10 @@
         <avalon:TextEditor Grid.Row="1" Name="textBox" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
                             ShowLineNumbers="true" TextChanged="textBox_TextChanged"/>
 
-        <Border Margin="68,67,60,67"  CornerRadius="20" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" >
-            <Border.Effect>
-                <DropShadowEffect />
-            </Border.Effect >
-            <Grid Name="cardGrid" Background="WhiteSmoke" MaxWidth="700" />
-        </Border>
+        <Grid Grid.Column="1" Grid.Row="1" Background="DarkGray">
+            
+            <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10"  />
+        </Grid>
 
         <Grid Grid.Row="2" Name="cardError" />
 

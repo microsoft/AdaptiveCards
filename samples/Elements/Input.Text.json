@@ -9,6 +9,7 @@
             "placeholder": "enter comment",
             "maxLength": 500,
             "isMultiline": false,
+            "speak":"What comments do you have?",
             "value": "This is a pre-filled value"
         }
     ]

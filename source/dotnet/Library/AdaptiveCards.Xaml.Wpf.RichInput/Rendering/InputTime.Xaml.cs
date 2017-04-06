@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering
         protected override FrameworkElement Render(InputTime input, RenderContext context)
         {
 
-            if (this.Options.SupportInteraction)
+            if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var timePicker = new TimePicker();
                 DateTime value;

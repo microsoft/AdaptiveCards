@@ -31,7 +31,7 @@ namespace GenerateSamples
                 "TextBlock", "Image",
                 "Container", "ColumnSet", "Column", "FactSet", "ImageSet",
                 "Input.Text", "Input.Number", "Input.Date", "Input.Time", "Input.Toggle", "Input.ChoiceSet",
-                "ActionOpenUrl", "ActionSubmit", "ActionHttp","ActionShowCard"
+                "Action.OpenUrl", "Action.Submit", "Action.Http","Action.ShowCard"
             };
             using (TextWriter writer = new StreamWriter(File.Open(Path.Combine(@"c:\\scratch\\dog", "explorer.html"), FileMode.Create)))
             {
@@ -50,7 +50,7 @@ namespace GenerateSamples
                     foreach (var file in Directory.GetFiles(args[0], element + "*.json").Where(f => f.Contains(element + ".")))
                     {
                         var name = Path.GetFileNameWithoutExtension(file);
-                        writer.WriteLine($"<h3 onclick='toggleContent(\"{name}Content\")'>{element}.{name.Split('.').Last()}</h3>");
+                        writer.WriteLine($"<h3 onclick='toggleContent(\"{name}Content\")'>{name}</h3>");
                         writer.WriteLine($"<div id='{name}Content' style='display:block'>");
                         var json = File.ReadAllText(file, Encoding.UTF8);
                         writer.WriteLine($"<div id='{name}Card' class='card' ></div>");

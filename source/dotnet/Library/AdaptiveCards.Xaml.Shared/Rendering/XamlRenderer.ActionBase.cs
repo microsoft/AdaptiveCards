@@ -19,7 +19,7 @@ namespace AdaptiveCards.Rendering
         protected Button CreateActionButton(ActionBase action, RenderContext renderContext)
         {
 #if WPF
-            ActionStyling styling = renderContext.Styling.GetActionStyling(action);
+            ActionOptions styling = renderContext.Options.Actions;
             var uiButton = new Button()
             {
                 Background = this.GetColorBrush(styling.BackgroundColor),
@@ -37,9 +37,9 @@ namespace AdaptiveCards.Rendering
                 FontWeight = FontWeight.FromOpenTypeWeight(styling.FontWeight),
                 FontSize = styling.FontSize,
                 Foreground = this.GetColorBrush(styling.TextColor),
-                Margin = (styling.TitleMargin.Length == 4) ?
-                            new Thickness(styling.TitleMargin[0], styling.TitleMargin[1], styling.TitleMargin[2], styling.TitleMargin[3]) :
-                            new Thickness(styling.TitleMargin.First()),
+                Margin = (styling.Padding.Length == 4) ?
+                            new Thickness(styling.Padding[0], styling.Padding[1], styling.Padding[2], styling.Padding[3]) :
+                            new Thickness(styling.Padding.First()),
             };
             uiTitle.Style = this.GetStyle($"Adaptive.Action.Title");
             uiButton.Content = uiTitle;

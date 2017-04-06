@@ -63,7 +63,11 @@ namespace WpfVisualizer
 
                         _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
                     }
-                    var renderer = new XamlRendererExtended(new RenderOptions(), this.Resources, _onAction, _OnMissingInput);
+
+                    var options = new RendererOptions();
+                    //options.AdaptiveCard.ActionsOrientation = ActionsOrientation.Horizontal;  
+
+                    var renderer = new XamlRendererExtended(options, this.Resources, _onAction, _OnMissingInput);
                     var element = renderer.RenderAdaptiveCard(_card);
                     this.cardGrid.Children.Clear();
                     this.cardGrid.Children.Add(element);
@@ -196,7 +200,7 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            var renderer = new ImageRenderer(new RenderOptions(), this.Resources);
+            var renderer = new ImageRenderer(new RendererOptions(), this.Resources);
             var imageStream = renderer.RenderAdaptiveCard(this._card, 480);
 //#else
 //            var renderer = new ImageRenderer(new RenderOptions(), @"c:\source\intercom\Channels\FacebookChannel\Content\AdaptiveCardStyles.xaml");

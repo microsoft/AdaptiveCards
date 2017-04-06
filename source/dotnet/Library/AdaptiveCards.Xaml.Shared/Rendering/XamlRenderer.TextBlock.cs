@@ -65,30 +65,30 @@ namespace AdaptiveCards.Rendering
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
             uiTextBlock.Style = this.GetStyle($"Adaptive.{textBlock.Type}");
 
-            uiTextBlock.FontFamily = new FontFamily(context.Styling.TextBlock.FontFamily);
+            uiTextBlock.FontFamily = new FontFamily(context.Options.AdaptiveCard.FontFamily);
 
             switch (textBlock.Color)
             {
                 case TextColor.Accent:
-                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorAccent);
+                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Accent);
                     break;
                 case TextColor.Attention:
-                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorAttention);
+                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Attention);
                     break;
                 case TextColor.Dark:
-                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorDark);
+                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Dark);
                     break;
                 case TextColor.Default:
-                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorDefault);
+                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Default);
                     break;
                 case TextColor.Good:
-                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorGood);
+                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Good);
                     break;
                 case TextColor.Light:
-                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorLight);
+                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Light);
                     break;
                 case TextColor.Warning:
-                    uiTextBlock.Foreground = GetColorBrush(context.Styling.TextBlock.ColorWarning);
+                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Warning);
                     break;
             }
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
@@ -96,14 +96,14 @@ namespace AdaptiveCards.Rendering
             switch (textBlock.Weight)
             {
                 case TextWeight.Bolder:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Styling.TextBlock.FontWeightBolder);
+                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(700);
                     break;
                 case TextWeight.Lighter:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Styling.TextBlock.FontWeightLighter);
+                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(300);
                     break;
                 case TextWeight.Normal:
                 default:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Styling.TextBlock.FontWeightNormal);
+                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(400);
                     break;
             }
 
@@ -157,25 +157,25 @@ namespace AdaptiveCards.Rendering
             switch (textBlock.Size)
             {
                 case TextSize.Small:
-                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeSmall;
+                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Small;
                     break;
                 case TextSize.Medium:
-                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeMedium;
+                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Medium;
                     break;
                 case TextSize.Large:
-                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeLarge;
+                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Large;
                     break;
                 case TextSize.ExtraLarge:
-                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeExtraLarge;
+                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.ExtraLarge;
                     break;
                 case TextSize.Normal:
                 default:
-                    uiTextBlock.FontSize = context.Styling.TextBlock.FontSizeNormal;
+                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Normal;
                     break;
             }
 
             if (textBlock.IsSubtle == true)
-                uiTextBlock.Opacity = context.Styling.TextBlock.IsSubtleOpacity;
+                uiTextBlock.Opacity = context.Options.TextBlock.IsSubtleOpacity;
 
 
             if (textBlock.MaxLines > 0)

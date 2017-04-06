@@ -19,7 +19,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected override FrameworkElement Render(InputNumber input, RenderContext context)
         {
-            if (this.Options.SupportInteraction)
+            if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value.ToString() };
                 textBox.Text = input.Placeholder;

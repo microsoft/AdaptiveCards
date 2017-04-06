@@ -12,6 +12,7 @@ namespace AdaptiveCards
         public TextBlock()
         {
             Type = "TextBlock";
+            Text = "";
         }
 
         /// <summary>
