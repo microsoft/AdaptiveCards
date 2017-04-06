@@ -1,0 +1,50 @@
+@import 'node_modules/adaptive-cards/scss/base';
+
+//TODO: remove or scope the asterisk selector so it does not pollute the global scope in the host page
+* {
+    box-sizing: border-box;
+}
+
+@include base-spacing();
+
+.cortanaLogo {
+    width: 50px;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+@include base-sizes();
+
+@include base-text-default($default-color: rgb(255, 255, 255));
+
+@include base-text-dark($color: rgb(255, 255, 255), $subtle-color: rgba(240, 240, 240, 0.5));
+
+@include base-text-light();
+
+@include base-text-special();
+
+@include base-container($container-margin: 5px 0px 0px 0px, $start-group-padding-top: 5px);
+
+.rootContainer {
+    width: 300px;
+    height: 300px;
+    background: black;
+}
+
+@include base-image();
+
+@include base-table();
+
+@include base-column();
+
+@include base-actions();
+
+@include base-push-button();
+
+@include base-link-button();
+
+@include base-input();

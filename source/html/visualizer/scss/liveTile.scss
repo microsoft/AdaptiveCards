@@ -1,0 +1,34 @@
+@import 'node_modules/adaptive-cards/scss/base';
+
+//TODO: remove or scope the asterisk selector so it does not pollute the global scope in the host page
+* {
+    box-sizing: border-box;
+}
+
+@include base-spacing();
+
+@include base-sizes();
+
+@include base-text-default();
+
+@include base-text-dark();
+
+@include base-text-light();
+
+@include base-text-special();
+
+@include base-container($root-padding:10px);
+
+@include base-image();
+
+@include base-table();
+
+@include base-column();
+
+@include base-actions();
+
+@include base-push-button();
+
+@include base-link-button();
+
+@include base-input();

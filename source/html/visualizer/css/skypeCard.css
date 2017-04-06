@@ -1,459 +1,424 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .removeTopSpacing {
-    margin-top: 0px !important;
+  margin-top: 0 !important;
 }
 
 .separator {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 20px 0px 0px 0px;
-    padding: 20px 0px 0px 0px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 20px 0 0 0;
+  padding: 20px 0 0 0;
 }
 
 .skypeContainer {
-    display: flex;
-    align-items: flex-start;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
 .rootContainer {
-    width: 300px;
-    border-radius: 5px;
-    background: rgba(234, 234, 234, 0.68);
+  width: 300px;
+  border-radius: 5px;
+  background: rgba(234, 234, 234, 0.68);
 }
 
 .stretch {
-    width: 100%;
+  width: 100%;
 }
 
 .smallSize {
-    width: 100px;
+  width: 100px;
 }
 
 .mediumSize {
-    width: 200px;
+  width: 200px;
 }
 
 .largeSize {
-    width: 300px;
+  width: 300px;
 }
 
 .text {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  color: #fff;
 }
 
 .text.defaultSize {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .text.small {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .text.medium {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .text.large {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .text.extraLarge {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .text.lighter {
-    font-weight: 200;
+  font-weight: 200;
 }
 
 .text.defaultWeight {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .text.bolder {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .text.defaultColor {
-    color: rgb(51, 51, 51);
+  color: #333333;
 }
 
 .text.defaultColor.subtle {
-    color: rgba(51, 51, 51, 0.5);
+  color: rgba(51, 51, 51, 0.5);
 }
 
 .text.darkColor {
-    color: rgb(51, 51, 51);
+  color: #333333;
 }
 
 .text.darkColor.subtle {
-    color: rgba(51, 51, 51, 0.5);
+  color: rgba(51, 51, 51, 0.5);
 }
 
 .text.lightColor {
-    color: rgb(255, 255, 255);
+  color: white;
 }
 
 .text.lightColor.subtle {
-    color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .text.accentColor {
-    color: rgb(46, 137, 252);
+  color: #2e89fc;
 }
 
 .text.accentColor.subtle {
-    color:  rgba(46, 137, 252, 0.5);
+  color: rgba(46, 137, 252, 0.5);
 }
 
 .text.goodColor {
-    color: #2ccc35;
+  color: #2ccc35;
 }
 
 .text.warningColor {
-    color: #f9a203;
+  color: #f9a203;
 }
 
 .text.attentionColor {
-    color: darkred;
+  color: darkred;
 }
 
 .rootContainer {
-    padding: 10px;
+  padding: 10px;
 }
 
 .container {
-    margin: 20px 0px 0px 0px;
+  margin: 20px 0 0 0;
 }
 
 .container.selectable {
-    padding: 5px;
+  padding: 5px;
 }
 
 .container.selectable:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .container.selectable:active {
-    background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
 .container.startGroup {
-    border-top: 1px solid rgba(0, 0, 0, 0.25);
-    padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+  padding-top: 20px;
 }
 
 .image {
-    margin: 0px 0px 0px 0px;
+  margin: 0;
 }
 
 .image.selectable {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .image.autoSize {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .image.stretch {
-    width: 100%;
+  width: 100%;
 }
 
 .image.small {
-    max-width: 40px;
+  max-width: 40px;
 }
 
 .image.medium {
-    max-width: 80px;
+  max-width: 80px;
 }
 
 .image.large {
-    max-width: 160px;
+  max-width: 160px;
 }
 
 .image.person {
-    border-radius: 50%;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-}
-
-table.factGroup {
-    margin: 20px 0px 0px 0px;
-    border-width: 0px;
-    border-spacing: 0px;
-    border-style: none;
-    border-collapse: collapse;
-}
-
-tr.factGroupRowSpacer {
-    height: 10px;
-}
-
-td.factName {
-    border-width: 0px;
-    padding: 0px;
-    border-style: none;
-    min-width: 100px;
-    vertical-align: top;
-    white-space: nowrap;
-}
-
-td.factValue {
-    border-width: 0px;
-    padding: 0px;
-    border-style: none;
-    vertical-align: top;
-    padding: 0px 0px 0px 10px
+  border-radius: 50%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
 }
 
 .imageGallery {
-    margin: 20px 0px 0px 0px;
+  margin: 20px 0 0 0;
 }
 
-.actionGroup {
-    margin: 20px 0px 0px 0px;
+table.factGroup {
+  margin: 20px 0 0 0;
+  border-width: 0;
+  border-spacing: 0;
+  border-style: none;
+  border-collapse: collapse;
 }
 
-/*.columnGroup {
-    margin: 15px 0px 5px 0px;
-}*/
+tr.factGroupRowSpacer {
+  height: 10px;
+}
 
-.column {
+td.factName {
+  border-width: 0;
+  padding: 0;
+  border-style: none;
+  min-width: 100px;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+td.factValue {
+  border-width: 0;
+  padding: 0;
+  border-style: none;
+  vertical-align: top;
+  padding: 0 0 0 10px;
 }
 
 .column.selectable {
-    padding: 5px;
+  padding: 5px;
 }
 
 .column.selectable:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .column.selectable:active {
-    background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
 .defaultColumnSeparator {
-    width: 10px;    
+  width: 10px;
 }
 
 .strongColumnSeparator {
-    border-left: 1px solid #EEEEEE;
-    margin-left: 10px;
-    padding-left: 10px;
+  border-left: 1px solid #EEEEEE;
+  margin-left: 10px;
+  padding-left: 10px;
+}
+
+.actionGroup {
+  margin: 20px 0 0 0;
 }
 
 .actionCardContainer {
-    margin: 16px -20px 0px -20px;
-    padding: 16px 20px 16px 20px;
-    background-color: #F8F8F8;
+  margin: 16px -20px 0 -20px;
+  padding: 16px 20px 16px 20px;
+  background-color: #F8F8F8;
 }
 
 .buttonStrip {
-    display: flex;
-    flex-direction: column;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .buttonStripItem {
-    flex-grow: 1;
-    flex-shrink: 1;
-    text-align: center;
-    flex-wrap: wrap;
-    margin: 5px;
-}
-
-.buttonStripItemSpacer {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+  text-align: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin: 5px;
 }
 
 .pushButton {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 6px 10px 5px 10px;
-    text-align: center;
-    vertical-align: middle;  
-    cursor: default;
-    background-color: white;
-    border: solid 2px #dcdcdc;
-    border-radius: 25px;
-    color: #0078d7;
-    height: 40px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 6px 10px 5px 10px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: default;
+  background-color: white;
+  color: #0078d7;
 }
 
 .pushButton:hover {
-    background-color: #0078d7;
-    color: #fff;
+  background-color: #0078d7;
+  color: #fff;
 }
 
 .pushButton:active {
-    background-color: #0078d7;
-    color: #fff;
+  background-color: #0078d7;
+  color: #fff;
 }
 
 /*
-Other styles that can be specified:
-    .pushButton.expanded
-    .pushButton.expanded:hover
-    .pushButton.expanded:active
+    Other styles that can be specified:
+        .pushButton.expanded
+        .pushButton.expanded:hover
+        .pushButton.expanded:active
 
-    .pushButton.subdued
-    .pushButton.subdued:hover
-    .pushButton.subdued:active
-*/
+        .pushButton.subdued
+        .pushButton.subdued:hover
+        .pushButton.subdued:active
+    */
+.pushButton {
+  border: solid 2px #dcdcdc;
+  border-radius: 25px;
+  height: 40px;
+}
 
 .linkButton {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    cursor: pointer;
-    border: none;
-    padding: none;
-    color: #0078D7;
-    background-color: transparent;
-    -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -moz-user-select: none;      /* Firefox */
-    -ms-user-select: none;       /* Internet Explorer/Edge */
-    user-select: none;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  border: none;
+  padding: none;
+  color: #0078D7;
+  background-color: transparent;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .linkButton:hover {
-    color: #005A9E;
+  color: #005A9E;
 }
 
 .linkButton:active {
-    color: #004D84;
+  color: #004D84;
 }
 
 .linkButton.subdued {
-    color: #666666;
-    font-weight: 500;
+  color: #666666;
+  font-weight: 500;
 }
 
 .linkButton.subdued:hover {
-    color: #005A9E;
+  color: #005A9E;
 }
 
 .linkButton.subdued:active {
-    color: #004D84;
+  color: #004D84;
 }
 
 /*
-Other styles that can be specified:
-    .linkButton.expanded
-    .linkButton.expanded:hover
-    .linkButton.expanded:active
-*/
-
+    Other styles that can be specified:
+        .linkButton.expanded
+        .linkButton.expanded:hover
+        .linkButton.expanded:active
+    */
 .input {
-    margin: 10px 0px 0px 0px;
+  margin: 10px 0 0 0;
 }
 
 .input.textInput {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    border-color: #EAEAEA;
-    border-width: 1px;
-    border-style: solid;
-    padding: 4px 8px 4px 8px;
-    height: 30px;
-    resize: none;
+  font-size: 14px;
+  height: 30px;
+  resize: none;
 }
 
 .input.textInput.multiline {
-    height: 72px;
+  height: 72px;
 }
 
-.input.number {
-    font-family: 'Segoe UI', sans-serif;
-    border-color: #EAEAEA;
-    border-width: 1px;
-    border-style: solid;
-    padding: 4px 8px 5px 8px;
-}
-
-.input.date {
-    font-family: 'Segoe UI', sans-serif;
-    border-color: #EAEAEA;
-    border-width: 1px;
-    border-style: solid;
-    padding: 4px 8px 5px 8px;
-}
-
-.input.time {
-    font-family: 'Segoe UI', sans-serif;
-    border-color: #EAEAEA;
-    border-width: 1px;
-    border-style: solid;
-    padding: 4px 8px 5px 8px;
-}
-
-.input.multichoiceInput {
-    font-family: 'Segoe UI', sans-serif;
-    border-color: #EAEAEA;
-    border-width: 1px;
-    border-style: solid;
-    padding: 4px 8px 6px 8px;
+.input.textInput, .input.number, .input.date, .input.time, .input.multichoiceInput {
+  font-family: 'Segoe UI', sans-serif;
+  border-color: #EAEAEA;
+  border-width: 1px;
+  border-style: solid;
+  padding: 4px 8px 4px 8px;
 }
 
 .toggleInput {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
 }
 
 .toggleLabel {
-    margin: 0px 0px 0px 6px !important;
-    padding: 0px !important;
-    display: inline-block;
-    vertical-align: middle;
+  margin: 0 0 0 6px !important;
+  padding: 0 !important;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /*Bot hexagon*/
-
 .hexagon {
-    overflow: hidden;
-    visibility: hidden;
-    -webkit-transform: rotate(120deg);
-       -moz-transform: rotate(120deg);
-        -ms-transform: rotate(120deg);
-         -o-transform: rotate(120deg);
-            transform: rotate(120deg);
-    cursor: pointer;
-    width: 50px;
-    height: 40px;
-    margin: 2px 5px -20px 0px;
+  overflow: hidden;
+  visibility: hidden;
+  -webkit-transform: rotate(120deg);
+  transform: rotate(120deg);
+  cursor: pointer;
+  width: 50px;
+  height: 40px;
+  margin: 2px 5px -20px 0px;
 }
 
 .hexagon-in1 {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    -webkit-transform: rotate(-60deg);
-       -moz-transform: rotate(-60deg);
-        -ms-transform: rotate(-60deg);
-         -o-transform: rotate(-60deg);
-            transform: rotate(-60deg);
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: rotate(-60deg);
+  transform: rotate(-60deg);
 }
 
 .hexagon-in2 {
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: 50%;
-    background-image: url(../assets/bot-framework.png);
-    background-size: 50px 50px;
-    visibility: visible;
-    -webkit-transform: rotate(-60deg);
-       -moz-transform: rotate(-60deg);
-        -ms-transform: rotate(-60deg);
-         -o-transform: rotate(-60deg);
-            transform: rotate(-60deg);
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-image: url(../assets/bot-framework.png);
+  background-size: 50px 50px;
+  visibility: visible;
+  -webkit-transform: rotate(-60deg);
+  transform: rotate(-60deg);
 }

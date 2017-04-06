@@ -1,0 +1,90 @@
+@import 'node_modules/adaptive-cards/scss/base';
+
+//TODO: remove or scope the asterisk selector so it does not pollute the global scope in the host page
+* {
+    box-sizing: border-box;
+}
+
+@include base-spacing(rgba(255, 255, 255, 0.3));
+
+@include base-sizes();
+
+@include base-text-default($default-size: 15px);
+
+@include base-text-dark();
+
+@include base-text-light();
+
+@include base-text-special();
+
+@include base-container(
+    $root-padding: 12px, 
+    $container-margin: 15px 0 0 0,
+    $start-group-padding-top: 15px
+    );
+
+@include base-image();
+
+@include base-table(
+    $margin: 10px 0 0 0, 
+    $fact-name-padding: 4px 0 0 0,
+    $fact-value-padding: 4px 0 0 10px
+    );
+
+@include base-column($group-margin: 20px 0 0 0);
+
+@include base-actions(
+    $card-container-background-color: rgba(255, 255, 255, 0.1),
+    $card-container-padding: 16px 20px 16px 20px, 
+    $button-spacing: 5px,
+    $item-flex-basis: 100%
+    );
+
+@include base-push-button(
+    $font-size: 15px,
+    $font-weight: 500, 
+    $border: 2px solid transparent,
+    $min-width: null,
+    $background-color: #464646,
+    $hover-background-color: null,
+    $hover-border: 2px solid #A9A9A9,
+    $active-background-color: #828282
+    );
+
+@include base-link-button(
+    $background-color: #464646,
+    $color: white,
+    $font-size: 15px,
+    $font-weight: 500,
+    $cursor: default,
+    $border: 2px solid transparent,
+    $padding: 4px 10px 5px 10px,
+    $hover-border: 2px solid #A9A9A9,
+    $hover-color: null,
+    $active-background-color: #828282,
+    $active-color: null,
+    $subdued: false
+    );
+
+.linkButton {
+    text-align: center;
+    vertical-align: middle;    
+}
+
+@include base-input(
+    $border-color: #797979,
+    $border-width: 2px,
+    $margin: 2px 0 0 0,
+    $hover-border: 2px solid #A5A5A5,
+    $hover-background-color: #0C0C0C
+    );
+
+.toggleInputLabel {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    margin-top: -3px;
+    margin-left: 6px;
+
+    display: inline-block;
+    vertical-align: middle;
+}
