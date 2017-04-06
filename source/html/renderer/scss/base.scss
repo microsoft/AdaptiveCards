@@ -280,7 +280,7 @@
 @mixin base-actions(
     $card-container-background-color: #F8F8F8,
     $card-container-margin: 16px -20px 0 -20px, 
-    $card-container-padding: 16px -20px 0 -20px, 
+    $card-container-padding: 16px 20px 16px 20px, 
     $button-spacing: 10px, 
     $button-strip: true,
     $item-flex-basis: auto

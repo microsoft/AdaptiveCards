@@ -250,7 +250,7 @@ td.factValue {
 
 .actionCardContainer {
   margin: 16px -20px 0 -20px;
-  padding: 16px -20px 0 -20px;
+  padding: 16px 20px 16px 20px;
   background-color: #F8F8F8;
 }
 
