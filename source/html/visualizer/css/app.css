@@ -7,6 +7,22 @@ body {
     padding: 0;
 }
 
+.popupOverlay {
+    background-color: rgba(0, 0, 0, 0.1);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 100000;
+}
+
+.popupCardContainer {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 0 15px -5px rgba(0,0,0,.4);
+    padding: 20px;
+    width: 300px;
+}
+
 .errorContainer {
     background-color: red;
     color: white;

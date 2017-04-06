@@ -9,17 +9,17 @@ export class JsonParser {
         action.title = json["title"];        
     }
 
-    private parseExternalAction(json: any, action: Adaptive.ActionExternal) {
+    private parseExternalAction(json: any, action: Adaptive.ExternalAction) {
         this.parseBaseAction(json, action);
     }
 
-    private parseActionOpenUrl(json: any, action: Adaptive.ActionOpenUrl) {
+    private parseActionOpenUrl(json: any, action: Adaptive.OpenUrlAction) {
         this.parseExternalAction(json, action);
 
         action.url = json["url"];
     }
 
-    private parseActionHttp(json: any, action: Adaptive.ActionHttp) {
+    private parseActionHttp(json: any, action: Adaptive.HttpAction) {
         this.parseExternalAction(json, action);
         
         action.url = json["url"];
@@ -40,16 +40,14 @@ export class JsonParser {
         }
     }
 
-    private parseActionSubmit(json: any, action: Adaptive.ActionSubmit) {
+    private parseActionSubmit(json: any, action: Adaptive.SubmitAction) {
         this.parseExternalAction(json, action);
 
         action.data = json["data"];
     }
 
-    private parseActionShowCard(json: any, action: Adaptive.ActionShowCard) {
+    private parseActionShowCard(json: any, action: Adaptive.ShowCardAction) {
         this.parseBaseAction(json, action);
-        
-        action.card.actionButtonStyle = Enums.ActionButtonStyle.Push;
         
         var s: string[] =  [];
 
@@ -65,24 +63,24 @@ export class JsonParser {
         var actionType = json["type"];
 
         switch (actionType) {
-            case Adaptive.ActionOpenUrl.TypeName:
-                result = new Adaptive.ActionOpenUrl();
-                this.parseActionOpenUrl(json, <Adaptive.ActionOpenUrl>result);
+            case Adaptive.OpenUrlAction.TypeName:
+                result = new Adaptive.OpenUrlAction();
+                this.parseActionOpenUrl(json, <Adaptive.OpenUrlAction>result);
 
                 break;
-            case Adaptive.ActionHttp.TypeName:
-                result = new Adaptive.ActionHttp();
-                this.parseActionHttp(json, <Adaptive.ActionHttp>result);
+            case Adaptive.HttpAction.TypeName:
+                result = new Adaptive.HttpAction();
+                this.parseActionHttp(json, <Adaptive.HttpAction>result);
 
                 break;
-            case Adaptive.ActionSubmit.TypeName:
-                result = new Adaptive.ActionSubmit();
-                this.parseActionSubmit(json, <Adaptive.ActionSubmit>result);
+            case Adaptive.SubmitAction.TypeName:
+                result = new Adaptive.SubmitAction();
+                this.parseActionSubmit(json, <Adaptive.SubmitAction>result);
 
                 break;
-            case Adaptive.ActionShowCard.TypeName:
-                result = new Adaptive.ActionShowCard();
-                this.parseActionShowCard(json, <Adaptive.ActionShowCard>result);
+            case Adaptive.ShowCardAction.TypeName:
+                result = new Adaptive.ShowCardAction();
+                this.parseActionShowCard(json, <Adaptive.ShowCardAction>result);
 
                 break;
             default:
@@ -107,6 +105,7 @@ export class JsonParser {
         textBlock.color = Enums.stringToTextColor(json["color"], null);
         textBlock.isSubtle = json["isSubtle"];
         textBlock.wrap = json["wrap"];
+        textBlock.maxLines = json["maxLines"];
     }
 
     private parseImage(json: any, image: Adaptive.Image) {
@@ -119,7 +118,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            image.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson);
+            image.selectAction = <Adaptive.ExternalAction>this.createAction(selectActionJson);
         }
     }
 
@@ -137,7 +136,7 @@ export class JsonParser {
                 image.size = imageSet.imageSize;
                 image.url = jsonImages[i]["url"];
 
-                imageSet.images.push(image);
+                imageSet.addImage(image);
             }
         }
     }
@@ -204,7 +203,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            container.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson);
+            container.selectAction = <Adaptive.ExternalAction>this.createAction(selectActionJson);
         }
     }
 
@@ -236,7 +235,7 @@ export class JsonParser {
 
                 this.parseColumn(jsonColumns[i], column);
 
-                columnSet.columns.push(column);
+                columnSet.addColumn(column);
             }
         }
     }
@@ -248,7 +247,7 @@ export class JsonParser {
         input.defaultValue = json["value"];
     }
 
-    private parseInputText(json: any, input: Adaptive.InputText) {
+    private parseInputText(json: any, input: Adaptive.TextInput) {
         this.parseInput(json, input);
 
         input.maxLength = json["maxLength"];
@@ -256,22 +255,22 @@ export class JsonParser {
         input.placeholder = json["placeholder"];
     }
 
-    private parseInputNumber(json: any, input: Adaptive.InputNumber) {
+    private parseInputNumber(json: any, input: Adaptive.NumberInput) {
         this.parseInput(json, input);
 
         input.min = json["min"];
         input.max = json["max"];
     }
 
-    private parseInputDate(json: any, input: Adaptive.InputDate) {
+    private parseInputDate(json: any, input: Adaptive.DateInput) {
         this.parseInput(json, input);
     }
 
-    private parseInputTime(json: any, input: Adaptive.InputTime) {
+    private parseInputTime(json: any, input: Adaptive.TimeInput) {
         this.parseInput(json, input);
     }
 
-    private parseInputToggle(json: any, input: Adaptive.InputToggle) {
+    private parseInputToggle(json: any, input: Adaptive.ToggleInput) {
         this.parseInput(json, input);
 
         input.title = json["title"];
@@ -279,7 +278,7 @@ export class JsonParser {
         input.valueOff = json["valueOff"];
     }
 
-    private parseInputChoiceSet(json: any, input: Adaptive.InputChoiceSet) {
+    private parseInputChoiceSet(json: any, input: Adaptive.ChoiceSetInput) {
         this.parseInput(json, input);
 
         input.isCompact = !(json["style"] === "expanded");
@@ -341,34 +340,34 @@ export class JsonParser {
                     <Adaptive.ColumnSet>result);
 
                 break;
-            case Adaptive.InputText.TypeName:
-                result = new Adaptive.InputText();
-                this.parseInputText(json, <Adaptive.InputText>result);
+            case Adaptive.TextInput.TypeName:
+                result = new Adaptive.TextInput();
+                this.parseInputText(json, <Adaptive.TextInput>result);
 
                 break;
-            case Adaptive.InputNumber.TypeName:
-                result = new Adaptive.InputNumber();
-                this.parseInputNumber(json, <Adaptive.InputNumber>result);
+            case Adaptive.NumberInput.TypeName:
+                result = new Adaptive.NumberInput();
+                this.parseInputNumber(json, <Adaptive.NumberInput>result);
 
                 break;
-            case Adaptive.InputDate.TypeName:
-                result = new Adaptive.InputDate();
-                this.parseInputDate(json, <Adaptive.InputDate>result);
+            case Adaptive.DateInput.TypeName:
+                result = new Adaptive.DateInput();
+                this.parseInputDate(json, <Adaptive.DateInput>result);
 
                 break;
-            case Adaptive.InputTime.TypeName:
-                result = new Adaptive.InputTime();
-                this.parseInputTime(json, <Adaptive.InputTime>result);
+            case Adaptive.TimeInput.TypeName:
+                result = new Adaptive.TimeInput();
+                this.parseInputTime(json, <Adaptive.TimeInput>result);
 
                 break;
-            case Adaptive.InputToggle.TypeName:
-                result = new Adaptive.InputToggle();
-                this.parseInputToggle(json, <Adaptive.InputToggle>result);
+            case Adaptive.ToggleInput.TypeName:
+                result = new Adaptive.ToggleInput();
+                this.parseInputToggle(json, <Adaptive.ToggleInput>result);
 
                 break;
-            case Adaptive.InputChoiceSet.TypeName:
-                result = new Adaptive.InputChoiceSet();
-                this.parseInputChoiceSet(json, <Adaptive.InputChoiceSet>result);
+            case Adaptive.ChoiceSetInput.TypeName:
+                result = new Adaptive.ChoiceSetInput();
+                this.parseInputChoiceSet(json, <Adaptive.ChoiceSetInput>result);
 
                 break;
             default:
@@ -381,9 +380,9 @@ export class JsonParser {
     parse(json: any): Adaptive.AdaptiveCard {
         var cardTypeName = json["type"];
 
-        if (cardTypeName != "AdaptiveCard" && Adaptive.AdaptiveCard.onRenderError) {
-            Adaptive.AdaptiveCard.onRenderError(
-                Enums.RenderError.MissingCardType,
+        if (cardTypeName != "AdaptiveCard" && Adaptive.AdaptiveCard.onValidationError) {
+            Adaptive.AdaptiveCard.onValidationError(
+                Enums.ValidationError.MissingCardType,
                 "Invalid card type. Make sure the card's type property is set to \"AdaptiveCard\".");
         }
 
