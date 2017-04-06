@@ -31,113 +31,13 @@ namespace AdaptiveCards.Rendering
             this.missingDataCallback = missingDataCallback;
         }
 
-#if WPF
-        public XamlRenderer(RenderOptions options,
-            string stylePath,
-            Action<object, ActionEventArgs> actionCallback = null,
-            Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(options)
-        {
-            this.StylePath = stylePath;
-            this.actionCallback = actionCallback;
-            this.missingDataCallback = missingDataCallback;
-        }
-#endif
 
         public CardStyling DefaultStyling { get; set; } = new CardStyling();
 
         /// <summary>
         /// Resource dictionary to use when rendering
         /// </summary>
-        private ResourceDictionary _resources;
-        public ResourceDictionary Resources
-        {
-            get
-            {
-                if (_resources != null)
-                    return _resources;
-
-#if WPF
-                using (var styleStream = File.OpenRead(this.StylePath))
-                {
-                    _resources = (ResourceDictionary)XamlReader.Load(styleStream);
-                }
-#elif XAMARIN
-                // TODO
-#endif
-                return _resources;
-            }
-            set
-            {
-                this._resources = value;
-            }
-        }
-
-        /// <summary>
-        /// Path to Xaml resource dictionary
-        /// </summary>
-        private string _stylePath;
-        public string StylePath
-        {
-            get { return _stylePath; }
-            set
-            {
-                this._stylePath = value;
-                this._resources = null;
-            }
-        }
-
-
-#if WPF
-        /// <summary>
-        /// AdaptiveCard
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
-        {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
-            {
-                Styling = styling ?? this.DefaultStyling
-            };
-            return Render(card, context);
-        }
-
-        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
-        {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
-            {
-                Styling = styling ?? this.DefaultStyling
-            };
-
-            return Render(showCard.Card, context);
-        }
-
-#elif XAMARIN
-        /// <summary>
-        /// AdaptiveCard
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public View RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
-        {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
-            {
-                Styling = styling ?? this.DefaultStyling
-            };
-            return Render(card, context);
-        }
-
-        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
-        {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
-            {
-                Styling = styling ?? this.DefaultStyling
-            };
-            return Render(showCard.Card, context);
-        }
-
-#endif
+        public ResourceDictionary Resources { get; set; }
 
         public virtual Style GetStyle(string styleName)
         {

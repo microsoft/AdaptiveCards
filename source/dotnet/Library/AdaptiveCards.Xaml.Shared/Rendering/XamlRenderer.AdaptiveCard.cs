@@ -32,7 +32,7 @@ namespace AdaptiveCards.Rendering
 #if WPF
                 if (card.BackgroundImage != null)
                 {
-                    outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
+                    outerGrid.Background = new ImageBrush(context.ResolveBitmapImage(card.BackgroundImage));
                 }
 #elif XAMARIN
                 if (card.BackgroundImage != null)

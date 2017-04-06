@@ -30,7 +30,7 @@ namespace AdaptiveCards.Rendering
                     textBox.TextWrapping = TextWrapping.Wrap;
                     textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
 #elif XAMARIN 
-                    // TODO 
+
 #endif
                 }
 #if WPF

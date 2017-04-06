@@ -21,7 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.FactSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ImageSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.CardElement.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.Image.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.InputChoiceSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.InputDate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.InputNumber.cs" />
