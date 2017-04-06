@@ -63,7 +63,11 @@ namespace WpfVisualizer
 
                         _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
                     }
-                    var renderer = new XamlRendererExtended(new RendererOptions(), this.Resources, _onAction, _OnMissingInput);
+
+                    var options = new RendererOptions();
+                    //options.AdaptiveCard.ActionsOrientation = ActionsOrientation.Horizontal;  
+
+                    var renderer = new XamlRendererExtended(options, this.Resources, _onAction, _OnMissingInput);
                     var element = renderer.RenderAdaptiveCard(_card);
                     this.cardGrid.Children.Clear();
                     this.cardGrid.Children.Add(element);
