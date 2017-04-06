@@ -51,7 +51,13 @@ export enum ValidationError {
     ElementTypeNotAllowed,
     ActionTypeNotAllowed,
     NestedActionNotAllowed,
+    InteractivityNotAllowed,
     TooManyActions
+}
+
+export enum ShowCardActionMode {
+    Inline,
+    Popup
 }
 
 export function stringToSize(value: string, defaultValue: Size): Size {

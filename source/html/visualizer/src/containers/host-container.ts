@@ -5,79 +5,43 @@ import * as vkbeautify from "vkbeautify";
 declare var SpeechSynthesisUtterance: any;
 
 export abstract class HostContainer {
-    readonly styleSheet: string;
-
-    supportsActionBar: boolean = false;
-
-    constructor(styleSheet: string) {
-        this.styleSheet = styleSheet;
-    }
-
-    applyOptions() {
-        // Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
-        Adaptive.AdaptiveCard.renderOptions.defaultTextColor = Adaptive.TextColor.Dark;
-    }
-
-    render(card: Adaptive.AdaptiveCard, showXml: boolean = false): HTMLElement {
-        // speech visualizer
-        let element = document.createElement("div");
-        element.className = "speechContainer";
-
-        let button = document.createElement("button");
-        button.className = "button";
-        button.innerText = "Speak this card";
-
-        let t = document.createTextNode("Speak");
-        let text = card.renderSpeech();
-        let output = new Array<any>();
-
-        if (text[0] == '<') {
-            if (text.indexOf("<speak") != 0) {
-                text = '<speak>\n' + text + '\n</speak>\n';
+    private static playNextTTS(output: any[], iCurrent: number) {
+        if (iCurrent < output.length) {
+            let current = output[iCurrent];
+            if (typeof current === "number") {
+                setTimeout(() => {
+                    HostContainer.playNextTTS(output, iCurrent + 1);
+                }, current);
+            } else {
+                if (current.indexOf("http") == 0) {
+                    let audio: any = document.getElementById('player');
+                    audio.src = current;
+                    audio.onended = () => {
+                        HostContainer.playNextTTS(output, iCurrent + 1);
+                    };
+                    audio.onerror = () => {
+                        HostContainer.playNextTTS(output, iCurrent + 1);
+                    };
+                    audio.play();
+                } else {
+                    let msg = new SpeechSynthesisUtterance();
+                    //msg.voiceURI = 'native';
+                    // msg.volume = 1; // 0 to 1
+                    // msg.rate = 1; // 0.1 to 10
+                    // msg.pitch = 2; //0 to 2
+                    msg.text = current;
+                    msg.lang = 'en-US';
+                    msg.onerror = (event) => {
+                        HostContainer.playNextTTS(output, iCurrent + 1);
+                    };
+                    msg.onend = (event) => {
+                        HostContainer.playNextTTS(output, iCurrent + 1);
+                    };
+                    (<any>window).speechSynthesis.speak(msg);
+                }
             }
-
-            let parser = new DOMParser();
-            let dom = parser.parseFromString(text, "text/xml");
-            let nodes = dom.documentElement.childNodes;
-
-            this.processNodes(nodes, output);
-
-            let serializer = new XMLSerializer();
-            
-            text = vkbeautify.xml(serializer.serializeToString(dom));;
         }
-        else {
-            output.push(text);
-            text = vkbeautify.xml(text);
-        }
-
-        // button.appendChild(t);
-        button.addEventListener("click", function () {
-            HostContainer.playNextTTS(output, 0);
-        });
-
-        Utils.appendChild(element, document.createElement("br"));
-        Utils.appendChild(element, document.createElement("br"));
-        // Utils.appendChild(element, document.createElement("hr"));
-        
-        Utils.appendChild(element, button);
-
-        if (showXml) {
-            let pre = document.createElement("pre");
-            Utils.appendChild(pre, document.createTextNode(text));
-            Utils.appendChild(element, pre);
-        }
-
-        //appendChild(pre, document.createTextNode(text));
-        let audio = document.createElement("audio");
-        audio.id = 'player';
-        audio.autoplay = true;
-
-        Utils.appendChild(element, audio);
-
-        return element;
     }
-
 
     // process SSML markup into an array of either 
     // * utterenance
@@ -123,42 +87,89 @@ export abstract class HostContainer {
         }
     }
 
-    static playNextTTS(output: any[], iCurrent: number) {
-        if (iCurrent < output.length) {
-            let current = output[iCurrent];
-            if (typeof current === "number") {
-                setTimeout(() => {
-                    HostContainer.playNextTTS(output, iCurrent + 1);
-                }, current);
-            } else {
-                if (current.indexOf("http") == 0) {
-                    let audio: any = document.getElementById('player');
-                    audio.src = current;
-                    audio.onended = () => {
-                        HostContainer.playNextTTS(output, iCurrent + 1);
-                    };
-                    audio.onerror = () => {
-                        HostContainer.playNextTTS(output, iCurrent + 1);
-                    };
-                    audio.play();
-                } else {
-                    let msg = new SpeechSynthesisUtterance();
-                    //msg.voiceURI = 'native';
-                    // msg.volume = 1; // 0 to 1
-                    // msg.rate = 1; // 0.1 to 10
-                    // msg.pitch = 2; //0 to 2
-                    msg.text = current;
-                    msg.lang = 'en-US';
-                    msg.onerror = (event) => {
-                        HostContainer.playNextTTS(output, iCurrent + 1);
-                    };
-                    msg.onend = (event) => {
-                        HostContainer.playNextTTS(output, iCurrent + 1);
-                    };
-                    (<any>window).speechSynthesis.speak(msg);
-                }
+    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+        return null;
+    }
+
+    protected renderSpeech(speechString: string, showXml: boolean = false): HTMLElement {
+        var element = document.createElement("div");
+
+        var button = document.createElement("button");
+        button.className = "button";
+        button.innerText = "Speak this card";
+
+        var t = document.createTextNode("Speak");
+        var output = new Array<any>();
+
+        if (speechString[0] == '<') {
+            if (speechString.indexOf("<speak") != 0) {
+                speechString = '<speak>\n' + speechString + '\n</speak>\n';
             }
+
+            var parser = new DOMParser();
+            var dom = parser.parseFromString(speechString, "text/xml");
+            var nodes = dom.documentElement.childNodes;
+
+            this.processNodes(nodes, output);
+
+            var serializer = new XMLSerializer();
+            
+            speechString = vkbeautify.xml(serializer.serializeToString(dom));;
         }
+        else {
+            output.push(speechString);
+            speechString = vkbeautify.xml(speechString);
+        }
+
+        button.addEventListener("click", function () {
+            HostContainer.playNextTTS(output, 0);
+        });
+
+        Utils.appendChild(element, button);
+
+        if (showXml) {
+            let pre = document.createElement("pre");
+            Utils.appendChild(pre, document.createTextNode(speechString));
+            Utils.appendChild(element, pre);
+        }
+
+        var audio = document.createElement("audio");
+        audio.id = 'player';
+        audio.autoplay = true;
+
+        Utils.appendChild(element, audio);
+
+        return element;
+    }
+
+    readonly styleSheet: string;
+
+    supportsActionBar: boolean = false;
+
+    constructor(styleSheet: string) {
+        this.styleSheet = styleSheet;
+    }
+
+    applyOptions() {
+        Adaptive.AdaptiveCard.renderOptions.defaultTextColor = Adaptive.TextColor.Dark;
+    }
+
+    render(renderedCard: HTMLElement, speechString: string, showSpeechXml: boolean = false): HTMLElement {
+        var element = document.createElement("div");
+        var renderedContainer = this.renderContainer(renderedCard);
+
+        if (renderedContainer) {
+            element.appendChild(renderedContainer);
+
+            var separator = document.createElement("div");
+            separator.style.height = "20px";
+
+            element.appendChild(separator);
+        }
+
+        element.appendChild(this.renderSpeech(speechString));
+
+        return element;
     }
 }
 

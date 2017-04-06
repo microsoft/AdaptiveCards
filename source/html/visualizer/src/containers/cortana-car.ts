@@ -6,27 +6,24 @@ export class CortanaCarContainer extends HostContainer {
     applyOptions() {
         super.applyOptions();
         
-        Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = true;
+        Adaptive.AdaptiveCard.renderOptions.showCardActionMode = Adaptive.ShowCardActionMode.Popup;
     }
 
-    render(card: Adaptive.AdaptiveCard): HTMLElement {
-        let element = document.createElement("div");
-        
-        let renderedCard = card.render();
-
-        let imgDiv = document.createElement("div");
+    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+        var element = document.createElement("div");        
+        var imgDiv = document.createElement("div");
         imgDiv.classList.add("title");
         
-        let img = document.createElement("img");
+        var img = document.createElement("img");
         img.classList.add("image", "cortanaLogo");
         img.src = "assets/cortana-logo.png";
-        Utils.appendChild(imgDiv, img);
+
+        imgDiv.appendChild(img);
+
         renderedCard.insertBefore(imgDiv, renderedCard.firstChild);
 
-        Utils.appendChild(element, renderedCard);
-        let hostDiv = document.createElement("div");
-        Utils.appendChild(hostDiv, element);
-        Utils.appendChild(hostDiv, super.render(card));
-        return hostDiv;
+        element.appendChild(renderedCard);
+
+        return element;
     }
 }

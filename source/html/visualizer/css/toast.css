@@ -276,11 +276,19 @@ td.factValue {
     user-select: none;
 }
 
-.pushButton:hover, .linkbutton:hover {
+.linkButton:hover {
     border: 2px solid #A9A9A9;
 }
 
-.pushButton:active, .linkbutton:active {
+.linkButton:active {
+    background-color: #828282;
+}
+
+.pushButton:hover {
+    border: 2px solid #A9A9A9;
+}
+
+.pushButton:active {
     background-color: #828282;
 }
 

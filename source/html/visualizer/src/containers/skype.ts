@@ -3,19 +3,12 @@ import * as Adaptive from "adaptive-cards";
 import * as Utils from "../utils";
 
 export class SkypeContainer extends HostContainer {
-    applyOptions() {
-        super.applyOptions();
-        
-        Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = true;
-        // Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
-    }
-
-    render(card: Adaptive.AdaptiveCard): HTMLElement {
-        let element = document.createElement("div");
+    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+        var element = document.createElement("div");
         element.className = "skypeContainer";
 
         // Draw the hexagon bot logo
-        let botElement = document.createElement("div");
+        var botElement = document.createElement("div");
         botElement.className = "hexagon";
 
         var botElementIn1 = document.createElement("div");
@@ -26,14 +19,15 @@ export class SkypeContainer extends HostContainer {
         botElementIn2.className = "hexagon-in2";
         botElementIn1.appendChild(botElementIn2);
 
-        //card.onAction = (action) => { alert(action.title);}
-        let renderedCard = card.render();
+        element.appendChild(botElement);
+        element.appendChild(renderedCard);
 
-        Utils.appendChild(element, botElement);
-        Utils.appendChild(element, renderedCard);
-        let hostDiv = document.createElement("div");
-        Utils.appendChild(hostDiv, element);
-        Utils.appendChild(hostDiv, super.render(card));
-        return hostDiv;
+        return element;
+    }
+
+    applyOptions() {
+        super.applyOptions();
+        
+        Adaptive.AdaptiveCard.renderOptions.showCardActionMode = Adaptive.ShowCardActionMode.Popup;
     }
 }

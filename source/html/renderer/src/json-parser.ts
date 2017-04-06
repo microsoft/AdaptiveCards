@@ -9,17 +9,17 @@ export class JsonParser {
         action.title = json["title"];        
     }
 
-    private parseExternalAction(json: any, action: Adaptive.ActionExternal) {
+    private parseExternalAction(json: any, action: Adaptive.ExternalAction) {
         this.parseBaseAction(json, action);
     }
 
-    private parseActionOpenUrl(json: any, action: Adaptive.ActionOpenUrl) {
+    private parseActionOpenUrl(json: any, action: Adaptive.OpenUrlAction) {
         this.parseExternalAction(json, action);
 
         action.url = json["url"];
     }
 
-    private parseActionHttp(json: any, action: Adaptive.ActionHttp) {
+    private parseActionHttp(json: any, action: Adaptive.HttpAction) {
         this.parseExternalAction(json, action);
         
         action.url = json["url"];
@@ -40,16 +40,14 @@ export class JsonParser {
         }
     }
 
-    private parseActionSubmit(json: any, action: Adaptive.ActionSubmit) {
+    private parseActionSubmit(json: any, action: Adaptive.SubmitAction) {
         this.parseExternalAction(json, action);
 
         action.data = json["data"];
     }
 
-    private parseActionShowCard(json: any, action: Adaptive.ActionShowCard) {
+    private parseActionShowCard(json: any, action: Adaptive.ShowCardAction) {
         this.parseBaseAction(json, action);
-        
-        // action.card.actionButtonStyle = Enums.ActionButtonStyle.Push;
         
         var s: string[] =  [];
 
@@ -65,24 +63,24 @@ export class JsonParser {
         var actionType = json["type"];
 
         switch (actionType) {
-            case Adaptive.ActionOpenUrl.TypeName:
-                result = new Adaptive.ActionOpenUrl();
-                this.parseActionOpenUrl(json, <Adaptive.ActionOpenUrl>result);
+            case Adaptive.OpenUrlAction.TypeName:
+                result = new Adaptive.OpenUrlAction();
+                this.parseActionOpenUrl(json, <Adaptive.OpenUrlAction>result);
 
                 break;
-            case Adaptive.ActionHttp.TypeName:
-                result = new Adaptive.ActionHttp();
-                this.parseActionHttp(json, <Adaptive.ActionHttp>result);
+            case Adaptive.HttpAction.TypeName:
+                result = new Adaptive.HttpAction();
+                this.parseActionHttp(json, <Adaptive.HttpAction>result);
 
                 break;
-            case Adaptive.ActionSubmit.TypeName:
-                result = new Adaptive.ActionSubmit();
-                this.parseActionSubmit(json, <Adaptive.ActionSubmit>result);
+            case Adaptive.SubmitAction.TypeName:
+                result = new Adaptive.SubmitAction();
+                this.parseActionSubmit(json, <Adaptive.SubmitAction>result);
 
                 break;
-            case Adaptive.ActionShowCard.TypeName:
-                result = new Adaptive.ActionShowCard();
-                this.parseActionShowCard(json, <Adaptive.ActionShowCard>result);
+            case Adaptive.ShowCardAction.TypeName:
+                result = new Adaptive.ShowCardAction();
+                this.parseActionShowCard(json, <Adaptive.ShowCardAction>result);
 
                 break;
             default:
@@ -120,7 +118,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            image.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson);
+            image.selectAction = <Adaptive.ExternalAction>this.createAction(selectActionJson);
         }
     }
 
@@ -205,7 +203,7 @@ export class JsonParser {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            container.selectAction = <Adaptive.ActionExternal>this.createAction(selectActionJson);
+            container.selectAction = <Adaptive.ExternalAction>this.createAction(selectActionJson);
         }
     }
 

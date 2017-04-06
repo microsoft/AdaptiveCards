@@ -20,39 +20,6 @@ let editor: ace.Editor;
 let hostContainerOptions: Array<HostContainerOption> = [];
 let hostContainerPicker: HTMLSelectElement;
 
-function actionExecuted(action: Adaptive.Action) {
-    
-    var message: string = "Action executed\n";
-    message += "    Title: " + action.title + "\n";
-
-    if (action instanceof Adaptive.ActionOpenUrl) {
-        message += "    Type: OpenUrl\n";
-        message += "    Url: " + (<Adaptive.ActionOpenUrl>action).url + "\n";
-    }
-    else if (action instanceof Adaptive.ActionSubmit) {
-        message += "    Type: Submit";
-        message += "    Data: " + JSON.stringify((<Adaptive.ActionSubmit>action).data);
-    }
-    else if (action instanceof Adaptive.ActionHttp) {
-        var httpAction = <Adaptive.ActionHttp>action;
-        message += "    Type: Http\n";
-        message += "    Url: " + httpAction.url + "\n";
-        message += "    Methid: " + httpAction.method + "\n";
-        message += "    Headers:\n";
-
-        for (var i = 0; i < httpAction.headers.length; i++) {
-            message += "        " + httpAction.headers[i].name + ": " + httpAction.headers[i].value + "\n";
-        }
-
-        message += "    Body: " + httpAction.body + "\n";
-    }
-    else {
-        message += "    Type: <unknown>";
-    }
-
-    alert(message);
-}
-
 function setContent(element) {
     let contentContainer = document.getElementById("content");
 
@@ -67,24 +34,12 @@ function renderCard(): HTMLElement {
     var jsonPayload = editor.getValue();
     var json = JSON.parse(jsonPayload);
 
-    var cardTypeName = json["type"];
-
     var jsonParser = new Adaptive.JsonParser();
     var adaptiveCard = jsonParser.parse(json);
 
-    var popupContainer = document.getElementById("popupCardContainer");
-
-    if (Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup) {
-        popupContainer.innerText = "ActionShowCard popups will appear in this box, according to container settings";
-        popupContainer.hidden = false;
-    }
-    else {
-        popupContainer.hidden = true;
-    }
-
     document.getElementById("errorContainer").hidden = true;
 
-    return hostContainer.render(adaptiveCard);
+    return hostContainer.render(adaptiveCard.render(), adaptiveCard.renderSpeech());
 }
 
 function tryRenderCard() {
@@ -298,15 +253,71 @@ function setupFilePicker() {
     document.getElementById("filePicker").addEventListener("change", filePickerChanged);
 }
 
-window.onload = () => {
-    Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
+function actionExecuted(action: Adaptive.Action) {
+    var message: string = "Action executed\n";
+    message += "    Title: " + action.title + "\n";
 
-    Adaptive.AdaptiveCard.onShowPopupCard = (action, element) => {
-        var popupContainer = document.getElementById("popupCardContainer");
-        popupContainer.innerHTML = "";
-        popupContainer.appendChild(action.card.render());
+    if (action instanceof Adaptive.OpenUrlAction) {
+        message += "    Type: OpenUrl\n";
+        message += "    Url: " + (<Adaptive.OpenUrlAction>action).url + "\n";
+    }
+    else if (action instanceof Adaptive.SubmitAction) {
+        message += "    Type: Submit";
+        message += "    Data: " + JSON.stringify((<Adaptive.SubmitAction>action).data);
+    }
+    else if (action instanceof Adaptive.HttpAction) {
+        var httpAction = <Adaptive.HttpAction>action;
+        message += "    Type: Http\n";
+        message += "    Url: " + httpAction.url + "\n";
+        message += "    Methid: " + httpAction.method + "\n";
+        message += "    Headers:\n";
+
+        for (var i = 0; i < httpAction.headers.length; i++) {
+            message += "        " + httpAction.headers[i].name + ": " + httpAction.headers[i].value + "\n";
+        }
+
+        message += "    Body: " + httpAction.body + "\n";
+    }
+    else {
+        message += "    Type: <unknown>";
     }
 
+    alert(message);
+}
+
+function showPopupCard(action: Adaptive.ShowCardAction) {
+    var overlayElement = document.createElement("div");
+    overlayElement.id = "popupOverlay";
+    overlayElement.className = "popupOverlay";
+    overlayElement.tabIndex = 0;
+    overlayElement.style.width = document.documentElement.scrollWidth + "px";
+    overlayElement.style.height = document.documentElement.scrollHeight + "px";
+    overlayElement.onclick = (e) => {
+        document.body.removeChild(overlayElement);
+    };
+
+    var cardContainer = document.createElement("div");
+    cardContainer.className = "popupCardContainer";
+    cardContainer.onclick = (e) => { e.stopPropagation() };
+
+    var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    hostContainer.applyOptions();
+
+    cardContainer.appendChild(hostContainer.render(action.card.render(), action.card.renderSpeech()));
+
+    overlayElement.appendChild(cardContainer);
+
+    document.body.appendChild(overlayElement);
+
+    var cardContainerBounds = cardContainer.getBoundingClientRect();
+    cardContainer.style.left = (window.innerWidth - cardContainerBounds.width) / 2 + "px";
+    cardContainer.style.top = (window.innerHeight - cardContainerBounds.height) / 2 + "px";
+}
+
+window.onload = () => {
+    Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
+    Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
+    
     Adaptive.AdaptiveCard.onValidationError = (error, message) => {
         var errorContainer = document.getElementById("errorContainer");
         errorContainer.innerText = message;
