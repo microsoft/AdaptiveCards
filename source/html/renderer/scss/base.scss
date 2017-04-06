@@ -283,11 +283,12 @@
     $card-container-padding: 16px 20px 16px 20px, 
     $button-spacing: 10px, 
     $button-strip: true,
-    $item-flex-basis: auto
+    $item-flex-basis: auto,
+    $margin: 20px 0 0 0
     ) {
 
     .actionGroup {
-        margin: 20px 0 0 0;
+        margin: $margin;
     }
 
     .actionCardContainer {
