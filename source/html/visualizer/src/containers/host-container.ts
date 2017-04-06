@@ -14,7 +14,7 @@ export abstract class HostContainer {
     }
 
     applyOptions() {
-        Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
+        // Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Link;
         Adaptive.AdaptiveCard.renderOptions.defaultTextColor = Adaptive.TextColor.Dark;
     }
 

@@ -49,7 +49,7 @@ export class JsonParser {
     private parseActionShowCard(json: any, action: Adaptive.ActionShowCard) {
         this.parseBaseAction(json, action);
         
-        action.card.actionButtonStyle = Enums.ActionButtonStyle.Push;
+        // action.card.actionButtonStyle = Enums.ActionButtonStyle.Push;
         
         var s: string[] =  [];
 
@@ -107,6 +107,7 @@ export class JsonParser {
         textBlock.color = Enums.stringToTextColor(json["color"], null);
         textBlock.isSubtle = json["isSubtle"];
         textBlock.wrap = json["wrap"];
+        textBlock.maxLines = json["maxLines"];
     }
 
     private parseImage(json: any, image: Adaptive.Image) {
@@ -137,7 +138,7 @@ export class JsonParser {
                 image.size = imageSet.imageSize;
                 image.url = jsonImages[i]["url"];
 
-                imageSet.images.push(image);
+                imageSet.addImage(image);
             }
         }
     }
@@ -236,7 +237,7 @@ export class JsonParser {
 
                 this.parseColumn(jsonColumns[i], column);
 
-                columnSet.columns.push(column);
+                columnSet.addColumn(column);
             }
         }
     }
@@ -248,7 +249,7 @@ export class JsonParser {
         input.defaultValue = json["value"];
     }
 
-    private parseInputText(json: any, input: Adaptive.InputText) {
+    private parseInputText(json: any, input: Adaptive.TextInput) {
         this.parseInput(json, input);
 
         input.maxLength = json["maxLength"];
@@ -256,22 +257,22 @@ export class JsonParser {
         input.placeholder = json["placeholder"];
     }
 
-    private parseInputNumber(json: any, input: Adaptive.InputNumber) {
+    private parseInputNumber(json: any, input: Adaptive.NumberInput) {
         this.parseInput(json, input);
 
         input.min = json["min"];
         input.max = json["max"];
     }
 
-    private parseInputDate(json: any, input: Adaptive.InputDate) {
+    private parseInputDate(json: any, input: Adaptive.DateInput) {
         this.parseInput(json, input);
     }
 
-    private parseInputTime(json: any, input: Adaptive.InputTime) {
+    private parseInputTime(json: any, input: Adaptive.TimeInput) {
         this.parseInput(json, input);
     }
 
-    private parseInputToggle(json: any, input: Adaptive.InputToggle) {
+    private parseInputToggle(json: any, input: Adaptive.ToggleInput) {
         this.parseInput(json, input);
 
         input.title = json["title"];
@@ -279,7 +280,7 @@ export class JsonParser {
         input.valueOff = json["valueOff"];
     }
 
-    private parseInputChoiceSet(json: any, input: Adaptive.InputChoiceSet) {
+    private parseInputChoiceSet(json: any, input: Adaptive.ChoiceSetInput) {
         this.parseInput(json, input);
 
         input.isCompact = !(json["style"] === "expanded");
@@ -341,34 +342,34 @@ export class JsonParser {
                     <Adaptive.ColumnSet>result);
 
                 break;
-            case Adaptive.InputText.TypeName:
-                result = new Adaptive.InputText();
-                this.parseInputText(json, <Adaptive.InputText>result);
+            case Adaptive.TextInput.TypeName:
+                result = new Adaptive.TextInput();
+                this.parseInputText(json, <Adaptive.TextInput>result);
 
                 break;
-            case Adaptive.InputNumber.TypeName:
-                result = new Adaptive.InputNumber();
-                this.parseInputNumber(json, <Adaptive.InputNumber>result);
+            case Adaptive.NumberInput.TypeName:
+                result = new Adaptive.NumberInput();
+                this.parseInputNumber(json, <Adaptive.NumberInput>result);
 
                 break;
-            case Adaptive.InputDate.TypeName:
-                result = new Adaptive.InputDate();
-                this.parseInputDate(json, <Adaptive.InputDate>result);
+            case Adaptive.DateInput.TypeName:
+                result = new Adaptive.DateInput();
+                this.parseInputDate(json, <Adaptive.DateInput>result);
 
                 break;
-            case Adaptive.InputTime.TypeName:
-                result = new Adaptive.InputTime();
-                this.parseInputTime(json, <Adaptive.InputTime>result);
+            case Adaptive.TimeInput.TypeName:
+                result = new Adaptive.TimeInput();
+                this.parseInputTime(json, <Adaptive.TimeInput>result);
 
                 break;
-            case Adaptive.InputToggle.TypeName:
-                result = new Adaptive.InputToggle();
-                this.parseInputToggle(json, <Adaptive.InputToggle>result);
+            case Adaptive.ToggleInput.TypeName:
+                result = new Adaptive.ToggleInput();
+                this.parseInputToggle(json, <Adaptive.ToggleInput>result);
 
                 break;
-            case Adaptive.InputChoiceSet.TypeName:
-                result = new Adaptive.InputChoiceSet();
-                this.parseInputChoiceSet(json, <Adaptive.InputChoiceSet>result);
+            case Adaptive.ChoiceSetInput.TypeName:
+                result = new Adaptive.ChoiceSetInput();
+                this.parseInputChoiceSet(json, <Adaptive.ChoiceSetInput>result);
 
                 break;
             default:
@@ -381,9 +382,9 @@ export class JsonParser {
     parse(json: any): Adaptive.AdaptiveCard {
         var cardTypeName = json["type"];
 
-        if (cardTypeName != "AdaptiveCard" && Adaptive.AdaptiveCard.onRenderError) {
-            Adaptive.AdaptiveCard.onRenderError(
-                Enums.RenderError.MissingCardType,
+        if (cardTypeName != "AdaptiveCard" && Adaptive.AdaptiveCard.onValidationError) {
+            Adaptive.AdaptiveCard.onValidationError(
+                Enums.ValidationError.MissingCardType,
                 "Invalid card type. Make sure the card's type property is set to \"AdaptiveCard\".");
         }
 

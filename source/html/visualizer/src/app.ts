@@ -307,7 +307,7 @@ window.onload = () => {
         popupContainer.appendChild(action.card.render());
     }
 
-    Adaptive.AdaptiveCard.onRenderError = (error, message) => {
+    Adaptive.AdaptiveCard.onValidationError = (error, message) => {
         var errorContainer = document.getElementById("errorContainer");
         errorContainer.innerText = message;
         errorContainer.hidden = false;

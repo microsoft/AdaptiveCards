@@ -18,7 +18,7 @@ export class ToastContainer extends HostContainer {
         super.applyOptions();
         
         Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = false;
-        Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
+        // Adaptive.AdaptiveCard.renderOptions.defaultActionButtonStyle = Adaptive.ActionButtonStyle.Push;
         Adaptive.AdaptiveCard.renderOptions.defaultTextColor = Adaptive.TextColor.Light;
     }
 
