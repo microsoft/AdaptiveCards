@@ -247,8 +247,8 @@ td.factValue {
 
 .buttonStripItem {
   -webkit-box-flex: 0;
-      -ms-flex: 0 1 auto;
-          flex: 0 1 auto;
+      -ms-flex: 0 1 100%;
+          flex: 0 1 100%;
   white-space: nowrap;
   overflow: hidden;
 }

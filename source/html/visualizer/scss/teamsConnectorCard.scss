@@ -30,7 +30,11 @@
 
 @include base-column($group-margin: 20px 0 0 0);
 
-@include base-actions($card-container-padding: 16px 20px 16px 20px, $button-spacing: 8px);
+@include base-actions(
+    $card-container-padding: 16px 20px 16px 20px, 
+    $button-spacing: 8px,
+    $item-flex-basis: 100%
+    );
 
 @include base-push-button();
 
