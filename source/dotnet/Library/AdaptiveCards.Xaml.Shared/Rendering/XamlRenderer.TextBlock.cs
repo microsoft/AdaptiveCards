@@ -79,7 +79,7 @@ namespace AdaptiveCards.Rendering
                     uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Dark);
                     break;
                 case TextColor.Default:
-                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Default);
+                    uiTextBlock.Foreground = GetColorBrush(context.Options.AdaptiveCard.TextColor);
                     break;
                 case TextColor.Good:
                     uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Good);

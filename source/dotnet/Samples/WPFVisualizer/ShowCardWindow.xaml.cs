@@ -43,10 +43,7 @@ namespace WpfVisualizer
             }
             else if (e.Action is AC.ActionShowCard)
             {
-                AC.ActionShowCard action = (AC.ActionShowCard)e.Action;
-                ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this._resources);
-                dialog.Owner = this;
-                dialog.ShowDialog();
+                MessageBox.Show("Action.ShowCard is not alloed from within a sub-card");
             }
             else if (e.Action is AC.ActionSubmit)
             {

@@ -149,7 +149,7 @@ namespace AdaptiveCards.Rendering
                 styleName = styleName.Substring(0, iPos);
             }
 
-            Debug.WriteLine($"Unable to find Style {styleName} from the supplied ResourceDictionary");
+            // Debug.WriteLine($"Unable to find Style {styleName} from the supplied ResourceDictionary");
             return null;
         }
     }
