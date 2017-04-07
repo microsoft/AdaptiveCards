@@ -57,6 +57,14 @@ namespace WpfVisualizer
 
         public XamlRendererExtended Renderer { get; set; }
 
+        public RendererOptions Options
+        {
+            get
+            {
+                return JsonConvert.DeserializeObject<RendererOptions>(JsonConvert.SerializeObject(this.options.SelectedObject));
+            }
+        }
+
         private void _timer_Tick(object sender, EventArgs e)
         {
             if (_dirty)
@@ -81,8 +89,7 @@ namespace WpfVisualizer
                     this.cardGrid.Children.Clear();
                     if (_card != null)
                     {
-                        var options = JsonConvert.DeserializeObject<RendererOptions>(JsonConvert.SerializeObject(this.options.SelectedObject));
-                        var element = this.Renderer.RenderAdaptiveCard(_card, styling: options);
+                        var element = this.Renderer.RenderAdaptiveCard(_card, styling: Options);
                         this.cardGrid.Children.Add(element);
                     }
                 }
@@ -176,10 +183,13 @@ namespace WpfVisualizer
             }
             else if (e.Action is AC.ActionShowCard)
             {
-                AC.ActionShowCard action = (AC.ActionShowCard)e.Action;
-                ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
-                dialog.Owner = this;
-                dialog.ShowDialog();
+                ActionShowCard action = (AC.ActionShowCard)e.Action;
+                if (Options.Actions.ShowCard.ActionMode == AC.Rendering.ShowCardActionMode.Popup)
+                {
+                    ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
+                    dialog.Owner = this;
+                    dialog.ShowDialog();
+                }
             }
             else if (e.Action is AC.ActionSubmit)
             {
@@ -315,7 +325,6 @@ namespace WpfVisualizer
 
         private void options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Debug.Print(e.PropertyName);
             _dirty = true;
         }
     }

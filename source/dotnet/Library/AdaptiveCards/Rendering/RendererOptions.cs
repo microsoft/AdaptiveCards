@@ -316,6 +316,21 @@ namespace AdaptiveCards.Rendering
         public ShowCardOptions() { }
 
         public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Popup;
+
+        /// <summary>
+        /// Background color for showcard area
+        /// </summary>
+        public string BackgroundColor { get; set; } = "#FFF8F8F8";
+
+        /// <summary>
+        /// margins for showcard when inline
+        /// </summary>
+        public int[] Margin { get; set; } = new int[] { 10 };
+
+        /// <summary>
+        /// Padding for showcard when inline
+        /// </summary>
+        public int[] Padding { get; set; } = new int[] { 10 };
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
