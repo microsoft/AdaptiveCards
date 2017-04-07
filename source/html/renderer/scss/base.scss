@@ -341,7 +341,7 @@
         padding: $padding;
         min-width: $min-width; 
         text-align: center;
-        vertical-align: middle;  
+        vertical-align: middle;
         cursor: default;
         background-color: $background-color;
         color: $color;    
@@ -384,7 +384,10 @@
     $hover-border: null,
     $hover-color: #005A9E,
     $padding: none,
-    $subdued: true
+    $min-width: null, 
+    $subdued: true,
+    $text-align: null,
+    $vertical-align: null
     ) {
 
     .linkButton {
@@ -396,6 +399,9 @@
         cursor: $cursor;
         border: $border;
         padding: $padding;
+        min-width: $min-width;
+        text-align: $text-align;
+        vertical-align: $vertical-align;
         color: $color;
         background-color: $background-color;
         user-select: none;
@@ -468,7 +474,6 @@
                 background-color: $hover-background-color;
             }
         }
-
     }
 
     .toggleInput {

@@ -43,8 +43,37 @@
 
 @include base-actions();
 
-@include base-push-button();
+@include base-push-button(
+    $background-color: #464646,
+    $border: 2px solid transparent,
+    $font-size: 15px,
+    $font-weight: 500,
+    $active-background-color: #828282,
+    $hover-background-color: null,
+    $hover-border: 2px solid #A9A9A9,
+    $min-width: null
+    );
 
-@include base-link-button();
+.linkButton {
+    @extend .pushButton;
+}
+
+// @include base-link-button(
+//     $background-color: #464646,
+//     $border: 2px solid transparent,
+//     $color: white,
+//     $cursor: default,
+//     $active-background-color: #828282,
+//     $active-color: null,
+//     $hover-border: 2px solid #A9A9A9,
+//     $hover-color: null,
+//     $font-size: 15px,
+//     $font-weight: 500,
+//     $min-width: null,
+//     $padding: 4px 10px 5px 10px,
+//     $text-align: center,
+//     $vertical-align: middle,
+//     $subdued: false
+//     );
 
 @include base-input();
