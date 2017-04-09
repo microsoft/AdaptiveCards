@@ -1,3 +1,6 @@
+@echo You need to be running in "DEVELOPER COMMAND PROMPT for 2017" for this script to work
+@pause
+
 erase /q bin\*.*
 cd Library/AdaptiveCards
 call createpackage
@@ -7,4 +10,6 @@ cd ..\AdaptiveCards.Xaml.Wpf
 call createpackage
 cd ..\AdaptiveCards.Xaml.Wpf.RichInput
 call createpackage
-cd ..
+cd ../bin
+dir /b
+
