@@ -122,16 +122,3 @@ export class StringWithSubstitutions {
         this._isProcessed = false;
     }
 }
-
-export function substituteInputValues(o: any, inputs: Array<IInput>) {
-    for (var field in o) {
-        var fieldValue = o[field];
-
-        if (fieldValue instanceof StringWithSubstitutions) {
-            (<StringWithSubstitutions>fieldValue).substituteInputValues(inputs);
-        }
-        else if (typeof(fieldValue) == "object" && fieldValue) {
-            substituteInputValues(fieldValue, inputs);
-        }
-    }
-}

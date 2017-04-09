@@ -41,8 +41,8 @@ namespace WpfVisualizer
             _timer.Tick += _timer_Tick;
             _timer.Start();
 
-            this.Renderer = new XamlRendererExtended(new RendererOptions(), this.Resources, _onAction, _OnMissingInput);
-            var options = new RendererOptionsEx();
+            this.Renderer = new XamlRendererExtended(new HostOptions(), this.Resources, _onAction, _OnMissingInput);
+            var options = new HostOptionsEx();
             options.PropertyChanged += Options_PropertyChanged;
             this.options.SelectedObject = options;
 
@@ -56,6 +56,15 @@ namespace WpfVisualizer
         private DocumentLine errorLine;
 
         public XamlRendererExtended Renderer { get; set; }
+
+        public HostOptions Options
+        {
+            get
+            {
+                var json = JsonConvert.SerializeObject(this.options.SelectedObject);
+                return JsonConvert.DeserializeObject<HostOptions>(json);
+            }
+        }
 
         private void _timer_Tick(object sender, EventArgs e)
         {
@@ -81,8 +90,7 @@ namespace WpfVisualizer
                     this.cardGrid.Children.Clear();
                     if (_card != null)
                     {
-                        var options = JsonConvert.DeserializeObject<RendererOptions>(JsonConvert.SerializeObject(this.options.SelectedObject));
-                        var element = this.Renderer.RenderAdaptiveCard(_card, styling: options);
+                        var element = this.Renderer.RenderAdaptiveCard(_card, styling: Options);
                         this.cardGrid.Children.Add(element);
                     }
                 }
@@ -176,10 +184,13 @@ namespace WpfVisualizer
             }
             else if (e.Action is AC.ActionShowCard)
             {
-                AC.ActionShowCard action = (AC.ActionShowCard)e.Action;
-                ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
-                dialog.Owner = this;
-                dialog.ShowDialog();
+                ActionShowCard action = (AC.ActionShowCard)e.Action;
+                if (Options.Actions.ShowCard.ActionMode == AC.Rendering.ShowCardActionMode.Popup)
+                {
+                    ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
+                    dialog.Owner = this;
+                    dialog.ShowDialog();
+                }
             }
             else if (e.Action is AC.ActionSubmit)
             {
@@ -214,7 +225,7 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            var renderer = new ImageRenderer(new RendererOptions(), this.Resources);
+            var renderer = new ImageRenderer(new HostOptions(), this.Resources);
             var imageStream = renderer.RenderAdaptiveCard(this._card, 480);
             //#else
             //            var renderer = new ImageRenderer(new RenderOptions(), @"c:\source\intercom\Channels\FacebookChannel\Content\AdaptiveCardStyles.xaml");
@@ -315,7 +326,6 @@ namespace WpfVisualizer
 
         private void options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Debug.Print(e.PropertyName);
             _dirty = true;
         }
     }

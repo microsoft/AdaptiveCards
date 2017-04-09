@@ -11,9 +11,9 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 namespace WpfVisualizer
 {
     [ImplementPropertyChanged]
-    public class RendererOptionsEx : INotifyPropertyChanged
+    public class HostOptionsEx : INotifyPropertyChanged
     {
-        public RendererOptionsEx() { }
+        public HostOptionsEx() { }
 
         //  ------ AdaptiveCard -------
         [ExpandableObject]
@@ -327,6 +327,22 @@ namespace WpfVisualizer
         public ShowCardOptions() { }
 
         public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Popup;
+
+        /// <summary>
+        /// Background color for showcard area
+        /// </summary>
+        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
+        public string BackgroundColor { get; set; } = "#FFF8F8F8";
+
+        /// <summary>
+        /// margins for showcard when inline
+        /// </summary>
+        public int[] Margin { get; set; } = new int[] { -8, 10, -8, 10 };
+
+        /// <summary>
+        /// Padding for showcard when inline
+        /// </summary>
+        public int[] Padding { get; set; } = new int[] { 8, 10, 8, 0 };
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]

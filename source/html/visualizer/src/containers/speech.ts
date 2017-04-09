@@ -6,12 +6,6 @@ export class SpeechContainer extends HostContainer {
     applyOptions() {
         super.applyOptions();
         
-        Adaptive.AdaptiveCard.renderOptions.actionShowCardInPopup = false;
-    }
-
-    render(card: Adaptive.AdaptiveCard): HTMLElement {
-        let hostDiv = document.createElement("div");
-        Utils.appendChild(hostDiv, super.render(card, true));
-        return hostDiv;
+        Adaptive.AdaptiveCard.renderOptions.showCardActionMode = Adaptive.ShowCardActionMode.Inline;
     }
 }
