@@ -41,8 +41,8 @@ namespace WpfVisualizer
             _timer.Tick += _timer_Tick;
             _timer.Start();
 
-            this.Renderer = new XamlRendererExtended(new RendererOptions(), this.Resources, _onAction, _OnMissingInput);
-            var options = new RendererOptionsEx();
+            this.Renderer = new XamlRendererExtended(new HostOptions(), this.Resources, _onAction, _OnMissingInput);
+            var options = new HostOptionsEx();
             options.PropertyChanged += Options_PropertyChanged;
             this.options.SelectedObject = options;
 
@@ -57,11 +57,12 @@ namespace WpfVisualizer
 
         public XamlRendererExtended Renderer { get; set; }
 
-        public RendererOptions Options
+        public HostOptions Options
         {
             get
             {
-                return JsonConvert.DeserializeObject<RendererOptions>(JsonConvert.SerializeObject(this.options.SelectedObject));
+                var json = JsonConvert.SerializeObject(this.options.SelectedObject);
+                return JsonConvert.DeserializeObject<HostOptions>(json);
             }
         }
 
@@ -224,7 +225,7 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            var renderer = new ImageRenderer(new RendererOptions(), this.Resources);
+            var renderer = new ImageRenderer(new HostOptions(), this.Resources);
             var imageStream = renderer.RenderAdaptiveCard(this._card, 480);
             //#else
             //            var renderer = new ImageRenderer(new RenderOptions(), @"c:\source\intercom\Channels\FacebookChannel\Content\AdaptiveCardStyles.xaml");

@@ -1,59 +1,74 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using PropertyChanged;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
-namespace WpfVisualizer
+namespace AdaptiveCards.Rendering
 {
-    [ImplementPropertyChanged]
-    public class RendererOptionsEx : INotifyPropertyChanged
+    public class HostOptions
     {
-        public RendererOptionsEx() { }
+        public HostOptions() { }
 
         //  ------ AdaptiveCard -------
-        [ExpandableObject]
         public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
 
         // ------ Basic ------
-        [ExpandableObject]
         public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
 
-        [ExpandableObject]
         public ImageOptions Image { get; set; } = new ImageOptions();
 
         // ------ Containers ------
-        [ExpandableObject]
         public ContainerOptions Container { get; set; } = new ContainerOptions();
 
-        [ExpandableObject]
         public ColumnSetOptions ColumnSet { get; set; } = new ColumnSetOptions();
 
-        [ExpandableObject]
         public ColumnOptions Column { get; set; } = new ColumnOptions();
 
-        [ExpandableObject]
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
-        [ExpandableObject]
         public FactSetOptions FactSet { get; set; } = new FactSetOptions();
 
         // ------ Input ------
-        [ExpandableObject]
         public InputOptions Input { get; set; } = new InputOptions();
 
         // ------ Actions------
-        [ExpandableObject]
         public ActionOptions Actions { get; set; } = new ActionOptions();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public CardElementOptions GetElementStyling(object obj)
+        {
+            if (obj is TextBlock)
+                return this.TextBlock;
+            if (obj is Image)
+                return this.Image;
+            if (obj is Container)
+                return this.Container;
+            if (obj is ColumnSet)
+                return this.ColumnSet;
+            if (obj is Column)
+                return this.Column;
+            if (obj is ImageSet)
+                return this.ImageSet;
+            if (obj is ImageSet)
+                return this.ImageSet;
+            if (obj is FactSet)
+                return this.FactSet;
+            if (obj is InputText)
+                return this.Input;
+            if (obj is InputNumber)
+                return this.Input;
+            if (obj is InputDate)
+                return this.Input;
+            if (obj is InputTime)
+                return this.Input;
+            if (obj is InputChoiceSet)
+                return this.Input;
+            if (obj is InputToggle)
+                return this.Input;
+            throw new ArgumentException($"Unknown type {obj.GetType().Name}");
+        }
     }
 
-    [ImplementPropertyChanged]
     public class AdaptiveCardOptions
     {
         public AdaptiveCardOptions() { }
@@ -66,19 +81,16 @@ namespace WpfVisualizer
         /// <summary>
         /// Background color for card
         /// </summary>
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string BackgroundColor { get; set; } = "#FFFFFFFF";
 
         /// <summary>
         /// Text color for card (shared by FactSet, TextBlock)
         /// </summary>
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string TextColor { get; set; } = "#FF000000";
 
         /// <summary>
         /// Font family for the card
         /// </summary>
-        //[Editor(typeof(FontComboBoxEditor), typeof(FontComboBoxEditor))]
         public string FontFamily { get; set; } = "Calibri";
 
         /// <summary>
@@ -89,7 +101,7 @@ namespace WpfVisualizer
         /// <summary>
         /// should they be aligned Left, Center or Right
         /// </summary>
-        public AdaptiveCards.HorizontalAlignment ActionAlignment { get; set; } = AdaptiveCards.HorizontalAlignment.Center;
+        public HorizontalAlignment ActionAlignment { get; set; } = HorizontalAlignment.Center;
 
         /// <summary>
         /// Toggles whether or not to render inputs and actions
@@ -101,10 +113,10 @@ namespace WpfVisualizer
         /// </summary>
         public string[] SupportedActions { get; set; } = new string[]
         {
-            AdaptiveCards.ActionOpenUrl.TYPE,
-            AdaptiveCards.ActionSubmit.TYPE,
-            AdaptiveCards.ActionHttp.TYPE,
-            AdaptiveCards.ActionShowCard.TYPE
+            ActionOpenUrl.TYPE,
+            ActionSubmit.TYPE,
+            ActionHttp.TYPE,
+            ActionShowCard.TYPE
         };
 
         /// <summary>
@@ -127,10 +139,10 @@ namespace WpfVisualizer
         Vertical
     }
 
+
     /// <summary>
     /// Shared properties for elements
     /// </summary>
-    [ImplementPropertyChanged]
     public class CardElementOptions
     {
         public CardElementOptions()
@@ -139,14 +151,12 @@ namespace WpfVisualizer
         /// <summary>
         /// Separation settings 
         /// </summary>
-        [ExpandableObject]
-        public SeparationOptions Separation { get; set; } = new SeparationOptions();
+        public SeparationOptions Separation { get; set; } = new SeparationOptions() ;
     }
 
     /// <summary>
     /// Properties which control spacing and visual between elements
     /// </summary>
-    [ImplementPropertyChanged]
     public class SeparationOptions
     {
         public SeparationOptions() { }
@@ -154,23 +164,19 @@ namespace WpfVisualizer
         /// <summary>
         /// Separation settings when Separation:none
         /// </summary>
-        [ExpandableObject]
         public SeparationOption None { get; set; } = new SeparationOption() { Spacing = 0, Thickness = 0 };
 
         /// <summary>
         /// Separation settings when Separation:default
         /// </summary>
-        [ExpandableObject]
         public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10, Thickness = 0 };
 
         /// <summary>
         /// Separation settings when Separation:Strong
         /// </summary>
-        [ExpandableObject]
         public SeparationOption Strong { get; set; } = new SeparationOption() { Spacing = 20, Thickness = 1, Color = "#FF707070" };
     }
 
-    [ImplementPropertyChanged]
     public class SeparationOption
     {
         public SeparationOption() { }
@@ -188,7 +194,6 @@ namespace WpfVisualizer
         /// <summary>
         /// If there is a visible color, what color to use
         /// </summary>
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string Color { get; set; }
 
     }
@@ -196,7 +201,6 @@ namespace WpfVisualizer
     /// <summary>
     /// Properties which control rendering of TextBlock 
     /// </summary>
-    [ImplementPropertyChanged]
     public class TextBlockOptions : CardElementOptions
     {
         public TextBlockOptions() { }
@@ -204,20 +208,17 @@ namespace WpfVisualizer
         /// <summary>
         /// Color settings for the TextBlock
         /// </summary>
-        [ExpandableObject]
         public TextColorOptions Color { get; set; } = new TextColorOptions();
 
         /// <summary>
         /// FontSize
         /// </summary>
-        [ExpandableObject]
         public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
 
 
         public double IsSubtleOpacity { get; set; } = .5;
     }
 
-    [ImplementPropertyChanged]
     public class FontSizeOptions
     {
         public FontSizeOptions() { }
@@ -234,43 +235,37 @@ namespace WpfVisualizer
 
     }
 
-    [ImplementPropertyChanged]
     public class TextColorOptions
     {
         public TextColorOptions() { }
 
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
+        /// <summary>
+        /// Default color for TextBlock
+        /// </summary>
+
         public string Accent { get; set; } = "#FF0000FF";
 
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string Dark { get; set; } = "#FF101010";
 
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string Light { get; set; } = "#FFFFFFFF";
 
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string Good { get; set; } = "#FF008000";
 
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string Warning { get; set; } = "#FFFFD700";
 
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string Attention { get; set; } = "#FF8B0000";
     }
 
     /// <summary>
     /// properties which control rendering of Images
     /// </summary>
-    [ImplementPropertyChanged]
     public class ImageOptions : CardElementOptions
     {
         public ImageOptions() { }
 
-        [ExpandableObject]
         public ImageSizeOptions Size { get; set; } = new ImageSizeOptions();
     }
 
-    [ImplementPropertyChanged]
     public class ImageSizeOptions
 
     {
@@ -286,21 +281,16 @@ namespace WpfVisualizer
     /// <summary>
     /// Properties which control rendering of actions
     /// </summary>
-    [ImplementPropertyChanged]
     public class ActionOptions
     {
         public ActionOptions() { }
 
-        [ExpandableObject]
         public ShowCardOptions ShowCard { get; set; } = new ShowCardOptions();
 
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string BackgroundColor { get; set; } = "#FF5098FF";
 
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string BorderColor { get; set; } = "#FF000000";
 
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string TextColor { get; set; } = "#FFFFFFFF";
 
         public int BorderThickness { get; set; } = 1;
@@ -321,7 +311,6 @@ namespace WpfVisualizer
         public int[] Padding { get; set; } = new int[] { 4 };
     }
 
-    [ImplementPropertyChanged]
     public class ShowCardOptions
     {
         public ShowCardOptions() { }
@@ -331,7 +320,6 @@ namespace WpfVisualizer
         /// <summary>
         /// Background color for showcard area
         /// </summary>
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
         public string BackgroundColor { get; set; } = "#FFF8F8F8";
 
         /// <summary>
@@ -352,7 +340,6 @@ namespace WpfVisualizer
         Popup
     }
 
-    [ImplementPropertyChanged]
     public class ContainerOptions : CardElementOptions
     {
         public ContainerOptions() { }
@@ -364,15 +351,14 @@ namespace WpfVisualizer
         /// </summary>
         public string[] SupportedActions { get; set; } = new string[]
         {
-            AdaptiveCards.ActionOpenUrl.TYPE,
-            AdaptiveCards.ActionSubmit.TYPE,
-            AdaptiveCards.ActionHttp.TYPE,
-            AdaptiveCards.ActionShowCard.TYPE
+            ActionOpenUrl.TYPE,
+            ActionSubmit.TYPE,
+            ActionHttp.TYPE,
+            ActionShowCard.TYPE
         };
 
     }
 
-    [ImplementPropertyChanged]
     public class ImageSetOptions : CardElementOptions
     {
         public ImageSetOptions() { }
@@ -380,7 +366,6 @@ namespace WpfVisualizer
         public bool Wrap { get; set; } = true;
     }
 
-    [ImplementPropertyChanged]
     public class FactSetOptions : CardElementOptions
     {
         public FactSetOptions() { }
@@ -388,29 +373,24 @@ namespace WpfVisualizer
         /// <summary>
         /// TextBlock to use for Titles in factsets
         /// </summary>
-        [ExpandableObject]
-        public AdaptiveCards.TextBlock Title { get; set; } = new AdaptiveCards.TextBlock() { Weight = AdaptiveCards.TextWeight.Bolder };
+        public TextBlock Title { get; set; } = new TextBlock() { Weight = TextWeight.Bolder };
 
         /// <summary>
         /// TextBlock to use for Values in fact sets
         /// </summary>
-        [ExpandableObject]
-        public AdaptiveCards.TextBlock Value { get; set; } = new AdaptiveCards.TextBlock() { };
+        public TextBlock Value { get; set; } = new TextBlock() { };
     }
 
-    [ImplementPropertyChanged]
     public class InputOptions : CardElementOptions
     {
         public InputOptions() { }
     }
 
-    [ImplementPropertyChanged]
     public class ColumnSetOptions : CardElementOptions
     {
         public ColumnSetOptions() { }
     }
 
-    [ImplementPropertyChanged]
     public class ColumnOptions : CardElementOptions
     {
         public ColumnOptions() { }

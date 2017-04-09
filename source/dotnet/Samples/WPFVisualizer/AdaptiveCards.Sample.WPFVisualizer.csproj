@@ -116,7 +116,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="RendererOptionsEx.cs" />
+    <Compile Include="HostOptionsEx.cs" />
     <Compile Include="ShowCardWindow.xaml.cs">
       <DependentUpon>ShowCardWindow.xaml</DependentUpon>
     </Compile>

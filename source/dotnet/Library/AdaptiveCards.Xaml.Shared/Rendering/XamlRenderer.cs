@@ -17,9 +17,9 @@ namespace AdaptiveCards.Rendering
     {
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
-        protected RendererOptions _defaultCardStyling;
+        protected HostOptions _defaultCardStyling;
 
-        public XamlRenderer(RendererOptions options,
+        public XamlRenderer(HostOptions options,
             ResourceDictionary resources,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
@@ -31,7 +31,7 @@ namespace AdaptiveCards.Rendering
         }
 
 #if WPF
-        public XamlRenderer(RendererOptions options,
+        public XamlRenderer(HostOptions options,
             string stylePath,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
@@ -91,7 +91,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, RendererOptions styling = null)
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
@@ -100,7 +100,7 @@ namespace AdaptiveCards.Rendering
             return Render(card, context);
         }
 
-        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, RendererOptions styling = null)
+        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
@@ -116,7 +116,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public View RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, RendererOptions options = null)
+        public View RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
@@ -125,7 +125,7 @@ namespace AdaptiveCards.Rendering
             return Render(card, context);
         }
 
-        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, RendererOptions options = null)
+        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
