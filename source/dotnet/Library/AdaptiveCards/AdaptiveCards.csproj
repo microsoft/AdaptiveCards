@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net4.5.2;netstandard1.3</TargetFrameworks>
     <PackageId>AdaptiveCards</PackageId>
-    <VersionPrefix>1.0.8</VersionPrefix>
+    <VersionPrefix>1.0.9</VersionPrefix>
     <Authors>Microsoft</Authors>
     <summary>Adaptive Card object model for .NET</summary>
     <Description>This library implements classes for building and serializing adaptive card objects</Description>

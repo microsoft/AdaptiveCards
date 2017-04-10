@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net4.5.2;netstandard1.6</TargetFrameworks>
     <PackageId>AdaptiveCards.Html</PackageId>
-    <VersionPrefix>1.0.4</VersionPrefix>
+    <VersionPrefix>1.0.5</VersionPrefix>
     <Authors>Microsoft Corporation</Authors>
     <summary>Adaptive Card HTML Rednobject model for .NET</summary>
     <Description>This library implements classes for rending adaptive card objects into HTML</Description>
