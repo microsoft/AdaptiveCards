@@ -17,7 +17,7 @@ namespace AdaptiveCards
         ///     Placeholder text for the input desired
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET46        
+#if NET452        
         [XmlAttribute]
 #endif
         public string Placeholder { get; set; }
@@ -25,7 +25,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The initial value for the field
         /// </summary>
-#if NET46
+#if NET452
         [XmlAttribute]
 #endif
         public double Value { get; set; } = double.NaN;
@@ -33,7 +33,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     hint of minimum value(may be ignored by some clients)
         /// </summary>
-#if NET46
+#if NET452
         [XmlAttribute]
 #endif
         public double Min { get; set; } = double.NaN;
@@ -41,7 +41,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     hint of maximum value(may be ignored by some clients)
         /// </summary>
-#if NET46
+#if NET452
         [XmlAttribute]
 #endif
         public double Max { get; set; } = double.NaN;
