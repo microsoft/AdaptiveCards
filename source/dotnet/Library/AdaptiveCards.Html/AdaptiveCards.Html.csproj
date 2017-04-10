@@ -19,6 +19,7 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <RepositoryType />
     <PackageReleaseNotes />
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
