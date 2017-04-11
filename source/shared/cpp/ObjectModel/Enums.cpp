@@ -2,6 +2,12 @@
 
 namespace AdaptiveCards
 {
+template <typename T>
+std::size_t EnumHash::operator()(T t) const
+{
+    return static_cast<std::size_t>(t);
+}
+
 struct CaseInsensitiveEqualTo {
     bool operator() (const std::string& lhs, const std::string& rhs) const {
         return _strnicmp(lhs.c_str(), rhs.c_str(), CHAR_MAX) == 0;
@@ -42,7 +48,7 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "size", AdaptiveCardSchemaKey::Size },
 };
 
-static std::unordered_map<AdaptiveCardSchemaKey, std::string> AdaptiveCardSchemaKeyEnumToName =
+static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> AdaptiveCardSchemaKeyEnumToName =
 {
     { AdaptiveCardSchemaKey::Type, "type" },
     { AdaptiveCardSchemaKey::Body, "body" },
@@ -84,7 +90,7 @@ static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, Cas
 
 };
 
-static std::unordered_map<CardElementType, std::string> CardElementTypeEnumToName =
+static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTypeEnumToName =
 {
     { CardElementType::AdaptiveCard, "AdaptiveCard" },
     { CardElementType::TextBlock, "TextBlock" },
@@ -104,7 +110,7 @@ static std::unordered_map<std::string, SeparationStyle, CaseInsensitiveHash, Cas
     { "strong", SeparationStyle::Strong},
 };
 
-static std::unordered_map<SeparationStyle, std::string> SeparationStyleEnumToName =
+static std::unordered_map<SeparationStyle, std::string, EnumHash> SeparationStyleEnumToName =
 {
     { SeparationStyle::Default, "default" },
     { SeparationStyle::None, "none" },
@@ -117,7 +123,7 @@ static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInse
     {"person", ImageStyle::Person},
 };
 
-static std::unordered_map<ImageStyle, std::string> ImageStyleEnumToName =
+static std::unordered_map<ImageStyle, std::string, EnumHash> ImageStyleEnumToName =
 {
     {ImageStyle::Normal, "normal"},
     {ImageStyle::Person, "person"},
@@ -132,7 +138,7 @@ static std::unordered_map<std::string, ImageSize, CaseInsensitiveHash, CaseInsen
     { "Large", ImageSize::Large }
 };
 
-static std::unordered_map<ImageSize, std::string> ImageSizeEnumToName =
+static std::unordered_map<ImageSize, std::string, EnumHash> ImageSizeEnumToName =
 {
     { ImageSize::Auto, "Auto" },
     { ImageSize::Stretch, "Stretch" },
@@ -148,7 +154,7 @@ static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash,
     {"Right", HorizontalAlignment::Right},
 };
 
-static std::unordered_map<HorizontalAlignment, std::string> HorizontalAlignmentEnumToName =
+static std::unordered_map<HorizontalAlignment, std::string, EnumHash> HorizontalAlignmentEnumToName =
 {
     {HorizontalAlignment::Left, "Left"},
     {HorizontalAlignment::Center, "Center"},
@@ -166,7 +172,7 @@ static std::unordered_map<std::string, TextColor, CaseInsensitiveHash, CaseInsen
     {"Attention", TextColor::Attention},
 };
 
-static std::unordered_map<TextColor, std::string> TextColorEnumToName =
+static std::unordered_map<TextColor, std::string, EnumHash> TextColorEnumToName =
 {
     {TextColor::Default, "Default"},
     {TextColor::Dark, "Dark"},
@@ -183,7 +189,7 @@ static std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInse
     {"Normal", TextWeight::Normal},
     {"Bolder", TextWeight::Bolder},
 };
-static std::unordered_map<TextWeight, std::string> TextWeightEnumToName =
+static std::unordered_map<TextWeight, std::string, EnumHash> TextWeightEnumToName =
 {
     {TextWeight::Lighter, "Lighter"},
     {TextWeight::Normal, "Normal"},
@@ -199,7 +205,7 @@ static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsens
     {"ExtraLarge", TextSize::ExtraLarge},
 };
 
-static std::unordered_map<TextSize, std::string> TextSizeEnumToName =
+static std::unordered_map<TextSize, std::string, EnumHash> TextSizeEnumToName =
 {
     {TextSize::Small, "Small"},
     {TextSize::Normal, "Normal"},
