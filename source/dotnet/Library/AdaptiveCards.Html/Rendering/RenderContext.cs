@@ -9,12 +9,12 @@ namespace AdaptiveCards.Rendering
 {
     public class RenderContext
     {
-        public RenderContext(RendererOptions options = null)
+        public RenderContext(HostOptions options = null)
         {
             if (options != null)
                 this.Options = options;
         }
 
-        public RendererOptions Options { get; set; } = new RendererOptions();
+        public HostOptions Options { get; set; } = new HostOptions();
     }
 }

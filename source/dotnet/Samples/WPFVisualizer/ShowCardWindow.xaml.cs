@@ -28,7 +28,7 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            XamlRenderer renderer = new XamlRendererExtended(new RendererOptions(), this._resources, OnAction);
+            XamlRenderer renderer = new XamlRendererExtended(new HostOptions(), this._resources, OnAction);
             var element = renderer.RenderShowCard(_card);
 
             this.Body.Children.Add(element);
@@ -43,10 +43,7 @@ namespace WpfVisualizer
             }
             else if (e.Action is AC.ActionShowCard)
             {
-                AC.ActionShowCard action = (AC.ActionShowCard)e.Action;
-                ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this._resources);
-                dialog.Owner = this;
-                dialog.ShowDialog();
+                MessageBox.Show("Action.ShowCard is not alloed from within a sub-card");
             }
             else if (e.Action is AC.ActionSubmit)
             {

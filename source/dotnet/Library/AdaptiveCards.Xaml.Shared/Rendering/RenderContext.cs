@@ -34,7 +34,7 @@ namespace AdaptiveCards.Rendering
             this._imageResolver = imageResolver;
         }
 
-        public RendererOptions Options { get; set; } = new RendererOptions();
+        public HostOptions Options { get; set; } = new HostOptions();
 
 #if WPF
         public BitmapImage ResolveImageSource(string url)

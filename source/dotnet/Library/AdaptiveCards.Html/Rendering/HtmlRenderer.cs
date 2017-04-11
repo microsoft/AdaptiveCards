@@ -30,7 +30,7 @@ namespace AdaptiveCards.Rendering
 #endif
         });
 
-        public HtmlRenderer(RendererOptions options) : base(options)
+        public HtmlRenderer(HostOptions options) : base(options)
         {
         }
 

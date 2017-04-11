@@ -9,12 +9,12 @@ namespace AdaptiveCards.Rendering
         where TUIElement : class
         where TContext : class
     {
-        protected AdaptiveRenderer(RendererOptions options)
+        protected AdaptiveRenderer(HostOptions options)
         {
-            DefaultOptions = options ?? new RendererOptions();
+            DefaultOptions = options ?? new HostOptions();
         }
 
-        public RendererOptions DefaultOptions { get; set; }
+        public HostOptions DefaultOptions { get; set; }
 
         // containers
         protected virtual TUIElement Render(CardElement cardElement, TContext context)

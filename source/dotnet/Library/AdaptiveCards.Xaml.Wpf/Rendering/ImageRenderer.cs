@@ -26,7 +26,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="options"></param>
         /// <param name="resources"></param>
-        public ImageRenderer(RendererOptions options, ResourceDictionary resources)
+        public ImageRenderer(HostOptions options, ResourceDictionary resources)
         {
             options.AdaptiveCard.SupportsInteractivity = false;
             _xamlRenderer = new XamlRenderer(options, resources);
@@ -37,13 +37,13 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="options"></param>
         /// <param name="stylePath"></param>
-        public ImageRenderer(RendererOptions options, string stylePath)
+        public ImageRenderer(HostOptions options, string stylePath)
         {
             options.AdaptiveCard.SupportsInteractivity = false;
             _xamlRenderer = new XamlRenderer(options, stylePath);
         }
 
-        public RendererOptions Options { get { return _xamlRenderer.DefaultOptions; } set { _xamlRenderer.DefaultOptions = value; } }
+        public HostOptions Options { get { return _xamlRenderer.DefaultOptions; } set { _xamlRenderer.DefaultOptions = value; } }
 
 
 

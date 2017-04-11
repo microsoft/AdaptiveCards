@@ -3,15 +3,20 @@
   <PropertyGroup>
     <TargetFrameworks>net4.6;netstandard1.3</TargetFrameworks>
     <PackageId>AdaptiveCards</PackageId>
-    <PackageVersion>1.0.0.6</PackageVersion>
+    <VersionPrefix>1.0.8</VersionPrefix>
     <Authors>Microsoft</Authors>
     <summary>Adaptive Card object model for .NET</summary>
     <Description>This library implements classes for building and serializing adaptive card objects</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
     <PackageTags>adaptivecards</PackageTags>
-    <iconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</iconUrl>
-    <language>en-US</language>
+    <PackageProjectUrl>https://github.com/Microsoft/AdaptiveCards</PackageProjectUrl>
+    <PacakgeIconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</PacakgeIconUrl>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <PackageIconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
+    <RepositoryType></RepositoryType>
+    <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
+    <AssemblyVersion>1.0.8.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

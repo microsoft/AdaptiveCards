@@ -6,9 +6,9 @@ using System.Text;
 
 namespace AdaptiveCards.Rendering
 {
-    public class RendererOptions
+    public class HostOptions
     {
-        public RendererOptions() { }
+        public HostOptions() { }
 
         //  ------ AdaptiveCard -------
         public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
@@ -76,7 +76,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         ///  Margin for the card
         /// </summary>
-        public int[] Margin = new[] { 8, 8, 8, 8 };
+        public int[] Margin { get; set; } = new[] { 8, 8, 8, 8 };
 
         /// <summary>
         /// Background color for card
@@ -91,7 +91,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Font family for the card
         /// </summary>
-        public string FontFamily = "Calibri";
+        public string FontFamily { get; set; } = "Calibri";
 
         /// <summary>
         /// Arrange actions horizontal or vertical
@@ -149,19 +149,9 @@ namespace AdaptiveCards.Rendering
         { }
 
         /// <summary>
-        /// Separation settings when Separation:none
+        /// Separation settings 
         /// </summary>
-        public SeparationOptions SeparationNone { get; set; } = new SeparationOptions() { Spacing = 0, Thickness = 0 };
-
-        /// <summary>
-        /// Separation settings when Separation:default
-        /// </summary>
-        public SeparationOptions SeparationDefault { get; set; } = new SeparationOptions() { Spacing = 10, Thickness = 0 };
-
-        /// <summary>
-        /// Separation settings when Separation:Strong
-        /// </summary>
-        public SeparationOptions SeparationStrong { get; set; } = new SeparationOptions() { Spacing = 20, Thickness = 1, Color = "#FF707070" };
+        public SeparationOptions Separation { get; set; } = new SeparationOptions() ;
     }
 
     /// <summary>
@@ -170,6 +160,26 @@ namespace AdaptiveCards.Rendering
     public class SeparationOptions
     {
         public SeparationOptions() { }
+
+        /// <summary>
+        /// Separation settings when Separation:none
+        /// </summary>
+        public SeparationOption None { get; set; } = new SeparationOption() { Spacing = 0, Thickness = 0 };
+
+        /// <summary>
+        /// Separation settings when Separation:default
+        /// </summary>
+        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10, Thickness = 0 };
+
+        /// <summary>
+        /// Separation settings when Separation:Strong
+        /// </summary>
+        public SeparationOption Strong { get; set; } = new SeparationOption() { Spacing = 20, Thickness = 1, Color = "#FF707070" };
+    }
+
+    public class SeparationOption
+    {
+        public SeparationOption() { }
 
         /// <summary>
         /// How much space between this element and previous should be used
@@ -185,6 +195,7 @@ namespace AdaptiveCards.Rendering
         /// If there is a visible color, what color to use
         /// </summary>
         public string Color { get; set; }
+
     }
 
     /// <summary>
@@ -231,7 +242,6 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Default color for TextBlock
         /// </summary>
-        public string Default { get; set; } = "#FF000000";
 
         public string Accent { get; set; } = "#FF0000FF";
 
@@ -306,6 +316,21 @@ namespace AdaptiveCards.Rendering
         public ShowCardOptions() { }
 
         public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Popup;
+
+        /// <summary>
+        /// Background color for showcard area
+        /// </summary>
+        public string BackgroundColor { get; set; } = "#FFF8F8F8";
+
+        /// <summary>
+        /// margins for showcard when inline
+        /// </summary>
+        public int[] Margin { get; set; } = new int[] { 10 };
+
+        /// <summary>
+        /// Padding for showcard when inline
+        /// </summary>
+        public int[] Padding { get; set; } = new int[] { 10 };
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
