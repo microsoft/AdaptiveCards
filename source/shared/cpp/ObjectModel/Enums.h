@@ -4,6 +4,12 @@
 namespace AdaptiveCards
 {
 
+struct EnumHash
+{
+    template <typename T>
+    std::size_t operator()(T t) const;
+};
+
 enum class AdaptiveCardSchemaKey
 {
     Type = 0,
