@@ -1,4 +1,5 @@
 {
+	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"body": [
 		{
@@ -113,7 +114,7 @@
 								"type": "Input.Text",
 								"id": "comment",
 								"isMultiline": true,
-								"title": "Enter your comment"
+								"placeholder": "Enter your comment"
 							}
 						],
 						"actions": [
