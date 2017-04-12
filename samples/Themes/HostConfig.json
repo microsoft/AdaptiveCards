@@ -159,7 +159,7 @@
         "BackgroundColor": "#FF5098FF",
         "BorderColor": "#FF000000",
         "TextColor": "#FFFFFFFF",
-        "BorderLineThickness": 1,
+        "BorderThickness": 1,
         "FontWeight": 400,
         "FontSize": 12,
         "Margin": {
