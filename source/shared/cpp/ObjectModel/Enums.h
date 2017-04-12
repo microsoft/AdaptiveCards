@@ -1,7 +1,9 @@
 #pragma once
 #include "pch.h"
 
-#define _strnicmp strncasecmp
+#ifdef _WIN32
+#define strncasecmp _strnicmp
+#endif // _WIN32
 
 namespace AdaptiveCards
 {
@@ -17,7 +19,7 @@ struct EnumHash
 
 struct CaseInsensitiveEqualTo {
     bool operator() (const std::string& lhs, const std::string& rhs) const {
-        return _strnicmp(lhs.c_str(), rhs.c_str(), CHAR_MAX) == 0;
+        return strncasecmp(lhs.c_str(), rhs.c_str(), CHAR_MAX) == 0;
     }
 };
 
