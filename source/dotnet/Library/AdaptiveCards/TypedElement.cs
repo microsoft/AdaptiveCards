@@ -16,7 +16,7 @@ namespace AdaptiveCards
 
         [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
         [JsonRequired]
-#if NET46
+#if NET452
         [XmlIgnore]
 #endif
         public string Type { get; set; }

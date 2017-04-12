@@ -18,7 +18,7 @@ namespace AdaptiveCards
         ///     Elements of the container
         /// </summary>
         [JsonRequired]
-#if NET46
+#if NET452
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
@@ -44,7 +44,7 @@ namespace AdaptiveCards
         ///     Size for the column (either ColumnSize string or number which is relative size of the column)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET46
+#if NET452
         [XmlAttribute]
 #endif
         public string Size { get; set; }

@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "Enums.h"
 #include "json\json.h"
+#include "ParseUtil.h"
 
 namespace AdaptiveCards
 {
@@ -44,11 +45,9 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
 
     baseCardElement->SetSpeak(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak));
     baseCardElement->SetSeparationStyle(
-        ParseUtil::GetEnumValue<SeparationStyle>(json, AdaptiveCardSchemaKey::Separation, SeparationStyle::Default, SeparationStyleFromString));
+            ParseUtil::GetEnumValue<SeparationStyle>(json, AdaptiveCardSchemaKey::Separation, SeparationStyle::Default, SeparationStyleFromString));
 
     return cardElement;
 }
-
-
 }
 

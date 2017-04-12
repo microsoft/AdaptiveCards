@@ -55,6 +55,6 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, Container::CardElementParsers);
-    column->SetItems(std::move(cardElements));
+    column->SetItems(cardElements);
     return column;
 }

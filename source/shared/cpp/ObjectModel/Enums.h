@@ -1,8 +1,33 @@
 #pragma once
 #include "pch.h"
 
+#ifdef _WIN32
+#define strncasecmp _strnicmp
+#endif // _WIN32
+
 namespace AdaptiveCards
 {
+
+struct EnumHash
+{
+    template <typename T>
+    std::size_t operator()(T t) const
+    {
+        return static_cast<std::size_t>(t);
+    }
+};
+
+struct CaseInsensitiveEqualTo {
+    bool operator() (const std::string& lhs, const std::string& rhs) const {
+        return strncasecmp(lhs.c_str(), rhs.c_str(), CHAR_MAX) == 0;
+    }
+};
+
+struct CaseInsensitiveHash {
+    size_t operator() (const std::string& keyval) const {
+        return std::accumulate(keyval.begin(), keyval.end(), 0, [](size_t acc, char c) { return acc + (size_t)std::tolower(c); });
+    }
+};
 
 enum class AdaptiveCardSchemaKey
 {
@@ -28,7 +53,10 @@ enum class AdaptiveCardSchemaKey
     MaxLines,
     Items,
     Columns,
-    Size
+    Size,
+    Facts,
+    Title,
+    Value,
 };
 
 enum class TextSize
@@ -84,7 +112,8 @@ enum class CardElementType
     Container,
     Column,
     ColumnSet,
-    FactGroup,
+    FactSet,
+    Fact,
     ImageGallery,
     ActionGroup
 };

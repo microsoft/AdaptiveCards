@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering
 
         private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
         {
-#if NET46
+#if NET452
             var assembly = Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.Rendering.AdaptiveCard.css"))
             using (var reader = new StreamReader(stream))
@@ -494,7 +494,7 @@ namespace AdaptiveCards.Rendering
         {
             if (!string.IsNullOrEmpty(cardElement.Speak))
             {
-#if NET46
+#if NET452
                 // TODO: Fix xamarin fallback
                 var doc = new XmlDocument();
                 var xml = cardElement.Speak;

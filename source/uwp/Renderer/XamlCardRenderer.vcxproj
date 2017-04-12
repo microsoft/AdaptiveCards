@@ -118,6 +118,8 @@
     <ClInclude Include="lib\AdaptiveColumn.h" />
     <ClInclude Include="lib\AdaptiveColumnSet.h" />
     <ClInclude Include="lib\AdaptiveContainer.h" />
+    <ClInclude Include="lib\AdaptiveFact.h" />
+    <ClInclude Include="lib\AdaptiveFactSet.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
     <ClInclude Include="lib\AsyncOperations.h" />
@@ -135,6 +137,8 @@
     <ClCompile Include="lib\AdaptiveColumn.cpp" />
     <ClCompile Include="lib\AdaptiveColumnSet.cpp" />
     <ClCompile Include="lib\AdaptiveContainer.cpp" />
+    <ClCompile Include="lib\AdaptiveFact.cpp" />
+    <ClCompile Include="lib\AdaptiveFactSet.cpp" />
     <ClCompile Include="lib\AdaptiveImage.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\ImageLoadTracker.cpp" />

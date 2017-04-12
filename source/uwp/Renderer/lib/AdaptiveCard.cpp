@@ -48,7 +48,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         RETURN_IF_FAILED(RuntimeClassInitialize());
         m_sharedAdaptiveCard = sharedAdaptiveCard;
 
-        return GenerateProjectionOfContainedElements(m_sharedAdaptiveCard->GetBody(), m_body.Get());
+        return GenerateContainedElementsProjection(m_sharedAdaptiveCard->GetBody(), m_body.Get());
     }
 
     _Use_decl_annotations_

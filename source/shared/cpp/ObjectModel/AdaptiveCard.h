@@ -1,7 +1,7 @@
 #pragma once
 
-#include "pch.h"
 #include "Enums.h"
+#include "pch.h"
 #include "BaseCardElement.h"
 #include "Container.h"
 
@@ -33,7 +33,7 @@ public:
 
 private:
 
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> CardElementParsers;
+    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
 
     std::string m_version;
     std::string m_minVersion;

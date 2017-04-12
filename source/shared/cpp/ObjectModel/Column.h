@@ -17,7 +17,7 @@ public:
 
     static std::shared_ptr<Column> Deserialize(const Json::Value& root);
 
-    const CardElementType Column::GetElementType() const;
+    const CardElementType GetElementType() const;
 
     std::string GetSize() const;
     void SetSize(const std::string value);
