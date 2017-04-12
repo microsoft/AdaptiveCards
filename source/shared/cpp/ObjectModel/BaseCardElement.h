@@ -34,21 +34,5 @@ private:
     std::string m_speak;
 };
 
-template <typename T>
-std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
-{
-    std::shared_ptr<T> cardElement = std::make_shared<T>();
-    std::shared_ptr<BaseCardElement> baseCardElement = cardElement;
-
-    ParseUtil::ThrowIfNotJsonObject(json);
-
-    baseCardElement->SetSpeak(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak));
-    baseCardElement->SetSeparationStyle(
-        ParseUtil::GetEnumValue<SeparationStyle>(json, AdaptiveCardSchemaKey::Separation, SeparationStyle::Default, SeparationStyleFromString));
-
-    return cardElement;
-}
-
-
 }
 
