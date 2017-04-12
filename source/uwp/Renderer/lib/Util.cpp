@@ -6,6 +6,7 @@
 
 #include "AdaptiveTextBlock.h"
 #include "AdaptiveImage.h"
+#include "AdaptiveImageSet.h"
 #include "AdaptiveContainer.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
@@ -73,6 +74,10 @@ HRESULT GenerateContainedElementsProjection(
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveFactSet>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::FactSet>(containedElement)));
             break;
+        case CardElementType::ImageSet:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveImageSet>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::ImageSet>(containedElement)));
+            break;
         default:
             return E_UNEXPECTED;
             break;
@@ -106,6 +111,21 @@ HRESULT GenerateFactsProjection(
         ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveFact> projectedContainedElement;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveFact>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::Fact>(containedElement)));
+
+        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateImagesProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage*>* projectedParentContainer) noexcept try
+{
+    for (auto& containedElement : containedElements)
+    {
+        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveImage>(&projectedContainedElement,
+            std::static_pointer_cast<AdaptiveCards::Image>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }
