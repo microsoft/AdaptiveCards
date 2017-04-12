@@ -2,16 +2,8 @@
     "activationUri": "",
     "visual": {
         "displayText": "",
-        "description": "", 
-
-        "baseImage": {
-            "type": "ImageSource",
-            "uri": "",
-            "altText": "",
-            "addImageQuery": true
-        },
-        "iconImage": {
-            "type": "ImageSource",
+        "description": "",
+        "attribution": { // "type": "ImageSource"
             "uri": "",
             "altText": "",
             "includeQueryParams": true
@@ -19,10 +11,15 @@
         "backgroundColor": "",
         "content": {
             "type": "AdaptiveCard",
+            "fallbackText": "",
             "speak": "",
             "actions": [],
+            "backgroundImage": { // "type": "BackgroundImage"
                 "uri": "",
                 "altText": "",
+                "includeQueryParams": true,
+                "overlay": 0.7,
+                "overlayColor": "light|dark"
             },
             "body": [
                 {
