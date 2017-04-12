@@ -4,13 +4,15 @@
 #include "Container.h"
 #include "TextBlock.h"
 #include "ColumnSet.h"
+#include "FactSet.h"
 
 using namespace AdaptiveCards;
 
-const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> AdaptiveCard::CardElementParsers =
+const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> AdaptiveCard::CardElementParsers =
 {
     { CardElementType::Container, Container::Deserialize },
     { CardElementType::ColumnSet, ColumnSet::Deserialize },
+    { CardElementType::FactSet, FactSet::Deserialize },
     { CardElementType::Image, Image::Deserialize },
     { CardElementType::TextBlock, TextBlock::Deserialize },
 };

@@ -7,8 +7,6 @@
 
 namespace AdaptiveCards
 {
-class BaseCardElement;
-class Column;
 class ColumnSet : public BaseCardElement
 {
 public:
@@ -22,7 +20,7 @@ public:
     static std::shared_ptr<ColumnSet> Deserialize(const Json::Value& root);
 
 private:
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>> ColumnParser;
+    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
     std::vector<std::shared_ptr<Column>> m_columns;
 };
 }

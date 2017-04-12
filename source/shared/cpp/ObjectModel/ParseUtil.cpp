@@ -151,6 +151,20 @@ CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
     }
 }
 
+Json::Value ParseUtil::GetArray(
+    const Json::Value& json,
+    AdaptiveCardSchemaKey key)
+{
+    std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+    auto elementArray = json.get(propertyName, Json::Value());
+
+    if (!elementArray.isArray() || elementArray.empty())
+    {
+        throw AdaptiveCardParseException("Could not parse specified key " + propertyName + ". It was not an array");
+    }
+    return elementArray;
+}
+
 ParseUtil::ParseUtil()
 {
 }

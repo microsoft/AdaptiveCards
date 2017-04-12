@@ -534,11 +534,10 @@
       "description": "Controls the horizontal size (width) of Item. ",
       "enum": [
         "auto",
+        "stretch",
         "small",
-        "normal",
         "medium",
-        "large",
-        "extraLarge"
+        "large"
       ]
     },
     "ImageStyle": {
@@ -641,7 +640,7 @@
       "description": "Input.Number collects number from the user,",
       "properties": {
         "id": {
-          "type": "number",
+          "type": "string",
           "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
         },
         "max": {

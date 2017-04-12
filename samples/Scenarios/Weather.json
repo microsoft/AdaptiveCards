@@ -15,7 +15,7 @@
 						{
 							"type": "Image",
 							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
-							"size":"stretch"
+							"size": "stretch"
 						}
 					]
 				},
@@ -76,7 +76,6 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"isParagraphStart": false,
 							"text": "523"
 						}
 					],
@@ -108,7 +107,6 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"isParagraphStart": false,
 							"text": "48"
 						}
 					],
@@ -140,7 +138,6 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"isParagraphStart": false,
 							"text": "49"
 						}
 					],
@@ -172,7 +169,6 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"isParagraphStart": false,
 							"text": "51"
 						}
 					],

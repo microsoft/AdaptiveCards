@@ -18,7 +18,7 @@ namespace AdaptiveCards
         ///     Columns that are part of this group
         /// </summary>
         [JsonRequired]
-#if NET46
+#if NET452
         [XmlElement(ElementName = "Column", Type = typeof(Column))]
 #endif
         public List<Column> Columns { get; set; } = new List<Column>();
