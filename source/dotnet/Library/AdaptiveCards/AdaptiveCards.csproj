@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.6;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net4.5.2;netstandard1.3</TargetFrameworks>
     <PackageId>AdaptiveCards</PackageId>
-    <VersionPrefix>1.0.8</VersionPrefix>
+    <VersionPrefix>1.0.9</VersionPrefix>
     <Authors>Microsoft</Authors>
     <summary>Adaptive Card object model for .NET</summary>
     <Description>This library implements classes for building and serializing adaptive card objects</Description>
@@ -16,7 +16,8 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
-    <AssemblyVersion>1.0.8.0</AssemblyVersion>
+    <AssemblyVersion>1.0.10.0</AssemblyVersion>
+    <Version>1.0.10</Version>
   </PropertyGroup>
 
   <ItemGroup>
