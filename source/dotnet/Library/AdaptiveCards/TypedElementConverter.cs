@@ -4,14 +4,31 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     This handles using @type field to instantiate strongly typed object on deserialization
     /// </summary>
-    internal class TypedElementConverter : JsonConverter
+    public class TypedElementConverter : JsonConverter
     {
+        /// <summary>
+        /// List of additional types to support, register any new types to this list 
+        /// </summary>
+        internal static Lazy<Dictionary<string, Type>> g_typedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
+        {
+            return typeof(TypedElement).GetTypeInfo().Assembly.ExportedTypes
+                .Where(exportedType => exportedType.Namespace.Contains("AdaptiveCards"))
+                .ToDictionary(type => type.Name);
+        });
+
+        public static void RegisterTypedElement<TypeT>()
+            where TypeT : TypedElement
+        {
+            g_typedElementTypes.Value.Add(typeof(TypeT).Name, typeof(TypeT));
+        }
+
         public override bool CanRead => true;
 
         public override bool CanWrite => false;
@@ -25,8 +42,7 @@ namespace AdaptiveCards
         {
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
             // Create target object based on JObject
@@ -35,11 +51,12 @@ namespace AdaptiveCards
             if (typeName != null)
             {
                 typeName = typeName.Replace(".", string.Empty);
-                var type = typeof(TypedElement).GetTypeInfo().Assembly.ExportedTypes
-                    .Where(t => t.Namespace.Contains("AdaptiveCards"))
-                    .FirstOrDefault(t => string.Equals(t.Name, typeName, StringComparison.CurrentCultureIgnoreCase));
-                if (type != null)
+
+                Type type = null;
+                if (g_typedElementTypes.Value.TryGetValue(typeName, out type))
+                {
                     result = Activator.CreateInstance(type);
+                }
                 // Populate the object properties
                 serializer.Populate(jObject.CreateReader(), result);
             }
