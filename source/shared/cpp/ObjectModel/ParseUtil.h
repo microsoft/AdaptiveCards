@@ -31,6 +31,8 @@ public:
 
     static CardElementType TryGetCardElementType(const Json::Value& json);
 
+    static Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key);
+
     template <typename T>
     static T GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, std::function<T(const std::string& name)> enumConverter);
 
@@ -82,13 +84,7 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(
     AdaptiveCardSchemaKey key,
     const std::unordered_map<CardElementType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers)
 {
-    std::string propertyName = AdaptiveCardSchemaKeyToString(key);
-    auto elementArray = json.get(propertyName, Json::Value());
-
-    if (!elementArray.isArray() || elementArray.empty())
-    {
-        throw AdaptiveCardParseException("Could not parse specified key " + propertyName + ". It was not an array");
-    }
+    auto elementArray = GetArray(json, key);
 
     std::vector<std::shared_ptr<T>> elements;
     if (elementArray.empty())

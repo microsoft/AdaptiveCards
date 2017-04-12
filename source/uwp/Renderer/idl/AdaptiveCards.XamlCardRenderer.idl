@@ -16,6 +16,8 @@ namespace AdaptiveCards
         runtimeclass AdaptiveContainer;
         runtimeclass AdaptiveColumn;
         runtimeclass AdaptiveColumnSet;
+        runtimeclass AdaptiveFact;
+        runtimeclass AdaptiveFactSet;
         interface IAdaptiveCardElement;
         interface IAdaptiveTextBlock;
         interface IAdaptiveCard;
@@ -23,6 +25,8 @@ namespace AdaptiveCards
         interface IAdaptiveContainer;
         interface IAdaptiveColumn;
         interface IAdaptiveColumnSet;
+        interface IAdaptiveFact;
+        interface IAdaptiveFactSet;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -71,7 +75,11 @@ namespace AdaptiveCards
             Image,
             Container,
             Column,
-            ColumnSet
+            ColumnSet,
+            FactSet,
+            Fact,
+            ImageGallery,
+            ActionGroup
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -100,7 +108,9 @@ namespace AdaptiveCards
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
+            interface Windows.Foundation.Collections.IVector<IAdaptiveFact*>; 
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
+            interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
             interface Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>;
             interface Windows.Foundation.IReference<Windows.UI.Text.FontWeight>;
@@ -297,6 +307,55 @@ namespace AdaptiveCards
             [default] interface IAdaptiveColumnSet;
             interface IAdaptiveCardElement;
         };
+
+
+        [
+            uuid(5c19aa31-03aa-4148-a529-75b855ba045b),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveFact : IInspectable
+        {
+            [propget] HRESULT ElementType([out, retval] ElementType* value);
+
+            [propget] HRESULT Speak([out, retval] HSTRING* value);
+            [propput] HRESULT Speak([in] HSTRING value);
+
+            [propget] HRESULT Title([out, retval] HSTRING* value);
+            [propput] HRESULT Title([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveFact
+        {
+            [default] interface IAdaptiveFact;
+        };
+
+        [
+            uuid(05457b99-8090-4937-a637-b469f8edc74f),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveFactSet)
+        ]
+        interface IAdaptiveFactSet : IInspectable
+        {
+            [propget] HRESULT Facts([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFact*>** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveFactSet
+        {
+            [default] interface IAdaptiveFactSet;
+            interface IAdaptiveCardElement;
+        };
+
 
         [flags]
         [version(NTDDI_WIN10_RS1)]

@@ -9,6 +9,8 @@
 #include "AdaptiveContainer.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
+#include "AdaptiveFact.h"
+#include "AdaptiveFactSet.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -42,7 +44,7 @@ bool Boolify(const boolean value)
     return value > 0 ? true : false;
 }
 
-HRESULT GenerateProjectionOfContainedElements(
+HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* projectedParentContainer) noexcept try
 {
@@ -67,6 +69,10 @@ HRESULT GenerateProjectionOfContainedElements(
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveColumnSet>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::ColumnSet>(containedElement)));
             break;
+        case CardElementType::FactSet:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveFactSet>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::FactSet>(containedElement)));
+            break;
         default:
             return E_UNEXPECTED;
             break;
@@ -76,7 +82,7 @@ HRESULT GenerateProjectionOfContainedElements(
     return S_OK;
 } CATCH_RETURN;
 
-HRESULT GenerateProjectionOfColumns(
+HRESULT GenerateColumnsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn*>* projectedParentContainer) noexcept try
 {
@@ -85,6 +91,21 @@ HRESULT GenerateProjectionOfColumns(
         ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn> projectedContainedElement;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveColumn>(&projectedContainedElement,
             std::static_pointer_cast<AdaptiveCards::Column>(containedElement)));
+
+        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateFactsProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveFact*>* projectedParentContainer) noexcept try
+{
+    for (auto& containedElement : containedElements)
+    {
+        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveFact> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveFact>(&projectedContainedElement,
+            std::static_pointer_cast<AdaptiveCards::Fact>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }
