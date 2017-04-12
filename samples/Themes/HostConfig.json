@@ -1,0 +1,176 @@
+{
+    "type": "AdaptiveCardHostConfiguration",
+    "AdaptiveCard": {
+        "MaxActions": 2,
+        "TypicalDimensions": [], // Ignore for now
+        "SupportsInteractivity": true,
+        "SupportedActions": [
+            "Action.ShowCard",
+            "Action.Submit",
+            "Action.Http",
+            "Action.OpenUrl"
+        ],
+        "Margin": {
+            "Left": 15,
+            "Right": 20,
+            "Bottom": 10,
+            "Top": 12
+        },
+        "ActionsOrientation": "Horizontal",
+        "ActionAlignment": "center",
+        "FontFamily": "Calibri",
+        "TextColor": "#FF000000",
+        "BackgroundColor": "#FFFFFFFF"
+    },
+    "Colors": {
+        "Accent": {
+            "Color": "#FF0000FF",
+            "SubtleOpacity": 0.7
+        },
+        "Dark": {
+            "Color": "#FF101010"
+        },
+        "Light": {
+            "Color": "#FFFFFFFF"
+        },
+        "Good": {
+            "Color": "#FF008000"
+        },
+        "Warning": {
+            "Color": "#FFFFD700"
+        },
+        "Attention": {
+            "Color": "#FF8B0000"
+        }
+    },
+    "TextBlock": {
+        "FontSize": {
+            "Small": 10,
+            "Normal": 12,
+            "Medium": 14,
+            "Large": 17,
+            "ExtraLarge": 20
+        },
+        "Separation": {
+            "Default": {
+                "Spacing": 10
+            },
+            "Strong": {
+                "Spacing": 20,
+                "LineThickness": 1,
+                "LineColor": "#FF707070"
+            }
+        }
+    },
+    "Image": {
+        "Size": {
+            "Small": 60,
+            "Medium": 120,
+            "Large": 180
+        },
+        "Separation": {
+            "Default": {
+                "Spacing": 10
+            },
+            "Strong": {
+                "Spacing": 20,
+                "LineThickness": 1,
+                "LineColor": "#FF707070"
+            }
+        }
+    },
+    "Container": {
+        "Separation": {
+            "Default": {
+                "Spacing": 10
+            },
+            "Strong": {
+                "Spacing": 20,
+                "LineThickness": 1,
+                "LineColor": "#FF707070"
+            }
+        }
+    },
+    "ContainerSet": {
+        "Separation": {
+            "Default": {
+                "Spacing": 10
+            },
+            "Strong": {
+                "Spacing": 20,
+                "LineThickness": 1,
+                "LineColor": "#FF707070"
+            }
+        }
+    },
+    "ImageSet": {
+        "Wrap": true,
+        "Separation": {
+            "Default": {
+                "Spacing": 10
+            },
+            "Strong": {
+                "Spacing": 20,
+                "LineThickness": 1,
+                "LineColor": "#FF707070"
+            }
+        }
+    },
+    "FactSet": {
+        "Title": {
+            "type": "TextBlock",
+            "weight": "bolder"
+        },
+        "Value": {
+            "type": "TextBlock"
+        },
+        "Separation": {
+            "Default": {
+                "Spacing": 10
+            },
+            "Strong": {
+                "Spacing": 20,
+                "LineThickness": 1,
+                "LineColor": "#FF707070"
+            }
+        }
+    },
+    "Input": {
+        "Toggle": {
+            "Something": true
+        },
+        "Separation": {
+            "Default": {
+                "Spacing": 10
+            },
+            "Strong": {
+                "Spacing": 20,
+                "LineThickness": 1,
+                "LineColor": "#FF707070"
+            }
+        }
+    },
+    "Action": {
+        "ShowCard": {
+            "Mode": "Inline",
+            "EdgeToEdge": true
+        },
+        "Style": "Button|Hyperlink",
+        "BackgroundColor": "#FF5098FF",
+        "BorderColor": "#FF000000",
+        "TextColor": "#FFFFFFFF",
+        "BorderLineThickness": 1,
+        "FontWeight": 400,
+        "FontSize": 12,
+        "Margin": {
+            "Left": 15,
+            "Right": 20,
+            "Bottom": 10,
+            "Top": 12
+        },
+        "Padding": {
+            "Left": 0,
+            "Right": 5
+        }
+    }
+}
