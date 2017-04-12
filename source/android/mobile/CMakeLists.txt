@@ -29,8 +29,12 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/Container.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCard.cpp
              ../../shared/cpp/ObjectModel/TextBlock.cpp
+             ../../shared/cpp/ObjectModel/Column.cpp
+             ../../shared/cpp/ObjectModel/ColumnSet.cpp
+             ../../shared/cpp/ObjectModel/Image.cpp
              src/main/cpp/objectmodel_wrap.cpp
-             src/main/cpp/native-lib.cpp)
+             src/main/cpp/native-lib.cpp
+             )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by

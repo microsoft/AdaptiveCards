@@ -2,24 +2,6 @@
 
 namespace AdaptiveCards
 {
-template <typename T>
-std::size_t EnumHash::operator()(T t) const
-{
-    return static_cast<std::size_t>(t);
-}
-
-struct CaseInsensitiveEqualTo {
-    bool operator() (const std::string& lhs, const std::string& rhs) const {
-        return _strnicmp(lhs.c_str(), rhs.c_str(), CHAR_MAX) == 0;
-    }
-};
-
-struct CaseInsensitiveHash {
-    size_t operator() (const std::string& keyval) const {
-        return std::accumulate(keyval.begin(), keyval.end(), 0, [](size_t acc, char c) { return acc + (size_t)std::tolower(c); });
-    }
-};
-
 static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHash, CaseInsensitiveEqualTo> AdaptiveCardSchemaKeyNameToEnum =
 {
     { "type", AdaptiveCardSchemaKey::Type },

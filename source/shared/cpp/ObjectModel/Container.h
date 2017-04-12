@@ -1,12 +1,11 @@
 #pragma once
 
-#include "pch.h"
 #include "Enums.h"
+#include "pch.h"
 #include "BaseCardElement.h"
 
 namespace AdaptiveCards
 {
-class BaseCardElement;
 class Container : public BaseCardElement
 {
 public:
@@ -22,7 +21,7 @@ public:
     static std::shared_ptr<Container> Deserialize(const Json::Value& root);
 
 protected:
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>> CardElementParsers;
+    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
     void SetItems(std::vector<std::shared_ptr<BaseCardElement>>& items);
 
 private:
