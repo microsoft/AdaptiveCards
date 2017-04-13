@@ -11,8 +11,9 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(InputDate input, RenderContext context)
+        protected static FrameworkElement RenderInputDateEx(TypedElement element, RenderContext context)
         {
+            InputDate input = (InputDate)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var datePicker = new DatePicker();
@@ -26,7 +27,7 @@ namespace AdaptiveCards.Rendering
                 DateTime maxValue;
                 if (DateTime.TryParse(input.Max, out maxValue))
                     datePicker.DisplayDateEnd = maxValue;
-                datePicker.Style = this.GetStyle("Adaptive.Input.Date");
+                datePicker.Style = context.GetStyle("Adaptive.Input.Date");
                 datePicker.DataContext = input;
                 context.InputControls.Add(datePicker);
                 return datePicker;
@@ -34,7 +35,7 @@ namespace AdaptiveCards.Rendering
             else
             {
                 var textBlock = new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder };
-                return Render(textBlock, context);
+                return context.Render(textBlock);
             }
         }
     }

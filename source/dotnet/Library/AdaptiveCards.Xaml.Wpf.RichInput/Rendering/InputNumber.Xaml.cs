@@ -12,8 +12,9 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(InputNumber input, RenderContext context)
+        protected static FrameworkElement RenderInputNumberEx(TypedElement element, RenderContext context)
         {
+            InputNumber input = (InputNumber)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
 
@@ -30,7 +31,7 @@ namespace AdaptiveCards.Rendering
                     numberPicker.Minimum = Convert.ToInt32(input.Max);
 
                 numberPicker.Watermark = input.Placeholder;
-                numberPicker.Style = this.GetStyle("Adaptive.Input.Number");
+                numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
                 numberPicker.DataContext = input;
                 context.InputControls.Add(numberPicker);
                 return numberPicker;
@@ -38,7 +39,7 @@ namespace AdaptiveCards.Rendering
             else
             {
                 var textBlock = new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder };
-                return Render(textBlock, context);
+                return context.Render(textBlock);
             }
 
         }

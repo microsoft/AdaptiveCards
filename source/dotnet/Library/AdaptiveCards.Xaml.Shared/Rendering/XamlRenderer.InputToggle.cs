@@ -9,23 +9,22 @@ using Xamarin.Forms;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
         /// <summary>
         /// TextInput
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(InputToggle input, RenderContext context)
+        protected static FrameworkElement RenderInputToggle(TypedElement element, RenderContext context)
         {
-
+            InputToggle input = (InputToggle)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
 #if WPF
                 var uiToggle = new CheckBox();
                 uiToggle.Content = input.Title;
                 uiToggle.IsChecked = input.Value == (input.ValueOn ?? "true");
-                uiToggle.Style = this.GetStyle($"Adaptive.Input.Toggle");
+                uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
                 uiToggle.DataContext = input;
                 context.InputControls.Add(uiToggle);
                 return uiToggle;
@@ -34,7 +33,7 @@ namespace AdaptiveCards.Rendering
                 // TODO: Finish switch
                 //uiToggle.Content = input.Title;
                 uiToggle.IsToggled = input.Value == (input.ValueOn ?? "true");
-                uiToggle.Style = this.GetStyle($"Adaptive.Input.Toggle");
+                uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
                 uiToggle.BindingContext = input;
                 context.InputControls.Add(uiToggle);
                 return uiToggle;
@@ -53,7 +52,7 @@ namespace AdaptiveCards.Rendering
                         Wrap = true
                     });
                 }
-                return Render(container, context);
+                return context.Render(container);
             }
 
         }

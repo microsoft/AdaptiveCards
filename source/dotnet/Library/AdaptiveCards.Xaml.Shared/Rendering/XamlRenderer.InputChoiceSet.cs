@@ -12,15 +12,15 @@ using Xamarin.Forms;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
         /// <summary>
         /// Input.ChoiceSet
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(InputChoiceSet choiceSet, RenderContext context)
+        protected static FrameworkElement RenderInputChoiceSet(TypedElement element, RenderContext context)
         {
+            InputChoiceSet choiceSet = (InputChoiceSet)element;
 #if WPF
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
@@ -29,7 +29,7 @@ namespace AdaptiveCards.Rendering
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
 
                 var uiComboBox = new ComboBox();
-                uiComboBox.Style = this.GetStyle("Adaptive.Input.ChoiceSet.ComboBox");
+                uiComboBox.Style = context.GetStyle("Adaptive.Input.ChoiceSet.ComboBox");
                 uiComboBox.DataContext = choiceSet;
 
                 var uiChoices = new ListBox();
@@ -39,7 +39,7 @@ namespace AdaptiveCards.Rendering
                 itemsPanelTemplate.VisualTree = factory;
                 uiChoices.ItemsPanel = itemsPanelTemplate;
                 uiChoices.DataContext = choiceSet;
-                uiChoices.Style = this.GetStyle("Adaptive.Input.ChoiceSet");
+                uiChoices.Style = context.GetStyle("Adaptive.Input.ChoiceSet");
 
                 foreach (var choice in choiceSet.Choices)
                 {
@@ -49,7 +49,7 @@ namespace AdaptiveCards.Rendering
                         uiCheckbox.Content = choice.Title;
                         uiCheckbox.IsChecked = choice.IsSelected;
                         uiCheckbox.DataContext = choice;
-                        uiCheckbox.Style = this.GetStyle("Adaptive.Input.ChoiceSet.CheckBox");
+                        uiCheckbox.Style = context.GetStyle("Adaptive.Input.ChoiceSet.CheckBox");
                         uiChoices.Items.Add(uiCheckbox);
                     }
                     else
@@ -57,7 +57,7 @@ namespace AdaptiveCards.Rendering
                         if (choiceSet.Style == ChoiceInputStyle.Compact)
                         {
                             var uiComboItem = new ComboBoxItem();
-                            uiComboItem.Style = this.GetStyle("Adaptive.Input.ChoiceSet.ComboBoxItem");
+                            uiComboItem.Style = context.GetStyle("Adaptive.Input.ChoiceSet.ComboBoxItem");
                             uiComboItem.Content = choice.Title;
                             uiComboItem.DataContext = choice;
                             uiComboBox.Items.Add(uiComboItem);
@@ -71,7 +71,7 @@ namespace AdaptiveCards.Rendering
                             uiRadio.IsChecked = choice.IsSelected;
                             uiRadio.GroupName = choiceSet.Id;
                             uiRadio.DataContext = choice;
-                            uiRadio.Style = this.GetStyle("Adaptive.Input.ChoiceSet.Radio");
+                            uiRadio.Style = context.GetStyle("Adaptive.Input.ChoiceSet.Radio");
                             uiChoices.Items.Add(uiRadio);
                         }
                     }
@@ -94,7 +94,7 @@ namespace AdaptiveCards.Rendering
             
 #endif
 
-            string choiceText = this.GetFallbackText(choiceSet);
+            string choiceText = GetFallbackText(choiceSet);
             if (choiceText == null)
             {
                 List<string> choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
@@ -102,16 +102,16 @@ namespace AdaptiveCards.Rendering
                 {
                     if (choiceSet.IsMultiSelect)
                     {
-                        choiceText = $"Choices: {JoinString(choices, ", ", " and ")}";
+                        choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " and ")}";
                     }
                     else
                     {
-                        choiceText = $"Choices: {JoinString(choices, ", ", " or ")}";
+                        choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " or ")}";
                     }
                 }
                 else // if (this.Style == ChoiceInputStyle.Expanded)
                 {
-                    choiceText = $"* {JoinString(choices, "\n* ", "\n* ")}";
+                    choiceText = $"* {RendererUtilities.JoinString(choices, "\n* ", "\n* ")}";
                 }
             }
             Container container = new Container() { Separation = choiceSet.Separation };
@@ -122,11 +122,11 @@ namespace AdaptiveCards.Rendering
             });
             container.Items.Add(new TextBlock()
             {
-                Text = JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
+                Text = RendererUtilities.JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
                 Color = TextColor.Accent,
                 Wrap = true
             });
-            return Render(container, context);
+            return context.Render(container);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering
     /// Renderer of AdaptiveCard schema into ElementT types 
     /// </summary>
     /// <typeparam name="ElementT">the base type of rendered elements</typeparam>
-    internal static class Utilities
+    public static class Utilities
     {
         private static Regex TextFunctionRegex = new Regex(@"\{\{(?<func>DATE|TIME){1}\((?<date>.+?){1}(?:,\s*(?<hint>Short|Long){1}\s*)??\)\}\}", RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
         private static Regex _regexBinding = new Regex(@"(?<property>\{\{\w+?\}\})+?", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering
 
         private enum TimeHints { LONG, SHORT };
 
-        internal static T TryGetValue<T>(this IDictionary dictionary, string key)
+        public static T TryGetValue<T>(this IDictionary dictionary, string key)
         {
             if (dictionary == null)
                 throw new ArgumentNullException(nameof(dictionary));
@@ -31,7 +31,7 @@ namespace AdaptiveCards.Rendering
             return default(T);
         }
 
-        internal static T TryGetValue<T>(this IDictionary<string, object> dictionary, string key)
+        public static T TryGetValue<T>(this IDictionary<string, object> dictionary, string key)
         {
             if (dictionary == null)
                 throw new ArgumentNullException(nameof(dictionary));
@@ -50,7 +50,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        internal static string ApplyTextFunctions(string text)
+        public static string ApplyTextFunctions(string text)
         {
             foreach (Match match in TextFunctionRegex.Matches(text))
             {
@@ -87,7 +87,7 @@ namespace AdaptiveCards.Rendering
         /// <param name="text"></param>
         /// <param name="url">true if url text is a url (escaping will be applied to the vaue of the binding)</param>
         /// <returns></returns>
-        internal static string BindData(dynamic data, string text, bool url = false)
+        public static string BindData(dynamic data, string text, bool url = false)
         {
             foreach (Match match in _regexBinding.Matches(text))
             {

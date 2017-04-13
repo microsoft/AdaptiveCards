@@ -21,13 +21,12 @@ namespace AdaptiveCards.Rendering
         // ------ Containers ------
         public ContainerOptions Container { get; set; } = new ContainerOptions();
 
-        public ColumnSetOptions ColumnSet { get; set; } = new ColumnSetOptions();
-
-        public ColumnOptions Column { get; set; } = new ColumnOptions();
+        public ContainerSetOptions ContainerSet { get; set; } = new ContainerSetOptions();
 
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
         public FactSetOptions FactSet { get; set; } = new FactSetOptions();
+        public CardElementOptions ActionSet { get; set; } = new CardElementOptions();
 
         // ------ Input ------
         public InputOptions Input { get; set; } = new InputOptions();
@@ -43,10 +42,10 @@ namespace AdaptiveCards.Rendering
                 return this.Image;
             if (obj is Container)
                 return this.Container;
-            if (obj is ColumnSet)
-                return this.ColumnSet;
-            if (obj is Column)
-                return this.Column;
+            if (obj is ContainerSet)
+                return this.ContainerSet;
+            if (obj is ActionSet)
+                return this.ActionSet;
             if (obj is ImageSet)
                 return this.ImageSet;
             if (obj is ImageSet)
@@ -109,7 +108,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Text color for card (shared by FactSet, TextBlock)
         /// </summary>
-        public string TextColor { get; set; } = "#FF000000";
+        public ColorOption TextColor { get; set; } = new ColorOption("#FF000000");
 
         /// <summary>
         /// Font family for the card
@@ -185,19 +184,14 @@ namespace AdaptiveCards.Rendering
         public SeparationOptions() { }
 
         /// <summary>
-        /// Separation settings when Separation:none
-        /// </summary>
-        public SeparationOption None { get; set; } = new SeparationOption() { Spacing = 0, Thickness = 0 };
-
-        /// <summary>
         /// Separation settings when Separation:default
         /// </summary>
-        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10, Thickness = 0 };
+        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10, LineThickness = 0 };
 
         /// <summary>
         /// Separation settings when Separation:Strong
         /// </summary>
-        public SeparationOption Strong { get; set; } = new SeparationOption() { Spacing = 20, Thickness = 1, Color = "#FF707070" };
+        public SeparationOption Strong { get; set; } = new SeparationOption() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
     }
 
     public class SeparationOption
@@ -212,12 +206,12 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// If there is a visible line, how thick should the line be
         /// </summary>
-        public int Thickness { get; set; }
+        public int LineThickness { get; set; }
 
         /// <summary>
         /// If there is a visible color, what color to use
         /// </summary>
-        public string Color { get; set; }
+        public string LineColor { get; set; }
 
     }
 
@@ -237,9 +231,6 @@ namespace AdaptiveCards.Rendering
         /// FontSize
         /// </summary>
         public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
-
-
-        public double IsSubtleOpacity { get; set; } = .5;
     }
 
     public class FontSizeOptions
@@ -266,17 +257,30 @@ namespace AdaptiveCards.Rendering
         /// Default color for TextBlock
         /// </summary>
 
-        public string Accent { get; set; } = "#FF0000FF";
+        public ColorOption Accent { get; set; } = new ColorOption("#FF0000FF");
 
-        public string Dark { get; set; } = "#FF101010";
+        public ColorOption Dark { get; set; } = new ColorOption("#FF101010");
 
-        public string Light { get; set; } = "#FFFFFFFF";
+        public ColorOption Light { get; set; } = new ColorOption("#FFFFFFFF");
 
-        public string Good { get; set; } = "#FF008000";
+        public ColorOption Good { get; set; } = new ColorOption("#FF008000");
 
-        public string Warning { get; set; } = "#FFFFD700";
+        public ColorOption Warning { get; set; } = new ColorOption("#FFFFD700");
 
-        public string Attention { get; set; } = "#FF8B0000";
+        public ColorOption Attention { get; set; } = new ColorOption("#FF8B0000");
+    }
+
+    public class ColorOption
+    {
+        public ColorOption(string color, double opacity = .7)
+        {
+            this.Color = color;
+            this.IsSubtleOpacity = opacity;
+        }
+
+        public string Color { get; set; }
+
+        public double IsSubtleOpacity { get; set; } = .7;
     }
 
     /// <summary>
@@ -325,7 +329,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Space between actions
         /// </summary>
-        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(4,10,4,0);
+        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(4, 10, 4, 0);
 
         /// <summary>
         /// space between title and button edge
@@ -364,24 +368,6 @@ namespace AdaptiveCards.Rendering
         Popup
     }
 
-    public class ContainerOptions : CardElementOptions
-    {
-        public ContainerOptions() { }
-
-        public int MaxActions { get; set; } = 5;
-
-        /// <summary>
-        /// The types of Actions that you support(null for no actions)
-        /// </summary>
-        public string[] SupportedActions { get; set; } = new string[]
-        {
-            ActionOpenUrl.TYPE,
-            ActionSubmit.TYPE,
-            ActionHttp.TYPE,
-            ActionShowCard.TYPE
-        };
-
-    }
 
     public class ImageSetOptions : CardElementOptions
     {
@@ -410,13 +396,27 @@ namespace AdaptiveCards.Rendering
         public InputOptions() { }
     }
 
-    public class ColumnSetOptions : CardElementOptions
+    public class ContainerSetOptions : CardElementOptions
     {
-        public ColumnSetOptions() { }
+        public ContainerSetOptions() { }
     }
 
-    public class ColumnOptions : CardElementOptions
+    public class ContainerOptions : CardElementOptions
     {
-        public ColumnOptions() { }
+        public ContainerOptions() { }
+
+        public int MaxActions { get; set; } = 5;
+
+        /// <summary>
+        /// The types of Actions that you support(null for no actions)
+        /// </summary>
+        public string[] SupportedActions { get; set; } = new string[]
+        {
+            ActionOpenUrl.TYPE,
+            ActionSubmit.TYPE,
+            ActionHttp.TYPE,
+            ActionShowCard.TYPE
+        };
+
     }
 }

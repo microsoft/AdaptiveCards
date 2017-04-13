@@ -15,15 +15,15 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
         /// <summary>
         /// Image
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(Image image, RenderContext context)
+        protected static FrameworkElement RenderImage(TypedElement element, RenderContext context)
         {
+            Image image = (Image)element;
             var uiImage = new UI.Image();
 #if WPF
             uiImage.Source = context.ResolveImageSource(image.Url);
@@ -53,7 +53,7 @@ namespace AdaptiveCards.Rendering
                 //TODO
 #endif 
             }
-            uiImage.Style = this.GetStyle(style);
+            uiImage.Style = context.GetStyle(style);
 #if WPF
             switch (image.Size)
             {
@@ -82,11 +82,11 @@ namespace AdaptiveCards.Rendering
 
             if (image.SelectAction != null)
             {
-                var uiButton = (Button)RenderAction(image.SelectAction, context);
+                var uiButton = (Button)context.Render(image.SelectAction);
                 if (uiButton != null)
                 {
                     uiButton.Content = uiImage;
-                    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
+                    uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
                     return uiButton;
                 }
             }

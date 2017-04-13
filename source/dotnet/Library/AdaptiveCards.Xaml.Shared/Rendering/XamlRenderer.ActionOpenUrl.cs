@@ -11,18 +11,14 @@ namespace AdaptiveCards.Rendering
 {
 
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// OpenUrl
-        /// </summary>
-        /// <param name="openUrlAction"></param>
-        /// <returns></returns>
-        protected override FrameworkElement Render(ActionOpenUrl action, RenderContext context)
+        public FrameworkElement RenderActionOpenUrl(TypedElement element, RenderContext context)
         {
+            ActionOpenUrl action = (ActionOpenUrl)element;
+
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                Button uiButton = this.CreateActionButton(action, context); // content);
+                Button uiButton = CreateActionButton(action, context); // content);
                 uiButton.Click += (sender, e) =>
                 {
                     context.Action(uiButton, new ActionEventArgs() { Action = action });

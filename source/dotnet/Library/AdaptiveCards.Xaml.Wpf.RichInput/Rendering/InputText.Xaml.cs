@@ -12,8 +12,9 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(InputText input, RenderContext context)
+        protected static FrameworkElement RenderInputTextEx(TypedElement element, RenderContext context)
         {
+            InputText input = (InputText)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var textBox = new WatermarkTextBox() { Text = input.Value };
@@ -27,7 +28,7 @@ namespace AdaptiveCards.Rendering
                     textBox.MaxLength = input.MaxLength;
 
                 textBox.Watermark = input.Placeholder;
-                textBox.Style = this.GetStyle($"Adaptive.Input.Text.{input.Style}");
+                textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
                 textBox.DataContext = input;
                 context.InputControls.Add(textBox);
                 return textBox;
@@ -36,9 +37,8 @@ namespace AdaptiveCards.Rendering
             {
 
                 var textBlock = new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder };
-                return Render(textBlock, context);
+                return context.Render(textBlock);
             }
-
         }
     }
 }

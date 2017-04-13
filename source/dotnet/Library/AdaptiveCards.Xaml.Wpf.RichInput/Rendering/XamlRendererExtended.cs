@@ -19,6 +19,7 @@ namespace AdaptiveCards.Rendering
             Action<object, MissingInputEventArgs> missingDataCallback = null)
             : base(options, resources, actionCallback, missingDataCallback)
         {
+            AddDefaultRenderers();
         }
 
 #if WPF
@@ -27,7 +28,15 @@ namespace AdaptiveCards.Rendering
             Action<object, MissingInputEventArgs> missingDataCallback = null)
             : base(options, stylePath, actionCallback, missingDataCallback)
         {
+            AddDefaultRenderers();
         }
 #endif
+        private void AddDefaultRenderers()
+        {
+            base.ElementRenderers["Input.Text"] = RenderInputTextEx;
+            base.ElementRenderers["Input.Number"] = RenderInputNumberEx;
+            base.ElementRenderers["Input.Date"] = RenderInputDateEx;
+            base.ElementRenderers["Input.Time"] = RenderInputTimeEx;
+        }
     }
 }

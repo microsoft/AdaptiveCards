@@ -18,38 +18,16 @@ namespace AdaptiveCards.Rendering
 {
 
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-#if WPF
-        private static Dictionary<string, SolidColorBrush> colors = new Dictionary<string, SolidColorBrush>();
-
-        public SolidColorBrush GetColorBrush(string color)
-        {
-            lock(colors)
-            {
-                if (colors.TryGetValue(color, out var brush))
-                    return brush;
-                brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
-                colors[color] = brush;
-                return brush;
-            }
-        }
-#elif XAMARIN
-        // TODO
-        public object GetColorBrush(string color)
-        {
-            return null;
-        }
-#endif
 
         /// <summary>
         /// TextBlock
         /// </summary>
         /// <param name="textBlock"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(TextBlock textBlock, RenderContext context)
+        protected static FrameworkElement RenderTextBlock(TypedElement element, RenderContext context)
         {
-
+            TextBlock textBlock = (TextBlock)element;
 #if WPF
             Marked marked = new Marked();
             marked.Options.Renderer = new MarkedXamlRenderer();
@@ -63,34 +41,40 @@ namespace AdaptiveCards.Rendering
 
             XmlReader xmlReader = XmlReader.Create(stringReader);
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
-            uiTextBlock.Style = this.GetStyle($"Adaptive.{textBlock.Type}");
+            uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
 
             uiTextBlock.FontFamily = new FontFamily(context.Options.AdaptiveCard.FontFamily);
 
+            ColorOption colorOption;
             switch (textBlock.Color)
             {
                 case TextColor.Accent:
-                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Accent);
+                    colorOption = context.Options.TextBlock.Color.Accent;
                     break;
                 case TextColor.Attention:
-                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Attention);
+                    colorOption = context.Options.TextBlock.Color.Attention;
                     break;
                 case TextColor.Dark:
-                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Dark);
-                    break;
-                case TextColor.Default:
-                    uiTextBlock.Foreground = GetColorBrush(context.Options.AdaptiveCard.TextColor);
+                    colorOption = context.Options.TextBlock.Color.Dark;
                     break;
                 case TextColor.Good:
-                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Good);
+                    colorOption = context.Options.TextBlock.Color.Good;
                     break;
                 case TextColor.Light:
-                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Light);
+                    colorOption = context.Options.TextBlock.Color.Light;
                     break;
                 case TextColor.Warning:
-                    uiTextBlock.Foreground = GetColorBrush(context.Options.TextBlock.Color.Warning);
+                    colorOption = context.Options.TextBlock.Color.Warning;
+                    break;
+                case TextColor.Default:
+                default:
+                    colorOption = context.Options.AdaptiveCard.TextColor;
                     break;
             }
+            uiTextBlock.Foreground = context.GetColorBrush(colorOption.Color);
+            if (textBlock.IsSubtle == true)
+                uiTextBlock.Opacity = colorOption.IsSubtleOpacity;
+
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
             switch (textBlock.Weight)
@@ -122,7 +106,7 @@ namespace AdaptiveCards.Rendering
 #elif XAMARIN
             var uiTextBlock = new Xamarin.Forms.TextBlock();
             uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
-            uiTextBlock.Style = this.GetStyle("Adaptive.TextBlock");
+            uiTextBlock.Style = context.GetStyle("Adaptive.TextBlock");
             // TODO: confirm text trimming
             uiTextBlock.LineBreakMode = LineBreakMode.TailTruncation;
 
@@ -144,7 +128,7 @@ namespace AdaptiveCards.Rendering
             
 
 
-            uiTextBlock.TextColor = this.Resources.TryGetValue<Color>($"Adaptive.{textBlock.Color}");
+            uiTextBlock.TextColor = context.Resources.TryGetValue<Color>($"Adaptive.{textBlock.Color}");
 
             if (textBlock.Weight == TextWeight.Bolder)
                 uiTextBlock.FontAttributes = FontAttributes.Bold;
@@ -173,9 +157,6 @@ namespace AdaptiveCards.Rendering
                     uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Normal;
                     break;
             }
-
-            if (textBlock.IsSubtle == true)
-                uiTextBlock.Opacity = context.Options.TextBlock.IsSubtleOpacity;
 
 
             if (textBlock.MaxLines > 0)

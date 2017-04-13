@@ -13,19 +13,13 @@ using AdaptiveCards.Rendering;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// HttpAction
-        /// </summary>
-        /// <param name="httpAction"></param>
-        /// <returns></returns>
-
-        protected override FrameworkElement Render(ActionHttp action, RenderContext context)
+        public static FrameworkElement RenderActionHttp(TypedElement element, RenderContext context)
         {
+            ActionHttp action = (ActionHttp)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                Button uiButton = this.CreateActionButton(action, context);
+                Button uiButton = CreateActionButton(action, context);
                 uiButton.Click += (sender, e) =>
                 {
                     dynamic data = new JObject();

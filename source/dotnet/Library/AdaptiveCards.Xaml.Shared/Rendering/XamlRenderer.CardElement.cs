@@ -5,16 +5,13 @@ using AdaptiveCards.Rendering;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-
-
         /// <summary>
         /// Get fallback text from the speech element 
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        protected string GetFallbackText(CardElement cardElement)
+        protected static string GetFallbackText(CardElement cardElement)
         {
 #if WPF
             if (!string.IsNullOrEmpty(cardElement.Speak))

@@ -11,19 +11,13 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-        /// <summary>
-        /// SubmitAction
-        /// </summary>
-        /// <param name="submitAction"></param>
-        /// <returns></returns>
-        protected override FrameworkElement Render(ActionSubmit action, RenderContext context)
+        public FrameworkElement RenderActionSubmit(TypedElement element, RenderContext context)
         {
-
+            ActionSubmit action = (ActionSubmit)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                Button uiButton = this.CreateActionButton(action, context); // content
+                Button uiButton = CreateActionButton(action, context); // content
                 uiButton.Click += (sender, e) =>
                 {
                     try

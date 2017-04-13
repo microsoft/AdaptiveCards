@@ -19,28 +19,22 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
-
-        /// <summary>
-        /// Container
-        /// </summary>
-        /// <param name="container"></param>
-        /// <returns></returns>
-        protected override FrameworkElement Render(Container container, RenderContext context)
+        public static FrameworkElement RenderContainer(TypedElement element, RenderContext context)
         {
+            Container container = (Container)element;
             var uiContainer = new Grid();
-            uiContainer.Style = this.GetStyle("Adaptive.Container");
+            uiContainer.Style = context.GetStyle("Adaptive.Container");
 
-            AddContainerElements(uiContainer, container.Items, container.Actions, context, context.Options.Container.SupportedActions, context.Options.Container.MaxActions);
+            AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
             {
-                var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
+                var uiButton = (Button)context.Render(container.SelectAction);//, new RenderContext(this.actionCallback, this.missingDataCallback));
                 if (uiButton != null)
                 {
                     uiButton.Content = uiContainer;
-                    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
+                    uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
                     return uiButton;
                 }
             }
@@ -48,151 +42,49 @@ namespace AdaptiveCards.Rendering
             return uiContainer;
         }
 
-        protected void AddContainerElements(Grid uiContainer, List<CardElement> elements, List<ActionBase> actions, RenderContext context, string[] supportedActions, int maxActions)
+        public static void AddContainerElements(Grid uiContainer, List<CardElement> elements, RenderContext context)
         {
             foreach (var cardElement in elements)
             {
                 // each element has a row
-                FrameworkElement uiElement = this.Render(cardElement, context);
+                FrameworkElement uiElement = context.Render(cardElement);
                 if (uiElement != null)
                 {
                     if (uiContainer.RowDefinitions.Count > 0)
                     {
-                        var uiSep = new Grid();
-                        uiSep.Style = this.GetStyle($"Adaptive.Separator");
-                        SeparationOption sepStyle = null;
-                        switch (cardElement.Separation)
+                        if (cardElement.Separation != SeparationStyle.None)
                         {
-                            case SeparationStyle.None:
-                                sepStyle = context.Options.GetElementStyling(cardElement).Separation.None;
-                                break;
-                            case SeparationStyle.Default:
-                                sepStyle = context.Options.GetElementStyling(cardElement).Separation.Default;
-                                break;
 
-                            case SeparationStyle.Strong:
-                                sepStyle = context.Options.GetElementStyling(cardElement).Separation.Strong;
-                                break;
-                        }
+                            var uiSep = new Grid();
+                            uiSep.Style = context.GetStyle($"Adaptive.Separator");
+                            SeparationOption sepStyle = null;
+                            switch (cardElement.Separation)
+                            {
+                                case SeparationStyle.Default:
+                                    sepStyle = context.Options.GetElementStyling(cardElement).Separation.Default;
+                                    break;
 
-                        uiSep.Margin = new Thickness(0, sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2);
+                                case SeparationStyle.Strong:
+                                    sepStyle = context.Options.GetElementStyling(cardElement).Separation.Strong;
+                                    break;
+                            }
+
+                            uiSep.Margin = new Thickness(0, sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2);
 #if WPF
-                        uiSep.Height = sepStyle.Thickness;
-                        if (sepStyle.Color != null)
-                            uiSep.Background = this.GetColorBrush(sepStyle.Color);
+                            uiSep.Height = sepStyle.LineThickness;
+                            if (sepStyle.LineColor != null)
+                                uiSep.Background = context.GetColorBrush(sepStyle.LineColor);
 #elif XAMARIN
                             // TODO
 #endif
-                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                        Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
-                        uiContainer.Children.Add(uiSep);
+                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                            Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
+                            uiContainer.Children.Add(uiSep);
+                        }
                     }
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                     uiContainer.Children.Add(uiElement);
-                }
-            }
-
-            if (supportedActions != null)
-            {
-                var actionsToProcess = actions
-                    .Where(a => supportedActions?.Contains(a.Type) == true)
-                    .Take(maxActions).ToList();
-                if (actionsToProcess.Any() == true)
-                {
-#if WPF
-                    var uiActionBar = new UniformGrid();
-                    if (context.Options.AdaptiveCard.ActionsOrientation == ActionsOrientation.Horizontal)
-                        uiActionBar.Columns = actionsToProcess.Count();
-                    else
-                        uiActionBar.Rows = actionsToProcess.Count();
-                    uiActionBar.HorizontalAlignment = (System.Windows.HorizontalAlignment)Enum.Parse(typeof(System.Windows.HorizontalAlignment), context.Options.AdaptiveCard.ActionAlignment.ToString());
-                    uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-
-                    uiActionBar.Style = this.GetStyle("Adaptive.Actions");
-                    uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                    Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);
-                    uiContainer.Children.Add(uiActionBar);
-
-                    if (context.Options.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline && actionsToProcess.Where(a => a is ActionShowCard).Any())
-                    {
-                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                    }
-
-                    int iPos = 0;
-                    List<FrameworkElement> actionBarCards = new List<FrameworkElement>();
-                    foreach (var action in actionsToProcess)
-                    {
-                        // add actions
-                        var uiAction = (Button)this.RenderAction(action, context);
-                        if (uiAction != null)
-                        {
-                            Grid.SetColumn(uiAction, iPos++);
-                            uiActionBar.Children.Add(uiAction);
-
-                            if (action is ActionShowCard)
-                            {
-                                ActionShowCard showCardAction = (ActionShowCard)action;
-                                if (context.Options.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline)
-                                {
-                                    Grid uiShowCardContainer = new Grid();
-                                    uiShowCardContainer.Style = this.GetStyle("Adaptive.Actions.ShowCard");
-                                    uiShowCardContainer.DataContext = showCardAction;
-                                    uiShowCardContainer.Margin = new Thickness(context.Options.Actions.ShowCard.Margin.Left,
-                                        context.Options.Actions.ShowCard.Margin.Top, 
-                                        context.Options.Actions.ShowCard.Margin.Right, 
-                                        context.Options.Actions.ShowCard.Margin.Bottom);
-                                    uiShowCardContainer.Background = this.GetColorBrush(context.Options.Actions.ShowCard.BackgroundColor);
-                                    uiShowCardContainer.Visibility = Visibility.Collapsed;
-
-                                    // render the card
-                                    var uiShowCard = Render(showCardAction.Card, context);
-                                    uiShowCard.Margin = new Thickness(context.Options.Actions.ShowCard.Padding.Left,
-                                        context.Options.Actions.ShowCard.Padding.Top,
-                                        context.Options.Actions.ShowCard.Padding.Right,
-                                        context.Options.Actions.ShowCard.Padding.Bottom);
-                                    uiShowCard.DataContext = showCardAction;
-                                    uiShowCardContainer.Children.Add(uiShowCard);
-
-                                    actionBarCards.Add(uiShowCardContainer);
-                                    Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
-                                    uiContainer.Children.Add(uiShowCardContainer);
-
-                                    uiAction.Click += (sender, e) =>
-                                    {
-                                        bool showCard = (uiShowCardContainer.Visibility != Visibility.Visible);
-                                        foreach (var actionBarCard in actionBarCards)
-                                            actionBarCard.Visibility = Visibility.Collapsed;
-                                        if (showCard)
-                                            uiShowCardContainer.Visibility = Visibility.Visible;
-                                    };
-                                }
-                            }
-                        }
-                    }
-
-#elif XAMARIN
-                var uiActionBar = new UniformGrid();
-                //uiActionBar.Rows = 1;
-                //uiActionBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-                //uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-
-                int iCol = 0;
-                foreach (var action in actionsToProcess)
-                {
-                    // add actions
-                    var uiAction = this.RenderAction(action, context);
-                    if (uiAction != null)
-                    {
-                        Grid.SetColumn(uiAction, iCol++);
-                        uiActionBar.Children.Add(uiAction);
-                    }
-                }
-                uiActionBar.Style = this.GetStyle("Adaptive.Actions");
-                uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);
-                uiContainer.Children.Add(uiActionBar);
-#endif
                 }
             }
         }

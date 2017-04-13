@@ -9,18 +9,18 @@ using Xamarin.Forms;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
         /// <summary>
         /// ImageSet
         /// </summary>
         /// <param name="imageSet"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(ImageSet imageSet, RenderContext context)
+        protected static FrameworkElement RenderImageSet(TypedElement element, RenderContext context)
         {
+            ImageSet imageSet = (ImageSet)element;
 #if WPF
             var uiImageSet = new ListBox();
-            uiImageSet.Style = this.GetStyle("Adaptive.ImageSet");
+            uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
 
             ScrollViewer.SetHorizontalScrollBarVisibility(uiImageSet, ScrollBarVisibility.Disabled);
             var itemsPanelTemplate = new ItemsPanelTemplate();
@@ -33,7 +33,7 @@ namespace AdaptiveCards.Rendering
             {
                 if (imageSet.ImageSize != ImageSize.Auto)
                     image.Size = imageSet.ImageSize;
-                var uiImage = this.Render(image, context);
+                var uiImage = context.Render(image);
                 uiImageSet.Items.Add(uiImage);
             }
             return uiImageSet;

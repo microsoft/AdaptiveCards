@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 
@@ -23,7 +22,8 @@ namespace AdaptiveCards
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
-        [XmlElement(typeof(ColumnSet))]
+        [XmlElement(typeof(ContainerSet))]
+        [XmlElement(typeof(ActionSet))]
         [XmlElement(typeof(FactSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(InputText), ElementName ="Input.Text")]
@@ -42,22 +42,12 @@ namespace AdaptiveCards
         public ActionBase SelectAction { get; set; }
 
         /// <summary>
-        ///     Actions for this container
+        ///     Size for the column (either ColumnSize string or number which is relative size of the column)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET452
-        [XmlArray("Actions")]
-        [XmlArrayItem(ElementName = "Action.OpenUrl", Type = typeof(ActionOpenUrl))]
-        [XmlArrayItem(ElementName = "Action.ShowCard", Type = typeof(ActionShowCard))]
-        [XmlArrayItem(ElementName = "Action.Submit", Type = typeof(ActionSubmit))]
-        [XmlArrayItem(ElementName = "Action.Http", Type = typeof(ActionHttp))]
+        [XmlAttribute]
 #endif
-        public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
-
-
-        public bool ShouldSerializeActions()
-        {
-            return Actions.Any();
-        }
+        public string Size { get; set; }
     }
 }

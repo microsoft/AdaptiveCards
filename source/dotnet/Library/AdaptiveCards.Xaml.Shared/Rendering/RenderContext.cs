@@ -11,6 +11,7 @@ using Xamarin.Forms.Xaml.Internals;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xceed.Wpf.Toolkit;
 #endif
@@ -35,6 +36,17 @@ namespace AdaptiveCards.Rendering
         }
 
         public HostOptions Options { get; set; } = new HostOptions();
+
+        public Dictionary<string, Func<TypedElement, RenderContext, FrameworkElement>> ElementRenderers = new Dictionary<string, Func<TypedElement, RenderContext, FrameworkElement>>();
+
+        public FrameworkElement Render(TypedElement element)
+        {
+            if (ElementRenderers.TryGetValue(element.Type, out Func<TypedElement, RenderContext, FrameworkElement> renderer))
+            {
+                return renderer(element, this);
+            }
+            return null;
+        }
 
 #if WPF
         public BitmapImage ResolveImageSource(string url)
@@ -84,6 +96,48 @@ namespace AdaptiveCards.Rendering
         {
             this.OnMissingInput?.Invoke(sender, args);
         }
+#if WPF
+        private static Dictionary<string, SolidColorBrush> colors = new Dictionary<string, SolidColorBrush>();
+
+        public SolidColorBrush GetColorBrush(string color)
+        {
+            lock (colors)
+            {
+                if (colors.TryGetValue(color, out var brush))
+                    return brush;
+                brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                colors[color] = brush;
+                return brush;
+            }
+        }
+#elif XAMARIN
+        // TODO
+        public object GetColorBrush(string color)
+        {
+            return null;
+        }
+#endif
+
+        public ResourceDictionary Resources { get; set; }
+
+
+        public virtual Style GetStyle(string styleName)
+        {
+            while (!String.IsNullOrEmpty(styleName))
+            {
+                Style style = this.Resources.TryGetValue<Style>(styleName);
+                if (style != null)
+                    return style;
+                var iPos = styleName.LastIndexOf('.');
+                if (iPos <= 0)
+                    break;
+                styleName = styleName.Substring(0, iPos);
+            }
+
+            // Debug.WriteLine($"Unable to find Style {styleName} from the supplied ResourceDictionary");
+            return null;
+        }
+
 
         public virtual dynamic MergeInputData(dynamic data)
         {

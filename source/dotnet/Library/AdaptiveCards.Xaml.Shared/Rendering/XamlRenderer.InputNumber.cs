@@ -9,7 +9,6 @@ using Xamarin.Forms;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
 
         /// <summary>
@@ -17,13 +16,14 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(InputNumber input, RenderContext context)
+        protected static FrameworkElement RenderInputNumber(TypedElement element, RenderContext context)
         {
+            InputNumber input = (InputNumber)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value.ToString() };
                 textBox.Text = input.Placeholder;
-                textBox.Style = this.GetStyle($"Adaptive.Input.Text.Number");
+                textBox.Style = context.GetStyle($"Adaptive.Input.Text.Number");
                 textBox.DataContext = input;
                 context.InputControls.Add(textBox);
                 return textBox;
@@ -41,7 +41,7 @@ namespace AdaptiveCards.Rendering
                         Wrap = true
                     });
                 }
-                return Render(container, context);
+                return context.Render(container);
             }
         }
     }

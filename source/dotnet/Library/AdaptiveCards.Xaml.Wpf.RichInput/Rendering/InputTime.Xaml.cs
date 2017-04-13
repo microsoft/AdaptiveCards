@@ -12,9 +12,9 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(InputTime input, RenderContext context)
+        protected static FrameworkElement RenderInputTimeEx(TypedElement element, RenderContext context)
         {
-
+            InputTime input = (InputTime)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var timePicker = new TimePicker();
@@ -28,7 +28,7 @@ namespace AdaptiveCards.Rendering
                 if (TimeSpan.TryParse(input.Max, out maxValue))
                     timePicker.EndTime = maxValue;
                 timePicker.Watermark = input.Placeholder;
-                timePicker.Style = this.GetStyle("Adaptive.Input.Time");
+                timePicker.Style = context.GetStyle("Adaptive.Input.Time");
                 timePicker.DataContext = input;
                 context.InputControls.Add(timePicker);
                 return timePicker;
@@ -36,7 +36,7 @@ namespace AdaptiveCards.Rendering
             else
             {
                 var textBlock = new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder };
-                return Render(textBlock, context);
+                return context.Render(textBlock);
             }
 
         }

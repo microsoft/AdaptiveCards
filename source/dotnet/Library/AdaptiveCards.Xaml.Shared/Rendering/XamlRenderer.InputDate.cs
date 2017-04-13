@@ -9,20 +9,20 @@ using Xamarin.Forms;
 namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
         /// <summary>
         /// Input.Date
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected override FrameworkElement Render(InputDate input, RenderContext context)
+        protected static FrameworkElement RenderInputDate(TypedElement element, RenderContext context)
         {
+            InputDate input = (InputDate)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };
                 textBox.Text = input.Placeholder;
-                textBox.Style = this.GetStyle($"Adaptive.Input.Text.Date");
+                textBox.Style = context.GetStyle($"Adaptive.Input.Text.Date");
                 textBox.DataContext = input;
                 context.InputControls.Add(textBox);
                 return textBox;
@@ -41,7 +41,7 @@ namespace AdaptiveCards.Rendering
                         Wrap = true
                     });
                 }
-                return Render(container, context);
+                return context.Render(container);
             }
         }
     }
