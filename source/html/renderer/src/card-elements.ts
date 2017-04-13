@@ -9,57 +9,6 @@ function invokeSetContainer(obj: any, container: Container) {
 }
 
 export abstract class CardElement {
-    static createCardElement(json: any): CardElement {
-        var result: CardElement;
-
-        var elementType = json["type"];
-
-        switch (elementType) {
-            case Container.TypeName:
-                result = new Container();
-                break;
-            case TextBlock.TypeName:
-                result = new TextBlock();
-                break;
-            case Image.TypeName:
-                result = new Image();
-                break;
-            case ImageSet.TypeName:
-                result = new ImageSet();
-                break;
-            case FactSet.TypeName:
-                result = new FactSet();
-                break;
-            case ColumnSet.TypeName:
-                result = new ColumnSet();
-                break;
-            case TextInput.TypeName:
-                result = new TextInput();
-                break;
-            case NumberInput.TypeName:
-                result = new NumberInput();
-                break;
-            case DateInput.TypeName:
-                result = new DateInput();
-                break;
-            case TimeInput.TypeName:
-                result = new TimeInput();
-                break;
-            case ToggleInput.TypeName:
-                result = new ToggleInput();
-                break;
-            case ChoiceSetInput.TypeName:
-                result = new ChoiceSetInput();
-                break;
-            default:
-                throw new Error("Unknown element type: " + elementType);
-        }
-
-        result.parse(json);
-
-        return result;
-    }
-
     private _container: Container = null;
 
     private getRootElement(): CardElement {
@@ -154,8 +103,6 @@ export abstract class CardElement {
 }
 
 export class TextBlock extends CardElement {
-    static TypeName: string = "TextBlock";
-
     size: Enums.TextSize = Enums.TextSize.Normal;
     weight: Enums.TextWeight = Enums.TextWeight.Normal;
     color?: Enums.TextColor;
@@ -305,8 +252,6 @@ export class Fact {
 }
 
 export class FactSet extends CardElement {
-    static TypeName: string = "FactSet";
-
     protected get useDefaultSizing(): boolean {
         return false;
     }
@@ -408,8 +353,6 @@ export class FactSet extends CardElement {
 }
 
 export class Image extends CardElement {
-    static TypeName: string = "Image";
-
     protected get useDefaultSizing() {
         return false;
     }
@@ -506,8 +449,6 @@ export class Image extends CardElement {
 }
 
 export class ImageSet extends CardElement {
-    static TypeName: string = "ImageSet";
-
     private _images: Array<Image> = [];
 
     protected internalRender(): HTMLElement {
@@ -614,8 +555,6 @@ export abstract class Input extends CardElement implements Utils.IInput {
 }
 
 export class TextInput extends Input {
-    static TypeName: string = "Input.Text";
-
     private _textareaElement: HTMLTextAreaElement;
 
     protected internalRender(): HTMLElement {
@@ -659,8 +598,6 @@ export class TextInput extends Input {
 }
 
 export class ToggleInput extends Input {
-    static TypeName: string = "Input.Toggle";
-
     private _checkboxInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
@@ -719,8 +656,6 @@ export class Choice {
 }
 
 export class ChoiceSetInput extends Input {
-    static TypeName: string = "Input.ChoiceSet";
-
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: Array<HTMLInputElement>;
 
@@ -887,8 +822,6 @@ export class ChoiceSetInput extends Input {
 }
 
 export class NumberInput extends Input {
-    static TypeName: string = "Input.Number";
-
     private _numberInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
@@ -921,8 +854,6 @@ export class NumberInput extends Input {
 }
 
 export class DateInput extends Input {
-    static TypeName: string = "Input.Date";
-
     private _dateInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
@@ -939,8 +870,6 @@ export class DateInput extends Input {
 }
 
 export class TimeInput extends Input {
-    static TypeName: string = "Input.Time";
-
     private _timeInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
@@ -1036,28 +965,16 @@ class ActionButton {
 
 export abstract class Action {
     static createAction(json: any): Action {
-        var result: Action;
-
         var actionType = json["type"];
 
-        switch (actionType) {
-            case OpenUrlAction.TypeName:
-                result = new OpenUrlAction();
-                break;
-            case HttpAction.TypeName:
-                result = new HttpAction();
-                break;
-            case SubmitAction.TypeName:
-                result = new SubmitAction();
-                break;
-            case ShowCardAction.TypeName:
-                result = new ShowCardAction();
-                break;
-            default:
-                throw new Error("Unknown action type: " + actionType);
-        }
+        var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
 
-        result.parse(json);
+        if (result) {
+            result.parse(json);
+        }
+        else {
+            raiseValidationErrorEvent(Enums.ValidationError.UnknownActionType, "Unknown action type: " + actionType);
+        }
 
         return result;
     }
@@ -1087,8 +1004,6 @@ export abstract class ExternalAction extends Action {
 }
 
 export class SubmitAction extends ExternalAction {
-    static TypeName: string = "Action.Submit";
-
     private _isPrepared: boolean = false;
     private _originalData: Object;
     private _processedData: Object;
@@ -1129,8 +1044,6 @@ export class SubmitAction extends ExternalAction {
 }
 
 export class OpenUrlAction extends ExternalAction {
-    static TypeName: string = "Action.OpenUrl";
-
     url: string;
 
     parse(json: any) {
@@ -1159,8 +1072,6 @@ export class HttpHeader {
 }
 
 export class HttpAction extends ExternalAction {
-    static TypeName: string = "Action.Http";
-
     private _url = new Utils.StringWithSubstitutions();
     private _body = new Utils.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
@@ -1219,8 +1130,6 @@ export class HttpAction extends ExternalAction {
 }
 
 export class ShowCardAction extends Action {
-    static TypeName: string = "Action.ShowCard";
-
     protected setContainer(value: Container) {
         super.setContainer(value);
 
@@ -1391,8 +1300,6 @@ export class ActionCollection {
 }
 
 export class Container extends CardElement {
-    static TypeName: string = "Container";
-
     private showBottomSpacer(requestingElement: CardElement = null) {
         if (requestingElement == null || this.isLastItem(requestingElement)) {
             if (this.container) {
@@ -1586,9 +1493,16 @@ export class Container extends CardElement {
             var items = json[itemsCollectionPropertyName] as Array<any>;
 
             for (var i = 0; i < items.length; i++) {
-                var element = CardElement.createCardElement(items[i]);
+                var elementType = items[i]["type"];
 
-                if (element != null) {
+                var element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
+
+                if (!element) {
+                    raiseValidationErrorEvent(Enums.ValidationError.UnknownElementType, "Unknown element type: " + elementType);
+                }
+                else {
+                    element.parse(items[i]);
+
                     this.addItem(element);
                 }
             }
@@ -1801,8 +1715,6 @@ export class Column extends Container {
 }
 
 export class ColumnSet extends CardElement {
-    static TypeName: string = "ColumnSet";
-
     private _columns: Array<Column> = [];
 
     protected internalRender(): HTMLElement {
@@ -1928,8 +1840,66 @@ function raiseValidationErrorEvent(error: Enums.ValidationError, data: string) {
     }
 }
 
+interface ITypeRegistration<T> {
+    typeName: string,
+    createInstance: () => T;
+}
+
+export class TypeRegistry<T> {
+    private _items: Array<ITypeRegistration<T>> = [];
+
+    private findTypeRegistration(typeName: string): ITypeRegistration<T> {
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].typeName === typeName) {
+                return this._items[i];
+            }
+        }
+
+        return null;
+    }
+
+    clear() {
+        this._items = [];
+    }
+
+    registerType(typeName: string, createInstance: () => T) {
+        var registrationInfo = this.findTypeRegistration(typeName);
+
+        if (registrationInfo != null) {
+            registrationInfo.createInstance = createInstance;
+        }
+        else {
+            registrationInfo = {
+                typeName: typeName,
+                createInstance: createInstance
+            }
+
+            this._items.push(registrationInfo);
+        }
+    }
+
+    unregisterType(typeName: string) {
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].typeName === typeName) {                
+                this._items = this._items.splice(i, 1);
+
+                return;
+            }
+        }
+    }
+
+    createInstance(typeName: string): T {
+        var registrationInfo = this.findTypeRegistration(typeName);
+
+        return registrationInfo != null ? registrationInfo.createInstance() : null;
+    }
+}
+
 export class AdaptiveCard {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
+
+    static elementTypeRegistry = new TypeRegistry<CardElement>();
+    static actionTypeRegistry = new TypeRegistry<Action>();
 
     static onExecuteAction: (action: ExternalAction) => void = null;
     static onShowPopupCard: (action: ShowCardAction) => void = null;
@@ -1962,6 +1932,30 @@ export class AdaptiveCard {
     static renderOptions: IRenderOptions = {
         defaultTextColor: Enums.TextColor.Dark,
         showCardActionMode: Enums.ShowCardActionMode.Inline
+    }
+
+    static initialize() {
+        AdaptiveCard.elementTypeRegistry.clear();
+
+        AdaptiveCard.elementTypeRegistry.registerType("Container", () => { return new Container(); });
+        AdaptiveCard.elementTypeRegistry.registerType("TextBlock", () => { return new TextBlock(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Image", () => { return new Image(); });
+        AdaptiveCard.elementTypeRegistry.registerType("ImageSet", () => { return new ImageSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("FactSet", () => { return new FactSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("ColumnSet", () => { return new ColumnSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Text", () => { return new TextInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Date", () => { return new DateInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Time", () => { return new TimeInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Number", () => { return new NumberInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Toggle", () => { return new ToggleInput(); });
+
+        AdaptiveCard.actionTypeRegistry.clear();
+
+        AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.Submit", () => { return new SubmitAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
     }
 
     readonly root: Container = new Container();
@@ -2015,3 +2009,6 @@ export class AdaptiveCard {
         return this.root.renderSpeech();
     }
 }
+
+// This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
+AdaptiveCard.initialize();
