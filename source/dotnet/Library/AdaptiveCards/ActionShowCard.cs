@@ -19,6 +19,6 @@ namespace AdaptiveCards
         ///     Container card to show when the action is invoked
         /// </summary>
         [JsonRequired]
-        public Container Card { get; set; }
+        public AdaptiveCard Card { get; set; }
     }
 }

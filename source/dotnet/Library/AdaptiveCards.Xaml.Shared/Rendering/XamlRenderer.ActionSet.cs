@@ -98,6 +98,7 @@ namespace AdaptiveCards.Rendering
 
                                     // render the card
                                     var uiShowCard = context.Render(showCardAction.Card);
+                                    ((Grid)uiShowCard).Background = context.GetColorBrush("Transparent");
                                     uiShowCard.Margin = new Thickness(context.Options.Actions.ShowCard.Padding.Left,
                                         context.Options.Actions.ShowCard.Padding.Top,
                                         context.Options.Actions.ShowCard.Padding.Right,
