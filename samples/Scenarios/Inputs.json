@@ -199,8 +199,8 @@
     {
       "type": "Action.ShowCard",
       "card": {
-        "type": "Container",
-        "items": [
+        "type": "AdaptiveCard",
+        "body": [
           {
             "type": "TextBlock",
             "isSubtle": true,

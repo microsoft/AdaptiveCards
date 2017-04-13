@@ -51,38 +51,32 @@
 		},
 		{
 			"type": "Container",
-			
 			"items": [
 				{
-					"type": "Container",
-					"items": [
+					"type": "TextBlock",
+					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+					"speak": "",
+					"wrap": true
+				},
+				{
+					"type": "FactSet",
+					"speak": "It has been assigned to: David Claux",
+					"facts": [
 						{
-							"type": "TextBlock",
-							"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-							"speak": "",
-							"wrap": true
+							"title": "Board:",
+							"value": "Adaptive Card"
 						},
 						{
-							"type": "FactSet",
-							"speak": "It has been assigned to: David Claux",
-							"facts": [
-								{
-									"title": "Board:",
-									"value": "Adaptive Card"
-								},
-								{
-									"title": "List:",
-									"value": "Backlog"
-								},
-								{
-									"title": "Assigned to:",
-									"value": "David Claux"
-								},
-								{
-									"title": "Due date:",
-									"value": "Not set"
-								}
-							]
+							"title": "List:",
+							"value": "Backlog"
+						},
+						{
+							"title": "Assigned to:",
+							"value": "David Claux"
+						},
+						{
+							"title": "Due date:",
+							"value": "Not set"
 						}
 					]
 				}
@@ -102,33 +96,6 @@
 						"id": "dueDate",
 						"title": "Select due date"
 					}
-				},
-				{
-					"type": "Action.ShowCard",
-					"title": "Comment",
-					"card": {
-						"type": "Container",
-						"items": [
-							{
-								"type": "Input.Text",
-								"id": "comment",
-								"isMultiline": true,
-								"placeholder": "Enter your comment"
-							}
-						],
-						"actions": [
-							{
-								"type": "Action.Http",
-								"method": "POST",
-								"title": "OK",
-								"url": "http://xyz.com",
-								"headers": {
-									"content-type": "application/json"
-								},
-								"body": "{ 'comment' : '{{comment.value}}' }"
-							}
-						]
-					}
 				]
 			}
 		},
@@ -142,7 +109,7 @@
 						"type": "Input.Text",
 						"id": "comment",
 						"isMultiline": true,
-						"title": "Enter your comment"
+						"placeholder": "Enter your comment"
 					}
 				],
 				"actions": [
