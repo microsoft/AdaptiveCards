@@ -79,10 +79,20 @@ namespace AdaptiveCards.Rendering
                                     Grid uiShowCardContainer = new Grid();
                                     uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
                                     uiShowCardContainer.DataContext = showCardAction;
-                                    uiShowCardContainer.Margin = new Thickness(context.Options.Actions.ShowCard.Margin.Left,
-                                        context.Options.Actions.ShowCard.Margin.Top,
-                                        context.Options.Actions.ShowCard.Margin.Right,
-                                        context.Options.Actions.ShowCard.Margin.Bottom);
+                                    if (context.Options.Actions.ShowCard.AutoMargin == true)
+                                    {
+                                        uiShowCardContainer.Margin = new Thickness(context.Options.AdaptiveCard.Padding.Left * -1,
+                                            context.Options.Actions.ShowCard.Padding.Top,
+                                            context.Options.AdaptiveCard.Padding.Right * -1,
+                                            context.Options.Actions.ShowCard.Padding.Bottom);
+                                    }
+                                    else
+                                    {
+                                        uiShowCardContainer.Margin = new Thickness(context.Options.Actions.ShowCard.Padding.Left,
+                                            context.Options.Actions.ShowCard.Padding.Top,
+                                            context.Options.Actions.ShowCard.Padding.Right,
+                                            context.Options.Actions.ShowCard.Padding.Bottom);
+                                    }
                                     uiShowCardContainer.Background = context.GetColorBrush(context.Options.Actions.ShowCard.BackgroundColor);
                                     uiShowCardContainer.Visibility = Visibility.Collapsed;
 

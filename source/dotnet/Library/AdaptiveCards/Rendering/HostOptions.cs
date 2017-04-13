@@ -102,12 +102,12 @@ namespace AdaptiveCards.Rendering
         public AdaptiveCardOptions() { }
 
         /// <summary>
-        ///  Margin for the card
+        ///  Padding for the card
         /// </summary>
-        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(8);
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(8);
 
         /// <summary>
-        /// Background color for card
+        /// Background color for card 
         /// </summary>
         public string BackgroundColor { get; set; } = "#FFFFFF";
 
@@ -354,12 +354,12 @@ namespace AdaptiveCards.Rendering
         public string BackgroundColor { get; set; } = "#FFF8F8F8";
 
         /// <summary>
-        /// margins for showcard when inline
+        /// If actionMode is inline and AutoMargin is on then the background will extend to the edges of the parent card.
         /// </summary>
-        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(10);
+        public bool AutoMargin { get; set; } = false;
 
         /// <summary>
-        /// Padding for showcard when inline
+        /// Padding for showcard when Popup or AutoMargin=false
         /// </summary>
         public BoundaryOptions Padding { get; set; } = new BoundaryOptions(10);
     }
