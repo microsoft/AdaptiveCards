@@ -1,49 +1,29 @@
 {
-    "title": "MVP Summit Prep.pptx",
-    "appName": "Amazon.com | Edge",
+    "activationUri": "",
     "visual": {
         "displayText": "",
-        "description": "", 
-
-        "baseImage": {
-            "type": "ImageSource",
-            "uri": "",
-            "altText": "",
-            "addImageQuery": true
-        },
-        "iconImage": {
-            "type": "ImageSource",
+        "description": "",
+        "attribution": { // "type": "ImageSource"
             "uri": "",
             "altText": "",
             "includeQueryParams": true
         },
         "backgroundColor": "",
-        "backgroundImage": {
-            "type": "BackgroundImage",
-            "uri": "",
-            "altText": "",
-            "includeQueryParams": true,
-            "overlay": 0.7,
-            "overlayColor": "light|dark"
-        },
-        "contentType": "application/vnd.microsoft.card.adaptive",
         "content": {
             "type": "AdaptiveCard",
+            "fallbackText": "",
             "speak": "",
             "actions": [],
-            "backgroundImage": {
+            "backgroundImage": { // "type": "BackgroundImage"
                 "uri": "",
                 "altText": "",
-                "includeQueryParams": true
+                "includeQueryParams": true,
+                "overlay": 0.7,
+                "overlayColor": "light|dark"
             },
             "body": [
                 {
                     "type": "Image",
-                    "source": {
-                        "uri": "",
-                        "altText": "",
-                        "includeQueryParams": true
-                    },
                     "uri": "",
                     "altText": "bolder",
                     "size": "medium",
