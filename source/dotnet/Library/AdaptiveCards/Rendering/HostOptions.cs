@@ -69,6 +69,29 @@ namespace AdaptiveCards.Rendering
         }
     }
 
+    public class BoundaryOptions
+    {
+        public BoundaryOptions() { }
+
+        public BoundaryOptions(int allMargin)
+        {
+            Left = Right = Top = Bottom = allMargin;
+        }
+        public BoundaryOptions(int left, int top, int right, int bottom)
+        {
+            Left = left;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
+        }
+
+
+        public int Left { get; set; }
+        public int Top { get; set; }
+        public int Right { get; set; }
+        public int Bottom { get; set; }
+    }
+
     public class AdaptiveCardOptions
     {
         public AdaptiveCardOptions() { }
@@ -76,7 +99,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         ///  Margin for the card
         /// </summary>
-        public int[] Margin { get; set; } = new[] { 8, 8, 8, 8 };
+        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(8);
 
         /// <summary>
         /// Background color for card
@@ -151,7 +174,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Separation settings 
         /// </summary>
-        public SeparationOptions Separation { get; set; } = new SeparationOptions() ;
+        public SeparationOptions Separation { get; set; } = new SeparationOptions();
     }
 
     /// <summary>
@@ -302,13 +325,14 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Space between actions
         /// </summary>
-        public int[] Margin { get; set; } = new int[] { 4, 10, 4, 0 };
+        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(4,10,4,0);
 
         /// <summary>
         /// space between title and button edge
         /// </summary>
 
-        public int[] Padding { get; set; } = new int[] { 4 };
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(4);
+
     }
 
     public class ShowCardOptions
@@ -325,12 +349,12 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// margins for showcard when inline
         /// </summary>
-        public int[] Margin { get; set; } = new int[] { 10 };
+        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(10);
 
         /// <summary>
         /// Padding for showcard when inline
         /// </summary>
-        public int[] Padding { get; set; } = new int[] { 10 };
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(10);
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]

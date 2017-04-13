@@ -23,9 +23,7 @@ namespace AdaptiveCards.Rendering
             var uiButton = new Button()
             {
                 Background = this.GetColorBrush(styling.BackgroundColor),
-                Margin = (styling.Margin.Length == 4) ? 
-                            new Thickness(styling.Margin[0], styling.Margin[1], styling.Margin[2], styling.Margin[3]) :
-                            new Thickness(styling.Margin.First()),
+                Margin = new Thickness(styling.Margin.Left, styling.Margin.Top, styling.Margin.Right, styling.Margin.Bottom),
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
                 BorderBrush = this.GetColorBrush(styling.BorderColor)
             };
@@ -37,9 +35,7 @@ namespace AdaptiveCards.Rendering
                 FontWeight = FontWeight.FromOpenTypeWeight(styling.FontWeight),
                 FontSize = styling.FontSize,
                 Foreground = this.GetColorBrush(styling.TextColor),
-                Margin = (styling.Padding.Length == 4) ?
-                            new Thickness(styling.Padding[0], styling.Padding[1], styling.Padding[2], styling.Padding[3]) :
-                            new Thickness(styling.Padding.First()),
+                Margin = new Thickness(styling.Padding.Left, styling.Padding.Top, styling.Padding.Right, styling.Padding.Bottom) ,
             };
             uiTitle.Style = this.GetStyle($"Adaptive.Action.Title");
             uiButton.Content = uiTitle;

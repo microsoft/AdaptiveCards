@@ -138,19 +138,19 @@ namespace AdaptiveCards.Rendering
                                     Grid uiShowCardContainer = new Grid();
                                     uiShowCardContainer.Style = this.GetStyle("Adaptive.Actions.ShowCard");
                                     uiShowCardContainer.DataContext = showCardAction;
-                                    if (context.Options.Actions.ShowCard.Margin.Length == 4)
-                                        uiShowCardContainer.Margin = new Thickness(context.Options.Actions.ShowCard.Margin[0], context.Options.Actions.ShowCard.Margin[1], context.Options.Actions.ShowCard.Margin[2], context.Options.Actions.ShowCard.Margin[3]);
-                                    else
-                                        uiShowCardContainer.Margin = new Thickness(context.Options.Actions.ShowCard.Margin.First());
+                                    uiShowCardContainer.Margin = new Thickness(context.Options.Actions.ShowCard.Margin.Left,
+                                        context.Options.Actions.ShowCard.Margin.Top, 
+                                        context.Options.Actions.ShowCard.Margin.Right, 
+                                        context.Options.Actions.ShowCard.Margin.Bottom);
                                     uiShowCardContainer.Background = this.GetColorBrush(context.Options.Actions.ShowCard.BackgroundColor);
                                     uiShowCardContainer.Visibility = Visibility.Collapsed;
 
                                     // render the card
                                     var uiShowCard = Render(showCardAction.Card, context);
-                                    if (context.Options.Actions.ShowCard.Padding.Length == 4)
-                                        uiShowCard.Margin = new Thickness(context.Options.Actions.ShowCard.Padding[0], context.Options.Actions.ShowCard.Padding[1], context.Options.Actions.ShowCard.Padding[2], context.Options.Actions.ShowCard.Padding[3]);
-                                    else
-                                        uiShowCard.Margin = new Thickness(context.Options.Actions.ShowCard.Padding.First());
+                                    uiShowCard.Margin = new Thickness(context.Options.Actions.ShowCard.Padding.Left,
+                                        context.Options.Actions.ShowCard.Padding.Top,
+                                        context.Options.Actions.ShowCard.Padding.Right,
+                                        context.Options.Actions.ShowCard.Padding.Bottom);
                                     uiShowCard.DataContext = showCardAction;
                                     uiShowCardContainer.Children.Add(uiShowCard);
 

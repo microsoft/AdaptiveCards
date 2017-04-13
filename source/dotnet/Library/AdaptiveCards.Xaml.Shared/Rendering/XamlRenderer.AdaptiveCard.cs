@@ -42,10 +42,10 @@ namespace AdaptiveCards.Rendering
 
             var grid = new Grid();
             grid.Style = this.GetStyle("Adaptive.InnerCard");
-            if (context.Options.AdaptiveCard.Margin.Length == 4)
-                grid.Margin = new Thickness(context.Options.AdaptiveCard.Margin[0], context.Options.AdaptiveCard.Margin[1], context.Options.AdaptiveCard.Margin[2], context.Options.AdaptiveCard.Margin[3]);
-            else
-                grid.Margin = new Thickness(context.Options.AdaptiveCard.Margin.First());
+            grid.Margin = new Thickness(context.Options.AdaptiveCard.Margin.Left, 
+                context.Options.AdaptiveCard.Margin.Top, 
+                context.Options.AdaptiveCard.Margin.Right, 
+                context.Options.AdaptiveCard.Margin.Bottom);
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
