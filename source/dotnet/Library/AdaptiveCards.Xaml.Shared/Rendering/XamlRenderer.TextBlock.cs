@@ -49,26 +49,26 @@ namespace AdaptiveCards.Rendering
             switch (textBlock.Color)
             {
                 case TextColor.Accent:
-                    colorOption = context.Options.TextBlock.Color.Accent;
+                    colorOption = context.Options.Colors.Accent;
                     break;
                 case TextColor.Attention:
-                    colorOption = context.Options.TextBlock.Color.Attention;
+                    colorOption = context.Options.Colors.Attention;
                     break;
                 case TextColor.Dark:
-                    colorOption = context.Options.TextBlock.Color.Dark;
+                    colorOption = context.Options.Colors.Dark;
                     break;
                 case TextColor.Good:
-                    colorOption = context.Options.TextBlock.Color.Good;
+                    colorOption = context.Options.Colors.Good;
                     break;
                 case TextColor.Light:
-                    colorOption = context.Options.TextBlock.Color.Light;
+                    colorOption = context.Options.Colors.Light;
                     break;
                 case TextColor.Warning:
-                    colorOption = context.Options.TextBlock.Color.Warning;
+                    colorOption = context.Options.Colors.Warning;
                     break;
                 case TextColor.Default:
                 default:
-                    colorOption = context.Options.AdaptiveCard.TextColor;
+                    colorOption = context.Options.Colors.Default;
                     break;
             }
             uiTextBlock.Foreground = context.GetColorBrush(colorOption.Color);

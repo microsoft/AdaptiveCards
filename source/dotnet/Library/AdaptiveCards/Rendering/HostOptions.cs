@@ -13,6 +13,11 @@ namespace AdaptiveCards.Rendering
         //  ------ AdaptiveCard -------
         public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
 
+        /// <summary>
+        /// Color settings for the TextBlock
+        /// </summary>
+        public TextColorOptions Colors { get; set; } = new TextColorOptions();
+
         // ------ Basic ------
         public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
 
@@ -26,7 +31,8 @@ namespace AdaptiveCards.Rendering
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
         public FactSetOptions FactSet { get; set; } = new FactSetOptions();
-        public CardElementOptions ActionSet { get; set; } = new CardElementOptions();
+
+        public ActionSetOptions ActionSet { get; set; } = new ActionSetOptions();
 
         // ------ Input ------
         public InputOptions Input { get; set; } = new InputOptions();
@@ -104,11 +110,6 @@ namespace AdaptiveCards.Rendering
         /// Background color for card
         /// </summary>
         public string BackgroundColor { get; set; } = "#FFFFFFFF";
-
-        /// <summary>
-        /// Text color for card (shared by FactSet, TextBlock)
-        /// </summary>
-        public ColorOption TextColor { get; set; } = new ColorOption("#FF000000");
 
         /// <summary>
         /// Font family for the card
@@ -223,11 +224,6 @@ namespace AdaptiveCards.Rendering
         public TextBlockOptions() { }
 
         /// <summary>
-        /// Color settings for the TextBlock
-        /// </summary>
-        public TextColorOptions Color { get; set; } = new TextColorOptions();
-
-        /// <summary>
         /// FontSize
         /// </summary>
         public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
@@ -253,9 +249,7 @@ namespace AdaptiveCards.Rendering
     {
         public TextColorOptions() { }
 
-        /// <summary>
-        /// Default color for TextBlock
-        /// </summary>
+        public ColorOption Default { get; set; } = new ColorOption("#FF000000");
 
         public ColorOption Accent { get; set; } = new ColorOption("#FF0000FF");
 
@@ -404,6 +398,11 @@ namespace AdaptiveCards.Rendering
     public class ContainerOptions : CardElementOptions
     {
         public ContainerOptions() { }
+    }
+
+    public class ActionSetOptions : CardElementOptions
+    {
+        public ActionSetOptions() { }
 
         public int MaxActions { get; set; } = 5;
 
@@ -417,6 +416,5 @@ namespace AdaptiveCards.Rendering
             ActionHttp.TYPE,
             ActionShowCard.TYPE
         };
-
     }
 }
