@@ -1,0 +1,48 @@
+@import 'node_modules/adaptive-cards/scss/base';
+
+//TODO: remove or scope the asterisk selector so it does not pollute the global scope in the host page
+* {
+    box-sizing: border-box;
+}
+
+@include base-spacing();
+
+@include base-sizes();
+
+@include base-text-default();
+
+@include base-text-dark();
+
+@include base-text-light();
+
+@include base-text-special();
+
+@include base-container($root-padding:10px);
+
+@include base-image();
+
+@include base-table();
+
+@include base-column();
+
+@include base-actions($item-flex-basis: 100%);
+
+@include base-push-button(
+    $background-color: rgba(0, 0, 0, 0.1),
+    $border: 2px solid transparent,
+    $font-size: 15px,
+    $font-weight: 500,
+    $active-background-color: rgba(0, 0, 0, 0.3),
+    $hover-background-color: null,
+    $hover-border:  2px solid rgba(0, 0, 0, 0.2),
+    $min-width: null
+    );
+
+//@include base-link-button();
+
+.linkButton {
+    @extend .pushButton;
+}
+
+
+@include base-input();

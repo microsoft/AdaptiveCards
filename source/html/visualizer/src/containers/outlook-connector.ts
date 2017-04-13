@@ -12,8 +12,8 @@ export class OutlookConnectorContainer extends ConnectorContainer {
         this._themeColor = themeColor;
     }
 
-    render(card: Adaptive.AdaptiveCard): HTMLElement {
-        let element = document.createElement("div");
+    protected renderContainer(renderedCard: HTMLElement): HTMLElement {
+        var element = document.createElement("div");
         element.style.borderTop = "1px solid #F1F1F1";
         element.style.borderRight = "1px solid #F1F1F1";
         element.style.borderBottom = "1px solid #F1F1F1";
@@ -25,12 +25,8 @@ export class OutlookConnectorContainer extends ConnectorContainer {
             element.style.borderLeft = "3px solid " + this._themeColor;
         }
 
-        let renderedCard = card.render();
+        element.appendChild(renderedCard);        
 
-        Utils.appendChild(element, renderedCard);
-        let hostDiv = document.createElement("div");
-        Utils.appendChild(hostDiv, element);
-        Utils.appendChild(hostDiv, super.render(card));
-        return hostDiv;
+        return element;
     }
 }

@@ -41,6 +41,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::Image] = std::bind(&XamlBuilder::BuildImage, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::Container] = std::bind(&XamlBuilder::BuildContainer, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2);
 
         m_imageLoadTracker.AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
 
@@ -547,7 +548,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     _Use_decl_annotations_
     void XamlBuilder::BuildColumnSet(
-         IAdaptiveCardElement* adaptiveCardElement,
+        IAdaptiveCardElement* adaptiveCardElement,
         IUIElement** columnSetControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -573,10 +574,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
             GridLength columnWidth;
             columnWidth.GridUnitType = (isAutoResult == 0) ? GridUnitType::GridUnitType_Auto : GridUnitType::GridUnitType_Star;
-            if (isAutoResult != 0)
-            {
-                columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
-            }
+            columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
             ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
             THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
@@ -611,5 +610,83 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         THROW_IF_FAILED(xamlGrid.CopyTo(columnSetControl));
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::BuildFactSet(
+            IAdaptiveCardElement* adaptiveCardElement,
+            IUIElement** factSetControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveFactSet> adaptiveFactSet;
+
+        THROW_IF_FAILED(cardElement.As(&adaptiveFactSet));
+
+        ComPtr<IGrid> xamlGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+        ComPtr<IGridStatics> gridStatics;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
+
+        ComPtr<IColumnDefinition> titleColumn = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+        ComPtr<IColumnDefinition> valueColumn = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+        GridLength factSetGridLength = { 1, GridUnitType::GridUnitType_Star };
+
+        THROW_IF_FAILED(titleColumn->put_Width(factSetGridLength));
+        THROW_IF_FAILED(valueColumn->put_Width(factSetGridLength));
+        ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
+        THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
+        THROW_IF_FAILED(columnDefinitions->Append(titleColumn.Get()));
+        THROW_IF_FAILED(columnDefinitions->Append(valueColumn.Get()));
+
+        // Create 
+        ComPtr<IVector<IAdaptiveFact*>> facts;
+        THROW_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
+        int currentFact = 0;
+        XamlHelpers::IterateOverVector<IAdaptiveFact>(facts.Get(), [this, xamlGrid, gridStatics, factSetGridLength, &currentFact](IAdaptiveFact* fact)
+        {
+            ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
+            THROW_IF_FAILED(factRow->put_Height(factSetGridLength));
+
+            ComPtr<IVector<RowDefinition*>> rowDefinitions;
+            THROW_IF_FAILED(xamlGrid->get_RowDefinitions(&rowDefinitions));
+            THROW_IF_FAILED(rowDefinitions->Append(factRow.Get()));
+
+            ComPtr<IAdaptiveFact> localFact(fact);
+            ComPtr<ITextBlock> titleTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            HString factTitle;
+            THROW_IF_FAILED(localFact->get_Title(factTitle.GetAddressOf()));
+            THROW_IF_FAILED(titleTextBlock->put_Text(factTitle.Get()));
+
+            ComPtr<ITextBlock> valueTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            HString factValue;
+            THROW_IF_FAILED(localFact->get_Value(factValue.GetAddressOf()));
+            THROW_IF_FAILED(valueTextBlock->put_Text(factValue.Get()));
+
+            // Mark the column container with the current column
+            ComPtr<IFrameworkElement> titleTextBlockAsFrameWorkElement;
+            THROW_IF_FAILED(titleTextBlock.As(&titleTextBlockAsFrameWorkElement));
+            THROW_IF_FAILED(gridStatics->SetColumn(titleTextBlockAsFrameWorkElement.Get(), 0));
+            THROW_IF_FAILED(gridStatics->SetRow(titleTextBlockAsFrameWorkElement.Get(), currentFact));
+
+            ComPtr<IFrameworkElement> valueTextBlockAsFrameWorkElement;
+            THROW_IF_FAILED(valueTextBlock.As(&valueTextBlockAsFrameWorkElement));
+            THROW_IF_FAILED(gridStatics->SetColumn(valueTextBlockAsFrameWorkElement.Get(), 1));
+            THROW_IF_FAILED(gridStatics->SetRow(valueTextBlockAsFrameWorkElement.Get(), currentFact));
+
+            // Finally add the column container to the grid, and increment the column count
+            ComPtr<IPanel> gridAsPanel;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+            ComPtr<IUIElement> titleUIElement;
+            THROW_IF_FAILED(titleTextBlockAsFrameWorkElement.As(&titleUIElement));
+            ComPtr<IUIElement> valueUIElement;
+            THROW_IF_FAILED(valueTextBlockAsFrameWorkElement.As(&valueUIElement));
+
+            XamlHelpers::AppendXamlElementToPanel(titleUIElement.Get(), gridAsPanel.Get());
+            XamlHelpers::AppendXamlElementToPanel(valueUIElement.Get(), gridAsPanel.Get());
+            ++currentFact;
+        });
+
+        // TODO: MSFT 11508861: [Adaptive Cards][Build] Support all styling properties for card Elements
+
+        THROW_IF_FAILED(xamlGrid.CopyTo(factSetControl));
     }
 }}

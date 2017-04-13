@@ -15,27 +15,37 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    AdaptiveColumn::AdaptiveColumn() : m_sharedColumn(std::make_unique<Container>())
+    AdaptiveColumn::AdaptiveColumn()
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
+    }
+
+    HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept try
+    {
+        m_sharedColumn = std::make_shared<Column>();
+        return S_OK;
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn)
+    {
+        m_sharedColumn = sharedColumn;
+        GenerateContainedElementsProjection(m_sharedColumn->GetItems(), m_items.Get());
+        return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Size(HSTRING* size)
     {
-        *size = nullptr;
-
-        if (m_size.IsValid())
-        {
-            RETURN_IF_FAILED(m_size.CopyTo(size));
-        }
-        return S_OK;
+        return UTF8ToHString(m_sharedColumn->GetSize(), size);
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveColumn::put_Size(HSTRING size)
     {
-        RETURN_IF_FAILED(m_size.Set(size));
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(size, out));
+        m_sharedColumn->SetSize(out);
         return S_OK;
     }
 
@@ -72,10 +82,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Speak(HSTRING text)
+    HRESULT AdaptiveColumn::put_Speak(HSTRING speak)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(text, out));
+        RETURN_IF_FAILED(HStringToUTF8(speak, out));
         m_sharedColumn->SetSpeak(out);
         return S_OK;
     }

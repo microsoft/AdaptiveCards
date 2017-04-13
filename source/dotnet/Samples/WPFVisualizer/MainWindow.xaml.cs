@@ -40,8 +40,31 @@ namespace WpfVisualizer
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += _timer_Tick;
             _timer.Start();
+
+            this.Renderer = new XamlRendererExtended(new HostOptions(), this.Resources, _onAction, _OnMissingInput);
+            var options = new HostOptionsEx();
+            options.PropertyChanged += Options_PropertyChanged;
+            this.options.SelectedObject = options;
+
         }
+
+        private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            _dirty = true;
+        }
+
         private DocumentLine errorLine;
+
+        public XamlRendererExtended Renderer { get; set; }
+
+        public HostOptions Options
+        {
+            get
+            {
+                var json = JsonConvert.SerializeObject(this.options.SelectedObject);
+                return JsonConvert.DeserializeObject<HostOptions>(json);
+            }
+        }
 
         private void _timer_Tick(object sender, EventArgs e)
         {
@@ -63,10 +86,13 @@ namespace WpfVisualizer
 
                         _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
                     }
-                    var renderer = new XamlRendererExtended(new RenderOptions(), this.Resources, _onAction, _OnMissingInput);
-                    var element = renderer.RenderAdaptiveCard(_card);
+
                     this.cardGrid.Children.Clear();
-                    this.cardGrid.Children.Add(element);
+                    if (_card != null)
+                    {
+                        var element = this.Renderer.RenderAdaptiveCard(_card, styling: Options);
+                        this.cardGrid.Children.Add(element);
+                    }
                 }
                 catch (Exception err)
                 {
@@ -158,10 +184,13 @@ namespace WpfVisualizer
             }
             else if (e.Action is AC.ActionShowCard)
             {
-                AC.ActionShowCard action = (AC.ActionShowCard)e.Action;
-                ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
-                dialog.Owner = this;
-                dialog.ShowDialog();
+                ActionShowCard action = (AC.ActionShowCard)e.Action;
+                if (Options.Actions.ShowCard.ActionMode == AC.Rendering.ShowCardActionMode.Popup)
+                {
+                    ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
+                    dialog.Owner = this;
+                    dialog.ShowDialog();
+                }
             }
             else if (e.Action is AC.ActionSubmit)
             {
@@ -196,12 +225,12 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            var renderer = new ImageRenderer(new RenderOptions(), this.Resources);
+            var renderer = new ImageRenderer(new HostOptions(), this.Resources);
             var imageStream = renderer.RenderAdaptiveCard(this._card, 480);
-//#else
-//            var renderer = new ImageRenderer(new RenderOptions(), @"c:\source\intercom\Channels\FacebookChannel\Content\AdaptiveCardStyles.xaml");
-//            var imageStream = await renderer.RenderAdaptiveCardAsync(this._card, 480);
-//#endif
+            //#else
+            //            var renderer = new ImageRenderer(new RenderOptions(), @"c:\source\intercom\Channels\FacebookChannel\Content\AdaptiveCardStyles.xaml");
+            //            var imageStream = await renderer.RenderAdaptiveCardAsync(this._card, 480);
+            //#endif
 
             string path = System.IO.Path.GetRandomFileName() + ".png";
             using (FileStream fileStream = new FileStream(path, FileMode.Create))
@@ -280,6 +309,24 @@ namespace WpfVisualizer
                     HandleParseError(err);
                 }
             }
+        }
+
+        private void options_TextChanged(object sender, EventArgs e)
+        {
+            _dirty = true;
+        }
+
+        private void toggleOptions_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.options.Visibility == Visibility.Visible)
+                this.options.Visibility = Visibility.Collapsed;
+            else
+                this.options.Visibility = Visibility.Visible;
+        }
+
+        private void options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            _dirty = true;
         }
     }
 }

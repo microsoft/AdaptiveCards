@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected override FrameworkElement Render(InputText input, RenderContext context)
         {
-            if (this.Options.SupportInteraction)
+            if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var textBox = new WatermarkTextBox() { Text = input.Value };
                 if (input.IsMultiline == true)

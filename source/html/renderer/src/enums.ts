@@ -1,14 +1,3 @@
-export enum ActionButtonStyle {
-    Link,
-    Push
-}
-
-export enum ActionButtonState {
-    Normal,
-    Expanded,
-    Subdued
-}
-
 export enum Size {
     Auto,
     Stretch,
@@ -57,13 +46,18 @@ export enum Separation  {
     Strong
 }
 
-export enum RenderError {
+export enum ValidationError {
     MissingCardType,
-    UnsupportedVersion,
     ElementTypeNotAllowed,
     ActionTypeNotAllowed,
     NestedActionNotAllowed,
+    InteractivityNotAllowed,
     TooManyActions
+}
+
+export enum ShowCardActionMode {
+    Inline,
+    Popup
 }
 
 export function stringToSize(value: string, defaultValue: Size): Size {

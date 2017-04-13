@@ -41,20 +41,20 @@ namespace AdaptiveCards.Rendering
                                 // TOOD: check xamarin separator visual
                                 //sep.VerticalAlignment = VerticalAlignment.Stretch;
 #endif
-                    SeparationStyling sepStyle;
+                    SeparationOption sepStyle;
                     switch (column.Separation)
                     {
                         case SeparationStyle.None:
-                            sepStyle = context.Styling.Column.SeparationNone;
+                            sepStyle = context.Options.Column.Separation.None;
                             break;
 
                         case SeparationStyle.Default:
                         default:
-                            sepStyle = context.Styling.Column.SeparationDefault;
+                            sepStyle = context.Options.Column.Separation.Default;
                             break;
 
                         case SeparationStyle.Strong:
-                            sepStyle = context.Styling.Column.SeparationStrong;
+                            sepStyle = context.Options.Column.Separation.Strong;
                             break;
 
                     }

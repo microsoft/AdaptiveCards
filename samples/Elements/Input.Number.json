@@ -7,6 +7,7 @@
             "type": "Input.Number",
             "id": "1234",
             "placeholder": "Enter a number",
+            "speak": "How many do you want?",
             "min": "1",
             "max": "10",
             "value": "3"

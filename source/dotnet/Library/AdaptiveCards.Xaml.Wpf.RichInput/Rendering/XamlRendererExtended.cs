@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering
 
     public partial class XamlRendererExtended : XamlRenderer
     {
-        public XamlRendererExtended(RenderOptions options,
+        public XamlRendererExtended(HostOptions options,
             ResourceDictionary resources,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
@@ -22,7 +22,7 @@ namespace AdaptiveCards.Rendering
         }
 
 #if WPF
-        public XamlRendererExtended(RenderOptions options, string stylePath,
+        public XamlRendererExtended(HostOptions options, string stylePath,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
             : base(options, stylePath, actionCallback, missingDataCallback)

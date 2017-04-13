@@ -32,5 +32,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.5")]
-[assembly: AssemblyFileVersion("1.0.0.5")]
+[assembly: AssemblyVersion("1.0.*")]
+
+// Uncomment to delay-sign
+//[assembly: AssemblyKeyFileAttribute(@"\\cp1pd2cdscvlt01\Public\StrongNamePublicKeys\35MSSharedLib1024.snk")]
+//[assembly: AssemblyDelaySignAttribute(true)]

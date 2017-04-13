@@ -17,9 +17,9 @@ namespace AdaptiveCards.Rendering
     {
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
-        protected CardStyling _defaultCardStyling;
+        protected HostOptions _defaultCardStyling;
 
-        public XamlRenderer(RenderOptions options,
+        public XamlRenderer(HostOptions options,
             ResourceDictionary resources,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
@@ -31,7 +31,7 @@ namespace AdaptiveCards.Rendering
         }
 
 #if WPF
-        public XamlRenderer(RenderOptions options,
+        public XamlRenderer(HostOptions options,
             string stylePath,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
@@ -42,8 +42,6 @@ namespace AdaptiveCards.Rendering
             this.missingDataCallback = missingDataCallback;
         }
 #endif
-
-        public CardStyling DefaultStyling { get; set; } = new CardStyling();
 
         /// <summary>
         /// Resource dictionary to use when rendering
@@ -93,20 +91,20 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Styling = styling ?? this.DefaultStyling
+                Options = styling ?? this.DefaultOptions
             };
             return Render(card, context);
         }
 
-        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
+        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Styling = styling ?? this.DefaultStyling
+                Options = styling ?? this.DefaultOptions
             };
 
             return Render(showCard.Card, context);
@@ -118,20 +116,20 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public View RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
+        public View RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Styling = styling ?? this.DefaultStyling
+                Options = options ?? this.DefaultOptions
             };
             return Render(card, context);
         }
 
-        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, CardStyling styling = null)
+        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Styling = styling ?? this.DefaultStyling
+                Options = options ?? this.DefaultOptions
             };
             return Render(showCard.Card, context);
         }
@@ -151,7 +149,7 @@ namespace AdaptiveCards.Rendering
                 styleName = styleName.Substring(0, iPos);
             }
 
-            Debug.WriteLine($"Unable to find Style {styleName} from the supplied ResourceDictionary");
+            // Debug.WriteLine($"Unable to find Style {styleName} from the supplied ResourceDictionary");
             return null;
         }
     }

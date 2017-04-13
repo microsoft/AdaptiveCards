@@ -1,0 +1,51 @@
+@import 'node_modules/adaptive-cards/scss/base';
+
+//TODO: remove or scope the asterisk selector so it does not pollute the global scope in the host page
+* {
+    box-sizing: border-box;
+}
+
+@include base-spacing();
+
+@include base-sizes();
+
+@include base-text-default();
+
+@include base-text-dark();
+
+@include base-text-light();
+
+@include base-text-special();
+
+@include base-container();
+
+@include base-image();
+
+@include base-table();
+
+@include base-column();
+
+@include base-actions();
+
+@include base-push-button();
+
+@include base-link-button();
+
+@include base-input();
+
+/*Bing Glpyh*/
+
+.rootContainer {
+    /*Needed to position the bing glyph in the lower right*/
+    position: relative;
+}
+
+.rootContainer:after {
+   content: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMS4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjQyIiBoZWlnaHQ9IjQyIiB4PSIwIiB5PSIwIg0KCSB2aWV3Qm94PSIwIDAgNDIgNDIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyIDQyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7b3BhY2l0eTowLjg7ZmlsbDojRTJFMkUyO30NCgkuc3Qxe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPGc+DQoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTMzLjYsOC40TDguNCwzMy42TDAsNDJoNDJWMEwzMy42LDguNHoiLz4NCgk8cG9seWdvbiBjbGFzcz0ic3QxIiBwb2ludHM9IjI5LjMsMjUuNiAzMC40LDI4LjIgMzIsMjkgMjguNywzMC45IDI4LjcsMjIuNSAyNi4zLDIxLjcgMjYuMywzMi4zIDI4LjcsMzMuNyAzNC43LDMwLjIgMzQuNywyNy41IAkNCgkJIi8+DQo8L2c+DQo8L3N2Zz4NCg==);
+
+    position: absolute;
+    pointer-events: none;
+    display: inline-block;
+    left: 243px;
+    top: 110px;
+}

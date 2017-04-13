@@ -9,51 +9,51 @@ namespace AdaptiveCards.Rendering
         where TUIElement : class
         where TContext : class
     {
-        protected AdaptiveRenderer(RenderOptions options)
+        protected AdaptiveRenderer(HostOptions options)
         {
-            Options = options;
+            DefaultOptions = options ?? new HostOptions();
         }
 
-        public RenderOptions Options { get; set; }
+        public HostOptions DefaultOptions { get; set; }
 
         // containers
         protected virtual TUIElement Render(CardElement cardElement, TContext context)
         {
             if (cardElement is Image)
-                return Render((Image) cardElement, context);
+                return Render((Image)cardElement, context);
 
             if (cardElement is TextBlock)
-                return Render((TextBlock) cardElement, context);
+                return Render((TextBlock)cardElement, context);
 
             if (cardElement is Container)
-                return Render((Container) cardElement, context);
+                return Render((Container)cardElement, context);
 
             if (cardElement is ColumnSet)
-                return Render((ColumnSet) cardElement, context);
+                return Render((ColumnSet)cardElement, context);
 
             if (cardElement is ImageSet)
-                return Render((ImageSet) cardElement, context);
+                return Render((ImageSet)cardElement, context);
 
             if (cardElement is FactSet)
-                return Render((FactSet) cardElement, context);
+                return Render((FactSet)cardElement, context);
 
             if (cardElement is InputChoiceSet)
-                return Render((InputChoiceSet) cardElement, context);
+                return Render((InputChoiceSet)cardElement, context);
 
             if (cardElement is InputText)
-                return Render((InputText) cardElement, context);
+                return Render((InputText)cardElement, context);
 
             if (cardElement is InputNumber)
-                return Render((InputNumber) cardElement, context);
+                return Render((InputNumber)cardElement, context);
 
             if (cardElement is InputDate)
-                return Render((InputDate) cardElement, context);
+                return Render((InputDate)cardElement, context);
 
             if (cardElement is InputTime)
-                return Render((InputTime) cardElement, context);
+                return Render((InputTime)cardElement, context);
 
             if (cardElement is InputToggle)
-                return Render((InputToggle) cardElement, context);
+                return Render((InputToggle)cardElement, context);
 
             return null;
         }
@@ -82,13 +82,13 @@ namespace AdaptiveCards.Rendering
         protected virtual TUIElement RenderAction(ActionBase action, TContext context)
         {
             if (action is ActionSubmit)
-                return Render((ActionSubmit) action, context);
+                return Render((ActionSubmit)action, context);
             if (action is ActionHttp)
-                return Render((ActionHttp) action, context);
+                return Render((ActionHttp)action, context);
             if (action is ActionOpenUrl)
-                return Render((ActionOpenUrl) action, context);
+                return Render((ActionOpenUrl)action, context);
             if (action is ActionShowCard)
-                return Render((ActionShowCard) action, context);
+                return Render((ActionShowCard)action, context);
             return null;
         }
 

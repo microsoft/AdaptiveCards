@@ -26,32 +26,31 @@ namespace AdaptiveCards.Rendering
         {
             var outerGrid = new Grid();
             outerGrid.Style = this.GetStyle("Adaptive.Card");
+#if WPF
+            outerGrid.Background = this.GetColorBrush(context.Options.AdaptiveCard.BackgroundColor);
             if (card.BackgroundImage != null)
             {
-#if WPF
-                if (card.BackgroundImage != null)
-                {
-                    outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
-                }
-#elif XAMARIN
-                if (card.BackgroundImage != null)
-                {
-                    outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));
-                }
-#endif
+                outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
             }
+#elif XAMARIN
+            // TODO outerGrid.Background = this.GetColorBrush(context.Styling.BackgroundColor);
+            if (card.BackgroundImage != null)
+            {
+                outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));
+            }
+#endif
 
             var grid = new Grid();
             grid.Style = this.GetStyle("Adaptive.InnerCard");
-            if (context.Styling.Margin.Length == 4)
-                grid.Margin = new Thickness(context.Styling.Margin[0], context.Styling.Margin[1], context.Styling.Margin[2], context.Styling.Margin[3]);
+            if (context.Options.AdaptiveCard.Margin.Length == 4)
+                grid.Margin = new Thickness(context.Options.AdaptiveCard.Margin[0], context.Options.AdaptiveCard.Margin[1], context.Options.AdaptiveCard.Margin[2], context.Options.AdaptiveCard.Margin[3]);
             else
-                grid.Margin = new Thickness(context.Styling.Margin.First());
-            
+                grid.Margin = new Thickness(context.Options.AdaptiveCard.Margin.First());
+
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
             var inputControls = new List<FrameworkElement>();
-            AddContainerElements(grid, card.Body, card.Actions, context);
+            AddContainerElements(grid, card.Body, card.Actions, context, context.Options.AdaptiveCard.SupportedActions, context.Options.AdaptiveCard.MaxActions);
 
             outerGrid.Children.Add(grid);
             return outerGrid;

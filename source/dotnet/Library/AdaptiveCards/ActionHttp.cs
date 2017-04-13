@@ -10,16 +10,18 @@ namespace AdaptiveCards
     /// </summary>
     public class ActionHttp : ActionBase
     {
+        public const string TYPE = "Action.Http";
+
         public ActionHttp()
         {
-            Type = "Action.Http";
+            Type = TYPE;
         }
 
         /// <summary>
         ///     HttpMethod to use
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET46
+#if NET452
         [XmlAttribute]
 #endif
         public string Method { get; set; } = "POST";
@@ -30,7 +32,7 @@ namespace AdaptiveCards
         ///     InputID is an id property on an TextInput or ChoiceInput element
         /// </summary>
         [JsonRequired]
-#if NET46
+#if NET452
         [XmlAttribute]
 #endif
         public string Url { get; set; }
@@ -38,14 +40,14 @@ namespace AdaptiveCards
         /// <summary>
         ///     Object which represents headers Example: { "content-type":"application/json" }
         /// </summary>
-#if NET46
+#if NET452
         [XmlIgnore]
 #endif
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public object Headers { get; set; }
 
         [JsonIgnore]
-#if NET46
+#if NET452
         [XmlElement("Headers")]
 #endif
         public string HeadersJson
@@ -70,7 +72,7 @@ namespace AdaptiveCards
         ///     NOTE: You can bind to properties from input fields by using {{InputID}} in the string
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET46
+#if NET452
         [XmlElement]
 #endif
         public string Body { get; set; }

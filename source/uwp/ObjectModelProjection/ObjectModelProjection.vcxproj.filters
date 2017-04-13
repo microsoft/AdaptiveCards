@@ -6,6 +6,8 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseCardElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Column.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\jsoncpp.cpp">
       <Filter>json</Filter>
     </ClCompile>
@@ -19,6 +21,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Enums.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseCardElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\json\json.h">
       <Filter>json</Filter>
     </ClInclude>
