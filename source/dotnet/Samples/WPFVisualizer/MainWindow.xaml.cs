@@ -42,7 +42,7 @@ namespace WpfVisualizer
             _timer.Start();
 
             this.Renderer = new XamlRendererExtended(new HostOptions(), this.Resources, _onAction, _OnMissingInput);
-            var options = new HostOptions(); //  new HostOptionsEx();
+            var options = new HostOptionsEx();
             this.options.SelectedObject = options;
         }
 

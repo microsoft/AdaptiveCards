@@ -9,6 +9,7 @@
     <Import_RootNamespace>AdaptiveCards</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.Container.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionHttp.cs" />
@@ -16,8 +17,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionShowCard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ActionSubmit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.AdaptiveCard.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ContainerSet.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.Container.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ColumnSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.Column.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.FactSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.ImageSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.CardElement.cs" />

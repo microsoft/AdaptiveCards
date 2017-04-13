@@ -50,7 +50,8 @@ namespace AdaptiveCards.Rendering
             base.ElementRenderers["TextBlock"] = RenderTextBlock;
             base.ElementRenderers["Image"] = RenderImage;
             base.ElementRenderers["Container"] = RenderContainer;
-            base.ElementRenderers["ContainerSet"] = RenderContainerSet;
+            base.ElementRenderers["Column"] = RenderColumn;
+            base.ElementRenderers["ColumnSet"] = RenderColumnSet;
             base.ElementRenderers["ActionSet"] = RenderActionSet;
             base.ElementRenderers["FactSet"] = RenderFactSet;
             base.ElementRenderers["ImageSet"] = RenderImageSet;

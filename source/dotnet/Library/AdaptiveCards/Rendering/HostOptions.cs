@@ -16,7 +16,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Color settings for the TextBlock
         /// </summary>
-        public TextColorOptions Colors { get; set; } = new TextColorOptions();
+        public ColorOptions Colors { get; set; } = new ColorOptions();
 
         // ------ Basic ------
         public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
@@ -26,7 +26,9 @@ namespace AdaptiveCards.Rendering
         // ------ Containers ------
         public ContainerOptions Container { get; set; } = new ContainerOptions();
 
-        public ContainerSetOptions ContainerSet { get; set; } = new ContainerSetOptions();
+        public ColumnOptions Column { get; set; } = new ColumnOptions();
+
+        public ColumnSetOptions ColumnSet { get; set; } = new ColumnSetOptions();
 
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
@@ -48,8 +50,8 @@ namespace AdaptiveCards.Rendering
                 return this.Image;
             if (obj is Container)
                 return this.Container;
-            if (obj is ContainerSet)
-                return this.ContainerSet;
+            if (obj is ColumnSet)
+                return this.ColumnSet;
             if (obj is ActionSet)
                 return this.ActionSet;
             if (obj is ImageSet)
@@ -187,7 +189,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Separation settings when Separation:default
         /// </summary>
-        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10, LineThickness = 0 };
+        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10 };
 
         /// <summary>
         /// Separation settings when Separation:Strong
@@ -245,9 +247,9 @@ namespace AdaptiveCards.Rendering
 
     }
 
-    public class TextColorOptions
+    public class ColorOptions
     {
-        public TextColorOptions() { }
+        public ColorOptions() { }
 
         public ColorOption Default { get; set; } = new ColorOption("#FF000000");
 
@@ -399,15 +401,21 @@ namespace AdaptiveCards.Rendering
         public InputOptions() { }
     }
 
-    public class ContainerSetOptions : CardElementOptions
+    public class ColumnSetOptions : CardElementOptions
     {
-        public ContainerSetOptions() { }
+        public ColumnSetOptions() { }
     }
 
     public class ContainerOptions : CardElementOptions
     {
         public ContainerOptions() { }
     }
+
+    public class ColumnOptions : CardElementOptions
+    {
+        public ColumnOptions() { }
+    }
+
 
     public class ActionSetOptions : CardElementOptions
     {

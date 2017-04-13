@@ -7,20 +7,20 @@ namespace AdaptiveCards
     /// <summary>
     ///     A set of containers (each a container of items)
     /// </summary>
-    public class ContainerSet : CardElement
+    public class ColumnSet : CardElement
     {
-        public ContainerSet()
+        public ColumnSet()
         {
-            Type = "ContainerSet";
+            Type = "ColumnSet";
         }
 
         /// <summary>
-        ///     Containers that are part of this group
+        ///     Columns that are part of this group
         /// </summary>
         [JsonRequired]
 #if NET452
-        [XmlElement(ElementName = "Container", Type = typeof(Container))]
+        [XmlElement(ElementName = "Column", Type = typeof(Column))]
 #endif
-        public List<Container> Containers { get; set; } = new List<Container>();
+        public List<Column> Columns { get; set; } = new List<Column>();
     }
 }

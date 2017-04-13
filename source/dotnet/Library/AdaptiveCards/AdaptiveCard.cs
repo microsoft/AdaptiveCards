@@ -21,7 +21,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
-        [XmlElement(typeof(ContainerSet))]
+        [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(FactSet))]
         [XmlElement(typeof(InputText), ElementName = "Input.Text")]

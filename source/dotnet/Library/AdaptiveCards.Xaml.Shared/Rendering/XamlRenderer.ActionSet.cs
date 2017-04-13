@@ -84,7 +84,7 @@ namespace AdaptiveCards.Rendering
                                         uiShowCardContainer.Margin = new Thickness(context.Options.AdaptiveCard.Padding.Left * -1,
                                             context.Options.Actions.ShowCard.Padding.Top,
                                             context.Options.AdaptiveCard.Padding.Right * -1,
-                                            context.Options.Actions.ShowCard.Padding.Bottom);
+                                            context.Options.AdaptiveCard.Padding.Bottom * -1);
                                     }
                                     else
                                     {

@@ -16,8 +16,8 @@ namespace AdaptiveCards.Rendering
             if (cardElement is Container)
                 Visit((Container) cardElement);
 
-            if (cardElement is ContainerSet)
-                Visit((ContainerSet) cardElement);
+            if (cardElement is ColumnSet)
+                Visit((ColumnSet) cardElement);
 
             if (cardElement is ImageSet)
                 Visit((ImageSet) cardElement);
@@ -56,9 +56,9 @@ namespace AdaptiveCards.Rendering
                 Visit(item);
         }
 
-        public virtual void Visit(ContainerSet columnSet)
+        public virtual void Visit(ColumnSet columnSet)
         {
-            foreach (var column in columnSet.Containers)
+            foreach (var column in columnSet.Columns)
                 Visit(column);
         }
 

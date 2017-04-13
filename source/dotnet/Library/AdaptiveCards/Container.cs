@@ -22,7 +22,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
-        [XmlElement(typeof(ContainerSet))]
+        [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ActionSet))]
         [XmlElement(typeof(FactSet))]
         [XmlElement(typeof(ImageSet))]
@@ -41,13 +41,5 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ActionBase SelectAction { get; set; }
 
-        /// <summary>
-        ///     Size for the column (either ColumnSize string or number which is relative size of the column)
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
-        public string Size { get; set; }
     }
 }

@@ -14,20 +14,20 @@ namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer
     {
-        public static FrameworkElement RenderContainerSet(TypedElement element, RenderContext context)
+        public static FrameworkElement RenderColumnSet(TypedElement element, RenderContext context)
         {
-            ContainerSet containerSet = (ContainerSet)element;
-            var uiContainerSet = new Grid();
-            uiContainerSet.Style = context.GetStyle($"Adaptive.{element.Type}");
+            ColumnSet columnSet = (ColumnSet)element;
+            var uiColumnSet = new Grid();
+            uiColumnSet.Style = context.GetStyle($"Adaptive.{element.Type}");
 
-            foreach (var container in containerSet.Containers)
+            foreach (var column in columnSet.Columns)
             {
-                FrameworkElement uiContainer = context.Render(container);
+                FrameworkElement uiContainer = context.Render(column);
 
                 // Add vertical Seperator
-                if (uiContainerSet.ColumnDefinitions.Count > 0)
+                if (uiColumnSet.ColumnDefinitions.Count > 0)
                 {
-                    if (container.Separation != SeparationStyle.None)
+                    if (column.Separation != SeparationStyle.None)
                     {
 
                         var uiSep = new Grid();
@@ -39,7 +39,7 @@ namespace AdaptiveCards.Rendering
                         //sep.VerticalAlignment = VerticalAlignment.Stretch;
 #endif
                         SeparationOption sepStyle;
-                        switch (container.Separation)
+                        switch (column.Separation)
                         {
                             case SeparationStyle.Strong:
                                 sepStyle = context.Options.Container.Separation.Strong;
@@ -58,34 +58,34 @@ namespace AdaptiveCards.Rendering
 #elif XAMARIN
                         // TODO
 #endif
-                        uiContainerSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                        Grid.SetColumn(uiSep, uiContainerSet.ColumnDefinitions.Count - 1);
-                        uiContainerSet.Children.Add(uiSep);
+                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                        Grid.SetColumn(uiSep, uiColumnSet.ColumnDefinitions.Count - 1);
+                        uiColumnSet.Children.Add(uiSep);
                     }
 
                 }
 
 
                 // do some sizing magic using the magic GridUnitType.Star
-                var size = container.Size?.ToLower();
+                var size = column.Size?.ToLower();
                 if (size == null || size == ColumnSize.Stretch.ToLower())
-                    uiContainerSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                    uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
                 else if (size == ColumnSize.Auto.ToLower())
-                    uiContainerSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                    uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 else
                 {
                     double val;
                     if (double.TryParse(size, out val))
-                        uiContainerSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
+                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
                     else
-                        uiContainerSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 }
 
-                Grid.SetColumn(uiContainer, uiContainerSet.ColumnDefinitions.Count - 1);
-                uiContainerSet.Children.Add(uiContainer);
+                Grid.SetColumn(uiContainer, uiColumnSet.ColumnDefinitions.Count - 1);
+                uiColumnSet.Children.Add(uiContainer);
             }
 
-            return uiContainerSet;
+            return uiColumnSet;
         }
 
     }

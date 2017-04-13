@@ -69,7 +69,7 @@ namespace AdaptiveCards.Rendering
                                     break;
                             }
 
-                            uiSep.Margin = new Thickness(0, sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2);
+                            uiSep.Margin = new Thickness(0, (sepStyle.Spacing - sepStyle.LineThickness) / 2, 0, (sepStyle.Spacing - sepStyle.LineThickness) / 2);
 #if WPF
                             uiSep.Height = sepStyle.LineThickness;
                             if (sepStyle.LineColor != null)
