@@ -9,6 +9,57 @@ function invokeSetContainer(obj: any, container: Container) {
 }
 
 export abstract class CardElement {
+    static createCardElement(json: any): CardElement {
+        var result: CardElement;
+
+        var elementType = json["type"];
+
+        switch (elementType) {
+            case Container.TypeName:
+                result = new Container();
+                break;
+            case TextBlock.TypeName:
+                result = new TextBlock();
+                break;
+            case Image.TypeName:
+                result = new Image();
+                break;
+            case ImageSet.TypeName:
+                result = new ImageSet();
+                break;
+            case FactSet.TypeName:
+                result = new FactSet();
+                break;
+            case ColumnSet.TypeName:
+                result = new ColumnSet();
+                break;
+            case TextInput.TypeName:
+                result = new TextInput();
+                break;
+            case NumberInput.TypeName:
+                result = new NumberInput();
+                break;
+            case DateInput.TypeName:
+                result = new DateInput();
+                break;
+            case TimeInput.TypeName:
+                result = new TimeInput();
+                break;
+            case ToggleInput.TypeName:
+                result = new ToggleInput();
+                break;
+            case ChoiceSetInput.TypeName:
+                result = new ChoiceSetInput();
+                break;
+            default:
+                throw new Error("Unknown element type: " + elementType);
+        }
+
+        result.parse(json);
+
+        return result;
+    }
+
     private _container: Container = null;
 
     private getRootElement(): CardElement {
@@ -69,6 +120,12 @@ export abstract class CardElement {
     separation: Enums.Separation;
 
     abstract renderSpeech(): string;
+
+    parse(json: any) {
+        this.speak = json["speak"];
+        this.horizontalAlignment = Enums.stringToHorizontalAlignment(json["horizontalAlignment"], Enums.HorizontalAlignment.Left);
+        this.separation = Enums.stringToSeparation(json["separation"], Enums.Separation.Default);        
+    }
 
     render(): HTMLElement {
         let renderedElement = this.internalRender();
@@ -204,6 +261,18 @@ export class TextBlock extends CardElement {
         }
     }
 
+    parse(json: any) {
+        super.parse(json);
+
+        this.text = json["text"];
+        this.size = Enums.stringToTextSize(json["size"], Enums.TextSize.Normal);
+        this.weight = Enums.stringToTextWeight(json["weight"], Enums.TextWeight.Normal);
+        this.color = Enums.stringToTextColor(json["color"], null);
+        this.isSubtle = json["isSubtle"];
+        this.wrap = json["wrap"];
+        this.maxLines = json["maxLines"];        
+    }
+
     renderSpeech(): string {
         if (this.speak != null)
             return this.speak + '\n';
@@ -295,6 +364,24 @@ export class FactSet extends CardElement {
     }
 
     facts: Array<Fact> = [];
+
+    parse(json: any) {
+        super.parse(json);
+        
+        if (json["facts"] != null) {
+            var jsonFacts = json["facts"] as Array<any>;
+
+            for (var i = 0; i < jsonFacts.length; i++) {
+                let fact = new Fact();
+
+                fact.name = jsonFacts[i]["title"];
+                fact.value = jsonFacts[i]["value"];
+                fact.speak = jsonFacts[i]["speak"];
+
+                this.facts.push(fact);
+            }
+        }
+    }
 
     renderSpeech(): string {
         if (this.speak != null) {
@@ -395,6 +482,20 @@ export class Image extends CardElement {
     size: Enums.Size = Enums.Size.Medium;
     selectAction: ExternalAction;
 
+    parse(json: any) {
+        super.parse(json);
+
+        this.url = json["url"];
+        this.style = Enums.stringToImageStyle(json["style"], Enums.ImageStyle.Normal);
+        this.size = Enums.stringToSize(json["size"], Enums.Size.Medium);
+
+        var selectActionJson = json["selectAction"];
+
+        if (selectActionJson != undefined) {
+            this.selectAction = <ExternalAction>Action.createAction(selectActionJson);
+        }        
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak + '\n';
@@ -436,6 +537,25 @@ export class ImageSet extends CardElement {
 
     imageSize: Enums.Size = Enums.Size.Medium;
 
+    parse(json: any) {
+        super.parse(json);
+        
+        this.imageSize = Enums.stringToSize(json["imageSize"], Enums.Size.Medium);
+
+        if (json["images"] != null) {
+            let jsonImages = json["images"] as Array<any>;
+
+            for (let i = 0; i < jsonImages.length; i++) {
+                var image = new Image();
+
+                image.size = this.imageSize;
+                image.url = jsonImages[i]["url"];
+
+                this.addImage(image);
+            }
+        }
+    }
+
     addImage(image: Image) {
         if (!image.container) {
             this._images.push(image);
@@ -472,6 +592,13 @@ export abstract class Input extends CardElement implements Utils.IInput {
     defaultValue: string;
 
     abstract get value(): string;
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.id = json["id"];
+        this.defaultValue = json["value"];
+    }
 
     renderSpeech(): string {
         if (this.speak != null) {
@@ -518,6 +645,14 @@ export class TextInput extends Input {
     isMultiline: boolean;
     placeholder: string;
 
+    parse(json: any) {
+        super.parse(json);
+
+        this.maxLength = json["maxLength"];
+        this.isMultiline = json["isMultiline"];
+        this.placeholder = json["placeholder"];
+    }
+
     get value(): string {
         return this._textareaElement ? this._textareaElement.textContent : null;
     }
@@ -559,6 +694,14 @@ export class ToggleInput extends Input {
     title: string;
     valueOn: string;
     valueOff: string;
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.title = json["title"];
+        this.valueOn = json["valueOn"];
+        this.valueOff = json["valueOff"];
+    }
 
     get value(): string {
         if (this._checkboxInputElement) {
@@ -681,6 +824,27 @@ export class ChoiceSetInput extends Input {
     isMultiSelect: boolean;
     placeholder: string;
 
+    parse(json: any) {
+        super.parse(json);
+
+        this.isCompact = !(json["style"] === "expanded");
+        this.isMultiSelect = json["isMultiSelect"];
+        this.placeholder = json["placeholder"];
+
+        if (json["choices"] != undefined) {
+            var choiceArray = json["choices"] as Array<any>;
+
+            for (var i = 0; i < choiceArray.length; i++) {
+                var choice = new Choice();
+
+                choice.title = choiceArray[i]["title"];
+                choice.value = choiceArray[i]["value"];
+
+                this.choices.push(choice);
+            }
+        }
+    }
+
     get value(): string {
         if (!this.isMultiSelect) {
             if (this.isCompact) {
@@ -743,6 +907,13 @@ export class NumberInput extends Input {
 
     min: string;
     max: string;
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.min = json["min"];
+        this.max = json["max"];
+    }
 
     get value(): string {
         return this._numberInputElement ? this._numberInputElement.value : null;
@@ -864,6 +1035,33 @@ class ActionButton {
 }
 
 export abstract class Action {
+    static createAction(json: any): Action {
+        var result: Action;
+
+        var actionType = json["type"];
+
+        switch (actionType) {
+            case OpenUrlAction.TypeName:
+                result = new OpenUrlAction();
+                break;
+            case HttpAction.TypeName:
+                result = new HttpAction();
+                break;
+            case SubmitAction.TypeName:
+                result = new SubmitAction();
+                break;
+            case ShowCardAction.TypeName:
+                result = new ShowCardAction();
+                break;
+            default:
+                throw new Error("Unknown action type: " + actionType);
+        }
+
+        result.parse(json);
+
+        return result;
+    }
+
     private _container: Container = null;
 
     protected setContainer(value: Container) {
@@ -873,6 +1071,10 @@ export abstract class Action {
     prepare(inputs: Array<Input>) {
         // Do nothing in base implementation
     };
+
+    parse(json: any) {
+        this.title = json["title"];        
+    }
 
     title: string;
 
@@ -910,6 +1112,12 @@ export class SubmitAction extends ExternalAction {
         this._isPrepared = true;
     }
 
+    parse(json: any) {
+        super.parse(json);
+
+        this.data = json["data"];        
+    }
+
     get data(): Object {
         return this._isPrepared ? this._processedData : this._originalData;
     }
@@ -924,6 +1132,12 @@ export class OpenUrlAction extends ExternalAction {
     static TypeName: string = "Action.OpenUrl";
 
     url: string;
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.url = json["url"];        
+    }
 }
 
 export class HttpHeader {
@@ -961,6 +1175,27 @@ export class HttpAction extends ExternalAction {
             this._headers[i].prepare(inputs);
         }
     };
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.url = json["url"];
+        this.method = json["method"];
+        this.body = json["body"];
+
+        if (json["headers"] != null) {
+            var jsonHeaders = json["headers"] as Array<any>;
+
+            for (var i = 0; i < jsonHeaders.length; i++) {
+                let httpHeader = new HttpHeader();
+
+                httpHeader.name = jsonHeaders[i]["name"];
+                httpHeader.value = jsonHeaders[i]["value"];
+
+                this.headers.push(httpHeader);
+            }
+        }        
+    }
 
     get url(): string {
         return this._url.get();
@@ -1000,6 +1235,12 @@ export class ShowCardAction extends Action {
         super();
 
         this.card = new ShowCardActionContainer();
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.card.parse(json["card"], "body");
     }
 }
 
@@ -1232,6 +1473,7 @@ export class Container extends CardElement {
 
     private _items: Array<CardElement> = [];
     private _hasBottomPadding?: boolean;
+    private _textColor?: Enums.TextColor;
 
     protected _actionCollection: ActionCollection;
     protected _element: HTMLDivElement;
@@ -1332,7 +1574,44 @@ export class Container extends CardElement {
         this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer() };
     }
 
-    private _textColor?: Enums.TextColor;
+    parse(json: any, itemsCollectionPropertyName: string = "items") {
+        super.parse(json);
+
+        this.backgroundImageUrl = json["backgroundImage"];
+        this.backgroundColor = json["backgroundColor"];
+
+        this.textColor = Enums.stringToTextColor(json["textColor"], null);
+
+        if (json[itemsCollectionPropertyName] != null) {
+            var items = json[itemsCollectionPropertyName] as Array<any>;
+
+            for (var i = 0; i < items.length; i++) {
+                var element = CardElement.createCardElement(items[i]);
+
+                if (element != null) {
+                    this.addItem(element);
+                }
+            }
+        }
+
+        if (json["actions"] != undefined) {
+            var jsonActions = json["actions"] as Array<any>;
+
+            for (var i = 0; i < jsonActions.length; i++) {
+                var action = Action.createAction(jsonActions[i]);
+
+                if (action != null) {
+                    this.addAction(action);
+                }
+            }
+        }
+
+        var selectActionJson = json["selectAction"];
+
+        if (selectActionJson != undefined) {
+            this.selectAction = <ExternalAction>Action.createAction(selectActionJson);
+        }
+    }
 
     get textColor(): Enums.TextColor {
         if (!this._textColor) {
@@ -1505,6 +1784,20 @@ export class Column extends Container {
             element.style.flex = "1 1 auto";
         }
     }
+
+    parse(json: any) {
+        super.parse(json);
+
+        if (json["size"] === "auto") {
+            this.weight = 0;
+        }
+        else if (json["size"] === "stretch") {
+            this.weight = -1;
+        }
+        else {
+            this.weight = Number(json["size"]);
+        }
+    }
 }
 
 export class ColumnSet extends CardElement {
@@ -1553,6 +1846,22 @@ export class ColumnSet extends CardElement {
         }
     }
 
+    parse(json: any) {
+        super.parse(json);
+        
+        if (json["columns"] != null) {
+            let jsonColumns = json["columns"] as Array<any>;
+
+            for (let i = 0; i < jsonColumns.length; i++) {
+                var column = new Column();
+
+                column.parse(jsonColumns[i]);
+
+                this.addColumn(column);
+            }
+        }
+    }
+
     addColumn(column: Column) {
         if (!column.container) {
             this._columns.push(column);
@@ -1588,7 +1897,6 @@ export interface IVersion {
 
 export interface IRenderOptions {
     defaultTextColor: Enums.TextColor;
-    defaultSeparation: Enums.Separation;
     showCardActionMode: Enums.ShowCardActionMode;
 }
 
@@ -1653,7 +1961,6 @@ export class AdaptiveCard {
 
     static renderOptions: IRenderOptions = {
         defaultTextColor: Enums.TextColor.Dark,
-        defaultSeparation: Enums.Separation.Default,
         showCardActionMode: Enums.ShowCardActionMode.Inline
     }
 
@@ -1661,6 +1968,29 @@ export class AdaptiveCard {
 
     minVersion: IVersion = { major: 1, minor: 0 };
     fallbackText: string;
+
+    parse(json: any) {
+        var cardTypeName = json["type"];
+
+        if (cardTypeName != "AdaptiveCard" && AdaptiveCard.onValidationError) {
+            AdaptiveCard.onValidationError(
+                Enums.ValidationError.MissingCardType,
+                "Invalid card type. Make sure the card's type property is set to \"AdaptiveCard\".");
+        }
+
+        var minVersion = json["minVersion"];
+        var regEx = /(\d+).(\d+)/gi;
+        var matches = regEx.exec(minVersion);
+
+        if (matches != null && matches.length == 3) {
+            this.minVersion.major = parseInt(matches[1]);
+            this.minVersion.minor = parseInt(matches[2]);
+        }
+
+        this.fallbackText = json["fallbackText"];
+
+        this.root.parse(json, "body");
+    }
 
     render(): HTMLElement {
         var unsupportedVersion: boolean =
