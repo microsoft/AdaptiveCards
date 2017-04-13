@@ -109,10 +109,10 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Background color for card
         /// </summary>
-        public string BackgroundColor { get; set; } = "#FFFFFFFF";
+        public string BackgroundColor { get; set; } = "#FFFFFF";
 
         /// <summary>
-        /// Font family for the card
+        /// Font family for the card (can be comma delimited for fallback)
         /// </summary>
         public string FontFamily { get; set; } = "Calibri";
 
@@ -266,15 +266,24 @@ namespace AdaptiveCards.Rendering
 
     public class ColorOption
     {
-        public ColorOption(string color, double opacity = .7)
+        public ColorOption(string normal, string subtle = null)
         {
-            this.Color = color;
-            this.IsSubtleOpacity = opacity;
+            this.Normal = normal;
+            if (subtle == null)
+            {
+                var opacity = (byte)(Convert.ToByte(normal.Substring(1, 2), 16) * .7);
+                this.Subtle = $"#{opacity.ToString("x")}{normal.Substring(3)}";
+            }
+            else
+                this.Subtle = subtle;
         }
 
-        public string Color { get; set; }
+        /// <summary>
+        /// Color in #RRGGBB format
+        /// </summary>
+        public string Normal { get; set; }
 
-        public double IsSubtleOpacity { get; set; } = .7;
+        public string Subtle { get; set; }
     }
 
     /// <summary>

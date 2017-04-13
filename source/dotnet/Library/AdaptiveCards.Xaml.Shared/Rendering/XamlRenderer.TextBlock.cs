@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml;
 using MarkedNet;
 using System.Collections.Generic;
+using System.Linq;
 #if WPF
 using System.Windows;
 using System.Windows.Controls;
@@ -71,9 +72,10 @@ namespace AdaptiveCards.Rendering
                     colorOption = context.Options.Colors.Default;
                     break;
             }
-            uiTextBlock.Foreground = context.GetColorBrush(colorOption.Color);
             if (textBlock.IsSubtle == true)
-                uiTextBlock.Opacity = colorOption.IsSubtleOpacity;
+                uiTextBlock.Foreground = context.GetColorBrush(colorOption.Subtle);
+            else 
+                uiTextBlock.Foreground = context.GetColorBrush(colorOption.Normal);
 
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
