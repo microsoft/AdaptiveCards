@@ -134,7 +134,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// The types of Actions that you support(null for no actions)
         /// </summary>
-        public string[] SupportedActions { get; set; } = new string[]
+        public string[] SupportedActionTypes { get; set; } = new string[]
         {
             ActionOpenUrl.TYPE,
             ActionSubmit.TYPE,
