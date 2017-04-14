@@ -48,7 +48,9 @@ export enum Separation  {
 
 export enum ValidationError {
     MissingCardType,
+    UnknownElementType,
     ElementTypeNotAllowed,
+    UnknownActionType,
     ActionTypeNotAllowed,
     NestedActionNotAllowed,
     InteractivityNotAllowed,
