@@ -1148,15 +1148,9 @@ export class ShowCardAction extends Action {
         invokeSetContainer(this.card, value);
     }
 
-    readonly card: ShowCardActionContainer;
+    readonly card: Container = new ShowCardActionContainer();
 
     title: string;
-
-    constructor() {
-        super();
-
-        this.card = new ShowCardActionContainer();
-    }
 
     parse(json: any) {
         super.parse(json);
@@ -1450,26 +1444,6 @@ export class ActionSet extends CardElement {
 }
 
 export class Container extends CardElement {
-    private showBottomSpacer(requestingElement: CardElement = null) {
-        if (requestingElement == null || this.isLastItem(requestingElement)) {
-            if (this.container) {
-                this.container.showBottomSpacer(this);
-            }
-
-            this._element.style.paddingBottom = null;
-        }
-    }
-
-    private hideBottomSpacer(requestingElement: CardElement = null) {
-        if (requestingElement == null || this.isLastItem(requestingElement)) {
-            if (this.container) {
-                this.container.hideBottomSpacer(this);
-            }
-
-            this._element.style.paddingBottom = "0px";
-        }
-    }
-
     private checkElementTypeIsAllowed(element: CardElement) {
         var className = Utils.getClassNameFromInstance(element);
         var typeIsForbidden = false;
@@ -1501,11 +1475,29 @@ export class Container extends CardElement {
     
     private _items: Array<CardElement> = [];
     private _textColor?: Enums.TextColor;
-    private _actionCollection: ActionCollection;
-    private _element: HTMLDivElement;
 
     private isLastItem(element: CardElement): boolean {
         return this._items.indexOf(element) == (this._items.length - 1);
+    }
+
+    protected showBottomSpacer(requestingElement: CardElement = null) {
+        if (requestingElement == null || this.isLastItem(requestingElement)) {
+            if (this.container) {
+                this.container.showBottomSpacer(this);
+            }
+
+            this._element.style.paddingBottom = null;
+        }
+    }
+
+    protected hideBottomSpacer(requestingElement: CardElement = null) {
+        if (requestingElement == null || this.isLastItem(requestingElement)) {
+            if (this.container) {
+                this.container.hideBottomSpacer(this);
+            }
+
+            this._element.style.paddingBottom = "0px";
+        }
     }
 
     protected internalRender(): HTMLElement {
@@ -1544,17 +1536,10 @@ export class Container extends CardElement {
             }
         }
 
-        var renderedActions = this._actionCollection.render();
-
-        Utils.appendChild(this._element, renderedActions);
-
-        if (renderedElementCount > 0 || renderedActions != null) {
-            return this._element;
-        }
-        else {
-            return null;
-        }
+        return renderedElementCount > 0 ? this._element : null;
     }
+
+    protected _element: HTMLDivElement;
 
     protected get hideOverflow() {
         return false;
@@ -1571,14 +1556,6 @@ export class Container extends CardElement {
     }
 
     selectAction: ExternalAction;
-
-    constructor() {
-        super();
-
-        this._actionCollection = new ActionCollection();
-        this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer() };
-        this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer() };
-    }
 
     getForbiddenElementTypes(): Array<any> {
         return null;
@@ -1608,18 +1585,6 @@ export class Container extends CardElement {
                     this.addItem(element);
 
                     element.parse(items[i]);
-                }
-            }
-        }
-
-        if (json["actions"] != undefined) {
-            var jsonActions = json["actions"] as Array<any>;
-
-            for (var i = 0; i < jsonActions.length; i++) {
-                var action = Action.createAction(jsonActions[i]);
-
-                if (action != null) {
-                    this.addAction(action);
                 }
             }
         }
@@ -1670,10 +1635,6 @@ export class Container extends CardElement {
         }
     }
 
-    addAction(action: Action) {
-        this._actionCollection.addAction(action, this);
-    }
-
     getAllInputs(): Array<Input> {
         var result: Array<Input> = [];
 
@@ -1682,8 +1643,6 @@ export class Container extends CardElement {
 
             result = result.concat(item.getAllInputs());
         }
-
-        result = result.concat(this._actionCollection.getAllInputs());
 
         return result;
     }
@@ -1712,7 +1671,53 @@ export class Container extends CardElement {
     }
 }
 
-export class ShowCardActionContainer extends Container {
+class RootContainer extends Container {
+    private _actionCollection: ActionCollection;
+
+    protected internalRender(): HTMLElement {
+        super.internalRender();
+
+        var renderedActions = this._actionCollection.render();
+
+        Utils.appendChild(this._element, renderedActions);
+
+        return this._element.children.length > 0 ? this._element : null;        
+    }
+
+    constructor() {
+        super();
+
+        this._actionCollection = new ActionCollection();
+        this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer() };
+        this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer() };
+    }
+
+    parse(json: any, itemsCollectionPropertyName: string = "items") {
+        super.parse(json, itemsCollectionPropertyName);
+
+        if (json["actions"] != undefined) {
+            var jsonActions = json["actions"] as Array<any>;
+
+            for (var i = 0; i < jsonActions.length; i++) {
+                var action = Action.createAction(jsonActions[i]);
+
+                if (action != null) {
+                    this.addAction(action);
+                }
+            }
+        }
+    }
+
+    addAction(action: Action) {
+        this._actionCollection.addAction(action, this);
+    }
+
+    getAllInputs(): Array<Input> {
+        return super.getAllInputs().concat(this._actionCollection.getAllInputs());
+    }
+}
+
+class ShowCardActionContainer extends RootContainer {
     protected get cssClassName(): string {
         return "showCardActionContainer";
     }
@@ -2008,7 +2013,7 @@ export class AdaptiveCard {
         AdaptiveCard.actionTypeRegistry.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
     }
 
-    readonly root: Container = new Container();
+    readonly root: Container = new RootContainer();
 
     minVersion: IVersion = { major: 1, minor: 0 };
     fallbackText: string;
