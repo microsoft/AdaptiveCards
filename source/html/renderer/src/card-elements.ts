@@ -1145,21 +1145,21 @@ export class ShowCardAction extends Action {
     protected setContainer(value: Container) {
         super.setContainer(value);
 
-        invokeSetContainer(this.card, value);
+        invokeSetContainer(this.card.root, value);
     }
 
-    readonly card: Container = new ShowCardActionContainer();
+    readonly card: AdaptiveCard = new AdaptiveCard();
 
     title: string;
 
     parse(json: any) {
         super.parse(json);
 
-        this.card.parse(json["card"], "body");
+        this.card.parse(json["card"]);
     }
 
     getAllInputs(): Array<Input> {
-        return this.card.getAllInputs();
+        return this.card.root.getAllInputs();
     }
 }
 
