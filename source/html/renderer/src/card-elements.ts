@@ -1034,13 +1034,11 @@ export abstract class Action {
             result.parse(json);
         }
         else {
-            raiseValidationErrorEvent(
-                [
-                    {
-                        error: Enums.ValidationError.UnknownActionType,
-                        message: "Unknown action type: " + actionType
-                    }
-                ]);
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.UnknownActionType,
+                    message: "Unknown action type: " + actionType
+                });
         }
 
         return result;
@@ -1649,13 +1647,11 @@ export class Container extends CardElement {
                 var element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
 
                 if (!element) {
-                    raiseValidationErrorEvent(
-                        [
-                            {
-                                error: Enums.ValidationError.UnknownElementType,
-                                message: "Unknown element type: " + elementType
-                            }
-                        ]);
+                    raiseParseError(
+                        {
+                            error: Enums.ValidationError.UnknownElementType,
+                            message: "Unknown element type: " + elementType
+                        });
                 }
                 else {
                     this.addItem(element);
@@ -1923,9 +1919,9 @@ function raiseShowPopupCardEvent(action: ShowCardAction) {
     }
 }
 
-function raiseValidationErrorEvent(errors: Array<IValidationError>) {
-    if (AdaptiveCard.onValidationError != null) {
-        AdaptiveCard.onValidationError(errors);
+function raiseParseError(error: IValidationError) {
+    if (AdaptiveCard.onParseError != null) {
+        AdaptiveCard.onParseError(error);
     }
 }
 
@@ -1992,7 +1988,7 @@ export class AdaptiveCard extends RootContainer {
 
     static onExecuteAction: (action: ExternalAction) => void = null;
     static onShowPopupCard: (action: ShowCardAction) => void = null;
-    static onValidationError: (errors: Array<IValidationError>) => void = null;
+    static onParseError: (error: IValidationError) => void = null;
 
     static validationOptions: IValidationOptions = {
         supportedElementTypes: [
