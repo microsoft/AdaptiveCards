@@ -10,9 +10,11 @@ namespace AdaptiveCards
     /// </summary>
     public class AdaptiveCard : TypedElement
     {
+        public const string TYPE = "AdaptiveCard";
+
         public AdaptiveCard()
         {
-            Type = "AdaptiveCard";
+            Type = TYPE;
         }
 
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
@@ -21,15 +23,16 @@ namespace AdaptiveCards
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
-        [XmlElement(typeof(ContainerSet))]
+        [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(FactSet))]
-        [XmlElement(typeof(InputText), ElementName = "Input.Text")]
-        [XmlElement(typeof(InputDate), ElementName = "Input.Date")]
-        [XmlElement(typeof(InputTime), ElementName = "Input.Time")]
-        [XmlElement(typeof(InputNumber), ElementName = "Input.Number")]
-        [XmlElement(typeof(InputToggle), ElementName = "Input.Toggle")]
-        [XmlElement(typeof(InputChoiceSet), ElementName = "Input.ChoiceSet")]
+        [XmlElement(typeof(ActionSet))]
+        [XmlElement(typeof(TextInput), ElementName = TextInput.TYPE)]
+        [XmlElement(typeof(DateInput), ElementName = DateInput.TYPE)]
+        [XmlElement(typeof(TimeInput), ElementName = TimeInput.TYPE)]
+        [XmlElement(typeof(NumberInput), ElementName = NumberInput.TYPE)]
+        [XmlElement(typeof(ToggleInput), ElementName = ToggleInput.TYPE)]
+        [XmlElement(typeof(ChoiceSet), ElementName = ChoiceSet.TYPE)]
 #endif
         public List<CardElement> Body { get; set; } = new List<CardElement>();
 
@@ -39,10 +42,10 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET452
         [XmlArray("Actions")]
-        [XmlArrayItem(ElementName = "Action.OpenUrl", Type = typeof(ActionOpenUrl))]
-        [XmlArrayItem(ElementName = "Action.ShowCard", Type = typeof(ActionShowCard))]
-        [XmlArrayItem(ElementName = "Action.Submit", Type = typeof(ActionSubmit))]
-        [XmlArrayItem(ElementName = "Action.Http", Type = typeof(ActionHttp))]
+        [XmlArrayItem(ElementName = OpenUrlAction.TYPE, Type = typeof(OpenUrlAction))]
+        [XmlArrayItem(ElementName = ShowCardAction.TYPE, Type = typeof(ShowCardAction))]
+        [XmlArrayItem(ElementName = SubmitAction.TYPE, Type = typeof(SubmitAction))]
+        [XmlArrayItem(ElementName = HttpAction.TYPE, Type = typeof(HttpAction))]
 #endif
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
 

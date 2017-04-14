@@ -9,9 +9,11 @@ namespace AdaptiveCards
     /// </summary>
     public class ImageSet : CardElement
     {
+        public const string TYPE = "ImageSet";
+
         public ImageSet()
         {
-            Type = "ImageSet";
+            Type = TYPE;
         }
 
         /// <summary>

@@ -3,6 +3,7 @@
 #include "Image.h"
 #include "TextBlock.h"
 #include "ColumnSet.h"
+#include "FactSet.h"
 
 using namespace AdaptiveCards;
 
@@ -10,6 +11,7 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
 {
     { CardElementType::Container, Container::Deserialize },
     { CardElementType::ColumnSet, ColumnSet::Deserialize },
+    { CardElementType::FactSet, FactSet::Deserialize },
     { CardElementType::Image, Image::Deserialize },
     { CardElementType::TextBlock, TextBlock::Deserialize },
 };

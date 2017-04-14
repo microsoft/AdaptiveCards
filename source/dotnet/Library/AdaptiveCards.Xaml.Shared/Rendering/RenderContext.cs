@@ -13,7 +13,6 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Xceed.Wpf.Toolkit;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -37,16 +36,7 @@ namespace AdaptiveCards.Rendering
 
         public HostOptions Options { get; set; } = new HostOptions();
 
-        public Dictionary<string, Func<TypedElement, RenderContext, FrameworkElement>> ElementRenderers = new Dictionary<string, Func<TypedElement, RenderContext, FrameworkElement>>();
-
-        public FrameworkElement Render(TypedElement element)
-        {
-            if (ElementRenderers.TryGetValue(element.Type, out Func<TypedElement, RenderContext, FrameworkElement> renderer))
-            {
-                return renderer(element, this);
-            }
-            return null;
-        }
+        public Dictionary<Type, Func<TypedElement, RenderContext, FrameworkElement>> ElementRenderers = new Dictionary<Type, Func<TypedElement, RenderContext, FrameworkElement>>();
 
 #if WPF
         public BitmapImage ResolveImageSource(string url)
@@ -67,11 +57,6 @@ namespace AdaptiveCards.Rendering
             return source ?? new BitmapImage(new Uri(url));
         }
 #endif
-
-        /// <summary>
-        /// Input Controls in scope for actions array
-        /// </summary>
-        public List<FrameworkElement> InputControls = new List<FrameworkElement>();
 
         /// <summary>
         /// Event fires when action is invoked
@@ -141,204 +126,29 @@ namespace AdaptiveCards.Rendering
 
         public virtual dynamic MergeInputData(dynamic data)
         {
-            foreach (var inputControl in this.InputControls)
+            foreach (var id in this.InputBindings.Keys)
             {
-                if (inputControl.DataContext is InputChoiceSet)
+                var value = this.InputBindings[id]();
+                bool hasValue = false;
+                if (value != null)
                 {
-                    InputChoiceSet choiceInput = (InputChoiceSet)inputControl.DataContext;
-                    var value = GetValueFromInputControl(inputControl);
-                    if (value != null)
-                    {
-                        data[choiceInput.Id] = JToken.FromObject(value);
-                    }
+                    data[id] = JToken.FromObject(value);
                 }
-                else
-                {
-                    Input input = inputControl.DataContext as Input;
-                    var value = GetValueFromInputControl(inputControl);
-                    bool hasValue = false;
-                    if (value != null)
-                    {
-                        if (value is string && !String.IsNullOrEmpty((string)value))
-                            hasValue = true;
-                    }
-
-                    if (hasValue)
-                    {
-                        data[input.Id] = JToken.FromObject(value);
-                    }
-                    else if (input.IsRequired)
-                    {
-                        throw new MissingInputException($"You are missing a required value.", input, inputControl);
-                    }
-                }
-
             }
             return data;
         }
 
         /// <summary>
-        /// Override this to look at inputControl and return value for it
+        /// Helper to deal with casting
         /// </summary>
-        /// <param name="inputControl"></param>
+        /// <param name="element"></param>
         /// <returns></returns>
-        public virtual object GetValueFromInputControl(FrameworkElement inputControl)
+        public FrameworkElement Render(TypedElement element)
         {
-#if WPF
-            if (inputControl is WatermarkTextBox)
-            {
-                return ((WatermarkTextBox)inputControl).Text;
-            }
-            else if (inputControl is TextBox)
-            {
-                return ((TextBox)inputControl).Text;
-            }
-            else if (inputControl is DatePicker)
-            {
-                return ((DatePicker)inputControl).Text;
-            }
-            else if (inputControl is CheckBox)
-            {
-                var toggleSwitch = (CheckBox)inputControl;
-                if (toggleSwitch.IsChecked == true)
-                    return ((InputToggle)toggleSwitch.DataContext).ValueOn;
-                else
-                    return ((InputToggle)toggleSwitch.DataContext).ValueOff;
-            }
-            else if (inputControl is PasswordBox)
-            {
-                return ((PasswordBox)inputControl).Password;
-            }
-            else if (inputControl is TimePicker)
-            {
-                return ((TimePicker)inputControl).Text;
-            }
-            else if (inputControl is IntegerUpDown)
-            {
-                return ((IntegerUpDown)inputControl).Text;
-            }
-            else if (inputControl is ComboBox)
-            {
-                ComboBox comboBox = (ComboBox)inputControl;
-                ComboBoxItem item = comboBox.SelectedItem as ComboBoxItem;
-                if (item != null)
-                {
-                    Choice choice = item.DataContext as Choice;
-                    return choice.Value;
-                }
-                return null;
-            }
-            else if (inputControl.DataContext is InputChoiceSet)
-            {
-                InputChoiceSet choiceInput = inputControl.DataContext as InputChoiceSet;
-                if (inputControl is ListBox)
-                {
-                    var choices = inputControl as ListBox;
-                    if (choiceInput.IsMultiSelect == true)
-                    {
-                        List<string> values = new List<string>();
-                        foreach (var item in choices.Items)
-                        {
-                            CheckBox checkBox = (CheckBox)item;
-                            Choice choice = checkBox.DataContext as Choice;
-                            if (checkBox.IsChecked == true)
-                                values.Add(choice.Value);
-                        }
-                        return values;
-                    }
-                    else
-                    {
-                        foreach (var item in choices.Items)
-                        {
-                            RadioButton radioBox = (RadioButton)item;
-                            Choice choice = radioBox.DataContext as Choice;
-                            if (radioBox.IsChecked == true)
-                                return choice.Value;
-                        }
-                        return null;
-                    }
-                }
-            }
-            Debug.Print($"Unknown control {inputControl.GetType().Name}");
-#endif
-            // TODO: Xamarin inputs
-            return null;
+            return this.ElementRenderers[element.GetType()](element, this);
         }
 
-        public void ResetInput()
-        {
-            foreach (var control in this.InputControls)
-            {
-                ResetInputControl(control);
-            }
-        }
-
-        /// <summary>
-        /// Override to reset a control back to default state
-        /// </summary>
-        /// <param name="control"></param>
-        public virtual void ResetInputControl(FrameworkElement control)
-        {
-#if WPF
-            if (control is TextBox)
-            {
-                InputText input = control.DataContext as InputText;
-                ((TextBox)control).Text = input.Value;
-            }
-            else if (control is DatePicker)
-            {
-                InputText input = control.DataContext as InputText;
-                ((DatePicker)control).Text = input.Value;
-            }
-            else if (control is TimePicker)
-            {
-                InputText input = control.DataContext as InputText;
-                ((TimePicker)control).Text = input.Value;
-            }
-            else if (control is IntegerUpDown)
-            {
-                InputText input = control.DataContext as InputText;
-                ((IntegerUpDown)control).Text = input.Value;
-            }
-            else if (control is WatermarkTextBox)
-            {
-                InputText input = control.DataContext as InputText;
-                ((WatermarkTextBox)control).Text = input.Value;
-            }
-            else if (control is PasswordBox)
-            {
-                InputText input = control.DataContext as InputText;
-                ((PasswordBox)control).Password = input.Value;
-            }
-            else if (control is StackPanel && control.DataContext is InputChoiceSet)
-            {
-                var stack = control as StackPanel;
-                foreach (var child in stack.Children)
-                {
-                    if (child is CheckBox)
-                    {
-                        CheckBox checkBox = (CheckBox)child;
-                        var choice = checkBox.DataContext as Choice;
-                        checkBox.IsChecked = choice.IsSelected == true;
-                    }
-                    else if (child is RadioButton)
-                    {
-                        RadioButton radioBox = (RadioButton)child;
-                        var choice = radioBox.DataContext as Choice;
-                        radioBox.IsChecked = choice.IsSelected == true;
-                    }
-                }
-            }
-            else if (control is ComboBox)
-            {
-                ComboBox comboBox = (ComboBox)control;
-                InputChoiceSet choiceInput = comboBox.DataContext as InputChoiceSet;
-                comboBox.SelectedIndex = 0;
-            }
-#endif
-
-        }
-
+        public Dictionary<string, Func<object>> InputBindings = new Dictionary<string, Func<object>>();
     }
 
 

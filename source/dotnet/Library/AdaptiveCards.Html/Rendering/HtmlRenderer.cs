@@ -1,512 +1,513 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
-//using System.Reflection;
-//using System.Xml;
-//using HtmlTags;
-//using MarkedNet;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml;
+using HtmlTags;
+using MarkedNet;
+#if FUTURE
+namespace AdaptiveCards.Rendering
+{
+    /// <summary>
+    ///     Render as texthtml suitable for server side generation
+    /// </summary>
+    public class HtmlRenderer : AdaptiveRenderer<HtmlTag, RenderContext>
+    {
+        // ---------------- INTERNAL METHODS -----------------------------
 
-//namespace AdaptiveCards.Rendering
-//{
-//    /// <summary>
-//    ///     Render as texthtml suitable for server side generation
-//    /// </summary>
-//    public class HtmlRenderer : AdaptiveRenderer<HtmlTag, RenderContext>
-//    {
-//        // ---------------- INTERNAL METHODS -----------------------------
+        private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
+        {
+#if NET452
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.Rendering.AdaptiveCard.css"))
+            using (var reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
+#else
+            return null;
+#endif
+        });
 
-//        private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
-//        {
-//#if NET452
-//            var assembly = Assembly.GetExecutingAssembly();
-//            using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.Rendering.AdaptiveCard.css"))
-//            using (var reader = new StreamReader(stream))
-//            {
-//                return reader.ReadToEnd();
-//            }
-//#else
-//            return null;
-//#endif
-//        });
+        public HtmlRenderer(HostOptions options) : base(options)
+        {
+        }
 
-//        public HtmlRenderer(HostOptions options) : base(options)
-//        {
-//        }
+        /// <summary>
+        ///     Stock CSS you can use with the generated html
+        /// </summary>
+        public static string StockCss
+        {
+            get { return _stockCss.Value; }
+        }
 
-//        /// <summary>
-//        ///     Stock CSS you can use with the generated html
-//        /// </summary>
-//        public static string StockCss
-//        {
-//            get { return _stockCss.Value; }
-//        }
+        public HtmlTag RenderAdaptiveCard(AdaptiveCard card)
+        {
+            return Render(card, new RenderContext(this.DefaultOptions));
+        }
 
-//        public HtmlTag RenderAdaptiveCard(AdaptiveCard card)
-//        {
-//            return Render(card, new RenderContext(this.DefaultOptions));
-//        }
-
-//        public HtmlTag RenderShowCard(ActionShowCard showCard)
-//        {
-//            return Render(showCard.Card, new RenderContext(this.DefaultOptions));
-//        }
-
-
-//        protected override HtmlTag Render(ActionHttp action, RenderContext context)
-//        {
-//            // not supported
-//            return null;
-//        }
-
-//        protected override HtmlTag Render(ActionOpenUrl action, RenderContext context)
-//        {
-//            if (context.Options.AdaptiveCard.SupportsInteractivity)
-//            {
-//                var uiButton = new LinkTag(action.Title, action.Url, action.Type.Replace(".", ""), "pushButton");
-//                return uiButton;
-//            }
-//            return null;
-//        }
-
-//        protected override HtmlTag Render(ActionShowCard action, RenderContext context)
-//        {
-//            // not supported
-//            return null;
-//        }
-
-//        protected override HtmlTag Render(ActionSubmit action, RenderContext context)
-//        {
-//            // not supported
-//            return null;
-//        }
-
-//        protected override HtmlTag Render(AdaptiveCard card, RenderContext context)
-//        {
-//            var uiCard = new DivTag()
-//                .AddClass(card.Type)
-//                .Style("border-width", "1px 1px 1px 3px")
-//                .Style("border-style", "solid")
-//                .Style("border-color", "rgb(241, 241, 241)");
-
-//            if (card.BackgroundImage != null)
-//                uiCard = uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
-//                    .Style("background-repeat", "no-repeat")
-//                    .Style("background-size", "cover");
-
-//            AddContainerElements(uiCard, card.Body, card.Actions, context);
-
-//            return uiCard;
-//        }
-
-//        protected void AddContainerElements(HtmlTag uiContainer, List<CardElement> elements, List<ActionBase> actions, RenderContext context)
-//        {
-//            foreach (var cardElement in elements)
-//            {
-//                // each element has a row
-//                var uiElement = Render(cardElement, context);
-//                if (uiElement != null)
-//                {
-//                    if (uiContainer.Children.Any())
-//                        switch (cardElement.Separation)
-//                        {
-//                            case SeparationStyle.None:
-//                                uiElement = uiElement.AddClass("NoSeparation");
-//                                break;
-//                            case SeparationStyle.Default:
-//                                break;
-//                            case SeparationStyle.Strong:
-//                                {
-//                                    uiElement = uiElement.AddClass("NoSeparation");
-//                                    var uiSep = new DivTag()
-//                                        .AddClass("Separator");
-//                                    uiContainer.Children.Add(uiSep);
-//                                }
-//                                break;
-//                        }
-//                    else
-//                        uiElement = uiElement.AddClass("NoSeparation");
-//                    uiContainer.Children.Add(uiElement);
-//                }
-//            }
-
-//            if (actions?.Where(a => context.Options.AdaptiveCard.SupportedActions.Contains(a.Type)).Any() == true)
-//            {
-//                var uiActions = new DivTag()
-//                    .AddClass("Container");
-
-//                foreach (var action in actions
-//                    .Where(act => context.Options.AdaptiveCard.SupportedActions?.Contains(act.Type) == true)
-//                    .Take(context.Options.AdaptiveCard.MaxActions))
-//                {
-//                    // add actions
-//                    var uiAction = RenderAction(action, context);
-//                    if (uiAction != null)
-//                        uiActions.Children.Add(uiAction);
-//                }
-
-//                if (uiActions.Children.Any())
-//                    uiContainer.Children.Add(uiActions);
-//            }
-//        }
+        public HtmlTag RenderShowCard(ShowCardAction showCard)
+        {
+            return Render(showCard.Card, new RenderContext(this.DefaultOptions));
+        }
 
 
-//        protected override HtmlTag Render(Column column, RenderContext context)
-//        {
-//            var uiColumn = new DivTag()
-//                .AddClass(column.Type);
+        protected override HtmlTag Render(HttpAction action, RenderContext context)
+        {
+            // not supported
+            return null;
+        }
 
-//            AddContainerElements(uiColumn, column.Items, null, context);
+        protected override HtmlTag Render(OpenUrlAction action, RenderContext context)
+        {
+            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            {
+                var uiButton = new LinkTag(action.Title, action.Url, action.Type.Replace(".", ""), "pushButton");
+                return uiButton;
+            }
+            return null;
+        }
 
-//            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && column.SelectAction != null)
-//            {
-//                //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
-//                //if (uiButton != null)
-//                //{
-//                //    uiButton.Content = uiContainer;
-//                //    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
-//                //    return uiButton;
-//                //}
-//            }
+        protected override HtmlTag Render(ShowCardAction action, RenderContext context)
+        {
+            // not supported
+            return null;
+        }
 
-//            return uiColumn;
-//        }
+        protected override HtmlTag Render(SubmitAction action, RenderContext context)
+        {
+            // not supported
+            return null;
+        }
 
-//        protected override HtmlTag Render(ColumnSet columnSet, RenderContext context)
-//        {
-//            var uiColumnSet = new DivTag()
-//                .AddClass(columnSet.Type)
-//                .Style("overflow", "hidden")
-//                .Style("display", "flex");
+        protected override HtmlTag Render(AdaptiveCard card, RenderContext context)
+        {
+            var uiCard = new DivTag()
+                .AddClass(card.Type)
+                .Style("border-width", "1px 1px 1px 3px")
+                .Style("border-style", "solid")
+                .Style("border-color", "rgb(241, 241, 241)");
 
-//            var max = Math.Max(1.0, columnSet.Columns.Select(col =>
-//            {
-//                if (double.TryParse(col.Size ?? "0", out double val))
-//                    return val;
-//                return 0;
-//            }).Sum());
+            if (card.BackgroundImage != null)
+                uiCard = uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
+                    .Style("background-repeat", "no-repeat")
+                    .Style("background-size", "cover");
 
-//            foreach (var column in columnSet.Columns)
-//            {
-//                var uiColumn = Render(column, context);
+            AddContainerElements(uiCard, card.Body, card.Actions, context);
 
-//                // Add vertical Seperator
-//                if (uiColumnSet.Children.Any())
-//                    switch (column.Separation)
-//                    {
-//                        case SeparationStyle.None:
-//                            break;
+            return uiCard;
+        }
 
-//                        case SeparationStyle.Default:
-//                            {
-//                                uiColumnSet.Children.Add(new DivTag()
-//                                    .AddClass("ColumnSeparator")
-//                                    .AddClass("Default")
-//                                    .Style("flex", "0 0 auto"));
-//                            }
-//                            break;
+        protected void AddContainerElements(HtmlTag uiContainer, List<CardElement> elements, List<ActionBase> actions, RenderContext context)
+        {
+            foreach (var cardElement in elements)
+            {
+                // each element has a row
+                var uiElement = Render(cardElement, context);
+                if (uiElement != null)
+                {
+                    if (uiContainer.Children.Any())
+                        switch (cardElement.Separation)
+                        {
+                            case SeparationStyle.None:
+                                uiElement = uiElement.AddClass("NoSeparation");
+                                break;
+                            case SeparationStyle.Default:
+                                break;
+                            case SeparationStyle.Strong:
+                                {
+                                    uiElement = uiElement.AddClass("NoSeparation");
+                                    var uiSep = new DivTag()
+                                        .AddClass("Separator");
+                                    uiContainer.Children.Add(uiSep);
+                                }
+                                break;
+                        }
+                    else
+                        uiElement = uiElement.AddClass("NoSeparation");
+                    uiContainer.Children.Add(uiElement);
+                }
+            }
 
-//                        case SeparationStyle.Strong:
-//                            {
-//                                uiColumnSet.Children.Add(new DivTag()
-//                                    .AddClass("ColumnSeparator")
-//                                    .AddClass("Strong")
-//                                    .Style("flex", "0 0 auto"));
-//                            }
-//                            break;
-//                    }
+            if (actions?.Where(a => context.Options.AdaptiveCard.SupportedActions.Contains(a.Type)).Any() == true)
+            {
+                var uiActions = new DivTag()
+                    .AddClass("Container");
 
-//                // do some sizing magic 
-//                var size = column.Size?.ToLower();
-//                if (size == null || size == ColumnSize.Stretch.ToLower())
-//                {
-//                    uiColumn = uiColumn.Style("flex", "1 1 auto");
-//                }
-//                else if (size == ColumnSize.Auto.ToLower())
-//                {
-//                    uiColumn = uiColumn.Style("flex", "0 0 auto");
-//                }
-//                else
-//                {
-//                    double val;
-//                    if (double.TryParse(size, out val))
-//                    {
-//                        var percent = Convert.ToInt32(100 * (val / max));
-//                        uiColumn = uiColumn.Style("flex", $"1 1 {percent}%");
-//                    }
-//                    else
-//                    {
-//                        uiColumn = uiColumn.Style("flex", "0 0 auto");
-//                    }
-//                }
+                foreach (var action in actions
+                    .Where(act => context.Options.AdaptiveCard.SupportedActions?.Contains(act.Type) == true)
+                    .Take(context.Options.AdaptiveCard.MaxActions))
+                {
+                    // add actions
+                    var uiAction = RenderAction(action, context);
+                    if (uiAction != null)
+                        uiActions.Children.Add(uiAction);
+                }
 
-//                uiColumnSet.Children.Add(uiColumn);
-//            }
+                if (uiActions.Children.Any())
+                    uiContainer.Children.Add(uiActions);
+            }
+        }
 
-//            return uiColumnSet;
-//        }
 
-//        protected override HtmlTag Render(Container container, RenderContext context)
-//        {
-//            var uiContainer = new DivTag()
-//                .AddClass(container.Type);
+        protected override HtmlTag Render(Column column, RenderContext context)
+        {
+            var uiColumn = new DivTag()
+                .AddClass(column.Type);
 
-//            AddContainerElements(uiContainer, container.Items, container.Actions, context);
+            AddContainerElements(uiColumn, column.Items, null, context);
 
-//            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && container.SelectAction != null)
-//            {
-//                //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
-//                //if (uiButton != null)
-//                //{
-//                //    uiButton.Content = uiContainer;
-//                //    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
-//                //    return uiButton;
-//                //}
-//            }
+            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && column.SelectAction != null)
+            {
+                //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
+                //if (uiButton != null)
+                //{
+                //    uiButton.Content = uiContainer;
+                //    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
+                //    return uiButton;
+                //}
+            }
 
-//            return uiContainer;
-//        }
+            return uiColumn;
+        }
 
-//        protected override Tuple<HtmlTag, HtmlTag> Render(Fact fact, RenderContext context)
-//        {
-//            return
-//                new Tuple<HtmlTag, HtmlTag>(new DivTag().Text(fact.Title).AddClass("FactName").AddClass("NoSeparation"),
-//                    new DivTag().Text(fact.Value).AddClass("FactTitle").AddClass("NoSeparation"));
-//        }
+        protected override HtmlTag Render(ColumnSet columnSet, RenderContext context)
+        {
+            var uiColumnSet = new DivTag()
+                .AddClass(columnSet.Type)
+                .Style("overflow", "hidden")
+                .Style("display", "flex");
 
-//        protected override HtmlTag Render(FactSet factSet, RenderContext context)
-//        {
-//            var uiFactSet = (TableTag)new TableTag()
-//                .AddClass(factSet.Type)
-//                .Style("overflow", "hidden");
+            var max = Math.Max(1.0, columnSet.Columns.Select(col =>
+            {
+                if (double.TryParse(col.Size ?? "0", out double val))
+                    return val;
+                return 0;
+            }).Sum());
 
-//            foreach (var fact in factSet.Facts)
-//            {
-//                var uiElements = Render(fact, context);
-//                var uiRow = uiFactSet.AddBodyRow();
-//                uiRow.Cell().AddClass("FactName").Append(uiElements.Item1);
-//                uiRow.Cell().AddClass("FactValue").Append(uiElements.Item2);
-//            }
-//            return uiFactSet;
-//        }
+            foreach (var column in columnSet.Columns)
+            {
+                var uiColumn = Render(column, context);
 
-//        protected override HtmlTag Render(TextBlock textBlock, RenderContext context)
-//        {
-//            var uiTextBlock = new DivTag()
-//                .AddClass(textBlock.Type)
-//                .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
-//                .Style("overflow", "hidden");
+                // Add vertical Seperator
+                if (uiColumnSet.Children.Any())
+                    switch (column.Separation)
+                    {
+                        case SeparationStyle.None:
+                            break;
 
-//            if (textBlock.Color != TextColor.Default)
-//                uiTextBlock = uiTextBlock.AddClass($"{textBlock.Color}");
-//            if (textBlock.Weight != TextWeight.Normal)
-//                uiTextBlock = uiTextBlock.AddClass($"{textBlock.Weight}");
-//            if (textBlock.Size != TextSize.Normal)
-//                uiTextBlock = uiTextBlock.AddClass($"{textBlock.Size}");
+                        case SeparationStyle.Default:
+                            {
+                                uiColumnSet.Children.Add(new DivTag()
+                                    .AddClass("ColumnSeparator")
+                                    .AddClass("Default")
+                                    .Style("flex", "0 0 auto"));
+                            }
+                            break;
 
-//            if (textBlock.Wrap == false)
-//                uiTextBlock = uiTextBlock
-//                    .Style("white-space", "nowrap")
-//                    .Style("text-overflow", "ellipsis");
+                        case SeparationStyle.Strong:
+                            {
+                                uiColumnSet.Children.Add(new DivTag()
+                                    .AddClass("ColumnSeparator")
+                                    .AddClass("Strong")
+                                    .Style("flex", "0 0 auto"));
+                            }
+                            break;
+                    }
 
-//            if (textBlock.IsSubtle)
-//                uiTextBlock = uiTextBlock.AddClass("Subtle");
+                // do some sizing magic 
+                var size = column.Size?.ToLower();
+                if (size == null || size == ColumnSize.Stretch.ToLower())
+                {
+                    uiColumn = uiColumn.Style("flex", "1 1 auto");
+                }
+                else if (size == ColumnSize.Auto.ToLower())
+                {
+                    uiColumn = uiColumn.Style("flex", "0 0 auto");
+                }
+                else
+                {
+                    double val;
+                    if (double.TryParse(size, out val))
+                    {
+                        var percent = Convert.ToInt32(100 * (val / max));
+                        uiColumn = uiColumn.Style("flex", $"1 1 {percent}%");
+                    }
+                    else
+                    {
+                        uiColumn = uiColumn.Style("flex", "0 0 auto");
+                    }
+                }
 
-//            var marked = new Marked();
-//            marked.Options.Mangle = false;
-//            marked.Options.Sanitize = true;
+                uiColumnSet.Children.Add(uiColumn);
+            }
 
-//            var html = marked.Parse(RendererUtilities.ApplyTextFunctions(textBlock.Text))
-//                .Replace("<p>", "<p style='margin-top: 0px;margin-bottom: 0px'>");
-//            var uiPara = new LiteralTag(html)
-//                .Style("margin-top", "0px")
-//                .Style("margin-bottom", "0px");
-//            uiTextBlock.Children.Add(uiPara);
-//            return uiTextBlock;
-//        }
+            return uiColumnSet;
+        }
 
-//        protected override HtmlTag Render(Image image, RenderContext context)
-//        {
-//            var uiImage = new HtmlTag("img")
-//                .AddClass(image.Type)
-//                .AddClass($"{image.Size}")
-//                .AddClass($"{image.Style}")
-//                .Attr("src", image.Url);
+        protected override HtmlTag Render(Container container, RenderContext context)
+        {
+            var uiContainer = new DivTag()
+                .AddClass(container.Type);
 
-//            switch (image.HorizontalAlignment)
-//            {
-//                case HorizontalAlignment.Left:
-//                    uiImage = uiImage.Style("overflow", "hidden")
-//                        .Style("display", "block");
-//                    break;
-//                case HorizontalAlignment.Center:
-//                    uiImage = uiImage.Style("overflow", "hidden")
-//                        .Style("margin-right", "auto")
-//                        .Style("margin-left", "auto")
-//                        .Style("display", "block");
-//                    break;
-//                case HorizontalAlignment.Right:
-//                    uiImage = uiImage.Style("overflow", "hidden")
-//                        .Style("margin-left", "auto")
-//                        .Style("display", "block");
-//                    break;
-//            }
+            AddContainerElements(uiContainer, container.Items, container.Actions, context);
 
-//            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && image.SelectAction != null)
-//            {
-//                //var uiButton = (Button)RenderAction(image.SelectAction, context);
-//                //if (uiButton != null)
-//                //{
-//                //    uiButton.Content = uiImage;
-//                //    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
-//                //    return uiButton;
-//                //}
-//            }
-//            return uiImage;
-//        }
+            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && container.SelectAction != null)
+            {
+                //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
+                //if (uiButton != null)
+                //{
+                //    uiButton.Content = uiContainer;
+                //    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
+                //    return uiButton;
+                //}
+            }
 
-//        protected override HtmlTag Render(ImageSet imageSet, RenderContext context)
-//        {
-//            var uiImageSet = new DivTag()
-//                .AddClass(imageSet.Type);
+            return uiContainer;
+        }
 
-//            foreach (var image in imageSet.Images)
-//            {
-//                var uiImage = Render(image, context);
-//                if (imageSet.ImageSize != ImageSize.Auto)
-//                    uiImage = uiImage.RemoveClass(ImageSize.Auto.ToString())
-//                        .RemoveClass($"{ImageSize.Stretch}")
-//                        .RemoveClass($"{ImageSize.Small}")
-//                        .RemoveClass($"{ImageSize.Medium}")
-//                        .RemoveClass($"{ImageSize.Large}")
-//                        .AddClass($"{imageSet.ImageSize}");
-//                uiImageSet.Children.Add(uiImage);
-//            }
-//            return uiImageSet;
-//        }
+        protected override Tuple<HtmlTag, HtmlTag> Render(Fact fact, RenderContext context)
+        {
+            return
+                new Tuple<HtmlTag, HtmlTag>(new DivTag().Text(fact.Title).AddClass("FactName").AddClass("NoSeparation"),
+                    new DivTag().Text(fact.Value).AddClass("FactTitle").AddClass("NoSeparation"));
+        }
 
-//        protected override HtmlTag Render(InputChoiceSet choiceSet, RenderContext context)
-//        {
-//            var choiceText = GetFallbackText(choiceSet);
-//            if (choiceText == null)
-//            {
-//                var choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
-//                if (choiceSet.Style == ChoiceInputStyle.Compact)
-//                    if (choiceSet.IsMultiSelect)
-//                        choiceText = $"Choices: {JoinString(choices, ", ", " and ")}";
-//                    else
-//                        choiceText = $"Choices: {JoinString(choices, ", ", " or ")}";
-//                else // if (this.Style == ChoiceInputStyle.Expanded)
-//                    choiceText = $"* {JoinString(choices, "\n* ", "\n* ")}";
-//            }
-//            var container = new Container { Separation = choiceSet.Separation };
-//            container.Items.Add(new TextBlock
-//            {
-//                Text = choiceText,
-//                Wrap = true
-//            });
-//            container.Items.Add(new TextBlock
-//            {
-//                Text =
-//                    JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
-//                Color = TextColor.Accent,
-//                Wrap = true
-//            });
-//            return Render(container, context);
-//        }
+        protected override HtmlTag Render(FactSet factSet, RenderContext context)
+        {
+            var uiFactSet = (TableTag)new TableTag()
+                .AddClass(factSet.Type)
+                .Style("overflow", "hidden");
 
-//        protected override HtmlTag Render(InputDate input, RenderContext context)
-//        {
-//            var container = new Container { Separation = input.Separation };
-//            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-//            if (input.Value != null)
-//                container.Items.Add(new TextBlock
-//                {
-//                    Text = input.Value,
-//                    Color = TextColor.Accent,
-//                    Wrap = true
-//                });
-//            return Render(container, context);
-//        }
+            foreach (var fact in factSet.Facts)
+            {
+                var uiElements = Render(fact, context);
+                var uiRow = uiFactSet.AddBodyRow();
+                uiRow.Cell().AddClass("FactName").Append(uiElements.Item1);
+                uiRow.Cell().AddClass("FactValue").Append(uiElements.Item2);
+            }
+            return uiFactSet;
+        }
 
-//        protected override HtmlTag Render(InputNumber input, RenderContext context)
-//        {
-//            var container = new Container { Separation = input.Separation };
-//            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-//            if (!double.IsNaN(input.Value))
-//            {
-//                container.Items.Add(new TextBlock
-//                {
-//                    Text = input.Value.ToString(),
-//                    Color = TextColor.Accent,
-//                    Wrap = true
-//                });
-//            }
-//            return Render(container, context);
-//        }
+        protected override HtmlTag Render(TextBlock textBlock, RenderContext context)
+        {
+            var uiTextBlock = new DivTag()
+                .AddClass(textBlock.Type)
+                .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
+                .Style("overflow", "hidden");
 
-//        protected override HtmlTag Render(InputText input, RenderContext context)
-//        {
-//            var container = new Container { Separation = input.Separation };
-//            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-//            if (input.Value != null)
-//                container.Items.Add(new TextBlock
-//                {
-//                    Text = input.Value,
-//                    Color = TextColor.Accent,
-//                    Wrap = true
-//                });
-//            return Render(container, context);
-//        }
+            if (textBlock.Color != TextColor.Default)
+                uiTextBlock = uiTextBlock.AddClass($"{textBlock.Color}");
+            if (textBlock.Weight != TextWeight.Normal)
+                uiTextBlock = uiTextBlock.AddClass($"{textBlock.Weight}");
+            if (textBlock.Size != TextSize.Normal)
+                uiTextBlock = uiTextBlock.AddClass($"{textBlock.Size}");
 
-//        protected override HtmlTag Render(InputTime input, RenderContext context)
-//        {
-//            var container = new Container { Separation = input.Separation };
-//            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-//            if (input.Value != null)
-//                container.Items.Add(new TextBlock
-//                {
-//                    Text = input.Value,
-//                    Color = TextColor.Accent,
-//                    Wrap = true
-//                });
-//            return Render(container, context);
-//        }
+            if (textBlock.Wrap == false)
+                uiTextBlock = uiTextBlock
+                    .Style("white-space", "nowrap")
+                    .Style("text-overflow", "ellipsis");
 
-//        protected override HtmlTag Render(InputToggle input, RenderContext context)
-//        {
-//            var container = new Container { Separation = input.Separation };
-//            container.Items.Add(new TextBlock { Text = GetFallbackText(input) });
-//            if (input.Value != null)
-//                container.Items.Add(new TextBlock
-//                {
-//                    Text =
-//                        input.Value == (input.ValueOn ?? "true")
-//                            ? input.ValueOn ?? "selected"
-//                            : input.ValueOff ?? "not selected",
-//                    Color = TextColor.Accent,
-//                    Wrap = true
-//                });
-//            return Render(container, context);
-//        }
+            if (textBlock.IsSubtle)
+                uiTextBlock = uiTextBlock.AddClass("Subtle");
 
-//        protected string GetFallbackText(CardElement cardElement)
-//        {
-//            if (!string.IsNullOrEmpty(cardElement.Speak))
-//            {
-//#if NET452
-//                // TODO: Fix xamarin fallback
-//                var doc = new XmlDocument();
-//                var xml = cardElement.Speak;
-//                if (!xml.Trim().StartsWith("<"))
-//                    xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Speak>{xml}</Speak>";
-//                else if (!xml.StartsWith("<?xml "))
-//                    xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n{xml}";
-//                doc.LoadXml(xml);
-//                return doc.InnerText;
-//#endif
-//            }
-//            return null;
-//        }
-//    }
-//}
+            var marked = new Marked();
+            marked.Options.Mangle = false;
+            marked.Options.Sanitize = true;
+
+            var html = marked.Parse(RendererUtilities.ApplyTextFunctions(textBlock.Text))
+                .Replace("<p>", "<p style='margin-top: 0px;margin-bottom: 0px'>");
+            var uiPara = new LiteralTag(html)
+                .Style("margin-top", "0px")
+                .Style("margin-bottom", "0px");
+            uiTextBlock.Children.Add(uiPara);
+            return uiTextBlock;
+        }
+
+        protected override HtmlTag Render(Image image, RenderContext context)
+        {
+            var uiImage = new HtmlTag("img")
+                .AddClass(image.Type)
+                .AddClass($"{image.Size}")
+                .AddClass($"{image.Style}")
+                .Attr("src", image.Url);
+
+            switch (image.HorizontalAlignment)
+            {
+                case HorizontalAlignment.Left:
+                    uiImage = uiImage.Style("overflow", "hidden")
+                        .Style("display", "block");
+                    break;
+                case HorizontalAlignment.Center:
+                    uiImage = uiImage.Style("overflow", "hidden")
+                        .Style("margin-right", "auto")
+                        .Style("margin-left", "auto")
+                        .Style("display", "block");
+                    break;
+                case HorizontalAlignment.Right:
+                    uiImage = uiImage.Style("overflow", "hidden")
+                        .Style("margin-left", "auto")
+                        .Style("display", "block");
+                    break;
+            }
+
+            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && image.SelectAction != null)
+            {
+                //var uiButton = (Button)RenderAction(image.SelectAction, context);
+                //if (uiButton != null)
+                //{
+                //    uiButton.Content = uiImage;
+                //    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
+                //    return uiButton;
+                //}
+            }
+            return uiImage;
+        }
+
+        protected override HtmlTag Render(ImageSet imageSet, RenderContext context)
+        {
+            var uiImageSet = new DivTag()
+                .AddClass(imageSet.Type);
+
+            foreach (var image in imageSet.Images)
+            {
+                var uiImage = Render(image, context);
+                if (imageSet.ImageSize != ImageSize.Auto)
+                    uiImage = uiImage.RemoveClass(ImageSize.Auto.ToString())
+                        .RemoveClass($"{ImageSize.Stretch}")
+                        .RemoveClass($"{ImageSize.Small}")
+                        .RemoveClass($"{ImageSize.Medium}")
+                        .RemoveClass($"{ImageSize.Large}")
+                        .AddClass($"{imageSet.ImageSize}");
+                uiImageSet.Children.Add(uiImage);
+            }
+            return uiImageSet;
+        }
+
+        protected override HtmlTag Render(ChoiceSet choiceSet, RenderContext context)
+        {
+            var choiceText = GetFallbackText(choiceSet);
+            if (choiceText == null)
+            {
+                var choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
+                if (choiceSet.Style == ChoiceInputStyle.Compact)
+                    if (choiceSet.IsMultiSelect)
+                        choiceText = $"Choices: {JoinString(choices, ", ", " and ")}";
+                    else
+                        choiceText = $"Choices: {JoinString(choices, ", ", " or ")}";
+                else // if (this.Style == ChoiceInputStyle.Expanded)
+                    choiceText = $"* {JoinString(choices, "\n* ", "\n* ")}";
+            }
+            var container = new Container { Separation = choiceSet.Separation };
+            container.Items.Add(new TextBlock
+            {
+                Text = choiceText,
+                Wrap = true
+            });
+            container.Items.Add(new TextBlock
+            {
+                Text =
+                    JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
+                Color = TextColor.Accent,
+                Wrap = true
+            });
+            return Render(container, context);
+        }
+
+        protected override HtmlTag Render(DateInput input, RenderContext context)
+        {
+            var container = new Container { Separation = input.Separation };
+            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
+            if (input.Value != null)
+                container.Items.Add(new TextBlock
+                {
+                    Text = input.Value,
+                    Color = TextColor.Accent,
+                    Wrap = true
+                });
+            return Render(container, context);
+        }
+
+        protected override HtmlTag Render(NumberInput input, RenderContext context)
+        {
+            var container = new Container { Separation = input.Separation };
+            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
+            if (!double.IsNaN(input.Value))
+            {
+                container.Items.Add(new TextBlock
+                {
+                    Text = input.Value.ToString(),
+                    Color = TextColor.Accent,
+                    Wrap = true
+                });
+            }
+            return Render(container, context);
+        }
+
+        protected override HtmlTag Render(TextInput input, RenderContext context)
+        {
+            var container = new Container { Separation = input.Separation };
+            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
+            if (input.Value != null)
+                container.Items.Add(new TextBlock
+                {
+                    Text = input.Value,
+                    Color = TextColor.Accent,
+                    Wrap = true
+                });
+            return Render(container, context);
+        }
+
+        protected override HtmlTag Render(TimeInput input, RenderContext context)
+        {
+            var container = new Container { Separation = input.Separation };
+            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
+            if (input.Value != null)
+                container.Items.Add(new TextBlock
+                {
+                    Text = input.Value,
+                    Color = TextColor.Accent,
+                    Wrap = true
+                });
+            return Render(container, context);
+        }
+
+        protected override HtmlTag Render(ToggleInput input, RenderContext context)
+        {
+            var container = new Container { Separation = input.Separation };
+            container.Items.Add(new TextBlock { Text = GetFallbackText(input) });
+            if (input.Value != null)
+                container.Items.Add(new TextBlock
+                {
+                    Text =
+                        input.Value == (input.ValueOn ?? "true")
+                            ? input.ValueOn ?? "selected"
+                            : input.ValueOff ?? "not selected",
+                    Color = TextColor.Accent,
+                    Wrap = true
+                });
+            return Render(container, context);
+        }
+
+        protected string GetFallbackText(CardElement cardElement)
+        {
+            if (!string.IsNullOrEmpty(cardElement.Speak))
+            {
+#if NET452
+                // TODO: Fix xamarin fallback
+                var doc = new XmlDocument();
+                var xml = cardElement.Speak;
+                if (!xml.Trim().StartsWith("<"))
+                    xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Speak>{xml}</Speak>";
+                else if (!xml.StartsWith("<?xml "))
+                    xml = $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n{xml}";
+                doc.LoadXml(xml);
+                return doc.InnerText;
+#endif
+            }
+            return null;
+        }
+    }
+}
+#endif

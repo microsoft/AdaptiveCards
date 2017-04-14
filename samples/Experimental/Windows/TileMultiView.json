@@ -7,14 +7,14 @@
 {
     "type": "AdaptiveCard.MultiView",
     "views": {
-        "TileMedium": {
+        "Medium": {
             "type": "AdaptiveCard",
             "visual": [],
             "actions": [
                 {}
             ]
         },
-        "TileLarge": {
+        "Large": {
             "type": "AdaptiveCard",
             "visual": [],
             "actions": [ // This is optional

@@ -13,6 +13,11 @@ namespace AdaptiveCards.Rendering
         //  ------ AdaptiveCard -------
         public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
 
+        /// <summary>
+        /// Color settings for the TextBlock
+        /// </summary>
+        public ColorOptions Colors { get; set; } = new ColorOptions();
+
         // ------ Basic ------
         public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
 
@@ -21,12 +26,15 @@ namespace AdaptiveCards.Rendering
         // ------ Containers ------
         public ContainerOptions Container { get; set; } = new ContainerOptions();
 
-        public ContainerSetOptions ContainerSet { get; set; } = new ContainerSetOptions();
+        public ColumnOptions Column { get; set; } = new ColumnOptions();
+
+        public ColumnSetOptions ColumnSet { get; set; } = new ColumnSetOptions();
 
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
         public FactSetOptions FactSet { get; set; } = new FactSetOptions();
-        public CardElementOptions ActionSet { get; set; } = new CardElementOptions();
+
+        public ActionSetOptions ActionSet { get; set; } = new ActionSetOptions();
 
         // ------ Input ------
         public InputOptions Input { get; set; } = new InputOptions();
@@ -42,8 +50,10 @@ namespace AdaptiveCards.Rendering
                 return this.Image;
             if (obj is Container)
                 return this.Container;
-            if (obj is ContainerSet)
-                return this.ContainerSet;
+            if (obj is Column)
+                return this.Column;
+            if (obj is ColumnSet)
+                return this.ColumnSet;
             if (obj is ActionSet)
                 return this.ActionSet;
             if (obj is ImageSet)
@@ -52,17 +62,17 @@ namespace AdaptiveCards.Rendering
                 return this.ImageSet;
             if (obj is FactSet)
                 return this.FactSet;
-            if (obj is InputText)
+            if (obj is TextInput)
                 return this.Input;
-            if (obj is InputNumber)
+            if (obj is NumberInput)
                 return this.Input;
-            if (obj is InputDate)
+            if (obj is DateInput)
                 return this.Input;
-            if (obj is InputTime)
+            if (obj is TimeInput)
                 return this.Input;
-            if (obj is InputChoiceSet)
+            if (obj is ChoiceSet)
                 return this.Input;
-            if (obj is InputToggle)
+            if (obj is ToggleInput)
                 return this.Input;
             throw new ArgumentException($"Unknown type {obj.GetType().Name}");
         }
@@ -96,22 +106,17 @@ namespace AdaptiveCards.Rendering
         public AdaptiveCardOptions() { }
 
         /// <summary>
-        ///  Margin for the card
+        ///  Padding for the card
         /// </summary>
-        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(8);
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(8);
 
         /// <summary>
-        /// Background color for card
+        /// Background color for card 
         /// </summary>
-        public string BackgroundColor { get; set; } = "#FFFFFFFF";
+        public string BackgroundColor { get; set; } = "#FFFFFF";
 
         /// <summary>
-        /// Text color for card (shared by FactSet, TextBlock)
-        /// </summary>
-        public ColorOption TextColor { get; set; } = new ColorOption("#FF000000");
-
-        /// <summary>
-        /// Font family for the card
+        /// Font family for the card (can be comma delimited for fallback)
         /// </summary>
         public string FontFamily { get; set; } = "Calibri";
 
@@ -133,12 +138,12 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// The types of Actions that you support(null for no actions)
         /// </summary>
-        public string[] SupportedActions { get; set; } = new string[]
+        public string[] SupportedActionTypes { get; set; } = new string[]
         {
-            ActionOpenUrl.TYPE,
-            ActionSubmit.TYPE,
-            ActionHttp.TYPE,
-            ActionShowCard.TYPE
+            OpenUrlAction.TYPE,
+            SubmitAction.TYPE,
+            HttpAction.TYPE,
+            ShowCardAction.TYPE
         };
 
         /// <summary>
@@ -186,7 +191,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Separation settings when Separation:default
         /// </summary>
-        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10, LineThickness = 0 };
+        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10 };
 
         /// <summary>
         /// Separation settings when Separation:Strong
@@ -223,11 +228,6 @@ namespace AdaptiveCards.Rendering
         public TextBlockOptions() { }
 
         /// <summary>
-        /// Color settings for the TextBlock
-        /// </summary>
-        public TextColorOptions Color { get; set; } = new TextColorOptions();
-
-        /// <summary>
         /// FontSize
         /// </summary>
         public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
@@ -249,13 +249,11 @@ namespace AdaptiveCards.Rendering
 
     }
 
-    public class TextColorOptions
+    public class ColorOptions
     {
-        public TextColorOptions() { }
+        public ColorOptions() { }
 
-        /// <summary>
-        /// Default color for TextBlock
-        /// </summary>
+        public ColorOption Default { get; set; } = new ColorOption("#FF000000");
 
         public ColorOption Accent { get; set; } = new ColorOption("#FF0000FF");
 
@@ -272,15 +270,24 @@ namespace AdaptiveCards.Rendering
 
     public class ColorOption
     {
-        public ColorOption(string color, double opacity = .7)
+        public ColorOption(string normal, string subtle = null)
         {
-            this.Color = color;
-            this.IsSubtleOpacity = opacity;
+            this.Normal = normal;
+            if (subtle == null)
+            {
+                var opacity = (byte)(Convert.ToByte(normal.Substring(1, 2), 16) * .7);
+                this.Subtle = $"#{opacity.ToString("x")}{normal.Substring(3)}";
+            }
+            else
+                this.Subtle = subtle;
         }
 
-        public string Color { get; set; }
+        /// <summary>
+        /// Color in #RRGGBB format
+        /// </summary>
+        public string Normal { get; set; }
 
-        public double IsSubtleOpacity { get; set; } = .7;
+        public string Subtle { get; set; }
     }
 
     /// <summary>
@@ -351,12 +358,12 @@ namespace AdaptiveCards.Rendering
         public string BackgroundColor { get; set; } = "#FFF8F8F8";
 
         /// <summary>
-        /// margins for showcard when inline
+        /// If actionMode is inline and AutoPAdding is on then the background will extend to the edges of the parent card.
         /// </summary>
-        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(10);
+        public bool AutoPadding { get; set; } = false;
 
         /// <summary>
-        /// Padding for showcard when inline
+        /// Padding for showcard when Popup or AutoMargin=false
         /// </summary>
         public BoundaryOptions Padding { get; set; } = new BoundaryOptions(10);
     }
@@ -396,14 +403,25 @@ namespace AdaptiveCards.Rendering
         public InputOptions() { }
     }
 
-    public class ContainerSetOptions : CardElementOptions
+    public class ColumnSetOptions : CardElementOptions
     {
-        public ContainerSetOptions() { }
+        public ColumnSetOptions() { }
     }
 
     public class ContainerOptions : CardElementOptions
     {
         public ContainerOptions() { }
+    }
+
+    public class ColumnOptions : CardElementOptions
+    {
+        public ColumnOptions() { }
+    }
+
+
+    public class ActionSetOptions : CardElementOptions
+    {
+        public ActionSetOptions() { }
 
         public int MaxActions { get; set; } = 5;
 
@@ -412,11 +430,10 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public string[] SupportedActions { get; set; } = new string[]
         {
-            ActionOpenUrl.TYPE,
-            ActionSubmit.TYPE,
-            ActionHttp.TYPE,
-            ActionShowCard.TYPE
+            OpenUrlAction.TYPE,
+            SubmitAction.TYPE,
+            HttpAction.TYPE,
+            ShowCardAction.TYPE
         };
-
     }
 }

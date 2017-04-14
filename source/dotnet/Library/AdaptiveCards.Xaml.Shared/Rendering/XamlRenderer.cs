@@ -27,7 +27,7 @@ namespace AdaptiveCards.Rendering
             this.Resources = resources;
             this.actionCallback = actionCallback;
             this.missingDataCallback = missingDataCallback;
-            AddDefaultRenderers();
+            SetObjectTypes();
         }
 
 #if WPF
@@ -40,30 +40,36 @@ namespace AdaptiveCards.Rendering
             this.StylePath = stylePath;
             this.actionCallback = actionCallback;
             this.missingDataCallback = missingDataCallback;
-            AddDefaultRenderers();
+            SetObjectTypes();
         }
 #endif
 
-        private void AddDefaultRenderers()
+        private void SetObjectTypes()
         {
-            base.ElementRenderers["AdaptiveCard"] = RenderAdaptiveCard;
-            base.ElementRenderers["TextBlock"] = RenderTextBlock;
-            base.ElementRenderers["Image"] = RenderImage;
-            base.ElementRenderers["Container"] = RenderContainer;
-            base.ElementRenderers["ContainerSet"] = RenderContainerSet;
-            base.ElementRenderers["ActionSet"] = RenderActionSet;
-            base.ElementRenderers["FactSet"] = RenderFactSet;
-            base.ElementRenderers["ImageSet"] = RenderImageSet;
-            base.ElementRenderers["Input.Text"] = RenderInputText;
-            base.ElementRenderers["Input.Number"] = RenderInputNumber;
-            base.ElementRenderers["Input.Date"] = RenderInputDate;
-            base.ElementRenderers["Input.ChoiceSet"] = RenderInputChoiceSet;
-            base.ElementRenderers["Input.Time"] = RenderInputTime;
-            base.ElementRenderers["Input.Toggle"] = RenderInputToggle;
-            base.ElementRenderers["Action.Submit"] = RenderActionSubmit;
-            base.ElementRenderers["Action.Http"] = RenderActionHttp;
-            base.ElementRenderers["Action.OpenUrl"] = RenderActionOpenUrl;
-            base.ElementRenderers["Action.ShowCard"] = RenderActionShowCard;
+            this.SetRenderer<AdaptiveCard>(XamlAdaptiveCard.Render);
+
+            this.SetRenderer<TextBlock>(XamlTextBlock.Render);
+            this.SetRenderer<Image>(XamlImage.Render);
+
+            this.SetRenderer<ActionSet>(XamlActionSet.Render);
+            this.SetRenderer<Container>(XamlContainer.Render);
+            this.SetRenderer<Column>(XamlColumn.Render);
+            this.SetRenderer<ColumnSet>(XamlColumnSet.Render);
+            this.SetRenderer<ActionSet>(XamlActionSet.Render);
+            this.SetRenderer<FactSet>(XamlFactSet.Render);
+            this.SetRenderer<ImageSet>(XamlImageSet.Render);
+
+            this.SetRenderer<ChoiceSet>(XamlChoiceSet.Render);
+            this.SetRenderer<TextInput>(XamlTextInput.Render);
+            this.SetRenderer<NumberInput>(XamlNumberInput.Render);
+            this.SetRenderer<DateInput>(XamlDateInput.Render);
+            this.SetRenderer<TimeInput>(XamlTimeInput.Render);
+            this.SetRenderer<ToggleInput>(XamlToggleInput.Render); ;
+
+            this.SetRenderer<SubmitAction>(XamlSubmitAction.Render);
+            this.SetRenderer<HttpAction>(XamlHttpAction.Render); ;
+            this.SetRenderer<OpenUrlAction>(XamlOpenUrlAction.Render);
+            this.SetRenderer<ShowCardAction>(XamlShowCardAction.Render);
         }
 
         /// <summary>
@@ -114,22 +120,22 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Options = styling ?? this.DefaultOptions,
+                Options = options ?? this.DefaultOptions,
                 Resources = this.Resources,
                 ElementRenderers = this.ElementRenderers
             };
             return context.Render(card);
         }
 
-        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
+        public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Options = styling ?? this.DefaultOptions,
+                Options = options ?? this.DefaultOptions,
                 Resources = this.Resources,
                 ElementRenderers = this.ElementRenderers
             };
@@ -152,13 +158,13 @@ namespace AdaptiveCards.Rendering
             return context.Render(card);
         }
 
-        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
+        public View RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
                 Options = options ?? this.DefaultOptions
             };
-            return context.Render(showCard.Card);
+            return context.Render(showCard);
         }
 
 #endif

@@ -10,17 +10,23 @@ namespace AdaptiveCards
     /// </summary>
     public class ActionSet : CardElement
     {
+        public const string TYPE = "ActionSet";
+
         public ActionSet()
         {
-            Type = "ActionSet";
+            Type = TYPE;
         }
 
         /// <summary>
         ///     The facts to be displayed.
         /// </summary>
-        [JsonRequired]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET452
-        [XmlElement(ElementName="Action", Type=typeof(ActionBase))]
+        [XmlArray("Actions")]
+        [XmlArrayItem(ElementName = OpenUrlAction.TYPE, Type = typeof(OpenUrlAction))]
+        [XmlArrayItem(ElementName = ShowCardAction.TYPE, Type = typeof(ShowCardAction))]
+        [XmlArrayItem(ElementName = SubmitAction.TYPE, Type = typeof(SubmitAction))]
+        [XmlArrayItem(ElementName = HttpAction.TYPE, Type = typeof(HttpAction))]
 #endif
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
     }

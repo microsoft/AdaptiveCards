@@ -34,8 +34,8 @@ function renderCard(): HTMLElement {
     var jsonPayload = editor.getValue();
     var json = JSON.parse(jsonPayload);
 
-    var jsonParser = new Adaptive.JsonParser();
-    var adaptiveCard = jsonParser.parse(json);
+    var adaptiveCard = new Adaptive.AdaptiveCard();
+    adaptiveCard.parse(json);
 
     document.getElementById("errorContainer").hidden = true;
 

@@ -12,6 +12,8 @@
     <ClCompile Include="lib\XamlBuilder.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
     <ClCompile Include="dll\dll.cpp" />
+    <ClCompile Include="lib\AdaptiveFact.cpp" />
+    <ClCompile Include="lib\AdaptiveFactSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -33,6 +35,8 @@
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClInclude Include="lib\XamlHelpers.h" />
     <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
+    <ClInclude Include="lib\AdaptiveFactSet.h" />
+    <ClInclude Include="lib\AdaptiveFact.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

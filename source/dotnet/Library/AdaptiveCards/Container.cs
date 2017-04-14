@@ -9,9 +9,11 @@ namespace AdaptiveCards
     /// </summary>
     public class Container : CardElement
     {
+        public const string TYPE = "Container";
+
         public Container()
         {
-            Type = "Container";
+            Type = TYPE;
         }
 
         /// <summary>
@@ -19,19 +21,20 @@ namespace AdaptiveCards
         /// </summary>
         [JsonRequired]
 #if NET452
-        [XmlElement(typeof(TextBlock))]
+ [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
         [XmlElement(typeof(Container))]
-        [XmlElement(typeof(ContainerSet))]
-        [XmlElement(typeof(ActionSet))]
-        [XmlElement(typeof(FactSet))]
+        [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ImageSet))]
-        [XmlElement(typeof(InputText), ElementName ="Input.Text")]
-        [XmlElement(typeof(InputDate), ElementName ="Input.Date")]
-        [XmlElement(typeof(InputTime), ElementName = "Input.Time")]
-        [XmlElement(typeof(InputNumber), ElementName = "Input.Number")]
-        [XmlElement(typeof(InputToggle), ElementName = "Input.Toggle")]
-        [XmlElement(typeof(InputChoiceSet), ElementName = "Input.ChoiceSet")]
+        [XmlElement(typeof(FactSet))]
+        [XmlElement(typeof(ActionSet))]
+        [XmlElement(typeof(TextInput), ElementName = TextInput.TYPE)]
+        [XmlElement(typeof(DateInput), ElementName = DateInput.TYPE)]
+        [XmlElement(typeof(TimeInput), ElementName = TimeInput.TYPE)]
+        [XmlElement(typeof(NumberInput), ElementName = NumberInput.TYPE)]
+        [XmlElement(typeof(ToggleInput), ElementName = ToggleInput.TYPE)]
+        [XmlElement(typeof(ChoiceSet), ElementName = ChoiceSet.TYPE)]
+
 #endif
         public List<CardElement> Items { get; set; } = new List<CardElement>();
 
@@ -41,13 +44,5 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ActionBase SelectAction { get; set; }
 
-        /// <summary>
-        ///     Size for the column (either ColumnSize string or number which is relative size of the column)
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
-        public string Size { get; set; }
     }
 }
