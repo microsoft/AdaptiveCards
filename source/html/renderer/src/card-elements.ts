@@ -1145,10 +1145,10 @@ export class ShowCardAction extends Action {
     protected setContainer(value: Container) {
         super.setContainer(value);
 
-        invokeSetContainer(this.card.root, value);
+        invokeSetContainer(this.card, value);
     }
 
-    readonly card: AdaptiveCard = new AdaptiveCard();
+    readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     title: string;
 
@@ -1159,7 +1159,7 @@ export class ShowCardAction extends Action {
     }
 
     getAllInputs(): Array<Input> {
-        return this.card.root.getAllInputs();
+        return this.card.getAllInputs();
     }
 }
 
@@ -1347,7 +1347,7 @@ class ActionCollection {
         }
 
         if (addAction) {
-            var isNested = container || this instanceof ShowCardActionContainer;
+            var isNested = container || this instanceof InlineAdaptiveCard;
 
             if (isNested && !AdaptiveCard.validationOptions.supportsNestedActions) {
                 raiseValidationErrorEvent(
@@ -1671,7 +1671,7 @@ export class Container extends CardElement {
     }
 }
 
-class RootContainer extends Container {
+export class RootContainer extends Container {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
@@ -1714,16 +1714,6 @@ class RootContainer extends Container {
 
     getAllInputs(): Array<Input> {
         return super.getAllInputs().concat(this._actionCollection.getAllInputs());
-    }
-}
-
-class ShowCardActionContainer extends RootContainer {
-    protected get cssClassName(): string {
-        return "showCardActionContainer";
-    }
-
-    getForbiddenActionTypes(): Array<any> {
-        return [ ShowCardAction ];
     }
 }
 
@@ -1948,7 +1938,7 @@ export class TypeRegistry<T> {
     }
 }
 
-export class AdaptiveCard {
+export class AdaptiveCard extends RootContainer {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
 
     static elementTypeRegistry = new TypeRegistry<CardElement>();
@@ -2013,7 +2003,9 @@ export class AdaptiveCard {
         AdaptiveCard.actionTypeRegistry.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
     }
 
-    readonly root: Container = new RootContainer();
+    protected get cssClassName(): string {
+        return "rootContainer";
+    }
 
     minVersion: IVersion = { major: 1, minor: 0 };
     fallbackText: string;
@@ -2038,7 +2030,7 @@ export class AdaptiveCard {
 
         this.fallbackText = json["fallbackText"];
 
-        this.root.parse(json, "body");
+        super.parse(json, "body");
     }
 
     render(): HTMLElement {
@@ -2051,19 +2043,24 @@ export class AdaptiveCard {
         if (unsupportedVersion) {
             renderedCard = document.createElement("div");
             renderedCard.innerHTML = this.fallbackText ? this.fallbackText : "The version of this card is not supported.";
+
+            return renderedCard;
         }
         else {
-            renderedCard = this.root.render();
-            renderedCard.className = "rootContainer";
+            return super.render();
         }
-
-        return renderedCard;
-    }
-
-    renderSpeech(): string {
-        return this.root.renderSpeech();
     }
 }
 
 // This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
 AdaptiveCard.initialize();
+
+class InlineAdaptiveCard extends AdaptiveCard {
+    protected get cssClassName(): string {
+        return "showCardActionContainer";
+    }
+
+    getForbiddenActionTypes(): Array<any> {
+        return [ ShowCardAction ];
+    }
+}
