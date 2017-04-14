@@ -34,7 +34,7 @@ namespace AdaptiveCards.Rendering
         public static T TryGetValue<T>(this IDictionary<string, object> dictionary, string key)
         {
             if (dictionary == null)
-                throw new ArgumentNullException(nameof(dictionary));
+                return default(T);
 
             if (dictionary.ContainsKey(key))
             {
