@@ -78,7 +78,7 @@ namespace AdaptiveCards.Rendering
                                     Grid uiShowCardContainer = new Grid();
                                     uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
                                     uiShowCardContainer.DataContext = showCardAction;
-                                    if (context.Options.Actions.ShowCard.AutoMargin == true)
+                                    if (context.Options.Actions.ShowCard.AutoPadding == true)
                                     {
                                         uiShowCardContainer.Margin = new Thickness(context.Options.AdaptiveCard.Padding.Left * -1,
                                             context.Options.Actions.ShowCard.Padding.Top,
