@@ -18,15 +18,14 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlActionSet : ActionSet, IRender<FrameworkElement, RenderContext>
     {
-        public static FrameworkElement RenderActionSet(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            ActionSet actionSet = (ActionSet)element;
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.ActionSet");
 
-            AddActions(uiContainer, actionSet.Actions, context, context.Options.ActionSet.SupportedActions, context.Options.ActionSet.MaxActions);
+            AddActions(uiContainer, this.Actions, context, context.Options.ActionSet.SupportedActions, context.Options.ActionSet.MaxActions);
 
             return uiContainer;
         }

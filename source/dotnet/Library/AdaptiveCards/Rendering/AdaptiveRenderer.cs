@@ -16,7 +16,6 @@ namespace AdaptiveCards.Rendering
 
         public HostOptions DefaultOptions { get; set; }
 
-        public Dictionary<string, Func<TypedElement, TContext, TUIElement>> ElementRenderers = new Dictionary<string, Func<TypedElement, TContext, TUIElement>>();
-
+        public Dictionary<string, Type> ElementRegistry = new Dictionary<string, Type>();
     }
 }

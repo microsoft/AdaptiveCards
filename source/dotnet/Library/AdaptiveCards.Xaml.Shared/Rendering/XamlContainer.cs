@@ -18,19 +18,18 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlContainer : Container, IRender<FrameworkElement, RenderContext>
     {
-        public static FrameworkElement RenderContainer(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            Container container = (Container)element;
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Container");
 
-            AddContainerElements(uiContainer, container.Items, context);
+            AddContainerElements(uiContainer, this.Items, context);
 
-            if (container.SelectAction != null)
+            if (this.SelectAction != null)
             {
-                var uiButton = (Button)context.Render(container.SelectAction);//, new RenderContext(this.actionCallback, this.missingDataCallback));
+                var uiButton = (Button)context.Render(this.SelectAction);//, new RenderContext(this.actionCallback, this.missingDataCallback));
                 if (uiButton != null)
                 {
                     uiButton.Content = uiContainer;
@@ -87,11 +86,6 @@ namespace AdaptiveCards.Rendering
                     uiContainer.Children.Add(uiElement);
                 }
             }
-        }
-
-        private void Context_OnAction(object sender, ActionEventArgs e)
-        {
-            throw new NotImplementedException();
         }
     }
 }

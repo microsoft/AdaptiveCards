@@ -18,19 +18,18 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlColumn : Column, IRender<FrameworkElement, RenderContext>
     {
-        public static FrameworkElement RenderColumn(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            Column container = (Column)element;
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Column");
 
-            AddContainerElements(uiContainer, container.Items, context);
+            XamlContainer.AddContainerElements(uiContainer, this.Items, context);
 
-            if (container.SelectAction != null)
+            if (this.SelectAction != null)
             {
-                var uiButton = (Button)context.Render(container.SelectAction);//, new RenderContext(this.actionCallback, this.missingDataCallback));
+                var uiButton = (Button)context.Render(this.SelectAction);//, new RenderContext(this.actionCallback, this.missingDataCallback));
                 if (uiButton != null)
                 {
                     uiButton.Content = uiContainer;

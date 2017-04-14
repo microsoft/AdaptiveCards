@@ -88,7 +88,7 @@ namespace WpfVisualizer
                     this.cardGrid.Children.Clear();
                     if (_card != null)
                     {
-                        var element = this.Renderer.RenderAdaptiveCard(_card, styling: Options);
+                        var element = this.Renderer.RenderAdaptiveCard(_card, options: Options);
                         this.cardGrid.Children.Add(element);
                     }
                 }

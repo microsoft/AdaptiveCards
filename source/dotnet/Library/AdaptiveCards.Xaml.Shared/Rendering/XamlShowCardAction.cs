@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows.Controls;
@@ -9,19 +10,16 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 
 namespace AdaptiveCards.Rendering
 {
-
-    public partial class XamlRenderer
+    public class XamlShowCardAction : ShowCardAction, IRender<FrameworkElement, RenderContext>
     {
-        public FrameworkElement RenderActionOpenUrl(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            OpenUrlAction action = (OpenUrlAction)element;
-
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                Button uiButton = CreateActionButton(action, context); // content);
+                Button uiButton = XamlUtilities.CreateActionButton(this, context);
                 uiButton.Click += (sender, e) =>
                 {
-                    context.Action(uiButton, new ActionEventArgs() { Action = action });
+                    context.Action(uiButton, new ActionEventArgs() { Action = this, Data = null });
                 };
                 return uiButton;
             }

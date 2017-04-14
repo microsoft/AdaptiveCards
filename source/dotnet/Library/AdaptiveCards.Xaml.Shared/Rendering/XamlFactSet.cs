@@ -12,11 +12,10 @@ using UI = Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlFactSet : FactSet, IRender<FrameworkElement, RenderContext>
     {
-        public static FrameworkElement RenderFactSet(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            FactSet factSet = (FactSet)element;
             var uiFactSet = new Grid();
             // grid.Margin = this.Theme.FactSetMargins;
             uiFactSet.Style = context.GetStyle("Adaptive.FactSet");
@@ -24,7 +23,7 @@ namespace AdaptiveCards.Rendering
             uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             int iRow = 0;
-            foreach (var fact in factSet.Facts)
+            foreach (var fact in this.Facts)
             {
                 var uiTitle = new UI.TextBlock()
                 {

@@ -12,15 +12,14 @@ using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlColumnSet : ColumnSet, IRender<FrameworkElement, RenderContext>
     {
-        public static FrameworkElement RenderColumnSet(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            ColumnSet columnSet = (ColumnSet)element;
             var uiColumnSet = new Grid();
-            uiColumnSet.Style = context.GetStyle($"Adaptive.{element.Type}");
+            uiColumnSet.Style = context.GetStyle($"Adaptive.{this.Type}");
 
-            foreach (var column in columnSet.Columns)
+            foreach (var column in this.Columns)
             {
                 FrameworkElement uiContainer = context.Render(column);
 

@@ -23,10 +23,10 @@ namespace AdaptiveCards
                 .ToDictionary(type => type.Name);
         });
 
-        public static void RegisterTypedElement<TypeT>()
+        public static void RegisterTypedElement<TypeT>(string type)
             where TypeT : TypedElement
         {
-            g_typedElementTypes.Value.Add(typeof(TypeT).Name, typeof(TypeT));
+            g_typedElementTypes.Value[type] = typeof(TypeT);
         }
 
         public override bool CanRead => true;
@@ -50,8 +50,6 @@ namespace AdaptiveCards
             object result = jObject;
             if (typeName != null)
             {
-                typeName = typeName.Replace(".", string.Empty);
-
                 Type type = null;
                 if (g_typedElementTypes.Value.TryGetValue(typeName, out type))
                 {
@@ -62,6 +60,17 @@ namespace AdaptiveCards
             }
 
             return result;
+        }
+
+        public static ElementT CreateElement<ElementT>(string typeName)
+            where ElementT : TypedElement
+        {
+            Type type = null;
+            if (g_typedElementTypes.Value.TryGetValue(typeName, out type))
+            {
+                return (ElementT)Activator.CreateInstance(type);
+            }
+            return null;
         }
     }
 }

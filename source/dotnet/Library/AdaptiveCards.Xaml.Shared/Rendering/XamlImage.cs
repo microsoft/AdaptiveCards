@@ -14,29 +14,28 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlImage : Image, IRender<FrameworkElement, RenderContext>
     {
         /// <summary>
         /// Image
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        protected static FrameworkElement RenderImage(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            Image image = (Image)element;
             var uiImage = new UI.Image();
 #if WPF
-            uiImage.Source = context.ResolveImageSource(image.Url);
+            uiImage.Source = context.ResolveImageSource(this.Url);
 #elif XAMARIN
-            uiImage.SetSource(new Uri(image.Url));
+            uiImage.SetSource(new Uri(this.Url));
 #endif
-            uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
+            uiImage.SetHorizontalAlignment(this.HorizontalAlignment);
 
 
-            string style = $"Adaptive.{image.Type}";
-            if (image.Style == ImageStyle.Person)
+            string style = $"Adaptive.{this.Type}";
+            if (this.Style == ImageStyle.Person)
             {
-                style += $".{image.Style}";
+                style += $".{this.Style}";
 #if WPF
                 var mask = new RadialGradientBrush()
                 {
@@ -55,7 +54,7 @@ namespace AdaptiveCards.Rendering
             }
             uiImage.Style = context.GetStyle(style);
 #if WPF
-            switch (image.Size)
+            switch (this.Size)
             {
                 case ImageSize.Auto:
                     uiImage.Stretch = System.Windows.Media.Stretch.UniformToFill;
@@ -80,9 +79,9 @@ namespace AdaptiveCards.Rendering
             // TODO
 #endif
 
-            if (image.SelectAction != null)
+            if (this.SelectAction != null)
             {
-                var uiButton = (Button)context.Render(image.SelectAction);
+                var uiButton = (Button)context.Render(this.SelectAction);
                 if (uiButton != null)
                 {
                     uiButton.Content = uiImage;

@@ -12,14 +12,13 @@ using AdaptiveCards.Rendering;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlHttpAction : HttpAction, IRender<FrameworkElement, RenderContext>
     {
-        public static FrameworkElement RenderActionHttp(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            HttpAction action = (HttpAction)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                Button uiButton = CreateActionButton(action, context);
+                Button uiButton = XamlUtilities.CreateActionButton(this, context);
                 uiButton.Click += (sender, e) =>
                 {
                     dynamic data = new JObject();
@@ -28,16 +27,16 @@ namespace AdaptiveCards.Rendering
 
                         data = context.MergeInputData(data);
 
-                        string body = (string)action.Body?.ToString() ?? String.Empty;
+                        string body = (string)this.Body?.ToString() ?? String.Empty;
 
                         context.Action(uiButton, new ActionEventArgs()
                         {
                             Action = new HttpAction()
                             {
-                                Title = action.Title,
-                                Method = action.Method,
-                                Url = RendererUtilities.BindData(data, action.Url, url: true),
-                                Headers = action.Headers,
+                                Title = this.Title,
+                                Method = this.Method,
+                                Url = RendererUtilities.BindData(data, this.Url, url: true),
+                                Headers = this.Headers,
                                 Body = RendererUtilities.BindData(data, body),
                             },
                             Data = data
@@ -45,7 +44,7 @@ namespace AdaptiveCards.Rendering
                     }
                     catch (MissingInputException err)
                     {
-                        context.MissingInput(action, new MissingInputEventArgs(err.Input, err.FrameworkElement));
+                        context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
                     }
                 };
                 return uiButton;

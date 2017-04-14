@@ -18,7 +18,7 @@ using Xamarin.Forms;
 namespace AdaptiveCards.Rendering
 {
 
-    public partial class XamlRenderer
+    public class XamlTextBlock : TextBlock, IRender<FrameworkElement, RenderContext>
     {
 
         /// <summary>
@@ -26,28 +26,27 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="textBlock"></param>
         /// <returns></returns>
-        protected static FrameworkElement RenderTextBlock(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            TextBlock textBlock = (TextBlock)element;
 #if WPF
             Marked marked = new Marked();
             marked.Options.Renderer = new MarkedXamlRenderer();
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
 
-            string text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
-            // uiTextBlock.Text = textBlock.Text;
+            string text = RendererUtilities.ApplyTextFunctions(this.Text);
+            // uiTextBlock.Text = this.Text;
             string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
             StringReader stringReader = new StringReader(xaml);
 
             XmlReader xmlReader = XmlReader.Create(stringReader);
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
-            uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
+            uiTextBlock.Style = context.GetStyle($"Adaptive.{this.Type}");
 
             uiTextBlock.FontFamily = new FontFamily(context.Options.AdaptiveCard.FontFamily);
 
             ColorOption colorOption;
-            switch (textBlock.Color)
+            switch (this.Color)
             {
                 case TextColor.Accent:
                     colorOption = context.Options.Colors.Accent;
@@ -72,14 +71,14 @@ namespace AdaptiveCards.Rendering
                     colorOption = context.Options.Colors.Default;
                     break;
             }
-            if (textBlock.IsSubtle == true)
+            if (this.IsSubtle == true)
                 uiTextBlock.Foreground = context.GetColorBrush(colorOption.Subtle);
             else 
                 uiTextBlock.Foreground = context.GetColorBrush(colorOption.Normal);
 
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
-            switch (textBlock.Weight)
+            switch (this.Weight)
             {
                 case TextWeight.Bolder:
                     uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(700);
@@ -95,24 +94,24 @@ namespace AdaptiveCards.Rendering
 
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
-            if (textBlock.HorizontalAlignment != HorizontalAlignment.Left)
+            if (this.HorizontalAlignment != HorizontalAlignment.Left)
             {
                 System.Windows.HorizontalAlignment alignment;
-                if (Enum.TryParse<System.Windows.HorizontalAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
+                if (Enum.TryParse<System.Windows.HorizontalAlignment>(this.HorizontalAlignment.ToString(), out alignment))
                     uiTextBlock.HorizontalAlignment = alignment;
             }
 
-            if (textBlock.Wrap)
+            if (this.Wrap)
                 uiTextBlock.TextWrapping = TextWrapping.Wrap;
 
 #elif XAMARIN
             var uiTextBlock = new Xamarin.Forms.TextBlock();
-            uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
+            uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(this.Text);
             uiTextBlock.Style = context.GetStyle("Adaptive.TextBlock");
             // TODO: confirm text trimming
             uiTextBlock.LineBreakMode = LineBreakMode.TailTruncation;
 
-            switch (textBlock.HorizontalAlignment)
+            switch (this.HorizontalAlignment)
             {
                 case HorizontalAlignment.Left:
                     uiTextBlock.HorizontalTextAlignment = TextAlignment.Start;
@@ -130,17 +129,17 @@ namespace AdaptiveCards.Rendering
             
 
 
-            uiTextBlock.TextColor = context.Resources.TryGetValue<Color>($"Adaptive.{textBlock.Color}");
+            uiTextBlock.TextColor = context.Resources.TryGetValue<Color>($"Adaptive.{this.Color}");
 
-            if (textBlock.Weight == TextWeight.Bolder)
+            if (this.Weight == TextWeight.Bolder)
                 uiTextBlock.FontAttributes = FontAttributes.Bold;
 
-            if (textBlock.Wrap == true)
+            if (this.Wrap == true)
                 uiTextBlock.LineBreakMode = LineBreakMode.WordWrap;
 #endif
 
 
-            switch (textBlock.Size)
+            switch (this.Size)
             {
                 case TextSize.Small:
                     uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Small;
@@ -161,7 +160,7 @@ namespace AdaptiveCards.Rendering
             }
 
 
-            if (textBlock.MaxLines > 0)
+            if (this.MaxLines > 0)
             {
                 var uiGrid = new Grid();
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
@@ -177,7 +176,7 @@ namespace AdaptiveCards.Rendering
                     TextWrapping = TextWrapping.NoWrap,
                     HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
-                    DataContext = textBlock.MaxLines
+                    DataContext = this.MaxLines
                 };
 
                 measureBlock.Inlines.Add(uiTextBlock.Text);
@@ -188,7 +187,7 @@ namespace AdaptiveCards.Rendering
                     Path = new PropertyPath("ActualHeight"),
                     Source = measureBlock,
                     Mode = BindingMode.OneWay,
-                    Converter = new MultiplyConverter(textBlock.MaxLines)
+                    Converter = new MultiplyConverter(this.MaxLines)
                 });
 
                 // Add both to a grid so they go as a unit

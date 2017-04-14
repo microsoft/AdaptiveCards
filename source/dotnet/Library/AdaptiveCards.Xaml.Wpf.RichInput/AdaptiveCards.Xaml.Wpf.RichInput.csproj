@@ -81,10 +81,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Rendering\InputDate.Xaml.cs" />
-    <Compile Include="Rendering\InputNumber.Xaml.cs" />
-    <Compile Include="Rendering\InputText.Xaml.cs" />
-    <Compile Include="Rendering\InputTime.Xaml.cs" />
+    <Compile Include="Rendering\XamlExDateInput.cs" />
+    <Compile Include="Rendering\XamlExNumberInput.cs" />
+    <Compile Include="Rendering\XamlExTextInput.cs" />
+    <Compile Include="Rendering\XamlExTimeInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\XamlRendererExtended.cs" />
   </ItemGroup>

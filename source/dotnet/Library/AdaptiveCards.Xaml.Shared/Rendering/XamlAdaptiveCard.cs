@@ -18,24 +18,23 @@ using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlAdaptiveCard : AdaptiveCard, IRender<FrameworkElement, RenderContext>
     {
-        public static FrameworkElement RenderAdaptiveCard(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            AdaptiveCard card = (AdaptiveCard)element;
             var outerGrid = new Grid();
             outerGrid.Style = context.GetStyle("Adaptive.Card");
 #if WPF
             outerGrid.Background = context.GetColorBrush(context.Options.AdaptiveCard.BackgroundColor);
-            if (card.BackgroundImage != null)
+            if (this.BackgroundImage != null)
             {
-                outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
+                outerGrid.Background = new ImageBrush(context.ResolveImageSource(this.BackgroundImage));
             }
 #elif XAMARIN
             // TODO outerGrid.Background = context.GetColorBrush(context.Styling.BackgroundColor);
-            if (card.BackgroundImage != null)
+            if (this.BackgroundImage != null)
             {
-                outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));
+                outerGrid.SetBackgroundImage(new Uri(this.BackgroundImage));
             }
 #endif
 
@@ -49,8 +48,8 @@ namespace AdaptiveCards.Rendering
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
             var inputControls = new List<FrameworkElement>();
-            AddContainerElements(grid, card.Body, context);
-            AddActions(grid, card.Actions, context, context.Options.AdaptiveCard.SupportedActionTypes, context.Options.AdaptiveCard.MaxActions);
+            XamlContainer.AddContainerElements(grid, this.Body, context);
+            XamlActionSet.AddActions(grid, this.Actions, context, context.Options.AdaptiveCard.SupportedActionTypes, context.Options.AdaptiveCard.MaxActions);
 
             outerGrid.Children.Add(grid);
             return outerGrid;

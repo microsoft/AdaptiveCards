@@ -4,38 +4,38 @@ using Xceed.Wpf.Toolkit;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRendererExtended : XamlRenderer
+    public class XamlExTimeInput : TimeInput, IRender<FrameworkElement, RenderContext>
     {
 
         /// <summary>
-        /// Input.Time
+        /// this.Time
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected static FrameworkElement RenderInputTimeEx(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            TimeInput input = (TimeInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var timePicker = new TimePicker();
                 DateTime value;
-                if (DateTime.TryParse(input.Value, out value))
+                if (DateTime.TryParse(this.Value, out value))
                     timePicker.Value = value;
                 TimeSpan minValue;
-                if (TimeSpan.TryParse(input.Min, out minValue))
+                if (TimeSpan.TryParse(this.Min, out minValue))
                     timePicker.EndTime = minValue;
                 TimeSpan maxValue;
-                if (TimeSpan.TryParse(input.Max, out maxValue))
+                if (TimeSpan.TryParse(this.Max, out maxValue))
                     timePicker.EndTime = maxValue;
-                timePicker.Watermark = input.Placeholder;
+                timePicker.Watermark = this.Placeholder;
                 timePicker.Style = context.GetStyle("Adaptive.Input.Time");
-                timePicker.DataContext = input;
-                context.InputControls.Add(timePicker);
+                timePicker.DataContext = this;
+                context.InputBindings.Add(this.Id, () => timePicker.Text);
                 return timePicker;
             }
             else
             {
-                var textBlock = new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder };
+                var textBlock = TypedElementConverter.CreateElement<TextBlock>("TextBlock");
+                textBlock.Text = XamlUtilities.GetFallbackText(this) ?? this.Placeholder;
                 return context.Render(textBlock);
             }
 

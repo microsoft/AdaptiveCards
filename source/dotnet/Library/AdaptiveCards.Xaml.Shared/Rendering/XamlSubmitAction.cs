@@ -10,26 +10,25 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlSubmitAction : SubmitAction, IRender<FrameworkElement, RenderContext>
     {
-        public FrameworkElement RenderActionSubmit(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            SubmitAction action = (SubmitAction)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                Button uiButton = CreateActionButton(action, context); // content
+                Button uiButton = XamlUtilities.CreateActionButton(this, context); // content
                 uiButton.Click += (sender, e) =>
                 {
                     try
                     {
 
-                        dynamic data = (action.Data != null) ? ((JToken)action.Data).DeepClone() : new JObject();
+                        dynamic data = (this.Data != null) ? ((JToken)this.Data).DeepClone() : new JObject();
                         data = context.MergeInputData(data);
-                        context.Action(uiButton, new ActionEventArgs() { Action = action, Data = data });
+                        context.Action(uiButton, new ActionEventArgs() { Action = this, Data = data });
                     }
                     catch (MissingInputException err)
                     {
-                        context.MissingInput(action, new MissingInputEventArgs(err.Input, err.FrameworkElement));
+                        context.MissingInput(this, new MissingInputEventArgs(err.Input, err.FrameworkElement));
                     }
                 };
                 return uiButton;

@@ -8,21 +8,20 @@ using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
+    public class XamlTextInput : TextInput , IRender<FrameworkElement, RenderContext>
     {
 
         /// <summary>
-        /// Input.Text
+        /// this.Text
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected static FrameworkElement RenderInputText(TypedElement element, RenderContext context)
+        public FrameworkElement Render(RenderContext context)
         {
-            TextInput input = (TextInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                var textBox = new TextBox() { Text = input.Value };
-                if (input.IsMultiline == true)
+                var textBox = new TextBox() { Text = this.Value };
+                if (this.IsMultiline == true)
                 {
                     textBox.AcceptsReturn = true;
 #if WPF
@@ -33,27 +32,27 @@ namespace AdaptiveCards.Rendering
 #endif
                 }
 #if WPF
-                if (input.MaxLength > 0)
-                    textBox.MaxLength = input.MaxLength;
+                if (this.MaxLength > 0)
+                    textBox.MaxLength = this.MaxLength;
 #elif XAMARIN 
                     // TODO 
 #endif
-                textBox.Text = input.Placeholder;
-                textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
-                textBox.DataContext = input;
-                context.InputControls.Add(textBox);
+                textBox.Text = this.Placeholder;
+                textBox.Style = context.GetStyle($"Adaptive.this.Text.{this.Style}");
+                textBox.DataContext = this;
+                context.InputBindings.Add(this.Id, () => textBox.Text);
                 return textBox;
             }
             else
             {
-                Container container = new Container() { Separation = input.Separation };
-                container.Items.Add(new TextBlock() { Text = GetFallbackText(input) ?? input.Placeholder });
-                if (input.Value != null)
+                Container container = new Container() { Separation = this.Separation };
+                container.Items.Add(new TextBlock() { Text = XamlUtilities.GetFallbackText(this) ?? this.Placeholder });
+                if (this.Value != null)
                 {
 
                     container.Items.Add(new TextBlock()
                     {
-                        Text = input.Value,
+                        Text = this.Value,
                         Color = TextColor.Accent,
                         Wrap = true
                     });
