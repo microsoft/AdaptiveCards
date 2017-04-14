@@ -1,176 +1,239 @@
 {
-    "type": "AdaptiveCardHostConfiguration",
-    "AdaptiveCard": {
-        "MaxActions": 2,
-        "TypicalDimensions": [], // Ignore for now
-        "SupportsInteractivity": true,
-        "SupportedActions": [
-            "Action.ShowCard",
-            "Action.Submit",
-            "Action.Http",
-            "Action.OpenUrl"
-        ],
-        "Margin": {
-            "Left": 15,
-            "Right": 20,
-            "Bottom": 10,
-            "Top": 12
-        },
-        "ActionsOrientation": "Horizontal",
-        "ActionAlignment": "center",
-        "FontFamily": "Calibri",
-        "TextColor": "#FF000000",
-        "BackgroundColor": "#FFFFFFFF"
+  "AdaptiveCard": {
+    "Padding": {
+      "Left": 8,
+      "Top": 8,
+      "Right": 8,
+      "Bottom": 8
     },
-    "Colors": {
-        "Accent": {
-            "Color": "#FF0000FF",
-            "SubtleOpacity": 0.7
-        },
-        "Dark": {
-            "Color": "#FF101010"
-        },
-        "Light": {
-            "Color": "#FFFFFFFF"
-        },
-        "Good": {
-            "Color": "#FF008000"
-        },
-        "Warning": {
-            "Color": "#FFFFD700"
-        },
-        "Attention": {
-            "Color": "#FF8B0000"
-        }
+    "BackgroundColor": "#FFFFFF",
+    "FontFamily": "Calibri",
+    "ActionsOrientation": "horizontal",
+    "ActionAlignment": "center",
+    "SupportsInteractivity": true,
+    "SupportedActionTypes": [
+      "Action.OpenUrl",
+      "Action.Submit",
+      "Action.Http",
+      "Action.ShowCard"
+    ],
+    "MaxActions": 5
+  },
+  "Colors": {
+    "Default": {
+      "Normal": "#FF000000",
+      "Subtle": "#b2000000"
     },
-    "TextBlock": {
-        "FontSize": {
-            "Small": 10,
-            "Normal": 12,
-            "Medium": 14,
-            "Large": 17,
-            "ExtraLarge": 20
-        },
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
+    "Accent": {
+      "Normal": "#FF0000FF",
+      "Subtle": "#b20000FF"
     },
-    "Image": {
-        "Size": {
-            "Small": 60,
-            "Medium": 120,
-            "Large": 180
-        },
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
+    "Dark": {
+      "Normal": "#FF101010",
+      "Subtle": "#b2101010"
     },
-    "Container": {
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
+    "Light": {
+      "Normal": "#FFFFFFFF",
+      "Subtle": "#b2FFFFFF"
     },
-    "ContainerSet": {
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
+    "Good": {
+      "Normal": "#FF008000",
+      "Subtle": "#b2008000"
     },
-    "ImageSet": {
-        "Wrap": true,
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
+    "Warning": {
+      "Normal": "#FFFFD700",
+      "Subtle": "#b2FFD700"
     },
-    "FactSet": {
-        "Title": {
-            "type": "TextBlock",
-            "weight": "bolder"
-        },
-        "Value": {
-            "type": "TextBlock"
-        },
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
-    },
-    "Input": {
-        "Toggle": {
-            "Something": true
-        },
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
-    },
-    "Action": {
-        "ShowCard": {
-            "Mode": "Inline",
-            "EdgeToEdge": true
-        },
-        "Style": "Button|Hyperlink",
-        "BackgroundColor": "#FF5098FF",
-        "BorderColor": "#FF000000",
-        "TextColor": "#FFFFFFFF",
-        "BorderThickness": 1,
-        "FontWeight": 400,
-        "FontSize": 12,
-        "Margin": {
-            "Left": 15,
-            "Right": 20,
-            "Bottom": 10,
-            "Top": 12
-        },
-        "Padding": {
-            "Left": 0,
-            "Right": 5
-        }
+    "Attention": {
+      "Normal": "#FF8B0000",
+      "Subtle": "#b28B0000"
     }
+  },
+  "TextBlock": {
+    "FontSize": {
+      "Small": 10,
+      "Normal": 12,
+      "Medium": 14,
+      "Large": 17,
+      "ExtraLarge": 20
+    },
+    "Separation": {
+      "Default": {
+        "Spacing": 10,
+        "LineThickness": 0,
+        "LineColor": null
+      },
+      "Strong": {
+        "Spacing": 20,
+        "LineThickness": 1,
+        "LineColor": "#FF707070"
+      }
+    }
+  },
+  "Image": {
+    "Size": {
+      "Small": 60,
+      "Medium": 120,
+      "Large": 180
+    },
+    "Separation": {
+      "Default": {
+        "Spacing": 10,
+        "LineThickness": 0,
+        "LineColor": null
+      },
+      "Strong": {
+        "Spacing": 20,
+        "LineThickness": 1,
+        "LineColor": "#FF707070"
+      }
+    }
+  },
+  "Container": {
+    "Separation": {
+      "Default": {
+        "Spacing": 10,
+        "LineThickness": 0,
+        "LineColor": null
+      },
+      "Strong": {
+        "Spacing": 20,
+        "LineThickness": 1,
+        "LineColor": "#FF707070"
+      }
+    }
+  },
+  "Column": {
+    "Separation": {
+      "Default": {
+        "Spacing": 10,
+        "LineThickness": 0,
+        "LineColor": null
+      },
+      "Strong": {
+        "Spacing": 20,
+        "LineThickness": 1,
+        "LineColor": "#FF707070"
+      }
+    }
+  },
+  "ColumnSet": {
+    "Separation": {
+      "Default": {
+        "Spacing": 10,
+        "LineThickness": 0,
+        "LineColor": null
+      },
+      "Strong": {
+        "Spacing": 20,
+        "LineThickness": 1,
+        "LineColor": "#FF707070"
+      }
+    }
+  },
+  "ImageSet": {
+    "Wrap": true,
+    "Separation": {
+      "Default": {
+        "Spacing": 10,
+        "LineThickness": 0,
+        "LineColor": null
+      },
+      "Strong": {
+        "Spacing": 20,
+        "LineThickness": 1,
+        "LineColor": "#FF707070"
+      }
+    }
+  },
+  "FactSet": {
+    "Title": {
+      "type": "TextBlock",
+      "weight": "bolder",
+      "text": ""
+    },
+    "Value": {
+      "type": "TextBlock",
+      "text": ""
+    },
+    "Separation": {
+      "Default": {
+        "Spacing": 10,
+        "LineThickness": 0,
+        "LineColor": null
+      },
+      "Strong": {
+        "Spacing": 20,
+        "LineThickness": 1,
+        "LineColor": "#FF707070"
+      }
+    }
+  },
+  "ActionSet": {
+    "MaxActions": 5,
+    "SupportedActions": [
+      "Action.OpenUrl",
+      "Action.Submit",
+      "Action.Http",
+      "Action.ShowCard"
+    ],
+    "Separation": {
+      "Default": {
+        "Spacing": 10,
+        "LineThickness": 0,
+        "LineColor": null
+      },
+      "Strong": {
+        "Spacing": 20,
+        "LineThickness": 1,
+        "LineColor": "#FF707070"
+      }
+    }
+  },
+  "Input": {
+    "Separation": {
+      "Default": {
+        "Spacing": 10,
+        "LineThickness": 0,
+        "LineColor": null
+      },
+      "Strong": {
+        "Spacing": 20,
+        "LineThickness": 1,
+        "LineColor": "#FF707070"
+      }
+    }
+  },
+  "Actions": {
+    "ShowCard": {
+      "ActionMode": "popup",
+      "BackgroundColor": "#FFF8F8F8",
+      "AutoPadding": false,
+      "Padding": {
+        "Left": 10,
+        "Top": 10,
+        "Right": 10,
+        "Bottom": 10
+      }
+    },
+    "BackgroundColor": "#FF5098FF",
+    "BorderColor": "#FF000000",
+    "TextColor": "#FFFFFFFF",
+    "BorderThickness": 1,
+    "FontWeight": 400,
+    "FontSize": 12,
+    "Margin": {
+      "Left": 4,
+      "Top": 10,
+      "Right": 4,
+      "Bottom": 0
+    },
+    "Padding": {
+      "Left": 4,
+      "Top": 4,
+      "Right": 4,
+      "Bottom": 4
+    }
+  }
 }
+
