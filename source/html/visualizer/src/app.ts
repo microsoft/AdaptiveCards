@@ -30,6 +30,7 @@ function setContent(element) {
 
 function renderCard(): HTMLElement {
     document.getElementById("errorContainer").hidden = true;
+    lastValidationErrors = [];
 
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
     hostContainer.applyOptions();
@@ -324,14 +325,15 @@ function showPopupCard(action: Adaptive.ShowCardAction) {
 function showValidationErrors() {
     if (lastValidationErrors.length > 0) {
         var errorContainer = document.getElementById("errorContainer");
-
-        var errorString = "";
+        errorContainer.innerHTML = "";
 
         for (var i = 0; i < lastValidationErrors.length; i++) {
-            errorString += lastValidationErrors[i].message + "\n";
+            var errorElement = document.createElement("div");
+            errorElement.innerText = lastValidationErrors[i].message;
+
+            errorContainer.appendChild(errorElement);
         }
 
-        errorContainer.innerText = errorString;
         errorContainer.hidden = false;
     }
 }
@@ -340,8 +342,8 @@ window.onload = () => {
     Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
     Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
     
-    Adaptive.AdaptiveCard.onValidationError = (errors: Array<Adaptive.IValidationError>) => {
-        lastValidationErrors = lastValidationErrors.concat(errors);
+    Adaptive.AdaptiveCard.onParseError = (error: Adaptive.IValidationError) => {
+        lastValidationErrors.push(error);
     }
 
     hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
