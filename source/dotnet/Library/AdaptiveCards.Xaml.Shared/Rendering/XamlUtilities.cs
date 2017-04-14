@@ -25,7 +25,8 @@ namespace AdaptiveCards.Rendering
                 Background = context.GetColorBrush(styling.BackgroundColor),
                 Margin = new Thickness(styling.Margin.Left, styling.Margin.Top, styling.Margin.Right, styling.Margin.Bottom),
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
-                BorderBrush = context.GetColorBrush(styling.BorderColor)
+                BorderBrush = context.GetColorBrush(styling.BorderColor),
+                BorderThickness = new Thickness(context.Options.Actions.BorderThickness)
             };
             uiButton.Style = context.GetStyle($"Adaptive.{action.Type}");
 
