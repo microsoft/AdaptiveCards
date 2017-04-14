@@ -4,13 +4,13 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     Input which collects text from the user
+    ///     Input which collects Time from the user
     /// </summary>
-    public class InputText : Input
+    public class TimeInput : Input
     {
-        public InputText()
+        public TimeInput()
         {
-            Type = "Input.Text";
+            Type = "Input.Time";
         }
 
         /// <summary>
@@ -32,35 +32,21 @@ namespace AdaptiveCards
         public string Value { get; set; }
 
         /// <summary>
-        ///     Hint of style of input, if client doesn't support the style it will become simple text input
+        ///     hint of minimum value(may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET452
         [XmlAttribute]
 #endif
-        public TextInputStyle Style { get; set; }
+        public string Min { get; set; }
 
         /// <summary>
-        ///     true to collect multiple lines of text(default is false)
+        ///     hint of maximum value(may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET452
         [XmlAttribute]
 #endif
-        public bool IsMultiline { get; set; }
-
-        /// <summary>
-        ///     hint of maximum length characters to collect(may be ignored by some clients)
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
-        public int MaxLength { get; set; }
-
-        public bool ShouldSerializeIsMultiline()
-        {
-            return IsMultiline;
-        }
+        public string Max { get; set; }
     }
 }

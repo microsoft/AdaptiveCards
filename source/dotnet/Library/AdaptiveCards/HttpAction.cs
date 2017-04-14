@@ -8,11 +8,11 @@ namespace AdaptiveCards
     ///     via data binding. Properties can be data bound to the Uri and Body properties, allowing you to send a request
     ///     to an arbitrary url.
     /// </summary>
-    public class ActionHttp : ActionBase
+    public class HttpAction : ActionBase
     {
         public const string TYPE = "Action.Http";
 
-        public ActionHttp()
+        public HttpAction()
         {
             Type = TYPE;
         }

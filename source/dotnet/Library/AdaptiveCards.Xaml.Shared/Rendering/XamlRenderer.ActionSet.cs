@@ -55,7 +55,7 @@ namespace AdaptiveCards.Rendering
                     Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);
                     uiContainer.Children.Add(uiActionBar);
 
-                    if (context.Options.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline && actionsToProcess.Where(a => a is ActionShowCard).Any())
+                    if (context.Options.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline && actionsToProcess.Where(a => a is ShowCardAction).Any())
                     {
                         uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     }
@@ -71,9 +71,9 @@ namespace AdaptiveCards.Rendering
                             Grid.SetColumn(uiAction, iPos++);
                             uiActionBar.Children.Add(uiAction);
 
-                            if (action is ActionShowCard)
+                            if (action is ShowCardAction)
                             {
-                                ActionShowCard showCardAction = (ActionShowCard)action;
+                                ShowCardAction showCardAction = (ShowCardAction)action;
                                 if (context.Options.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline)
                                 {
                                     Grid uiShowCardContainer = new Grid();

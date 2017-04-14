@@ -26,12 +26,12 @@ namespace AdaptiveCards
         [XmlElement(typeof(ActionSet))]
         [XmlElement(typeof(FactSet))]
         [XmlElement(typeof(ImageSet))]
-        [XmlElement(typeof(InputText), ElementName ="Input.Text")]
-        [XmlElement(typeof(InputDate), ElementName ="Input.Date")]
-        [XmlElement(typeof(InputTime), ElementName = "Input.Time")]
-        [XmlElement(typeof(InputNumber), ElementName = "Input.Number")]
-        [XmlElement(typeof(InputToggle), ElementName = "Input.Toggle")]
-        [XmlElement(typeof(InputChoiceSet), ElementName = "Input.ChoiceSet")]
+        [XmlElement(typeof(TextInput), ElementName ="Input.Text")]
+        [XmlElement(typeof(DateInput), ElementName ="Input.Date")]
+        [XmlElement(typeof(TimeInput), ElementName = "Input.Time")]
+        [XmlElement(typeof(NumberInput), ElementName = "Input.Number")]
+        [XmlElement(typeof(ToggleInput), ElementName = "Input.Toggle")]
+        [XmlElement(typeof(ChoiceSet), ElementName = "Input.ChoiceSet")]
 #endif
         public List<CardElement> Items { get; set; } = new List<CardElement>();
 

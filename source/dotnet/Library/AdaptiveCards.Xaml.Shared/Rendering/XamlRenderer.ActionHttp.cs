@@ -16,7 +16,7 @@ namespace AdaptiveCards.Rendering
     {
         public static FrameworkElement RenderActionHttp(TypedElement element, RenderContext context)
         {
-            ActionHttp action = (ActionHttp)element;
+            HttpAction action = (HttpAction)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 Button uiButton = CreateActionButton(action, context);
@@ -32,7 +32,7 @@ namespace AdaptiveCards.Rendering
 
                         context.Action(uiButton, new ActionEventArgs()
                         {
-                            Action = new ActionHttp()
+                            Action = new HttpAction()
                             {
                                 Title = action.Title,
                                 Method = action.Method,

@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected static FrameworkElement RenderInputDateEx(TypedElement element, RenderContext context)
         {
-            InputDate input = (InputDate)element;
+            DateInput input = (DateInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var datePicker = new DatePicker();

@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
     {
         public FrameworkElement RenderActionSubmit(TypedElement element, RenderContext context)
         {
-            ActionSubmit action = (ActionSubmit)element;
+            SubmitAction action = (SubmitAction)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 Button uiButton = CreateActionButton(action, context); // content

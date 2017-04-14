@@ -17,7 +17,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected static FrameworkElement RenderInputToggle(TypedElement element, RenderContext context)
         {
-            InputToggle input = (InputToggle)element;
+            ToggleInput input = (ToggleInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
 #if WPF

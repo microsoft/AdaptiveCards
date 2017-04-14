@@ -8,9 +8,9 @@ namespace AdaptiveCards
     /// <summary>
     ///     Element which collects choice from the user
     /// </summary>
-    public class InputChoiceSet : Input
+    public class ChoiceSet : Input
     {
-        public InputChoiceSet()
+        public ChoiceSet()
         {
             Type = "Input.ChoiceSet";
         }

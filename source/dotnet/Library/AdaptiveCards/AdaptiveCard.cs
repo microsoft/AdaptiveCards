@@ -24,12 +24,12 @@ namespace AdaptiveCards
         [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(FactSet))]
-        [XmlElement(typeof(InputText), ElementName = "Input.Text")]
-        [XmlElement(typeof(InputDate), ElementName = "Input.Date")]
-        [XmlElement(typeof(InputTime), ElementName = "Input.Time")]
-        [XmlElement(typeof(InputNumber), ElementName = "Input.Number")]
-        [XmlElement(typeof(InputToggle), ElementName = "Input.Toggle")]
-        [XmlElement(typeof(InputChoiceSet), ElementName = "Input.ChoiceSet")]
+        [XmlElement(typeof(TextInput), ElementName = "Input.Text")]
+        [XmlElement(typeof(DateInput), ElementName = "Input.Date")]
+        [XmlElement(typeof(TimeInput), ElementName = "Input.Time")]
+        [XmlElement(typeof(NumberInput), ElementName = "Input.Number")]
+        [XmlElement(typeof(ToggleInput), ElementName = "Input.Toggle")]
+        [XmlElement(typeof(ChoiceSet), ElementName = "Input.ChoiceSet")]
 #endif
         public List<CardElement> Body { get; set; } = new List<CardElement>();
 
@@ -39,10 +39,10 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET452
         [XmlArray("Actions")]
-        [XmlArrayItem(ElementName = "Action.OpenUrl", Type = typeof(ActionOpenUrl))]
-        [XmlArrayItem(ElementName = "Action.ShowCard", Type = typeof(ActionShowCard))]
-        [XmlArrayItem(ElementName = "Action.Submit", Type = typeof(ActionSubmit))]
-        [XmlArrayItem(ElementName = "Action.Http", Type = typeof(ActionHttp))]
+        [XmlArrayItem(ElementName = "Action.OpenUrl", Type = typeof(OpenUrlAction))]
+        [XmlArrayItem(ElementName = "Action.ShowCard", Type = typeof(ShowCardAction))]
+        [XmlArrayItem(ElementName = "Action.Submit", Type = typeof(SubmitAction))]
+        [XmlArrayItem(ElementName = "Action.Http", Type = typeof(HttpAction))]
 #endif
         public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
 

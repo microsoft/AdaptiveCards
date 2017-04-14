@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected static FrameworkElement RenderInputTimeEx(TypedElement element, RenderContext context)
         {
-            InputTime input = (InputTime)element;
+            TimeInput input = (TimeInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var timePicker = new TimePicker();

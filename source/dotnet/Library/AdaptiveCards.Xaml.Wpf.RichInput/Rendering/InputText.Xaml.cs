@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected static FrameworkElement RenderInputTextEx(TypedElement element, RenderContext context)
         {
-            InputText input = (InputText)element;
+            TextInput input = (TextInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var textBox = new WatermarkTextBox() { Text = input.Value };

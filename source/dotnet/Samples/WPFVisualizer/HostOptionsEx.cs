@@ -103,10 +103,10 @@ namespace WpfVisualizer
         /// </summary>
         public string[] SupportedActions { get; set; } = new string[]
         {
-            AdaptiveCards.ActionOpenUrl.TYPE,
-            AdaptiveCards.ActionSubmit.TYPE,
-            AdaptiveCards.ActionHttp.TYPE,
-            AdaptiveCards.ActionShowCard.TYPE
+            AdaptiveCards.OpenUrlAction.TYPE,
+            AdaptiveCards.SubmitAction.TYPE,
+            AdaptiveCards.HttpAction.TYPE,
+            AdaptiveCards.ShowCardAction.TYPE
         };
 
         /// <summary>
@@ -402,10 +402,10 @@ namespace WpfVisualizer
         /// </summary>
         public string[] SupportedActions { get; set; } = new string[]
         {
-            AdaptiveCards.ActionOpenUrl.TYPE,
-            AdaptiveCards.ActionSubmit.TYPE,
-            AdaptiveCards.ActionHttp.TYPE,
-            AdaptiveCards.ActionShowCard.TYPE
+            AdaptiveCards.OpenUrlAction.TYPE,
+            AdaptiveCards.SubmitAction.TYPE,
+            AdaptiveCards.HttpAction.TYPE,
+            AdaptiveCards.ShowCardAction.TYPE
         };
 
     }
@@ -466,10 +466,10 @@ namespace WpfVisualizer
         /// </summary>
         public string[] SupportedActions { get; set; } = new string[]
         {
-            AdaptiveCards.ActionOpenUrl.TYPE,
-            AdaptiveCards.ActionSubmit.TYPE,
-            AdaptiveCards.ActionHttp.TYPE,
-            AdaptiveCards.ActionShowCard.TYPE
+            AdaptiveCards.OpenUrlAction.TYPE,
+            AdaptiveCards.SubmitAction.TYPE,
+            AdaptiveCards.HttpAction.TYPE,
+            AdaptiveCards.ShowCardAction.TYPE
         };
     }
 }

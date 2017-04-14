@@ -4,23 +4,41 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     Input which collects date from the user
+    ///     Input which collects a choice between two options from the user
     /// </summary>
-    public class InputDate : Input
+    public class ToggleInput : Input
     {
-        public InputDate()
+        public ToggleInput()
         {
-            Type = "Input.Date";
+            Type = "Input.Toggle";
         }
 
         /// <summary>
-        ///     Placeholder text for the input desired
+        ///     Title text for toggle
+        /// </summary>
+        [JsonRequired]
+#if NET452
+        [XmlAttribute]
+#endif
+        public string Title { get; set; }
+
+        /// <summary>
+        ///     Value to use for on (Default: true)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET452
         [XmlAttribute]
 #endif
-        public string Placeholder { get; set; }
+        public string ValueOn { get; set; } = "true";
+
+        /// <summary>
+        ///     Value to use for off (Default: false)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if NET452
+        [XmlAttribute]
+#endif
+        public string ValueOff { get; set; } = "false";
 
         /// <summary>
         ///     The initial value for the field
@@ -30,23 +48,5 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         public string Value { get; set; }
-
-        /// <summary>
-        ///     hint of minimum value(may be ignored by some clients)
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
-        public string Min { get; set; }
-
-        /// <summary>
-        ///     hint of maximum value(may be ignored by some clients)
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if NET452
-        [XmlAttribute]
-#endif
-        public string Max { get; set; }
     }
 }

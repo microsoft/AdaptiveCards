@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
     {
         public static FrameworkElement RenderActionShowCard(TypedElement element, RenderContext context)
         {
-            ActionShowCard action = (ActionShowCard)element;
+            ShowCardAction action = (ShowCardAction)element;
 
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {

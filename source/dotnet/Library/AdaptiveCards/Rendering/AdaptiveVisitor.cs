@@ -25,23 +25,23 @@ namespace AdaptiveCards.Rendering
             if (cardElement is FactSet)
                 Visit((FactSet) cardElement);
 
-            if (cardElement is InputChoiceSet)
-                Visit((InputChoiceSet) cardElement);
+            if (cardElement is ChoiceSet)
+                Visit((ChoiceSet) cardElement);
 
-            if (cardElement is InputText)
-                Visit((InputText) cardElement);
+            if (cardElement is TextInput)
+                Visit((TextInput) cardElement);
 
-            if (cardElement is InputNumber)
-                Visit((InputNumber) cardElement);
+            if (cardElement is NumberInput)
+                Visit((NumberInput) cardElement);
 
-            if (cardElement is InputDate)
-                Visit((InputDate) cardElement);
+            if (cardElement is DateInput)
+                Visit((DateInput) cardElement);
 
-            if (cardElement is InputTime)
-                Visit((InputTime) cardElement);
+            if (cardElement is TimeInput)
+                Visit((TimeInput) cardElement);
 
-            if (cardElement is InputToggle)
-                Visit((InputToggle) cardElement);
+            if (cardElement is ToggleInput)
+                Visit((ToggleInput) cardElement);
         }
 
         public virtual void Visit(AdaptiveCard card)
@@ -92,55 +92,55 @@ namespace AdaptiveCards.Rendering
         {
         }
 
-        public virtual void Visit(InputText inputText)
+        public virtual void Visit(TextInput inputText)
         {
         }
 
-        public virtual void Visit(InputDate inputDate)
+        public virtual void Visit(DateInput inputDate)
         {
         }
 
-        public virtual void Visit(InputNumber inputNumber)
+        public virtual void Visit(NumberInput inputNumber)
         {
         }
 
-        public virtual void Visit(InputTime inputTime)
+        public virtual void Visit(TimeInput inputTime)
         {
         }
 
-        public virtual void Visit(InputToggle inputToggle)
+        public virtual void Visit(ToggleInput inputToggle)
         {
         }
 
-        public virtual void Visit(InputChoiceSet choiceSet)
+        public virtual void Visit(ChoiceSet choiceSet)
         {
         }
 
         public virtual void Visit(ActionBase action)
         {
-            if (action is ActionHttp)
-                Visit((ActionHttp) action);
-            if (action is ActionOpenUrl)
-                Visit((ActionOpenUrl) action);
-            if (action is ActionSubmit)
-                Visit((ActionSubmit) action);
-            if (action is ActionShowCard)
-                Visit((ActionShowCard) action);
+            if (action is HttpAction)
+                Visit((HttpAction) action);
+            if (action is OpenUrlAction)
+                Visit((OpenUrlAction) action);
+            if (action is SubmitAction)
+                Visit((SubmitAction) action);
+            if (action is ShowCardAction)
+                Visit((ShowCardAction) action);
         }
 
-        public virtual void Visit(ActionHttp action)
+        public virtual void Visit(HttpAction action)
         {
         }
 
-        public virtual void Visit(ActionSubmit action)
+        public virtual void Visit(SubmitAction action)
         {
         }
 
-        public virtual void Visit(ActionOpenUrl action)
+        public virtual void Visit(OpenUrlAction action)
         {
         }
 
-        public virtual void Visit(ActionShowCard action)
+        public virtual void Visit(ShowCardAction action)
         {
         }
     }

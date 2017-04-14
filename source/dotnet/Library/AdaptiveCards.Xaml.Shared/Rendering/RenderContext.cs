@@ -143,9 +143,9 @@ namespace AdaptiveCards.Rendering
         {
             foreach (var inputControl in this.InputControls)
             {
-                if (inputControl.DataContext is InputChoiceSet)
+                if (inputControl.DataContext is ChoiceSet)
                 {
-                    InputChoiceSet choiceInput = (InputChoiceSet)inputControl.DataContext;
+                    ChoiceSet choiceInput = (ChoiceSet)inputControl.DataContext;
                     var value = GetValueFromInputControl(inputControl);
                     if (value != null)
                     {
@@ -201,9 +201,9 @@ namespace AdaptiveCards.Rendering
             {
                 var toggleSwitch = (CheckBox)inputControl;
                 if (toggleSwitch.IsChecked == true)
-                    return ((InputToggle)toggleSwitch.DataContext).ValueOn;
+                    return ((ToggleInput)toggleSwitch.DataContext).ValueOn;
                 else
-                    return ((InputToggle)toggleSwitch.DataContext).ValueOff;
+                    return ((ToggleInput)toggleSwitch.DataContext).ValueOff;
             }
             else if (inputControl is PasswordBox)
             {
@@ -228,9 +228,9 @@ namespace AdaptiveCards.Rendering
                 }
                 return null;
             }
-            else if (inputControl.DataContext is InputChoiceSet)
+            else if (inputControl.DataContext is ChoiceSet)
             {
-                InputChoiceSet choiceInput = inputControl.DataContext as InputChoiceSet;
+                ChoiceSet choiceInput = inputControl.DataContext as ChoiceSet;
                 if (inputControl is ListBox)
                 {
                     var choices = inputControl as ListBox;
@@ -282,35 +282,35 @@ namespace AdaptiveCards.Rendering
 #if WPF
             if (control is TextBox)
             {
-                InputText input = control.DataContext as InputText;
+                TextInput input = control.DataContext as TextInput;
                 ((TextBox)control).Text = input.Value;
             }
             else if (control is DatePicker)
             {
-                InputText input = control.DataContext as InputText;
+                TextInput input = control.DataContext as TextInput;
                 ((DatePicker)control).Text = input.Value;
             }
             else if (control is TimePicker)
             {
-                InputText input = control.DataContext as InputText;
+                TextInput input = control.DataContext as TextInput;
                 ((TimePicker)control).Text = input.Value;
             }
             else if (control is IntegerUpDown)
             {
-                InputText input = control.DataContext as InputText;
+                TextInput input = control.DataContext as TextInput;
                 ((IntegerUpDown)control).Text = input.Value;
             }
             else if (control is WatermarkTextBox)
             {
-                InputText input = control.DataContext as InputText;
+                TextInput input = control.DataContext as TextInput;
                 ((WatermarkTextBox)control).Text = input.Value;
             }
             else if (control is PasswordBox)
             {
-                InputText input = control.DataContext as InputText;
+                TextInput input = control.DataContext as TextInput;
                 ((PasswordBox)control).Password = input.Value;
             }
-            else if (control is StackPanel && control.DataContext is InputChoiceSet)
+            else if (control is StackPanel && control.DataContext is ChoiceSet)
             {
                 var stack = control as StackPanel;
                 foreach (var child in stack.Children)
@@ -332,7 +332,7 @@ namespace AdaptiveCards.Rendering
             else if (control is ComboBox)
             {
                 ComboBox comboBox = (ComboBox)control;
-                InputChoiceSet choiceInput = comboBox.DataContext as InputChoiceSet;
+                ChoiceSet choiceInput = comboBox.DataContext as ChoiceSet;
                 comboBox.SelectedIndex = 0;
             }
 #endif

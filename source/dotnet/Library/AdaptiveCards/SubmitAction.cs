@@ -8,11 +8,11 @@ namespace AdaptiveCards
     ///     data to be submitted. It is up to the client to determine how that data is processed. For example: With
     ///     BotFramework bots the client would send an activity through the messaging medium to the bot.
     /// </summary>
-    public class ActionSubmit : ActionBase
+    public class SubmitAction : ActionBase
     {
         public const string TYPE = "Action.Submit";
 
-        public ActionSubmit()
+        public SubmitAction()
         {
             Type = TYPE;
         }

@@ -20,7 +20,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected static FrameworkElement RenderInputChoiceSet(TypedElement element, RenderContext context)
         {
-            InputChoiceSet choiceSet = (InputChoiceSet)element;
+            ChoiceSet choiceSet = (ChoiceSet)element;
 #if WPF
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {

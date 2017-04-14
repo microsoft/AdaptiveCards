@@ -6,11 +6,11 @@ namespace AdaptiveCards
     /// <summary>
     ///     ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
     /// </summary>
-    public class ActionShowCard : ActionBase
+    public class ShowCardAction : ActionBase
     {
         public const string TYPE = "Action.ShowCard";
 
-        public ActionShowCard()
+        public ShowCardAction()
         {
             Type = TYPE;
         }

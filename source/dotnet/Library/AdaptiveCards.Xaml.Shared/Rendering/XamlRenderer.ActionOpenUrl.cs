@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
     {
         public FrameworkElement RenderActionOpenUrl(TypedElement element, RenderContext context)
         {
-            ActionOpenUrl action = (ActionOpenUrl)element;
+            OpenUrlAction action = (OpenUrlAction)element;
 
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {

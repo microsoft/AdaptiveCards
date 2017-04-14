@@ -6,9 +6,9 @@ namespace AdaptiveCards
     /// <summary>
     ///     Input which collects number from the user
     /// </summary>
-    public class InputNumber : Input
+    public class NumberInput : Input
     {
-        public InputNumber()
+        public NumberInput()
         {
             Type = "Input.Number";
         }

@@ -17,7 +17,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected static FrameworkElement RenderInputDate(TypedElement element, RenderContext context)
         {
-            InputDate input = (InputDate)element;
+            DateInput input = (DateInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };

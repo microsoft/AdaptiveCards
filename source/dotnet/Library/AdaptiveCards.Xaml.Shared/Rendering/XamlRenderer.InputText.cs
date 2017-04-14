@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected static FrameworkElement RenderInputText(TypedElement element, RenderContext context)
         {
-            InputText input = (InputText)element;
+            TextInput input = (TextInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };

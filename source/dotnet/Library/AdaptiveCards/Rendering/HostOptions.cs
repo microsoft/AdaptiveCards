@@ -50,6 +50,8 @@ namespace AdaptiveCards.Rendering
                 return this.Image;
             if (obj is Container)
                 return this.Container;
+            if (obj is Column)
+                return this.Column;
             if (obj is ColumnSet)
                 return this.ColumnSet;
             if (obj is ActionSet)
@@ -60,17 +62,17 @@ namespace AdaptiveCards.Rendering
                 return this.ImageSet;
             if (obj is FactSet)
                 return this.FactSet;
-            if (obj is InputText)
+            if (obj is TextInput)
                 return this.Input;
-            if (obj is InputNumber)
+            if (obj is NumberInput)
                 return this.Input;
-            if (obj is InputDate)
+            if (obj is DateInput)
                 return this.Input;
-            if (obj is InputTime)
+            if (obj is TimeInput)
                 return this.Input;
-            if (obj is InputChoiceSet)
+            if (obj is ChoiceSet)
                 return this.Input;
-            if (obj is InputToggle)
+            if (obj is ToggleInput)
                 return this.Input;
             throw new ArgumentException($"Unknown type {obj.GetType().Name}");
         }
@@ -138,10 +140,10 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public string[] SupportedActionTypes { get; set; } = new string[]
         {
-            ActionOpenUrl.TYPE,
-            ActionSubmit.TYPE,
-            ActionHttp.TYPE,
-            ActionShowCard.TYPE
+            OpenUrlAction.TYPE,
+            SubmitAction.TYPE,
+            HttpAction.TYPE,
+            ShowCardAction.TYPE
         };
 
         /// <summary>
@@ -428,10 +430,10 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public string[] SupportedActions { get; set; } = new string[]
         {
-            ActionOpenUrl.TYPE,
-            ActionSubmit.TYPE,
-            ActionHttp.TYPE,
-            ActionShowCard.TYPE
+            OpenUrlAction.TYPE,
+            SubmitAction.TYPE,
+            HttpAction.TYPE,
+            ShowCardAction.TYPE
         };
     }
 }

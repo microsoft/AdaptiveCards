@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected static FrameworkElement RenderInputNumberEx(TypedElement element, RenderContext context)
         {
-            InputNumber input = (InputNumber)element;
+            NumberInput input = (NumberInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
 

@@ -126,7 +126,7 @@ namespace AdaptiveCards.Rendering
             return context.Render(card);
         }
 
-        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
+        public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
@@ -153,7 +153,7 @@ namespace AdaptiveCards.Rendering
             return context.Render(card);
         }
 
-        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
+        public View RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
