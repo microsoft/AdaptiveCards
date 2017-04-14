@@ -9,57 +9,6 @@ function invokeSetContainer(obj: any, container: Container) {
 }
 
 export abstract class CardElement {
-    static createCardElement(json: any): CardElement {
-        var result: CardElement;
-
-        var elementType = json["type"];
-
-        switch (elementType) {
-            case Container.TypeName:
-                result = new Container();
-                break;
-            case TextBlock.TypeName:
-                result = new TextBlock();
-                break;
-            case Image.TypeName:
-                result = new Image();
-                break;
-            case ImageSet.TypeName:
-                result = new ImageSet();
-                break;
-            case FactSet.TypeName:
-                result = new FactSet();
-                break;
-            case ColumnSet.TypeName:
-                result = new ColumnSet();
-                break;
-            case TextInput.TypeName:
-                result = new TextInput();
-                break;
-            case NumberInput.TypeName:
-                result = new NumberInput();
-                break;
-            case DateInput.TypeName:
-                result = new DateInput();
-                break;
-            case TimeInput.TypeName:
-                result = new TimeInput();
-                break;
-            case ToggleInput.TypeName:
-                result = new ToggleInput();
-                break;
-            case ChoiceSetInput.TypeName:
-                result = new ChoiceSetInput();
-                break;
-            default:
-                throw new Error("Unknown element type: " + elementType);
-        }
-
-        result.parse(json);
-
-        return result;
-    }
-
     private _container: Container = null;
 
     private getRootElement(): CardElement {
@@ -148,14 +97,16 @@ export abstract class CardElement {
         }
     }
 
+    getAllInputs(): Array<Input> {
+        return [];
+    }
+
     get container(): Container {
         return this._container;
     }
 }
 
 export class TextBlock extends CardElement {
-    static TypeName: string = "TextBlock";
-
     size: Enums.TextSize = Enums.TextSize.Normal;
     weight: Enums.TextWeight = Enums.TextWeight.Normal;
     color?: Enums.TextColor;
@@ -305,8 +256,6 @@ export class Fact {
 }
 
 export class FactSet extends CardElement {
-    static TypeName: string = "FactSet";
-
     protected get useDefaultSizing(): boolean {
         return false;
     }
@@ -408,8 +357,6 @@ export class FactSet extends CardElement {
 }
 
 export class Image extends CardElement {
-    static TypeName: string = "Image";
-
     protected get useDefaultSizing() {
         return false;
     }
@@ -506,8 +453,6 @@ export class Image extends CardElement {
 }
 
 export class ImageSet extends CardElement {
-    static TypeName: string = "ImageSet";
-
     private _images: Array<Image> = [];
 
     protected internalRender(): HTMLElement {
@@ -611,11 +556,13 @@ export abstract class Input extends CardElement implements Utils.IInput {
 
         return null;
     }
+
+    getAllInputs(): Array<Input> {
+        return [ this ];
+    }
 }
 
 export class TextInput extends Input {
-    static TypeName: string = "Input.Text";
-
     private _textareaElement: HTMLTextAreaElement;
 
     protected internalRender(): HTMLElement {
@@ -659,8 +606,6 @@ export class TextInput extends Input {
 }
 
 export class ToggleInput extends Input {
-    static TypeName: string = "Input.Toggle";
-
     private _checkboxInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
@@ -719,8 +664,6 @@ export class Choice {
 }
 
 export class ChoiceSetInput extends Input {
-    static TypeName: string = "Input.ChoiceSet";
-
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: Array<HTMLInputElement>;
 
@@ -887,8 +830,6 @@ export class ChoiceSetInput extends Input {
 }
 
 export class NumberInput extends Input {
-    static TypeName: string = "Input.Number";
-
     private _numberInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
@@ -921,8 +862,6 @@ export class NumberInput extends Input {
 }
 
 export class DateInput extends Input {
-    static TypeName: string = "Input.Date";
-
     private _dateInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
@@ -939,8 +878,6 @@ export class DateInput extends Input {
 }
 
 export class TimeInput extends Input {
-    static TypeName: string = "Input.Time";
-
     private _timeInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
@@ -1036,28 +973,16 @@ class ActionButton {
 
 export abstract class Action {
     static createAction(json: any): Action {
-        var result: Action;
-
         var actionType = json["type"];
 
-        switch (actionType) {
-            case OpenUrlAction.TypeName:
-                result = new OpenUrlAction();
-                break;
-            case HttpAction.TypeName:
-                result = new HttpAction();
-                break;
-            case SubmitAction.TypeName:
-                result = new SubmitAction();
-                break;
-            case ShowCardAction.TypeName:
-                result = new ShowCardAction();
-                break;
-            default:
-                throw new Error("Unknown action type: " + actionType);
-        }
+        var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
 
-        result.parse(json);
+        if (result) {
+            result.parse(json);
+        }
+        else {
+            raiseValidationErrorEvent(Enums.ValidationError.UnknownActionType, "Unknown action type: " + actionType);
+        }
 
         return result;
     }
@@ -1076,6 +1001,10 @@ export abstract class Action {
         this.title = json["title"];        
     }
 
+    getAllInputs(): Array<Input> {
+        return [];
+    }
+
     title: string;
 
     get container(): Container {
@@ -1087,8 +1016,6 @@ export abstract class ExternalAction extends Action {
 }
 
 export class SubmitAction extends ExternalAction {
-    static TypeName: string = "Action.Submit";
-
     private _isPrepared: boolean = false;
     private _originalData: Object;
     private _processedData: Object;
@@ -1129,8 +1056,6 @@ export class SubmitAction extends ExternalAction {
 }
 
 export class OpenUrlAction extends ExternalAction {
-    static TypeName: string = "Action.OpenUrl";
-
     url: string;
 
     parse(json: any) {
@@ -1159,8 +1084,6 @@ export class HttpHeader {
 }
 
 export class HttpAction extends ExternalAction {
-    static TypeName: string = "Action.Http";
-
     private _url = new Utils.StringWithSubstitutions();
     private _body = new Utils.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
@@ -1219,8 +1142,6 @@ export class HttpAction extends ExternalAction {
 }
 
 export class ShowCardAction extends Action {
-    static TypeName: string = "Action.ShowCard";
-
     protected setContainer(value: Container) {
         super.setContainer(value);
 
@@ -1242,11 +1163,13 @@ export class ShowCardAction extends Action {
 
         this.card.parse(json["card"], "body");
     }
+
+    getAllInputs(): Array<Input> {
+        return this.card.getAllInputs();
+    }
 }
 
-export class ActionCollection {
-    private _container: Container;
-    private _forbiddenActionTypes: Array<any>;
+class ActionCollection {
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
     private _expandedAction: Action = null;
@@ -1322,11 +1245,40 @@ export class ActionCollection {
         }
     }
 
-    constructor(container: Container, forbiddenActionTypes?: Array<any>) {
-        this._container = container;
-        this._forbiddenActionTypes = forbiddenActionTypes;
+    private checkActionTypeIsAllowed(action: Action, forbiddenActionTypes: Array<any>): boolean {
+        var className = Utils.getClassNameFromInstance(action);
+        var typeIsForbidden = false;
+
+        if (forbiddenActionTypes) {
+            for (var i = 0; i < forbiddenActionTypes.length; i++) {
+                if (className === Utils.getClassNameFromConstructor(forbiddenActionTypes[i])) {
+                    typeIsForbidden = true;
+                    break;
+                }
+            }
+        }
+
+        if (!typeIsForbidden) {
+            for (var i = 0; i < AdaptiveCard.validationOptions.supportedActionTypes.length; i++) {
+                if (className === Utils.getClassNameFromConstructor(AdaptiveCard.validationOptions.supportedActionTypes[i])) {
+                    return true;
+                }
+            }
+        }
+
+        raiseValidationErrorEvent(
+            Enums.ValidationError.ActionTypeNotAllowed,
+            "Actions of type " + className + " are not allowed in this container.");
+
+        return false;
     }
-    
+
+    protected setContainer(value: Container) {
+        for (var i = 0; i < this.items.length; i++) {
+            invokeSetContainer(this.items[i], value);
+        }
+    }
+
     items: Array<Action> = [];
     onHideActionCardPane: () => void = null;
     onShowActionCardPane: (action: ShowCardAction) => void = null;
@@ -1388,11 +1340,116 @@ export class ActionCollection {
 
         return renderedActions > 0 ? element : null;
     }
+
+    addAction(action: Action, container: Container) {
+        var addAction = true;
+
+        if (!AdaptiveCard.validationOptions.supportsInteractivity) {
+            raiseValidationErrorEvent(
+                Enums.ValidationError.InteractivityNotAllowed,
+                "Interactivity is not allowed.");
+
+            addAction = false;            
+        }
+
+        if (addAction) {
+            var isNested = container || this instanceof ShowCardActionContainer;
+
+            if (isNested && !AdaptiveCard.validationOptions.supportsNestedActions) {
+                raiseValidationErrorEvent(
+                    Enums.ValidationError.NestedActionNotAllowed,
+                    "Nested actions are not allowed.");
+
+                addAction = false;
+            }
+        }
+
+        if (addAction) {
+            addAction = this.checkActionTypeIsAllowed(action, container.getForbiddenActionTypes());
+        }
+
+        if (addAction) {
+            if (AdaptiveCard.validationOptions.maxActions != null && this.items.length >= AdaptiveCard.validationOptions.maxActions) {
+                raiseValidationErrorEvent(
+                    Enums.ValidationError.TooManyActions,
+                    "Maximum number of actions (" + AdaptiveCard.validationOptions.maxActions.toString() + ") exceeded.");
+
+                addAction = false;
+            }            
+        }
+
+        if (addAction) {
+            this.items.push(action);
+
+            invokeSetContainer(action, container);
+        }
+    }
+
+    getAllInputs(): Array<Input> {
+        var result: Array<Input> = [];
+
+        for (var i = 0; i < this.items.length; i++) {
+            var action = this.items[i];
+
+            result = result.concat(action.getAllInputs());
+        }
+
+        return result;
+    }
+}
+
+export class ActionSet extends CardElement {
+    private _actionCollection: ActionCollection;
+
+    protected get hideOverflow(): boolean {
+        return false;
+    }
+
+    protected internalRender(): HTMLElement {
+        return this._actionCollection.render();
+    }
+    
+    protected setContainer(value: Container) {
+        super.setContainer(value);
+
+        invokeSetContainer(this._actionCollection, value);
+    }
+
+    constructor() {
+        super();
+
+        this._actionCollection = new ActionCollection();
+        this._actionCollection.onHideActionCardPane = () => { this.container["showBottomSpacer"]() };
+        this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.container["hideBottomSpacer"]() };
+    }
+
+    parse(json: any, itemsCollectionPropertyName: string = "items") {
+        super.parse(json);
+
+        if (json["actions"] != undefined) {
+            var jsonActions = json["actions"] as Array<any>;
+
+            for (var i = 0; i < jsonActions.length; i++) {
+                var action = Action.createAction(jsonActions[i]);
+
+                if (action != null) {
+                    this._actionCollection.addAction(action, this.container);
+                }
+            }
+        }
+    }
+
+    getAllInputs(): Array<Input> {
+        return this._actionCollection.getAllInputs();
+    }
+
+    renderSpeech(): string {
+        // TODO: What's the right thing to do here?
+        return "";
+    }
 }
 
 export class Container extends CardElement {
-    static TypeName: string = "Container";
-
     private showBottomSpacer(requestingElement: CardElement = null) {
         if (requestingElement == null || this.isLastItem(requestingElement)) {
             if (this.container) {
@@ -1442,52 +1499,13 @@ export class Container extends CardElement {
         return false;
     }
     
-    private checkActionTypeIsAllowed(action: Action): boolean {
-        var className = Utils.getClassNameFromInstance(action);
-        var typeIsForbidden = false;
-        var forbiddenActionTypes = this.getForbiddenActionTypes();
-
-        if (forbiddenActionTypes) {
-            for (var i = 0; i < forbiddenActionTypes.length; i++) {
-                if (className === Utils.getClassNameFromConstructor(forbiddenActionTypes[i])) {
-                    typeIsForbidden = true;
-                    break;
-                }
-            }
-        }
-
-        if (!typeIsForbidden) {
-            for (var i = 0; i < AdaptiveCard.validationOptions.supportedActionTypes.length; i++) {
-                if (className === Utils.getClassNameFromConstructor(AdaptiveCard.validationOptions.supportedActionTypes[i])) {
-                    return true;
-                }
-            }
-        }
-
-        raiseValidationErrorEvent(
-            Enums.ValidationError.ActionTypeNotAllowed,
-            "Actions of type " + className + " are not allowed in this container.");
-
-        return false;
-    }
-
     private _items: Array<CardElement> = [];
-    private _hasBottomPadding?: boolean;
     private _textColor?: Enums.TextColor;
+    private _actionCollection: ActionCollection;
+    private _element: HTMLDivElement;
 
-    protected _actionCollection: ActionCollection;
-    protected _element: HTMLDivElement;
-
-    protected isLastItem(element: CardElement): boolean {
+    private isLastItem(element: CardElement): boolean {
         return this._items.indexOf(element) == (this._items.length - 1);
-    }
-
-    protected getForbiddenElementTypes(): Array<any> {
-        return null;
-    }
-
-    protected getForbiddenActionTypes(): Array<any> {
-        return null;
     }
 
     protected internalRender(): HTMLElement {
@@ -1498,10 +1516,6 @@ export class Container extends CardElement {
                 raiseExecuteActionEvent(this.selectAction);
                 e.cancelBubble = true;
             }
-        }
-
-        if (!Utils.isNullOrEmpty(this.backgroundColor)) {
-            this._element.style.backgroundColor = this.backgroundColor;
         }
 
         if (this._items.length > 0) {
@@ -1535,12 +1549,6 @@ export class Container extends CardElement {
         Utils.appendChild(this._element, renderedActions);
 
         if (renderedElementCount > 0 || renderedActions != null) {
-            if (!Utils.isNullOrEmpty(this.backgroundImageUrl)) {
-                this._element.style.backgroundImage = 'url("' + this.backgroundImageUrl + '")';
-                this._element.style.backgroundRepeat = "no-repeat";
-                this._element.style.backgroundSize = "cover";
-            }
-
             return this._element;
         }
         else {
@@ -1562,23 +1570,26 @@ export class Container extends CardElement {
         return className;
     }
 
-    backgroundImageUrl: string;
-    backgroundColor: string;
     selectAction: ExternalAction;
 
     constructor() {
         super();
 
-        this._actionCollection = new ActionCollection(this, this.getForbiddenActionTypes());
+        this._actionCollection = new ActionCollection();
         this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer() };
         this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer() };
     }
 
+    getForbiddenElementTypes(): Array<any> {
+        return null;
+    }
+
+    getForbiddenActionTypes(): Array<any> {
+        return null;
+    }
+
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
-
-        this.backgroundImageUrl = json["backgroundImage"];
-        this.backgroundColor = json["backgroundColor"];
 
         this.textColor = Enums.stringToTextColor(json["textColor"], null);
 
@@ -1586,10 +1597,17 @@ export class Container extends CardElement {
             var items = json[itemsCollectionPropertyName] as Array<any>;
 
             for (var i = 0; i < items.length; i++) {
-                var element = CardElement.createCardElement(items[i]);
+                var elementType = items[i]["type"];
 
-                if (element != null) {
+                var element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
+
+                if (!element) {
+                    raiseValidationErrorEvent(Enums.ValidationError.UnknownElementType, "Unknown element type: " + elementType);
+                }
+                else {
                     this.addItem(element);
+
+                    element.parse(items[i]);
                 }
             }
         }
@@ -1653,47 +1671,7 @@ export class Container extends CardElement {
     }
 
     addAction(action: Action) {
-        var addAction = true;
-
-        if (!AdaptiveCard.validationOptions.supportsInteractivity) {
-            raiseValidationErrorEvent(
-                Enums.ValidationError.InteractivityNotAllowed,
-                "Interactivity is not allowed.");
-
-            addAction = false;            
-        }
-
-        if (addAction) {
-            var isNested = this.container || this instanceof ShowCardActionContainer;
-
-            if (isNested && !AdaptiveCard.validationOptions.supportsNestedActions) {
-                raiseValidationErrorEvent(
-                    Enums.ValidationError.NestedActionNotAllowed,
-                    "Nested actions are not allowed.");
-
-                addAction = false;
-            }
-        }
-
-        if (addAction) {
-            addAction = this.checkActionTypeIsAllowed(action);
-        }
-
-        if (addAction) {
-            if (AdaptiveCard.validationOptions.maxActions != null && this._actionCollection.items.length >= AdaptiveCard.validationOptions.maxActions) {
-                raiseValidationErrorEvent(
-                    Enums.ValidationError.TooManyActions,
-                    "Maximum number of actions (" + AdaptiveCard.validationOptions.maxActions.toString() + ") exceeded.");
-
-                addAction = false;
-            }            
-        }
-
-        if (addAction) {
-            this._actionCollection.items.push(action);
-
-            invokeSetContainer(action, this);
-        }
+        this._actionCollection.addAction(action, this);
     }
 
     getAllInputs(): Array<Input> {
@@ -1702,26 +1680,10 @@ export class Container extends CardElement {
         for (var i = 0; i < this._items.length; i++) {
             var item: CardElement = this._items[i];
 
-            if (item instanceof Input) {
-                result.push(<Input>item);
-            }
-
-            if (item instanceof Container) {
-                result = result.concat((<Container>item).getAllInputs());
-            }
+            result = result.concat(item.getAllInputs());
         }
 
-        for (var i = 0; i < this._actionCollection.items.length; i++) {
-            var action = this._actionCollection.items[i];
-
-            if (action instanceof ShowCardAction) {
-                var actionShowCard = <ShowCardAction>action;
-
-                if (actionShowCard.card) {
-                    result = result.concat(actionShowCard.card.getAllInputs());
-                }
-            }
-        }
+        result = result.concat(this._actionCollection.getAllInputs());
 
         return result;
     }
@@ -1751,12 +1713,12 @@ export class Container extends CardElement {
 }
 
 export class ShowCardActionContainer extends Container {
-    protected getForbiddenActionTypes(): Array<any> {
-        return [ ShowCardAction ];
-    }
-
     protected get cssClassName(): string {
         return "showCardActionContainer";
+    }
+
+    getForbiddenActionTypes(): Array<any> {
+        return [ ShowCardAction ];
     }
 }
 
@@ -1801,8 +1763,6 @@ export class Column extends Container {
 }
 
 export class ColumnSet extends CardElement {
-    static TypeName: string = "ColumnSet";
-
     private _columns: Array<Column> = [];
 
     protected internalRender(): HTMLElement {
@@ -1928,8 +1888,66 @@ function raiseValidationErrorEvent(error: Enums.ValidationError, data: string) {
     }
 }
 
+interface ITypeRegistration<T> {
+    typeName: string,
+    createInstance: () => T;
+}
+
+export class TypeRegistry<T> {
+    private _items: Array<ITypeRegistration<T>> = [];
+
+    private findTypeRegistration(typeName: string): ITypeRegistration<T> {
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].typeName === typeName) {
+                return this._items[i];
+            }
+        }
+
+        return null;
+    }
+
+    clear() {
+        this._items = [];
+    }
+
+    registerType(typeName: string, createInstance: () => T) {
+        var registrationInfo = this.findTypeRegistration(typeName);
+
+        if (registrationInfo != null) {
+            registrationInfo.createInstance = createInstance;
+        }
+        else {
+            registrationInfo = {
+                typeName: typeName,
+                createInstance: createInstance
+            }
+
+            this._items.push(registrationInfo);
+        }
+    }
+
+    unregisterType(typeName: string) {
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].typeName === typeName) {                
+                this._items = this._items.splice(i, 1);
+
+                return;
+            }
+        }
+    }
+
+    createInstance(typeName: string): T {
+        var registrationInfo = this.findTypeRegistration(typeName);
+
+        return registrationInfo ? registrationInfo.createInstance() : null;
+    }
+}
+
 export class AdaptiveCard {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
+
+    static elementTypeRegistry = new TypeRegistry<CardElement>();
+    static actionTypeRegistry = new TypeRegistry<Action>();
 
     static onExecuteAction: (action: ExternalAction) => void = null;
     static onShowPopupCard: (action: ShowCardAction) => void = null;
@@ -1943,6 +1961,7 @@ export class AdaptiveCard {
             ImageSet,
             FactSet,
             ColumnSet,
+            ActionSet,
             TextInput,
             DateInput,
             NumberInput,
@@ -1962,6 +1981,31 @@ export class AdaptiveCard {
     static renderOptions: IRenderOptions = {
         defaultTextColor: Enums.TextColor.Dark,
         showCardActionMode: Enums.ShowCardActionMode.Inline
+    }
+
+    static initialize() {
+        AdaptiveCard.elementTypeRegistry.clear();
+
+        AdaptiveCard.elementTypeRegistry.registerType("Container", () => { return new Container(); });
+        AdaptiveCard.elementTypeRegistry.registerType("TextBlock", () => { return new TextBlock(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Image", () => { return new Image(); });
+        AdaptiveCard.elementTypeRegistry.registerType("ImageSet", () => { return new ImageSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("FactSet", () => { return new FactSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("ColumnSet", () => { return new ColumnSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new ActionSet(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Text", () => { return new TextInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Date", () => { return new DateInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Time", () => { return new TimeInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Number", () => { return new NumberInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
+        AdaptiveCard.elementTypeRegistry.registerType("Input.Toggle", () => { return new ToggleInput(); });
+
+        AdaptiveCard.actionTypeRegistry.clear();
+
+        AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.Submit", () => { return new SubmitAction(); });
+        AdaptiveCard.actionTypeRegistry.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
     }
 
     readonly root: Container = new Container();
@@ -2015,3 +2059,6 @@ export class AdaptiveCard {
         return this.root.renderSpeech();
     }
 }
+
+// This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
+AdaptiveCard.initialize();
