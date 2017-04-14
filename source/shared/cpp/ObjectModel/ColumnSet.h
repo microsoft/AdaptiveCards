@@ -18,6 +18,7 @@ public:
     std::vector<std::shared_ptr<Column>>& GetColumns();
     const std::vector<std::shared_ptr<Column>>& GetColumns() const;
     static std::shared_ptr<ColumnSet> Deserialize(const Json::Value& root);
+    static std::shared_ptr<ColumnSet> DeserializeFromString(const std::string& jsonString);
 
 private:
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;

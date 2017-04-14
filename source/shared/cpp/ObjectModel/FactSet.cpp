@@ -62,3 +62,10 @@ std::shared_ptr<FactSet> FactSet::Deserialize(const Json::Value& value)
     factSet->m_facts = std::move(facts);
     return factSet;
 }
+
+std::shared_ptr<FactSet> FactSet::DeserializeFromString(const std::string& jsonString)
+{
+    Json::Value jsonValue(jsonString);
+
+    return FactSet::Deserialize(jsonValue);
+}

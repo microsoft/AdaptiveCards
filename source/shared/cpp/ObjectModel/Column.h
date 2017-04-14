@@ -16,6 +16,7 @@ public:
     virtual std::string Serialize();
 
     static std::shared_ptr<Column> Deserialize(const Json::Value& root);
+    static std::shared_ptr<Column> DeserializeFromString(const std::string& jsonString);
 
     const CardElementType GetElementType() const;
 

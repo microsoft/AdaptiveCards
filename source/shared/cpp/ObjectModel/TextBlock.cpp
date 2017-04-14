@@ -54,6 +54,13 @@ std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
     return textBlock;
 }
 
+std::shared_ptr<TextBlock> TextBlock::DeserializeFromString(const std::string& jsonString)
+{
+    Json::Value jsonValue(jsonString);
+
+    return TextBlock::Deserialize(jsonValue);
+}
+
 std::string TextBlock::Serialize()
 {
     return "";
