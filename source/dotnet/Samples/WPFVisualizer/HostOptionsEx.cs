@@ -19,6 +19,9 @@ namespace WpfVisualizer
         [ExpandableObject]
         public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
 
+        [ExpandableObject]
+        public ColorOptions Colors { get; set; } = new ColorOptions();
+
         // ------ Basic ------
         [ExpandableObject]
         public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
@@ -42,6 +45,9 @@ namespace WpfVisualizer
         [ExpandableObject]
         public FactSetOptions FactSet { get; set; } = new FactSetOptions();
 
+        [ExpandableObject]
+        public ActionSetOptions ActionSet { get; set; } = new ActionSetOptions();
+
         // ------ Input ------
         [ExpandableObject]
         public InputOptions Input { get; set; } = new InputOptions();
@@ -59,9 +65,10 @@ namespace WpfVisualizer
         public AdaptiveCardOptions() { }
 
         /// <summary>
-        ///  Margin for the card
+        ///  Padding for the card
         /// </summary>
-        public int[] Margin { get; set; } = new[] { 8, 8, 8, 8 };
+        [ExpandableObject]
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(8);
 
         /// <summary>
         /// Background color for card
@@ -70,16 +77,15 @@ namespace WpfVisualizer
         public string BackgroundColor { get; set; } = "#FFFFFFFF";
 
         /// <summary>
-        /// Text color for card (shared by FactSet, TextBlock)
-        /// </summary>
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
-        public string TextColor { get; set; } = "#FF000000";
-
-        /// <summary>
         /// Font family for the card
         /// </summary>
         //[Editor(typeof(FontComboBoxEditor), typeof(FontComboBoxEditor))]
         public string FontFamily { get; set; } = "Calibri";
+
+        /// <summary>
+        /// Toggles whether or not to render inputs and actions
+        /// </summary>
+        public bool SupportsInteractivity { get; set; } = true;
 
         /// <summary>
         /// Arrange actions horizontal or vertical
@@ -91,26 +97,45 @@ namespace WpfVisualizer
         /// </summary>
         public AdaptiveCards.HorizontalAlignment ActionAlignment { get; set; } = AdaptiveCards.HorizontalAlignment.Center;
 
-        /// <summary>
-        /// Toggles whether or not to render inputs and actions
-        /// </summary>
-        public bool SupportsInteractivity { get; set; } = true;
 
         /// <summary>
         /// The types of Actions that you support(null for no actions)
         /// </summary>
         public string[] SupportedActions { get; set; } = new string[]
         {
-            AdaptiveCards.ActionOpenUrl.TYPE,
-            AdaptiveCards.ActionSubmit.TYPE,
-            AdaptiveCards.ActionHttp.TYPE,
-            AdaptiveCards.ActionShowCard.TYPE
+            AdaptiveCards.OpenUrlAction.TYPE,
+            AdaptiveCards.SubmitAction.TYPE,
+            AdaptiveCards.HttpAction.TYPE,
+            AdaptiveCards.ShowCardAction.TYPE
         };
 
         /// <summary>
         /// Max number of actions to support on your Cards(e.g., 3)
         /// </summary>
         public int MaxActions { get; set; } = 5;
+    }
+
+    public class BoundaryOptions
+    {
+        public BoundaryOptions() { }
+
+        public BoundaryOptions(int allMargin)
+        {
+            Left = Right = Top = Bottom = allMargin;
+        }
+        public BoundaryOptions(int left, int top, int right, int bottom)
+        {
+            Left = left;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
+        }
+
+
+        public int Left { get; set; }
+        public int Top { get; set; }
+        public int Right { get; set; }
+        public int Bottom { get; set; }
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
@@ -152,22 +177,16 @@ namespace WpfVisualizer
         public SeparationOptions() { }
 
         /// <summary>
-        /// Separation settings when Separation:none
-        /// </summary>
-        [ExpandableObject]
-        public SeparationOption None { get; set; } = new SeparationOption() { Spacing = 0, Thickness = 0 };
-
-        /// <summary>
         /// Separation settings when Separation:default
         /// </summary>
         [ExpandableObject]
-        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10, Thickness = 0 };
+        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10 };
 
         /// <summary>
         /// Separation settings when Separation:Strong
         /// </summary>
         [ExpandableObject]
-        public SeparationOption Strong { get; set; } = new SeparationOption() { Spacing = 20, Thickness = 1, Color = "#FF707070" };
+        public SeparationOption Strong { get; set; } = new SeparationOption() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
     }
 
     [ImplementPropertyChanged]
@@ -183,14 +202,12 @@ namespace WpfVisualizer
         /// <summary>
         /// If there is a visible line, how thick should the line be
         /// </summary>
-        public int Thickness { get; set; }
+        public int LineThickness { get; set; }
 
         /// <summary>
         /// If there is a visible color, what color to use
         /// </summary>
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
-        public string Color { get; set; }
-
+        public string LineColor { get; set; }
     }
 
     /// <summary>
@@ -202,19 +219,10 @@ namespace WpfVisualizer
         public TextBlockOptions() { }
 
         /// <summary>
-        /// Color settings for the TextBlock
-        /// </summary>
-        [ExpandableObject]
-        public TextColorOptions Color { get; set; } = new TextColorOptions();
-
-        /// <summary>
         /// FontSize
         /// </summary>
         [ExpandableObject]
         public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
-
-
-        public double IsSubtleOpacity { get; set; } = .5;
     }
 
     [ImplementPropertyChanged]
@@ -235,27 +243,54 @@ namespace WpfVisualizer
     }
 
     [ImplementPropertyChanged]
-    public class TextColorOptions
+    public class ColorOptions
     {
-        public TextColorOptions() { }
+        public ColorOptions() { }
+
+        [ExpandableObject]
+        public ColorOption Default { get; set; } = new ColorOption("#FF000000");
+
+        [ExpandableObject]
+        public ColorOption Accent { get; set; } = new ColorOption("#FF0000FF");
+
+        [ExpandableObject]
+        public ColorOption Dark { get; set; } = new ColorOption("#FF101010");
+
+        [ExpandableObject]
+        public ColorOption Light { get; set; } = new ColorOption("#FFFFFFFF");
+
+        [ExpandableObject]
+        public ColorOption Good { get; set; } = new ColorOption("#FF008000");
+
+        [ExpandableObject]
+        public ColorOption Warning { get; set; } = new ColorOption("#FFFFD700");
+
+        [ExpandableObject]
+        public ColorOption Attention { get; set; } = new ColorOption("#FF8B0000");
+    }
+
+    public class ColorOption
+    {
+        public ColorOption(string normal, string subtle = null)
+        {
+            this.Normal = normal;
+            if (subtle == null)
+            {
+                var opacity = (byte)(Convert.ToByte(normal.Substring(1, 2), 16) * .7);
+                this.Subtle = $"#{opacity.ToString("x")}{normal.Substring(3)}";
+            }
+            else
+                this.Subtle = subtle;
+        }
+
+        /// <summary>
+        /// Color in #RRGGBB format
+        /// </summary>
+        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
+        public string Normal { get; set; }
 
         [Editor(typeof(ColorEditor), typeof(ColorEditor))]
-        public string Accent { get; set; } = "#FF0000FF";
-
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
-        public string Dark { get; set; } = "#FF101010";
-
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
-        public string Light { get; set; } = "#FFFFFFFF";
-
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
-        public string Good { get; set; } = "#FF008000";
-
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
-        public string Warning { get; set; } = "#FFFFD700";
-
-        [Editor(typeof(ColorEditor), typeof(ColorEditor))]
-        public string Attention { get; set; } = "#FF8B0000";
+        public string Subtle { get; set; }
     }
 
     /// <summary>
@@ -312,13 +347,15 @@ namespace WpfVisualizer
         /// <summary>
         /// Space between actions
         /// </summary>
-        public int[] Margin { get; set; } = new int[] { 4, 10, 4, 0 };
+        [ExpandableObject]
+        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(4, 10, 4, 0);
 
         /// <summary>
         /// space between title and button edge
         /// </summary>
 
-        public int[] Padding { get; set; } = new int[] { 4 };
+        [ExpandableObject]
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(4);
     }
 
     [ImplementPropertyChanged]
@@ -335,14 +372,15 @@ namespace WpfVisualizer
         public string BackgroundColor { get; set; } = "#FFF8F8F8";
 
         /// <summary>
-        /// margins for showcard when inline
+        /// If actionMode is inline and AutoPadding is on then the background will extend to the edges of the parent card.
         /// </summary>
-        public int[] Margin { get; set; } = new int[] { -8, 10, -8, 10 };
+        public bool AutoPadding { get; set; } = false;
 
         /// <summary>
-        /// Padding for showcard when inline
+        /// Padding for showcard when Popup or AutoMargin=false
         /// </summary>
-        public int[] Padding { get; set; } = new int[] { 8, 10, 8, 0 };
+        [ExpandableObject]
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(10);
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
@@ -364,10 +402,10 @@ namespace WpfVisualizer
         /// </summary>
         public string[] SupportedActions { get; set; } = new string[]
         {
-            AdaptiveCards.ActionOpenUrl.TYPE,
-            AdaptiveCards.ActionSubmit.TYPE,
-            AdaptiveCards.ActionHttp.TYPE,
-            AdaptiveCards.ActionShowCard.TYPE
+            AdaptiveCards.OpenUrlAction.TYPE,
+            AdaptiveCards.SubmitAction.TYPE,
+            AdaptiveCards.HttpAction.TYPE,
+            AdaptiveCards.ShowCardAction.TYPE
         };
 
     }
@@ -404,6 +442,7 @@ namespace WpfVisualizer
         public InputOptions() { }
     }
 
+
     [ImplementPropertyChanged]
     public class ColumnSetOptions : CardElementOptions
     {
@@ -414,5 +453,23 @@ namespace WpfVisualizer
     public class ColumnOptions : CardElementOptions
     {
         public ColumnOptions() { }
+    }
+
+    public class ActionSetOptions : CardElementOptions
+    {
+        public ActionSetOptions() { }
+
+        public int MaxActions { get; set; } = 5;
+
+        /// <summary>
+        /// The types of Actions that you support(null for no actions)
+        /// </summary>
+        public string[] SupportedActions { get; set; } = new string[]
+        {
+            AdaptiveCards.OpenUrlAction.TYPE,
+            AdaptiveCards.SubmitAction.TYPE,
+            AdaptiveCards.HttpAction.TYPE,
+            AdaptiveCards.ShowCardAction.TYPE
+        };
     }
 }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AdaptiveCards.Rendering
@@ -79,5 +82,22 @@ namespace AdaptiveCards.Rendering
             LONG,
             SHORT
         }
+
+        public static string JoinString(IList<string> choices, string sep, string last)
+        {
+            var sb = new StringBuilder();
+            var s = string.Empty;
+            for (var i = 0; i < choices.Count - 1; i++)
+            {
+                sb.Append(s);
+                sb.Append(choices[i]);
+                s = sep;
+            }
+            if (choices.Count > 1)
+                sb.Append(last);
+            sb.Append(choices.Last());
+            return sb.ToString();
+        }
+
     }
 }

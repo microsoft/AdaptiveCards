@@ -88,7 +88,7 @@ namespace AdaptiveCards.Rendering
 
         public override string ListItem(string text)
         {
-            return $"   • {text}<LineBreak/>";
+            return $" • {text}<LineBreak/>";
         }
 
         public override string Paragraph(string text)

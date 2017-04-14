@@ -13,6 +13,11 @@ namespace AdaptiveCards.Rendering
         //  ------ AdaptiveCard -------
         public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
 
+        /// <summary>
+        /// Color settings for the TextBlock
+        /// </summary>
+        public ColorOptions Colors { get; set; } = new ColorOptions();
+
         // ------ Basic ------
         public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
 
@@ -21,13 +26,15 @@ namespace AdaptiveCards.Rendering
         // ------ Containers ------
         public ContainerOptions Container { get; set; } = new ContainerOptions();
 
-        public ColumnSetOptions ColumnSet { get; set; } = new ColumnSetOptions();
-
         public ColumnOptions Column { get; set; } = new ColumnOptions();
+
+        public ColumnSetOptions ColumnSet { get; set; } = new ColumnSetOptions();
 
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
         public FactSetOptions FactSet { get; set; } = new FactSetOptions();
+
+        public ActionSetOptions ActionSet { get; set; } = new ActionSetOptions();
 
         // ------ Input ------
         public InputOptions Input { get; set; } = new InputOptions();
@@ -43,30 +50,55 @@ namespace AdaptiveCards.Rendering
                 return this.Image;
             if (obj is Container)
                 return this.Container;
-            if (obj is ColumnSet)
-                return this.ColumnSet;
             if (obj is Column)
                 return this.Column;
+            if (obj is ColumnSet)
+                return this.ColumnSet;
+            if (obj is ActionSet)
+                return this.ActionSet;
             if (obj is ImageSet)
                 return this.ImageSet;
             if (obj is ImageSet)
                 return this.ImageSet;
             if (obj is FactSet)
                 return this.FactSet;
-            if (obj is InputText)
+            if (obj is TextInput)
                 return this.Input;
-            if (obj is InputNumber)
+            if (obj is NumberInput)
                 return this.Input;
-            if (obj is InputDate)
+            if (obj is DateInput)
                 return this.Input;
-            if (obj is InputTime)
+            if (obj is TimeInput)
                 return this.Input;
-            if (obj is InputChoiceSet)
+            if (obj is ChoiceSet)
                 return this.Input;
-            if (obj is InputToggle)
+            if (obj is ToggleInput)
                 return this.Input;
             throw new ArgumentException($"Unknown type {obj.GetType().Name}");
         }
+    }
+
+    public class BoundaryOptions
+    {
+        public BoundaryOptions() { }
+
+        public BoundaryOptions(int allMargin)
+        {
+            Left = Right = Top = Bottom = allMargin;
+        }
+        public BoundaryOptions(int left, int top, int right, int bottom)
+        {
+            Left = left;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
+        }
+
+
+        public int Left { get; set; }
+        public int Top { get; set; }
+        public int Right { get; set; }
+        public int Bottom { get; set; }
     }
 
     public class AdaptiveCardOptions
@@ -74,22 +106,17 @@ namespace AdaptiveCards.Rendering
         public AdaptiveCardOptions() { }
 
         /// <summary>
-        ///  Margin for the card
+        ///  Padding for the card
         /// </summary>
-        public int[] Margin { get; set; } = new[] { 8, 8, 8, 8 };
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(8);
 
         /// <summary>
-        /// Background color for card
+        /// Background color for card 
         /// </summary>
-        public string BackgroundColor { get; set; } = "#FFFFFFFF";
+        public string BackgroundColor { get; set; } = "#FFFFFF";
 
         /// <summary>
-        /// Text color for card (shared by FactSet, TextBlock)
-        /// </summary>
-        public string TextColor { get; set; } = "#FF000000";
-
-        /// <summary>
-        /// Font family for the card
+        /// Font family for the card (can be comma delimited for fallback)
         /// </summary>
         public string FontFamily { get; set; } = "Calibri";
 
@@ -111,12 +138,12 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// The types of Actions that you support(null for no actions)
         /// </summary>
-        public string[] SupportedActions { get; set; } = new string[]
+        public string[] SupportedActionTypes { get; set; } = new string[]
         {
-            ActionOpenUrl.TYPE,
-            ActionSubmit.TYPE,
-            ActionHttp.TYPE,
-            ActionShowCard.TYPE
+            OpenUrlAction.TYPE,
+            SubmitAction.TYPE,
+            HttpAction.TYPE,
+            ShowCardAction.TYPE
         };
 
         /// <summary>
@@ -151,7 +178,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Separation settings 
         /// </summary>
-        public SeparationOptions Separation { get; set; } = new SeparationOptions() ;
+        public SeparationOptions Separation { get; set; } = new SeparationOptions();
     }
 
     /// <summary>
@@ -162,19 +189,14 @@ namespace AdaptiveCards.Rendering
         public SeparationOptions() { }
 
         /// <summary>
-        /// Separation settings when Separation:none
-        /// </summary>
-        public SeparationOption None { get; set; } = new SeparationOption() { Spacing = 0, Thickness = 0 };
-
-        /// <summary>
         /// Separation settings when Separation:default
         /// </summary>
-        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10, Thickness = 0 };
+        public SeparationOption Default { get; set; } = new SeparationOption() { Spacing = 10 };
 
         /// <summary>
         /// Separation settings when Separation:Strong
         /// </summary>
-        public SeparationOption Strong { get; set; } = new SeparationOption() { Spacing = 20, Thickness = 1, Color = "#FF707070" };
+        public SeparationOption Strong { get; set; } = new SeparationOption() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
     }
 
     public class SeparationOption
@@ -189,12 +211,12 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// If there is a visible line, how thick should the line be
         /// </summary>
-        public int Thickness { get; set; }
+        public int LineThickness { get; set; }
 
         /// <summary>
         /// If there is a visible color, what color to use
         /// </summary>
-        public string Color { get; set; }
+        public string LineColor { get; set; }
 
     }
 
@@ -206,17 +228,9 @@ namespace AdaptiveCards.Rendering
         public TextBlockOptions() { }
 
         /// <summary>
-        /// Color settings for the TextBlock
-        /// </summary>
-        public TextColorOptions Color { get; set; } = new TextColorOptions();
-
-        /// <summary>
         /// FontSize
         /// </summary>
         public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
-
-
-        public double IsSubtleOpacity { get; set; } = .5;
     }
 
     public class FontSizeOptions
@@ -235,25 +249,45 @@ namespace AdaptiveCards.Rendering
 
     }
 
-    public class TextColorOptions
+    public class ColorOptions
     {
-        public TextColorOptions() { }
+        public ColorOptions() { }
+
+        public ColorOption Default { get; set; } = new ColorOption("#FF000000");
+
+        public ColorOption Accent { get; set; } = new ColorOption("#FF0000FF");
+
+        public ColorOption Dark { get; set; } = new ColorOption("#FF101010");
+
+        public ColorOption Light { get; set; } = new ColorOption("#FFFFFFFF");
+
+        public ColorOption Good { get; set; } = new ColorOption("#FF008000");
+
+        public ColorOption Warning { get; set; } = new ColorOption("#FFFFD700");
+
+        public ColorOption Attention { get; set; } = new ColorOption("#FF8B0000");
+    }
+
+    public class ColorOption
+    {
+        public ColorOption(string normal, string subtle = null)
+        {
+            this.Normal = normal;
+            if (subtle == null)
+            {
+                var opacity = (byte)(Convert.ToByte(normal.Substring(1, 2), 16) * .7);
+                this.Subtle = $"#{opacity.ToString("x")}{normal.Substring(3)}";
+            }
+            else
+                this.Subtle = subtle;
+        }
 
         /// <summary>
-        /// Default color for TextBlock
+        /// Color in #RRGGBB format
         /// </summary>
+        public string Normal { get; set; }
 
-        public string Accent { get; set; } = "#FF0000FF";
-
-        public string Dark { get; set; } = "#FF101010";
-
-        public string Light { get; set; } = "#FFFFFFFF";
-
-        public string Good { get; set; } = "#FF008000";
-
-        public string Warning { get; set; } = "#FFFFD700";
-
-        public string Attention { get; set; } = "#FF8B0000";
+        public string Subtle { get; set; }
     }
 
     /// <summary>
@@ -302,13 +336,14 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Space between actions
         /// </summary>
-        public int[] Margin { get; set; } = new int[] { 4, 10, 4, 0 };
+        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(4, 10, 4, 0);
 
         /// <summary>
         /// space between title and button edge
         /// </summary>
 
-        public int[] Padding { get; set; } = new int[] { 4 };
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(4);
+
     }
 
     public class ShowCardOptions
@@ -323,14 +358,14 @@ namespace AdaptiveCards.Rendering
         public string BackgroundColor { get; set; } = "#FFF8F8F8";
 
         /// <summary>
-        /// margins for showcard when inline
+        /// If actionMode is inline and AutoPAdding is on then the background will extend to the edges of the parent card.
         /// </summary>
-        public int[] Margin { get; set; } = new int[] { 10 };
+        public bool AutoPadding { get; set; } = false;
 
         /// <summary>
-        /// Padding for showcard when inline
+        /// Padding for showcard when Popup or AutoMargin=false
         /// </summary>
-        public int[] Padding { get; set; } = new int[] { 10 };
+        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(10);
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
@@ -340,24 +375,6 @@ namespace AdaptiveCards.Rendering
         Popup
     }
 
-    public class ContainerOptions : CardElementOptions
-    {
-        public ContainerOptions() { }
-
-        public int MaxActions { get; set; } = 5;
-
-        /// <summary>
-        /// The types of Actions that you support(null for no actions)
-        /// </summary>
-        public string[] SupportedActions { get; set; } = new string[]
-        {
-            ActionOpenUrl.TYPE,
-            ActionSubmit.TYPE,
-            ActionHttp.TYPE,
-            ActionShowCard.TYPE
-        };
-
-    }
 
     public class ImageSetOptions : CardElementOptions
     {
@@ -391,8 +408,32 @@ namespace AdaptiveCards.Rendering
         public ColumnSetOptions() { }
     }
 
+    public class ContainerOptions : CardElementOptions
+    {
+        public ContainerOptions() { }
+    }
+
     public class ColumnOptions : CardElementOptions
     {
         public ColumnOptions() { }
+    }
+
+
+    public class ActionSetOptions : CardElementOptions
+    {
+        public ActionSetOptions() { }
+
+        public int MaxActions { get; set; } = 5;
+
+        /// <summary>
+        /// The types of Actions that you support(null for no actions)
+        /// </summary>
+        public string[] SupportedActions { get; set; } = new string[]
+        {
+            OpenUrlAction.TYPE,
+            SubmitAction.TYPE,
+            HttpAction.TYPE,
+            ShowCardAction.TYPE
+        };
     }
 }
