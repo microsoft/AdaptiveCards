@@ -31,7 +31,9 @@ namespace AdaptiveCards
             types[TextInput.TYPE] = typeof(TextInput);
             types[DateInput.TYPE] = typeof(DateInput);
             types[TimeInput.TYPE] = typeof(TimeInput);
+            types[ChoiceSet.TYPE] = typeof(ChoiceSet);
             types[NumberInput.TYPE] = typeof(NumberInput);
+            types[ToggleInput.TYPE] = typeof(ToggleInput);
             types[SubmitAction.TYPE] = typeof(SubmitAction);
             types[OpenUrlAction.TYPE] = typeof(OpenUrlAction);
             types[HttpAction.TYPE] = typeof(HttpAction);

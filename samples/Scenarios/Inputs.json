@@ -274,7 +274,7 @@
             "placeholder": "enter comment",
             "style": "text",
             "maxLength": 0,
-            "id": "SimpleVal"
+            "id": "CommentVal"
           }
         ],
         "actions": [

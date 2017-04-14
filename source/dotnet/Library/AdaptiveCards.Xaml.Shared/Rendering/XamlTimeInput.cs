@@ -8,36 +8,31 @@ using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public class XamlTimeInput : TimeInput, IRender<FrameworkElement, RenderContext>
+    public static class XamlTimeInput
     {
-
-        /// <summary>
-        /// this.Time
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public FrameworkElement Render(RenderContext context)
+        public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            TimeInput input = (TimeInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                var textBox = new TextBox() { Text = this.Value };
-                textBox.Text = this.Placeholder;
-                textBox.Style = context.GetStyle($"Adaptive.this.Text.Time");
-                textBox.DataContext = this;
-                context.InputBindings.Add(this.Id, () => textBox.Text);
+                var textBox = new TextBox() { Text = input.Value };
+                textBox.Text = input.Placeholder;
+                textBox.Style = context.GetStyle($"Adaptive.Input.Text.Time");
+                textBox.DataContext = input;
+                context.InputBindings.Add(input.Id, () => textBox.Text);
                 return textBox;
             }
             else
             {
                 Container container = TypedElementConverter.CreateElement<Container>();
-                container.Separation = this.Separation;
+                container.Separation = input.Separation;
                 TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
-                textBlock.Text = XamlUtilities.GetFallbackText(this) ?? this.Placeholder;
+                textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 container.Items.Add(textBlock);
-                if (this.Value != null)
+                if (input.Value != null)
                 {
                     textBlock = TypedElementConverter.CreateElement<TextBlock>();
-                    textBlock.Text = this.Value;
+                    textBlock.Text = input.Value;
                     textBlock.Color = TextColor.Accent;
                     textBlock.Wrap = true;
                     container.Items.Add(textBlock);

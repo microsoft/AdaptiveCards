@@ -36,6 +36,7 @@ namespace AdaptiveCards.Rendering
 
         public HostOptions Options { get; set; } = new HostOptions();
 
+        public Dictionary<Type, Func<TypedElement, RenderContext, FrameworkElement>> ElementRenderers = new Dictionary<Type, Func<TypedElement, RenderContext, FrameworkElement>>();
 
 #if WPF
         public BitmapImage ResolveImageSource(string url)
@@ -144,12 +145,10 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         public FrameworkElement Render(TypedElement element)
         {
-            return ((IRender<FrameworkElement, RenderContext>)element).Render(this);
+            return this.ElementRenderers[element.GetType()](element, this);
         }
 
         public Dictionary<string, Func<object>> InputBindings = new Dictionary<string, Func<object>>();
-
-
     }
 
 

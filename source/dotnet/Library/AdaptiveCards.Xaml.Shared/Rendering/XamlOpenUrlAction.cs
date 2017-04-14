@@ -10,16 +10,17 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 namespace AdaptiveCards.Rendering
 {
 
-    public class XamlOpenUrlAction : OpenUrlAction, IRender<FrameworkElement, RenderContext>
+    public static class XamlOpenUrlAction
     {
-        public FrameworkElement Render(RenderContext context)
+        public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            OpenUrlAction action = (OpenUrlAction)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                Button uiButton = XamlUtilities.CreateActionButton(this, context); // content);
+                Button uiButton = XamlUtilities.CreateActionButton(action, context); // content);
                 uiButton.Click += (sender, e) =>
                 {
-                    context.Action(uiButton, new ActionEventArgs() { Action = this});
+                    context.Action(uiButton, new ActionEventArgs() { Action = action});
                 };
                 return uiButton;
             }

@@ -10,16 +10,17 @@ using Button = AdaptiveCards.Rendering.ContentButton;
 
 namespace AdaptiveCards.Rendering
 {
-    public class XamlShowCardAction : ShowCardAction, IRender<FrameworkElement, RenderContext>
+    public static class XamlShowCardAction
     {
-        public FrameworkElement Render(RenderContext context)
+        public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            ShowCardAction action = (ShowCardAction)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
-                Button uiButton = XamlUtilities.CreateActionButton(this, context);
+                Button uiButton = XamlUtilities.CreateActionButton(action, context);
                 uiButton.Click += (sender, e) =>
                 {
-                    context.Action(uiButton, new ActionEventArgs() { Action = this, Data = null });
+                    context.Action(uiButton, new ActionEventArgs() { Action = action, Data = null });
                 };
                 return uiButton;
             }

@@ -8,15 +8,11 @@ using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public class XamlImageSet : ImageSet, IRender<FrameworkElement, RenderContext>
+    public static class XamlImageSet
     {
-        /// <summary>
-        /// ImageSet
-        /// </summary>
-        /// <param name="imageSet"></param>
-        /// <returns></returns>
-        public FrameworkElement Render(RenderContext context)
+        public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            ImageSet imageSet = (ImageSet)element;
 #if WPF
             var uiImageSet = new ListBox();
             uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
@@ -28,10 +24,10 @@ namespace AdaptiveCards.Rendering
             itemsPanelTemplate.VisualTree = factory;
             uiImageSet.ItemsPanel = itemsPanelTemplate;
 
-            foreach (var image in this.Images)
+            foreach (var image in imageSet.Images)
             {
-                if (this.ImageSize != ImageSize.Auto)
-                    image.Size = this.ImageSize;
+                if (imageSet.ImageSize != ImageSize.Auto)
+                    image.Size = imageSet.ImageSize;
                 var uiImage = context.Render(image);
                 uiImageSet.Items.Add(uiImage);
             }

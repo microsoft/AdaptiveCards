@@ -33,10 +33,10 @@ namespace AdaptiveCards.Rendering
 #endif
         private void SetObjectTypes()
         {
-            TypedElementConverter.RegisterTypedElement<XamlExTextInput>();
-            TypedElementConverter.RegisterTypedElement<XamlExNumberInput>();
-            TypedElementConverter.RegisterTypedElement<XamlExDateInput>();
-            TypedElementConverter.RegisterTypedElement<XamlExTimeInput>();
+            this.SetRenderer<TextInput>(XamlExTextInput.Render);
+            this.SetRenderer<NumberInput>(XamlExNumberInput.Render);
+            this.SetRenderer<DateInput>(XamlExDateInput.Render);
+            this.SetRenderer<TimeInput>(XamlExTimeInput.Render);
         }
     }
 }

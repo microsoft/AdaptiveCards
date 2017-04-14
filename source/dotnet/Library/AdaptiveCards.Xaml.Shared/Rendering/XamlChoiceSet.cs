@@ -11,15 +11,11 @@ using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public class XamlChoiceSet : ChoiceSet, IRender<FrameworkElement, RenderContext>
+    public static class XamlChoiceSet
     {
-        /// <summary>
-        /// Input.ChoiceSet
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public FrameworkElement Render(RenderContext context)
+        public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            ChoiceSet choiceSet = (ChoiceSet)element;
 #if WPF
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
@@ -29,7 +25,7 @@ namespace AdaptiveCards.Rendering
 
                 var uiComboBox = new ComboBox();
                 uiComboBox.Style = context.GetStyle("Adaptive.Input.ChoiceSet.ComboBox");
-                uiComboBox.DataContext = this;
+                uiComboBox.DataContext = choiceSet;
 
                 var uiChoices = new ListBox();
                 ScrollViewer.SetHorizontalScrollBarVisibility(uiChoices, ScrollBarVisibility.Disabled);
@@ -37,12 +33,12 @@ namespace AdaptiveCards.Rendering
                 var factory = new FrameworkElementFactory(typeof(WrapPanel));
                 itemsPanelTemplate.VisualTree = factory;
                 uiChoices.ItemsPanel = itemsPanelTemplate;
-                uiChoices.DataContext = this;
+                uiChoices.DataContext = choiceSet;
                 uiChoices.Style = context.GetStyle("Adaptive.Input.ChoiceSet");
 
-                foreach (var choice in this.Choices)
+                foreach (var choice in choiceSet.Choices)
                 {
-                    if (this.IsMultiSelect == true)
+                    if (choiceSet.IsMultiSelect == true)
                     {
                         var uiCheckbox = new CheckBox();
                         uiCheckbox.Content = choice.Title;
@@ -53,7 +49,7 @@ namespace AdaptiveCards.Rendering
                     }
                     else
                     {
-                        if (this.Style == ChoiceInputStyle.Compact)
+                        if (choiceSet.Style == ChoiceInputStyle.Compact)
                         {
                             var uiComboItem = new ComboBoxItem();
                             uiComboItem.Style = context.GetStyle("Adaptive.Input.ChoiceSet.ComboBoxItem");
@@ -68,16 +64,16 @@ namespace AdaptiveCards.Rendering
                             var uiRadio = new RadioButton();
                             uiRadio.Content = choice.Title;
                             uiRadio.IsChecked = choice.IsSelected;
-                            uiRadio.GroupName = this.Id;
+                            uiRadio.GroupName = choiceSet.Id;
                             uiRadio.DataContext = choice;
                             uiRadio.Style = context.GetStyle("Adaptive.Input.ChoiceSet.Radio");
                             uiChoices.Items.Add(uiRadio);
                         }
                     }
                 }
-                context.InputBindings.Add(this.Id, () =>
+                context.InputBindings.Add(choiceSet.Id, () =>
                 {
-                    if (this.IsMultiSelect == true)
+                    if (choiceSet.IsMultiSelect == true)
                     {
                         List<string> values = new List<string>();
                         foreach (var item in uiChoices.Items)
@@ -91,7 +87,7 @@ namespace AdaptiveCards.Rendering
                     }
                     else
                     {
-                        if (this.Style == ChoiceInputStyle.Compact)
+                        if (choiceSet.Style == ChoiceInputStyle.Compact)
                         {
                             ComboBoxItem item = uiComboBox.SelectedItem as ComboBoxItem;
                             if (item != null)
@@ -114,7 +110,7 @@ namespace AdaptiveCards.Rendering
                         }
                     }
                 });
-                if (this.Style == ChoiceInputStyle.Compact)
+                if (choiceSet.Style == ChoiceInputStyle.Compact)
                 {
                     Grid.SetRow(uiComboBox, 1);
                     uiGrid.Children.Add(uiComboBox);
@@ -130,13 +126,13 @@ namespace AdaptiveCards.Rendering
 
 #endif
 
-            string choiceText = XamlUtilities.GetFallbackText(this);
+            string choiceText = XamlUtilities.GetFallbackText(choiceSet);
             if (choiceText == null)
             {
-                List<string> choices = this.Choices.Select(choice => choice.Title).ToList();
-                if (this.Style == ChoiceInputStyle.Compact)
+                List<string> choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
+                if (choiceSet.Style == ChoiceInputStyle.Compact)
                 {
-                    if (this.IsMultiSelect)
+                    if (choiceSet.IsMultiSelect)
                     {
                         choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " and ")}";
                     }
@@ -145,20 +141,20 @@ namespace AdaptiveCards.Rendering
                         choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " or ")}";
                     }
                 }
-                else // if (this.Style == ChoiceInputStyle.Expanded)
+                else // if (choiceSet.Style == ChoiceInputStyle.Expanded)
                 {
                     choiceText = $"* {RendererUtilities.JoinString(choices, "\n* ", "\n* ")}";
                 }
             }
             Container container = TypedElementConverter.CreateElement<Container>();
-            container.Separation = this.Separation;
+            container.Separation = choiceSet.Separation;
             TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
             textBlock.Text = choiceText;
             textBlock.Wrap = true;
             container.Items.Add(textBlock);
 
             textBlock = TypedElementConverter.CreateElement<TextBlock>();
-            textBlock.Text = RendererUtilities.JoinString(this.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and ");
+            textBlock.Text = RendererUtilities.JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and ");
             textBlock.Color = TextColor.Accent;
             textBlock.Wrap = true;
             container.Items.Add(textBlock);

@@ -46,25 +46,30 @@ namespace AdaptiveCards.Rendering
 
         private void SetObjectTypes()
         {
-            TypedElementConverter.RegisterTypedElement<XamlAdaptiveCard>();
-            TypedElementConverter.RegisterTypedElement<XamlTextBlock>();
-            TypedElementConverter.RegisterTypedElement<XamlImage>();
-            TypedElementConverter.RegisterTypedElement<XamlContainer>();
-            TypedElementConverter.RegisterTypedElement<XamlColumn>();
-            TypedElementConverter.RegisterTypedElement<XamlColumnSet>();
-            TypedElementConverter.RegisterTypedElement<XamlActionSet>();
-            TypedElementConverter.RegisterTypedElement<XamlFactSet>();
-            TypedElementConverter.RegisterTypedElement<XamlImageSet>();
-            TypedElementConverter.RegisterTypedElement<XamlTextInput>();
-            TypedElementConverter.RegisterTypedElement<XamlNumberInput>();
-            TypedElementConverter.RegisterTypedElement<XamlDateInput>();
-            TypedElementConverter.RegisterTypedElement<XamlChoiceSet>();
-            TypedElementConverter.RegisterTypedElement<XamlTimeInput>();
-            TypedElementConverter.RegisterTypedElement<XamlToggleInput>();
-            TypedElementConverter.RegisterTypedElement<XamlSubmitAction>();
-            TypedElementConverter.RegisterTypedElement<XamlHttpAction>();
-            TypedElementConverter.RegisterTypedElement<XamlOpenUrlAction>();
-            TypedElementConverter.RegisterTypedElement<XamlShowCardAction>();
+            this.SetRenderer<AdaptiveCard>(XamlAdaptiveCard.Render);
+
+            this.SetRenderer<TextBlock>(XamlTextBlock.Render);
+            this.SetRenderer<Image>(XamlImage.Render);
+
+            this.SetRenderer<ActionSet>(XamlActionSet.Render);
+            this.SetRenderer<Container>(XamlContainer.Render);
+            this.SetRenderer<Column>(XamlColumn.Render);
+            this.SetRenderer<ColumnSet>(XamlColumnSet.Render);
+            this.SetRenderer<ActionSet>(XamlActionSet.Render);
+            this.SetRenderer<FactSet>(XamlFactSet.Render);
+            this.SetRenderer<ImageSet>(XamlImageSet.Render);
+
+            this.SetRenderer<ChoiceSet>(XamlChoiceSet.Render);
+            this.SetRenderer<TextInput>(XamlTextInput.Render);
+            this.SetRenderer<NumberInput>(XamlNumberInput.Render);
+            this.SetRenderer<DateInput>(XamlDateInput.Render);
+            this.SetRenderer<TimeInput>(XamlTimeInput.Render);
+            this.SetRenderer<ToggleInput>(XamlToggleInput.Render); ;
+
+            this.SetRenderer<SubmitAction>(XamlSubmitAction.Render);
+            this.SetRenderer<HttpAction>(XamlHttpAction.Render); ;
+            this.SetRenderer<OpenUrlAction>(XamlOpenUrlAction.Render);
+            this.SetRenderer<ShowCardAction>(XamlShowCardAction.Render);
         }
 
         /// <summary>
@@ -120,7 +125,8 @@ namespace AdaptiveCards.Rendering
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
                 Options = options ?? this.DefaultOptions,
-                Resources = this.Resources
+                Resources = this.Resources,
+                ElementRenderers = this.ElementRenderers
             };
             return context.Render(card);
         }
@@ -130,7 +136,8 @@ namespace AdaptiveCards.Rendering
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
                 Options = options ?? this.DefaultOptions,
-                Resources = this.Resources
+                Resources = this.Resources,
+                ElementRenderers = this.ElementRenderers
             };
 
             return context.Render(showCard.Card);

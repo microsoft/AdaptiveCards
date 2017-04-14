@@ -4,41 +4,36 @@ using Xceed.Wpf.Toolkit;
 
 namespace AdaptiveCards.Rendering
 {
-    public class XamlExNumberInput : NumberInput, IRender<FrameworkElement, RenderContext>
+    public static class XamlExNumberInput
     {
-
-        /// <summary>
-        /// this.Number
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public FrameworkElement Render(RenderContext context)
+        public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            NumberInput input = (NumberInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
 
                 IntegerUpDown numberPicker = new IntegerUpDown();
                 // numberPicker.ShowButtonSpinner = true;
 
-                if (!Double.IsNaN(this.Value))
-                    numberPicker.Value = Convert.ToInt32(this.Value);
+                if (!Double.IsNaN(input.Value))
+                    numberPicker.Value = Convert.ToInt32(input.Value);
 
-                if (!Double.IsNaN(this.Min))
-                    numberPicker.Minimum = Convert.ToInt32(this.Min);
+                if (!Double.IsNaN(input.Min))
+                    numberPicker.Minimum = Convert.ToInt32(input.Min);
 
-                if (!Double.IsNaN(this.Max))
-                    numberPicker.Minimum = Convert.ToInt32(this.Max);
+                if (!Double.IsNaN(input.Max))
+                    numberPicker.Minimum = Convert.ToInt32(input.Max);
 
-                numberPicker.Watermark = this.Placeholder;
+                numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
-                numberPicker.DataContext = this;
-                context.InputBindings.Add(this.Id, () => numberPicker.Value);
+                numberPicker.DataContext = input;
+                context.InputBindings.Add(input.Id, () => numberPicker.Value);
                 return numberPicker;
             }
             else
             {
                 var textBlock = TypedElementConverter.CreateElement<TextBlock>();
-                textBlock.Text = XamlUtilities.GetFallbackText(this) ?? this.Placeholder;
+                textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 return context.Render(textBlock);
             }
 

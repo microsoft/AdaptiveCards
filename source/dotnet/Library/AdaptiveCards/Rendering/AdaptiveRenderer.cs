@@ -5,6 +5,7 @@ using System.Text;
 
 namespace AdaptiveCards.Rendering
 {
+
     public abstract class AdaptiveRenderer<TUIElement, TContext>
         where TUIElement : class
         where TContext : class
@@ -16,6 +17,11 @@ namespace AdaptiveCards.Rendering
 
         public HostOptions DefaultOptions { get; set; }
 
-        public Dictionary<string, Type> ElementRegistry = new Dictionary<string, Type>();
+        public Dictionary<Type, Func<TypedElement, TContext, TUIElement>> ElementRenderers = new Dictionary<Type, Func<TypedElement, TContext, TUIElement>>();
+
+        public void SetRenderer<TElement>(Func<TypedElement, TContext, TUIElement> renderer)
+        {
+            ElementRenderers[typeof(TElement)] = renderer;
+        }
     }
 }

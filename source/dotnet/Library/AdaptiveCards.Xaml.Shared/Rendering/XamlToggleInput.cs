@@ -8,38 +8,34 @@ using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public class XamlToggleInput : ToggleInput, IRender<FrameworkElement, RenderContext>
+    public static class XamlToggleInput
     {
-        /// <summary>
-        /// TextInput
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public FrameworkElement Render(RenderContext context)
+        public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            ToggleInput input = (ToggleInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
 #if WPF
                 var uiToggle = new CheckBox();
-                uiToggle.Content = this.Title;
-                uiToggle.IsChecked = this.Value == (this.ValueOn ?? "true");
-                uiToggle.Style = context.GetStyle($"Adaptive.this.Toggle");
-                uiToggle.DataContext = this;
-                context.InputBindings.Add(this.Id, () =>
+                uiToggle.Content = input.Title;
+                uiToggle.IsChecked = input.Value == (input.ValueOn ?? "true");
+                uiToggle.Style = context.GetStyle($"Adaptive.input.Toggle");
+                uiToggle.DataContext = input;
+                context.InputBindings.Add(input.Id, () =>
                 {
-                    return uiToggle.IsChecked == true ? this.ValueOn ?? "true" : this.ValueOff ?? "false";
+                    return uiToggle.IsChecked == true ? input.ValueOn ?? "true" : input.ValueOff ?? "false";
                 });
                 return uiToggle;
 #elif XAMARIN
                 var uiToggle = new Switch();
                 // TODO: Finish switch
-                //uiToggle.Content = this.Title;
-                uiToggle.IsToggled = this.Value == (this.ValueOn ?? "true");
-                uiToggle.Style = context.GetStyle($"Adaptive.this.Toggle");
-                uiToggle.BindingContext = this;
-                context.InputBindings.Add(this.Id, () =>
+                //uiToggle.Content = input.Title;
+                uiToggle.IsToggled = input.Value == (input.ValueOn ?? "true");
+                uiToggle.Style = context.GetStyle($"Adaptive.input.Toggle");
+                uiToggle.BindingContext = input;
+                context.InputBindings.Add(input.Id, () =>
                 {
-                    return uiToggle.IsToggled == true ? this.ValueOn ?? "true" : this.ValueOff ?? "false";
+                    return uiToggle.IsToggled == true ? input.ValueOn ?? "true" : input.ValueOff ?? "false";
                 });
                 return uiToggle;
 #endif
@@ -47,15 +43,15 @@ namespace AdaptiveCards.Rendering
             else
             {
                 Container container = TypedElementConverter.CreateElement<Container>();
-                container.Separation = this.Separation;
+                container.Separation = input.Separation;
 
                 TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
-                textBlock.Text = XamlUtilities.GetFallbackText(this);
+                textBlock.Text = XamlUtilities.GetFallbackText(input);
                 container.Items.Add(textBlock);
-                if (this.Value != null)
+                if (input.Value != null)
                 {
                     textBlock = TypedElementConverter.CreateElement<TextBlock>();
-                    textBlock.Text = (this.Value == (this.ValueOn ?? "true")) ? this.ValueOn ?? "selected" : this.ValueOff ?? "not selected";
+                    textBlock.Text = (input.Value == (input.ValueOn ?? "true")) ? input.ValueOn ?? "selected" : input.ValueOff ?? "not selected";
                     textBlock.Color = TextColor.Accent;
                     textBlock.Wrap = true;
                     container.Items.Add(textBlock);

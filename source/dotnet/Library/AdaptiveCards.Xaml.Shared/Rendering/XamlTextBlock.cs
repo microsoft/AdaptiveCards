@@ -18,35 +18,30 @@ using Xamarin.Forms;
 namespace AdaptiveCards.Rendering
 {
 
-    public class XamlTextBlock : TextBlock, IRender<FrameworkElement, RenderContext>
+    public static class XamlTextBlock
     {
-
-        /// <summary>
-        /// TextBlock
-        /// </summary>
-        /// <param name="textBlock"></param>
-        /// <returns></returns>
-        public FrameworkElement Render(RenderContext context)
+        public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            TextBlock textBlock = (TextBlock)element;
 #if WPF
             Marked marked = new Marked();
             marked.Options.Renderer = new MarkedXamlRenderer();
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
 
-            string text = RendererUtilities.ApplyTextFunctions(this.Text);
-            // uiTextBlock.Text = this.Text;
+            string text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
+            // uiTextBlock.Text = textBlock.Text;
             string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
             StringReader stringReader = new StringReader(xaml);
 
             XmlReader xmlReader = XmlReader.Create(stringReader);
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
-            uiTextBlock.Style = context.GetStyle($"Adaptive.{this.Type}");
+            uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
 
             uiTextBlock.FontFamily = new FontFamily(context.Options.AdaptiveCard.FontFamily);
 
             ColorOption colorOption;
-            switch (this.Color)
+            switch (textBlock.Color)
             {
                 case TextColor.Accent:
                     colorOption = context.Options.Colors.Accent;
@@ -71,14 +66,14 @@ namespace AdaptiveCards.Rendering
                     colorOption = context.Options.Colors.Default;
                     break;
             }
-            if (this.IsSubtle == true)
+            if (textBlock.IsSubtle == true)
                 uiTextBlock.Foreground = context.GetColorBrush(colorOption.Subtle);
             else 
                 uiTextBlock.Foreground = context.GetColorBrush(colorOption.Normal);
 
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
-            switch (this.Weight)
+            switch (textBlock.Weight)
             {
                 case TextWeight.Bolder:
                     uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(700);
@@ -94,24 +89,24 @@ namespace AdaptiveCards.Rendering
 
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
-            if (this.HorizontalAlignment != HorizontalAlignment.Left)
+            if (textBlock.HorizontalAlignment != HorizontalAlignment.Left)
             {
                 System.Windows.HorizontalAlignment alignment;
-                if (Enum.TryParse<System.Windows.HorizontalAlignment>(this.HorizontalAlignment.ToString(), out alignment))
+                if (Enum.TryParse<System.Windows.HorizontalAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
                     uiTextBlock.HorizontalAlignment = alignment;
             }
 
-            if (this.Wrap)
+            if (textBlock.Wrap)
                 uiTextBlock.TextWrapping = TextWrapping.Wrap;
 
 #elif XAMARIN
             var uiTextBlock = new Xamarin.Forms.TextBlock();
-            uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(this.Text);
+            uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
             uiTextBlock.Style = context.GetStyle("Adaptive.TextBlock");
             // TODO: confirm text trimming
             uiTextBlock.LineBreakMode = LineBreakMode.TailTruncation;
 
-            switch (this.HorizontalAlignment)
+            switch (textBlock.HorizontalAlignment)
             {
                 case HorizontalAlignment.Left:
                     uiTextBlock.HorizontalTextAlignment = TextAlignment.Start;
@@ -129,17 +124,17 @@ namespace AdaptiveCards.Rendering
             
 
 
-            uiTextBlock.TextColor = context.Resources.TryGetValue<Color>($"Adaptive.{this.Color}");
+            uiTextBlock.TextColor = context.Resources.TryGetValue<Color>($"Adaptive.{textBlock.Color}");
 
-            if (this.Weight == TextWeight.Bolder)
+            if (textBlock.Weight == TextWeight.Bolder)
                 uiTextBlock.FontAttributes = FontAttributes.Bold;
 
-            if (this.Wrap == true)
+            if (textBlock.Wrap == true)
                 uiTextBlock.LineBreakMode = LineBreakMode.WordWrap;
 #endif
 
 
-            switch (this.Size)
+            switch (textBlock.Size)
             {
                 case TextSize.Small:
                     uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Small;
@@ -160,7 +155,7 @@ namespace AdaptiveCards.Rendering
             }
 
 
-            if (this.MaxLines > 0)
+            if (textBlock.MaxLines > 0)
             {
                 var uiGrid = new Grid();
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
@@ -176,7 +171,7 @@ namespace AdaptiveCards.Rendering
                     TextWrapping = TextWrapping.NoWrap,
                     HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
-                    DataContext = this.MaxLines
+                    DataContext = textBlock.MaxLines
                 };
 
                 measureBlock.Inlines.Add(uiTextBlock.Text);
@@ -187,7 +182,7 @@ namespace AdaptiveCards.Rendering
                     Path = new PropertyPath("ActualHeight"),
                     Source = measureBlock,
                     Mode = BindingMode.OneWay,
-                    Converter = new MultiplyConverter(this.MaxLines)
+                    Converter = new MultiplyConverter(textBlock.MaxLines)
                 });
 
                 // Add both to a grid so they go as a unit

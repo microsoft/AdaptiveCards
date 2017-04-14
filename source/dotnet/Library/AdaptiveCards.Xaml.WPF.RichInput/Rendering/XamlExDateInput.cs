@@ -4,37 +4,34 @@ using System.Windows.Controls;
 
 namespace AdaptiveCards.Rendering
 {
-    public class XamlExDateInput : DateInput, IRender<FrameworkElement, RenderContext>
+
+    public static class XamlExDateInput
     {
-        /// <summary>
-        /// Input.Date
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public FrameworkElement Render(RenderContext context)
+        public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            DateInput input = (DateInput)element;
             if (context.Options.AdaptiveCard.SupportsInteractivity)
             {
                 var datePicker = new DatePicker();
-                datePicker.ToolTip = this.Placeholder;
+                datePicker.ToolTip = input.Placeholder;
                 DateTime value;
-                if (DateTime.TryParse(this.Value, out value))
+                if (DateTime.TryParse(input.Value, out value))
                     datePicker.SelectedDate = value;
                 DateTime minValue;
-                if (DateTime.TryParse(this.Min, out minValue))
+                if (DateTime.TryParse(input.Min, out minValue))
                     datePicker.DisplayDateStart = minValue;
                 DateTime maxValue;
-                if (DateTime.TryParse(this.Max, out maxValue))
+                if (DateTime.TryParse(input.Max, out maxValue))
                     datePicker.DisplayDateEnd = maxValue;
                 datePicker.Style = context.GetStyle("Adaptive.Input.Date");
-                datePicker.DataContext = this;
-                context.InputBindings.Add(this.Id, () => datePicker.Text);
+                datePicker.DataContext = input;
+                context.InputBindings.Add(input.Id, () => datePicker.Text);
                 return datePicker;
             }
             else
             {
                 var textBlock = TypedElementConverter.CreateElement<TextBlock>();
-                textBlock.Text = XamlUtilities.GetFallbackText(this) ?? this.Placeholder;
+                textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 return context.Render(textBlock);
             }
         }

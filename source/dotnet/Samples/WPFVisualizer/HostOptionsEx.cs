@@ -374,7 +374,7 @@ namespace WpfVisualizer
         /// <summary>
         /// If actionMode is inline and AutoPadding is on then the background will extend to the edges of the parent card.
         /// </summary>
-        public bool AutoPAdding { get; set; } = false;
+        public bool AutoPadding { get; set; } = false;
 
         /// <summary>
         /// Padding for showcard when Popup or AutoMargin=false
