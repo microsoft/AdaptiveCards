@@ -46,25 +46,25 @@ namespace AdaptiveCards.Rendering
 
         private void SetObjectTypes()
         {
-            TypedElementConverter.RegisterTypedElement<XamlAdaptiveCard>("AdaptiveCard");
-            TypedElementConverter.RegisterTypedElement<XamlTextBlock>("TextBlock");
-            TypedElementConverter.RegisterTypedElement<XamlImage>("Image");
-            TypedElementConverter.RegisterTypedElement<XamlContainer>("Container");
-            TypedElementConverter.RegisterTypedElement<XamlColumn>("Column");
-            TypedElementConverter.RegisterTypedElement<XamlColumnSet>("ColumnSet");
-            TypedElementConverter.RegisterTypedElement<XamlActionSet>("ActionSet");
-            TypedElementConverter.RegisterTypedElement<XamlFactSet>("FactSet");
-            TypedElementConverter.RegisterTypedElement<XamlImageSet>("ImageSet");
-            TypedElementConverter.RegisterTypedElement<XamlTextInput>("Input.Text");
-            TypedElementConverter.RegisterTypedElement<XamlNumberInput>("Input.Number");
-            TypedElementConverter.RegisterTypedElement<XamlDateInput>("Input.Date");
-            TypedElementConverter.RegisterTypedElement<XamlChoiceSet>("Input.ChoiceSet");
-            TypedElementConverter.RegisterTypedElement<XamlTimeInput>("Input.Time");
-            TypedElementConverter.RegisterTypedElement<XamlToggleInput>("Input.Toggle");
-            TypedElementConverter.RegisterTypedElement<XamlSubmitAction>("Action.Submit");
-            TypedElementConverter.RegisterTypedElement<XamlHttpAction>("Action.Http");
-            TypedElementConverter.RegisterTypedElement<XamlOpenUrlAction>("Action.OpenUrl");
-            TypedElementConverter.RegisterTypedElement<XamlShowCardAction>("Action.ShowCard");
+            TypedElementConverter.RegisterTypedElement<XamlAdaptiveCard>();
+            TypedElementConverter.RegisterTypedElement<XamlTextBlock>();
+            TypedElementConverter.RegisterTypedElement<XamlImage>();
+            TypedElementConverter.RegisterTypedElement<XamlContainer>();
+            TypedElementConverter.RegisterTypedElement<XamlColumn>();
+            TypedElementConverter.RegisterTypedElement<XamlColumnSet>();
+            TypedElementConverter.RegisterTypedElement<XamlActionSet>();
+            TypedElementConverter.RegisterTypedElement<XamlFactSet>();
+            TypedElementConverter.RegisterTypedElement<XamlImageSet>();
+            TypedElementConverter.RegisterTypedElement<XamlTextInput>();
+            TypedElementConverter.RegisterTypedElement<XamlNumberInput>();
+            TypedElementConverter.RegisterTypedElement<XamlDateInput>();
+            TypedElementConverter.RegisterTypedElement<XamlChoiceSet>();
+            TypedElementConverter.RegisterTypedElement<XamlTimeInput>();
+            TypedElementConverter.RegisterTypedElement<XamlToggleInput>();
+            TypedElementConverter.RegisterTypedElement<XamlSubmitAction>();
+            TypedElementConverter.RegisterTypedElement<XamlHttpAction>();
+            TypedElementConverter.RegisterTypedElement<XamlOpenUrlAction>();
+            TypedElementConverter.RegisterTypedElement<XamlShowCardAction>();
         }
 
         /// <summary>

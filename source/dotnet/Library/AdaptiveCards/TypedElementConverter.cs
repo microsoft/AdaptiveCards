@@ -14,19 +14,38 @@ namespace AdaptiveCards
     public class TypedElementConverter : JsonConverter
     {
         /// <summary>
-        /// List of additional types to support, register any new types to this list 
+        /// Default types to support, register any new types to this list 
         /// </summary>
-        internal static Lazy<Dictionary<string, Type>> g_typedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
+        private static Lazy<Dictionary<string, Type>> g_typedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
         {
-            return typeof(TypedElement).GetTypeInfo().Assembly.ExportedTypes
-                .Where(exportedType => exportedType.Namespace.Contains("AdaptiveCards"))
-                .ToDictionary(type => type.Name);
+            Dictionary<string, Type> types = new Dictionary<string, Type>();
+            types[AdaptiveCard.TYPE] = typeof(AdaptiveCard);
+            types[TextBlock.TYPE] = typeof(TextBlock);
+            types[Image.TYPE] = typeof(Image);
+            types[Container.TYPE] = typeof(Container);
+            types[Column.TYPE] = typeof(Column);
+            types[ColumnSet.TYPE] = typeof(ColumnSet);
+            types[FactSet.TYPE] = typeof(FactSet);
+            types[ImageSet.TYPE] = typeof(ImageSet);
+            types[ActionSet.TYPE] = typeof(ActionSet);
+            types[TextInput.TYPE] = typeof(TextInput);
+            types[DateInput.TYPE] = typeof(DateInput);
+            types[TimeInput.TYPE] = typeof(TimeInput);
+            types[NumberInput.TYPE] = typeof(NumberInput);
+            types[SubmitAction.TYPE] = typeof(SubmitAction);
+            types[OpenUrlAction.TYPE] = typeof(OpenUrlAction);
+            types[HttpAction.TYPE] = typeof(HttpAction);
+            types[ShowCardAction.TYPE] = typeof(ShowCardAction);
+            return types;
         });
 
-        public static void RegisterTypedElement<TypeT>(string type)
+        public static void RegisterTypedElement<TypeT>(string typeName = null)
             where TypeT : TypedElement
         {
-            g_typedElementTypes.Value[type] = typeof(TypeT);
+            if (typeName == null)
+                typeName = ((TypedElement)Activator.CreateInstance(typeof(TypeT))).Type;
+
+            g_typedElementTypes.Value[typeName] = typeof(TypeT);
         }
 
         public override bool CanRead => true;
@@ -55,6 +74,9 @@ namespace AdaptiveCards
                 {
                     result = Activator.CreateInstance(type);
                 }
+                else
+                    throw new ArgumentException($"Unknown Type={typeName}");
+
                 // Populate the object properties
                 serializer.Populate(jObject.CreateReader(), result);
             }

@@ -10,9 +10,11 @@ namespace AdaptiveCards
     /// </summary>
     public class ChoiceSet : Input
     {
+        public const string TYPE = "Input.ChoiceSet";
+
         public ChoiceSet()
         {
-            Type = "Input.ChoiceSet";
+            Type = TYPE;
         }
 
         /// <summary>
