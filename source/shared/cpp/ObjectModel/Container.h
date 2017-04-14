@@ -19,6 +19,7 @@ public:
     const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
     static std::shared_ptr<Container> Deserialize(const Json::Value& root);
+    static std::shared_ptr<Container> DeserializeFromString(const std::string& jsonString);
 
 protected:
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;

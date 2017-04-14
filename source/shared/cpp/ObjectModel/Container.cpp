@@ -68,3 +68,10 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
     container->m_items = std::move(cardElements);
     return container;
 }
+
+std::shared_ptr<Container> Container::DeserializeFromString(const std::string& jsonString)
+{
+    Json::Value jsonValue(jsonString);
+
+    return Container::Deserialize(jsonValue);
+}

@@ -19,6 +19,7 @@ public:
         HorizontalAlignment hAlignment);
 
     static std::shared_ptr<Image> Deserialize(const Json::Value& root);
+    static std::shared_ptr<Image> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
 
