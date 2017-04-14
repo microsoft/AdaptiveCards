@@ -28,16 +28,18 @@ namespace AdaptiveCards.Rendering
             }
             else
             {
-                Container container = new Container() { Separation = this.Separation };
-                container.Items.Add(new TextBlock() { Text = XamlUtilities.GetFallbackText(this) ?? this.Placeholder });
+                Container container = TypedElementConverter.CreateElement<Container>();
+                container.Separation = this.Separation;
+                TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                textBlock.Text = XamlUtilities.GetFallbackText(this) ?? this.Placeholder;
+                container.Items.Add(textBlock);
                 if (this.Value != null)
                 {
-                    container.Items.Add(new TextBlock()
-                    {
-                        Text = this.Value,
-                        Color = TextColor.Accent,
-                        Wrap = true
-                    });
+                    textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                    textBlock.Text = this.Value;
+                    textBlock.Color = TextColor.Accent;
+                    textBlock.Wrap = true;
+                    container.Items.Add(textBlock);
                 }
                 return context.Render(container);
             }

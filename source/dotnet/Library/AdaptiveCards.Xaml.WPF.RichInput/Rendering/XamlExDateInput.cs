@@ -33,7 +33,7 @@ namespace AdaptiveCards.Rendering
             }
             else
             {
-                var textBlock = TypedElementConverter.CreateElement<TextBlock>("TextBlock");
+                var textBlock = TypedElementConverter.CreateElement<TextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(this) ?? this.Placeholder;
                 return context.Render(textBlock);
             }

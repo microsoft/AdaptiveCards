@@ -150,18 +150,18 @@ namespace AdaptiveCards.Rendering
                     choiceText = $"* {RendererUtilities.JoinString(choices, "\n* ", "\n* ")}";
                 }
             }
-            Container container = new Container() { Separation = this.Separation };
-            container.Items.Add(new TextBlock()
-            {
-                Text = choiceText,
-                Wrap = true
-            });
-            container.Items.Add(new TextBlock()
-            {
-                Text = RendererUtilities.JoinString(this.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
-                Color = TextColor.Accent,
-                Wrap = true
-            });
+            Container container = TypedElementConverter.CreateElement<Container>();
+            container.Separation = this.Separation;
+            TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
+            textBlock.Text = choiceText;
+            textBlock.Wrap = true;
+            container.Items.Add(textBlock);
+
+            textBlock = TypedElementConverter.CreateElement<TextBlock>();
+            textBlock.Text = RendererUtilities.JoinString(this.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and ");
+            textBlock.Color = TextColor.Accent;
+            textBlock.Wrap = true;
+            container.Items.Add(textBlock);
             return context.Render(container);
         }
     }

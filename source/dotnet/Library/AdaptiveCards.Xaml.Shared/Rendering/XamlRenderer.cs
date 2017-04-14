@@ -133,7 +133,7 @@ namespace AdaptiveCards.Rendering
                 Resources = this.Resources
             };
 
-            return context.Render(showCard);
+            return context.Render(showCard.Card);
         }
 
 #elif XAMARIN

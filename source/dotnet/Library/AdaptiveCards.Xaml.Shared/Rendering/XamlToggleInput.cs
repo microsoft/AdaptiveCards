@@ -46,16 +46,19 @@ namespace AdaptiveCards.Rendering
             }
             else
             {
-                Container container = new Container() { Separation = this.Separation };
-                container.Items.Add(new TextBlock() { Text = XamlUtilities.GetFallbackText(this)});
+                Container container = TypedElementConverter.CreateElement<Container>();
+                container.Separation = this.Separation;
+
+                TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                textBlock.Text = XamlUtilities.GetFallbackText(this);
+                container.Items.Add(textBlock);
                 if (this.Value != null)
                 {
-                    container.Items.Add(new TextBlock()
-                    {
-                        Text = (this.Value == (this.ValueOn ?? "true")) ? this.ValueOn ?? "selected" : this.ValueOff ?? "not selected",
-                        Color = TextColor.Accent,
-                        Wrap = true
-                    });
+                    textBlock = TypedElementConverter.CreateElement<TextBlock>();
+                    textBlock.Text = (this.Value == (this.ValueOn ?? "true")) ? this.ValueOn ?? "selected" : this.ValueOff ?? "not selected";
+                    textBlock.Color = TextColor.Accent;
+                    textBlock.Wrap = true;
+                    container.Items.Add(textBlock);
                 }
                 return context.Render(container);
             }

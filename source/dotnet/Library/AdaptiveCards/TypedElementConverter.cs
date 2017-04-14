@@ -62,9 +62,12 @@ namespace AdaptiveCards
             return result;
         }
 
-        public static ElementT CreateElement<ElementT>(string typeName)
+        public static ElementT CreateElement<ElementT>(string typeName = null)
             where ElementT : TypedElement
         {
+            if (typeName == null)
+                typeName = ((ElementT)Activator.CreateInstance(typeof(ElementT))).Type;
+
             Type type = null;
             if (g_typedElementTypes.Value.TryGetValue(typeName, out type))
             {
