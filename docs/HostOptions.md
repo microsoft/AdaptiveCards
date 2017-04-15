@@ -96,7 +96,7 @@ Default Image size for the imageset
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| imageSize | [ImageSize](#imagesize)| Medium | The default image size to use for an imageSet| 
+| imageSize | [ImageSize](#imagesizeoptions)| Medium | The default image size to use for an imageSet| 
 
 ## FactSetOptions
 Defines how factSets should look
