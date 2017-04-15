@@ -1,4 +1,49 @@
 {
+  "fontFamily": "Calibri",
+  "fontSize": {
+    "small": 10,
+    "normal": 12,
+    "medium": 14,
+    "large": 17,
+    "extraLarge": 20
+  },
+  "supportsInteractivity": true,
+  "supportedActionTypes": [
+    "Action.OpenUrl",
+    "Action.Submit",
+    "Action.Http",
+    "Action.ShowCard"
+  ],
+  "imageSize": {
+    "small": 60,
+    "medium": 120,
+    "large": 180
+  },
+  "maxActions": 5,
+  "verticalSeparation": {
+    "default": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    },
+    "strong": {
+      "spacing": 20,
+      "lineThickness": 1,
+      "lineColor": "#FF707070"
+    }
+  },
+  "horizontalSeparation": {
+    "default": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    },
+    "strong": {
+      "spacing": 20,
+      "lineThickness": 1,
+      "lineColor": "#FF707070"
+    }
+  },
   "adaptiveCard": {
     "padding": {
       "left": 8,
@@ -6,18 +51,7 @@
       "right": 8,
       "bottom": 8
     },
-    "backgroundColor": "#FFFFFF",
-    "fontFamily": "Calibri",
-    "actionsOrientation": "horizontal",
-    "actionAlignment": "center",
-    "supportsInteractivity": true,
-    "supportedActionTypes": [
-      "Action.OpenUrl",
-      "Action.Submit",
-      "Action.Http",
-      "Action.ShowCard"
-    ],
-    "maxActions": 5
+    "backgroundColor": "#FFFFFF"
   },
   "colors": {
     "default": {
@@ -49,179 +83,31 @@
       "subtle": "#b28B0000"
     }
   },
-  "textBlock": {
-    "fontSize": {
-      "small": 10,
-      "normal": 12,
-      "medium": 14,
-      "large": 17,
-      "extraLarge": 20
-    },
-    "separation": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
-  },
-  "image": {
-    "size": {
-      "small": 60,
-      "medium": 120,
-      "large": 180
-    },
-    "separation": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
-  },
-  "container": {
-    "separation": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
-  },
-  "column": {
-    "separation": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
-  },
-  "columnSet": {
-    "separation": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
-  },
   "imageSet": {
-    "separation": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
+    "ImageSize": "medium"
   },
   "factSet": {
-    "title": {
+    "Title": {
       "weight": "bolder"
     },
-    "value": {},
-    "separation": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
-  },
-  "actionSet": {
-    "maxActions": 5,
-    "supportedActions": [
-      "Action.OpenUrl",
-      "Action.Submit",
-      "Action.Http",
-      "Action.ShowCard"
-    ],
-    "separation": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
-  },
-  "input": {
-    "separation": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
+    "Value": {},
+    "Spacing": 20
   },
   "actions": {
     "showCard": {
-      "actionMode": "popup",
+      "actionMode": "inline",
       "backgroundColor": "#FFF8F8F8",
-      "autoPadding": false,
-      "padding": {
-        "left": 10,
-        "top": 10,
-        "right": 10,
-        "bottom": 10
-      }
+      "autoPadding": true
     },
+    "actionsOrientation": "horizontal",
+    "actionAlignment": "center",
     "backgroundColor": "#FF5098FF",
     "borderColor": "#FF000000",
     "textColor": "#FFFFFFFF",
     "borderThickness": 1,
     "fontWeight": 400,
     "fontSize": 12,
-    "margin": {
-      "left": 4,
-      "top": 10,
-      "right": 4,
-      "bottom": 0
-    },
+    "spacing": 8,
     "padding": {
       "left": 4,
       "top": 4,
