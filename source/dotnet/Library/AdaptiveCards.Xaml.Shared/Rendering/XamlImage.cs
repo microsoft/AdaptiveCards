@@ -10,6 +10,7 @@ using UI = System.Windows.Controls;
 using Xamarin.Forms;
 using UI = Xamarin.Forms;
 using Button = AdaptiveCards.Rendering.ContentButton;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering

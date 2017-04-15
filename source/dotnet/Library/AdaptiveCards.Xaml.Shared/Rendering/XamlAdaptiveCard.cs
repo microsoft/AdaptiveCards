@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 // using Adaptive.Threading.Tasks.Schedulers;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering

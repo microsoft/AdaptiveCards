@@ -3,6 +3,7 @@ using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows.Controls;
 #elif XAMARIN
+using FrameworkElement = Xamarin.Forms.View;
 using Xamarin.Forms;
 #endif
 
