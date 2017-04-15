@@ -47,12 +47,16 @@ export enum Separation  {
 }
 
 export enum ValidationError {
-    MissingCardType,
-    ElementTypeNotAllowed,
     ActionTypeNotAllowed,
-    NestedActionNotAllowed,
+    CollectionCantBeEmpty,
+    ElementTypeNotAllowed,
     InteractivityNotAllowed,
-    TooManyActions
+    MissingCardType,
+    PropertyCantBeNull,
+    TooManyActions,
+    UnknownActionType,
+    UnknownElementType,
+    UnsupportedCardVersion
 }
 
 export enum ShowCardActionMode {

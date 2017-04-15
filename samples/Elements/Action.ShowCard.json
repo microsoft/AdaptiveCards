@@ -13,8 +13,8 @@
             "type": "Action.ShowCard",
             "title": "Action.ShowCard",
             "card": {
-                "type": "Container",
-                "items": [
+                "type": "AdaptiveCard",
+                "body": [
                     {
                         "type": "TextBlock",
                         "text":"What do you think?"

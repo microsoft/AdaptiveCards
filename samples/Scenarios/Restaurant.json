@@ -9,13 +9,13 @@
             "columns": [
                 {
                     "type": "Column",
-                    "size": "stretch",
+                    "size": "2",
                     "items": [
                         {
                             "type": "TextBlock",
                             "text": "Serious Pie",
                             "weight": "bolder",
-                            "size": "medium"
+                            "size": "extraLarge"
                         },
                         {
                             "type": "TextBlock",
@@ -31,12 +31,12 @@
                 },
                 {
                     "type": "Column",
-                    "size": "auto",
+                    "size": "1",
                     "items": [
                         {
                             "type": "Image",
                             "url": "http://res.cloudinary.com/sagacity/image/upload/c_crop,h_670,w_635,x_0,y_0/c_scale,w_640/v1397425743/Untitled-4_lviznp.jpg",
-                            "size": "large"
+                            "size":"auto"
                         }
                     ]
                 }

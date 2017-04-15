@@ -22,6 +22,7 @@ public:
         HorizontalAlignment hAlignment);
 
     static std::shared_ptr<TextBlock> Deserialize(const Json::Value& root);
+    static std::shared_ptr<TextBlock> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
 

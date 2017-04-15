@@ -16,19 +16,23 @@ import "brace/mode/json";
 import "brace/theme/chrome";
 import * as vkbeautify from "vkbeautify";
 
-let editor: ace.Editor;
-let hostContainerOptions: Array<HostContainerOption> = [];
-let hostContainerPicker: HTMLSelectElement;
+var editor: ace.Editor;
+var hostContainerOptions: Array<HostContainerOption> = [];
+var hostContainerPicker: HTMLSelectElement;
+var lastValidationErrors: Array<Adaptive.IValidationError> = [];
 
 function setContent(element) {
-    let contentContainer = document.getElementById("content");
+    var contentContainer = document.getElementById("content");
 
     contentContainer.innerHTML = '';
     contentContainer.appendChild(element);
 }
 
 function renderCard(): HTMLElement {
-    let hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+    document.getElementById("errorContainer").hidden = true;
+    lastValidationErrors = [];
+
+    var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
     hostContainer.applyOptions();
 
     var jsonPayload = editor.getValue();
@@ -36,8 +40,9 @@ function renderCard(): HTMLElement {
 
     var adaptiveCard = new Adaptive.AdaptiveCard();
     adaptiveCard.parse(json);
+    lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
-    document.getElementById("errorContainer").hidden = true;
+    showValidationErrors();
 
     return hostContainer.render(adaptiveCard.render(), adaptiveCard.renderSpeech());
 }
@@ -70,9 +75,9 @@ function openFilePicker() {
 }
 
 function filePickerChanged(evt) {
-    let filePicker = document.getElementById("filePicker") as HTMLInputElement;
+    var filePicker = document.getElementById("filePicker") as HTMLInputElement;
 
-    let file = filePicker.files[0];
+    var file = filePicker.files[0];
 
     if (file) {
         let reader = new FileReader();
@@ -89,7 +94,7 @@ function filePickerChanged(evt) {
 }
 
 function updateStyleSheet() {
-    let styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
+    var styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
 
     if (styleSheetLinkElement == null) {
         styleSheetLinkElement = document.createElement("link");
@@ -152,15 +157,18 @@ function setupEditor() {
 
     // Load the cached payload if the user had one
     try {
-        let cachedPayload = sessionStorage.getItem("AdaptivePayload");
+        var cachedPayload = sessionStorage.getItem("AdaptivePayload");
         var cardUrl = document.location.search.substring(1).split('card=')[1];
+
         if (cardUrl) {
             var xhttp = new XMLHttpRequest();
+
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     editor.session.setValue(xhttp.responseText);
                 }
             };
+        
             xhttp.open("GET", cardUrl, true);
             xhttp.send(); 
         }
@@ -228,8 +236,8 @@ function setupContainerPicker() {
                 tryRenderCard();
             });
 
-        for (let i = 0; i < hostContainerOptions.length; i++) {
-            let option = document.createElement("option");
+        for (var i = 0; i < hostContainerOptions.length; i++) {
+            var option = document.createElement("option");
             option.value = hostContainerOptions[i].name;
             option.text = hostContainerOptions[i].name;
 
@@ -314,14 +322,28 @@ function showPopupCard(action: Adaptive.ShowCardAction) {
     cardContainer.style.top = (window.innerHeight - cardContainerBounds.height) / 2 + "px";
 }
 
+function showValidationErrors() {
+    if (lastValidationErrors.length > 0) {
+        var errorContainer = document.getElementById("errorContainer");
+        errorContainer.innerHTML = "";
+
+        for (var i = 0; i < lastValidationErrors.length; i++) {
+            var errorElement = document.createElement("div");
+            errorElement.innerText = lastValidationErrors[i].message;
+
+            errorContainer.appendChild(errorElement);
+        }
+
+        errorContainer.hidden = false;
+    }
+}
+
 window.onload = () => {
     Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
     Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
     
-    Adaptive.AdaptiveCard.onValidationError = (error, message) => {
-        var errorContainer = document.getElementById("errorContainer");
-        errorContainer.innerText = message;
-        errorContainer.hidden = false;
+    Adaptive.AdaptiveCard.onParseError = (error: Adaptive.IValidationError) => {
+        lastValidationErrors.push(error);
     }
 
     hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
@@ -339,4 +361,3 @@ window.onload = () => {
             setContainerAppFromUrl();
         });
 };
-

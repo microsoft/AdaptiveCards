@@ -24,6 +24,7 @@ public:
     void SetSpeak(const std::string value);
 
     static std::shared_ptr<Fact> Deserialize(const Json::Value& root);
+    static std::shared_ptr<Fact> DeserializeFromString(const std::string& jsonString);
 
 private:
     std::string m_title;

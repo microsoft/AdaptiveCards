@@ -16,8 +16,8 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
-    <AssemblyVersion>1.0.10.0</AssemblyVersion>
-    <Version>1.0.10</Version>
+    <AssemblyVersion>1.0.11.0</AssemblyVersion>
+    <Version>1.0.11</Version>
   </PropertyGroup>
 
   <ItemGroup>

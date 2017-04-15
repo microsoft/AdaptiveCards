@@ -12,8 +12,7 @@ using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer
-        : AdaptiveRenderer<FrameworkElement, RenderContext>
+    public partial class XamlRenderer : AdaptiveRenderer<FrameworkElement, RenderContext>
     {
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
@@ -28,6 +27,7 @@ namespace AdaptiveCards.Rendering
             this.Resources = resources;
             this.actionCallback = actionCallback;
             this.missingDataCallback = missingDataCallback;
+            SetObjectTypes();
         }
 
 #if WPF
@@ -40,8 +40,37 @@ namespace AdaptiveCards.Rendering
             this.StylePath = stylePath;
             this.actionCallback = actionCallback;
             this.missingDataCallback = missingDataCallback;
+            SetObjectTypes();
         }
 #endif
+
+        private void SetObjectTypes()
+        {
+            this.SetRenderer<AdaptiveCard>(XamlAdaptiveCard.Render);
+
+            this.SetRenderer<TextBlock>(XamlTextBlock.Render);
+            this.SetRenderer<Image>(XamlImage.Render);
+
+            this.SetRenderer<ActionSet>(XamlActionSet.Render);
+            this.SetRenderer<Container>(XamlContainer.Render);
+            this.SetRenderer<Column>(XamlColumn.Render);
+            this.SetRenderer<ColumnSet>(XamlColumnSet.Render);
+            this.SetRenderer<ActionSet>(XamlActionSet.Render);
+            this.SetRenderer<FactSet>(XamlFactSet.Render);
+            this.SetRenderer<ImageSet>(XamlImageSet.Render);
+
+            this.SetRenderer<ChoiceSet>(XamlChoiceSet.Render);
+            this.SetRenderer<TextInput>(XamlTextInput.Render);
+            this.SetRenderer<NumberInput>(XamlNumberInput.Render);
+            this.SetRenderer<DateInput>(XamlDateInput.Render);
+            this.SetRenderer<TimeInput>(XamlTimeInput.Render);
+            this.SetRenderer<ToggleInput>(XamlToggleInput.Render); ;
+
+            this.SetRenderer<SubmitAction>(XamlSubmitAction.Render);
+            this.SetRenderer<HttpAction>(XamlHttpAction.Render); ;
+            this.SetRenderer<OpenUrlAction>(XamlOpenUrlAction.Render);
+            this.SetRenderer<ShowCardAction>(XamlShowCardAction.Render);
+        }
 
         /// <summary>
         /// Resource dictionary to use when rendering
@@ -91,23 +120,27 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Options = styling ?? this.DefaultOptions
+                Options = options ?? this.DefaultOptions,
+                Resources = this.Resources,
+                ElementRenderers = this.ElementRenderers
             };
-            return Render(card, context);
+            return context.Render(card);
         }
 
-        public FrameworkElement RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions styling = null)
+        public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Options = styling ?? this.DefaultOptions
+                Options = options ?? this.DefaultOptions,
+                Resources = this.Resources,
+                ElementRenderers = this.ElementRenderers
             };
 
-            return Render(showCard.Card, context);
+            return context.Render(showCard.Card);
         }
 
 #elif XAMARIN
@@ -122,35 +155,19 @@ namespace AdaptiveCards.Rendering
             {
                 Options = options ?? this.DefaultOptions
             };
-            return Render(card, context);
+            return context.Render(card);
         }
 
-        public View RenderShowCard(ActionShowCard showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
+        public View RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
                 Options = options ?? this.DefaultOptions
             };
-            return Render(showCard.Card, context);
+            return context.Render(showCard);
         }
 
 #endif
 
-        public virtual Style GetStyle(string styleName)
-        {
-            while (!String.IsNullOrEmpty(styleName))
-            {
-                Style style = this.Resources.TryGetValue<Style>(styleName);
-                if (style != null)
-                    return style;
-                var iPos = styleName.LastIndexOf('.');
-                if (iPos <= 0)
-                    break;
-                styleName = styleName.Substring(0, iPos);
-            }
-
-            // Debug.WriteLine($"Unable to find Style {styleName} from the supplied ResourceDictionary");
-            return null;
-        }
     }
 }

@@ -10,9 +10,11 @@ namespace AdaptiveCards
     /// </summary>
     public class FactSet : CardElement
     {
+        public const string TYPE = "FactSet";
+
         public FactSet()
         {
-            Type = "FactSet";
+            Type = TYPE;
         }
 
         /// <summary>
