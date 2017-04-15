@@ -36,7 +36,7 @@ namespace AdaptiveCards.Rendering
                 {
                     Text = fact.Value,
                     Style = context.GetStyle("Adaptive.Fact.Value"),
-                    Margin = new Thickness(20, 0, 0, 0)
+                    Margin = new Thickness(context.Options.FactSet.Spacing, 0, 0, 0)
                 };
                 uiFactSet.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 

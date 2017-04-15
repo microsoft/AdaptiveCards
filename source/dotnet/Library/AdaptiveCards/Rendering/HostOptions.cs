@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AdaptiveCards.Rendering
 {
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class HostOptions
     {
         public HostOptions() { }
@@ -78,6 +80,7 @@ namespace AdaptiveCards.Rendering
         }
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class BoundaryOptions
     {
         public BoundaryOptions() { }
@@ -101,6 +104,7 @@ namespace AdaptiveCards.Rendering
         public int Bottom { get; set; }
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveCardOptions
     {
         public AdaptiveCardOptions() { }
@@ -170,6 +174,7 @@ namespace AdaptiveCards.Rendering
     /// <summary>
     /// Shared properties for elements
     /// </summary>
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class CardElementOptions
     {
         public CardElementOptions()
@@ -184,6 +189,7 @@ namespace AdaptiveCards.Rendering
     /// <summary>
     /// Properties which control spacing and visual between elements
     /// </summary>
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class SeparationOptions
     {
         public SeparationOptions() { }
@@ -199,6 +205,7 @@ namespace AdaptiveCards.Rendering
         public SeparationOption Strong { get; set; } = new SeparationOption() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class SeparationOption
     {
         public SeparationOption() { }
@@ -233,6 +240,7 @@ namespace AdaptiveCards.Rendering
         public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FontSizeOptions
     {
         public FontSizeOptions() { }
@@ -249,6 +257,7 @@ namespace AdaptiveCards.Rendering
 
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ColorOptions
     {
         public ColorOptions() { }
@@ -268,6 +277,7 @@ namespace AdaptiveCards.Rendering
         public ColorOption Attention { get; set; } = new ColorOption("#FF8B0000");
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ColorOption
     {
         public ColorOption(string normal, string subtle = null)
@@ -300,6 +310,7 @@ namespace AdaptiveCards.Rendering
         public ImageSizeOptions Size { get; set; } = new ImageSizeOptions();
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ImageSizeOptions
 
     {
@@ -315,6 +326,7 @@ namespace AdaptiveCards.Rendering
     /// <summary>
     /// Properties which control rendering of actions
     /// </summary>
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ActionOptions
     {
         public ActionOptions() { }
@@ -346,6 +358,7 @@ namespace AdaptiveCards.Rendering
 
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ShowCardOptions
     {
         public ShowCardOptions() { }
@@ -379,8 +392,6 @@ namespace AdaptiveCards.Rendering
     public class ImageSetOptions : CardElementOptions
     {
         public ImageSetOptions() { }
-
-        public bool Wrap { get; set; } = true;
     }
 
     public class FactSetOptions : CardElementOptions
@@ -396,8 +407,14 @@ namespace AdaptiveCards.Rendering
         /// TextBlock to use for Values in fact sets
         /// </summary>
         public TextOptions Value { get; set; } = new TextOptions();
+
+        /// <summary>
+        /// Spacing between facts and values
+        /// </summary>
+        public int Spacing { get; set; } = 20;
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class TextOptions
     {
         public TextOptions()
