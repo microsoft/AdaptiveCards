@@ -26,5 +26,10 @@ namespace AdaptiveCards.Rendering
         {
             return control.IsToggled;
         }
+
+        public static void Add(this StackLayout control, View item)
+        {
+            control.Children.Add(item);
+        }
     }
 }

@@ -16,27 +16,25 @@ namespace AdaptiveCards.Rendering
             ImageSet imageSet = (ImageSet)element;
 #if WPF
             var uiImageSet = new ListBox();
-            uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
-
             ScrollViewer.SetHorizontalScrollBarVisibility(uiImageSet, ScrollBarVisibility.Disabled);
             var itemsPanelTemplate = new ItemsPanelTemplate();
             var factory = new FrameworkElementFactory(typeof(WrapPanel));
             // factory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
             itemsPanelTemplate.VisualTree = factory;
-            uiImageSet.ItemsPanel = itemsPanelTemplate;
+            uiImageSet.ItemsPanel = itemsPanelTemplate;            
+#elif XAMARIN
+            var uiImageSet = new StackLayout { Orientation = StackOrientation.Vertical };
+#endif
 
+            uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
             foreach (var image in imageSet.Images)
             {
                 if (imageSet.ImageSize != ImageSize.Auto)
                     image.Size = imageSet.ImageSize;
                 var uiImage = context.Render(image);
-                uiImageSet.Items.Add(uiImage);
+                uiImageSet.Add(uiImage);
             }
             return uiImageSet;
-#elif XAMARIN
-            // TODO: xamarin imageset support
-            return new Grid();
-#endif
 
         }
     }

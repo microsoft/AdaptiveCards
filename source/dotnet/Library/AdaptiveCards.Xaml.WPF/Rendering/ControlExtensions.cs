@@ -29,5 +29,10 @@ namespace AdaptiveCards.Rendering
         {
             return control.IsChecked;
         }
+
+        public static void Add (this ListBox control, object element)
+        {
+            control.Items.Add(element);
+        }
     }
 }
