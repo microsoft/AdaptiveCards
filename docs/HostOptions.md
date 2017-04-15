@@ -10,18 +10,18 @@ You  can further customize the look and feel of the card using ui framework leve
 | Property | Type | default | Description |
 |---|---|---|---|
 | **fontFamily**| string | "Calibri" | defines comma delimited font-family to be used for card |
-| **fontSize** | [FontSizeOptions](#FontSizeOptions) |  - | The font sizes to use for text. |
-| **colors** | [ColorOptions](#ColorOptions) | - | defines color pallette|
-| **imageSize** | [ImageSizeOptions](#ImageSizeOptions) | - | Defines the sizes for images |
+| **fontSize** | [FontSizeOptions](#fontsizeoptions) |  - | The font sizes to use for text. |
+| **colors** | [ColorOptions](#coloroptions) | - | defines color pallette|
+| **imageSize** | [ImageSizeOptions](#imagesizeoptions) | - | Defines the sizes for images |
 | **supportsInteractivity** | bool | true| Does the host want to support interactivity like actions and inputs |
 | **supportedActionTypes** | string[] | All | What action types does the app want to support
 | **maxActions** | int | 5 | max number of actions that the app wants to support|
-| **horizontalSeparation** | [SeparationOptions](#SeparationOptions) | - | Defines spacing and color for separations between vertical elements| 
-| **verticalSeparation** | [SeparationOptions](#SeparationOptions) | - | Defines spacing and color for separations between horizontal elements| 
-| **adaptiveCard**| [AdaptiveCardOptions](#AdaptiveCardOptions) | - | Defines adaptive card options |
-| **imageSet** | [ImageSetOptions](#ImageSetOptions) | - | defines options for ImageSet element|
-| **factSet** | [FactSetOptions](#FactSetOptions) | - | defines options for FactSet element|
-| **actions** | [ActionOptions](#ActionOptions) | - | Defines options for Actions |
+| **horizontalSeparation** | [SeparationOptions](#separationoptions) | - | Defines spacing and color for separations between vertical elements| 
+| **verticalSeparation** | [SeparationOptions](#separationoptions) | - | Defines spacing and color for separations between horizontal elements| 
+| **adaptiveCard**| [AdaptiveCardOptions](#adaptivecardoptions) | - | Defines adaptive card options |
+| **imageSet** | [ImageSetOptions](#imagesetoptions) | - | defines options for ImageSet element|
+| **factSet** | [FactSetOptions](#factsetoptions) | - | defines options for FactSet element|
+| **actions** | [ActionOptions](#actionoptions) | - | Defines options for Actions |
 
 
 ## AdaptiveCardOptions
@@ -30,7 +30,7 @@ Defines Card options
 | Property | Type | default | Description |
 |---|---|---|---|
 | **backgroundColor**| string | #FFFFFFFF | defines default color for the background in RGBa format #AARRGGBB|
-| **Padding**| [BoundaryOptions](#BoundaryOptions) | 8,8,8,8 | defines padding between card content and edge of card|
+| **Padding**| [BoundaryOptions](#boundaryoptions) | 8,8,8,8 | defines padding between card content and edge of card|
 
 
 ## SeparationOptions
@@ -38,8 +38,8 @@ Properties which control spacing and visual between elements
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| default| [SeparationOption](#SeparationOption) | {Spacing=10} |default separation |
-| strong | [SeparationOption](#SeparationOption) | {Spacing=20, lineThickness=1, lineColor=#FF707070} |strong separation |
+| default| [SeparationOption](#separationoption) | {Spacing=10} |default separation |
+| strong | [SeparationOption](#separationoption) | {Spacing=20, lineThickness=1, lineColor=#FF707070} |strong separation |
 
 ## SeparationOption
 Properties which define spacing, line thickness and color for separating elements
@@ -66,13 +66,13 @@ ColorOptions defining the pallette for the card
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| default | [ColorOption](#ColorOption) | #FF000000 | default color to use |
-| accent | [ColorOption](#ColorOption) | #FF0000FF | accent color to use |
-| dark | [ColorOption](#ColorOption) | #FF101010 | dark color to use |
-| light  | [ColorOption](#ColorOption) | #FFFFFFFF | light color to use |
-| good   | [ColorOption](#ColorOption) | #FF008000 | good color to use |
-| warning  | [ColorOption](#ColorOption) | #FFFFD700 | warning color to use |
-| attention  | [ColorOption](#ColorOption) | #FF8B0000 | attention color to use |
+| default | [ColorOption](#coloroption) | #FF000000 | default color to use |
+| accent | [ColorOption](#coloroption) | #FF0000FF | accent color to use |
+| dark | [ColorOption](#coloroption) | #FF101010 | dark color to use |
+| light  | [ColorOption](#coloroption) | #FFFFFFFF | light color to use |
+| good   | [ColorOption](#coloroption) | #FF008000 | good color to use |
+| warning  | [ColorOption](#coloroption) | #FFFFD700 | warning color to use |
+| attention  | [ColorOption](#coloroption) | #FF8B0000 | attention color to use |
 
 ## ColorOption
 Defines color and subtle version of color
@@ -96,15 +96,15 @@ Default Image size for the imageset
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| imageSize | [ImageSize](#ImageSize)| Medium | The default image size to use for an imageSet| 
+| imageSize | [ImageSize](#imagesize)| Medium | The default image size to use for an imageSet| 
 
 ## FactSetOptions
 Defines how factSets should look
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| title | [TextOptions](#TextOptions) | {  Weight = TextWeight.Bolder }| sets how text for fact title should look|
-| value | [TextOptions](#TextOptions) | { } | sets how text for fact title should look|
+| title | [TextOptions](#textoptions) | {  Weight = TextWeight.Bolder }| sets how text for fact title should look|
+| value | [TextOptions](#textoptions) | { } | sets how text for fact title should look|
 | spacing | int | 20 | spacing between fact and value |
 
 ## TextOptions
@@ -123,7 +123,7 @@ Defines options for how actions should be rendered
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| ShowCard | [ShowCardOptions](#ShowCardOptions)| - | defines options for ShowCardAction|
+| ShowCard | [ShowCardOptions](#showcardoptions)| - | defines options for ShowCardAction|
 | ActionsOrientation | Horizontal or Vertical | Horizontal | defines actions as horizontal vs vertical |
 | ActionAlignment | Left or center or right | center | should actions be aligned left, centered or right |
 | BackgroundColor | string | #FF5098FF | defines background for card when the showCard is shown inline|
@@ -133,7 +133,7 @@ Defines options for how actions should be rendered
 | FontWeight  | int  | #FFFFFFFF | defines color of title for action button |
 | FontSize  | int  | 12 | defines size of the text on the action btton |
 | Spacing | int | 8 | spacing between buttons in an actionSet|
-| Padding | [BoundaryOptions](#BoundaryOptions)| 4,4,4,4| The default padding around the title of the button |
+| Padding | [BoundaryOptions](#boundaryoptions)| 4,4,4,4| The default padding around the title of the button |
 
 ## ShowCardActions
 The options for showing a card action.
