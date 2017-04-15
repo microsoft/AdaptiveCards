@@ -42,12 +42,12 @@ namespace AdaptiveCards.Rendering
                         switch (column.Separation)
                         {
                             case SeparationStyle.Strong:
-                                sepStyle = context.Options.Container.Separation.Strong;
+                                sepStyle = context.Options.HorizontalSeparation.Strong;
                                 break;
 
                             case SeparationStyle.Default:
                             default:
-                                sepStyle = context.Options.Container.Separation.Default;
+                                sepStyle = context.Options.HorizontalSeparation.Default;
                                 break;
                         }
                         uiSep.Margin = new Thickness(sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2, 0);

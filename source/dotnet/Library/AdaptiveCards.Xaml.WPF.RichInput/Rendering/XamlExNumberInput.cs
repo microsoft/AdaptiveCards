@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             NumberInput input = (NumberInput)element;
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
 
                 IntegerUpDown numberPicker = new IntegerUpDown();

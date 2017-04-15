@@ -38,7 +38,7 @@ namespace AdaptiveCards.Rendering
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
             uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
 
-            uiTextBlock.FontFamily = new FontFamily(context.Options.AdaptiveCard.FontFamily);
+            uiTextBlock.FontFamily = new FontFamily(context.Options.FontFamily);
 
             ColorOption colorOption;
             switch (textBlock.Color)
@@ -137,20 +137,20 @@ namespace AdaptiveCards.Rendering
             switch (textBlock.Size)
             {
                 case TextSize.Small:
-                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Small;
+                    uiTextBlock.FontSize = context.Options.FontSize.Small;
                     break;
                 case TextSize.Medium:
-                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Medium;
+                    uiTextBlock.FontSize = context.Options.FontSize.Medium;
                     break;
                 case TextSize.Large:
-                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Large;
+                    uiTextBlock.FontSize = context.Options.FontSize.Large;
                     break;
                 case TextSize.ExtraLarge:
-                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.ExtraLarge;
+                    uiTextBlock.FontSize = context.Options.FontSize.ExtraLarge;
                     break;
                 case TextSize.Normal:
                 default:
-                    uiTextBlock.FontSize = context.Options.TextBlock.FontSize.Normal;
+                    uiTextBlock.FontSize = context.Options.FontSize.Normal;
                     break;
             }
 

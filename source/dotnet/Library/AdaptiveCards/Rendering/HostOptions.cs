@@ -12,6 +12,51 @@ namespace AdaptiveCards.Rendering
     {
         public HostOptions() { }
 
+        /// <summary>
+        /// Font family for the card (can be comma delimited for fallback)
+        /// </summary>
+        public string FontFamily { get; set; } = "Calibri";
+
+        /// <summary>
+        /// FontSize
+        /// </summary>
+        public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
+
+
+        /// <summary>
+        /// Toggles whether or not to render inputs and actions
+        /// </summary>
+        public bool SupportsInteractivity { get; set; } = true;
+
+        /// <summary>
+        /// The types of Actions that you support(null for no actions)
+        /// </summary>
+        public string[] SupportedActionTypes { get; set; } = new string[]
+        {
+            OpenUrlAction.TYPE,
+            SubmitAction.TYPE,
+            HttpAction.TYPE,
+            ShowCardAction.TYPE
+        };
+
+        public ImageSizeOptions ImageSize { get; set; } = new ImageSizeOptions();
+
+        /// <summary>
+        /// Max number of actions to support on your Cards(e.g., 3)
+        /// </summary>
+        public int MaxActions { get; set; } = 5;
+
+        /// <summary>
+        /// Separation settings 
+        /// </summary>
+        public SeparationOptions VerticalSeparation { get; set; } = new SeparationOptions();
+
+        /// <summary>
+        /// Separation settings between columns
+        /// </summary>
+        public SeparationOptions HorizontalSeparation { get; set; } = new SeparationOptions();
+
+
         //  ------ AdaptiveCard -------
         public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
 
@@ -21,63 +66,15 @@ namespace AdaptiveCards.Rendering
         public ColorOptions Colors { get; set; } = new ColorOptions();
 
         // ------ Basic ------
-        public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
-
-        public ImageOptions Image { get; set; } = new ImageOptions();
+        //public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
 
         // ------ Containers ------
-        public ContainerOptions Container { get; set; } = new ContainerOptions();
-
-        public ColumnOptions Column { get; set; } = new ColumnOptions();
-
-        public ColumnSetOptions ColumnSet { get; set; } = new ColumnSetOptions();
-
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
         public FactSetOptions FactSet { get; set; } = new FactSetOptions();
 
-        public ActionSetOptions ActionSet { get; set; } = new ActionSetOptions();
-
-        // ------ Input ------
-        public InputOptions Input { get; set; } = new InputOptions();
-
         // ------ Actions------
         public ActionOptions Actions { get; set; } = new ActionOptions();
-
-        public CardElementOptions GetElementStyling(object obj)
-        {
-            if (obj is TextBlock)
-                return this.TextBlock;
-            if (obj is Image)
-                return this.Image;
-            if (obj is Container)
-                return this.Container;
-            if (obj is Column)
-                return this.Column;
-            if (obj is ColumnSet)
-                return this.ColumnSet;
-            if (obj is ActionSet)
-                return this.ActionSet;
-            if (obj is ImageSet)
-                return this.ImageSet;
-            if (obj is ImageSet)
-                return this.ImageSet;
-            if (obj is FactSet)
-                return this.FactSet;
-            if (obj is TextInput)
-                return this.Input;
-            if (obj is NumberInput)
-                return this.Input;
-            if (obj is DateInput)
-                return this.Input;
-            if (obj is TimeInput)
-                return this.Input;
-            if (obj is ChoiceSet)
-                return this.Input;
-            if (obj is ToggleInput)
-                return this.Input;
-            throw new ArgumentException($"Unknown type {obj.GetType().Name}");
-        }
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
@@ -118,42 +115,6 @@ namespace AdaptiveCards.Rendering
         /// Background color for card 
         /// </summary>
         public string BackgroundColor { get; set; } = "#FFFFFF";
-
-        /// <summary>
-        /// Font family for the card (can be comma delimited for fallback)
-        /// </summary>
-        public string FontFamily { get; set; } = "Calibri";
-
-        /// <summary>
-        /// Arrange actions horizontal or vertical
-        /// </summary>
-        public ActionsOrientation ActionsOrientation { get; set; } = ActionsOrientation.Horizontal;
-
-        /// <summary>
-        /// should they be aligned Left, Center or Right
-        /// </summary>
-        public HorizontalAlignment ActionAlignment { get; set; } = HorizontalAlignment.Center;
-
-        /// <summary>
-        /// Toggles whether or not to render inputs and actions
-        /// </summary>
-        public bool SupportsInteractivity { get; set; } = true;
-
-        /// <summary>
-        /// The types of Actions that you support(null for no actions)
-        /// </summary>
-        public string[] SupportedActionTypes { get; set; } = new string[]
-        {
-            OpenUrlAction.TYPE,
-            SubmitAction.TYPE,
-            HttpAction.TYPE,
-            ShowCardAction.TYPE
-        };
-
-        /// <summary>
-        /// Max number of actions to support on your Cards(e.g., 3)
-        /// </summary>
-        public int MaxActions { get; set; } = 5;
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
@@ -170,21 +131,6 @@ namespace AdaptiveCards.Rendering
         Vertical
     }
 
-
-    /// <summary>
-    /// Shared properties for elements
-    /// </summary>
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class CardElementOptions
-    {
-        public CardElementOptions()
-        { }
-
-        /// <summary>
-        /// Separation settings 
-        /// </summary>
-        public SeparationOptions Separation { get; set; } = new SeparationOptions();
-    }
 
     /// <summary>
     /// Properties which control spacing and visual between elements
@@ -230,15 +176,11 @@ namespace AdaptiveCards.Rendering
     /// <summary>
     /// Properties which control rendering of TextBlock 
     /// </summary>
-    public class TextBlockOptions : CardElementOptions
-    {
-        public TextBlockOptions() { }
+    //public class TextBlockOptions : CardElementOptions
+    //{
+    //    public TextBlockOptions() { }
 
-        /// <summary>
-        /// FontSize
-        /// </summary>
-        public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
-    }
+    //}
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FontSizeOptions
@@ -300,16 +242,6 @@ namespace AdaptiveCards.Rendering
         public string Subtle { get; set; }
     }
 
-    /// <summary>
-    /// properties which control rendering of Images
-    /// </summary>
-    public class ImageOptions : CardElementOptions
-    {
-        public ImageOptions() { }
-
-        public ImageSizeOptions Size { get; set; } = new ImageSizeOptions();
-    }
-
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ImageSizeOptions
 
@@ -333,6 +265,17 @@ namespace AdaptiveCards.Rendering
 
         public ShowCardOptions ShowCard { get; set; } = new ShowCardOptions();
 
+        /// <summary>
+        /// Arrange actions horizontal or vertical
+        /// </summary>
+        public ActionsOrientation ActionsOrientation { get; set; } = ActionsOrientation.Horizontal;
+
+        /// <summary>
+        /// should they be aligned Left, Center or Right
+        /// </summary>
+        public HorizontalAlignment ActionAlignment { get; set; } = HorizontalAlignment.Center;
+
+
         public string BackgroundColor { get; set; } = "#FF5098FF";
 
         public string BorderColor { get; set; } = "#FF000000";
@@ -348,7 +291,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Space between actions
         /// </summary>
-        public BoundaryOptions Margin { get; set; } = new BoundaryOptions(4, 10, 4, 0);
+        public int Spacing { get; set; } = 8;
 
         /// <summary>
         /// space between title and button edge
@@ -363,7 +306,7 @@ namespace AdaptiveCards.Rendering
     {
         public ShowCardOptions() { }
 
-        public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Popup;
+        public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Inline;
 
         /// <summary>
         /// Background color for showcard area
@@ -371,14 +314,9 @@ namespace AdaptiveCards.Rendering
         public string BackgroundColor { get; set; } = "#FFF8F8F8";
 
         /// <summary>
-        /// If actionMode is inline and AutoPAdding is on then the background will extend to the edges of the parent card.
+        /// If actionMode is inline and AutoPadding is on then the background will extend to the edges of the parent card.
         /// </summary>
-        public bool AutoPadding { get; set; } = false;
-
-        /// <summary>
-        /// Padding for showcard when Popup or AutoMargin=false
-        /// </summary>
-        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(10);
+        public bool AutoPadding { get; set; } = true;
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
@@ -389,12 +327,14 @@ namespace AdaptiveCards.Rendering
     }
 
 
-    public class ImageSetOptions : CardElementOptions
+    public class ImageSetOptions 
     {
         public ImageSetOptions() { }
+
+        public ImageSize ImageSize { get; set; } = ImageSize.Medium;
     }
 
-    public class FactSetOptions : CardElementOptions
+    public class FactSetOptions 
     {
         public FactSetOptions() { }
 
@@ -463,44 +403,5 @@ namespace AdaptiveCards.Rendering
         {
             return IsSubtle;
         }
-    }
-
-    public class InputOptions : CardElementOptions
-    {
-        public InputOptions() { }
-    }
-
-    public class ColumnSetOptions : CardElementOptions
-    {
-        public ColumnSetOptions() { }
-    }
-
-    public class ContainerOptions : CardElementOptions
-    {
-        public ContainerOptions() { }
-    }
-
-    public class ColumnOptions : CardElementOptions
-    {
-        public ColumnOptions() { }
-    }
-
-
-    public class ActionSetOptions : CardElementOptions
-    {
-        public ActionSetOptions() { }
-
-        public int MaxActions { get; set; } = 5;
-
-        /// <summary>
-        /// The types of Actions that you support(null for no actions)
-        /// </summary>
-        public string[] SupportedActions { get; set; } = new string[]
-        {
-            OpenUrlAction.TYPE,
-            SubmitAction.TYPE,
-            HttpAction.TYPE,
-            ShowCardAction.TYPE
-        };
     }
 }

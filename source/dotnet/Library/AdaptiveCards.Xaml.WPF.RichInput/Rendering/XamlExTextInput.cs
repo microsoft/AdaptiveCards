@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             TextInput input = (TextInput)element;
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
                 var textBox = new WatermarkTextBox() { Text = input.Value };
                 if (input.IsMultiline == true)

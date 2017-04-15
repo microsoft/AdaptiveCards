@@ -61,7 +61,7 @@ namespace AdaptiveCards.Rendering
 
         protected override HtmlTag Render(OpenUrlAction action, RenderContext context)
         {
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
                 var uiButton = new LinkTag(action.Title, action.Url, action.Type.Replace(".", ""), "pushButton");
                 return uiButton;
@@ -158,7 +158,7 @@ namespace AdaptiveCards.Rendering
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
-            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && column.SelectAction != null)
+            if (DefaultOptions.SupportsInteractivity && column.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
@@ -253,7 +253,7 @@ namespace AdaptiveCards.Rendering
 
             AddContainerElements(uiContainer, container.Items, container.Actions, context);
 
-            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && container.SelectAction != null)
+            if (DefaultOptions.SupportsInteractivity && container.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
@@ -352,7 +352,7 @@ namespace AdaptiveCards.Rendering
                     break;
             }
 
-            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && image.SelectAction != null)
+            if (DefaultOptions.SupportsInteractivity && image.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(image.SelectAction, context);
                 //if (uiButton != null)

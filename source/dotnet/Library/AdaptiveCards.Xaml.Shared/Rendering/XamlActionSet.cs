@@ -26,7 +26,7 @@ namespace AdaptiveCards.Rendering
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.ActionSet");
 
-            AddActions(uiContainer, actionSet.Actions, context, context.Options.ActionSet.SupportedActions, context.Options.ActionSet.MaxActions);
+            AddActions(uiContainer, actionSet.Actions, context, context.Options.SupportedActionTypes, context.Options.MaxActions);
 
             return uiContainer;
         }
@@ -43,14 +43,17 @@ namespace AdaptiveCards.Rendering
                 {
 #if WPF
                     var uiActionBar = new UniformGrid();
-                    if (context.Options.AdaptiveCard.ActionsOrientation == ActionsOrientation.Horizontal)
+                    if (context.Options.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
                         uiActionBar.Columns = actionsToProcess.Count();
                     else
                         uiActionBar.Rows = actionsToProcess.Count();
-                    uiActionBar.HorizontalAlignment = (System.Windows.HorizontalAlignment)Enum.Parse(typeof(System.Windows.HorizontalAlignment), context.Options.AdaptiveCard.ActionAlignment.ToString());
+                    uiActionBar.HorizontalAlignment = (System.Windows.HorizontalAlignment)Enum.Parse(typeof(System.Windows.HorizontalAlignment), context.Options.Actions.ActionAlignment.ToString());
                     uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-
                     uiActionBar.Style = context.GetStyle("Adaptive.Actions");
+                    if (uiContainer.RowDefinitions.Count > 0)
+                    {
+                        XamlContainer.AddSeperator(context, uiContainer, SeparationStyle.Default);
+                    }
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);
                     uiContainer.Children.Add(uiActionBar);
@@ -68,6 +71,11 @@ namespace AdaptiveCards.Rendering
                         var uiAction = (Button)context.Render(action);
                         if (uiAction != null)
                         {
+                            if (uiActionBar.Children.Count > 0)
+                            {
+                                uiAction.Margin = new Thickness(context.Options.Actions.Spacing, 0, 0, 0);
+                            }
+
                             Grid.SetColumn(uiAction, iPos++);
                             uiActionBar.Children.Add(uiAction);
 
@@ -81,17 +89,13 @@ namespace AdaptiveCards.Rendering
                                     uiShowCardContainer.DataContext = showCardAction;
                                     if (context.Options.Actions.ShowCard.AutoPadding == true)
                                     {
-                                        uiShowCardContainer.Margin = new Thickness(context.Options.AdaptiveCard.Padding.Left * -1,
-                                            context.Options.Actions.ShowCard.Padding.Top,
+                                        uiShowCardContainer.Margin = new Thickness(context.Options.AdaptiveCard.Padding.Left * -1, /*top*/0,
                                             context.Options.AdaptiveCard.Padding.Right * -1,
                                             context.Options.AdaptiveCard.Padding.Bottom * -1);
                                     }
                                     else
                                     {
-                                        uiShowCardContainer.Margin = new Thickness(context.Options.Actions.ShowCard.Padding.Left,
-                                            context.Options.Actions.ShowCard.Padding.Top,
-                                            context.Options.Actions.ShowCard.Padding.Right,
-                                            context.Options.Actions.ShowCard.Padding.Bottom);
+                                        uiShowCardContainer.Margin = new Thickness(0);
                                     }
                                     uiShowCardContainer.Background = context.GetColorBrush(context.Options.Actions.ShowCard.BackgroundColor);
                                     uiShowCardContainer.Visibility = Visibility.Collapsed;
@@ -99,10 +103,6 @@ namespace AdaptiveCards.Rendering
                                     // render the card
                                     var uiShowCard = context.Render(showCardAction.Card);
                                     ((Grid)uiShowCard).Background = context.GetColorBrush("Transparent");
-                                    uiShowCard.Margin = new Thickness(context.Options.Actions.ShowCard.Padding.Left,
-                                        context.Options.Actions.ShowCard.Padding.Top,
-                                        context.Options.Actions.ShowCard.Padding.Right,
-                                        context.Options.Actions.ShowCard.Padding.Bottom);
                                     uiShowCard.DataContext = showCardAction;
                                     uiShowCardContainer.Children.Add(uiShowCard);
 
@@ -120,6 +120,7 @@ namespace AdaptiveCards.Rendering
                                     };
                                 }
                             }
+
                         }
                     }
 
