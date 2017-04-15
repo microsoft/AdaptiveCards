@@ -19,7 +19,7 @@ namespace AdaptiveCards.Rendering
                 var textBox = new TextBox() { Text = input.Value.ToString() };
                 textBox.Text = input.Placeholder;
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.Number");
-                textBox.DataContext = input;
+                textBox.SetContext(input);
                 context.InputBindings.Add(input.Id, () => textBox.Text);
                 return textBox;
             }

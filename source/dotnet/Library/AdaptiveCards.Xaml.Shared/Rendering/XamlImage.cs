@@ -21,11 +21,7 @@ namespace AdaptiveCards.Rendering
         {
             Image image = (Image)element;
             var uiImage = new UI.Image();
-#if WPF
-            uiImage.Source = context.ResolveImageSource(image.Url);
-#elif XAMARIN
-            uiImage.SetSource(new Uri(image.Url));
-#endif
+            uiImage.SetSource(image.Url,context);
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
 

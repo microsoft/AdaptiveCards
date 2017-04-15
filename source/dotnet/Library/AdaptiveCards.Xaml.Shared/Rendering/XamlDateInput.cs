@@ -20,7 +20,7 @@ namespace AdaptiveCards.Rendering
                 var textBox = new TextBox() { Text = input.Value };
                 textBox.Text = input.Placeholder;
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.Date");
-                textBox.DataContext = input;
+                textBox.SetContext(input);
                 context.InputBindings.Add(input.Id, () => textBox.Text);
                 return textBox;
             }

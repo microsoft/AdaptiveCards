@@ -54,6 +54,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Rendering\ControlExtensions.cs" />
+    <Compile Include="Rendering\ImageExtensions.cs" />
     <Compile Include="Rendering\ImageRenderer.cs" />
     <Compile Include="Rendering\RenderHelper.cs" />
     <Compile Include="Rendering\StaTaskSchedule.cs" />
