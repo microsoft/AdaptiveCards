@@ -390,12 +390,62 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// TextBlock to use for Titles in factsets
         /// </summary>
-        public TextBlock Title { get; set; } = new TextBlock() { Weight = TextWeight.Bolder };
+        public TextOptions Title { get; set; } = new TextOptions() { Size = TextSize.Normal, Color = TextColor.Default, IsSubtle = false, Weight = TextWeight.Bolder };
 
         /// <summary>
         /// TextBlock to use for Values in fact sets
         /// </summary>
-        public TextBlock Value { get; set; } = new TextBlock() { };
+        public TextOptions Value { get; set; } = new TextOptions();
+    }
+
+    public class TextOptions
+    {
+        public TextOptions()
+        { }
+
+        /// <summary>
+        ///     The size of the text
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public TextSize Size { get; set; } = TextSize.Normal;
+
+        /// <summary>
+        ///     The weight of the text
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public TextWeight Weight { get; set; } = TextWeight.Normal;
+
+        /// <summary>
+        ///     The color of the text
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public TextColor Color { get; set; } = TextColor.Default;
+
+        /// <summary>
+        ///     Should it be subtle?
+        /// </summary>
+        public bool IsSubtle { get; set; } = false;
+
+        public bool ShouldSerializeSize()
+        {
+            return Size != TextSize.Normal;
+        }
+
+        public bool ShouldSerializeColor()
+        {
+            return Color != TextColor.Default;
+        }
+
+
+        public bool ShouldSerializeWeight()
+        {
+            return Weight != TextWeight.Normal;
+        }
+
+        public bool ShouldSerializeIsSubtle()
+        {
+            return IsSubtle;
+        }
     }
 
     public class InputOptions : CardElementOptions
