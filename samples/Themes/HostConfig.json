@@ -72,17 +72,17 @@
     }
   },
   "imageSet": {
-    "ImageSize": "medium"
+    "imageSize": "medium"
   },
   "factSet": {
-    "Title": {
+    "title": {
       "weight": "bolder"
     },
-    "Value": {},
-    "Spacing": 20
+    "value": {},
+    "spacing": 20
   },
   "column": {
-    "Separation": {
+    "separation": {
       "default": {
         "spacing": 10,
         "lineThickness": 0,

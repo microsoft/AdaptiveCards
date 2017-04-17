@@ -321,6 +321,7 @@ namespace AdaptiveCards.Rendering
     }
 
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ImageSetOptions 
     {
         public ImageSetOptions() { }
@@ -328,6 +329,7 @@ namespace AdaptiveCards.Rendering
         public ImageSize ImageSize { get; set; } = ImageSize.Medium;
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FactSetOptions 
     {
         public FactSetOptions() { }
@@ -348,6 +350,7 @@ namespace AdaptiveCards.Rendering
         public int Spacing { get; set; } = 20;
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ColumnOptions
     {
         public ColumnOptions() { }
