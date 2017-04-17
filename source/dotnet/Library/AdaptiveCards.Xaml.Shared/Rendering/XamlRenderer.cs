@@ -56,7 +56,6 @@ namespace AdaptiveCards.Rendering
             this.SetRenderer<Container>(XamlContainer.Render);
             this.SetRenderer<Column>(XamlColumn.Render);
             this.SetRenderer<ColumnSet>(XamlColumnSet.Render);
-            this.SetRenderer<ActionSet>(XamlActionSet.Render);
             this.SetRenderer<FactSet>(XamlFactSet.Render);
             this.SetRenderer<ImageSet>(XamlImageSet.Render);
 

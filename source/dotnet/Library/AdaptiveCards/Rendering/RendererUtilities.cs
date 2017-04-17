@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace AdaptiveCards.Rendering
 {
@@ -98,6 +99,33 @@ namespace AdaptiveCards.Rendering
             sb.Append(choices.Last());
             return sb.ToString();
         }
+
+        public static T TryGetValue<T>(this IDictionary dictionary, string key)
+        {
+            if (dictionary == null)
+                throw new ArgumentNullException(nameof(dictionary));
+
+            if (dictionary.Contains(key))
+            {
+                return (T)dictionary[key];
+            }
+
+            return default(T);
+        }
+
+        public static T TryGetValue<T>(this IDictionary<string, object> dictionary, string key)
+        {
+            if (dictionary == null)
+                return default(T);
+
+            if (dictionary.ContainsKey(key))
+            {
+                return (T)dictionary[key];
+            }
+
+            return default(T);
+        }
+
 
     }
 }

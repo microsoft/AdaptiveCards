@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering
         {
             TextInput input = (TextInput)element;
 
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };
                 if (input.IsMultiline == true)

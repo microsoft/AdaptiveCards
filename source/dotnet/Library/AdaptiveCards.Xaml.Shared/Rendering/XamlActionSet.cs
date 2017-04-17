@@ -27,9 +27,9 @@ namespace AdaptiveCards.Rendering
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.ActionSet");
 
-            AddActions(uiContainer, actionSet.Actions, context, context.Options.ActionSet.SupportedActions, context.Options.ActionSet.MaxActions);
+            AddActions(uiContainer, actionSet.Actions, context, context.Options.SupportedActionTypes, context.Options.MaxActions);
 
             return uiContainer;
-        }        
+        }
     }
 }
