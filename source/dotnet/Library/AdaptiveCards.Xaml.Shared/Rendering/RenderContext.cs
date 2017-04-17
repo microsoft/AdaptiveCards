@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 #if XAMARIN
+using FrameworkElement = Xamarin.Forms.View;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml.Internals;
 #elif WPF
