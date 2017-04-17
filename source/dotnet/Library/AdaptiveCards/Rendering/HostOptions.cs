@@ -20,7 +20,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// FontSize
         /// </summary>
-        public FontSizeOptions FontSize { get; set; } = new FontSizeOptions();
+        public FontSizeOptions FontSizes { get; set; } = new FontSizeOptions();
 
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace AdaptiveCards.Rendering
             ShowCardAction.TYPE
         };
 
-        public ImageSizeOptions ImageSize { get; set; } = new ImageSizeOptions();
+        public ImageSizeOptions ImageSizes { get; set; } = new ImageSizeOptions();
 
         /// <summary>
         /// Max number of actions to support on your Cards(e.g., 3)
@@ -49,12 +49,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Separation settings 
         /// </summary>
-        public SeparationOptions VerticalSeparation { get; set; } = new SeparationOptions();
-
-        /// <summary>
-        /// Separation settings between columns
-        /// </summary>
-        public SeparationOptions HorizontalSeparation { get; set; } = new SeparationOptions();
+        public SeparationOptions Separation { get; set; } = new SeparationOptions();
 
 
         //  ------ AdaptiveCard -------
@@ -65,13 +60,12 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public ColorOptions Colors { get; set; } = new ColorOptions();
 
-        // ------ Basic ------
-        //public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
-
         // ------ Containers ------
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
         public FactSetOptions FactSet { get; set; } = new FactSetOptions();
+
+        public ColumnOptions Column { get; set; } = new ColumnOptions();
 
         // ------ Actions------
         public ActionOptions Actions { get; set; } = new ActionOptions();
@@ -352,6 +346,17 @@ namespace AdaptiveCards.Rendering
         /// Spacing between facts and values
         /// </summary>
         public int Spacing { get; set; } = 20;
+    }
+
+    public class ColumnOptions
+    {
+        public ColumnOptions() { }
+
+        /// <summary>
+        /// Separation settings between columns
+        /// </summary>
+        public SeparationOptions Separation { get; set; } = new SeparationOptions();
+
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]

@@ -71,11 +71,11 @@ namespace AdaptiveCards.Rendering
                 switch (seperationStyle)
                 {
                     case SeparationStyle.Default:
-                        sepStyle = context.Options.VerticalSeparation.Default;
+                        sepStyle = context.Options.Separation.Default;
                         break;
 
                     case SeparationStyle.Strong:
-                        sepStyle = context.Options.VerticalSeparation.Strong;
+                        sepStyle = context.Options.Separation.Strong;
                         break;
                 }
 

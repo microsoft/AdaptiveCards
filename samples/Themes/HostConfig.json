@@ -1,6 +1,6 @@
 {
   "fontFamily": "Calibri",
-  "fontSize": {
+  "fontSizes": {
     "small": 10,
     "normal": 12,
     "medium": 14,
@@ -14,25 +14,13 @@
     "Action.Http",
     "Action.ShowCard"
   ],
-  "imageSize": {
+  "imageSizes": {
     "small": 60,
     "medium": 120,
     "large": 180
   },
   "maxActions": 5,
-  "verticalSeparation": {
-    "default": {
-      "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
-    },
-    "strong": {
-      "spacing": 20,
-      "lineThickness": 1,
-      "lineColor": "#FF707070"
-    }
-  },
-  "horizontalSeparation": {
+  "separation": {
     "default": {
       "spacing": 10,
       "lineThickness": 0,
@@ -92,6 +80,20 @@
     },
     "Value": {},
     "Spacing": 20
+  },
+  "column": {
+    "Separation": {
+      "default": {
+        "spacing": 10,
+        "lineThickness": 0,
+        "lineColor": null
+      },
+      "strong": {
+        "spacing": 20,
+        "lineThickness": 1,
+        "lineColor": "#FF707070"
+      }
+    }
   },
   "actions": {
     "showCard": {

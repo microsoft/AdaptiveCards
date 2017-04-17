@@ -137,20 +137,20 @@ namespace AdaptiveCards.Rendering
             switch (textBlock.Size)
             {
                 case TextSize.Small:
-                    uiTextBlock.FontSize = context.Options.FontSize.Small;
+                    uiTextBlock.FontSize = context.Options.FontSizes.Small;
                     break;
                 case TextSize.Medium:
-                    uiTextBlock.FontSize = context.Options.FontSize.Medium;
+                    uiTextBlock.FontSize = context.Options.FontSizes.Medium;
                     break;
                 case TextSize.Large:
-                    uiTextBlock.FontSize = context.Options.FontSize.Large;
+                    uiTextBlock.FontSize = context.Options.FontSizes.Large;
                     break;
                 case TextSize.ExtraLarge:
-                    uiTextBlock.FontSize = context.Options.FontSize.ExtraLarge;
+                    uiTextBlock.FontSize = context.Options.FontSizes.ExtraLarge;
                     break;
                 case TextSize.Normal:
                 default:
-                    uiTextBlock.FontSize = context.Options.FontSize.Normal;
+                    uiTextBlock.FontSize = context.Options.FontSizes.Normal;
                     break;
             }
 
