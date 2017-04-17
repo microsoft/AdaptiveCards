@@ -119,8 +119,6 @@ namespace AdaptiveCards.Rendering
             }
         }
 
-
-#if WPF
         /// <summary>
         /// AdaptiveCard
         /// </summary>
@@ -148,32 +146,5 @@ namespace AdaptiveCards.Rendering
 
             return context.Render(showCard.Card);
         }
-
-#elif XAMARIN
-        /// <summary>
-        /// AdaptiveCard
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public View RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
-        {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
-            {
-                Options = options ?? this.DefaultOptions
-            };
-            return context.Render(card);
-        }
-
-        public View RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
-        {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
-            {
-                Options = options ?? this.DefaultOptions
-            };
-            return context.Render(showCard);
-        }
-
-#endif
-
     }
 }
