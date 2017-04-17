@@ -23,7 +23,6 @@ namespace AdaptiveCards.Rendering
             var uiButton = new Button()
             {
                 Background = context.GetColorBrush(styling.BackgroundColor),
-                Margin = new Thickness(styling.Margin.Left, styling.Margin.Top, styling.Margin.Right, styling.Margin.Bottom),
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
                 BorderBrush = context.GetColorBrush(styling.BorderColor),
                 BorderThickness = new Thickness(context.Options.Actions.BorderThickness)

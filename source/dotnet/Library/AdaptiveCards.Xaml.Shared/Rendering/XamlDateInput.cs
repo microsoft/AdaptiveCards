@@ -4,6 +4,7 @@ using AdaptiveCards.Rendering;
 using System.Windows.Controls;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -14,12 +15,12 @@ namespace AdaptiveCards.Rendering
         {
             DateInput input = (DateInput)element;
 
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };
                 textBox.Text = input.Placeholder;
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.Date");
-                textBox.DataContext = input;
+                textBox.SetContext(input);
                 context.InputBindings.Add(input.Id, () => textBox.Text);
                 return textBox;
             }

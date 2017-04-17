@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 #elif XAMARIN
 using AsNum.XFControls;
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 using Button = AdaptiveCards.Rendering.ContentButton;
 #endif
 
@@ -52,40 +53,44 @@ namespace AdaptiveCards.Rendering
                 {
                     if (uiContainer.RowDefinitions.Count > 0)
                     {
-                        if (cardElement.Separation != SeparationStyle.None)
-                        {
-
-                            var uiSep = new Grid();
-                            uiSep.Style = context.GetStyle($"Adaptive.Separator");
-                            SeparationOption sepStyle = null;
-                            switch (cardElement.Separation)
-                            {
-                                case SeparationStyle.Default:
-                                    sepStyle = context.Options.GetElementStyling(cardElement).Separation.Default;
-                                    break;
-
-                                case SeparationStyle.Strong:
-                                    sepStyle = context.Options.GetElementStyling(cardElement).Separation.Strong;
-                                    break;
-                            }
-
-                            uiSep.Margin = new Thickness(0, (sepStyle.Spacing - sepStyle.LineThickness) / 2, 0, (sepStyle.Spacing - sepStyle.LineThickness) / 2);
-#if WPF
-                            uiSep.Height = sepStyle.LineThickness;
-                            if (sepStyle.LineColor != null)
-                                uiSep.Background = context.GetColorBrush(sepStyle.LineColor);
-#elif XAMARIN
-                            // TODO
-#endif
-                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                            Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
-                            uiContainer.Children.Add(uiSep);
-                        }
+                        AddSeperator(context, uiContainer, cardElement.Separation);
                     }
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                     uiContainer.Children.Add(uiElement);
                 }
+            }
+        }
+
+        public static void AddSeperator(RenderContext context, Grid uiContainer, SeparationStyle seperationStyle)
+        {
+            if (seperationStyle != SeparationStyle.None)
+            {
+                var uiSep = new Grid();
+                uiSep.Style = context.GetStyle($"Adaptive.Separator");
+                SeparationOption sepStyle = null;
+                switch (seperationStyle)
+                {
+                    case SeparationStyle.Default:
+                        sepStyle = context.Options.Separation.Default;
+                        break;
+
+                    case SeparationStyle.Strong:
+                        sepStyle = context.Options.Separation.Strong;
+                        break;
+                }
+
+                uiSep.Margin = new Thickness(0, (sepStyle.Spacing - sepStyle.LineThickness) / 2, 0, (sepStyle.Spacing - sepStyle.LineThickness) / 2);
+#if WPF
+                uiSep.Height = sepStyle.LineThickness;
+                if (sepStyle.LineColor != null)
+                    uiSep.Background = context.GetColorBrush(sepStyle.LineColor);
+#elif XAMARIN
+                            // TODO
+#endif
+                uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
+                uiContainer.Children.Add(uiSep);
             }
         }
     }

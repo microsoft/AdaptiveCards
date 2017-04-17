@@ -3,7 +3,9 @@ using AdaptiveCards.Rendering;
 #if WPF
 using System.Windows.Controls;
 #elif XAMARIN
+using FrameworkElement = Xamarin.Forms.View;
 using Xamarin.Forms;
+using CheckBox = Xamarin.Forms.Switch;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -13,32 +15,21 @@ namespace AdaptiveCards.Rendering
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             ToggleInput input = (ToggleInput)element;
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
-#if WPF
                 var uiToggle = new CheckBox();
-                uiToggle.Content = input.Title;
-                uiToggle.IsChecked = input.Value == (input.ValueOn ?? "true");
-                uiToggle.Style = context.GetStyle($"Adaptive.input.Toggle");
-                uiToggle.DataContext = input;
-                context.InputBindings.Add(input.Id, () =>
-                {
-                    return uiToggle.IsChecked == true ? input.ValueOn ?? "true" : input.ValueOff ?? "false";
-                });
-                return uiToggle;
-#elif XAMARIN
-                var uiToggle = new Switch();
+#if WPF
                 // TODO: Finish switch
-                //uiToggle.Content = input.Title;
-                uiToggle.IsToggled = input.Value == (input.ValueOn ?? "true");
+                uiToggle.Content = input.Title;
+#endif
+                uiToggle.SetState(input.Value == (input.ValueOn ?? "true"));
                 uiToggle.Style = context.GetStyle($"Adaptive.input.Toggle");
-                uiToggle.BindingContext = input;
+                uiToggle.SetContext(input);
                 context.InputBindings.Add(input.Id, () =>
                 {
-                    return uiToggle.IsToggled == true ? input.ValueOn ?? "true" : input.ValueOff ?? "false";
+                    return uiToggle.GetState() == true ? input.ValueOn ?? "true" : input.ValueOff ?? "false";
                 });
                 return uiToggle;
-#endif
             }
             else
             {

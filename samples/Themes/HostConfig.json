@@ -1,176 +1,121 @@
 {
-    "type": "AdaptiveCardHostConfiguration",
-    "AdaptiveCard": {
-        "MaxActions": 2,
-        "TypicalDimensions": [], // Ignore for now
-        "SupportsInteractivity": true,
-        "SupportedActions": [
-            "Action.ShowCard",
-            "Action.Submit",
-            "Action.Http",
-            "Action.OpenUrl"
-        ],
-        "Margin": {
-            "Left": 15,
-            "Right": 20,
-            "Bottom": 10,
-            "Top": 12
-        },
-        "ActionsOrientation": "Horizontal",
-        "ActionAlignment": "center",
-        "FontFamily": "Calibri",
-        "TextColor": "#FF000000",
-        "BackgroundColor": "#FFFFFFFF"
+  "fontFamily": "Calibri",
+  "fontSizes": {
+    "small": 10,
+    "normal": 12,
+    "medium": 14,
+    "large": 17,
+    "extraLarge": 20
+  },
+  "supportsInteractivity": true,
+  "supportedActionTypes": [
+    "Action.OpenUrl",
+    "Action.Submit",
+    "Action.Http",
+    "Action.ShowCard"
+  ],
+  "imageSizes": {
+    "small": 60,
+    "medium": 120,
+    "large": 180
+  },
+  "maxActions": 5,
+  "separation": {
+    "default": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
     },
-    "Colors": {
-        "Accent": {
-            "Color": "#FF0000FF",
-            "SubtleOpacity": 0.7
-        },
-        "Dark": {
-            "Color": "#FF101010"
-        },
-        "Light": {
-            "Color": "#FFFFFFFF"
-        },
-        "Good": {
-            "Color": "#FF008000"
-        },
-        "Warning": {
-            "Color": "#FFFFD700"
-        },
-        "Attention": {
-            "Color": "#FF8B0000"
-        }
-    },
-    "TextBlock": {
-        "FontSize": {
-            "Small": 10,
-            "Normal": 12,
-            "Medium": 14,
-            "Large": 17,
-            "ExtraLarge": 20
-        },
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
-    },
-    "Image": {
-        "Size": {
-            "Small": 60,
-            "Medium": 120,
-            "Large": 180
-        },
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
-    },
-    "Container": {
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
-    },
-    "ContainerSet": {
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
-    },
-    "ImageSet": {
-        "Wrap": true,
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
-    },
-    "FactSet": {
-        "Title": {
-            "type": "TextBlock",
-            "weight": "bolder"
-        },
-        "Value": {
-            "type": "TextBlock"
-        },
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
-    },
-    "Input": {
-        "Toggle": {
-            "Something": true
-        },
-        "Separation": {
-            "Default": {
-                "Spacing": 10
-            },
-            "Strong": {
-                "Spacing": 20,
-                "LineThickness": 1,
-                "LineColor": "#FF707070"
-            }
-        }
-    },
-    "Action": {
-        "ShowCard": {
-            "Mode": "Inline",
-            "EdgeToEdge": true
-        },
-        "Style": "Button|Hyperlink",
-        "BackgroundColor": "#FF5098FF",
-        "BorderColor": "#FF000000",
-        "TextColor": "#FFFFFFFF",
-        "BorderThickness": 1,
-        "FontWeight": 400,
-        "FontSize": 12,
-        "Margin": {
-            "Left": 15,
-            "Right": 20,
-            "Bottom": 10,
-            "Top": 12
-        },
-        "Padding": {
-            "Left": 0,
-            "Right": 5
-        }
+    "strong": {
+      "spacing": 20,
+      "lineThickness": 1,
+      "lineColor": "#FF707070"
     }
+  },
+  "adaptiveCard": {
+    "padding": {
+      "left": 8,
+      "top": 8,
+      "right": 8,
+      "bottom": 8
+    },
+    "backgroundColor": "#FFFFFF"
+  },
+  "colors": {
+    "default": {
+      "normal": "#FF000000",
+      "subtle": "#b2000000"
+    },
+    "accent": {
+      "normal": "#FF0000FF",
+      "subtle": "#b20000FF"
+    },
+    "dark": {
+      "normal": "#FF101010",
+      "subtle": "#b2101010"
+    },
+    "light": {
+      "normal": "#FFFFFFFF",
+      "subtle": "#b2FFFFFF"
+    },
+    "good": {
+      "normal": "#FF008000",
+      "subtle": "#b2008000"
+    },
+    "warning": {
+      "normal": "#FFFFD700",
+      "subtle": "#b2FFD700"
+    },
+    "attention": {
+      "normal": "#FF8B0000",
+      "subtle": "#b28B0000"
+    }
+  },
+  "imageSet": {
+    "imageSize": "medium"
+  },
+  "factSet": {
+    "title": {
+      "weight": "bolder"
+    },
+    "value": {},
+    "spacing": 20
+  },
+  "column": {
+    "separation": {
+      "default": {
+        "spacing": 10,
+        "lineThickness": 0,
+        "lineColor": null
+      },
+      "strong": {
+        "spacing": 20,
+        "lineThickness": 1,
+        "lineColor": "#FF707070"
+      }
+    }
+  },
+  "actions": {
+    "showCard": {
+      "actionMode": "inline",
+      "backgroundColor": "#FFF8F8F8",
+      "autoPadding": true
+    },
+    "actionsOrientation": "horizontal",
+    "actionAlignment": "center",
+    "backgroundColor": "#FF5098FF",
+    "borderColor": "#FF000000",
+    "textColor": "#FFFFFFFF",
+    "borderThickness": 1,
+    "fontWeight": 400,
+    "fontSize": 12,
+    "spacing": 8,
+    "padding": {
+      "left": 4,
+      "top": 4,
+      "right": 4,
+      "bottom": 4
+    }
+  }
 }
+

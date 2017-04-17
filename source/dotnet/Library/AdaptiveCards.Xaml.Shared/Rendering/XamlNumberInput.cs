@@ -4,6 +4,7 @@ using AdaptiveCards.Rendering;
 using System.Windows.Controls;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -13,12 +14,12 @@ namespace AdaptiveCards.Rendering
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             NumberInput input = (NumberInput)element;
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value.ToString() };
                 textBox.Text = input.Placeholder;
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.Number");
-                textBox.DataContext = input;
+                textBox.SetContext(input);
                 context.InputBindings.Add(input.Id, () => textBox.Text);
                 return textBox;
             }

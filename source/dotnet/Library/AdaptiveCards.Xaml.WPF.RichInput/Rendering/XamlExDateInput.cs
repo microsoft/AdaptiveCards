@@ -10,7 +10,7 @@ namespace AdaptiveCards.Rendering
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             DateInput input = (DateInput)element;
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
                 var datePicker = new DatePicker();
                 datePicker.ToolTip = input.Placeholder;

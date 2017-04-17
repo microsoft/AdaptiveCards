@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 // using Adaptive.Threading.Tasks.Schedulers;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -26,18 +27,11 @@ namespace AdaptiveCards.Rendering
             var outerGrid = new Grid();
             outerGrid.Style = context.GetStyle("Adaptive.Card");
 #if WPF
+            //TODO for Xamarin
             outerGrid.Background = context.GetColorBrush(context.Options.AdaptiveCard.BackgroundColor);
-            if (card.BackgroundImage != null)
-            {
-                outerGrid.Background = new ImageBrush(context.ResolveImageSource(card.BackgroundImage));
-            }
-#elif XAMARIN
-            // TODO outerGrid.Background = context.GetColorBrush(context.Styling.BackgroundColor);
-            if (card.BackgroundImage != null)
-            {
-                outerGrid.SetBackgroundImage(new Uri(card.BackgroundImage));
-            }
 #endif
+
+            outerGrid.SetBackgroundSource(card.BackgroundImage,context);
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
@@ -50,7 +44,7 @@ namespace AdaptiveCards.Rendering
 
             var inputControls = new List<FrameworkElement>();
             XamlContainer.AddContainerElements(grid, card.Body, context);
-            XamlActionSet.AddActions(grid, card.Actions, context, context.Options.AdaptiveCard.SupportedActionTypes, context.Options.AdaptiveCard.MaxActions);
+            XamlActionSet.AddActions(grid, card.Actions, context, context.Options.SupportedActionTypes, context.Options.MaxActions);
 
             outerGrid.Children.Add(grid);
             return outerGrid;

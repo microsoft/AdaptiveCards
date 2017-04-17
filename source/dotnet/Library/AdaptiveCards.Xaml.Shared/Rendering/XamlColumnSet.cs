@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -42,12 +43,12 @@ namespace AdaptiveCards.Rendering
                         switch (column.Separation)
                         {
                             case SeparationStyle.Strong:
-                                sepStyle = context.Options.Container.Separation.Strong;
+                                sepStyle = context.Options.Column.Separation.Strong;
                                 break;
 
                             case SeparationStyle.Default:
                             default:
-                                sepStyle = context.Options.Container.Separation.Default;
+                                sepStyle = context.Options.Column.Separation.Default;
                                 break;
                         }
                         uiSep.Margin = new Thickness(sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2, 0);
