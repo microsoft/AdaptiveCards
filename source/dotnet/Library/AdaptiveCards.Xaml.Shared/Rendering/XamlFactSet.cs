@@ -26,18 +26,35 @@ namespace AdaptiveCards.Rendering
             int iRow = 0;
             foreach (var fact in factSet.Facts)
             {
-                var uiTitle = new UI.TextBlock()
+                var uiTitle = context.Render(new TextBlock()
                 {
-                    Text = fact.Title,
-                    Style = context.GetStyle("Adaptive.Fact.Title"),
-                    Margin = new Thickness(0, 0, 0, 0)
-                };
-                var uiValue = new UI.TextBlock()
+                    Size = context.Options.FactSet.Title.Size,
+                    Color = context.Options.FactSet.Title.Color,
+                    IsSubtle = context.Options.FactSet.Title.IsSubtle,
+                    Weight = context.Options.FactSet.Title.Weight,
+                    Text = fact.Title
+                });
+#if WPF
+                uiTitle.Style = context.GetStyle("Adaptive.Fact.Title");
+#elif XAMARIN
+                //TODO
+#endif
+
+                var uiValue = context.Render(new TextBlock()
                 {
-                    Text = fact.Value,
-                    Style = context.GetStyle("Adaptive.Fact.Value"),
-                    Margin = new Thickness(20, 0, 0, 0)
-                };
+                    Size = context.Options.FactSet.Value.Size,
+                    Color = context.Options.FactSet.Value.Color,
+                    IsSubtle = context.Options.FactSet.Value.IsSubtle,
+                    Weight = context.Options.FactSet.Value.Weight,
+                    Text = fact.Value
+                });
+#if WPF
+                uiValue.Style = context.GetStyle("Adaptive.Fact.Value");
+                uiValue.Margin = new Thickness(context.Options.FactSet.Spacing, 0, 0, 0);
+#elif XAMARIN
+                //TODO
+#endif
+
                 uiFactSet.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
                 Grid.SetColumn(uiTitle, 0);

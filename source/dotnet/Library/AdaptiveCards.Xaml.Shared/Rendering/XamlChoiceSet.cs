@@ -17,7 +17,7 @@ namespace AdaptiveCards.Rendering
         {
             ChoiceSet choiceSet = (ChoiceSet)element;
 #if WPF
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
                 var uiGrid = new Grid();
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });

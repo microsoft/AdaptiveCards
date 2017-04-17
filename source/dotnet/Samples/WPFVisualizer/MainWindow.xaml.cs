@@ -42,8 +42,7 @@ namespace WpfVisualizer
             _timer.Start();
 
             this.Renderer = new XamlRendererExtended(new HostOptions(), this.Resources, _onAction, _OnMissingInput);
-            var options = new HostOptionsEx();
-            this.options.SelectedObject = options;
+            this.options.SelectedObject = JsonConvert.DeserializeObject<HostOptionsEx>(JsonConvert.SerializeObject(new HostOptions()));
         }
 
         private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

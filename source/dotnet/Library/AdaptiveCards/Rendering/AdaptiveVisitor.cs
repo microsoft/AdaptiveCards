@@ -13,9 +13,10 @@ namespace AdaptiveCards.Rendering
             if (cardElement is TextBlock)
                 Visit((TextBlock) cardElement);
 
+            // includes Column
             if (cardElement is Container)
-                Visit((Container) cardElement);
-
+                Visit((Container)cardElement);
+            
             if (cardElement is ColumnSet)
                 Visit((ColumnSet) cardElement);
 
@@ -24,6 +25,9 @@ namespace AdaptiveCards.Rendering
 
             if (cardElement is FactSet)
                 Visit((FactSet) cardElement);
+
+            if (cardElement is ActionSet)
+                Visit((ActionSet)cardElement);
 
             if (cardElement is ChoiceSet)
                 Visit((ChoiceSet) cardElement);
@@ -48,6 +52,9 @@ namespace AdaptiveCards.Rendering
         {
             foreach (var item in card.Body)
                 Visit(item);
+
+            foreach (var action in card.Actions)
+                Visit(action);
         }
 
         public virtual void Visit(Container container)
@@ -142,6 +149,7 @@ namespace AdaptiveCards.Rendering
 
         public virtual void Visit(ShowCardAction action)
         {
+            Visit(action.Card);
         }
     }
 }

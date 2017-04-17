@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             OpenUrlAction action = (OpenUrlAction)element;
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
                 Button uiButton = XamlUtilities.CreateActionButton(action, context); // content);
                 uiButton.Click += (sender, e) =>
