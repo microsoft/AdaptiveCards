@@ -10,17 +10,17 @@ You  can further customize the look and feel of the card using ui framework leve
 | Property | Type | default | Description |
 |---|---|---|---|
 | **fontFamily**| string | "Calibri" | defines comma delimited font-family to be used for card |
-| **fontSize** | [FontSizeOptions](#fontsizeoptions) |  - | The font sizes to use for text. |
+| **fontSizes** | [FontSizeOptions](#fontsizeoptions) |  - | The font sizes to use for text. |
 | **colors** | [ColorOptions](#coloroptions) | - | defines color pallette|
-| **imageSize** | [ImageSizeOptions](#imagesizeoptions) | - | Defines the sizes for images |
+| **imageSizes** | [ImageSizeOptions](#imagesizeoptions) | - | Defines the sizes for images |
 | **supportsInteractivity** | bool | true| Does the host want to support interactivity like actions and inputs |
 | **supportedActionTypes** | string[] | All | What action types does the app want to support
 | **maxActions** | int | 5 | max number of actions that the app wants to support|
-| **horizontalSeparation** | [SeparationOptions](#separationoptions) | - | Defines spacing and color for separations between vertical elements| 
-| **verticalSeparation** | [SeparationOptions](#separationoptions) | - | Defines spacing and color for separations between horizontal elements| 
+| **separation** | [SeparationOptions](#separationoptions) | - | Defines spacing and color for separations between vertical elements| 
 | **adaptiveCard**| [AdaptiveCardOptions](#adaptivecardoptions) | - | Defines adaptive card options |
 | **imageSet** | [ImageSetOptions](#imagesetoptions) | - | defines options for ImageSet element|
 | **factSet** | [FactSetOptions](#factsetoptions) | - | defines options for FactSet element|
+| **column** | [ColumnOptions](#columntoptions) | - | defines optionns for column element |
 | **actions** | [ActionOptions](#actionoptions) | - | Defines options for Actions |
 
 
@@ -106,6 +106,13 @@ Defines how factSets should look
 | title | [TextOptions](#textoptions) | {  Weight = TextWeight.Bolder }| sets how text for fact title should look|
 | value | [TextOptions](#textoptions) | { } | sets how text for fact title should look|
 | spacing | int | 20 | spacing between fact and value |
+
+## ColumnOptions
+Defines column options
+
+| Property | Type | default | Description |
+|---|---|---|---|
+| **separation** | [SeparationOptions](#separationoptions) | - | Defines spacing and color for separations between colunns | 
 
 ## TextOptions
 Defines text settings for things like FactSet Title.
