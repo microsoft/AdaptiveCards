@@ -23,5 +23,30 @@ namespace AdaptiveCards.Rendering
                 return;
             grid.Background = new ImageBrush(context.ResolveImageSource(url));
         }
+
+        public static void SetImageProperties(this System.Windows.Controls.Image imageview, Image image, RenderContext context)
+        {
+            switch (image.Size)
+            {
+                case ImageSize.Auto:
+                    imageview.Stretch = System.Windows.Media.Stretch.UniformToFill;
+                    break;
+                case ImageSize.Stretch:
+                    imageview.Stretch = System.Windows.Media.Stretch.Uniform;
+                    break;
+                case ImageSize.Small:
+                    imageview.Width = context.Options.Image.Size.Small;
+                    imageview.Height = context.Options.Image.Size.Small;
+                    break;
+                case ImageSize.Medium:
+                    imageview.Width = context.Options.Image.Size.Medium;
+                    imageview.Height = context.Options.Image.Size.Medium;
+                    break;
+                case ImageSize.Large:
+                    imageview.Width = context.Options.Image.Size.Large;
+                    imageview.Height = context.Options.Image.Size.Large;
+                    break;
+            }
+        }
     }
 }

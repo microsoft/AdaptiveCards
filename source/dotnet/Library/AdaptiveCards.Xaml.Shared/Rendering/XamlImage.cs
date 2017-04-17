@@ -46,31 +46,7 @@ namespace AdaptiveCards.Rendering
 #endif 
             }
             uiImage.Style = context.GetStyle(style);
-#if WPF
-            switch (image.Size)
-            {
-                case ImageSize.Auto:
-                    uiImage.Stretch = System.Windows.Media.Stretch.UniformToFill;
-                    break;
-                case ImageSize.Stretch:
-                    uiImage.Stretch = System.Windows.Media.Stretch.Uniform;
-                    break;
-                case ImageSize.Small:
-                    uiImage.Width = context.Options.Image.Size.Small;
-                    uiImage.Height = context.Options.Image.Size.Small;
-                    break;
-                case ImageSize.Medium:
-                    uiImage.Width = context.Options.Image.Size.Medium;
-                    uiImage.Height = context.Options.Image.Size.Medium;
-                    break;
-                case ImageSize.Large:
-                    uiImage.Width = context.Options.Image.Size.Large;
-                    uiImage.Height = context.Options.Image.Size.Large;
-                    break;
-            }
-#elif XAMARIN
-            // TODO
-#endif
+            uiImage.SetImageProperties(image, context);
 
             if (image.SelectAction != null)
             {
