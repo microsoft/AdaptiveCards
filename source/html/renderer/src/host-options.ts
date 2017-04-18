@@ -19,7 +19,7 @@ export interface ISeparationDefinition {
 }
 
 export interface ITextBlockConfiguration {
-    separation: {
+    separations: {
         small: ISeparationDefinition,
         normal: ISeparationDefinition,
         medium: ISeparationDefinition,
@@ -28,8 +28,17 @@ export interface ITextBlockConfiguration {
     }    
 }
 
+export interface IContainerStyleDefinition {
+    backgroundColor?: string,
+    padding?: ISpacingDefinition,
+    borderColor?: string,
+    borderThickness?: ISpacingDefinition
+}
+
 export interface IContainerConfiguration {
-    separation: ISeparationDefinition
+    separation: ISeparationDefinition,
+    normal: IContainerStyleDefinition,
+    emphasis: IContainerStyleDefinition
 }
 
 export interface IImageConfiguration {
@@ -64,10 +73,20 @@ export interface IColumnConfiguration {
     separation: ISeparationDefinition
 }
 
-export interface IActionSetConfiguration {
+export interface IShowCardActionConfiguration {
+    actionMode: Enums.ShowCardActionMode,
+    inlineCardSpacing: number,
+    backgroundColor: string,
+    padding: ISpacingDefinition
+}
+
+export interface IActionsConfiguration {
+    maxActions: number,
+    supportedActionTypes: Array<any>,
     separation: ISeparationDefinition,
     buttonSpacing: number,
-    stretch: boolean
+    stretch: boolean,
+    showCard: IShowCardActionConfiguration
 }
 
 export interface IInputConfiguration {
@@ -75,8 +94,6 @@ export interface IInputConfiguration {
 }
 
 export interface IAdaptiveCardConfiguration {
-    maxActions: number,
-    supportedActionTypes: Array<any>,
     supportedElementTypes: Array<any>,
     supportsInteractivity: boolean,
     padding: ISpacingDefinition,
@@ -115,6 +132,6 @@ export interface IAdaptiveCardConfiguration {
     factSet: IFactSetConfiguration,
     columnSet: IColumnSetConfiguration,
     column: IColumnConfiguration,
-    actionSet: IActionSetConfiguration,
+    actions: IActionsConfiguration,
     input: IInputConfiguration
 }
