@@ -46,5 +46,25 @@ namespace AdaptiveCards.Rendering
         {
             view.HeightRequest = height;
         }
+
+        public static void SetBackgroundColor(this ContentButton view, string color, RenderContext context)
+        {
+            view.BackgroundColor = Color.FromHex(color);
+        }
+
+        public static void SetBorderColor(this ContentButton view, string color, RenderContext context)
+        {
+           // view.Button.BorderColor = Color.FromHex(color);
+        }
+
+        public static void SetThickness(this ContentButton view, double thickness)
+        {
+            //view.Button.BorderWidth = thickness;
+        }
+
+        public static void SetFontWeight(this Xamarin.Forms.TextBlock text, int weight)
+        {
+           // text.font
+        }
     }
 }
