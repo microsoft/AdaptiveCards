@@ -466,6 +466,29 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         THROW_IF_FAILED(xamlTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
 
+        ComPtr<ITextBlock2> xamlTextBlock2;
+        THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
+
+        UINT maxLines;
+        THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
+        THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
+
+        ABI::AdaptiveCards::XamlCardRenderer::HAlignment adaptiveHorizontalAlignment;
+        THROW_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
+
+        switch (adaptiveHorizontalAlignment)
+        {
+        case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Left:
+            xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Left);
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Right:
+            xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Right);
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Center:
+            xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Center);
+            break;
+        }
+
         THROW_IF_FAILED(xamlTextBlock.CopyTo(textBlockControl));
     }
 
