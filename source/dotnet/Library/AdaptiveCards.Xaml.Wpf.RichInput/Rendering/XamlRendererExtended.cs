@@ -11,7 +11,7 @@ namespace AdaptiveCards.Rendering
 {
     // TODO: give this a better name
 
-    public partial class XamlRendererExtended : XamlRenderer
+    public class XamlRendererExtended : XamlRenderer
     {
         public XamlRendererExtended(HostOptions options,
             ResourceDictionary resources,
@@ -19,6 +19,7 @@ namespace AdaptiveCards.Rendering
             Action<object, MissingInputEventArgs> missingDataCallback = null)
             : base(options, resources, actionCallback, missingDataCallback)
         {
+            SetObjectTypes();
         }
 
 #if WPF
@@ -27,7 +28,15 @@ namespace AdaptiveCards.Rendering
             Action<object, MissingInputEventArgs> missingDataCallback = null)
             : base(options, stylePath, actionCallback, missingDataCallback)
         {
+            SetObjectTypes();
         }
 #endif
+        private void SetObjectTypes()
+        {
+            this.SetRenderer<TextInput>(XamlExTextInput.Render);
+            this.SetRenderer<NumberInput>(XamlExNumberInput.Render);
+            this.SetRenderer<DateInput>(XamlExDateInput.Render);
+            this.SetRenderer<TimeInput>(XamlExTimeInput.Render);
+        }
     }
 }

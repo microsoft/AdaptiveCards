@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Xml;
 using HtmlTags;
 using MarkedNet;
-
+#if FUTURE
 namespace AdaptiveCards.Rendering
 {
     /// <summary>
@@ -47,21 +47,21 @@ namespace AdaptiveCards.Rendering
             return Render(card, new RenderContext(this.DefaultOptions));
         }
 
-        public HtmlTag RenderShowCard(ActionShowCard showCard)
+        public HtmlTag RenderShowCard(ShowCardAction showCard)
         {
             return Render(showCard.Card, new RenderContext(this.DefaultOptions));
         }
 
 
-        protected override HtmlTag Render(ActionHttp action, RenderContext context)
+        protected override HtmlTag Render(HttpAction action, RenderContext context)
         {
             // not supported
             return null;
         }
 
-        protected override HtmlTag Render(ActionOpenUrl action, RenderContext context)
+        protected override HtmlTag Render(OpenUrlAction action, RenderContext context)
         {
-            if (context.Options.AdaptiveCard.SupportsInteractivity)
+            if (context.Options.SupportsInteractivity)
             {
                 var uiButton = new LinkTag(action.Title, action.Url, action.Type.Replace(".", ""), "pushButton");
                 return uiButton;
@@ -69,13 +69,13 @@ namespace AdaptiveCards.Rendering
             return null;
         }
 
-        protected override HtmlTag Render(ActionShowCard action, RenderContext context)
+        protected override HtmlTag Render(ShowCardAction action, RenderContext context)
         {
             // not supported
             return null;
         }
 
-        protected override HtmlTag Render(ActionSubmit action, RenderContext context)
+        protected override HtmlTag Render(SubmitAction action, RenderContext context)
         {
             // not supported
             return null;
@@ -158,7 +158,7 @@ namespace AdaptiveCards.Rendering
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
-            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && column.SelectAction != null)
+            if (DefaultOptions.SupportsInteractivity && column.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
@@ -253,7 +253,7 @@ namespace AdaptiveCards.Rendering
 
             AddContainerElements(uiContainer, container.Items, container.Actions, context);
 
-            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && container.SelectAction != null)
+            if (DefaultOptions.SupportsInteractivity && container.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
@@ -352,7 +352,7 @@ namespace AdaptiveCards.Rendering
                     break;
             }
 
-            if (DefaultOptions.AdaptiveCard.SupportsInteractivity && image.SelectAction != null)
+            if (DefaultOptions.SupportsInteractivity && image.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(image.SelectAction, context);
                 //if (uiButton != null)
@@ -385,7 +385,7 @@ namespace AdaptiveCards.Rendering
             return uiImageSet;
         }
 
-        protected override HtmlTag Render(InputChoiceSet choiceSet, RenderContext context)
+        protected override HtmlTag Render(ChoiceSet choiceSet, RenderContext context)
         {
             var choiceText = GetFallbackText(choiceSet);
             if (choiceText == null)
@@ -415,7 +415,7 @@ namespace AdaptiveCards.Rendering
             return Render(container, context);
         }
 
-        protected override HtmlTag Render(InputDate input, RenderContext context)
+        protected override HtmlTag Render(DateInput input, RenderContext context)
         {
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
@@ -429,7 +429,7 @@ namespace AdaptiveCards.Rendering
             return Render(container, context);
         }
 
-        protected override HtmlTag Render(InputNumber input, RenderContext context)
+        protected override HtmlTag Render(NumberInput input, RenderContext context)
         {
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
@@ -445,7 +445,7 @@ namespace AdaptiveCards.Rendering
             return Render(container, context);
         }
 
-        protected override HtmlTag Render(InputText input, RenderContext context)
+        protected override HtmlTag Render(TextInput input, RenderContext context)
         {
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
@@ -459,7 +459,7 @@ namespace AdaptiveCards.Rendering
             return Render(container, context);
         }
 
-        protected override HtmlTag Render(InputTime input, RenderContext context)
+        protected override HtmlTag Render(TimeInput input, RenderContext context)
         {
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
@@ -473,7 +473,7 @@ namespace AdaptiveCards.Rendering
             return Render(container, context);
         }
 
-        protected override HtmlTag Render(InputToggle input, RenderContext context)
+        protected override HtmlTag Render(ToggleInput input, RenderContext context)
         {
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) });
@@ -510,3 +510,4 @@ namespace AdaptiveCards.Rendering
         }
     }
 }
+#endif

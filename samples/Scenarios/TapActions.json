@@ -20,8 +20,8 @@
                 "type": "Action.ShowCard",
                 "title": "Set due date",
                 "card": {
-                    "type": "Container",
-                    "items": [
+                    "type": "AdaptiveCard",
+                    "body": [
                         {
                             "type": "Input.Date",
                             "id": "dueDate",
