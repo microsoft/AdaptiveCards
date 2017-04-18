@@ -130,7 +130,7 @@
         "color": "Dark",
         "separations": {
             "small": {
-                "spacing": 20,
+                "spacing": 20
             },
             "normal": {
                 "spacing": 20
