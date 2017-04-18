@@ -4,7 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using AdaptiveCards.Rendering.Options;
 #if XAMARIN
+using FrameworkElement = Xamarin.Forms.View;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml.Internals;
 #elif WPF

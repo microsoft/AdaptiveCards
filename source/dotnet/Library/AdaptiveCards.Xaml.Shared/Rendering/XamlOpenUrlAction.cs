@@ -5,6 +5,7 @@ using System.Windows.Controls;
 #elif XAMARIN
 using Xamarin.Forms;
 using Button = AdaptiveCards.Rendering.ContentButton;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering

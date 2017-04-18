@@ -20,6 +20,7 @@ public:
     std::vector<std::shared_ptr<Fact>>& GetFacts();
     const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
     static std::shared_ptr<FactSet> Deserialize(const Json::Value& root);
+    static std::shared_ptr<FactSet> DeserializeFromString(const std::string& jsonString);
 
 private:
     std::vector<std::shared_ptr<Fact>> m_facts; 

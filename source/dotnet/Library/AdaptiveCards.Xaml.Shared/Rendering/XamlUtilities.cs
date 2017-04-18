@@ -1,4 +1,5 @@
 ﻿
+using AdaptiveCards.Rendering.Options;
 using System;
 using System.Linq;
 using System.Windows;

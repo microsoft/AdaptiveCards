@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Options;
 #if WPF
 using System.Windows.Controls;
 using System.Windows.Shapes;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -42,12 +44,12 @@ namespace AdaptiveCards.Rendering
                         switch (column.Separation)
                         {
                             case SeparationStyle.Strong:
-                                sepStyle = context.Options.Column.Separation.Strong;
+                                sepStyle = context.Options.GetSeparationForElement(element, true);
                                 break;
 
                             case SeparationStyle.Default:
                             default:
-                                sepStyle = context.Options.Column.Separation.Default;
+                                sepStyle = context.Options.GetSeparationForElement(element, false);
                                 break;
                         }
                         uiSep.Margin = new Thickness(sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2, 0);

@@ -66,6 +66,13 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     return result;
 }
 
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(const std::string& jsonString)
+{
+    Json::Value jsonValue(jsonString);
+
+    return AdaptiveCard::Deserialize(jsonValue);
+}
+
 std::string AdaptiveCard::GetVersion() const
 {
     return m_version;

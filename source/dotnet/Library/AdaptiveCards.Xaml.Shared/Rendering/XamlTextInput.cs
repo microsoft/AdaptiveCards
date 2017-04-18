@@ -4,6 +4,7 @@ using AdaptiveCards.Rendering;
 using System.Windows.Controls;
 #elif XAMARIN
 using Xamarin.Forms;
+using FrameworkElement = Xamarin.Forms.View;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -35,7 +36,7 @@ namespace AdaptiveCards.Rendering
 #endif
                 textBox.Text = input.Placeholder;
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
-                textBox.DataContext = input;
+                textBox.SetContext(input);
                 context.InputBindings.Add(input.Id, () => textBox.Text);
                 return textBox;
             }
