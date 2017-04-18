@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Options;
 #if WPF
 using System.Windows.Markup;
 #elif XAMARIN

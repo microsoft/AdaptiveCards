@@ -4,6 +4,7 @@ using System.Windows;
 using System;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using AdaptiveCards.Rendering.Options;
 
 namespace AdaptiveCards.Rendering
 {
@@ -29,7 +30,7 @@ namespace AdaptiveCards.Rendering
                     uiActionBar.Style = context.GetStyle("Adaptive.Actions");
                     if (uiContainer.RowDefinitions.Count > 0)
                     {
-                        XamlContainer.AddSeperator(context, uiContainer, SeparationStyle.Default);
+                        XamlContainer.AddSeperator(context, new ActionSet(), uiContainer, SeparationStyle.Default);
                     }
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using HtmlTags;
-using MarkedNet;
 #if FUTURE
+using Microsoft.MarkedNet;
 namespace AdaptiveCards.Rendering
 {
     /// <summary>

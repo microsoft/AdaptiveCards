@@ -16,6 +16,10 @@ using ICSharpCode.AvalonEdit.Document;
 using System.Xml.Serialization;
 using System.Reflection;
 using AdaptiveCards.Rendering;
+using System.Windows.Media;
+using AdaptiveCards.Rendering.Options;
+using System.ComponentModel;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace WpfVisualizer
 {
@@ -31,6 +35,11 @@ namespace WpfVisualizer
 
         public MainWindow()
         {
+            foreach (var type in typeof(HostOptions).Assembly.GetExportedTypes().Where(t => t.Namespace == typeof(HostOptions).Namespace))
+            {
+                TypeDescriptor.AddAttributes(type, new ExpandableObjectAttribute());
+            }
+
             InitializeComponent();
 
             _synth = new SpeechSynthesizer();
@@ -41,8 +50,11 @@ namespace WpfVisualizer
             _timer.Tick += _timer_Tick;
             _timer.Start();
 
-            this.Renderer = new XamlRendererExtended(new HostOptions(), this.Resources, _onAction, _OnMissingInput);
-            this.options.SelectedObject = JsonConvert.DeserializeObject<HostOptionsEx>(JsonConvert.SerializeObject(new HostOptions()));
+            var hostOptions = new HostOptions();
+            hostOptions.AdaptiveCard.BackgroundColor = Colors.WhiteSmoke.ToString();
+            this.Renderer = new XamlRendererExtended(hostOptions, this.Resources, _onAction, _OnMissingInput);
+            // this.options.SelectedObject = JsonConvert.DeserializeObject<HostOptionsEx>(JsonConvert.SerializeObject(new HostOptions()));
+            this.options.SelectedObject = hostOptions;
         }
 
         private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -58,8 +70,9 @@ namespace WpfVisualizer
         {
             get
             {
-                var json = JsonConvert.SerializeObject(this.options.SelectedObject);
-                return JsonConvert.DeserializeObject<HostOptions>(json);
+                //var json = JsonConvert.SerializeObject(this.options.SelectedObject);
+                // return JsonConvert.DeserializeObject<HostOptions>(json);
+                return (HostOptions)this.options.SelectedObject;
             }
         }
 
@@ -87,6 +100,7 @@ namespace WpfVisualizer
                     this.cardGrid.Children.Clear();
                     if (_card != null)
                     {
+                        this.Renderer = new XamlRendererExtended(this.Options, this.Resources, _onAction, _OnMissingInput);
                         var element = this.Renderer.RenderAdaptiveCard(_card, options: Options);
                         this.cardGrid.Children.Add(element);
                     }
@@ -182,7 +196,7 @@ namespace WpfVisualizer
             else if (e.Action is AC.ShowCardAction)
             {
                 ShowCardAction action = (AC.ShowCardAction)e.Action;
-                if (Options.Actions.ShowCard.ActionMode == AC.Rendering.ShowCardActionMode.Popup)
+                if (Options.Actions.ShowCard.ActionMode == AC.Rendering.Options.ShowCardActionMode.Popup)
                 {
                     ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
                     dialog.Owner = this;
