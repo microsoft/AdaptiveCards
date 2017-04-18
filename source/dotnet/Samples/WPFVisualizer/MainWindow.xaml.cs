@@ -20,6 +20,7 @@ using System.Windows.Media;
 using AdaptiveCards.Rendering.Options;
 using System.ComponentModel;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using System.Threading.Tasks;
 
 namespace WpfVisualizer
 {
@@ -238,11 +239,6 @@ namespace WpfVisualizer
         {
             var renderer = new ImageRenderer(new HostOptions(), this.Resources);
             var imageStream = renderer.RenderAdaptiveCard(this._card, 480);
-            //#else
-            //            var renderer = new ImageRenderer(new RenderOptions(), @"c:\source\intercom\Channels\FacebookChannel\Content\AdaptiveCardStyles.xaml");
-            //            var imageStream = await renderer.RenderAdaptiveCardAsync(this._card, 480);
-            //#endif
-
             string path = System.IO.Path.GetRandomFileName() + ".png";
             using (FileStream fileStream = new FileStream(path, FileMode.Create))
             {
