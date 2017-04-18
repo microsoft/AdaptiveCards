@@ -9,6 +9,50 @@ function invokeSetParent(obj: any, parent: CardElement) {
     obj["setParent"](parent);
 }
 
+function isActionAllowed(action: Action, forbiddenActionTypes: Array<any>): boolean {
+    var className = Utils.getClassNameFromInstance(action);
+
+    if (forbiddenActionTypes) {
+        for (var i = 0; i < forbiddenActionTypes.length; i++) {
+            if (className === Utils.getClassNameFromConstructor(forbiddenActionTypes[i])) {
+                return false;
+            }
+        }
+    }
+
+    for (var i = 0; i < AdaptiveCard.configuration.actions.supportedActionTypes.length; i++) {
+        if (className === Utils.getClassNameFromConstructor(AdaptiveCard.configuration.actions.supportedActionTypes[i])) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<any>) {
+    if (!AdaptiveCard.configuration.supportsInteractivity && element.isInteractive) {
+        return false;
+    }
+
+    var className = Utils.getClassNameFromInstance(element);
+
+    if (forbiddenElementTypes) {
+        for (var i = 0; i < forbiddenElementTypes.length; i++) {
+            if (className === Utils.getClassNameFromConstructor(forbiddenElementTypes[i])) {
+                return false;
+            }
+        }
+    }
+
+    for (var i = 0; i < AdaptiveCard.configuration.supportedElementTypes.length; i++) {
+        if (className === Utils.getClassNameFromConstructor(AdaptiveCard.configuration.supportedElementTypes[i])) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 export interface IValidationError {
     error: Enums.ValidationError,
     message: string;
@@ -39,15 +83,15 @@ export abstract class CardElement {
         }
     }
 
-    protected showBottomSpacer() {
+    protected showBottomSpacer(requestingElement: CardElement) {
         if (this.parent) {
-            this.parent.showBottomSpacer();
+            this.parent.showBottomSpacer(this);
         }
     }
 
-    protected hideBottomSpacer() {
+    protected hideBottomSpacer(requestingElement: CardElement) {
         if (this.parent) {
-            this.parent.hideBottomSpacer();
+            this.parent.hideBottomSpacer(this);
         }
     }
 
@@ -88,6 +132,7 @@ export abstract class CardElement {
         }
     }
 
+    /*
     protected isLastElementInParentContainer(): boolean {
         if (this.parent instanceof Container) {
             return (<Container>this.parent).isLastItem(this);
@@ -96,6 +141,7 @@ export abstract class CardElement {
             return false;
         }
     }
+    */
 
     protected abstract internalRender(): HTMLElement;
 
@@ -140,6 +186,10 @@ export abstract class CardElement {
         }
 
         return renderedElement;
+    }
+
+    isLastItem(item: CardElement): boolean {
+        return this.parent ? this.parent.isLastItem(item) : true;
     }
 
     getRootElement(): CardElement {
@@ -284,15 +334,15 @@ export class TextBlock extends CardElement {
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
         switch (this.size) {
             case Enums.TextSize.Small:
-                return AdaptiveCard.configuration.textBlock.separation.small;
+                return AdaptiveCard.configuration.textBlock.separations.small;
             case Enums.TextSize.Medium:
-                return AdaptiveCard.configuration.textBlock.separation.medium;
+                return AdaptiveCard.configuration.textBlock.separations.medium;
             case Enums.TextSize.Large:
-                return AdaptiveCard.configuration.textBlock.separation.large;
+                return AdaptiveCard.configuration.textBlock.separations.large;
             case Enums.TextSize.ExtraLarge:
-                return AdaptiveCard.configuration.textBlock.separation.extraLarge;
+                return AdaptiveCard.configuration.textBlock.separations.extraLarge;
             default:
-                return AdaptiveCard.configuration.textBlock.separation.normal;
+                return AdaptiveCard.configuration.textBlock.separations.normal;
         }
     }
 
@@ -1344,18 +1394,25 @@ class ActionCollection {
             this.onShowActionCardPane(action);
         }
 
+        var renderedCard = action.card.render();
+
         this._actionCardContainer.innerHTML = '';
+        this._actionCardContainer.style.marginTop = this.items.length > 1 ? AdaptiveCard.configuration.actions.showCard.inlineCardSpacing + "px" : "0px";
 
-        var padding = this._owner.getNonZeroPadding();
+        if (AdaptiveCard.configuration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge) {
+            var padding = this._owner.getNonZeroPadding();
 
-        this._actionCardContainer.style.paddingLeft = padding.left + "px";
-        this._actionCardContainer.style.paddingRight = padding.right + "px";
+            this._actionCardContainer.style.paddingLeft = padding.left + "px";
+            this._actionCardContainer.style.paddingRight = padding.right + "px";
 
-        this._actionCardContainer.style.marginTop = this.items.length > 1 ? "16px" : "0px";
-        this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
-        this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
+            this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
+            this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
 
-        Utils.appendChild(this._actionCardContainer, action.card.render());
+            renderedCard.style.paddingLeft = "0px";
+            renderedCard.style.paddingRight = "0px";
+        }
+
+        Utils.appendChild(this._actionCardContainer, renderedCard);
     }
 
     private actionClicked(actionButton: ActionButton) {
@@ -1410,11 +1467,11 @@ class ActionCollection {
     validate(): Array<IValidationError> {
         var result: Array<IValidationError> = [];
 
-        if (AdaptiveCard.configuration.maxActions && this.items.length > AdaptiveCard.configuration.maxActions) {
+        if (AdaptiveCard.configuration.actions.maxActions && this.items.length > AdaptiveCard.configuration.actions.maxActions) {
             result.push(
                 {
                     error: Enums.ValidationError.TooManyActions,
-                    message: "A maximum of " + AdaptiveCard.configuration.maxActions + " actions are allowed."
+                    message: "A maximum of " + AdaptiveCard.configuration.actions.maxActions + " actions are allowed."
                 });
         }
 
@@ -1427,7 +1484,7 @@ class ActionCollection {
         }
 
         for (var i = 0; i < this.items.length; i++) {
-            if (!AdaptiveCard.isActionAllowed(this.items[i], this._owner.getForbiddenActionTypes())) {
+            if (!isActionAllowed(this.items[i], this._owner.getForbiddenActionTypes())) {
                 result.push(
                     {
                         error: Enums.ValidationError.ActionTypeNotAllowed,
@@ -1458,9 +1515,9 @@ class ActionCollection {
         buttonStrip.style.overflow = "hidden";
 
         this._actionCardContainer = document.createElement("div");
-        this._actionCardContainer.style.padding = "0px";
-        this._actionCardContainer.style.marginTop = "0px";
-        this._actionCardContainer.style.backgroundColor = "#EEEEEE";
+        // this._actionCardContainer.style.padding = "0px";
+        // this._actionCardContainer.style.marginTop = "0px";
+        this._actionCardContainer.style.backgroundColor = AdaptiveCard.configuration.actions.showCard.backgroundColor;
 
         var renderedActions: number = 0;
 
@@ -1472,7 +1529,7 @@ class ActionCollection {
         else {
             var actionButtonStyle = ActionButtonStyle.Push;
 
-            var maxActions = AdaptiveCard.configuration.maxActions ? Math.min(AdaptiveCard.configuration.maxActions, this.items.length) : this.items.length;
+            var maxActions = AdaptiveCard.configuration.actions.maxActions ? Math.min(AdaptiveCard.configuration.actions.maxActions, this.items.length) : this.items.length;
 
             for (var i = 0; i < maxActions; i++) {
                 if (this.items[i] instanceof ShowCardAction) {
@@ -1484,17 +1541,11 @@ class ActionCollection {
             var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
             for (var i = 0; i < maxActions; i++) {
-                if (AdaptiveCard.isActionAllowed(this.items[i], forbiddenActionTypes)) {
+                if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
                     let buttonStripItem = document.createElement("div");
-                    // buttonStripItem.className = "buttonStripItem";
-                    /*
-            flex: 0 1 $item-flex-basis;
-            white-space: nowrap;
-            overflow: hidden;
-                    */
                     buttonStripItem.style.whiteSpace = "nowrap";
                     buttonStripItem.style.overflow = "hidden";
-                    buttonStripItem.style.flex = AdaptiveCard.configuration.actionSet.stretch ? "0 1 100%" : "0 1 auto";
+                    buttonStripItem.style.flex = AdaptiveCard.configuration.actions.stretch ? "0 1 100%" : "0 1 auto";
 
                     let actionButton = new ActionButton(this.items[i], actionButtonStyle);
                     actionButton.text = this.items[i].title;
@@ -1505,17 +1556,11 @@ class ActionCollection {
 
                     Utils.appendChild(buttonStripItem, actionButton.element);
 
-                    /*
-                    if (i < this.items.length - 1) {
-                        buttonStripItem.classList.add("buttonStripItemSpacer");
-                    }
-                    */
-
                     Utils.appendChild(buttonStrip, buttonStripItem);
 
-                    if (i < this.items.length - 1 && AdaptiveCard.configuration.actionSet.buttonSpacing > 0) {
+                    if (i < this.items.length - 1 && AdaptiveCard.configuration.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
-                        spacer.style.flex = "0 0 " + AdaptiveCard.configuration.actionSet.buttonSpacing + "px";
+                        spacer.style.flex = "0 0 " + AdaptiveCard.configuration.actions.buttonSpacing + "px";
 
                         Utils.appendChild(buttonStrip, spacer);
                     }
@@ -1571,20 +1616,12 @@ export class ActionSet extends CardElement {
         super();
 
         this._actionCollection = new ActionCollection(this);
-        this._actionCollection.onHideActionCardPane = () => {
-            if (this.isLastElementInParentContainer()) {
-                this.showBottomSpacer();
-            }
-        };
-        this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => {
-            if (this.isLastElementInParentContainer()) {
-                this.hideBottomSpacer();
-            }
-        };
+        this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer(this); };
+        this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer(this); };
     }
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return AdaptiveCard.configuration.actionSet.separation;
+        return AdaptiveCard.configuration.actions.separation;
     }
 
     validate(): Array<IValidationError> {
@@ -1623,19 +1660,23 @@ export class ActionSet extends CardElement {
     }
 }
 
-export class Container extends CardElement {
+export abstract class ContainerBase extends CardElement {
     private _items: Array<CardElement> = [];
 
-    protected showBottomSpacer() {
-        super.showBottomSpacer();
+    protected showBottomSpacer(requestingElement: CardElement) {
+        if (!requestingElement || (this.isLastItem(requestingElement) && AdaptiveCard.configuration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge)) {
+            this._element.style.paddingBottom = this.padding.bottom + "px";
 
-        this._element.style.paddingBottom = AdaptiveCard.configuration.padding.bottom + "px";
+            super.showBottomSpacer(this);
+        }
     }
 
-    protected hideBottomSpacer(requestingElement: CardElement = null) {
-        super.hideBottomSpacer();
+    protected hideBottomSpacer(requestingElement: CardElement) {
+        if (!requestingElement || (this.isLastItem(requestingElement) && AdaptiveCard.configuration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge)) {
+            this._element.style.paddingBottom = "0px";
 
-        this._element.style.paddingBottom = "0px";
+            super.hideBottomSpacer(this);
+        }
     }
 
     protected internalRender(): HTMLElement {
@@ -1661,7 +1702,7 @@ export class Container extends CardElement {
             var renderedElementCount: number = 0;
 
             for (var i = 0; i < this._items.length; i++) {
-                var renderedElement = AdaptiveCard.isElementAllowed(this._items[i], this.getForbiddenElementTypes()) ? this._items[i].render() : null;
+                var renderedElement = isElementAllowed(this._items[i], this.getForbiddenElementTypes()) ? this._items[i].render() : null;
 
                 if (renderedElement != null) {
                     if (renderedElementCount > 0 && this._items[i].separation != Enums.Separation.None) {
@@ -1712,7 +1753,7 @@ export class Container extends CardElement {
                     });
             }
 
-            if (!AdaptiveCard.isElementAllowed(this._items[i], this.getForbiddenElementTypes())) {
+            if (!isElementAllowed(this._items[i], this.getForbiddenElementTypes())) {
                 result.push(
                     {
                         error: Enums.ValidationError.InteractivityNotAllowed,
@@ -1804,6 +1845,51 @@ export class Container extends CardElement {
         }
 
         return speak;
+    }
+}
+
+export class Container extends ContainerBase {
+    protected get padding(): HostConfig.ISpacingDefinition {
+        var styleDefinition = this.style == Enums.ContainerStyle.Normal ? AdaptiveCard.configuration.container.normal : AdaptiveCard.configuration.container.emphasis;
+
+        return styleDefinition.padding ? styleDefinition.padding : { top: 0, right: 0, bottom: 0, left: 0 };
+    }
+
+    protected internalRender(): HTMLElement {
+        var renderedContainer = super.internalRender();
+
+        var styleDefinition = this.style == Enums.ContainerStyle.Normal ? AdaptiveCard.configuration.container.normal : AdaptiveCard.configuration.container.emphasis;
+
+        if (styleDefinition.backgroundColor) {
+            renderedContainer.style.backgroundColor = styleDefinition.backgroundColor;
+        }
+
+        if (styleDefinition.borderColor) {
+            renderedContainer.style.borderColor = styleDefinition.borderColor;
+        }
+
+        if (styleDefinition.borderThickness) {
+            renderedContainer.style.borderWidth = styleDefinition.borderThickness + "px";
+        }
+
+        /*
+        if (styleDefinition.padding) {
+            renderedContainer.style.paddingTop = styleDefinition.padding.top + "px";
+            renderedContainer.style.paddingRight = styleDefinition.padding.right + "px";
+            renderedContainer.style.paddingBottom = styleDefinition.padding.bottom + "px";
+            renderedContainer.style.paddingLeft = styleDefinition.padding.left + "px";
+        }
+        */
+
+        return renderedContainer;
+    }
+
+    style: Enums.ContainerStyle = Enums.ContainerStyle.Normal;    
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.style = Enums.stringToContainerStyle(json["style"], Enums.ContainerStyle.Normal);
     }
 }
 
@@ -2026,7 +2112,7 @@ export class TypeRegistry<T> {
     }
 }
 
-export abstract class ContainerWidthActions extends Container {
+export abstract class ContainerWithActions extends ContainerBase {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
@@ -2035,7 +2121,7 @@ export abstract class ContainerWidthActions extends Container {
         var renderedActions = this._actionCollection.render();
 
         if (renderedActions) {
-            Utils.appendChild(this._element, Utils.renderSeparation(AdaptiveCard.configuration.actionSet.separation));
+            Utils.appendChild(this._element, Utils.renderSeparation(AdaptiveCard.configuration.actions.separation));
             Utils.appendChild(this._element, renderedActions);
         }
 
@@ -2046,8 +2132,8 @@ export abstract class ContainerWidthActions extends Container {
         super();
 
         this._actionCollection = new ActionCollection(this);
-        this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer() };
-        this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer() };
+        this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer(null) };
+        this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer(null) };
     }
 
     parse(json: any, itemsCollectionPropertyName: string = "items") {
@@ -2066,6 +2152,10 @@ export abstract class ContainerWidthActions extends Container {
         }
     }
 
+    isLastItem(item: CardElement): boolean {
+        return super.isLastItem(item) && this._actionCollection.items.length == 0;
+    }
+
     addAction(action: Action) {
         this._actionCollection.addAction(action);
     }
@@ -2075,7 +2165,7 @@ export abstract class ContainerWidthActions extends Container {
     }
 }
 
-export class AdaptiveCard extends ContainerWidthActions {
+export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
 
     static elementTypeRegistry = new TypeRegistry<CardElement>();
@@ -2086,13 +2176,6 @@ export class AdaptiveCard extends ContainerWidthActions {
     static onParseError: (error: IValidationError) => void = null;
 
     static configuration: HostConfig.IAdaptiveCardConfiguration = {
-        maxActions: 5,
-        supportedActionTypes: [
-            HttpAction,
-            OpenUrlAction,
-            SubmitAction,
-            ShowCardAction
-        ],
         supportedElementTypes: [
             Container,
             TextBlock,
@@ -2167,10 +2250,28 @@ export class AdaptiveCard extends ContainerWidthActions {
         container: {
             separation: {
                 spacing: 20
+            },
+            normal: {
+            },
+            emphasis: {
+                backgroundColor: "#EEEEEE",
+                borderColor: "#AAAAAA",
+                borderThickness: {
+                    top: 1,
+                    right: 1,
+                    bottom: 1,
+                    left: 1
+                },
+                padding: {
+                    top: 10,
+                    right: 10,
+                    bottom: 10,
+                    left: 10
+                }
             }
         },
         textBlock: {
-            separation: {
+            separations: {
                 small: {
                     spacing: 20,
                 },
@@ -2233,12 +2334,30 @@ export class AdaptiveCard extends ContainerWidthActions {
                 spacing: 20
             }
         },
-        actionSet: {
+        actions: {
+            maxActions: 5,
+            supportedActionTypes: [
+                HttpAction,
+                OpenUrlAction,
+                SubmitAction,
+                ShowCardAction
+            ],
             separation: {
                 spacing: 20
             },
             buttonSpacing: 20,
-            stretch: false
+            stretch: false,
+            showCard: {
+                actionMode: Enums.ShowCardActionMode.InlineEdgeToEdge,
+                inlineCardSpacing: 16,
+                backgroundColor: "#EEEEEE",
+                padding: {
+                    top: 16,
+                    right: 16,
+                    bottom: 16,
+                    left: 16
+                }
+            }
         },
     }
 
@@ -2270,50 +2389,6 @@ export class AdaptiveCard extends ContainerWidthActions {
         AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
         AdaptiveCard.actionTypeRegistry.registerType("Action.Submit", () => { return new SubmitAction(); });
         AdaptiveCard.actionTypeRegistry.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
-    }
-
-    static isActionAllowed(action: Action, forbiddenActionTypes: Array<any>): boolean {
-        var className = Utils.getClassNameFromInstance(action);
-
-        if (forbiddenActionTypes) {
-            for (var i = 0; i < forbiddenActionTypes.length; i++) {
-                if (className === Utils.getClassNameFromConstructor(forbiddenActionTypes[i])) {
-                    return false;
-                }
-            }
-        }
-
-        for (var i = 0; i < AdaptiveCard.configuration.supportedActionTypes.length; i++) {
-            if (className === Utils.getClassNameFromConstructor(AdaptiveCard.configuration.supportedActionTypes[i])) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    static isElementAllowed(element: CardElement, forbiddenElementTypes: Array<any>) {
-        if (!AdaptiveCard.configuration.supportsInteractivity && element.isInteractive) {
-            return false;
-        }
-
-        var className = Utils.getClassNameFromInstance(element);
-
-        if (forbiddenElementTypes) {
-            for (var i = 0; i < forbiddenElementTypes.length; i++) {
-                if (className === Utils.getClassNameFromConstructor(forbiddenElementTypes[i])) {
-                    return false;
-                }
-            }
-        }
-
-        for (var i = 0; i < AdaptiveCard.configuration.supportedElementTypes.length; i++) {
-            if (className === Utils.getClassNameFromConstructor(AdaptiveCard.configuration.supportedElementTypes[i])) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private isVersionSupported(): boolean {
@@ -2392,7 +2467,7 @@ AdaptiveCard.initialize();
 
 class InlineAdaptiveCard extends AdaptiveCard {
     protected get padding(): HostConfig.ISpacingDefinition {
-        return { left: 0, top: 16, right: 0, bottom: 16};
+        return AdaptiveCard.configuration.actions.showCard.padding;
     }
 
     getForbiddenActionTypes(): Array<any> {

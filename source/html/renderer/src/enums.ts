@@ -35,6 +35,11 @@ export enum HorizontalAlignment {
     Right
 }
 
+export enum ContainerStyle {
+    Normal,
+    Emphasis
+}
+
 export enum ImageStyle {
     Normal,
     Person
@@ -61,6 +66,7 @@ export enum ValidationError {
 
 export enum ShowCardActionMode {
     Inline,
+    InlineEdgeToEdge,
     Popup
 }
 
@@ -149,6 +155,17 @@ export function stringToImageStyle(value: string, defaultValue: ImageStyle): Ima
             return ImageStyle.Person;
         case "normal":
             return ImageStyle.Normal;
+        default:
+            return defaultValue;
+    }
+}
+
+export function stringToContainerStyle(value: string, defaultValue: ContainerStyle): ContainerStyle {
+    switch (value) {
+        case "normal":
+            return ContainerStyle.Normal;
+        case "emphasis":
+            return ContainerStyle.Emphasis;
         default:
             return defaultValue;
     }
