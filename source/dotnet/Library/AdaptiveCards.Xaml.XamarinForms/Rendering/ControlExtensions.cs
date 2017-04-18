@@ -31,5 +31,10 @@ namespace AdaptiveCards.Rendering
         {
             control.Children.Add(item);
         }
+
+        public static void SetColor(this Xamarin.Forms.TextBlock textBlock, string color, RenderContext context)
+        {
+            textBlock.TextColor = Color.FromHex(color);
+        }
     }
 }

@@ -34,5 +34,10 @@ namespace AdaptiveCards.Rendering
         {
             control.Items.Add(element);
         }
+
+        public static void SetColor(this System.Windows.Controls.TextBlock textBlock, string color, RenderContext context)
+        {
+            textBlock.Foreground = context.GetColorBrush(color);
+        }
     }
 }

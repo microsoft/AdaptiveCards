@@ -61,6 +61,7 @@
     <Compile Include="Rendering\StaTaskSchedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\XamlActionSet.Wpf.cs" />
+    <Compile Include="Rendering\XamlTextBlock.Wpf.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AdaptiveCards.Xaml.Wpf.nuspec">
