@@ -1,20 +1,6 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Xml;
-using MarkedNet;
-using System.Collections.Generic;
-using System.Linq;
-#if WPF
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Markup;
-using System.Windows.Media;
-#elif XAMARIN
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
+
 using FrameworkElement = Xamarin.Forms.View;
-#endif
 
 namespace AdaptiveCards.Rendering
 {
