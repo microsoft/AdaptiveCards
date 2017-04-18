@@ -1,7 +1,7 @@
 ﻿import * as Enums from "./enums";
 import * as Utils from "./utils";
-import * as HostConfig from "./host-options";
-import * as TextFormatters from "./text-formatter";
+import * as HostConfig from "./host-configuration";
+import * as TextFormatters from "./text-formatters";
 
 function invokeSetParent(obj: any, parent: CardElement) {
     // This is not super pretty, but it the closest emulation of
@@ -20,8 +20,8 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<any>): bool
         }
     }
 
-    for (var i = 0; i < AdaptiveCard.configuration.actions.supportedActionTypes.length; i++) {
-        if (className === Utils.getClassNameFromConstructor(AdaptiveCard.configuration.actions.supportedActionTypes[i])) {
+    for (var i = 0; i < hostConfiguration.actions.supportedActionTypes.length; i++) {
+        if (className === Utils.getClassNameFromConstructor(hostConfiguration.actions.supportedActionTypes[i])) {
             return true;
         }
     }
@@ -30,7 +30,7 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<any>): bool
 }
 
 function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<any>) {
-    if (!AdaptiveCard.configuration.supportsInteractivity && element.isInteractive) {
+    if (!hostConfiguration.supportsInteractivity && element.isInteractive) {
         return false;
     }
 
@@ -44,8 +44,8 @@ function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<any
         }
     }
 
-    for (var i = 0; i < AdaptiveCard.configuration.supportedElementTypes.length; i++) {
-        if (className === Utils.getClassNameFromConstructor(AdaptiveCard.configuration.supportedElementTypes[i])) {
+    for (var i = 0; i < hostConfiguration.supportedElementTypes.length; i++) {
+        if (className === Utils.getClassNameFromConstructor(hostConfiguration.supportedElementTypes[i])) {
             return true;
         }
     }
@@ -131,17 +131,6 @@ export abstract class CardElement {
             element.style.overflow = "hidden";
         }
     }
-
-    /*
-    protected isLastElementInParentContainer(): boolean {
-        if (this.parent instanceof Container) {
-            return (<Container>this.parent).isLastItem(this);
-        }
-        else {
-            return false;
-        }
-    }
-    */
 
     protected abstract internalRender(): HTMLElement;
 
@@ -231,26 +220,26 @@ export class TextBlock extends CardElement {
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
-            element.style.fontFamily = AdaptiveCard.configuration.fontFamily;
+            element.style.fontFamily = hostConfiguration.fontFamily;
 
             var cssStyle = "text ";
             var fontSize: number;
 
             switch (this.size) {
                 case Enums.TextSize.Small:
-                    fontSize = AdaptiveCard.configuration.fontSizes.small;
+                    fontSize = hostConfiguration.fontSizes.small;
                     break;
                 case Enums.TextSize.Medium:
-                    fontSize = AdaptiveCard.configuration.fontSizes.medium;
+                    fontSize = hostConfiguration.fontSizes.medium;
                     break;
                 case Enums.TextSize.Large:
-                    fontSize = AdaptiveCard.configuration.fontSizes.large;
+                    fontSize = hostConfiguration.fontSizes.large;
                     break;
                 case Enums.TextSize.ExtraLarge:
-                    fontSize = AdaptiveCard.configuration.fontSizes.extraLarge;
+                    fontSize = hostConfiguration.fontSizes.extraLarge;
                     break;
                 default:
-                    fontSize = AdaptiveCard.configuration.fontSizes.normal;
+                    fontSize = hostConfiguration.fontSizes.normal;
                     break;
             }
 
@@ -261,41 +250,41 @@ export class TextBlock extends CardElement {
 
             switch (actualTextColor) {
                 case Enums.TextColor.Dark:
-                    colorDefinition = AdaptiveCard.configuration.colors.dark;
+                    colorDefinition = hostConfiguration.colors.dark;
                     break;
                 case Enums.TextColor.Light:
-                    colorDefinition = AdaptiveCard.configuration.colors.light;
+                    colorDefinition = hostConfiguration.colors.light;
                     break;
                 case Enums.TextColor.Accent:
-                    colorDefinition = AdaptiveCard.configuration.colors.accent;
+                    colorDefinition = hostConfiguration.colors.accent;
                     break;
                 case Enums.TextColor.Good:
-                    colorDefinition = AdaptiveCard.configuration.colors.good;
+                    colorDefinition = hostConfiguration.colors.good;
                     break;
                 case Enums.TextColor.Warning:
-                    colorDefinition = AdaptiveCard.configuration.colors.warning;
+                    colorDefinition = hostConfiguration.colors.warning;
                     break;
                 case Enums.TextColor.Attention:
-                    colorDefinition = AdaptiveCard.configuration.colors.attention;
+                    colorDefinition = hostConfiguration.colors.attention;
                     break;
                 default:
-                    colorDefinition = AdaptiveCard.configuration.colors.dark;
+                    colorDefinition = hostConfiguration.colors.dark;
                     break;
             }
 
-            element.style.color = this.isSubtle ? colorDefinition.subtle : colorDefinition.normal;
+            element.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.normal);
 
             var fontWeight: number;
 
             switch (this.weight) {
                 case Enums.TextWeight.Lighter:
-                    fontWeight = AdaptiveCard.configuration.fontWeights.lighter;
+                    fontWeight = hostConfiguration.fontWeights.lighter;
                     break;
                 case Enums.TextWeight.Bolder:
-                    fontWeight = AdaptiveCard.configuration.fontWeights.bolder;
+                    fontWeight = hostConfiguration.fontWeights.bolder;
                     break;
                 default:
-                    fontWeight = AdaptiveCard.configuration.fontWeights.normal;
+                    fontWeight = hostConfiguration.fontWeights.normal;
                     break;
             }
 
@@ -334,15 +323,15 @@ export class TextBlock extends CardElement {
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
         switch (this.size) {
             case Enums.TextSize.Small:
-                return AdaptiveCard.configuration.textBlock.separations.small;
+                return hostConfiguration.textBlock.separations.small;
             case Enums.TextSize.Medium:
-                return AdaptiveCard.configuration.textBlock.separations.medium;
+                return hostConfiguration.textBlock.separations.medium;
             case Enums.TextSize.Large:
-                return AdaptiveCard.configuration.textBlock.separations.large;
+                return hostConfiguration.textBlock.separations.large;
             case Enums.TextSize.ExtraLarge:
-                return AdaptiveCard.configuration.textBlock.separations.extraLarge;
+                return hostConfiguration.textBlock.separations.extraLarge;
             default:
-                return AdaptiveCard.configuration.textBlock.separations.normal;
+                return hostConfiguration.textBlock.separations.normal;
         }
     }
 
@@ -408,7 +397,7 @@ export class FactSet extends CardElement {
                 var trElement = document.createElement("tr");
 
                 if (i > 0) {
-                    trElement.style.marginTop = AdaptiveCard.configuration.factSet.spacing + "px";
+                    trElement.style.marginTop = hostConfiguration.factSet.spacing + "px";
                 }
 
                 var tdElement = document.createElement("td");
@@ -416,10 +405,10 @@ export class FactSet extends CardElement {
 
                 let textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].name;
-                textBlock.size = AdaptiveCard.configuration.factSet.title.size;
-                textBlock.color = AdaptiveCard.configuration.factSet.title.color;
-                textBlock.isSubtle = AdaptiveCard.configuration.factSet.title.isSubtle;
-                textBlock.weight = AdaptiveCard.configuration.factSet.title.weight;
+                textBlock.size = hostConfiguration.factSet.title.size;
+                textBlock.color = hostConfiguration.factSet.title.color;
+                textBlock.isSubtle = hostConfiguration.factSet.title.isSubtle;
+                textBlock.weight = hostConfiguration.factSet.title.weight;
                 textBlock.separation = Enums.Separation.None;
 
                 Utils.appendChild(tdElement, textBlock.render());
@@ -430,10 +419,10 @@ export class FactSet extends CardElement {
 
                 textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].value;
-                textBlock.size = AdaptiveCard.configuration.factSet.value.size;
-                textBlock.color = AdaptiveCard.configuration.factSet.value.color;
-                textBlock.isSubtle = AdaptiveCard.configuration.factSet.value.isSubtle;
-                textBlock.weight = AdaptiveCard.configuration.factSet.value.weight;
+                textBlock.size = hostConfiguration.factSet.value.size;
+                textBlock.color = hostConfiguration.factSet.value.color;
+                textBlock.isSubtle = hostConfiguration.factSet.value.isSubtle;
+                textBlock.weight = hostConfiguration.factSet.value.weight;
                 textBlock.separation = Enums.Separation.None;
 
                 Utils.appendChild(tdElement, textBlock.render());
@@ -448,7 +437,7 @@ export class FactSet extends CardElement {
     facts: Array<Fact> = [];
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return AdaptiveCard.configuration.factSet.separation;
+        return hostConfiguration.factSet.separation;
     }
 
     parse(json: any) {
@@ -538,13 +527,13 @@ export class Image extends CardElement {
                     imageElement.style.width = "100%";
                     break;
                 case Enums.Size.Small:
-                    imageElement.style.maxWidth = AdaptiveCard.configuration.imageSizes.small + "px";
+                    imageElement.style.maxWidth = hostConfiguration.imageSizes.small + "px";
                     break;
                 case Enums.Size.Large:
-                    imageElement.style.maxWidth = AdaptiveCard.configuration.imageSizes.large + "px";
+                    imageElement.style.maxWidth = hostConfiguration.imageSizes.large + "px";
                     break;
                 default:
-                    imageElement.style.maxWidth = AdaptiveCard.configuration.imageSizes.medium + "px";
+                    imageElement.style.maxWidth = hostConfiguration.imageSizes.medium + "px";
                     break;
             }
 
@@ -564,7 +553,7 @@ export class Image extends CardElement {
     selectAction: ExternalAction;
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return AdaptiveCard.configuration.image.separation;
+        return hostConfiguration.image.separation;
     }
 
     parse(json: any) {
@@ -621,7 +610,7 @@ export class ImageSet extends CardElement {
     imageSize: Enums.Size = Enums.Size.Medium;
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return AdaptiveCard.configuration.imageSet.separation;
+        return hostConfiguration.imageSet.separation;
     }
 
     parse(json: any) {
@@ -681,7 +670,7 @@ export abstract class Input extends CardElement implements Utils.IInput {
     abstract get value(): string;
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return AdaptiveCard.configuration.input.separation;
+        return hostConfiguration.input.separation;
     }
 
     validate(): Array<IValidationError> {
@@ -1106,6 +1095,7 @@ class ActionButton {
         this._action = action;
         this._style = style;
         this._element = document.createElement("div");
+        // this._element.style.display = "table-cell";
         this._element.onclick = (e) => { this.click(); };
 
         this.updateCssStyle();
@@ -1397,9 +1387,9 @@ class ActionCollection {
         var renderedCard = action.card.render();
 
         this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.marginTop = this.items.length > 1 ? AdaptiveCard.configuration.actions.showCard.inlineCardSpacing + "px" : "0px";
+        this._actionCardContainer.style.marginTop = this.items.length > 1 ? hostConfiguration.actions.showCard.inlineCardSpacing + "px" : "0px";
 
-        if (AdaptiveCard.configuration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge) {
+        if (hostConfiguration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge) {
             var padding = this._owner.getNonZeroPadding();
 
             this._actionCardContainer.style.paddingLeft = padding.left + "px";
@@ -1467,15 +1457,15 @@ class ActionCollection {
     validate(): Array<IValidationError> {
         var result: Array<IValidationError> = [];
 
-        if (AdaptiveCard.configuration.actions.maxActions && this.items.length > AdaptiveCard.configuration.actions.maxActions) {
+        if (hostConfiguration.actions.maxActions && this.items.length > hostConfiguration.actions.maxActions) {
             result.push(
                 {
                     error: Enums.ValidationError.TooManyActions,
-                    message: "A maximum of " + AdaptiveCard.configuration.actions.maxActions + " actions are allowed."
+                    message: "A maximum of " + hostConfiguration.actions.maxActions + " actions are allowed."
                 });
         }
 
-        if (this.items.length > 0 && !AdaptiveCard.configuration.supportsInteractivity) {
+        if (this.items.length > 0 && !hostConfiguration.supportsInteractivity) {
             result.push(
                 {
                     error: Enums.ValidationError.InteractivityNotAllowed,
@@ -1502,22 +1492,36 @@ class ActionCollection {
     }
 
     render(): HTMLElement {
-        if (!AdaptiveCard.configuration.supportsInteractivity) {
+        if (!hostConfiguration.supportsInteractivity) {
             return null;
         }
 
         let element = document.createElement("div");
-        // element.className = "actionGroup";
-
         let buttonStrip = document.createElement("div");
-        // buttonStrip.className = "buttonStrip";
-        buttonStrip.style.display = "flex";
         buttonStrip.style.overflow = "hidden";
 
+        switch (hostConfiguration.actions.actionAlignment) {
+            case Enums.HorizontalAlignment.Center:
+                element.style.textAlign = "center";
+                buttonStrip.style.textAlign = "center";
+
+                break;
+            case Enums.HorizontalAlignment.Right:
+                element.style.textAlign = "right";
+                buttonStrip.style.textAlign = "right";
+
+                break;
+        }
+
+        if (hostConfiguration.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+            buttonStrip.style.display = "inline-flex";
+        }
+        else {
+            buttonStrip.style.display = "inline-table";
+        }
+
         this._actionCardContainer = document.createElement("div");
-        // this._actionCardContainer.style.padding = "0px";
-        // this._actionCardContainer.style.marginTop = "0px";
-        this._actionCardContainer.style.backgroundColor = AdaptiveCard.configuration.actions.showCard.backgroundColor;
+        this._actionCardContainer.style.backgroundColor = Utils.stringToCssColor(hostConfiguration.actions.showCard.backgroundColor);
 
         var renderedActions: number = 0;
 
@@ -1529,7 +1533,7 @@ class ActionCollection {
         else {
             var actionButtonStyle = ActionButtonStyle.Push;
 
-            var maxActions = AdaptiveCard.configuration.actions.maxActions ? Math.min(AdaptiveCard.configuration.actions.maxActions, this.items.length) : this.items.length;
+            var maxActions = hostConfiguration.actions.maxActions ? Math.min(hostConfiguration.actions.maxActions, this.items.length) : this.items.length;
 
             for (var i = 0; i < maxActions; i++) {
                 if (this.items[i] instanceof ShowCardAction) {
@@ -1545,7 +1549,7 @@ class ActionCollection {
                     let buttonStripItem = document.createElement("div");
                     buttonStripItem.style.whiteSpace = "nowrap";
                     buttonStripItem.style.overflow = "hidden";
-                    buttonStripItem.style.flex = AdaptiveCard.configuration.actions.stretch ? "0 1 100%" : "0 1 auto";
+                    buttonStripItem.style.flex = hostConfiguration.actions.stretch ? "0 1 100%" : "0 1 auto";
 
                     let actionButton = new ActionButton(this.items[i], actionButtonStyle);
                     actionButton.text = this.items[i].title;
@@ -1558,9 +1562,15 @@ class ActionCollection {
 
                     Utils.appendChild(buttonStrip, buttonStripItem);
 
-                    if (i < this.items.length - 1 && AdaptiveCard.configuration.actions.buttonSpacing > 0) {
+                    if (i < this.items.length - 1 && hostConfiguration.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
-                        spacer.style.flex = "0 0 " + AdaptiveCard.configuration.actions.buttonSpacing + "px";
+
+                        if (hostConfiguration.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+                            spacer.style.flex = "0 0 " + hostConfiguration.actions.buttonSpacing + "px";
+                        }
+                        else {
+                            spacer.style.height = hostConfiguration.actions.buttonSpacing + "px";
+                        }
 
                         Utils.appendChild(buttonStrip, spacer);
                     }
@@ -1621,7 +1631,7 @@ export class ActionSet extends CardElement {
     }
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return AdaptiveCard.configuration.actions.separation;
+        return hostConfiguration.actions.separation;
     }
 
     validate(): Array<IValidationError> {
@@ -1664,7 +1674,7 @@ export abstract class ContainerBase extends CardElement {
     private _items: Array<CardElement> = [];
 
     protected showBottomSpacer(requestingElement: CardElement) {
-        if (!requestingElement || (this.isLastItem(requestingElement) && AdaptiveCard.configuration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge)) {
+        if (!requestingElement || (this.isLastItem(requestingElement) && hostConfiguration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge)) {
             this._element.style.paddingBottom = this.padding.bottom + "px";
 
             super.showBottomSpacer(this);
@@ -1672,7 +1682,7 @@ export abstract class ContainerBase extends CardElement {
     }
 
     protected hideBottomSpacer(requestingElement: CardElement) {
-        if (!requestingElement || (this.isLastItem(requestingElement) && AdaptiveCard.configuration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge)) {
+        if (!requestingElement || (this.isLastItem(requestingElement) && hostConfiguration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge)) {
             this._element.style.paddingBottom = "0px";
 
             super.hideBottomSpacer(this);
@@ -1706,9 +1716,9 @@ export abstract class ContainerBase extends CardElement {
 
                 if (renderedElement != null) {
                     if (renderedElementCount > 0 && this._items[i].separation != Enums.Separation.None) {
-                        var separationDefinition = this._items[i].separation == Enums.Separation.Default ? this._items[i].getDefaultSeparationDefinition() : AdaptiveCard.configuration.strongSeparation;
+                        var separationDefinition = this._items[i].separation == Enums.Separation.Default ? this._items[i].getDefaultSeparationDefinition() : hostConfiguration.strongSeparation;
 
-                        Utils.appendChild(this._element, Utils.renderSeparation(separationDefinition));
+                        Utils.appendChild(this._element, Utils.renderSeparation(separationDefinition, Enums.Orientation.Vertical));
                     }
 
                     Utils.appendChild(this._element, renderedElement);
@@ -1738,14 +1748,14 @@ export abstract class ContainerBase extends CardElement {
     }
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return AdaptiveCard.configuration.container.separation;
+        return hostConfiguration.container.separation;
     }
 
     validate(): Array<IValidationError> {
         var result: Array<IValidationError> = [];
 
         for (var i = 0; i < this._items.length; i++) {
-            if (!AdaptiveCard.configuration.supportsInteractivity && this._items[i].isInteractive) {
+            if (!hostConfiguration.supportsInteractivity && this._items[i].isInteractive) {
                 result.push(
                     {
                         error: Enums.ValidationError.InteractivityNotAllowed,
@@ -1850,7 +1860,7 @@ export abstract class ContainerBase extends CardElement {
 
 export class Container extends ContainerBase {
     protected get padding(): HostConfig.ISpacingDefinition {
-        var styleDefinition = this.style == Enums.ContainerStyle.Normal ? AdaptiveCard.configuration.container.normal : AdaptiveCard.configuration.container.emphasis;
+        var styleDefinition = this.style == Enums.ContainerStyle.Normal ? hostConfiguration.container.normal : hostConfiguration.container.emphasis;
 
         return styleDefinition.padding ? styleDefinition.padding : { top: 0, right: 0, bottom: 0, left: 0 };
     }
@@ -1858,28 +1868,19 @@ export class Container extends ContainerBase {
     protected internalRender(): HTMLElement {
         var renderedContainer = super.internalRender();
 
-        var styleDefinition = this.style == Enums.ContainerStyle.Normal ? AdaptiveCard.configuration.container.normal : AdaptiveCard.configuration.container.emphasis;
+        var styleDefinition = this.style == Enums.ContainerStyle.Normal ? hostConfiguration.container.normal : hostConfiguration.container.emphasis;
 
         if (styleDefinition.backgroundColor) {
-            renderedContainer.style.backgroundColor = styleDefinition.backgroundColor;
+            renderedContainer.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
         }
 
         if (styleDefinition.borderColor) {
-            renderedContainer.style.borderColor = styleDefinition.borderColor;
+            renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
         }
 
         if (styleDefinition.borderThickness) {
             renderedContainer.style.borderWidth = styleDefinition.borderThickness + "px";
         }
-
-        /*
-        if (styleDefinition.padding) {
-            renderedContainer.style.paddingTop = styleDefinition.padding.top + "px";
-            renderedContainer.style.paddingRight = styleDefinition.padding.right + "px";
-            renderedContainer.style.paddingBottom = styleDefinition.padding.bottom + "px";
-            renderedContainer.style.paddingLeft = styleDefinition.padding.left + "px";
-        }
-        */
 
         return renderedContainer;
     }
@@ -1913,7 +1914,7 @@ export class Column extends Container {
     weight: number = 100;
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return AdaptiveCard.configuration.column.separation;
+        return hostConfiguration.column.separation;
     }
 
     parse(json: any) {
@@ -1948,20 +1949,11 @@ export class ColumnSet extends CardElement {
                     Utils.appendChild(element, renderedColumn);
 
                     if (this._columns.length > 1 && i < this._columns.length - 1 && this._columns[i + 1].separation != Enums.Separation.None) {
-                        var separationDefinition = this._columns[i + 1].separation == Enums.Separation.Default ? this._columns[i + 1].getDefaultSeparationDefinition() : AdaptiveCard.configuration.strongSeparation;
+                        var separationDefinition = this._columns[i + 1].separation == Enums.Separation.Default ? this._columns[i + 1].getDefaultSeparationDefinition() : hostConfiguration.strongSeparation;
 
                         if (separationDefinition) {
-                            var separator = document.createElement("div");
+                            var separator = Utils.renderSeparation(separationDefinition, Enums.Orientation.Horizontal);
                             separator.style.flex = "0 0 auto";
-
-                            if (separationDefinition.lineThickness) {
-                                separator.style.marginLeft = (separationDefinition.spacing / 2) + "px";
-                                separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
-                                separator.style.borderLeft = separationDefinition.lineThickness + "px solid " + separationDefinition.lineColor;
-                            }
-                            else {
-                                separator.style.width = separationDefinition.spacing + "px";
-                            }
 
                             Utils.appendChild(element, separator);
                         }
@@ -1979,7 +1971,7 @@ export class ColumnSet extends CardElement {
     }
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return AdaptiveCard.configuration.columnSet.separation;
+        return hostConfiguration.columnSet.separation;
     }
 
     parse(json: any) {
@@ -2121,7 +2113,7 @@ export abstract class ContainerWithActions extends ContainerBase {
         var renderedActions = this._actionCollection.render();
 
         if (renderedActions) {
-            Utils.appendChild(this._element, Utils.renderSeparation(AdaptiveCard.configuration.actions.separation));
+            Utils.appendChild(this._element, Utils.renderSeparation(hostConfiguration.actions.separation, Enums.Orientation.Vertical));
             Utils.appendChild(this._element, renderedActions);
         }
 
@@ -2175,192 +2167,6 @@ export class AdaptiveCard extends ContainerWithActions {
     static onShowPopupCard: (action: ShowCardAction) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
-    static configuration: HostConfig.IAdaptiveCardConfiguration = {
-        supportedElementTypes: [
-            Container,
-            TextBlock,
-            Image,
-            ImageSet,
-            FactSet,
-            ColumnSet,
-            ActionSet,
-            TextInput,
-            DateInput,
-            NumberInput,
-            ChoiceSetInput,
-            ToggleInput            
-        ],
-        supportsInteractivity: true,
-        backgroundColor: "transparent",
-        strongSeparation: {
-            spacing: 40,
-            lineThickness: 1,
-            lineColor: "#EEEEEE"
-        },
-        padding: {
-            left: 20,
-            top: 20,
-            right: 20,
-            bottom: 20
-        },
-        fontFamily: "Segoe UI",
-        fontSizes: {
-            small: 8,
-            normal: 10,
-            medium: 12,
-            large: 14,
-            extraLarge: 16
-        },
-        fontWeights: {
-            lighter: 200,
-            normal: 400,
-            bolder: 600
-        },
-        colors: {
-            dark: {
-                normal: "#0000FF",
-                subtle: "#222222"
-            },
-            light: {
-                normal: "#FFFFFF",
-                subtle: "#DDDDDD"
-            },
-            accent: {
-                normal: "#0000FF",
-                subtle: "#0000DD" 
-            },
-            attention: {
-                normal: "#FF6600",
-                subtle: "#DD4400"
-            },
-            good: {
-                normal: "#00FF00",
-                subtle: "#00DD00"
-            },
-            warning: {
-                normal: "#FF0000",
-                subtle: "#DD0000"
-            }
-        },
-        imageSizes: {
-            small: 40,
-            medium: 80,
-            large: 160
-        },
-        container: {
-            separation: {
-                spacing: 20
-            },
-            normal: {
-            },
-            emphasis: {
-                backgroundColor: "#EEEEEE",
-                borderColor: "#AAAAAA",
-                borderThickness: {
-                    top: 1,
-                    right: 1,
-                    bottom: 1,
-                    left: 1
-                },
-                padding: {
-                    top: 10,
-                    right: 10,
-                    bottom: 10,
-                    left: 10
-                }
-            }
-        },
-        textBlock: {
-            separations: {
-                small: {
-                    spacing: 20,
-                },
-                normal: {
-                    spacing: 20
-                },
-                medium: {
-                    spacing: 20
-                },
-                large: {
-                    spacing: 20
-                },
-                extraLarge: {
-                    spacing: 20
-                }
-            }
-        },
-        image: {
-            size: Enums.Size.Medium,
-            separation: {
-                spacing: 20
-            }
-        },
-        imageSet: {
-            imageSize: Enums.Size.Medium,
-            separation: {
-                spacing: 20
-            }
-        },
-        factSet: {
-            separation: {
-                spacing: 20
-            },
-            title: {
-                color: Enums.TextColor.Attention,
-                size: Enums.TextSize.Large,
-                isSubtle: false,
-                weight: Enums.TextWeight.Bolder
-            },
-            value: {
-                color: Enums.TextColor.Warning,
-                size: Enums.TextSize.ExtraLarge,
-                isSubtle: false,
-                weight: Enums.TextWeight.Normal
-            },
-            spacing: 10
-        },
-        input: {
-            separation: {
-                spacing: 20
-            }
-        },
-        columnSet: {
-            separation: {
-                spacing: 20
-            }
-        },
-        column: {
-            separation: {
-                spacing: 20
-            }
-        },
-        actions: {
-            maxActions: 5,
-            supportedActionTypes: [
-                HttpAction,
-                OpenUrlAction,
-                SubmitAction,
-                ShowCardAction
-            ],
-            separation: {
-                spacing: 20
-            },
-            buttonSpacing: 20,
-            stretch: false,
-            showCard: {
-                actionMode: Enums.ShowCardActionMode.InlineEdgeToEdge,
-                inlineCardSpacing: 16,
-                backgroundColor: "#EEEEEE",
-                padding: {
-                    top: 16,
-                    right: 16,
-                    bottom: 16,
-                    left: 16
-                }
-            }
-        },
-    }
-
     static renderOptions: IRenderOptions = {
         defaultTextColor: Enums.TextColor.Dark,
         showCardActionMode: Enums.ShowCardActionMode.Inline
@@ -2402,7 +2208,7 @@ export class AdaptiveCard extends ContainerWithActions {
     private _cardTypeName: string;
     
     protected get padding(): HostConfig.ISpacingDefinition {
-        return AdaptiveCard.configuration.padding;
+        return hostConfiguration.adaptiveCard.padding;
     }
 
     minVersion: IVersion = { major: 1, minor: 0 };
@@ -2467,10 +2273,202 @@ AdaptiveCard.initialize();
 
 class InlineAdaptiveCard extends AdaptiveCard {
     protected get padding(): HostConfig.ISpacingDefinition {
-        return AdaptiveCard.configuration.actions.showCard.padding;
+        return hostConfiguration.actions.showCard.padding;
     }
 
     getForbiddenActionTypes(): Array<any> {
         return [ ShowCardAction ];
     }
 }
+
+var defaultConfiguration: HostConfig.IHostConfiguration = {
+    supportedElementTypes: [
+        Container,
+        TextBlock,
+        Image,
+        ImageSet,
+        FactSet,
+        ColumnSet,
+        ActionSet,
+        TextInput,
+        DateInput,
+        NumberInput,
+        ChoiceSetInput,
+        ToggleInput            
+    ],
+    supportsInteractivity: true,
+    strongSeparation: {
+        spacing: 40,
+        lineThickness: 1,
+        lineColor: "#EEEEEE"
+    },
+    fontFamily: "Segoe UI",
+    fontSizes: {
+        small: 8,
+        normal: 10,
+        medium: 12,
+        large: 14,
+        extraLarge: 16
+    },
+    fontWeights: {
+        lighter: 200,
+        normal: 400,
+        bolder: 600
+    },
+    colors: {
+        dark: {
+            normal: "#0000FF",
+            subtle: "#222222"
+        },
+        light: {
+            normal: "#FFFFFF",
+            subtle: "#DDDDDD"
+        },
+        accent: {
+            normal: "#0000FF",
+            subtle: "#0000DD" 
+        },
+        attention: {
+            normal: "#FF6600",
+            subtle: "#DD4400"
+        },
+        good: {
+            normal: "#00FF00",
+            subtle: "#00DD00"
+        },
+        warning: {
+            normal: "#FF0000",
+            subtle: "#DD0000"
+        }
+    },
+    imageSizes: {
+        small: 40,
+        medium: 80,
+        large: 160
+    },
+    actions: {
+        maxActions: 5,
+        supportedActionTypes: [
+            HttpAction,
+            OpenUrlAction,
+            SubmitAction,
+            ShowCardAction
+        ],
+        separation: {
+            spacing: 20
+        },
+        buttonSpacing: 20,
+        stretch: false,
+        showCard: {
+            actionMode: Enums.ShowCardActionMode.InlineEdgeToEdge,
+            inlineCardSpacing: 16,
+            backgroundColor: "#22000000",
+            padding: {
+                top: 16,
+                right: 16,
+                bottom: 16,
+                left: 16
+            }
+        },
+        actionsOrientation: Enums.Orientation.Horizontal,
+        actionAlignment: Enums.HorizontalAlignment.Left
+    },
+    adaptiveCard: {
+        backgroundColor: "#00000000",
+        padding: {
+            left: 20,
+            top: 20,
+            right: 20,
+            bottom: 20
+        }
+    },
+    container: {
+        separation: {
+            spacing: 20
+        },
+        normal: {
+        },
+        emphasis: {
+            backgroundColor: "#EEEEEE",
+            borderColor: "#AAAAAA",
+            borderThickness: {
+                top: 1,
+                right: 1,
+                bottom: 1,
+                left: 1
+            },
+            padding: {
+                top: 10,
+                right: 10,
+                bottom: 10,
+                left: 10
+            }
+        }
+    },
+    textBlock: {
+        separations: {
+            small: {
+                spacing: 20,
+            },
+            normal: {
+                spacing: 20
+            },
+            medium: {
+                spacing: 20
+            },
+            large: {
+                spacing: 20
+            },
+            extraLarge: {
+                spacing: 20
+            }
+        }
+    },
+    image: {
+        size: Enums.Size.Medium,
+        separation: {
+            spacing: 20
+        }
+    },
+    imageSet: {
+        imageSize: Enums.Size.Medium,
+        separation: {
+            spacing: 20
+        }
+    },
+    factSet: {
+        separation: {
+            spacing: 20
+        },
+        title: {
+            color: Enums.TextColor.Attention,
+            size: Enums.TextSize.Large,
+            isSubtle: false,
+            weight: Enums.TextWeight.Bolder
+        },
+        value: {
+            color: Enums.TextColor.Warning,
+            size: Enums.TextSize.ExtraLarge,
+            isSubtle: false,
+            weight: Enums.TextWeight.Normal
+        },
+        spacing: 10
+    },
+    input: {
+        separation: {
+            spacing: 20
+        }
+    },
+    columnSet: {
+        separation: {
+            spacing: 20
+        }
+    },
+    column: {
+        separation: {
+            spacing: 20
+        }
+    }
+}
+
+export var hostConfiguration = defaultConfiguration;

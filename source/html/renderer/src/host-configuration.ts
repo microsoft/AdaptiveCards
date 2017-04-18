@@ -18,6 +18,11 @@ export interface ISeparationDefinition {
     lineColor?: string
 }
 
+export interface IAdaptiveCardConfiguration {
+    backgroundColor: string,
+    padding: ISpacingDefinition
+}
+
 export interface ITextBlockConfiguration {
     separations: {
         small: ISeparationDefinition,
@@ -86,17 +91,18 @@ export interface IActionsConfiguration {
     separation: ISeparationDefinition,
     buttonSpacing: number,
     stretch: boolean,
-    showCard: IShowCardActionConfiguration
+    showCard: IShowCardActionConfiguration,
+    actionsOrientation: Enums.Orientation,
+    actionAlignment: Enums.HorizontalAlignment
 }
 
 export interface IInputConfiguration {
     separation: ISeparationDefinition
 }
 
-export interface IAdaptiveCardConfiguration {
+export interface IHostConfiguration {
     supportedElementTypes: Array<any>,
     supportsInteractivity: boolean,
-    padding: ISpacingDefinition,
     fontFamily: string,
     fontSizes: {
         small: number,
@@ -115,7 +121,6 @@ export interface IAdaptiveCardConfiguration {
         medium: number,
         large: number
     }
-    backgroundColor: string,
     colors: {
         dark: IColorDefinition,
         light: IColorDefinition,
@@ -125,6 +130,8 @@ export interface IAdaptiveCardConfiguration {
         attention: IColorDefinition
     },
     strongSeparation: ISeparationDefinition,
+    actions: IActionsConfiguration,
+    adaptiveCard: IAdaptiveCardConfiguration,
     container: IContainerConfiguration,
     textBlock: ITextBlockConfiguration,
     image: IImageConfiguration,
@@ -132,6 +139,5 @@ export interface IAdaptiveCardConfiguration {
     factSet: IFactSetConfiguration,
     columnSet: IColumnSetConfiguration,
     column: IColumnConfiguration,
-    actions: IActionsConfiguration,
     input: IInputConfiguration
 }
