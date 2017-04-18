@@ -37,43 +37,6 @@
   padding-left: 10px;
 }
 
-/*
-* {
-    box-sizing: border-box;
-}
-
-@include base-spacing(rgba(255, 255, 255, 0.3));
-
-@include base-sizes();
-
-@include base-text-default($default-size: 15px);
-
-@include base-text-dark();
-
-@include base-text-light();
-
-@include base-text-special();
-
-@include base-container();
-
-@include base-image();
-
-@include base-table(
-    // $margin: 10px 0 0 0, 
-    $fact-name-padding: 4px 0 0 0,
-    $fact-value-padding: 4px 0 0 10px
-    );
-
-@include base-column($group-margin: 20px 0 0 0);
-
-@include base-actions(
-    $card-container-background-color: rgba(255, 255, 255, 0.1),
-    $card-container-padding: 16px 20px 16px 20px, 
-    $button-spacing: 5px,
-    $item-flex-basis: 100%
-    // $margin: 10px 0 0 0
-    );
-*/
 .pushButton, .linkButton {
   font-family: 'Segoe UI', sans-serif;
   font-size: 15px;

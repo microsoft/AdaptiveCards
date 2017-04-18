@@ -24,6 +24,10 @@ export interface IAdaptiveCardConfiguration {
 }
 
 export interface ITextBlockConfiguration {
+    size: Enums.TextSize,
+    color: Enums.TextColor,
+    weight: Enums.TextWeight,
+    wrap: boolean,
     separations: {
         small: ISeparationDefinition,
         normal: ISeparationDefinition,

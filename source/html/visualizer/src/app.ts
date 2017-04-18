@@ -33,7 +33,8 @@ function renderCard(): HTMLElement {
     lastValidationErrors = [];
 
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
-    hostContainer.applyOptions();
+
+    Adaptive.setConfiguration(hostContainer.getHostConfiguration());
 
     var jsonPayload = editor.getValue();
     var json = JSON.parse(jsonPayload);
@@ -209,7 +210,7 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Skype",
-            new SkypeContainer("css/skypeCard.css")));
+            new SkypeContainer(350, "css/skypeCard.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -219,7 +220,7 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Cortana Car",
-            new CortanaCarContainer("css/cortanaCar.css")));
+            new CortanaCarContainer(350, "css/cortanaCar.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -309,7 +310,6 @@ function showPopupCard(action: Adaptive.ShowCardAction) {
     cardContainer.onclick = (e) => { e.stopPropagation() };
 
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
-    hostContainer.applyOptions();
 
     cardContainer.appendChild(hostContainer.render(action.card.render(), action.card.renderSpeech()));
 
