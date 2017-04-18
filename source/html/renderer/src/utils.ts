@@ -1,4 +1,5 @@
-import * as HostConfig from "./host-options";
+import * as Enums from "./enums";
+import * as HostConfig from "./host-configuration";
 
 import markdownIt = require("markdown-it");
 let markdownProcessor = new markdownIt();
@@ -29,19 +30,49 @@ export function getClassNameFromConstructor(constructor: any) {
     return constructorString.match(/\w+/g)[1];
 }
 
-export function renderSeparation(separationDefinition: HostConfig.ISeparationDefinition): HTMLElement {
+export function renderSeparation(separationDefinition: HostConfig.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
     var separator = document.createElement("div");
 
-    if (separationDefinition.lineThickness) {
-        separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
-        separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
-        separator.style.borderTop = separationDefinition.lineThickness + "px solid " + separationDefinition.lineColor;
+    if (orientation == Enums.Orientation.Vertical) {
+        if (separationDefinition.lineThickness) {
+            separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
+            separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
+            separator.style.borderTop = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+        }
+        else {
+            separator.style.height = separationDefinition.spacing + "px";
+        }
     }
     else {
-        separator.style.height = separationDefinition.spacing + "px";
+        if (separationDefinition.lineThickness) {
+            separator.style.marginLeft = (separationDefinition.spacing / 2) + "px";
+            separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
+            separator.style.borderLeft = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+        }
+        else {
+            separator.style.width = separationDefinition.spacing + "px";
+        }
     }
 
     return separator;
+}
+
+export function stringToCssColor(color: string): string {
+    var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+
+    var matches = regEx.exec(color);
+
+    if (matches[4]) {
+        var a = parseInt(matches[1], 16) / 255;
+        var r = parseInt(matches[2], 16);
+        var g = parseInt(matches[3], 16);
+        var b = parseInt(matches[4], 16);
+
+        return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+    }
+    else {
+        return color;
+    }
 }
 
 export interface IInput {

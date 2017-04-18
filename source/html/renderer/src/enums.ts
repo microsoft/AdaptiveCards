@@ -70,6 +70,11 @@ export enum ShowCardActionMode {
     Popup
 }
 
+export enum Orientation {
+    Horizontal,
+    Vertical
+}
+
 export function stringToSize(value: string, defaultValue: Size): Size {
     switch (value) {
         case "auto":
@@ -166,6 +171,17 @@ export function stringToContainerStyle(value: string, defaultValue: ContainerSty
             return ContainerStyle.Normal;
         case "emphasis":
             return ContainerStyle.Emphasis;
+        default:
+            return defaultValue;
+    }
+}
+
+export function stringToOrientation(value: string, defaultValue: Orientation): Orientation {
+    switch (value) {
+        case "horizontal":
+            return Orientation.Horizontal;
+        case "vertical":
+            return Orientation.Vertical;
         default:
             return defaultValue;
     }
