@@ -39,5 +39,15 @@ namespace AdaptiveCards.Rendering
         {
             textBlock.Foreground = context.GetColorBrush(color);
         }
+
+        public static void SetBackgroundColor(this System.Windows.Controls.Panel panel, string color, RenderContext context)
+        {
+            panel.Background = context.GetColorBrush(color);
+        }
+        
+        public static void SetHeight(this System.Windows.FrameworkElement element, double height)
+        {
+            element.Height = height;
+        }
     }
 }

@@ -36,5 +36,15 @@ namespace AdaptiveCards.Rendering
         {
             textBlock.TextColor = Color.FromHex(color);
         }
+
+        public static void SetBackgroundColor(this Xamarin.Forms.View view, string color, RenderContext context)
+        {
+            view.BackgroundColor = Color.FromHex(color);
+        }
+
+        public static void SetHeight(this Xamarin.Forms.View view, double height)
+        {
+            view.HeightRequest = height;
+        }
     }
 }
