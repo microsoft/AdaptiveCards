@@ -156,9 +156,6 @@ export class CortanaCarContainer extends HostContainer {
                 }
             },
             textBlock: {
-                wrap: true,
-                size: Adaptive.TextSize.Normal,
-                weight: Adaptive.TextWeight.Normal,
                 color: Adaptive.TextColor.Light,
                 separations: {
                     small: {

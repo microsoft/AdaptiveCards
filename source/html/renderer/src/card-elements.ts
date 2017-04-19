@@ -99,10 +99,6 @@ export abstract class CardElement {
         this._parent = value;
     }
 
-    protected get hideOverflow(): boolean {
-        return true;
-    }
-
     protected get useDefaultSizing(): boolean {
         return true;
     }
@@ -126,10 +122,6 @@ export abstract class CardElement {
         }
 
         this.adjustAlignment(element);
-
-        if (this.hideOverflow) {
-            element.style.overflow = "hidden";
-        }
     }
 
     protected abstract internalRender(): HTMLElement;
@@ -294,11 +286,17 @@ export class TextBlock extends CardElement {
 
             element.innerHTML = Utils.processMarkdown(formattedText);
 
-            if (element.firstElementChild instanceof (HTMLElement)) {
-                (<HTMLElement>element.firstElementChild).style.marginTop = "0px";
+            if (element.firstElementChild instanceof HTMLElement) {
+                var firstElementChild = <HTMLElement>element.firstElementChild;                
+                firstElementChild.style.marginTop = "0px";
+
+                if (!this.wrap) {
+                    firstElementChild.style.overflow = "hidden";
+                    firstElementChild.style.textOverflow = "ellipsis";
+                }
             }
 
-            if (element.lastElementChild instanceof (HTMLElement)) {
+            if (element.lastElementChild instanceof HTMLElement) {
                 (<HTMLElement>element.lastElementChild).style.marginBottom = "0px";
             }
 
@@ -308,9 +306,11 @@ export class TextBlock extends CardElement {
                 anchors[i].target = "_blank";
             }
 
-            if (!this.wrap) {
+            if (this.wrap) {
+                element.style.wordWrap = "break-word";
+            }
+            else {
                 element.style.whiteSpace = "nowrap";
-                element.style.textOverflow = "ellipsis";
             }
 
             return element;
@@ -339,11 +339,11 @@ export class TextBlock extends CardElement {
         super.parse(json);
 
         this.text = json["text"];
-        this.size = Enums.stringToTextSize(json["size"], hostConfiguration.textBlock.size);
-        this.weight = Enums.stringToTextWeight(json["weight"], hostConfiguration.textBlock.weight);
+        this.size = Enums.stringToTextSize(json["size"], Enums.TextSize.Normal);
+        this.weight = Enums.stringToTextWeight(json["weight"], Enums.TextWeight.Normal);
         this.color = Enums.stringToTextColor(json["color"], hostConfiguration.textBlock.color);
         this.isSubtle = json["isSubtle"];
-        this.wrap = json["wrap"] ? json["wrap"] : hostConfiguration.textBlock.wrap;
+        this.wrap = json["wrap"] === undefined ? true : json["wrap"];
         this.maxLines = json["maxLines"];        
     }
 
@@ -1497,8 +1497,9 @@ class ActionCollection {
         }
 
         let element = document.createElement("div");
+        element.style.overflow = "hidden";
+
         let buttonStrip = document.createElement("div");
-        buttonStrip.style.overflow = "hidden";
 
         switch (hostConfiguration.actions.actionAlignment) {
             case Enums.HorizontalAlignment.Center:
@@ -1619,10 +1620,6 @@ class ActionCollection {
 
 export class ActionSet extends CardElement {
     private _actionCollection: ActionCollection;
-
-    protected get hideOverflow(): boolean {
-        return false;
-    }
 
     protected internalRender(): HTMLElement {
         return this._actionCollection.render();
@@ -1919,6 +1916,8 @@ export class Column extends Container {
     }
 
     protected adjustLayout(element: HTMLElement) {
+        element.style.minWidth = "0";
+
         if (this.weight > 0) {
             element.style.flex = "1 1 " + this.weight + "%";
         }
@@ -2289,6 +2288,10 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return hostConfiguration.actions.showCard.padding;
     }
 
+    protected getBackgroundColor(): string {
+        return null;
+    }
+
     getForbiddenActionTypes(): Array<any> {
         return [ ShowCardAction ];
     }
@@ -2419,9 +2422,6 @@ var defaultConfiguration: HostConfig.IHostConfiguration = {
         }
     },
     textBlock: {
-        wrap: true,
-        size: Enums.TextSize.Normal,
-        weight: Enums.TextWeight.Normal,
         color: Enums.TextColor.Dark,
         separations: {
             small: {
