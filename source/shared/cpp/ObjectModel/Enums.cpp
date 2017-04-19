@@ -31,6 +31,7 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "facts", AdaptiveCardSchemaKey::Facts },
     { "title", AdaptiveCardSchemaKey::Title },
     { "value", AdaptiveCardSchemaKey::Value },
+    { "images", AdaptiveCardSchemaKey::Images },
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> AdaptiveCardSchemaKeyEnumToName =
@@ -62,6 +63,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Facts, "facts" },
     { AdaptiveCardSchemaKey::Title, "title" },
     { AdaptiveCardSchemaKey::Value, "value" },
+    { AdaptiveCardSchemaKey::Images, "images" },
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
@@ -73,7 +75,7 @@ static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, Cas
     { "Column", CardElementType::Column },
     { "FactSet", CardElementType::FactSet },
     { "Fact", CardElementType::Fact },
-    //{ "ImageGallery", CardElementType::ImageGallery },
+    { "ImageSet", CardElementType::ImageSet },
     //{ "ActionSet", CardElementType::ActionSet },
     { "Container", CardElementType::Container }
 
@@ -88,7 +90,7 @@ static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTyp
     { CardElementType::ColumnSet, "ColumnSet"},
     { CardElementType::FactSet, "FactSet" },
     { CardElementType::Fact, "Fact" },
-    //{ CardElementType::ImageGallery, "ImageGallery" },
+    { CardElementType::ImageSet, "ImageSet" },
     //{ CardElementType::ActionSet, "ActionSet" },
     { CardElementType::Container, "Container" }
 };

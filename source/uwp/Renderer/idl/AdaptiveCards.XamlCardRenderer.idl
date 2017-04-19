@@ -13,6 +13,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTextBlock;
         runtimeclass AdaptiveCard;
         runtimeclass AdaptiveImage;
+        runtimeclass AdaptiveImageSet;
         runtimeclass AdaptiveContainer;
         runtimeclass AdaptiveColumn;
         runtimeclass AdaptiveColumnSet;
@@ -22,6 +23,7 @@ namespace AdaptiveCards
         interface IAdaptiveTextBlock;
         interface IAdaptiveCard;
         interface IAdaptiveImage;
+        interface IAdaptiveImageSet;
         interface IAdaptiveContainer;
         interface IAdaptiveColumn;
         interface IAdaptiveColumnSet;
@@ -78,7 +80,7 @@ namespace AdaptiveCards
             ColumnSet,
             FactSet,
             Fact,
-            ImageGallery,
+            ImageSet,
             ActionGroup
         } ElementType;
 
@@ -218,7 +220,6 @@ namespace AdaptiveCards
         [
             uuid(16452a2e-1152-47f3-90bd-6e4148b09669),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveImage)
         ]
         interface IAdaptiveImage : IInspectable
         {
@@ -245,6 +246,29 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImage
         {
             [default] interface IAdaptiveImage;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(f618bd35-8fe3-46bd-8988-cdf5607314d1),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveImageSet)
+        ]
+        interface IAdaptiveImageSet : IInspectable
+        {
+            [propget] HRESULT Images([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveImage*>** value);
+
+            [propget] HRESULT ImageSize([out, retval] ImageSize* value);
+            [propput] HRESULT ImageSize([in] ImageSize value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveImageSet
+        {
+            [default] interface IAdaptiveImageSet;
             interface IAdaptiveCardElement;
         };
 

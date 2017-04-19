@@ -57,6 +57,7 @@ enum class AdaptiveCardSchemaKey
     Facts,
     Title,
     Value,
+    Images,
 };
 
 enum class TextSize
@@ -114,8 +115,8 @@ enum class CardElementType
     ColumnSet,
     FactSet,
     Fact,
-    ImageGallery,
-    ActionGroup
+    ActionGroup,
+    ImageSet,
 };
 
 enum class SeparationStyle {
