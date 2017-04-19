@@ -42,6 +42,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::Container] = std::bind(&XamlBuilder::BuildContainer, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
 
         m_imageLoadTracker.AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
 
@@ -500,7 +501,35 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // Set the image to UniformToFill if the card element's size is stretch
         ABI::AdaptiveCards::XamlCardRenderer::ImageSize size;
         THROW_IF_FAILED(adaptiveImage->get_Size(&size));
-        THROW_IF_FAILED(xamlImage->put_Stretch(size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch ? Stretch::Stretch_UniformToFill : Stretch::Stretch_None));
+
+        // TODO: 11508861 Hardcoded image sizes for now.  These will be retrieved from the HostConfig.
+        ComPtr<IFrameworkElement> imageAsFrameworkElement;
+        THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
+        switch (size)
+        {
+            case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto:
+                xamlImage->put_Stretch(Stretch::Stretch_UniformToFill);
+                break;
+
+            case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch:
+                xamlImage->put_Stretch(Stretch::Stretch_Uniform);
+                break;
+
+            case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Small:
+                imageAsFrameworkElement->put_Width(60);
+                imageAsFrameworkElement->put_Height(60);
+                break;
+
+            case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Medium:
+                imageAsFrameworkElement->put_Width(120);
+                imageAsFrameworkElement->put_Height(120);
+                break;
+
+            case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Large:
+                imageAsFrameworkElement->put_Width(180);
+                imageAsFrameworkElement->put_Height(180);
+                break;
+        }
 
         // Generate the style name from the adaptive element and apply it to the xaml
         // element it it exists in the resource dictionaries
@@ -508,8 +537,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForImage(adaptiveImage.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
         {
-            ComPtr<IFrameworkElement> imageAsFrameworkElement;
-            THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
             THROW_IF_FAILED(imageAsFrameworkElement->put_Style(style.Get()));
         }
 
@@ -688,5 +715,45 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // TODO: MSFT 11508861: [Adaptive Cards][Build] Support all styling properties for card Elements
 
         THROW_IF_FAILED(xamlGrid.CopyTo(factSetControl));
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::BuildImageSet(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** imageSetControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveImageSet> adaptiveImageSet;
+        THROW_IF_FAILED(cardElement.As(&adaptiveImageSet));
+
+        ComPtr<IVariableSizedWrapGrid> xamlGrid = XamlHelpers::CreateXamlClass<IVariableSizedWrapGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_VariableSizedWrapGrid));
+
+        xamlGrid->put_Orientation(Orientation_Horizontal);
+
+        ComPtr<IVector<IAdaptiveImage*>> images;
+        THROW_IF_FAILED(adaptiveImageSet->get_Images(&images));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize;
+        THROW_IF_FAILED(adaptiveImageSet->get_ImageSize(&imageSize));
+
+        XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [this, imageSize, xamlGrid](IAdaptiveImage* adaptiveImage)
+        {
+            ComPtr<IAdaptiveImage> localAdaptiveImage(adaptiveImage);
+            THROW_IF_FAILED(localAdaptiveImage->put_Size(imageSize));
+
+            ComPtr<IAdaptiveCardElement> adaptiveElementImage;
+            localAdaptiveImage.As(&adaptiveElementImage);
+
+            ComPtr<IUIElement> uiImage;
+            BuildImage(adaptiveElementImage.Get(), &uiImage);
+
+            ComPtr<IPanel> gridAsPanel;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+
+            XamlHelpers::AppendXamlElementToPanel(uiImage.Get(), gridAsPanel.Get());
+        });
+
+        // TODO: 11508861
+        THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
     }
 }}
