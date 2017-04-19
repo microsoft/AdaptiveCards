@@ -1,128 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
-.removeTopSpacing {
-  margin-top: 0 !important;
-}
-
-.separator {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin: 20px 0 0 0;
-  padding: 20px 0 0 0;
-}
-
-.stretch {
-  width: 100%;
-}
-
-.smallSize {
-  width: 100px;
-}
-
-.mediumSize {
-  width: 200px;
-}
-
-.largeSize {
-  width: 300px;
-}
-
-.text {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 14px;
-  font-weight: normal;
-  margin-top: 20px;
-}
-
-.text.defaultSize {
-  font-size: 14px;
-}
-
-.text.small {
-  font-size: 12px;
-}
-
-.text.medium {
-  font-size: 20px;
-}
-
-.text.large {
-  font-size: 24px;
-}
-
-.text.extraLarge {
-  font-size: 30px;
-}
-
-.text.lighter {
-  font-weight: 200;
-}
-
-.text.defaultWeight {
-  font-weight: 400;
-}
-
-.text.bolder {
-  font-weight: 600;
-}
-
-.text.defaultColor {
-  color: #333333;
-}
-
-.text.defaultColor.subtle {
-  color: rgba(51, 51, 51, 0.5);
-}
-
-.text.darkColor {
-  color: #333333;
-}
-
-.text.darkColor.subtle {
-  color: rgba(51, 51, 51, 0.5);
-}
-
-.text.lightColor {
-  color: white;
-}
-
-.text.lightColor.subtle {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.text.accentColor {
-  color: #2e89fc;
-}
-
-.text.accentColor.subtle {
-  color: rgba(46, 137, 252, 0.5);
-}
-
-.text.goodColor {
-  color: #2ccc35;
-}
-
-.text.warningColor {
-  color: #f9a203;
-}
-
-.text.attentionColor {
-  color: darkred;
-}
-
-.headerContainer {
-  padding: 20px 20px 0px 20px;
-}
-
-.rootContainer {
-  padding: 20px;
-}
-
-.container {
-  margin: 20px 0 0 0;
-}
-
 .container.selectable {
   padding: 5px;
 }
@@ -135,37 +10,8 @@
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-.container.startGroup {
-  border-top: 1px solid rgba(0, 0, 0, 0.25);
-  padding-top: 20px;
-}
-
-.image {
-  margin: 20px 0px 0px 0px;
-}
-
 .image.selectable {
   cursor: pointer;
-}
-
-.image.autoSize {
-  max-width: 100%;
-}
-
-.image.stretch {
-  width: 100%;
-}
-
-.image.small {
-  max-width: 40px;
-}
-
-.image.medium {
-  max-width: 80px;
-}
-
-.image.large {
-  max-width: 160px;
 }
 
 .image.person {
@@ -174,23 +20,7 @@
   background-repeat: no-repeat;
 }
 
-.imageGallery {
-  margin: 20px 0 0 0;
-}
-
-table.factGroup {
-  margin: 20px 0 0 0;
-  border-width: 0;
-  border-spacing: 0;
-  border-style: none;
-  border-collapse: collapse;
-}
-
-tr.factGroupRowSpacer {
-  height: 10px;
-}
-
-td.factName {
+.factNameContainer {
   border-width: 0;
   padding: 0;
   border-style: none;
@@ -199,67 +29,12 @@ td.factName {
   white-space: nowrap;
 }
 
-td.factValue {
+.factValueContainer {
   border-width: 0;
   padding: 0;
   border-style: none;
   vertical-align: top;
-  padding: 0 0 0 10px;
-}
-
-.columnGroup {
-  margin: 20px 0px 0px 0px;
-}
-
-.column.selectable {
-  padding: 5px;
-}
-
-.column.selectable:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.column.selectable:active {
-  background-color: rgba(0, 0, 0, 0.15);
-}
-
-.defaultColumnSeparator {
-  width: 10px;
-}
-
-.strongColumnSeparator {
-  border-left: 1px solid #EEEEEE;
-  margin-left: 10px;
   padding-left: 10px;
-}
-
-.actionGroup {
-  margin: 20px 0 0 0;
-}
-
-.actionCardContainer {
-  margin: 16px 0 0 0;
-  padding: 16px 0 16px 0;
-  background-color: #F8F8F8;
-}
-
-.buttonStrip {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-}
-
-.buttonStripItem {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 1 auto;
-          flex: 0 1 auto;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.buttonStripItemSpacer {
-  margin-right: 20px;
 }
 
 .pushButton {
@@ -290,16 +65,6 @@ td.factValue {
   background-color: #004D84;
 }
 
-/*
-    Other styles that can be specified:
-        .pushButton.expanded
-        .pushButton.expanded:hover
-        .pushButton.expanded:active
-
-        .pushButton.subdued
-        .pushButton.subdued:hover
-        .pushButton.subdued:active
-    */
 .linkButton {
   font-family: 'Segoe UI', sans-serif;
   font-size: 14px;
@@ -344,10 +109,6 @@ td.factValue {
         .linkButton.expanded:hover
         .linkButton.expanded:active
     */
-.input {
-  margin: 10px 0 0 0;
-}
-
 .input.textInput {
   font-size: 14px;
   height: 30px;

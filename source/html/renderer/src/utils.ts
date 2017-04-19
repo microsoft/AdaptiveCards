@@ -1,3 +1,6 @@
+import * as Enums from "./enums";
+import * as HostConfig from "./host-configuration";
+
 import markdownIt = require("markdown-it");
 let markdownProcessor = new markdownIt();
 
@@ -27,51 +30,49 @@ export function getClassNameFromConstructor(constructor: any) {
     return constructorString.match(/\w+/g)[1];
 }
 
-export interface IPadding {
-    left: number;
-    top: number;
-    right: number;
-    bottom: number;
+export function renderSeparation(separationDefinition: HostConfig.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
+    var separator = document.createElement("div");
+
+    if (orientation == Enums.Orientation.Vertical) {
+        if (separationDefinition.lineThickness) {
+            separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
+            separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
+            separator.style.borderTop = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+        }
+        else {
+            separator.style.height = separationDefinition.spacing + "px";
+        }
+    }
+    else {
+        if (separationDefinition.lineThickness) {
+            separator.style.marginLeft = (separationDefinition.spacing / 2) + "px";
+            separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
+            separator.style.borderLeft = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+        }
+        else {
+            separator.style.width = separationDefinition.spacing + "px";
+        }
+    }
+
+    return separator;
 }
 
-export function getHasBottomPadding(element: HTMLElement): boolean {
-    return parseInt(window.getComputedStyle(element).paddingBottom) > 0;
-}
+export function stringToCssColor(color: string): string {
+    var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
 
-function getActualPaddingInternal(element: HTMLElement, padding: IPadding) {
-    var computedStyle = window.getComputedStyle(element);
+    var matches = regEx.exec(color);
 
-    if (padding.top == 0) {
-        padding.top = parseInt(computedStyle.paddingTop);
+    if (matches[4]) {
+        var a = parseInt(matches[1], 16) / 255;
+        var r = parseInt(matches[2], 16);
+        var g = parseInt(matches[3], 16);
+        var b = parseInt(matches[4], 16);
+
+        return "rgba(" + r + "," + g + "," + b + "," + a + ")";
     }
-
-    if (padding.right == 0) {
-        padding.right = parseInt(computedStyle.paddingRight);
+    else {
+        return color;
     }
-
-    if (padding.bottom == 0) {
-        padding.bottom = parseInt(computedStyle.paddingBottom);
-    }
-
-    if (padding.left == 0) {
-        padding.left = parseInt(computedStyle.paddingLeft);
-    }
-
-    if (element.className.indexOf("rootContainer") >= 0) {
-        return;
-    }
-
-    if (element.parentElement) {
-        getActualPaddingInternal(element.parentElement, padding);
-    }
-}
-
-export function getActualPadding(element: HTMLElement): IPadding {
-    var padding: IPadding = { top: 0, right: 0, bottom: 0, left: 0 };
-
-    getActualPaddingInternal(element, padding);
-
-    return padding;
 }
 
 export interface IInput {
