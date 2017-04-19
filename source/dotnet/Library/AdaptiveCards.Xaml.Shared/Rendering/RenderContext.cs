@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using AdaptiveCards.Rendering.Options;
 #if XAMARIN
 using FrameworkElement = Xamarin.Forms.View;
 using Xamarin.Forms;
@@ -83,7 +84,7 @@ namespace AdaptiveCards.Rendering
             this.OnMissingInput?.Invoke(sender, args);
         }
 #if WPF
-        private static Dictionary<string, SolidColorBrush> colors = new Dictionary<string, SolidColorBrush>();
+        private Dictionary<string, SolidColorBrush> colors = new Dictionary<string, SolidColorBrush>();
 
         public SolidColorBrush GetColorBrush(string color)
         {

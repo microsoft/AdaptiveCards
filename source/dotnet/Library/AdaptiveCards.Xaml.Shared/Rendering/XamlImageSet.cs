@@ -29,8 +29,12 @@ namespace AdaptiveCards.Rendering
             uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
             foreach (var image in imageSet.Images)
             {
-                if (imageSet.ImageSize != ImageSize.Auto)
-                    image.Size = imageSet.ImageSize;
+                if (image.Size == ImageSize.Auto)
+                    if (imageSet.ImageSize != ImageSize.Auto)
+                        image.Size = imageSet.ImageSize;
+                    else
+                        image.Size = context.Options.ImageSet.ImageSize;
+
                 var uiImage = context.Render(image);
                 uiImageSet.Add(uiImage);
             }

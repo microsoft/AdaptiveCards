@@ -5,6 +5,7 @@ using AdaptiveCards;
 using Newtonsoft.Json;
 using AC = AdaptiveCards;
 using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Options;
 
 namespace WpfVisualizer
 {

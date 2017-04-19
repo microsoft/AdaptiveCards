@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using AdaptiveCards.Rendering;
 using System;
+using AdaptiveCards.Rendering.Options;
 #if WPF
 using System.Windows.Shapes;
 using System.Windows.Controls;
@@ -53,7 +54,7 @@ namespace AdaptiveCards.Rendering
                 {
                     if (uiContainer.RowDefinitions.Count > 0)
                     {
-                        AddSeperator(context, uiContainer, cardElement.Separation);
+                        AddSeperator(context, cardElement, uiContainer, cardElement.Separation);
                     }
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
@@ -62,7 +63,7 @@ namespace AdaptiveCards.Rendering
             }
         }
 
-        public static void AddSeperator(RenderContext context, Grid uiContainer, SeparationStyle seperationStyle)
+        public static void AddSeperator(RenderContext context, CardElement element, Grid uiContainer, SeparationStyle seperationStyle)
         {
             if (seperationStyle != SeparationStyle.None)
             {
@@ -72,11 +73,11 @@ namespace AdaptiveCards.Rendering
                 switch (seperationStyle)
                 {
                     case SeparationStyle.Default:
-                        sepStyle = context.Options.Separation.Default;
+                        sepStyle = context.Options.GetSeparationForElement(element, strong: false);
                         break;
 
                     case SeparationStyle.Strong:
-                        sepStyle = context.Options.Separation.Strong;
+                        sepStyle = context.Options.GetSeparationForElement(element, strong: true);
                         break;
                 }
 

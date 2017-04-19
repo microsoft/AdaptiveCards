@@ -1,23 +1,20 @@
-﻿using System;
+﻿using Microsoft.MarkedNet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MarkedNet;
 
 namespace AdaptiveCards.Rendering
 {
 
-    /// <summary>
-    /// Renderer which renders to pure text environments like SMS
-    /// </summary>
-    public class MarkedXamlRenderer : Renderer
+    public class AdaptiveXamlMarkdownRenderer : Renderer
     {
-        public MarkedXamlRenderer() : base()
+        public AdaptiveXamlMarkdownRenderer() : base()
         {
         }
 
-        public MarkedXamlRenderer(Options options) : base(options)
+        public AdaptiveXamlMarkdownRenderer(Microsoft.MarkedNet.Options options) : base(options)
         {
         }
 
@@ -81,7 +78,7 @@ namespace AdaptiveCards.Rendering
             return $"<Hyperlink Command=\"NavigationCommands.GoToPage\" CommandParameter=\"{href}\">{text}</Hyperlink>";
         }
 
-        public override string List(string body, bool ordered)
+        public override string List(string body, bool ordered, int start)
         {
             return body;
         }

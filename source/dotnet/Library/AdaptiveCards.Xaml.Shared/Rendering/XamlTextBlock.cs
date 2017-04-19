@@ -2,9 +2,10 @@
 using System.Globalization;
 using System.IO;
 using System.Xml;
-using MarkedNet;
+using Microsoft.MarkedNet;
 using System.Collections.Generic;
 using System.Linq;
+using AdaptiveCards.Rendering.Options;
 #if WPF
 using System.Windows;
 using System.Windows.Controls;
@@ -26,7 +27,7 @@ namespace AdaptiveCards.Rendering
             TextBlock textBlock = (TextBlock)element;
 #if WPF
             Marked marked = new Marked();
-            marked.Options.Renderer = new MarkedXamlRenderer();
+            marked.Options.Renderer = new AdaptiveXamlMarkdownRenderer();
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
 
