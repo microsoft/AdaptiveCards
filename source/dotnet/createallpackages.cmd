@@ -13,6 +13,6 @@ call createpackage
 cd ..\AdaptiveCards.Xaml.Wpf.RichInput
 call createpackage
 cd ..\..
-call disabledelaysign.cmd
 cd library/bin
 dir /b
+
