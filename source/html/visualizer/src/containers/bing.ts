@@ -155,9 +155,6 @@ export class BingContainer extends HostContainer {
                 }
             },
             textBlock: {
-                wrap: true,
-                size: Adaptive.TextSize.Normal,
-                weight: Adaptive.TextWeight.Normal,
                 color: Adaptive.TextColor.Dark,
                 separations: {
                     small: {

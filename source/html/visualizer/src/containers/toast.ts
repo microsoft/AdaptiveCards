@@ -3,18 +3,12 @@ import * as Adaptive from "adaptive-cards";
 import * as Utils from "../utils";
 
 export class ToastContainer extends HostContainer {
-    /*
-    static backgroundColor: string = "#1F1F1F";
-    static textColor: Adaptive.TextColor = Adaptive.TextColor.Light;
-    */
-
     private _width: number;
 
     protected renderContainer(renderedCard: HTMLElement): HTMLElement {
         var element = document.createElement("div");
         element.style.border = "#474747 1px solid";
         element.style.width = this._width + "px";
-        // element.style.backgroundColor = ToastContainer.backgroundColor;
         element.style.overflow = "hidden";
 
         element.appendChild(renderedCard);
@@ -46,9 +40,9 @@ export class ToastContainer extends HostContainer {
             ],
             supportsInteractivity: true,
             strongSeparation: {
-                spacing: 40,
+                spacing: 20,
                 lineThickness: 1,
-                lineColor: "#EEEEEE"
+                lineColor: "#22FFFFFF"
             },
             fontFamily: "Segoe UI",
             fontSizes: {
@@ -103,19 +97,19 @@ export class ToastContainer extends HostContainer {
                     Adaptive.ShowCardAction
                 ],
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 },
-                buttonSpacing: 20,
-                stretch: false,
+                buttonSpacing: 10,
+                stretch: true,
                 showCard: {
                     actionMode: Adaptive.ShowCardActionMode.InlineEdgeToEdge,
-                    inlineCardSpacing: 16,
-                    backgroundColor: "#08000000",
+                    inlineCardSpacing: 10,
+                    backgroundColor: "#22FFFFFF",
                     padding: {
-                        top: 16,
-                        right: 16,
-                        bottom: 16,
-                        left: 16
+                        top: 10,
+                        right: 10,
+                        bottom: 10,
+                        left: 10
                     }
                 },
                 actionsOrientation: Adaptive.Orientation.Horizontal,
@@ -124,21 +118,20 @@ export class ToastContainer extends HostContainer {
             adaptiveCard: {
                 backgroundColor: "#1F1F1F",
                 padding: {
-                    left: 20,
-                    top: 20,
-                    right: 20,
-                    bottom: 20
+                    left: 10,
+                    top: 10,
+                    right: 10,
+                    bottom: 10
                 }
             },
             container: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 },
                 normal: {
                 },
                 emphasis: {
-                    backgroundColor: "#EEEEEE",
-                    borderColor: "#AAAAAA",
+                    backgroundColor: "#22FFFFFF",
                     borderThickness: {
                         top: 1,
                         right: 1,
@@ -154,43 +147,40 @@ export class ToastContainer extends HostContainer {
                 }
             },
             textBlock: {
-                wrap: true,
-                size: Adaptive.TextSize.Normal,
-                weight: Adaptive.TextWeight.Normal,
                 color: Adaptive.TextColor.Light,
                 separations: {
                     small: {
-                        spacing: 20,
+                        spacing: 10,
                     },
                     normal: {
-                        spacing: 20
+                        spacing: 10
                     },
                     medium: {
-                        spacing: 20
+                        spacing: 10
                     },
                     large: {
-                        spacing: 20
+                        spacing: 10
                     },
                     extraLarge: {
-                        spacing: 20
+                        spacing: 10
                     }
                 }
             },
             image: {
                 size: Adaptive.Size.Medium,
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             },
             imageSet: {
                 imageSize: Adaptive.Size.Medium,
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 },
                 title: {
                     color: Adaptive.TextColor.Dark,
@@ -208,17 +198,17 @@ export class ToastContainer extends HostContainer {
             },
             input: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             },
             column: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             }
         };
