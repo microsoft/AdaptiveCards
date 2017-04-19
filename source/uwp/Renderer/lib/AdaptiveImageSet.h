@@ -41,7 +41,6 @@ namespace AdaptiveCards {
             // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
             Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage*>> m_images;
 
-            //Using a Container as backing element for now
             std::shared_ptr<AdaptiveCards::ImageSet> m_sharedImageSet;
         };
 

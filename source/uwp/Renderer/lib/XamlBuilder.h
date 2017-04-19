@@ -84,6 +84,6 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** factSetControl);
         void BuildImageSet(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** factSetControl);
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageSetControl);
     };
 }}

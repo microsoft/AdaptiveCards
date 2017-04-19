@@ -502,6 +502,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ABI::AdaptiveCards::XamlCardRenderer::ImageSize size;
         THROW_IF_FAILED(adaptiveImage->get_Size(&size));
 
+        // TODO: 11508861 Hardcoded image sizes for now.  These will be retrieved from the HostConfig.
         ComPtr<IFrameworkElement> imageAsFrameworkElement;
         THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
         switch (size)
@@ -717,15 +718,15 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        void XamlBuilder::BuildImageSet(
-            IAdaptiveCardElement* adaptiveCardElement,
-            IUIElement** imageSetControl)
+    void XamlBuilder::BuildImageSet(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** imageSetControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveImageSet> adaptiveImageSet;
         THROW_IF_FAILED(cardElement.As(&adaptiveImageSet));
 
-        ComPtr<IVariableSizedWrapGrid> xamlGrid = XamlHelpers::CreateXamlClass<IVariableSizedWrapGrid>(HStringReference(L"Windows.UI.Xaml.Controls.VariableSizedWrapGrid"));
+        ComPtr<IVariableSizedWrapGrid> xamlGrid = XamlHelpers::CreateXamlClass<IVariableSizedWrapGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_VariableSizedWrapGrid));
 
         xamlGrid->put_Orientation(Orientation_Horizontal);
 
@@ -737,12 +738,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [this, imageSize, xamlGrid](IAdaptiveImage* adaptiveImage)
         {
-            ComPtr<IAdaptiveImage> comAdaptiveImage(adaptiveImage);
-
-            THROW_IF_FAILED(comAdaptiveImage->put_Size(imageSize));
+            ComPtr<IAdaptiveImage> localAdaptiveImage(adaptiveImage);
+            THROW_IF_FAILED(localAdaptiveImage->put_Size(imageSize));
 
             ComPtr<IAdaptiveCardElement> adaptiveElementImage;
-            comAdaptiveImage.As(&adaptiveElementImage);
+            localAdaptiveImage.As(&adaptiveElementImage);
 
             ComPtr<IUIElement> uiImage;
             BuildImage(adaptiveElementImage.Get(), &uiImage);
@@ -753,7 +753,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             XamlHelpers::AppendXamlElementToPanel(uiImage.Get(), gridAsPanel.Get());
         });
 
+        // TODO: 11508861
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
-        return;
     }
 }}
