@@ -554,6 +554,22 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 break;
         }
 
+        ABI::AdaptiveCards::XamlCardRenderer::HAlignment adaptiveHorizontalAlignment;
+        THROW_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
+
+        switch (adaptiveHorizontalAlignment)
+        {
+            case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Left:
+                imageAsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Left);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Right:
+                imageAsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Right);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Center:
+                imageAsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Center);
+                break;
+        }
+
         // Generate the style name from the adaptive element and apply it to the xaml
         // element it it exists in the resource dictionaries
         ComPtr<IStyle> style;
