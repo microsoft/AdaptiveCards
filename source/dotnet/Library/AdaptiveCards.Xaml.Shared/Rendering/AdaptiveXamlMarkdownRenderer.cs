@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AdaptiveCards.Rendering
 {
 
-    public class AdaptiveXamlMarkdownRenderer : Renderer
+    public class AdaptiveXamlMarkdownRenderer : MarkdownRenderer
     {
         public AdaptiveXamlMarkdownRenderer() : base()
         {
@@ -37,7 +37,7 @@ namespace AdaptiveCards.Rendering
 
         public override string Codespan(string text)
         {
-            return "<Run FontFamily=\"Consolas\">" + text + "</Run>\n";
+            return $"<Run FontFamily=\"Consolas\">{text}</Run>\n";
         }
 
         public override string Del(string text)
@@ -52,7 +52,7 @@ namespace AdaptiveCards.Rendering
 
         public override string Heading(string text, int level, string raw)
         {
-            return text;
+            return $"{text}<LineBreak/>";
         }
 
         public override string Hr()
@@ -80,7 +80,7 @@ namespace AdaptiveCards.Rendering
 
         public override string List(string body, bool ordered, int start)
         {
-            return body;
+            return $"{body}<LineBreak/>";
         }
 
         public override string ListItem(string text)
@@ -90,7 +90,7 @@ namespace AdaptiveCards.Rendering
 
         public override string Paragraph(string text)
         {
-            return text;
+            return $"{text}<LineBreak/>";
         }
 
         public override string Strong(string text)
@@ -114,6 +114,14 @@ namespace AdaptiveCards.Rendering
         {
             // not supported
             return string.Empty;
+        }
+
+        public override string Postprocess(string text)
+        {
+            text = text.Replace("<LineBreak/><LineBreak/>", "<LineBreak/>");
+            while (text.EndsWith("<LineBreak/>"))
+                text = text.Substring(0, text.LastIndexOf("<LineBreak/>"));
+            return base.Postprocess(text);
         }
     }
 }
