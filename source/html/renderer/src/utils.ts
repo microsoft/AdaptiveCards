@@ -8,6 +8,10 @@ export function processMarkdown(text: string): any {
     return markdownProcessor.render(text);
 }
 
+export function getValueOrDefault<T>(obj: any, defaultValue: T): T {
+    return obj ? <T>obj : defaultValue;
+}
+
 export function isNullOrEmpty(value: string): boolean {
     return value === undefined || value === null || value === "";
 }
@@ -21,7 +25,7 @@ export function appendChild(node: Node, child: Node) {
 export function renderSeparation(separationDefinition: HostConfig.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
     var separator = document.createElement("div");
 
-    if (orientation == Enums.Orientation.Vertical) {
+    if (orientation == "vertical") {
         if (separationDefinition.lineThickness) {
             separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
             separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";

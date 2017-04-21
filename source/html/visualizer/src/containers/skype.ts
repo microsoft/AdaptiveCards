@@ -96,7 +96,7 @@ export class SkypeContainer extends HostContainer {
                 buttonSpacing: 20,
                 stretch: false,
                 showCard: {
-                    actionMode: Adaptive.ShowCardActionMode.Popup,
+                    actionMode: "popup",
                     inlineCardSpacing: 16,
                     backgroundColor: "#AEEAEAEA",
                     padding: {
@@ -106,8 +106,8 @@ export class SkypeContainer extends HostContainer {
                         left: 16
                     }
                 },
-                actionsOrientation: Adaptive.Orientation.Vertical,
-                actionAlignment: Adaptive.HorizontalAlignment.Center
+                actionsOrientation: "vertical",
+                actionAlignment: "center"
             },
             adaptiveCard: {
                 backgroundColor: "#AEEAEAEA",
@@ -142,7 +142,7 @@ export class SkypeContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: Adaptive.TextColor.Dark,
+                color: "dark",
                 separations: {
                     small: {
                         spacing: 20,
@@ -162,13 +162,13 @@ export class SkypeContainer extends HostContainer {
                 }
             },
             image: {
-                size: Adaptive.Size.Medium,
+                size: "medium",
                 separation: {
                     spacing: 20
                 }
             },
             imageSet: {
-                imageSize: Adaptive.Size.Medium,
+                imageSize: "medium",
                 separation: {
                     spacing: 20
                 }
@@ -178,16 +178,16 @@ export class SkypeContainer extends HostContainer {
                     spacing: 20
                 },
                 title: {
-                    color: Adaptive.TextColor.Dark,
-                    size: Adaptive.TextSize.Normal,
+                    color: "dark",
+                    size: "normal",
                     isSubtle: false,
-                    weight: Adaptive.TextWeight.Bolder
+                    weight: "bolder"
                 },
                 value: {
-                    color: Adaptive.TextColor.Dark,
-                    size: Adaptive.TextSize.Normal,
+                    color: "dark",
+                    size: "normal",
                     isSubtle: false,
-                    weight: Adaptive.TextWeight.Normal
+                    weight: "normal"
                 },
                 spacing: 10
             },

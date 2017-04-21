@@ -34,10 +34,15 @@ function renderCard(): HTMLElement {
 
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
 
-    Adaptive.setConfiguration(hostContainer.getHostConfiguration());
+    try {
+        var configuration = Adaptive.parseHostConfiguration(currentConfigPayload);
+        Adaptive.setConfiguration(configuration);
+    }
+    catch (e) {
+        // TODO
+    }
 
-    var jsonPayload = editor.getValue();
-    var json = JSON.parse(jsonPayload);
+    var json = JSON.parse(currentCardPayload);
 
     var adaptiveCard = new Adaptive.AdaptiveCard();
     adaptiveCard.parse(json);
@@ -64,7 +69,7 @@ function tryRenderCard() {
     contentContainer.appendChild(renderedCard);
 
     try {
-        sessionStorage.setItem("AdaptivePayload", editor.getValue());
+        sessionStorage.setItem("AdaptivePayload", currentCardPayload);
     }
     catch (e) {
         console.log("Unable to cache JSON payload.")
@@ -73,6 +78,10 @@ function tryRenderCard() {
 
 function openFilePicker() {
     document.getElementById("filePicker").click();
+}
+
+function setEditorText(text: string) {
+    editor.session.setValue(text);
 }
 
 function filePickerChanged(evt) {
@@ -84,7 +93,8 @@ function filePickerChanged(evt) {
         let reader = new FileReader();
 
         reader.onload = function (e: ProgressEvent) {
-            editor.session.setValue((e.target as FileReader).result);
+            // editor.session.setValue((e.target as FileReader).result);
+            setEditorText((e.target as FileReader).result);
         }
 
         reader.readAsText(file);
@@ -94,7 +104,7 @@ function filePickerChanged(evt) {
     }
 }
 
-function updateStyleSheet() {
+function loadStyleSheetAndConfig() {
     var styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
 
     if (styleSheetLinkElement == null) {
@@ -106,7 +116,16 @@ function updateStyleSheet() {
 
     styleSheetLinkElement.rel = "stylesheet";
     styleSheetLinkElement.type = "text/css";
-    styleSheetLinkElement.href = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer.styleSheet;
+
+    var selectedHostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+
+    styleSheetLinkElement.href = selectedHostContainer.styleSheet;
+
+    currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfiguration(), null, '\t');
+
+    if (!isCardEditor) {
+        setEditorText(currentConfigPayload);
+    }
 }
 
 function getParameterByName(name, url) {
@@ -138,6 +157,9 @@ class HostContainerOption {
     }
 }
 
+var currentCardPayload: string = "";
+var currentConfigPayload: string = "";
+
 function setupEditor() {
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/chrome");
@@ -153,6 +175,13 @@ function setupEditor() {
     editor.getSession().on(
         "change",
         function (e) {
+            if (isCardEditor) {
+                currentCardPayload = editor.getValue();
+            }
+            else {
+                currentConfigPayload = editor.getValue();
+            }
+            
             tryRenderCard();
         });
 
@@ -166,7 +195,7 @@ function setupEditor() {
 
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    editor.session.setValue(xhttp.responseText);
+                    currentCardPayload = xhttp.responseText;
                 }
             };
         
@@ -174,14 +203,14 @@ function setupEditor() {
             xhttp.send(); 
         }
         else if (cachedPayload) {
-            editor.session.setValue(cachedPayload);
+            currentCardPayload = cachedPayload;
         }
         else {
-            editor.session.setValue(Constants.defaultPayload);
+            currentCardPayload = Constants.defaultPayload;
         }
     }
     catch (e) {
-        editor.session.setValue(Constants.defaultPayload);
+        currentCardPayload = Constants.defaultPayload;
     }
 }
 
@@ -233,7 +262,7 @@ function setupContainerPicker() {
                 // update the query string
                 history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
 
-                updateStyleSheet();
+                loadStyleSheetAndConfig();
                 tryRenderCard();
             });
 
@@ -338,7 +367,39 @@ function showValidationErrors() {
     }
 }
 
+var isCardEditor = true;
+
+function switchToCardEditor() {
+    isCardEditor = true;
+
+    document.getElementById("editCard").classList.remove("subdued");
+    document.getElementById("editConfig").classList.add("subdued");
+
+    setEditorText(currentCardPayload);
+    editor.focus();
+}
+
+function switchToConfigEditor() {
+    isCardEditor = false;
+
+    document.getElementById("editCard").classList.add("subdued");
+    document.getElementById("editConfig").classList.remove("subdued");
+
+    setEditorText(currentConfigPayload);
+    editor.focus();
+}
+
 window.onload = () => {
+    currentConfigPayload = Constants.defaultConfigPayload;
+
+    document.getElementById("editCard").onclick = (e) => {
+        switchToCardEditor();
+    };
+
+    document.getElementById("editConfig").onclick = (e) => {
+        switchToConfigEditor();
+    };
+    
     Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
     Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
     
@@ -351,8 +412,10 @@ window.onload = () => {
     setupContainerPicker();
     setContainerAppFromUrl();
     setupFilePicker();
-    updateStyleSheet();
+    loadStyleSheetAndConfig();
     setupEditor();
+
+    switchToCardEditor();
 
     // handle Back and Forward after the Container app drop down is changed
     window.addEventListener(
