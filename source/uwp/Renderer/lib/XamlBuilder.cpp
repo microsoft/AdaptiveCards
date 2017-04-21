@@ -301,21 +301,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     _Use_decl_annotations_
     template<typename T>
-    void SetImageSource(
-        T * destination,
-        IImageSource * imageSource)
+    void XamlBuilder::SetImageSource(
+        T* destination,
+        IImageSource* imageSource)
     {
         THROW_IF_FAILED(destination->put_Source(imageSource));
     };
 
     _Use_decl_annotations_
     template<>
-    void SetImageSource<ABI::Windows::UI::Xaml::Shapes::IEllipse>(
-        ABI::Windows::UI::Xaml::Shapes::IEllipse * destination,
-        IImageSource * imageSource)
+    void XamlBuilder::SetImageSource<IEllipse>(
+        IEllipse* destination,
+        IImageSource* imageSource)
     {
         ComPtr<IImageBrush> imageBrush = XamlHelpers::CreateXamlClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
         THROW_IF_FAILED(imageBrush->put_ImageSource(imageSource));
+
+        ComPtr<ITileBrush> tileBrush;
+        THROW_IF_FAILED(imageBrush.As(&tileBrush));
+        THROW_IF_FAILED(tileBrush->put_Stretch(Stretch_UniformToFill));
 
         ComPtr<IBrush> brush;
         THROW_IF_FAILED(imageBrush.As(&brush));
@@ -323,13 +327,33 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IShape> ellipseAsShape;
         ComPtr<IEllipse> ellipse(destination);
         THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
-
         THROW_IF_FAILED(ellipseAsShape->put_Fill(brush.Get()));
     };
 
     _Use_decl_annotations_
+        template<typename T>
+    void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri, T* uiElement)
+    {
+        if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
+        {
+            // If we've been explicitly told to let Xaml handle the image loading, or there are
+            // no listeners waiting on the image load callbacks, use Xaml to load the images
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+            THROW_IF_FAILED(bitmapImage->put_UriSource(imageUri));
+
+            ComPtr<IImageSource> bitmapImageSource;
+            THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
+            SetImageSource(uiElement, bitmapImageSource.Get());
+        }
+        else
+        {
+            PopulateImageFromUrlAsync(imageUri, uiElement);
+        }
+    }
+
+    _Use_decl_annotations_
     template<typename T>
-    void XamlBuilder::PopulateImageFromUrlAsync(IUriRuntimeClass* imageUri, T * imageControl)
+    void XamlBuilder::PopulateImageFromUrlAsync(IUriRuntimeClass* imageUri, T* imageControl)
     {
         // Create the HttpClient to load the image stream
         ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter =
@@ -352,10 +376,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IAsyncOperationWithProgress<IInputStream*, HttpProgress>> getStreamOperation;
         httpClient->GetInputStreamAsync(imageUri, &getStreamOperation);
 
-        ComPtr<T> localImageControl(imageControl);
+        ComPtr<T> strongImageControl(imageControl);
         ComPtr<XamlBuilder> strongThis(this);
         getStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>
-            ([strongThis, this, bitmapSource, localImageControl](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
+            ([strongThis, this, bitmapSource, strongImageControl](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
         {
             if (status == AsyncStatus::Completed)
             {
@@ -371,7 +395,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 RETURN_IF_FAILED(m_randomAccessStreamStatics->CopyAsync(imageStream.Get(), outputStream.Get(), &copyStreamOperation));
 
                 return copyStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT64, UINT64>>>
-                    ([strongThis, this, bitmapSource, randomAccessStream, localImageControl](IAsyncOperationWithProgress<UINT64, UINT64>* /*operation*/, AsyncStatus /*status*/) -> HRESULT
+                    ([strongThis, this, bitmapSource, randomAccessStream, strongImageControl](IAsyncOperationWithProgress<UINT64, UINT64>* /*operation*/, AsyncStatus /*status*/) -> HRESULT
                 {
                     randomAccessStream->Seek(0);
                     RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
@@ -379,7 +403,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                     ComPtr<IImageSource> imageSource;
                     RETURN_IF_FAILED(bitmapSource.As(&imageSource));
 
-                    SetImageSource(localImageControl.Get(), imageSource.Get());
+                    SetImageSource(strongImageControl.Get(), imageSource.Get());
                     return S_OK;
                 }).Get());
                 m_copyStreamOperations.push_back(copyStreamOperation);
@@ -497,6 +521,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         THROW_IF_FAILED(xamlTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
 
+        // Set the maximum number of lines the next block should show
         ComPtr<ITextBlock2> xamlTextBlock2;
         THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
 
@@ -507,6 +532,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ABI::AdaptiveCards::XamlCardRenderer::HAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
 
+        // Set the horizontal alignment of the text
         switch (adaptiveHorizontalAlignment)
         {
             case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Left:
@@ -521,27 +547,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         THROW_IF_FAILED(xamlTextBlock.CopyTo(textBlockControl));
-    }
-
-    _Use_decl_annotations_
-        template<typename T>
-    void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri, T* uiElement)
-    {
-        if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
-        {
-            // If we've been explicitly told to let Xaml handle the image loading, or there are
-            // no listeners waiting on the image load callbacks, use Xaml to load the images
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-            THROW_IF_FAILED(bitmapImage->put_UriSource(imageUri));
-
-            ComPtr<IImageSource> bitmapImageSource;
-            THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
-            SetImageSource(uiElement, bitmapImageSource.Get());
-        }
-        else
-        {
-            PopulateImageFromUrlAsync(imageUri, uiElement);
-        }
     }
 
     _Use_decl_annotations_
@@ -569,6 +574,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IEllipse> ellipse = XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
             SetImageOnUIElement(imageUri.Get(), ellipse.Get());
 
+            // Set both Auto and Stretch to Stretch_UniformToFill.  An ellipse set to Stretch_Uniform ends up with size 0.
             if (size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto ||
                 size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch)
             {
