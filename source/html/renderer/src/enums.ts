@@ -75,6 +75,19 @@ export enum Orientation {
     Vertical
 }
 
+export function stringToShowCardActionMode(value: string, defaultValue: ShowCardActionMode): ShowCardActionMode {
+    switch (value) {
+        case "inline":
+            return ShowCardActionMode.Inline;
+        case "inlineEdgeToEdge":
+            return ShowCardActionMode.InlineEdgeToEdge;
+        case "popup":
+            return ShowCardActionMode.Popup;
+        default:
+            return defaultValue;
+    }
+}
+
 export function stringToSize(value: string, defaultValue: Size): Size {
     switch (value) {
         case "auto":

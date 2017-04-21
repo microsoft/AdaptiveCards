@@ -1,19 +1,4 @@
 {
-    "supportedElementTypes": [
-        "Container",
-        "TextBlock",
-        "Image",
-        "ImageSet",
-        "FactSet",
-        "ColumnSet",
-        "ActionSet",
-        "Input.Text",
-        "Input.Date",
-        "Input.Time",
-        "Input.Number",
-        "Input.ChoiceSet",
-        "Input.Toggle"
-    ],
     "supportsInteractivity": true,
     "strongSeparation": {
         "spacing": 40,
@@ -66,12 +51,6 @@
     },
     "actions": {
         "maxActions": 5,
-        "supportedActionTypes": [
-            "Action.Http",
-            "Action.OpenUrl",
-            "Action.Submit",
-            "Action.ShowCard"
-        ],
         "separation": {
             "spacing": 20
         },

@@ -9,19 +9,21 @@ function invokeSetParent(obj: any, parent: CardElement) {
     obj["setParent"](parent);
 }
 
-function isActionAllowed(action: Action, forbiddenActionTypes: Array<any>): boolean {
-    var className = Utils.getClassNameFromInstance(action);
-
+function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): boolean {
     if (forbiddenActionTypes) {
         for (var i = 0; i < forbiddenActionTypes.length; i++) {
-            if (className === Utils.getClassNameFromConstructor(forbiddenActionTypes[i])) {
+            if (action.getJsonTypeName() === forbiddenActionTypes[i]) {
                 return false;
             }
         }
     }
 
+    if (!hostConfiguration.actions.supportedActionTypes) {
+        return true;
+    }
+
     for (var i = 0; i < hostConfiguration.actions.supportedActionTypes.length; i++) {
-        if (className === Utils.getClassNameFromConstructor(hostConfiguration.actions.supportedActionTypes[i])) {
+        if (action.getJsonTypeName() === hostConfiguration.actions.supportedActionTypes[i]) {
             return true;
         }
     }
@@ -29,27 +31,29 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<any>): bool
     return false;
 }
 
-function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<any>) {
+function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
     if (!hostConfiguration.supportsInteractivity && element.isInteractive) {
         return false;
     }
 
-    var className = Utils.getClassNameFromInstance(element);
-
     if (forbiddenElementTypes) {
         for (var i = 0; i < forbiddenElementTypes.length; i++) {
-            if (className === Utils.getClassNameFromConstructor(forbiddenElementTypes[i])) {
+            if (element.getJsonTypeName() === forbiddenElementTypes[i]) {
                 return false;
             }
         }
     }
 
+    if (!hostConfiguration.supportedElementTypes) {
+        return true;
+    }
+    
     for (var i = 0; i < hostConfiguration.supportedElementTypes.length; i++) {
-        if (className === Utils.getClassNameFromConstructor(hostConfiguration.supportedElementTypes[i])) {
+        if (element.getJsonTypeName() === hostConfiguration.supportedElementTypes[i]) {
             return true;
         }
     }
-
+    
     return false;
 }
 
@@ -130,6 +134,7 @@ export abstract class CardElement {
     horizontalAlignment: Enums.HorizontalAlignment = Enums.HorizontalAlignment.Left;
     separation: Enums.Separation;
 
+    abstract getJsonTypeName(): string;
     abstract getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition;
     abstract renderSpeech(): string;
 
@@ -141,7 +146,7 @@ export abstract class CardElement {
         return padding;
     }
 
-    getForbiddenElementTypes(): Array<any> {
+    getForbiddenElementTypes(): Array<string> {
         return null;
     }
 
@@ -320,6 +325,10 @@ export class TextBlock extends CardElement {
         }
     }
 
+    getJsonTypeName(): string {
+        return "TextBlock";
+    }
+
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
         switch (this.size) {
             case Enums.TextSize.Small:
@@ -435,6 +444,10 @@ export class FactSet extends CardElement {
     }
 
     facts: Array<Fact> = [];
+
+    getJsonTypeName(): string {
+        return "FactSet";
+    }
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
         return hostConfiguration.factSet.separation;
@@ -552,6 +565,10 @@ export class Image extends CardElement {
     size: Enums.Size = Enums.Size.Medium;
     selectAction: ExternalAction;
 
+    getJsonTypeName(): string {
+        return "Image";
+    }
+
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
         return hostConfiguration.image.separation;
     }
@@ -608,6 +625,10 @@ export class ImageSet extends CardElement {
     }
 
     imageSize: Enums.Size = Enums.Size.Medium;
+
+    getJsonTypeName(): string {
+        return "ImageSet";
+    }
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
         return hostConfiguration.imageSet.separation;
@@ -740,6 +761,10 @@ export class TextInput extends Input {
     isMultiline: boolean;
     placeholder: string;
 
+    getJsonTypeName(): string {
+        return "Input.Text";
+    }
+
     parse(json: any) {
         super.parse(json);
 
@@ -785,6 +810,10 @@ export class ToggleInput extends Input {
     title: string;
     valueOn: string;
     valueOff: string;
+
+    getJsonTypeName(): string {
+        return "Input.Toggle";
+    }
 
     parse(json: any) {
         super.parse(json);
@@ -909,6 +938,10 @@ export class ChoiceSetInput extends Input {
     isMultiSelect: boolean;
     placeholder: string;
 
+    getJsonTypeName(): string {
+        return "Input.ChoiceSet";
+    }
+
     validate(): Array<IValidationError> {
         var result: Array<IValidationError> = [];
 
@@ -1008,6 +1041,10 @@ export class NumberInput extends Input {
     min: string;
     max: string;
 
+    getJsonTypeName(): string {
+        return "Input.Number";
+    }
+
     parse(json: any) {
         super.parse(json);
 
@@ -1031,6 +1068,10 @@ export class DateInput extends Input {
         return this._dateInputElement;
     }
 
+    getJsonTypeName(): string {
+        return "Input.Date";
+    }
+
     get value(): string {
         return this._dateInputElement ? this._dateInputElement.value : null;
     }
@@ -1045,6 +1086,10 @@ export class TimeInput extends Input {
         this._timeInputElement.className = "input time";
 
         return this._timeInputElement;
+    }
+
+    getJsonTypeName(): string {
+        return "Input.Time";
     }
 
     get value(): string {
@@ -1157,6 +1202,8 @@ export abstract class Action {
         this._parent = value;
     }
 
+    abstract getJsonTypeName(): string;
+
     validate(): Array<IValidationError> {
         return [];
     }
@@ -1187,6 +1234,10 @@ export class SubmitAction extends ExternalAction {
     private _isPrepared: boolean = false;
     private _originalData: Object;
     private _processedData: Object;
+
+    getJsonTypeName(): string {
+        return "Action.Submit";
+    }
 
     prepare(inputs: Array<Input>) {
         if (this._originalData) {
@@ -1226,6 +1277,10 @@ export class SubmitAction extends ExternalAction {
 export class OpenUrlAction extends ExternalAction {
     url: string;
 
+    getJsonTypeName(): string {
+        return "Action.OpenUrl";
+    }
+    
     validate(): Array<IValidationError> {
         if (!this.url) {
             return [ { error: Enums.ValidationError.PropertyCantBeNull, message: "An Action.OpenUrl must have its url property set." }];
@@ -1267,6 +1322,10 @@ export class HttpAction extends ExternalAction {
 
     method: string;
 
+    getJsonTypeName(): string {
+        return "Action.Http";
+    }
+    
     validate(): Array<IValidationError> {
         var result: Array<IValidationError> = [];
 
@@ -1348,6 +1407,10 @@ export class ShowCardAction extends Action {
 
     title: string;
 
+    getJsonTypeName(): string {
+        return "Action.ShowCard";
+    }
+    
     validate(): Array<IValidationError> {
         return this.card.validate();
     }
@@ -1478,7 +1541,7 @@ class ActionCollection {
                 result.push(
                     {
                         error: Enums.ValidationError.ActionTypeNotAllowed,
-                        message: "Actions of type " + Utils.getClassNameFromInstance(this.items[i]) + " are not allowe."
+                        message: "Actions of type " + this.items[i].getJsonTypeName() + " are not allowe."
                     });
             }
 
@@ -1633,6 +1696,10 @@ export class ActionSet extends CardElement {
         this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer(this); };
     }
 
+    getJsonTypeName(): string {
+        return "ActionSet";
+    }
+
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
         return hostConfiguration.actions.separation;
     }
@@ -1780,7 +1847,7 @@ export abstract class ContainerBase extends CardElement {
                 result.push(
                     {
                         error: Enums.ValidationError.InteractivityNotAllowed,
-                        message: "Elements of type " + Utils.getClassNameFromInstance(this._items[i]) + " are not allowed in this container."
+                        message: "Elements of type " + this._items[i].getJsonTypeName() + " are not allowed in this container."
                     });
             }
 
@@ -1903,6 +1970,10 @@ export class Container extends ContainerBase {
 
     style: Enums.ContainerStyle = Enums.ContainerStyle.Normal;    
 
+    getJsonTypeName(): string {
+        return "Container";
+    }
+
     parse(json: any) {
         super.parse(json);
 
@@ -1930,6 +2001,10 @@ export class Column extends Container {
     }
 
     weight: number = 100;
+
+    getJsonTypeName(): string {
+        return "Column";
+    }
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
         return hostConfiguration.column.separation;
@@ -1986,6 +2061,10 @@ export class ColumnSet extends CardElement {
         else {
             return null;
         }
+    }
+
+    getJsonTypeName(): string {
+        return "ColumnSet";
     }
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
@@ -2226,6 +2305,10 @@ export class AdaptiveCard extends ContainerWithActions {
     minVersion: IVersion = { major: 1, minor: 0 };
     fallbackText: string;
 
+    getJsonTypeName(): string {
+        return "AdaptiveCard";
+    }
+
     validate(): Array<IValidationError> {
         var result: Array<IValidationError> = [];
 
@@ -2298,20 +2381,6 @@ class InlineAdaptiveCard extends AdaptiveCard {
 }
 
 var defaultConfiguration: HostConfig.IHostConfiguration = {
-    supportedElementTypes: [
-        Container,
-        TextBlock,
-        Image,
-        ImageSet,
-        FactSet,
-        ColumnSet,
-        ActionSet,
-        TextInput,
-        DateInput,
-        NumberInput,
-        ChoiceSetInput,
-        ToggleInput            
-    ],
     supportsInteractivity: true,
     strongSeparation: {
         spacing: 40,
@@ -2364,12 +2433,6 @@ var defaultConfiguration: HostConfig.IHostConfiguration = {
     },
     actions: {
         maxActions: 5,
-        supportedActionTypes: [
-            HttpAction,
-            OpenUrlAction,
-            SubmitAction,
-            ShowCardAction
-        ],
         separation: {
             spacing: 20
         },

@@ -18,18 +18,6 @@ export function appendChild(node: Node, child: Node) {
     }
 }
 
-export function getClassNameFromInstance(instance: any) {
-    return getClassNameFromConstructor(instance.constructor);
-}
-
-export function getClassNameFromConstructor(constructor: any) {
-    // There is a cleaner way to do this in ES6, but in order to support
-    // IE11 we need to stick to ES5.
-    var constructorString: string = constructor.toString();
-
-    return constructorString.match(/\w+/g)[1];
-}
-
 export function renderSeparation(separationDefinition: HostConfig.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
     var separator = document.createElement("div");
 

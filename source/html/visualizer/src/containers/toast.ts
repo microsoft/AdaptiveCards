@@ -24,20 +24,6 @@ export class ToastContainer extends HostContainer {
 
     public getHostConfiguration(): Adaptive.IHostConfiguration {
         return {
-            supportedElementTypes: [
-                Adaptive.Container,
-                Adaptive.TextBlock,
-                Adaptive.Image,
-                Adaptive.ImageSet,
-                Adaptive.FactSet,
-                Adaptive.ColumnSet,
-                Adaptive.ActionSet,
-                Adaptive.TextInput,
-                Adaptive.DateInput,
-                Adaptive.NumberInput,
-                Adaptive.ChoiceSetInput,
-                Adaptive.ToggleInput            
-            ],
             supportsInteractivity: true,
             strongSeparation: {
                 spacing: 20,
@@ -90,12 +76,6 @@ export class ToastContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                supportedActionTypes: [
-                    Adaptive.HttpAction,
-                    Adaptive.OpenUrlAction,
-                    Adaptive.SubmitAction,
-                    Adaptive.ShowCardAction
-                ],
                 separation: {
                     spacing: 10
                 },
