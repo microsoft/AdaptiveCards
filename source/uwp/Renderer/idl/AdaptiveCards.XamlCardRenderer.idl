@@ -19,6 +19,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveColumnSet;
         runtimeclass AdaptiveFact;
         runtimeclass AdaptiveFactSet;
+        runtimeclass AdaptiveInputText;
 
         runtimeclass AdaptiveBoundaryOptions;
         runtimeclass AdaptiveFontSizeOptions;
@@ -55,6 +56,7 @@ namespace AdaptiveCards
         interface IAdaptiveColumnSet;
         interface IAdaptiveFact;
         interface IAdaptiveFactSet;
+        interface IAdaptiveInputText;
 
         interface IAdaptiveBoundaryOptions;
         interface IAdaptiveFontSizeOptions;
@@ -132,7 +134,8 @@ namespace AdaptiveCards
             FactSet,
             Fact,
             ImageSet,
-            ActionGroup
+            ActionGroup,
+            InputText
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -332,6 +335,36 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageSet
         {
             [default] interface IAdaptiveImageSet;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(ab30772b-172d-4595-bcd2-01001df19d1e),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputText)
+        ]
+        interface IAdaptiveInputText : IInspectable
+        {
+            [propget] HRESULT IsMultiline([out, retval] boolean* value);
+            [propput] HRESULT IsMultiline([in] boolean value);
+
+            [propget] HRESULT MaxLength([out, retval] UINT32 *value);
+            [propput] HRESULT MaxLength([in] UINT32 value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputText
+        {
+            [default] interface IAdaptiveInputText;
             interface IAdaptiveCardElement;
         };
 

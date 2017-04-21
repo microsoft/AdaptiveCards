@@ -46,6 +46,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2);
 
         m_hostOptions = Make<AdaptiveHostOptions>();
 
@@ -892,5 +893,37 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // TODO: 11508861
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
+    }
+
+    void XamlBuilder::BuildInputText(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputTextControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputText> adaptiveInputText;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputText));
+
+        ComPtr<ITextBox> textBox = XamlHelpers::CreateXamlClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
+
+        boolean isMultiLine;
+        THROW_IF_FAILED(adaptiveInputText->get_IsMultiline(&isMultiLine));
+        THROW_IF_FAILED(textBox->put_AcceptsReturn(isMultiLine));
+
+        HString textValue;
+        THROW_IF_FAILED(adaptiveInputText->get_Value(textValue.GetAddressOf()));
+        THROW_IF_FAILED(textBox->put_Text(textValue.Get()));
+
+        UINT32 maxLength;
+        THROW_IF_FAILED(adaptiveInputText->get_MaxLength(&maxLength));
+        THROW_IF_FAILED(textBox->put_MaxLength(maxLength));
+
+        ComPtr<ITextBox2> textBox2;
+        THROW_IF_FAILED(textBox.As(&textBox2));
+
+        HString placeHolderText;
+        THROW_IF_FAILED(adaptiveInputText->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
+
+        THROW_IF_FAILED(textBox.CopyTo(inputTextControl));
     }
 }}
