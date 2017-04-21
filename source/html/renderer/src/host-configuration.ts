@@ -67,7 +67,7 @@ export interface ITextBlockConfiguration {
 
 function parseTextBlockConfiguration(obj: any): ITextBlockConfiguration {
     return obj ? {
-        color: Enums.stringToTextColor(obj["color"], Enums.TextColor.Dark),
+        color: obj["color"],
         separations: {
             small: parseSeparationDefinition(obj["separations"]["small"]),
             normal: parseSeparationDefinition(obj["separations"]["normal"]),
@@ -116,7 +116,7 @@ export interface IImageConfiguration {
 function parseImageConfiguration(obj: any): IImageConfiguration {
     return obj ? {
         separation: parseSeparationDefinition(obj["separation"]),
-        size: Enums.stringToSize(obj["size"], Enums.Size.Medium)
+        size: obj["size"]
     } : null;
 }
 
@@ -128,7 +128,7 @@ export interface IImageSetConfiguration {
 function parseImageSetConfiguration(obj: any): IImageSetConfiguration {
     return obj ? {
         separation: parseSeparationDefinition(obj["separation"]),
-        imageSize: Enums.stringToSize(obj["imageSize"], Enums.Size.Medium)
+        imageSize: obj["imageSize"]
     } : null;
 }
 
@@ -141,10 +141,10 @@ export interface ITextFormatDefinition {
 
 function parseTextFormatDefinition(obj: any): ITextFormatDefinition {
     return obj ? {
-        size: Enums.stringToTextSize(obj["size"], Enums.TextSize.Normal),
-        color: Enums.stringToTextColor(obj["color"], Enums.TextColor.Dark),
+        size: obj["size"],
+        color: obj["color"],
         isSubtle: obj["isSubtle"],
-        weight: Enums.stringToTextWeight(obj["weight"], Enums.TextWeight.Normal)
+        weight: obj["weight"]
     } : null;
 }
 
@@ -193,7 +193,7 @@ export interface IShowCardActionConfiguration {
 
 function parseShowCardActionConfiguration(obj: any): IShowCardActionConfiguration {
     return obj ? {
-        actionMode: Enums.stringToShowCardActionMode(obj["actionMode"], Enums.ShowCardActionMode.Inline),
+        actionMode: obj["actionMode"],
         inlineCardSpacing: obj["inlineCardSpacing"],
         backgroundColor: obj["backgroundColor"],
         padding: parseSpacingDefinition(obj["padding"])
@@ -219,8 +219,8 @@ function parseActionsConfiguration(obj: any): IActionsConfiguration {
         buttonSpacing: obj["buttonSpacing"],
         stretch: obj["stretch"],
         showCard: parseShowCardActionConfiguration(obj["showCard"]),
-        actionsOrientation: Enums.stringToOrientation(obj["orientation"], Enums.Orientation.Horizontal),
-        actionAlignment: Enums.stringToHorizontalAlignment(obj["horizontalAlignment"], Enums.HorizontalAlignment.Left)
+        actionsOrientation: obj["orientation"],
+        actionAlignment: obj["horizontalAlignment"]
     } : null;
 }
 

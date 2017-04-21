@@ -108,13 +108,8 @@ export abstract class CardElement {
     }
 
     protected adjustAlignment(element: HTMLElement) {
-        switch (this.horizontalAlignment) {
-            case Enums.HorizontalAlignment.Center:
-                element.style.textAlign = "center";
-                break;
-            case Enums.HorizontalAlignment.Right:
-                element.style.textAlign = "right";
-                break;
+        if (this.horizontalAlignment != "left") {
+            element.style.textAlign = this.horizontalAlignment;
         }
     }
 
@@ -131,7 +126,7 @@ export abstract class CardElement {
     protected abstract internalRender(): HTMLElement;
 
     speak: string;
-    horizontalAlignment: Enums.HorizontalAlignment = Enums.HorizontalAlignment.Left;
+    horizontalAlignment: Enums.HorizontalAlignment = "left";
     separation: Enums.Separation;
 
     abstract getJsonTypeName(): string;
@@ -156,8 +151,8 @@ export abstract class CardElement {
 
     parse(json: any) {
         this.speak = json["speak"];
-        this.horizontalAlignment = Enums.stringToHorizontalAlignment(json["horizontalAlignment"], Enums.HorizontalAlignment.Left);
-        this.separation = Enums.stringToSeparation(json["separation"], Enums.Separation.Default);        
+        this.horizontalAlignment = json["horizontalAlignment"];
+        this.separation = Utils.getValueOrDefault<Enums.Separation>(json["separation"], "default");        
     }
 
     validate(): Array<IValidationError> {
@@ -206,8 +201,8 @@ export abstract class CardElement {
 }
 
 export class TextBlock extends CardElement {
-    size: Enums.TextSize = Enums.TextSize.Normal;
-    weight: Enums.TextWeight = Enums.TextWeight.Normal;
+    size: Enums.TextSize = "normal";
+    weight: Enums.TextWeight = "normal";
     color?: Enums.TextColor;
     text: string;
     isSubtle: boolean = false;
@@ -223,16 +218,16 @@ export class TextBlock extends CardElement {
             var fontSize: number;
 
             switch (this.size) {
-                case Enums.TextSize.Small:
+                case "small":
                     fontSize = hostConfiguration.fontSizes.small;
                     break;
-                case Enums.TextSize.Medium:
+                case "medium":
                     fontSize = hostConfiguration.fontSizes.medium;
                     break;
-                case Enums.TextSize.Large:
+                case "large":
                     fontSize = hostConfiguration.fontSizes.large;
                     break;
-                case Enums.TextSize.ExtraLarge:
+                case "extraLarge":
                     fontSize = hostConfiguration.fontSizes.extraLarge;
                     break;
                 default:
@@ -246,22 +241,22 @@ export class TextBlock extends CardElement {
             var colorDefinition: HostConfig.IColorDefinition;
 
             switch (actualTextColor) {
-                case Enums.TextColor.Dark:
+                case "dark":
                     colorDefinition = hostConfiguration.colors.dark;
                     break;
-                case Enums.TextColor.Light:
+                case "light":
                     colorDefinition = hostConfiguration.colors.light;
                     break;
-                case Enums.TextColor.Accent:
+                case "accent":
                     colorDefinition = hostConfiguration.colors.accent;
                     break;
-                case Enums.TextColor.Good:
+                case "good":
                     colorDefinition = hostConfiguration.colors.good;
                     break;
-                case Enums.TextColor.Warning:
+                case "warning":
                     colorDefinition = hostConfiguration.colors.warning;
                     break;
-                case Enums.TextColor.Attention:
+                case "attention":
                     colorDefinition = hostConfiguration.colors.attention;
                     break;
                 default:
@@ -274,10 +269,10 @@ export class TextBlock extends CardElement {
             var fontWeight: number;
 
             switch (this.weight) {
-                case Enums.TextWeight.Lighter:
+                case "lighter":
                     fontWeight = hostConfiguration.fontWeights.lighter;
                     break;
-                case Enums.TextWeight.Bolder:
+                case "bolder":
                     fontWeight = hostConfiguration.fontWeights.bolder;
                     break;
                 default:
@@ -331,13 +326,13 @@ export class TextBlock extends CardElement {
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
         switch (this.size) {
-            case Enums.TextSize.Small:
+            case "small":
                 return hostConfiguration.textBlock.separations.small;
-            case Enums.TextSize.Medium:
+            case "medium":
                 return hostConfiguration.textBlock.separations.medium;
-            case Enums.TextSize.Large:
+            case "large":
                 return hostConfiguration.textBlock.separations.large;
-            case Enums.TextSize.ExtraLarge:
+            case "extraLarge":
                 return hostConfiguration.textBlock.separations.extraLarge;
             default:
                 return hostConfiguration.textBlock.separations.normal;
@@ -348,9 +343,9 @@ export class TextBlock extends CardElement {
         super.parse(json);
 
         this.text = json["text"];
-        this.size = Enums.stringToTextSize(json["size"], Enums.TextSize.Normal);
-        this.weight = Enums.stringToTextWeight(json["weight"], Enums.TextWeight.Normal);
-        this.color = Enums.stringToTextColor(json["color"], hostConfiguration.textBlock.color);
+        this.size = Utils.getValueOrDefault<Enums.TextSize>(json["size"], "normal");
+        this.weight = Utils.getValueOrDefault<Enums.TextWeight>(json["weight"], "normal");
+        this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], hostConfiguration.textBlock.color);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"] === undefined ? true : json["wrap"];
         this.maxLines = json["maxLines"];        
@@ -418,7 +413,7 @@ export class FactSet extends CardElement {
                 textBlock.color = hostConfiguration.factSet.title.color;
                 textBlock.isSubtle = hostConfiguration.factSet.title.isSubtle;
                 textBlock.weight = hostConfiguration.factSet.title.weight;
-                textBlock.separation = Enums.Separation.None;
+                textBlock.separation = "none";
 
                 Utils.appendChild(tdElement, textBlock.render());
                 Utils.appendChild(trElement, tdElement);
@@ -432,7 +427,7 @@ export class FactSet extends CardElement {
                 textBlock.color = hostConfiguration.factSet.value.color;
                 textBlock.isSubtle = hostConfiguration.factSet.value.isSubtle;
                 textBlock.weight = hostConfiguration.factSet.value.weight;
-                textBlock.separation = Enums.Separation.None;
+                textBlock.separation = "none";
 
                 Utils.appendChild(tdElement, textBlock.render());
                 Utils.appendChild(trElement, tdElement);
@@ -502,12 +497,12 @@ export class Image extends CardElement {
 
     protected adjustAlignment(element: HTMLElement) {
         switch (this.horizontalAlignment) {
-            case Enums.HorizontalAlignment.Center:
+            case "center":
                 element.style.marginLeft = "auto";
                 element.style.marginRight = "auto";
 
                 break;
-            case Enums.HorizontalAlignment.Right:
+            case "right":
                 element.style.marginLeft = "auto";
 
                 break;
@@ -533,16 +528,16 @@ export class Image extends CardElement {
             }
 
             switch (this.size) {
-                case Enums.Size.Auto:
+                case "auto":
                     imageElement.style.maxWidth = "100%";
                     break;
-                case Enums.Size.Stretch:
+                case "stretch":
                     imageElement.style.width = "100%";
                     break;
-                case Enums.Size.Small:
+                case "small":
                     imageElement.style.maxWidth = hostConfiguration.imageSizes.small + "px";
                     break;
-                case Enums.Size.Large:
+                case "large":
                     imageElement.style.maxWidth = hostConfiguration.imageSizes.large + "px";
                     break;
                 default:
@@ -550,7 +545,7 @@ export class Image extends CardElement {
                     break;
             }
 
-            if (this.style == Enums.ImageStyle.Person) {
+            if (this.style == "person") {
                 imageElement.classList.add("person");
             }
 
@@ -560,9 +555,9 @@ export class Image extends CardElement {
         return imageElement;
     }
 
-    style: Enums.ImageStyle = Enums.ImageStyle.Normal;
+    style: Enums.ImageStyle = "normal";
     url: string;
-    size: Enums.Size = Enums.Size.Medium;
+    size: Enums.Size = "medium";
     selectAction: ExternalAction;
 
     getJsonTypeName(): string {
@@ -577,8 +572,8 @@ export class Image extends CardElement {
         super.parse(json);
 
         this.url = json["url"];
-        this.style = Enums.stringToImageStyle(json["style"], Enums.ImageStyle.Normal);
-        this.size = Enums.stringToSize(json["size"], Enums.Size.Medium);
+        this.style = Utils.getValueOrDefault<Enums.ImageStyle>(json["style"], "normal");
+        this.size = Utils.getValueOrDefault<Enums.Size>(json["size"], "medium");
 
         var selectActionJson = json["selectAction"];
 
@@ -624,7 +619,7 @@ export class ImageSet extends CardElement {
         return element;
     }
 
-    imageSize: Enums.Size = Enums.Size.Medium;
+    imageSize: Enums.Size = "medium";
 
     getJsonTypeName(): string {
         return "ImageSet";
@@ -637,7 +632,7 @@ export class ImageSet extends CardElement {
     parse(json: any) {
         super.parse(json);
         
-        this.imageSize = Enums.stringToSize(json["imageSize"], Enums.Size.Medium);
+        this.imageSize = Utils.getValueOrDefault<Enums.Size>(json["imageSize"], "medium");
 
         if (json["images"] != null) {
             let jsonImages = json["images"] as Array<any>;
@@ -1140,7 +1135,6 @@ class ActionButton {
         this._action = action;
         this._style = style;
         this._element = document.createElement("div");
-        // this._element.style.display = "table-cell";
         this._element.onclick = (e) => { this.click(); };
 
         this.updateCssStyle();
@@ -1452,7 +1446,7 @@ class ActionCollection {
         this._actionCardContainer.innerHTML = '';
         this._actionCardContainer.style.marginTop = this.items.length > 1 ? hostConfiguration.actions.showCard.inlineCardSpacing + "px" : "0px";
 
-        if (hostConfiguration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge) {
+        if (hostConfiguration.actions.showCard.actionMode == "inlineEdgeToEdge") {
             var padding = this._owner.getNonZeroPadding();
 
             this._actionCardContainer.style.paddingLeft = padding.left + "px";
@@ -1479,7 +1473,7 @@ class ActionCollection {
             raiseExecuteActionEvent(<ExternalAction>actionButton.action);
         }
         else {
-            if (hostConfiguration.actions.showCard.actionMode == Enums.ShowCardActionMode.Popup) {
+            if (hostConfiguration.actions.showCard.actionMode == "popup") {
                 var actionShowCard = <ShowCardAction>actionButton.action;
 
                 raiseShowPopupCardEvent(actionShowCard);
@@ -1565,19 +1559,19 @@ class ActionCollection {
         let buttonStrip = document.createElement("div");
 
         switch (hostConfiguration.actions.actionAlignment) {
-            case Enums.HorizontalAlignment.Center:
+            case "center":
                 element.style.textAlign = "center";
                 buttonStrip.style.textAlign = "center";
 
                 break;
-            case Enums.HorizontalAlignment.Right:
+            case "right":
                 element.style.textAlign = "right";
                 buttonStrip.style.textAlign = "right";
 
                 break;
         }
 
-        if (hostConfiguration.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+        if (hostConfiguration.actions.actionsOrientation == "horizontal") {
             if (hostConfiguration.actions.stretch) {
                 buttonStrip.style.display = "flex";
             }
@@ -1635,7 +1629,7 @@ class ActionCollection {
                     if (i < this.items.length - 1 && hostConfiguration.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
 
-                        if (hostConfiguration.actions.actionsOrientation == Enums.Orientation.Horizontal) {
+                        if (hostConfiguration.actions.actionsOrientation == "horizontal") {
                             spacer.style.flex = "0 0 " + hostConfiguration.actions.buttonSpacing + "px";
                         }
                         else {
@@ -1744,7 +1738,7 @@ export abstract class ContainerBase extends CardElement {
     private _items: Array<CardElement> = [];
 
     protected showBottomSpacer(requestingElement: CardElement) {
-        if (!requestingElement || (this.isLastItem(requestingElement) && hostConfiguration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge)) {
+        if (!requestingElement || (this.isLastItem(requestingElement) && hostConfiguration.actions.showCard.actionMode == "inlineEdgeToEdge")) {
             this._element.style.paddingBottom = this.padding.bottom + "px";
 
             super.showBottomSpacer(this);
@@ -1752,7 +1746,7 @@ export abstract class ContainerBase extends CardElement {
     }
 
     protected hideBottomSpacer(requestingElement: CardElement) {
-        if (!requestingElement || (this.isLastItem(requestingElement) && hostConfiguration.actions.showCard.actionMode == Enums.ShowCardActionMode.InlineEdgeToEdge)) {
+        if (!requestingElement || (this.isLastItem(requestingElement) && hostConfiguration.actions.showCard.actionMode == "inlineEdgeToEdge")) {
             this._element.style.paddingBottom = "0px";
 
             super.hideBottomSpacer(this);
@@ -1791,10 +1785,10 @@ export abstract class ContainerBase extends CardElement {
                 var renderedElement = isElementAllowed(this._items[i], this.getForbiddenElementTypes()) ? this._items[i].render() : null;
 
                 if (renderedElement != null) {
-                    if (renderedElementCount > 0 && this._items[i].separation != Enums.Separation.None) {
-                        var separationDefinition = this._items[i].separation == Enums.Separation.Default ? this._items[i].getDefaultSeparationDefinition() : hostConfiguration.strongSeparation;
+                    if (renderedElementCount > 0 && this._items[i].separation != "none") {
+                        var separationDefinition = this._items[i].separation == "default" ? this._items[i].getDefaultSeparationDefinition() : hostConfiguration.strongSeparation;
 
-                        Utils.appendChild(this._element, Utils.renderSeparation(separationDefinition, Enums.Orientation.Vertical));
+                        Utils.appendChild(this._element, Utils.renderSeparation(separationDefinition, "vertical"));
                     }
 
                     Utils.appendChild(this._element, renderedElement);
@@ -1940,13 +1934,13 @@ export abstract class ContainerBase extends CardElement {
 
 export class Container extends ContainerBase {
     protected getBackgroundColor(): string {
-        return this.style == Enums.ContainerStyle.Normal ? hostConfiguration.container.normal.backgroundColor : hostConfiguration.container.emphasis.backgroundColor;
+        return this.style == "normal" ? hostConfiguration.container.normal.backgroundColor : hostConfiguration.container.emphasis.backgroundColor;
     }
 
     protected internalRender(): HTMLElement {
         var renderedContainer = super.internalRender();
 
-        var styleDefinition = this.style == Enums.ContainerStyle.Normal ? hostConfiguration.container.normal : hostConfiguration.container.emphasis;
+        var styleDefinition = this.style == "normal" ? hostConfiguration.container.normal : hostConfiguration.container.emphasis;
 
         if (styleDefinition.borderColor) {
             renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
@@ -1963,12 +1957,12 @@ export class Container extends ContainerBase {
     }
 
     protected get padding(): HostConfig.ISpacingDefinition {
-        var styleDefinition = this.style == Enums.ContainerStyle.Normal ? hostConfiguration.container.normal : hostConfiguration.container.emphasis;
+        var styleDefinition = this.style == "normal" ? hostConfiguration.container.normal : hostConfiguration.container.emphasis;
 
         return styleDefinition.padding ? styleDefinition.padding : { top: 0, right: 0, bottom: 0, left: 0 };
     }
 
-    style: Enums.ContainerStyle = Enums.ContainerStyle.Normal;    
+    style: Enums.ContainerStyle = "normal";    
 
     getJsonTypeName(): string {
         return "Container";
@@ -1977,7 +1971,7 @@ export class Container extends ContainerBase {
     parse(json: any) {
         super.parse(json);
 
-        this.style = Enums.stringToContainerStyle(json["style"], Enums.ContainerStyle.Normal);
+        this.style = Utils.getValueOrDefault<Enums.ContainerStyle>(json["style"], "normal");
     }
 }
 
@@ -1989,10 +1983,10 @@ export class Column extends Container {
     protected adjustLayout(element: HTMLElement) {
         element.style.minWidth = "0";
 
-        if (this.weight > 0) {
-            element.style.flex = "1 1 " + this.weight + "%";
+        if (typeof this.size === "number") {
+            element.style.flex = "1 1 " + this.size + "%";            
         }
-        else if (this.weight == 0) {
+        else if (this.size === "auto") {
             element.style.flex = "0 0 auto";
         }
         else {
@@ -2000,7 +1994,7 @@ export class Column extends Container {
         }
     }
 
-    weight: number = 100;
+    size: number | "auto" | "stretch" = "auto";
 
     getJsonTypeName(): string {
         return "Column";
@@ -2013,14 +2007,10 @@ export class Column extends Container {
     parse(json: any) {
         super.parse(json);
 
-        if (json["size"] === "auto") {
-            this.weight = 0;
-        }
-        else if (json["size"] === "stretch") {
-            this.weight = -1;
-        }
-        else {
-            this.weight = Number(json["size"]);
+        var sizeValue = json["size"];
+
+        if (sizeValue) {
+            this.size = sizeValue;
         }
     }
 }
@@ -2041,11 +2031,11 @@ export class ColumnSet extends CardElement {
                 if (renderedColumn != null) {
                     Utils.appendChild(element, renderedColumn);
 
-                    if (this._columns.length > 1 && i < this._columns.length - 1 && this._columns[i + 1].separation != Enums.Separation.None) {
-                        var separationDefinition = this._columns[i + 1].separation == Enums.Separation.Default ? this._columns[i + 1].getDefaultSeparationDefinition() : hostConfiguration.strongSeparation;
+                    if (this._columns.length > 1 && i < this._columns.length - 1 && this._columns[i + 1].separation != "none") {
+                        var separationDefinition = this._columns[i + 1].separation == "default" ? this._columns[i + 1].getDefaultSeparationDefinition() : hostConfiguration.strongSeparation;
 
                         if (separationDefinition) {
-                            var separator = Utils.renderSeparation(separationDefinition, Enums.Orientation.Horizontal);
+                            var separator = Utils.renderSeparation(separationDefinition, "horizontal");
                             separator.style.flex = "0 0 auto";
 
                             Utils.appendChild(element, separator);
@@ -2205,7 +2195,7 @@ export abstract class ContainerWithActions extends ContainerBase {
         var renderedActions = this._actionCollection.render();
 
         if (renderedActions) {
-            Utils.appendChild(this._element, Utils.renderSeparation(hostConfiguration.actions.separation, Enums.Orientation.Vertical));
+            Utils.appendChild(this._element, Utils.renderSeparation(hostConfiguration.actions.separation, "vertical"));
             Utils.appendChild(this._element, renderedActions);
         }
 
@@ -2439,7 +2429,7 @@ var defaultConfiguration: HostConfig.IHostConfiguration = {
         buttonSpacing: 20,
         stretch: false,
         showCard: {
-            actionMode: Enums.ShowCardActionMode.InlineEdgeToEdge,
+            actionMode: "inlineEdgeToEdge",
             inlineCardSpacing: 16,
             backgroundColor: "#22000000",
             padding: {
@@ -2449,8 +2439,8 @@ var defaultConfiguration: HostConfig.IHostConfiguration = {
                 left: 16
             }
         },
-        actionsOrientation: Enums.Orientation.Horizontal,
-        actionAlignment: Enums.HorizontalAlignment.Left
+        actionsOrientation: "horizontal",
+        actionAlignment: "left"
     },
     adaptiveCard: {
         backgroundColor: "#00000000",
@@ -2485,7 +2475,7 @@ var defaultConfiguration: HostConfig.IHostConfiguration = {
         }
     },
     textBlock: {
-        color: Enums.TextColor.Dark,
+        color: "dark",
         separations: {
             small: {
                 spacing: 20,
@@ -2505,13 +2495,13 @@ var defaultConfiguration: HostConfig.IHostConfiguration = {
         }
     },
     image: {
-        size: Enums.Size.Medium,
+        size: "medium",
         separation: {
             spacing: 20
         }
     },
     imageSet: {
-        imageSize: Enums.Size.Medium,
+        imageSize: "medium",
         separation: {
             spacing: 20
         }
@@ -2521,16 +2511,16 @@ var defaultConfiguration: HostConfig.IHostConfiguration = {
             spacing: 20
         },
         title: {
-            color: Enums.TextColor.Attention,
-            size: Enums.TextSize.Large,
+            color: "dark",
+            size: "normal",
             isSubtle: false,
-            weight: Enums.TextWeight.Bolder
+            weight: "bolder"
         },
         value: {
-            color: Enums.TextColor.Warning,
-            size: Enums.TextSize.ExtraLarge,
+            color: "dark",
+            size: "normal",
             isSubtle: false,
-            weight: Enums.TextWeight.Normal
+            weight: "normal"
         },
         spacing: 10
     },

@@ -90,7 +90,7 @@ export class CortanaCarContainer extends HostContainer {
                 buttonSpacing: 20,
                 stretch: false,
                 showCard: {
-                    actionMode: Adaptive.ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: "inlineEdgeToEdge",
                     inlineCardSpacing: 16,
                     backgroundColor: "#111111",
                     padding: {
@@ -100,8 +100,8 @@ export class CortanaCarContainer extends HostContainer {
                         left: 16
                     }
                 },
-                actionsOrientation: Adaptive.Orientation.Horizontal,
-                actionAlignment: Adaptive.HorizontalAlignment.Left
+                actionsOrientation: "horizontal",
+                actionAlignment: "left"
             },
             adaptiveCard: {
                 backgroundColor: "#111111",
@@ -136,7 +136,7 @@ export class CortanaCarContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: Adaptive.TextColor.Light,
+                color: "light",
                 separations: {
                     small: {
                         spacing: 20,
@@ -156,13 +156,13 @@ export class CortanaCarContainer extends HostContainer {
                 }
             },
             image: {
-                size: Adaptive.Size.Medium,
+                size: "medium",
                 separation: {
                     spacing: 20
                 }
             },
             imageSet: {
-                imageSize: Adaptive.Size.Medium,
+                imageSize: "medium",
                 separation: {
                     spacing: 20
                 }
@@ -172,16 +172,16 @@ export class CortanaCarContainer extends HostContainer {
                     spacing: 20
                 },
                 title: {
-                    color: Adaptive.TextColor.Dark,
-                    size: Adaptive.TextSize.Normal,
+                    color: "light",
+                    size: "normal",
                     isSubtle: false,
-                    weight: Adaptive.TextWeight.Bolder
+                    weight: "bolder"
                 },
                 value: {
-                    color: Adaptive.TextColor.Dark,
-                    size: Adaptive.TextSize.Normal,
+                    color: "light",
+                    size: "normal",
                     isSubtle: false,
-                    weight: Adaptive.TextWeight.Normal
+                    weight: "normal"
                 },
                 spacing: 10
             },

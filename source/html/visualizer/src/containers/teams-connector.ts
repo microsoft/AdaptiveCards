@@ -75,7 +75,7 @@ export class TeamsConnectorContainer extends HostContainer {
                 buttonSpacing: 10,
                 stretch: true,
                 showCard: {
-                    actionMode: Adaptive.ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: "inlineEdgeToEdge",
                     inlineCardSpacing: 16,
                     backgroundColor: "#08000000",
                     padding: {
@@ -85,8 +85,8 @@ export class TeamsConnectorContainer extends HostContainer {
                         left: 16
                     }
                 },
-                actionsOrientation: Adaptive.Orientation.Horizontal,
-                actionAlignment: Adaptive.HorizontalAlignment.Left
+                actionsOrientation: "horizontal",
+                actionAlignment: "left"
             },
             adaptiveCard: {
                 backgroundColor: "#00000000",
@@ -121,7 +121,7 @@ export class TeamsConnectorContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: Adaptive.TextColor.Dark,
+                color: "dark",
                 separations: {
                     small: {
                         spacing: 20,
@@ -141,13 +141,13 @@ export class TeamsConnectorContainer extends HostContainer {
                 }
             },
             image: {
-                size: Adaptive.Size.Medium,
+                size: "medium",
                 separation: {
                     spacing: 20
                 }
             },
             imageSet: {
-                imageSize: Adaptive.Size.Medium,
+                imageSize: "medium",
                 separation: {
                     spacing: 20
                 }
@@ -157,16 +157,16 @@ export class TeamsConnectorContainer extends HostContainer {
                     spacing: 20
                 },
                 title: {
-                    color: Adaptive.TextColor.Dark,
-                    size: Adaptive.TextSize.Normal,
+                    color: "dark",
+                    size: "normal",
                     isSubtle: false,
-                    weight: Adaptive.TextWeight.Bolder
+                    weight: "bolder"
                 },
                 value: {
-                    color: Adaptive.TextColor.Dark,
-                    size: Adaptive.TextSize.Normal,
+                    color: "dark",
+                    size: "normal",
                     isSubtle: false,
-                    weight: Adaptive.TextWeight.Normal
+                    weight: "normal"
                 },
                 spacing: 10
             },

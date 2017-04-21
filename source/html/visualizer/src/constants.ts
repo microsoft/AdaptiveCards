@@ -1,6 +1,6 @@
 // TOOD: Can I pull this from the samples folder rather than copying it here?
 
-export const testConfiguration: string = `
+export const defaultConfigPayload: string = `
 {
     "supportsInteractivity": true,
     "strongSeparation": {

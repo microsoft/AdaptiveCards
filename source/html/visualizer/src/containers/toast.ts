@@ -82,7 +82,7 @@ export class ToastContainer extends HostContainer {
                 buttonSpacing: 10,
                 stretch: true,
                 showCard: {
-                    actionMode: Adaptive.ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: "inlineEdgeToEdge",
                     inlineCardSpacing: 10,
                     backgroundColor: "#22FFFFFF",
                     padding: {
@@ -92,8 +92,8 @@ export class ToastContainer extends HostContainer {
                         left: 10
                     }
                 },
-                actionsOrientation: Adaptive.Orientation.Horizontal,
-                actionAlignment: Adaptive.HorizontalAlignment.Left
+                actionsOrientation: "horizontal",
+                actionAlignment: "left"
             },
             adaptiveCard: {
                 backgroundColor: "#1F1F1F",
@@ -127,7 +127,7 @@ export class ToastContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: Adaptive.TextColor.Light,
+                color: "light",
                 separations: {
                     small: {
                         spacing: 10,
@@ -147,13 +147,13 @@ export class ToastContainer extends HostContainer {
                 }
             },
             image: {
-                size: Adaptive.Size.Medium,
+                size: "medium",
                 separation: {
                     spacing: 10
                 }
             },
             imageSet: {
-                imageSize: Adaptive.Size.Medium,
+                imageSize: "medium",
                 separation: {
                     spacing: 10
                 }
@@ -163,16 +163,16 @@ export class ToastContainer extends HostContainer {
                     spacing: 10
                 },
                 title: {
-                    color: Adaptive.TextColor.Dark,
-                    size: Adaptive.TextSize.Normal,
+                    color: "light",
+                    size: "normal",
                     isSubtle: false,
-                    weight: Adaptive.TextWeight.Bolder
+                    weight: "bolder"
                 },
                 value: {
-                    color: Adaptive.TextColor.Dark,
-                    size: Adaptive.TextSize.Normal,
+                    color: "light",
+                    size: "normal",
                     isSubtle: false,
-                    weight: Adaptive.TextWeight.Normal
+                    weight: "normal"
                 },
                 spacing: 10
             },

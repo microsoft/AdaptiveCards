@@ -101,7 +101,7 @@ div.markupRender {
     resize: none;
     white-space: nowrap;
     overflow: auto;
-    border: 1px solid #F1F1F1;
+    border: 1px solid #EEEEEE;
 }
 
 .button {
@@ -116,12 +116,14 @@ div.markupRender {
     text-align: center;
     vertical-align: middle;  
     cursor: default;
+    border: 1px solid #0078D7;
     background-color: #0078D7;
     color: white;    
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
     -moz-user-select: none;      /* Firefox */
     -ms-user-select: none;       /* Internet Explorer/Edge */
     user-select: none;
+    display: inline-block;
 }
 
 .button:hover {
@@ -130,6 +132,16 @@ div.markupRender {
 
 .button:active {
     background-color: #004D84;
+}
+
+.button.subdued {
+    background-color: transparent;
+    color: #0078D7;
+}
+
+.button.subdued:hover {
+    background-color: #0078D7;
+    color: white;
 }
 
 select {
