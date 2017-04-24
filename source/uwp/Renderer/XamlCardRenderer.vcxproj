@@ -139,6 +139,7 @@
     <ClInclude Include="lib\AdaptiveImageSetOptions.h" />
     <ClInclude Include="lib\AdaptiveImageSizeOptions.h" />
     <ClInclude Include="lib\AdaptiveInputText.h" />
+    <ClInclude Include="lib\AdaptiveInputToggle.h" />
     <ClInclude Include="lib\AdaptiveNumberInputOptions.h" />
     <ClInclude Include="lib\AdaptiveSeparationOptions.h" />
     <ClInclude Include="lib\AdaptiveShowCardOptions.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="lib\AdaptiveImageSetOptions.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizeOptions.cpp" />
     <ClCompile Include="lib\AdaptiveInputText.cpp" />
+    <ClCompile Include="lib\AdaptiveInputToggle.cpp" />
     <ClCompile Include="lib\AdaptiveNumberInputOptions.cpp" />
     <ClCompile Include="lib\AdaptiveSeparationOptions.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardOptions.cpp" />

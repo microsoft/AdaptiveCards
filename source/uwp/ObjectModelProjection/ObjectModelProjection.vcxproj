@@ -35,6 +35,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputText.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputToggle.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseUtil.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseCardElement.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputText.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputToggle.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseUtil.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseCardElement.h" />

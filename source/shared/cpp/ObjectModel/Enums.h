@@ -61,6 +61,8 @@ enum class AdaptiveCardSchemaKey
     Placeholder,
     IsMultiline,
     MaxLength,
+    ValueOff,
+    ValueOn,
 };
 
 enum class TextSize
@@ -120,7 +122,8 @@ enum class CardElementType
     Fact,
     ActionGroup,
     ImageSet,
-    InputText
+    InputText,
+    InputToggle,
 };
 
 enum class ActionType

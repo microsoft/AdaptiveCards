@@ -20,6 +20,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveFact;
         runtimeclass AdaptiveFactSet;
         runtimeclass AdaptiveInputText;
+        runtimeclass AdaptiveInputToggle;
 
         runtimeclass AdaptiveBoundaryOptions;
         runtimeclass AdaptiveFontSizeOptions;
@@ -57,6 +58,7 @@ namespace AdaptiveCards
         interface IAdaptiveFact;
         interface IAdaptiveFactSet;
         interface IAdaptiveInputText;
+        interface IAdaptiveInputToggle;
 
         interface IAdaptiveBoundaryOptions;
         interface IAdaptiveFontSizeOptions;
@@ -135,7 +137,8 @@ namespace AdaptiveCards
             Fact,
             ImageSet,
             ActionGroup,
-            InputText
+            InputText,
+            InputToggle
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -365,6 +368,36 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputText
         {
             [default] interface IAdaptiveInputText;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(e8af72a5-597c-4a19-b9c2-1a597db1c79a),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputToggle)
+        ]
+        interface IAdaptiveInputToggle : IInspectable
+        {
+            [propget] HRESULT Title([out, retval] HSTRING* value);
+            [propput] HRESULT Title([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+
+            [propget] HRESULT ValueOff([out, retval] HSTRING* value);
+            [propput] HRESULT ValueOff([in] HSTRING value);
+
+            [propget] HRESULT ValueOn([out, retval] HSTRING* value);
+            [propput] HRESULT ValueOn([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputToggle
+        {
+            [default] interface IAdaptiveInputToggle;
             interface IAdaptiveCardElement;
         };
 

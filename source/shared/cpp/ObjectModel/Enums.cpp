@@ -35,6 +35,8 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "placeholder", AdaptiveCardSchemaKey::Placeholder },
     { "isMultiline", AdaptiveCardSchemaKey::IsMultiline },
     { "maxLength", AdaptiveCardSchemaKey::MaxLength },
+    { "valueOff", AdaptiveCardSchemaKey::ValueOff },
+    { "valueOn", AdaptiveCardSchemaKey::ValueOn },
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> AdaptiveCardSchemaKeyEnumToName =
@@ -70,6 +72,8 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
     { AdaptiveCardSchemaKey::IsMultiline, "isMultiline" },
     { AdaptiveCardSchemaKey::MaxLength, "maxLength" },
+    { AdaptiveCardSchemaKey::ValueOff, "valueOff" },
+    { AdaptiveCardSchemaKey::ValueOn, "valueOn" },
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
@@ -84,6 +88,7 @@ static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, Cas
     { "ImageSet", CardElementType::ImageSet },
     { "Container", CardElementType::Container },
     { "Input.Text", CardElementType::InputText },
+    { "Input.Toggle", CardElementType::InputToggle },
 };
 
 static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTypeEnumToName =
@@ -98,6 +103,7 @@ static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTyp
     { CardElementType::ImageSet, "ImageSet" },
     { CardElementType::Container, "Container" },
     { CardElementType::InputText, "Input.Text" },
+    { CardElementType::InputToggle, "Input.Toggle" },
 };
 
 static std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionTypeNameToEnum =

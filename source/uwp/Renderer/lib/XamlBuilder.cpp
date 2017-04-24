@@ -25,6 +25,7 @@ using namespace ABI::Windows::Storage::Streams;
 using namespace ABI::Windows::UI::Text;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
@@ -47,6 +48,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputToggle] = std::bind(&XamlBuilder::BuildInputToggle, this, std::placeholders::_1, std::placeholders::_2);
 
         m_hostOptions = Make<AdaptiveHostOptions>();
 
@@ -925,5 +927,58 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
 
         THROW_IF_FAILED(textBox.CopyTo(inputTextControl));
+    }
+
+    void XamlBuilder::BuildInputToggle(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputToggleControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputToggle> adaptiveInputToggle;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputToggle));
+
+        ComPtr<ICheckBox> checkBox = XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+        ComPtr<IContentControl> contentControl;
+        THROW_IF_FAILED(checkBox.As(&contentControl));
+
+        HString title;
+        THROW_IF_FAILED(adaptiveInputToggle->get_Title(title.GetAddressOf()));
+
+        ComPtr<ITextBlock> content = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+        THROW_IF_FAILED(content->put_Text(title.Get()));
+        THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+
+        HString value;
+        THROW_IF_FAILED(adaptiveInputToggle->get_Value(value.GetAddressOf()));
+
+        INT32 compareTrue;
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), HStringReference(L"true").Get(), &compareTrue));
+
+        HString valueOn;
+        THROW_IF_FAILED(adaptiveInputToggle->get_ValueOn(valueOn.GetAddressOf()));
+
+        INT32 compareValueOn;
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), valueOn.Get(), &compareValueOn));
+
+        bool isChecked = false;
+        if (compareTrue == 0 || compareValueOn == 0)
+        {
+            isChecked = true;
+        }
+
+        ComPtr<IPropertyValueStatics> propertyValueStatics;
+        ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
+        
+        ComPtr<IPropertyValue> propertyValue;
+        propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
+
+        ComPtr<ABI::Windows::Foundation::IReference<bool>> boolProperty;
+        propertyValue.As(&boolProperty);
+
+        ComPtr<IToggleButton> toggleButton;
+        THROW_IF_FAILED(checkBox.As(&toggleButton));
+        THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
+
+        THROW_IF_FAILED(checkBox.CopyTo(inputToggleControl));
     }
 }}

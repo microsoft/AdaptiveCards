@@ -18,6 +18,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FactSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputText.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputToggle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\pch.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputText.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputToggle.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">
