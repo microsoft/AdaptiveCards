@@ -331,7 +331,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     };
 
     _Use_decl_annotations_
-        template<typename T>
+    template<typename T>
     void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri, T* uiElement)
     {
         if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
