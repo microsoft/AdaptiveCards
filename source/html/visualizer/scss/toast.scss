@@ -7,10 +7,10 @@
     $font-weight: 500, 
     $border: 2px solid transparent,
     $min-width: null,
-    $background-color: #464646,
+    $background-color: rgba(255, 255, 255, 0.2),
     $hover-background-color: null,
-    $hover-border: 2px solid #A9A9A9,
-    $active-background-color: #828282
+    $hover-border: 2px solid rgba(255, 255, 255, 0.6),
+    $active-background-color: rgba(255, 255, 255, 0.4)
     );
 
 .ac-linkButton {
@@ -18,9 +18,10 @@
 }
 
 @include base-input(
-    $border-color: #797979,
-    $border-width: 2px,
+    $color: white,
+    $border: 2px solid #797979,
     $hover-border: 2px solid #A5A5A5,
+    $background-color: #0C0C0C,
     $hover-background-color: #0C0C0C
     );
 

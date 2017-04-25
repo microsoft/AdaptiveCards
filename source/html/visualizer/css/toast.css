@@ -25,7 +25,7 @@
   text-align: center;
   vertical-align: middle;
   cursor: default;
-  background-color: #464646;
+  background-color: rgba(255, 255, 255, 0.2);
   color: white;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -34,19 +34,20 @@
 }
 
 .ac-pushButton:hover, .ac-linkButton:hover {
-  border: 2px solid #A9A9A9;
+  border: 2px solid rgba(255, 255, 255, 0.6);
 }
 
 .ac-pushButton:active, .ac-linkButton:active {
-  background-color: #828282;
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
 .ac-input {
   font-family: "Segoe UI", sans-serif;
+  font-size: 14px;
+  color: white;
 }
 
 .ac-input.ac-textInput {
-  font-size: 14px;
   height: 30px;
   resize: none;
 }
@@ -55,14 +56,13 @@
   height: 72px;
 }
 
-.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.multichoiceInput {
-  border-color: #797979;
-  border-width: 2px;
-  border-style: solid;
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
+  border: 2px solid #797979;
   padding: 4px 8px 4px 8px;
+  background-color: #0C0C0C;
 }
 
-.ac-input.ac-textInput:hover, .ac-input.ac-numberInput:hover, .ac-input.ac-dateInput:hover, .ac-input.ac-timeInput:hover, .ac-input.multichoiceInput:hover {
+.ac-input.ac-textInput:hover, .ac-input.ac-numberInput:hover, .ac-input.ac-dateInput:hover, .ac-input.ac-timeInput:hover, .ac-input.ac-multichoiceInput:hover {
   border: 2px solid #A5A5A5;
   background-color: #0C0C0C;
 }

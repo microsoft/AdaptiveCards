@@ -140,18 +140,21 @@ $font-family: 'Segoe UI', sans-serif;
 }
 
 @mixin base-input(
+    $font-size: 14px,
     $padding: 4px 8px 4px 8px,
-    $border-color: #EAEAEA,
-    $border-width: 1px,
+    $color: black,
+    $border: 1px solid #DDDDDD,
     $hover-border: null,
+    $background-color: null,
     $hover-background-color: null
     ) {
 
     .ac-input {
         font-family: $font-family;
+        font-size: $font-size;
+        color: $color;
 
         &.ac-textInput {
-            font-size: 14px;
             height: 30px;
             resize: none;
         }
@@ -160,11 +163,10 @@ $font-family: 'Segoe UI', sans-serif;
             height: 72px;
         }
 
-        &.ac-textInput, &.ac-numberInput, &.ac-dateInput, &.ac-timeInput, &.multichoiceInput {
-            border-color: $border-color;
-            border-width: $border-width;
-            border-style: solid;
+        &.ac-textInput, &.ac-numberInput, &.ac-dateInput, &.ac-timeInput, &.ac-multichoiceInput {
+            border: $border;
             padding: $padding;
+            background-color: $background-color;
 
             &:hover {
                 border: $hover-border;

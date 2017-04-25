@@ -95,6 +95,17 @@
 						"id": "dueDate",
 						"title": "Select due date"
 					}
+				],
+				"actions": [
+				    {
+				        "type": "Action.Http",
+				        "title": "OK",
+				        "url": "http://xyz.com",
+                        "headers": {
+							"content-type": "application/json"
+						},
+						"body": "{ 'comment' : '{{comment.value}}' }"
+				    }
 				]
 			}
 		},
