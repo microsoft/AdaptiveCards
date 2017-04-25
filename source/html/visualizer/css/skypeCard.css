@@ -1,3 +1,16 @@
+.image.selectable {
+  cursor: pointer;
+}
+
+.skypeContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
 .container.selectable {
   padding: 5px;
 }
@@ -10,56 +23,8 @@
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-.image.selectable {
-  cursor: pointer;
-}
-
-.image.person {
-  border-radius: 50%;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-}
-
-.factNameContainer {
-  border-width: 0;
-  padding: 0;
-  border-style: none;
-  min-width: 100px;
-  vertical-align: top;
-  white-space: nowrap;
-}
-
-.factValueContainer {
-  border-width: 0;
-  padding: 0;
-  border-style: none;
-  vertical-align: top;
-  padding-left: 10px;
-}
-
-.skypeContainer {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-}
-
-/*
-.rootContainer {
-    width: 300px;
-    border-radius: 5px;
-    background: rgba(234, 234, 234, 0.68);
-}
-
-.showCardActionContainer {
-    background: rgba(234, 234, 234, 0.68);    
-    padding: 10px;
-}
-*/
 .pushButton, .linkButton {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   font-size: 15px;
   font-weight: 400;
   overflow: hidden;
@@ -99,7 +64,7 @@
 }
 
 .input.textInput, .input.number, .input.date, .input.time, .input.multichoiceInput {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   border-color: #EAEAEA;
   border-width: 1px;
   border-style: solid;

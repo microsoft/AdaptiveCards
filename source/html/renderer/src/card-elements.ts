@@ -419,7 +419,9 @@ export class FactSet extends CardElement {
                 }
 
                 var tdElement = document.createElement("td");
-                tdElement.className = "factNameContainer";
+                tdElement.style.padding = "0";
+                tdElement.style.minWidth = "100px";
+                tdElement.style.verticalAlign = "top";
 
                 let textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].name;
@@ -433,7 +435,9 @@ export class FactSet extends CardElement {
                 Utils.appendChild(trElement, tdElement);
 
                 tdElement = document.createElement("td");
-                tdElement.className = "factValueContainer";
+                tdElement.style.padding = "0px 0px 0px 10px";
+                tdElement.style.minWidth = "100px";
+                tdElement.style.verticalAlign = "top";
 
                 textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].value;
@@ -560,7 +564,9 @@ export class Image extends CardElement {
             }
 
             if (this.style == "person") {
-                imageElement.classList.add("person");
+                imageElement.style.borderRadius = "50%";
+                imageElement.style.backgroundPosition = "50% 50%";
+                imageElement.style.backgroundRepeat = "no-repeat";
             }
 
             imageElement.src = this.url;
@@ -795,8 +801,9 @@ export class ToggleInput extends Input {
         element.className = "input";
 
         this._checkboxInputElement = document.createElement("input");
-        this._checkboxInputElement.className = "toggleInput";
         this._checkboxInputElement.type = "checkbox";
+        this._checkboxInputElement.style.display = "inline-block";
+        this._checkboxInputElement.style.verticalAlign = "middle";
 
         if (this.defaultValue == this.valueOn) {
             this._checkboxInputElement.checked = true;
@@ -806,7 +813,9 @@ export class ToggleInput extends Input {
         label.text = this.title;
 
         var labelElement = label.render();
-        labelElement.classList.add("toggleLabel");
+        labelElement.style.display = "inline-block";
+        labelElement.style.marginLeft = "6px";
+        labelElement.style.verticalAlign = "middle";
 
         var compoundInput = document.createElement("div");
 
@@ -1567,10 +1576,8 @@ class ActionCollection {
             return null;
         }
 
-        let element = document.createElement("div");
-        element.style.overflow = "hidden";
-
-        let buttonStrip = document.createElement("div");
+        var element = document.createElement("div");
+        var buttonStrip = document.createElement("div");
 
         switch (hostConfiguration.actions.actionAlignment) {
             case "center":
@@ -1591,6 +1598,7 @@ class ActionCollection {
             }
             else {
                 buttonStrip.style.display = "inline-flex";
+                buttonStrip.style.width = "100%";
             }
         }
         else {

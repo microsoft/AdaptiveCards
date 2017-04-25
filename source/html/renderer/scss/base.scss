@@ -1,40 +1,27 @@
-.container.selectable {
-    padding: 5px;
-}
+$font-family: 'Segoe UI', sans-serif;
 
-.container.selectable:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
+@mixin base-container (
+    $selectable-padding: 5px,
+    $selectable-hover-background: rgba(0, 0, 0, 0.1),
+    $selectable-active-background: rgba(0, 0, 0, 0.15)
+) {
+    .container {
+        &.selectable {
+            padding: $selectable-padding;
 
-.container.selectable:active {
-    background-color: rgba(0, 0, 0, 0.15);
+            &:hover {
+                background-color: $selectable-hover-background;
+            }
+
+            &:active {
+                background-color: $selectable-active-background;
+            }
+        }
+    }
 }
 
 .image.selectable {
     cursor: pointer;
-}
-
-.image.person {
-    border-radius: 50%;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-}
-
-.factNameContainer {
-    border-width: 0;
-    padding: 0;
-    border-style: none;
-    min-width: 100px;
-    vertical-align: top;
-    white-space: nowrap;
-}
-
-.factValueContainer {
-    border-width: 0;
-    padding: 0;
-    border-style: none;
-    vertical-align: top;
-    padding-left: 10px;
 }
 
 @mixin base-push-button(
@@ -54,7 +41,7 @@
      ) {
 
     .pushButton {
-        font-family: 'Segoe UI', sans-serif;
+        font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;
         overflow: hidden;
@@ -102,7 +89,7 @@
     ) {
 
     .linkButton {
-        font-family: 'Segoe UI', sans-serif;
+        font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;
         overflow: hidden;
@@ -153,16 +140,14 @@
 }
 
 @mixin base-input(
+    $padding: 4px 8px 4px 8px,
     $border-color: #EAEAEA,
     $border-width: 1px,
-    $margin: 10px 0 0 0,
     $hover-border: null,
     $hover-background-color: null
     ) {
 
     .input {
-        // margin: $margin;
-
         &.textInput {
             font-size: 14px;
             height: 30px;
@@ -174,29 +159,16 @@
         }
 
         &.textInput, &.number, &.date, &.time, &.multichoiceInput {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: $font-family;
             border-color: $border-color;
             border-width: $border-width;
             border-style: solid;
-            padding: 4px 8px 4px 8px;
+            padding: $padding;
 
             &:hover {
                 border: $hover-border;
                 background-color: $hover-background-color;
             }
         }
-    }
-
-    .toggleInput {
-        display: inline-block;
-        vertical-align: middle;
-        margin: 0;
-    }
-
-    .toggleLabel {
-        margin: 0 0 0 6px !important;
-        padding: 0 !important;
-        display: inline-block;
-        vertical-align: middle;
     }
 }

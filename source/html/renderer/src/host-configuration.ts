@@ -219,8 +219,8 @@ function parseActionsConfiguration(obj: any): IActionsConfiguration {
         buttonSpacing: obj["buttonSpacing"],
         stretch: obj["stretch"],
         showCard: parseShowCardActionConfiguration(obj["showCard"]),
-        actionsOrientation: obj["orientation"],
-        actionAlignment: obj["horizontalAlignment"]
+        actionsOrientation: obj["actionsOrientation"],
+        actionAlignment: obj["actionAlignment"]
     } : null;
 }
 
