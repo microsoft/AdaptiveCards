@@ -22,14 +22,14 @@
     $active-background-color: #0078d7
     );
 
-.pushButton {
+.ac-pushButton {
     border: solid 2px #dcdcdc;
     border-radius: 20px;
     line-height: 30px;
 }
 
-.linkButton {
-    @extend .pushButton;
+.ac-linkButton {
+    @extend .ac-pushButton;
 }
 
 @include base-input();

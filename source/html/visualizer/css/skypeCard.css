@@ -1,4 +1,4 @@
-.image.selectable {
+.ac-image.ac-selectable {
   cursor: pointer;
 }
 
@@ -11,19 +11,19 @@
           align-items: flex-start;
 }
 
-.container.selectable {
+.ac-container.ac-selectable {
   padding: 5px;
 }
 
-.container.selectable:hover {
+.ac-container.ac-selectable:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.container.selectable:active {
+.ac-container.ac-selectable:active {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-.pushButton, .linkButton {
+.ac-pushButton, .ac-linkButton {
   font-family: "Segoe UI", sans-serif;
   font-size: 15px;
   font-weight: 400;
@@ -37,51 +37,41 @@
   color: #0078d7;
 }
 
-.pushButton:hover, .linkButton:hover {
+.ac-pushButton:hover, .ac-linkButton:hover {
   background-color: #0078d7;
   color: #fff;
 }
 
-.pushButton:active, .linkButton:active {
+.ac-pushButton:active, .ac-linkButton:active {
   background-color: #0078d7;
   color: #fff;
 }
 
-.pushButton, .linkButton {
+.ac-pushButton, .ac-linkButton {
   border: solid 2px #dcdcdc;
   border-radius: 20px;
   line-height: 30px;
 }
 
-.input.textInput {
+.ac-input {
+  font-family: "Segoe UI", sans-serif;
+}
+
+.ac-input.ac-textInput {
   font-size: 14px;
   height: 30px;
   resize: none;
 }
 
-.input.textInput.multiline {
+.ac-input.ac-textInput.ac-multiline {
   height: 72px;
 }
 
-.input.textInput, .input.number, .input.date, .input.time, .input.multichoiceInput {
-  font-family: "Segoe UI", sans-serif;
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.multichoiceInput {
   border-color: #EAEAEA;
   border-width: 1px;
   border-style: solid;
   padding: 4px 8px 4px 8px;
-}
-
-.toggleInput {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0;
-}
-
-.toggleLabel {
-  margin: 0 0 0 6px !important;
-  padding: 0 !important;
-  display: inline-block;
-  vertical-align: middle;
 }
 
 /*Bot hexagon*/

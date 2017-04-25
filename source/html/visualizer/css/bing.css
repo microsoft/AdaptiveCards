@@ -1,20 +1,20 @@
-.image.selectable {
+.ac-image.ac-selectable {
   cursor: pointer;
 }
 
-.container.selectable {
+.ac-container.ac-selectable {
   padding: 5px;
 }
 
-.container.selectable:hover {
+.ac-container.ac-selectable:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.container.selectable:active {
+.ac-container.ac-selectable:active {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-.pushButton {
+.ac-pushButton {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -34,15 +34,15 @@
           user-select: none;
 }
 
-.pushButton:hover {
+.ac-pushButton:hover {
   background-color: #005A9E;
 }
 
-.pushButton:active {
+.ac-pushButton:active {
   background-color: #004D84;
 }
 
-.linkButton {
+.ac-linkButton {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -59,62 +59,52 @@
           user-select: none;
 }
 
-.linkButton:hover {
+.ac-linkButton:hover {
   color: #005A9E;
 }
 
-.linkButton:active {
+.ac-linkButton:active {
   color: #004D84;
 }
 
-.linkButton.subdued {
+.ac-linkButton.ac-subdued {
   color: #666666;
   font-weight: 500;
 }
 
-.linkButton.subdued:hover {
+.ac-linkButton.ac-subdued:hover {
   color: #005A9E;
 }
 
-.linkButton.subdued:active {
+.ac-linkButton.ac-subdued:active {
   color: #004D84;
 }
 
 /*
     Other styles that can be specified:
-        .linkButton.expanded
-        .linkButton.expanded:hover
-        .linkButton.expanded:active
+        .ac-linkButton.ac-expanded
+        .ac-linkButton.ac-expanded:hover
+        .ac-linkButton.ac-expanded:active
     */
-.input.textInput {
+.ac-input {
+  font-family: "Segoe UI", sans-serif;
+}
+
+.ac-input.ac-textInput {
   font-size: 14px;
   height: 30px;
   resize: none;
 }
 
-.input.textInput.multiline {
+.ac-input.ac-textInput.ac-multiline {
   height: 72px;
 }
 
-.input.textInput, .input.number, .input.date, .input.time, .input.multichoiceInput {
-  font-family: "Segoe UI", sans-serif;
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.multichoiceInput {
   border-color: #EAEAEA;
   border-width: 1px;
   border-style: solid;
   padding: 4px 8px 4px 8px;
-}
-
-.toggleInput {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0;
-}
-
-.toggleLabel {
-  margin: 0 0 0 6px !important;
-  padding: 0 !important;
-  display: inline-block;
-  vertical-align: middle;
 }
 
 /*Bing Glpyh*/

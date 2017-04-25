@@ -13,8 +13,8 @@
     $active-background-color: #828282
     );
 
-.linkButton {
-    @extend .pushButton;
+.ac-linkButton {
+    @extend .ac-pushButton;
 }
 
 @include base-input(
@@ -24,6 +24,7 @@
     $hover-background-color: #0C0C0C
     );
 
+/*
 .toggleInputLabel {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
@@ -33,3 +34,4 @@
     display: inline-block;
     vertical-align: middle;
 }
+*/

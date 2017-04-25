@@ -539,10 +539,10 @@ export class Image extends CardElement {
                     e.cancelBubble = true;
                 }
             }
-            imageElement.classList.add("image");
+            imageElement.classList.add("ac-image");
 
             if (this.selectAction != null) {
-                imageElement.classList.add("selectable");
+                imageElement.classList.add("ac-selectable");
             }
 
             switch (this.size) {
@@ -751,10 +751,10 @@ export class TextInput extends Input {
 
     protected internalRender(): HTMLElement {
         this._textareaElement = document.createElement("textarea");
-        this._textareaElement.className = "input textInput";
+        this._textareaElement.className = "ac-input ac-textInput";
 
         if (this.isMultiline) {
-            this._textareaElement.classList.add("multiline");
+            this._textareaElement.classList.add("ac-multiline");
         }
 
         if (!Utils.isNullOrEmpty(this.placeholder)) {
@@ -798,12 +798,13 @@ export class ToggleInput extends Input {
 
     protected internalRender(): HTMLElement {
         var element = document.createElement("div");
-        element.className = "input";
+        element.className = "ac-input";
 
         this._checkboxInputElement = document.createElement("input");
         this._checkboxInputElement.type = "checkbox";
         this._checkboxInputElement.style.display = "inline-block";
         this._checkboxInputElement.style.verticalAlign = "middle";
+        this._checkboxInputElement.style.margin = "0";
 
         if (this.defaultValue == this.valueOn) {
             this._checkboxInputElement.checked = true;
@@ -865,7 +866,7 @@ export class ChoiceSetInput extends Input {
             if (this.isCompact) {
                 // Render as a combo box
                 this._selectElement = document.createElement("select");
-                this._selectElement.className = "input multichoiceInput";
+                this._selectElement.className = "ac-input ac-multichoiceInput";
 
                 var option = document.createElement("option");
                 option.selected = true;
@@ -888,14 +889,16 @@ export class ChoiceSetInput extends Input {
             else {
                 // Render as a series of radio buttons
                 var element = document.createElement("div");
-                element.className = "input";
+                element.className = "ac-input";
 
                 this._toggleInputs = [];
 
                 for (var i = 0; i < this.choices.length; i++) {
                     var radioInput = document.createElement("input");
-                    radioInput.className = "toggleInput";
                     radioInput.type = "radio";
+                    radioInput.style.margin = "0";
+                    radioInput.style.display = "inline-block";
+                    radioInput.style.verticalAlign = "middle";
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
 
@@ -905,7 +908,9 @@ export class ChoiceSetInput extends Input {
                     label.text = this.choices[i].title;
 
                     var labelElement = label.render();
-                    labelElement.classList.add("toggleLabel");
+                    labelElement.style.display = "inline-block";
+                    labelElement.style.marginLeft = "6px";
+                    labelElement.style.verticalAlign = "middle";
 
                     var compoundInput = document.createElement("div");
 
@@ -927,8 +932,10 @@ export class ChoiceSetInput extends Input {
 
             for (var i = 0; i < this.choices.length; i++) {
                 var checkboxInput = document.createElement("input");
-                checkboxInput.className = "toggleInput";
                 checkboxInput.type = "checkbox";
+                checkboxInput.style.margin = "0";
+                checkboxInput.style.display = "inline-block";
+                checkboxInput.style.verticalAlign = "middle";
                 checkboxInput.value = this.choices[i].value;
 
                 this._toggleInputs.push(checkboxInput);
@@ -937,7 +944,9 @@ export class ChoiceSetInput extends Input {
                 label.text = this.choices[i].title;
 
                 var labelElement = label.render();
-                labelElement.classList.add("toggleLabel");
+                labelElement.style.display = "inline-block";
+                labelElement.style.marginLeft = "6px";
+                labelElement.style.verticalAlign = "middle";
 
                 var compoundInput = document.createElement("div");
 
@@ -1045,7 +1054,7 @@ export class NumberInput extends Input {
     protected internalRender(): HTMLElement {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.type = "number";
-        this._numberInputElement.className = "input number";
+        this._numberInputElement.className = "ac-input ac-numberInput";
         this._numberInputElement.min = this.min;
         this._numberInputElement.max = this.max;
 
@@ -1081,7 +1090,7 @@ export class DateInput extends Input {
     protected internalRender(): HTMLElement {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.type = "date";
-        this._dateInputElement.className = "input date";
+        this._dateInputElement.className = "ac-input ac-dateInput";
 
         return this._dateInputElement;
     }
@@ -1101,7 +1110,7 @@ export class TimeInput extends Input {
     protected internalRender(): HTMLElement {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.type = "time";
-        this._timeInputElement.className = "input time";
+        this._timeInputElement.className = "ac-input ac-timeInput";
 
         return this._timeInputElement;
     }
@@ -1140,18 +1149,16 @@ class ActionButton {
     }
 
     private updateCssStyle() {
-        let cssStyle = this._style == ActionButtonStyle.Link ? "linkButton " : "pushButton ";
+        this._element.className = this._style == ActionButtonStyle.Link ? "ac-linkButton " : "ac-pushButton ";
 
         switch (this._state) {
             case ActionButtonState.Expanded:
-                cssStyle += " expanded";
+                this._element.classList.add("ac-expanded");
                 break;
             case ActionButtonState.Subdued:
-                cssStyle += " subdued";
+                this._element.classList.add("ac-subdued");
                 break;
         }
-
-        this._element.className = cssStyle;
     }
 
     constructor(action: Action, style: ActionButtonStyle) {
@@ -1777,7 +1784,7 @@ export abstract class ContainerBase extends CardElement {
 
     protected internalRender(): HTMLElement {
         this._element = document.createElement("div");
-        this._element.className = "container";
+        this._element.className = "ac-container";
 
         var backgroundColor = this.getBackgroundColor();
 
@@ -1786,7 +1793,7 @@ export abstract class ContainerBase extends CardElement {
         }
 
         if (this.selectAction) {
-            this._element.classList.add("selectable");
+            this._element.classList.add("ac-selectable");
         }
 
         this._element.style.paddingTop = this.padding.top + "px";

@@ -1,20 +1,20 @@
-.image.selectable {
+.ac-image.ac-selectable {
   cursor: pointer;
 }
 
-.container.selectable {
+.ac-container.ac-selectable {
   padding: 5px;
 }
 
-.container.selectable:hover {
+.ac-container.ac-selectable:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.container.selectable:active {
+.ac-container.ac-selectable:active {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-.pushButton, .linkButton {
+.ac-pushButton, .ac-linkButton {
   font-family: "Segoe UI", sans-serif;
   font-size: 15px;
   font-weight: 500;
@@ -33,55 +33,48 @@
           user-select: none;
 }
 
-.pushButton:hover, .linkButton:hover {
+.ac-pushButton:hover, .ac-linkButton:hover {
   border: 2px solid #A9A9A9;
 }
 
-.pushButton:active, .linkButton:active {
+.ac-pushButton:active, .ac-linkButton:active {
   background-color: #828282;
 }
 
-.input.textInput {
+.ac-input {
+  font-family: "Segoe UI", sans-serif;
+}
+
+.ac-input.ac-textInput {
   font-size: 14px;
   height: 30px;
   resize: none;
 }
 
-.input.textInput.multiline {
+.ac-input.ac-textInput.ac-multiline {
   height: 72px;
 }
 
-.input.textInput, .input.number, .input.date, .input.time, .input.multichoiceInput {
-  font-family: "Segoe UI", sans-serif;
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.multichoiceInput {
   border-color: #797979;
   border-width: 2px;
   border-style: solid;
   padding: 4px 8px 4px 8px;
 }
 
-.input.textInput:hover, .input.number:hover, .input.date:hover, .input.time:hover, .input.multichoiceInput:hover {
+.ac-input.ac-textInput:hover, .ac-input.ac-numberInput:hover, .ac-input.ac-dateInput:hover, .ac-input.ac-timeInput:hover, .ac-input.multichoiceInput:hover {
   border: 2px solid #A5A5A5;
   background-color: #0C0C0C;
 }
 
-.toggleInput {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0;
-}
-
-.toggleLabel {
-  margin: 0 0 0 6px !important;
-  padding: 0 !important;
-  display: inline-block;
-  vertical-align: middle;
-}
-
+/*
 .toggleInputLabel {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 14px;
-  margin-top: -3px;
-  margin-left: 6px;
-  display: inline-block;
-  vertical-align: middle;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    margin-top: -3px;
+    margin-left: 6px;
+
+    display: inline-block;
+    vertical-align: middle;
 }
+*/

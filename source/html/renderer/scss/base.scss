@@ -5,8 +5,8 @@ $font-family: 'Segoe UI', sans-serif;
     $selectable-hover-background: rgba(0, 0, 0, 0.1),
     $selectable-active-background: rgba(0, 0, 0, 0.15)
 ) {
-    .container {
-        &.selectable {
+    .ac-container {
+        &.ac-selectable {
             padding: $selectable-padding;
 
             &:hover {
@@ -20,7 +20,7 @@ $font-family: 'Segoe UI', sans-serif;
     }
 }
 
-.image.selectable {
+.ac-image.ac-selectable {
     cursor: pointer;
 }
 
@@ -40,7 +40,7 @@ $font-family: 'Segoe UI', sans-serif;
     $active-background-color: #004D84
      ) {
 
-    .pushButton {
+    .ac-pushButton {
         font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;
@@ -88,7 +88,7 @@ $font-family: 'Segoe UI', sans-serif;
     $vertical-align: null
     ) {
 
-    .linkButton {
+    .ac-linkButton {
         font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;
@@ -116,16 +116,16 @@ $font-family: 'Segoe UI', sans-serif;
         }
         
         @if $subdued {
-            &.subdued {
+            &.ac-subdued {
                 color: #666666;
                 font-weight: 500;
             }
 
-            &.subdued:hover {
+            &.ac-subdued:hover {
                 color: #005A9E;
             }
 
-            &.subdued:active {
+            &.ac-subdued:active {
                 color: #004D84;
             }
         }
@@ -133,9 +133,9 @@ $font-family: 'Segoe UI', sans-serif;
 
     /*
     Other styles that can be specified:
-        .linkButton.expanded
-        .linkButton.expanded:hover
-        .linkButton.expanded:active
+        .ac-linkButton.ac-expanded
+        .ac-linkButton.ac-expanded:hover
+        .ac-linkButton.ac-expanded:active
     */
 }
 
@@ -147,19 +147,20 @@ $font-family: 'Segoe UI', sans-serif;
     $hover-background-color: null
     ) {
 
-    .input {
-        &.textInput {
+    .ac-input {
+        font-family: $font-family;
+
+        &.ac-textInput {
             font-size: 14px;
             height: 30px;
             resize: none;
         }
 
-        &.textInput.multiline {
+        &.ac-textInput.ac-multiline {
             height: 72px;
         }
 
-        &.textInput, &.number, &.date, &.time, &.multichoiceInput {
-            font-family: $font-family;
+        &.ac-textInput, &.ac-numberInput, &.ac-dateInput, &.ac-timeInput, &.multichoiceInput {
             border-color: $border-color;
             border-width: $border-width;
             border-style: solid;
