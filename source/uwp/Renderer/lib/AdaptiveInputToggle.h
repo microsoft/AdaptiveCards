@@ -19,11 +19,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::InputToggle>& sharedInputToggle);
 
         // IAdaptiveInputToggle
-        IFACEMETHODIMP get_Title(_Out_ HSTRING *placeholder);
-        IFACEMETHODIMP put_Title(_In_ HSTRING placeholder);
+        IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
+        IFACEMETHODIMP put_Title(_In_ HSTRING title);
 
-        IFACEMETHODIMP get_Value(_Out_ HSTRING* isMultiline);
-        IFACEMETHODIMP put_Value(_In_ HSTRING isMultiline);
+        IFACEMETHODIMP get_Value(_Out_ HSTRING* value);
+        IFACEMETHODIMP put_Value(_In_ HSTRING value);
 
         IFACEMETHODIMP get_ValueOff(_Out_ HSTRING* value);
         IFACEMETHODIMP put_ValueOff(_In_ HSTRING value);

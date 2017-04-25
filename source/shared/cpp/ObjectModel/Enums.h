@@ -63,6 +63,8 @@ enum class AdaptiveCardSchemaKey
     MaxLength,
     ValueOff,
     ValueOn,
+    Max,
+    Min,
 };
 
 enum class TextSize
@@ -124,6 +126,7 @@ enum class CardElementType
     ImageSet,
     InputText,
     InputToggle,
+    InputDate,
 };
 
 enum class ActionType

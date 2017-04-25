@@ -6,6 +6,7 @@
 #include "ColumnSet.h"
 #include "FactSet.h"
 #include "ImageSet.h"
+#include "InputDate.h"
 #include "InputText.h"
 #include "InputToggle.h"
 
@@ -19,6 +20,7 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
     { CardElementType::Image, Image::Deserialize },
     { CardElementType::ImageSet, ImageSet::Deserialize },
     { CardElementType::TextBlock, TextBlock::Deserialize },
+    { CardElementType::InputDate, InputDate::Deserialize },
     { CardElementType::InputText, InputText::Deserialize },
     { CardElementType::InputToggle, InputToggle::Deserialize },
 };

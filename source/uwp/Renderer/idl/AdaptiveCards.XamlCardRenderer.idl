@@ -19,6 +19,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveColumnSet;
         runtimeclass AdaptiveFact;
         runtimeclass AdaptiveFactSet;
+        runtimeclass AdaptiveInputDate;
         runtimeclass AdaptiveInputText;
         runtimeclass AdaptiveInputToggle;
 
@@ -57,6 +58,7 @@ namespace AdaptiveCards
         interface IAdaptiveColumnSet;
         interface IAdaptiveFact;
         interface IAdaptiveFactSet;
+        interface IAdaptiveInputDate;
         interface IAdaptiveInputText;
         interface IAdaptiveInputToggle;
 
@@ -138,7 +140,8 @@ namespace AdaptiveCards
             ImageSet,
             ActionGroup,
             InputText,
-            InputToggle
+            InputToggle,
+            InputDate,
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -338,6 +341,36 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageSet
         {
             [default] interface IAdaptiveImageSet;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(359e2cc5-9b8d-40bf-bbb2-2d3494d30991),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputDate)
+        ]
+        interface IAdaptiveInputDate : IInspectable
+        {
+            [propget] HRESULT Max([out, retval] HSTRING* value);
+            [propput] HRESULT Max([in] HSTRING value);
+
+            [propget] HRESULT Min([out, retval] HSTRING* value);
+            [propput] HRESULT Min([in] HSTRING value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputDate
+        {
+            [default] interface IAdaptiveInputDate;
             interface IAdaptiveCardElement;
         };
 

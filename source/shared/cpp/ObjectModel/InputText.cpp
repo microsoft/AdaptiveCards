@@ -14,14 +14,14 @@ std::shared_ptr<InputText> InputText::Deserialize(const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::InputText);
 
-    std::shared_ptr<InputText> inputToggle = BaseCardElement::Deserialize<InputText>(json);
+    std::shared_ptr<InputText> inputText = BaseCardElement::Deserialize<InputText>(json);
 
-    inputToggle->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
-    inputToggle->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
-    inputToggle->SetIsMultiline(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiline, false));
-    inputToggle->SetMaxLength(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLength, 0));
+    inputText->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
+    inputText->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
+    inputText->SetIsMultiline(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiline, false));
+    inputText->SetMaxLength(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLength, 0));
 
-    return inputToggle;
+    return inputText;
 }
 
 std::shared_ptr<InputText> InputText::DeserializeFromString(const std::string& jsonString)

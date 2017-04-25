@@ -47,6 +47,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputDate] = std::bind(&XamlBuilder::BuildInputDate, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputToggle] = std::bind(&XamlBuilder::BuildInputToggle, this, std::placeholders::_1, std::placeholders::_2);
 
@@ -895,6 +896,23 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // TODO: 11508861
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
+    }
+
+    void XamlBuilder::BuildInputDate(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputDateControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputDate> adaptiveInputDate;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputDate));
+
+        ComPtr<ICalendarDatePicker> datePicker = XamlHelpers::CreateXamlClass<ICalendarDatePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CalendarDatePicker));
+
+        HString placeHolderText;
+        THROW_IF_FAILED(adaptiveInputDate->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(datePicker->put_PlaceholderText(placeHolderText.Get()));
+
+        THROW_IF_FAILED(datePicker.CopyTo(inputDateControl));
     }
 
     void XamlBuilder::BuildInputText(
