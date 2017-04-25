@@ -123,6 +123,10 @@ export abstract class CardElement {
         this.adjustAlignment(element);
     }
 
+    protected get padding(): HostConfig.ISpacingDefinition {
+        return { top: 0, right: 0, bottom: 0, left: 0 };
+    }
+
     protected abstract internalRender(): HTMLElement;
 
     speak: string;
@@ -187,12 +191,12 @@ export abstract class CardElement {
         return [];
     }
 
-    protected get padding(): HostConfig.ISpacingDefinition {
-        return { top: 0, right: 0, bottom: 0, left: 0 };
-    }
-
     get isInteractive(): boolean {
         return false;
+    }
+
+    get isStandalone(): boolean {
+        return true;
     }
 
     get parent(): CardElement {
@@ -235,7 +239,12 @@ export class TextBlock extends CardElement {
                     break;
             }
 
+            // Looks like 1.33 is the magic number to compute line-height
+            // from font size.
+            var computedLineHeight = fontSize * 1.33;
+
             element.style.fontSize = fontSize + "px";
+            element.style.lineHeight = computedLineHeight + "px";
 
             var actualTextColor = this.color ? this.color : hostConfiguration.textBlock.color;
             var colorDefinition: HostConfig.IColorDefinition;
@@ -308,6 +317,11 @@ export class TextBlock extends CardElement {
 
             if (this.wrap) {
                 element.style.wordWrap = "break-word";
+
+                if (this.maxLines > 0) {
+                    element.style.maxHeight = (computedLineHeight * this.maxLines) + "px";
+                    element.style.overflow = "hidden";
+                }
             }
             else {
                 element.style.whiteSpace = "nowrap";
@@ -318,6 +332,18 @@ export class TextBlock extends CardElement {
         else {
             return null;
         }
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.text = json["text"];
+        this.size = Utils.getValueOrDefault<Enums.TextSize>(json["size"], "normal");
+        this.weight = Utils.getValueOrDefault<Enums.TextWeight>(json["weight"], "normal");
+        this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], hostConfiguration.textBlock.color);
+        this.isSubtle = json["isSubtle"];
+        this.wrap = json["wrap"] === undefined ? true : json["wrap"];
+        this.maxLines = json["maxLines"];        
     }
 
     getJsonTypeName(): string {
@@ -337,18 +363,6 @@ export class TextBlock extends CardElement {
             default:
                 return hostConfiguration.textBlock.separations.normal;
         }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.text = json["text"];
-        this.size = Utils.getValueOrDefault<Enums.TextSize>(json["size"], "normal");
-        this.weight = Utils.getValueOrDefault<Enums.TextWeight>(json["weight"], "normal");
-        this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], hostConfiguration.textBlock.color);
-        this.isSubtle = json["isSubtle"];
-        this.wrap = json["wrap"] === undefined ? true : json["wrap"];
-        this.maxLines = json["maxLines"];        
     }
 
     renderSpeech(): string {
@@ -1807,10 +1821,6 @@ export abstract class ContainerBase extends CardElement {
 
     protected _element: HTMLDivElement;
 
-    protected get hideOverflow() {
-        return false;
-    }
-
     protected get padding(): HostConfig.ISpacingDefinition {
         return { left: 0, top: 0, right: 0, bottom: 0};
     }
@@ -1887,9 +1897,14 @@ export abstract class ContainerBase extends CardElement {
 
     addItem(item: CardElement) {
         if (!item.parent) {
-            this._items.push(item);
+            if (item.isStandalone) {
+                this._items.push(item);
 
-            invokeSetParent(item, this);
+                invokeSetParent(item, this);
+            }
+            else {
+                throw new Error("Elements of type " + item.getJsonTypeName() + " cannot be used as standalone elements.");
+            }
         }
         else {
             throw new Error("The element already belongs to another container.")
@@ -2012,6 +2027,10 @@ export class Column extends Container {
         if (sizeValue) {
             this.size = sizeValue;
         }
+    }
+
+    get isStandalone(): boolean {
+        return false;
     }
 }
 
@@ -2236,6 +2255,10 @@ export abstract class ContainerWithActions extends ContainerBase {
 
     getAllInputs(): Array<Input> {
         return super.getAllInputs().concat(this._actionCollection.getAllInputs());
+    }
+
+    get isStandalone(): boolean {
+        return false;
     }
 }
 
