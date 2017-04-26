@@ -65,6 +65,11 @@ enum class AdaptiveCardSchemaKey
     ValueOn,
     Max,
     Min,
+    Choices,
+    IsSelected,
+    Style,
+    IsMultiSelect,
+    IsRequired,
 };
 
 enum class TextSize
@@ -129,6 +134,7 @@ enum class CardElementType
     InputText,
     InputTime,
     InputToggle,
+    InputChoiceSet,
 };
 
 enum class ActionType
@@ -137,6 +143,12 @@ enum class ActionType
     Submit,
     Http,
     OpenUrl
+};
+
+enum class ChoiceSetStyle
+{
+    Compact = 0,
+    Expanded
 };
 
 enum class SeparationStyle {
@@ -190,4 +202,8 @@ ActionsOrientation ActionsOrientationFromString(const std::string& style);
 
 const std::string ActionModeToString(ActionMode style);
 ActionMode ActionModeFromString(const std::string& style);
+
+const std::string ChoiceSetStyleToString(ChoiceSetStyle type);
+ChoiceSetStyle ChoiceSetStyleFromString(const std::string& type);
+
 }

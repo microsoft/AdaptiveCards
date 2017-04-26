@@ -31,7 +31,7 @@
         },
         {
             "type": "TextBlock",
-            "text": "What color do you want? *(isMultiSelect:false, style:compact)*"
+            "text": "What color do you want? *(isMultiSelect:false, style:expanded)*"
         },
         {
             "type": "Input.ChoiceSet",
@@ -91,7 +91,7 @@
             "id": "myColor3",
             "isMultiSelect": true,
             "value": "1",
-            "style": "compact",
+            "style": "expanded",
             "choices": [
                 {
                     "title": "Red",

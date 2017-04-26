@@ -39,6 +39,11 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "valueOn", AdaptiveCardSchemaKey::ValueOn },
     { "max", AdaptiveCardSchemaKey::Max },
     { "min", AdaptiveCardSchemaKey::Min },
+    { "choices", AdaptiveCardSchemaKey::Choices },
+    { "isSelected", AdaptiveCardSchemaKey::IsSelected },
+    { "style", AdaptiveCardSchemaKey::Style },
+    { "isMultiSelect", AdaptiveCardSchemaKey::IsMultiSelect },
+    { "isRequired", AdaptiveCardSchemaKey::IsRequired },
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> AdaptiveCardSchemaKeyEnumToName =
@@ -78,6 +83,11 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::ValueOn, "valueOn" },
     { AdaptiveCardSchemaKey::Max, "max" },
     { AdaptiveCardSchemaKey::Min, "min" },
+    { AdaptiveCardSchemaKey::Choices, "choices" },
+    { AdaptiveCardSchemaKey::IsSelected, "isSelected"},
+    { AdaptiveCardSchemaKey::Style, "style"},
+    { AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect" },
+    { AdaptiveCardSchemaKey::IsRequired, "isRequired" },
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
@@ -91,6 +101,7 @@ static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, Cas
     { "Fact", CardElementType::Fact },
     { "ImageSet", CardElementType::ImageSet },
     { "Container", CardElementType::Container },
+    { "Input.ChoiceSet", CardElementType::InputChoiceSet },
     { "Input.Date", CardElementType::InputDate },
     { "Input.Text", CardElementType::InputText },
     { "Input.Time", CardElementType::InputTime},
@@ -108,6 +119,7 @@ static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTyp
     { CardElementType::Fact, "Fact" },
     { CardElementType::ImageSet, "ImageSet" },
     { CardElementType::Container, "Container" },
+    { CardElementType::InputChoiceSet, "Input.ChoiceSet" },
     { CardElementType::InputDate, "Input.Date" },
     { CardElementType::InputText, "Input.Text" },
     { CardElementType::InputTime, "Input.Time" },
@@ -263,6 +275,18 @@ static std::unordered_map<ActionMode, std::string, EnumHash> ActionModeEnumToNam
 {
     { ActionMode::Inline, "Inline" },
     { ActionMode::Popup, "Popup" }
+};
+
+static std::unordered_map<std::string, ChoiceSetStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ChoiceSetStyleNameToEnum =
+{
+    { "Compact", ChoiceSetStyle::Compact },
+    { "Expanded", ChoiceSetStyle::Expanded }
+};
+
+static std::unordered_map<ChoiceSetStyle, std::string, EnumHash> ChoiceSetStyleEnumToName =
+{
+    { ChoiceSetStyle::Compact, "Compact" },
+    { ChoiceSetStyle::Expanded, "Expanded" }
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
@@ -492,5 +516,21 @@ ActionMode ActionModeFromString(const std::string& mode)
         throw std::out_of_range("Invalid ActionMode: " + mode);
     }
     return ActionModeNameToEnum[mode];
+}
+const std::string ChoiceSetStyleToString(ChoiceSetStyle style)
+{
+    if (ChoiceSetStyleEnumToName.find(style) == ChoiceSetStyleEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ChoiceSetStyle");
+    }
+    return ChoiceSetStyleEnumToName[style];
+}
+ChoiceSetStyle ChoiceSetStyleFromString(const std::string & style)
+{
+    if (ChoiceSetStyleNameToEnum.find(style) == ChoiceSetStyleNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ChoiceSetStyle: " + style);
+    }
+    return ChoiceSetStyleNameToEnum[style];
 }
 }

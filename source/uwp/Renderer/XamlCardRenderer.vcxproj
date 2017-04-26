@@ -118,6 +118,8 @@
     <ClInclude Include="lib\AdaptiveBoundaryOptions.h" />
     <ClInclude Include="lib\AdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveCardOptions.h" />
+    <ClInclude Include="lib\AdaptiveInputChoice.h" />
+    <ClInclude Include="lib\AdaptiveInputChoiceSet.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputOptions.h" />
     <ClInclude Include="lib\AdaptiveColorOption.h" />
     <ClInclude Include="lib\AdaptiveColorOptions.h" />
@@ -166,6 +168,8 @@
     <ClCompile Include="lib\AdaptiveBoundaryOptions.cpp" />
     <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveCardOptions.cpp" />
+    <ClCompile Include="lib\AdaptiveInputChoice.cpp" />
+    <ClCompile Include="lib\AdaptiveInputChoiceSet.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInputOptions.cpp" />
     <ClCompile Include="lib\AdaptiveColorOption.cpp" />
     <ClCompile Include="lib\AdaptiveColorOptions.cpp" />
