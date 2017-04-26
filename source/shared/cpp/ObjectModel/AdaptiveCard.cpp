@@ -8,6 +8,7 @@
 #include "ImageSet.h"
 #include "InputDate.h"
 #include "InputText.h"
+#include "InputTime.h"
 #include "InputToggle.h"
 
 using namespace AdaptiveCards;
@@ -22,6 +23,7 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
     { CardElementType::TextBlock, TextBlock::Deserialize },
     { CardElementType::InputDate, InputDate::Deserialize },
     { CardElementType::InputText, InputText::Deserialize },
+    { CardElementType::InputTime, InputTime::Deserialize },
     { CardElementType::InputToggle, InputToggle::Deserialize },
 };
 

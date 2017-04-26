@@ -124,9 +124,10 @@ enum class CardElementType
     Fact,
     ActionGroup,
     ImageSet,
-    InputText,
-    InputToggle,
     InputDate,
+    InputText,
+    InputTime,
+    InputToggle,
 };
 
 enum class ActionType

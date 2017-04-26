@@ -93,6 +93,7 @@ static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, Cas
     { "Container", CardElementType::Container },
     { "Input.Date", CardElementType::InputDate },
     { "Input.Text", CardElementType::InputText },
+    { "Input.Time", CardElementType::InputTime},
     { "Input.Toggle", CardElementType::InputToggle },
 };
 
@@ -109,6 +110,7 @@ static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTyp
     { CardElementType::Container, "Container" },
     { CardElementType::InputDate, "Input.Date" },
     { CardElementType::InputText, "Input.Text" },
+    { CardElementType::InputTime, "Input.Time" },
     { CardElementType::InputToggle, "Input.Toggle" },
 };
 

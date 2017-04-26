@@ -49,6 +49,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputDate] = std::bind(&XamlBuilder::BuildInputDate, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputTime] = std::bind(&XamlBuilder::BuildInputTime, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputToggle] = std::bind(&XamlBuilder::BuildInputToggle, this, std::placeholders::_1, std::placeholders::_2);
 
         m_hostOptions = Make<AdaptiveHostOptions>();
@@ -912,6 +913,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveInputDate->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(datePicker->put_PlaceholderText(placeHolderText.Get()));
 
+        // TODO: Handle parsing dates for min/max and value
+
+        // TODO: 11508861
         THROW_IF_FAILED(datePicker.CopyTo(inputDateControl));
     }
 
@@ -944,7 +948,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveInputText->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
 
+        // TODO: 11508861
         THROW_IF_FAILED(textBox.CopyTo(inputTextControl));
+    }
+
+    void XamlBuilder::BuildInputTime(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputTimeControl)
+    {
+        ComPtr<ITimePicker> timePicker = XamlHelpers::CreateXamlClass<ITimePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TimePicker));
+
+        // TODO: Handle placeholder text and parsing times for min/max and value
+
+        // TODO: 11508861
+        THROW_IF_FAILED(timePicker.CopyTo(inputTimeControl));
     }
 
     void XamlBuilder::BuildInputToggle(
@@ -997,6 +1014,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(checkBox.As(&toggleButton));
         THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
 
+        // TODO: 11508861
         THROW_IF_FAILED(checkBox.CopyTo(inputToggleControl));
     }
 }}

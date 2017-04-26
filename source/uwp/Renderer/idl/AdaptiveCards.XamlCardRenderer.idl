@@ -21,6 +21,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveFactSet;
         runtimeclass AdaptiveInputDate;
         runtimeclass AdaptiveInputText;
+        runtimeclass AdaptiveInputTime;
         runtimeclass AdaptiveInputToggle;
 
         runtimeclass AdaptiveBoundaryOptions;
@@ -60,6 +61,7 @@ namespace AdaptiveCards
         interface IAdaptiveFactSet;
         interface IAdaptiveInputDate;
         interface IAdaptiveInputText;
+        interface IAdaptiveInputTime;
         interface IAdaptiveInputToggle;
 
         interface IAdaptiveBoundaryOptions;
@@ -139,9 +141,10 @@ namespace AdaptiveCards
             Fact,
             ImageSet,
             ActionGroup,
-            InputText,
-            InputToggle,
             InputDate,
+            InputText,
+            InputTime,
+            InputToggle,
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -401,6 +404,36 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputText
         {
             [default] interface IAdaptiveInputText;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(1ee90aff-93e8-4292-ac49-39d4c3289cd9),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputTime)
+        ]
+        interface IAdaptiveInputTime : IInspectable
+        {
+            [propget] HRESULT Max([out, retval] HSTRING* value);
+            [propput] HRESULT Max([in] HSTRING value);
+
+            [propget] HRESULT Min([out, retval] HSTRING* value);
+            [propput] HRESULT Min([in] HSTRING value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputTime
+        {
+            [default] interface IAdaptiveInputTime;
             interface IAdaptiveCardElement;
         };
 
