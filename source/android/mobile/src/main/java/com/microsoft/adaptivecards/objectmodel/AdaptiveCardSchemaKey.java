@@ -32,6 +32,10 @@ public final class AdaptiveCardSchemaKey {
   public final static AdaptiveCardSchemaKey Items = new AdaptiveCardSchemaKey("Items");
   public final static AdaptiveCardSchemaKey Columns = new AdaptiveCardSchemaKey("Columns");
   public final static AdaptiveCardSchemaKey Size = new AdaptiveCardSchemaKey("Size");
+  public final static AdaptiveCardSchemaKey Facts = new AdaptiveCardSchemaKey("Facts");
+  public final static AdaptiveCardSchemaKey Title = new AdaptiveCardSchemaKey("Title");
+  public final static AdaptiveCardSchemaKey Value = new AdaptiveCardSchemaKey("Value");
+  public final static AdaptiveCardSchemaKey Images = new AdaptiveCardSchemaKey("Images");
 
   public final int swigValue() {
     return swigValue;
@@ -67,7 +71,7 @@ public final class AdaptiveCardSchemaKey {
     swigNext = this.swigValue+1;
   }
 
-  private static AdaptiveCardSchemaKey[] swigValues = { Type, Body, Version, MinVersion, FallbackText, BaseCardElement, Separation, Speak, Url, ImageStyle, ImageSize, AltText, HorizontalAlignment, Text, TextSize, TextWeight, TextColor, IsSubtle, Wrap, MaxLines, Items, Columns, Size };
+  private static AdaptiveCardSchemaKey[] swigValues = { Type, Body, Version, MinVersion, FallbackText, BaseCardElement, Separation, Speak, Url, ImageStyle, ImageSize, AltText, HorizontalAlignment, Text, TextSize, TextWeight, TextColor, IsSubtle, Wrap, MaxLines, Items, Columns, Size, Facts, Title, Value, Images };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

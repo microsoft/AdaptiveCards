@@ -89,4 +89,9 @@ public class AdaptiveCard {
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
+  public static AdaptiveCard DeserializeFromString(String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromString(jsonString);
+    return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
+  }
+
 }
