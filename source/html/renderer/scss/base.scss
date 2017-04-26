@@ -1,40 +1,27 @@
-.container.selectable {
-    padding: 5px;
+$font-family: 'Segoe UI', sans-serif;
+
+@mixin base-container (
+    $selectable-padding: 5px,
+    $selectable-hover-background: rgba(0, 0, 0, 0.1),
+    $selectable-active-background: rgba(0, 0, 0, 0.15)
+) {
+    .ac-container {
+        &.ac-selectable {
+            padding: $selectable-padding;
+
+            &:hover {
+                background-color: $selectable-hover-background;
+            }
+
+            &:active {
+                background-color: $selectable-active-background;
+            }
+        }
+    }
 }
 
-.container.selectable:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.container.selectable:active {
-    background-color: rgba(0, 0, 0, 0.15);
-}
-
-.image.selectable {
+.ac-image.ac-selectable {
     cursor: pointer;
-}
-
-.image.person {
-    border-radius: 50%;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-}
-
-.factNameContainer {
-    border-width: 0;
-    padding: 0;
-    border-style: none;
-    min-width: 100px;
-    vertical-align: top;
-    white-space: nowrap;
-}
-
-.factValueContainer {
-    border-width: 0;
-    padding: 0;
-    border-style: none;
-    vertical-align: top;
-    padding-left: 10px;
 }
 
 @mixin base-push-button(
@@ -53,8 +40,8 @@
     $active-background-color: #004D84
      ) {
 
-    .pushButton {
-        font-family: 'Segoe UI', sans-serif;
+    .ac-pushButton {
+        font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;
         overflow: hidden;
@@ -101,8 +88,8 @@
     $vertical-align: null
     ) {
 
-    .linkButton {
-        font-family: 'Segoe UI', sans-serif;
+    .ac-linkButton {
+        font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;
         overflow: hidden;
@@ -129,16 +116,16 @@
         }
         
         @if $subdued {
-            &.subdued {
+            &.ac-subdued {
                 color: #666666;
                 font-weight: 500;
             }
 
-            &.subdued:hover {
+            &.ac-subdued:hover {
                 color: #005A9E;
             }
 
-            &.subdued:active {
+            &.ac-subdued:active {
                 color: #004D84;
             }
         }
@@ -146,57 +133,45 @@
 
     /*
     Other styles that can be specified:
-        .linkButton.expanded
-        .linkButton.expanded:hover
-        .linkButton.expanded:active
+        .ac-linkButton.ac-expanded
+        .ac-linkButton.ac-expanded:hover
+        .ac-linkButton.ac-expanded:active
     */
 }
 
 @mixin base-input(
-    $border-color: #EAEAEA,
-    $border-width: 1px,
-    $margin: 10px 0 0 0,
+    $font-size: 14px,
+    $padding: 4px 8px 4px 8px,
+    $color: black,
+    $border: 1px solid #DDDDDD,
     $hover-border: null,
+    $background-color: null,
     $hover-background-color: null
     ) {
 
-    .input {
-        // margin: $margin;
+    .ac-input {
+        font-family: $font-family;
+        font-size: $font-size;
+        color: $color;
 
-        &.textInput {
-            font-size: 14px;
+        &.ac-textInput {
             height: 30px;
             resize: none;
         }
 
-        &.textInput.multiline {
+        &.ac-textInput.ac-multiline {
             height: 72px;
         }
 
-        &.textInput, &.number, &.date, &.time, &.multichoiceInput {
-            font-family: 'Segoe UI', sans-serif;
-            border-color: $border-color;
-            border-width: $border-width;
-            border-style: solid;
-            padding: 4px 8px 4px 8px;
+        &.ac-textInput, &.ac-numberInput, &.ac-dateInput, &.ac-timeInput, &.ac-multichoiceInput {
+            border: $border;
+            padding: $padding;
+            background-color: $background-color;
 
             &:hover {
                 border: $hover-border;
                 background-color: $hover-background-color;
             }
         }
-    }
-
-    .toggleInput {
-        display: inline-block;
-        vertical-align: middle;
-        margin: 0;
-    }
-
-    .toggleLabel {
-        margin: 0 0 0 6px !important;
-        padding: 0 !important;
-        display: inline-block;
-        vertical-align: middle;
     }
 }

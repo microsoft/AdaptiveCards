@@ -10,6 +10,8 @@
     margin-bottom: 10px;
 }
 
+@include base-container();
+
 @include base-push-button(
     $background-color: #464646,
     $border: 2px solid transparent,
@@ -21,8 +23,8 @@
     $min-width: null
     );
 
-.linkButton {
-    @extend .pushButton;
+.ac-linkButton {
+    @extend .ac-pushButton;
 }
 
 @include base-input();

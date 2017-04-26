@@ -5,18 +5,7 @@
     align-items: flex-start;
 }
 
-/*
-.rootContainer {
-    width: 300px;
-    border-radius: 5px;
-    background: rgba(234, 234, 234, 0.68);
-}
-
-.showCardActionContainer {
-    background: rgba(234, 234, 234, 0.68);    
-    padding: 10px;
-}
-*/
+@include base-container();
 
 @include base-push-button(
     $font-size: 15px, 
@@ -33,14 +22,14 @@
     $active-background-color: #0078d7
     );
 
-.pushButton {
+.ac-pushButton {
     border: solid 2px #dcdcdc;
     border-radius: 20px;
     line-height: 30px;
 }
 
-.linkButton {
-    @extend .pushButton;
+.ac-linkButton {
+    @extend .ac-pushButton;
 }
 
 @include base-input();

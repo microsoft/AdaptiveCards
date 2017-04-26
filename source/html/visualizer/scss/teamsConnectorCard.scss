@@ -1,5 +1,7 @@
 @import 'node_modules/adaptive-cards/scss/base';
 
+@include base-container();
+
 @include base-push-button();
 
 @include base-link-button(
@@ -15,7 +17,7 @@
     $subdued: false
     );
 
-.linkButton {
+.ac-linkButton {
     min-width: 80px; 
     text-align: center;
     vertical-align: middle;    
