@@ -48,7 +48,7 @@ struct TextOptions
     bool isSubtle = false;
 };
 
-struct SeparationOption
+struct SeparationOptions
 {
     int spacing = 10;
     int lineThickness = 0;
@@ -63,38 +63,38 @@ struct ImageSizeOptions
 
 struct TextBlockOptions
 {
-    SeparationOption small;
-    SeparationOption normal;
-    SeparationOption medium;
-    SeparationOption large;
-    SeparationOption extraLarge;
+    SeparationOptions small;
+    SeparationOptions normal;
+    SeparationOptions medium;
+    SeparationOptions large;
+    SeparationOptions extraLarge;
 };
 
 struct ImageSetOptions
 {
     ImageSize imageSize = ImageSize::Medium;
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct ColumnOptions
 {
-    SeparationOption defaultSeparation;
-    SeparationOption strong = { 20, 1, "#FF707070" };
+    SeparationOptions defaultSeparation;
+    SeparationOptions strong = { 20, 1, "#FF707070" };
 };
 
 struct ContainerOptions
 {
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct ColumnSetOptions
 {
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct ImageOptions
 {
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct AdaptiveCardOptions
@@ -113,7 +113,7 @@ struct FactSetOptions
     TextOptions title = { TextWeight::Bolder };
     TextOptions value;
     int spacing = 20;
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct ShowCardOptions
@@ -140,32 +140,32 @@ struct ActionOptions
 
 struct DateInputOptions
 {
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct TimeInputOptions
 {
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct NumberInputOptions
 {
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct ToggleInputOptions
 {
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct TextInputOptions
 {
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct ChoiceSetOptions
 {
-    SeparationOption separation;
+    SeparationOptions separation;
 };
 
 struct HostOptions
@@ -176,7 +176,7 @@ struct HostOptions
     ColorOptions colors;
     ImageSizeOptions imageSizes;
     int maxActions = 5;
-    SeparationOption strongSeparation = { 20, 1, "#FF707070" };
+    SeparationOptions strongSeparation = { 20, 1, "#FF707070" };
     AdaptiveCardOptions adaptiveCard;
     ImageSetOptions imageSet;
     ImageOptions image;
