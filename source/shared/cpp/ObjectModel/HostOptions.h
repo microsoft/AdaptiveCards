@@ -31,7 +31,7 @@ struct ColorOption
 
 struct ColorOptions
 {
-    ColorOption default = { "#FF000000" };
+    ColorOption defaultColor = { "#FF000000" };
     ColorOption accent = { "#FF0000FF" };
     ColorOption dark = { "#FF101010" };
     ColorOption light = { "#FFFFFFFF" };
@@ -78,7 +78,7 @@ struct ImageSetOptions
 
 struct ColumnOptions
 {
-    SeparationOption default;
+    SeparationOption defaultSeparation;
     SeparationOption strong = { 20, 1, "#FF707070" };
 };
 
