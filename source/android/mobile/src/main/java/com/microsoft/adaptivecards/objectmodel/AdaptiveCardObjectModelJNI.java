@@ -23,6 +23,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long EnableSharedFromThisContainer_shared_from_this(long jarg1, EnableSharedFromThisContainer jarg1_);
   public final static native long new_EnumHash();
   public final static native void delete_EnumHash(long jarg1);
+  public final static native long new_CaseInsensitiveEqualTo();
+  public final static native void delete_CaseInsensitiveEqualTo(long jarg1);
+  public final static native long new_CaseInsensitiveHash();
+  public final static native void delete_CaseInsensitiveHash(long jarg1);
   public final static native int AdaptiveCardSchemaKey_Type_get();
   public final static native int TextSize_Small_get();
   public final static native int TextWeight_Lighter_get();
@@ -63,11 +67,13 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String Container_Serialize(long jarg1, Container jarg1_);
   public final static native long Container_GetItems__SWIG_0(long jarg1, Container jarg1_);
   public final static native long Container_Deserialize(long jarg1);
+  public final static native long Container_DeserializeFromString(String jarg1);
   public final static native long Container_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Container(long jarg1);
   public final static native long new_TextBlock__SWIG_0();
   public final static native long new_TextBlock__SWIG_1(int jarg1, String jarg2, String jarg3, int jarg4, int jarg5, int jarg6, boolean jarg7, boolean jarg8, int jarg9, int jarg10);
   public final static native long TextBlock_Deserialize(long jarg1);
+  public final static native long TextBlock_DeserializeFromString(String jarg1);
   public final static native String TextBlock_Serialize(long jarg1, TextBlock jarg1_);
   public final static native String TextBlock_GetText(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetText(long jarg1, TextBlock jarg1_, String jarg2);
@@ -100,6 +106,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int AdaptiveCard_GetElementType(long jarg1, AdaptiveCard jarg1_);
   public final static native long AdaptiveCard_DeserializeFromFile(String jarg1);
   public final static native long AdaptiveCard_Deserialize(long jarg1);
+  public final static native long AdaptiveCard_DeserializeFromString(String jarg1);
   public final static native void delete_AdaptiveCard(long jarg1);
   public final static native long Container_SWIGSmartPtrUpcast(long jarg1);
   public final static native long TextBlock_SWIGSmartPtrUpcast(long jarg1);

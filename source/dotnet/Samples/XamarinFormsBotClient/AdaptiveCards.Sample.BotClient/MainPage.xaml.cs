@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using Microsoft.Bot.Connector.DirectLine;
 using Newtonsoft.Json.Linq;
 using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Options;
 
 namespace AdaptiveCards.XamarinForms.BotClient
 {

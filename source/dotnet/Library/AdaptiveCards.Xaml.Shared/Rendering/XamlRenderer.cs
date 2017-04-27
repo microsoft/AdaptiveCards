@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Options;
 #if WPF
 using System.Windows.Markup;
 #elif XAMARIN
@@ -84,10 +85,15 @@ namespace AdaptiveCards.Rendering
                     return _resources;
 
 #if WPF
-                using (var styleStream = File.OpenRead(this.StylePath))
+                if (File.Exists(this.StylePath))
                 {
-                    _resources = (ResourceDictionary)XamlReader.Load(styleStream);
+                    using (var styleStream = File.OpenRead(this.StylePath))
+                    {
+                        _resources = (ResourceDictionary)XamlReader.Load(styleStream);
+                    }
                 }
+                else
+                    _resources = new ResourceDictionary();
 #elif XAMARIN
                 // TODO
 #endif

@@ -34,6 +34,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/Fact.cpp
              ../../shared/cpp/ObjectModel/FactSet.cpp
              ../../shared/cpp/ObjectModel/Image.cpp
+             ../../shared/cpp/ObjectModel/ImageSet.cpp
              src/main/cpp/objectmodel_wrap.cpp
              src/main/cpp/native-lib.cpp
              )

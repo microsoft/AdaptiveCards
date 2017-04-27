@@ -82,11 +82,12 @@
     },
     {
       "type": "TextBlock",
-      "text": "What color do you want?"
+      "text": "What color do you want? (compact)"
     },
     {
       "type": "Input.ChoiceSet",
       "style": "compact",
+      "placeholder": "Pick a color",
       "choices": [
         {
           "title": "Red",
@@ -106,10 +107,11 @@
     },
     {
       "type": "TextBlock",
-      "text": "What color do you want?"
+      "text": "What color do you want? (expanded)"
     },
     {
       "type": "Input.ChoiceSet",
+      "style": "expanded",
       "choices": [
         {
           "title": "Red",
@@ -129,7 +131,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "What colors do you want?"
+      "text": "What colors do you want? (multiselect)"
     },
     {
       "type": "Input.ChoiceSet",

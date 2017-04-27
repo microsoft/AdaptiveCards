@@ -1,9 +1,8 @@
 import { HostContainer} from "./host-container";
-import { ConnectorContainer } from "./connector";
 import * as Adaptive from "adaptive-cards";
 import * as Utils from "../utils";
 
-export class OutlookConnectorContainer extends ConnectorContainer {
+export class OutlookConnectorContainer extends HostContainer {
     private _themeColor: string;
 
     constructor(themeColor: string, styleSheet: string) {

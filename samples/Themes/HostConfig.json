@@ -20,17 +20,10 @@
     "large": 180
   },
   "maxActions": 5,
-  "separation": {
-    "default": {
-      "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
-    },
-    "strong": {
-      "spacing": 20,
-      "lineThickness": 1,
-      "lineColor": "#FF707070"
-    }
+  "strongSeparation": {
+    "spacing": 20,
+    "lineThickness": 1,
+    "lineColor": "#FF707070"
   },
   "adaptiveCard": {
     "padding": {
@@ -71,18 +64,8 @@
       "subtle": "#b28B0000"
     }
   },
-  "imageSet": {
-    "imageSize": "medium"
-  },
-  "factSet": {
-    "title": {
-      "weight": "bolder"
-    },
-    "value": {},
-    "spacing": 20
-  },
   "column": {
-    "separation": {
+    "separations": {
       "default": {
         "spacing": 10,
         "lineThickness": 0,
@@ -93,6 +76,125 @@
         "lineThickness": 1,
         "lineColor": "#FF707070"
       }
+    }
+  },
+  "container": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "imageSet": {
+    "imageSize": "medium",
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "factSet": {
+    "title": {
+      "weight": "bolder"
+    },
+    "value": {},
+    "spacing": 20,
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "actionSet": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "columnSet": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "textBlock": {
+    "seperations": {
+      "small": {
+        "spacing": 10,
+        "lineThickness": 0,
+        "lineColor": null
+      },
+      "normal": {
+        "spacing": 10,
+        "lineThickness": 0,
+        "lineColor": null
+      },
+      "medium": {
+        "spacing": 10,
+        "lineThickness": 0,
+        "lineColor": null
+      },
+      "large": {
+        "spacing": 10,
+        "lineThickness": 0,
+        "lineColor": null
+      },
+      "extraLarge": {
+        "spacing": 10,
+        "lineThickness": 0,
+        "lineColor": null
+      }
+    }
+  },
+  "image": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "dateInput": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "timeInput": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "numberInput": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "toggleInput": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "textInput": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
+    }
+  },
+  "choiceSet": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0,
+      "lineColor": null
     }
   },
   "actions": {

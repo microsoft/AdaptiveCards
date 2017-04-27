@@ -1,23 +1,20 @@
-﻿using System;
+﻿using Microsoft.MarkedNet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MarkedNet;
 
 namespace AdaptiveCards.Rendering
 {
 
-    /// <summary>
-    /// Renderer which renders to pure text environments like SMS
-    /// </summary>
-    public class MarkedXamlRenderer : Renderer
+    public class AdaptiveXamlMarkdownRenderer : MarkdownRenderer
     {
-        public MarkedXamlRenderer() : base()
+        public AdaptiveXamlMarkdownRenderer() : base()
         {
         }
 
-        public MarkedXamlRenderer(Options options) : base(options)
+        public AdaptiveXamlMarkdownRenderer(Microsoft.MarkedNet.Options options) : base(options)
         {
         }
 
@@ -40,7 +37,7 @@ namespace AdaptiveCards.Rendering
 
         public override string Codespan(string text)
         {
-            return "<Run FontFamily=\"Consolas\">" + text + "</Run>\n";
+            return $"<Run FontFamily=\"Consolas\">{text}</Run>\n";
         }
 
         public override string Del(string text)
@@ -55,7 +52,7 @@ namespace AdaptiveCards.Rendering
 
         public override string Heading(string text, int level, string raw)
         {
-            return text;
+            return $"{text}<LineBreak/>";
         }
 
         public override string Hr()
@@ -81,9 +78,9 @@ namespace AdaptiveCards.Rendering
             return $"<Hyperlink Command=\"NavigationCommands.GoToPage\" CommandParameter=\"{href}\">{text}</Hyperlink>";
         }
 
-        public override string List(string body, bool ordered)
+        public override string List(string body, bool ordered, int start)
         {
-            return body;
+            return $"{body}<LineBreak/>";
         }
 
         public override string ListItem(string text)
@@ -93,7 +90,7 @@ namespace AdaptiveCards.Rendering
 
         public override string Paragraph(string text)
         {
-            return text;
+            return $"{text}<LineBreak/>";
         }
 
         public override string Strong(string text)
@@ -117,6 +114,14 @@ namespace AdaptiveCards.Rendering
         {
             // not supported
             return string.Empty;
+        }
+
+        public override string Postprocess(string text)
+        {
+            text = text.Replace("<LineBreak/><LineBreak/>", "<LineBreak/>");
+            while (text.EndsWith("<LineBreak/>"))
+                text = text.Substring(0, text.LastIndexOf("<LineBreak/>"));
+            return base.Postprocess(text);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Options;
 
 namespace AdaptiveCards.Rendering
 {

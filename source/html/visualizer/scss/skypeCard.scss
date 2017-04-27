@@ -1,66 +1,17 @@
 @import 'node_modules/adaptive-cards/scss/base';
 
-//TODO: remove or scope the asterisk selector so it does not pollute the global scope in the host page
-* {
-    box-sizing: border-box;
-}
-
-@include base-spacing();
-
 .skypeContainer {
     display: flex;
     align-items: flex-start;
 }
 
-.rootContainer {
-    width: 300px;
-    border-radius: 5px;
-    background: rgba(234, 234, 234, 0.68);
-}
-
-.showCardActionContainer {
-    background: rgba(234, 234, 234, 0.68);    
-    padding: 10px;
-}
-
-@include base-sizes();
-
-@include base-text-default($base-color: #fff, $extra-large-size: 40px);
-
-@include base-text-dark();
-
-@include base-text-light();
-
-@include base-text-special();
-
-@include base-container($root-padding: 10px);
-
-@include base-image(0);
-
-@include base-table();
-
-@include base-column(null);
-
-@include base-actions($card-container-padding: 16px 20px 16px 20px, $button-strip: false);
-
-.buttonStrip {
-    display: flex;
-    flex-direction: column;
-}
-
-.buttonStripItem {
-    flex-grow: 1;
-    flex-shrink: 1;
-    text-align: center;
-    flex-wrap: wrap;
-    margin: 5px;
-}
+@include base-container();
 
 @include base-push-button(
     $font-size: 15px, 
-    $font-weight: 500, 
+    $font-weight: 400, 
     $border: null, 
-    $padding: 6px 10px 5px 10px,
+    $padding: 4px 10px 6px 10px,
     $min-width: null,
     $background-color: white,
     $color: #0078d7,
@@ -71,14 +22,14 @@
     $active-background-color: #0078d7
     );
 
-.pushButton {
+.ac-pushButton {
     border: solid 2px #dcdcdc;
-    border-radius: 25px;
-    height: 40px;
+    border-radius: 20px;
+    line-height: 30px;
 }
 
-.linkButton {
-    @extend .pushButton;
+.ac-linkButton {
+    @extend .ac-pushButton;
 }
 
 @include base-input();

@@ -14,6 +14,9 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseUtil.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Image.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Fact.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\FactSet.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ImageSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
@@ -32,6 +35,10 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseUtil.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\HostOptions.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">
