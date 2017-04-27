@@ -76,7 +76,6 @@ static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, Cas
     { "FactSet", CardElementType::FactSet },
     { "Fact", CardElementType::Fact },
     { "ImageSet", CardElementType::ImageSet },
-    //{ "ActionSet", CardElementType::ActionSet },
     { "Container", CardElementType::Container }
 
 };
@@ -91,34 +90,49 @@ static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTyp
     { CardElementType::FactSet, "FactSet" },
     { CardElementType::Fact, "Fact" },
     { CardElementType::ImageSet, "ImageSet" },
-    //{ CardElementType::ActionSet, "ActionSet" },
     { CardElementType::Container, "Container" }
+};
+
+static std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionTypeNameToEnum =
+{
+    { "Action.Http", ActionType::Http },
+    { "Action.OpenUrl", ActionType::OpenUrl },
+    { "Action.ShowCard", ActionType::ShowCard },
+    { "Action.Submit", ActionType::Submit }
+};
+
+static std::unordered_map<ActionType, std::string, EnumHash> ActionTypeEnumToName =
+{
+    { ActionType::Http, "Action.Http" },
+    { ActionType::OpenUrl, "Action.OpenUrl" },
+    { ActionType::ShowCard, "Action.ShowCard" },
+    { ActionType::Submit, "Action.Submit" }
 };
 
 static std::unordered_map<std::string, SeparationStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> SeparationStyleNameToEnum =
 {
     { "default", SeparationStyle::Default },
     { "none", SeparationStyle::None },
-    { "strong", SeparationStyle::Strong},
+    { "strong", SeparationStyle::Strong}
 };
 
 static std::unordered_map<SeparationStyle, std::string, EnumHash> SeparationStyleEnumToName =
 {
     { SeparationStyle::Default, "default" },
     { SeparationStyle::None, "none" },
-    { SeparationStyle::Strong, "strong" },
+    { SeparationStyle::Strong, "strong" }
 };
 
 static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageStyleNameToEnum =
 {
     {"normal", ImageStyle::Normal},
-    {"person", ImageStyle::Person},
+    {"person", ImageStyle::Person}
 };
 
 static std::unordered_map<ImageStyle, std::string, EnumHash> ImageStyleEnumToName =
 {
     {ImageStyle::Normal, "normal"},
-    {ImageStyle::Person, "person"},
+    {ImageStyle::Person, "person"}
 };
 
 static std::unordered_map<std::string, ImageSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageSizeNameToEnum =
@@ -143,14 +157,14 @@ static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash,
 {
     {"Left", HorizontalAlignment::Left},
     {"Center", HorizontalAlignment::Center},
-    {"Right", HorizontalAlignment::Right},
+    {"Right", HorizontalAlignment::Right}
 };
 
 static std::unordered_map<HorizontalAlignment, std::string, EnumHash> HorizontalAlignmentEnumToName =
 {
     {HorizontalAlignment::Left, "Left"},
     {HorizontalAlignment::Center, "Center"},
-    {HorizontalAlignment::Right, "Right"},
+    {HorizontalAlignment::Right, "Right"}
 };
 
 static std::unordered_map<std::string, TextColor, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextColorNameToEnum =
@@ -161,7 +175,7 @@ static std::unordered_map<std::string, TextColor, CaseInsensitiveHash, CaseInsen
     {"Accent", TextColor::Accent},
     {"Good", TextColor::Good},
     {"Warning", TextColor::Warning},
-    {"Attention", TextColor::Attention},
+    {"Attention", TextColor::Attention}
 };
 
 static std::unordered_map<TextColor, std::string, EnumHash> TextColorEnumToName =
@@ -172,20 +186,20 @@ static std::unordered_map<TextColor, std::string, EnumHash> TextColorEnumToName 
     {TextColor::Accent, "Accent"},
     {TextColor::Good, "Good"},
     {TextColor::Warning, "Warning"},
-    {TextColor::Attention, "Attention"},
+    {TextColor::Attention, "Attention"}
 };
 
 static std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextWeightNameToEnum =
 {
     {"Lighter", TextWeight::Lighter},
     {"Normal", TextWeight::Normal},
-    {"Bolder", TextWeight::Bolder},
+    {"Bolder", TextWeight::Bolder}
 };
 static std::unordered_map<TextWeight, std::string, EnumHash> TextWeightEnumToName =
 {
     {TextWeight::Lighter, "Lighter"},
     {TextWeight::Normal, "Normal"},
-    {TextWeight::Bolder, "Bolder"},
+    {TextWeight::Bolder, "Bolder"}
 };
 
 static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextSizeNameToEnum =
@@ -194,7 +208,7 @@ static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsens
     {"Normal", TextSize::Normal},
     {"Medium", TextSize::Medium},
     {"Large", TextSize::Large},
-    {"ExtraLarge", TextSize::ExtraLarge},
+    {"ExtraLarge", TextSize::ExtraLarge}
 };
 
 static std::unordered_map<TextSize, std::string, EnumHash> TextSizeEnumToName =
@@ -203,7 +217,31 @@ static std::unordered_map<TextSize, std::string, EnumHash> TextSizeEnumToName =
     {TextSize::Normal, "Normal"},
     {TextSize::Medium, "Medium"},
     {TextSize::Large, "Large"},
-    {TextSize::ExtraLarge, "ExtraLarge"},
+    {TextSize::ExtraLarge, "ExtraLarge"}
+};
+
+static std::unordered_map<std::string, ActionsOrientation, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionsOrientationNameToEnum =
+{
+    { "Vertical", ActionsOrientation::Vertical },
+    { "Horizontal", ActionsOrientation::Horizontal }
+};
+
+static std::unordered_map<ActionsOrientation, std::string, EnumHash> ActionsOrientationEnumToName =
+{
+    { ActionsOrientation::Vertical, "Vertical" },
+    { ActionsOrientation::Horizontal, "Horizontal" }
+};
+
+static std::unordered_map<std::string, ActionMode, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionModeNameToEnum =
+{
+    { "Inline", ActionMode::Inline },
+    { "Popup", ActionMode::Popup }
+};
+
+static std::unordered_map<ActionMode, std::string, EnumHash> ActionModeEnumToName =
+{
+    { ActionMode::Inline, "Inline" },
+    { ActionMode::Popup, "Popup" }
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
@@ -244,6 +282,26 @@ CardElementType CardElementTypeFromString(const std::string& elementType)
     }
 
     return CardElementTypeNameToEnum[elementType];
+}
+
+const std::string ActionTypeToString(ActionType actionType)
+{
+    if (ActionTypeEnumToName.find(actionType) == ActionTypeEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ActionType");
+    }
+
+    return ActionTypeEnumToName[actionType];
+}
+
+ActionType ActionTypeFromString(const std::string& actionType)
+{
+    if (ActionTypeNameToEnum.find(actionType) == ActionTypeNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ActionType: " + actionType);
+    }
+
+    return ActionTypeNameToEnum[actionType];
 }
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment type)
@@ -377,5 +435,41 @@ ImageStyle ImageStyleFromString(const std::string& style)
     }
 
     return ImageStyleNameToEnum[style];
+}
+
+const std::string ActionsOrientationToString(ActionsOrientation orientation)
+{
+    if (ActionsOrientationEnumToName.find(orientation) == ActionsOrientationEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ActionsOrientation type");
+    }
+    return ActionsOrientationEnumToName[orientation];
+}
+
+ActionsOrientation ActionsOrientationFromString(const std::string& orientation)
+{
+    if (ActionsOrientationNameToEnum.find(orientation) == ActionsOrientationNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ActionsOrientation: " + orientation);
+    }
+    return ActionsOrientationNameToEnum[orientation];
+}
+
+const std::string ActionModeToString(ActionMode mode)
+{
+    if (ActionModeEnumToName.find(mode) == ActionModeEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ActionMode type");
+    }
+    return ActionModeEnumToName[mode];
+}
+
+ActionMode ActionModeFromString(const std::string& mode)
+{
+    if (ActionModeNameToEnum.find(mode) == ActionModeNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ActionMode: " + mode);
+    }
+    return ActionModeNameToEnum[mode];
 }
 }
