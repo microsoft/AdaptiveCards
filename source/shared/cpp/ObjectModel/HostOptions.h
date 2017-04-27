@@ -31,13 +31,13 @@ struct ColorOption
 
 struct ColorOptions
 {
-    ColorOption defaultColor = { "#FF000000" };
-    ColorOption accent = { "#FF0000FF" };
-    ColorOption dark = { "#FF101010" };
-    ColorOption light = { "#FFFFFFFF" };
-    ColorOption good = { "#FF008000" };
-    ColorOption warning = { "#FFFFD700" };
-    ColorOption attention = { "#FF8B0000" };
+    ColorOption defaultColor = { "#FF000000", "#B2000000" };
+    ColorOption accent = { "#FF0000FF", "#B20000FF" };
+    ColorOption dark = { "#FF101010", "#B2101010" };
+    ColorOption light = { "#FFFFFFFF", "#B2FFFFFF" };
+    ColorOption good = { "#FF008000", "#B2008000" };
+    ColorOption warning = { "#FFFFD700", "#B2FFD700" };
+    ColorOption attention = { "#FF8B0000", "#B28B0000" };
 };
 
 struct TextOptions
