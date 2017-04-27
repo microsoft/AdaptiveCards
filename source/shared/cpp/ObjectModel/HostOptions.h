@@ -16,11 +16,11 @@ struct BoundaryOptions
 
 struct FontSizeOptions
 {
-    int small = 10;
-    int normal = 12;
-    int medium = 14;
-    int large = 17;
-    int extraLarge = 20;
+    int smallFontSize = 10;
+    int normalFontSize = 12;
+    int mediumFontSize = 14;
+    int largeFontSize = 17;
+    int extraLargeFontSize = 20;
 };
 
 struct ColorOption
@@ -56,18 +56,18 @@ struct SeparationOptions
 };
 struct ImageSizeOptions
 {
-    int small = 60;
-    int medium = 120;
-    int large = 180;
+    int smallSize = 60;
+    int mediumSize = 120;
+    int largeSize = 180;
 };
 
 struct TextBlockOptions
 {
-    SeparationOptions small;
-    SeparationOptions normal;
-    SeparationOptions medium;
-    SeparationOptions large;
-    SeparationOptions extraLarge;
+    SeparationOptions smallSeparation;
+    SeparationOptions normalSeparation;
+    SeparationOptions mediumSeparation;
+    SeparationOptions largeSeparation;
+    SeparationOptions extraLargeSeparation;
 };
 
 struct ImageSetOptions
@@ -79,7 +79,7 @@ struct ImageSetOptions
 struct ColumnOptions
 {
     SeparationOptions defaultSeparation;
-    SeparationOptions strong = { 20, 1, "#FF707070" };
+    SeparationOptions strongSeparation = { 20, 1, "#FF707070" };
 };
 
 struct ContainerOptions
