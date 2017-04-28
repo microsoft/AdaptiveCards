@@ -1,6 +1,7 @@
 ﻿using AdaptiveCards;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -82,7 +83,10 @@ namespace AdaptiveCards.Rendering
         {
             var bitmapImage = _renderToBitmapSource(card, width, imageResolver);
             var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+            BitmapMetadata metadata = new BitmapMetadata("png");
+            metadata.SetQuery("/tEXt/{str=Description}", JsonConvert.SerializeObject(card));
+            BitmapFrame pngFrame = BitmapFrame.Create(bitmapImage, null, metadata, null);
+            encoder.Frames.Add(pngFrame);
 
             MemoryStream stream = new MemoryStream();
             encoder.Save(stream);
