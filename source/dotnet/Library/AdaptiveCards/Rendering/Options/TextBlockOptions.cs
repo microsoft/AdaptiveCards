@@ -16,27 +16,33 @@ namespace AdaptiveCards.Rendering.Options
         { }
 
         /// <summary>
-        ///     The size of the text
+        ///  The size of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public TextSize Size { get; set; } = TextSize.Normal;
 
         /// <summary>
-        ///     The weight of the text
+        ///  The weight of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public TextWeight Weight { get; set; } = TextWeight.Normal;
 
         /// <summary>
-        ///     The color of the text
+        ///  The color of the text
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public TextColor Color { get; set; } = TextColor.Default;
 
         /// <summary>
-        ///     Should it be subtle?
+        ///   Should it be subtle?
         /// </summary>
         public bool IsSubtle { get; set; } = false;
+
+        /// <summary>
+        ///  Is it allowed for the text to wrap
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool Wrap { get; set; }
 
         public bool ShouldSerializeSize()
         {

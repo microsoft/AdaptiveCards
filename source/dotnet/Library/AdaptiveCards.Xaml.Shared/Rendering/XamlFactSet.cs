@@ -23,7 +23,7 @@ namespace AdaptiveCards.Rendering
             uiFactSet.Style = context.GetStyle("Adaptive.FactSet");
 
             uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-            uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+            uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
             int iRow = 0;
             foreach (var fact in factSet.Facts)
             {
@@ -33,10 +33,12 @@ namespace AdaptiveCards.Rendering
                     Color = context.Options.FactSet.Title.Color,
                     IsSubtle = context.Options.FactSet.Title.IsSubtle,
                     Weight = context.Options.FactSet.Title.Weight,
+                    Wrap = context.Options.FactSet.Title.Wrap,
                     Text = fact.Title
                 });
 #if WPF
                 uiTitle.Style = context.GetStyle("Adaptive.Fact.Title");
+                uiTitle.Margin = new Thickness(left: 0, top: 0, right: context.Options.FactSet.Spacing, bottom: 0);
 #elif XAMARIN
                 //TODO
 #endif
@@ -47,11 +49,11 @@ namespace AdaptiveCards.Rendering
                     Color = context.Options.FactSet.Value.Color,
                     IsSubtle = context.Options.FactSet.Value.IsSubtle,
                     Weight = context.Options.FactSet.Value.Weight,
+                    Wrap = context.Options.FactSet.Value.Wrap,
                     Text = fact.Value
                 });
 #if WPF
                 uiValue.Style = context.GetStyle("Adaptive.Fact.Value");
-                uiValue.Margin = new Thickness(context.Options.FactSet.Spacing, 0, 0, 0);
 #elif XAMARIN
                 //TODO
 #endif
