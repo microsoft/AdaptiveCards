@@ -136,9 +136,9 @@ Defines a style for a container
 | Property | Type | default | Description |
 |---|---|---|---|
 | **backgroundColor** | string | transparent | Defines background color for the container | 
-| **padding** | [SpacingDefinition](#spacingdefinition) | transparent | Defines background color for the container | 
 | **borderColor** | string | transparent | Defines a border color for the container | 
-| **borderThickness** | [SpacingDefinition](#spacingdefinition) | {1,1,1,1} | Defines a border thickness for the container | 
+| **borderThickness** | [SpacingDefinition](#spacingdefinition) | {0,0,0,0} | Defines a border thickness for the container | 
+| **padding** | [SpacingDefinition](#spacingdefinition) | {0,0,0,0} | Defines background color for the container | 
 
 ## ColumnOptions
 Defines column options
