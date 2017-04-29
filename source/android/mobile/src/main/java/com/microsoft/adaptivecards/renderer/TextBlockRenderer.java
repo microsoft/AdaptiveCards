@@ -3,12 +3,17 @@ package com.microsoft.adaptivecards.renderer;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
+import com.microsoft.adaptivecards.objectmodel.ColorOptions;
+import com.microsoft.adaptivecards.objectmodel.FontSizeOptions;
+import com.microsoft.adaptivecards.objectmodel.HorizontalAlignment;
+import com.microsoft.adaptivecards.objectmodel.HostOptions;
 import com.microsoft.adaptivecards.objectmodel.TextBlock;
 import com.microsoft.adaptivecards.objectmodel.TextColor;
 import com.microsoft.adaptivecards.objectmodel.TextSize;
@@ -26,24 +31,6 @@ public class TextBlockRenderer implements BaseCardElementRenderer
 {
     private TextBlockRenderer()
     {
-        // Set up Text Color Map
-        m_textColorMap.put(TextColor.Default, g_textColorDefault);
-        m_textColorMap.put(TextColor.Dark, g_textColorDark);
-        m_textColorMap.put(TextColor.Light, g_textColorLight);
-        m_textColorMap.put(TextColor.Accent, g_textColorAccent);
-        m_textColorMap.put(TextColor.Good, g_textColorGood);
-        m_textColorMap.put(TextColor.Warning, g_textColorWarning);
-        m_textColorMap.put(TextColor.Attention, g_textColorAttention);
-
-        // Set up Text Size Map
-        // TODO:: should use dimensions.xml instead - res/values/dimensions.xml
-        // http://stackoverflow.com/questions/9494037/how-to-set-text-size-of-textview-dynamically-for-different-screens
-        m_textSizeMap.put(TextSize.Small, g_textSizeSmall);
-        m_textSizeMap.put(TextSize.Normal, g_textSizeNormal);
-        m_textSizeMap.put(TextSize.Medium, g_textSizeMedium);
-        m_textSizeMap.put(TextSize.Large, g_textSizeLarge);
-        m_textSizeMap.put(TextSize.ExtraLarge, g_textSizeExtraLarge);
-
         // Set up Text Weight Map
         m_textWeightMap.put(TextWeight.Normal, g_textWeightNormal);
         m_textWeightMap.put(TextWeight.Bolder, g_textWeightBolder);
@@ -60,7 +47,97 @@ public class TextBlockRenderer implements BaseCardElementRenderer
         return s_instance;
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement)
+    private static void setTextSize(TextView textView, TextSize textSize, FontSizeOptions fontSizeOptions)
+    {
+        if (textSize.swigValue() == TextSize.ExtraLarge.swigValue())
+        {
+            textView.setTextSize(fontSizeOptions.getExtraLargeFontSize());
+        }
+        else if (textSize.swigValue() == TextSize.Large.swigValue())
+        {
+            textView.setTextSize(fontSizeOptions.getLargeFontSize());
+        }
+        else if (textSize.swigValue() == TextSize.Medium.swigValue())
+        {
+            textView.setTextSize(fontSizeOptions.getMediumFontSize());
+        }
+        else if (textSize.swigValue() == TextSize.Normal.swigValue())
+        {
+            textView.setTextSize(fontSizeOptions.getNormalFontSize());
+        }
+        else if (textSize.swigValue() == TextSize.Small.swigValue())
+        {
+            textView.setTextSize(fontSizeOptions.getSmallFontSize());
+        }
+        else
+        {
+            throw new IllegalArgumentException("Unknown text size: " + textSize.toString());
+        }
+    }
+
+    private static void setTextColor(TextView textView, TextColor textColor, boolean isSubtle, ColorOptions colorOptions)
+    {
+        com.microsoft.adaptivecards.objectmodel.ColorOption colorOption;
+        if (textColor.swigValue() == TextColor.Accent.swigValue())
+        {
+            colorOption = colorOptions.getAccent();
+        }
+        else if (textColor.swigValue() == TextColor.Attention.swigValue())
+        {
+            colorOption = colorOptions.getAttention();
+        }
+        else if (textColor.swigValue() == TextColor.Dark.swigValue())
+        {
+            colorOption = colorOptions.getDark();
+        }
+        else if (textColor.swigValue() == TextColor.Default.swigValue())
+        {
+            colorOption = colorOptions.getDefaultColor();
+        }
+        else if (textColor.swigValue() == TextColor.Good.swigValue())
+        {
+            colorOption = colorOptions.getGood();
+        }
+        else if (textColor.swigValue() == TextColor.Light.swigValue())
+        {
+            colorOption = colorOptions.getLight();
+        }
+        else if (textColor.swigValue() == TextColor.Warning.swigValue())
+        {
+            colorOption = colorOptions.getWarning();
+        }
+        else
+        {
+            throw new IllegalArgumentException("Unknown text color: " + textColor.toString());
+        }
+
+        textView.setTextColor(Color.parseColor(isSubtle ? colorOption.getSubtle() : colorOption.getNormal()));
+    }
+
+    private static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
+    {
+        int alignment;
+        if (textAlignment.swigValue() == HorizontalAlignment.Center.swigValue())
+        {
+            alignment = Gravity.CENTER;
+        }
+        else if (textAlignment.swigValue() == HorizontalAlignment.Left.swigValue())
+        {
+            alignment = Gravity.LEFT;
+        }
+        else if (textAlignment.swigValue() == HorizontalAlignment.Right.swigValue())
+        {
+            alignment = Gravity.RIGHT;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid text alignment: " + textAlignment.toString());
+        }
+
+        textView.setGravity(alignment);
+    }
+
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions)
     {
         TextBlock textBlock = null;
         if (baseCardElement instanceof TextBlock)
@@ -73,37 +150,22 @@ public class TextBlockRenderer implements BaseCardElementRenderer
         }
 
         TextView textView = new TextView(context);
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         textView.setText(textBlock.GetText());
-        textView.setTextSize(m_textSizeMap.get(textBlock.GetTextSize()));
         textView.setTypeface(null, m_textWeightMap.get(textBlock.GetTextWeight()));
-        textView.setTextColor(m_textColorMap.get(textBlock.GetTextColor()));
-        //textView.setSingleLine(m_textWrapMap.get(textBlock.GetWrap()));
+        textView.setSingleLine(!textBlock.GetWrap());
+        textView.setMaxLines((int)textBlock.GetMaxLines());
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        setTextSize(textView, textBlock.GetTextSize(), hostOptions.getFontSizes());
+        setTextColor(textView, textBlock.GetTextColor(), textBlock.GetIsSubtle(), hostOptions.getColors());
+        setTextAlignment(textView, textBlock.GetHorizontalAlignment());
+
         viewGroup.addView(textView);
         return viewGroup;
     }
 
     private static TextBlockRenderer s_instance = null;
 
-    private HashMap<TextColor, Integer> m_textColorMap = new HashMap<TextColor, Integer>();
-    private HashMap<TextSize, Integer> m_textSizeMap = new HashMap<TextSize, Integer>();
     private HashMap<TextWeight, Integer> m_textWeightMap = new HashMap<TextWeight, Integer>();
-
-    // Text Color Constants
-    private int g_textColorDefault = Color.GRAY;
-    private int g_textColorDark = Color.DKGRAY;
-    private int g_textColorLight = Color.LTGRAY;
-    private int g_textColorAccent = Color.CYAN;
-    private int g_textColorGood = Color.GREEN;
-    private int g_textColorWarning = Color.YELLOW;
-    private int g_textColorAttention = Color.RED;
-
-    // Text Size Constants
-    private int g_textSizeSmall = 8;
-    private int g_textSizeNormal = 12;
-    private int g_textSizeMedium = 16;
-    private int g_textSizeLarge = 20;
-    private int g_textSizeExtraLarge = 24;
 
     // Text Weight Constants
     private int g_textWeightNormal = Typeface.NORMAL;

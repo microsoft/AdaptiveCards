@@ -24,12 +24,25 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
+#include "../../../shared/cpp/ObjectModel/Image.h"
+#include "../../../shared/cpp/ObjectModel/ImageSet.h"
+#include "../../../shared/cpp/ObjectModel/Column.h"
+#include "../../../shared/cpp/ObjectModel/ColumnSet.h"
+#include "../../../shared/cpp/ObjectModel/Fact.h"
+#include "../../../shared/cpp/ObjectModel/FactSet.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
+#include "../../../shared/cpp/ObjectModel/HostOptions.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::Container)
 %shared_ptr(AdaptiveCards::TextBlock)
+%shared_ptr(AdaptiveCards::Image)
+%shared_ptr(AdaptiveCards::ImageSet)
+%shared_ptr(AdaptiveCards::Column)
+%shared_ptr(AdaptiveCards::ColumnSet)
+%shared_ptr(AdaptiveCards::Fact)
+%shared_ptr(AdaptiveCards::FactSet)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
 
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
@@ -65,10 +78,91 @@ namespace std {
     }
 };
 
+%exception AdaptiveCards::Image::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::Image {
+    static AdaptiveCards::Image *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::Image *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::ImageSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ImageSet {
+    static AdaptiveCards::ImageSet *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::ImageSet *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::Column::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::Column {
+    static AdaptiveCards::Column *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::Column *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::ColumnSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ColumnSet {
+    static AdaptiveCards::ColumnSet *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::ColumnSet *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::FactSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::FactSet {
+    static AdaptiveCards::FactSet *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::FactSet *>(baseCardElement);
+    }
+};
+
 #include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
+%include "../../../shared/cpp/ObjectModel/Image.h"
+%include "../../../shared/cpp/ObjectModel/ImageSet.h"
+%include "../../../shared/cpp/ObjectModel/Column.h"
+%include "../../../shared/cpp/ObjectModel/ColumnSet.h"
+%include "../../../shared/cpp/ObjectModel/Fact.h"
+%include "../../../shared/cpp/ObjectModel/FactSet.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
-
+%include "../../../shared/cpp/ObjectModel/HostOptions.h"
