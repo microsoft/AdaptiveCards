@@ -1,44 +1,21 @@
-.container.selectable {
-  padding: 5px;
-}
-
-.container.selectable:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.container.selectable:active {
-  background-color: rgba(0, 0, 0, 0.15);
-}
-
-.image.selectable {
+.ac-image.ac-selectable {
   cursor: pointer;
 }
 
-.image.person {
-  border-radius: 50%;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
+.ac-container.ac-selectable {
+  padding: 5px;
 }
 
-.factNameContainer {
-  border-width: 0;
-  padding: 0;
-  border-style: none;
-  min-width: 100px;
-  vertical-align: top;
-  white-space: nowrap;
+.ac-container.ac-selectable:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
-.factValueContainer {
-  border-width: 0;
-  padding: 0;
-  border-style: none;
-  vertical-align: top;
-  padding-left: 10px;
+.ac-container.ac-selectable:active {
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
-.pushButton, .linkButton {
-  font-family: 'Segoe UI', sans-serif;
+.ac-pushButton, .ac-linkButton {
+  font-family: "Segoe UI", sans-serif;
   font-size: 15px;
   font-weight: 500;
   overflow: hidden;
@@ -56,41 +33,30 @@
           user-select: none;
 }
 
-.pushButton:hover, .linkButton:hover {
+.ac-pushButton:hover, .ac-linkButton:hover {
   border: 2px solid rgba(0, 0, 0, 0.2);
 }
 
-.pushButton:active, .linkButton:active {
+.ac-pushButton:active, .ac-linkButton:active {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.input.textInput {
+.ac-input {
+  font-family: "Segoe UI", sans-serif;
   font-size: 14px;
+  color: black;
+}
+
+.ac-input.ac-textInput {
   height: 30px;
   resize: none;
 }
 
-.input.textInput.multiline {
+.ac-input.ac-textInput.ac-multiline {
   height: 72px;
 }
 
-.input.textInput, .input.number, .input.date, .input.time, .input.multichoiceInput {
-  font-family: 'Segoe UI', sans-serif;
-  border-color: #EAEAEA;
-  border-width: 1px;
-  border-style: solid;
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
+  border: 1px solid #DDDDDD;
   padding: 4px 8px 4px 8px;
-}
-
-.toggleInput {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0;
-}
-
-.toggleLabel {
-  margin: 0 0 0 6px !important;
-  padding: 0 !important;
-  display: inline-block;
-  vertical-align: middle;
 }

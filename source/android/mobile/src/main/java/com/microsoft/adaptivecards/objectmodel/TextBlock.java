@@ -50,6 +50,11 @@ public class TextBlock extends BaseCardElement {
     return (cPtr == 0) ? null : new TextBlock(cPtr, true);
   }
 
+  public static TextBlock DeserializeFromString(String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.TextBlock_DeserializeFromString(jsonString);
+    return (cPtr == 0) ? null : new TextBlock(cPtr, true);
+  }
+
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.TextBlock_Serialize(swigCPtr, this);
   }

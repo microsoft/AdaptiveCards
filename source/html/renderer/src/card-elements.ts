@@ -123,6 +123,10 @@ export abstract class CardElement {
         this.adjustAlignment(element);
     }
 
+    protected get padding(): HostConfig.ISpacingDefinition {
+        return { top: 0, right: 0, bottom: 0, left: 0 };
+    }
+
     protected abstract internalRender(): HTMLElement;
 
     speak: string;
@@ -187,12 +191,12 @@ export abstract class CardElement {
         return [];
     }
 
-    protected get padding(): HostConfig.ISpacingDefinition {
-        return { top: 0, right: 0, bottom: 0, left: 0 };
-    }
-
     get isInteractive(): boolean {
         return false;
+    }
+
+    get isStandalone(): boolean {
+        return true;
     }
 
     get parent(): CardElement {
@@ -235,7 +239,12 @@ export class TextBlock extends CardElement {
                     break;
             }
 
+            // Looks like 1.33 is the magic number to compute line-height
+            // from font size.
+            var computedLineHeight = fontSize * 1.33;
+
             element.style.fontSize = fontSize + "px";
+            element.style.lineHeight = computedLineHeight + "px";
 
             var actualTextColor = this.color ? this.color : hostConfiguration.textBlock.color;
             var colorDefinition: HostConfig.IColorDefinition;
@@ -308,6 +317,11 @@ export class TextBlock extends CardElement {
 
             if (this.wrap) {
                 element.style.wordWrap = "break-word";
+
+                if (this.maxLines > 0) {
+                    element.style.maxHeight = (computedLineHeight * this.maxLines) + "px";
+                    element.style.overflow = "hidden";
+                }
             }
             else {
                 element.style.whiteSpace = "nowrap";
@@ -318,6 +332,18 @@ export class TextBlock extends CardElement {
         else {
             return null;
         }
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.text = json["text"];
+        this.size = Utils.getValueOrDefault<Enums.TextSize>(json["size"], "normal");
+        this.weight = Utils.getValueOrDefault<Enums.TextWeight>(json["weight"], "normal");
+        this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], hostConfiguration.textBlock.color);
+        this.isSubtle = json["isSubtle"];
+        this.wrap = json["wrap"] === undefined ? true : json["wrap"];
+        this.maxLines = json["maxLines"];        
     }
 
     getJsonTypeName(): string {
@@ -337,18 +363,6 @@ export class TextBlock extends CardElement {
             default:
                 return hostConfiguration.textBlock.separations.normal;
         }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.text = json["text"];
-        this.size = Utils.getValueOrDefault<Enums.TextSize>(json["size"], "normal");
-        this.weight = Utils.getValueOrDefault<Enums.TextWeight>(json["weight"], "normal");
-        this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], hostConfiguration.textBlock.color);
-        this.isSubtle = json["isSubtle"];
-        this.wrap = json["wrap"] === undefined ? true : json["wrap"];
-        this.maxLines = json["maxLines"];        
     }
 
     renderSpeech(): string {
@@ -405,7 +419,9 @@ export class FactSet extends CardElement {
                 }
 
                 var tdElement = document.createElement("td");
-                tdElement.className = "factNameContainer";
+                tdElement.style.padding = "0";
+                tdElement.style.minWidth = "100px";
+                tdElement.style.verticalAlign = "top";
 
                 let textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].name;
@@ -419,7 +435,9 @@ export class FactSet extends CardElement {
                 Utils.appendChild(trElement, tdElement);
 
                 tdElement = document.createElement("td");
-                tdElement.className = "factValueContainer";
+                tdElement.style.padding = "0px 0px 0px 10px";
+                tdElement.style.minWidth = "100px";
+                tdElement.style.verticalAlign = "top";
 
                 textBlock = new InternalTextBlock();
                 textBlock.text = this.facts[i].value;
@@ -521,10 +539,10 @@ export class Image extends CardElement {
                     e.cancelBubble = true;
                 }
             }
-            imageElement.classList.add("image");
+            imageElement.classList.add("ac-image");
 
             if (this.selectAction != null) {
-                imageElement.classList.add("selectable");
+                imageElement.classList.add("ac-selectable");
             }
 
             switch (this.size) {
@@ -546,7 +564,9 @@ export class Image extends CardElement {
             }
 
             if (this.style == "person") {
-                imageElement.classList.add("person");
+                imageElement.style.borderRadius = "50%";
+                imageElement.style.backgroundPosition = "50% 50%";
+                imageElement.style.backgroundRepeat = "no-repeat";
             }
 
             imageElement.src = this.url;
@@ -731,10 +751,10 @@ export class TextInput extends Input {
 
     protected internalRender(): HTMLElement {
         this._textareaElement = document.createElement("textarea");
-        this._textareaElement.className = "input textInput";
+        this._textareaElement.className = "ac-input ac-textInput";
 
         if (this.isMultiline) {
-            this._textareaElement.classList.add("multiline");
+            this._textareaElement.classList.add("ac-multiline");
         }
 
         if (!Utils.isNullOrEmpty(this.placeholder)) {
@@ -778,11 +798,13 @@ export class ToggleInput extends Input {
 
     protected internalRender(): HTMLElement {
         var element = document.createElement("div");
-        element.className = "input";
+        element.className = "ac-input";
 
         this._checkboxInputElement = document.createElement("input");
-        this._checkboxInputElement.className = "toggleInput";
         this._checkboxInputElement.type = "checkbox";
+        this._checkboxInputElement.style.display = "inline-block";
+        this._checkboxInputElement.style.verticalAlign = "middle";
+        this._checkboxInputElement.style.margin = "0";
 
         if (this.defaultValue == this.valueOn) {
             this._checkboxInputElement.checked = true;
@@ -792,7 +814,9 @@ export class ToggleInput extends Input {
         label.text = this.title;
 
         var labelElement = label.render();
-        labelElement.classList.add("toggleLabel");
+        labelElement.style.display = "inline-block";
+        labelElement.style.marginLeft = "6px";
+        labelElement.style.verticalAlign = "middle";
 
         var compoundInput = document.createElement("div");
 
@@ -842,7 +866,7 @@ export class ChoiceSetInput extends Input {
             if (this.isCompact) {
                 // Render as a combo box
                 this._selectElement = document.createElement("select");
-                this._selectElement.className = "input multichoiceInput";
+                this._selectElement.className = "ac-input ac-multichoiceInput";
 
                 var option = document.createElement("option");
                 option.selected = true;
@@ -865,14 +889,16 @@ export class ChoiceSetInput extends Input {
             else {
                 // Render as a series of radio buttons
                 var element = document.createElement("div");
-                element.className = "input";
+                element.className = "ac-input";
 
                 this._toggleInputs = [];
 
                 for (var i = 0; i < this.choices.length; i++) {
                     var radioInput = document.createElement("input");
-                    radioInput.className = "toggleInput";
                     radioInput.type = "radio";
+                    radioInput.style.margin = "0";
+                    radioInput.style.display = "inline-block";
+                    radioInput.style.verticalAlign = "middle";
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
 
@@ -882,7 +908,9 @@ export class ChoiceSetInput extends Input {
                     label.text = this.choices[i].title;
 
                     var labelElement = label.render();
-                    labelElement.classList.add("toggleLabel");
+                    labelElement.style.display = "inline-block";
+                    labelElement.style.marginLeft = "6px";
+                    labelElement.style.verticalAlign = "middle";
 
                     var compoundInput = document.createElement("div");
 
@@ -904,8 +932,10 @@ export class ChoiceSetInput extends Input {
 
             for (var i = 0; i < this.choices.length; i++) {
                 var checkboxInput = document.createElement("input");
-                checkboxInput.className = "toggleInput";
                 checkboxInput.type = "checkbox";
+                checkboxInput.style.margin = "0";
+                checkboxInput.style.display = "inline-block";
+                checkboxInput.style.verticalAlign = "middle";
                 checkboxInput.value = this.choices[i].value;
 
                 this._toggleInputs.push(checkboxInput);
@@ -914,7 +944,9 @@ export class ChoiceSetInput extends Input {
                 label.text = this.choices[i].title;
 
                 var labelElement = label.render();
-                labelElement.classList.add("toggleLabel");
+                labelElement.style.display = "inline-block";
+                labelElement.style.marginLeft = "6px";
+                labelElement.style.verticalAlign = "middle";
 
                 var compoundInput = document.createElement("div");
 
@@ -1022,7 +1054,7 @@ export class NumberInput extends Input {
     protected internalRender(): HTMLElement {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.type = "number";
-        this._numberInputElement.className = "input number";
+        this._numberInputElement.className = "ac-input ac-numberInput";
         this._numberInputElement.min = this.min;
         this._numberInputElement.max = this.max;
 
@@ -1058,7 +1090,7 @@ export class DateInput extends Input {
     protected internalRender(): HTMLElement {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.type = "date";
-        this._dateInputElement.className = "input date";
+        this._dateInputElement.className = "ac-input ac-dateInput";
 
         return this._dateInputElement;
     }
@@ -1078,7 +1110,7 @@ export class TimeInput extends Input {
     protected internalRender(): HTMLElement {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.type = "time";
-        this._timeInputElement.className = "input time";
+        this._timeInputElement.className = "ac-input ac-timeInput";
 
         return this._timeInputElement;
     }
@@ -1117,18 +1149,16 @@ class ActionButton {
     }
 
     private updateCssStyle() {
-        let cssStyle = this._style == ActionButtonStyle.Link ? "linkButton " : "pushButton ";
+        this._element.className = this._style == ActionButtonStyle.Link ? "ac-linkButton " : "ac-pushButton ";
 
         switch (this._state) {
             case ActionButtonState.Expanded:
-                cssStyle += " expanded";
+                this._element.classList.add("ac-expanded");
                 break;
             case ActionButtonState.Subdued:
-                cssStyle += " subdued";
+                this._element.classList.add("ac-subdued");
                 break;
         }
-
-        this._element.className = cssStyle;
     }
 
     constructor(action: Action, style: ActionButtonStyle) {
@@ -1553,10 +1583,8 @@ class ActionCollection {
             return null;
         }
 
-        let element = document.createElement("div");
-        element.style.overflow = "hidden";
-
-        let buttonStrip = document.createElement("div");
+        var element = document.createElement("div");
+        var buttonStrip = document.createElement("div");
 
         switch (hostConfiguration.actions.actionAlignment) {
             case "center":
@@ -1577,6 +1605,7 @@ class ActionCollection {
             }
             else {
                 buttonStrip.style.display = "inline-flex";
+                buttonStrip.style.width = "100%";
             }
         }
         else {
@@ -1755,7 +1784,7 @@ export abstract class ContainerBase extends CardElement {
 
     protected internalRender(): HTMLElement {
         this._element = document.createElement("div");
-        this._element.className = "container";
+        this._element.className = "ac-container";
 
         var backgroundColor = this.getBackgroundColor();
 
@@ -1764,7 +1793,7 @@ export abstract class ContainerBase extends CardElement {
         }
 
         if (this.selectAction) {
-            this._element.classList.add("selectable");
+            this._element.classList.add("ac-selectable");
         }
 
         this._element.style.paddingTop = this.padding.top + "px";
@@ -1806,10 +1835,6 @@ export abstract class ContainerBase extends CardElement {
     }
 
     protected _element: HTMLDivElement;
-
-    protected get hideOverflow() {
-        return false;
-    }
 
     protected get padding(): HostConfig.ISpacingDefinition {
         return { left: 0, top: 0, right: 0, bottom: 0};
@@ -1887,9 +1912,14 @@ export abstract class ContainerBase extends CardElement {
 
     addItem(item: CardElement) {
         if (!item.parent) {
-            this._items.push(item);
+            if (item.isStandalone) {
+                this._items.push(item);
 
-            invokeSetParent(item, this);
+                invokeSetParent(item, this);
+            }
+            else {
+                throw new Error("Elements of type " + item.getJsonTypeName() + " cannot be used as standalone elements.");
+            }
         }
         else {
             throw new Error("The element already belongs to another container.")
@@ -2012,6 +2042,10 @@ export class Column extends Container {
         if (sizeValue) {
             this.size = sizeValue;
         }
+    }
+
+    get isStandalone(): boolean {
+        return false;
     }
 }
 
@@ -2236,6 +2270,10 @@ export abstract class ContainerWithActions extends ContainerBase {
 
     getAllInputs(): Array<Input> {
         return super.getAllInputs().concat(this._actionCollection.getAllInputs());
+    }
+
+    get isStandalone(): boolean {
+        return false;
     }
 }
 

@@ -16,9 +16,10 @@ public final class CardElementType {
   public final static CardElementType Container = new CardElementType("Container");
   public final static CardElementType Column = new CardElementType("Column");
   public final static CardElementType ColumnSet = new CardElementType("ColumnSet");
-  public final static CardElementType FactGroup = new CardElementType("FactGroup");
-  public final static CardElementType ImageGallery = new CardElementType("ImageGallery");
+  public final static CardElementType FactSet = new CardElementType("FactSet");
+  public final static CardElementType Fact = new CardElementType("Fact");
   public final static CardElementType ActionGroup = new CardElementType("ActionGroup");
+  public final static CardElementType ImageSet = new CardElementType("ImageSet");
 
   public final int swigValue() {
     return swigValue;
@@ -54,7 +55,7 @@ public final class CardElementType {
     swigNext = this.swigValue+1;
   }
 
-  private static CardElementType[] swigValues = { Unsupported, AdaptiveCard, TextBlock, Image, Container, Column, ColumnSet, FactGroup, ImageGallery, ActionGroup };
+  private static CardElementType[] swigValues = { Unsupported, AdaptiveCard, TextBlock, Image, Container, Column, ColumnSet, FactSet, Fact, ActionGroup, ImageSet };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

@@ -1,5 +1,7 @@
 @import 'node_modules/adaptive-cards/scss/base';
 
+@include base-container();
+
 @include base-push-button(
     $background-color: rgba(0, 0, 0, 0.1),
     $border: 2px solid transparent,
@@ -11,8 +13,8 @@
     $min-width: null
     );
 
-.linkButton {
-    @extend .pushButton;
+.ac-linkButton {
+    @extend .ac-pushButton;
 }
 
 

@@ -1,44 +1,21 @@
-.container.selectable {
-  padding: 5px;
-}
-
-.container.selectable:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.container.selectable:active {
-  background-color: rgba(0, 0, 0, 0.15);
-}
-
-.image.selectable {
+.ac-image.ac-selectable {
   cursor: pointer;
 }
 
-.image.person {
-  border-radius: 50%;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
+.ac-container.ac-selectable {
+  padding: 5px;
 }
 
-.factNameContainer {
-  border-width: 0;
-  padding: 0;
-  border-style: none;
-  min-width: 100px;
-  vertical-align: top;
-  white-space: nowrap;
+.ac-container.ac-selectable:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
-.factValueContainer {
-  border-width: 0;
-  padding: 0;
-  border-style: none;
-  vertical-align: top;
-  padding-left: 10px;
+.ac-container.ac-selectable:active {
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
-.pushButton {
-  font-family: 'Segoe UI', sans-serif;
+.ac-pushButton {
+  font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 600;
   overflow: hidden;
@@ -57,16 +34,16 @@
           user-select: none;
 }
 
-.pushButton:hover {
+.ac-pushButton:hover {
   background-color: #005A9E;
 }
 
-.pushButton:active {
+.ac-pushButton:active {
   background-color: #004D84;
 }
 
-.linkButton {
-  font-family: 'Segoe UI', sans-serif;
+.ac-linkButton {
+  font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 600;
   overflow: hidden;
@@ -82,60 +59,49 @@
           user-select: none;
 }
 
-.linkButton:hover {
+.ac-linkButton:hover {
   color: #005A9E;
 }
 
-.linkButton:active {
+.ac-linkButton:active {
   color: #004D84;
 }
 
-.linkButton.subdued {
+.ac-linkButton.ac-subdued {
   color: #666666;
   font-weight: 500;
 }
 
-.linkButton.subdued:hover {
+.ac-linkButton.ac-subdued:hover {
   color: #005A9E;
 }
 
-.linkButton.subdued:active {
+.ac-linkButton.ac-subdued:active {
   color: #004D84;
 }
 
 /*
     Other styles that can be specified:
-        .linkButton.expanded
-        .linkButton.expanded:hover
-        .linkButton.expanded:active
+        .ac-linkButton.ac-expanded
+        .ac-linkButton.ac-expanded:hover
+        .ac-linkButton.ac-expanded:active
     */
-.input.textInput {
+.ac-input {
+  font-family: "Segoe UI", sans-serif;
   font-size: 14px;
+  color: black;
+}
+
+.ac-input.ac-textInput {
   height: 30px;
   resize: none;
 }
 
-.input.textInput.multiline {
+.ac-input.ac-textInput.ac-multiline {
   height: 72px;
 }
 
-.input.textInput, .input.number, .input.date, .input.time, .input.multichoiceInput {
-  font-family: 'Segoe UI', sans-serif;
-  border-color: #EAEAEA;
-  border-width: 1px;
-  border-style: solid;
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
+  border: 1px solid #DDDDDD;
   padding: 4px 8px 4px 8px;
-}
-
-.toggleInput {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0;
-}
-
-.toggleLabel {
-  margin: 0 0 0 6px !important;
-  padding: 0 !important;
-  display: inline-block;
-  vertical-align: middle;
 }

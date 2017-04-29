@@ -172,9 +172,8 @@ export const defaultConfigPayload: string = `
     }
 }`;
 
-export const defaultPayload: string = `
-
-{
+export const defaultPayload: string = `{
+	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"body": [
 		{
@@ -255,64 +254,66 @@ export const defaultPayload: string = `
 						}
 					]
 				}
-			],
-			"actions": [
-				{
-					"type": "Action.ShowCard",
-					"title": "Set due date",
-					"card": {
-						"type": "AdaptiveCard",
-						"body": [
-							{
-								"type": "Input.Text",
-								"style": "date",
-								"id": "dueDate",
-								"title": "Select due date"
-							}
-						],
-						"actions": [
-							{
-								"type": "Action.Http",
-								"method": "POST",
-								"title": "OK",
-								"url": "http://xyz.com?dueDate={{dueDate.value}}"
-							}
-						]
-					}
-				},
-				{
-					"type": "Action.ShowCard",
-					"title": "Comment",
-					"card": {
-						"type": "AdaptiveCard",
-						"body": [
-							{
-								"type": "Input.Text",
-								"id": "comment",
-								"isMultiline": true,
-								"title": "Enter your comment"
-							}
-						],
-						"actions": [
-							{
-								"type": "Action.Http",
-								"method": "POST",
-								"title": "OK",
-								"url": "http://xyz.com",
-								"headers": {
-									"content-type": "application/json"
-								},
-								"body": "{ 'comment' : '{{comment.value}}' }"
-							}
-						]
-					}
-				},
-				{
-					"type": "Action.OpenUrl",
-					"title": "View",
-					"url": "http://foo.com"
-				}
 			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Set due date",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Date",
+						"id": "dueDate",
+						"title": "Select due date"
+					}
+				],
+				"actions": [
+				    {
+				        "type": "Action.Http",
+				        "title": "OK",
+				        "url": "http://xyz.com",
+                        "headers": {
+							"content-type": "application/json"
+						},
+						"body": "{ 'comment' : '{{comment.value}}' }"
+				    }
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Comment",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"isMultiline": true,
+						"placeholder": "Enter your comment"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Http",
+						"method": "POST",
+						"title": "OK",
+						"url": "http://xyz.com",
+						"headers": {
+							"content-type": "application/json"
+						},
+						"body": "{ 'comment' : '{{comment.value}}' }"
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "View",
+			"url": "http://foo.com"
 		}
 	]
 }`;
