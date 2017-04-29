@@ -43,27 +43,22 @@ namespace AdaptiveCards.Rendering.Options
         public ImageSizeOptions ImageSizes { get; set; } = new ImageSizeOptions();
 
         /// <summary>
-        /// Max number of actions to support on your Cards(e.g., 3)
-        /// </summary>
-        public int MaxActions { get; set; } = 5;
-
-        /// <summary>
         /// Separation settings 
         /// </summary>
         public SeparationOption StrongSeparation { get; set; } = new SeparationOption() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
-
-        //  ------ AdaptiveCard -------
-        public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
 
         /// <summary>
         /// Color settings for the TextBlock
         /// </summary>
         public ColorOptions Colors { get; set; } = new ColorOptions();
 
-        // ------ Containers ------
-        public ColumnOptions Column { get; set; } = new ColumnOptions();
+        //  ------ AdaptiveCard -------
+        public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
 
+        // ------ Containers ------
         public ContainerOptions Container { get; set; } = new ContainerOptions();
+
+        public ColumnOptions Column { get; set; } = new ColumnOptions();
 
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 

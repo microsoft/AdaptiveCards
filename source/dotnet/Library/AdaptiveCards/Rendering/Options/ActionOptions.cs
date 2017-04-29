@@ -20,6 +20,11 @@ namespace AdaptiveCards.Rendering.Options
         public ShowCardOptions ShowCard { get; set; } = new ShowCardOptions();
 
         /// <summary>
+        /// Max number of actions to support on your Cards(e.g., 3)
+        /// </summary>
+        public int MaxActions { get; set; } = 5;
+
+        /// <summary>
         /// Arrange actions horizontal or vertical
         /// </summary>
         public ActionsOrientation ActionsOrientation { get; set; } = ActionsOrientation.Horizontal;
