@@ -29,41 +29,25 @@ namespace AdaptiveCards.Rendering.Options
         /// </summary>
         public bool SupportsInteractivity { get; set; } = true;
 
-        /// <summary>
-        /// The types of Actions that you support(null for no actions)
-        /// </summary>
-        public string[] SupportedActionTypes { get; set; } = new string[]
-        {
-            OpenUrlAction.TYPE,
-            SubmitAction.TYPE,
-            HttpAction.TYPE,
-            ShowCardAction.TYPE
-        };
-
         public ImageSizeOptions ImageSizes { get; set; } = new ImageSizeOptions();
-
-        /// <summary>
-        /// Max number of actions to support on your Cards(e.g., 3)
-        /// </summary>
-        public int MaxActions { get; set; } = 5;
 
         /// <summary>
         /// Separation settings 
         /// </summary>
         public SeparationOption StrongSeparation { get; set; } = new SeparationOption() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
 
-        //  ------ AdaptiveCard -------
-        public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
-
         /// <summary>
         /// Color settings for the TextBlock
         /// </summary>
         public ColorOptions Colors { get; set; } = new ColorOptions();
 
-        // ------ Containers ------
-        public ColumnOptions Column { get; set; } = new ColumnOptions();
+        //  ------ AdaptiveCard -------
+        public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
 
+        // ------ Containers ------
         public ContainerOptions Container { get; set; } = new ContainerOptions();
+
+        public ColumnOptions Column { get; set; } = new ColumnOptions();
 
         public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
 
@@ -171,15 +155,15 @@ namespace AdaptiveCards.Rendering.Options
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class BoundaryOptions
+    public class SpacingDefinition
     {
-        public BoundaryOptions() { }
+        public SpacingDefinition() { }
 
-        public BoundaryOptions(int allMargin)
+        public SpacingDefinition(int allMargin)
         {
             Left = Right = Top = Bottom = allMargin;
         }
-        public BoundaryOptions(int left, int top, int right, int bottom)
+        public SpacingDefinition(int left, int top, int right, int bottom)
         {
             Left = left;
             Top = top;

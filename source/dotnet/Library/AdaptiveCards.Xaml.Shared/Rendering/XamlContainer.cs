@@ -24,10 +24,11 @@ namespace AdaptiveCards.Rendering
     {
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            var containerStyle = context.Options.Container.Normal;
             Container container = (Container)element;
             var uiContainer = new Grid();
+            uiContainer.Margin = new Thickness(containerStyle.Padding.Left, containerStyle.Padding.Top, containerStyle.Padding.Right, containerStyle.Padding.Bottom);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
-
             AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
@@ -41,7 +42,21 @@ namespace AdaptiveCards.Rendering
                 }
             }
 
+#if WPF 
+            Grid uiOuterContainer = new Grid();
+            uiOuterContainer.Background = context.GetColorBrush(containerStyle.BackgroundColor);
+            uiOuterContainer.Children.Add(uiContainer);
+            Border border = new Border()
+            {
+                BorderBrush = context.GetColorBrush(containerStyle.BorderColor),
+                BorderThickness = new Thickness(containerStyle.BorderThickness.Left, containerStyle.BorderThickness.Top, containerStyle.BorderThickness.Right, containerStyle.BorderThickness.Bottom)
+            };
+            border.Child = uiOuterContainer;
+            return border;
+#else
+            // TODO for xamarin
             return uiContainer;
+#endif 
         }
 
         public static void AddContainerElements(Grid uiContainer, List<CardElement> elements, RenderContext context)

@@ -17,7 +17,7 @@ namespace AdaptiveCards.Rendering.Options
         /// <summary>
         ///  Padding for the card
         /// </summary>
-        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(8);
+        public SpacingDefinition Padding { get; set; } = new SpacingDefinition(8);
 
         /// <summary>
         /// Background color for card 

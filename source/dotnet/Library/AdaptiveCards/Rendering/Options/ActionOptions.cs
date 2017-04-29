@@ -20,6 +20,11 @@ namespace AdaptiveCards.Rendering.Options
         public ShowCardOptions ShowCard { get; set; } = new ShowCardOptions();
 
         /// <summary>
+        /// Max number of actions to support on your Cards(e.g., 3)
+        /// </summary>
+        public int MaxActions { get; set; } = 5;
+
+        /// <summary>
         /// Arrange actions horizontal or vertical
         /// </summary>
         public ActionsOrientation ActionsOrientation { get; set; } = ActionsOrientation.Horizontal;
@@ -51,7 +56,7 @@ namespace AdaptiveCards.Rendering.Options
         /// space between title and button edge
         /// </summary>
 
-        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(4);
+        public SpacingDefinition Padding { get; set; } = new SpacingDefinition(4);
 
     }
 

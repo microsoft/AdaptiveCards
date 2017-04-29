@@ -11,21 +11,11 @@ If you want to render Adaptive Cards inside your app or web site, the toolkit pr
 * Xamarin Forms
 
 
-## RenderOptions
+## HostOptions
 
-Each platform has a set of options to control how the renderer should behave. 
-For example, Live Tiles show read-only content, so they set `SupportsInteractivity` to `false`, which will instruct the the renderer to strip any actions and inputs from the payload.
+There is a standardized [HostOptions](HostOptions.md) object which allows the host of an adaptive card to control lhow each renderer library renders a card. 
 
-| Property | Type | Description |
-|----------|------|-------------|
-| **SupportsInteractivity** |bool | Toggles whether or not to render inputs and actions
-| **SupportedActionTypes** | string[] | The types of Actions that you support (null for no actions)
-| **SupportedContainerActionTypes** | string[] | The types of Actions you support in Containers (null for no Container actions)
-| **ShowCardActionMode** | Inline/Popup | Toggles where a Action.ShowCard should render inline with the action, or as a popup
-| **CardMaxActions** | int | Max number of actions to support on your Cards (e.g., 3)
-| **ContainerMaxActions** | int | max number of actions to support inside Containers
-| **Styling**| object | This property varies per platform, and influences the styling of the rendered UI. E.g., using the HTML Renderer you pass a link to a CSS stylesheet
-
+Here is a [Sample HostConfig](samples/themes/HostConfig.json) definition.
 
 ## Events
 
