@@ -44,8 +44,8 @@ Properties which define spacing, line thickness and color for separating element
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| **spacing**| int | - | spacing between elements|
-| **lineThickness** |  int | - | thickness of visible line if desired|
+| **spacing**| number | - | spacing between elements|
+| **lineThickness** |  number | - | thickness of visible line if desired|
 | **lineColor** | string | - | color defined as RGBa value #AARRGGBB   |
 
 ## FontSizeOptions
@@ -53,11 +53,11 @@ Font sizes you desire
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| **small** | int | 10 | small font size|
-| **normal** | int | 12 | normal font size|
-| **medium** | int | 14 | medium font size|
-| **large** | int | 17 | large font size|
-| **extraLarge** | int | 20 | extraLarge font size|
+| **small** | number | 10 | small font size|
+| **normal** | number | 12 | normal font size|
+| **medium** | number | 14 | medium font size|
+| **large** | number | 17 | large font size|
+| **extraLarge** | number | 20 | extraLarge font size|
 
 ## ColorOptions
 ColorOptions defining the pallette for the card
@@ -85,9 +85,9 @@ Defines imageSize for the card
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| **small** | int | 60 | small image size|
-| **medium** | int | 120 | medium image size|
-| **large**  | int | 120 | large image size|
+| **small** | number | 60 | small image size|
+| **medium** | number | 120 | medium image size|
+| **large**  | number | 120 | large image size|
 
 ## ImageSetOptions
 Default Image size for the imageset
@@ -103,7 +103,7 @@ Defines how factSets should look
 |---|---|---|---|
 | **title** | [TextOptions](#textoptions) | {  Weight = TextWeight.Bolder }| sets how text for fact title should look|
 | **value** | [TextOptions](#textoptions) | { } | sets how text for fact title should look|
-| **spacing** | int | 20 | spacing between fact and value |
+| **spacing** | number | 20 | spacing between fact and value |
 
 ## ColumnOptions
 Defines column options
@@ -121,6 +121,7 @@ Defines text settings for things like FactSet Title.
 | **size** | TextSize | normal | desired size (small, normal, medium, large, extraLarge)  |
 | **weight** | TextWeight | normal | desired weight (lighter, normal, bolder)  |
 | **color** | TextColor | default | desired color from pallete |
+| **maxLength** | number | default | desired color from pallete |
 | **isSubtle** | bool | false | should use subtle version of color |
 
 ## ActionOptions
@@ -133,12 +134,12 @@ Defines options for how actions should be rendered
 | **actionAlignment** | Left or center or right | center | should actions be aligned left, centered or right |
 | **backgroundColor** | string | #FF5098FF | defines background for card when the showCard is shown inline|
 | **borderColor**  | string | #FF000000 | defines color of border for action button |
-| **borderThickness**  | int | 1 | Defnes thickness of border around the action|
-| **maxActions** | int | 5 | max number of actions that the app wants to support|
+| **borderThickness**  | number | 1 | Defnes thickness of border around the action|
+| **maxActions** | number | 5 | max number of actions that the app wants to support|
 | **textColor**  | string | #FFFFFFFF | defines color of title for action button |
-| **fontWeight**  | int  | #FFFFFFFF | defines color of title for action button |
-| **fontSize**  | int  | 12 | defines size of the text on the action btton |
-| **spacing** | int | 8 | spacing between buttons in an actionSet|
+| **fontWeight**  | number  | #FFFFFFFF | defines color of title for action button |
+| **fontSize**  | number  | 12 | defines size of the text on the action btton |
+| **spacing** | number | 8 | spacing between buttons in an actionSet|
 | **padding** | [BoundaryOptions](#boundaryoptions)| 4,4,4,4| The default padding around the title of the button |
 
 ## ShowCardOptions
@@ -152,14 +153,14 @@ The options for showing a card action.
 
 
 ## BoundaryOptions
-Defines left,top, right and bottom int values
+Defines left,top, right and bottom number values
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| **left**| int | 0 | define left value |
-| **right**| int | 0 | define right value |
-| **top**| int | 0 | define top value |
-| **bottom**| int | 0 | define bottom value |
+| **left**| number | 0 | define left value |
+| **right**| number | 0 | define right value |
+| **top**| number | 0 | define top value |
+| **bottom**| number | 0 | define bottom value |
 
 
 # Sample theme
