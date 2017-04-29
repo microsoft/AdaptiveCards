@@ -44,7 +44,7 @@ namespace AdaptiveCards.Rendering
 
             var inputControls = new List<FrameworkElement>();
             XamlContainer.AddContainerElements(grid, card.Body, context);
-            XamlActionSet.AddActions(grid, card.Actions, context, context.Options.SupportedActionTypes, context.Options.Actions.MaxActions);
+            XamlActionSet.AddActions(grid, card.Actions, context);
 
             outerGrid.Children.Add(grid);
             return outerGrid;

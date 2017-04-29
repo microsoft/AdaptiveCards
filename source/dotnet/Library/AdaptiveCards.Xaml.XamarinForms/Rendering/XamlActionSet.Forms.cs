@@ -8,14 +8,10 @@ namespace AdaptiveCards.Rendering
 {
     public static partial class XamlActionSet 
     {
-        public static void AddActions(Grid uiContainer, List<ActionBase> actions, RenderContext context, string[] supportedActions, int maxActions)
+        public static void AddActions(Grid uiContainer, List<ActionBase> actions, RenderContext context)
         {
-
-            if (supportedActions == null)
-                return;
             var actionsToProcess = actions
-                .Where(a => supportedActions?.Contains(a.Type) == true)
-                .Take(maxActions).ToList();
+                .Take(context.Options.Actions.MaxActions).ToList();
             if (!actionsToProcess.Any())
                 return;                
                    

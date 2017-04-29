@@ -29,17 +29,6 @@ namespace AdaptiveCards.Rendering.Options
         /// </summary>
         public bool SupportsInteractivity { get; set; } = true;
 
-        /// <summary>
-        /// The types of Actions that you support(null for no actions)
-        /// </summary>
-        public string[] SupportedActionTypes { get; set; } = new string[]
-        {
-            OpenUrlAction.TYPE,
-            SubmitAction.TYPE,
-            HttpAction.TYPE,
-            ShowCardAction.TYPE
-        };
-
         public ImageSizeOptions ImageSizes { get; set; } = new ImageSizeOptions();
 
         /// <summary>
