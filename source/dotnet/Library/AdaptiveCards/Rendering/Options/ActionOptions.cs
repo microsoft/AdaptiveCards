@@ -56,7 +56,7 @@ namespace AdaptiveCards.Rendering.Options
         /// space between title and button edge
         /// </summary>
 
-        public BoundaryOptions Padding { get; set; } = new BoundaryOptions(4);
+        public SpacingDefinition Padding { get; set; } = new SpacingDefinition(4);
 
     }
 

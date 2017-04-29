@@ -24,6 +24,10 @@ namespace AdaptiveCards.Rendering.Options
     public class ContainerOptions : CardElementOptions
     {
         public ContainerOptions() { }
+
+        public ContainerStyleOptions Normal { get; set; } = new ContainerStyleOptions();
+
+        public ContainerStyleOptions Emphasis { get; set; } = new ContainerStyleOptions() { };
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]

@@ -166,15 +166,15 @@ namespace AdaptiveCards.Rendering.Options
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class BoundaryOptions
+    public class SpacingDefinition
     {
-        public BoundaryOptions() { }
+        public SpacingDefinition() { }
 
-        public BoundaryOptions(int allMargin)
+        public SpacingDefinition(int allMargin)
         {
             Left = Right = Top = Bottom = allMargin;
         }
-        public BoundaryOptions(int left, int top, int right, int bottom)
+        public SpacingDefinition(int left, int top, int right, int bottom)
         {
             Left = left;
             Top = top;

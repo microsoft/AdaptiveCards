@@ -34,7 +34,7 @@ Defines Card options
 | Property | Type | default | Description |
 |---|---|---|---|
 | **backgroundColor**| string | #FFFFFFFF | Defines default color for the background in RGBa format #AARRGGBB|
-| **padding**| [BoundaryOptions](#boundaryoptions) | 8,8,8,8 | Defines padding between card content and edge of card|
+| **padding**| [SpacingDefinition](#spacingdefinition) | 8,8,8,8 | Defines padding between card content and edge of card|
 
 
 ## SeparationOptions
@@ -127,6 +127,18 @@ Defines container options
 | Property | Type | default | Description |
 |---|---|---|---|
 | **separation** | [SeparationOptions](#separationoptions) | - | Defines spacing and color for separations between elements | 
+| **normal**| [ContainerStyleOptions](#containerstyleoptions)| - | Defines the normal style for a container |
+| **emphasis**| [ContainerStyleOptions](#containerstyleoptions)| - | Defines an emphasized style for a container |
+
+### ContainerStyleOptions
+Defines a style for a container
+
+| Property | Type | default | Description |
+|---|---|---|---|
+| **backgroundColor** | string | transparent | Defines background color for the container | 
+| **padding** | [SpacingDefinition](#spacingdefinition) | transparent | Defines background color for the container | 
+| **borderColor** | string | transparent | Defines a border color for the container | 
+| **borderThickness** | [SpacingDefinition](#spacingdefinition) | {1,1,1,1} | Defines a border thickness for the container | 
 
 ## ColumnOptions
 Defines column options
@@ -192,7 +204,7 @@ Defines options for how actions should be rendered
 | **fontWeight**  | number  | #FFFFFFFF | Defines color of title for action button |
 | **fontSize**  | number  | 12 | Defines size of the text on the action btton |
 | **spacing** | number | 8 | spacing between buttons in an actionSet|
-| **padding** | [BoundaryOptions](#boundaryoptions)| 4,4,4,4| The default padding around the title of the button |
+| **padding** | [SpacingDefinition](#spacingdefinition)| 4,4,4,4| The default padding around the title of the button |
 
 ## ShowCardOptions
 The options for showing a card action.
@@ -204,7 +216,7 @@ The options for showing a card action.
 | **autoPadding** | bool | true| when inline will automatically expand padding to card boundary (it looks nice)|
 
 
-## BoundaryOptions
+## SpacingDefinition
 Defines left,top, right and bottom number values
 
 | Property | Type | default | Description |

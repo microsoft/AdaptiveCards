@@ -44,5 +44,27 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ActionBase SelectAction { get; set; }
 
+        /// <summary>
+        ///     The style in which the image is displayed.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if NET452
+        [XmlAttribute]
+#endif
+        public ContainerStyle Style { get; set; }
+    }
+
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<ImageStyle>), true)]
+    public enum ContainerStyle
+    {
+        /// <summary>
+        /// The container is a normal container
+        /// </summary>
+        Normal,
+
+        /// <summary>
+        /// The container should be emphasized as a grouping of elements
+        /// </summary>
+        Emphasis
     }
 }
