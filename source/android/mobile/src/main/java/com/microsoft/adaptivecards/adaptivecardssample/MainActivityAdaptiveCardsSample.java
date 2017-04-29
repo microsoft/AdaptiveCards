@@ -89,7 +89,7 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromFile(jsonFile.getAbsolutePath());
             LinearLayout layout = (LinearLayout) findViewById(R.id.layoutAdaptiveCard);
             layout.removeAllViews();
-            AdaptiveCardRenderer.getInstance().render(getApplicationContext(), layout, adaptiveCard);
+            layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), adaptiveCard, new HostOptions()));
         }
         catch (Exception ex)
         {
