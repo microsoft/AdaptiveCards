@@ -380,6 +380,14 @@
         "separation": {
           "$ref": "#/definitions/SeparationStyle"
         },
+        "style": {
+          "type": "string",
+          "description": "Style hint for Container",
+          "enum": [
+            "normal",
+            "emphasis"
+          ]
+        },
         "type": {
           "type": "string",
           "description": "Must be Container",
