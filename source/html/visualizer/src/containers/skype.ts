@@ -36,7 +36,7 @@ export class SkypeContainer extends HostContainer {
         this._width = width;
     }
 
-    public getHostConfiguration(): Adaptive.IHostConfiguration {
+    public getHostConfig(): Adaptive.IHostConfig {
         return {
             supportsInteractivity: true,
             strongSeparation: {

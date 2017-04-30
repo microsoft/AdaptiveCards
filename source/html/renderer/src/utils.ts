@@ -1,5 +1,5 @@
 import * as Enums from "./enums";
-import * as HostConfig from "./host-configuration";
+import * as HostConfig from "./host-config";
 
 import markdownIt = require("markdown-it");
 let markdownProcessor = new markdownIt();

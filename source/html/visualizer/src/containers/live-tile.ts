@@ -30,7 +30,7 @@ export class LiveTileContainer extends HostContainer {
         return element;
     }
 
-    public getHostConfiguration(): Adaptive.IHostConfiguration {
+    public getHostConfig(): Adaptive.IHostConfig {
         return {
             supportsInteractivity: true,
             strongSeparation: {
