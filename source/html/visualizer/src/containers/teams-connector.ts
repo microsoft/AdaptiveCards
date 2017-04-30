@@ -15,7 +15,7 @@ export class TeamsConnectorContainer extends HostContainer {
         return element;
     }
 
-    public getHostConfiguration(): Adaptive.IHostConfiguration {
+    public getHostConfig(): Adaptive.IHostConfig {
         return {
             supportsInteractivity: true,
             strongSeparation: {

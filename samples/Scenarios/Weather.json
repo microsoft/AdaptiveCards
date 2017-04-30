@@ -10,7 +10,7 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": "35",
+					"size": 35,
 					"items": [
 						{
 							"type": "Image",
@@ -21,7 +21,7 @@
 				},
 				{
 					"type": "Column",
-					"size": "65",
+					"size": 65,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -60,6 +60,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
+							"wrap": false,
 							"text": "Fri"
 						},
 						{
@@ -70,13 +71,16 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
+							"wrap": false,
 							"text": "62"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"text": "523"
+							"wrap": false,
+							"text": "52",
+							"separation": "none"
 						}
 					],
 					"selectAction": {
@@ -91,6 +95,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
+							"wrap": false,
 							"text": "Sat"
 						},
 						{
@@ -101,13 +106,16 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
+							"wrap": false,
 							"text": "60"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"text": "48"
+							"wrap": false,
+							"text": "48",
+							"separation": "none"
 						}
 					],
 					"selectAction": {
@@ -122,6 +130,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
+							"wrap": false,
 							"text": "Sun"
 						},
 						{
@@ -132,13 +141,16 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
+							"wrap": false,
 							"text": "59"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"text": "49"
+							"wrap": false,
+							"text": "49",
+							"separation": "none"
 						}
 					],
 					"selectAction": {
@@ -153,6 +165,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
+							"wrap": false,
 							"text": "Mon"
 						},
 						{
@@ -163,13 +176,16 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
+							"wrap": false,
 							"text": "64"
 						},
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"isSubtle": true,
-							"text": "51"
+							"wrap": false,
+							"text": "51",
+							"separation": "none"
 						}
 					],
 					"selectAction": {
