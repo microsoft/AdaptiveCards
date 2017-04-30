@@ -52,7 +52,7 @@ namespace AdaptiveCards.Rendering.Config
         /// <summary>
         /// Space between actions
         /// </summary>
-        public int ButtonSpacing { get; set; } = 8;
+        public int Spacing { get; set; } = 8;
 
         /// <summary>
         /// space between title and button edge
