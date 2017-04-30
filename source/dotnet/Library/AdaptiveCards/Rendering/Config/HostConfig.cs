@@ -13,49 +13,38 @@ namespace AdaptiveCards.Rendering.Config
     {
         public HostConfig() { }
 
-        /// <summary>
-        /// Font family for the card (can be comma delimited for fallback)
-        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string FontFamily { get; set; } = "Calibri";
-
-        /// <summary>
-        /// FontSize
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
-
-
-        /// <summary>
-        /// Toggles whether or not to render inputs and actions
-        /// </summary>
-        public bool SupportsInteractivity { get; set; } = true;
+        public ActionConfig Actions { get; set; } = new ActionConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ImageSizesConfig ImageSizes { get; set; } = new ImageSizesConfig();
+        public ActionSetConfig ActionSet { get; set; } = new ActionSetConfig();
 
-        /// <summary>
-        /// Separation settings 
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public SeparationConfig StrongSeparation { get; set; } = new SeparationConfig() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
-
-        /// <summary>
-        /// Color settings for the TextBlock
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColorsConfig Colors { get; set; } = new ColorsConfig();
-
-        //  ------ AdaptiveCard -------
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public AdaptiveCardConfig AdaptiveCard { get; set; } = new AdaptiveCardConfig();
 
-        // ------ Containers ------
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ChoiceSetConfig ChoiceSet { get; set; } = new ChoiceSetConfig();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ColorsConfig Colors { get; set; } = new ColorsConfig();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ColumnConfig Column { get; set; } = new ColumnConfig();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ColumnSetConfig ColumnSet { get; set; } = new ColumnSetConfig();
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerConfig Container { get; set; } = new ContainerConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColumnConfig Column { get; set; } = new ColumnConfig();
+        public DateInputConfig DateInput { get; set; } = new DateInputConfig();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ImageSizesConfig ImageSizes { get; set; } = new ImageSizesConfig();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ImageConfig Image { get; set; } = new ImageConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ImageSetConfig ImageSet { get; set; } = new ImageSetConfig();
@@ -64,40 +53,37 @@ namespace AdaptiveCards.Rendering.Config
         public FactSetConfig FactSet { get; set; } = new FactSetConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionSetConfig ActionSet { get; set; } = new ActionSetConfig();
+        public string FontFamily { get; set; } = "Calibri";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColumnSetConfig ColumnSet { get; set; } = new ColumnSetConfig();
-
-        // ------- Elements -------
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextBlockConfig TextBlock { get; set; } = new TextBlockConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ImageConfig Image { get; set; } = new ImageConfig();
-
-        // ------- Inputs -------
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public DateInputConfig DateInput { get; set; } = new DateInputConfig();
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TimeInputConfig TimeInput { get; set; } = new TimeInputConfig();
+        public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public NumberInputConfig NumberInput { get; set; } = new NumberInputConfig();
 
+
+        /// <summary>
+        /// Separation settings 
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ToggleInputConfig ToggleInput { get; set; } = new ToggleInputConfig();
+        public SeparationConfig StrongSeparation { get; set; } = new SeparationConfig() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
+
+        /// <summary>
+        /// Toggles whether or not to render inputs and actions
+        /// </summary>
+        public bool SupportsInteractivity { get; set; } = true;
+        
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public TextBlockConfig TextBlock { get; set; } = new TextBlockConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public TextInputConfig TextInput { get; set; } = new TextInputConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ChoiceSetConfig ChoiceSet { get; set; } = new ChoiceSetConfig();
+        public TimeInputConfig TimeInput { get; set; } = new TimeInputConfig();
 
-        // ------ Actions------
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionConfig Actions { get; set; } = new ActionConfig();
+        public ToggleInputConfig ToggleInput { get; set; } = new ToggleInputConfig();
 
         public virtual SeparationConfig GetSeparationForElement(TypedElement element, bool strong)
         {

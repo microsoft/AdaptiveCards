@@ -1,9 +1,9 @@
 {
   "supportsInteractivity": true,
   "strongSeparation": {
-    "spacing": 40,
+    "spacing": 20,
     "lineThickness": 1,
-    "lineColor": "#EEEEEE"
+    "lineColor": "#22FFFFFF"
   },
   "fontFamily": "Segoe UI",
   "fontSizes": {
@@ -52,41 +52,40 @@
   "actions": {
     "maxActions": 5,
     "separation": {
-      "spacing": 20
+      "spacing": 10
     },
     "buttonSpacing": 10,
     "stretch": true,
     "showCard": {
       "actionMode": "inlineEdgeToEdge",
-      "inlineCardSpacing": 16,
-      "backgroundColor": "#08000000",
+      "inlineCardSpacing": 10,
+      "backgroundColor": "#22FFFFFF",
       "padding": {
-        "top": 16,
-        "right": 16,
-        "bottom": 16,
-        "left": 16
+        "top": 10,
+        "right": 10,
+        "bottom": 10,
+        "left": 10
       }
     },
     "actionsOrientation": "horizontal",
-    "actionAlignment": "center"
+    "actionAlignment": "left"
   },
   "adaptiveCard": {
-    "backgroundColor": "#00000000",
+    "backgroundColor": "#1F1F1F",
     "padding": {
-      "left": 20,
-      "top": 20,
-      "right": 20,
-      "bottom": 20
+      "left": 10,
+      "top": 10,
+      "right": 10,
+      "bottom": 10
     }
   },
   "container": {
     "separation": {
-      "spacing": 20
+      "spacing": 10
     },
     "normal": {},
     "emphasis": {
-      "backgroundColor": "#EEEEEE",
-      "borderColor": "#AAAAAA",
+      "backgroundColor": "#22FFFFFF",
       "borderThickness": {
         "top": 1,
         "right": 1,
@@ -102,49 +101,49 @@
     }
   },
   "textBlock": {
-    "color": "dark",
+    "color": "light",
     "separations": {
       "small": {
-        "spacing": 20
+        "spacing": 10
       },
       "normal": {
-        "spacing": 20
+        "spacing": 10
       },
       "medium": {
-        "spacing": 20
+        "spacing": 10
       },
       "large": {
-        "spacing": 20
+        "spacing": 10
       },
       "extraLarge": {
-        "spacing": 20
+        "spacing": 10
       }
     }
   },
   "image": {
     "size": "medium",
     "separation": {
-      "spacing": 20
+      "spacing": 10
     }
   },
   "imageSet": {
     "imageSize": "medium",
     "separation": {
-      "spacing": 20
+      "spacing": 10
     }
   },
   "factSet": {
     "separation": {
-      "spacing": 20
+      "spacing": 10
     },
     "title": {
-      "color": "dark",
+      "color": "light",
       "size": "normal",
       "isSubtle": false,
       "weight": "bolder"
     },
     "value": {
-      "color": "dark",
+      "color": "light",
       "size": "normal",
       "isSubtle": false,
       "weight": "normal"
@@ -153,17 +152,17 @@
   },
   "input": {
     "separation": {
-      "spacing": 20
+      "spacing": 10
     }
   },
   "columnSet": {
     "separation": {
-      "spacing": 20
+      "spacing": 10
     }
   },
   "column": {
     "separation": {
-      "spacing": 20
+      "spacing": 10
     }
   }
 }

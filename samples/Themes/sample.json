@@ -1,22 +1,47 @@
 {
-  "fontFamily": "Calibri",
-  "fontSizes": {
-    "small": 10,
-    "normal": 12,
-    "medium": 14,
-    "large": 17,
-    "extraLarge": 20
+  "actions": {
+    "showCard": {
+      "actionMode": "inline",
+      "backgroundColor": "#FFF8F8F8",
+      "autoPadding": true
+    },
+    "maxActions": 5,
+    "actionsOrientation": "horizontal",
+    "actionAlignment": "center",
+    "backgroundColor": "#FF5098FF",
+    "borderColor": "#FF000000",
+    "textColor": "#FFFFFFFF",
+    "borderThickness": 1,
+    "fontWeight": 400,
+    "fontSize": 12,
+    "spacing": 8,
+    "padding": {
+      "left": 4,
+      "top": 4,
+      "right": 4,
+      "bottom": 4
+    }
   },
-  "supportsInteractivity": true,
-  "imageSizes": {
-    "small": 60,
-    "medium": 120,
-    "large": 180
+  "actionSet": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0
+    }
   },
-  "strongSeparation": {
-    "spacing": 20,
-    "lineThickness": 1,
-    "lineColor": "#FF707070"
+  "adaptiveCard": {
+    "padding": {
+      "left": 8,
+      "top": 8,
+      "right": 8,
+      "bottom": 8
+    },
+    "backgroundColor": "#FFFFFF"
+  },
+  "choiceSet": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0
+    }
   },
   "colors": {
     "default": {
@@ -48,14 +73,17 @@
       "subtle": "#b28B0000"
     }
   },
-  "adaptiveCard": {
-    "padding": {
-      "left": 8,
-      "top": 8,
-      "right": 8,
-      "bottom": 8
-    },
-    "backgroundColor": "#FFFFFF"
+  "column": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0
+    }
+  },
+  "columnSet": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0
+    }
   },
   "container": {
     "normal": {
@@ -103,7 +131,18 @@
       "lineThickness": 0
     }
   },
-  "column": {
+  "dateInput": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0
+    }
+  },
+  "imageSizes": {
+    "small": 60,
+    "medium": 120,
+    "large": 180
+  },
+  "image": {
     "separation": {
       "spacing": 10,
       "lineThickness": 0
@@ -130,18 +169,26 @@
       "lineThickness": 0
     }
   },
-  "actionSet": {
+  "fontFamily": "Calibri",
+  "fontSizes": {
+    "small": 10,
+    "normal": 12,
+    "medium": 14,
+    "large": 17,
+    "extraLarge": 20
+  },
+  "numberInput": {
     "separation": {
       "spacing": 10,
       "lineThickness": 0
     }
   },
-  "columnSet": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
+  "strongSeparation": {
+    "spacing": 20,
+    "lineThickness": 1,
+    "lineColor": "#FF707070"
   },
+  "supportsInteractivity": true,
   "textBlock": {
     "seperations": {
       "small": {
@@ -166,13 +213,7 @@
       }
     }
   },
-  "image": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
-  },
-  "dateInput": {
+  "textInput": {
     "separation": {
       "spacing": 10,
       "lineThickness": 0
@@ -184,51 +225,10 @@
       "lineThickness": 0
     }
   },
-  "numberInput": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
-  },
   "toggleInput": {
     "separation": {
       "spacing": 10,
       "lineThickness": 0
-    }
-  },
-  "textInput": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
-  },
-  "choiceSet": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
-  },
-  "actions": {
-    "showCard": {
-      "actionMode": "inline",
-      "backgroundColor": "#FFF8F8F8",
-      "autoPadding": true
-    },
-    "maxActions": 5,
-    "actionsOrientation": "horizontal",
-    "actionAlignment": "center",
-    "backgroundColor": "#FF5098FF",
-    "borderColor": "#FF000000",
-    "textColor": "#FFFFFFFF",
-    "borderThickness": 1,
-    "fontWeight": 400,
-    "fontSize": 12,
-    "spacing": 8,
-    "padding": {
-      "left": 4,
-      "top": 4,
-      "right": 4,
-      "bottom": 4
     }
   }
 }
