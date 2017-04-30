@@ -8,31 +8,15 @@
     "extraLarge": 20
   },
   "supportsInteractivity": true,
-  "supportedActionTypes": [
-    "Action.OpenUrl",
-    "Action.Submit",
-    "Action.Http",
-    "Action.ShowCard"
-  ],
   "imageSizes": {
     "small": 60,
     "medium": 120,
     "large": 180
   },
-  "maxActions": 5,
   "strongSeparation": {
     "spacing": 20,
     "lineThickness": 1,
     "lineColor": "#FF707070"
-  },
-  "adaptiveCard": {
-    "padding": {
-      "left": 8,
-      "top": 8,
-      "right": 8,
-      "bottom": 8
-    },
-    "backgroundColor": "#FFFFFF"
   },
   "colors": {
     "default": {
@@ -64,137 +48,164 @@
       "subtle": "#b28B0000"
     }
   },
-  "column": {
-    "separations": {
-      "default": {
-        "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
-      },
-      "strong": {
-        "spacing": 20,
-        "lineThickness": 1,
-        "lineColor": "#FF707070"
-      }
-    }
+  "adaptiveCard": {
+    "padding": {
+      "left": 8,
+      "top": 8,
+      "right": 8,
+      "bottom": 8
+    },
+    "backgroundColor": "#FFFFFF"
   },
   "container": {
+    "normal": {
+      "separation": {
+        "spacing": 10,
+        "lineThickness": 0
+      },
+      "backgroundColor": "#00FFFFFF",
+      "padding": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "borderColor": "#00FFFFFF",
+      "borderThickness": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    "emphasis": {
+      "separation": {
+        "spacing": 10,
+        "lineThickness": 0
+      },
+      "backgroundColor": "#00FFFFFF",
+      "padding": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "borderColor": "#00FFFFFF",
+      "borderThickness": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
+    }
+  },
+  "column": {
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0
     }
   },
   "imageSet": {
     "imageSize": "medium",
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "factSet": {
     "title": {
-      "weight": "bolder"
+      "weight": "bolder",
+      "wrap": false
     },
-    "value": {},
+    "value": {
+      "wrap": false
+    },
     "spacing": 20,
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "actionSet": {
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "columnSet": {
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "textBlock": {
     "seperations": {
       "small": {
         "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
+        "lineThickness": 0
       },
       "normal": {
         "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
+        "lineThickness": 0
       },
       "medium": {
         "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
+        "lineThickness": 0
       },
       "large": {
         "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
+        "lineThickness": 0
       },
       "extraLarge": {
         "spacing": 10,
-        "lineThickness": 0,
-        "lineColor": null
+        "lineThickness": 0
       }
     }
   },
   "image": {
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "dateInput": {
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "timeInput": {
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "numberInput": {
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "toggleInput": {
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "textInput": {
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "choiceSet": {
     "separation": {
       "spacing": 10,
-      "lineThickness": 0,
-      "lineColor": null
+      "lineThickness": 0
     }
   },
   "actions": {
@@ -203,6 +214,7 @@
       "backgroundColor": "#FFF8F8F8",
       "autoPadding": true
     },
+    "maxActions": 5,
     "actionsOrientation": "horizontal",
     "actionAlignment": "center",
     "backgroundColor": "#FF5098FF",
