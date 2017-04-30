@@ -16,6 +16,7 @@ namespace AdaptiveCards.Rendering.Config
         /// <summary>
         /// Separation settings between elements
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public SeparationConfig Separation { get; set; } = new SeparationConfig() { Spacing = 10 };
     }
 }

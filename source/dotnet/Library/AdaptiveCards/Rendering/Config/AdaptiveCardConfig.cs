@@ -17,6 +17,7 @@ namespace AdaptiveCards.Rendering.Config
         /// <summary>
         ///  Padding for the card
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public SpacingDefinition Padding { get; set; } = new SpacingDefinition(8);
 
         /// <summary>

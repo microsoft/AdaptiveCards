@@ -13,18 +13,25 @@ namespace AdaptiveCards.Rendering.Config
     {
         public ColorsConfig() { }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ColorConfig Default { get; set; } = new ColorConfig("#FF000000");
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ColorConfig Accent { get; set; } = new ColorConfig("#FF0000FF");
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ColorConfig Dark { get; set; } = new ColorConfig("#FF101010");
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ColorConfig Light { get; set; } = new ColorConfig("#FFFFFFFF");
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ColorConfig Good { get; set; } = new ColorConfig("#FF008000");
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ColorConfig Warning { get; set; } = new ColorConfig("#FFFFD700");
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ColorConfig Attention { get; set; } = new ColorConfig("#FF8B0000");
     }
 
@@ -46,8 +53,10 @@ namespace AdaptiveCards.Rendering.Config
         /// <summary>
         /// Color in #RRGGBB format
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Normal { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Subtle { get; set; }
     }
 }

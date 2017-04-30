@@ -27,6 +27,7 @@ namespace AdaptiveCards.Rendering.Config
         /// <summary>
         /// If there is a visible color, what color to use
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string LineColor { get; set; }
 
     }

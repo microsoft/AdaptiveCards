@@ -35,10 +35,13 @@ namespace AdaptiveCards.Rendering.Config
         public HorizontalAlignment ActionAlignment { get; set; } = HorizontalAlignment.Center;
 
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BackgroundColor { get; set; } = "#FF5098FF";
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BorderColor { get; set; } = "#FF000000";
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string TextColor { get; set; } = "#FFFFFFFF";
 
         public int BorderThickness { get; set; } = 1;
@@ -56,6 +59,7 @@ namespace AdaptiveCards.Rendering.Config
         /// space between title and button edge
         /// </summary>
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public SpacingDefinition Padding { get; set; } = new SpacingDefinition(4);
 
     }

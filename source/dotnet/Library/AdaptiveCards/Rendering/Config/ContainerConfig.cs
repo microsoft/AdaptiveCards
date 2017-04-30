@@ -14,8 +14,10 @@ namespace AdaptiveCards.Rendering.Config
     {
         public ContainerConfig() { }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Normal { get; set; } = new ContainerStyleConfig();
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Emphasis { get; set; } = new ContainerStyleConfig() { };
     }
 
