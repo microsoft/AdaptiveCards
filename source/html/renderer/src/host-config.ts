@@ -132,34 +132,50 @@ function parseImageSetConfiguration(obj: any): IImageSetConfig {
     } : null;
 }
 
-export interface ITextFormatDefinition {
+export interface IFactTextDefinition {
     size: Enums.TextSize,
     color: Enums.TextColor,
     isSubtle: boolean,
-    weight: Enums.TextWeight    
+    weight: Enums.TextWeight,
+    wrap: boolean    
 }
 
-function parseTextFormatDefinition(obj: any): ITextFormatDefinition {
+function parseFactTextDefinition(obj: any): IFactTextDefinition {
     return obj ? {
         size: obj["size"],
         color: obj["color"],
         isSubtle: obj["isSubtle"],
-        weight: obj["weight"]
+        weight: obj["weight"],
+        wrap: obj["wrap"]
     } : null;
+}
+
+export interface IFactTitleDefinition extends IFactTextDefinition {
+    maxWidth?: number;
+}
+
+function parseFactTitleDefinition(obj: any): IFactTitleDefinition {
+    var result: IFactTitleDefinition = parseFactTextDefinition(obj);
+
+    if (result) {
+        result.maxWidth = obj["maxWidth"];
+    }
+
+    return result;
 }
 
 export interface IFactSetConfig {
     separation: ISeparationDefinition,
-    title: ITextFormatDefinition,
-    value: ITextFormatDefinition,
+    title: IFactTitleDefinition,
+    value: IFactTextDefinition,
     spacing: number
 }
 
 function parseFactSetConfiguration(obj: any): IFactSetConfig {
     return obj ? {
         separation: parseSeparationDefinition(obj["separation"]),
-        title: parseTextFormatDefinition(obj["title"]),
-        value: parseTextFormatDefinition(obj["value"]),
+        title: parseFactTitleDefinition(obj["title"]),
+        value: parseFactTextDefinition(obj["value"]),
         spacing: obj["spacing"]
     } : null;
 }

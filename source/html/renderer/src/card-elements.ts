@@ -410,6 +410,8 @@ export class FactSet extends CardElement {
             element.style.borderSpacing = "0px";
             element.style.borderStyle = "none";
             element.style.borderCollapse = "collapse";
+            element.style.display = "block";
+            element.style.overflow = "hidden";
 
             for (var i = 0; i < this.facts.length; i++) {
                 var trElement = document.createElement("tr");
@@ -420,7 +422,11 @@ export class FactSet extends CardElement {
 
                 var tdElement = document.createElement("td");
                 tdElement.style.padding = "0";
-                tdElement.style.minWidth = "100px";
+
+                if (hostConfig.factSet.title.maxWidth) {
+                    tdElement.style.maxWidth = hostConfig.factSet.title.maxWidth + "px";
+                }
+
                 tdElement.style.verticalAlign = "top";
 
                 let textBlock = new InternalTextBlock();
@@ -429,6 +435,7 @@ export class FactSet extends CardElement {
                 textBlock.color = hostConfig.factSet.title.color;
                 textBlock.isSubtle = hostConfig.factSet.title.isSubtle;
                 textBlock.weight = hostConfig.factSet.title.weight;
+                textBlock.wrap = hostConfig.factSet.title.wrap;
                 textBlock.separation = "none";
 
                 Utils.appendChild(tdElement, textBlock.render());
@@ -436,7 +443,6 @@ export class FactSet extends CardElement {
 
                 tdElement = document.createElement("td");
                 tdElement.style.padding = "0px 0px 0px 10px";
-                tdElement.style.minWidth = "100px";
                 tdElement.style.verticalAlign = "top";
 
                 textBlock = new InternalTextBlock();
@@ -445,6 +451,7 @@ export class FactSet extends CardElement {
                 textBlock.color = hostConfig.factSet.value.color;
                 textBlock.isSubtle = hostConfig.factSet.value.isSubtle;
                 textBlock.weight = hostConfig.factSet.value.weight;
+                textBlock.wrap = hostConfig.factSet.value.wrap;
                 textBlock.separation = "none";
 
                 Utils.appendChild(tdElement, textBlock.render());
@@ -2571,13 +2578,16 @@ var defaultHostConfig: HostConfig.IHostConfig = {
             color: "dark",
             size: "normal",
             isSubtle: false,
-            weight: "bolder"
+            weight: "bolder",
+            wrap: true,
+            maxWidth: 150
         },
         value: {
             color: "dark",
             size: "normal",
             isSubtle: false,
-            weight: "normal"
+            weight: "normal",
+            wrap: true
         },
         spacing: 10
     },

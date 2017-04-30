@@ -232,13 +232,16 @@ export abstract class HostContainer {
                     color: "dark",
                     size: "normal",
                     isSubtle: false,
-                    weight: "bolder"
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150
                 },
                 value: {
                     color: "dark",
                     size: "normal",
                     isSubtle: false,
-                    weight: "normal"
+                    weight: "normal",
+                    wrap: true
                 },
                 spacing: 10
             },

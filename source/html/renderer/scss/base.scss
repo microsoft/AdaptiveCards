@@ -29,7 +29,6 @@ $font-family: 'Segoe UI', sans-serif;
     $font-weight: 600, 
     $border: none, 
     $padding: 4px 10px 5px 10px, 
-    $min-width: 80px,
     $background-color: #0078D7,
     $color: white,
     $user-select: none,
@@ -48,7 +47,6 @@ $font-family: 'Segoe UI', sans-serif;
         text-overflow: ellipsis;
         border: $border;
         padding: $padding;
-        min-width: $min-width; 
         text-align: center;
         vertical-align: middle;
         cursor: default;
@@ -82,7 +80,6 @@ $font-family: 'Segoe UI', sans-serif;
     $hover-border: null,
     $hover-color: #005A9E,
     $padding: none,
-    $min-width: null, 
     $subdued: true,
     $text-align: null,
     $vertical-align: null
@@ -97,7 +94,6 @@ $font-family: 'Segoe UI', sans-serif;
         cursor: $cursor;
         border: $border;
         padding: $padding;
-        min-width: $min-width;
         text-align: $text-align;
         vertical-align: $vertical-align;
         color: $color;
