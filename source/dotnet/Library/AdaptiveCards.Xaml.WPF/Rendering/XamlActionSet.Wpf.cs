@@ -49,7 +49,7 @@ namespace AdaptiveCards.Rendering
                     {
                         if (uiActionBar.Children.Count > 0)
                         {
-                            uiAction.Margin = new Thickness(context.Config.Actions.Spacing, 0, 0, 0);
+                            uiAction.Margin = new Thickness(context.Config.Actions.ButtonSpacing, 0, 0, 0);
                         }
 
                         Grid.SetColumn(uiAction, iPos++);
