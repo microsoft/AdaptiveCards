@@ -28,17 +28,17 @@ namespace AdaptiveCards.Rendering
             outerGrid.Style = context.GetStyle("Adaptive.Card");
 #if WPF
             //TODO for Xamarin
-            outerGrid.Background = context.GetColorBrush(context.Options.AdaptiveCard.BackgroundColor);
+            outerGrid.Background = context.GetColorBrush(context.Config.AdaptiveCard.BackgroundColor);
 #endif
 
             outerGrid.SetBackgroundSource(card.BackgroundImage,context);
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
-            grid.Margin = new Thickness(context.Options.AdaptiveCard.Padding.Left,
-                context.Options.AdaptiveCard.Padding.Top,
-                context.Options.AdaptiveCard.Padding.Right,
-                context.Options.AdaptiveCard.Padding.Bottom);
+            grid.Margin = new Thickness(context.Config.AdaptiveCard.Padding.Left,
+                context.Config.AdaptiveCard.Padding.Top,
+                context.Config.AdaptiveCard.Padding.Right,
+                context.Config.AdaptiveCard.Padding.Bottom);
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 

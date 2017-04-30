@@ -31,16 +31,16 @@ namespace AdaptiveCards.Rendering
                     imageview.HorizontalOptions = LayoutOptions.FillAndExpand;
                     break;
                 case ImageSize.Small:
-                    imageview.WidthRequest = context.Options.ImageSizes.Small;
-                    imageview.HeightRequest = context.Options.ImageSizes.Small;
+                    imageview.WidthRequest = context.Config.ImageSizes.Small;
+                    imageview.HeightRequest = context.Config.ImageSizes.Small;
                     break;
                 case ImageSize.Medium:
-                    imageview.WidthRequest = context.Options.ImageSizes.Medium;
-                    imageview.HeightRequest = context.Options.ImageSizes.Medium;
+                    imageview.WidthRequest = context.Config.ImageSizes.Medium;
+                    imageview.HeightRequest = context.Config.ImageSizes.Medium;
                     break;
                 case ImageSize.Large:
-                    imageview.WidthRequest = context.Options.ImageSizes.Large;
-                    imageview.HeightRequest = context.Options.ImageSizes.Large;
+                    imageview.WidthRequest = context.Config.ImageSizes.Large;
+                    imageview.HeightRequest = context.Config.ImageSizes.Large;
                     break;
             }
         }

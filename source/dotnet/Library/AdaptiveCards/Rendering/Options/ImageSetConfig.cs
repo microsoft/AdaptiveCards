@@ -6,20 +6,13 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace AdaptiveCards.Rendering.Options
+namespace AdaptiveCards.Rendering.Config
 {
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ImageOptions : CardElementOptions
+    public class ImageSetConfig : CardElementConfig
     {
-        public ImageOptions() { }
-    }
-
-
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ImageSetOptions : CardElementOptions
-    {
-        public ImageSetOptions() { }
+        public ImageSetConfig() { }
 
         public ImageSize ImageSize { get; set; } = ImageSize.Medium;
     }

@@ -7,12 +7,12 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Converters;
 
-namespace AdaptiveCards.Rendering.Options
+namespace AdaptiveCards.Rendering.Config
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class AdaptiveCardOptions
+    public class AdaptiveCardConfig
     {
-        public AdaptiveCardOptions() { }
+        public AdaptiveCardConfig() { }
 
         /// <summary>
         ///  Padding for the card

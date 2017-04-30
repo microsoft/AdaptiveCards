@@ -11,7 +11,7 @@ namespace AdaptiveCards.Rendering
         public static void AddActions(Grid uiContainer, List<ActionBase> actions, RenderContext context)
         {
             var actionsToProcess = actions
-                .Take(context.Options.Actions.MaxActions).ToList();
+                .Take(context.Config.Actions.MaxActions).ToList();
             if (!actionsToProcess.Any())
                 return;                
                    

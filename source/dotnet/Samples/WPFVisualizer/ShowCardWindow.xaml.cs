@@ -5,7 +5,7 @@ using AdaptiveCards;
 using Newtonsoft.Json;
 using AC = AdaptiveCards;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 
 namespace WpfVisualizer
 {
@@ -29,7 +29,7 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var renderer = new XamlRendererExtended(new HostOptions(), this._resources, OnAction);
+            var renderer = new XamlRendererExtended(new HostConfig(), this._resources, OnAction);
             var element = renderer.RenderShowCard(_card);
 
             this.Body.Children.Add(element);

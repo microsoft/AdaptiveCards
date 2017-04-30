@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Text;
 using AdaptiveCards.Rendering;
 
-namespace AdaptiveCards.Rendering.Options
+namespace AdaptiveCards.Rendering.Config
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class HostOptions
+    public class HostConfig
     {
-        public HostOptions() { }
+        public HostConfig() { }
 
         /// <summary>
         /// Font family for the card (can be comma delimited for fallback)
@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering.Options
         /// <summary>
         /// FontSize
         /// </summary>
-        public FontSizeOptions FontSizes { get; set; } = new FontSizeOptions();
+        public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
 
 
         /// <summary>
@@ -29,61 +29,59 @@ namespace AdaptiveCards.Rendering.Options
         /// </summary>
         public bool SupportsInteractivity { get; set; } = true;
 
-        public ImageSizeOptions ImageSizes { get; set; } = new ImageSizeOptions();
+        public ImageSizesConfig ImageSizes { get; set; } = new ImageSizesConfig();
 
         /// <summary>
         /// Separation settings 
         /// </summary>
-        public SeparationOption StrongSeparation { get; set; } = new SeparationOption() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
+        public SeparationConfig StrongSeparation { get; set; } = new SeparationConfig() { Spacing = 20, LineThickness = 1, LineColor = "#FF707070" };
 
         /// <summary>
         /// Color settings for the TextBlock
         /// </summary>
-        public ColorOptions Colors { get; set; } = new ColorOptions();
+        public ColorsConfig Colors { get; set; } = new ColorsConfig();
 
         //  ------ AdaptiveCard -------
-        public AdaptiveCardOptions AdaptiveCard { get; set; } = new AdaptiveCardOptions();
+        public AdaptiveCardConfig AdaptiveCard { get; set; } = new AdaptiveCardConfig();
 
         // ------ Containers ------
-        public ContainerOptions Container { get; set; } = new ContainerOptions();
+        public ContainerConfig Container { get; set; } = new ContainerConfig();
 
-        public ColumnOptions Column { get; set; } = new ColumnOptions();
+        public ColumnConfig Column { get; set; } = new ColumnConfig();
 
-        public ImageSetOptions ImageSet { get; set; } = new ImageSetOptions();
+        public ImageSetConfig ImageSet { get; set; } = new ImageSetConfig();
 
-        public FactSetOptions FactSet { get; set; } = new FactSetOptions();
+        public FactSetConfig FactSet { get; set; } = new FactSetConfig();
 
-        public ActionSetOptions ActionSet { get; set; } = new ActionSetOptions();
+        public ActionSetConfig ActionSet { get; set; } = new ActionSetConfig();
 
-        public ColumnSetOptions ColumnSet { get; set; } = new ColumnSetOptions();
+        public ColumnSetConfig ColumnSet { get; set; } = new ColumnSetConfig();
 
         // ------- Elements -------
-        public TextBlockOptions TextBlock { get; set; } = new TextBlockOptions();
+        public TextBlockConfig TextBlock { get; set; } = new TextBlockConfig();
 
-        public ImageOptions Image { get; set; } = new ImageOptions();
+        public ImageConfig Image { get; set; } = new ImageConfig();
 
         // ------- Inputs -------
-        public DateInputOptions DateInput { get; set; } = new DateInputOptions();
+        public DateInputConfig DateInput { get; set; } = new DateInputConfig();
 
-        public TimeInputOptions TimeInput { get; set; } = new TimeInputOptions();
+        public TimeInputConfig TimeInput { get; set; } = new TimeInputConfig();
 
-        public NumberInputOptions NumberInput { get; set; } = new NumberInputOptions();
+        public NumberInputConfig NumberInput { get; set; } = new NumberInputConfig();
 
-        public ToggleInputOptions ToggleInput { get; set; } = new ToggleInputOptions();
+        public ToggleInputConfig ToggleInput { get; set; } = new ToggleInputConfig();
 
-        public TextInputOptions TextInput { get; set; } = new TextInputOptions();
+        public TextInputConfig TextInput { get; set; } = new TextInputConfig();
 
-        public ChoiceSetOptions ChoiceSet { get; set; } = new ChoiceSetOptions();
+        public ChoiceSetConfig ChoiceSet { get; set; } = new ChoiceSetConfig();
 
         // ------ Actions------
-        public ActionOptions Actions { get; set; } = new ActionOptions();
+        public ActionConfig Actions { get; set; } = new ActionConfig();
 
-        public SeparationOption GetSeparationForElement(TypedElement element, bool strong)
+        public virtual SeparationConfig GetSeparationForElement(TypedElement element, bool strong)
         {
             if (strong)
             {
-                if (element.Type == AdaptiveCards.Column.TYPE)
-                    return this.Column.Separations.Strong ?? this.StrongSeparation;
                 return this.StrongSeparation;
             }
 
@@ -112,7 +110,7 @@ namespace AdaptiveCards.Rendering.Options
                     return this.Image.Separation;
 
                 case AdaptiveCards.Column.TYPE:
-                    return this.Column.Separations.Default;
+                    return this.Column.Separation;
 
                 case AdaptiveCards.ColumnSet.TYPE:
                     return this.ColumnSet.Separation;
@@ -150,7 +148,7 @@ namespace AdaptiveCards.Rendering.Options
                 default:
                     break;
             }
-            return new SeparationOption() { Spacing = 10 };
+            return new SeparationConfig() { Spacing = 10 };
         }
     }
 

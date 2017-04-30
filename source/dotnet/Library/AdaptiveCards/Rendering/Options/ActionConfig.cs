@@ -7,17 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdaptiveCards.Rendering.Options
+namespace AdaptiveCards.Rendering.Config
 {
     /// <summary>
     /// Properties which control rendering of actions
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ActionOptions
+    public class ActionConfig
     {
-        public ActionOptions() { }
+        public ActionConfig() { }
 
-        public ShowCardOptions ShowCard { get; set; } = new ShowCardOptions();
+        public ShowCardConfig ShowCard { get; set; } = new ShowCardConfig();
 
         /// <summary>
         /// Max number of actions to support on your Cards(e.g., 3)
@@ -61,9 +61,9 @@ namespace AdaptiveCards.Rendering.Options
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ShowCardOptions
+    public class ShowCardConfig
     {
-        public ShowCardOptions() { }
+        public ShowCardConfig() { }
 
         public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Inline;
 

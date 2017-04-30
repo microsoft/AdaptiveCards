@@ -6,32 +6,32 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace AdaptiveCards.Rendering.Options
+namespace AdaptiveCards.Rendering.Config
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ColorOptions
+    public class ColorsConfig
     {
-        public ColorOptions() { }
+        public ColorsConfig() { }
 
-        public ColorOption Default { get; set; } = new ColorOption("#FF000000");
+        public ColorConfig Default { get; set; } = new ColorConfig("#FF000000");
 
-        public ColorOption Accent { get; set; } = new ColorOption("#FF0000FF");
+        public ColorConfig Accent { get; set; } = new ColorConfig("#FF0000FF");
 
-        public ColorOption Dark { get; set; } = new ColorOption("#FF101010");
+        public ColorConfig Dark { get; set; } = new ColorConfig("#FF101010");
 
-        public ColorOption Light { get; set; } = new ColorOption("#FFFFFFFF");
+        public ColorConfig Light { get; set; } = new ColorConfig("#FFFFFFFF");
 
-        public ColorOption Good { get; set; } = new ColorOption("#FF008000");
+        public ColorConfig Good { get; set; } = new ColorConfig("#FF008000");
 
-        public ColorOption Warning { get; set; } = new ColorOption("#FFFFD700");
+        public ColorConfig Warning { get; set; } = new ColorConfig("#FFFFD700");
 
-        public ColorOption Attention { get; set; } = new ColorOption("#FF8B0000");
+        public ColorConfig Attention { get; set; } = new ColorConfig("#FF8B0000");
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ColorOption
+    public class ColorConfig
     {
-        public ColorOption(string normal, string subtle = null)
+        public ColorConfig(string normal, string subtle = null)
         {
             this.Normal = normal;
             if (subtle == null)

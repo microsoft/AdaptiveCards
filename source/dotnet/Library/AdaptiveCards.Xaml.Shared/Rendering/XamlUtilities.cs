@@ -1,5 +1,5 @@
 ﻿
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 using System;
 using System.Linq;
 using System.Windows;
@@ -20,13 +20,13 @@ namespace AdaptiveCards.Rendering
         public static Button CreateActionButton(ActionBase action, RenderContext context)
         {
 #if WPF
-            ActionOptions styling = context.Options.Actions;
+            ActionConfig styling = context.Config.Actions;
             var uiButton = new Button()
             {
                 Background = context.GetColorBrush(styling.BackgroundColor),
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
                 BorderBrush = context.GetColorBrush(styling.BorderColor),
-                BorderThickness = new Thickness(context.Options.Actions.BorderThickness)
+                BorderThickness = new Thickness(context.Config.Actions.BorderThickness)
             };
             uiButton.Style = context.GetStyle($"Adaptive.{action.Type}");
 

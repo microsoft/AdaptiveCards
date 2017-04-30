@@ -2,17 +2,17 @@
 using Newtonsoft.Json.Serialization;
 
 
-namespace AdaptiveCards.Rendering.Options
+namespace AdaptiveCards.Rendering.Config
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ContainerStyleOptions
+    public class ContainerStyleConfig
     {
-        public ContainerStyleOptions() { }
+        public ContainerStyleConfig() { }
 
         /// <summary>
         /// Separation settings between elements
         /// </summary>
-        public SeparationOptions Separations { get; set; } = new SeparationOptions();
+        public SeparationConfig Separation { get; set; } = new SeparationConfig();
 
         /// <summary>
         /// The background color to use for this container
