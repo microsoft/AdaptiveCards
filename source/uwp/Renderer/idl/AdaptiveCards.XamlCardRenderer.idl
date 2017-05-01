@@ -19,6 +19,10 @@ namespace AdaptiveCards
         runtimeclass AdaptiveColumnSet;
         runtimeclass AdaptiveFact;
         runtimeclass AdaptiveFactSet;
+        runtimeclass AdaptiveInputDate;
+        runtimeclass AdaptiveInputText;
+        runtimeclass AdaptiveInputTime;
+        runtimeclass AdaptiveInputToggle;
 
         runtimeclass AdaptiveBoundaryOptions;
         runtimeclass AdaptiveFontSizeOptions;
@@ -55,6 +59,10 @@ namespace AdaptiveCards
         interface IAdaptiveColumnSet;
         interface IAdaptiveFact;
         interface IAdaptiveFactSet;
+        interface IAdaptiveInputDate;
+        interface IAdaptiveInputText;
+        interface IAdaptiveInputTime;
+        interface IAdaptiveInputToggle;
 
         interface IAdaptiveBoundaryOptions;
         interface IAdaptiveFontSizeOptions;
@@ -132,7 +140,11 @@ namespace AdaptiveCards
             FactSet,
             Fact,
             ImageSet,
-            ActionGroup
+            ActionGroup,
+            InputDate,
+            InputText,
+            InputTime,
+            InputToggle,
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -332,6 +344,126 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageSet
         {
             [default] interface IAdaptiveImageSet;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(359e2cc5-9b8d-40bf-bbb2-2d3494d30991),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputDate)
+        ]
+        interface IAdaptiveInputDate : IInspectable
+        {
+            [propget] HRESULT Max([out, retval] HSTRING* value);
+            [propput] HRESULT Max([in] HSTRING value);
+
+            [propget] HRESULT Min([out, retval] HSTRING* value);
+            [propput] HRESULT Min([in] HSTRING value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputDate
+        {
+            [default] interface IAdaptiveInputDate;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(ab30772b-172d-4595-bcd2-01001df19d1e),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputText)
+        ]
+        interface IAdaptiveInputText : IInspectable
+        {
+            [propget] HRESULT IsMultiline([out, retval] boolean* value);
+            [propput] HRESULT IsMultiline([in] boolean value);
+
+            [propget] HRESULT MaxLength([out, retval] UINT32 *value);
+            [propput] HRESULT MaxLength([in] UINT32 value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputText
+        {
+            [default] interface IAdaptiveInputText;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(1ee90aff-93e8-4292-ac49-39d4c3289cd9),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputTime)
+        ]
+        interface IAdaptiveInputTime : IInspectable
+        {
+            [propget] HRESULT Max([out, retval] HSTRING* value);
+            [propput] HRESULT Max([in] HSTRING value);
+
+            [propget] HRESULT Min([out, retval] HSTRING* value);
+            [propput] HRESULT Min([in] HSTRING value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputTime
+        {
+            [default] interface IAdaptiveInputTime;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(e8af72a5-597c-4a19-b9c2-1a597db1c79a),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputToggle)
+        ]
+        interface IAdaptiveInputToggle : IInspectable
+        {
+            [propget] HRESULT Title([out, retval] HSTRING* value);
+            [propput] HRESULT Title([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+
+            [propget] HRESULT ValueOff([out, retval] HSTRING* value);
+            [propput] HRESULT ValueOff([in] HSTRING value);
+
+            [propget] HRESULT ValueOn([out, retval] HSTRING* value);
+            [propput] HRESULT ValueOn([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputToggle
+        {
+            [default] interface IAdaptiveInputToggle;
             interface IAdaptiveCardElement;
         };
 

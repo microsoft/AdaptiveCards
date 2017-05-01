@@ -25,6 +25,7 @@ using namespace ABI::Windows::Storage::Streams;
 using namespace ABI::Windows::UI::Text;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
@@ -46,6 +47,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputDate] = std::bind(&XamlBuilder::BuildInputDate, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputTime] = std::bind(&XamlBuilder::BuildInputTime, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputToggle] = std::bind(&XamlBuilder::BuildInputToggle, this, std::placeholders::_1, std::placeholders::_2);
 
         m_hostOptions = Make<AdaptiveHostOptions>();
 
@@ -892,5 +897,120 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // TODO: 11508861
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
+    }
+
+    void XamlBuilder::BuildInputDate(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputDateControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputDate> adaptiveInputDate;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputDate));
+
+        ComPtr<ICalendarDatePicker> datePicker = XamlHelpers::CreateXamlClass<ICalendarDatePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CalendarDatePicker));
+
+        HString placeHolderText;
+        THROW_IF_FAILED(adaptiveInputDate->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(datePicker->put_PlaceholderText(placeHolderText.Get()));
+
+        // TODO: Handle parsing dates for min/max and value
+
+        // TODO: 11508861
+        THROW_IF_FAILED(datePicker.CopyTo(inputDateControl));
+    }
+
+    void XamlBuilder::BuildInputText(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputTextControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputText> adaptiveInputText;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputText));
+
+        ComPtr<ITextBox> textBox = XamlHelpers::CreateXamlClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
+
+        boolean isMultiLine;
+        THROW_IF_FAILED(adaptiveInputText->get_IsMultiline(&isMultiLine));
+        THROW_IF_FAILED(textBox->put_AcceptsReturn(isMultiLine));
+
+        HString textValue;
+        THROW_IF_FAILED(adaptiveInputText->get_Value(textValue.GetAddressOf()));
+        THROW_IF_FAILED(textBox->put_Text(textValue.Get()));
+
+        UINT32 maxLength;
+        THROW_IF_FAILED(adaptiveInputText->get_MaxLength(&maxLength));
+        THROW_IF_FAILED(textBox->put_MaxLength(maxLength));
+
+        ComPtr<ITextBox2> textBox2;
+        THROW_IF_FAILED(textBox.As(&textBox2));
+
+        HString placeHolderText;
+        THROW_IF_FAILED(adaptiveInputText->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
+
+        // TODO: 11508861
+        THROW_IF_FAILED(textBox.CopyTo(inputTextControl));
+    }
+
+    void XamlBuilder::BuildInputTime(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputTimeControl)
+    {
+        ComPtr<ITimePicker> timePicker = XamlHelpers::CreateXamlClass<ITimePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TimePicker));
+
+        // TODO: Handle placeholder text and parsing times for min/max and value
+
+        // TODO: 11508861
+        THROW_IF_FAILED(timePicker.CopyTo(inputTimeControl));
+    }
+
+    void XamlBuilder::BuildInputToggle(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputToggleControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputToggle> adaptiveInputToggle;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputToggle));
+
+        ComPtr<ICheckBox> checkBox = XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+        ComPtr<IContentControl> contentControl;
+        THROW_IF_FAILED(checkBox.As(&contentControl));
+
+        HString title;
+        THROW_IF_FAILED(adaptiveInputToggle->get_Title(title.GetAddressOf()));
+
+        ComPtr<ITextBlock> content = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+        THROW_IF_FAILED(content->put_Text(title.Get()));
+        THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+
+        HString value;
+        THROW_IF_FAILED(adaptiveInputToggle->get_Value(value.GetAddressOf()));
+
+        INT32 compareTrue;
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), HStringReference(L"true").Get(), &compareTrue));
+
+        HString valueOn;
+        THROW_IF_FAILED(adaptiveInputToggle->get_ValueOn(valueOn.GetAddressOf()));
+
+        INT32 compareValueOn;
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), valueOn.Get(), &compareValueOn));
+
+        bool isChecked = (compareTrue == 0) || (compareValueOn == 0);
+
+        ComPtr<IPropertyValueStatics> propertyValueStatics;
+        ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
+        
+        ComPtr<IPropertyValue> propertyValue;
+        propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
+
+        ComPtr<ABI::Windows::Foundation::IReference<bool>> boolProperty;
+        propertyValue.As(&boolProperty);
+
+        ComPtr<IToggleButton> toggleButton;
+        THROW_IF_FAILED(checkBox.As(&toggleButton));
+        THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
+
+        // TODO: 11508861
+        THROW_IF_FAILED(checkBox.CopyTo(inputToggleControl));
     }
 }}

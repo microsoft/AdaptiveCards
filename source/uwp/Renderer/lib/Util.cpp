@@ -12,6 +12,10 @@
 #include "AdaptiveColumnSet.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
+#include "AdaptiveInputDate.h"
+#include "AdaptiveInputText.h"
+#include "AdaptiveInputTime.h"
+#include "AdaptiveInputToggle.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -78,6 +82,22 @@ HRESULT GenerateContainedElementsProjection(
         case CardElementType::ImageSet:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveImageSet>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::ImageSet>(containedElement)));
+            break;
+        case CardElementType::InputDate:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputDate>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::InputDate>(containedElement)));
+            break;
+        case CardElementType::InputText:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputText>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::InputText>(containedElement)));
+            break;
+        case CardElementType::InputTime:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputTime>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::InputTime>(containedElement)));
+            break;
+        case CardElementType::InputToggle:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputToggle>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::InputToggle>(containedElement)));
             break;
         default:
             return E_UNEXPECTED;
