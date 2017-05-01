@@ -995,11 +995,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         INT32 compareValueOn;
         THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), valueOn.Get(), &compareValueOn));
 
-        bool isChecked = false;
-        if (compareTrue == 0 || compareValueOn == 0)
-        {
-            isChecked = true;
-        }
+        bool isChecked = (compareTrue == 0) || (compareValueOn == 0);
 
         ComPtr<IPropertyValueStatics> propertyValueStatics;
         ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
