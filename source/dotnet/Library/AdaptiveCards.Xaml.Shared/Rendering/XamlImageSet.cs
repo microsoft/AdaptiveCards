@@ -33,7 +33,7 @@ namespace AdaptiveCards.Rendering
                     if (imageSet.ImageSize != ImageSize.Auto)
                         image.Size = imageSet.ImageSize;
                     else
-                        image.Size = context.Options.ImageSet.ImageSize;
+                        image.Size = context.Config.ImageSet.ImageSize;
 
                 var uiImage = context.Render(image);
                 uiImageSet.Add(uiImage);

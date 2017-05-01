@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using AdaptiveCards.Rendering;
 using System;
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 #if WPF
 using System.Windows.Shapes;
 using System.Windows.Controls;
@@ -24,7 +24,7 @@ namespace AdaptiveCards.Rendering
     {
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
-            var containerStyle = context.Options.Container.Normal;
+            var containerStyle = context.Config.Container.Normal;
             Container container = (Container)element;
             var uiContainer = new Grid();
             uiContainer.Margin = new Thickness(containerStyle.Padding.Left, containerStyle.Padding.Top, containerStyle.Padding.Right, containerStyle.Padding.Bottom);
@@ -84,15 +84,15 @@ namespace AdaptiveCards.Rendering
             {
                 var uiSep = new Grid();
                 uiSep.Style = context.GetStyle($"Adaptive.Separator");
-                SeparationOption sepStyle = null;
+                SeparationConfig sepStyle = null;
                 switch (seperationStyle)
                 {
                     case SeparationStyle.Default:
-                        sepStyle = context.Options.GetSeparationForElement(element, strong: false);
+                        sepStyle = context.Config.GetSeparationForElement(element, strong: false);
                         break;
 
                     case SeparationStyle.Strong:
-                        sepStyle = context.Options.GetSeparationForElement(element, strong: true);
+                        sepStyle = context.Config.GetSeparationForElement(element, strong: true);
                         break;
                 }
 

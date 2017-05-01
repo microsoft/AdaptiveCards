@@ -9,7 +9,7 @@ using Xamarin.Forms;
 using Microsoft.Bot.Connector.DirectLine;
 using Newtonsoft.Json.Linq;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 
 namespace AdaptiveCards.XamarinForms.BotClient
 {
@@ -40,7 +40,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
             _conversation = await _client.Conversations.StartConversationAsync().ConfigureAwait(false);
 
-            _renderer = new XamlRenderer(new HostOptions(), Application.Current.Resources, _onAction, _onMissingInput);
+            _renderer = new XamlRenderer(new HostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
         
             // AdaptiveTestBot
             // d5600769-0c92-4ab3-99f4-61380589a887

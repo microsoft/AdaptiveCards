@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             TimeInput input = (TimeInput)element;
-            if (context.Options.SupportsInteractivity)
+            if (context.Config.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };
                 textBox.Text = input.Placeholder;

@@ -1,5 +1,5 @@
 ﻿using AdaptiveCards;
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -15,9 +15,9 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 namespace WpfVisualizer
 {
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class HostOptionsEx
+//    public class HostConfigEx
 //    {
-//        public HostOptionsEx() { }
+//        public HostConfigEx() { }
 
 //        /// <summary>
 //        /// Font family for the card (can be comma delimited for fallback)
@@ -28,7 +28,7 @@ namespace WpfVisualizer
 //        /// FontSize
 //        /// </summary>
 //        [ExpandableObject]
-//        public FontSizeOptionsEx FontSize { get; set; } = new FontSizeOptionsEx();
+//        public FontSizeConfigEx FontSize { get; set; } = new FontSizeConfigEx();
 
 
 //        /// <summary>
@@ -48,7 +48,7 @@ namespace WpfVisualizer
 //        };
 
 //        [ExpandableObject]
-//        public ImageSizeOptionsEx ImageSize { get; set; } = new ImageSizeOptionsEx();
+//        public ImageSizeConfigEx ImageSize { get; set; } = new ImageSizeConfigEx();
 
 //        /// <summary>
 //        /// Max number of actions to support on your Cards(e.g., 3)
@@ -59,46 +59,46 @@ namespace WpfVisualizer
 //        /// Separation settings between vertical elements
 //        /// </summary>
 //        [ExpandableObject]
-//        public SeparationOptionsEx VerticalSeparation { get; set; } = new SeparationOptionsEx();
+//        public SeparationConfigEx VerticalSeparation { get; set; } = new SeparationConfigEx();
 
 //        /// <summary>
 //        /// Separation settings between horizontal elements
 //        /// </summary>
 //        [ExpandableObject]
-//        public SeparationOptionsEx HorizontalSeparation { get; set; } = new SeparationOptionsEx();
+//        public SeparationConfigEx HorizontalSeparation { get; set; } = new SeparationConfigEx();
 
 //        //  ------ AdaptiveCard -------
 //        [ExpandableObject]
-//        public AdaptiveCardOptionsEx AdaptiveCard { get; set; } = new AdaptiveCardOptionsEx();
+//        public AdaptiveCardConfigEx AdaptiveCard { get; set; } = new AdaptiveCardConfigEx();
 
 //        /// <summary>
 //        /// Color settings for the TextBlock
 //        /// </summary>
 //        [ExpandableObject]
-//        public ColorOptionsEx Colors { get; set; } = new ColorOptionsEx();
+//        public ColorConfigEx Colors { get; set; } = new ColorConfigEx();
 
 //        // ------ Containers ------
 //        [ExpandableObject]
-//        public ImageSetOptionsEx ImageSet { get; set; } = new ImageSetOptionsEx();
+//        public ImageSetConfigEx ImageSet { get; set; } = new ImageSetConfigEx();
 
 //        [ExpandableObject]
-//        public FactSetOptionsEx FactSet { get; set; } = new FactSetOptionsEx();
+//        public FactSetConfigEx FactSet { get; set; } = new FactSetConfigEx();
 
 //        // ------ Actions------
 //        [ExpandableObject]
-//        public ActionOptionsEx Actions { get; set; } = new ActionOptionsEx();
+//        public ActionConfigEx Actions { get; set; } = new ActionConfigEx();
 //    }
 
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class BoundaryOptionsEx
+//    public class BoundaryConfigEx
 //    {
-//        public BoundaryOptionsEx() { }
+//        public BoundaryConfigEx() { }
 
-//        public BoundaryOptionsEx(int allMargin)
+//        public BoundaryConfigEx(int allMargin)
 //        {
 //            Left = Right = Top = Bottom = allMargin;
 //        }
-//        public BoundaryOptionsEx(int left, int top, int right, int bottom)
+//        public BoundaryConfigEx(int left, int top, int right, int bottom)
 //        {
 //            Left = left;
 //            Top = top;
@@ -114,14 +114,14 @@ namespace WpfVisualizer
 //    }
 
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class AdaptiveCardOptionsEx
+//    public class AdaptiveCardConfigEx
 //    {
-//        public AdaptiveCardOptionsEx() { }
+//        public AdaptiveCardConfigEx() { }
 
 //        /// <summary>
 //        ///  Padding for the card
 //        /// </summary>
-//        public BoundaryOptionsEx Padding { get; set; } = new BoundaryOptionsEx(8);
+//        public BoundaryConfigEx Padding { get; set; } = new BoundaryConfigEx(8);
 
 //        /// <summary>
 //        /// Background color for card 
@@ -149,9 +149,9 @@ namespace WpfVisualizer
 //    /// Properties which control spacing and visual between elements
 //    /// </summary>
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class SeparationOptionsEx
+//    public class SeparationConfigEx
 //    {
-//        public SeparationOptionsEx() { }
+//        public SeparationConfigEx() { }
 
 //        /// <summary>
 //        /// Separation settings when Separation:default
@@ -192,16 +192,16 @@ namespace WpfVisualizer
 //    /// <summary>
 //    /// Properties which control rendering of TextBlock 
 //    /// </summary>
-//    //public class TextBlockOptions : CardElementOptions
+//    //public class TextBlockConfig : CardElementConfig
 //    //{
-//    //    public TextBlockOptions() { }
+//    //    public TextBlockConfig() { }
 
 //    //}
 
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class FontSizeOptionsEx
+//    public class FontSizeConfigEx
 //    {
-//        public FontSizeOptionsEx() { }
+//        public FontSizeConfigEx() { }
 
 //        public int Small { get; set; } = 10;
 
@@ -216,9 +216,9 @@ namespace WpfVisualizer
 //    }
 
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class ColorOptionsEx
+//    public class ColorConfigEx
 //    {
-//        public ColorOptionsEx() { }
+//        public ColorConfigEx() { }
 
 //        [ExpandableObject]
 //        public ColorOptionEx Default { get; set; } = new ColorOptionEx("#FF000000");
@@ -268,10 +268,10 @@ namespace WpfVisualizer
 //    }
 
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class ImageSizeOptionsEx
+//    public class ImageSizeConfigEx
 
 //    {
-//        public ImageSizeOptionsEx() { }
+//        public ImageSizeConfigEx() { }
 
 //        public int Small { get; set; } = 60;
 
@@ -284,12 +284,12 @@ namespace WpfVisualizer
 //    /// Properties which control rendering of actions
 //    /// </summary>
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class ActionOptionsEx
+//    public class ActionConfigEx
 //    {
-//        public ActionOptionsEx() { }
+//        public ActionConfigEx() { }
 
 //        [ExpandableObject]
-//        public ShowCardOptionsEx ShowCard { get; set; } = new ShowCardOptionsEx();
+//        public ShowCardConfigEx ShowCard { get; set; } = new ShowCardConfigEx();
 
 //        /// <summary>
 //        /// Arrange actions horizontal or vertical
@@ -323,14 +323,14 @@ namespace WpfVisualizer
 //        /// space between title and button edge
 //        /// </summary>
 //        [ExpandableObject]
-//        public BoundaryOptionsEx Padding { get; set; } = new BoundaryOptionsEx(4);
+//        public BoundaryConfigEx Padding { get; set; } = new BoundaryConfigEx(4);
 
 //    }
 
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class ShowCardOptionsEx
+//    public class ShowCardConfigEx
 //    {
-//        public ShowCardOptionsEx() { }
+//        public ShowCardConfigEx() { }
 
 //        public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Popup;
 
@@ -354,28 +354,28 @@ namespace WpfVisualizer
 //    }
 
 
-//    public class ImageSetOptionsEx
+//    public class ImageSetConfigEx
 //    {
-//        public ImageSetOptionsEx() { }
+//        public ImageSetConfigEx() { }
 
 //        public ImageSize ImageSize { get; set; } = ImageSize.Medium;
 //    }
 
-//    public class FactSetOptionsEx
+//    public class FactSetConfigEx
 //    {
-//        public FactSetOptionsEx() { }
+//        public FactSetConfigEx() { }
 
 //        /// <summary>
 //        /// TextBlock to use for Titles in factsets
 //        /// </summary>
 //        [ExpandableObject]
-//        public TextOptionsEx Title { get; set; } = new TextOptionsEx() { Size = TextSize.Normal, Color = TextColor.Default, IsSubtle = false, Weight = TextWeight.Bolder };
+//        public TextConfigEx Title { get; set; } = new TextConfigEx() { Size = TextSize.Normal, Color = TextColor.Default, IsSubtle = false, Weight = TextWeight.Bolder };
 
 //        /// <summary>
 //        /// TextBlock to use for Values in fact sets
 //        /// </summary>
 //        [ExpandableObject]
-//        public TextOptionsEx Value { get; set; } = new TextOptionsEx();
+//        public TextConfigEx Value { get; set; } = new TextConfigEx();
 
 //        /// <summary>
 //        /// Spacing between facts and values
@@ -384,9 +384,9 @@ namespace WpfVisualizer
 //    }
 
 //    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-//    public class TextOptionsEx
+//    public class TextConfigEx
 //    {
-//        public TextOptionsEx()
+//        public TextConfigEx()
 //        { }
 
 //        /// <summary>
