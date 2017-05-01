@@ -1,3 +1,3 @@
 export * from "./card-elements";
 export * from "./enums";
-export * from "./host-configuration";
+export * from "./host-config";

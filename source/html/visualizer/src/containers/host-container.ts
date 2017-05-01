@@ -87,7 +87,7 @@ export abstract class HostContainer {
         }
     }
 
-    public getHostConfiguration(): Adaptive.IHostConfiguration {
+    public getHostConfig(): Adaptive.IHostConfig {
         return {
             supportsInteractivity: true,
             strongSeparation: {
@@ -232,13 +232,16 @@ export abstract class HostContainer {
                     color: "dark",
                     size: "normal",
                     isSubtle: false,
-                    weight: "bolder"
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150
                 },
                 value: {
                     color: "dark",
                     size: "normal",
                     isSubtle: false,
-                    weight: "normal"
+                    weight: "normal",
+                    wrap: true
                 },
                 spacing: 10
             },
@@ -265,6 +268,10 @@ export abstract class HostContainer {
     }
 
     protected renderSpeech(speechString: string, showXml: boolean = false): HTMLElement {
+        if (!speechString) {
+            return null;
+        }
+
         var element = document.createElement("div");
 
         var button = document.createElement("button");
@@ -336,7 +343,11 @@ export abstract class HostContainer {
             element.appendChild(separator);
         }
 
-        element.appendChild(this.renderSpeech(speechString));
+        var renderedSpeech = this.renderSpeech(speechString);
+
+        if (renderedSpeech) {
+            element.appendChild(renderedSpeech);
+        }
 
         return element;
     }

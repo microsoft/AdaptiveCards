@@ -35,8 +35,8 @@ function renderCard(): HTMLElement {
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
 
     try {
-        var configuration = Adaptive.parseHostConfiguration(currentConfigPayload);
-        Adaptive.setConfiguration(configuration);
+        var configuration = Adaptive.parseHostConfig(currentConfigPayload);
+        Adaptive.setHostConfig(configuration);
     }
     catch (e) {
         // TODO
@@ -121,7 +121,7 @@ function loadStyleSheetAndConfig() {
 
     styleSheetLinkElement.href = selectedHostContainer.styleSheet;
 
-    currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfiguration(), null, '\t');
+    currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfig(), null, '\t');
 
     if (!isCardEditor) {
         setEditorText(currentConfigPayload);

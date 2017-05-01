@@ -15,7 +15,7 @@ export class TeamsConnectorContainer extends HostContainer {
         return element;
     }
 
-    public getHostConfiguration(): Adaptive.IHostConfiguration {
+    public getHostConfig(): Adaptive.IHostConfig {
         return {
             supportsInteractivity: true,
             strongSeparation: {
@@ -160,13 +160,16 @@ export class TeamsConnectorContainer extends HostContainer {
                     color: "dark",
                     size: "normal",
                     isSubtle: false,
-                    weight: "bolder"
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150,
                 },
                 value: {
                     color: "dark",
                     size: "normal",
                     isSubtle: false,
-                    weight: "normal"
+                    weight: "normal",
+                    wrap: true,
                 },
                 spacing: 10
             },

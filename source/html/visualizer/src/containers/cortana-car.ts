@@ -30,7 +30,7 @@ export class CortanaCarContainer extends HostContainer {
         this._width = width;
     }
 
-    public getHostConfiguration(): Adaptive.IHostConfiguration {
+    public getHostConfig(): Adaptive.IHostConfig {
         return {
             supportsInteractivity: true,
             strongSeparation: {
@@ -175,13 +175,16 @@ export class CortanaCarContainer extends HostContainer {
                     color: "light",
                     size: "normal",
                     isSubtle: false,
-                    weight: "bolder"
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150,
                 },
                 value: {
-                    color: "light",
+                    color: "dark",
                     size: "normal",
                     isSubtle: false,
-                    weight: "normal"
+                    weight: "normal",
+                    wrap: true,
                 },
                 spacing: 10
             },
