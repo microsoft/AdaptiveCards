@@ -83,7 +83,7 @@ export class ToastContainer extends HostContainer {
                 stretch: true,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
-                    inlineCardSpacing: 10,
+                    inlineTopMargin: 16,
                     backgroundColor: "#22FFFFFF",
                     padding: {
                         top: 10,
