@@ -1466,7 +1466,7 @@ class ActionCollection {
     private _owner: CardElement;
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
-    private _expandedAction: Action = null;
+    private _expandedAction: ShowCardAction = null;
 
     private hideActionCardPane() {
         this._actionCardContainer.innerHTML = '';
@@ -1476,6 +1476,12 @@ class ActionCollection {
         if (this.onHideActionCardPane) {
             this.onHideActionCardPane();
         }
+
+        if (this._expandedAction) {
+            raiseInlineCardExpandedEvent(this._expandedAction, false);
+        }
+
+        this._expandedAction = null;
     }
 
     private showActionCardPane(action: ShowCardAction) {
@@ -1502,6 +1508,10 @@ class ActionCollection {
         }
 
         Utils.appendChild(this._actionCardContainer, renderedCard);
+
+        raiseInlineCardExpandedEvent(action, true);
+
+        this._expandedAction = action;
     }
 
     private actionClicked(actionButton: ActionButton) {
@@ -1525,8 +1535,6 @@ class ActionCollection {
                     this._actionButtons[i].state = ActionButtonState.Normal;
                 }
 
-                this._expandedAction = null;
-
                 this.hideActionCardPane();
             }
             else {
@@ -1537,8 +1545,6 @@ class ActionCollection {
                 }
 
                 actionButton.state = ActionButtonState.Expanded;
-
-                this._expandedAction = actionButton.action;
 
                 this.showActionCardPane(actionButton.action);
             }
@@ -2173,6 +2179,12 @@ function raiseExecuteActionEvent(action: ExternalAction) {
     }
 }
 
+function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolean) {
+    if (AdaptiveCard.onInlineCardExpanded != null) {
+        AdaptiveCard.onInlineCardExpanded(action, isExpanded);
+    }
+}
+
 function raiseShowPopupCardEvent(action: ShowCardAction) {
     if (AdaptiveCard.onShowPopupCard != null) {
         AdaptiveCard.onShowPopupCard(action);
@@ -2311,6 +2323,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     static onExecuteAction: (action: ExternalAction) => void = null;
     static onShowPopupCard: (action: ShowCardAction) => void = null;
+    static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
     static initialize() {

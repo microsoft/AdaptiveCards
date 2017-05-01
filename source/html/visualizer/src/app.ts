@@ -396,6 +396,10 @@ function switchToConfigEditor() {
     editor.focus();
 }
 
+function inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
+    alert("Card \"" + action.title + "\" " + (isExpanded ? "expanded" : "collapsed"));
+}
+
 window.onload = () => {
     currentConfigPayload = Constants.defaultConfigPayload;
 
@@ -409,6 +413,9 @@ window.onload = () => {
     
     Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
     Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
+
+    // Uncomment to test the onInlineCardExpanded event:
+    // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
     
     Adaptive.AdaptiveCard.onParseError = (error: Adaptive.IValidationError) => {
         lastValidationErrors.push(error);
