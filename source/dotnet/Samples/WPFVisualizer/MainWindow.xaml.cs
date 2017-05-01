@@ -21,6 +21,7 @@ using AdaptiveCards.Rendering.Config;
 using System.ComponentModel;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using System.Threading.Tasks;
+using System.Windows.Media.Effects;
 
 namespace WpfVisualizer
 {
@@ -55,6 +56,15 @@ namespace WpfVisualizer
             hostConfig.AdaptiveCard.BackgroundColor = Colors.WhiteSmoke.ToString();
             this.Renderer = new XamlRendererExtended(hostConfig, this.Resources, _onAction, _OnMissingInput);
             this.hostConfigEditor.SelectedObject = hostConfig;
+
+            foreach (var style in Directory.GetFiles(@"..\..\..\..\..\..\samples\Themes", "*.json"))
+            {
+                this.hostConfigs.Items.Add(new ComboBoxItem()
+                {
+                    Content = Path.GetFileNameWithoutExtension(style),
+                    Tag = style
+                });
+            }
         }
 
         private void Config_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -71,6 +81,10 @@ namespace WpfVisualizer
             get
             {
                 return (HostConfig)this.hostConfigEditor.SelectedObject;
+            }
+            set
+            {
+                this.hostConfigEditor.SelectedObject = value;
             }
         }
 
@@ -99,8 +113,16 @@ namespace WpfVisualizer
                     if (_card != null)
                     {
                         this.Renderer = new XamlRendererExtended(this.HostConfig, this.Resources, _onAction, _OnMissingInput);
-                        var element = this.Renderer.RenderAdaptiveCard(_card, hostConfig: HostConfig);
-                        this.cardGrid.Children.Add(element);
+                        var uiCard = this.Renderer.RenderAdaptiveCard(_card, hostConfig: HostConfig);
+                        uiCard.Effect = new DropShadowEffect()
+                        {
+                            BlurRadius = 15,
+                            Direction = -90,
+                            RenderingBias = RenderingBias.Quality,
+                            ShadowDepth = 2
+                        };
+ 
+                        this.cardGrid.Children.Add(uiCard);
                     }
                 }
                 catch (Exception err)
@@ -331,6 +353,40 @@ namespace WpfVisualizer
         private void options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _dirty = true;
+        }
+
+        private void hostConfigs_Selected(object sender, RoutedEventArgs e)
+        {
+            var config = JsonConvert.DeserializeObject<HostConfig>(File.ReadAllText((string)((ComboBoxItem)this.hostConfigs.SelectedItem).Tag));
+            this.HostConfig = config;
+            _dirty = true;
+        }
+
+        private void loadConfig_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "Json documents (*.json)|*.json";
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                var json = File.ReadAllText(dlg.FileName);
+                this.HostConfig = JsonConvert.DeserializeObject<HostConfig>(json);
+                _dirty = true;
+            }
+        }
+
+        private void saveConfig_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "Json documents (*.json)|*.json";
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                var json = JsonConvert.SerializeObject(this.HostConfig, Formatting.Indented);
+                File.WriteAllText(dlg.FileName, json);
+            }
         }
     }
 }
