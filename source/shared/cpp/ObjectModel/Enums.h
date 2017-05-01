@@ -104,7 +104,8 @@ enum class ImageStyle {
 };
 
 enum class ImageSize {
-    Auto = 0,
+    Default = 0,
+    Auto,
     Stretch,
     Small,
     Medium,
