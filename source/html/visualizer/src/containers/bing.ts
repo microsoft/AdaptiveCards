@@ -90,7 +90,7 @@ export class BingContainer extends HostContainer {
                 stretch: false,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
-                    inlineCardSpacing: 16,
+                    inlineTopMargin: 16,
                     backgroundColor: "#EFEFEF",
                     padding: {
                         top: 16,

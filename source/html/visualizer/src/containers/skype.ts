@@ -97,7 +97,7 @@ export class SkypeContainer extends HostContainer {
                 stretch: false,
                 showCard: {
                     actionMode: "popup",
-                    inlineCardSpacing: 16,
+                    inlineTopMargin: 16,
                     backgroundColor: "#AEEAEAEA",
                     padding: {
                         top: 16,

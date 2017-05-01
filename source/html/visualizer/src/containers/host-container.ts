@@ -148,7 +148,7 @@ export abstract class HostContainer {
                 stretch: false,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
-                    inlineCardSpacing: 16,
+                    inlineTopMargin: 16,
                     backgroundColor: "#08000000",
                     padding: {
                         top: 16,
