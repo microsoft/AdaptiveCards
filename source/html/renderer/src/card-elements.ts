@@ -884,7 +884,10 @@ export class ChoiceSetInput extends Input {
                 option.selected = true;
                 option.disabled = true;
                 option.hidden = true;
-                option.text = this.placeholder;
+
+                if (this.placeholder) {
+                    option.text = this.placeholder;
+                }
 
                 Utils.appendChild(this._selectElement, option);
 
