@@ -11,7 +11,6 @@ to render the card.  For example: use CSS in HTML to change the look and behavio
 | Property | Type | default | Description |
 |---|---|---|---|
 | **actions** | [ActionsConfig](#actionsconfig) | - | Defines config for actions in general|
-| **actionSet** | [ActionSetConfig](#actionsetconfig) | - | Defines config for ActionSet element|
 | **adaptiveCard**| [AdaptiveCardConfig](#adaptivecardconfig) | - | Defines adaptive card config |
 | **choiceSet**| [ChoiceSetConfig](#choicesetconfig) | - | Defines ChoiceSet config |
 | **colors** | [ColorsConfig](#colorsconfig) | - | Defines color pallette|
@@ -39,18 +38,13 @@ Defines config for how actions should be rendered
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| **showCard** | [ShowCardConfig](#showcardconfig)| - | Defines config for ShowCardAction|
 | **actionsOrientation** | Horizontal or Vertical | Horizontal | Defines actions as horizontal vs vertical |
 | **actionAlignment** | Left or center or right | center | should actions be aligned left, centered or right |
-| **backgroundColor** | string | #FF5098FF | Defines background for card when the showCard is shown inline|
-| **borderColor**  | string | #FF000000 | Defines color of border for action button |
-| **borderThickness**  | number | 1 | Defnes thickness of border around the action|
+| **buttonSpacing** | number | 8 | spacing between buttons in an actionSet|
 | **maxActions** | number | 5 | max number of actions that the app wants to support|
-| **textColor**  | string | #FFFFFFFF | Defines color of title for action button |
-| **fontWeight**  | number  | #FFFFFFFF | Defines color of title for action button |
-| **fontSize**  | number  | 12 | Defines size of the text on the action btton |
-| **spacing** | number | 8 | spacing between buttons in an actionSet|
-| **padding** | [SpacingDefinition](#spacingdefinition)| 4,4,4,4| The default padding around the title of the button |
+| **separation** | [SeparationConfig](#separationconfig) | - | Defines separation between actionSet and previous elements | 
+| **showCard** | [ShowCardActionConfig](#showcardactionconfig)| - | Defines config for ShowCardAction|
+| **stretch** | bool | false | Should buttons stretch to fill horizontal space or not |
 
 ## ActionSetConfig
 Defines ActionSet config
@@ -240,14 +234,15 @@ Properties which define spacing, line thickness and color for separating element
 | **lineColor** | string | - | color defined as RGBa value #AARRGGBB   |
 
 
-## ShowCardConfig
+## ShowCardActionConfig
 The config for showing a card action.
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| **actionMode** | inline or popup| Inline| Defines whether showCard should popup or be displayed inline|
+| **actionMode** | [ShowActionMode](#showactionmode) | InlineEdgeToEdge | Defines whether showCard should popup or be displayed inline or inline with background extended to container boundary|
 | **backgroundColor** | string | #FFF8F8F8"| Defines inline slide-out background color |  
-| **autoPadding** | bool | true| when inline will automatically expand padding to card boundary (it looks nice)|
+| **inlineTopMargin** | number | when in inline mode defines the space between action buttons and the inline card |
+| **padding** | [SpacingDefinition]](#spacingdefinition) | {16,16,16,16} | The padding for the card when shown inline  |
 
 ## SpacingDefinition
 Defines left,top, right and bottom number values
@@ -259,5 +254,15 @@ Defines left,top, right and bottom number values
 | **top**| number | 0 | define top value |
 | **bottom**| number | 0 | define bottom value |
 
+## ShowActionMode
+Controls how to show the card for a ShowActionCard 
+
+| Value | Meaning |
+|---|---|
+| **InlineEdgeToEdge** | Show the card inline, but with background color extending to container boundaries |
+| **Inline** | Show the card inline |
+| **Popup** | Popup a window to show the card |
+
 # Sample theme
 Go to [HostConfig.json](../samples/Themes/HostConfig.json) to see sample theme.
+

@@ -13,16 +13,10 @@ namespace AdaptiveCards.Rendering.Config
     /// Properties which control rendering of actions
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ActionConfig
+    public class ActionConfig 
     {
         public ActionConfig() { }
 
-        public ShowCardConfig ShowCard { get; set; } = new ShowCardConfig();
-
-        /// <summary>
-        /// Max number of actions to support on your Cards(e.g., 3)
-        /// </summary>
-        public int MaxActions { get; set; } = 5;
 
         /// <summary>
         /// Arrange actions horizontal or vertical
@@ -37,6 +31,40 @@ namespace AdaptiveCards.Rendering.Config
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BackgroundColor { get; set; } = "#FF5098FF";
 
+        /// <summary>
+        /// Space between actions
+        /// </summary>
+        public int ButtonSpacing { get; set; } = 8;
+
+        /// <summary>
+        /// Max number of actions to support on your Cards(e.g., 3)
+        /// </summary>
+        public int MaxActions { get; set; } = 5;
+
+        /// <summary>
+        /// Separation settings between elements
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public SeparationConfig Separation { get; set; } = new SeparationConfig() { Spacing = 10 };
+
+        /// <summary>
+        /// ShowCard configuration
+        /// </summary>
+        public ShowCardConfig ShowCard { get; set; } = new ShowCardConfig();
+
+        /// <summary>
+        /// Should buttons stretch to fill horizontal space?
+        /// </summary>
+        public bool Stretch { get; set; } = true;
+
+        /// <summary>
+        /// extra stuff
+        /// </summary>
+        /// 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public SpacingDefinition Padding { get; set; } = new SpacingDefinition(4);
+
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BorderColor { get; set; } = "#FF000000";
 
@@ -49,17 +77,6 @@ namespace AdaptiveCards.Rendering.Config
 
         public int FontSize { get; set; } = 12;
 
-        /// <summary>
-        /// Space between actions
-        /// </summary>
-        public int Spacing { get; set; } = 8;
-
-        /// <summary>
-        /// space between title and button edge
-        /// </summary>
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public SpacingDefinition Padding { get; set; } = new SpacingDefinition(4);
 
     }
 
@@ -68,7 +85,7 @@ namespace AdaptiveCards.Rendering.Config
     {
         public ShowCardConfig() { }
 
-        public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Inline;
+        public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.InlineEdgeToEdge;
 
         /// <summary>
         /// Background color for showcard area
@@ -76,15 +93,32 @@ namespace AdaptiveCards.Rendering.Config
         public string BackgroundColor { get; set; } = "#FFF8F8F8";
 
         /// <summary>
-        /// If actionMode is inline and AutoPadding is on then the background will extend to the edges of the parent card.
+        /// If actionMode is inline this is the margin between the inline card and the actions
         /// </summary>
-        public bool AutoPadding { get; set; } = true;
+        public int InlineTopMargin { get; set; } = 8;
+
+        /// <summary>
+        /// Padding for the card when shown inline.  
+        /// </summary>
+        public SpacingDefinition Padding { get; set; } = new SpacingDefinition(10, 10, 10, 10);
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum ShowCardActionMode
     {
+        /// <summary>
+        /// Show the card inline, but with background color extending to container boundaries
+        /// </summary>
+        InlineEdgeToEdge,
+
+        /// <summary>
+        /// Show the card inline 
+        /// </summary>
         Inline,
+
+        /// <summary>
+        /// Popup the card 
+        /// </summary>
         Popup
     }
 

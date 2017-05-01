@@ -36,6 +36,7 @@ namespace AdaptiveCards.Rendering
                 FontWeight = FontWeight.FromOpenTypeWeight(styling.FontWeight),
                 FontSize = styling.FontSize,
                 Foreground = context.GetColorBrush(styling.TextColor),
+                TextAlignment = TextAlignment.Center,
                 Margin = new Thickness(styling.Padding.Left, styling.Padding.Top, styling.Padding.Right, styling.Padding.Bottom) ,
             };
             uiTitle.Style = context.GetStyle($"Adaptive.Action.Title");

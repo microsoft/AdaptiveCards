@@ -19,13 +19,19 @@ namespace AdaptiveCards.Rendering
             if (actionsToProcess.Any() == true)
             {
                 var uiActionBar = new UniformGrid();
+
                 if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
                     uiActionBar.Columns = actionsToProcess.Count();
                 else
                     uiActionBar.Rows = actionsToProcess.Count();
+
                 uiActionBar.HorizontalAlignment = (System.Windows.HorizontalAlignment)Enum.Parse(typeof(System.Windows.HorizontalAlignment), context.Config.Actions.ActionAlignment.ToString());
                 uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
                 uiActionBar.Style = context.GetStyle("Adaptive.Actions");
+
+                if (context.Config.Actions.Stretch)
+                    uiActionBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+
                 if (uiContainer.RowDefinitions.Count > 0)
                 {
                     XamlContainer.AddSeperator(context, new ActionSet(), uiContainer, SeparationStyle.Default);
@@ -34,7 +40,10 @@ namespace AdaptiveCards.Rendering
                 Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);
                 uiContainer.Children.Add(uiActionBar);
 
-                if (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline && actionsToProcess.Where(a => a is ShowCardAction).Any())
+                bool isInline = (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline || context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.InlineEdgeToEdge);
+
+                if (isInline &&
+                    actionsToProcess.Where(a => a is ShowCardAction).Any())
                 {
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 }
@@ -47,35 +56,43 @@ namespace AdaptiveCards.Rendering
                     var uiAction = (Button)context.Render(action);
                     if (uiAction != null)
                     {
+                        if (context.Config.Actions.Stretch)
+                            uiAction.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch;
+
                         if (uiActionBar.Children.Count > 0)
                         {
-                            uiAction.Margin = new Thickness(context.Config.Actions.Spacing, 0, 0, 0);
+                            if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
+                                uiAction.Margin = new Thickness(context.Config.Actions.ButtonSpacing, 0, 0, 0);
+                            else
+                                uiAction.Margin = new Thickness(0, context.Config.Actions.ButtonSpacing, 0, 0);
                         }
 
-                        Grid.SetColumn(uiAction, iPos++);
+                        if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
+                            Grid.SetColumn(uiAction, iPos++);
+
                         uiActionBar.Children.Add(uiAction);
 
                         if (action is ShowCardAction)
                         {
                             ShowCardAction showCardAction = (ShowCardAction)action;
-                            if (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline)
+                            if (isInline)
                             {
                                 Grid uiShowCardContainer = new Grid();
                                 uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
                                 uiShowCardContainer.DataContext = showCardAction;
-                                if (context.Config.Actions.ShowCard.AutoPadding == true)
+                                if (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.InlineEdgeToEdge)
                                 {
                                     uiShowCardContainer.Margin = new Thickness(
-                                        context.Config.AdaptiveCard.Padding.Left * -1, /*top*/0,
-                                        context.Config.AdaptiveCard.Padding.Right * -1,
-                                        context.Config.AdaptiveCard.Padding.Bottom * -1);
+                                        left: context.Config.AdaptiveCard.Padding.Left * -1,
+                                        top: context.Config.Actions.ShowCard.InlineTopMargin,
+                                        right: context.Config.AdaptiveCard.Padding.Right * -1,
+                                        bottom: context.Config.AdaptiveCard.Padding.Bottom * -1);
                                 }
                                 else
                                 {
-                                    uiShowCardContainer.Margin = new Thickness(0);
+                                    uiShowCardContainer.Margin = new Thickness(0, context.Config.Actions.ShowCard.InlineTopMargin, 0, 0);
                                 }
-                                uiShowCardContainer.Background =
-                                    context.GetColorBrush(context.Config.Actions.ShowCard.BackgroundColor);
+                                uiShowCardContainer.Background = context.GetColorBrush(context.Config.Actions.ShowCard.BackgroundColor);
                                 uiShowCardContainer.Visibility = Visibility.Collapsed;
 
                                 // render the card

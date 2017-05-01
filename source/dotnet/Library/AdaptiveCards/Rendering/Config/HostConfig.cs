@@ -16,8 +16,6 @@ namespace AdaptiveCards.Rendering.Config
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ActionConfig Actions { get; set; } = new ActionConfig();
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionSetConfig ActionSet { get; set; } = new ActionSetConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public AdaptiveCardConfig AdaptiveCard { get; set; } = new AdaptiveCardConfig();
@@ -132,7 +130,7 @@ namespace AdaptiveCards.Rendering.Config
                     return this.ImageSet.Separation;
 
                 case AdaptiveCards.ActionSet.TYPE:
-                    return this.ActionSet.Separation;
+                    return this.Actions.Separation;
 
                 case AdaptiveCards.ChoiceSet.TYPE:
                     return this.ChoiceSet.Separation;
