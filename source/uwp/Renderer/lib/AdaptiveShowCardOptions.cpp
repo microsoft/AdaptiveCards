@@ -20,7 +20,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardOptions::get_ActionMode(ABI::AdaptiveCards::XamlCardRenderer::ActionMode * value)
+    HRESULT  AdaptiveShowCardOptions::get_ActionMode(ABI::AdaptiveCards::XamlCardRenderer::ActionMode* value)
     {
         *value = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ActionMode>(m_sharedShowCardOptions.actionMode);
         return S_OK;
