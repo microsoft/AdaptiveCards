@@ -20,6 +20,8 @@ HRESULT HStringToUTF8(const HSTRING& in, std::string &out);
 
 bool Boolify(const boolean value);
 
+HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color);
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
