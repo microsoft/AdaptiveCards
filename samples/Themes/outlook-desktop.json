@@ -71,7 +71,7 @@
         "actionAlignment": "Left"
     },
     "adaptiveCard": {
-        "backgroundColor": "#00000000",
+        "backgroundColor": "#FFFFFFFF",
         "padding": {
             "left": 20,
             "top": 20,
