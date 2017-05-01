@@ -1,16 +1,11 @@
 #include "pch.h"
-#include "AdaptiveHostOptions.h"
 #include "Util.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 #include "AdaptiveActionOptions.h"
 #include "AdaptiveBoundaryOptions.h"
 #include "AdaptiveShowCardOptions.h"
 
 using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
-using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
@@ -27,19 +22,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_ShowCard(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveShowCardOptions ** showCardOptions)
+    HRESULT AdaptiveActionOptions::get_ShowCard(IAdaptiveShowCardOptions** showCardOptions)
     {
         return MakeAndInitialize<AdaptiveShowCardOptions>(showCardOptions, m_sharedActionOptions.showCard);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_ShowCard(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveShowCardOptions * showCardOptions)
+    HRESULT AdaptiveActionOptions::put_ShowCard(IAdaptiveShowCardOptions* showCardOptions)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_Padding(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions ** boundaryOptions)
+    HRESULT AdaptiveActionOptions::get_Padding(IAdaptiveBoundaryOptions** boundaryOptions)
     {
         return MakeAndInitialize<AdaptiveBoundaryOptions>(boundaryOptions, m_sharedActionOptions.padding);
     }
@@ -65,42 +60,42 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionOptions::get_FontWeight(INT32* value)
+    HRESULT AdaptiveActionOptions::get_FontWeight(INT32* value)
     {
         *value = m_sharedActionOptions.fontWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionOptions::put_FontWeight(INT32 value)
+    HRESULT AdaptiveActionOptions::put_FontWeight(INT32 value)
     {
         m_sharedActionOptions.fontWeight = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionOptions::get_FontSize(INT32* value)
+    HRESULT AdaptiveActionOptions::get_FontSize(INT32* value)
     {
         *value = m_sharedActionOptions.fontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionOptions::put_FontSize(INT32 value)
+    HRESULT AdaptiveActionOptions::put_FontSize(INT32 value)
     {
         m_sharedActionOptions.fontSize = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionOptions::get_Spacing(INT32* value)
+    HRESULT AdaptiveActionOptions::get_Spacing(INT32* value)
     {
         *value = m_sharedActionOptions.spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionOptions::put_Spacing(INT32 value)
+    HRESULT AdaptiveActionOptions::put_Spacing(INT32 value)
     {
         m_sharedActionOptions.spacing = value;
         return S_OK;

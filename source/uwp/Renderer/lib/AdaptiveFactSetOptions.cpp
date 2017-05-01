@@ -1,18 +1,10 @@
 #include "pch.h"
-#include "AdaptiveHostOptions.h"
-#include "Util.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 #include "AdaptiveFactSetOptions.h"
 #include "AdaptiveSeparationOptions.h"
 #include "AdaptiveTextOptions.h"
 
 using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -29,25 +21,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetOptions::get_Title(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions ** titleTextOptions)
+    HRESULT AdaptiveFactSetOptions::get_Title(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions** titleTextOptions)
     {
         return MakeAndInitialize<AdaptiveTextOptions>(titleTextOptions, m_sharedFactSetOptions.title);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetOptions::put_Title(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions * titleTextOptions)
+    HRESULT AdaptiveFactSetOptions::put_Title(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions* titleTextOptions)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetOptions::get_Value(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions ** valueTextOptions)
+    HRESULT AdaptiveFactSetOptions::get_Value(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions** valueTextOptions)
     {
         return MakeAndInitialize<AdaptiveTextOptions>(valueTextOptions, m_sharedFactSetOptions.title);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetOptions::put_Value(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions * valueTextOptions)
+    HRESULT AdaptiveFactSetOptions::put_Value(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions* valueTextOptions)
     {
         return E_NOTIMPL;
     }

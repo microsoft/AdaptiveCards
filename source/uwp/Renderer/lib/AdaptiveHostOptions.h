@@ -26,8 +26,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_SupportsInteractivity(_Out_ boolean* supportsInteractivity);
         IFACEMETHODIMP put_SupportsInteractivity(_In_ boolean supportsInteractivity);
 
-        IFACEMETHODIMP get_Colors(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorOptions **colorOptions);
-        IFACEMETHODIMP put_Colors(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorOptions *colorOptions);
+        IFACEMETHODIMP get_Colors(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorOptions** colorOptions);
+        IFACEMETHODIMP put_Colors(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorOptions* colorOptions);
 
         IFACEMETHODIMP get_ImageSizes(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImageSizeOptions** imageOptions);
         IFACEMETHODIMP put_ImageSizes(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImageSizeOptions* imageOptions);

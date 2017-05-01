@@ -48,7 +48,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  XamlCardRenderer::SetHostOptions(IAdaptiveHostOptions * hostOptions)
+    HRESULT  XamlCardRenderer::SetHostOptions(IAdaptiveHostOptions* hostOptions)
     {
         m_hostOptions = hostOptions;
         return S_OK;

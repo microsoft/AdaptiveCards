@@ -1,8 +1,4 @@
 #include "pch.h"
-#include "AdaptiveHostOptions.h"
-#include "Util.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 #include "AdaptiveFontSizeOptions.h"
 
 using namespace Microsoft::WRL;

@@ -1,16 +1,8 @@
 #include "pch.h"
-#include "AdaptiveHostOptions.h"
-#include "Util.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 #include "AdaptiveImageSizeOptions.h"
 
 using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {

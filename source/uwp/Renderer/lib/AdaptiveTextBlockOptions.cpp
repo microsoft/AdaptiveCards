@@ -1,17 +1,9 @@
 #include "pch.h"
-#include "AdaptiveHostOptions.h"
-#include "Util.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 #include "AdaptiveTextBlockOptions.h"
 #include "AdaptiveSeparationOptions.h"
 
 using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -27,61 +19,61 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::get_SmallSeparation(IAdaptiveSeparationOptions** separationOptions)
+    HRESULT AdaptiveTextBlockOptions::get_SmallSeparation(IAdaptiveSeparationOptions** separationOptions)
     {
         return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedTextBlockOptions.smallSeparation);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::put_SmallSeparation(IAdaptiveSeparationOptions*)
+    HRESULT AdaptiveTextBlockOptions::put_SmallSeparation(IAdaptiveSeparationOptions*)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::get_NormalSeparation(IAdaptiveSeparationOptions** separationOptions)
+    HRESULT AdaptiveTextBlockOptions::get_NormalSeparation(IAdaptiveSeparationOptions** separationOptions)
     {
         return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedTextBlockOptions.normalSeparation);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::put_NormalSeparation(IAdaptiveSeparationOptions*)
+    HRESULT AdaptiveTextBlockOptions::put_NormalSeparation(IAdaptiveSeparationOptions*)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::get_MediumSeparation(IAdaptiveSeparationOptions** separationOptions)
+    HRESULT AdaptiveTextBlockOptions::get_MediumSeparation(IAdaptiveSeparationOptions** separationOptions)
     {
         return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedTextBlockOptions.mediumSeparation);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::put_MediumSeparation(IAdaptiveSeparationOptions*)
+    HRESULT AdaptiveTextBlockOptions::put_MediumSeparation(IAdaptiveSeparationOptions*)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::get_LargeSeparation(IAdaptiveSeparationOptions** separationOptions)
+    HRESULT AdaptiveTextBlockOptions::get_LargeSeparation(IAdaptiveSeparationOptions** separationOptions)
     {
         return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedTextBlockOptions.largeSeparation);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::put_LargeSeparation(IAdaptiveSeparationOptions*)
+    HRESULT AdaptiveTextBlockOptions::put_LargeSeparation(IAdaptiveSeparationOptions*)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::get_ExtraLargeSeparation(IAdaptiveSeparationOptions** separationOptions)
+    HRESULT AdaptiveTextBlockOptions::get_ExtraLargeSeparation(IAdaptiveSeparationOptions** separationOptions)
     {
         return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedTextBlockOptions.extraLargeSeparation);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveTextBlockOptions::put_ExtraLargeSeparation(IAdaptiveSeparationOptions*)
+    HRESULT AdaptiveTextBlockOptions::put_ExtraLargeSeparation(IAdaptiveSeparationOptions*)
     {
         return E_NOTIMPL;
     }

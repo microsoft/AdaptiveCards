@@ -689,20 +689,20 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveTextBlockOptions : IInspectable
         {
-            [propget] HRESULT SmallSeparation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT SmallSeparation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT SmallSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT SmallSeparation([in] AdaptiveSeparationOptions* value);
 
-            [propget] HRESULT NormalSeparation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT NormalSeparation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT NormalSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT NormalSeparation([in] AdaptiveSeparationOptions* value);
 
-            [propget] HRESULT MediumSeparation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT MediumSeparation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT MediumSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT MediumSeparation([in] AdaptiveSeparationOptions* value);
 
-            [propget] HRESULT LargeSeparation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT LargeSeparation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT LargeSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT LargeSeparation([in] AdaptiveSeparationOptions* value);
 
-            [propget] HRESULT ExtraLargeSeparation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT ExtraLargeSeparation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT ExtraLargeSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT ExtraLargeSeparation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -724,8 +724,8 @@ namespace AdaptiveCards
             [propget] HRESULT ImageSize([out, retval] ImageSize* value);
             [propput] HRESULT ImageSize([in] ImageSize value);
 
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -744,11 +744,11 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveColumnOptions : IInspectable
         {
-            [propget] HRESULT DefaultSeparation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT DefaultSeparation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT DefaultSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT DefaultSeparation([in] AdaptiveSeparationOptions* value);
 
-            [propget] HRESULT StrongSeparation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT StrongSeparation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT StrongSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT StrongSeparation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -767,8 +767,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveContainerOptions : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -787,8 +787,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveColumnSetOptions : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -807,8 +807,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveImageOptions : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -827,8 +827,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveCardOptions : IInspectable
         {
-            [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions **value);
-            [propput] HRESULT Padding([in] AdaptiveBoundaryOptions *value);
+            [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions** value);
+            [propput] HRESULT Padding([in] AdaptiveBoundaryOptions* value);
 
             [propget] HRESULT BorderColor([out][retval] Windows.UI.Color* value);
             [propput] HRESULT BorderColor([in] Windows.UI.Color value);
@@ -865,17 +865,17 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveFactSetOptions : IInspectable
         {
-            [propget] HRESULT Title([out, retval] AdaptiveTextOptions **value);
-            [propput] HRESULT Title([in] AdaptiveTextOptions *value);
+            [propget] HRESULT Title([out, retval] AdaptiveTextOptions** value);
+            [propput] HRESULT Title([in] AdaptiveTextOptions* value);
 
-            [propget] HRESULT Value([out, retval] AdaptiveTextOptions **value);
-            [propput] HRESULT Value([in] AdaptiveTextOptions *value);
+            [propget] HRESULT Value([out, retval] AdaptiveTextOptions** value);
+            [propput] HRESULT Value([in] AdaptiveTextOptions* value);
 
             [propget] HRESULT Spacing([out][retval] INT32* value);
             [propput] HRESULT Spacing([in] INT32 value);
 
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -920,8 +920,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveActionOptions : IInspectable
         {
-            [propget] HRESULT ShowCard([out, retval] AdaptiveShowCardOptions **value);
-            [propput] HRESULT ShowCard([in] AdaptiveShowCardOptions *value);
+            [propget] HRESULT ShowCard([out, retval] AdaptiveShowCardOptions** value);
+            [propput] HRESULT ShowCard([in] AdaptiveShowCardOptions* value);
 
             [propget] HRESULT ActionsOrientation([out][retval] ActionsOrientation* value);
             [propput] HRESULT ActionsOrientation([in] ActionsOrientation value);
@@ -950,8 +950,8 @@ namespace AdaptiveCards
             [propget] HRESULT Spacing([out][retval] INT32* value);
             [propput] HRESULT Spacing([in] INT32 value);
 
-            [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions **value);
-            [propput] HRESULT Padding([in] AdaptiveBoundaryOptions *value);
+            [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions** value);
+            [propput] HRESULT Padding([in] AdaptiveBoundaryOptions* value);
         };
 
         [
@@ -970,8 +970,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveDateInputOptions : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -990,8 +990,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveTimeInputOptions : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -1010,8 +1010,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveNumberInputOptions : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -1030,8 +1030,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveToggleInputOptions : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -1050,8 +1050,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveTextInputOptions : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -1070,8 +1070,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveChoiceSetInputOptions : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -1108,53 +1108,53 @@ namespace AdaptiveCards
             [propget] HRESULT MaxActions([out, retval] INT32 *value);
             [propput] HRESULT MaxActions([in] INT32 value);
 
-            [propget] HRESULT StrongSeparation([out, retval] AdaptiveSeparationOptions **value);
-            [propput] HRESULT StrongSeparation([in] AdaptiveSeparationOptions *value);
+            [propget] HRESULT StrongSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT StrongSeparation([in] AdaptiveSeparationOptions* value);
 
-            [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCardOptions **value);
-            [propput] HRESULT AdaptiveCard([in] AdaptiveCardOptions *value);
+            [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCardOptions** value);
+            [propput] HRESULT AdaptiveCard([in] AdaptiveCardOptions* value);
 
-            [propget] HRESULT ImageSet([out, retval] AdaptiveImageSetOptions **value);
-            [propput] HRESULT ImageSet([in] AdaptiveImageSetOptions *value);
+            [propget] HRESULT ImageSet([out, retval] AdaptiveImageSetOptions** value);
+            [propput] HRESULT ImageSet([in] AdaptiveImageSetOptions* value);
 
-            [propget] HRESULT Image([out, retval] AdaptiveImageOptions **value);
-            [propput] HRESULT Image([in] AdaptiveImageOptions *value);
+            [propget] HRESULT Image([out, retval] AdaptiveImageOptions** value);
+            [propput] HRESULT Image([in] AdaptiveImageOptions* value);
 
-            [propget] HRESULT FactSet([out, retval] AdaptiveFactSetOptions **value);
-            [propput] HRESULT FactSet([in] AdaptiveFactSetOptions *value);
+            [propget] HRESULT FactSet([out, retval] AdaptiveFactSetOptions** value);
+            [propput] HRESULT FactSet([in] AdaptiveFactSetOptions* value);
 
-            [propget] HRESULT Column([out, retval] AdaptiveColumnOptions **value);
-            [propput] HRESULT Column([in] AdaptiveColumnOptions *value);
+            [propget] HRESULT Column([out, retval] AdaptiveColumnOptions** value);
+            [propput] HRESULT Column([in] AdaptiveColumnOptions* value);
 
-            [propget] HRESULT Container([out, retval] AdaptiveContainerOptions **value);
-            [propput] HRESULT Container([in] AdaptiveContainerOptions *value);
+            [propget] HRESULT Container([out, retval] AdaptiveContainerOptions** value);
+            [propput] HRESULT Container([in] AdaptiveContainerOptions* value);
 
-            [propget] HRESULT ColumnSet([out, retval] AdaptiveColumnSetOptions **value);
-            [propput] HRESULT ColumnSet([in] AdaptiveColumnSetOptions *value);
+            [propget] HRESULT ColumnSet([out, retval] AdaptiveColumnSetOptions** value);
+            [propput] HRESULT ColumnSet([in] AdaptiveColumnSetOptions* value);
 
-            [propget] HRESULT TextBlock([out, retval] AdaptiveTextBlockOptions **value);
-            [propput] HRESULT TextBlock([in] AdaptiveTextBlockOptions *value);
+            [propget] HRESULT TextBlock([out, retval] AdaptiveTextBlockOptions** value);
+            [propput] HRESULT TextBlock([in] AdaptiveTextBlockOptions* value);
 
-            [propget] HRESULT DateInput([out, retval] AdaptiveDateInputOptions **value);
-            [propput] HRESULT DateInput([in] AdaptiveDateInputOptions *value);
+            [propget] HRESULT DateInput([out, retval] AdaptiveDateInputOptions** value);
+            [propput] HRESULT DateInput([in] AdaptiveDateInputOptions* value);
 
-            [propget] HRESULT TimeInput([out, retval] AdaptiveTimeInputOptions **value);
-            [propput] HRESULT TimeInput([in] AdaptiveTimeInputOptions *value);
+            [propget] HRESULT TimeInput([out, retval] AdaptiveTimeInputOptions** value);
+            [propput] HRESULT TimeInput([in] AdaptiveTimeInputOptions* value);
 
-            [propget] HRESULT NumberInput([out, retval] AdaptiveNumberInputOptions **value);
-            [propput] HRESULT NumberInput([in] AdaptiveNumberInputOptions *value);
+            [propget] HRESULT NumberInput([out, retval] AdaptiveNumberInputOptions** value);
+            [propput] HRESULT NumberInput([in] AdaptiveNumberInputOptions* value);
 
-            [propget] HRESULT ToggleInput([out, retval] AdaptiveToggleInputOptions **value);
-            [propput] HRESULT ToggleInput([in] AdaptiveToggleInputOptions *value);
+            [propget] HRESULT ToggleInput([out, retval] AdaptiveToggleInputOptions** value);
+            [propput] HRESULT ToggleInput([in] AdaptiveToggleInputOptions* value);
 
-            [propget] HRESULT TextInput([out, retval] AdaptiveTextInputOptions **value);
-            [propput] HRESULT TextInput([in] AdaptiveTextInputOptions *value);
+            [propget] HRESULT TextInput([out, retval] AdaptiveTextInputOptions** value);
+            [propput] HRESULT TextInput([in] AdaptiveTextInputOptions* value);
 
-            [propget] HRESULT ChoiceSetInput([out, retval] AdaptiveChoiceSetInputOptions **value);
-            [propput] HRESULT ChoiceSetInput([in] AdaptiveChoiceSetInputOptions *value);
+            [propget] HRESULT ChoiceSetInput([out, retval] AdaptiveChoiceSetInputOptions** value);
+            [propput] HRESULT ChoiceSetInput([in] AdaptiveChoiceSetInputOptions* value);
 
-            [propget] HRESULT Actions([out, retval] AdaptiveActionOptions **value);
-            [propput] HRESULT Actions([in] AdaptiveActionOptions *value);
+            [propget] HRESULT Actions([out, retval] AdaptiveActionOptions** value);
+            [propput] HRESULT Actions([in] AdaptiveActionOptions* value);
         };
 
         [

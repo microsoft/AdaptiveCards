@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "AdaptiveHostOptions.h"
 #include "Util.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 #include "AdaptiveActionOptions.h"
 #include "AdaptiveCardOptions.h"
 #include "AdaptiveChoiceSetInputOptions.h"
@@ -24,11 +22,7 @@
 #include "AdaptiveToggleInputOptions.h"
 
 using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -53,13 +47,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_FontSizes(IAdaptiveFontSizeOptions ** fontSizeOptions)
+    HRESULT AdaptiveHostOptions::get_FontSizes(IAdaptiveFontSizeOptions** fontSizeOptions)
     {
         return MakeAndInitialize<AdaptiveFontSizeOptions>(fontSizeOptions, m_sharedHostOptions.fontSizes);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_FontSizes(IAdaptiveFontSizeOptions *)
+    HRESULT AdaptiveHostOptions::put_FontSizes(IAdaptiveFontSizeOptions*)
     {
         return E_NOTIMPL;
     }
@@ -79,25 +73,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveHostOptions::get_Colors(IAdaptiveColorOptions ** colorOptions)
+    HRESULT  AdaptiveHostOptions::get_Colors(IAdaptiveColorOptions** colorOptions)
     {
         return MakeAndInitialize<AdaptiveColorOptions>(colorOptions, m_sharedHostOptions.colors);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveHostOptions::put_Colors(IAdaptiveColorOptions * )
+    HRESULT  AdaptiveHostOptions::put_Colors(IAdaptiveColorOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_ImageSizes(IAdaptiveImageSizeOptions ** imageSizes)
+    HRESULT AdaptiveHostOptions::get_ImageSizes(IAdaptiveImageSizeOptions** imageSizes)
     {
         return MakeAndInitialize<AdaptiveImageSizeOptions>(imageSizes, m_sharedHostOptions.imageSizes);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_ImageSizes(IAdaptiveImageSizeOptions * )
+    HRESULT AdaptiveHostOptions::put_ImageSizes(IAdaptiveImageSizeOptions* )
     {
         return E_NOTIMPL;
     }
@@ -153,158 +147,158 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_Image(IAdaptiveImageOptions ** imageOptions)
+    HRESULT AdaptiveHostOptions::get_Image(IAdaptiveImageOptions** imageOptions)
     {
         return MakeAndInitialize<AdaptiveImageOptions>(imageOptions, m_sharedHostOptions.image);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_Image(IAdaptiveImageOptions * )
+    HRESULT AdaptiveHostOptions::put_Image(IAdaptiveImageOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_FactSet(IAdaptiveFactSetOptions ** factSetOptions)
+    HRESULT AdaptiveHostOptions::get_FactSet(IAdaptiveFactSetOptions** factSetOptions)
     {
         return MakeAndInitialize<AdaptiveFactSetOptions>(factSetOptions, m_sharedHostOptions.factSet);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_FactSet(IAdaptiveFactSetOptions * )
+    HRESULT AdaptiveHostOptions::put_FactSet(IAdaptiveFactSetOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_Column(IAdaptiveColumnOptions ** columnOptions)
+    HRESULT AdaptiveHostOptions::get_Column(IAdaptiveColumnOptions** columnOptions)
     {
         return MakeAndInitialize<AdaptiveColumnOptions>(columnOptions, m_sharedHostOptions.column);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_Column(IAdaptiveColumnOptions * )
+    HRESULT AdaptiveHostOptions::put_Column(IAdaptiveColumnOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_Container(IAdaptiveContainerOptions ** containerOptions)
+    HRESULT AdaptiveHostOptions::get_Container(IAdaptiveContainerOptions** containerOptions)
     {
         return MakeAndInitialize<AdaptiveContainerOptions>(containerOptions, m_sharedHostOptions.container);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_Container(IAdaptiveContainerOptions * )
+    HRESULT AdaptiveHostOptions::put_Container(IAdaptiveContainerOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_ColumnSet(IAdaptiveColumnSetOptions ** columnSetOptions)
+    HRESULT AdaptiveHostOptions::get_ColumnSet(IAdaptiveColumnSetOptions** columnSetOptions)
     {
         return MakeAndInitialize<AdaptiveColumnSetOptions>(columnSetOptions, m_sharedHostOptions.columnSet);
 
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_ColumnSet(IAdaptiveColumnSetOptions * )
+    HRESULT AdaptiveHostOptions::put_ColumnSet(IAdaptiveColumnSetOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_TextBlock(IAdaptiveTextBlockOptions ** textBlockOptions)
+    HRESULT AdaptiveHostOptions::get_TextBlock(IAdaptiveTextBlockOptions** textBlockOptions)
     {
         return MakeAndInitialize<AdaptiveTextBlockOptions>(textBlockOptions, m_sharedHostOptions.textBlock);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_TextBlock(IAdaptiveTextBlockOptions * )
+    HRESULT AdaptiveHostOptions::put_TextBlock(IAdaptiveTextBlockOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_DateInput(IAdaptiveDateInputOptions ** dateInputOptions)
+    HRESULT AdaptiveHostOptions::get_DateInput(IAdaptiveDateInputOptions** dateInputOptions)
     {
         return MakeAndInitialize<AdaptiveDateInputOptions>(dateInputOptions, m_sharedHostOptions.dateInput);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_DateInput(IAdaptiveDateInputOptions * )
+    HRESULT AdaptiveHostOptions::put_DateInput(IAdaptiveDateInputOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_TimeInput(IAdaptiveTimeInputOptions ** timeInputOptions)
+    HRESULT AdaptiveHostOptions::get_TimeInput(IAdaptiveTimeInputOptions** timeInputOptions)
     {
         return MakeAndInitialize<AdaptiveTimeInputOptions>(timeInputOptions, m_sharedHostOptions.timeInput);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_TimeInput(IAdaptiveTimeInputOptions * )
+    HRESULT AdaptiveHostOptions::put_TimeInput(IAdaptiveTimeInputOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_NumberInput(IAdaptiveNumberInputOptions ** numberInputOptions)
+    HRESULT AdaptiveHostOptions::get_NumberInput(IAdaptiveNumberInputOptions** numberInputOptions)
     {
         return MakeAndInitialize<AdaptiveNumberInputOptions>(numberInputOptions, m_sharedHostOptions.numberInput);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_NumberInput(IAdaptiveNumberInputOptions * )
+    HRESULT AdaptiveHostOptions::put_NumberInput(IAdaptiveNumberInputOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_ToggleInput(IAdaptiveToggleInputOptions ** toggleInputOptions)
+    HRESULT AdaptiveHostOptions::get_ToggleInput(IAdaptiveToggleInputOptions** toggleInputOptions)
     {
         return MakeAndInitialize<AdaptiveToggleInputOptions>(toggleInputOptions, m_sharedHostOptions.toggleInput);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_ToggleInput(IAdaptiveToggleInputOptions * )
+    HRESULT AdaptiveHostOptions::put_ToggleInput(IAdaptiveToggleInputOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_TextInput(IAdaptiveTextInputOptions ** textInputOptions)
+    HRESULT AdaptiveHostOptions::get_TextInput(IAdaptiveTextInputOptions** textInputOptions)
     {
         return MakeAndInitialize<AdaptiveTextInputOptions>(textInputOptions, m_sharedHostOptions.textInput);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_TextInput(IAdaptiveTextInputOptions * )
+    HRESULT AdaptiveHostOptions::put_TextInput(IAdaptiveTextInputOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_ChoiceSetInput(IAdaptiveChoiceSetInputOptions ** choiceSetOptions)
+    HRESULT AdaptiveHostOptions::get_ChoiceSetInput(IAdaptiveChoiceSetInputOptions** choiceSetOptions)
     {
         return MakeAndInitialize<AdaptiveChoiceSetInputOptions>(choiceSetOptions, m_sharedHostOptions.choiceSet);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_ChoiceSetInput(IAdaptiveChoiceSetInputOptions * )
+    HRESULT AdaptiveHostOptions::put_ChoiceSetInput(IAdaptiveChoiceSetInputOptions* )
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_Actions(IAdaptiveActionOptions ** actionOptions)
+    HRESULT AdaptiveHostOptions::get_Actions(IAdaptiveActionOptions** actionOptions)
     {
         return MakeAndInitialize<AdaptiveActionOptions>(actionOptions, m_sharedHostOptions.actions);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_Actions(IAdaptiveActionOptions * )
+    HRESULT AdaptiveHostOptions::put_Actions(IAdaptiveActionOptions* )
     {
         return E_NOTIMPL;
     }

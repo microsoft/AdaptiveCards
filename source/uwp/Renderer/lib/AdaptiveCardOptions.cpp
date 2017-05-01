@@ -1,15 +1,10 @@
 #include "pch.h"
-#include "AdaptiveHostOptions.h"
 #include "Util.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 #include "AdaptiveCardOptions.h"
 #include "AdaptiveBoundaryOptions.h"
 
 using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
-using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
@@ -26,7 +21,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardOptions::get_Padding(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions ** boundaryOptions)
+    HRESULT AdaptiveCardOptions::get_Padding(IAdaptiveBoundaryOptions** boundaryOptions)
     {
         return MakeAndInitialize<AdaptiveBoundaryOptions>(boundaryOptions, m_sharedAdaptiveCardOptions.padding);
     }
