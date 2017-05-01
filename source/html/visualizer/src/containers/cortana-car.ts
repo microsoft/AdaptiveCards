@@ -91,7 +91,7 @@ export class CortanaCarContainer extends HostContainer {
                 stretch: false,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
-                    inlineCardSpacing: 16,
+                    inlineTopMargin: 16,
                     backgroundColor: "#111111",
                     padding: {
                         top: 16,

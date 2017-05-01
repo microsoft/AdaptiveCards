@@ -202,7 +202,7 @@ function parseColumnConfiguration(obj: any): IColumnConfig {
 
 export interface IShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode,
-    inlineCardSpacing: number,
+    inlineTopMargin: number,
     backgroundColor: string,
     padding: ISpacingDefinition
 }
@@ -210,7 +210,7 @@ export interface IShowCardActionConfig {
 function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
     return obj ? {
         actionMode: obj["actionMode"],
-        inlineCardSpacing: obj["inlineCardSpacing"],
+        inlineTopMargin: obj["inlineTopMargin"],
         backgroundColor: obj["backgroundColor"],
         padding: parseSpacingDefinition(obj["padding"])
     } : null;

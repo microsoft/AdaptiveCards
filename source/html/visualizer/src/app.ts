@@ -6,6 +6,7 @@ import { BingContainer } from "./containers/bing";
 import { LiveTileContainer } from "./containers/live-tile";
 import { OutlookConnectorContainer } from "./containers/outlook-connector";
 import { SkypeContainer } from "./containers/skype";
+import { WebChatContainer } from "./containers/webchat";
 import { SpeechContainer } from "./containers/speech";
 import { TeamsConnectorContainer } from "./containers/teams-connector";
 import { ToastContainer } from "./containers/toast";
@@ -243,6 +244,11 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
+            "WebChat",
+            new WebChatContainer("css/webchat.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
             "Bing",
             new BingContainer(285, 150, "css/bing.css")));
 
@@ -259,8 +265,9 @@ function setupContainerPicker() {
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(
             "change", () => {
+                // Disable this for now because it interferes with dev.html
                 // update the query string
-                history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
+                // history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
 
                 loadStyleSheetAndConfig();
                 tryRenderCard();

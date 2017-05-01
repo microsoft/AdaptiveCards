@@ -1486,7 +1486,7 @@ class ActionCollection {
         var renderedCard = action.card.render();
 
         this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.marginTop = this.items.length > 1 ? hostConfig.actions.showCard.inlineCardSpacing + "px" : "0px";
+        this._actionCardContainer.style.marginTop = this.items.length > 1 ? hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
 
         if (hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
             var padding = this._owner.getNonZeroPadding();
@@ -2494,7 +2494,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         stretch: false,
         showCard: {
             actionMode: "inlineEdgeToEdge",
-            inlineCardSpacing: 16,
+            inlineTopMargin: 16,
             backgroundColor: "#22000000",
             padding: {
                 top: 16,

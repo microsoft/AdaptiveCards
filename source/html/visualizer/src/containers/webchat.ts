@@ -1,18 +1,40 @@
-import { HostContainer} from "./host-container";
+import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptive-cards";
 import * as Utils from "../utils";
 
-export class TeamsConnectorContainer extends HostContainer {
+export class WebChatContainer extends HostContainer {
     protected renderContainer(renderedCard: HTMLElement): HTMLElement {
-        var element = document.createElement("div");
-        element.style.borderTop = "1px solid #F1F1F1";
-        element.style.borderRight = "1px solid #F1F1F1";
-        element.style.borderBottom = "1px solid #F1F1F1";
-        element.style.border = "1px solid #F1F1F1"
+        var outerElement = document.createElement("div");
+        outerElement.className = "webChatOuterContainer";
 
-        element.appendChild(renderedCard);
+        window.addEventListener(
+            "resize",
+            () => {
+                if (outerElement.parentElement) {
+                    var bounds = outerElement.parentElement.getBoundingClientRect();
 
-        return element;
+                    var newWidth: string = "216px";
+
+                    if (bounds.width >= 500) {
+                        newWidth = "416px";
+                    }
+                    else if (bounds.width >= 400) {
+                        newWidth = "320px";
+                    }
+
+                    if (outerElement.style.width != newWidth) {
+                        outerElement.style.width = newWidth;
+                    }
+                }
+            });
+
+        var innerElement = document.createElement("div");
+        innerElement.className = "webChatInnerContainer";
+
+        innerElement.appendChild(renderedCard);
+        outerElement.appendChild(innerElement);
+
+        return outerElement;
     }
 
     public getHostConfig(): Adaptive.IHostConfig {
@@ -70,36 +92,36 @@ export class TeamsConnectorContainer extends HostContainer {
             actions: {
                 maxActions: 5,
                 separation: {
-                    spacing: 20
+                    spacing: 8
                 },
-                buttonSpacing: 10,
-                stretch: true,
+                buttonSpacing: 20,
+                stretch: false,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
                     backgroundColor: "#08000000",
                     padding: {
-                        top: 16,
-                        right: 16,
-                        bottom: 16,
-                        left: 16
+                        top: 8,
+                        right: 8,
+                        bottom: 8,
+                        left: 8
                     }
                 },
                 actionsOrientation: "horizontal",
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#00000000",
+                backgroundColor: "#FFFFFF",
                 padding: {
-                    left: 20,
-                    top: 20,
-                    right: 20,
-                    bottom: 20
+                    left: 8,
+                    top: 8,
+                    right: 8,
+                    bottom: 8
                 }
             },
             container: {
                 separation: {
-                    spacing: 20
+                    spacing: 8
                 },
                 normal: {
                 },
@@ -124,37 +146,37 @@ export class TeamsConnectorContainer extends HostContainer {
                 color: "dark",
                 separations: {
                     small: {
-                        spacing: 20,
+                        spacing: 8,
                     },
                     normal: {
-                        spacing: 20
+                        spacing: 8
                     },
                     medium: {
-                        spacing: 20
+                        spacing: 8
                     },
                     large: {
-                        spacing: 20
+                        spacing: 8
                     },
                     extraLarge: {
-                        spacing: 20
+                        spacing: 8
                     }
                 }
             },
             image: {
                 size: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 8
                 }
             },
             imageSet: {
                 imageSize: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 8
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 8
                 },
                 title: {
                     color: "dark",
@@ -162,30 +184,30 @@ export class TeamsConnectorContainer extends HostContainer {
                     isSubtle: false,
                     weight: "bolder",
                     wrap: true,
-                    maxWidth: 150,
+                    maxWidth: 150
                 },
                 value: {
                     color: "dark",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",
-                    wrap: true,
+                    wrap: true
                 },
                 spacing: 10
             },
             input: {
                 separation: {
-                    spacing: 20
+                    spacing: 8
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 8
                 }
             },
             column: {
                 separation: {
-                    spacing: 20
+                    spacing: 8
                 }
             }
         };
