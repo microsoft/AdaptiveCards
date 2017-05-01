@@ -1,6 +1,6 @@
 ﻿using AdaptiveCards;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -26,26 +26,26 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// You can use this from within a WPF app, passing in resource dictionary directly
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="hostConfig"></param>
         /// <param name="resources"></param>
-        public ImageRenderer(HostOptions options, ResourceDictionary resources)
+        public ImageRenderer(HostConfig hostConfig, ResourceDictionary resources)
         {
-            options.SupportsInteractivity = false;
-            _xamlRenderer = new XamlRenderer(options, resources);
+            hostConfig.SupportsInteractivity = false;
+            _xamlRenderer = new XamlRenderer(hostConfig, resources);
         }
 
         /// <summary>
         /// Use this from a Server, passing in the path to a resource dictionary so that UI resources can be created in correct thread
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="hostConfig"></param>
         /// <param name="stylePath"></param>
-        public ImageRenderer(HostOptions options, string stylePath)
+        public ImageRenderer(HostConfig hostConfig, string stylePath)
         {
-            options.SupportsInteractivity = false;
-            _xamlRenderer = new XamlRenderer(options, stylePath);
+            hostConfig.SupportsInteractivity = false;
+            _xamlRenderer = new XamlRenderer(hostConfig, stylePath);
         }
 
-        public HostOptions Options { get { return _xamlRenderer.DefaultOptions; } set { _xamlRenderer.DefaultOptions = value; } }
+        public HostConfig Options { get { return _xamlRenderer.DefaultConfig; } set { _xamlRenderer.DefaultConfig = value; } }
 
 
 

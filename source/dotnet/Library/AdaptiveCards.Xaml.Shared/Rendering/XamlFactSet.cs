@@ -29,27 +29,27 @@ namespace AdaptiveCards.Rendering
             {
                 var uiTitle = context.Render(new TextBlock()
                 {
-                    Size = context.Options.FactSet.Title.Size,
-                    Color = context.Options.FactSet.Title.Color,
-                    IsSubtle = context.Options.FactSet.Title.IsSubtle,
-                    Weight = context.Options.FactSet.Title.Weight,
-                    Wrap = context.Options.FactSet.Title.Wrap,
+                    Size = context.Config.FactSet.Title.Size,
+                    Color = context.Config.FactSet.Title.Color,
+                    IsSubtle = context.Config.FactSet.Title.IsSubtle,
+                    Weight = context.Config.FactSet.Title.Weight,
+                    Wrap = context.Config.FactSet.Title.Wrap,
                     Text = fact.Title
                 });
 #if WPF
                 uiTitle.Style = context.GetStyle("Adaptive.Fact.Title");
-                uiTitle.Margin = new Thickness(left: 0, top: 0, right: context.Options.FactSet.Spacing, bottom: 0);
+                uiTitle.Margin = new Thickness(left: 0, top: 0, right: context.Config.FactSet.Spacing, bottom: 0);
 #elif XAMARIN
                 //TODO
 #endif
 
                 var uiValue = context.Render(new TextBlock()
                 {
-                    Size = context.Options.FactSet.Value.Size,
-                    Color = context.Options.FactSet.Value.Color,
-                    IsSubtle = context.Options.FactSet.Value.IsSubtle,
-                    Weight = context.Options.FactSet.Value.Weight,
-                    Wrap = context.Options.FactSet.Value.Wrap,
+                    Size = context.Config.FactSet.Value.Size,
+                    Color = context.Config.FactSet.Value.Color,
+                    IsSubtle = context.Config.FactSet.Value.IsSubtle,
+                    Weight = context.Config.FactSet.Value.Weight,
+                    Wrap = context.Config.FactSet.Value.Wrap,
                     Text = fact.Value
                 });
 #if WPF

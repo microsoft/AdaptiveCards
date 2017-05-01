@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 #if WPF
 using System.Windows.Markup;
 #elif XAMARIN
@@ -18,13 +18,13 @@ namespace AdaptiveCards.Rendering
     {
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
-        protected HostOptions _defaultCardStyling;
+        protected HostConfig _defaultCardStyling;
 
-        public XamlRenderer(HostOptions options,
+        public XamlRenderer(HostConfig hostConfig,
             ResourceDictionary resources,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(options)
+            : base(hostConfig)
         {
             this.Resources = resources;
             this.actionCallback = actionCallback;
@@ -33,11 +33,11 @@ namespace AdaptiveCards.Rendering
         }
 
 #if WPF
-        public XamlRenderer(HostOptions options,
+        public XamlRenderer(HostConfig hostConfig,
             string stylePath,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(options)
+            : base(hostConfig)
         {
             this.StylePath = stylePath;
             this.actionCallback = actionCallback;
@@ -124,22 +124,22 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Options = options ?? this.DefaultOptions,
+                Config = hostConfig ?? this.DefaultConfig,
                 Resources = this.Resources,
                 ElementRenderers = this.ElementRenderers
             };
             return context.Render(card);
         }
 
-        public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostOptions options = null)
+        public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Options = options ?? this.DefaultOptions,
+                Config = hostConfig ?? this.DefaultConfig,
                 Resources = this.Resources,
                 ElementRenderers = this.ElementRenderers
             };

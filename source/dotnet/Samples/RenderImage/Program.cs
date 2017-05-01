@@ -1,6 +1,6 @@
 ﻿using AdaptiveCards;
 using AdaptiveCards.Rendering;
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace RenderImage
     {
         static async Task RenderImage(AdaptiveCard card, string image)
         {
-            var renderer = new ImageRenderer(new HostOptions(), String.Empty);
+            var renderer = new ImageRenderer(new HostConfig(), String.Empty);
             var imageStream = await renderer.RenderAdaptiveCardAsync(card, 480);
             using (FileStream fileStream = new FileStream(image, FileMode.Create))
             {

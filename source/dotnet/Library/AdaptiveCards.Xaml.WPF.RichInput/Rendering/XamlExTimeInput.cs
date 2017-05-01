@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             TimeInput input = (TimeInput)element;
-            if (context.Options.SupportsInteractivity)
+            if (context.Config.SupportsInteractivity)
             {
                 var timePicker = new TimePicker();
                 DateTime value;

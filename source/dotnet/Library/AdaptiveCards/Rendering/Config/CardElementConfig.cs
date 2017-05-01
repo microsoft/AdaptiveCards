@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace AdaptiveCards.Rendering.Options
+namespace AdaptiveCards.Rendering.Config
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class CardElementOptions
+    public class CardElementConfig
     {
-        public CardElementOptions() { }
+        public CardElementConfig() { }
 
         /// <summary>
         /// Separation settings between elements
         /// </summary>
-        public SeparationOption Separation { get; set; } = new SeparationOption() { Spacing = 10 };
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public SeparationConfig Separation { get; set; } = new SeparationConfig() { Spacing = 10 };
     }
 }

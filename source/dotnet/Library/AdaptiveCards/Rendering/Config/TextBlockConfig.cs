@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace AdaptiveCards.Rendering.Options
+namespace AdaptiveCards.Rendering.Config
 {
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class TextOptions
+    public class TextConfig
     {
-        public TextOptions()
+        public TextConfig()
         { }
 
         /// <summary>
@@ -67,33 +67,33 @@ namespace AdaptiveCards.Rendering.Options
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class TextBlockOptions
+    public class TextBlockConfig
     {
-        public TextBlockOptions()
+        public TextBlockConfig()
         { }
 
-        public TextSizeSepartations Seperations { get; set; } = new TextSizeSepartations();
+        public TextSizeSeparations Seperations { get; set; } = new TextSizeSeparations();
     }
 
 
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 
-    public class TextSizeSepartations
+    public class TextSizeSeparations
     {
-        public TextSizeSepartations()
+        public TextSizeSeparations()
         {
         }
 
-        public SeparationOption Small { get; set; } = new SeparationOption() { Spacing = 10 };
+        public SeparationConfig Small { get; set; } = new SeparationConfig() { Spacing = 10 };
 
-        public SeparationOption Normal { get; set; } = new SeparationOption() { Spacing = 10 };
+        public SeparationConfig Normal { get; set; } = new SeparationConfig() { Spacing = 10 };
 
-        public SeparationOption Medium { get; set; } = new SeparationOption() { Spacing = 10 };
+        public SeparationConfig Medium { get; set; } = new SeparationConfig() { Spacing = 10 };
 
-        public SeparationOption Large { get; set; } = new SeparationOption() { Spacing = 10 };
+        public SeparationConfig Large { get; set; } = new SeparationConfig() { Spacing = 10 };
 
-        public SeparationOption ExtraLarge { get; set; } = new SeparationOption() { Spacing = 10 };
+        public SeparationConfig ExtraLarge { get; set; } = new SeparationConfig() { Spacing = 10 };
 
     }
 }

@@ -1,4 +1,4 @@
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +11,12 @@ namespace AdaptiveCards.Rendering
         where TUIElement : class
         where TContext : class
     {
-        protected AdaptiveRenderer(HostOptions options)
+        protected AdaptiveRenderer(HostConfig config)
         {
-            DefaultOptions = options ?? new HostOptions();
+            DefaultConfig = config ?? new HostConfig();
         }
 
-        public HostOptions DefaultOptions { get; set; }
+        public HostConfig DefaultConfig { get; set; }
 
         public Dictionary<Type, Func<TypedElement, TContext, TUIElement>> ElementRenderers = new Dictionary<Type, Func<TypedElement, TContext, TUIElement>>();
 

@@ -17,7 +17,7 @@ using System.Xml.Serialization;
 using System.Reflection;
 using AdaptiveCards.Rendering;
 using System.Windows.Media;
-using AdaptiveCards.Rendering.Options;
+using AdaptiveCards.Rendering.Config;
 using System.ComponentModel;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using System.Threading.Tasks;
@@ -36,7 +36,7 @@ namespace WpfVisualizer
 
         public MainWindow()
         {
-            foreach (var type in typeof(HostOptions).Assembly.GetExportedTypes().Where(t => t.Namespace == typeof(HostOptions).Namespace))
+            foreach (var type in typeof(HostConfig).Assembly.GetExportedTypes().Where(t => t.Namespace == typeof(HostConfig).Namespace))
             {
                 TypeDescriptor.AddAttributes(type, new ExpandableObjectAttribute());
             }
@@ -51,14 +51,13 @@ namespace WpfVisualizer
             _timer.Tick += _timer_Tick;
             _timer.Start();
 
-            var hostOptions = new HostOptions();
-            hostOptions.AdaptiveCard.BackgroundColor = Colors.WhiteSmoke.ToString();
-            this.Renderer = new XamlRendererExtended(hostOptions, this.Resources, _onAction, _OnMissingInput);
-            // this.options.SelectedObject = JsonConvert.DeserializeObject<HostOptionsEx>(JsonConvert.SerializeObject(new HostOptions()));
-            this.options.SelectedObject = hostOptions;
+            var hostConfig = new HostConfig();
+            hostConfig.AdaptiveCard.BackgroundColor = Colors.WhiteSmoke.ToString();
+            this.Renderer = new XamlRendererExtended(hostConfig, this.Resources, _onAction, _OnMissingInput);
+            this.hostConfigEditor.SelectedObject = hostConfig;
         }
 
-        private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Config_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _dirty = true;
         }
@@ -67,13 +66,11 @@ namespace WpfVisualizer
 
         public XamlRendererExtended Renderer { get; set; }
 
-        public HostOptions Options
+        public HostConfig HostConfig
         {
             get
             {
-                //var json = JsonConvert.SerializeObject(this.options.SelectedObject);
-                // return JsonConvert.DeserializeObject<HostOptions>(json);
-                return (HostOptions)this.options.SelectedObject;
+                return (HostConfig)this.hostConfigEditor.SelectedObject;
             }
         }
 
@@ -101,8 +98,8 @@ namespace WpfVisualizer
                     this.cardGrid.Children.Clear();
                     if (_card != null)
                     {
-                        this.Renderer = new XamlRendererExtended(this.Options, this.Resources, _onAction, _OnMissingInput);
-                        var element = this.Renderer.RenderAdaptiveCard(_card, options: Options);
+                        this.Renderer = new XamlRendererExtended(this.HostConfig, this.Resources, _onAction, _OnMissingInput);
+                        var element = this.Renderer.RenderAdaptiveCard(_card, hostConfig: HostConfig);
                         this.cardGrid.Children.Add(element);
                     }
                 }
@@ -197,7 +194,7 @@ namespace WpfVisualizer
             else if (e.Action is AC.ShowCardAction)
             {
                 ShowCardAction action = (AC.ShowCardAction)e.Action;
-                if (Options.Actions.ShowCard.ActionMode == AC.Rendering.Options.ShowCardActionMode.Popup)
+                if (HostConfig.Actions.ShowCard.ActionMode == AC.Rendering.Config.ShowCardActionMode.Popup)
                 {
                     ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
                     dialog.Owner = this;
@@ -237,7 +234,7 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            var renderer = new ImageRenderer(new HostOptions(), this.Resources);
+            var renderer = new ImageRenderer(new HostConfig(), this.Resources);
             var imageStream = renderer.RenderAdaptiveCard(this._card, 480);
             string path = System.IO.Path.GetRandomFileName() + ".png";
             using (FileStream fileStream = new FileStream(path, FileMode.Create))
@@ -325,10 +322,10 @@ namespace WpfVisualizer
 
         private void toggleOptions_Click(object sender, RoutedEventArgs e)
         {
-            if (this.options.Visibility == Visibility.Visible)
-                this.options.Visibility = Visibility.Collapsed;
+            if (this.hostConfigEditor.Visibility == Visibility.Visible)
+                this.hostConfigEditor.Visibility = Visibility.Collapsed;
             else
-                this.options.Visibility = Visibility.Visible;
+                this.hostConfigEditor.Visibility = Visibility.Visible;
         }
 
         private void options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
