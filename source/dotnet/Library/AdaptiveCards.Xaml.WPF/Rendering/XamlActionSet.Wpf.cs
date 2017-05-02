@@ -29,9 +29,6 @@ namespace AdaptiveCards.Rendering
                 uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
                 uiActionBar.Style = context.GetStyle("Adaptive.Actions");
 
-                if (context.Config.Actions.Stretch)
-                    uiActionBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-
                 if (uiContainer.RowDefinitions.Count > 0)
                 {
                     XamlContainer.AddSeperator(context, new ActionSet(), uiContainer, SeparationStyle.Default);
@@ -56,9 +53,6 @@ namespace AdaptiveCards.Rendering
                     var uiAction = (Button)context.Render(action);
                     if (uiAction != null)
                     {
-                        if (context.Config.Actions.Stretch)
-                            uiAction.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch;
-
                         if (uiActionBar.Children.Count > 0)
                         {
                             if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)

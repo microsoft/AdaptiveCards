@@ -212,7 +212,12 @@ namespace AdaptiveCards
         /// <summary>
         ///     The element is right aligned
         /// </summary>
-        Right
+        Right,
+
+        /// <summary>
+        /// Stretch the actions to fit the containerhrit
+        /// </summary>
+        Stretch
     }
 
     /// <summary>
