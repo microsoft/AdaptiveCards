@@ -1605,6 +1605,7 @@ class ActionCollection {
         }
 
         var element = document.createElement("div");
+
         var buttonStrip = document.createElement("div");
 
         switch (hostConfig.actions.actionAlignment) {
@@ -1621,16 +1622,19 @@ class ActionCollection {
         }
 
         if (hostConfig.actions.actionsOrientation == "horizontal") {
-            if (hostConfig.actions.stretch) {
+            if (hostConfig.actions.actionAlignment == "stretch") {
                 buttonStrip.style.display = "flex";
             }
             else {
                 buttonStrip.style.display = "inline-flex";
-                buttonStrip.style.width = "100%";
             }
         }
         else {
             buttonStrip.style.display = "inline-table";
+
+            if (hostConfig.actions.actionAlignment == "stretch") {
+                buttonStrip.style.width = "100%";
+            }
         }
 
         this._actionCardContainer = document.createElement("div");
@@ -1663,7 +1667,7 @@ class ActionCollection {
                     buttonStripItem.style.whiteSpace = "nowrap";
                     buttonStripItem.style.overflow = "hidden";
                     buttonStripItem.style.overflow = "table-cell";
-                    buttonStripItem.style.flex = hostConfig.actions.stretch ? "0 1 100%" : "0 1 auto";
+                    buttonStripItem.style.flex = hostConfig.actions.actionAlignment == "stretch" ? "0 1 100%" : "0 1 auto";
 
                     let actionButton = new ActionButton(this.items[i], actionButtonStyle);
                     actionButton.text = this.items[i].title;
@@ -1693,7 +1697,11 @@ class ActionCollection {
                 }
             }
 
-            Utils.appendChild(element, buttonStrip);
+            var buttonStripContainer = document.createElement("div");
+            buttonStripContainer.style.overflow = "hidden";
+            buttonStripContainer.appendChild(buttonStrip);
+            
+            Utils.appendChild(element, buttonStripContainer);
         }
 
         Utils.appendChild(element, this._actionCardContainer);
@@ -2507,7 +2515,6 @@ var defaultHostConfig: HostConfig.IHostConfig = {
             spacing: 20
         },
         buttonSpacing: 20,
-        stretch: false,
         showCard: {
             actionMode: "inlineEdgeToEdge",
             inlineTopMargin: 16,
