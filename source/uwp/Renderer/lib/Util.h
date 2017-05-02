@@ -7,6 +7,7 @@
 #include <BaseCardElement.h>
 #include <Column.h>
 #include <Fact.h>
+#include <Image.h>
 #include <windows.foundation.collections.h>
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
@@ -19,6 +20,8 @@ HRESULT HStringToUTF8(const HSTRING& in, std::string &out);
 
 bool Boolify(const boolean value);
 
+HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color);
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
@@ -30,3 +33,7 @@ HRESULT GenerateColumnsProjection(
 HRESULT GenerateFactsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveFact*>* projectedParentContainer) noexcept;
+
+HRESULT GenerateImagesProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage*>* projectedParentContainer) noexcept;

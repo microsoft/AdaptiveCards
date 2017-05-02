@@ -1,4 +1,5 @@
 ﻿using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace AdaptiveCards.Rendering
 {
     public class RenderContext
     {
-        public RenderContext(HostOptions options = null)
+        public RenderContext(HostConfig hostConfig = null)
         {
-            if (options != null)
-                this.Options = options;
+            if (hostConfig != null)
+                this.Config = hostConfig;
         }
 
-        public HostOptions Options { get; set; } = new HostOptions();
+        public HostConfig Config { get; set; } = new HostConfig();
     }
 }

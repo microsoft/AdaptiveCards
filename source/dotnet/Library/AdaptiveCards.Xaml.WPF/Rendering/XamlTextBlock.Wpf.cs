@@ -1,20 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
-using MarkedNet;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
+using Microsoft.MarkedNet;
 
 namespace AdaptiveCards.Rendering
 {
-
     public static partial class XamlTextBlock
     {
         public static System.Windows.Controls.TextBlock CreateControl(TextBlock textBlock, RenderContext context)
         {
             Marked marked = new Marked();
-            marked.Options.Renderer = new MarkedXamlRenderer();
+            marked.Options.Renderer = new AdaptiveXamlMarkdownRenderer();
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
 
@@ -27,8 +26,7 @@ namespace AdaptiveCards.Rendering
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
             uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
 
-            uiTextBlock.FontFamily = new FontFamily(context.Options.FontFamily);
-
+            uiTextBlock.FontFamily = new FontFamily(context.Config.FontFamily);
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
             switch (textBlock.Weight)

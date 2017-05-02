@@ -54,7 +54,11 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                 <h1>Adaptive Card Preview</h1>
                 <div id='previewDiv' style="background-color:white;margin:8px 0px 20px 0px;"></div>
                 <script>
-                    document.getElementById('previewDiv').appendChild(new AdaptiveCards.JsonParser().parse(${json}).render());
+                    var adaptiveCard = new AdaptiveCards.AdaptiveCard();
+                    adaptiveCard.parse(${json});
+                    var renderedCard = adaptiveCard.render();
+                    
+                    document.getElementById('previewDiv').appendChild(renderedCard);
                     AdaptiveCards.AdaptiveCard.onExecuteAction = function(action) 
                     {
                         alert(JSON.stringify(action));

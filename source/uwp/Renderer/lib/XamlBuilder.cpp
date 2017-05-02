@@ -11,6 +11,9 @@
 #include <windows.web.http.filters.h>
 #include "XamlHelpers.h"
 #include "XamlStyleKeyGenerators.h"
+#include "AdaptiveHostOptions.h"
+#include "AdaptiveColorOptions.h"
+#include "AdaptiveColorOption.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -22,6 +25,7 @@ using namespace ABI::Windows::Storage::Streams;
 using namespace ABI::Windows::UI::Text;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
@@ -42,6 +46,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::Container] = std::bind(&XamlBuilder::BuildContainer, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputDate] = std::bind(&XamlBuilder::BuildInputDate, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputTime] = std::bind(&XamlBuilder::BuildInputTime, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputToggle] = std::bind(&XamlBuilder::BuildInputToggle, this, std::placeholders::_1, std::placeholders::_2);
+
+        m_hostOptions = Make<AdaptiveHostOptions>();
 
         m_imageLoadTracker.AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
 
@@ -149,6 +160,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             m_mergedResourceDictionary->get_MergedDictionaries(&mergedDictionaries);
             mergedDictionaries->Append(m_defaultResourceDictionary.Get());
         }
+        return S_OK;
+    } CATCH_RETURN;
+
+    HRESULT XamlBuilder::SetHostOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostOptions* hostOptions) noexcept try
+    {
+        m_hostOptions = hostOptions;
         return S_OK;
     } CATCH_RETURN;
 
@@ -299,7 +316,60 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    void XamlBuilder::PopulateImageFromUrlAsync(IUriRuntimeClass* imageUri, ABI::Windows::UI::Xaml::Controls::IImage* imageControl)
+    template<typename T>
+    void XamlBuilder::SetImageSource(
+        T* destination,
+        IImageSource* imageSource)
+    {
+        THROW_IF_FAILED(destination->put_Source(imageSource));
+    };
+
+    _Use_decl_annotations_
+    template<>
+    void XamlBuilder::SetImageSource<IEllipse>(
+        IEllipse* destination,
+        IImageSource* imageSource)
+    {
+        ComPtr<IImageBrush> imageBrush = XamlHelpers::CreateXamlClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
+        THROW_IF_FAILED(imageBrush->put_ImageSource(imageSource));
+
+        ComPtr<ITileBrush> tileBrush;
+        THROW_IF_FAILED(imageBrush.As(&tileBrush));
+        THROW_IF_FAILED(tileBrush->put_Stretch(Stretch_UniformToFill));
+
+        ComPtr<IBrush> brush;
+        THROW_IF_FAILED(imageBrush.As(&brush));
+
+        ComPtr<IShape> ellipseAsShape;
+        ComPtr<IEllipse> ellipse(destination);
+        THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
+        THROW_IF_FAILED(ellipseAsShape->put_Fill(brush.Get()));
+    };
+
+    _Use_decl_annotations_
+    template<typename T>
+    void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri, T* uiElement)
+    {
+        if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
+        {
+            // If we've been explicitly told to let Xaml handle the image loading, or there are
+            // no listeners waiting on the image load callbacks, use Xaml to load the images
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+            THROW_IF_FAILED(bitmapImage->put_UriSource(imageUri));
+
+            ComPtr<IImageSource> bitmapImageSource;
+            THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
+            SetImageSource(uiElement, bitmapImageSource.Get());
+        }
+        else
+        {
+            PopulateImageFromUrlAsync(imageUri, uiElement);
+        }
+    }
+
+    _Use_decl_annotations_
+    template<typename T>
+    void XamlBuilder::PopulateImageFromUrlAsync(IUriRuntimeClass* imageUri, T* imageControl)
     {
         // Create the HttpClient to load the image stream
         ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter =
@@ -322,9 +392,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IAsyncOperationWithProgress<IInputStream*, HttpProgress>> getStreamOperation;
         httpClient->GetInputStreamAsync(imageUri, &getStreamOperation);
 
+        ComPtr<T> strongImageControl(imageControl);
         ComPtr<XamlBuilder> strongThis(this);
         getStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>
-            ([strongThis, this, bitmapSource, imageControl](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
+            ([strongThis, this, bitmapSource, strongImageControl](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
         {
             if (status == AsyncStatus::Completed)
             {
@@ -340,14 +411,15 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 RETURN_IF_FAILED(m_randomAccessStreamStatics->CopyAsync(imageStream.Get(), outputStream.Get(), &copyStreamOperation));
 
                 return copyStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT64, UINT64>>>
-                    ([strongThis, this, bitmapSource, randomAccessStream, imageControl](IAsyncOperationWithProgress<UINT64, UINT64>* /*operation*/, AsyncStatus /*status*/) -> HRESULT
+                    ([strongThis, this, bitmapSource, randomAccessStream, strongImageControl](IAsyncOperationWithProgress<UINT64, UINT64>* /*operation*/, AsyncStatus /*status*/) -> HRESULT
                 {
                     randomAccessStream->Seek(0);
                     RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
 
                     ComPtr<IImageSource> imageSource;
                     RETURN_IF_FAILED(bitmapSource.As(&imageSource));
-                    imageControl->put_Source(imageSource.Get());
+
+                    SetImageSource(strongImageControl.Get(), imageSource.Get());
                     return S_OK;
                 }).Get());
                 m_copyStreamOperations.push_back(copyStreamOperation);
@@ -465,6 +537,31 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         THROW_IF_FAILED(xamlTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
 
+        // Set the maximum number of lines the next block should show
+        ComPtr<ITextBlock2> xamlTextBlock2;
+        THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
+
+        UINT maxLines;
+        THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
+        THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
+
+        ABI::AdaptiveCards::XamlCardRenderer::HAlignment adaptiveHorizontalAlignment;
+        THROW_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
+
+        // Set the horizontal alignment of the text
+        switch (adaptiveHorizontalAlignment)
+        {
+            case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Left:
+                THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Left));
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Right:
+                THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Right));
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Center:
+                THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Center));
+                break;
+        }
+
         THROW_IF_FAILED(xamlTextBlock.CopyTo(textBlockControl));
     }
 
@@ -477,30 +574,104 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(cardElement.As(&adaptiveImage));
 
-        ComPtr<IImage> xamlImage = XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
-
         ComPtr<IUriRuntimeClass> imageUri;
         THROW_IF_FAILED(adaptiveImage->get_Url(imageUri.GetAddressOf()));
-        if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
-        {
-            // If we've been explicitly told to let Xaml handle the image loading, or there are
-            // no listeners waiting on the image load callbacks, use Xaml to load the images
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-            THROW_IF_FAILED(bitmapImage->put_UriSource(imageUri.Get()));
 
-            ComPtr<IImageSource> bitmapImageSource;
-            THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
-            THROW_IF_FAILED(xamlImage->put_Source(bitmapImageSource.Get()));
+        // Get the image's size and style
+        ABI::AdaptiveCards::XamlCardRenderer::ImageSize size;
+        THROW_IF_FAILED(adaptiveImage->get_Size(&size));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ImageStyle imageStyle;
+        THROW_IF_FAILED(adaptiveImage->get_Style(&imageStyle));
+
+        ComPtr<IFrameworkElement> frameworkElement;
+        if (imageStyle == ImageStyle_Person)
+        {
+            ComPtr<IEllipse> ellipse = XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
+            SetImageOnUIElement(imageUri.Get(), ellipse.Get());
+
+            // Set both Auto and Stretch to Stretch_UniformToFill.  An ellipse set to Stretch_Uniform ends up with size 0.
+            if (size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto ||
+                size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch)
+            {
+                ComPtr<IShape> ellipseAsShape;
+                THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
+
+                THROW_IF_FAILED(ellipseAsShape->put_Stretch(Stretch::Stretch_UniformToFill));
+            }
+
+            THROW_IF_FAILED(ellipse.As(&frameworkElement));
         }
         else
         {
-            PopulateImageFromUrlAsync(imageUri.Get(), xamlImage.Get());
+            ComPtr<IImage> xamlImage = XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
+            SetImageOnUIElement(imageUri.Get(), xamlImage.Get());
+
+            switch (size)
+            {
+                case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto:
+                    THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
+                    break;
+
+                case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch:
+                    THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_Uniform));
+                    break;
+            }
+
+            THROW_IF_FAILED(xamlImage.As(&frameworkElement));
         }
 
-        // Set the image to UniformToFill if the card element's size is stretch
-        ABI::AdaptiveCards::XamlCardRenderer::ImageSize size;
-        THROW_IF_FAILED(adaptiveImage->get_Size(&size));
-        THROW_IF_FAILED(xamlImage->put_Stretch(size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch ? Stretch::Stretch_UniformToFill : Stretch::Stretch_None));
+        ComPtr<IAdaptiveImageSizeOptions> sizeOptions;
+        THROW_IF_FAILED(m_hostOptions->get_ImageSizes(sizeOptions.GetAddressOf()));
+
+        switch (size)
+        {
+            case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Small:
+            {
+                INT32 imageSize;
+                THROW_IF_FAILED(sizeOptions->get_Small(&imageSize));
+
+                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                break;
+            }
+
+            case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Medium:
+            {
+                INT32 imageSize;
+                THROW_IF_FAILED(sizeOptions->get_Medium(&imageSize));
+
+                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                break;
+            }
+
+            case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Large:
+            {
+                INT32 imageSize;
+                THROW_IF_FAILED(sizeOptions->get_Large(&imageSize));
+
+                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                break;
+            }
+        }
+
+        ABI::AdaptiveCards::XamlCardRenderer::HAlignment adaptiveHorizontalAlignment;
+        THROW_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
+
+        switch (adaptiveHorizontalAlignment)
+        {
+            case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Left:
+                THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Left));
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Right:
+                THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Right));
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Center:
+                THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Center));
+                break;
+        }
 
         // Generate the style name from the adaptive element and apply it to the xaml
         // element it it exists in the resource dictionaries
@@ -508,12 +679,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForImage(adaptiveImage.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
         {
-            ComPtr<IFrameworkElement> imageAsFrameworkElement;
-            THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
-            THROW_IF_FAILED(imageAsFrameworkElement->put_Style(style.Get()));
+            THROW_IF_FAILED(frameworkElement->put_Style(style.Get()));
         }
 
-        THROW_IF_FAILED(xamlImage.CopyTo(imageControl));
+        THROW_IF_FAILED(frameworkElement.CopyTo(imageControl));
     }
 
     _Use_decl_annotations_
@@ -688,5 +857,160 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // TODO: MSFT 11508861: [Adaptive Cards][Build] Support all styling properties for card Elements
 
         THROW_IF_FAILED(xamlGrid.CopyTo(factSetControl));
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::BuildImageSet(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** imageSetControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveImageSet> adaptiveImageSet;
+        THROW_IF_FAILED(cardElement.As(&adaptiveImageSet));
+
+        ComPtr<IVariableSizedWrapGrid> xamlGrid = XamlHelpers::CreateXamlClass<IVariableSizedWrapGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_VariableSizedWrapGrid));
+
+        xamlGrid->put_Orientation(Orientation_Horizontal);
+
+        ComPtr<IVector<IAdaptiveImage*>> images;
+        THROW_IF_FAILED(adaptiveImageSet->get_Images(&images));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize;
+        THROW_IF_FAILED(adaptiveImageSet->get_ImageSize(&imageSize));
+
+        XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [this, imageSize, xamlGrid](IAdaptiveImage* adaptiveImage)
+        {
+            ComPtr<IAdaptiveImage> localAdaptiveImage(adaptiveImage);
+            THROW_IF_FAILED(localAdaptiveImage->put_Size(imageSize));
+
+            ComPtr<IAdaptiveCardElement> adaptiveElementImage;
+            localAdaptiveImage.As(&adaptiveElementImage);
+
+            ComPtr<IUIElement> uiImage;
+            BuildImage(adaptiveElementImage.Get(), &uiImage);
+
+            ComPtr<IPanel> gridAsPanel;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+
+            XamlHelpers::AppendXamlElementToPanel(uiImage.Get(), gridAsPanel.Get());
+        });
+
+        // TODO: 11508861
+        THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
+    }
+
+    void XamlBuilder::BuildInputDate(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputDateControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputDate> adaptiveInputDate;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputDate));
+
+        ComPtr<ICalendarDatePicker> datePicker = XamlHelpers::CreateXamlClass<ICalendarDatePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CalendarDatePicker));
+
+        HString placeHolderText;
+        THROW_IF_FAILED(adaptiveInputDate->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(datePicker->put_PlaceholderText(placeHolderText.Get()));
+
+        // TODO: Handle parsing dates for min/max and value
+
+        // TODO: 11508861
+        THROW_IF_FAILED(datePicker.CopyTo(inputDateControl));
+    }
+
+    void XamlBuilder::BuildInputText(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputTextControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputText> adaptiveInputText;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputText));
+
+        ComPtr<ITextBox> textBox = XamlHelpers::CreateXamlClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
+
+        boolean isMultiLine;
+        THROW_IF_FAILED(adaptiveInputText->get_IsMultiline(&isMultiLine));
+        THROW_IF_FAILED(textBox->put_AcceptsReturn(isMultiLine));
+
+        HString textValue;
+        THROW_IF_FAILED(adaptiveInputText->get_Value(textValue.GetAddressOf()));
+        THROW_IF_FAILED(textBox->put_Text(textValue.Get()));
+
+        UINT32 maxLength;
+        THROW_IF_FAILED(adaptiveInputText->get_MaxLength(&maxLength));
+        THROW_IF_FAILED(textBox->put_MaxLength(maxLength));
+
+        ComPtr<ITextBox2> textBox2;
+        THROW_IF_FAILED(textBox.As(&textBox2));
+
+        HString placeHolderText;
+        THROW_IF_FAILED(adaptiveInputText->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
+
+        // TODO: 11508861
+        THROW_IF_FAILED(textBox.CopyTo(inputTextControl));
+    }
+
+    void XamlBuilder::BuildInputTime(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputTimeControl)
+    {
+        ComPtr<ITimePicker> timePicker = XamlHelpers::CreateXamlClass<ITimePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TimePicker));
+
+        // TODO: Handle placeholder text and parsing times for min/max and value
+
+        // TODO: 11508861
+        THROW_IF_FAILED(timePicker.CopyTo(inputTimeControl));
+    }
+
+    void XamlBuilder::BuildInputToggle(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputToggleControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputToggle> adaptiveInputToggle;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputToggle));
+
+        ComPtr<ICheckBox> checkBox = XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+        ComPtr<IContentControl> contentControl;
+        THROW_IF_FAILED(checkBox.As(&contentControl));
+
+        HString title;
+        THROW_IF_FAILED(adaptiveInputToggle->get_Title(title.GetAddressOf()));
+
+        ComPtr<ITextBlock> content = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+        THROW_IF_FAILED(content->put_Text(title.Get()));
+        THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+
+        HString value;
+        THROW_IF_FAILED(adaptiveInputToggle->get_Value(value.GetAddressOf()));
+
+        INT32 compareTrue;
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), HStringReference(L"true").Get(), &compareTrue));
+
+        HString valueOn;
+        THROW_IF_FAILED(adaptiveInputToggle->get_ValueOn(valueOn.GetAddressOf()));
+
+        INT32 compareValueOn;
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), valueOn.Get(), &compareValueOn));
+
+        bool isChecked = (compareTrue == 0) || (compareValueOn == 0);
+
+        ComPtr<IPropertyValueStatics> propertyValueStatics;
+        ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
+        
+        ComPtr<IPropertyValue> propertyValue;
+        propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
+
+        ComPtr<ABI::Windows::Foundation::IReference<bool>> boolProperty;
+        propertyValue.As(&boolProperty);
+
+        ComPtr<IToggleButton> toggleButton;
+        THROW_IF_FAILED(checkBox.As(&toggleButton));
+        THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
+
+        // TODO: 11508861
+        THROW_IF_FAILED(checkBox.CopyTo(inputToggleControl));
     }
 }}

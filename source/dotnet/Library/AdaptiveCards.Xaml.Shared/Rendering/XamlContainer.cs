@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using AdaptiveCards.Rendering;
 using System;
+using AdaptiveCards.Rendering.Config;
 #if WPF
 using System.Windows.Shapes;
 using System.Windows.Controls;
@@ -23,10 +24,11 @@ namespace AdaptiveCards.Rendering
     {
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
+            var containerStyle = context.Config.Container.Normal;
             Container container = (Container)element;
             var uiContainer = new Grid();
+            uiContainer.Margin = new Thickness(containerStyle.Padding.Left, containerStyle.Padding.Top, containerStyle.Padding.Right, containerStyle.Padding.Bottom);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
-
             AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
@@ -40,7 +42,21 @@ namespace AdaptiveCards.Rendering
                 }
             }
 
+#if WPF 
+            Grid uiOuterContainer = new Grid();
+            uiOuterContainer.Background = context.GetColorBrush(containerStyle.BackgroundColor);
+            uiOuterContainer.Children.Add(uiContainer);
+            Border border = new Border()
+            {
+                BorderBrush = context.GetColorBrush(containerStyle.BorderColor),
+                BorderThickness = new Thickness(containerStyle.BorderThickness.Left, containerStyle.BorderThickness.Top, containerStyle.BorderThickness.Right, containerStyle.BorderThickness.Bottom)
+            };
+            border.Child = uiOuterContainer;
+            return border;
+#else
+            // TODO for xamarin
             return uiContainer;
+#endif 
         }
 
         public static void AddContainerElements(Grid uiContainer, List<CardElement> elements, RenderContext context)
@@ -53,7 +69,7 @@ namespace AdaptiveCards.Rendering
                 {
                     if (uiContainer.RowDefinitions.Count > 0)
                     {
-                        AddSeperator(context, uiContainer, cardElement.Separation);
+                        AddSeperator(context, cardElement, uiContainer, cardElement.Separation);
                     }
                     uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                     Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
@@ -62,32 +78,32 @@ namespace AdaptiveCards.Rendering
             }
         }
 
-        public static void AddSeperator(RenderContext context, Grid uiContainer, SeparationStyle seperationStyle)
+        public static void AddSeperator(RenderContext context, CardElement element, Grid uiContainer, SeparationStyle seperationStyle)
         {
             if (seperationStyle == SeparationStyle.None)
                 return;
+
             var uiSep = new Grid();
             uiSep.Style = context.GetStyle($"Adaptive.Separator");
-            SeparationOption sepStyle = null;
+            SeparationConfig sepStyle = null;
             switch (seperationStyle)
             {
                 case SeparationStyle.Default:
-                    sepStyle = context.Options.Separation.Default;
+                    sepStyle = context.Config.GetSeparationForElement(element, strong: false);
                     break;
 
                 case SeparationStyle.Strong:
-                    sepStyle = context.Options.Separation.Strong;
+                    sepStyle = context.Config.GetSeparationForElement(element, strong: true);
                     break;
             }
-
+            
             uiSep.Margin = new Thickness(0, (sepStyle.Spacing - sepStyle.LineThickness) / 2, 0, (sepStyle.Spacing - sepStyle.LineThickness) / 2);
             uiSep.SetHeight(sepStyle.LineThickness);
             if(!string.IsNullOrWhiteSpace(sepStyle.LineColor))
                 uiSep.SetBackgroundColor(sepStyle.LineColor,context);
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
-            uiContainer.Children.Add(uiSep);
-            
+            uiContainer.Children.Add(uiSep);            
         }
     }
 }

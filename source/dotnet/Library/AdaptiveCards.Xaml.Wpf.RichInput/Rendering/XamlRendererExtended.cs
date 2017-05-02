@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Config;
 
 namespace AdaptiveCards.Rendering
 {
@@ -13,20 +14,20 @@ namespace AdaptiveCards.Rendering
 
     public class XamlRendererExtended : XamlRenderer
     {
-        public XamlRendererExtended(HostOptions options,
+        public XamlRendererExtended(HostConfig hostConfig,
             ResourceDictionary resources,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(options, resources, actionCallback, missingDataCallback)
+            : base(hostConfig, resources, actionCallback, missingDataCallback)
         {
             SetObjectTypes();
         }
 
 #if WPF
-        public XamlRendererExtended(HostOptions options, string stylePath,
+        public XamlRendererExtended(HostConfig hostConfig, string stylePath,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(options, stylePath, actionCallback, missingDataCallback)
+            : base(hostConfig, stylePath, actionCallback, missingDataCallback)
         {
             SetObjectTypes();
         }

@@ -85,7 +85,7 @@ See the `source` dir for a `README` in each platform for instructions.
 Visual Studio Code preview extension allows you to see in real-time the card you are building
 
 To install:
-1. Download AdaptiveCards.vsix
+1. Download [AdaptiveCards.vsix](/source/vscode/vscode-adaptivecards-1.0.4.vsix)
 2. from command line run: `code --install-extension adaptivecards.vsix`
 3. In editor create and save a new Json file (helloworld.json)  with following in it:
 

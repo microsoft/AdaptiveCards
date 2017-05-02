@@ -16,6 +16,12 @@ using ICSharpCode.AvalonEdit.Document;
 using System.Xml.Serialization;
 using System.Reflection;
 using AdaptiveCards.Rendering;
+using System.Windows.Media;
+using AdaptiveCards.Rendering.Config;
+using System.ComponentModel;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using System.Threading.Tasks;
+using System.Windows.Media.Effects;
 
 namespace WpfVisualizer
 {
@@ -31,6 +37,11 @@ namespace WpfVisualizer
 
         public MainWindow()
         {
+            foreach (var type in typeof(HostConfig).Assembly.GetExportedTypes().Where(t => t.Namespace == typeof(HostConfig).Namespace))
+            {
+                TypeDescriptor.AddAttributes(type, new ExpandableObjectAttribute());
+            }
+
             InitializeComponent();
 
             _synth = new SpeechSynthesizer();
@@ -41,11 +52,22 @@ namespace WpfVisualizer
             _timer.Tick += _timer_Tick;
             _timer.Start();
 
-            this.Renderer = new XamlRendererExtended(new HostOptions(), this.Resources, _onAction, _OnMissingInput);
-            this.options.SelectedObject = JsonConvert.DeserializeObject<HostOptionsEx>(JsonConvert.SerializeObject(new HostOptions()));
+            var hostConfig = new HostConfig();
+            hostConfig.AdaptiveCard.BackgroundColor = Colors.WhiteSmoke.ToString();
+            this.Renderer = new XamlRendererExtended(hostConfig, this.Resources, _onAction, _OnMissingInput);
+            this.hostConfigEditor.SelectedObject = hostConfig;
+
+            foreach (var style in Directory.GetFiles(@"..\..\..\..\..\..\samples\Themes", "*.json"))
+            {
+                this.hostConfigs.Items.Add(new ComboBoxItem()
+                {
+                    Content = Path.GetFileNameWithoutExtension(style),
+                    Tag = style
+                });
+            }
         }
 
-        private void Options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Config_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _dirty = true;
         }
@@ -54,12 +76,15 @@ namespace WpfVisualizer
 
         public XamlRendererExtended Renderer { get; set; }
 
-        public HostOptions Options
+        public HostConfig HostConfig
         {
             get
             {
-                var json = JsonConvert.SerializeObject(this.options.SelectedObject);
-                return JsonConvert.DeserializeObject<HostOptions>(json);
+                return (HostConfig)this.hostConfigEditor.SelectedObject;
+            }
+            set
+            {
+                this.hostConfigEditor.SelectedObject = value;
             }
         }
 
@@ -87,8 +112,17 @@ namespace WpfVisualizer
                     this.cardGrid.Children.Clear();
                     if (_card != null)
                     {
-                        var element = this.Renderer.RenderAdaptiveCard(_card, options: Options);
-                        this.cardGrid.Children.Add(element);
+                        this.Renderer = new XamlRendererExtended(this.HostConfig, this.Resources, _onAction, _OnMissingInput);
+                        var uiCard = this.Renderer.RenderAdaptiveCard(_card, hostConfig: HostConfig);
+                        uiCard.Effect = new DropShadowEffect()
+                        {
+                            BlurRadius = 15,
+                            Direction = -90,
+                            RenderingBias = RenderingBias.Quality,
+                            ShadowDepth = 2
+                        };
+ 
+                        this.cardGrid.Children.Add(uiCard);
                     }
                 }
                 catch (Exception err)
@@ -182,7 +216,7 @@ namespace WpfVisualizer
             else if (e.Action is AC.ShowCardAction)
             {
                 ShowCardAction action = (AC.ShowCardAction)e.Action;
-                if (Options.Actions.ShowCard.ActionMode == AC.Rendering.ShowCardActionMode.Popup)
+                if (HostConfig.Actions.ShowCard.ActionMode == AC.Rendering.Config.ShowCardActionMode.Popup)
                 {
                     ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
                     dialog.Owner = this;
@@ -222,13 +256,8 @@ namespace WpfVisualizer
 
         private async void viewImage_Click(object sender, RoutedEventArgs e)
         {
-            var renderer = new ImageRenderer(new HostOptions(), this.Resources);
+            var renderer = new ImageRenderer(new HostConfig(), this.Resources);
             var imageStream = renderer.RenderAdaptiveCard(this._card, 480);
-            //#else
-            //            var renderer = new ImageRenderer(new RenderOptions(), @"c:\source\intercom\Channels\FacebookChannel\Content\AdaptiveCardStyles.xaml");
-            //            var imageStream = await renderer.RenderAdaptiveCardAsync(this._card, 480);
-            //#endif
-
             string path = System.IO.Path.GetRandomFileName() + ".png";
             using (FileStream fileStream = new FileStream(path, FileMode.Create))
             {
@@ -315,15 +344,49 @@ namespace WpfVisualizer
 
         private void toggleOptions_Click(object sender, RoutedEventArgs e)
         {
-            if (this.options.Visibility == Visibility.Visible)
-                this.options.Visibility = Visibility.Collapsed;
+            if (this.hostConfigEditor.Visibility == Visibility.Visible)
+                this.hostConfigEditor.Visibility = Visibility.Collapsed;
             else
-                this.options.Visibility = Visibility.Visible;
+                this.hostConfigEditor.Visibility = Visibility.Visible;
         }
 
         private void options_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _dirty = true;
+        }
+
+        private void hostConfigs_Selected(object sender, RoutedEventArgs e)
+        {
+            var config = JsonConvert.DeserializeObject<HostConfig>(File.ReadAllText((string)((ComboBoxItem)this.hostConfigs.SelectedItem).Tag));
+            this.HostConfig = config;
+            _dirty = true;
+        }
+
+        private void loadConfig_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "Json documents (*.json)|*.json";
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                var json = File.ReadAllText(dlg.FileName);
+                this.HostConfig = JsonConvert.DeserializeObject<HostConfig>(json);
+                _dirty = true;
+            }
+        }
+
+        private void saveConfig_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "Json documents (*.json)|*.json";
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                var json = JsonConvert.SerializeObject(this.HostConfig, Formatting.Indented);
+                File.WriteAllText(dlg.FileName, json);
+            }
         }
     }
 }

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using HtmlTags;
-using MarkedNet;
 #if FUTURE
+using Microsoft.MarkedNet;
 namespace AdaptiveCards.Rendering
 {
     /// <summary>
@@ -30,7 +30,7 @@ namespace AdaptiveCards.Rendering
 #endif
         });
 
-        public HtmlRenderer(HostOptions options) : base(options)
+        public HtmlRenderer(HostConfig config) : base(config)
         {
         }
 
@@ -44,12 +44,12 @@ namespace AdaptiveCards.Rendering
 
         public HtmlTag RenderAdaptiveCard(AdaptiveCard card)
         {
-            return Render(card, new RenderContext(this.DefaultOptions));
+            return Render(card, new RenderContext(this.DefaultConfig));
         }
 
         public HtmlTag RenderShowCard(ShowCardAction showCard)
         {
-            return Render(showCard.Card, new RenderContext(this.DefaultOptions));
+            return Render(showCard.Card, new RenderContext(this.DefaultConfig));
         }
 
 
@@ -61,7 +61,7 @@ namespace AdaptiveCards.Rendering
 
         protected override HtmlTag Render(OpenUrlAction action, RenderContext context)
         {
-            if (context.Options.SupportsInteractivity)
+            if (context.Config.SupportsInteractivity)
             {
                 var uiButton = new LinkTag(action.Title, action.Url, action.Type.Replace(".", ""), "pushButton");
                 return uiButton;
@@ -130,14 +130,14 @@ namespace AdaptiveCards.Rendering
                 }
             }
 
-            if (actions?.Where(a => context.Options.AdaptiveCard.SupportedActions.Contains(a.Type)).Any() == true)
+            if (actions?.Where(a => context.Config.AdaptiveCard.SupportedActions.Contains(a.Type)).Any() == true)
             {
                 var uiActions = new DivTag()
                     .AddClass("Container");
 
                 foreach (var action in actions
-                    .Where(act => context.Options.AdaptiveCard.SupportedActions?.Contains(act.Type) == true)
-                    .Take(context.Options.AdaptiveCard.MaxActions))
+                    .Where(act => context.Config.AdaptiveCard.SupportedActions?.Contains(act.Type) == true)
+                    .Take(context.Config.AdaptiveCard.MaxActions))
                 {
                     // add actions
                     var uiAction = RenderAction(action, context);
@@ -158,7 +158,7 @@ namespace AdaptiveCards.Rendering
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
-            if (DefaultOptions.SupportsInteractivity && column.SelectAction != null)
+            if (DefaultConfig.SupportsInteractivity && column.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
@@ -253,7 +253,7 @@ namespace AdaptiveCards.Rendering
 
             AddContainerElements(uiContainer, container.Items, container.Actions, context);
 
-            if (DefaultOptions.SupportsInteractivity && container.SelectAction != null)
+            if (DefaultConfig.SupportsInteractivity && container.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
@@ -313,8 +313,8 @@ namespace AdaptiveCards.Rendering
                 uiTextBlock = uiTextBlock.AddClass("Subtle");
 
             var marked = new Marked();
-            marked.Options.Mangle = false;
-            marked.Options.Sanitize = true;
+            marked.Config.Mangle = false;
+            marked.Config.Sanitize = true;
 
             var html = marked.Parse(RendererUtilities.ApplyTextFunctions(textBlock.Text))
                 .Replace("<p>", "<p style='margin-top: 0px;margin-bottom: 0px'>");
@@ -352,7 +352,7 @@ namespace AdaptiveCards.Rendering
                     break;
             }
 
-            if (DefaultOptions.SupportsInteractivity && image.SelectAction != null)
+            if (DefaultConfig.SupportsInteractivity && image.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(image.SelectAction, context);
                 //if (uiButton != null)

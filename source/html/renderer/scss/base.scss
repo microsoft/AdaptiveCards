@@ -1,318 +1,27 @@
+$font-family: 'Segoe UI', sans-serif;
 
-@mixin base-spacing($separator-color: rgba(0, 0, 0, 0.1)) {
-    .removeTopSpacing {
-        margin-top: 0 !important;
-    }
+@mixin base-container (
+    $selectable-padding: 5px,
+    $selectable-hover-background: rgba(0, 0, 0, 0.1),
+    $selectable-active-background: rgba(0, 0, 0, 0.15)
+) {
+    .ac-container {
+        &.ac-selectable {
+            padding: $selectable-padding;
 
-    .separator {
-        border-top: 1px solid $separator-color;
-        margin: 20px 0 0 0;
-        padding: 20px 0 0 0;
-    }
-}
+            &:hover {
+                background-color: $selectable-hover-background;
+            }
 
-@mixin base-sizes() {
-    .stretch {
-        width: 100%;
-    }
-
-    .smallSize {
-        width: 100px;
-    }
-
-    .mediumSize {
-        width: 200px;
-    }
-
-    .largeSize {
-        width: 300px;
-    }
-}
-
-@mixin base-text-default($default-color: rgb(51, 51, 51), $default-size: 14px, $subtle-color: rgba(51, 51, 51, 0.5), $margin-top: null, $base-color: null, $extra-large-size: 30px, $medium-size: 20px) {
-
-    .text {
-        font-family: 'Segoe UI', sans-serif;
-        font-size: 14px;
-        font-weight: normal;
-        margin-top: $margin-top;
-        color: $base-color;
-    
-        &.defaultSize {
-            font-size: $default-size;
-        }
-
-        &.small {
-            font-size: 12px;
-        }
-
-        &.medium {
-            font-size: $medium-size;
-        }
-
-        &.large {
-            font-size: 24px;
-        }
-
-        &.extraLarge {
-            font-size: $extra-large-size;
-        }
-
-        &.lighter {
-            font-weight: 200;
-        }
-
-        &.defaultWeight {
-            font-weight: 400;
-        }
-
-        &.bolder {
-            font-weight: 600;
-        }
-
-        &.defaultColor {
-            color: $default-color;
-        }
-
-        &.defaultColor.subtle {
-            color: $subtle-color;
+            &:active {
+                background-color: $selectable-active-background;
+            }
         }
     }
 }
 
-@mixin base-text-dark($color: rgb(51, 51, 51), $subtle-color: rgba(51, 51, 51, 0.5)) {
-
-    .text {
-
-        &.darkColor {
-            color: $color;
-        }
-
-        &.darkColor.subtle {
-            color: $subtle-color;
-        }
-    }
-}
-
-@mixin base-text-light() {
-
-    .text {
-
-        &.lightColor {
-            color: rgb(255, 255, 255);
-        }
-
-        &.lightColor.subtle {
-            color: rgba(255, 255, 255, 0.5);
-        }
-    }
-}
-
-@mixin base-text-special() {
-
-    .text {
-
-        &.accentColor {
-            color:  rgb(46, 137, 252);
-        }
-
-        &.accentColor.subtle {
-            color:  rgba(46, 137, 252, 0.5);
-        }
-
-        &.goodColor {
-            color: #2ccc35;
-        }
-
-        &.warningColor {
-            color: #f9a203;
-        }
-
-        &.attentionColor {
-            color: darkred;
-        }
-    }
-}
-
-@mixin base-container($container-margin: 20px 0 0 0, $start-group-padding-top: 20px, $root-padding: 10px 12px) {
-
-    .rootContainer {
-        padding: $root-padding;
-    }
-
-    .container {
-        margin: $container-margin;
-
-        &.selectable {
-            padding: 5px;
-        }
-
-        &.selectable:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-
-        &.selectable:active {
-            background-color: rgba(0, 0, 0, 0.15);
-        }
-
-        &.startGroup {
-            border-top: 1px solid rgba(0, 0, 0, 0.25);
-            padding-top: $start-group-padding-top;
-        }
-    }
-}
-
-@mixin base-image(
-    $margin: 5px 0 0 0,
-    $small-max-width: 40px,
-    $medium-max-width: 80px,
-    $large-max-width: 160px
-    ) {
-
-    .image {
-        margin: $margin;
-
-        &.selectable {
-            cursor: pointer;
-        }
-
-        &.autoSize {
-            max-width: 100%;
-        }
-
-        &.stretch {
-            width: 100%;
-        }
-
-        &.small {
-            max-width: $small-max-width;
-        }
-
-        &.medium {
-            max-width: $medium-max-width;
-        }
-
-        &.large {
-            max-width: $large-max-width;
-        }
-
-        &.person {
-            border-radius: 50%;
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
-        }
-    }
-
-    .imageGallery {
-        margin: 20px 0 0 0;
-    }
-
-}
-
-@mixin base-table(
-    $margin: 20px 0 0 0, 
-    $fact-name-padding: 0, 
-    $fact-value-padding: 0 0 0 10px
-    ) {
-
-    table.factGroup {
-        margin: $margin;
-        border-width: 0;
-        border-spacing: 0;
-        border-style: none;
-        border-collapse: collapse;
-    }
-
-    tr.factGroupRowSpacer {
-        height: 10px;
-    }
-
-    td.factName {
-        border-width: 0;
-        padding: $fact-name-padding;
-        border-style: none;
-        min-width: 100px;
-        vertical-align: top;
-        white-space: nowrap;
-    }
-
-    td.factValue {
-        border-width: 0;
-        padding: 0;
-        border-style: none;
-        vertical-align: top;
-        padding: $fact-value-padding;
-    }
-}
-
-@mixin base-column($group-margin: 15px 0 5px 0) {
-
-    .columnGroup {
-        margin: $group-margin;
-    }
-
-    .column {
-        &.selectable {
-            padding: 5px;
-        }
-
-        &.selectable:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-
-        &.selectable:active {
-            background-color: rgba(0, 0, 0, 0.15);
-        }
-    }
-
-    .defaultColumnSeparator {
-        width: 10px;    
-    }
-
-    .strongColumnSeparator {
-        border-left: 1px solid #EEEEEE;
-        margin-left: 10px;
-        padding-left: 10px;
-    }
-
-}
-
-@mixin base-actions(
-    $card-container-background-color: #F8F8F8,
-    $card-container-margin: 16px -20px 0 -20px, 
-    $card-container-padding: 16px 20px 16px 20px, 
-    $button-spacing: 10px, 
-    $button-strip: true,
-    $item-flex-basis: auto,
-    $margin: 20px 0 0 0
-    ) {
-
-    .actionGroup {
-        margin: $margin;
-    }
-
-    .actionCardContainer {
-        margin: $card-container-margin;
-        padding: $card-container-padding;
-        background-color: $card-container-background-color;
-    }
-
-    @if $button-strip {
-        .buttonStrip {
-            display: flex;
-            overflow: hidden;
-        }
-
-        .buttonStripItem {
-            flex: 0 1 $item-flex-basis;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        .buttonStripItemSpacer {
-            margin-right: $button-spacing;
-        }
-    }
+.ac-image.ac-selectable {
+    cursor: pointer;
 }
 
 @mixin base-push-button(
@@ -320,7 +29,6 @@
     $font-weight: 600, 
     $border: none, 
     $padding: 4px 10px 5px 10px, 
-    $min-width: 80px,
     $background-color: #0078D7,
     $color: white,
     $user-select: none,
@@ -331,15 +39,14 @@
     $active-background-color: #004D84
      ) {
 
-    .pushButton {
-        font-family: 'Segoe UI', sans-serif;
+    .ac-pushButton {
+        font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;
         overflow: hidden;
         text-overflow: ellipsis;
         border: $border;
         padding: $padding;
-        min-width: $min-width; 
         text-align: center;
         vertical-align: middle;
         cursor: default;
@@ -358,17 +65,6 @@
             color: $active-color
         }
     }
-
-    /*
-    Other styles that can be specified:
-        .pushButton.expanded
-        .pushButton.expanded:hover
-        .pushButton.expanded:active
-
-        .pushButton.subdued
-        .pushButton.subdued:hover
-        .pushButton.subdued:active
-    */
 }
 
 @mixin base-link-button(
@@ -384,14 +80,13 @@
     $hover-border: null,
     $hover-color: #005A9E,
     $padding: none,
-    $min-width: null, 
     $subdued: true,
     $text-align: null,
     $vertical-align: null
     ) {
 
-    .linkButton {
-        font-family: 'Segoe UI', sans-serif;
+    .ac-linkButton {
+        font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;
         overflow: hidden;
@@ -399,7 +94,6 @@
         cursor: $cursor;
         border: $border;
         padding: $padding;
-        min-width: $min-width;
         text-align: $text-align;
         vertical-align: $vertical-align;
         color: $color;
@@ -418,16 +112,16 @@
         }
         
         @if $subdued {
-            &.subdued {
+            &.ac-subdued {
                 color: #666666;
                 font-weight: 500;
             }
 
-            &.subdued:hover {
+            &.ac-subdued:hover {
                 color: #005A9E;
             }
 
-            &.subdued:active {
+            &.ac-subdued:active {
                 color: #004D84;
             }
         }
@@ -435,57 +129,45 @@
 
     /*
     Other styles that can be specified:
-        .linkButton.expanded
-        .linkButton.expanded:hover
-        .linkButton.expanded:active
+        .ac-linkButton.ac-expanded
+        .ac-linkButton.ac-expanded:hover
+        .ac-linkButton.ac-expanded:active
     */
 }
 
 @mixin base-input(
-    $border-color: #EAEAEA,
-    $border-width: 1px,
-    $margin: 10px 0 0 0,
+    $font-size: 14px,
+    $padding: 4px 8px 4px 8px,
+    $color: black,
+    $border: 1px solid #DDDDDD,
     $hover-border: null,
+    $background-color: null,
     $hover-background-color: null
     ) {
 
-    .input {
-        margin: $margin;
+    .ac-input {
+        font-family: $font-family;
+        font-size: $font-size;
+        color: $color;
 
-        &.textInput {
-            font-size: 14px;
+        &.ac-textInput {
             height: 30px;
             resize: none;
         }
 
-        &.textInput.multiline {
+        &.ac-textInput.ac-multiline {
             height: 72px;
         }
 
-        &.textInput, &.number, &.date, &.time, &.multichoiceInput {
-            font-family: 'Segoe UI', sans-serif;
-            border-color: $border-color;
-            border-width: $border-width;
-            border-style: solid;
-            padding: 4px 8px 4px 8px;
+        &.ac-textInput, &.ac-numberInput, &.ac-dateInput, &.ac-timeInput, &.ac-multichoiceInput {
+            border: $border;
+            padding: $padding;
+            background-color: $background-color;
 
             &:hover {
                 border: $hover-border;
                 background-color: $hover-background-color;
             }
         }
-    }
-
-    .toggleInput {
-        display: inline-block;
-        vertical-align: middle;
-        margin: 0;
-    }
-
-    .toggleLabel {
-        margin: 0 0 0 6px !important;
-        padding: 0 !important;
-        display: inline-block;
-        vertical-align: middle;
     }
 }

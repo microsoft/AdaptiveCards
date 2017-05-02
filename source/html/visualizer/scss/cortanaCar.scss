@@ -1,12 +1,5 @@
 @import 'node_modules/adaptive-cards/scss/base';
 
-//TODO: remove or scope the asterisk selector so it does not pollute the global scope in the host page
-* {
-    box-sizing: border-box;
-}
-
-@include base-spacing();
-
 .cortanaLogo {
     width: 50px;
 }
@@ -17,31 +10,7 @@
     margin-bottom: 10px;
 }
 
-@include base-sizes();
-
-@include base-text-default($default-color: rgb(255, 255, 255));
-
-@include base-text-dark($color: rgb(255, 255, 255), $subtle-color: rgba(240, 240, 240, 0.5));
-
-@include base-text-light();
-
-@include base-text-special();
-
-@include base-container($container-margin: 5px 0px 0px 0px, $start-group-padding-top: 5px);
-
-.rootContainer {
-    width: 300px;
-    height: 300px;
-    background: black;
-}
-
-@include base-image();
-
-@include base-table();
-
-@include base-column();
-
-@include base-actions();
+@include base-container();
 
 @include base-push-button(
     $background-color: #464646,
@@ -50,30 +19,11 @@
     $font-weight: 500,
     $active-background-color: #828282,
     $hover-background-color: null,
-    $hover-border: 2px solid #A9A9A9,
-    $min-width: null
+    $hover-border: 2px solid #A9A9A9
     );
 
-.linkButton {
-    @extend .pushButton;
+.ac-linkButton {
+    @extend .ac-pushButton;
 }
-
-// @include base-link-button(
-//     $background-color: #464646,
-//     $border: 2px solid transparent,
-//     $color: white,
-//     $cursor: default,
-//     $active-background-color: #828282,
-//     $active-color: null,
-//     $hover-border: 2px solid #A9A9A9,
-//     $hover-color: null,
-//     $font-size: 15px,
-//     $font-weight: 500,
-//     $min-width: null,
-//     $padding: 4px 10px 5px 10px,
-//     $text-align: center,
-//     $vertical-align: middle,
-//     $subdued: false
-//     );
 
 @include base-input();

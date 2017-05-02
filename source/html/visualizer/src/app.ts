@@ -6,6 +6,7 @@ import { BingContainer } from "./containers/bing";
 import { LiveTileContainer } from "./containers/live-tile";
 import { OutlookConnectorContainer } from "./containers/outlook-connector";
 import { SkypeContainer } from "./containers/skype";
+import { WebChatContainer } from "./containers/webchat";
 import { SpeechContainer } from "./containers/speech";
 import { TeamsConnectorContainer } from "./containers/teams-connector";
 import { ToastContainer } from "./containers/toast";
@@ -33,10 +34,16 @@ function renderCard(): HTMLElement {
     lastValidationErrors = [];
 
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
-    hostContainer.applyOptions();
 
-    var jsonPayload = editor.getValue();
-    var json = JSON.parse(jsonPayload);
+    try {
+        var configuration = Adaptive.parseHostConfig(currentConfigPayload);
+        Adaptive.setHostConfig(configuration);
+    }
+    catch (e) {
+        // TODO
+    }
+
+    var json = JSON.parse(currentCardPayload);
 
     var adaptiveCard = new Adaptive.AdaptiveCard();
     adaptiveCard.parse(json);
@@ -63,7 +70,7 @@ function tryRenderCard() {
     contentContainer.appendChild(renderedCard);
 
     try {
-        sessionStorage.setItem("AdaptivePayload", editor.getValue());
+        sessionStorage.setItem("AdaptivePayload", currentCardPayload);
     }
     catch (e) {
         console.log("Unable to cache JSON payload.")
@@ -72,6 +79,10 @@ function tryRenderCard() {
 
 function openFilePicker() {
     document.getElementById("filePicker").click();
+}
+
+function setEditorText(text: string) {
+    editor.session.setValue(text);
 }
 
 function filePickerChanged(evt) {
@@ -83,7 +94,8 @@ function filePickerChanged(evt) {
         let reader = new FileReader();
 
         reader.onload = function (e: ProgressEvent) {
-            editor.session.setValue((e.target as FileReader).result);
+            // editor.session.setValue((e.target as FileReader).result);
+            setEditorText((e.target as FileReader).result);
         }
 
         reader.readAsText(file);
@@ -93,7 +105,7 @@ function filePickerChanged(evt) {
     }
 }
 
-function updateStyleSheet() {
+function loadStyleSheetAndConfig() {
     var styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
 
     if (styleSheetLinkElement == null) {
@@ -105,7 +117,16 @@ function updateStyleSheet() {
 
     styleSheetLinkElement.rel = "stylesheet";
     styleSheetLinkElement.type = "text/css";
-    styleSheetLinkElement.href = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer.styleSheet;
+
+    var selectedHostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
+
+    styleSheetLinkElement.href = selectedHostContainer.styleSheet;
+
+    currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfig(), null, '\t');
+
+    if (!isCardEditor) {
+        setEditorText(currentConfigPayload);
+    }
 }
 
 function getParameterByName(name, url) {
@@ -137,6 +158,9 @@ class HostContainerOption {
     }
 }
 
+var currentCardPayload: string = "";
+var currentConfigPayload: string = "";
+
 function setupEditor() {
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/chrome");
@@ -152,6 +176,13 @@ function setupEditor() {
     editor.getSession().on(
         "change",
         function (e) {
+            if (isCardEditor) {
+                currentCardPayload = editor.getValue();
+            }
+            else {
+                currentConfigPayload = editor.getValue();
+            }
+            
             tryRenderCard();
         });
 
@@ -165,7 +196,7 @@ function setupEditor() {
 
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    editor.session.setValue(xhttp.responseText);
+                    currentCardPayload = xhttp.responseText;
                 }
             };
         
@@ -173,14 +204,14 @@ function setupEditor() {
             xhttp.send(); 
         }
         else if (cachedPayload) {
-            editor.session.setValue(cachedPayload);
+            currentCardPayload = cachedPayload;
         }
         else {
-            editor.session.setValue(Constants.defaultPayload);
+            currentCardPayload = Constants.defaultPayload;
         }
     }
     catch (e) {
-        editor.session.setValue(Constants.defaultPayload);
+        currentCardPayload = Constants.defaultPayload;
     }
 }
 
@@ -209,7 +240,12 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Skype",
-            new SkypeContainer("css/skypeCard.css")));
+            new SkypeContainer(350, "css/skypeCard.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "WebChat",
+            new WebChatContainer("css/webchat.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -219,7 +255,7 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Cortana Car",
-            new CortanaCarContainer("css/cortanaCar.css")));
+            new CortanaCarContainer(350, "css/cortanaCar.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -229,10 +265,12 @@ function setupContainerPicker() {
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(
             "change", () => {
-                // update the query string
-                history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
+                // Update the query string
+                var htmlFileName = location.pathname.indexOf("index.html") >= 0 ? "index.html" : "dev.html";
 
-                updateStyleSheet();
+                history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, htmlFileName + `?hostApp=${hostContainerPicker.value}`);
+
+                loadStyleSheetAndConfig();
                 tryRenderCard();
             });
 
@@ -309,7 +347,6 @@ function showPopupCard(action: Adaptive.ShowCardAction) {
     cardContainer.onclick = (e) => { e.stopPropagation() };
 
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
-    hostContainer.applyOptions();
 
     cardContainer.appendChild(hostContainer.render(action.card.render(), action.card.renderSpeech()));
 
@@ -338,9 +375,48 @@ function showValidationErrors() {
     }
 }
 
+var isCardEditor = true;
+
+function switchToCardEditor() {
+    isCardEditor = true;
+
+    document.getElementById("editCard").classList.remove("subdued");
+    document.getElementById("editConfig").classList.add("subdued");
+
+    setEditorText(currentCardPayload);
+    editor.focus();
+}
+
+function switchToConfigEditor() {
+    isCardEditor = false;
+
+    document.getElementById("editCard").classList.add("subdued");
+    document.getElementById("editConfig").classList.remove("subdued");
+
+    setEditorText(currentConfigPayload);
+    editor.focus();
+}
+
+function inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
+    alert("Card \"" + action.title + "\" " + (isExpanded ? "expanded" : "collapsed"));
+}
+
 window.onload = () => {
+    currentConfigPayload = Constants.defaultConfigPayload;
+
+    document.getElementById("editCard").onclick = (e) => {
+        switchToCardEditor();
+    };
+
+    document.getElementById("editConfig").onclick = (e) => {
+        switchToConfigEditor();
+    };
+    
     Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
     Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
+
+    // Uncomment to test the onInlineCardExpanded event:
+    // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
     
     Adaptive.AdaptiveCard.onParseError = (error: Adaptive.IValidationError) => {
         lastValidationErrors.push(error);
@@ -351,8 +427,10 @@ window.onload = () => {
     setupContainerPicker();
     setContainerAppFromUrl();
     setupFilePicker();
-    updateStyleSheet();
+    loadStyleSheetAndConfig();
     setupEditor();
+
+    switchToCardEditor();
 
     // handle Back and Forward after the Container app drop down is changed
     window.addEventListener(

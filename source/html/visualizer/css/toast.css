@@ -1,264 +1,21 @@
-* {
-  box-sizing: border-box;
-}
-
-.removeTopSpacing {
-  margin-top: 0 !important;
-}
-
-.separator {
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-  margin: 20px 0 0 0;
-  padding: 20px 0 0 0;
-}
-
-.stretch {
-  width: 100%;
-}
-
-.smallSize {
-  width: 100px;
-}
-
-.mediumSize {
-  width: 200px;
-}
-
-.largeSize {
-  width: 300px;
-}
-
-.text {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 14px;
-  font-weight: normal;
-}
-
-.text.defaultSize {
-  font-size: 15px;
-}
-
-.text.small {
-  font-size: 12px;
-}
-
-.text.medium {
-  font-size: 20px;
-}
-
-.text.large {
-  font-size: 24px;
-}
-
-.text.extraLarge {
-  font-size: 30px;
-}
-
-.text.lighter {
-  font-weight: 200;
-}
-
-.text.defaultWeight {
-  font-weight: 400;
-}
-
-.text.bolder {
-  font-weight: 600;
-}
-
-.text.defaultColor {
-  color: #333333;
-}
-
-.text.defaultColor.subtle {
-  color: rgba(51, 51, 51, 0.5);
-}
-
-.text.darkColor {
-  color: #333333;
-}
-
-.text.darkColor.subtle {
-  color: rgba(51, 51, 51, 0.5);
-}
-
-.text.lightColor {
-  color: white;
-}
-
-.text.lightColor.subtle {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.text.accentColor {
-  color: #2e89fc;
-}
-
-.text.accentColor.subtle {
-  color: rgba(46, 137, 252, 0.5);
-}
-
-.text.goodColor {
-  color: #2ccc35;
-}
-
-.text.warningColor {
-  color: #f9a203;
-}
-
-.text.attentionColor {
-  color: darkred;
-}
-
-.rootContainer {
-  padding: 12px;
-}
-
-.container {
-  margin: 15px 0 0 0;
-}
-
-.container.selectable {
-  padding: 5px;
-}
-
-.container.selectable:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.container.selectable:active {
-  background-color: rgba(0, 0, 0, 0.15);
-}
-
-.container.startGroup {
-  border-top: 1px solid rgba(0, 0, 0, 0.25);
-  padding-top: 15px;
-}
-
-.image {
-  margin: 5px 0 0 0;
-}
-
-.image.selectable {
+.ac-image.ac-selectable {
   cursor: pointer;
 }
 
-.image.autoSize {
-  max-width: 100%;
-}
-
-.image.stretch {
-  width: 100%;
-}
-
-.image.small {
-  max-width: 40px;
-}
-
-.image.medium {
-  max-width: 80px;
-}
-
-.image.large {
-  max-width: 160px;
-}
-
-.image.person {
-  border-radius: 50%;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-}
-
-.imageGallery {
-  margin: 20px 0 0 0;
-}
-
-table.factGroup {
-  margin: 10px 0 0 0;
-  border-width: 0;
-  border-spacing: 0;
-  border-style: none;
-  border-collapse: collapse;
-}
-
-tr.factGroupRowSpacer {
-  height: 10px;
-}
-
-td.factName {
-  border-width: 0;
-  padding: 4px 0 0 0;
-  border-style: none;
-  min-width: 100px;
-  vertical-align: top;
-  white-space: nowrap;
-}
-
-td.factValue {
-  border-width: 0;
-  padding: 0;
-  border-style: none;
-  vertical-align: top;
-  padding: 4px 0 0 10px;
-}
-
-.columnGroup {
-  margin: 20px 0 0 0;
-}
-
-.column.selectable {
+.ac-container.ac-selectable {
   padding: 5px;
 }
 
-.column.selectable:hover {
+.ac-container.ac-selectable:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.column.selectable:active {
+.ac-container.ac-selectable:active {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-.defaultColumnSeparator {
-  width: 10px;
-}
-
-.strongColumnSeparator {
-  border-left: 1px solid #EEEEEE;
-  margin-left: 10px;
-  padding-left: 10px;
-}
-
-.actionGroup {
-  margin: 10px 0 0 0;
-}
-
-.actionCardContainer {
-  margin: 16px -20px 0 -20px;
-  padding: 16px 20px 16px 20px;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.buttonStrip {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-}
-
-.buttonStripItem {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 1 100%;
-          flex: 0 1 100%;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.buttonStripItemSpacer {
-  margin-right: 5px;
-}
-
-.pushButton, .linkButton {
-  font-family: 'Segoe UI', sans-serif;
+.ac-pushButton, .ac-linkButton {
+  font-family: "Segoe UI", sans-serif;
   font-size: 15px;
   font-weight: 500;
   overflow: hidden;
@@ -268,7 +25,7 @@ td.factValue {
   text-align: center;
   vertical-align: middle;
   cursor: default;
-  background-color: #464646;
+  background-color: rgba(255, 255, 255, 0.2);
   color: white;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -276,69 +33,36 @@ td.factValue {
           user-select: none;
 }
 
-.pushButton:hover, .linkButton:hover {
-  border: 2px solid #A9A9A9;
+.ac-pushButton:hover, .ac-linkButton:hover {
+  border: 2px solid rgba(255, 255, 255, 0.6);
 }
 
-.pushButton:active, .linkButton:active {
-  background-color: #828282;
+.ac-pushButton:active, .ac-linkButton:active {
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
-/*
-    Other styles that can be specified:
-        .pushButton.expanded
-        .pushButton.expanded:hover
-        .pushButton.expanded:active
-
-        .pushButton.subdued
-        .pushButton.subdued:hover
-        .pushButton.subdued:active
-    */
-.input {
-  margin: 2px 0 0 0;
-}
-
-.input.textInput {
+.ac-input {
+  font-family: "Segoe UI", sans-serif;
   font-size: 14px;
+  color: white;
+}
+
+.ac-input.ac-textInput {
   height: 30px;
   resize: none;
 }
 
-.input.textInput.multiline {
+.ac-input.ac-textInput.ac-multiline {
   height: 72px;
 }
 
-.input.textInput, .input.number, .input.date, .input.time, .input.multichoiceInput {
-  font-family: 'Segoe UI', sans-serif;
-  border-color: #797979;
-  border-width: 2px;
-  border-style: solid;
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
+  border: 2px solid #797979;
   padding: 4px 8px 4px 8px;
-}
-
-.input.textInput:hover, .input.number:hover, .input.date:hover, .input.time:hover, .input.multichoiceInput:hover {
-  border: 2px solid #A5A5A5;
   background-color: #0C0C0C;
 }
 
-.toggleInput {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0;
-}
-
-.toggleLabel {
-  margin: 0 0 0 6px !important;
-  padding: 0 !important;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.toggleInputLabel {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 14px;
-  margin-top: -3px;
-  margin-left: 6px;
-  display: inline-block;
-  vertical-align: middle;
+.ac-input.ac-textInput:hover, .ac-input.ac-numberInput:hover, .ac-input.ac-dateInput:hover, .ac-input.ac-timeInput:hover, .ac-input.ac-multichoiceInput:hover {
+  border: 2px solid #A5A5A5;
+  background-color: #0C0C0C;
 }
