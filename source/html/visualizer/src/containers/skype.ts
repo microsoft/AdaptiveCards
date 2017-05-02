@@ -40,7 +40,7 @@ export class SkypeContainer extends HostContainer {
         return {
             supportsInteractivity: true,
             strongSeparation: {
-                spacing: 40,
+                spacing: 20,
                 lineThickness: 1,
                 lineColor: "#EEEEEE"
             },
@@ -93,7 +93,7 @@ export class SkypeContainer extends HostContainer {
                 separation: {
                     spacing: 20
                 },
-                buttonSpacing: 20,
+                buttonSpacing: 10,
                 showCard: {
                     actionMode: "popup",
                     inlineTopMargin: 16,
@@ -106,20 +106,20 @@ export class SkypeContainer extends HostContainer {
                     }
                 },
                 actionsOrientation: "vertical",
-                actionAlignment: "center"
+                actionAlignment: "stretch"
             },
             adaptiveCard: {
                 backgroundColor: "#AEEAEAEA",
                 padding: {
-                    left: 20,
-                    top: 20,
-                    right: 20,
-                    bottom: 20
+                    left: 10,
+                    top: 10,
+                    right: 10,
+                    bottom: 10
                 }
             },
             container: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 },
                 normal: {
                 },
@@ -144,37 +144,37 @@ export class SkypeContainer extends HostContainer {
                 color: "dark",
                 separations: {
                     small: {
-                        spacing: 20,
+                        spacing: 10,
                     },
                     normal: {
-                        spacing: 20
+                        spacing: 10
                     },
                     medium: {
-                        spacing: 20
+                        spacing: 10
                     },
                     large: {
-                        spacing: 20
+                        spacing: 10
                     },
                     extraLarge: {
-                        spacing: 20
+                        spacing: 10
                     }
                 }
             },
             image: {
                 size: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             },
             imageSet: {
                 imageSize: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 },
                 title: {
                     color: "dark",
@@ -195,17 +195,17 @@ export class SkypeContainer extends HostContainer {
             },
             input: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             },
             column: {
                 separation: {
-                    spacing: 20
+                    spacing: 10
                 }
             }
         };
