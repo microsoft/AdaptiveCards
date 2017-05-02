@@ -210,7 +210,7 @@ export class TextBlock extends CardElement {
     color?: Enums.TextColor;
     text: string;
     isSubtle: boolean = false;
-    wrap: boolean = true;
+    wrap: boolean = false;
     maxLines: number;
 
     protected internalRender(): HTMLElement {
@@ -342,7 +342,7 @@ export class TextBlock extends CardElement {
         this.weight = Utils.getValueOrDefault<Enums.TextWeight>(json["weight"], "normal");
         this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], hostConfig.textBlock.color);
         this.isSubtle = json["isSubtle"];
-        this.wrap = json["wrap"] === undefined ? true : json["wrap"];
+        this.wrap = json["wrap"] === undefined ? false : json["wrap"];
         this.maxLines = json["maxLines"];        
     }
 
