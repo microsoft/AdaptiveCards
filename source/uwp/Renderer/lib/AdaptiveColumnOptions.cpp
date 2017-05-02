@@ -20,25 +20,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnOptions::get_DefaultSeparation(IAdaptiveSeparationOptions** separationOptions)
+    HRESULT AdaptiveColumnOptions::get_Separation(IAdaptiveSeparationOptions** separationOptions)
     {
         return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedColumnOptions.defaultSeparation);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnOptions::put_DefaultSeparation(IAdaptiveSeparationOptions*)
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnOptions::get_StrongSeparation(IAdaptiveSeparationOptions** separationOptions)
-    {
-        return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedColumnOptions.strongSeparation);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnOptions::put_StrongSeparation(IAdaptiveSeparationOptions*)
+    HRESULT AdaptiveColumnOptions::put_Separation(IAdaptiveSeparationOptions*)
     {
         return E_NOTIMPL;
     }
