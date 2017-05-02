@@ -1,5 +1,7 @@
 ﻿using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Config;
+using HtmlTags;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,25 @@ namespace AdaptiveCards.Rendering
 {
     public class RenderContext
     {
-        public RenderContext(HostConfig hostConfig = null)
+        public RenderContext(HostConfig hostConfig, Dictionary<Type, Func<TypedElement, RenderContext, HtmlTag>> elementRenderers)
         {
-            if (hostConfig != null)
-                this.Config = hostConfig;
+            // clone it
+            this.Config = JsonConvert.DeserializeObject<HostConfig>(JsonConvert.SerializeObject(hostConfig));
+            this.ElementRenderers = elementRenderers;
         }
 
-        public HostConfig Config { get; set; } = new HostConfig();
+        public HostConfig Config { get; set; }
+
+        public Dictionary<Type, Func<TypedElement, RenderContext, HtmlTag>> ElementRenderers { get; set; }
+
+        /// <summary>
+        /// Helper to deal with casting
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public HtmlTag Render(TypedElement element)
+        {
+            return this.ElementRenderers[element.GetType()](element, this);
+        }
     }
 }

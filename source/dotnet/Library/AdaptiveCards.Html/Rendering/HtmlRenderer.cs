@@ -5,8 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using HtmlTags;
-#if FUTURE
 using Microsoft.MarkedNet;
+using AdaptiveCards.Rendering.Config;
+
 namespace AdaptiveCards.Rendering
 {
     /// <summary>
@@ -16,73 +17,119 @@ namespace AdaptiveCards.Rendering
     {
         // ---------------- INTERNAL METHODS -----------------------------
 
-        private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
-        {
-#if NET452
-            var assembly = Assembly.GetExecutingAssembly();
-            using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.Rendering.AdaptiveCard.css"))
-            using (var reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
-#else
-            return null;
-#endif
-        });
+        //        private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
+        //        {
+        //#if NET452
+        //            var assembly = Assembly.GetExecutingAssembly();
+        //            using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.Rendering.AdaptiveCard.css"))
+        //            using (var reader = new StreamReader(stream))
+        //            {
+        //                return reader.ReadToEnd();
+        //            }
+        //#else
+        //            return null;
+        //#endif
+        //        });
 
         public HtmlRenderer(HostConfig config) : base(config)
         {
+            SetObjectTypes();
         }
 
-        /// <summary>
-        ///     Stock CSS you can use with the generated html
-        /// </summary>
-        public static string StockCss
-        {
-            get { return _stockCss.Value; }
-        }
+        ///// <summary>
+        /////     Stock CSS you can use with the generated html
+        ///// </summary>
+        //public static string StockCss
+        //{
+        //    get { return _stockCss.Value; }
+        //}
 
         public HtmlTag RenderAdaptiveCard(AdaptiveCard card)
         {
-            return Render(card, new RenderContext(this.DefaultConfig));
+            var context = new RenderContext(this.DefaultConfig, this.ElementRenderers);
+            return context.Render(card);
         }
 
         public HtmlTag RenderShowCard(ShowCardAction showCard)
         {
-            return Render(showCard.Card, new RenderContext(this.DefaultConfig));
+            return new RenderContext(this.DefaultConfig, this.ElementRenderers).Render(showCard.Card);
+        }
+
+        private void SetObjectTypes()
+        {
+            this.SetRenderer<AdaptiveCard>(AdaptiveCardRender);
+
+            this.SetRenderer<TextBlock>(TextBlockRender);
+            this.SetRenderer<Image>(ImageRender);
+
+            this.SetRenderer<ActionSet>(ActionSetRender);
+            this.SetRenderer<Container>(ContainerRender);
+            this.SetRenderer<Column>(ColumnRender);
+            this.SetRenderer<ColumnSet>(ColumnSetRender);
+            this.SetRenderer<FactSet>(FactSetRender);
+            this.SetRenderer<ImageSet>(ImageSetRender);
+
+            this.SetRenderer<ChoiceSet>(ChoiceSetRender);
+            this.SetRenderer<TextInput>(TextInputRender);
+            this.SetRenderer<NumberInput>(NumberInputRender);
+            this.SetRenderer<DateInput>(DateInputRender);
+            this.SetRenderer<TimeInput>(TimeInputRender);
+            this.SetRenderer<ToggleInput>(ToggleInputRender); ;
+
+            this.SetRenderer<SubmitAction>(SubmitActionRender);
+            this.SetRenderer<HttpAction>(HttpActionRender);
+            this.SetRenderer<OpenUrlAction>(OpenUrlActionRender);
+            this.SetRenderer<ShowCardAction>(ShowCardActionRender);
         }
 
 
-        protected override HtmlTag Render(HttpAction action, RenderContext context)
+        protected static HtmlTag OpenUrlActionRender(TypedElement actionElement, RenderContext context)
         {
-            // not supported
-            return null;
-        }
-
-        protected override HtmlTag Render(OpenUrlAction action, RenderContext context)
-        {
+            OpenUrlAction action = (OpenUrlAction)actionElement;
             if (context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, action.Url, action.Type.Replace(".", ""), "pushButton");
+                var uiButton = new LinkTag(action.Title, action.Url, action.Type.Replace(".", ""), "ac-action");
                 return uiButton;
             }
             return null;
         }
 
-        protected override HtmlTag Render(ShowCardAction action, RenderContext context)
+        protected static HtmlTag ShowCardActionRender(TypedElement actionElement, RenderContext context)
         {
-            // not supported
+            ShowCardAction action = (ShowCardAction)actionElement;
+            if (context.Config.SupportsInteractivity)
+            {
+                var uiButton = new LinkTag(action.Title, null, action.Type.Replace(".", ""), "ac-action");
+                return uiButton;
+            }
             return null;
         }
 
-        protected override HtmlTag Render(SubmitAction action, RenderContext context)
+        protected static HtmlTag SubmitActionRender(TypedElement actionElement, RenderContext context)
         {
-            // not supported
+            SubmitAction action = (SubmitAction)actionElement;
+            if (context.Config.SupportsInteractivity)
+            {
+                var uiButton = new LinkTag(action.Title, null, action.Type.Replace(".", ""), "ac-action");
+                return uiButton;
+            }
             return null;
         }
 
-        protected override HtmlTag Render(AdaptiveCard card, RenderContext context)
+        protected static HtmlTag HttpActionRender(TypedElement actionElement, RenderContext context)
         {
+            HttpAction action = (HttpAction)actionElement;
+            if (context.Config.SupportsInteractivity)
+            {
+                var uiButton = new LinkTag(action.Title, null, action.Type.Replace(".", ""), "ac-action");
+                return uiButton;
+            }
+            return null;
+        }
+
+        protected static HtmlTag AdaptiveCardRender(TypedElement element, RenderContext context)
+        {
+            AdaptiveCard card = (AdaptiveCard)element;
             var uiCard = new DivTag()
                 .AddClass(card.Type)
                 .Style("border-width", "1px 1px 1px 3px")
@@ -99,48 +146,49 @@ namespace AdaptiveCards.Rendering
             return uiCard;
         }
 
-        protected void AddContainerElements(HtmlTag uiContainer, List<CardElement> elements, List<ActionBase> actions, RenderContext context)
+        protected static void AddContainerElements(HtmlTag uiContainer, List<CardElement> elements, List<ActionBase> actions, RenderContext context)
         {
-            foreach (var cardElement in elements)
+            if (elements != null)
             {
-                // each element has a row
-                var uiElement = Render(cardElement, context);
-                if (uiElement != null)
+                foreach (var cardElement in elements)
                 {
-                    if (uiContainer.Children.Any())
-                        switch (cardElement.Separation)
-                        {
-                            case SeparationStyle.None:
-                                uiElement = uiElement.AddClass("NoSeparation");
-                                break;
-                            case SeparationStyle.Default:
-                                break;
-                            case SeparationStyle.Strong:
-                                {
+                    // each element has a row
+                    var uiElement = context.Render(cardElement);
+                    if (uiElement != null)
+                    {
+                        if (uiContainer.Children.Any())
+                            switch (cardElement.Separation)
+                            {
+                                case SeparationStyle.None:
                                     uiElement = uiElement.AddClass("NoSeparation");
-                                    var uiSep = new DivTag()
-                                        .AddClass("Separator");
-                                    uiContainer.Children.Add(uiSep);
-                                }
-                                break;
-                        }
-                    else
-                        uiElement = uiElement.AddClass("NoSeparation");
-                    uiContainer.Children.Add(uiElement);
+                                    break;
+                                case SeparationStyle.Default:
+                                    break;
+                                case SeparationStyle.Strong:
+                                    {
+                                        uiElement = uiElement.AddClass("NoSeparation");
+                                        var uiSep = new DivTag()
+                                            .AddClass("Separator");
+                                        uiContainer.Children.Add(uiSep);
+                                    }
+                                    break;
+                            }
+                        else
+                            uiElement = uiElement.AddClass("NoSeparation");
+                        uiContainer.Children.Add(uiElement);
+                    }
                 }
             }
 
-            if (actions?.Where(a => context.Config.AdaptiveCard.SupportedActions.Contains(a.Type)).Any() == true)
+            if (actions != null)
             {
                 var uiActions = new DivTag()
                     .AddClass("Container");
 
-                foreach (var action in actions
-                    .Where(act => context.Config.AdaptiveCard.SupportedActions?.Contains(act.Type) == true)
-                    .Take(context.Config.AdaptiveCard.MaxActions))
+                foreach (var action in actions.Take(context.Config.Actions.MaxActions))
                 {
                     // add actions
-                    var uiAction = RenderAction(action, context);
+                    var uiAction = context.Render(action);
                     if (uiAction != null)
                         uiActions.Children.Add(uiAction);
                 }
@@ -151,14 +199,15 @@ namespace AdaptiveCards.Rendering
         }
 
 
-        protected override HtmlTag Render(Column column, RenderContext context)
+        protected static HtmlTag ColumnRender(TypedElement element, RenderContext context)
         {
+            Column column = (Column)element;
             var uiColumn = new DivTag()
                 .AddClass(column.Type);
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
-            if (DefaultConfig.SupportsInteractivity && column.SelectAction != null)
+            if (context.Config.SupportsInteractivity && column.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
@@ -172,8 +221,9 @@ namespace AdaptiveCards.Rendering
             return uiColumn;
         }
 
-        protected override HtmlTag Render(ColumnSet columnSet, RenderContext context)
+        protected static HtmlTag ColumnSetRender(TypedElement element, RenderContext context)
         {
+            ColumnSet columnSet = (ColumnSet)element;
             var uiColumnSet = new DivTag()
                 .AddClass(columnSet.Type)
                 .Style("overflow", "hidden")
@@ -188,7 +238,7 @@ namespace AdaptiveCards.Rendering
 
             foreach (var column in columnSet.Columns)
             {
-                var uiColumn = Render(column, context);
+                var uiColumn = context.Render(column);
 
                 // Add vertical Seperator
                 if (uiColumnSet.Children.Any())
@@ -246,14 +296,15 @@ namespace AdaptiveCards.Rendering
             return uiColumnSet;
         }
 
-        protected override HtmlTag Render(Container container, RenderContext context)
+        protected static HtmlTag ContainerRender(TypedElement element, RenderContext context)
         {
+            Container container = (Container)element;
             var uiContainer = new DivTag()
                 .AddClass(container.Type);
 
-            AddContainerElements(uiContainer, container.Items, container.Actions, context);
+            AddContainerElements(uiContainer, container.Items, null, context);
 
-            if (DefaultConfig.SupportsInteractivity && container.SelectAction != null)
+            if (context.Config.SupportsInteractivity && container.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(container.SelectAction, new RenderContext(this.actionCallback, this.missingDataCallback));
                 //if (uiButton != null)
@@ -267,31 +318,39 @@ namespace AdaptiveCards.Rendering
             return uiContainer;
         }
 
-        protected override Tuple<HtmlTag, HtmlTag> Render(Fact fact, RenderContext context)
+        protected static HtmlTag ActionSetRender(TypedElement element, RenderContext context)
         {
-            return
-                new Tuple<HtmlTag, HtmlTag>(new DivTag().Text(fact.Title).AddClass("FactName").AddClass("NoSeparation"),
-                    new DivTag().Text(fact.Value).AddClass("FactTitle").AddClass("NoSeparation"));
+            ActionSet actionSet = (ActionSet)element;
+            var uiContainer = new DivTag()
+                .AddClass(actionSet.Type);
+            AddContainerElements(uiContainer, null, actionSet.Actions, context);
+            return uiContainer;
         }
 
-        protected override HtmlTag Render(FactSet factSet, RenderContext context)
+
+        protected static HtmlTag FactSetRender(TypedElement element, RenderContext context)
         {
+            FactSet factSet = (FactSet)element;
             var uiFactSet = (TableTag)new TableTag()
                 .AddClass(factSet.Type)
                 .Style("overflow", "hidden");
 
             foreach (var fact in factSet.Facts)
             {
-                var uiElements = Render(fact, context);
+                var uiTitle = new DivTag().Text(fact.Title).AddClass("FactName").AddClass("NoSeparation");
+                var uiValue = new DivTag().Text(fact.Value).AddClass("FactTitle").AddClass("NoSeparation");
+
                 var uiRow = uiFactSet.AddBodyRow();
-                uiRow.Cell().AddClass("FactName").Append(uiElements.Item1);
-                uiRow.Cell().AddClass("FactValue").Append(uiElements.Item2);
+
+                uiRow.Cell().AddClass("FactName").Append(uiTitle);
+                uiRow.Cell().AddClass("FactValue").Append(uiValue);
             }
             return uiFactSet;
         }
 
-        protected override HtmlTag Render(TextBlock textBlock, RenderContext context)
+        protected static HtmlTag TextBlockRender(TypedElement element, RenderContext context)
         {
+            TextBlock textBlock = (TextBlock)element;
             var uiTextBlock = new DivTag()
                 .AddClass(textBlock.Type)
                 .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
@@ -313,8 +372,8 @@ namespace AdaptiveCards.Rendering
                 uiTextBlock = uiTextBlock.AddClass("Subtle");
 
             var marked = new Marked();
-            marked.Config.Mangle = false;
-            marked.Config.Sanitize = true;
+            marked.Options.Mangle = false;
+            marked.Options.Sanitize = true;
 
             var html = marked.Parse(RendererUtilities.ApplyTextFunctions(textBlock.Text))
                 .Replace("<p>", "<p style='margin-top: 0px;margin-bottom: 0px'>");
@@ -325,8 +384,9 @@ namespace AdaptiveCards.Rendering
             return uiTextBlock;
         }
 
-        protected override HtmlTag Render(Image image, RenderContext context)
+        protected static HtmlTag ImageRender(TypedElement element, RenderContext context)
         {
+            Image image = (Image)element;
             var uiImage = new HtmlTag("img")
                 .AddClass(image.Type)
                 .AddClass($"{image.Size}")
@@ -352,7 +412,7 @@ namespace AdaptiveCards.Rendering
                     break;
             }
 
-            if (DefaultConfig.SupportsInteractivity && image.SelectAction != null)
+            if (context.Config.SupportsInteractivity && image.SelectAction != null)
             {
                 //var uiButton = (Button)RenderAction(image.SelectAction, context);
                 //if (uiButton != null)
@@ -365,14 +425,15 @@ namespace AdaptiveCards.Rendering
             return uiImage;
         }
 
-        protected override HtmlTag Render(ImageSet imageSet, RenderContext context)
+        protected static HtmlTag ImageSetRender(TypedElement element, RenderContext context)
         {
+            ImageSet imageSet = (ImageSet)element;
             var uiImageSet = new DivTag()
                 .AddClass(imageSet.Type);
 
             foreach (var image in imageSet.Images)
             {
-                var uiImage = Render(image, context);
+                var uiImage = context.Render(image);
                 if (imageSet.ImageSize != ImageSize.Auto)
                     uiImage = uiImage.RemoveClass(ImageSize.Auto.ToString())
                         .RemoveClass($"{ImageSize.Stretch}")
@@ -385,19 +446,20 @@ namespace AdaptiveCards.Rendering
             return uiImageSet;
         }
 
-        protected override HtmlTag Render(ChoiceSet choiceSet, RenderContext context)
+        protected static HtmlTag ChoiceSetRender(TypedElement element, RenderContext context)
         {
+            ChoiceSet choiceSet = (ChoiceSet)element;
             var choiceText = GetFallbackText(choiceSet);
             if (choiceText == null)
             {
                 var choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
                 if (choiceSet.Style == ChoiceInputStyle.Compact)
                     if (choiceSet.IsMultiSelect)
-                        choiceText = $"Choices: {JoinString(choices, ", ", " and ")}";
+                        choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " and ")}";
                     else
-                        choiceText = $"Choices: {JoinString(choices, ", ", " or ")}";
+                        choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " or ")}";
                 else // if (this.Style == ChoiceInputStyle.Expanded)
-                    choiceText = $"* {JoinString(choices, "\n* ", "\n* ")}";
+                    choiceText = $"* {RendererUtilities.JoinString(choices, "\n* ", "\n* ")}";
             }
             var container = new Container { Separation = choiceSet.Separation };
             container.Items.Add(new TextBlock
@@ -408,15 +470,16 @@ namespace AdaptiveCards.Rendering
             container.Items.Add(new TextBlock
             {
                 Text =
-                    JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
+                    RendererUtilities.JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
                 Color = TextColor.Accent,
                 Wrap = true
             });
-            return Render(container, context);
+            return context.Render(container);
         }
 
-        protected override HtmlTag Render(DateInput input, RenderContext context)
+        protected static HtmlTag DateInputRender(TypedElement element, RenderContext context)
         {
+            DateInput input = (DateInput)element;
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
             if (input.Value != null)
@@ -426,11 +489,12 @@ namespace AdaptiveCards.Rendering
                     Color = TextColor.Accent,
                     Wrap = true
                 });
-            return Render(container, context);
+            return context.Render(container);
         }
 
-        protected override HtmlTag Render(NumberInput input, RenderContext context)
+        protected static HtmlTag NumberInputRender(TypedElement element, RenderContext context)
         {
+            NumberInput input = (NumberInput)element;
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
             if (!double.IsNaN(input.Value))
@@ -442,11 +506,12 @@ namespace AdaptiveCards.Rendering
                     Wrap = true
                 });
             }
-            return Render(container, context);
+            return context.Render(container);
         }
 
-        protected override HtmlTag Render(TextInput input, RenderContext context)
+        protected static HtmlTag TextInputRender(TypedElement element, RenderContext context)
         {
+            TextInput input = (TextInput)element;
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
             if (input.Value != null)
@@ -456,11 +521,12 @@ namespace AdaptiveCards.Rendering
                     Color = TextColor.Accent,
                     Wrap = true
                 });
-            return Render(container, context);
+            return context.Render(container);
         }
 
-        protected override HtmlTag Render(TimeInput input, RenderContext context)
+        protected static HtmlTag TimeInputRender(TypedElement element, RenderContext context)
         {
+            TimeInput input = (TimeInput)element;
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
             if (input.Value != null)
@@ -470,11 +536,12 @@ namespace AdaptiveCards.Rendering
                     Color = TextColor.Accent,
                     Wrap = true
                 });
-            return Render(container, context);
+            return context.Render(container);
         }
 
-        protected override HtmlTag Render(ToggleInput input, RenderContext context)
+        protected static HtmlTag ToggleInputRender(TypedElement element, RenderContext context)
         {
+            ToggleInput input = (ToggleInput)element;
             var container = new Container { Separation = input.Separation };
             container.Items.Add(new TextBlock { Text = GetFallbackText(input) });
             if (input.Value != null)
@@ -487,10 +554,10 @@ namespace AdaptiveCards.Rendering
                     Color = TextColor.Accent,
                     Wrap = true
                 });
-            return Render(container, context);
+            return context.Render(container);
         }
 
-        protected string GetFallbackText(CardElement cardElement)
+        protected static string GetFallbackText(CardElement cardElement)
         {
             if (!string.IsNullOrEmpty(cardElement.Speak))
             {
@@ -510,4 +577,3 @@ namespace AdaptiveCards.Rendering
         }
     }
 }
-#endif
