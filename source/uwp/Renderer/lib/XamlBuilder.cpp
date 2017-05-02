@@ -688,6 +688,95 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    void XamlBuilder::StyleXamlTextBlock(
+        ABI::AdaptiveCards::XamlCardRenderer::TextSize size,
+        ABI::AdaptiveCards::XamlCardRenderer::TextColor color,
+        bool isSubtle,
+        ABI::AdaptiveCards::XamlCardRenderer::TextWeight weight,
+        ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock)
+    {
+        ComPtr<ITextBlock> localTextBlock(xamlTextBlock);
+        ComPtr<IAdaptiveColorOptions> colorOptions;
+        THROW_IF_FAILED(m_hostOptions->get_Colors(&colorOptions));
+
+        ComPtr<IAdaptiveColorOption> colorOption;
+        switch (color)
+        {
+        case ABI::AdaptiveCards::XamlCardRenderer::TextColor::Default:
+            THROW_IF_FAILED(colorOptions->get_Default(&colorOption));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextColor::Accent:
+            THROW_IF_FAILED(colorOptions->get_Accent(&colorOption));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextColor::Dark:
+            THROW_IF_FAILED(colorOptions->get_Dark(&colorOption));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextColor::Light:
+            THROW_IF_FAILED(colorOptions->get_Light(&colorOption));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextColor::Good:
+            THROW_IF_FAILED(colorOptions->get_Good(&colorOption));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextColor::Warning:
+            THROW_IF_FAILED(colorOptions->get_Warning(&colorOption));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextColor::Attention:
+            THROW_IF_FAILED(colorOptions->get_Attention(&colorOption));
+            break;
+        default:
+            break;
+        }
+        Color fontColor;
+        THROW_IF_FAILED(isSubtle ? colorOption->get_Normal(&fontColor) : colorOption->get_Subtle(&fontColor));
+
+        ComPtr<ISolidColorBrush> solidColorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
+        solidColorBrush->put_Color(fontColor);
+        ComPtr<IBrush> solidColorBrushAsBrush;
+        THROW_IF_FAILED(solidColorBrush.As(&solidColorBrushAsBrush));
+        THROW_IF_FAILED(localTextBlock->put_Foreground(solidColorBrushAsBrush.Get()));
+
+        // Retrieve the Font Size from Host Options
+        ComPtr<IAdaptiveFontSizeOptions> fontSizeOptions;
+        THROW_IF_FAILED(m_hostOptions->get_FontSizes(&fontSizeOptions));
+        INT32 fontSize;
+        switch (size)
+        {
+        case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Small:
+            THROW_IF_FAILED(fontSizeOptions->get_Small(&fontSize));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Normal:
+            THROW_IF_FAILED(fontSizeOptions->get_Normal(&fontSize));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Medium:
+            THROW_IF_FAILED(fontSizeOptions->get_Medium(&fontSize));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Large:
+            THROW_IF_FAILED(fontSizeOptions->get_Large(&fontSize));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextSize::ExtraLarge:
+            THROW_IF_FAILED(fontSizeOptions->get_ExtraLarge(&fontSize));
+            break;
+        }
+        THROW_IF_FAILED(localTextBlock->put_FontSize((double)fontSize));
+
+        ComPtr<IFontWeightsStatics> fontWeightsStatics = XamlHelpers::CreateXamlClass<IFontWeightsStatics>(HStringReference(RuntimeClass_Windows_UI_Text_FontWeights));
+        ABI::Windows::UI::Text::FontWeight xamlFontWeight;
+        switch (weight)
+        {
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Lighter:
+            THROW_IF_FAILED(fontWeightsStatics->get_Light(&xamlFontWeight));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Normal:
+            THROW_IF_FAILED(fontWeightsStatics->get_Normal(&xamlFontWeight));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Bolder:
+            THROW_IF_FAILED(fontWeightsStatics->get_Bold(&xamlFontWeight));
+            break;
+        }
+        THROW_IF_FAILED(localTextBlock->put_FontWeight(xamlFontWeight));
+    }
+
+    _Use_decl_annotations_
     void XamlBuilder::BuildTextBlock(
         IAdaptiveCardElement* adaptiveCardElement, 
         IUIElement** textBlockControl)
@@ -702,43 +791,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         adaptiveTextBlock->get_Text(text.GetAddressOf());
         xamlTextBlock->put_Text(text.Get());
 
-        // Generate the style name from the adaptive element and apply it to the xaml
-        // element it it exists in the resource dictionaries
-        ComPtr<IStyle> style;
-        std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForTextBlock(adaptiveTextBlock.Get());
-        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
-        {
-            ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
-            THROW_IF_FAILED(xamlTextBlock.As(&textBlockAsFrameworkElement));
-            THROW_IF_FAILED(textBlockAsFrameworkElement->put_Style(style.Get()));
-        }
-
-        // Translate the font weight into a resource key and apply the value if it exists
-        ComPtr<IInspectable> fontWeightInspectable;
-        std::wstring fontWeightResourceName = XamlStyleKeyGenerators::GenerateKeyForTextBlockWeight(adaptiveTextBlock.Get());
-        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IInspectable>(fontWeightResourceName, &fontWeightInspectable)))
-        {
-            ComPtr<IReference<FontWeight>> fontWeightReference;
-            if (SUCCEEDED(fontWeightInspectable.As(&fontWeightReference)))
-            {
-                FontWeight fontWeight;
-                fontWeightReference.Get()->get_Value(&fontWeight);
-                THROW_IF_FAILED(xamlTextBlock->put_FontWeight(fontWeight));
-            }
-        }
-
-        // Translate the font color into a resource key and apply the value if it exists
-        ComPtr<IBrush> fontColorBrush;
-        std::wstring fontColorResourceName = XamlStyleKeyGenerators::GenerateKeyForTextBlockColor(adaptiveTextBlock.Get());
-        if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IBrush>(fontColorResourceName, &fontColorBrush)))
-        {
-            THROW_IF_FAILED(xamlTextBlock->put_Foreground(fontColorBrush.Get()));
-        }
+        // Retrieve the Text Color from Host Options.
+        ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor;
+        THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));
+        boolean isSubtle = false;
+        THROW_IF_FAILED(adaptiveTextBlock->get_IsSubtle(&isSubtle));
 
         // The subtle boolean is rendered by setting the opacity on the text block, so retrieve
         // that value from the resource dictionary and set the Opacity
-        boolean isSubtle = false;
-        THROW_IF_FAILED(adaptiveTextBlock->get_IsSubtle(&isSubtle));
         if (isSubtle)
         {
             ComPtr<IInspectable> subtleOpacityInspectable;
@@ -761,16 +821,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         boolean shouldWrap = false;
         THROW_IF_FAILED(adaptiveTextBlock->get_Wrap(&shouldWrap));
         THROW_IF_FAILED(xamlTextBlock->put_TextWrapping(shouldWrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
-
         THROW_IF_FAILED(xamlTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
 
-        // Set the maximum number of lines the next block should show
-        ComPtr<ITextBlock2> xamlTextBlock2;
-        THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
-
-        UINT maxLines;
-        THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
-        THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
+        // Set the maximum number of lines the text block should show in cases where wrapping is enabled.
+        if (shouldWrap)
+        {
+            ComPtr<ITextBlock2> xamlTextBlock2;
+            THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
+            UINT maxLines;
+            THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
+            THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
+        }
 
         ABI::AdaptiveCards::XamlCardRenderer::HAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
@@ -788,6 +849,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Center));
                 break;
         }
+        ABI::AdaptiveCards::XamlCardRenderer::TextSize textblockSize;
+        THROW_IF_FAILED(adaptiveTextBlock->get_Size(&textblockSize));
+
+        ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight;
+        THROW_IF_FAILED(adaptiveTextBlock->get_Weight(&textWeight));
+
+        //Style the TextBlock using Host Options
+        StyleXamlTextBlock(textblockSize, textColor, isSubtle, textWeight, xamlTextBlock.Get());
 
         THROW_IF_FAILED(xamlTextBlock.CopyTo(textBlockControl));
     }
