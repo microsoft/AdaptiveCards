@@ -38,13 +38,22 @@ Defines config for how actions should be rendered
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| **actionsOrientation** | Horizontal or Vertical | Horizontal | Defines actions as horizontal vs vertical |
-| **actionAlignment** | Left or center or right | center | should actions be aligned left, centered or right |
+| **actionsOrientation** | [ActionsOrientation](#actionsorientation) | Horizontal | Defines actions as horizontal vs vertical |
+| **actionAlignment** | [ActionAlignment](#actionalignment) | center | should actions be aligned left, centered, right or stretch |
 | **buttonSpacing** | number | 8 | spacing between buttons in an actionSet|
 | **maxActions** | number | 5 | max number of actions that the app wants to support|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines separation between actionSet and previous elements | 
 | **showCard** | [ShowCardActionConfig](#showcardactionconfig)| - | Defines config for ShowCardAction|
-| **stretch** | bool | false | Should buttons stretch to fill horizontal space or not |
+
+### ActionAlignment
+Controls how actions are horizontally positioned within their container
+
+| Value | Meaning |
+|---|---|
+| **left** | actions should be aligned to the left |
+| **center** | actions should be aligned center |
+| **right** | actions should be aligned tot the right |
+| **stretch** | actions should be be stretched to fit the width |
 
 ## ActionSetConfig
 Defines ActionSet config
@@ -52,6 +61,14 @@ Defines ActionSet config
 | Property | Type | default | Description |
 |---|---|---|---|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
+
+### ActionOrientation
+Controls how actions are oriented
+
+| Value | Meaning |
+|---|---|
+| **horizontal** |actions should be laid out horizontally|
+| **vertically** |actions should be laid out vertically|
 
 ## AdaptiveCardConfig
 Defines Card config
@@ -88,7 +105,6 @@ Defines color and subtle version of color
 |---|---|---|---|
 | **normal** | string | - | normal color to use (in #AARRGGBB)|
 | **subtle** | string | - | subtle color to use (in #AARRGGBB)|
-
 
 ## ColumnSetConfig
 Defines ColumnSet config
