@@ -265,9 +265,10 @@ function setupContainerPicker() {
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(
             "change", () => {
-                // Disable this for now because it interferes with dev.html
-                // update the query string
-                // history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
+                // Update the query string
+                var htmlFileName = location.pathname.indexOf("index.html") >= 0 ? "index.html" : "dev.html";
+
+                history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, htmlFileName + `?hostApp=${hostContainerPicker.value}`);
 
                 loadStyleSheetAndConfig();
                 tryRenderCard();

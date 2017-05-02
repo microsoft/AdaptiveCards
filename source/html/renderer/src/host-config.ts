@@ -221,10 +221,9 @@ export interface IActionsConfig {
     supportedActionTypes?: Array<string>,
     separation: ISeparationDefinition,
     buttonSpacing: number,
-    stretch: boolean,
     showCard: IShowCardActionConfig,
     actionsOrientation: Enums.Orientation,
-    actionAlignment: Enums.HorizontalAlignment
+    actionAlignment: Enums.ActionAlignment
 }
 
 function parseActionsConfiguration(obj: any): IActionsConfig {
@@ -233,7 +232,6 @@ function parseActionsConfiguration(obj: any): IActionsConfig {
         supportedActionTypes: obj["supportedActionTypes"],
         separation: parseSeparationDefinition(obj["separation"]),
         buttonSpacing: obj["buttonSpacing"],
-        stretch: obj["stretch"],
         showCard: parseShowCardActionConfiguration(obj["showCard"]),
         actionsOrientation: obj["actionsOrientation"],
         actionAlignment: obj["actionAlignment"]

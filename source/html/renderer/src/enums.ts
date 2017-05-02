@@ -8,6 +8,8 @@ export type TextColor = "dark" | "light" | "accent" | "good" | "warning" | "atte
 
 export type HorizontalAlignment = "left" | "center" | "right";
 
+export type ActionAlignment = "left" | "center" | "right" | "stretch";
+
 export type ContainerStyle = "normal" | "emphasis";
 
 export type ImageStyle = "normal" | "person";
