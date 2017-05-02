@@ -25,7 +25,7 @@
 
 .ac-pushButton, .ac-linkButton {
   font-family: "Segoe UI", sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -48,9 +48,9 @@
 }
 
 .ac-pushButton, .ac-linkButton {
-  border: solid 2px #dcdcdc;
+  border: 2px solid #dcdcdc;
   border-radius: 20px;
-  line-height: 30px;
+  line-height: 20px;
 }
 
 .ac-input {

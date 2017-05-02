@@ -2086,11 +2086,16 @@ export class Column extends Container {
 export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
 
+    protected adjustAlignment(element: HTMLElement) {
+        element.style.textAlign = hostConfig.actions.actionAlignment;
+    }
+
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             // An outer div is necessary for it's responsible for
             // horizontally aligning its content, via adjustAlignment
             var outerElement = document.createElement("div");
+            outerElement.style.overflow = "hidden";
 
             var innerElement = document.createElement("div");
             var renderedColumnCount: number = 0;
