@@ -55,6 +55,7 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* separationOptions,
             _In_ bool isHorizontal = true);
 
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetFontColorFromHostOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor, bool isSubtle);
         void InitializeDefaultResourceDictionary();
         template<typename T>
         HRESULT TryGetResoureFromResourceDictionaries(
