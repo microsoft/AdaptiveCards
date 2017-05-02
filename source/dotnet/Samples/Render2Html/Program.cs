@@ -14,10 +14,7 @@ namespace Render2Html
     {
         static void Main(string[] args)
         {
-            //HtmlRenderer.StockCss.Dump();
             Console.WriteLine(@"<html><head><link rel='stylesheet' type='text/css' href='outlook.css'>");
-            //foreach (var file in )
-
             List<string> files = new List<string>();
             if (File.Exists(args[0]))
                 files.Add(args[0]);
