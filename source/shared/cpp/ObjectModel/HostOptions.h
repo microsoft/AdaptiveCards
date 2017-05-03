@@ -78,7 +78,7 @@ struct ImageSetOptions
 
 struct ColumnOptions
 {
-    SeparationOptions defaultSeparation;
+    SeparationOptions separation;
 };
 
 struct ContainerOptions

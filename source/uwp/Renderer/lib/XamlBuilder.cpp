@@ -503,12 +503,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 // First element does not need a separator added
                 if (currentElement++ > 0)
                 {
-                    ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation;
-                    THROW_IF_FAILED(element->get_Separation(&separation));
-                    if (separation != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
+                    ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separationStyle;
+                    THROW_IF_FAILED(element->get_Separation(&separationStyle));
+                    if (separationStyle != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
                     {
                         ComPtr<IAdaptiveSeparationOptions> separationOptions;
-                        GetSeparationOptionsForElement(element, separation, &separationOptions);
+                        GetSeparationOptionsForElement(element, separationStyle, &separationOptions);
                         if (separationOptions != nullptr)
                         {
                             auto separator = CreateSeparator(separationOptions.Get());

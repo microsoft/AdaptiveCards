@@ -22,7 +22,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveColumnOptions::get_Separation(IAdaptiveSeparationOptions** separationOptions)
     {
-        return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedColumnOptions.defaultSeparation);
+        return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedColumnOptions.separation);
     }
 
     _Use_decl_annotations_
