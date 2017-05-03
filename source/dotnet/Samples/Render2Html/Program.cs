@@ -14,7 +14,18 @@ namespace Render2Html
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(@"<html><head><link rel='stylesheet' type='text/css' href='outlook.css'>");
+            Console.WriteLine(@"<html><head>");
+            Console.WriteLine(@"<style>");
+            Console.WriteLine(@".cardcontainer { ");
+            Console.WriteLine(@"  width: 400px;");
+            Console.WriteLine(@"  border-width: 1px;");
+            Console.WriteLine(@"  border-color: #808080;");
+            Console.WriteLine(@"  border-style: solid;");
+            Console.WriteLine(@"  padding: 8px;");
+            Console.WriteLine(@"}");
+            Console.WriteLine(@"</style>");
+            Console.WriteLine(@"</head>");
+            Console.WriteLine(@"<body>");
             List<string> files = new List<string>();
             if (File.Exists(args[0]))
                 files.Add(args[0]);
@@ -28,9 +39,9 @@ namespace Render2Html
                     Console.WriteLine("<hr/>");
                     Console.WriteLine($"<h1>{file}</h1>");
                     var card = JsonConvert.DeserializeObject<AdaptiveCards.AdaptiveCard>(File.ReadAllText(file));
-                    HtmlRenderer renderer = new HtmlRenderer(new HostConfig() { SupportsInteractivity = true });
+                    HtmlRenderer renderer = new HtmlRenderer(new HostConfig() { SupportsInteractivity = false });
                     var result = renderer.RenderAdaptiveCard(card);
-                    Console.WriteLine(result.ToPrettyString());
+                    Console.WriteLine($"<div class='cardcontainer'>{result.ToPrettyString()}</div>");
                 }
                 catch (Exception err)
                 {

@@ -88,7 +88,7 @@ namespace AdaptiveCards.Rendering
             OpenUrlAction action = (OpenUrlAction)actionElement;
             if (context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, action.Url, action.Type.Replace(".", ""), "ac-action");
+                var uiButton = new LinkTag(action.Title, action.Url, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
                 return uiButton;
             }
             return null;
@@ -99,7 +99,7 @@ namespace AdaptiveCards.Rendering
             ShowCardAction action = (ShowCardAction)actionElement;
             if (context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, null, action.Type.Replace(".", ""), "ac-action");
+                var uiButton = new LinkTag(action.Title, null, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
                 return uiButton;
             }
             return null;
@@ -110,7 +110,7 @@ namespace AdaptiveCards.Rendering
             SubmitAction action = (SubmitAction)actionElement;
             if (context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, null, action.Type.Replace(".", ""), "ac-action");
+                var uiButton = new LinkTag(action.Title, null, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
                 return uiButton;
             }
             return null;
@@ -121,7 +121,7 @@ namespace AdaptiveCards.Rendering
             HttpAction action = (HttpAction)actionElement;
             if (context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, null, action.Type.Replace(".", ""), "ac-action");
+                var uiButton = new LinkTag(action.Title, null, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
                 return uiButton;
             }
             return null;
@@ -131,10 +131,10 @@ namespace AdaptiveCards.Rendering
         {
             AdaptiveCard card = (AdaptiveCard)element;
             var uiCard = new DivTag()
-                .AddClass(card.Type)
-                .Style("border-width", "1px 1px 1px 3px")
-                .Style("border-style", "solid")
-                .Style("border-color", "rgb(241, 241, 241)");
+                .AddClass($"ac-{card.Type.ToLower()}")
+                .Style("width", "100%")
+                .Style("background-color", context.GetRGBColor(context.Config.AdaptiveCard.BackgroundColor))
+                .Style("box-sizing", "border-box");
 
             if (card.BackgroundImage != null)
                 uiCard = uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
@@ -160,21 +160,31 @@ namespace AdaptiveCards.Rendering
                             switch (cardElement.Separation)
                             {
                                 case SeparationStyle.None:
-                                    uiElement = uiElement.AddClass("NoSeparation");
                                     break;
                                 case SeparationStyle.Default:
+                                    {
+                                        SeparationConfig sep = context.GetElementSeparation(cardElement);
+                                        var uiSep = new DivTag()
+                                            .AddClass("ac-separator")
+                                            .Style("height", $"{sep.Spacing}px");
+                                        uiContainer.Children.Add(uiSep);
+                                    }
                                     break;
                                 case SeparationStyle.Strong:
                                     {
-                                        uiElement = uiElement.AddClass("NoSeparation");
+                                        SeparationConfig sep = context.Config.StrongSeparation;
                                         var uiSep = new DivTag()
-                                            .AddClass("Separator");
+                                            .AddClass("ac-separator")
+                                            .Style("padding-top", $"{sep.Spacing}px")
+                                            .Style("margin-top", $"{sep.Spacing}px")
+                                            .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
+                                            .Style("border-top-width", $"{sep.LineThickness}px")
+                                            .Style("border-top-style", "solid")
+                                            ;
                                         uiContainer.Children.Add(uiSep);
                                     }
                                     break;
                             }
-                        else
-                            uiElement = uiElement.AddClass("NoSeparation");
                         uiContainer.Children.Add(uiElement);
                     }
                 }
@@ -183,7 +193,7 @@ namespace AdaptiveCards.Rendering
             if (actions != null)
             {
                 var uiActions = new DivTag()
-                    .AddClass("Container");
+                    .AddClass("ac-actionset");
 
                 foreach (var action in actions.Take(context.Config.Actions.MaxActions))
                 {
@@ -203,7 +213,7 @@ namespace AdaptiveCards.Rendering
         {
             Column column = (Column)element;
             var uiColumn = new DivTag()
-                .AddClass(column.Type);
+                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}");
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
@@ -225,7 +235,7 @@ namespace AdaptiveCards.Rendering
         {
             ColumnSet columnSet = (ColumnSet)element;
             var uiColumnSet = new DivTag()
-                .AddClass(columnSet.Type)
+                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
                 .Style("overflow", "hidden")
                 .Style("display", "flex");
 
@@ -240,31 +250,35 @@ namespace AdaptiveCards.Rendering
             {
                 var uiColumn = context.Render(column);
 
-                // Add vertical Seperator
+                // Add horizontal Seperator
                 if (uiColumnSet.Children.Any())
+                {
+                    SeparationConfig sep = null;
                     switch (column.Separation)
                     {
                         case SeparationStyle.None:
                             break;
 
                         case SeparationStyle.Default:
-                            {
-                                uiColumnSet.Children.Add(new DivTag()
-                                    .AddClass("ColumnSeparator")
-                                    .AddClass("Default")
-                                    .Style("flex", "0 0 auto"));
-                            }
+                            sep = context.Config.Column.Separation;
                             break;
 
                         case SeparationStyle.Strong:
-                            {
-                                uiColumnSet.Children.Add(new DivTag()
-                                    .AddClass("ColumnSeparator")
-                                    .AddClass("Strong")
-                                    .Style("flex", "0 0 auto"));
-                            }
+                            sep = context.Config.StrongSeparation;
                             break;
                     }
+                    if (sep != null)
+                    {
+                        uiColumnSet.Children.Add(new DivTag()
+                            .AddClass($"ac-columnseparator")
+                            .Style("flex", "0 0 auto")
+                            .Style("padding-left", $"{sep.Spacing}")
+                            .Style("margin-left", $"{sep.Spacing}")
+                            .Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
+                            .Style("border-left-width", $"{sep.LineThickness}px")
+                            .Style("border-left-style", $"solid"));
+                    }
+                }
 
                 // do some sizing magic 
                 var size = column.Size?.ToLower();
@@ -274,7 +288,7 @@ namespace AdaptiveCards.Rendering
                 }
                 else if (size == ColumnSize.Auto.ToLower())
                 {
-                    uiColumn = uiColumn.Style("flex", "0 0 auto");
+                    uiColumn = uiColumn.Style("flex", "0 1 auto");
                 }
                 else
                 {
@@ -300,7 +314,7 @@ namespace AdaptiveCards.Rendering
         {
             Container container = (Container)element;
             var uiContainer = new DivTag()
-                .AddClass(container.Type);
+                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}");
 
             AddContainerElements(uiContainer, container.Items, null, context);
 
@@ -322,7 +336,7 @@ namespace AdaptiveCards.Rendering
         {
             ActionSet actionSet = (ActionSet)element;
             var uiContainer = new DivTag()
-                .AddClass(actionSet.Type);
+                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}");
             AddContainerElements(uiContainer, null, actionSet.Actions, context);
             return uiContainer;
         }
@@ -332,18 +346,41 @@ namespace AdaptiveCards.Rendering
         {
             FactSet factSet = (FactSet)element;
             var uiFactSet = (TableTag)new TableTag()
-                .AddClass(factSet.Type)
+                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
                 .Style("overflow", "hidden");
 
             foreach (var fact in factSet.Facts)
             {
-                var uiTitle = new DivTag().Text(fact.Title).AddClass("FactName").AddClass("NoSeparation");
-                var uiValue = new DivTag().Text(fact.Value).AddClass("FactTitle").AddClass("NoSeparation");
+                TextBlock factTitle = new TextBlock()
+                {
+                    Text = fact.Title,
+                    Size = context.Config.FactSet.Title.Size,
+                    Color = context.Config.FactSet.Title.Color,
+                    Weight = context.Config.FactSet.Title.Weight,
+                    IsSubtle = context.Config.FactSet.Title.IsSubtle,
+                };
+                var uiTitle = context.Render(factTitle)
+                    .AddClass("ac-facttitle")
+                    .Style("margin-right", $"{context.Config.FactSet.Spacing}px");
 
-                var uiRow = uiFactSet.AddBodyRow();
+                TextBlock factValue = new TextBlock()
+                {
+                    Text = fact.Value,
+                    Size = context.Config.FactSet.Value.Size,
+                    Color = context.Config.FactSet.Value.Color,
+                    Weight = context.Config.FactSet.Value.Weight,
+                    IsSubtle = context.Config.FactSet.Value.IsSubtle,
+                };
+                var uiValue = context.Render(factValue)
+                    .AddClass("ac-factvalue");
 
-                uiRow.Cell().AddClass("FactName").Append(uiTitle);
-                uiRow.Cell().AddClass("FactValue").Append(uiValue);
+                // create row in factset 
+                var uiRow = uiFactSet
+                    .AddBodyRow();
+                
+                // add elements as cells
+                uiRow.Cell().AddClass("ac-factset-titlecell").Append(uiTitle);
+                uiRow.Cell().AddClass("ac-factset-valuecell").Append(uiValue);
             }
             return uiFactSet;
         }
@@ -351,96 +388,164 @@ namespace AdaptiveCards.Rendering
         protected static HtmlTag TextBlockRender(TypedElement element, RenderContext context)
         {
             TextBlock textBlock = (TextBlock)element;
+
+            int fontSize;
+            switch (textBlock.Size)
+            {
+                case TextSize.Small:
+                    fontSize = context.Config.FontSizes.Small;
+                    break;
+                case TextSize.Medium:
+                    fontSize = context.Config.FontSizes.Medium;
+                    break;
+                case TextSize.Large:
+                    fontSize = context.Config.FontSizes.Large;
+                    break;
+                case TextSize.ExtraLarge:
+                    fontSize = context.Config.FontSizes.ExtraLarge;
+                    break;
+                case TextSize.Normal:
+                default:
+                    fontSize = context.Config.FontSizes.Normal;
+                    break;
+            }
+            int weight = 400;
+            switch (textBlock.Weight)
+            {
+                case TextWeight.Lighter:
+                    weight = 200;
+                    break;
+
+                case TextWeight.Bolder:
+                    weight = 600;
+                    break;
+            }
+            var lineHeight = fontSize * 1.2;
+
             var uiTextBlock = new DivTag()
-                .AddClass(textBlock.Type)
+                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
                 .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
-                .Style("overflow", "hidden");
+                .Style("width", "100%")
+                .Style("box-sizing", "border-box")
+                .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
+                .Style("line-height", $"{lineHeight.ToString("F")}px")
+                .Style("font-family", context.Config.FontFamily)
+                .Style("font-size", $"{fontSize}px")
+                .Style("font-weight", $"{weight}");
 
-            if (textBlock.Color != TextColor.Default)
-                uiTextBlock = uiTextBlock.AddClass($"{textBlock.Color}");
-            if (textBlock.Weight != TextWeight.Normal)
-                uiTextBlock = uiTextBlock.AddClass($"{textBlock.Weight}");
-            if (textBlock.Size != TextSize.Normal)
-                uiTextBlock = uiTextBlock.AddClass($"{textBlock.Size}");
-
-            if (textBlock.Wrap == false)
+            if (textBlock.MaxLines > 0)
                 uiTextBlock = uiTextBlock
-                    .Style("white-space", "nowrap")
-                    .Style("text-overflow", "ellipsis");
+                    .Style("max-height", $"{lineHeight * textBlock.MaxLines}px")
+                    .Style("overflow","hidden");
 
-            if (textBlock.IsSubtle)
-                uiTextBlock = uiTextBlock.AddClass("Subtle");
+            var wrapStyle = "";
+            if (textBlock.Wrap == false)
+            {
+                uiTextBlock = uiTextBlock
+                    .Style("white-space", "nowrap");
+                wrapStyle= "text-overflow: ellipsis; overflow: hidden";
+            }
+            else
+            {
+                uiTextBlock = uiTextBlock
+                    .Style("word-wrap", "break-word");
+            }
 
             var marked = new Marked();
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
 
             var html = marked.Parse(RendererUtilities.ApplyTextFunctions(textBlock.Text))
-                .Replace("<p>", "<p style='margin-top: 0px;margin-bottom: 0px'>");
-            var uiPara = new LiteralTag(html)
-                .Style("margin-top", "0px")
-                .Style("margin-bottom", "0px");
-            uiTextBlock.Children.Add(uiPara);
+                .Replace("<p>", $"<p style='margin-top: 0px;margin-bottom: 0px;{wrapStyle}'>");
+            uiTextBlock.Children.Add(new LiteralTag(html));
+
+
             return uiTextBlock;
         }
 
         protected static HtmlTag ImageRender(TypedElement element, RenderContext context)
         {
             Image image = (Image)element;
+            var uiDiv = new HtmlTag("div")
+                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
+                .Style("display", "block")
+                .Style("box-sizing", "border-box");
+
+            switch (image.Size)
+            {
+                case ImageSize.Auto:
+                    uiDiv = uiDiv.Style("max-width", $"100%");
+                    break;
+                case ImageSize.Small:
+                    uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Small}px");
+                    break;
+                case ImageSize.Medium:
+                    uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Medium}px");
+                    break;
+                case ImageSize.Large:
+                    uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Large}px");
+                    break;
+                case ImageSize.Stretch:
+                    uiDiv = uiDiv.Style("width", $"100%");
+                    break;
+            }
+
             var uiImage = new HtmlTag("img")
-                .AddClass(image.Type)
-                .AddClass($"{image.Size}")
-                .AddClass($"{image.Style}")
+                .Style("width", "100%")
                 .Attr("src", image.Url);
+
+            switch(image.Style)
+            {
+                case ImageStyle.Normal:
+                    break;
+                case ImageStyle.Person:
+                    uiImage = uiImage.Style("background-position", "50% 50%")
+                        .Style("border-radius", "50%")
+                        .Style("background-repeat", "no-repeat");
+                    break;
+            }
+
 
             switch (image.HorizontalAlignment)
             {
                 case HorizontalAlignment.Left:
-                    uiImage = uiImage.Style("overflow", "hidden")
+                    uiDiv = uiDiv.Style("overflow", "hidden")
                         .Style("display", "block");
                     break;
                 case HorizontalAlignment.Center:
-                    uiImage = uiImage.Style("overflow", "hidden")
+                    uiDiv = uiDiv.Style("overflow", "hidden")
                         .Style("margin-right", "auto")
                         .Style("margin-left", "auto")
                         .Style("display", "block");
                     break;
                 case HorizontalAlignment.Right:
-                    uiImage = uiImage.Style("overflow", "hidden")
+                    uiDiv = uiDiv.Style("overflow", "hidden")
                         .Style("margin-left", "auto")
                         .Style("display", "block");
                     break;
             }
+            uiDiv.Children.Add(uiImage);
 
             if (context.Config.SupportsInteractivity && image.SelectAction != null)
             {
-                //var uiButton = (Button)RenderAction(image.SelectAction, context);
-                //if (uiButton != null)
-                //{
-                //    uiButton.Content = uiImage;
-                //    uiButton.Style = this.GetStyle("Adaptive.Action.Tap");
-                //    return uiButton;
-                //}
+                uiDiv.AddClass("ac-tap");
             }
-            return uiImage;
+            return uiDiv;
         }
 
         protected static HtmlTag ImageSetRender(TypedElement element, RenderContext context)
         {
             ImageSet imageSet = (ImageSet)element;
             var uiImageSet = new DivTag()
-                .AddClass(imageSet.Type);
+                .AddClass(imageSet.Type.ToLower());
 
             foreach (var image in imageSet.Images)
             {
-                var uiImage = context.Render(image);
                 if (imageSet.ImageSize != ImageSize.Auto)
-                    uiImage = uiImage.RemoveClass(ImageSize.Auto.ToString())
-                        .RemoveClass($"{ImageSize.Stretch}")
-                        .RemoveClass($"{ImageSize.Small}")
-                        .RemoveClass($"{ImageSize.Medium}")
-                        .RemoveClass($"{ImageSize.Large}")
-                        .AddClass($"{imageSet.ImageSize}");
+                    image.Size = imageSet.ImageSize;
+
+                var uiImage = context.Render(image);
+                uiImage = uiImage.Style("display", "inline-block");
                 uiImageSet.Children.Add(uiImage);
             }
             return uiImageSet;
