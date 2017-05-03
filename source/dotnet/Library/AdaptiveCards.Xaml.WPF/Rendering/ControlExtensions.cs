@@ -34,5 +34,40 @@ namespace AdaptiveCards.Rendering
         {
             control.Items.Add(element);
         }
+
+        public static void SetColor(this System.Windows.Controls.TextBlock textBlock, string color, RenderContext context)
+        {
+            textBlock.Foreground = context.GetColorBrush(color);
+        }
+
+        public static void SetBackgroundColor(this System.Windows.Controls.Panel panel, string color, RenderContext context)
+        {
+            panel.Background = context.GetColorBrush(color);
+        }
+        
+        public static void SetHeight(this System.Windows.FrameworkElement element, double height)
+        {
+            element.Height = height;
+        }
+
+        public static void SetBackgroundColor(this Button panel, string color, RenderContext context)
+        {
+            panel.Background = context.GetColorBrush(color);
+        }
+
+        public static void SetBorderColor(this Button view, string color, RenderContext context)
+        {
+            view.BorderBrush = context.GetColorBrush(color);
+        }
+
+        public static void SetThickness(this Button view, double thickness)
+        {
+            view.BorderThickness = new Thickness(thickness);
+        }
+
+        public static void SetFontWeight(this System.Windows.Controls.TextBlock textBlock, int weight)
+        {
+            textBlock.FontWeight = FontWeight.FromOpenTypeWeight(weight);
+        }
     }
 }

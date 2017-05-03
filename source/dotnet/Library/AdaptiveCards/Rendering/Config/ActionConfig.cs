@@ -53,17 +53,11 @@ namespace AdaptiveCards.Rendering.Config
         public ShowCardConfig ShowCard { get; set; } = new ShowCardConfig();
 
         /// <summary>
-        /// Should buttons stretch to fill horizontal space?
-        /// </summary>
-        public bool Stretch { get; set; } = true;
-
-        /// <summary>
         /// extra stuff
         /// </summary>
         /// 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public SpacingDefinition Padding { get; set; } = new SpacingDefinition(4);
-
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BorderColor { get; set; } = "#FF000000";

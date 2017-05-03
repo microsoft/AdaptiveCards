@@ -67,12 +67,18 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5">
-            <Button Name="loadButton" Click="loadButton_Click" Content="Load" Margin="4"/>
+            <Button Name="loadButton" Click="loadButton_Click" Content="Load Card..." Margin="4"/>
             <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4"/>
             <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4"/>
             <Button Name="toJson" Content="To JSON" Margin="4" Click="toJson_Click"/>
             <Button Name="toXml" Content="To XML" Margin="4" Click="toXml_Click"/>
-            <Button Name="toggleOptions" Content="RenderOptions" Margin="4" Click="toggleOptions_Click"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
+            <Label>HostConfig:</Label>
+            <Button Name="loadConfig" Content="Load..." Margin="4" Click="loadConfig_Click" HorizontalAlignment="Right"/>
+            <Button Name="saveConfig" Content="Save..." Margin="4" Click="saveConfig_Click" HorizontalAlignment="Right"/>
+            <ComboBox Name="hostConfigs" IsEditable="False" Width="150" SelectionChanged="hostConfigs_Selected" HorizontalAlignment="Right"/>
+            <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right"/>
         </StackPanel>
 
         <!--<TextBox Grid.Row="1" AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>-->
@@ -81,8 +87,7 @@
 
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
-        <Grid Grid.Row="1" Grid.Column="2" Background="DarkGray">
-            
+        <Grid Grid.Row="1" Grid.Column="2" Background="LightGray">
             <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10"  />
         </Grid>
 
@@ -90,7 +95,7 @@
 
 
         <GridSplitter Grid.Row="1" Grid.Column="4" VerticalAlignment="Stretch" ResizeDirection="Columns" Name="optionsSplitter" />
-        
+
         <!--<avalon:TextEditor Grid.Row="1" Grid.Column="5" Name="options" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
                             ShowLineNumbers="true" TextChanged="options_TextChanged" Visibility="Collapsed"/>-->
         <xctk:PropertyGrid Grid.Row="1" Grid.Column="5"  SelectedObject="{Binding}" Name="hostConfigEditor" PropertyChanged="options_PropertyChanged" Visibility="Collapsed" >

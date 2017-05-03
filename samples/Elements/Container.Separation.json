@@ -5,52 +5,41 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "previous element"
-        },
-        {
-            "type": "TextBlock",
-            "text": "separation:none",
-            "weight": "bolder",
-            "size": "large"
+            "text": "SOME ELEMENT BEFORE THE CONTAINER"
         },
         {
             "type": "Container",
+            "separation": "none",
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "separation:none",
+                    "weight": "bolder",
+                    "size": "large"
                 },
                 {
                     "type": "Image",
-                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+                    "size": "large"
                 }
             ]
         },
         {
-            "type": "TextBlock",
-            "text": "separation:default",
-            "weight": "bolder",
-            "size": "large"
-        },
-        {
             "type": "Container",
-            "separation": "default",            
+            "separation": "default",
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "separation:default",
+                    "weight": "bolder",
+                    "size": "large"
                 },
                 {
                     "type": "Image",
-                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+                    "size": "large"
                 }
             ]
-        },
-        {
-            "type": "TextBlock",
-            "text": "separation:strong",
-            "weight": "bolder",
-            "size": "large"
         },
         {
             "type": "Container",
@@ -58,11 +47,14 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "separation:strong",
+                    "weight": "bolder",
+                    "size": "large"
                 },
                 {
                     "type": "Image",
-                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                    "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+                    "size": "large"
                 }
             ]
         }

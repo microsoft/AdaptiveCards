@@ -73,7 +73,6 @@ export class TeamsConnectorContainer extends HostContainer {
                     spacing: 20
                 },
                 buttonSpacing: 10,
-                stretch: true,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
@@ -86,7 +85,7 @@ export class TeamsConnectorContainer extends HostContainer {
                     }
                 },
                 actionsOrientation: "horizontal",
-                actionAlignment: "left"
+                actionAlignment: "stretch"
             },
             adaptiveCard: {
                 backgroundColor: "#00000000",

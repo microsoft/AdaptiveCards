@@ -32,7 +32,7 @@ export class LiveTileContainer extends HostContainer {
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
-            supportsInteractivity: true,
+            supportsInteractivity: false,
             strongSeparation: {
                 spacing: 40,
                 lineThickness: 1,
@@ -88,7 +88,6 @@ export class LiveTileContainer extends HostContainer {
                     spacing: 20
                 },
                 buttonSpacing: 20,
-                stretch: false,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
@@ -180,7 +179,7 @@ export class LiveTileContainer extends HostContainer {
                     maxWidth: 150,
                 },
                 value: {
-                    color: "dark",
+                    color: "light",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",

@@ -1,32 +1,37 @@
 {
   "actions": {
-    "showCard": {
-      "actionMode": "inline",
-      "backgroundColor": "#FFF8F8F8",
-      "autoPadding": true
-    },
-    "maxActions": 5,
     "actionsOrientation": "horizontal",
     "actionAlignment": "center",
     "backgroundColor": "#FF5098FF",
-    "borderColor": "#FF000000",
-    "textColor": "#FFFFFFFF",
-    "borderThickness": 1,
-    "fontWeight": 400,
-    "fontSize": 12,
-    "spacing": 8,
+    "buttonSpacing": 8,
+    "maxActions": 5,
+    "separation": {
+      "spacing": 10,
+      "lineThickness": 0
+    },
+    "showCard": {
+      "actionMode": "inlineEdgeToEdge",
+      "backgroundColor": "#FFF8F8F8",
+      "inlineTopMargin": 8,
+      "padding": {
+        "left": 10,
+        "top": 10,
+        "right": 10,
+        "bottom": 10
+      }
+    },
+    "stretch": true,
     "padding": {
       "left": 4,
       "top": 4,
       "right": 4,
       "bottom": 4
-    }
-  },
-  "actionSet": {
-    "separation": {
-      "spacing": 10,
-      "lineThickness": 0
-    }
+    },
+    "borderColor": "#FF000000",
+    "textColor": "#FFFFFFFF",
+    "borderThickness": 1,
+    "fontWeight": 400,
+    "fontSize": 12
   },
   "adaptiveCard": {
     "padding": {

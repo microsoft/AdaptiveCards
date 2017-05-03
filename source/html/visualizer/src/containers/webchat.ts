@@ -95,7 +95,6 @@ export class WebChatContainer extends HostContainer {
                     spacing: 8
                 },
                 buttonSpacing: 20,
-                stretch: false,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,

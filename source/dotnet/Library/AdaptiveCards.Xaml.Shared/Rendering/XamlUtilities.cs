@@ -9,6 +9,7 @@ using xaml = System.Windows.Controls;
 #elif XAMARIN
 using Xamarin.Forms;
 using Button = AdaptiveCards.Rendering.ContentButton;
+using xaml = Xamarin.Forms;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -19,39 +20,32 @@ namespace AdaptiveCards.Rendering
 
         public static Button CreateActionButton(ActionBase action, RenderContext context)
         {
-#if WPF
             ActionConfig styling = context.Config.Actions;
             var uiButton = new Button()
             {
-                Background = context.GetColorBrush(styling.BackgroundColor),
+#if WPF
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
-                BorderBrush = context.GetColorBrush(styling.BorderColor),
-                BorderThickness = new Thickness(context.Config.Actions.BorderThickness)
+#endif
             };
+
+            uiButton.SetBackgroundColor(styling.BackgroundColor, context);
+            uiButton.SetBorderColor(styling.BackgroundColor, context);
+            uiButton.SetThickness(context.Config.Actions.BorderThickness);
             uiButton.Style = context.GetStyle($"Adaptive.{action.Type}");
 
             xaml.TextBlock uiTitle = new xaml.TextBlock()
             {
-                Text = action.Title,
-                FontWeight = FontWeight.FromOpenTypeWeight(styling.FontWeight),
+                Text = action.Title,                
                 FontSize = styling.FontSize,
-                Foreground = context.GetColorBrush(styling.TextColor),
-                TextAlignment = TextAlignment.Center,
                 Margin = new Thickness(styling.Padding.Left, styling.Padding.Top, styling.Padding.Right, styling.Padding.Bottom) ,
             };
+            uiTitle.SetFontWeight(styling.FontWeight);
+            uiTitle.SetColor(styling.TextColor, context);
             uiTitle.Style = context.GetStyle($"Adaptive.Action.Title");
             uiButton.Content = uiTitle;
             string name = context.GetType().Name.Replace("Action", String.Empty);
             return uiButton;
-
-#elif XAMARIN
-            var uiButton = new Button();
-            // TODO: button styling
-            uiButton.Text = action.Title;
-            string name = context.GetType().Name.Replace("Action", String.Empty);
-            uiButton.Style = context.GetStyle($"Adaptive.Action.{name}");
-            return uiButton;
-#endif
+            
         }
 
         /// <summary>
@@ -73,7 +67,7 @@ namespace AdaptiveCards.Rendering
                 doc.LoadXml(xml);
                 return doc.InnerText;
             }
-#elif XAMARIN 
+#elif XAMARIN
             // TODO: Xamarin fallback
 #endif
 

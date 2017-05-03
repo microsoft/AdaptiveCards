@@ -265,9 +265,10 @@ function setupContainerPicker() {
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(
             "change", () => {
-                // Disable this for now because it interferes with dev.html
-                // update the query string
-                // history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, `index.html?hostApp=${hostContainerPicker.value}`);
+                // Update the query string
+                var htmlFileName = location.pathname.indexOf("index.html") >= 0 ? "index.html" : "dev.html";
+
+                history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, htmlFileName + `?hostApp=${hostContainerPicker.value}`);
 
                 loadStyleSheetAndConfig();
                 tryRenderCard();
@@ -396,6 +397,10 @@ function switchToConfigEditor() {
     editor.focus();
 }
 
+function inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
+    alert("Card \"" + action.title + "\" " + (isExpanded ? "expanded" : "collapsed"));
+}
+
 window.onload = () => {
     currentConfigPayload = Constants.defaultConfigPayload;
 
@@ -409,6 +414,9 @@ window.onload = () => {
     
     Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
     Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
+
+    // Uncomment to test the onInlineCardExpanded event:
+    // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
     
     Adaptive.AdaptiveCard.onParseError = (error: Adaptive.IValidationError) => {
         lastValidationErrors.push(error);

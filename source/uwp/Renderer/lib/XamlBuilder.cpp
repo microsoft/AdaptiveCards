@@ -11,6 +11,9 @@
 #include <windows.web.http.filters.h>
 #include "XamlHelpers.h"
 #include "XamlStyleKeyGenerators.h"
+#include "AdaptiveHostOptions.h"
+#include "AdaptiveColorOptions.h"
+#include "AdaptiveColorOption.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -19,9 +22,11 @@ using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Storage;
 using namespace ABI::Windows::Storage::Streams;
+using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Text;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
@@ -43,6 +48,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputDate] = std::bind(&XamlBuilder::BuildInputDate, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputTime] = std::bind(&XamlBuilder::BuildInputTime, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputToggle] = std::bind(&XamlBuilder::BuildInputToggle, this, std::placeholders::_1, std::placeholders::_2);
+
+        m_hostOptions = Make<AdaptiveHostOptions>();
 
         m_imageLoadTracker.AddListener(dynamic_cast<IImageLoadTrackerListener*>(this));
 
@@ -50,6 +61,50 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &m_propertyValueStatics));
 
         InitializeDefaultResourceDictionary();
+    }
+
+    _Use_decl_annotations_
+    ComPtr<IUIElement> XamlBuilder::CreateSeparator(
+        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* separationOptions,
+        bool isHorizontal)
+    {
+        ComPtr<IGrid> separator = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+        ComPtr<IFrameworkElement> separatorAsFrameworkElement;
+        THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
+        Color lineColor;
+        if (SUCCEEDED(separationOptions->get_LineColor(&lineColor)))
+        {
+            ComPtr<ISolidColorBrush> colorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
+            colorBrush->put_Color(lineColor);
+            ComPtr<IBrush> asBrush;
+            THROW_IF_FAILED(colorBrush.As(&asBrush));
+            ComPtr<IPanel> separatorAsPanel;
+            THROW_IF_FAILED(separator.As(&separatorAsPanel));
+            separatorAsPanel->put_Background(asBrush.Get());
+        }
+
+        INT32 spacing;
+        THROW_IF_FAILED(separationOptions->get_Spacing(&spacing));
+        INT32 lineThickness;
+        THROW_IF_FAILED(separationOptions->get_LineThickness(&lineThickness));
+        INT32 separatorMarginValue = (spacing - lineThickness) / 2;
+        Thickness margin = { 0, 0, 0, 0 };
+
+        if (isHorizontal)
+        {
+            margin.Top = margin.Bottom = separatorMarginValue;
+            separatorAsFrameworkElement->put_Height(lineThickness);
+        }
+        else
+        {
+            margin.Left = margin.Right = separatorMarginValue;
+            separatorAsFrameworkElement->put_Width(lineThickness);
+
+        }
+        THROW_IF_FAILED(separatorAsFrameworkElement->put_Margin(margin));
+        ComPtr<IUIElement> result;
+        THROW_IF_FAILED(separator.As(&result));
+        return result;
     }
 
     HRESULT XamlBuilder::AllImagesLoaded()
@@ -150,6 +205,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             m_mergedResourceDictionary->get_MergedDictionaries(&mergedDictionaries);
             mergedDictionaries->Append(m_defaultResourceDictionary.Get());
         }
+        return S_OK;
+    } CATCH_RETURN;
+
+    HRESULT XamlBuilder::SetHostOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostOptions* hostOptions) noexcept try
+    {
+        m_hostOptions = hostOptions;
         return S_OK;
     } CATCH_RETURN;
 
@@ -430,18 +491,133 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IPanel* parentPanel,
         std::function<void(IUIElement* child)> childCreatedCallback)
     {
+        int currentElement = 0;
+        unsigned int childrenSize;
+        THROW_IF_FAILED(children->get_Size(&childrenSize));
         XamlHelpers::IterateOverVector<IAdaptiveCardElement>(children, [&](IAdaptiveCardElement* element)
         {
             ElementType elementType;
             THROW_IF_FAILED(element->get_ElementType(&elementType));
             if (m_adaptiveElementBuilder.find(elementType) != m_adaptiveElementBuilder.end())
             {
+                // First element does not need a separator added
+                if (currentElement++ > 0)
+                {
+                    ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separationStyle;
+                    THROW_IF_FAILED(element->get_Separation(&separationStyle));
+                    if (separationStyle != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
+                    {
+                        ComPtr<IAdaptiveSeparationOptions> separationOptions;
+                        GetSeparationOptionsForElement(element, separationStyle, &separationOptions);
+                        if (separationOptions != nullptr)
+                        {
+                            auto separator = CreateSeparator(separationOptions.Get());
+                            XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+                        }
+                    }
+                }
                 ComPtr<IUIElement> newControl;
                 m_adaptiveElementBuilder[elementType](element, &newControl);
                 XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel);
                 childCreatedCallback(newControl.Get());
             }
         });
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::GetSeparationOptionsForElement(
+        IAdaptiveCardElement* cardElement,
+        ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation,
+        IAdaptiveSeparationOptions** separationOptions)
+    {
+        ComPtr<IAdaptiveCardElement> localCardElement(cardElement);
+        ComPtr<IAdaptiveSeparationOptions> localSeparationOptions = nullptr;
+        switch (separation)
+        {
+        case ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::Strong:
+            THROW_IF_FAILED(m_hostOptions->get_StrongSeparation(&localSeparationOptions));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::Default:
+            ABI::AdaptiveCards::XamlCardRenderer::ElementType elementType;
+            THROW_IF_FAILED(cardElement->get_ElementType(&elementType));
+
+            switch (elementType)
+            {
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::Container:
+            {
+                ComPtr<IAdaptiveContainerOptions> containerOptions;
+                THROW_IF_FAILED(m_hostOptions->get_Container(&containerOptions));
+                THROW_IF_FAILED(containerOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::Column:
+            {
+                ComPtr<IAdaptiveColumnOptions> columnOptions;
+                THROW_IF_FAILED(m_hostOptions->get_Column(&columnOptions));
+                THROW_IF_FAILED(columnOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::ColumnSet:
+            {
+                ComPtr<IAdaptiveColumnSetOptions> columnSetOptions;
+                THROW_IF_FAILED(m_hostOptions->get_ColumnSet(&columnSetOptions));
+                THROW_IF_FAILED(columnSetOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::FactSet:
+            {
+                ComPtr<IAdaptiveFactSetOptions> factSetOptions;
+                THROW_IF_FAILED(m_hostOptions->get_FactSet(&factSetOptions));
+                THROW_IF_FAILED(factSetOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::Image:
+            {
+                ComPtr<IAdaptiveImageOptions> imageOptions;
+                THROW_IF_FAILED(m_hostOptions->get_Image(&imageOptions));
+                THROW_IF_FAILED(imageOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::ImageSet:
+            {
+                ComPtr<IAdaptiveImageSetOptions> imageSetOptions;
+                THROW_IF_FAILED(m_hostOptions->get_ImageSet(&imageSetOptions));
+                THROW_IF_FAILED(imageSetOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::TextBlock:
+            {
+                ComPtr<IAdaptiveTextBlock> asTextBlock;
+                THROW_IF_FAILED(localCardElement.As(&asTextBlock));
+                ComPtr<IAdaptiveTextBlockOptions> textBlockOptions;
+                THROW_IF_FAILED(m_hostOptions->get_TextBlock(&textBlockOptions));
+                ABI::AdaptiveCards::XamlCardRenderer::TextSize size;
+                THROW_IF_FAILED(asTextBlock->get_Size(&size));
+                switch (size)
+                {
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Small:
+                    THROW_IF_FAILED(textBlockOptions->get_SmallSeparation(&localSeparationOptions));
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Normal:
+                    THROW_IF_FAILED(textBlockOptions->get_NormalSeparation(&localSeparationOptions));
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Medium:
+                    THROW_IF_FAILED(textBlockOptions->get_MediumSeparation(&localSeparationOptions));
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Large:
+                    THROW_IF_FAILED(textBlockOptions->get_LargeSeparation(&localSeparationOptions));
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::ExtraLarge:
+                    THROW_IF_FAILED(textBlockOptions->get_ExtraLargeSeparation(&localSeparationOptions));
+                    break;
+                }
+                break;
+            }
+            }
+        default:
+            break;
+        }
+        THROW_IF_FAILED(localSeparationOptions.CopyTo(separationOptions));
     }
 
     _Use_decl_annotations_
@@ -605,23 +781,40 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(xamlImage.As(&frameworkElement));
         }
 
-        // TODO: 11508861 Hardcoded image sizes for now.  These will be retrieved from the HostConfig.
+        ComPtr<IAdaptiveImageSizeOptions> sizeOptions;
+        THROW_IF_FAILED(m_hostOptions->get_ImageSizes(sizeOptions.GetAddressOf()));
+
         switch (size)
         {
             case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Small:
-                THROW_IF_FAILED(frameworkElement->put_Width(60));
-                THROW_IF_FAILED(frameworkElement->put_Height(60));
+            {
+                INT32 imageSize;
+                THROW_IF_FAILED(sizeOptions->get_Small(&imageSize));
+
+                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
                 break;
+            }
 
             case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Medium:
-                THROW_IF_FAILED(frameworkElement->put_Width(120));
-                THROW_IF_FAILED(frameworkElement->put_Height(120));
+            {
+                INT32 imageSize;
+                THROW_IF_FAILED(sizeOptions->get_Medium(&imageSize));
+
+                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
                 break;
+            }
 
             case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Large:
-                THROW_IF_FAILED(frameworkElement->put_Width(180));
-                THROW_IF_FAILED(frameworkElement->put_Height(180));
+            {
+                INT32 imageSize;
+                THROW_IF_FAILED(sizeOptions->get_Large(&imageSize));
+
+                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
                 break;
+            }
         }
 
         ABI::AdaptiveCards::XamlCardRenderer::HAlignment adaptiveHorizontalAlignment;
@@ -641,7 +834,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         // Generate the style name from the adaptive element and apply it to the xaml
-        // element it it exists in the resource dictionaries
+        // element if it exists in the resource dictionaries
         ComPtr<IStyle> style;
         std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForImage(adaptiveImage.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
@@ -701,6 +894,36 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         int currentColumn = 0;
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [this, xamlGrid, gridStatics, &currentColumn](IAdaptiveColumn* column)
         {
+            ComPtr<IAdaptiveCardElement> columnAsCardElement;
+            ComPtr<IAdaptiveColumn> localColumn(column);
+            THROW_IF_FAILED(localColumn.As(&columnAsCardElement));
+            ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
+            THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
+            ComPtr<IPanel> gridAsPanel;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+
+            // Add Separator to the columnSet
+            ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation;
+            THROW_IF_FAILED(columnAsCardElement->get_Separation(&separation));
+            if (separation != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
+            {
+                ComPtr<IAdaptiveSeparationOptions> separationOptions;
+                GetSeparationOptionsForElement(columnAsCardElement.Get(), separation, &separationOptions);
+                if (separationOptions != nullptr)
+                {
+                    //Create a new ColumnDefinition for the separator
+                    ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+                    THROW_IF_FAILED(separatorColumnDefinition->put_Width({ 1.0, GridUnitType::GridUnitType_Auto }));
+                    THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
+
+                    auto separator = CreateSeparator(separationOptions.Get(), false);
+                    ComPtr<IFrameworkElement> separatorAsFrameworkElement;
+                    THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
+                    gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
+                    XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
+                }
+            }
+
             HString adaptiveColumnSize;
             THROW_IF_FAILED(column->get_Size(adaptiveColumnSize.GetAddressOf()));
             INT32 isAutoResult;
@@ -713,27 +936,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
 
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
-            ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
-            THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
             THROW_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
 
             // The column is a container, so build it
-            ComPtr<IAdaptiveCardElement> columnAsCardElement;
-            ComPtr<IAdaptiveColumn> localColumn(column);
-            THROW_IF_FAILED(localColumn.As(&columnAsCardElement));
             ComPtr<IUIElement> xamlColumn;
             BuildContainer(columnAsCardElement.Get(), &xamlColumn);
 
             // Mark the column container with the current column
             ComPtr<IFrameworkElement> columnAsFrameworkElement;
             THROW_IF_FAILED(xamlColumn.As(&columnAsFrameworkElement));
-            gridStatics->SetColumn(columnAsFrameworkElement.Get(), currentColumn);
+            gridStatics->SetColumn(columnAsFrameworkElement.Get(), currentColumn++);
 
-            // Finally add the column container to the grid, and increment the column count
-            ComPtr<IPanel> gridAsPanel;
-            THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+            // Finally add the column container to the grid
             XamlHelpers::AppendXamlElementToPanel(xamlColumn.Get(), gridAsPanel.Get());
-            ++currentColumn;
         });
 
         ComPtr<IStyle> style;
@@ -864,5 +1079,120 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // TODO: 11508861
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
+    }
+
+    void XamlBuilder::BuildInputDate(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputDateControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputDate> adaptiveInputDate;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputDate));
+
+        ComPtr<ICalendarDatePicker> datePicker = XamlHelpers::CreateXamlClass<ICalendarDatePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CalendarDatePicker));
+
+        HString placeHolderText;
+        THROW_IF_FAILED(adaptiveInputDate->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(datePicker->put_PlaceholderText(placeHolderText.Get()));
+
+        // TODO: Handle parsing dates for min/max and value
+
+        // TODO: 11508861
+        THROW_IF_FAILED(datePicker.CopyTo(inputDateControl));
+    }
+
+    void XamlBuilder::BuildInputText(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputTextControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputText> adaptiveInputText;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputText));
+
+        ComPtr<ITextBox> textBox = XamlHelpers::CreateXamlClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
+
+        boolean isMultiLine;
+        THROW_IF_FAILED(adaptiveInputText->get_IsMultiline(&isMultiLine));
+        THROW_IF_FAILED(textBox->put_AcceptsReturn(isMultiLine));
+
+        HString textValue;
+        THROW_IF_FAILED(adaptiveInputText->get_Value(textValue.GetAddressOf()));
+        THROW_IF_FAILED(textBox->put_Text(textValue.Get()));
+
+        UINT32 maxLength;
+        THROW_IF_FAILED(adaptiveInputText->get_MaxLength(&maxLength));
+        THROW_IF_FAILED(textBox->put_MaxLength(maxLength));
+
+        ComPtr<ITextBox2> textBox2;
+        THROW_IF_FAILED(textBox.As(&textBox2));
+
+        HString placeHolderText;
+        THROW_IF_FAILED(adaptiveInputText->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
+
+        // TODO: 11508861
+        THROW_IF_FAILED(textBox.CopyTo(inputTextControl));
+    }
+
+    void XamlBuilder::BuildInputTime(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputTimeControl)
+    {
+        ComPtr<ITimePicker> timePicker = XamlHelpers::CreateXamlClass<ITimePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TimePicker));
+
+        // TODO: Handle placeholder text and parsing times for min/max and value
+
+        // TODO: 11508861
+        THROW_IF_FAILED(timePicker.CopyTo(inputTimeControl));
+    }
+
+    void XamlBuilder::BuildInputToggle(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputToggleControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputToggle> adaptiveInputToggle;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputToggle));
+
+        ComPtr<ICheckBox> checkBox = XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+        ComPtr<IContentControl> contentControl;
+        THROW_IF_FAILED(checkBox.As(&contentControl));
+
+        HString title;
+        THROW_IF_FAILED(adaptiveInputToggle->get_Title(title.GetAddressOf()));
+
+        ComPtr<ITextBlock> content = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+        THROW_IF_FAILED(content->put_Text(title.Get()));
+        THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+
+        HString value;
+        THROW_IF_FAILED(adaptiveInputToggle->get_Value(value.GetAddressOf()));
+
+        INT32 compareTrue;
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), HStringReference(L"true").Get(), &compareTrue));
+
+        HString valueOn;
+        THROW_IF_FAILED(adaptiveInputToggle->get_ValueOn(valueOn.GetAddressOf()));
+
+        INT32 compareValueOn;
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), valueOn.Get(), &compareValueOn));
+
+        bool isChecked = (compareTrue == 0) || (compareValueOn == 0);
+
+        ComPtr<IPropertyValueStatics> propertyValueStatics;
+        ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
+        
+        ComPtr<IPropertyValue> propertyValue;
+        propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
+
+        ComPtr<ABI::Windows::Foundation::IReference<bool>> boolProperty;
+        propertyValue.As(&boolProperty);
+
+        ComPtr<IToggleButton> toggleButton;
+        THROW_IF_FAILED(checkBox.As(&toggleButton));
+        THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
+
+        // TODO: 11508861
+        THROW_IF_FAILED(checkBox.CopyTo(inputToggleControl));
     }
 }}

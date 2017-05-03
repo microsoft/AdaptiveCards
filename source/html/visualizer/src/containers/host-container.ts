@@ -145,7 +145,6 @@ export abstract class HostContainer {
                     spacing: 20
                 },
                 buttonSpacing: 20,
-                stretch: false,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,

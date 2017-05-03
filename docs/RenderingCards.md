@@ -13,9 +13,9 @@ If you want to render Adaptive Cards inside your app or web site, the toolkit pr
 
 ## HostOptions
 
-There is a standardized [HostOptions](HostOptions.md) object which allows the host of an adaptive card to control lhow each renderer library renders a card. 
+There is a standardized [HostOptions](HostConfig.md) object which allows the host of an adaptive card to control lhow each renderer library renders a card. 
 
-Here is a [Sample HostConfig](samples/themes/HostConfig.json) definition.
+Here is a [Sample HostConfig](../samples/Themes/sample.json) definition.
 
 ## Events
 

@@ -19,6 +19,36 @@ namespace AdaptiveCards
         runtimeclass AdaptiveColumnSet;
         runtimeclass AdaptiveFact;
         runtimeclass AdaptiveFactSet;
+        runtimeclass AdaptiveInputDate;
+        runtimeclass AdaptiveInputText;
+        runtimeclass AdaptiveInputTime;
+        runtimeclass AdaptiveInputToggle;
+
+        runtimeclass AdaptiveBoundaryOptions;
+        runtimeclass AdaptiveFontSizeOptions;
+        runtimeclass AdaptiveColorOptions;
+        runtimeclass AdaptiveColorOption;
+        runtimeclass AdaptiveTextOptions;
+        runtimeclass AdaptiveSeparationOptions;
+        runtimeclass AdaptiveImageSizeOptions;
+        runtimeclass AdaptiveTextBlockOptions;
+        runtimeclass AdaptiveImageSetOptions;
+        runtimeclass AdaptiveColumnOptions;
+        runtimeclass AdaptiveContainerOptions;
+        runtimeclass AdaptiveColumnSetOptions;
+        runtimeclass AdaptiveImageOptions;
+        runtimeclass AdaptiveCardOptions;
+        runtimeclass AdaptiveFactSetOptions;
+        runtimeclass AdaptiveShowCardOptions;
+        runtimeclass AdaptiveActionOptions;
+        runtimeclass AdaptiveDateInputOptions;
+        runtimeclass AdaptiveTimeInputOptions;
+        runtimeclass AdaptiveNumberInputOptions;
+        runtimeclass AdaptiveToggleInputOptions;
+        runtimeclass AdaptiveTextInputOptions;
+        runtimeclass AdaptiveChoiceSetInputOptions;
+        runtimeclass AdaptiveHostOptions;
+
         interface IAdaptiveCardElement;
         interface IAdaptiveTextBlock;
         interface IAdaptiveCard;
@@ -29,6 +59,35 @@ namespace AdaptiveCards
         interface IAdaptiveColumnSet;
         interface IAdaptiveFact;
         interface IAdaptiveFactSet;
+        interface IAdaptiveInputDate;
+        interface IAdaptiveInputText;
+        interface IAdaptiveInputTime;
+        interface IAdaptiveInputToggle;
+
+        interface IAdaptiveBoundaryOptions;
+        interface IAdaptiveFontSizeOptions;
+        interface IAdaptiveColorOption;
+        interface IAdaptiveColorOptions;
+        interface IAdaptiveTextOptions;
+        interface IAdaptiveSeparationOptions;
+        interface IAdaptiveImageSizeOptions;
+        interface IAdaptiveTextBlockOptions;
+        interface IAdaptiveImageSetOptions;
+        interface IAdaptiveColumnOptions;
+        interface IAdaptiveContainerOptions;
+        interface IAdaptiveColumnSetOptions;
+        interface IAdaptiveImageOptions;
+        interface IAdaptiveCardOptions;
+        interface IAdaptiveFactSetOptions;
+        interface IAdaptiveShowCardOptions;
+        interface IAdaptiveActionOptions;
+        interface IAdaptiveDateInputOptions;
+        interface IAdaptiveTimeInputOptions;
+        interface IAdaptiveNumberInputOptions;
+        interface IAdaptiveToggleInputOptions;
+        interface IAdaptiveTextInputOptions;
+        interface IAdaptiveChoiceSetInputOptions;
+        interface IAdaptiveHostOptions;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -81,7 +140,11 @@ namespace AdaptiveCards
             FactSet,
             Fact,
             ImageSet,
-            ActionGroup
+            ActionGroup,
+            InputDate,
+            InputText,
+            InputTime,
+            InputToggle,
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -106,11 +169,23 @@ namespace AdaptiveCards
             Strong,
         } SeparationStyle;
 
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ActionsOrientation {
+            Vertical = 0,
+            Horizontal
+        } ActionsOrientation;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ActionMode {
+            Inline = 0,
+            Popup
+        } ActionMode;
+
         declare
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
-            interface Windows.Foundation.Collections.IVector<IAdaptiveFact*>; 
+            interface Windows.Foundation.Collections.IVector<IAdaptiveFact*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
@@ -273,6 +348,126 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(359e2cc5-9b8d-40bf-bbb2-2d3494d30991),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputDate)
+        ]
+        interface IAdaptiveInputDate : IInspectable
+        {
+            [propget] HRESULT Max([out, retval] HSTRING* value);
+            [propput] HRESULT Max([in] HSTRING value);
+
+            [propget] HRESULT Min([out, retval] HSTRING* value);
+            [propput] HRESULT Min([in] HSTRING value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputDate
+        {
+            [default] interface IAdaptiveInputDate;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(ab30772b-172d-4595-bcd2-01001df19d1e),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputText)
+        ]
+        interface IAdaptiveInputText : IInspectable
+        {
+            [propget] HRESULT IsMultiline([out, retval] boolean* value);
+            [propput] HRESULT IsMultiline([in] boolean value);
+
+            [propget] HRESULT MaxLength([out, retval] UINT32 *value);
+            [propput] HRESULT MaxLength([in] UINT32 value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputText
+        {
+            [default] interface IAdaptiveInputText;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(1ee90aff-93e8-4292-ac49-39d4c3289cd9),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputTime)
+        ]
+        interface IAdaptiveInputTime : IInspectable
+        {
+            [propget] HRESULT Max([out, retval] HSTRING* value);
+            [propput] HRESULT Max([in] HSTRING value);
+
+            [propget] HRESULT Min([out, retval] HSTRING* value);
+            [propput] HRESULT Min([in] HSTRING value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputTime
+        {
+            [default] interface IAdaptiveInputTime;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(e8af72a5-597c-4a19-b9c2-1a597db1c79a),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputToggle)
+        ]
+        interface IAdaptiveInputToggle : IInspectable
+        {
+            [propget] HRESULT Title([out, retval] HSTRING* value);
+            [propput] HRESULT Title([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+
+            [propget] HRESULT ValueOff([out, retval] HSTRING* value);
+            [propput] HRESULT ValueOff([in] HSTRING value);
+
+            [propget] HRESULT ValueOn([out, retval] HSTRING* value);
+            [propput] HRESULT ValueOn([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputToggle
+        {
+            [default] interface IAdaptiveInputToggle;
+            interface IAdaptiveCardElement;
+        };
+
+        [
             uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7),
             version(NTDDI_WIN10_RS1)
         ]
@@ -317,7 +512,7 @@ namespace AdaptiveCards
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveColumnSet)
         ]
-        interface IAdaptiveColumnSet: IInspectable
+        interface IAdaptiveColumnSet : IInspectable
         {
             [propget] HRESULT Columns([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveColumn*>** value);
         };
@@ -380,7 +575,6 @@ namespace AdaptiveCards
             interface IAdaptiveCardElement;
         };
 
-
         [flags]
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum RenderOptions
@@ -399,8 +593,9 @@ namespace AdaptiveCards
         {
             HRESULT SetRenderOptions([in] RenderOptions options);
             HRESULT SetOverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
-            
-            HRESULT RenderCardAsXaml([in] AdaptiveCard* adaptiveCard,[out, retval] Windows.UI.Xaml.UIElement** result);
+            HRESULT SetHostOptions([in] AdaptiveHostOptions* hostOptions);
+
+            HRESULT RenderCardAsXaml([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.UI.Xaml.UIElement** result);
             HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
 
             HRESULT RenderAdaptiveJsonAsXaml([in] HSTRING adaptiveJson, [out, retval] Windows.UI.Xaml.UIElement** result);
@@ -414,6 +609,690 @@ namespace AdaptiveCards
         runtimeclass XamlCardRenderer
         {
             [default] interface IXamlCardRenderer;
+        };
+
+        [
+            uuid(c49685af-df56-49ea-8fce-ce302788edc5),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveBoundaryOptions)
+        ]
+        interface IAdaptiveBoundaryOptions : IInspectable
+        {
+            [propget] HRESULT Left([out, retval] INT32 *value);
+            [propput] HRESULT Left([in] INT32 value);
+
+            [propget] HRESULT Right([out, retval] INT32 *value);
+            [propput] HRESULT Right([in] INT32 value);
+
+            [propget] HRESULT Bottom([out, retval] INT32 *value);
+            [propput] HRESULT Bottom([in] INT32 value);
+
+            [propget] HRESULT Top([out, retval] INT32 *value);
+            [propput] HRESULT Top([in] INT32 value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveBoundaryOptions
+        {
+            [default] interface IAdaptiveBoundaryOptions;
+        };
+
+        [
+            uuid(ebca0eab-b08b-4087-9c42-4667ec6ab0e0),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveFontSizeOptions)
+        ]
+        interface IAdaptiveFontSizeOptions : IInspectable
+        {
+            [propget] HRESULT Small([out, retval] INT32 *value);
+            [propput] HRESULT Small([in] INT32 value);
+
+            [propget] HRESULT Normal([out, retval] INT32 *value);
+            [propput] HRESULT Normal([in] INT32 value);
+
+            [propget] HRESULT Medium([out, retval] INT32 *value);
+            [propput] HRESULT Medium([in] INT32 value);
+
+            [propget] HRESULT Large([out, retval] INT32 *value);
+            [propput] HRESULT Large([in] INT32 value);
+
+            [propget] HRESULT ExtraLarge([out, retval] INT32 *value);
+            [propput] HRESULT ExtraLarge([in] INT32 value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveFontSizeOptions
+        {
+            [default] interface IAdaptiveFontSizeOptions;
+        };
+
+        [
+            uuid(421149d7-65e9-4ec9-b70b-802ba7d6cf98),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveColorOption)
+        ]
+        interface IAdaptiveColorOption : IInspectable
+        {
+            [propget] HRESULT Normal([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT Normal([in] Windows.UI.Color value);
+
+            [propget] HRESULT Subtle([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT Subtle([in] Windows.UI.Color value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveColorOption
+        {
+            [default] interface IAdaptiveColorOption;
+        };
+
+        [
+            uuid(1ade7d94-f0ae-4301-a9e2-b1f9c065916f),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveColorOptions)
+        ]
+        interface IAdaptiveColorOptions : IInspectable
+        {
+            [propget] HRESULT Default([out][retval] AdaptiveColorOption** value);
+            [propput] HRESULT Default([in] AdaptiveColorOption* value);
+
+            [propget] HRESULT Accent([out][retval] AdaptiveColorOption** value);
+            [propput] HRESULT Accent([in] AdaptiveColorOption* value);
+
+            [propget] HRESULT Dark([out][retval] AdaptiveColorOption** value);
+            [propput] HRESULT Dark([in] AdaptiveColorOption* value);
+
+            [propget] HRESULT Light([out][retval] AdaptiveColorOption** value);
+            [propput] HRESULT Light([in] AdaptiveColorOption* value);
+
+            [propget] HRESULT Good([out][retval] AdaptiveColorOption** value);
+            [propput] HRESULT Good([in] AdaptiveColorOption* value);
+
+            [propget] HRESULT Warning([out][retval] AdaptiveColorOption** value);
+            [propput] HRESULT Warning([in] AdaptiveColorOption* value);
+
+            [propget] HRESULT Attention([out][retval] AdaptiveColorOption** value);
+            [propput] HRESULT Attention([in] AdaptiveColorOption* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveColorOptions
+        {
+            [default] interface IAdaptiveColorOptions;
+        };
+
+        [
+            uuid(d730ba59-1f48-4dc6-8375-17f364f6086a),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveTextOptions)
+        ]
+        interface IAdaptiveTextOptions : IInspectable
+        {
+            [propget] HRESULT Weight([out, retval] TextWeight* value);
+            [propput] HRESULT Weight([in] TextWeight value);
+
+            [propget] HRESULT Size([out, retval] TextSize* value);
+            [propput] HRESULT Size([in] TextSize value);
+
+            [propget] HRESULT Color([out, retval] TextColor* value);
+            [propput] HRESULT Color([in] TextColor value);
+ 
+            [propget] HRESULT IsSubtle([out, retval] boolean* value);
+            [propput] HRESULT IsSubtle([in] boolean value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveTextOptions
+        {
+            [default] interface IAdaptiveTextOptions;
+        };
+
+        [
+            uuid(88e10cbc-0d67-42e3-bfcc-fd2ddb31dadd),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveSeparationOptions)
+        ]
+        interface IAdaptiveSeparationOptions : IInspectable
+        {
+            [propget] HRESULT Spacing([out, retval] INT32 *value);
+            [propput] HRESULT Spacing([in] INT32 value);
+
+            [propget] HRESULT LineThickness([out, retval] INT32 *value);
+            [propput] HRESULT LineThickness([in] INT32 value);
+
+            [propget] HRESULT LineColor([out, retval] Windows.UI.Color* value);
+            [propput] HRESULT LineColor([in] Windows.UI.Color value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveSeparationOptions
+        {
+            [default] interface IAdaptiveSeparationOptions;
+        };
+
+        [
+            uuid(ce5cd318-502c-4017-a076-4f8cdbb0316d),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveImageSizeOptions)
+        ]
+        interface IAdaptiveImageSizeOptions : IInspectable
+        {
+            [propget] HRESULT Small([out, retval] INT32 *value);
+            [propput] HRESULT Small([in] INT32 value);
+
+            [propget] HRESULT Medium([out, retval] INT32 *value);
+            [propput] HRESULT Medium([in] INT32 value);
+
+            [propget] HRESULT Large([out, retval] INT32 *value);
+            [propput] HRESULT Large([in] INT32 value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveImageSizeOptions
+        {
+            [default] interface IAdaptiveImageSizeOptions;
+        };
+
+        [
+            uuid(51417beb-2bbc-44e5-8210-6f61414cca6f),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveTextBlockOptions)
+        ]
+        interface IAdaptiveTextBlockOptions : IInspectable
+        {
+            [propget] HRESULT SmallSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT SmallSeparation([in] AdaptiveSeparationOptions* value);
+
+            [propget] HRESULT NormalSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT NormalSeparation([in] AdaptiveSeparationOptions* value);
+
+            [propget] HRESULT MediumSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT MediumSeparation([in] AdaptiveSeparationOptions* value);
+
+            [propget] HRESULT LargeSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT LargeSeparation([in] AdaptiveSeparationOptions* value);
+
+            [propget] HRESULT ExtraLargeSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT ExtraLargeSeparation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveTextBlockOptions
+        {
+            [default] interface IAdaptiveTextBlockOptions;
+        };
+        
+        [
+            uuid(29685cc3-027f-4da8-9659-6d3a53c34d88),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveImageSetOptions)
+        ]
+        interface IAdaptiveImageSetOptions : IInspectable
+        {
+            [propget] HRESULT ImageSize([out, retval] ImageSize* value);
+            [propput] HRESULT ImageSize([in] ImageSize value);
+
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveImageSetOptions
+        {
+            [default] interface IAdaptiveImageSetOptions;
+        };
+
+        [
+            uuid(0103c3c1-aa6e-4fb4-ab38-9c0ff1a6a00f),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveColumnOptions)
+        ]
+        interface IAdaptiveColumnOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveColumnOptions
+        {
+            [default] interface IAdaptiveColumnOptions;
+        };
+
+        [
+            uuid(740419b1-29de-435d-b8da-e34f1bd5afee),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveContainerOptions)
+        ]
+        interface IAdaptiveContainerOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveContainerOptions
+        {
+            [default] interface IAdaptiveContainerOptions;
+        };
+
+        [
+            uuid(cc83d315-b819-4980-97b1-cf950e760fc4),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveColumnSetOptions)
+        ]
+        interface IAdaptiveColumnSetOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveColumnSetOptions
+        {
+            [default] interface IAdaptiveColumnSetOptions;
+        };
+
+        [
+            uuid(4b8664ce-92d4-4093-af07-0d46712ac09b),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveImageOptions)
+        ]
+        interface IAdaptiveImageOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveImageOptions
+        {
+            [default] interface IAdaptiveImageOptions;
+        };
+
+        [
+            uuid(9363ea9c-9f73-4e7d-8d6e-0559ac52b314),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveCardOptions)
+        ]
+        interface IAdaptiveCardOptions : IInspectable
+        {
+            [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions** value);
+            [propput] HRESULT Padding([in] AdaptiveBoundaryOptions* value);
+
+            [propget] HRESULT BorderColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT BorderColor([in] Windows.UI.Color value);
+
+            [propget] HRESULT MaxActions([out][retval] INT32* value);
+            [propput] HRESULT MaxActions([in] INT32 value);
+
+            [propget] HRESULT ActionsOrientation([out][retval] ActionsOrientation* value);
+            [propput] HRESULT ActionsOrientation([in] ActionsOrientation value);
+
+            [propget] HRESULT ActionAlignment([out][retval] HAlignment* value);
+            [propput] HRESULT ActionAlignment([in] HAlignment value);
+
+            [propget] HRESULT TextColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT TextColor([in] Windows.UI.Color value);
+
+            [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveCardOptions
+        {
+            [default] interface IAdaptiveCardOptions;
+        };
+
+        [
+            uuid(9949ed60-fbc0-49fd-80d4-29fb1184854d),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveFactSetOptions)
+        ]
+        interface IAdaptiveFactSetOptions : IInspectable
+        {
+            [propget] HRESULT Title([out, retval] AdaptiveTextOptions** value);
+            [propput] HRESULT Title([in] AdaptiveTextOptions* value);
+
+            [propget] HRESULT Value([out, retval] AdaptiveTextOptions** value);
+            [propput] HRESULT Value([in] AdaptiveTextOptions* value);
+
+            [propget] HRESULT Spacing([out][retval] INT32* value);
+            [propput] HRESULT Spacing([in] INT32 value);
+
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveFactSetOptions
+        {
+            [default] interface IAdaptiveFactSetOptions;
+        };
+
+        [
+            uuid(eacabf24-288c-4307-bd5a-5888a00da918),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveShowCardOptions)
+        ]
+        interface IAdaptiveShowCardOptions : IInspectable
+        {
+            [propget] HRESULT ActionMode([out, retval] ActionMode *value);
+            [propput] HRESULT ActionMode([in] ActionMode value);
+
+            [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
+
+            [propget] HRESULT AutoPadding([out, retval] boolean* value);
+            [propput] HRESULT AutoPadding([in] boolean value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveShowCardOptions
+        {
+            [default] interface IAdaptiveShowCardOptions;
+        };
+
+        [
+            uuid(c01e7195-0c83-4fed-9911-3845bdb8ebc6),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveActionOptions)
+        ]
+        interface IAdaptiveActionOptions : IInspectable
+        {
+            [propget] HRESULT ShowCard([out, retval] AdaptiveShowCardOptions** value);
+            [propput] HRESULT ShowCard([in] AdaptiveShowCardOptions* value);
+
+            [propget] HRESULT ActionsOrientation([out][retval] ActionsOrientation* value);
+            [propput] HRESULT ActionsOrientation([in] ActionsOrientation value);
+
+            [propget] HRESULT ActionAlignment([out, retval] HAlignment* value);
+            [propput] HRESULT ActionAlignment([in] HAlignment value);
+
+            [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
+
+            [propget] HRESULT BorderColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT BorderColor([in] Windows.UI.Color value);
+
+            [propget] HRESULT TextColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT TextColor([in] Windows.UI.Color value);
+
+            [propget] HRESULT BorderThickness([out][retval] INT32* value);
+            [propput] HRESULT BorderThickness([in] INT32 value);
+
+            [propget] HRESULT FontWeight([out][retval] INT32* value);
+            [propput] HRESULT FontWeight([in] INT32 value);
+
+            [propget] HRESULT FontSize([out][retval] INT32* value);
+            [propput] HRESULT FontSize([in] INT32 value);
+
+            [propget] HRESULT Spacing([out][retval] INT32* value);
+            [propput] HRESULT Spacing([in] INT32 value);
+
+            [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions** value);
+            [propput] HRESULT Padding([in] AdaptiveBoundaryOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveActionOptions
+        {
+            [default] interface IAdaptiveActionOptions;
+        };
+
+        [
+            uuid(11213517-1e67-49df-a471-13dc0b2a3e5c),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveDateInputOptions)
+        ]
+        interface IAdaptiveDateInputOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveDateInputOptions
+        {
+            [default] interface IAdaptiveDateInputOptions;
+        };
+
+        [
+            uuid(0a53b7db-e8d8-41a5-94ad-d0992ba2879e),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveTimeInputOptions)
+        ]
+        interface IAdaptiveTimeInputOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveTimeInputOptions
+        {
+            [default] interface IAdaptiveTimeInputOptions;
+        };
+
+        [
+            uuid(f0a43896-35e3-4d61-9057-c19da8dafa07),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveNumberInputOptions)
+        ]
+        interface IAdaptiveNumberInputOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveNumberInputOptions
+        {
+            [default] interface IAdaptiveNumberInputOptions;
+        };
+
+        [
+            uuid(78a7b94a-559a-4aec-8d34-6a88189460b3),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveToggleInputOptions)
+        ]
+        interface IAdaptiveToggleInputOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveToggleInputOptions
+        {
+            [default] interface IAdaptiveToggleInputOptions;
+        };
+
+        [
+            uuid(b9b3fccc-2d5a-4a15-9e72-b8f6e8d479e9),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveTextInputOptions)
+        ]
+        interface IAdaptiveTextInputOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveTextInputOptions
+        {
+            [default] interface IAdaptiveTextInputOptions;
+        };
+
+        [
+            uuid(0df8b226-303c-46a7-9c4b-0b4154bb9c7d),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveChoiceSetInputOptions)
+        ]
+        interface IAdaptiveChoiceSetInputOptions : IInspectable
+        {
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveChoiceSetInputOptions
+        {
+            [default] interface IAdaptiveChoiceSetInputOptions;
+        };
+
+        [
+            uuid(85ef9ddc-4599-4ab6-adf1-1e04238601a5),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveHostOptions)
+        ]
+        interface IAdaptiveHostOptions : IInspectable
+        {
+            [propget] HRESULT FontFamily([out, retval] HSTRING* value);
+            [propput] HRESULT FontFamily([in] HSTRING value);
+
+            [propget] HRESULT FontSizes([out, retval] AdaptiveFontSizeOptions** value);
+            [propput] HRESULT FontSizes([in] AdaptiveFontSizeOptions* value);
+
+            [propget] HRESULT SupportsInteractivity([out, retval] boolean* value);
+            [propput] HRESULT SupportsInteractivity([in] boolean value);
+
+            [propget] HRESULT Colors([out, retval] AdaptiveColorOptions** value);
+            [propput] HRESULT Colors([in] AdaptiveColorOptions* value);
+
+            [propget] HRESULT ImageSizes([out, retval] AdaptiveImageSizeOptions** value);
+            [propput] HRESULT ImageSizes([in] AdaptiveImageSizeOptions* value);
+
+            [propget] HRESULT MaxActions([out, retval] INT32 *value);
+            [propput] HRESULT MaxActions([in] INT32 value);
+
+            [propget] HRESULT StrongSeparation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT StrongSeparation([in] AdaptiveSeparationOptions* value);
+
+            [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCardOptions** value);
+            [propput] HRESULT AdaptiveCard([in] AdaptiveCardOptions* value);
+
+            [propget] HRESULT ImageSet([out, retval] AdaptiveImageSetOptions** value);
+            [propput] HRESULT ImageSet([in] AdaptiveImageSetOptions* value);
+
+            [propget] HRESULT Image([out, retval] AdaptiveImageOptions** value);
+            [propput] HRESULT Image([in] AdaptiveImageOptions* value);
+
+            [propget] HRESULT FactSet([out, retval] AdaptiveFactSetOptions** value);
+            [propput] HRESULT FactSet([in] AdaptiveFactSetOptions* value);
+
+            [propget] HRESULT Column([out, retval] AdaptiveColumnOptions** value);
+            [propput] HRESULT Column([in] AdaptiveColumnOptions* value);
+
+            [propget] HRESULT Container([out, retval] AdaptiveContainerOptions** value);
+            [propput] HRESULT Container([in] AdaptiveContainerOptions* value);
+
+            [propget] HRESULT ColumnSet([out, retval] AdaptiveColumnSetOptions** value);
+            [propput] HRESULT ColumnSet([in] AdaptiveColumnSetOptions* value);
+
+            [propget] HRESULT TextBlock([out, retval] AdaptiveTextBlockOptions** value);
+            [propput] HRESULT TextBlock([in] AdaptiveTextBlockOptions* value);
+
+            [propget] HRESULT DateInput([out, retval] AdaptiveDateInputOptions** value);
+            [propput] HRESULT DateInput([in] AdaptiveDateInputOptions* value);
+
+            [propget] HRESULT TimeInput([out, retval] AdaptiveTimeInputOptions** value);
+            [propput] HRESULT TimeInput([in] AdaptiveTimeInputOptions* value);
+
+            [propget] HRESULT NumberInput([out, retval] AdaptiveNumberInputOptions** value);
+            [propput] HRESULT NumberInput([in] AdaptiveNumberInputOptions* value);
+
+            [propget] HRESULT ToggleInput([out, retval] AdaptiveToggleInputOptions** value);
+            [propput] HRESULT ToggleInput([in] AdaptiveToggleInputOptions* value);
+
+            [propget] HRESULT TextInput([out, retval] AdaptiveTextInputOptions** value);
+            [propput] HRESULT TextInput([in] AdaptiveTextInputOptions* value);
+
+            [propget] HRESULT ChoiceSetInput([out, retval] AdaptiveChoiceSetInputOptions** value);
+            [propput] HRESULT ChoiceSetInput([in] AdaptiveChoiceSetInputOptions* value);
+
+            [propget] HRESULT Actions([out, retval] AdaptiveActionOptions** value);
+            [propput] HRESULT Actions([in] AdaptiveActionOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveHostOptions
+        {
+            [default] interface IAdaptiveHostOptions;
         };
     }
 }

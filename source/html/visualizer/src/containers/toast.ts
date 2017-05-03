@@ -80,7 +80,6 @@ export class ToastContainer extends HostContainer {
                     spacing: 10
                 },
                 buttonSpacing: 10,
-                stretch: true,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
@@ -93,7 +92,7 @@ export class ToastContainer extends HostContainer {
                     }
                 },
                 actionsOrientation: "horizontal",
-                actionAlignment: "left"
+                actionAlignment: "stretch"
             },
             adaptiveCard: {
                 backgroundColor: "#1F1F1F",
@@ -171,7 +170,7 @@ export class ToastContainer extends HostContainer {
                     maxWidth: 150,
                 },
                 value: {
-                    color: "dark",
+                    color: "light",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",

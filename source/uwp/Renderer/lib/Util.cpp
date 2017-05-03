@@ -12,10 +12,15 @@
 #include "AdaptiveColumnSet.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
+#include "AdaptiveInputDate.h"
+#include "AdaptiveInputText.h"
+#include "AdaptiveInputTime.h"
+#include "AdaptiveInputToggle.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
+using namespace ABI::Windows::UI;
 using namespace std;
 
 HRESULT UTF8ToHString(const string& in, HSTRING* out)
@@ -78,6 +83,22 @@ HRESULT GenerateContainedElementsProjection(
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveImageSet>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::ImageSet>(containedElement)));
             break;
+        case CardElementType::InputDate:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputDate>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::InputDate>(containedElement)));
+            break;
+        case CardElementType::InputText:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputText>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::InputText>(containedElement)));
+            break;
+        case CardElementType::InputTime:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputTime>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::InputTime>(containedElement)));
+            break;
+        case CardElementType::InputToggle:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputToggle>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::InputToggle>(containedElement)));
+            break;
         default:
             return E_UNEXPECTED;
             break;
@@ -129,5 +150,27 @@ HRESULT GenerateImagesProjection(
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetColorFromString(std::string colorString, Color *color) noexcept try
+{
+    std::string alphaString = colorString.substr(1, 2);
+    INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
+
+    std::string redString = colorString.substr(3, 2);
+    INT32 red = strtol(redString.c_str(), nullptr, 16);
+
+    std::string blueString = colorString.substr(5, 2);
+    INT32 blue = strtol(blueString.c_str(), nullptr, 16);
+
+    std::string greenString = colorString.substr(7, 2);
+    INT32 green = strtol(greenString.c_str(), nullptr, 16);
+
+    color->A = alpha;
+    color->R = red;
+    color->B = blue;
+    color->G = green;
+
     return S_OK;
 } CATCH_RETURN;
