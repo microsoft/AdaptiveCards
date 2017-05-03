@@ -18,19 +18,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::InputChoice>& sharedInputChoice);
 
         // IAdaptiveInputChoice
-        IFACEMETHODIMP get_Title(_In_ HSTRING *title);
+        IFACEMETHODIMP get_Title(_In_ HSTRING* title);
         IFACEMETHODIMP put_Title(_Out_ HSTRING title);
 
-        IFACEMETHODIMP get_Value(_In_ HSTRING *value);
+        IFACEMETHODIMP get_Value(_In_ HSTRING* value);
         IFACEMETHODIMP put_Value(_Out_ HSTRING value);
 
-        IFACEMETHODIMP get_Speak(_In_ HSTRING *speak);
+        IFACEMETHODIMP get_Speak(_In_ HSTRING* speak);
         IFACEMETHODIMP put_Speak(_Out_ HSTRING speak);
 
         IFACEMETHODIMP get_IsSelected(_Out_ boolean* isSelected);
         IFACEMETHODIMP put_IsSelected(_In_ boolean isSelected);
 
-        // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
     private:

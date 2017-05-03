@@ -72,7 +72,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputChoice::get_IsSelected(boolean * isSelected)
+    HRESULT AdaptiveInputChoice::get_IsSelected(boolean* isSelected)
     {
         *isSelected = m_sharedInputChoice->GetIsSelected();
         return S_OK;
@@ -91,5 +91,4 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *elementType = ElementType::InputChoice;
         return S_OK;
     }
-
 }}

@@ -35,7 +35,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputChoiceSet::get_IsMultiSelect(boolean * isMultiSelect)
+    HRESULT AdaptiveInputChoiceSet::get_IsMultiSelect(boolean* isMultiSelect)
     {
         *isMultiSelect = m_sharedInputChoiceSet->GetIsMultiSelect();
         return S_OK;
@@ -49,7 +49,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputChoiceSet::get_IsRequired(boolean * isRequired)
+    HRESULT AdaptiveInputChoiceSet::get_IsRequired(boolean* isRequired)
     {
         *isRequired = m_sharedInputChoiceSet->GetIsRequired();
         return S_OK;
@@ -63,7 +63,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputChoiceSet::get_ChoiceSetStyle(ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle * choiceSetStyle)
+    HRESULT AdaptiveInputChoiceSet::get_ChoiceSetStyle(ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle* choiceSetStyle)
     {
         *choiceSetStyle = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle>(m_sharedInputChoiceSet->GetChoiceSetStyle());
         return S_OK;
