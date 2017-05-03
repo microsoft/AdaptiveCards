@@ -55,7 +55,12 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* separationOptions,
             _In_ bool isHorizontal = true);
 
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetFontColorFromHostOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor, bool isSubtle);
+        void StyleXamlTextBlock(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::TextSize size,
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor color,
+            _In_ bool isSubtle,
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight weight,
+            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
         void InitializeDefaultResourceDictionary();
         template<typename T>
         HRESULT TryGetResoureFromResourceDictionaries(
@@ -82,10 +87,6 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
             _In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation,
             _COM_Outptr_result_maybenull_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions** separationOptions);
-        void AppendSeparatorToPanel(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* separation,
-            _Inout_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
-            _In_ bool isHorizontalSeparator = true);
         template<typename T>
         void SetContent(T* item, HSTRING contentString);
         template<typename T>
