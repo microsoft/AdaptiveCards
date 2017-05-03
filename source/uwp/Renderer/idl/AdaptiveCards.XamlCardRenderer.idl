@@ -155,7 +155,8 @@ namespace AdaptiveCards
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ImageSize {
-            Auto = 0,
+            Default = 0,
+            Auto,
             Stretch,
             Small,
             Medium,

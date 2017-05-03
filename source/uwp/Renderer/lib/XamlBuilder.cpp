@@ -770,6 +770,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             switch (size)
             {
                 case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto:
+                case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Default:
                     THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
                     break;
 
@@ -1059,6 +1060,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize;
         THROW_IF_FAILED(adaptiveImageSet->get_ImageSize(&imageSize));
+
+        if (imageSize == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Default)
+        {
+            ComPtr<IAdaptiveImageSetOptions> imageSetOptions;
+            THROW_IF_FAILED(m_hostOptions->get_ImageSet(&imageSetOptions));
+            THROW_IF_FAILED(imageSetOptions->get_ImageSize(&imageSize));
+        }
 
         XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [this, imageSize, xamlGrid](IAdaptiveImage* adaptiveImage)
         {
