@@ -41,7 +41,7 @@ namespace Render2Html
                     var card = JsonConvert.DeserializeObject<AdaptiveCards.AdaptiveCard>(File.ReadAllText(file));
                     HtmlRenderer renderer = new HtmlRenderer(new HostConfig() { SupportsInteractivity = false });
                     var result = renderer.RenderAdaptiveCard(card);
-                    Console.WriteLine($"<div class='cardcontainer'>{result.ToPrettyString()}</div>");
+                    Console.WriteLine($"<div class='cardcontainer'>{result.ToString()}</div>");
                 }
                 catch (Exception err)
                 {

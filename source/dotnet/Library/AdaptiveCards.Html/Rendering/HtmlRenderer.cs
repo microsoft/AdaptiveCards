@@ -379,8 +379,8 @@ namespace AdaptiveCards.Rendering
                     .AddBodyRow();
 
                 // add elements as cells
-                uiRow.Cell().AddClass("ac-factset-titlecell").Append(uiTitle);
-                uiRow.Cell().AddClass("ac-factset-valuecell").Append(uiValue);
+                uiRow.AddCell().AddClass("ac-factset-titlecell").Append(uiTitle);
+                uiRow.AddCell().AddClass("ac-factset-valuecell").Append(uiValue);
             }
             return uiFactSet;
         }

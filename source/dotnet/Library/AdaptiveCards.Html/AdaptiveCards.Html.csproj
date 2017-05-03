@@ -19,11 +19,10 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <RepositoryType />
     <PackageReleaseNotes />
-    <Version>1.0.10</Version>
+    <Version>1.0.11</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlTags.AspNetCore" Version="4.2.0" />
     <PackageReference Include="Microsoft.MarkedNet" Version="1.0.11" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
