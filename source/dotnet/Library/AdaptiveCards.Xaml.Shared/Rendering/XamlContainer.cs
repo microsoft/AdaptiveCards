@@ -80,34 +80,30 @@ namespace AdaptiveCards.Rendering
 
         public static void AddSeperator(RenderContext context, CardElement element, Grid uiContainer, SeparationStyle seperationStyle)
         {
-            if (seperationStyle != SeparationStyle.None)
+            if (seperationStyle == SeparationStyle.None)
+                return;
+
+            var uiSep = new Grid();
+            uiSep.Style = context.GetStyle($"Adaptive.Separator");
+            SeparationConfig sepStyle = null;
+            switch (seperationStyle)
             {
-                var uiSep = new Grid();
-                uiSep.Style = context.GetStyle($"Adaptive.Separator");
-                SeparationConfig sepStyle = null;
-                switch (seperationStyle)
-                {
-                    case SeparationStyle.Default:
-                        sepStyle = context.Config.GetSeparationForElement(element, strong: false);
-                        break;
+                case SeparationStyle.Default:
+                    sepStyle = context.Config.GetSeparationForElement(element, strong: false);
+                    break;
 
-                    case SeparationStyle.Strong:
-                        sepStyle = context.Config.GetSeparationForElement(element, strong: true);
-                        break;
-                }
-
-                uiSep.Margin = new Thickness(0, (sepStyle.Spacing - sepStyle.LineThickness) / 2, 0, (sepStyle.Spacing - sepStyle.LineThickness) / 2);
-#if WPF
-                uiSep.Height = sepStyle.LineThickness;
-                if (sepStyle.LineColor != null)
-                    uiSep.Background = context.GetColorBrush(sepStyle.LineColor);
-#elif XAMARIN
-                            // TODO
-#endif
-                uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
-                uiContainer.Children.Add(uiSep);
+                case SeparationStyle.Strong:
+                    sepStyle = context.Config.GetSeparationForElement(element, strong: true);
+                    break;
             }
+            
+            uiSep.Margin = new Thickness(0, (sepStyle.Spacing - sepStyle.LineThickness) / 2, 0, (sepStyle.Spacing - sepStyle.LineThickness) / 2);
+            uiSep.SetHeight(sepStyle.LineThickness);
+            if(!string.IsNullOrWhiteSpace(sepStyle.LineColor))
+                uiSep.SetBackgroundColor(sepStyle.LineColor,context);
+            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
+            uiContainer.Children.Add(uiSep);            
         }
     }
 }
