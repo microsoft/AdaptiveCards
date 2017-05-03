@@ -26,28 +26,31 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         public static string ApplyTextFunctions(string text)
         {
-            foreach (Match match in TextFunctionRegex.Matches(text))
+            if (text != null)
             {
-                Functions function;
-                if (Enum.TryParse(match.Groups[1].Value.ToUpper(), out function))
+                foreach (Match match in TextFunctionRegex.Matches(text))
                 {
-                    DateTime date;
-                    if (DateTime.TryParse(match.Groups[2].Value, out date))
+                    Functions function;
+                    if (Enum.TryParse(match.Groups[1].Value.ToUpper(), out function))
                     {
-                        TimeHints timeHint;
-                        if (!Enum.TryParse(match.Groups[3].Value.ToUpper(), out timeHint))
-                            timeHint = TimeHints.LONG;
+                        DateTime date;
+                        if (DateTime.TryParse(match.Groups[2].Value, out date))
+                        {
+                            TimeHints timeHint;
+                            if (!Enum.TryParse(match.Groups[3].Value.ToUpper(), out timeHint))
+                                timeHint = TimeHints.LONG;
 
-                        var dateTimeFormat = "D";
-                        if (function == Functions.DATE)
-                            dateTimeFormat = timeHint == TimeHints.LONG ? "D" : "d";
-                        else if (function == Functions.TIME)
-                            dateTimeFormat = timeHint == TimeHints.LONG ? "T" : "t";
-                        text = text.Replace(match.Value, date.ToString(dateTimeFormat));
+                            var dateTimeFormat = "D";
+                            if (function == Functions.DATE)
+                                dateTimeFormat = timeHint == TimeHints.LONG ? "D" : "d";
+                            else if (function == Functions.TIME)
+                                dateTimeFormat = timeHint == TimeHints.LONG ? "T" : "t";
+                            text = text.Replace(match.Value, date.ToString(dateTimeFormat));
+                        }
                     }
                 }
             }
-            return text;
+            return text ?? String.Empty;
         }
 
         /// <summary>
