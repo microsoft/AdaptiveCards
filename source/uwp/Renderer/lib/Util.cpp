@@ -13,6 +13,7 @@
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
 #include "AdaptiveInputDate.h"
+#include "AdaptiveInputNumber.h"
 #include "AdaptiveInputText.h"
 #include "AdaptiveInputTime.h"
 #include "AdaptiveInputToggle.h"
@@ -92,6 +93,10 @@ HRESULT GenerateContainedElementsProjection(
         case CardElementType::InputDate:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputDate>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::InputDate>(containedElement)));
+            break;
+        case CardElementType::InputNumber:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputNumber>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::InputNumber>(containedElement)));
             break;
         case CardElementType::InputText:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputText>(&projectedContainedElement,

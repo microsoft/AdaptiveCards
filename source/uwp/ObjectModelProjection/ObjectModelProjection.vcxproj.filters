@@ -23,6 +23,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputTime.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoice.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputNumber.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
@@ -52,6 +53,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputTime.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoice.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputNumber.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

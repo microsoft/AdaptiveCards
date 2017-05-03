@@ -31,6 +31,7 @@ using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 using namespace ABI::Windows::UI::Xaml::Shapes;
+using namespace ABI::Windows::UI::Xaml::Input;
 using namespace ABI::Windows::Web::Http;
 using namespace ABI::Windows::Web::Http::Filters;
 
@@ -50,6 +51,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputChoiceSet] = std::bind(&XamlBuilder::BuildInputChoiceSet, this, std::placeholders::_1, std::placeholders::_2); 
         m_adaptiveElementBuilder[ElementType::InputDate] = std::bind(&XamlBuilder::BuildInputDate, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputNumber] = std::bind(&XamlBuilder::BuildInputNumber, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputTime] = std::bind(&XamlBuilder::BuildInputTime, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputToggle] = std::bind(&XamlBuilder::BuildInputToggle, this, std::placeholders::_1, std::placeholders::_2);
@@ -1261,6 +1263,42 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // TODO: 11508861
         THROW_IF_FAILED(datePicker.CopyTo(inputDateControl));
+    }
+
+    void XamlBuilder::BuildInputNumber(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputNumberControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputNumber> adaptiveInputNumber;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputNumber));
+
+        ComPtr<ITextBox> textBox = XamlHelpers::CreateXamlClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
+
+        ComPtr<IInputScopeName> inputScopeName = XamlHelpers::CreateXamlClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
+        THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Number));
+
+        ComPtr<IInputScope> inputScope = XamlHelpers::CreateXamlClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
+        ComPtr<IVector<InputScopeName*>> names;
+        THROW_IF_FAILED(inputScope->get_Names(names.GetAddressOf()));
+        THROW_IF_FAILED(names->Append(inputScopeName.Get()));
+
+        THROW_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
+
+        HString textValue;
+        THROW_IF_FAILED(adaptiveInputNumber->get_Value(textValue.GetAddressOf()));
+        THROW_IF_FAILED(textBox->put_Text(textValue.Get()));
+
+        ComPtr<ITextBox2> textBox2;
+        THROW_IF_FAILED(textBox.As(&textBox2));
+
+        HString placeHolderText;
+        THROW_IF_FAILED(adaptiveInputNumber->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
+
+        // TODO: Handle max and min?
+
+        THROW_IF_FAILED(textBox.CopyTo(inputNumberControl));
     }
 
     void XamlBuilder::BuildInputText(

@@ -45,6 +45,7 @@
     <ClCompile Include="lib\AdaptiveInputTime.cpp" />
     <ClCompile Include="lib\AdaptiveInputChoice.cpp" />
     <ClCompile Include="lib\AdaptiveInputChoiceSet.cpp" />
+    <ClCompile Include="lib\AdaptiveInputNumber.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -99,6 +100,7 @@
     <ClInclude Include="lib\AdaptiveInputTime.h" />
     <ClInclude Include="lib\AdaptiveInputChoice.h" />
     <ClInclude Include="lib\AdaptiveInputChoiceSet.h" />
+    <ClInclude Include="lib\AdaptiveInputNumber.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />
