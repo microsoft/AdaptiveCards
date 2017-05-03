@@ -78,8 +78,7 @@ struct ImageSetOptions
 
 struct ColumnOptions
 {
-    SeparationOptions defaultSeparation;
-    SeparationOptions strongSeparation = { 20, 1, "#FF707070" };
+    SeparationOptions separation;
 };
 
 struct ContainerOptions
