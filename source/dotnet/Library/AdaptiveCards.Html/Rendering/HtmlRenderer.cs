@@ -377,10 +377,10 @@ namespace AdaptiveCards.Rendering
                 // create row in factset 
                 var uiRow = uiFactSet
                     .AddBodyRow();
-                
+
                 // add elements as cells
-                uiRow.Cell().AddClass("ac-factset-titlecell").Append(uiTitle);
-                uiRow.Cell().AddClass("ac-factset-valuecell").Append(uiValue);
+                uiRow.AddCell().AddClass("ac-factset-titlecell").Append(uiTitle);
+                uiRow.AddCell().AddClass("ac-factset-valuecell").Append(uiValue);
             }
             return uiFactSet;
         }
@@ -429,21 +429,24 @@ namespace AdaptiveCards.Rendering
                 .Style("box-sizing", "border-box")
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
-                .Style("font-family", context.Config.FontFamily)
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
+
+            if (!String.IsNullOrEmpty(context.Config.FontFamily))
+                uiTextBlock = uiTextBlock
+                    .Style("font-family", context.Config.FontFamily);
 
             if (textBlock.MaxLines > 0)
                 uiTextBlock = uiTextBlock
                     .Style("max-height", $"{lineHeight * textBlock.MaxLines}px")
-                    .Style("overflow","hidden");
+                    .Style("overflow", "hidden");
 
             var wrapStyle = "";
             if (textBlock.Wrap == false)
             {
                 uiTextBlock = uiTextBlock
                     .Style("white-space", "nowrap");
-                wrapStyle= "text-overflow: ellipsis; overflow: hidden";
+                wrapStyle = "text-overflow: ellipsis; overflow: hidden";
             }
             else
             {
@@ -494,7 +497,7 @@ namespace AdaptiveCards.Rendering
                 .Style("width", "100%")
                 .Attr("src", image.Url);
 
-            switch(image.Style)
+            switch (image.Style)
             {
                 case ImageStyle.Normal:
                     break;

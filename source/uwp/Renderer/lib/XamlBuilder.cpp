@@ -48,6 +48,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2);
+        m_adaptiveElementBuilder[ElementType::InputChoiceSet] = std::bind(&XamlBuilder::BuildInputChoiceSet, this, std::placeholders::_1, std::placeholders::_2); 
         m_adaptiveElementBuilder[ElementType::InputDate] = std::bind(&XamlBuilder::BuildInputDate, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2);
         m_adaptiveElementBuilder[ElementType::InputTime] = std::bind(&XamlBuilder::BuildInputTime, this, std::placeholders::_1, std::placeholders::_2);
@@ -524,6 +525,40 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         });
     }
 
+    template<typename T>
+    void XamlBuilder::SetContent(
+        T* item,
+        HSTRING contentString)
+    {
+        ComPtr<T> localItem(item);
+        ComPtr<IContentControl> contentControl;
+        THROW_IF_FAILED(localItem.As(&contentControl));
+
+        ComPtr<ITextBlock> content = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+        THROW_IF_FAILED(content->put_Text(contentString));
+        THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+    }
+
+    template<typename T>
+    void XamlBuilder::SetToggleValue(
+        T* item,
+        boolean isChecked)
+    {
+        ComPtr<IPropertyValueStatics> propertyValueStatics;
+        ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
+
+        ComPtr<IPropertyValue> propertyValue;
+        propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
+
+        ComPtr<ABI::Windows::Foundation::IReference<bool>> boolProperty;
+        propertyValue.As(&boolProperty);
+
+        ComPtr<T> localItem (item);
+        ComPtr<IToggleButton> toggleButton;
+        THROW_IF_FAILED(localItem.As(&toggleButton));
+        THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
+    }
+
     _Use_decl_annotations_
     void XamlBuilder::GetSeparationOptionsForElement(
         IAdaptiveCardElement* cardElement,
@@ -770,6 +805,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             switch (size)
             {
                 case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto:
+                case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Default:
                     THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
                     break;
 
@@ -1060,6 +1096,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize;
         THROW_IF_FAILED(adaptiveImageSet->get_ImageSize(&imageSize));
 
+        if (imageSize == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Default)
+        {
+            ComPtr<IAdaptiveImageSetOptions> imageSetOptions;
+            THROW_IF_FAILED(m_hostOptions->get_ImageSet(&imageSetOptions));
+            THROW_IF_FAILED(imageSetOptions->get_ImageSize(&imageSize));
+        }
+
         XamlHelpers::IterateOverVector<IAdaptiveImage>(images.Get(), [this, imageSize, xamlGrid](IAdaptiveImage* adaptiveImage)
         {
             ComPtr<IAdaptiveImage> localAdaptiveImage(adaptiveImage);
@@ -1079,6 +1122,125 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // TODO: 11508861
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
+    }
+
+    void XamlBuilder::BuildCompactInputChoiceSet(
+        IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
+        IUIElement** inputChoiceSet)
+    {
+        ComPtr<IComboBox> comboBox = XamlHelpers::CreateXamlClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
+
+        ComPtr<IItemsControl> itemsControl;
+        THROW_IF_FAILED(comboBox.As(&itemsControl));
+
+        ComPtr<IObservableVector<IInspectable*>> items;
+        THROW_IF_FAILED(itemsControl->get_Items(items.GetAddressOf()));
+
+        ComPtr<IVector<IInspectable*>> itemsVector;
+        THROW_IF_FAILED(items.As(&itemsVector));
+
+        ComPtr<IVector<IAdaptiveInputChoice*>> choices;
+        THROW_IF_FAILED(adaptiveInputChoiceSet->get_Choices(&choices));
+
+        int currentIndex = 0;
+        int selectedIndex = -1;
+        XamlHelpers::IterateOverVector<IAdaptiveInputChoice>(choices.Get(), [this, &currentIndex, &selectedIndex, itemsVector](IAdaptiveInputChoice* adaptiveInputChoice)
+        {
+            HString title;
+            THROW_IF_FAILED(adaptiveInputChoice->get_Title(title.GetAddressOf()));
+
+            ComPtr<IComboBoxItem> comboBoxItem = XamlHelpers::CreateXamlClass<IComboBoxItem>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBoxItem));
+
+            SetContent(comboBoxItem.Get(), title.Get());
+
+            boolean isSelected;
+            THROW_IF_FAILED(adaptiveInputChoice->get_IsSelected(&isSelected));
+            if (isSelected)
+            {
+                selectedIndex = currentIndex;
+            }
+
+            ComPtr<IInspectable> inspectable;
+            THROW_IF_FAILED(comboBoxItem.As(&inspectable));
+
+            THROW_IF_FAILED(itemsVector->Append(inspectable.Get()));
+            currentIndex++;
+        });
+
+        ComPtr<ISelector> selector;
+        THROW_IF_FAILED(comboBox.As(&selector));
+        THROW_IF_FAILED(selector->put_SelectedIndex(selectedIndex));
+
+        // TODO: 11508861
+        THROW_IF_FAILED(comboBox.CopyTo(inputChoiceSet));
+    }
+
+    void XamlBuilder::BuildExpandedInputChoiceSet(
+        IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
+        boolean isMultiSelect,
+        IUIElement** inputChoiceSet)
+    {
+        ComPtr<IVector<IAdaptiveInputChoice*>> choices;
+        THROW_IF_FAILED(adaptiveInputChoiceSet->get_Choices(&choices));
+
+        ComPtr<IStackPanel> stackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        stackPanel->put_Orientation(Orientation::Orientation_Vertical);
+
+        ComPtr<IPanel> panel;
+        THROW_IF_FAILED(stackPanel.As(&panel));
+
+        XamlHelpers::IterateOverVector<IAdaptiveInputChoice>(choices.Get(), [this, panel, isMultiSelect](IAdaptiveInputChoice* adaptiveInputChoice)
+        {
+            ComPtr<IInspectable> choiceItem;
+            if (isMultiSelect)
+            {
+                ComPtr<ICheckBox> checkBox = XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+                THROW_IF_FAILED(checkBox.As(&choiceItem));
+            }
+            else
+            {
+                ComPtr<IRadioButton> radioButton = XamlHelpers::CreateXamlClass<IRadioButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RadioButton));
+                THROW_IF_FAILED(radioButton.As(&choiceItem));
+            }
+
+            HString title;
+            THROW_IF_FAILED(adaptiveInputChoice->get_Title(title.GetAddressOf()));
+            SetContent(choiceItem.Get(), title.Get());
+
+            boolean isSelected;
+            THROW_IF_FAILED(adaptiveInputChoice->get_IsSelected(&isSelected));
+            SetToggleValue(choiceItem.Get(), isSelected);
+
+            XamlHelpers::AppendXamlElementToPanel(choiceItem.Get(), panel.Get());
+        });
+
+        // TODO: 11508861
+        THROW_IF_FAILED(stackPanel.CopyTo(inputChoiceSet));
+    }
+
+    void XamlBuilder::BuildInputChoiceSet(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** inputChoiceSet)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveInputChoiceSet> adaptiveInputChoiceSet;
+        THROW_IF_FAILED(cardElement.As(&adaptiveInputChoiceSet));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle choiceSetStyle;
+        THROW_IF_FAILED(adaptiveInputChoiceSet->get_ChoiceSetStyle(&choiceSetStyle));
+
+        boolean isMultiSelect;
+        THROW_IF_FAILED(adaptiveInputChoiceSet->get_IsMultiSelect(&isMultiSelect));
+
+        if (choiceSetStyle == ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle_Compact &&
+            !isMultiSelect)
+        {
+            BuildCompactInputChoiceSet(adaptiveInputChoiceSet.Get(), inputChoiceSet);
+        }
+        else
+        {
+            BuildExpandedInputChoiceSet(adaptiveInputChoiceSet.Get(), isMultiSelect, inputChoiceSet);
+        }
     }
 
     void XamlBuilder::BuildInputDate(
@@ -1155,15 +1317,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(cardElement.As(&adaptiveInputToggle));
 
         ComPtr<ICheckBox> checkBox = XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
-        ComPtr<IContentControl> contentControl;
-        THROW_IF_FAILED(checkBox.As(&contentControl));
 
         HString title;
         THROW_IF_FAILED(adaptiveInputToggle->get_Title(title.GetAddressOf()));
 
-        ComPtr<ITextBlock> content = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-        THROW_IF_FAILED(content->put_Text(title.Get()));
-        THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+        SetContent(checkBox.Get(), title.Get());
 
         HString value;
         THROW_IF_FAILED(adaptiveInputToggle->get_Value(value.GetAddressOf()));
@@ -1177,20 +1335,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         INT32 compareValueOn;
         THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), valueOn.Get(), &compareValueOn));
 
-        bool isChecked = (compareTrue == 0) || (compareValueOn == 0);
+        boolean isChecked = (compareTrue == 0) || (compareValueOn == 0);
 
-        ComPtr<IPropertyValueStatics> propertyValueStatics;
-        ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
-        
-        ComPtr<IPropertyValue> propertyValue;
-        propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
-
-        ComPtr<ABI::Windows::Foundation::IReference<bool>> boolProperty;
-        propertyValue.As(&boolProperty);
-
-        ComPtr<IToggleButton> toggleButton;
-        THROW_IF_FAILED(checkBox.As(&toggleButton));
-        THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
+        SetToggleValue(checkBox.Get(), isChecked);
 
         // TODO: 11508861
         THROW_IF_FAILED(checkBox.CopyTo(inputToggleControl));

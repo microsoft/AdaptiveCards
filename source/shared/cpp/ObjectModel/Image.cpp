@@ -35,7 +35,7 @@ std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url));
     image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::ImageStyle, ImageStyle::Normal, ImageStyleFromString));
-    image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::Auto, ImageSizeFromString));
+    image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::Default, ImageSizeFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
     return image;
