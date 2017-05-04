@@ -197,6 +197,14 @@ namespace AdaptiveCards
             Expanded
         } ChoiceSetStyle;
 
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum TextInputStyle {
+            Text = 0,
+            Tel,
+            Url,
+            Email,
+        } TextInputStyle;
+
         declare
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -500,6 +508,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT Value([out, retval] HSTRING* value);
             [propput] HRESULT Value([in] HSTRING value);
+
+            [propget] HRESULT TextInputStyle([out, retval] TextInputStyle* value);
+            [propput] HRESULT TextInputStyle([in] TextInputStyle value);
         };
 
         [

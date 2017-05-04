@@ -1332,6 +1332,32 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveInputText->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
 
+        ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle textInputStyle;
+        THROW_IF_FAILED(adaptiveInputText->get_TextInputStyle(&textInputStyle));
+
+        ComPtr<IInputScopeName> inputScopeName = XamlHelpers::CreateXamlClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
+        switch (textInputStyle)
+        {
+            case ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle::Email:
+                THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_EmailSmtpAddress));
+                break;
+
+            case ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle::Tel:
+                THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_TelephoneNumber));
+                break;
+
+            case ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle::Url:
+                THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Url));
+                break;
+        }
+
+        ComPtr<IInputScope> inputScope = XamlHelpers::CreateXamlClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
+        ComPtr<IVector<InputScopeName*>> names;
+        THROW_IF_FAILED(inputScope->get_Names(names.GetAddressOf()));
+        THROW_IF_FAILED(names->Append(inputScopeName.Get()));
+
+        THROW_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
+
         // TODO: 11508861
         THROW_IF_FAILED(textBox.CopyTo(inputTextControl));
     }
