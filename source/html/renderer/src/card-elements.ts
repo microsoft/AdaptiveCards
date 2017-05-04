@@ -501,6 +501,7 @@ export class Image extends CardElement {
         if (!Utils.isNullOrEmpty(this.url)) {
             element = document.createElement("div");
             element.style.display = "flex";
+            element.style.alignItems = "flex-start";
             element.onclick = (e) => {
                 if (this.selectAction != null) {
                     raiseExecuteActionEvent(this.selectAction);
