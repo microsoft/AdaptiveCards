@@ -85,6 +85,11 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* separation,
             _Inout_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
             _In_ bool isHorizontalSeparator = true);
+        template<typename T>
+        void SetContent(T* item, HSTRING contentString);
+        template<typename T>
+        void SetToggleValue(T* item, boolean isChecked);
+
         void BuildTextBlock(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBlockControl);
@@ -103,6 +108,16 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
         void BuildImageSet(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageSetControl);
+        void BuildCompactInputChoiceSet(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
+        void BuildExpandedInputChoiceSet(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
+            boolean isMultiSelect,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
+        void BuildInputChoiceSet(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
         void BuildInputDate(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputDateControl);

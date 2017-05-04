@@ -18,17 +18,7 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
         }
     }
 
-    if (!hostConfig.actions.supportedActionTypes) {
-        return true;
-    }
-
-    for (var i = 0; i < hostConfig.actions.supportedActionTypes.length; i++) {
-        if (action.getJsonTypeName() === hostConfig.actions.supportedActionTypes[i]) {
-            return true;
-        }
-    }
-
-    return false;
+    return true;
 }
 
 function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
@@ -43,18 +33,8 @@ function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<str
             }
         }
     }
-
-    if (!hostConfig.supportedElementTypes) {
-        return true;
-    }
     
-    for (var i = 0; i < hostConfig.supportedElementTypes.length; i++) {
-        if (element.getJsonTypeName() === hostConfig.supportedElementTypes[i]) {
-            return true;
-        }
-    }
-    
-    return false;
+    return true;
 }
 
 export interface IValidationError {
@@ -107,18 +87,8 @@ export abstract class CardElement {
         return true;
     }
 
-    protected adjustAlignment(element: HTMLElement) {
-        element.style.textAlign = this.horizontalAlignment;
-    }
-
     protected adjustLayout(element: HTMLElement) {
         element.style.boxSizing = "border-box";
-
-        if (this.useDefaultSizing) {
-            element.style.width = "100%";
-        }
-
-        this.adjustAlignment(element);
     }
 
     protected get padding(): HostConfig.ISpacingDefinition {
@@ -216,6 +186,18 @@ export class TextBlock extends CardElement {
             var element = document.createElement("div");
             element.style.fontFamily = hostConfig.fontFamily;
 
+            switch (this.horizontalAlignment) {
+                case "center":
+                    element.style.textAlign = "center";
+                    break;
+                case "right":
+                    element.style.textAlign = "right";
+                    break;
+                default:
+                    element.style.textAlign = "left";
+                    break;
+            }
+            
             var cssStyle = "text ";
             var fontSize: number;
 
@@ -296,6 +278,7 @@ export class TextBlock extends CardElement {
             if (element.firstElementChild instanceof HTMLElement) {
                 var firstElementChild = <HTMLElement>element.firstElementChild;                
                 firstElementChild.style.marginTop = "0px";
+                firstElementChild.style.width = "100%";
 
                 if (!this.wrap) {
                     firstElementChild.style.overflow = "hidden";
@@ -374,12 +357,6 @@ export class TextBlock extends CardElement {
     }
 }
 
-class InternalTextBlock extends TextBlock {
-    get useDefaultSizing(): boolean {
-        return false;
-    }
-}
-
 export class Fact {
     name: string;
     value: string;
@@ -427,7 +404,7 @@ export class FactSet extends CardElement {
 
                 tdElement.style.verticalAlign = "top";
 
-                let textBlock = new InternalTextBlock();
+                let textBlock = new TextBlock();
                 textBlock.text = this.facts[i].name;
                 textBlock.size = hostConfig.factSet.title.size;
                 textBlock.color = hostConfig.factSet.title.color;
@@ -443,7 +420,7 @@ export class FactSet extends CardElement {
                 tdElement.style.padding = "0px 0px 0px 10px";
                 tdElement.style.verticalAlign = "top";
 
-                textBlock = new InternalTextBlock();
+                textBlock = new TextBlock();
                 textBlock.text = this.facts[i].value;
                 textBlock.size = hostConfig.factSet.value.size;
                 textBlock.color = hostConfig.factSet.value.color;
@@ -518,26 +495,12 @@ export class Image extends CardElement {
         return false;
     }
 
-    protected adjustAlignment(element: HTMLElement) {
-        switch (this.horizontalAlignment) {
-            case "center":
-                element.style.marginLeft = "auto";
-                element.style.marginRight = "auto";
-
-                break;
-            case "right":
-                element.style.marginLeft = "auto";
-
-                break;
-        }
-    }
-
     protected internalRender(): HTMLElement {
         var element: HTMLElement = null;
 
         if (!Utils.isNullOrEmpty(this.url)) {
             element = document.createElement("div");
-            element.style.display = "block";
+            element.style.display = "flex";
             element.onclick = (e) => {
                 if (this.selectAction != null) {
                     raiseExecuteActionEvent(this.selectAction);
@@ -546,30 +509,39 @@ export class Image extends CardElement {
             }
             element.classList.add("ac-image");
 
+            switch (this.horizontalAlignment) {
+                case "center":
+                    element.style.justifyContent = "center";
+                    break;
+                case "right":
+                    element.style.justifyContent = "flex-end";
+                    break;
+                default:
+                    element.style.justifyContent = "flex-start";
+                    break;
+            }
+            
             if (this.selectAction != null) {
                 element.classList.add("ac-selectable");
             }
 
-            switch (this.size) {
-                case "auto":
-                    element.style.maxWidth = "100%";
-                    break;
-                case "stretch":
-                    element.style.width = "100%";
-                    break;
-                case "small":
-                    element.style.maxWidth = hostConfig.imageSizes.small + "px";
-                    break;
-                case "large":
-                    element.style.maxWidth = hostConfig.imageSizes.large + "px";
-                    break;
-                default:
-                    element.style.maxWidth = hostConfig.imageSizes.medium + "px";
-                    break;
-            }
-
             var imageElement = document.createElement("img");
             imageElement.style.width = "100%";
+
+            switch (this.size) {
+                case "auto":
+                    imageElement.style.maxWidth = "100%";
+                    break;
+                case "small":
+                    imageElement.style.maxWidth = hostConfig.imageSizes.small + "px";
+                    break;
+                case "large":
+                    imageElement.style.maxWidth = hostConfig.imageSizes.large + "px";
+                    break;
+                case "medium":
+                    imageElement.style.maxWidth = hostConfig.imageSizes.medium + "px";
+                    break;
+            }
 
             if (this.style == "person") {
                 imageElement.style.borderRadius = "50%";
@@ -713,6 +685,12 @@ export abstract class Input extends CardElement implements Utils.IInput {
     title: string;
     defaultValue: string;
 
+    protected adjustLayout(element: HTMLElement) {
+        super.adjustLayout(element);
+
+        element.style.width = "100%";
+    }
+
     abstract get value(): string;
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
@@ -820,7 +798,7 @@ export class ToggleInput extends Input {
             this._checkboxInputElement.checked = true;
         }
 
-        var label = new InternalTextBlock();
+        var label = new TextBlock();
         label.text = this.title;
 
         var labelElement = label.render();
@@ -917,7 +895,7 @@ export class ChoiceSetInput extends Input {
 
                     this._toggleInputs.push(radioInput);
 
-                    var label = new InternalTextBlock();
+                    var label = new TextBlock();
                     label.text = this.choices[i].title;
 
                     var labelElement = label.render();
@@ -953,7 +931,7 @@ export class ChoiceSetInput extends Input {
 
                 this._toggleInputs.push(checkboxInput);
 
-                var label = new InternalTextBlock();
+                var label = new TextBlock();
                 label.text = this.choices[i].title;
 
                 var labelElement = label.render();
@@ -1178,7 +1156,7 @@ class ActionButton {
         this._action = action;
         this._style = style;
 
-        this._element = document.createElement("div");
+        this._element = document.createElement("button");
         this._element.style.overflow = "hidden";
         this._element.style.whiteSpace = "nowrap";
         this._element.style.textOverflow = "ellipsis";
@@ -1609,33 +1587,39 @@ class ActionCollection {
         var element = document.createElement("div");
 
         var buttonStrip = document.createElement("div");
-
-        switch (hostConfig.actions.actionAlignment) {
-            case "center":
-                element.style.textAlign = "center";
-                buttonStrip.style.textAlign = "center";
-
-                break;
-            case "right":
-                element.style.textAlign = "right";
-                buttonStrip.style.textAlign = "right";
-
-                break;
-        }
+        buttonStrip.style.display = "flex";
 
         if (hostConfig.actions.actionsOrientation == "horizontal") {
-            if (hostConfig.actions.actionAlignment == "stretch") {
-                buttonStrip.style.display = "flex";
-            }
-            else {
-                buttonStrip.style.display = "inline-flex";
+            buttonStrip.style.flexDirection = "row";
+
+            switch (hostConfig.actions.actionAlignment) {
+                case "center":
+                    buttonStrip.style.justifyContent = "center";
+                    break;
+                case "right":
+                    buttonStrip.style.justifyContent = "flex-end";
+                    break;
+                default:
+                    buttonStrip.style.justifyContent = "flex-start";
+                    break;
             }
         }
         else {
-            buttonStrip.style.display = "inline-table";
+            buttonStrip.style.flexDirection = "column";
 
-            if (hostConfig.actions.actionAlignment == "stretch") {
-                buttonStrip.style.width = "100%";
+            switch (hostConfig.actions.actionAlignment) {
+                case "center":
+                    buttonStrip.style.alignItems = "center";
+                    break;
+                case "right":
+                    buttonStrip.style.alignItems = "flex-end";
+                    break;
+                case "stretch":
+                    buttonStrip.style.alignItems = "stretch";
+                    break;
+                default:
+                    buttonStrip.style.alignItems = "flex-start";
+                    break;
             }
         }
 
@@ -2086,30 +2070,31 @@ export class Column extends Container {
 export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
 
-    protected adjustAlignment(element: HTMLElement) {
-        element.style.textAlign = hostConfig.actions.actionAlignment;
-    }
-
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
-            // An outer div is necessary for it's responsible for
-            // horizontally aligning its content, via adjustAlignment
-            var outerElement = document.createElement("div");
-            outerElement.style.overflow = "hidden";
+            var element = document.createElement("div");
+            element.style.display = "flex";
+            element.style.overflow = "hidden";
 
-            var innerElement = document.createElement("div");
+            switch (this.horizontalAlignment) {
+                case "center":
+                    element.style.justifyContent = "center";
+                    break;
+                case "right":
+                    element.style.justifyContent = "flex-end";
+                    break;
+                default:
+                    element.style.justifyContent = "flex-start";
+                    break;
+            }
+            
             var renderedColumnCount: number = 0;
-            var stretchedColumns: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
-                if (this._columns[i].size == "stretch") {
-                    stretchedColumns++;
-                }
-
                 var renderedColumn = this._columns[i].render();
 
                 if (renderedColumn != null) {
-                    Utils.appendChild(innerElement, renderedColumn);
+                    Utils.appendChild(element, renderedColumn);
 
                     if (this._columns.length > 1 && i < this._columns.length - 1 && this._columns[i + 1].separation != "none") {
                         var separationDefinition = this._columns[i + 1].separation == "default" ? this._columns[i + 1].getDefaultSeparationDefinition() : hostConfig.strongSeparation;
@@ -2118,7 +2103,7 @@ export class ColumnSet extends CardElement {
                             var separator = Utils.renderSeparation(separationDefinition, "horizontal");
                             separator.style.flex = "0 0 auto";
 
-                            Utils.appendChild(innerElement, separator);
+                            Utils.appendChild(element, separator);
                         }
                     }
 
@@ -2126,11 +2111,7 @@ export class ColumnSet extends CardElement {
                 }
             }
 
-            innerElement.style.display = stretchedColumns > 0 ? "flex" : "inline-flex";
-
-            outerElement.appendChild(innerElement);
-
-            return renderedColumnCount > 0 ? outerElement : null;
+            return renderedColumnCount > 0 ? element : null;
         }
         else {
             return null;

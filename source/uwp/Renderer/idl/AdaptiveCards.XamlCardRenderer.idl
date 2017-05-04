@@ -19,6 +19,8 @@ namespace AdaptiveCards
         runtimeclass AdaptiveColumnSet;
         runtimeclass AdaptiveFact;
         runtimeclass AdaptiveFactSet;
+        runtimeclass AdaptiveInputChoice;
+        runtimeclass AdaptiveInputChoiceSet;
         runtimeclass AdaptiveInputDate;
         runtimeclass AdaptiveInputText;
         runtimeclass AdaptiveInputTime;
@@ -59,6 +61,8 @@ namespace AdaptiveCards
         interface IAdaptiveColumnSet;
         interface IAdaptiveFact;
         interface IAdaptiveFactSet;
+        interface IAdaptiveInputChoice;
+        interface IAdaptiveInputChoiceSet;
         interface IAdaptiveInputDate;
         interface IAdaptiveInputText;
         interface IAdaptiveInputTime;
@@ -141,6 +145,8 @@ namespace AdaptiveCards
             Fact,
             ImageSet,
             ActionGroup,
+            InputChoice,
+            InputChoiceSet,
             InputDate,
             InputText,
             InputTime,
@@ -155,7 +161,8 @@ namespace AdaptiveCards
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ImageSize {
-            Auto = 0,
+            Default = 0,
+            Auto,
             Stretch,
             Small,
             Medium,
@@ -181,11 +188,18 @@ namespace AdaptiveCards
             Popup
         } ActionMode;
 
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ChoiceSetStyle {
+            Compact = 0,
+            Expanded
+        } ChoiceSetStyle;
+
         declare
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveFact*>;
+            interface Windows.Foundation.Collections.IVector<IAdaptiveInputChoice*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
@@ -344,6 +358,64 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageSet
         {
             [default] interface IAdaptiveImageSet;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(99797dfe-d39c-43a4-9f2b-d457cc358e1e),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveInputChoice : IInspectable
+        {
+            [propget] HRESULT ElementType([out, retval] ElementType* value);
+
+            [propget] HRESULT Speak([out, retval] HSTRING* value);
+            [propput] HRESULT Speak([in] HSTRING value);
+
+            [propget] HRESULT Title([out, retval] HSTRING* value);
+            [propput] HRESULT Title([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+            
+            [propget] HRESULT IsSelected([out, retval] boolean* value);
+            [propput] HRESULT IsSelected([in] boolean value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputChoice
+        {
+            [default] interface IAdaptiveInputChoice;
+        };
+
+        [
+            uuid(ce0735ef-f983-4a5e-bdad-f5eb7f962faa),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveInputChoiceSet : IInspectable
+        {
+            [propget] HRESULT IsMultiSelect([out, retval] boolean* value);
+            [propput] HRESULT IsMultiSelect([in] boolean value);
+
+            [propget] HRESULT IsRequired([out, retval] boolean* value);
+            [propput] HRESULT IsRequired([in] boolean value);
+
+            [propget] HRESULT ChoiceSetStyle([out, retval] ChoiceSetStyle* value);
+            [propput] HRESULT ChoiceSetStyle([in] ChoiceSetStyle value);
+
+            [propget] HRESULT Choices([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveInputChoice*>** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputChoiceSet
+        {
+            [default] interface IAdaptiveInputChoiceSet;
             interface IAdaptiveCardElement;
         };
 

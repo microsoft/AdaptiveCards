@@ -8,6 +8,7 @@
 #include <Column.h>
 #include <Fact.h>
 #include <Image.h>
+#include <InputChoice.h>
 #include <windows.foundation.collections.h>
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
@@ -37,3 +38,7 @@ HRESULT GenerateFactsProjection(
 HRESULT GenerateImagesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage*>* projectedParentContainer) noexcept;
+
+HRESULT GenerateInputChoicesProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::InputChoice>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoice*>* projectedParentContainer) noexcept;

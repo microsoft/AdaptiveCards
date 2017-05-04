@@ -16,7 +16,7 @@ ImageSet::ImageSet(
     std::vector<std::shared_ptr<Image>>& images) :
     BaseCardElement(CardElementType::ImageSet, separation, speak),
     m_images(images),
-    m_imageSize(ImageSize::Auto)
+    m_imageSize(ImageSize::Default)
 {
 }
 
