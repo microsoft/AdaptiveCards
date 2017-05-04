@@ -42,43 +42,42 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveInputNumber::get_Value(HSTRING* value)
+    HRESULT AdaptiveInputNumber::get_Value(INT32* value)
     {
-        return UTF8ToHString(m_sharedInputNumber->GetValue(), value);
-    }
-
-    _Use_decl_annotations_
-        HRESULT AdaptiveInputNumber::put_Value(HSTRING value)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(value, out));
-        m_sharedInputNumber->SetValue(out);
+        *value = m_sharedInputNumber->GetValue();
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputNumber::get_Max(UINT32* max)
+    HRESULT AdaptiveInputNumber::put_Value(INT32 value)
+    {
+        m_sharedInputNumber->SetValue(value);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveInputNumber::get_Max(INT32* max)
     {
         *max = m_sharedInputNumber->GetMax();
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputNumber::put_Max(UINT32 max)
+    HRESULT AdaptiveInputNumber::put_Max(INT32 max)
     {
         m_sharedInputNumber->SetMax(max);
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveInputNumber::get_Min(UINT32* min)
+        HRESULT AdaptiveInputNumber::get_Min(INT32* min)
     {
         *min = m_sharedInputNumber->GetMin();
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveInputNumber::put_Min(UINT32 min)
+        HRESULT AdaptiveInputNumber::put_Min(INT32 min)
     {
         m_sharedInputNumber->SetMin(min);
         return S_OK;

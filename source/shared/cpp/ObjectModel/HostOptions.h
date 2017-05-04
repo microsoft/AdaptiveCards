@@ -8,19 +8,19 @@ namespace AdaptiveCards
 {
 struct BoundaryOptions
 {
-    int left = 0;
-    int right = 0;
-    int bottom = 0;
-    int top = 0;
+    unsigned int left = 0;
+    unsigned int right = 0;
+    unsigned int bottom = 0;
+    unsigned int top = 0;
 };
 
 struct FontSizeOptions
 {
-    int smallFontSize = 10;
-    int normalFontSize = 12;
-    int mediumFontSize = 14;
-    int largeFontSize = 17;
-    int extraLargeFontSize = 20;
+    unsigned int smallFontSize = 10;
+    unsigned int normalFontSize = 12;
+    unsigned int mediumFontSize = 14;
+    unsigned int largeFontSize = 17;
+    unsigned int extraLargeFontSize = 20;
 };
 
 struct ColorOption
@@ -50,15 +50,15 @@ struct TextOptions
 
 struct SeparationOptions
 {
-    int spacing = 10;
-    int lineThickness = 0;
+    unsigned int spacing = 10;
+    unsigned int lineThickness = 0;
     std::string lineColor;
 };
 struct ImageSizeOptions
 {
-    int smallSize = 60;
-    int mediumSize = 120;
-    int largeSize = 180;
+    unsigned int smallSize = 60;
+    unsigned int mediumSize = 120;
+    unsigned int largeSize = 180;
 };
 
 struct TextBlockOptions
@@ -100,7 +100,7 @@ struct AdaptiveCardOptions
 {
     BoundaryOptions padding = { 8, 8, 8, 8 };
     std::string borderColor = "#FFFFFFFF";
-    int maxActions = 5;
+    unsigned int maxActions = 5;
     ActionsOrientation actionsOrientation = ActionsOrientation::Horizontal;
     HorizontalAlignment actionAlignment = HorizontalAlignment::Center;
     std::string textColor = "#FF000000";
@@ -111,7 +111,7 @@ struct FactSetOptions
 {
     TextOptions title = { TextWeight::Bolder };
     TextOptions value;
-    int spacing = 20;
+    unsigned int spacing = 20;
     SeparationOptions separation;
 };
 
@@ -130,10 +130,10 @@ struct ActionOptions
     std::string backgroundColor = "#FF5098FF";
     std::string borderColor = "#FF000000";
     std::string textColor = "FFFFFFFF";
-    int borderThickness = 1;
-    int fontWeight = 400;
-    int fontSize = 12;
-    int spacing = 8;
+    unsigned int borderThickness = 1;
+    unsigned int fontWeight = 400;
+    unsigned int fontSize = 12;
+    unsigned int spacing = 8;
     BoundaryOptions padding = { 4, 4, 4, 4 };
 };
 
@@ -174,7 +174,7 @@ struct HostOptions
     bool supportsInteractivity = true;
     ColorOptions colors;
     ImageSizeOptions imageSizes;
-    int maxActions = 5;
+    unsigned int maxActions = 5;
     SeparationOptions strongSeparation = { 20, 1, "#FF707070" };
     AdaptiveCardOptions adaptiveCard;
     ImageSetOptions imageSet;

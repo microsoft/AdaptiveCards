@@ -459,17 +459,17 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveInputNumber : IInspectable
         {
-            [propget] HRESULT Max([out, retval] UINT32 *value);
-            [propput] HRESULT Max([in] UINT32 value);
+            [propget] HRESULT Max([out, retval] INT32 *value);
+            [propput] HRESULT Max([in] INT32 value);
 
-            [propget] HRESULT Min([out, retval] UINT32 *value);
-            [propput] HRESULT Min([in] UINT32 value);
+            [propget] HRESULT Min([out, retval] INT32 *value);
+            [propput] HRESULT Min([in] INT32 value);
 
             [propget] HRESULT Placeholder([out, retval] HSTRING* value);
             [propput] HRESULT Placeholder([in] HSTRING value);
 
-            [propget] HRESULT Value([out, retval] HSTRING* value);
-            [propput] HRESULT Value([in] HSTRING value);
+            [propget] HRESULT Value([out, retval] INT32* value);
+            [propput] HRESULT Value([in] INT32 value);
         };
 
         [
@@ -723,17 +723,17 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveBoundaryOptions : IInspectable
         {
-            [propget] HRESULT Left([out, retval] INT32 *value);
-            [propput] HRESULT Left([in] INT32 value);
+            [propget] HRESULT Left([out, retval] UINT32 *value);
+            [propput] HRESULT Left([in] UINT32 value);
 
-            [propget] HRESULT Right([out, retval] INT32 *value);
-            [propput] HRESULT Right([in] INT32 value);
+            [propget] HRESULT Right([out, retval] UINT32 *value);
+            [propput] HRESULT Right([in] UINT32 value);
 
-            [propget] HRESULT Bottom([out, retval] INT32 *value);
-            [propput] HRESULT Bottom([in] INT32 value);
+            [propget] HRESULT Bottom([out, retval] UINT32 *value);
+            [propput] HRESULT Bottom([in] UINT32 value);
 
-            [propget] HRESULT Top([out, retval] INT32 *value);
-            [propput] HRESULT Top([in] INT32 value);
+            [propget] HRESULT Top([out, retval] UINT32 *value);
+            [propput] HRESULT Top([in] UINT32 value);
         };
 
         [
@@ -752,20 +752,20 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveFontSizeOptions : IInspectable
         {
-            [propget] HRESULT Small([out, retval] INT32 *value);
-            [propput] HRESULT Small([in] INT32 value);
+            [propget] HRESULT Small([out, retval] UINT32 *value);
+            [propput] HRESULT Small([in] UINT32 value);
 
-            [propget] HRESULT Normal([out, retval] INT32 *value);
-            [propput] HRESULT Normal([in] INT32 value);
+            [propget] HRESULT Normal([out, retval] UINT32 *value);
+            [propput] HRESULT Normal([in] UINT32 value);
 
-            [propget] HRESULT Medium([out, retval] INT32 *value);
-            [propput] HRESULT Medium([in] INT32 value);
+            [propget] HRESULT Medium([out, retval] UINT32 *value);
+            [propput] HRESULT Medium([in] UINT32 value);
 
-            [propget] HRESULT Large([out, retval] INT32 *value);
-            [propput] HRESULT Large([in] INT32 value);
+            [propget] HRESULT Large([out, retval] UINT32 *value);
+            [propput] HRESULT Large([in] UINT32 value);
 
-            [propget] HRESULT ExtraLarge([out, retval] INT32 *value);
-            [propput] HRESULT ExtraLarge([in] INT32 value);
+            [propget] HRESULT ExtraLarge([out, retval] UINT32 *value);
+            [propput] HRESULT ExtraLarge([in] UINT32 value);
         };
 
         [
@@ -874,11 +874,11 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveSeparationOptions : IInspectable
         {
-            [propget] HRESULT Spacing([out, retval] INT32 *value);
-            [propput] HRESULT Spacing([in] INT32 value);
+            [propget] HRESULT Spacing([out, retval] UINT32 *value);
+            [propput] HRESULT Spacing([in] UINT32 value);
 
-            [propget] HRESULT LineThickness([out, retval] INT32 *value);
-            [propput] HRESULT LineThickness([in] INT32 value);
+            [propget] HRESULT LineThickness([out, retval] UINT32 *value);
+            [propput] HRESULT LineThickness([in] UINT32 value);
 
             [propget] HRESULT LineColor([out, retval] Windows.UI.Color* value);
             [propput] HRESULT LineColor([in] Windows.UI.Color value);
@@ -900,14 +900,14 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveImageSizeOptions : IInspectable
         {
-            [propget] HRESULT Small([out, retval] INT32 *value);
-            [propput] HRESULT Small([in] INT32 value);
+            [propget] HRESULT Small([out, retval] UINT32 *value);
+            [propput] HRESULT Small([in] UINT32 value);
 
-            [propget] HRESULT Medium([out, retval] INT32 *value);
-            [propput] HRESULT Medium([in] INT32 value);
+            [propget] HRESULT Medium([out, retval] UINT32 *value);
+            [propput] HRESULT Medium([in] UINT32 value);
 
-            [propget] HRESULT Large([out, retval] INT32 *value);
-            [propput] HRESULT Large([in] INT32 value);
+            [propget] HRESULT Large([out, retval] UINT32 *value);
+            [propput] HRESULT Large([in] UINT32 value);
         };
 
         [
@@ -1067,8 +1067,8 @@ namespace AdaptiveCards
             [propget] HRESULT BorderColor([out][retval] Windows.UI.Color* value);
             [propput] HRESULT BorderColor([in] Windows.UI.Color value);
 
-            [propget] HRESULT MaxActions([out][retval] INT32* value);
-            [propput] HRESULT MaxActions([in] INT32 value);
+            [propget] HRESULT MaxActions([out][retval] UINT32* value);
+            [propput] HRESULT MaxActions([in] UINT32 value);
 
             [propget] HRESULT ActionsOrientation([out][retval] ActionsOrientation* value);
             [propput] HRESULT ActionsOrientation([in] ActionsOrientation value);
@@ -1105,8 +1105,8 @@ namespace AdaptiveCards
             [propget] HRESULT Value([out, retval] AdaptiveTextOptions** value);
             [propput] HRESULT Value([in] AdaptiveTextOptions* value);
 
-            [propget] HRESULT Spacing([out][retval] INT32* value);
-            [propput] HRESULT Spacing([in] INT32 value);
+            [propget] HRESULT Spacing([out][retval] UINT32* value);
+            [propput] HRESULT Spacing([in] UINT32 value);
 
             [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
             [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
@@ -1172,17 +1172,17 @@ namespace AdaptiveCards
             [propget] HRESULT TextColor([out][retval] Windows.UI.Color* value);
             [propput] HRESULT TextColor([in] Windows.UI.Color value);
 
-            [propget] HRESULT BorderThickness([out][retval] INT32* value);
-            [propput] HRESULT BorderThickness([in] INT32 value);
+            [propget] HRESULT BorderThickness([out][retval] UINT32* value);
+            [propput] HRESULT BorderThickness([in] UINT32 value);
 
-            [propget] HRESULT FontWeight([out][retval] INT32* value);
-            [propput] HRESULT FontWeight([in] INT32 value);
+            [propget] HRESULT FontWeight([out][retval] UINT32* value);
+            [propput] HRESULT FontWeight([in] UINT32 value);
 
-            [propget] HRESULT FontSize([out][retval] INT32* value);
-            [propput] HRESULT FontSize([in] INT32 value);
+            [propget] HRESULT FontSize([out][retval] UINT32* value);
+            [propput] HRESULT FontSize([in] UINT32 value);
 
-            [propget] HRESULT Spacing([out][retval] INT32* value);
-            [propput] HRESULT Spacing([in] INT32 value);
+            [propget] HRESULT Spacing([out][retval] UINT32* value);
+            [propput] HRESULT Spacing([in] UINT32 value);
 
             [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions** value);
             [propput] HRESULT Padding([in] AdaptiveBoundaryOptions* value);
@@ -1339,8 +1339,8 @@ namespace AdaptiveCards
             [propget] HRESULT ImageSizes([out, retval] AdaptiveImageSizeOptions** value);
             [propput] HRESULT ImageSizes([in] AdaptiveImageSizeOptions* value);
 
-            [propget] HRESULT MaxActions([out, retval] INT32 *value);
-            [propput] HRESULT MaxActions([in] INT32 value);
+            [propget] HRESULT MaxActions([out, retval] UINT32 *value);
+            [propput] HRESULT MaxActions([in] UINT32 value);
 
             [propget] HRESULT StrongSeparation([out, retval] AdaptiveSeparationOptions** value);
             [propput] HRESULT StrongSeparation([in] AdaptiveSeparationOptions* value);

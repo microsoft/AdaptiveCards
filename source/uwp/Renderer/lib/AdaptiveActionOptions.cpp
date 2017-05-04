@@ -46,56 +46,56 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_BorderThickness(INT32* value)
+    HRESULT AdaptiveActionOptions::get_BorderThickness(UINT32* value)
     {
         *value = m_sharedActionOptions.borderThickness;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_BorderThickness(INT32 value)
+    HRESULT AdaptiveActionOptions::put_BorderThickness(UINT32 value)
     {
         m_sharedActionOptions.borderThickness = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_FontWeight(INT32* value)
+    HRESULT AdaptiveActionOptions::get_FontWeight(UINT32* value)
     {
         *value = m_sharedActionOptions.fontWeight;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_FontWeight(INT32 value)
+    HRESULT AdaptiveActionOptions::put_FontWeight(UINT32 value)
     {
         m_sharedActionOptions.fontWeight = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_FontSize(INT32* value)
+    HRESULT AdaptiveActionOptions::get_FontSize(UINT32* value)
     {
         *value = m_sharedActionOptions.fontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_FontSize(INT32 value)
+    HRESULT AdaptiveActionOptions::put_FontSize(UINT32 value)
     {
         m_sharedActionOptions.fontSize = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_Spacing(INT32* value)
+    HRESULT AdaptiveActionOptions::get_Spacing(UINT32* value)
     {
         *value = m_sharedActionOptions.spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_Spacing(INT32 value)
+    HRESULT AdaptiveActionOptions::put_Spacing(UINT32 value)
     {
         m_sharedActionOptions.spacing = value;
         return S_OK;

@@ -33,14 +33,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardOptions::get_MaxActions(INT32* value)
+    HRESULT AdaptiveCardOptions::get_MaxActions(UINT32* value)
     {
         *value = m_sharedAdaptiveCardOptions.maxActions;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardOptions::put_MaxActions(INT32 value)
+    HRESULT AdaptiveCardOptions::put_MaxActions(UINT32 value)
     {
         m_sharedAdaptiveCardOptions.maxActions = value;
         return S_OK;

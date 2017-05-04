@@ -20,8 +20,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Padding(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions** value);
         IFACEMETHODIMP put_Padding(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions* value);
 
-        IFACEMETHODIMP get_MaxActions(_Out_ INT32 *value);
-        IFACEMETHODIMP put_MaxActions(_In_ INT32 value);
+        IFACEMETHODIMP get_MaxActions(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_MaxActions(_In_ UINT32 value);
 
         IFACEMETHODIMP get_ActionAlignment(_Out_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment* value);
         IFACEMETHODIMP put_ActionAlignment(_In_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment value);

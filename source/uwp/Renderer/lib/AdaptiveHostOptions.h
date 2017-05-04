@@ -32,8 +32,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_ImageSizes(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImageSizeOptions** imageOptions);
         IFACEMETHODIMP put_ImageSizes(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImageSizeOptions* imageOptions);
 
-        IFACEMETHODIMP get_MaxActions(_Out_ INT32 *maxActions);
-        IFACEMETHODIMP put_MaxActions(_In_ INT32 maxActions);
+        IFACEMETHODIMP get_MaxActions(_Out_ UINT32 *maxActions);
+        IFACEMETHODIMP put_MaxActions(_In_ UINT32 maxActions);
 
         IFACEMETHODIMP get_StrongSeparation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions** strongSeparationOptions);
         IFACEMETHODIMP put_StrongSeparation(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* strongSeparationOptions);
