@@ -49,7 +49,7 @@
   text-overflow: ellipsis;
   cursor: pointer;
   border: none;
-  padding: none;
+  padding: 0;
   color: #0078D7;
   background-color: transparent;
   -webkit-user-select: none;

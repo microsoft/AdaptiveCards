@@ -1,4 +1,5 @@
 import * as Enums from "./enums";
+import * as Utils from "./utils";
 
 export interface ISpacingDefinition {
     left: number,
@@ -142,10 +143,10 @@ export interface IFactTextDefinition {
 
 function parseFactTextDefinition(obj: any): IFactTextDefinition {
     return obj ? {
-        size: obj["size"],
-        color: obj["color"],
+        size: Utils.getValueOrDefault<Enums.TextSize>(obj["size"], "normal"),
+        color: Utils.getValueOrDefault<Enums.TextColor>(obj["color"], "dark"),
         isSubtle: obj["isSubtle"],
-        weight: obj["weight"],
+        weight: Utils.getValueOrDefault<Enums.TextWeight>(obj["weight"], "normal"),
         wrap: obj["wrap"]
     } : null;
 }
@@ -209,7 +210,7 @@ export interface IShowCardActionConfig {
 
 function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
     return obj ? {
-        actionMode: obj["actionMode"],
+        actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inlineEdgeToEdge"),
         inlineTopMargin: obj["inlineTopMargin"],
         backgroundColor: obj["backgroundColor"],
         padding: parseSpacingDefinition(obj["padding"])
@@ -218,7 +219,6 @@ function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
 
 export interface IActionsConfig {
     maxActions: number,
-    supportedActionTypes?: Array<string>,
     separation: ISeparationDefinition,
     buttonSpacing: number,
     showCard: IShowCardActionConfig,
@@ -229,12 +229,11 @@ export interface IActionsConfig {
 function parseActionsConfiguration(obj: any): IActionsConfig {
     return obj ? {
         maxActions: obj["maxActions"],
-        supportedActionTypes: obj["supportedActionTypes"],
         separation: parseSeparationDefinition(obj["separation"]),
         buttonSpacing: obj["buttonSpacing"],
         showCard: parseShowCardActionConfiguration(obj["showCard"]),
-        actionsOrientation: obj["actionsOrientation"],
-        actionAlignment: obj["actionAlignment"]
+        actionsOrientation: Utils.getValueOrDefault<Enums.Orientation>(obj["actionsOrientation"], "horizontal"),
+        actionAlignment: Utils.getValueOrDefault<Enums.ActionAlignment>(obj["actionAlignment"], "left"),
     } : null;
 }
 
@@ -249,9 +248,8 @@ function parseInputConfiguration(obj: any): IInputConfig {
 }
 
 export interface IHostConfig {
-    supportedElementTypes?: Array<string>,
     supportsInteractivity: boolean,
-    fontFamily: string,
+    fontFamily?: string,
     fontSizes: {
         small: number,
         normal: number,
@@ -294,7 +292,6 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
     var obj = JSON.parse(serializedConfiguration);
 
     return obj ? {
-        supportedElementTypes: obj["supportedElementTypes"],
         supportsInteractivity: obj["supportsInteractivity"],
         fontFamily: obj["fontFamily"],
         fontSizes: {
