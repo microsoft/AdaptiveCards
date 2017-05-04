@@ -108,9 +108,7 @@ export abstract class CardElement {
     }
 
     protected adjustAlignment(element: HTMLElement) {
-        if (this.horizontalAlignment != "left") {
-            element.style.textAlign = this.horizontalAlignment;
-        }
+        element.style.textAlign = this.horizontalAlignment;
     }
 
     protected adjustLayout(element: HTMLElement) {
@@ -155,7 +153,7 @@ export abstract class CardElement {
 
     parse(json: any) {
         this.speak = json["speak"];
-        this.horizontalAlignment = json["horizontalAlignment"];
+        this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
         this.separation = Utils.getValueOrDefault<Enums.Separation>(json["separation"], "default");        
     }
 
@@ -210,7 +208,7 @@ export class TextBlock extends CardElement {
     color?: Enums.TextColor;
     text: string;
     isSubtle: boolean = false;
-    wrap: boolean = true;
+    wrap: boolean = false;
     maxLines: number;
 
     protected internalRender(): HTMLElement {
@@ -342,7 +340,7 @@ export class TextBlock extends CardElement {
         this.weight = Utils.getValueOrDefault<Enums.TextWeight>(json["weight"], "normal");
         this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], hostConfig.textBlock.color);
         this.isSubtle = json["isSubtle"];
-        this.wrap = json["wrap"] === undefined ? true : json["wrap"];
+        this.wrap = json["wrap"] === undefined ? false : json["wrap"];
         this.maxLines = json["maxLines"];        
     }
 
@@ -1179,7 +1177,11 @@ class ActionButton {
     constructor(action: Action, style: ActionButtonStyle) {
         this._action = action;
         this._style = style;
+
         this._element = document.createElement("div");
+        this._element.style.overflow = "hidden";
+        this._element.style.whiteSpace = "nowrap";
+        this._element.style.textOverflow = "ellipsis";
         this._element.onclick = (e) => { this.click(); };
 
         this.updateCssStyle();
@@ -1663,28 +1665,23 @@ class ActionCollection {
 
             for (var i = 0; i < maxActions; i++) {
                 if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
-                    let buttonStripItem = document.createElement("div");
-                    buttonStripItem.style.whiteSpace = "nowrap";
-                    buttonStripItem.style.overflow = "hidden";
-                    buttonStripItem.style.overflow = "table-cell";
-                    buttonStripItem.style.flex = hostConfig.actions.actionAlignment == "stretch" ? "0 1 100%" : "0 1 auto";
-
                     let actionButton = new ActionButton(this.items[i], actionButtonStyle);
+                    actionButton.element.style.overflow = "hidden";
+                    actionButton.element.style.overflow = "table-cell";
+                    actionButton.element.style.flex = hostConfig.actions.actionAlignment == "stretch" ? "0 1 100%" : "0 1 auto";
                     actionButton.text = this.items[i].title;
-
                     actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                     this._actionButtons.push(actionButton);
 
-                    Utils.appendChild(buttonStripItem, actionButton.element);
-
-                    Utils.appendChild(buttonStrip, buttonStripItem);
+                    buttonStrip.appendChild(actionButton.element);
 
                     if (i < this.items.length - 1 && hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
 
                         if (hostConfig.actions.actionsOrientation == "horizontal") {
-                            spacer.style.flex = "0 0 " + hostConfig.actions.buttonSpacing + "px";
+                            spacer.style.flex = "0 0 auto";
+                            spacer.style.width = hostConfig.actions.buttonSpacing + "px";
                         }
                         else {
                             spacer.style.height = hostConfig.actions.buttonSpacing + "px";
@@ -2089,18 +2086,30 @@ export class Column extends Container {
 export class ColumnSet extends CardElement {
     private _columns: Array<Column> = [];
 
+    protected adjustAlignment(element: HTMLElement) {
+        element.style.textAlign = hostConfig.actions.actionAlignment;
+    }
+
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
-            var element = document.createElement("div");
-            element.style.display = "flex";
+            // An outer div is necessary for it's responsible for
+            // horizontally aligning its content, via adjustAlignment
+            var outerElement = document.createElement("div");
+            outerElement.style.overflow = "hidden";
 
+            var innerElement = document.createElement("div");
             var renderedColumnCount: number = 0;
+            var stretchedColumns: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
+                if (this._columns[i].size == "stretch") {
+                    stretchedColumns++;
+                }
+
                 var renderedColumn = this._columns[i].render();
 
                 if (renderedColumn != null) {
-                    Utils.appendChild(element, renderedColumn);
+                    Utils.appendChild(innerElement, renderedColumn);
 
                     if (this._columns.length > 1 && i < this._columns.length - 1 && this._columns[i + 1].separation != "none") {
                         var separationDefinition = this._columns[i + 1].separation == "default" ? this._columns[i + 1].getDefaultSeparationDefinition() : hostConfig.strongSeparation;
@@ -2109,7 +2118,7 @@ export class ColumnSet extends CardElement {
                             var separator = Utils.renderSeparation(separationDefinition, "horizontal");
                             separator.style.flex = "0 0 auto";
 
-                            Utils.appendChild(element, separator);
+                            Utils.appendChild(innerElement, separator);
                         }
                     }
 
@@ -2117,7 +2126,11 @@ export class ColumnSet extends CardElement {
                 }
             }
 
-            return renderedColumnCount > 0 ? element : null;
+            innerElement.style.display = stretchedColumns > 0 ? "flex" : "inline-flex";
+
+            outerElement.appendChild(innerElement);
+
+            return renderedColumnCount > 0 ? outerElement : null;
         }
         else {
             return null;

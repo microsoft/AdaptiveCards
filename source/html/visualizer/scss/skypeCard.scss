@@ -8,7 +8,7 @@
 @include base-container();
 
 @include base-push-button(
-    $font-size: 15px, 
+    $font-size: 14px, 
     $font-weight: 400, 
     $border: null, 
     $padding: 4px 10px 6px 10px,
@@ -22,9 +22,9 @@
     );
 
 .ac-pushButton {
-    border: solid 2px #dcdcdc;
+    border: 2px solid #dcdcdc;
     border-radius: 20px;
-    line-height: 30px;
+    line-height: 20px;
 }
 
 .ac-linkButton {

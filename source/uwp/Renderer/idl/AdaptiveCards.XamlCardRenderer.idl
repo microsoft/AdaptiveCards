@@ -876,11 +876,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveColumnOptions : IInspectable
         {
-            [propget] HRESULT DefaultSeparation([out, retval] AdaptiveSeparationOptions** value);
-            [propput] HRESULT DefaultSeparation([in] AdaptiveSeparationOptions* value);
-
-            [propget] HRESULT StrongSeparation([out, retval] AdaptiveSeparationOptions** value);
-            [propput] HRESULT StrongSeparation([in] AdaptiveSeparationOptions* value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions **value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions *value);
         };
 
         [

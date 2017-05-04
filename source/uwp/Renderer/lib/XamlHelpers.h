@@ -65,5 +65,4 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(panelChildren->Append(elementToAppend.Get()));
         }
     };
-
 }}

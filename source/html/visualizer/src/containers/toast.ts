@@ -170,7 +170,7 @@ export class ToastContainer extends HostContainer {
                     maxWidth: 150,
                 },
                 value: {
-                    color: "dark",
+                    color: "light",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",

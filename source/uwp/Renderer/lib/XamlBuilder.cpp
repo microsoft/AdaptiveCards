@@ -22,6 +22,7 @@ using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Storage;
 using namespace ABI::Windows::Storage::Streams;
+using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Text;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -60,6 +61,50 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &m_propertyValueStatics));
 
         InitializeDefaultResourceDictionary();
+    }
+
+    _Use_decl_annotations_
+    ComPtr<IUIElement> XamlBuilder::CreateSeparator(
+        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* separationOptions,
+        bool isHorizontal)
+    {
+        ComPtr<IGrid> separator = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+        ComPtr<IFrameworkElement> separatorAsFrameworkElement;
+        THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
+        Color lineColor;
+        if (SUCCEEDED(separationOptions->get_LineColor(&lineColor)))
+        {
+            ComPtr<ISolidColorBrush> colorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
+            colorBrush->put_Color(lineColor);
+            ComPtr<IBrush> asBrush;
+            THROW_IF_FAILED(colorBrush.As(&asBrush));
+            ComPtr<IPanel> separatorAsPanel;
+            THROW_IF_FAILED(separator.As(&separatorAsPanel));
+            separatorAsPanel->put_Background(asBrush.Get());
+        }
+
+        INT32 spacing;
+        THROW_IF_FAILED(separationOptions->get_Spacing(&spacing));
+        INT32 lineThickness;
+        THROW_IF_FAILED(separationOptions->get_LineThickness(&lineThickness));
+        INT32 separatorMarginValue = (spacing - lineThickness) / 2;
+        Thickness margin = { 0, 0, 0, 0 };
+
+        if (isHorizontal)
+        {
+            margin.Top = margin.Bottom = separatorMarginValue;
+            separatorAsFrameworkElement->put_Height(lineThickness);
+        }
+        else
+        {
+            margin.Left = margin.Right = separatorMarginValue;
+            separatorAsFrameworkElement->put_Width(lineThickness);
+
+        }
+        THROW_IF_FAILED(separatorAsFrameworkElement->put_Margin(margin));
+        ComPtr<IUIElement> result;
+        THROW_IF_FAILED(separator.As(&result));
+        return result;
     }
 
     HRESULT XamlBuilder::AllImagesLoaded()
@@ -446,18 +491,133 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IPanel* parentPanel,
         std::function<void(IUIElement* child)> childCreatedCallback)
     {
+        int currentElement = 0;
+        unsigned int childrenSize;
+        THROW_IF_FAILED(children->get_Size(&childrenSize));
         XamlHelpers::IterateOverVector<IAdaptiveCardElement>(children, [&](IAdaptiveCardElement* element)
         {
             ElementType elementType;
             THROW_IF_FAILED(element->get_ElementType(&elementType));
             if (m_adaptiveElementBuilder.find(elementType) != m_adaptiveElementBuilder.end())
             {
+                // First element does not need a separator added
+                if (currentElement++ > 0)
+                {
+                    ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separationStyle;
+                    THROW_IF_FAILED(element->get_Separation(&separationStyle));
+                    if (separationStyle != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
+                    {
+                        ComPtr<IAdaptiveSeparationOptions> separationOptions;
+                        GetSeparationOptionsForElement(element, separationStyle, &separationOptions);
+                        if (separationOptions != nullptr)
+                        {
+                            auto separator = CreateSeparator(separationOptions.Get());
+                            XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+                        }
+                    }
+                }
                 ComPtr<IUIElement> newControl;
                 m_adaptiveElementBuilder[elementType](element, &newControl);
                 XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel);
                 childCreatedCallback(newControl.Get());
             }
         });
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::GetSeparationOptionsForElement(
+        IAdaptiveCardElement* cardElement,
+        ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation,
+        IAdaptiveSeparationOptions** separationOptions)
+    {
+        ComPtr<IAdaptiveCardElement> localCardElement(cardElement);
+        ComPtr<IAdaptiveSeparationOptions> localSeparationOptions = nullptr;
+        switch (separation)
+        {
+        case ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::Strong:
+            THROW_IF_FAILED(m_hostOptions->get_StrongSeparation(&localSeparationOptions));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::Default:
+            ABI::AdaptiveCards::XamlCardRenderer::ElementType elementType;
+            THROW_IF_FAILED(cardElement->get_ElementType(&elementType));
+
+            switch (elementType)
+            {
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::Container:
+            {
+                ComPtr<IAdaptiveContainerOptions> containerOptions;
+                THROW_IF_FAILED(m_hostOptions->get_Container(&containerOptions));
+                THROW_IF_FAILED(containerOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::Column:
+            {
+                ComPtr<IAdaptiveColumnOptions> columnOptions;
+                THROW_IF_FAILED(m_hostOptions->get_Column(&columnOptions));
+                THROW_IF_FAILED(columnOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::ColumnSet:
+            {
+                ComPtr<IAdaptiveColumnSetOptions> columnSetOptions;
+                THROW_IF_FAILED(m_hostOptions->get_ColumnSet(&columnSetOptions));
+                THROW_IF_FAILED(columnSetOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::FactSet:
+            {
+                ComPtr<IAdaptiveFactSetOptions> factSetOptions;
+                THROW_IF_FAILED(m_hostOptions->get_FactSet(&factSetOptions));
+                THROW_IF_FAILED(factSetOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::Image:
+            {
+                ComPtr<IAdaptiveImageOptions> imageOptions;
+                THROW_IF_FAILED(m_hostOptions->get_Image(&imageOptions));
+                THROW_IF_FAILED(imageOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::ImageSet:
+            {
+                ComPtr<IAdaptiveImageSetOptions> imageSetOptions;
+                THROW_IF_FAILED(m_hostOptions->get_ImageSet(&imageSetOptions));
+                THROW_IF_FAILED(imageSetOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::TextBlock:
+            {
+                ComPtr<IAdaptiveTextBlock> asTextBlock;
+                THROW_IF_FAILED(localCardElement.As(&asTextBlock));
+                ComPtr<IAdaptiveTextBlockOptions> textBlockOptions;
+                THROW_IF_FAILED(m_hostOptions->get_TextBlock(&textBlockOptions));
+                ABI::AdaptiveCards::XamlCardRenderer::TextSize size;
+                THROW_IF_FAILED(asTextBlock->get_Size(&size));
+                switch (size)
+                {
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Small:
+                    THROW_IF_FAILED(textBlockOptions->get_SmallSeparation(&localSeparationOptions));
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Normal:
+                    THROW_IF_FAILED(textBlockOptions->get_NormalSeparation(&localSeparationOptions));
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Medium:
+                    THROW_IF_FAILED(textBlockOptions->get_MediumSeparation(&localSeparationOptions));
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Large:
+                    THROW_IF_FAILED(textBlockOptions->get_LargeSeparation(&localSeparationOptions));
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::TextSize::ExtraLarge:
+                    THROW_IF_FAILED(textBlockOptions->get_ExtraLargeSeparation(&localSeparationOptions));
+                    break;
+                }
+                break;
+            }
+            }
+        default:
+            break;
+        }
+        THROW_IF_FAILED(localSeparationOptions.CopyTo(separationOptions));
     }
 
     _Use_decl_annotations_
@@ -674,7 +834,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         // Generate the style name from the adaptive element and apply it to the xaml
-        // element it it exists in the resource dictionaries
+        // element if it exists in the resource dictionaries
         ComPtr<IStyle> style;
         std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForImage(adaptiveImage.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
@@ -734,6 +894,36 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         int currentColumn = 0;
         XamlHelpers::IterateOverVector<IAdaptiveColumn>(columns.Get(), [this, xamlGrid, gridStatics, &currentColumn](IAdaptiveColumn* column)
         {
+            ComPtr<IAdaptiveCardElement> columnAsCardElement;
+            ComPtr<IAdaptiveColumn> localColumn(column);
+            THROW_IF_FAILED(localColumn.As(&columnAsCardElement));
+            ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
+            THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
+            ComPtr<IPanel> gridAsPanel;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+
+            // Add Separator to the columnSet
+            ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation;
+            THROW_IF_FAILED(columnAsCardElement->get_Separation(&separation));
+            if (separation != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
+            {
+                ComPtr<IAdaptiveSeparationOptions> separationOptions;
+                GetSeparationOptionsForElement(columnAsCardElement.Get(), separation, &separationOptions);
+                if (separationOptions != nullptr)
+                {
+                    //Create a new ColumnDefinition for the separator
+                    ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+                    THROW_IF_FAILED(separatorColumnDefinition->put_Width({ 1.0, GridUnitType::GridUnitType_Auto }));
+                    THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
+
+                    auto separator = CreateSeparator(separationOptions.Get(), false);
+                    ComPtr<IFrameworkElement> separatorAsFrameworkElement;
+                    THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
+                    gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
+                    XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
+                }
+            }
+
             HString adaptiveColumnSize;
             THROW_IF_FAILED(column->get_Size(adaptiveColumnSize.GetAddressOf()));
             INT32 isAutoResult;
@@ -746,27 +936,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
 
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
-            ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
-            THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
             THROW_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
 
             // The column is a container, so build it
-            ComPtr<IAdaptiveCardElement> columnAsCardElement;
-            ComPtr<IAdaptiveColumn> localColumn(column);
-            THROW_IF_FAILED(localColumn.As(&columnAsCardElement));
             ComPtr<IUIElement> xamlColumn;
             BuildContainer(columnAsCardElement.Get(), &xamlColumn);
 
             // Mark the column container with the current column
             ComPtr<IFrameworkElement> columnAsFrameworkElement;
             THROW_IF_FAILED(xamlColumn.As(&columnAsFrameworkElement));
-            gridStatics->SetColumn(columnAsFrameworkElement.Get(), currentColumn);
+            gridStatics->SetColumn(columnAsFrameworkElement.Get(), currentColumn++);
 
-            // Finally add the column container to the grid, and increment the column count
-            ComPtr<IPanel> gridAsPanel;
-            THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+            // Finally add the column container to the grid
             XamlHelpers::AppendXamlElementToPanel(xamlColumn.Get(), gridAsPanel.Get());
-            ++currentColumn;
         });
 
         ComPtr<IStyle> style;

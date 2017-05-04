@@ -20,27 +20,12 @@ using FrameworkElement = Xamarin.Forms.View;
 namespace AdaptiveCards.Rendering
 {
 
-    public static class XamlTextBlock
+    public static partial class XamlTextBlock
     {
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             TextBlock textBlock = (TextBlock)element;
-#if WPF
-            Marked marked = new Marked();
-            marked.Options.Renderer = new AdaptiveXamlMarkdownRenderer();
-            marked.Options.Mangle = false;
-            marked.Options.Sanitize = true;
-
-            string text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
-            // uiTextBlock.Text = textBlock.Text;
-            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
-            StringReader stringReader = new StringReader(xaml);
-
-            XmlReader xmlReader = XmlReader.Create(stringReader);
-            var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
-            uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
-
-            uiTextBlock.FontFamily = new FontFamily(context.Config.FontFamily);
+            var uiTextBlock = CreateControl(textBlock, context);
 
             ColorConfig colorOption;
             switch (textBlock.Color)
@@ -68,73 +53,11 @@ namespace AdaptiveCards.Rendering
                     colorOption = context.Config.Colors.Default;
                     break;
             }
+
             if (textBlock.IsSubtle == true)
-                uiTextBlock.Foreground = context.GetColorBrush(colorOption.Subtle);
-            else 
-                uiTextBlock.Foreground = context.GetColorBrush(colorOption.Normal);
-
-            uiTextBlock.TextWrapping = TextWrapping.NoWrap;
-
-            switch (textBlock.Weight)
-            {
-                case TextWeight.Bolder:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(700);
-                    break;
-                case TextWeight.Lighter:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(300);
-                    break;
-                case TextWeight.Normal:
-                default:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(400);
-                    break;
-            }
-
-            uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
-
-            if (textBlock.HorizontalAlignment != HorizontalAlignment.Left)
-            {
-                System.Windows.HorizontalAlignment alignment;
-                if (Enum.TryParse<System.Windows.HorizontalAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
-                    uiTextBlock.HorizontalAlignment = alignment;
-            }
-
-            if (textBlock.Wrap)
-                uiTextBlock.TextWrapping = TextWrapping.Wrap;
-
-#elif XAMARIN
-            var uiTextBlock = new Xamarin.Forms.TextBlock();
-            uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
-            uiTextBlock.Style = context.GetStyle("Adaptive.TextBlock");
-            // TODO: confirm text trimming
-            uiTextBlock.LineBreakMode = LineBreakMode.TailTruncation;
-
-            switch (textBlock.HorizontalAlignment)
-            {
-                case HorizontalAlignment.Left:
-                    uiTextBlock.HorizontalTextAlignment = TextAlignment.Start;
-                    break;
-
-                case HorizontalAlignment.Center:
-                    uiTextBlock.HorizontalTextAlignment = TextAlignment.Center;
-                    break;
-
-                case HorizontalAlignment.Right:
-                    uiTextBlock.HorizontalTextAlignment = TextAlignment.End;
-                    break;
-            }
-
-            
-
-
-            uiTextBlock.TextColor = context.Resources.TryGetValue<Color>($"Adaptive.{textBlock.Color}");
-
-            if (textBlock.Weight == TextWeight.Bolder)
-                uiTextBlock.FontAttributes = FontAttributes.Bold;
-
-            if (textBlock.Wrap == true)
-                uiTextBlock.LineBreakMode = LineBreakMode.WordWrap;
-#endif
-
+                uiTextBlock.SetColor(colorOption.Subtle, context);
+            else
+                uiTextBlock.SetColor(colorOption.Normal, context);
 
             switch (textBlock.Size)
             {
