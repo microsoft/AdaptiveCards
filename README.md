@@ -1,3 +1,5 @@
+![adaptive-cards](assets/adaptive-card-100.png) 
+
 # Introducing Adaptive Cards
 
 Adaptive Cards is a JSON format which gives developers the ability to deliver great looking cards to any device or client.
