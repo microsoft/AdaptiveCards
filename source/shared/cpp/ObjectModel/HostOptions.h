@@ -130,16 +130,11 @@ struct ShowCardOptions
 struct ActionOptions
 {
     ShowCardOptions showCard;
-    ActionsOrientation actionsOrientation;
-    HorizontalAlignment actionAlignment;
-    std::string backgroundColor = "#FF5098FF";
-    std::string borderColor = "#FF000000";
-    std::string textColor = "FFFFFFFF";
-    unsigned int borderThickness = 1;
-    unsigned int fontWeight = 400;
-    unsigned int fontSize = 12;
-    unsigned int spacing = 8;
-    BoundaryOptions padding = { 4, 4, 4, 4 };
+    ActionsOrientation actionsOrientation = ActionsOrientation::Horizontal;
+    ActionAlignment actionAlignment = ActionAlignment::Center;
+    unsigned int buttonSpacing = 8;
+    unsigned int maxActions = 5;
+    SeparationOptions separation;
 };
 
 struct DateInputOptions

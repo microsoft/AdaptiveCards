@@ -24,6 +24,11 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoice.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputNumber.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseActionElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\HttpAction.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ShowCardAction.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\SubmitAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
@@ -54,6 +59,11 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoice.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputNumber.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\HttpAction.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ShowCardAction.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\SubmitAction.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

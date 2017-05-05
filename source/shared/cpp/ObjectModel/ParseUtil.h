@@ -35,6 +35,10 @@ public:
 
     static CardElementType TryGetCardElementType(const Json::Value& json);
 
+    static ActionType GetActionType(const Json::Value& json);
+
+    static ActionType TryGetActionType(const Json::Value& json);
+
     static Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key);
 
     template <typename T>
@@ -42,6 +46,9 @@ public:
 
     template <typename T>
     static std::vector<std::shared_ptr<T>> GetElementCollection(const Json::Value& json, AdaptiveCardSchemaKey key, const std::unordered_map<CardElementType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers);
+
+    template <typename T>
+    static std::vector<std::shared_ptr<T>> GetActionCollection(const Json::Value& json, AdaptiveCardSchemaKey key, const std::unordered_map<ActionType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers);
 
     static void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
 
@@ -116,4 +123,40 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(
 
     return elements;
 }
+
+template <typename T>
+std::vector<std::shared_ptr<T>> ParseUtil::GetActionCollection(
+    const Json::Value& json,
+    AdaptiveCardSchemaKey key,
+    const std::unordered_map<ActionType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers)
+{
+    auto elementArray = GetArray(json, key);
+
+    std::vector<std::shared_ptr<T>> elements;
+    if (elementArray.empty())
+    {
+        return elements;
+    }
+
+    // Make sure the container fits the elements in the json file
+    elements.resize(elementArray.size());
+
+    std::transform(elementArray.begin(), elementArray.end(), elements.begin(), [&parsers](const Json::Value& cur)
+    {
+        // Get the element's type
+        ActionType curElementType = ParseUtil::TryGetActionType(cur);
+
+        //Parse it if it's allowed by the current parsers
+        if (parsers.find(curElementType) != parsers.end())
+        {
+            // Use the parser that maps to the type
+            std::shared_ptr<T> element = parsers.at(curElementType)(cur);
+            return element;
+        }
+        return std::shared_ptr<T>();
+    });
+
+    return elements;
+}
+
 }

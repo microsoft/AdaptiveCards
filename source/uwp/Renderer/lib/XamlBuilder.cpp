@@ -129,6 +129,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
         BuildPanelChildren(body.Get(), childElementContainer.Get(), [](IUIElement*) {});
 
+        ComPtr<IVector<IAdaptiveActionElement*>> actions;
+        THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
+        BuildActions(actions.Get(), childElementContainer.Get());
+
         THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
 
         if (m_listeners.size() == 0)
@@ -537,6 +541,99 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 childCreatedCallback(newControl.Get());
             }
         });
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::BuildActions(
+        IVector<IAdaptiveActionElement*>* children,
+        IPanel* parentPanel)
+    {
+        // Create a separator between the body and the actions
+        ComPtr<IAdaptiveActionOptions> actionOptions;
+        THROW_IF_FAILED(m_hostOptions->get_Actions(actionOptions.GetAddressOf()));
+
+        ComPtr<IAdaptiveSeparationOptions> separationOptions;
+        THROW_IF_FAILED(actionOptions->get_Separation(&separationOptions));
+            
+        auto separator = CreateSeparator(separationOptions.Get());
+        XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+
+        // Create a stack panel for the action buttons
+        ComPtr<IStackPanel> actionStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<IPanel> actionsPanel;
+        THROW_IF_FAILED(actionStackPanel.As(&actionsPanel));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation actionsOrientation;
+        THROW_IF_FAILED(actionOptions->get_ActionsOrientation(&actionsOrientation));
+
+        auto uiOrientation = (actionsOrientation == ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation::Horizontal) ?
+            Orientation::Orientation_Horizontal :
+            Orientation::Orientation_Vertical;
+
+        THROW_IF_FAILED(actionStackPanel->put_Orientation(uiOrientation));
+
+        ComPtr<IFrameworkElement> actionsFrameworkElement;
+        THROW_IF_FAILED(actionStackPanel.As(&actionsFrameworkElement));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment actionAlignment;
+        THROW_IF_FAILED(actionOptions->get_ActionAlignment(&actionAlignment));
+
+        switch (actionAlignment)
+        {
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch);
+                break;
+        }
+
+        UINT32 buttonSpacing;
+        THROW_IF_FAILED(actionOptions->get_ButtonSpacing(&buttonSpacing));
+
+        Thickness buttonMargin = { 0, 0, 0, 0 };
+        if (actionsOrientation == ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation::Horizontal)
+        {
+            buttonMargin.Left = buttonMargin.Right = buttonSpacing / 2;
+        }
+        else
+        {
+            buttonMargin.Top = buttonMargin.Bottom = buttonSpacing / 2;
+        }
+
+        UINT32 maxActions;
+        THROW_IF_FAILED(actionOptions->get_MaxActions(&maxActions));
+
+        // Add the action buttons to the stack panel
+        UINT currentAction = 0;
+        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child)
+        {
+            if (currentAction < maxActions)
+            {
+                ComPtr<IAdaptiveActionElement> action(child);
+                ComPtr<IButton> button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+
+                ComPtr<IFrameworkElement> buttonFrameworkElement;
+                THROW_IF_FAILED(button.As(&buttonFrameworkElement));
+
+                THROW_IF_FAILED(buttonFrameworkElement->put_Margin(buttonMargin));
+
+                HString title;
+                THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+                SetContent(button.Get(), title.Get());
+
+                XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
+            }
+            currentAction++;
+        });
+
+        XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), parentPanel);
     }
 
     template<typename T>

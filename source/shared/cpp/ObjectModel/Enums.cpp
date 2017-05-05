@@ -44,7 +44,9 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "style", AdaptiveCardSchemaKey::Style },
     { "isMultiSelect", AdaptiveCardSchemaKey::IsMultiSelect },
     { "isRequired", AdaptiveCardSchemaKey::IsRequired },
-    { "backgroundImageUrl", AdaptiveCardSchemaKey::BackgroundImageUrl}
+    { "backgroundImageUrl", AdaptiveCardSchemaKey::BackgroundImageUrl},
+    { "actions", AdaptiveCardSchemaKey::Actions },
+    { "method", AdaptiveCardSchemaKey::Method },
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> AdaptiveCardSchemaKeyEnumToName =
@@ -90,6 +92,8 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect" },
     { AdaptiveCardSchemaKey::IsRequired, "isRequired" },
     { AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl" },
+    { AdaptiveCardSchemaKey::Actions, "actions" },
+    { AdaptiveCardSchemaKey::Method, "method" },
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
