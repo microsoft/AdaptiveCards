@@ -2,7 +2,6 @@
 import * as Constants from "./constants";
 
 import { HostContainer } from "./containers/host-container";
-import { BingContainer } from "./containers/bing";
 import { LiveTileContainer } from "./containers/live-tile";
 import { SkypeContainer } from "./containers/skype";
 import { WebChatContainer } from "./containers/webchat";
@@ -238,11 +237,6 @@ function setupContainerPicker() {
         new HostContainerOption(
             "Skype",
             new SkypeContainer(350, "css/skype.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Bing",
-            new BingContainer(285, 150, "css/bing.css")));
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(
