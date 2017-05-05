@@ -1,6 +1,6 @@
 {
   "name": "adaptive-cards",
-  "version": "1.0.6",
+  "version": "0.1.0",
   "description": "Adaptive Card toolkit for javascript",
   "main": "built/adaptive-cards.js",
   "types": "built/adaptive-cards.d.ts",
