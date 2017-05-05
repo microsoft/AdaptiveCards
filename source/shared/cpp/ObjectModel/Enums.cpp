@@ -185,7 +185,8 @@ static std::unordered_map<ImageSize, std::string, EnumHash> ImageSizeEnumToName 
     { ImageSize::Stretch, "Stretch" },
     { ImageSize::Small, "Small" },
     { ImageSize::Medium, "Medium" },
-    { ImageSize::Large, "Large" }
+    { ImageSize::Large, "Large" },
+    { ImageSize::Default, "Auto" },
 };
 
 static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> HorizontalAlignmentNameToEnum =
