@@ -6,7 +6,7 @@ using namespace AdaptiveCards;
 InputNumber::InputNumber() :
     BaseCardElement(CardElementType::InputNumber),
     m_min(0),
-    m_max(INT_MAX)
+    m_max(std::numeric_limits<int>::max())
 {
 }
 
