@@ -11,8 +11,6 @@
     <description>This library implements classes for rending adaptive card objects into XAML/WPF using the Extended WPF Toolkit input controls</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="9.0.1" />
-      <dependency id="Extended.Wpf.Toolkit" version="3.0" />
       <dependency id="AdaptiveCards.WPF" version="1.0.0.0" />
     </dependencies>
   </metadata>

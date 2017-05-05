@@ -98,6 +98,23 @@ unsigned int ParseUtil::GetUInt(const Json::Value & json, AdaptiveCardSchemaKey 
     return propertyValue.asUInt();
 }
 
+int ParseUtil::GetInt(const Json::Value & json, AdaptiveCardSchemaKey key, int defaultValue)
+{
+    std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+    auto propertyValue = json.get(propertyName, Json::Value());
+    if (propertyValue.empty())
+    {
+        return defaultValue;
+    }
+
+    if (!propertyValue.isInt())
+    {
+        throw AdaptiveCardParseException("Value was invalid. Expected type int.");
+    }
+
+    return propertyValue.asInt();
+}
+
 void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyType)
 {
     std::string actualType = GetTypeAsString(json);

@@ -1,0 +1,82 @@
+{
+	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Title of connector card",
+			"weight": "bolder",
+			"size": "medium"
+		},
+		{
+			"type": "ContainerSet",
+			"speak": "",
+			"containers": [
+				{
+					"type": "Container",
+					"size": "auto",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://microsoft.github.io/AdaptiveCards/assets/Closed%20bug%2092x92.png",
+							"size": "medium"
+						}
+					]
+				},
+				{
+					"type": "Container",
+					"size": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Bug XXXXXX: This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. ",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "FactSet",
+			"facts": [
+				{
+					"title": "Work item type:",
+					"value": "Bug"
+				},
+				{
+					"title": "State:",
+					"value": "Closed"
+				},
+				{
+					"title": "Area Path:",
+					"value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines",
+					"speak": ""
+				},
+				{
+					"title": "Iteration Path:",
+					"value": "t365\\Tabs\\Extensibility\\longer to show",
+					"speak": ""
+				},
+				{
+					"title": "Priority:",
+					"value": "1"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Http",
+			"method": "POST",
+			"title": "View more work items",
+			"url": "http://someurl.com"
+		},
+		{
+			"type": "Action.Http",
+			"method": "POST",
+			"title": "View more work items",
+			"url": "http://someurl.com"
+		}
+	]
+}

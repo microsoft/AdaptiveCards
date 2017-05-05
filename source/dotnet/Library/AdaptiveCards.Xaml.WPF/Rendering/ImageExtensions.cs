@@ -35,16 +35,16 @@ namespace AdaptiveCards.Rendering
                     imageview.Stretch = System.Windows.Media.Stretch.Uniform;
                     break;
                 case ImageSize.Small:
-                    imageview.Width = context.Options.ImageSizes.Small;
-                    imageview.Height = context.Options.ImageSizes.Small;
+                    imageview.Width = context.Config.ImageSizes.Small;
+                    imageview.Height = context.Config.ImageSizes.Small;
                     break;
                 case ImageSize.Medium:
-                    imageview.Width = context.Options.ImageSizes.Medium;
-                    imageview.Height = context.Options.ImageSizes.Medium;
+                    imageview.Width = context.Config.ImageSizes.Medium;
+                    imageview.Height = context.Config.ImageSizes.Medium;
                     break;
                 case ImageSize.Large:
-                    imageview.Width = context.Options.ImageSizes.Large;
-                    imageview.Height = context.Options.ImageSizes.Large;
+                    imageview.Width = context.Config.ImageSizes.Large;
+                    imageview.Height = context.Config.ImageSizes.Large;
                     break;
             }
         }

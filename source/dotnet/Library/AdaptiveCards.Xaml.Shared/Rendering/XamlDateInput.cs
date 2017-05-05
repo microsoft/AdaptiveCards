@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering
         {
             DateInput input = (DateInput)element;
 
-            if (context.Options.SupportsInteractivity)
+            if (context.Config.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };
                 textBox.Text = input.Placeholder;

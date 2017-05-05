@@ -2,9 +2,10 @@
 using System.Globalization;
 using System.IO;
 using System.Xml;
-using MarkedNet;
+using Microsoft.MarkedNet;
 using System.Collections.Generic;
 using System.Linq;
+using AdaptiveCards.Rendering.Config;
 #if WPF
 using System.Windows;
 using System.Windows.Controls;
@@ -19,139 +20,62 @@ using FrameworkElement = Xamarin.Forms.View;
 namespace AdaptiveCards.Rendering
 {
 
-    public static class XamlTextBlock
+    public static partial class XamlTextBlock
     {
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             TextBlock textBlock = (TextBlock)element;
-#if WPF
-            Marked marked = new Marked();
-            marked.Options.Renderer = new MarkedXamlRenderer();
-            marked.Options.Mangle = false;
-            marked.Options.Sanitize = true;
+            var uiTextBlock = CreateControl(textBlock, context);
 
-            string text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
-            // uiTextBlock.Text = textBlock.Text;
-            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
-            StringReader stringReader = new StringReader(xaml);
-
-            XmlReader xmlReader = XmlReader.Create(stringReader);
-            var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
-            uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
-
-            uiTextBlock.FontFamily = new FontFamily(context.Options.FontFamily);
-
-            ColorOption colorOption;
+            ColorConfig colorOption;
             switch (textBlock.Color)
             {
                 case TextColor.Accent:
-                    colorOption = context.Options.Colors.Accent;
+                    colorOption = context.Config.Colors.Accent;
                     break;
                 case TextColor.Attention:
-                    colorOption = context.Options.Colors.Attention;
+                    colorOption = context.Config.Colors.Attention;
                     break;
                 case TextColor.Dark:
-                    colorOption = context.Options.Colors.Dark;
+                    colorOption = context.Config.Colors.Dark;
                     break;
                 case TextColor.Good:
-                    colorOption = context.Options.Colors.Good;
+                    colorOption = context.Config.Colors.Good;
                     break;
                 case TextColor.Light:
-                    colorOption = context.Options.Colors.Light;
+                    colorOption = context.Config.Colors.Light;
                     break;
                 case TextColor.Warning:
-                    colorOption = context.Options.Colors.Warning;
+                    colorOption = context.Config.Colors.Warning;
                     break;
                 case TextColor.Default:
                 default:
-                    colorOption = context.Options.Colors.Default;
+                    colorOption = context.Config.Colors.Default;
                     break;
             }
+
             if (textBlock.IsSubtle == true)
-                uiTextBlock.Foreground = context.GetColorBrush(colorOption.Subtle);
-            else 
-                uiTextBlock.Foreground = context.GetColorBrush(colorOption.Normal);
-
-            uiTextBlock.TextWrapping = TextWrapping.NoWrap;
-
-            switch (textBlock.Weight)
-            {
-                case TextWeight.Bolder:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(700);
-                    break;
-                case TextWeight.Lighter:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(300);
-                    break;
-                case TextWeight.Normal:
-                default:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(400);
-                    break;
-            }
-
-            uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
-
-            if (textBlock.HorizontalAlignment != HorizontalAlignment.Left)
-            {
-                System.Windows.HorizontalAlignment alignment;
-                if (Enum.TryParse<System.Windows.HorizontalAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
-                    uiTextBlock.HorizontalAlignment = alignment;
-            }
-
-            if (textBlock.Wrap)
-                uiTextBlock.TextWrapping = TextWrapping.Wrap;
-
-#elif XAMARIN
-            var uiTextBlock = new Xamarin.Forms.TextBlock();
-            uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
-            uiTextBlock.Style = context.GetStyle("Adaptive.TextBlock");
-            // TODO: confirm text trimming
-            uiTextBlock.LineBreakMode = LineBreakMode.TailTruncation;
-
-            switch (textBlock.HorizontalAlignment)
-            {
-                case HorizontalAlignment.Left:
-                    uiTextBlock.HorizontalTextAlignment = TextAlignment.Start;
-                    break;
-
-                case HorizontalAlignment.Center:
-                    uiTextBlock.HorizontalTextAlignment = TextAlignment.Center;
-                    break;
-
-                case HorizontalAlignment.Right:
-                    uiTextBlock.HorizontalTextAlignment = TextAlignment.End;
-                    break;
-            }
-
-            
-
-
-            uiTextBlock.TextColor = context.Resources.TryGetValue<Color>($"Adaptive.{textBlock.Color}");
-
-            if (textBlock.Weight == TextWeight.Bolder)
-                uiTextBlock.FontAttributes = FontAttributes.Bold;
-
-            if (textBlock.Wrap == true)
-                uiTextBlock.LineBreakMode = LineBreakMode.WordWrap;
-#endif
-
+                uiTextBlock.SetColor(colorOption.Subtle, context);
+            else
+                uiTextBlock.SetColor(colorOption.Normal, context);
 
             switch (textBlock.Size)
             {
                 case TextSize.Small:
-                    uiTextBlock.FontSize = context.Options.FontSizes.Small;
+                    uiTextBlock.FontSize = context.Config.FontSizes.Small;
                     break;
                 case TextSize.Medium:
-                    uiTextBlock.FontSize = context.Options.FontSizes.Medium;
+                    uiTextBlock.FontSize = context.Config.FontSizes.Medium;
                     break;
                 case TextSize.Large:
-                    uiTextBlock.FontSize = context.Options.FontSizes.Large;
+                    uiTextBlock.FontSize = context.Config.FontSizes.Large;
                     break;
                 case TextSize.ExtraLarge:
-                    uiTextBlock.FontSize = context.Options.FontSizes.ExtraLarge;
+                    uiTextBlock.FontSize = context.Config.FontSizes.ExtraLarge;
                     break;
                 case TextSize.Normal:
                 default:
-                    uiTextBlock.FontSize = context.Options.FontSizes.Normal;
+                    uiTextBlock.FontSize = context.Config.FontSizes.Normal;
                     break;
             }
 

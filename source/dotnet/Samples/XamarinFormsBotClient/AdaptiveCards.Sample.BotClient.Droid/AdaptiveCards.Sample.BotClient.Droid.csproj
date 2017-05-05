@@ -58,11 +58,15 @@
       <HintPath>..\..\..\packages\Xamarin.Forms.2.3.4.221-pre6\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MarkedNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MarkedNet.1.0.6\lib\netstandard1.3\MarkedNet.dll</HintPath>
+    <Reference Include="HtmlAgilityPack.NetCore, Version=1.5.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\HtmlAgilityPack.NetCore.1.5.0.1\lib\netstandard1.3\HtmlAgilityPack.NetCore.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bot.Connector.DirectLine, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.Bot.Connector.DirectLine.3.0.0\lib\netstandard1.3\Microsoft.Bot.Connector.DirectLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.MarkedNet, Version=1.0.11.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.MarkedNet.1.0.11\lib\netstandard1.3\Microsoft.MarkedNet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Rest.ClientRuntime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.Rest.ClientRuntime.2.3.6\lib\netstandard1.5\Microsoft.Rest.ClientRuntime.dll</HintPath>

@@ -1,0 +1,288 @@
+{
+	"type": "AdaptiveCard",
+	"sections": [
+		{
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This is a text element",
+					"style": "sectionTitle",
+					"hint-textStacking": "bottom"
+				},
+				{
+					"type": "Image",
+					"url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
+					"size": "medium"
+				},
+				{
+					"type": "FactSet",
+					"facts": [
+						{
+							"name": "This is a fact name",
+							"value": "This is a fact value"
+						},
+						{
+							"name": "This is a fact name",
+							"value": "This is a fact value"
+						},
+						{
+							"name": "This is a fact name",
+							"value": "This is a fact value"
+						}
+					]
+				},
+				{
+				    "type": "DateInput"
+				},
+				{
+				    "type": "TextInput",
+				    "topSpacing": "narrow",
+				    "title": "Enter text here"
+				},
+				{
+				    "type": "MultichoiceInput",
+				    "topSpacing": "narrow",
+				    "choices": [
+				        { "display": "Choice 1", "value": "1" },
+				        { "display": "Choice 2", "value": "2" },
+				        { "display": "Choice 3", "value": "3" }
+				    ]
+				},
+				{
+					"type": "ImageSet",
+					"imageSize": "medium",
+					"items": [
+						"http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
+						"http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg",
+						"http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg"
+					]
+				},
+				{
+					"type": "ActionGroup",
+					"actions": [
+						{
+							"type": "ActionCard",
+							"name": "Comment",
+							"card": {
+							    "items": [
+							        {
+							            "type": "FlexBox",
+							            "items": [
+							                {
+							                    "size": 50,
+							                    "items": [
+							                        {
+							                            "type": "TextInput"
+							                        }
+							                    ]
+							                },
+							                {
+							                    "size": 50,
+							                    "items": [
+							                        {
+							                            "type": "DateInput",
+							                            "size": "stretch"
+							                        },
+							                        {
+                    									"type": "MultichoiceInput",
+							                            "size": "stretch",
+                    									"topSpacing": "narrow",
+                    									"id": "list",
+                    									"title": "Pick an option",
+                    									"choices": [
+                    										{
+                    											"display": "Choice 1",
+                    											"value": "1"
+                    										},
+                    										{
+                    											"display": "Choice 2",
+                    											"value": "2"
+                    										},
+                    										{
+                    											"display": "Choice 3",
+                    											"value": "3"
+                    										}
+                    									]
+							                        }
+							                    ]
+							                }
+							            ]
+							        },
+							        {
+							            "type": "TextInput",
+							            "topSpacing": "narrow"
+							        }
+							    ]
+							},
+							"inputs": [
+								{
+
+									"type": "TextInput",
+									"id": "comment",
+									"isMultiline": true,
+									"title": "Input's title property"
+								}
+							],
+							"actions": [
+								{
+									"type": "HttpPOST",
+									"name": "Action's name prop.",
+									"target": "http://...",
+									"successMessage": "This is the action's successMessage property.",
+
+									"errorMessage": "This is the action's errorMessage property."
+								}
+							]
+						},
+						{
+							"type": "ActionCard",
+							"name": "Move",
+							"inputs": [
+								{
+									"type": "MultichoiceInput",
+									"id": "list",
+									"title": "Pick an option",
+									"choices": [
+										{
+											"display": "Choice 1",
+											"value": "1"
+										},
+										{
+											"display": "Choice 2",
+											"value": "2"
+										},
+										{
+											"display": "Choice 3",
+											"value": "3"
+										}
+									]
+								}
+							],
+							"actions": [
+								{
+									"type": "HttpPOST",
+									"name": "Action's name prop.",
+									"target": "http://...",
+									"successMessage": "This is the action's successMessage property.",
+									"errorMessage": "This is the action's errorMessage property."
+								}
+							]
+						},
+						{
+							"type": "ActionCard",
+							"name": "Due Date",
+							"inputs": [
+								{
+									"type": "DateInput",
+									"id": "dueDate",
+									"title": "Input's title property"
+								}
+							],
+							"actions": [
+								{
+									"type": "HttpPOST",
+									"name": "Action's name prop.",
+									"target": "http://...",
+									"successMessage": "This is the action's successMessage property.",
+									"errorMessage": "This is the action's errorMessage property."
+
+								}
+							]
+						},
+						{
+							"type": "HttpPOST",
+
+							"name": "Action's name prop.",
+							"target": "http://...",
+							"successMessage": "This is the action's successMessage property.",
+							"errorMessage": "This is the action's errorMessage property."
+						},
+						{
+							"type": "OpenUri",
+							"name": "Action's name prop",
+							"targets": [
+								{
+									"os": "default",
+									"uri": "http://..."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"items": [
+				{
+					"type": "Separator"
+				},
+				{
+					"type": "TextBlock",
+					"text": "Second section",
+					"style": "sectionTitle"
+				},
+				{
+					"type": "FlexBox",
+					"items": [
+						{
+							"size": "auto",
+							"items": [
+                				{
+                					"type": "Image",
+                					"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+                					"size": "small"
+                				}
+							]
+						},
+						{
+							"size": "stretch",
+							"items": [
+							    {
+							        "type": "TextBlock",
+							        "text": "This is the activityTitle property",
+							        "style": "activityTitle"
+							    },
+							    {
+							        "type": "TextBlock",
+							        "text": "This is the activitySubtitle property",
+							        "style": "activitySubtitle",
+									"topSpacing": "none"
+							    },
+							    {
+							        "type": "TextBlock",
+							        "text": "This is the activityText property",
+							        "style": "activityText",
+									"topSpacing": "none"
+							    }
+							]
+						},
+						{
+						    "size": "large",
+						    "items": [
+                				{
+                				    "type": "DateInput",
+                				    "size": "stretch"
+                				},
+                				{
+                				    "type": "TextInput",
+                				    "topSpacing": "narrow",
+                				    "title": "Enter text here"
+                				},
+                				{
+                				    "type": "MultichoiceInput",
+                				    "size": "stretch",
+                				    "topSpacing": "narrow",
+                				    "choices": [
+                				        { "display": "Choice 1", "value": "1" },
+                				        { "display": "Choice 2", "value": "2" },
+                				        { "display": "Choice 3", "value": "3" }
+                				    ]
+                				}
+						    ]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -28,11 +28,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoice.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Column.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ColumnSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Fact.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FactSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Image.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ImageSet.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputDate.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputNumber.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputText.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputTime.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputToggle.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseUtil.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseCardElement.cpp" />
@@ -43,11 +51,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoice.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\HostOptions.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputDate.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputNumber.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputText.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputTime.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputToggle.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseUtil.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseCardElement.h" />
@@ -55,6 +72,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Enums.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\json\json-forwards.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\json\json.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\pch.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
