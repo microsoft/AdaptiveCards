@@ -738,7 +738,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // Retrieve the Font Size from Host Options
         ComPtr<IAdaptiveFontSizeOptions> fontSizeOptions;
         THROW_IF_FAILED(m_hostOptions->get_FontSizes(&fontSizeOptions));
-        INT32 fontSize;
+        UINT32 fontSize;
         switch (size)
         {
         case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Small:
