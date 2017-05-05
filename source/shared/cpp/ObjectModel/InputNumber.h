@@ -19,18 +19,18 @@ public:
     std::string GetPlaceholder() const;
     void SetPlaceholder(const std::string value);
 
-    std::string GetValue() const;
-    void SetValue(const std::string value);
+    int GetValue() const;
+    void SetValue(const int value);
 
-    unsigned int GetMax() const;
-    void SetMax(const unsigned int value);
+    int GetMax() const;
+    void SetMax(const int value);
 
-    unsigned int GetMin() const;
-    void SetMin(const unsigned int value);
+    int GetMin() const;
+    void SetMin(const int value);
 
 private:
     std::string m_placeholder;
-    std::string m_value;
+    int m_value;
     int m_max;
     int m_min;
 };

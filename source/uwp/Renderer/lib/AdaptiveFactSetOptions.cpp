@@ -45,14 +45,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetOptions::get_Spacing(INT32 * value)
+    HRESULT AdaptiveFactSetOptions::get_Spacing(UINT32 * value)
     {
         *value = m_sharedFactSetOptions.spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetOptions::put_Spacing(INT32 value)
+    HRESULT AdaptiveFactSetOptions::put_Spacing(UINT32 value)
     {
         m_sharedFactSetOptions.spacing = value;
         return S_OK;

@@ -5,7 +5,7 @@ using namespace AdaptiveCards;
 
 InputNumber::InputNumber() :
     BaseCardElement(CardElementType::InputNumber),
-    m_min(0),
+    m_min(std::numeric_limits<int>::min()),
     m_max(std::numeric_limits<int>::max())
 {
 }
@@ -17,9 +17,9 @@ std::shared_ptr<InputNumber> InputNumber::Deserialize(const Json::Value& json)
     std::shared_ptr<InputNumber> inputNumber = BaseCardElement::Deserialize<InputNumber>(json);
 
     inputNumber->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
-    inputNumber->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
-    inputNumber->SetMax(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Max, INT_MAX));
-    inputNumber->SetMin(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Min, 0));
+    inputNumber->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));
+    inputNumber->SetMax(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Max, std::numeric_limits<int>::max()));
+    inputNumber->SetMin(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Min, std::numeric_limits<int>::min()));
 
     return inputNumber;
 }
@@ -46,32 +46,32 @@ void InputNumber::SetPlaceholder(const std::string value)
     m_placeholder = value;
 }
 
-std::string InputNumber::GetValue() const
+int InputNumber::GetValue() const
 {
     return m_value;
 }
 
-void InputNumber::SetValue(const std::string value)
+void InputNumber::SetValue(const int value)
 {
     m_value = value;
 }
 
-unsigned int InputNumber::GetMax() const
+int InputNumber::GetMax() const
 {
     return m_max;
 }
 
-void InputNumber::SetMax(const unsigned int value)
+void InputNumber::SetMax(const int value)
 {
     m_max = value;
 }
 
-unsigned int InputNumber::GetMin() const
+int InputNumber::GetMin() const
 {
     return m_min;
 }
 
-void InputNumber::SetMin(const unsigned int value)
+void InputNumber::SetMin(const int value)
 {
     m_min = value;
 }

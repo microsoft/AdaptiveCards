@@ -27,6 +27,8 @@ public:
 
     static unsigned int GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue);
 
+    static int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue);
+
     static CardElementType GetCardElementType(const Json::Value& json);
 
     static CardElementType TryGetCardElementType(const Json::Value& json);

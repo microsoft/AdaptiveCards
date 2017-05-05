@@ -57,7 +57,7 @@ private:
     TextColor m_textColor;
     bool m_isSubtle;
     bool m_wrap;
-    int m_maxLines;
+    unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
 };
 }

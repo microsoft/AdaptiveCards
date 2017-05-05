@@ -20,28 +20,28 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSeparationOptions::get_Spacing(INT32* value)
+    HRESULT AdaptiveSeparationOptions::get_Spacing(UINT32* value)
     {
         *value = m_sharedSeparationOptions.spacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSeparationOptions::put_Spacing(INT32 value)
+    HRESULT AdaptiveSeparationOptions::put_Spacing(UINT32 value)
     {
         m_sharedSeparationOptions.spacing = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSeparationOptions::get_LineThickness(INT32* value)
+    HRESULT AdaptiveSeparationOptions::get_LineThickness(UINT32* value)
     {
         *value = m_sharedSeparationOptions.lineThickness;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSeparationOptions::put_LineThickness(INT32 value)
+    HRESULT AdaptiveSeparationOptions::put_LineThickness(UINT32 value)
     {
         m_sharedSeparationOptions.lineThickness = value;
         return S_OK;

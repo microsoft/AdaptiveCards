@@ -10,7 +10,7 @@
             "speak": "How many do you want?",
             "min": 1,
             "max": 10,
-            "value": "3"
+            "value": 3
         }
     ]
 }

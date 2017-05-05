@@ -17,17 +17,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(BoundaryOptions boundaryOptions) noexcept;
 
-        IFACEMETHODIMP get_Left(_Out_ INT32 *value);
-        IFACEMETHODIMP put_Left(_In_ INT32 value);
+        IFACEMETHODIMP get_Left(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_Left(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_Right(_Out_ INT32 *value);
-        IFACEMETHODIMP put_Right(_In_ INT32 value);
+        IFACEMETHODIMP get_Right(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_Right(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_Bottom(_Out_ INT32 *value);
-        IFACEMETHODIMP put_Bottom(_In_ INT32 value);
+        IFACEMETHODIMP get_Bottom(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_Bottom(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_Top(_Out_ INT32 *value);
-        IFACEMETHODIMP put_Top(_In_ INT32 value);
+        IFACEMETHODIMP get_Top(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_Top(_In_ UINT32 value);
 
     private:
         BoundaryOptions m_sharedBoundaryOptions;

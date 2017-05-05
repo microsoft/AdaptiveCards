@@ -22,14 +22,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Placeholder(_Out_ HSTRING* placeholder);
         IFACEMETHODIMP put_Placeholder(_In_ HSTRING placeholder);
 
-        IFACEMETHODIMP get_Value(_Out_ HSTRING* value);
-        IFACEMETHODIMP put_Value(_In_ HSTRING value);
+        IFACEMETHODIMP get_Value(_Out_ INT32* value);
+        IFACEMETHODIMP put_Value(_In_ INT32 value);
 
-        IFACEMETHODIMP get_Max(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Max(_In_ UINT32 value);
+        IFACEMETHODIMP get_Max(_Out_ INT32* value);
+        IFACEMETHODIMP put_Max(_In_ INT32 value);
 
-        IFACEMETHODIMP get_Min(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Min(_In_ UINT32 value);
+        IFACEMETHODIMP get_Min(_Out_ INT32* value);
+        IFACEMETHODIMP put_Min(_In_ INT32 value);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);

@@ -97,14 +97,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::get_MaxActions(INT32* maxActions)
+    HRESULT AdaptiveHostOptions::get_MaxActions(UINT32* maxActions)
     {
         *maxActions = m_sharedHostOptions.maxActions;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostOptions::put_MaxActions(INT32 maxActions)
+    HRESULT AdaptiveHostOptions::put_MaxActions(UINT32 maxActions)
     {
         m_sharedHostOptions.maxActions = maxActions;
         return S_OK;

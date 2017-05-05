@@ -19,70 +19,70 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::get_Small(INT32* smallFontSize)
+    HRESULT AdaptiveFontSizeOptions::get_Small(UINT32* smallFontSize)
     {
         *smallFontSize = m_sharedFontSizeOptions.smallFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::put_Small(INT32 smallFontSize)
+    HRESULT AdaptiveFontSizeOptions::put_Small(UINT32 smallFontSize)
     {
         m_sharedFontSizeOptions.smallFontSize = smallFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::get_Normal(INT32* normalFontSize)
+    HRESULT AdaptiveFontSizeOptions::get_Normal(UINT32* normalFontSize)
     {
         *normalFontSize = m_sharedFontSizeOptions.normalFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::put_Normal(INT32 normalFontSize)
+    HRESULT AdaptiveFontSizeOptions::put_Normal(UINT32 normalFontSize)
     {
         m_sharedFontSizeOptions.normalFontSize = normalFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::get_Medium(INT32* mediumFontSize)
+    HRESULT AdaptiveFontSizeOptions::get_Medium(UINT32* mediumFontSize)
     {
         *mediumFontSize = m_sharedFontSizeOptions.mediumFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::put_Medium(INT32 mediumFontSize)
+    HRESULT AdaptiveFontSizeOptions::put_Medium(UINT32 mediumFontSize)
     {
         m_sharedFontSizeOptions.mediumFontSize = mediumFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::get_Large(INT32* largeFontSize)
+    HRESULT AdaptiveFontSizeOptions::get_Large(UINT32* largeFontSize)
     {
         *largeFontSize = m_sharedFontSizeOptions.largeFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::put_Large(INT32 largeFontSize)
+    HRESULT AdaptiveFontSizeOptions::put_Large(UINT32 largeFontSize)
     {
         m_sharedFontSizeOptions.largeFontSize = largeFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::get_ExtraLarge(INT32* extraLargeFontSize)
+    HRESULT AdaptiveFontSizeOptions::get_ExtraLarge(UINT32* extraLargeFontSize)
     {
         *extraLargeFontSize = m_sharedFontSizeOptions.extraLargeFontSize;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFontSizeOptions::put_ExtraLarge(INT32 extraLargeFontSize)
+    HRESULT AdaptiveFontSizeOptions::put_ExtraLarge(UINT32 extraLargeFontSize)
     {
         m_sharedFontSizeOptions.extraLargeFontSize = extraLargeFontSize;
         return S_OK;

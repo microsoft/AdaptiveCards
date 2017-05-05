@@ -86,11 +86,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             separatorAsPanel->put_Background(asBrush.Get());
         }
 
-        INT32 spacing;
+        UINT32 spacing;
         THROW_IF_FAILED(separationOptions->get_Spacing(&spacing));
-        INT32 lineThickness;
+        UINT32 lineThickness;
         THROW_IF_FAILED(separationOptions->get_LineThickness(&lineThickness));
-        INT32 separatorMarginValue = (spacing - lineThickness) / 2;
+        UINT32 separatorMarginValue = (spacing - lineThickness) / 2;
         Thickness margin = { 0, 0, 0, 0 };
 
         if (isHorizontal)
@@ -826,7 +826,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         {
             case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Small:
             {
-                INT32 imageSize;
+                UINT32 imageSize;
                 THROW_IF_FAILED(sizeOptions->get_Small(&imageSize));
 
                 THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
@@ -836,7 +836,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
             case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Medium:
             {
-                INT32 imageSize;
+                UINT32 imageSize;
                 THROW_IF_FAILED(sizeOptions->get_Medium(&imageSize));
 
                 THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
@@ -846,7 +846,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
             case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Large:
             {
-                INT32 imageSize;
+                UINT32 imageSize;
                 THROW_IF_FAILED(sizeOptions->get_Large(&imageSize));
 
                 THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
@@ -1285,9 +1285,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         THROW_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
-        HString textValue;
-        THROW_IF_FAILED(adaptiveInputNumber->get_Value(textValue.GetAddressOf()));
-        THROW_IF_FAILED(textBox->put_Text(textValue.Get()));
+        INT32 value;
+        THROW_IF_FAILED(adaptiveInputNumber->get_Value(&value));
+
+        std::wstring stringValue = std::to_wstring(value);
+        THROW_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
 
         ComPtr<ITextBox2> textBox2;
         THROW_IF_FAILED(textBox.As(&textBox2));

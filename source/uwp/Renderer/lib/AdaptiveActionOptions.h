@@ -35,17 +35,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_TextColor(_Out_ ABI::Windows::UI::Color* value);
         IFACEMETHODIMP put_TextColor(_In_ ABI::Windows::UI::Color value);
 
-        IFACEMETHODIMP get_BorderThickness(_Out_ INT32 *value);
-        IFACEMETHODIMP put_BorderThickness(_In_ INT32 value);
+        IFACEMETHODIMP get_BorderThickness(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_BorderThickness(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_FontWeight(_Out_ INT32 *value);
-        IFACEMETHODIMP put_FontWeight(_In_ INT32 value);
+        IFACEMETHODIMP get_FontWeight(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_FontWeight(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_FontSize(_Out_ INT32 *value);
-        IFACEMETHODIMP put_FontSize(_In_ INT32 value);
+        IFACEMETHODIMP get_FontSize(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_FontSize(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_Spacing(_Out_ INT32 *value);
-        IFACEMETHODIMP put_Spacing(_In_ INT32 value);
+        IFACEMETHODIMP get_Spacing(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_Spacing(_In_ UINT32 value);
 
         IFACEMETHODIMP get_Padding(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions** value);
         IFACEMETHODIMP put_Padding(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions* value);
