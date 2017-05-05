@@ -6,6 +6,13 @@
 [CardElements](#CardElements) 
 * [TextBlock](#textblock) - display text
 * [Image](#image) - display an image
+* [Input.Text](#inputtext) - get text input from user
+* [Input.Date](#inputdate) - get date input from user
+* [Input.Time](#inputtime) - get time input from user
+* [Input.Number](#inputnumber) - get number input from user
+* [Input.Toggle](#inputtoggle) - get user to select betweeen two options
+* [Input.ChoiceSet](#inputchoiceset) - display set of choices to the user 
+    * [Choice](#choice) - choice object
 
 [Containers](#containers) 
 * [Container](#container) - container of items
@@ -20,16 +27,6 @@
 * [Action.OpenUrl](#actionopenurl) - defines action which opens a url either in external browser or embedded browser
 * [Action.ShowCard](#actionshowcard) - defines action which shows a card to the user
 * [Action.Submit](#actionsubmit) - defines action which collects input and sends via client appropriate mechanism (it's up to client)
-
-[Input](#input)
-* [Input.Text](#inputtext) - get text input from user
-* [Input.Date](#inputdate) - get date input from user
-* [Input.Time](#inputtime) - get time input from user
-* [Input.Number](#inputnumber) - get number input from user
-* [Input.Toggle](#inputtoggle) - get user to select betweeen two options
-* [Input.ChoiceSet](#inputchoiceset) - display set of choices to the user 
-    * [Choice](#choice) - choice object
-
 
 # Cards
 
