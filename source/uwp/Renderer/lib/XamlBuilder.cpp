@@ -962,16 +962,36 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 }
             }
 
+            // Determine if the column is auto, stretch, or percentage width, and set the column width appropriately
+            ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+
             HString adaptiveColumnSize;
             THROW_IF_FAILED(column->get_Size(adaptiveColumnSize.GetAddressOf()));
-            INT32 isAutoResult;
-            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"Auto").Get(), &isAutoResult));
 
-            // Determine if the column is auto or percentage width, and set the column width appropriately
-            ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+            INT32 isStretchResult;
+            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"stretch").Get(), &isStretchResult));
+
+            INT32 isAutoResult;
+            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"auto").Get(), &isAutoResult));
+
+            double sizeAsDouble = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+
             GridLength columnWidth;
-            columnWidth.GridUnitType = (isAutoResult == 0) ? GridUnitType::GridUnitType_Auto : GridUnitType::GridUnitType_Star;
-            columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+            if (isStretchResult == 0)
+            {
+                columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
+                columnWidth.Value = 0;
+            }
+            else if (!adaptiveColumnSize.IsValid() || (isAutoResult == 0) || (sizeAsDouble == 0))
+            {
+                columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+                columnWidth.Value = 1;
+            }
+            else
+            {
+                columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+                columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+            }
 
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
             THROW_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
