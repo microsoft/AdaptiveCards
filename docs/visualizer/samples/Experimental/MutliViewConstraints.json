@@ -1,0 +1,41 @@
+// Experimenting with view constraints in a multi view
+{
+    "type": "AdaptiveCard.MultiView",
+    "constraints": [
+        {
+            "startingWView": {
+                "id": "small",
+                "min-width": "300px"
+                // find way to model multuple constraints
+            }
+        }
+    ],
+    "views": {
+        "small": {
+            "type": "AdaptiveCard",
+            "constraints": {
+                "min-width": "300px"
+            },
+            "body": [],
+            "actions": [
+                {
+                    "type": "ShowView", // introduces new action type
+                    "name": "View Boarding Pass",
+                    "value": "large"
+                }
+            ]
+        },
+        "large": {
+            "type": "AdaptiveCard",
+            "defaultIfPossible": true,
+            "body": [],
+            "actions": [ // This is optional, a
+                {
+                    "type": "ShowView",
+                    "name": "Close",
+                    "value": "small" // should we use $ref here?
+                }
+            ]
+        }
+    }
+}

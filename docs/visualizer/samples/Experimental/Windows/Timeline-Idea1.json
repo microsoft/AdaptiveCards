@@ -1,0 +1,66 @@
+{
+    "activationUri": "",
+    "visual": {
+        "displayText": "",
+        "description": "",
+        "attribution": { // "type": "ImageSource"
+            "uri": "",
+            "altText": "",
+            "includeQueryParams": true
+        },
+        "backgroundColor": "",
+        "content": {
+            "type": "AdaptiveCard",
+            "fallbackText": "",
+            "speak": "",
+            "actions": [],
+            "backgroundImage": { // "type": "BackgroundImage"
+                "uri": "",
+                "altText": "",
+                "includeQueryParams": true,
+                "overlay": 0.7,
+                "overlayColor": "light|dark"
+            },
+            "body": [
+                {
+                    "type": "Image",
+                    "uri": "",
+                    "altText": "bolder",
+                    "size": "medium",
+                    "includeQueryParams": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Line 1",
+                    "weight": "bolder",
+                    "size": "medium"
+                },
+                {
+                    "type": "FactSet",
+                    "facts": [
+                        {
+                            "name": "Work item type:",
+                            "value": "Bug"
+                        },
+                        {
+                            "name": "State:",
+                            "value": "Closed"
+                        },
+                        {
+                            "name": "Area Path:",
+                            "value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines"
+                        },
+                        {
+                            "name": "Iteration Path:",
+                            "value": "t365\\Tabs\\Extensibility\\longer to show"
+                        },
+                        {
+                            "name": "Priority:",
+                            "value": "1"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

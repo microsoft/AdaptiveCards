@@ -1,0 +1,37 @@
+{
+    "type": "ContainerSet",
+    "minSize": 300,
+    "snapToContainer": true,
+    "containers": [
+        {
+            "type": "Container",
+            "size": 1,
+            "items": [
+                {
+                    "type": "TextBlock"
+                }
+            ],
+            "actions": [] // only applicable in carousel mode
+        },
+        {
+            "type": "Container",
+            "size": 2,
+            "items": [
+                {
+                    "type": "TextBlock"
+                }
+            ],
+            "actions": []
+        },
+        {
+            "type": "Container",
+            "size": 1,
+            "items": [
+                {
+                    "type": "TextBlock"
+                }
+            ],
+            "actions": []
+        }
+    ]
+}

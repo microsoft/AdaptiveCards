@@ -1,0 +1,59 @@
+{
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "size":"auto",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1 (auto)"
+                        },
+                        {
+                            "type": "Image",
+                            "size":"large",
+                            "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "size":"stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment":"center",
+                            "text": "Column 2 (stretch)"
+                        },
+                        {
+                            "type": "Image",
+                            "size":"large",
+                            "horizontalAlignment":"center",
+                            "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "size":"auto",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 3 (auto)"
+                        },
+                        {
+                            "type": "Image",
+                            "size":"large",
+                            "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

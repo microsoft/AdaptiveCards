@@ -1,0 +1,62 @@
+{
+    "@type": "AdaptiveCard",
+    "body":[
+        {
+            "@type": "Input.Text",
+                "style": "email",
+                "style": "telephone",
+                "style": "url",
+                "isMultiLine": true,
+
+
+            "@type": "Input.Date",
+                "min" :"",
+                "max": "",
+
+            "@type": "Input.Time",
+                "min" :"",
+                "max": "",
+
+            "@type": "Input.Number",
+                "min" :"",
+                "max": "",
+
+
+            "@type": "Input.ChoiceSet",
+            "choices": [],
+            "style": "compact|expanded",
+            "isMultiSelect": true,
+
+
+            "@type": "Input.Toggle",
+            "valueOn":"",
+            "valueOff": "",
+            
+
+            //Later
+            "@type": "Input.Range",
+            "style": "password"
+        },
+        {
+            "type": "Radio"
+        },
+        {
+            "type": "Checkbox"
+        },
+        {
+            "type": "Password"
+        },
+        {
+            "type": "Select",
+            "multiple": true
+        },
+        {
+            "type": "Input",
+            "id": "dueDate",
+            "title": "Select a date",
+            "inputType": "date",
+            "min": "1/1/2017",
+            "max": "21/31/2017"
+        } 
+   ]     
+}

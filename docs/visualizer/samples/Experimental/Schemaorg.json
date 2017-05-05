@@ -1,0 +1,39 @@
+{
+    "appName": "Amazon.com | Edge",
+    "entities": [
+        {
+            "@type": "Event",
+            "id": "actor1",
+            "actor": "Nicolas Cage"
+        }
+    ],
+    "visual": {
+        "backgroundImage": "",
+        "icon": "",
+        "body": [
+            {
+                "type": "TextBlock",
+                "text": "{Binding actor}",
+                "weight": "bolder",
+                "size": "medium"
+            },
+            {
+                "type": "FactSet",
+                "facts": [
+                    {
+                        "name": "File Type:",
+                        "value": "pptx"
+                    },
+                    {
+                        "name": "Last Modified",
+                        "value": "Jan 9, 2017 3:45 PM"
+                    },
+                    {
+                        "name": "Taco",
+                        "value": "Bell"
+                    }
+                ]
+            }
+        ]
+    }
+}

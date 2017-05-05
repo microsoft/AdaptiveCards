@@ -1,0 +1,78 @@
+// DISCUSSION ABOUT BINDING IN PAYLOAD
+// DECISION: Binding is server side or between server and client, NOT inhernetly part of protocol
+
+{
+    "type": "message",
+    "timestamp": "2017-01-11T20:30:44.030Z",
+    "serviceUrl": "https://74e8e5e2.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+        "id": "hce24nil8md1hk573",
+        "name": "Bot"
+    },
+    "conversation": {
+        "id": "9nji0fj357hamgga7c"
+    },
+    "recipient": {
+        "id": "12345"
+    },
+    "textFormat": "plain",
+    "text": "",
+    "summary": "Hero Card about bender",
+    "attachments": [
+        {
+            "contentType": "application/vnd.microsoft.card.adaptive",
+            "content": {
+                "type": "AdaptiveCard",
+                "targets": {
+                    "windows": {
+                        // metadata for windows target
+                    },
+                    "car": {
+                        // metadata for car target
+                    }
+                },
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "{Binding Name}",
+                        "weight": "bolder",
+                        "size": "medium"
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "{Binding Rating.MaxValue}",
+                        "isSubtle": true
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "{Binding Rating.Average}",
+                        "isSubtle": true
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "{Binding Description}",
+                        "wrap": true
+                    },
+                    {
+                        "type": "Image",
+                        "url": "{Binding Thumbnail}",
+                        "size": "large"
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "HttpPOST",
+                        "name": "More Info"
+                    },
+                    {
+                        "type": "HttpPOST",
+                        "name": "View on Foursquare"
+                    }
+                ]
+            }
+        }
+    ],
+    "entities": [],
+    "replyToId": "06c95gkhee171d23i",
+    "id": "5089clmgkbhlif2eac"}
