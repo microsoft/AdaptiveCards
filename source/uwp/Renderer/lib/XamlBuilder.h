@@ -63,6 +63,9 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _In_ bool isSubtle,
             _In_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight weight,
             _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
+        void StyleXamlTextBlock(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions* textOptions,
+            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
         void InitializeDefaultResourceDictionary();
         template<typename T>
         HRESULT TryGetResoureFromResourceDictionaries(

@@ -777,6 +777,22 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    void XamlBuilder::StyleXamlTextBlock(
+        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions* options,
+        ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock)
+    {
+        ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight;
+        THROW_IF_FAILED(options->get_Weight(&textWeight));
+        ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor;
+        THROW_IF_FAILED(options->get_Color(&textColor));
+        ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize;
+        THROW_IF_FAILED(options->get_Size(&textSize));
+        boolean isSubtle;
+        THROW_IF_FAILED(options->get_IsSubtle(&isSubtle));
+        StyleXamlTextBlock(textSize, textColor, Boolify(isSubtle), textWeight, xamlTextBlock);
+    }
+
+    _Use_decl_annotations_
     void XamlBuilder::BuildTextBlock(
         IAdaptiveCardElement* adaptiveCardElement, 
         IUIElement** textBlockControl)
@@ -1159,15 +1175,26 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(rowDefinitions->Append(factRow.Get()));
 
             ComPtr<IAdaptiveFact> localFact(fact);
+            ComPtr<IAdaptiveFactSetOptions> factSetOptions;
+            THROW_IF_FAILED(m_hostOptions->get_FactSet(&factSetOptions));
+
+            // Create the title xaml textblock and style it from Host options
             ComPtr<ITextBlock> titleTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
             HString factTitle;
             THROW_IF_FAILED(localFact->get_Title(factTitle.GetAddressOf()));
             THROW_IF_FAILED(titleTextBlock->put_Text(factTitle.Get()));
+            ComPtr<IAdaptiveTextOptions> titleTextOptions;
+            THROW_IF_FAILED(factSetOptions->get_Title(&titleTextOptions));
+            StyleXamlTextBlock(titleTextOptions.Get(), titleTextBlock.Get());
 
+            // Create the value xaml textblock and style it from Host options
             ComPtr<ITextBlock> valueTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
             HString factValue;
             THROW_IF_FAILED(localFact->get_Value(factValue.GetAddressOf()));
             THROW_IF_FAILED(valueTextBlock->put_Text(factValue.Get()));
+            ComPtr<IAdaptiveTextOptions> valueTextOptions;
+            THROW_IF_FAILED(factSetOptions->get_Value(&valueTextOptions));
+            StyleXamlTextBlock(valueTextOptions.Get(), valueTextBlock.Get());
 
             // Mark the column container with the current column
             ComPtr<IFrameworkElement> titleTextBlockAsFrameWorkElement;
