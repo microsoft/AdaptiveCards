@@ -53,6 +53,9 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* separationOptions,
             _In_ bool isHorizontal = true);
+        static void ApplyMarginToXamlElement(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions* boundaryOptions,
+            _Inout_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
 
         void InitializeDefaultResourceDictionary();
         template<typename T>

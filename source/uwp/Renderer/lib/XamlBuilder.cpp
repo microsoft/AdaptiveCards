@@ -298,9 +298,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // Shape (optional) - Provides the background image overlay, if one is set
         // StackPanel - The container for all the card's body elements
         ComPtr<IGrid> rootElement = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+        ComPtr<IAdaptiveCardOptions> adaptiveCardOptions;
+        THROW_IF_FAILED(m_hostOptions->get_AdaptiveCard(&adaptiveCardOptions));
 
         ComPtr<IPanel> rootAsPanel;
         THROW_IF_FAILED(rootElement.As(&rootAsPanel));
+        Color backgroundColor;
+        if (SUCCEEDED(adaptiveCardOptions->get_BackgroundColor(&backgroundColor)))
+        {
+            ComPtr<ISolidColorBrush> solidColorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
+            THROW_IF_FAILED(solidColorBrush->put_Color(backgroundColor));
+            ComPtr<IBrush> asBrush;
+            THROW_IF_FAILED(solidColorBrush.As(&asBrush));
+            THROW_IF_FAILED(rootAsPanel->put_Background(asBrush.Get()));
+        }
+
         ComPtr<IUriRuntimeClass> backgroundImageUrl;
         if (SUCCEEDED(adaptiveCard->get_BackgroundImageUrl(&backgroundImageUrl)))
         {
@@ -308,8 +320,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         // Now create the inner stack panel to serve as the root host for all the 
-        // body elements
+        // body elements and apply padding from host configuration
         ComPtr<IStackPanel> bodyElementHost = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<IFrameworkElement> bodyElementHostAsElement;
+        THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
+        ComPtr<IAdaptiveBoundaryOptions> cardPadding;
+        THROW_IF_FAILED(adaptiveCardOptions->get_Padding(&cardPadding));
+        ApplyMarginToXamlElement(cardPadding.Get(), bodyElementHostAsElement.Get());
+
         XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get());
         THROW_IF_FAILED(bodyElementHost.CopyTo(childElementContainer));
 
@@ -553,6 +571,24 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IToggleButton> toggleButton;
         THROW_IF_FAILED(localItem.As(&toggleButton));
         THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::ApplyMarginToXamlElement(
+        IAdaptiveBoundaryOptions* boundaryOptions,
+        IFrameworkElement* element)
+    {
+        ComPtr<IFrameworkElement> localElement(element);
+        UINT32 left;
+        THROW_IF_FAILED(boundaryOptions->get_Left(&left));
+        UINT32 top;
+        THROW_IF_FAILED(boundaryOptions->get_Top(&top));
+        UINT32 right;
+        THROW_IF_FAILED(boundaryOptions->get_Right(&right));
+        UINT32 bottom;
+        THROW_IF_FAILED(boundaryOptions->get_Bottom(&bottom));
+        Thickness margin = { (double)left, (double)top, (double)right, (double)bottom };
+        THROW_IF_FAILED(localElement->put_Margin(margin));
     }
 
     _Use_decl_annotations_
