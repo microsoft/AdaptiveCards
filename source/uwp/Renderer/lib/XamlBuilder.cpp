@@ -122,7 +122,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *xamlTreeRoot = nullptr;
 
         ComPtr<IPanel> childElementContainer;
-        ComPtr<IUIElement> rootElement = CreateRootCardElement(&childElementContainer);
+        ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, &childElementContainer);
 
         // Enumerate the child items of the card and build xaml for them
         ComPtr<IVector<IAdaptiveCardElement*>> body;
@@ -295,7 +295,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(IPanel** childElementContainer)
+    ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(IAdaptiveCard* adaptiveCard, IPanel** childElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
         // properties.  From back to fron these are:
@@ -308,9 +308,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         ComPtr<IPanel> rootAsPanel;
         THROW_IF_FAILED(rootElement.As(&rootAsPanel));
-        if (m_backgroundImageUri != nullptr)
+        ComPtr<IUriRuntimeClass> backgroundImageUrl;
+        if (SUCCEEDED(adaptiveCard->get_BackgroundImageUrl(&backgroundImageUrl)) && backgroundImageUrl.Get() != nullptr)
         {
-            ApplyBackgroundToRoot(rootAsPanel.Get());
+            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get());
         }
 
         // Now create the inner stack panel to serve as the root host for all the 
@@ -334,14 +335,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    void XamlBuilder::ApplyBackgroundToRoot(ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel)
+    void XamlBuilder::ApplyBackgroundToRoot(ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel, ABI::Windows::Foundation::IUriRuntimeClass* url)
     {
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
-        adaptiveImage->put_Url(m_backgroundImageUri.Get());
-        adaptiveImage->put_Size(ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch);
+        adaptiveImage->put_Url(url);
+        adaptiveImage->put_Size(ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto);
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));

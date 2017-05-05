@@ -70,6 +70,7 @@ enum class AdaptiveCardSchemaKey
     Style,
     IsMultiSelect,
     IsRequired,
+    BackgroundImageUrl
 };
 
 enum class TextSize
