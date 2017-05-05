@@ -2,32 +2,17 @@ import { HostContainer} from "./host-container";
 import * as Adaptive from "adaptive-cards";
 import * as Utils from "../utils";
 
-export class CortanaCarContainer extends HostContainer {
-    private _width: number;
-
+export class TeamsContainer extends HostContainer {
     protected renderContainer(renderedCard: HTMLElement): HTMLElement {
-        var element = document.createElement("div");        
-        var imgDiv = document.createElement("div");
-        imgDiv.classList.add("title");
-        
-        var img = document.createElement("img");
-        img.classList.add("image", "cortanaLogo");
-        img.src = "assets/cortana-logo.png";
-
-        imgDiv.appendChild(img);
-
-        renderedCard.insertBefore(imgDiv, renderedCard.firstChild);
-        renderedCard.style.width = this._width + "px";
+        var element = document.createElement("div");
+        element.style.borderTop = "1px solid #F1F1F1";
+        element.style.borderRight = "1px solid #F1F1F1";
+        element.style.borderBottom = "1px solid #F1F1F1";
+        element.style.border = "1px solid #F1F1F1"
 
         element.appendChild(renderedCard);
 
         return element;
-    }
-
-    constructor(width: number, styleSheet: string) {
-        super(styleSheet);
-
-        this._width = width;
     }
 
     public getHostConfig(): Adaptive.IHostConfig {
@@ -87,11 +72,11 @@ export class CortanaCarContainer extends HostContainer {
                 separation: {
                     spacing: 20
                 },
-                buttonSpacing: 20,
+                buttonSpacing: 10,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#111111",
+                    backgroundColor: "#08000000",
                     padding: {
                         top: 16,
                         right: 16,
@@ -100,10 +85,10 @@ export class CortanaCarContainer extends HostContainer {
                     }
                 },
                 actionsOrientation: "horizontal",
-                actionAlignment: "left"
+                actionAlignment: "stretch"
             },
             adaptiveCard: {
-                backgroundColor: "#111111",
+                backgroundColor: "#00000000",
                 padding: {
                     left: 20,
                     top: 20,
@@ -135,7 +120,7 @@ export class CortanaCarContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: "light",
+                color: "dark",
                 separations: {
                     small: {
                         spacing: 20,
@@ -171,7 +156,7 @@ export class CortanaCarContainer extends HostContainer {
                     spacing: 20
                 },
                 title: {
-                    color: "light",
+                    color: "dark",
                     size: "normal",
                     isSubtle: false,
                     weight: "bolder",
