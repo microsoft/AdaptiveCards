@@ -4,13 +4,10 @@ import * as Constants from "./constants";
 import { HostContainer } from "./containers/host-container";
 import { BingContainer } from "./containers/bing";
 import { LiveTileContainer } from "./containers/live-tile";
-import { OutlookConnectorContainer } from "./containers/outlook-connector";
 import { SkypeContainer } from "./containers/skype";
 import { WebChatContainer } from "./containers/webchat";
-import { SpeechContainer } from "./containers/speech";
-import { TeamsConnectorContainer } from "./containers/teams-connector";
+import { TeamsContainer } from "./containers/teams";
 import { ToastContainer } from "./containers/toast";
-import { CortanaCarContainer } from "./containers/cortana-car";
 
 import * as ace from "brace";
 import "brace/mode/json";
@@ -219,13 +216,13 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "Outlook Connector",
-            new OutlookConnectorContainer("red", "css/outlookConnectorCard.css")));
+            "WebChat",
+            new WebChatContainer("css/webchat.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "Microsoft Teams Connector",
-            new TeamsConnectorContainer("css/teamsConnectorCard.css")));
+            "Microsoft Teams",
+            new TeamsContainer("css/teams.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -240,27 +237,12 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Skype",
-            new SkypeContainer(350, "css/skypeCard.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "WebChat",
-            new WebChatContainer("css/webchat.css")));
+            new SkypeContainer(350, "css/skype.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Bing",
             new BingContainer(285, 150, "css/bing.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Cortana Car",
-            new CortanaCarContainer(350, "css/cortanaCar.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Speech",
-            new SpeechContainer("css/bing.css")));
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(
