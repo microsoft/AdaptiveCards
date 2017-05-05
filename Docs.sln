@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCardDocs", "WebApplication1\AdaptiveCardDocs.csproj", "{121B94F6-92B9-489F-A06A-3CF6640B7A79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docs", "docs\Docs.csproj", "{121B94F6-92B9-489F-A06A-3CF6640B7A79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
