@@ -22,6 +22,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputChoice;
         runtimeclass AdaptiveInputChoiceSet;
         runtimeclass AdaptiveInputDate;
+        runtimeclass AdaptiveInputNumber;
         runtimeclass AdaptiveInputText;
         runtimeclass AdaptiveInputTime;
         runtimeclass AdaptiveInputToggle;
@@ -65,6 +66,7 @@ namespace AdaptiveCards
         interface IAdaptiveInputChoiceSet;
         interface IAdaptiveInputDate;
         interface IAdaptiveInputText;
+        interface IAdaptiveInputNumber;
         interface IAdaptiveInputTime;
         interface IAdaptiveInputToggle;
 
@@ -148,6 +150,7 @@ namespace AdaptiveCards
             InputChoice,
             InputChoiceSet,
             InputDate,
+            InputNumber,
             InputText,
             InputTime,
             InputToggle,
@@ -446,6 +449,36 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputDate
         {
             [default] interface IAdaptiveInputDate;
+            interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(3bd0868c-5fbd-4341-91ff-4b07eb2bd54c),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveInputNumber)
+        ]
+        interface IAdaptiveInputNumber : IInspectable
+        {
+            [propget] HRESULT Max([out, retval] UINT32 *value);
+            [propput] HRESULT Max([in] UINT32 value);
+
+            [propget] HRESULT Min([out, retval] UINT32 *value);
+            [propput] HRESULT Min([in] UINT32 value);
+
+            [propget] HRESULT Placeholder([out, retval] HSTRING* value);
+            [propput] HRESULT Placeholder([in] HSTRING value);
+
+            [propget] HRESULT Value([out, retval] HSTRING* value);
+            [propput] HRESULT Value([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveInputNumber
+        {
+            [default] interface IAdaptiveInputNumber;
             interface IAdaptiveCardElement;
         };
 

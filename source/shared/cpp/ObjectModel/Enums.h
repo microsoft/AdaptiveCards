@@ -131,6 +131,7 @@ enum class CardElementType
     ActionGroup,
     ImageSet,
     InputDate,
+    InputNumber,
     InputText,
     InputTime,
     InputToggle,
