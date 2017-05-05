@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  
+  <url>
+    <loc>http://localhost:4000/samplepost.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/myupdate.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/test-post-from-last-year.html</loc>
+  </url>
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/index.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_about.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_about_ruby_gems_etc.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_adding_tooltips.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_alerts.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_atom_text_editor.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_build_arguments.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_build_scripts.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_code_samples.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_collections.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_commenting_on_files.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_conditional_logic.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_content_reuse.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_exluding_files.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_faq_layout.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_generating_pdfs.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_glossary.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_help_api.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_hyperlinks.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_icons.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_images.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_install_jekyll_on_mac.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_install_jekyll_on_windows.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_introduction.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_iterm_profiles.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_kb_layout.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_labels.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_lists.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_navtabs.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_no_password_prompts_scp.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_pages.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_posts.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_publishing_github_pages.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_push_build_to_server.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_release_notes_50.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_release_notes_60.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_scroll.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/js/mydoc_scroll.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_search_configuration.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_series.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_seriesdemo1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_seriesdemo2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_seriesdemo3.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_seriesdemo4.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_shuffle.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_sidebar_navigation.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_special_layouts.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_support.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_supported_features.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_syntax_highlighting.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_tables.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_tag_archives_overview.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_tags.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_themes.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_troubleshooting.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_webstorm_text_editor.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_workflow_maps.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/mydoc_yaml_tutorial.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/news.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/news_archive.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p1_landing_page.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p1_sample1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p1_sample2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p1_sample3.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p1_sample4.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p1_sample5.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p1_sample6.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p1_sample7.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_landing_page.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample10.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample11.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample12.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample13.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample14.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample3.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample4.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample5.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample6.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample7.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample8.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/p2_sample9.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</urlset>

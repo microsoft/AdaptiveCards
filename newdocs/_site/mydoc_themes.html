@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="You can choose between two different themes (one green, the other blue) for your projects. The theme CSS is stored in the CSS folder and configured in the co...">
+<meta name="keywords" content="publishing,  themes, styles, colors, css">
+<title>Themes | Jekyll theme for documentation</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<link rel="stylesheet" href="css/lavish-bootstrap.css">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="http://localhost:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Jekyll Documentation Theme</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+                
+                
+                
+                <li><a href="news">News</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Jekyll Resources<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://github.com/tomjohnson1492/documentation-theme-jekyll" target="_blank">Github Repo</a></li>
+                        
+                        
+                        
+                        <li><a href="https://talk.jekyllrb.com" target="_blank">Jekyll Talk</a></li>
+                        
+                        
+                        
+                        <li><a href="http://jekyllrb.com/docs/home/" target="_blank">Jekyll documentation</a></li>
+                        
+                        
+                        
+                        <li><a href="http://stackoverflow.com/questions/tagged/jekyll" target="_blank">Jekyll on Stack Overflow</a></li>
+                        
+                        
+                        
+                        <li><a href="http://idratherbewriting.com/category-jekyll/" target="_blank">Jekyll on my blog</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="mydoc_introduction.html">Jekyll Documentation Theme</a></li>
+                        
+                        
+                        
+                        <li><a href="p1_landing_page.html">Product 1</a></li>
+                        
+                        
+                        
+                        <li><a href="p2_landing_page.html">Product 2</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+			<li>
+
+
+
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:tomjohnson1492@gmail.com?subject=Jekyll documentation theme feedback&body=I have some feedback about the Themes page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+
+</li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Themes">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+    <div class="col-lg-12">&nbsp;</div>
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="mysidebar" class="nav">
+    <li class="sidebarTitle">Jekyll Doc Theme 6.0</li>
+    
+    
+    
+        
+    
+    <li>
+        <a href="#">Overview</a>
+        <ul>
+            
+            
+            
+            <li><a href="index.html">Get started</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_introduction.html">Introduction</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_supported_features.html">Supported features</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_about.html">About the theme author</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_support.html">Support</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Release Notes</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_release_notes_60.html">6.0 Release notes</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_release_notes_50.html">5.0 Release notes</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Installation</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_about_ruby_gems_etc.html">About Ruby, Gems, Bundler, etc.</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_install_jekyll_on_mac.html">Install Jekyll on Mac</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_install_jekyll_on_windows.html">Install Jekyll on Windows</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Authoring</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_pages.html">Pages</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_posts.html">Posts</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_lists.html">Lists</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_conditional_logic.html">Conditional logic</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_content_reuse.html">Content reuse</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_collections.html">Collections</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_webstorm_text_editor.html">WebStorm editor tips</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_atom_text_editor.html">Atom editor tips</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Navigation</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_sidebar_navigation.html">Sidebar navigation</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_yaml_tutorial.html">YAML tutorial in the context of Jekyll</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_tags.html">Tags</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_series.html">Series</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Formatting</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_adding_tooltips.html">Tooltips</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_alerts.html">Alerts</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_icons.html">Icons</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_images.html">Images</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_code_samples.html">Code samples</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_labels.html">Labels</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_hyperlinks.html">Links</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_navtabs.html">Navtabs</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_tables.html">Tables</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_syntax_highlighting.html">Syntax highlighting</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_workflow_maps.html">Workflow maps</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Handling reviews</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_commenting_on_files.html">Commenting on files</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Publishing</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_build_arguments.html">Build arguments</a></li>
+            
+            
+            
+            
+            
+            
+            <li class="active"><a href="mydoc_themes.html">Themes</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_generating_pdfs.html">Generating PDFs</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_help_api.html">Help APIs and UI tooltips</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_search_configuration.html">Search configuration</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_iterm_profiles.html">iTerm profiles</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_push_build_to_server.html">Pushing builds to server</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_no_password_prompts_scp.html">Getting around the password prompts in SCP</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_publishing_github_pages.html">Publishing on Github Pages</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Special layouts</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_kb_layout.html">Knowledge-base layout</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_glossary.html">Glossary layout</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_faq_layout.html">FAQ layout</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_scroll.html">Scroll layout</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_shuffle.html">Shuffle layout</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Troubleshooting</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_troubleshooting.html">Troubleshooting</a></li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+    
+    <li>
+        <a href="#">Tag archives</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_tag_archives_overview.html">Tag archives overview</a></li>
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">Tag archive pages</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="tag_formatting.html">Formatting pages</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="tag_navigation.html">Navigation pages</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="tag_content_types.html">Content types pages</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="tag_publishing.html">Publishing pages</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="tag_special_layouts.html">Special layout pages</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="tag_collaboration.html">Collaboration pages</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="tag_troubleshooting.html">Troubleshooting pages</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
+            
+        </ul>
+     </li>
+       
+        
+        
+        <!-- if you aren't using the accordion, uncomment this block:
+           <p class="external">
+               <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+           </p>
+           -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">Themes</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+    <div class="summary">You can choose between two different themes (one green, the other blue) for your projects. The theme CSS is stored in the CSS folder and configured in the configuration file for each project.</div>
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+    <a target="_blank" href="https://github.com/tomjohnson1492/documentation-theme-jekyll/blob/gh-pages/pages/mydoc/mydoc_themes.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+
+    
+
+  <div class="alert alert-info" role="alert"><i class="fa fa-info-circle"></i> <b>Note:</b> The <a href="https://jekyllrb.com/docs/themes/">gem-based theme</a> approach is not yet integrated into this theme.</div>
+
+<h2 id="theme-options">Theme options</h2>
+<p>You can choose a green or blue theme, or you can create your own. In the css folder, there are two theme files: theme-blue.css and theme-green.css. These files have the most common CSS elements extracted in their own CSS file. Just change the hex colors to the ones you want.</p>
+
+<p>In the _includes/head.html file, specify the theme file you want the output to use — for example, <code class="highlighter-rouge">theme_file: theme-green.css</code>. See this line:</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"css/theme-green.css"</span> <span class="nt">/&gt;</span>
+</code></pre>
+</div>
+
+<h2 id="theme-differences">Theme differences</h2>
+<p>The differences between the themes is fairly minimal. The main navigation bar, sidebar, buttons, and heading colors change color. That’s about it.</p>
+
+<p>In a more sophisticated theming approach, you could use Sass files to generate rules based on options set in a data file, but I kept things simple here.</p>
+
+
+
+    <div class="tags">
+        
+        <b>Tags: </b>
+        
+        
+        
+        <a href="tag_publishing.html" class="btn btn-default navbar-btn cursorNorm" role="button">publishing</a>
+        
+        
+        
+    </div>
+
+
+
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'idrbwjekyll'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2017 Your company. All rights reserved. <br />
+<span>Page last updated:</span> July 3, 2016<br/> Site last generated: May 5, 2017 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+    </div>
+
+</body>
+
+</html>

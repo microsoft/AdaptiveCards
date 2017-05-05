@@ -1,0 +1,989 @@
+[
+
+
+
+
+
+
+{
+"title": "Getting started with the Documentation Theme for Jekyll",
+"tags": "getting_started",
+"keywords": "sample homepage",
+"url": "index.html",
+"summary": "These brief instructions will help you get started quickly with the theme. The other topics in this help provide additional information and detail about working with other aspects of this theme and Jekyll."
+}
+,
+
+
+
+{
+"title": "About the theme author",
+"tags": "getting_started",
+"keywords": "documentation theme, jekyll, technical writers, help authoring tools, hat replacements",
+"url": "mydoc_about.html",
+"summary": "I have used this theme for projects that I've worked on as a professional technical writer."
+}
+,
+
+
+
+{
+"title": "About Ruby, Gems, Bundler, and other prerequisites",
+"tags": "getting_startedtroubleshooting",
+"keywords": "",
+"url": "mydoc_about_ruby_gems_etc.html",
+"summary": "Ruby is a programming language you must have on your computer in order to build Jekyll locally. Ruby has various gems (or plugins) that provide various functionality. Each Jekyll project usually requires certain gems."
+}
+,
+
+
+
+{
+"title": "Tooltips",
+"tags": "formatting",
+"keywords": "popovers, tooltips, user interface text, glossaries, definitions",
+"url": "mydoc_adding_tooltips.html",
+"summary": "You can add tooltips to any word, such as an acronym or specialized term. Tooltips work well for glossary definitions, because you don't have to keep repeating the definition, nor do you assume the reader already knows the word's meaning."
+}
+,
+
+
+
+{
+"title": "Alerts",
+"tags": "formatting",
+"keywords": "notes, tips, cautions, warnings, admonitions",
+"url": "mydoc_alerts.html",
+"summary": "You can insert notes, tips, warnings, and important alerts in your content. These notes make use of Bootstrap styling and are available through data references such as site.data.alerts.note."
+}
+,
+
+
+
+{
+"title": "Atom Text Editor",
+"tags": "",
+"keywords": "atom, text editor,",
+"url": "mydoc_atom_text_editor.html",
+"summary": "Atom is a free text editor that is a favorite tool of many writers because it is free. This page provides some tips for using Atom."
+}
+,
+
+
+
+{
+"title": "Build arguments",
+"tags": "publishing",
+"keywords": "building, serving, serve, build",
+"url": "mydoc_build_arguments.html",
+"summary": "You use various build arguments with your Jekyll project. You can also create shell scripts to act as shortcuts for long build commands. You can store the commands in iTerm as profiles as well."
+}
+,
+
+
+
+{
+"title": "10. Configure the build scripts",
+"tags": "publishing",
+"keywords": "build scripts, generating outputs, building, publishing",
+"url": "mydoc_build_scripts.html",
+"summary": "You need to customize the build scripts. These script automate the publishing of your PDFs and web outputs through shell scripts on the command line."
+}
+,
+
+
+
+{
+"title": "Code samples",
+"tags": "formatting",
+"keywords": "dcode samples syntax highlighting",
+"url": "mydoc_code_samples.html",
+"summary": "You can use fenced code blocks with the language specified after the first set of backtick fences."
+}
+,
+
+
+
+{
+"title": "Collections",
+"tags": "content_types",
+"keywords": "groups, api, structure",
+"url": "mydoc_collections.html",
+"summary": "Collections are useful if you want to loop through a special folder of pages that you make available in a content API. You could also use collections if you have a set of articles that you want to treat differently from the other content, with a different layout or format."
+}
+,
+
+
+
+{
+"title": "Commenting on files",
+"tags": "navigation",
+"keywords": "annotations, comments, feedback",
+"url": "mydoc_commenting_on_files.html",
+"summary": "You can add a button to your pages that allows people to add comments."
+}
+,
+
+
+
+{
+"title": "Conditional logic",
+"tags": "single_sourcing",
+"keywords": "if else logic, conditions, conditional attributes, conditional filtering",
+"url": "mydoc_conditional_logic.html",
+"summary": "You can implement advanced conditional logic that includes if statements, or statements, unless, and more. This conditional logic facilitates single sourcing scenarios in which you're outputting the same content for different audiences."
+}
+,
+
+
+
+{
+"title": "Content reuse",
+"tags": "single_sourcing",
+"keywords": "includes, conref, dita, transclusion, transclude, inclusion, reference",
+"url": "mydoc_content_reuse.html",
+"summary": "You can reuse chunks of content by storing these files in the includes folder. You then choose to include the file where you need it. This works similar to conref in DITA, except that you can include the file in any content type."
+}
+,
+
+
+
+{
+"title": "Excluding files",
+"tags": "single_sourcing",
+"keywords": "exclusion, separating outputs, removing files from outputs",
+"url": "mydoc_exluding_files.html",
+"summary": "By default, all the files in your Jekyll project are included in the output (this differs from DITA projects, which don't include files unless noted on the map). If you're single sourcing, you'll need to exclude the files that shouldn't be included in the output. The sidebar doesn't control inclusion or exclusion."
+}
+,
+
+
+
+{
+"title": "FAQ layout",
+"tags": "special_layouts",
+"keywords": "frequently asked questions, FAQ, question and answer, collapsible sections, expand, collapse",
+"url": "mydoc_faq_layout.html",
+"summary": "You can use an accordion-layout that takes advantage of Bootstrap styling. This is useful for an FAQ page."
+}
+,
+
+
+
+{
+"title": "Generating PDFs",
+"tags": "publishingsingle_sourcingcontent_types",
+"keywords": "PDF, prince, prince XML, ant, xsl fo",
+"url": "mydoc_generating_pdfs.html",
+"summary": "You can generate a PDF from your Jekyll project. You do this by creating a web version of your project that is printer friendly. You then use utility called Prince to iterate through the pages and create a PDF from them. It works quite well and gives you complete control to customize the PDF output through CSS, including page directives and dynamic tags from Prince."
+}
+,
+
+
+
+{
+"title": "Glossary layout",
+"tags": "formattingspecial_layouts",
+"keywords": "definitions, glossaries, terms, style guide",
+"url": "mydoc_glossary.html",
+"summary": "Your glossary page can take advantage of definitions stored in a data file. This gives you the ability to reuse the same definition in multiple places. Additionally, you can use Bootstrap classes to arrange your definition list horizontally."
+}
+,
+
+
+
+{
+"title": "Help APIs and UI tooltips",
+"tags": "publishingsingle_sourcingcontent_types",
+"keywords": "API, content API, UI text, inline help, context-sensitive help, popovers, tooltips",
+"url": "mydoc_help_api.html",
+"summary": "You can loop through files and generate a JSON file that developers can consume like a help API. Developers can pull in values from the JSON into interface elements, styling them as popovers for user interface text, for example. The beauty of this method is that the UI text remains in the help system (or at least in a single JSON file delivered to the dev team) and isn't hard-coded into the UI."
+}
+,
+
+
+
+{
+"title": "Links",
+"tags": "formattingnavigation",
+"keywords": "links, hyperlinks, cross references, related links, relationship tables",
+"url": "mydoc_hyperlinks.html",
+"summary": "When creating links, you can use standard HTML or Markdown formatting. However, you can also implement an automated approach to linking that makes linking much less error-prone (meaning less chances of broken links in your output) and requiring less effort."
+}
+,
+
+
+
+{
+"title": "Icons",
+"tags": "formatting",
+"keywords": "font icons, buttons, images, vectors, font awesome, glyphicons",
+"url": "mydoc_icons.html",
+"summary": "You can integrate font icons through the Font Awesome and Glyphical Halflings libraries. These libraries allow you to embed icons through their libraries delivered as a link reference. You don't need any image libraries downloaded in your project."
+}
+,
+
+
+
+{
+"title": "Images",
+"tags": "formatting",
+"keywords": "images, screenshots, vectors, svg, markdown syntax",
+"url": "mydoc_images.html",
+"summary": "Store images in the images folder and use the image.html include to insert images. This include has several options, including figcaptions, that extract the content from the formatting."
+}
+,
+
+
+
+{
+"title": "Install Jekyll on Mac",
+"tags": "getting_startedtroubleshooting",
+"keywords": "",
+"url": "mydoc_install_jekyll_on_mac.html",
+"summary": "Installation of Jekyll on Mac is usually less problematic than on Windows. However, you may run into permissions issues with Ruby that you must overcome. You should also use Bundler to be sure that you have all the required gems and other utilities on your computer to make the project run."
+}
+,
+
+
+
+{
+"title": "Install Jekyll on Windows",
+"tags": "",
+"keywords": "jekyll on windows, pc, ruby, ruby dev kit",
+"url": "mydoc_install_jekyll_on_windows.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Introduction",
+"tags": "",
+"keywords": "",
+"url": "mydoc_introduction.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "iTerm profiles",
+"tags": "publishing",
+"keywords": "iterm, terminal, build shortcuts, mac",
+"url": "mydoc_iterm_profiles.html",
+"summary": "You can set up profiles in iTerm to facilitate the build process with just a few clicks. This can make it a lot easier to quickly build multiple outputs."
+}
+,
+
+
+
+{
+"title": "Knowledge-base layout",
+"tags": "special_layouts",
+"keywords": "knowledge base, support portal, grid, doc portal",
+"url": "mydoc_kb_layout.html",
+"summary": "This shows a sample layout for a knowledge base. Each square could link to a tag archive page. In this example, font icons from Font Awesome are used for the graphics, and the layout is pulled from the Modern Business theme. ."
+}
+,
+
+
+
+{
+"title": "Labels",
+"tags": "formatting",
+"keywords": "labels, buttons, bootstrap, api methods",
+"url": "mydoc_labels.html",
+"summary": "Labels are just a simple Bootstrap component that you can include in your pages as needed. They represent one of many Bootstrap options you can include in your theme."
+}
+,
+
+
+
+{
+"title": "Lists",
+"tags": "formatting",
+"keywords": "bulleted lists, numbered lists",
+"url": "mydoc_lists.html",
+"summary": "This page shows how to create both bulleted and numbered lists"
+}
+,
+
+
+
+{
+"title": "Navtabs",
+"tags": "formatting",
+"keywords": "navigation tabs, hide sections, tabbers, interface tabs",
+"url": "mydoc_navtabs.html",
+"summary": "Navtabs provide a tab-based navagation directly in your content, allowing users to click from tab to tab to see different panels of content. Navtabs are especially helpful for showing code samples for different programming languages. The only downside to using navtabs is that you must use HTML instead of Markdown."
+}
+,
+
+
+
+{
+"title": "Getting around the password prompts in SCP",
+"tags": "publishingtroubleshooting",
+"keywords": "",
+"url": "mydoc_no_password_prompts_scp.html",
+"summary": "You can publish your docs via SSH through a Terminal window or more likely, via a shell script that you simply execute as part of the publishing process. However, you will be prompted for your password with each file transfer unless you configure passwordless SSH. The basic process for setting up password less SSH is to create a key on your own machine that you also transfer to the remote machine. When you use the SCP command, the remote machine checks that you have the authorized key and allows access without a password prompt."
+}
+,
+
+
+
+{
+"title": "Pages",
+"tags": "getting_startedformattingcontent_types",
+"keywords": "pages, authoring, exclusion, frontmatter",
+"url": "mydoc_pages.html",
+"summary": "This theme primarily uses pages. You need to make sure your pages have the appropriate frontmatter. One frontmatter tag your users might find helpful is the summary tag. This functions similar in purpose to the shortdesc element in DITA."
+}
+,
+
+
+
+{
+"title": "Posts",
+"tags": "getting_startedformattingcontent_types",
+"keywords": "posts, blog, news, authoring, exclusion, frontmatter",
+"url": "mydoc_posts.html",
+"summary": "You can use posts when you want to create blogs or news type of content."
+}
+,
+
+
+
+{
+"title": "Publishing on Github Pages",
+"tags": "",
+"keywords": "",
+"url": "mydoc_publishing_github_pages.html",
+"summary": "You can publish your project on Github Pages, which is a free web hosting service provided by Github. All you need is to put your content into a Github repo branch called gh-pages and make this your default branch in your repo. With a Jekyll site, you just commit your entire project into the gh-pages branch and Github Pages will build the site for you."
+}
+,
+
+
+
+{
+"title": "Pushing builds to server",
+"tags": "publishing",
+"keywords": "AWS, Amazon, command line, pushing build",
+"url": "mydoc_push_build_to_server.html",
+"summary": "You can push your build to AWS using commands from the command line. By including your copy commands in commands, you can package all of the build and deploy process into executable scripts."
+}
+,
+
+
+
+{
+"title": "Release notes 5.0",
+"tags": "getting_started",
+"keywords": "release notes, announcements, what's new, new features",
+"url": "mydoc_release_notes_50.html",
+"summary": "Version 5.0 of the Documentation theme for Jekyll changes some fundamental ways the theme works to provide product-specific sidebars, intended to accommodate a site where multiple products are grouped together on the same site rather than generated out as separate outputs."
+}
+,
+
+
+
+{
+"title": "Release notes 6.0",
+"tags": "getting_started",
+"keywords": "release notes, announcements, what's new, new features",
+"url": "mydoc_release_notes_60.html",
+"summary": "Version 6.0 of the Documentation theme for Jekyll, released July 4, 2016, implements relative links so you can view the files offline or on any server without configuring urls and baseurls. Additionally, you can store pages in subdirectories. Templates for alerts and images are available."
+}
+,
+
+
+
+{
+"title": "Scroll layout",
+"tags": "special_layouts",
+"keywords": "json, scrolling, scrollto, jquery plugin",
+"url": "mydoc_scroll.html",
+"summary": "This page demonstrates how you the integration of a script called ScrollTo, which is used here to link definitions of a JSON code sample to a list of definitions for that particular term. The scenario here is that the JSON blocks are really long, with extensive nesting and subnesting, which makes it difficult for tables below the JSON to adequately explain the term in a usable way."
+}
+,
+
+
+
+{
+"title": "Scroll layout",
+"tags": "special_layouts",
+"keywords": "json, scrolling, scrollto, jquery plugin",
+"url": "jsmydoc_scroll.html",
+"summary": "This page demonstrates how you the integration of a script called ScrollTo, which is used here to link definitions of a JSON code sample to a list of definitions for that particular term. The scenario here is that the JSON blocks are really long, with extensive nesting and subnesting, which makes it difficult for tables below the JSON to adequately explain the term in a usable way."
+}
+,
+
+
+
+{
+"title": "Search configuration",
+"tags": "publishingnavigation",
+"keywords": "search, json, configuration, findability",
+"url": "mydoc_search_configuration.html",
+"summary": "The search feature uses JavaScript to look for keyword matches in a JSON file. The results show instant matches, but it doesn't provide a search results page like Google. Also, sometimes invalid formatting can break the JSON file."
+}
+,
+
+
+
+{
+"title": "Series",
+"tags": "content_types",
+"keywords": "series, connected articles, tutorials, hello world",
+"url": "mydoc_series.html",
+"summary": "You can automatically link together topics belonging to the same series. This helps users know the context within a particular process."
+}
+,
+
+
+
+{
+"title": "Series demo 1",
+"tags": "",
+"keywords": "",
+"url": "mydoc_seriesdemo1.html",
+"summary": "This is the first post in the series."
+}
+,
+
+
+
+{
+"title": "Series demo 2",
+"tags": "",
+"keywords": "",
+"url": "mydoc_seriesdemo2.html",
+"summary": "This is the second post in the series."
+}
+,
+
+
+
+{
+"title": "Series demo 3",
+"tags": "",
+"keywords": "",
+"url": "mydoc_seriesdemo3.html",
+"summary": "This is the third post in the series."
+}
+,
+
+
+
+{
+"title": "Series demo 4",
+"tags": "",
+"keywords": "",
+"url": "mydoc_seriesdemo4.html",
+"summary": "This is the fourth post in the series."
+}
+,
+
+
+
+{
+"title": "Shuffle layout",
+"tags": "special_layouts",
+"keywords": "shuffle, card layout, dynamic grid, doc portal, support portal",
+"url": "mydoc_shuffle.html",
+"summary": "This layout shows an example of a knowledge-base style navigation system, where there is no hierarchy, just groups of pages that have certain tags."
+}
+,
+
+
+
+{
+"title": "Sidebar Navigation",
+"tags": "getting_started",
+"keywords": "sidebar, accordion, yaml, iteration, for loop, navigation, attributes, conditional filtering",
+"url": "mydoc_sidebar_navigation.html",
+"summary": "The sidebar navigation uses a jQuery component called Navgoco. The sidebar is a somewhat complex part of the theme that remembers your current page, highlights the active item, stays in a fixed position on the page, and more. This page explains a bit about how the sidebar was put together."
+}
+,
+
+
+
+{
+"title": "Special layouts overview",
+"tags": "special_layouts",
+"keywords": "layouts, information design, presentation",
+"url": "mydoc_special_layouts.html",
+"summary": "This theme has a few special layouts. Special layouts include the JS files they need directly in the page. The JavaScript for each special layout does not load by default for every page in the site."
+}
+,
+
+
+
+{
+"title": "Support",
+"tags": "getting_startedtroubleshooting",
+"keywords": "questions, troubleshooting, contact, support",
+"url": "mydoc_support.html",
+"summary": "Contact me for any support issues."
+}
+,
+
+
+
+{
+"title": "Supported features",
+"tags": "getting_started",
+"keywords": "features, capabilities, scalability, multichannel output, dita, hats, comparison, benefits",
+"url": "mydoc_supported_features.html",
+"summary": "If you're not sure whether Jekyll and this theme will support your requirements, this list provides a semi-comprehensive overview of available features."
+}
+,
+
+
+
+{
+"title": "Syntax highlighting",
+"tags": "formatting",
+"keywords": "rouge, pygments, prettify, color coding,",
+"url": "mydoc_syntax_highlighting.html",
+"summary": "You can apply syntax highlighting to your code. This theme uses pygments and applies color coding based on the lexer you specify."
+}
+,
+
+
+
+{
+"title": "Tables",
+"tags": "formatting",
+"keywords": "datatables, tables, grids, markdown, multimarkdown, jquery plugins",
+"url": "mydoc_tables.html",
+"summary": "You can format tables using either multimarkdown syntax or HTML. You can also use jQuery datatables (a plugin) if you need more robust tables."
+}
+,
+
+
+
+{
+"title": "Tag archives overview",
+"tags": "navigation",
+"keywords": "archives, tagging",
+"url": "mydoc_tag_archives_overview.html",
+"summary": "This is an overview to the tag archives section. Really the only reason this section is listed explicitly in the TOC here is to demonstrate how to add a third-level to the navigation."
+}
+,
+
+
+
+{
+"title": "Tags",
+"tags": "navigation",
+"keywords": "tags, navigation, buttons, links, association",
+"url": "mydoc_tags.html",
+"summary": "Tags provide another means of navigation for your content. Unlike the table of contents, tags can show the content in a variety of arrangements and groupings. Implementing tags in this Jekyll theme is somewhat of a manual process."
+}
+,
+
+
+
+{
+"title": "Themes",
+"tags": "publishing",
+"keywords": "themes, styles, colors, css",
+"url": "mydoc_themes.html",
+"summary": "You can choose between two different themes (one green, the other blue) for your projects. The theme CSS is stored in the CSS folder and configured in the configuration file for each project."
+}
+,
+
+
+
+{
+"title": "Troubleshooting",
+"tags": "troubleshooting",
+"keywords": "trouble, problems, support, error messages, problems, failure, error,",
+"url": "mydoc_troubleshooting.html",
+"summary": "This page lists common errors and the steps needed to troubleshoot them."
+}
+,
+
+
+
+{
+"title": "WebStorm Text Editor",
+"tags": "",
+"keywords": "webstorm, sublime, markdown, atom, gnome, notepad ++, textpad, bbedit",
+"url": "mydoc_webstorm_text_editor.html",
+"summary": "You can use a variety of text editors when working with a Jekyll project. WebStorm from IntelliJ offers a lot of project-specific features, such as find and replace, that make it ideal for working with tech comm projects."
+}
+,
+
+
+
+{
+"title": "Workflow maps",
+"tags": "formatting",
+"keywords": "release notes, announcements, what's new, new features",
+"url": "mydoc_workflow_maps.html",
+"summary": "Version 6.0 of the Documentation theme for Jekyll reverts back to relative links so you can view the files offline. Additionally, you can store pages in subdirectories. Templates for alerts and images are available."
+}
+,
+
+
+
+{
+"title": "YAML tutorial in the context of Jekyll",
+"tags": "formatting",
+"keywords": "search",
+"url": "mydoc_yaml_tutorial.html",
+"summary": "YAML is a format that relies on white spacing to separate out the various elements of content. Jekyll lets you use Liquid with YAML as a way to parse through the data. Storing items for your table of contents is one of the most common uses of YAML with Jekyll."
+}
+,
+
+
+
+{
+"title": "News",
+"tags": "",
+"keywords": "news, blog, updates, release notes, announcements",
+"url": "news.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "News",
+"tags": "",
+"keywords": "news, blog, updates, release notes, announcements",
+"url": "news_archive.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Product 1",
+"tags": "",
+"keywords": "mydoc",
+"url": "p1_landing_page.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Sample 1 Topic (Product 1)",
+"tags": "",
+"keywords": "sample",
+"url": "p1_sample1.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 2 Topic (Product 1)",
+"tags": "",
+"keywords": "sample",
+"url": "p1_sample2.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 3 Topic (Product 1)",
+"tags": "",
+"keywords": "sample",
+"url": "p1_sample3.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 4 Topic (Product 1)",
+"tags": "",
+"keywords": "sample",
+"url": "p1_sample4.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 5 Topic (Product 1)",
+"tags": "",
+"keywords": "sample",
+"url": "p1_sample5.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 6 Topic (Product 1)",
+"tags": "",
+"keywords": "sample",
+"url": "p1_sample6.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 7 Topic (Product 1)",
+"tags": "",
+"keywords": "sample",
+"url": "p1_sample7.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Product 2",
+"tags": "",
+"keywords": "mydoc",
+"url": "p2_landing_page.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Sample 1 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample1.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 10 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample10.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 11 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample11.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 12 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample12.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 13 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample13.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 14 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample14.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 2 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample2.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 3 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample3.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 4 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample4.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 5 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample5.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 6 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample6.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 7 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample7.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 8 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample8.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+{
+"title": "Sample 9 Topic",
+"tags": "",
+"keywords": "sample",
+"url": "p2_sample9.html",
+"summary": "This is just a sample topic..."
+}
+,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+"title": "Sample post",
+"tags": "newsgetting_started",
+"keywords": "",
+"url": "samplepost.html",
+"summary": "This is some summary frontmatter for my sample post."
+}
+,
+
+
+{
+"title": "Welcome to Jekyll!",
+"tags": "news",
+"keywords": "",
+"url": "myupdate.html",
+"summary": ""
+}
+,
+
+
+{
+"title": "Test post from last year",
+"tags": "news",
+"keywords": "",
+"url": "test-post-from-last-year.html",
+"summary": ""
+}
+
+
+
+]
