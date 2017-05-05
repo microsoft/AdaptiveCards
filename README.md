@@ -1,4 +1,4 @@
-![adaptive-cards](assets/adaptive-card-100.png) 
+![adaptive-cards](assets/adaptive-cards-100.png) 
 
 # Introducing Adaptive Cards
 
