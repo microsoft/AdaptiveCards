@@ -18,8 +18,8 @@ std::shared_ptr<InputNumber> InputNumber::Deserialize(const Json::Value& json)
 
     inputNumber->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
     inputNumber->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));
-    inputNumber->SetMax(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Max, INT_MAX));
-    inputNumber->SetMin(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Min, INT_MIN));
+    inputNumber->SetMax(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Max, std::numeric_limits<int>::max()));
+    inputNumber->SetMin(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Min, std::numeric_limits<int>::min()));
 
     return inputNumber;
 }

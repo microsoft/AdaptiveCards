@@ -109,7 +109,7 @@ int ParseUtil::GetInt(const Json::Value & json, AdaptiveCardSchemaKey key, int d
 
     if (!propertyValue.isInt())
     {
-        throw AdaptiveCardParseException("Value was invalid. Expected type uInt.");
+        throw AdaptiveCardParseException("Value was invalid. Expected type int.");
     }
 
     return propertyValue.asInt();
