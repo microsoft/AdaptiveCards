@@ -1,48 +1,4 @@
-﻿body {
-    font-family: 'Segoe UI', sans-serif;
-}
-
-table {
-    border-spacing: 10px;
-}
-
-th {
-    text-align: left
-}
-
-h1 {
-    font-size: xx-large;
-    cursor: pointer;
-}
-
-h2 {
-    font-size: x-large;
-    cursor: pointer;
-}
-
-h3 {
-    font-size: medium;
-    cursor: pointer;
-}
-
-.w3-container {
-    margin-top: 39px;
-    margin-left: 256px;
-}
-
-.w3-sidebar {
-    width: 256px;
-    font-family: "Segoe UI";
-    font-size: 15px;
-    font-weight:600;
-}
-
-.w3-bar-block .w3-bar-item {
-    padding-left: 24px;
-    height: 42px;
-}
-
-
+﻿
 .card {
     background - color:rgb(250, 250, 250);
     border: 1px solid #ccc;

@@ -5,16 +5,17 @@
     <title></title>
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/content/shared.css">
     <script>
         function myAccFunc(sectionName) {
             var x = document.getElementById(sectionName);
             if (x.className.indexOf("w3-show") == -1) {
                 x.className += " w3-show";
-                x.previousElementSibling.className += " w3-green";
+                x.previousElementSibling.className += " w3-gray";
             } else {
                 x.className = x.className.replace(" w3-show", "");
                 x.previousElementSibling.className =
-                    x.previousElementSibling.className.replace(" w3-green", "");
+                    x.previousElementSibling.className.replace(" w3-gray", "");
             }
         }
 
@@ -22,11 +23,11 @@
             var x = document.getElementById("demoDrop");
             if (x.className.indexOf("w3-show") == -1) {
                 x.className += " w3-show";
-                x.previousElementSibling.className += " w3-green";
+                x.previousElementSibling.className += " w3-gray";
             } else {
                 x.className = x.className.replace(" w3-show", "");
                 x.previousElementSibling.className =
-                    x.previousElementSibling.className.replace(" w3-green", "");
+                    x.previousElementSibling.className.replace(" w3-gray", "");
             }
         }
     </script>
@@ -45,16 +46,15 @@
     </div>
 
     <!-- side bar with accordion -->
-
-    <div class="w3-sidebar w3-light-grey w3-card-2" style="width:200px">
+    <div class="w3-sidebar w3-light-grey w3-card-2 w3-bar-block">
         <a href="#" class="w3-bar-item w3-button">About Adaptive Cards</a>
         <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('create')">Creating a card</button>
-        <div id="create" class="w3-bar-block w3-hide w3-white w3-card-4">
+        <div id="create" class="w3-bar-block w3-white w3-card-4">
             <a href="#" class="w3-bar-item w3-button">Getting started</a>
             <a href="#" class="w3-bar-item w3-button">Schema</a>
         </div>
         <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('displayCard')">Display a card</button>
-        <div id="displayCard" class="w3-bar-block w3-hide w3-white w3-card-4">
+        <div id="displayCard" class="w3-bar-block w3-white w3-card-4">
             <a href="#" class="w3-bar-item w3-button">Getting started</a>
             <a href="#" class="w3-bar-item w3-button">Actions</a>
             <a href="#" class="w3-bar-item w3-button">Libraries</a>
@@ -63,16 +63,19 @@
             <a href="#" class="w3-bar-item w3-button">Writing a new renderer</a>
         </div>
         <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('samples')">Samples</button>
-        <div id="samples" class="w3-bar-block w3-hide w3-white w3-card-4">
+        <div id="samples" class="w3-bar-block w3-white w3-card-4">
             <a href="#" class="w3-bar-item w3-button">Elements</a>
             <a href="#" class="w3-bar-item w3-button">Scenarios</a>
         </div>
         <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('resources')">Resources</button>
-        <div id="resources" class="w3-bar-block w3-hide w3-white w3-card-4">
+        <div id="resources" class="w3-bar-block w3-white w3-card-4">
             <a href="#" class="w3-bar-item w3-button">Partners</a>
             <a href="#" class="w3-bar-item w3-button">Projects</a>
             <a href="#" class="w3-bar-item w3-button">Bot Framework</a>
         </div>
+    </div>
+    <div class="w3-container">
+        todo...
     </div>
 </body>
 </html>

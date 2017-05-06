@@ -3,8 +3,9 @@
     <meta charset = "utf-8" />
     <title>Adaptive Cards - Element Explorer</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <script src = "/node_modules/adaptive-cards/dist/adaptive-cards.js"></script> 
+	<link rel="stylesheet" href="/content/shared.css">
 	<link rel="stylesheet" href="/explorer/explorer.css">
+    <script src = "/node_modules/adaptive-cards/dist/adaptive-cards.js"></script> 
 	<script src="/explorer/explorer.js"></script>
 </head>
 
