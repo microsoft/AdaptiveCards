@@ -193,12 +193,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
-    HRESULT XamlBuilder::SetBackgroundImageUri(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri) noexcept
-    {
-        m_backgroundImageUri = imageUri;
-        return S_OK;
-    }
-
     HRESULT XamlBuilder::SetOverrideDictionary(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) noexcept try
     {
         if (overrideDictionary != nullptr)
@@ -305,11 +299,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // StackPanel - The container for all the card's body elements
         ComPtr<IGrid> rootElement = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
 
-
         ComPtr<IPanel> rootAsPanel;
         THROW_IF_FAILED(rootElement.As(&rootAsPanel));
         ComPtr<IUriRuntimeClass> backgroundImageUrl;
-        if (SUCCEEDED(adaptiveCard->get_BackgroundImageUrl(&backgroundImageUrl)) && backgroundImageUrl.Get() != nullptr)
+        if (SUCCEEDED(adaptiveCard->get_BackgroundImageUrl(&backgroundImageUrl)))
         {
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get());
         }

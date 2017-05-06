@@ -117,17 +117,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT AdaptiveCard::get_BackgroundImageUrl(IUriRuntimeClass** url)
     {
         *url = nullptr;
-        if (!m_sharedAdaptiveCard->GetBackgroundImageUrl().empty())
-        {
-            ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-            RETURN_IF_FAILED(GetActivationFactory(
-                HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-                &uriActivationFactory));
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        RETURN_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
 
-            HSTRING imageUri;
-            RETURN_IF_FAILED(UTF8ToHString(m_sharedAdaptiveCard->GetBackgroundImageUrl(), &imageUri));
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, url));
-        }
+        HSTRING imageUri;
+        RETURN_IF_FAILED(UTF8ToHString(m_sharedAdaptiveCard->GetBackgroundImageUrl(), &imageUri));
+        RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, url));
         return S_OK;
     }
 
