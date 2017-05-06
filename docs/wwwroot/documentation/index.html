@@ -5,72 +5,74 @@
     <title></title>
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<script>
-function myAccFunc(sectionName) {
-    var x = document.getElementById(sectionName);
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-        x.previousElementSibling.className += " w3-green";
-    } else { 
-        x.className = x.className.replace(" w3-show", "");
-        x.previousElementSibling.className = 
-        x.previousElementSibling.className.replace(" w3-green", "");
-    }
-}
+    <script>
+        function myAccFunc(sectionName) {
+            var x = document.getElementById(sectionName);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-green";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-green", "");
+            }
+        }
 
-function myDropFunc() {
-    var x = document.getElementById("demoDrop");
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-        x.previousElementSibling.className += " w3-green";
-    } else { 
-        x.className = x.className.replace(" w3-show", "");
-        x.previousElementSibling.className = 
-        x.previousElementSibling.className.replace(" w3-green", "");
-    }
-}
-</script>
+        function myDropFunc() {
+            var x = document.getElementById("demoDrop");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-green";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-green", "");
+            }
+        }
+    </script>
 </head>
 <body>
     <!-- Nav bar-->
-    <div class="w3-bar w3-black">
-        <a href="/"><img src="/content/icons_transparent/white-48.png" height="38" style="float:left;" /></a>
-        <a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
-        <a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
-        <a href="/explorer" class="w3-bar-item w3-button w3-mobile">Element Explorer</a>
-        <a href="/visualizer" class="w3-bar-item w3-button w3-mobile">Visualizer</a>
-        <a href="#" class="w3-bar-item w3-button w3-mobile">Samples</a>
-    </div> 
+    <div class="w3-top">
+        <div class="w3-bar w3-black">
+            <a href="/"><img src="/content/icons_transparent/white-48.png" height="38" style="float:left;" /></a>
+            <a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
+            <a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
+            <a href="/explorer" class="w3-bar-item w3-button w3-mobile">Element Explorer</a>
+            <a href="/visualizer" class="w3-bar-item w3-button w3-mobile">Visualizer</a>
+            <a href="#" class="w3-bar-item w3-button w3-mobile">Samples</a>
+        </div>
+    </div>
 
     <!-- side bar with accordion -->
 
-<div class="w3-sidebar w3-light-grey w3-card-2" style="width:200px">
-  <a href="#" class="w3-bar-item w3-button">About Adaptive Cards</a> 
-  <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('create')">Creating a card</button>
-  <div id="create" class="w3-bar-block w3-hide w3-white w3-card-4">
-    <a href="#" class="w3-bar-item w3-button">Getting started</a>
-    <a href="#" class="w3-bar-item w3-button">Schema</a>
-  </div>
- <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('displayCard')">Display a card</button>
-  <div id="displayCard" class="w3-bar-block w3-hide w3-white w3-card-4">
-    <a href="#" class="w3-bar-item w3-button">Getting started</a>
-    <a href="#" class="w3-bar-item w3-button">Actions</a>
-	<a href="#" class="w3-bar-item w3-button">Libraries</a>
-	<a href="#" class="w3-bar-item w3-button">Styling</a>
-	<a href="#" class="w3-bar-item w3-button">Customizing a renderer</a>
-	<a href="#" class="w3-bar-item w3-button">Writing a new renderer</a>			
-  </div>
-   <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('samples')">Samples</button>
-  <div id="samples" class="w3-bar-block w3-hide w3-white w3-card-4">
-    <a href="#" class="w3-bar-item w3-button">Elements</a>
-    <a href="#" class="w3-bar-item w3-button">Scenarios</a>			
-  </div>
-   <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('resources')">Resources</button>
-  <div id="resources" class="w3-bar-block w3-hide w3-white w3-card-4">
-    <a href="#" class="w3-bar-item w3-button">Partners</a>
-    <a href="#" class="w3-bar-item w3-button">Projects</a>
-	<a href="#" class="w3-bar-item w3-button">Bot Framework</a>		
-  </div>
-</div>
+    <div class="w3-sidebar w3-light-grey w3-card-2" style="width:200px">
+        <a href="#" class="w3-bar-item w3-button">About Adaptive Cards</a>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('create')">Creating a card</button>
+        <div id="create" class="w3-bar-block w3-hide w3-white w3-card-4">
+            <a href="#" class="w3-bar-item w3-button">Getting started</a>
+            <a href="#" class="w3-bar-item w3-button">Schema</a>
+        </div>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('displayCard')">Display a card</button>
+        <div id="displayCard" class="w3-bar-block w3-hide w3-white w3-card-4">
+            <a href="#" class="w3-bar-item w3-button">Getting started</a>
+            <a href="#" class="w3-bar-item w3-button">Actions</a>
+            <a href="#" class="w3-bar-item w3-button">Libraries</a>
+            <a href="#" class="w3-bar-item w3-button">Styling</a>
+            <a href="#" class="w3-bar-item w3-button">Customizing a renderer</a>
+            <a href="#" class="w3-bar-item w3-button">Writing a new renderer</a>
+        </div>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('samples')">Samples</button>
+        <div id="samples" class="w3-bar-block w3-hide w3-white w3-card-4">
+            <a href="#" class="w3-bar-item w3-button">Elements</a>
+            <a href="#" class="w3-bar-item w3-button">Scenarios</a>
+        </div>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('resources')">Resources</button>
+        <div id="resources" class="w3-bar-block w3-hide w3-white w3-card-4">
+            <a href="#" class="w3-bar-item w3-button">Partners</a>
+            <a href="#" class="w3-bar-item w3-button">Projects</a>
+            <a href="#" class="w3-bar-item w3-button">Bot Framework</a>
+        </div>
+    </div>
 </body>
 </html>

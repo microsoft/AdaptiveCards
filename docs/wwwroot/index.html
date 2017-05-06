@@ -5,54 +5,58 @@
     <title></title>
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<script>
-function myAccFunc(sectionName) {
-    var x = document.getElementById(sectionName);
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-        x.previousElementSibling.className += " w3-green";
-    } else { 
-        x.className = x.className.replace(" w3-show", "");
-        x.previousElementSibling.className = 
-        x.previousElementSibling.className.replace(" w3-green", "");
-    }
-}
+    <script>
+        function myAccFunc(sectionName) {
+            var x = document.getElementById(sectionName);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-green";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-green", "");
+            }
+        }
 
-function myDropFunc() {
-    var x = document.getElementById("demoDrop");
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-        x.previousElementSibling.className += " w3-green";
-    } else { 
-        x.className = x.className.replace(" w3-show", "");
-        x.previousElementSibling.className = 
-        x.previousElementSibling.className.replace(" w3-green", "");
-    }
-}
-</script>
+        function myDropFunc() {
+            var x = document.getElementById("demoDrop");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-green";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-green", "");
+            }
+        }
+    </script>
 </head>
 <body>
     <!-- Nav bar-->
-    <div class="w3-bar w3-black">
-        <a href="/"><img src="/content/icons_transparent/white-48.png" height="38" style="float:left;" /></a>
-        <a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
-        <a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
-        <a href="/explorer" class="w3-bar-item w3-button w3-mobile">Element Explorer</a>
-        <a href="/visualizer" class="w3-bar-item w3-button w3-mobile">Visualizer</a>
-        <a href="#" class="w3-bar-item w3-button w3-mobile">Samples</a>
-    </div> 
+    <div class="w3-top">
+        <div class="w3-bar w3-black">
+            <a href="/"><img src="/content/icons_transparent/white-48.png" height="38" style="float:left;" /></a>
+            <a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
+            <a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
+            <a href="/explorer" class="w3-bar-item w3-button w3-mobile">Element Explorer</a>
+            <a href="/visualizer" class="w3-bar-item w3-button w3-mobile">Visualizer</a>
+            <a href="#" class="w3-bar-item w3-button w3-mobile">Samples</a>
+        </div>
+    </div>
 
     <!-- main content -->
-    <h1>Introducing Adaptive Cards</h1>
+    <div class="w3-container" style="margin-top:38px;">
+        <h1>Introducing Adaptive Cards</h1>
 
-    <p>Adaptive Cards is a JSON format which gives developers the ability deliver great lookin cards to any device or client.</p>
+        <p>Adaptive Cards is a JSON format which gives developers the ability deliver great lookin cards to any device or client.</p>
 
-    <h2>Developer features</h2>
-    <ul>
-        <li>Simple by expressive JSON layout gives developers ability easily create rich great looking cards across any device or client!</li>
-        <li>Rich inut controls (text, date, time, etc) allows developer to collect information from users!</li>
-        <li>Speech enabled from Day one!</li>
-        <li>Open source libraries available via npm, nuget, etc. allows for easy integration into your application!</li>
-    </ul>
+        <h2>Developer features</h2>
+        <ul>
+            <li>Simple by expressive JSON layout gives developers ability easily create rich great looking cards across any device or client!</li>
+            <li>Rich inut controls (text, date, time, etc) allows developer to collect information from users!</li>
+            <li>Speech enabled from Day one!</li>
+            <li>Open source libraries available via npm, nuget, etc. allows for easy integration into your application!</li>
+        </ul>
+    </div>
 </body>
 </html>

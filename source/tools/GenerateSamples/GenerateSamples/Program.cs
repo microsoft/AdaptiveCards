@@ -37,7 +37,7 @@ namespace GenerateSamples
             {
                 writer.WriteLine(preamble);
                 // side bar
-                writer.WriteLine("<div class=\"w3-sidebar w3-light-grey w3-card-2 w3-bar-block\" style=\"width:200px\">");
+                writer.WriteLine("<div class=\"w3-sidebar w3-light-grey w3-card-2 w3-bar-block\">");
                 int i = 0;
                 foreach (var element in elements)
                 {
@@ -46,6 +46,8 @@ namespace GenerateSamples
                     writer.WriteLine($"<a href=\"#\" id='{elementName}Link' onclick=\"showElement('{elementName}')\" class=\"elementLink w3-bar-item w3-button{highlight}\">{element}</a>");
                 }
                 writer.WriteLine("</div>");
+
+                writer.WriteLine("<div class=\"w3-container\">");
                 i = 0;
                 foreach (var element in elements)
                 {
@@ -72,6 +74,7 @@ namespace GenerateSamples
                     writer.WriteLine($"</div>");
 
                 }
+                writer.WriteLine("</div>");
                 writer.WriteLine("</body></html>");
                 writer.Flush();
             }

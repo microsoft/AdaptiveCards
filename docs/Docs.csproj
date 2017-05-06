@@ -14,7 +14,9 @@
     <Content Include="wwwroot\documentation\index.html" />
     <Content Include="wwwroot\explorer.html" />
     <Content Include="wwwroot\explorer\adaptive-cards.js" />
+    <Content Include="wwwroot\explorer\explorer.css" />
     <Content Include="wwwroot\explorer\explorer.html" />
+    <Content Include="wwwroot\explorer\explorer.js" />
     <Content Include="wwwroot\explorer\index.html" />
     <Content Include="wwwroot\index.html" />
   </ItemGroup>
