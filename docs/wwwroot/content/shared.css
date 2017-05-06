@@ -17,7 +17,11 @@ h3 {
     cursor: pointer;
 }
 
-.w3-container {
+.content {
+    margin-top: 39px;
+}
+
+.content-sidebar {
     margin-top: 39px;
     margin-left: 256px;
 }

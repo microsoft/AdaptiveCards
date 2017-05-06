@@ -25,15 +25,20 @@ namespace Docs.Controllers
         private static Random rnd = new Random();
 
         [HttpGet]
-        [Route("")]
-        [Route("{id}")]
-        public FileContentResult Get(int? id = null)
+        public RedirectResult Get()
         {
             var path = Path.Combine(_env.WebRootPath, "content");
             var cats = Directory.EnumerateFiles(path, "Cat*.png").ToList();
-            if (id.HasValue)
-                return new FileContentResult(System.IO.File.ReadAllBytes(cats[id.Value]), "image/png");
-            return new FileContentResult(System.IO.File.ReadAllBytes(cats[rnd.Next(0, cats.Count)]), "image/png");
+            return new RedirectResult($"/api/cat/{rnd.Next(cats.Count)}");
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public FileContentResult Get(int id)
+        {
+            var path = Path.Combine(_env.WebRootPath, "content");
+            var cats = Directory.EnumerateFiles(path, "Cat*.png").ToList();
+            return new FileContentResult(System.IO.File.ReadAllBytes(cats[id]), "image/png");
         }
 
     }

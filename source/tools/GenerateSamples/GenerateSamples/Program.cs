@@ -47,7 +47,7 @@ namespace GenerateSamples
                 }
                 writer.WriteLine("</div>");
 
-                writer.WriteLine("<div class=\"w3-container\">");
+                writer.WriteLine("<div class=\"w3-container content-sidebar\">");
                 i = 0;
                 foreach (var element in elements)
                 {
