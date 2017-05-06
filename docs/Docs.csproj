@@ -22,9 +22,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Include="wwwroot\index.html" />
-    <Content Include="wwwroot\markdown\GettingStarted - Copy.md">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Include="wwwroot\markdown\Home.md" />
     <Content Include="wwwroot\samples\index.html" />
   </ItemGroup>
