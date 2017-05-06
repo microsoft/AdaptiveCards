@@ -295,6 +295,8 @@ namespace AdaptiveCards
             [propget] HRESULT FallbackText([out, retval] HSTRING* value);
             [propput] HRESULT FallbackText([in] HSTRING value);
 
+            [propget] HRESULT BackgroundImageUrl([out, retval] Windows.Foundation.Uri** value);
+            [propput] HRESULT BackgroundImageUrl([in] Windows.Foundation.Uri* value);
         };
 
         [
