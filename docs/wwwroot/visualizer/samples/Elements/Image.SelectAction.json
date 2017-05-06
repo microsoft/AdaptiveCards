@@ -1,0 +1,20 @@
+{
+  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "selectAction on image",
+      "weight": "bolder"
+    },
+    {
+      "type": "Image",
+      "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png",
+      "selectAction": {
+        "type": "Action.OpenUrl",
+        "title": "cool link",
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+    }
+  ]
+}

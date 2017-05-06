@@ -1,0 +1,43 @@
+     // Skip this for now
+        {
+            "type": "SubmitAfterInput", // Submit action that collects input first
+            "title": "Set due date",
+            "data": {
+                "reportId": "ABC",
+                "approved": "false"
+            },
+            "okText": "OK", // ISSUE: these don't apply without inputs, is that ok?
+            "cancelText": "Cancel",
+            "inputs": [
+                {
+                    "type": "Input",
+                    "inputType": "date",
+                    "id": "dueDate",
+                    "prompt": "Select a date"
+                }
+            ]
+        },
+        {
+            "type": "ShowCardAction",
+            "title": "Show a custom form",
+            "card": {
+                "type": "FormCard",
+                "actions": [], // Submit button by default
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Hello"
+                    },
+                    {
+                        "type": "Input",
+                        "id": "approvalDate",
+                        "inputType": "date",
+                        "title": "Select a date"
+                    }
+                ],
+                "data": {
+                    "orderId": "ABC"
+                }
+            }
+        }
+   

@@ -1,0 +1,40 @@
+{
+    "type": "ContainerSet",
+    "mode": "inline|carousel",
+    "allowWrap": true,
+    "minSize": 400,
+    "containers": [
+        {
+            "type": "Container.Flexible",
+            "allowShrink": true,
+            
+            "size": 1,
+            "items": [
+                {
+                    "type": "TextBlock"
+                }
+            ],
+            "actions": [] // only applicable in carousel mode
+        },
+        {
+            "type": "Container.Carousel",
+            "size": 2,
+            "items": [
+                {
+                    "type": "TextBlock"
+                }
+            ],
+            "actions": []
+        },
+        {
+            "type": "Container.Carousel",
+            "size": 1,
+            "items": [
+                {
+                    "type": "TextBlock"
+                }
+            ],
+            "actions": []
+        }
+    ]
+}

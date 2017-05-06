@@ -1,0 +1,41 @@
+{
+    "type": "AdaptiveCard",
+    "actions": [
+        {
+            "type": "OpenUri", //or OpenWebView
+            "name": "View",
+            "value": "http://..."
+        },
+        {
+            "type": "Submit",
+            "name": "Declined",
+            "value": {
+                "reportId": "ABC",
+                "approved": "false"
+            }
+        },
+        {
+            "type": "Form",
+            "name": "Set Approval Date",
+            "inputs": [
+                {
+                    "type": "Input",
+                    "id": "approvalDate",
+                    "title": "Select a date"
+                }
+            ],
+            // should actions be implicit?
+            "actions": [
+                {
+                    "type": "Submit",
+                    "name": "OK",
+                    "value": {
+                        "orderId": "ABC"
+                        // rest of the input data rolled up here
+                    }
+                }
+            ]
+        }
+    ],
+    "body": []
+}

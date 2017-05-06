@@ -1,0 +1,70 @@
+{
+    "type": "AdaptiveCard",
+    "actions": [
+        {
+            "type": "OpenUrlAction", //or OpenWebView
+            "title": "View",
+            "url": "http://..."
+        },
+        // Possibly reintroduce HttpPost, would not be supported by bots/tiles/etc
+        // Windows needs new types for Foreground/Background activation
+        // OR we can add metadata like URL or foreground/background properties
+        {
+            "type": "SubmitAction", // Submit action
+            "title": "Declined",
+            "data": {
+                "reportId": "ABC",
+                "approved": "false"
+            }
+        },
+        {
+            "type": "HttpAction",
+            "method": "POST",
+            "title": "Set due date",
+            "uri": "http://mysite/approve/{{reportId.value}}/",
+            "headers": [
+                {
+                    "content-type": "application/json"
+                }
+            ],
+            "body": "{ 'status':'approved', 'reportId':{{reportId.value}} }"
+        },
+        {
+            "type": "ShowCardAction",
+            "title": "View details",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [],
+                "actions": []
+            }
+        },
+        {
+            "type": "CancelAction",
+            "title": "Reset"
+        }
+    ],
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Hi there, what is your name?"
+                },
+                {
+                    "type": "Input",
+                    "id": "firstName",
+                    "title": "First Name"
+                },
+                {
+                    "type": "Input",
+                    "id": "lastName",
+                    "title": "Last Name"
+                }
+            ],
+            "actions": [
+                // owner draw the actions bar, user has to add submit
+            ]
+        }
+    ]
+}

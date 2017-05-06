@@ -1,0 +1,64 @@
+{
+    "type": "AdaptiveCard",
+    "actions": [
+        {
+            "type": "Selection",
+            "title": "Choose a rating",
+            "style": "rating",
+            "items": [
+                {
+                    "title": "1",
+                    "inputs": [
+                        {
+                            "type": "TextInput",
+                            "prompt": "Sorry it sucked, any thoughts on making it bettah'?"
+                        }
+                    ]
+                },
+                {
+                    "title": "1",
+                    "inputs": [
+                        {
+                            "type": "TextInput",
+                            "prompt": "Sorry it sucked, any thoughts on making it bettah'?"
+                        }
+                    ]
+                }
+            ]
+        },
+        "card": {
+            "type": "AdaptiveCard",
+            "body": [
+                {
+                    "type": "TextInput",
+                    "multiLine": true
+                }
+            ]
+        }
+    }
+],
+"body": [
+    {
+        "type": "Container",
+        "items": [
+            {
+                "type": "TextBlock",
+                "text": "Hi there, what is your name?"
+            },
+            {
+                "type": "Input",
+                "id": "firstName",
+                "title": "First Name"
+            },
+            {
+                "type": "Input",
+                "id": "lastName",
+                "title": "Last Name"
+            }
+        ],
+        "actions": [
+            // owner draw the actions bar, user has to add submit
+        ]
+    }
+]
+}
