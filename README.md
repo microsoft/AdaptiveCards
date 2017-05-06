@@ -41,7 +41,7 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 
 # What's in the Toolkit
 
-* Documentation of the schema (see [docs/Schema.md](docs/Schema.md))
+* Documentation of the schema (see [Schema.md](docs/wwwroot/markdown/Schema.md))
 * Learn about the elements with the [Element Explorer](https://microsoft.github.io/AdaptiveCards/explorer)
 * An online live previewer  [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards) to preview and design Card payloads
 * Sample Cards (see [samples](samples/Scenarios))
