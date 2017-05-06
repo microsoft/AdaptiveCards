@@ -3,7 +3,7 @@
     <meta charset = "utf-8" />
     <title>Adaptive Cards - Element Explorer</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <script src = "/explorer/adaptive-cards.js"></script> 
+    <script src = "/node_modules/adaptive-cards/dist/adaptive-cards.js"></script> 
 
 <style type = "text/css">
 table {
@@ -75,6 +75,176 @@ h3 {
     AdaptiveCards.AdaptiveCard.onExecuteAction = function(action) {
             alert(JSON.stringify(action));
         };
+
+AdaptiveCards.setHostConfig({
+	"supportsInteractivity": true,
+	"strongSeparation": {
+		"spacing": 40,
+		"lineThickness": 1,
+		"lineColor": "#EEEEEE"
+	},
+	"fontFamily": "Segoe UI",
+	"fontSizes": {
+		"small": 12,
+		"normal": 14,
+		"medium": 17,
+		"large": 21,
+		"extraLarge": 26
+	},
+	"fontWeights": {
+		"lighter": 200,
+		"normal": 400,
+		"bolder": 600
+	},
+	"colors": {
+		"dark": {
+			"normal": "#333333",
+			"subtle": "#EE333333"
+		},
+		"light": {
+			"normal": "#FFFFFF",
+			"subtle": "#88FFFFFF"
+		},
+		"accent": {
+			"normal": "#2E89FC",
+			"subtle": "#882E89FC"
+		},
+		"attention": {
+			"normal": "#FFD800",
+			"subtle": "#DDFFD800"
+		},
+		"good": {
+			"normal": "#00FF00",
+			"subtle": "#DD00FF00"
+		},
+		"warning": {
+			"normal": "#FF0000",
+			"subtle": "#DDFF0000"
+		}
+	},
+	"imageSizes": {
+		"small": 40,
+		"medium": 80,
+		"large": 160
+	},
+	"actions": {
+		"maxActions": 5,
+		"separation": {
+			"spacing": 20
+		},
+		"buttonSpacing": 20,
+		"stretch": false,
+		"showCard": {
+			"actionMode": "inlineEdgeToEdge",
+			"inlineCardSpacing": 16,
+			"backgroundColor": "#08000000",
+			"padding": {
+				"top": 16,
+				"right": 16,
+				"bottom": 16,
+				"left": 16
+			}
+		},
+		"actionsOrientation": "horizontal",
+		"actionAlignment": "left"
+	},
+	"adaptiveCard": {
+		"backgroundColor": "#00000000",
+		"padding": {
+			"left": 20,
+			"top": 20,
+			"right": 20,
+			"bottom": 20
+		}
+	},
+	"container": {
+		"separation": {
+			"spacing": 20
+		},
+		"normal": {},
+		"emphasis": {
+			"backgroundColor": "#EEEEEE",
+			"borderColor": "#AAAAAA",
+			"borderThickness": {
+				"top": 1,
+				"right": 1,
+				"bottom": 1,
+				"left": 1
+			},
+			"padding": {
+				"top": 10,
+				"right": 10,
+				"bottom": 10,
+				"left": 10
+			}
+		}
+	},
+	"textBlock": {
+		"color": "dark",
+		"separations": {
+			"small": {
+				"spacing": 20
+			},
+			"normal": {
+				"spacing": 20
+			},
+			"medium": {
+				"spacing": 20
+			},
+			"large": {
+				"spacing": 20
+			},
+			"extraLarge": {
+				"spacing": 20
+			}
+		}
+	},
+	"image": {
+		"size": "medium",
+		"separation": {
+			"spacing": 20
+		}
+	},
+	"imageSet": {
+		"imageSize": "medium",
+		"separation": {
+			"spacing": 20
+		}
+	},
+	"factSet": {
+		"separation": {
+			"spacing": 20
+		},
+		"title": {
+			"color": "dark",
+			"size": "normal",
+			"isSubtle": false,
+			"weight": "bolder"
+		},
+		"value": {
+			"color": "dark",
+			"size": "normal",
+			"isSubtle": false,
+			"weight": "normal"
+		},
+		"spacing": 10
+	},
+	"input": {
+		"separation": {
+			"spacing": 20
+		}
+	},
+	"columnSet": {
+		"separation": {
+			"spacing": 20
+		}
+	},
+	"column": {
+		"separation": {
+			"spacing": 20
+		}
+	}
+});
 
 	function renderCard(targetDiv, card)
 	{
@@ -148,7 +318,7 @@ h3 {
 <a href="#" id='ActionShowCardLink' onclick="showElement('ActionShowCard')" class="elementLink w3-bar-item w3-button">Action.ShowCard</a>
 </div>
 <div class='element' id='TextBlockContent' style='display:inline-block'>
-<h2>TextBlock</h2>
+<h1>TextBlock</h1>
 <p>The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.</p>
 <table>
 <thead>
@@ -217,7 +387,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("TextBlock.ColorContent")'>TextBlock.Color</h3>
+<h2 onclick='toggleContent("TextBlock.ColorContent")'>TextBlock.Color</h2>
 <div id='TextBlock.ColorContent' style='display:block'>
 <div id='TextBlock.ColorCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Color.json'>Try it Yourself »</a>
@@ -263,7 +433,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("TextBlock.HorizontalAlignmentContent")'>TextBlock.HorizontalAlignment</h3>
+<h2 onclick='toggleContent("TextBlock.HorizontalAlignmentContent")'>TextBlock.HorizontalAlignment</h2>
 <div id='TextBlock.HorizontalAlignmentContent' style='display:block'>
 <div id='TextBlock.HorizontalAlignmentCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.HorizontalAlignment.json'>Try it Yourself »</a>
@@ -289,7 +459,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("TextBlock.IsSubtleContent")'>TextBlock.IsSubtle</h3>
+<h2 onclick='toggleContent("TextBlock.IsSubtleContent")'>TextBlock.IsSubtle</h2>
 <div id='TextBlock.IsSubtleContent' style='display:block'>
 <div id='TextBlock.IsSubtleCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.IsSubtle.json'>Try it Yourself »</a>
@@ -310,7 +480,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("TextBlock.MaxLinesContent")'>TextBlock.MaxLines</h3>
+<h2 onclick='toggleContent("TextBlock.MaxLinesContent")'>TextBlock.MaxLines</h2>
 <div id='TextBlock.MaxLinesContent' style='display:block'>
 <div id='TextBlock.MaxLinesCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.MaxLines.json'>Try it Yourself »</a>
@@ -333,7 +503,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("TextBlock.SeparationContent")'>TextBlock.Separation</h3>
+<h2 onclick='toggleContent("TextBlock.SeparationContent")'>TextBlock.Separation</h2>
 <div id='TextBlock.SeparationContent' style='display:block'>
 <div id='TextBlock.SeparationCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Separation.json'>Try it Yourself »</a>
@@ -364,7 +534,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("TextBlock.SizeContent")'>TextBlock.Size</h3>
+<h2 onclick='toggleContent("TextBlock.SizeContent")'>TextBlock.Size</h2>
 <div id='TextBlock.SizeContent' style='display:block'>
 <div id='TextBlock.SizeCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Size.json'>Try it Yourself »</a>
@@ -404,7 +574,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("TextBlock.TextContent")'>TextBlock.Text</h3>
+<h2 onclick='toggleContent("TextBlock.TextContent")'>TextBlock.Text</h2>
 <div id='TextBlock.TextContent' style='display:block'>
 <div id='TextBlock.TextCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Text.json'>Try it Yourself »</a>
@@ -419,7 +589,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("TextBlock.WeightContent")'>TextBlock.Weight</h3>
+<h2 onclick='toggleContent("TextBlock.WeightContent")'>TextBlock.Weight</h2>
 <div id='TextBlock.WeightContent' style='display:block'>
 <div id='TextBlock.WeightCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Weight.json'>Try it Yourself »</a>
@@ -445,7 +615,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("TextBlock.WrapContent")'>TextBlock.Wrap</h3>
+<h2 onclick='toggleContent("TextBlock.WrapContent")'>TextBlock.Wrap</h2>
 <div id='TextBlock.WrapContent' style='display:block'>
 <div id='TextBlock.WrapCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Wrap.json'>Try it Yourself »</a>
@@ -468,7 +638,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='ImageContent' style='display:none'>
-<h2>Image</h2>
+<h1>Image</h1>
 <p>The Image element allows for the inclusion of images in an Adaptive Card.</p>
 <table>
 <thead>
@@ -525,7 +695,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("Image.HorizontalAlignmentContent")'>Image.HorizontalAlignment</h3>
+<h2 onclick='toggleContent("Image.HorizontalAlignmentContent")'>Image.HorizontalAlignment</h2>
 <div id='Image.HorizontalAlignmentContent' style='display:block'>
 <div id='Image.HorizontalAlignmentCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.HorizontalAlignment.json'>Try it Yourself »</a>
@@ -570,7 +740,7 @@ h3 {
     }
   ]
 });</script>
-<h3 onclick='toggleContent("Image.SelectActionContent")'>Image.SelectAction</h3>
+<h2 onclick='toggleContent("Image.SelectActionContent")'>Image.SelectAction</h2>
 <div id='Image.SelectActionContent' style='display:block'>
 <div id='Image.SelectActionCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.SelectAction.json'>Try it Yourself »</a>
@@ -594,7 +764,7 @@ h3 {
     }
   ]
 });</script>
-<h3 onclick='toggleContent("Image.SeparationContent")'>Image.Separation</h3>
+<h2 onclick='toggleContent("Image.SeparationContent")'>Image.Separation</h2>
 <div id='Image.SeparationContent' style='display:block'>
 <div id='Image.SeparationCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.Separation.json'>Try it Yourself »</a>
@@ -640,7 +810,7 @@ h3 {
     }
   ]
 });</script>
-<h3 onclick='toggleContent("Image.SizeContent")'>Image.Size</h3>
+<h2 onclick='toggleContent("Image.SizeContent")'>Image.Size</h2>
 <div id='Image.SizeContent' style='display:block'>
 <div id='Image.SizeCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.Size.json'>Try it Yourself »</a>
@@ -705,7 +875,7 @@ h3 {
     }
   ]
 });</script>
-<h3 onclick='toggleContent("Image.StyleContent")'>Image.Style</h3>
+<h2 onclick='toggleContent("Image.StyleContent")'>Image.Style</h2>
 <div id='Image.StyleContent' style='display:block'>
 <div id='Image.StyleCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.Style.json'>Try it Yourself »</a>
@@ -735,7 +905,7 @@ h3 {
     }
   ]
 });</script>
-<h3 onclick='toggleContent("Image.UrlContent")'>Image.Url</h3>
+<h2 onclick='toggleContent("Image.UrlContent")'>Image.Url</h2>
 <div id='Image.UrlContent' style='display:block'>
 <div id='Image.UrlCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.Url.json'>Try it Yourself »</a>
@@ -751,7 +921,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='InputTextContent' style='display:none'>
-<h2>Input.Text</h2>
+<h1>Input.Text</h1>
 <p>Input.Text collects text from the user</p>
 <table>
 <thead>
@@ -825,7 +995,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("Input.TextContent")'>Input.Text</h3>
+<h2 onclick='toggleContent("Input.TextContent")'>Input.Text</h2>
 <div id='Input.TextContent' style='display:block'>
 <div id='Input.TextCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Text.json'>Try it Yourself »</a>
@@ -845,7 +1015,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("Input.Text.StyleContent")'>Input.Text.Style</h3>
+<h2 onclick='toggleContent("Input.Text.StyleContent")'>Input.Text.Style</h2>
 <div id='Input.Text.StyleContent' style='display:block'>
 <div id='Input.Text.StyleCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Text.Style.json'>Try it Yourself »</a>
@@ -898,7 +1068,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='InputNumberContent' style='display:none'>
-<h2>Input.Number</h2>
+<h1>Input.Number</h1>
 <p>Input.Number collects text from the user with a bias towards a number. </p>
 <blockquote>
 <p>NOTE: Value collected may not be valid depending on the capabilities of the client.</p>
@@ -964,7 +1134,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("Input.NumberContent")'>Input.Number</h3>
+<h2 onclick='toggleContent("Input.NumberContent")'>Input.Number</h2>
 <div id='Input.NumberContent' style='display:block'>
 <div id='Input.NumberCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Number.json'>Try it Yourself »</a>
@@ -986,7 +1156,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='InputDateContent' style='display:none'>
-<h2>Input.Date</h2>
+<h1>Input.Date</h1>
 <p>Input.Date collects text from the user in form of a date. </p>
 <blockquote>
 <p>NOTE: Clients may not be able to validate that the value of this is a valid date.</p>
@@ -1052,7 +1222,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("Input.DateContent")'>Input.Date</h3>
+<h2 onclick='toggleContent("Input.DateContent")'>Input.Date</h2>
 <div id='Input.DateContent' style='display:block'>
 <div id='Input.DateCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Date.json'>Try it Yourself »</a>
@@ -1074,7 +1244,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='InputTimeContent' style='display:none'>
-<h2>Input.Time</h2>
+<h1>Input.Time</h1>
 <p>Input.Time collects text from the user in form of a time of day.</p>
 <blockquote>
 <p>NOTE: Clients may not be able to validate that the value of this is a valid time expression.</p>
@@ -1140,7 +1310,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("Input.TimeContent")'>Input.Time</h3>
+<h2 onclick='toggleContent("Input.TimeContent")'>Input.Time</h2>
 <div id='Input.TimeContent' style='display:block'>
 <div id='Input.TimeCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Time.json'>Try it Yourself »</a>
@@ -1161,7 +1331,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='InputToggleContent' style='display:none'>
-<h2>Input.Toggle</h2>
+<h1>Input.Toggle</h1>
 <p>Input.Toggle collects a selection between two values, with <strong>value</strong> representing the current selected toggle value (either value1 or value2).</p>
 <table>
 <thead>
@@ -1229,7 +1399,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("Input.ToggleContent")'>Input.Toggle</h3>
+<h2 onclick='toggleContent("Input.ToggleContent")'>Input.Toggle</h2>
 <div id='Input.ToggleContent' style='display:block'>
 <div id='Input.ToggleCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Toggle.json'>Try it Yourself »</a>
@@ -1250,7 +1420,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='InputChoiceSetContent' style='display:none'>
-<h2>Input.ChoiceSet</h2>
+<h1>Input.ChoiceSet</h1>
 <p>Shows an array of choices the to the user.</p>
 <ul>
 <li>If <strong>isMultiSelect</strong> is false, then the result will be the single selected choice value</li>
@@ -1355,7 +1525,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("Input.ChoiceSetContent")'>Input.ChoiceSet</h3>
+<h2 onclick='toggleContent("Input.ChoiceSetContent")'>Input.ChoiceSet</h2>
 <div id='Input.ChoiceSetContent' style='display:block'>
 <div id='Input.ChoiceSetCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.ChoiceSet.json'>Try it Yourself »</a>
@@ -1474,7 +1644,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='ContainerContent' style='display:none'>
-<h2>Container</h2>
+<h1>Container</h1>
 <p>A  Container is a CardElement which contains a list of CardElements that are logically grouped.</p>
 <table>
 <thead>
@@ -1539,7 +1709,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("Container.ActionsContent")'>Container.Actions</h3>
+<h2 onclick='toggleContent("Container.ActionsContent")'>Container.Actions</h2>
 <div id='Container.ActionsContent' style='display:block'>
 <div id='Container.ActionsCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Container.Actions.json'>Try it Yourself »</a>
@@ -1600,7 +1770,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("Container.ItemsContent")'>Container.Items</h3>
+<h2 onclick='toggleContent("Container.ItemsContent")'>Container.Items</h2>
 <div id='Container.ItemsContent' style='display:block'>
 <div id='Container.ItemsCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Container.Items.json'>Try it Yourself »</a>
@@ -1624,7 +1794,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("Container.SelectActionContent")'>Container.SelectAction</h3>
+<h2 onclick='toggleContent("Container.SelectActionContent")'>Container.SelectAction</h2>
 <div id='Container.SelectActionContent' style='display:block'>
 <div id='Container.SelectActionCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Container.SelectAction.json'>Try it Yourself »</a>
@@ -1653,7 +1823,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("Container.SeparationContent")'>Container.Separation</h3>
+<h2 onclick='toggleContent("Container.SeparationContent")'>Container.Separation</h2>
 <div id='Container.SeparationContent' style='display:block'>
 <div id='Container.SeparationCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Container.Separation.json'>Try it Yourself »</a>
@@ -1721,7 +1891,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='ColumnSetContent' style='display:none'>
-<h2>ColumnSet</h2>
+<h1>ColumnSet</h1>
 <p>The column Set element adds the ability to have a set of Column objects.</p>
 <table>
 <thead>
@@ -1748,7 +1918,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("ColumnSet.ColumnsContent")'>ColumnSet.Columns</h3>
+<h2 onclick='toggleContent("ColumnSet.ColumnsContent")'>ColumnSet.Columns</h2>
 <div id='ColumnSet.ColumnsContent' style='display:block'>
 <div id='ColumnSet.ColumnsCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/ColumnSet.Columns.json'>Try it Yourself »</a>
@@ -1804,7 +1974,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("ColumnSet.SeparationContent")'>ColumnSet.Separation</h3>
+<h2 onclick='toggleContent("ColumnSet.SeparationContent")'>ColumnSet.Separation</h2>
 <div id='ColumnSet.SeparationContent' style='display:block'>
 <div id='ColumnSet.SeparationCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/ColumnSet.Separation.json'>Try it Yourself »</a>
@@ -1906,7 +2076,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='ColumnContent' style='display:none'>
-<h2>Column</h2>
+<h1>Column</h1>
 <p>A Column is a container which contains a list of CardElements that are logically grouped.</p>
 <table>
 <thead>
@@ -1945,7 +2115,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("Column.SelectActionContent")'>Column.SelectAction</h3>
+<h2 onclick='toggleContent("Column.SelectActionContent")'>Column.SelectAction</h2>
 <div id='Column.SelectActionContent' style='display:block'>
 <div id='Column.SelectActionCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Column.SelectAction.json'>Try it Yourself »</a>
@@ -2015,7 +2185,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("Column.SeparationContent")'>Column.Separation</h3>
+<h2 onclick='toggleContent("Column.SeparationContent")'>Column.Separation</h2>
 <div id='Column.SeparationContent' style='display:block'>
 <div id='Column.SeparationCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Column.Separation.json'>Try it Yourself »</a>
@@ -2086,7 +2256,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("Column.SizeContent")'>Column.Size</h3>
+<h2 onclick='toggleContent("Column.SizeContent")'>Column.Size</h2>
 <div id='Column.SizeContent' style='display:block'>
 <div id='Column.SizeCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Column.Size.json'>Try it Yourself »</a>
@@ -2149,7 +2319,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("Column.SizeRatioContent")'>Column.SizeRatio</h3>
+<h2 onclick='toggleContent("Column.SizeRatioContent")'>Column.SizeRatio</h2>
 <div id='Column.SizeRatioContent' style='display:block'>
 <div id='Column.SizeRatioCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Column.SizeRatio.json'>Try it Yourself »</a>
@@ -2209,7 +2379,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='FactSetContent' style='display:none'>
-<h2>FactSet</h2>
+<h1>FactSet</h1>
 <p>The FactSet element makes it simple to display a series of &quot;facts&quot; (e.g. name/value pairs) in a tabular form.</p>
 <table>
 <thead>
@@ -2236,7 +2406,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("FactSetContent")'>FactSet</h3>
+<h2 onclick='toggleContent("FactSetContent")'>FactSet</h2>
 <div id='FactSetContent' style='display:block'>
 <div id='FactSetCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/FactSet.json'>Try it Yourself »</a>
@@ -2270,7 +2440,7 @@ h3 {
 });</script>
 </div>
 <div class='element' id='ImageSetContent' style='display:none'>
-<h2>ImageSet</h2>
+<h1>ImageSet</h1>
 <p>The ImageSet allows for the inclusion of a collection images like a photoSet.</p>
 <table>
 <thead>
@@ -2303,7 +2473,7 @@ h3 {
 </tbody>
 </table>
 
-<h3 onclick='toggleContent("ImageSet.ImageSizeContent")'>ImageSet.ImageSize</h3>
+<h2 onclick='toggleContent("ImageSet.ImageSizeContent")'>ImageSet.ImageSize</h2>
 <div id='ImageSet.ImageSizeContent' style='display:block'>
 <div id='ImageSet.ImageSizeCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/ImageSet.ImageSize.json'>Try it Yourself »</a>
@@ -2344,7 +2514,7 @@ h3 {
         }
     ]
 });</script>
-<h3 onclick='toggleContent("ImageSetContent")'>ImageSet</h3>
+<h2 onclick='toggleContent("ImageSetContent")'>ImageSet</h2>
 <div id='ImageSetContent' style='display:block'>
 <div id='ImageSetCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/ImageSet.json'>Try it Yourself »</a>
@@ -2386,11 +2556,11 @@ h3 {
 });</script>
 </div>
 <div class='element' id='ActionSetContent' style='display:none'>
-<h2>ActionSet</h2>
+<h1>ActionSet</h1>
 </div>
 <div class='element' id='ActionOpenUrlContent' style='display:none'>
-<h2>Action.OpenUrl</h2>
-<h3 onclick='toggleContent("Action.OpenUrlContent")'>Action.OpenUrl</h3>
+<h1>Action.OpenUrl</h1>
+<h2 onclick='toggleContent("Action.OpenUrlContent")'>Action.OpenUrl</h2>
 <div id='Action.OpenUrlContent' style='display:block'>
 <div id='Action.OpenUrlCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Action.OpenUrl.json'>Try it Yourself »</a>
@@ -2414,8 +2584,8 @@ h3 {
 });</script>
 </div>
 <div class='element' id='ActionSubmitContent' style='display:none'>
-<h2>Action.Submit</h2>
-<h3 onclick='toggleContent("Action.SubmitContent")'>Action.Submit</h3>
+<h1>Action.Submit</h1>
+<h2 onclick='toggleContent("Action.SubmitContent")'>Action.Submit</h2>
 <div id='Action.SubmitContent' style='display:block'>
 <div id='Action.SubmitCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Action.Submit.json'>Try it Yourself »</a>
@@ -2447,8 +2617,8 @@ h3 {
 });</script>
 </div>
 <div class='element' id='ActionHttpContent' style='display:none'>
-<h2>Action.Http</h2>
-<h3 onclick='toggleContent("Action.HttpContent")'>Action.Http</h3>
+<h1>Action.Http</h1>
+<h2 onclick='toggleContent("Action.HttpContent")'>Action.Http</h2>
 <div id='Action.HttpContent' style='display:block'>
 <div id='Action.HttpCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Action.Http.json'>Try it Yourself »</a>
@@ -2483,8 +2653,8 @@ h3 {
 });</script>
 </div>
 <div class='element' id='ActionShowCardContent' style='display:none'>
-<h2>Action.ShowCard</h2>
-<h3 onclick='toggleContent("Action.ShowCardContent")'>Action.ShowCard</h3>
+<h1>Action.ShowCard</h1>
+<h2 onclick='toggleContent("Action.ShowCardContent")'>Action.ShowCard</h2>
 <div id='Action.ShowCardContent' style='display:block'>
 <div id='Action.ShowCardCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Action.ShowCard.json'>Try it Yourself »</a>

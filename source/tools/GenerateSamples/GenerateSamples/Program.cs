@@ -51,7 +51,7 @@ namespace GenerateSamples
                 {
                     string display = (i++ == 0) ? "inline-block" : "none";
                     writer.WriteLine($"<div class='element' id='{element.Replace(".",String.Empty)}Content' style='display:{display}'>");
-                    writer.WriteLine($"<h2>{element}</h2>");
+                    writer.WriteLine($"<h1>{element}</h1>");
                     string path = $@"..\..\..\..\..\..\pages\schema\{element}.md";
                     if (File.Exists(path))
                     {
@@ -62,7 +62,7 @@ namespace GenerateSamples
                     foreach (var file in Directory.GetFiles(args[0], element + "*.json").Where(f => f.Contains(element + ".")))
                     {
                         var name = Path.GetFileNameWithoutExtension(file);
-                        writer.WriteLine($"<h3 onclick='toggleContent(\"{name}Content\")'>{name}</h3>");
+                        writer.WriteLine($"<h2 onclick='toggleContent(\"{name}Content\")'>{name}</h2>");
                         writer.WriteLine($"<div id='{name}Content' style='display:block'>");
                         var json = File.ReadAllText(file, Encoding.UTF8);
                         writer.WriteLine($"<div id='{name}Card' class='card' ></div>");
