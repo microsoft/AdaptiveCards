@@ -6,31 +6,30 @@
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/content/shared.css">
-    <script>
-        function myAccFunc(sectionName) {
-            var x = document.getElementById(sectionName);
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-                x.previousElementSibling.className += " w3-green";
-            } else {
-                x.className = x.className.replace(" w3-show", "");
-                x.previousElementSibling.className =
-                    x.previousElementSibling.className.replace(" w3-green", "");
-            }
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI';
+            font-weight: 400
         }
 
-        function myDropFunc() {
-            var x = document.getElementById("demoDrop");
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-                x.previousElementSibling.className += " w3-green";
-            } else {
-                x.className = x.className.replace(" w3-show", "");
-                x.previousElementSibling.className =
-                    x.previousElementSibling.className.replace(" w3-green", "");
-            }
+        .w3-container {
+            margin-left: 24px;
         }
-    </script>
+
+        h1 {
+            font-size: 34px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        h3 {
+            font-size: 15px;
+            font-weight: 600
+        }
+    </style>
 </head>
 <body>
     <!-- Nav bar-->
@@ -46,18 +45,16 @@
     </div>
 
     <!-- main content -->
-    <div class="w3-container" style="margin-top:38px;">
-        <h1>Introducing Adaptive Cards</h1>
-
-        <p>Adaptive Cards is a JSON format which gives developers the ability deliver great lookin cards to any device or client.</p>
-
-        <h2>Developer features</h2>
-        <ul>
-            <li>Simple by expressive JSON layout gives developers ability easily create rich great looking cards across any device or client!</li>
-            <li>Rich inut controls (text, date, time, etc) allows developer to collect information from users!</li>
-            <li>Speech enabled from Day one!</li>
-            <li>Open source libraries available via npm, nuget, etc. allows for easy integration into your application!</li>
-        </ul>
+    <div class="w3-container" id="home">
     </div>
+    <script>
+        $(document).ready(function () {
+            $.get("/api/markdown/Home.md",
+                null,
+                function (data) {
+                    document.getElementById('home').innerHTML = data;
+                });
+        });
+    </script>
 </body>
 </html>

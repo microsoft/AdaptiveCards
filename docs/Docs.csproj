@@ -18,8 +18,15 @@
     <Content Include="wwwroot\documentation\index.html" />
     <Content Include="wwwroot\explorer\explorer.css" />
     <Content Include="wwwroot\explorer\explorer.js" />
-    <Content Include="wwwroot\explorer\index.html" />
+    <Content Include="wwwroot\explorer\index.html">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\index.html" />
+    <Content Include="wwwroot\markdown\GettingStarted - Copy.md">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\markdown\Home.md" />
+    <Content Include="wwwroot\samples\index.html" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MarkedNet" Version="1.0.6" />

@@ -9,7 +9,7 @@ using System.IO;
 
 namespace Docs.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class MarkdownController : Controller
     {
         private IHostingEnvironment _env;
@@ -27,6 +27,7 @@ namespace Docs.Controllers
 
             Marked marked = new Marked();
             var text = System.IO.File.ReadAllText(path);
+            HttpContext.Response.ContentType = "text/html";
             return marked.Parse(text);
         }
 
