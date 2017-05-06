@@ -84,6 +84,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveInputText::get_TextInputStyle(ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle * textInputStyle)
+    {
+        *textInputStyle = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle>(m_sharedInputText->GetTextInputStyle());
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveInputText::put_TextInputStyle(ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle textInputStyle)
+    {
+        m_sharedInputText->SetTextInputStyle(static_cast<AdaptiveCards::TextInputStyle>(textInputStyle));
+        return S_OK;
+    }
+
     _Use_decl_annotations_
     HRESULT AdaptiveInputText::get_ElementType(ElementType* elementType)
     {

@@ -292,6 +292,22 @@ static std::unordered_map<ChoiceSetStyle, std::string, EnumHash> ChoiceSetStyleE
     { ChoiceSetStyle::Expanded, "Expanded" }
 };
 
+static std::unordered_map<std::string, TextInputStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> InputTextStyleNameToEnum =
+{
+    { "Text", TextInputStyle::Text },
+    { "Tel", TextInputStyle::Tel },
+    { "Url", TextInputStyle::Url },
+    { "Email", TextInputStyle::Email },
+};
+
+static std::unordered_map<TextInputStyle, std::string, EnumHash> InputTextStyleEnumToName =
+{
+    { TextInputStyle::Text, "Text" },
+    { TextInputStyle::Tel, "Tel" },
+    { TextInputStyle::Url, "Url" },
+    { TextInputStyle::Email, "Email" },
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
 {
     if (AdaptiveCardSchemaKeyEnumToName.find(type) == AdaptiveCardSchemaKeyEnumToName.end())
@@ -535,5 +551,22 @@ ChoiceSetStyle ChoiceSetStyleFromString(const std::string & style)
         throw std::out_of_range("Invalid ChoiceSetStyle: " + style);
     }
     return ChoiceSetStyleNameToEnum[style];
+}
+
+const std::string TextInputStyleToString(TextInputStyle style)
+{
+    if (InputTextStyleEnumToName.find(style) == InputTextStyleEnumToName.end())
+    {
+        throw std::out_of_range("Invalid InputTextStyle");
+    }
+    return InputTextStyleEnumToName[style];
+}
+TextInputStyle TextInputStyleFromString(const std::string & style)
+{
+    if (InputTextStyleNameToEnum.find(style) == InputTextStyleNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid InputTextStyle: " + style);
+    }
+    return InputTextStyleNameToEnum[style];
 }
 }

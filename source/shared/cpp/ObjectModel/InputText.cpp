@@ -20,6 +20,7 @@ std::shared_ptr<InputText> InputText::Deserialize(const Json::Value& json)
     inputText->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
     inputText->SetIsMultiline(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiline, false));
     inputText->SetMaxLength(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLength, 0));
+    inputText->SetTextInputStyle(ParseUtil::GetEnumValue<TextInputStyle>(json, AdaptiveCardSchemaKey::Style, TextInputStyle::Text, TextInputStyleFromString));
 
     return inputText;
 }
@@ -74,4 +75,14 @@ unsigned int InputText::GetMaxLength() const
 void InputText::SetMaxLength(const unsigned int value)
 {
     m_maxLength = value;
+}
+
+TextInputStyle AdaptiveCards::InputText::GetTextInputStyle() const
+{
+    return m_style;
+}
+
+void AdaptiveCards::InputText::SetTextInputStyle(const TextInputStyle value)
+{
+    m_style = value;
 }
