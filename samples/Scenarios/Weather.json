@@ -10,7 +10,7 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": 35,
+					"size": "35",
 					"items": [
 						{
 							"type": "Image",
@@ -21,7 +21,7 @@
 				},
 				{
 					"type": "Column",
-					"size": 65,
+					"size": "65",
 					"items": [
 						{
 							"type": "TextBlock",
