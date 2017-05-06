@@ -29,24 +29,36 @@ namespace GenerateSamples
 
             string[] elements = new string[] {
                 "TextBlock", "Image",
-                "Container", "ColumnSet", "Column", "FactSet", "ImageSet",
                 "Input.Text", "Input.Number", "Input.Date", "Input.Time", "Input.Toggle", "Input.ChoiceSet",
+                "Container", "ColumnSet", "Column", "FactSet", "ImageSet", "ActionSet",
                 "Action.OpenUrl", "Action.Submit", "Action.Http","Action.ShowCard"
             };
-            using (TextWriter writer = new StreamWriter(File.Open(Path.Combine(@"c:\\scratch\\dog", "explorer.html"), FileMode.Create)))
+            using (TextWriter writer = new StreamWriter(File.Open(@"..\..\..\..\..\..\docs\wwwroot\explorer\index.html", FileMode.Create)))
             {
                 writer.WriteLine(preamble);
-                writer.WriteLine("<h1>AdaptiveCard Element Explorer</h1>");
+                // side bar
+                writer.WriteLine("<div class=\"w3-sidebar w3-light-grey w3-card-2 w3-bar-block\" style=\"width:200px\">");
+                int i = 0;
                 foreach (var element in elements)
                 {
-                    writer.WriteLine($"<h2 onclick='toggleContent(\"{element}Content\")'>{element}</h2>");
-                    writer.WriteLine($"<div id='{element}Content' style='display:none'>");
-                    string path = Path.Combine(args[0], $"..\\..\\docs\\schema\\{element}.md");
+                    string highlight = (i++ == 0) ? " w3-gray" : String.Empty;
+                    var elementName = element.Replace(".", string.Empty);
+                    writer.WriteLine($"<a href=\"#\" id='{elementName}Link' onclick=\"showElement('{elementName}')\" class=\"elementLink w3-bar-item w3-button{highlight}\">{element}</a>");
+                }
+                writer.WriteLine("</div>");
+                i = 0;
+                foreach (var element in elements)
+                {
+                    string display = (i++ == 0) ? "inline-block" : "none";
+                    writer.WriteLine($"<div class='element' id='{element.Replace(".",String.Empty)}Content' style='display:{display}'>");
+                    writer.WriteLine($"<h2>{element}</h2>");
+                    string path = $@"..\..\..\..\..\..\pages\schema\{element}.md";
                     if (File.Exists(path))
                     {
                         string markdown = File.ReadAllText(path);
                         writer.WriteLine(marked.Parse(markdown));
                     }
+
                     foreach (var file in Directory.GetFiles(args[0], element + "*.json").Where(f => f.Contains(element + ".")))
                     {
                         var name = Path.GetFileNameWithoutExtension(file);
