@@ -26,34 +26,179 @@
     <!-- side bar with accordion -->
 
 <div class="w3-sidebar w3-light-grey w3-card-2 w3-bar-block">
-<a href="#BingSports" id='BingSportsLink' class="elementLink w3-bar-item w3-button">BingSports</a>
-<a href="#BingStock" id='BingStockLink' class="elementLink w3-bar-item w3-button">BingStock</a>
-<a href="#BingWeather" id='BingWeatherLink' class="elementLink w3-bar-item w3-button">BingWeather</a>
-<a href="#CalendarReminder" id='CalendarReminderLink' class="elementLink w3-bar-item w3-button">CalendarReminder</a>
-<a href="#FlightItinerary" id='FlightItineraryLink' class="elementLink w3-bar-item w3-button">FlightItinerary</a>
-<a href="#FlightUpdate" id='FlightUpdateLink' class="elementLink w3-bar-item w3-button">FlightUpdate</a>
-<a href="#ImageGallery" id='ImageGalleryLink' class="elementLink w3-bar-item w3-button">ImageGallery</a>
-<a href="#Inputs" id='InputsLink' class="elementLink w3-bar-item w3-button">Inputs</a>
+<a href="#ActivityUpdate" id='ActivityUpdateLink' class="elementLink w3-bar-item w3-button">Activity Update</a>
+<a href="#BingSports" id='BingSportsLink' class="elementLink w3-bar-item w3-button">Bing Sports</a>
+<a href="#BingStock" id='BingStockLink' class="elementLink w3-bar-item w3-button">Bing Stock</a>
+<a href="#BingWeather" id='BingWeatherLink' class="elementLink w3-bar-item w3-button">Bing Weather</a>
+<a href="#CalendarReminder" id='CalendarReminderLink' class="elementLink w3-bar-item w3-button">Calendar Reminder</a>
+<a href="#FlightItinerary" id='FlightItineraryLink' class="elementLink w3-bar-item w3-button">Flight Itinerary</a>
+<a href="#FlightUpdate" id='FlightUpdateLink' class="elementLink w3-bar-item w3-button">Flight Update</a>
+<a href="#ImageGallery" id='ImageGalleryLink' class="elementLink w3-bar-item w3-button">Image Gallery</a>
 <a href="#Restaurant" id='RestaurantLink' class="elementLink w3-bar-item w3-button">Restaurant</a>
-<a href="#TapActions" id='TapActionsLink' class="elementLink w3-bar-item w3-button">TapActions</a>
-<a href="#TrelloCardActionBar" id='TrelloCardActionBarLink' class="elementLink w3-bar-item w3-button">TrelloCardActionBar</a>
-<a href="#TrelloCardCreated" id='TrelloCardCreatedLink' class="elementLink w3-bar-item w3-button">TrelloCardCreated</a>
-<a href="#VSTSCard" id='VSTSCardLink' class="elementLink w3-bar-item w3-button">VSTSCard</a>
 <a href="#Weather" id='WeatherLink' class="elementLink w3-bar-item w3-button">Weather</a>
 </div>
 
 <script>
     $(document).ready(() => {
         if (window.location.hash == '')
-            showElement('BingSports');
+            showElement('ActivityUpdate');
         else
             showElement(window.location.hash.slice(1));
     });
 </script>
 <div class="w3-container content-sidebar">
+<div class='element' id='ActivityUpdateContent' style='display:none'>
+<div id='ActivityUpdateCard' class='card' ></div>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Activity Update.json'>Try it Yourself »</a>
+<script>renderCard('ActivityUpdateCard', {
+	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "Container",
+			"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Card created: Publish Adaptive Card schema",
+					"weight": "bolder",
+					"size": "medium"
+				},
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"size": "auto",
+							"items": [
+								{
+									"type": "Image",
+									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+									"size": "small",
+									"style": "person"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"size": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "**Miguel Garcia**",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"separation": "none",
+									"text": "Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}",
+									"isSubtle": true,
+									"wrap": true
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+					"speak": "",
+					"wrap": true
+				},
+				{
+					"type": "FactSet",
+					"speak": "It has been assigned to: David Claux",
+					"facts": [
+						{
+							"title": "Board:",
+							"value": "Adaptive Card"
+						},
+						{
+							"title": "List:",
+							"value": "Backlog"
+						},
+						{
+							"title": "Assigned to:",
+							"value": "David Claux"
+						},
+						{
+							"title": "Due date:",
+							"value": "Not set"
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Set due date",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Date",
+						"id": "dueDate",
+						"title": "Select due date"
+					}
+				],
+				"actions": [
+				    {
+				        "type": "Action.Http",
+				        "title": "OK",
+				        "url": "http://xyz.com",
+                        "headers": {
+							"content-type": "application/json"
+						},
+						"body": "{ 'comment' : '{{comment.value}}' }"
+				    }
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Comment",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"isMultiline": true,
+						"placeholder": "Enter your comment"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Http",
+						"method": "POST",
+						"title": "OK",
+						"url": "http://xyz.com",
+						"headers": {
+							"content-type": "application/json"
+						},
+						"body": "{ 'comment' : '{{comment.value}}' }"
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "View",
+			"url": "http://foo.com"
+		}
+	]
+});</script>
+</div>
 <div class='element' id='BingSportsContent' style='display:none'>
 <div id='BingSportsCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/BingSports.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Bing Sports.json'>Try it Yourself »</a>
 <script>renderCard('BingSportsCard', {
   "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -155,7 +300,7 @@
 </div>
 <div class='element' id='BingStockContent' style='display:none'>
 <div id='BingStockCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/BingStock.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Bing Stock.json'>Try it Yourself »</a>
 <script>renderCard('BingStockCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -232,7 +377,7 @@
 </div>
 <div class='element' id='BingWeatherContent' style='display:none'>
 <div id='BingWeatherCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/BingWeather.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Bing Weather.json'>Try it Yourself »</a>
 <script>renderCard('BingWeatherCard', {
 	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
@@ -328,7 +473,7 @@
 </div>
 <div class='element' id='CalendarReminderContent' style='display:none'>
 <div id='CalendarReminderCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/CalendarReminder.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Calendar Reminder.json'>Try it Yourself »</a>
 <script>renderCard('CalendarReminderCard', {
   "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -401,7 +546,7 @@
 </div>
 <div class='element' id='FlightItineraryContent' style='display:none'>
 <div id='FlightItineraryCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/FlightItinerary.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Flight Itinerary.json'>Try it Yourself »</a>
 <script>renderCard('FlightItineraryCard', {
 	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"version": "1.0",
@@ -594,7 +739,7 @@
 </div>
 <div class='element' id='FlightUpdateContent' style='display:none'>
 <div id='FlightUpdateCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/FlightUpdate.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Flight Update.json'>Try it Yourself »</a>
 <script>renderCard('FlightUpdateCard', {
 	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
@@ -812,7 +957,7 @@
 </div>
 <div class='element' id='ImageGalleryContent' style='display:none'>
 <div id='ImageGalleryCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/ImageGallery.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Image Gallery.json'>Try it Yourself »</a>
 <script>renderCard('ImageGalleryCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -872,303 +1017,6 @@
             ]
         }
     ]
-});</script>
-</div>
-<div class='element' id='InputsContent' style='display:none'>
-<div id='InputsCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Inputs.json'>Try it Yourself »</a>
-<script>renderCard('InputsCard', {
-  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-  "type": "AdaptiveCard",
-  "version": "1.0",
-  "speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
-  "body": [
-    {
-      "type": "TextBlock",
-      "size": "medium",
-      "weight": "bolder",
-      "text": "Input.Text elements",
-      "horizontalAlignment": "center"
-    },
-    {
-      "type": "Input.Text",
-      "placeholder": "Name",
-      "style": "text",
-      "maxLength": 0,
-      "id": "SimpleVal",
-      "speak": "What is your name?"
-    },
-    {
-      "type": "Input.Text",
-      "placeholder": "Homepage",
-      "style": "url",
-      "maxLength": 0,
-      "id": "UrlVal",
-      "speak": "What is your homepage?"
-    },
-    {
-      "type": "Input.Text",
-      "placeholder": "Email",
-      "style": "email",
-      "maxLength": 0,
-      "id": "EmailVal",
-      "speak": "What is your email address?"
-    },
-    {
-      "type": "Input.Text",
-      "placeholder": "Phone",
-      "style": "tel",
-      "maxLength": 0,
-      "id": "TelVal",
-      "speak": "What is your phone number?"
-    },
-    {
-      "type": "Input.Text",
-      "placeholder": "Comments",
-      "style": "text",
-      "isMultiline": true,
-      "maxLength": 0,
-      "id": "MultiLineVal",
-      "speak": "What comments do you have?"
-    },
-    {
-      "type": "Input.Number",
-      "placeholder": "Quantity",
-      "min": -5,
-      "max": 5,
-      "value": 1,
-      "id": "NumVal",
-      "speak": "How many do you want?"
-    },
-    {
-      "type": "Input.Date",
-      "placeholder": "Due Date",
-      "id": "DateVal",
-      "speak": "What is the due date?"
-    },
-    {
-      "type": "Input.Time",
-      "placeholder": "Start time",
-      "id": "TimeVal",
-      "speak": "What time to start?"
-    },
-    {
-      "type": "TextBlock",
-      "size": "medium",
-      "weight": "bolder",
-      "text": "Input.ChoiceSet",
-      "horizontalAlignment": "center"
-    },
-    {
-      "type": "TextBlock",
-      "text": "What color do you want? (compact)"
-    },
-    {
-      "type": "Input.ChoiceSet",
-      "style": "compact",
-      "placeholder": "Pick a color",
-      "choices": [
-        {
-          "title": "Red",
-          "value": "1",
-          "isSelected": true
-        },
-        {
-          "title": "Green",
-          "value": "2"
-        },
-        {
-          "title": "Blue",
-          "value": "3"
-        }
-      ],
-      "id": "SingleSelectVal"
-    },
-    {
-      "type": "TextBlock",
-      "text": "What color do you want? (expanded)"
-    },
-    {
-      "type": "Input.ChoiceSet",
-      "style": "expanded",
-      "choices": [
-        {
-          "title": "Red",
-          "value": "1",
-          "isSelected": true
-        },
-        {
-          "title": "Green",
-          "value": "2"
-        },
-        {
-          "title": "Blue",
-          "value": "3"
-        }
-      ],
-      "id": "CompactSelectVal"
-    },
-    {
-      "type": "TextBlock",
-      "text": "What colors do you want? (multiselect)"
-    },
-    {
-      "type": "Input.ChoiceSet",
-      "isMultiSelect": true,
-      "choices": [
-        {
-          "title": "Red",
-          "value": "1",
-          "isSelected": true
-        },
-        {
-          "title": "Green",
-          "value": "2"
-        },
-        {
-          "title": "Blue",
-          "value": "3",
-          "isSelected": true
-        }
-      ],
-      "id": "MultiSelectVal"
-    },
-    {
-      "type": "TextBlock",
-      "size": "medium",
-      "weight": "bolder",
-      "text": "Input.Toggle",
-      "horizontalAlignment": "center"
-    },
-    {
-      "type": "Input.Toggle",
-      "title": "isCool (True/False)",
-      "valueOn": "true",
-      "valueOff": "false",
-      "id": "IsCool",
-      "speak": "Is it cool?"
-    },
-    {
-      "type": "Input.Toggle",
-      "title": "IsMale (valueOn/valueOff)",
-      "valueOn": "Male",
-      "valueOff": "Female",
-      "id": "gender",
-      "speak": "Are you male or female?"
-    }
-  ],
-  "actions": [
-    {
-      "type": "Action.OpenUrl",
-      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "title": "Open Url"
-    },
-    {
-      "type": "Action.Submit",
-      "data": {
-        "id": "1234567890"
-      },
-      "title": "Submit"
-    },
-    {
-      "type": "Action.Http",
-      "method": "POST",
-      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "body": "This is the body with Gender={{gender.value}}",
-      "title": "POST"
-    },
-    {
-      "type": "Action.ShowCard",
-      "card": {
-        "type": "AdaptiveCard",
-        "body": [
-          {
-            "type": "TextBlock",
-            "isSubtle": true,
-            "text": "Seattle vs Panthers"
-          },
-          {
-            "type": "ColumnSet",
-            "columns": [
-              {
-                "type": "Column",
-                "size": "auto",
-                "items": [
-                  {
-                    "type": "Image",
-                    "size": "small",
-                    "url": "https://www.bing.com/th?id=AR_3934aff63dd6ff941034090a4b9d12e1&w=50&h=50&dpr=2&pid=AppEx",
-                    "horizontalAlignment": "center"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "weight": "bolder",
-                    "text": "CAR",
-                    "horizontalAlignment": "center"
-                  }
-                ]
-              },
-              {
-                "type": "Column",
-                "size": "stretch",
-                "items": [
-                  {
-                    "type": "TextBlock",
-                    "text": "Dec 4",
-                    "horizontalAlignment": "center"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "text": "Final",
-                    "horizontalAlignment": "center"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "size": "large",
-                    "text": "7 - 40",
-                    "horizontalAlignment": "center"
-                  }
-                ]
-              },
-              {
-                "type": "Column",
-                "size": "auto",
-                "items": [
-                  {
-                    "type": "Image",
-                    "size": "small",
-                    "url": "https://www.bing.com/th?id=AR_95e44d654968e8de2336993a1cf8a3cf&w=50&h=50&dpr=2&pid=AppEx",
-                    "horizontalAlignment": "center"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "weight": "bolder",
-                    "text": "SEA",
-                    "horizontalAlignment": "center"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "Input.Text",
-            "placeholder": "enter comment",
-            "style": "text",
-            "maxLength": 0,
-            "id": "CommentVal"
-          }
-        ],
-        "actions": [
-          {
-            "type": "Action.Submit",
-            "title": "OK"
-          }
-        ],
-        "speak": "The Seattle Seahawks beat the Carolina Panters 40-7"
-      },
-      "title": "Show Card"
-    }
-  ]
 });</script>
 </div>
 <div class='element' id='RestaurantContent' style='display:none'>
@@ -1233,475 +1081,6 @@
             "url": "http://foo.com"
         }
     ]
-});</script>
-</div>
-<div class='element' id='TapActionsContent' style='display:none'>
-<div id='TapActionsCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/TapActions.json'>Try it Yourself »</a>
-<script>renderCard('TapActionsCard', {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "Here are some cool photos",
-            "size": "large"
-        },
-        {
-            "type": "Container",
-            "items": [
-                {
-                    "type": "TextBlock",
-                    "text": "You mebbe wanna click on me?"
-                }
-            ],
-            "selectAction": {
-                "type": "Action.ShowCard",
-                "title": "Set due date",
-                "card": {
-                    "type": "AdaptiveCard",
-                    "body": [
-                        {
-                            "type": "Input.Date",
-                            "id": "dueDate",
-                            "placeholder": "Select the due date"
-                        }
-                    ],
-                    "actions": [
-                        {
-                            "type": "Action.Http",
-                            "method": "POST",
-                            "title": "OK",
-                            "url": "http://google.com?dueDate={{dueDate.value}}"
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "type": "ImageSet",
-            "imageSize": "medium",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
-                    "selectAction": {
-                        "type": "Action.OpenUrl",
-                        "title": "",
-                        "url": "https://www.bing.com/images/search?q=puppies&FORM=HDRSC2"
-                    }
-                },
-                {
-                    "type": "Image",
-                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Scene_01.jpg"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://images4.fanpop.com/image/photos/22000000/Cute-Puppies-puppies-22040876-1280-800.jpg"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://4.bp.blogspot.com/-AVVjwXbRge0/UQaL06qBLmI/AAAAAAAAHH4/UPzbIn3bHus/s1600/Akita+Puppies+hd+Wallpapers_1.jpg"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://2.bp.blogspot.com/-ZxQidRZLfTo/T6Oe6n2rhqI/AAAAAAAAAbQ/wDvaG8M8f5A/s1600/cute_puppies4.jpg"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://images2.fanpop.com/image/photos/13700000/cute-puppy-puppies-13789224-1024-768.jpg"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://images5.fanpop.com/image/photos/29000000/Puppies-puppies-29017071-1280-1024.jpg"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://www.321dogs.com/pictures/beagle-puppies.jpg"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://blog.timesunion.com/opinion/files/2010/11/1117_WVfriendship.jpg"
-                }
-            ]
-        }
-    ]
-});</script>
-</div>
-<div class='element' id='TrelloCardActionBarContent' style='display:none'>
-<div id='TrelloCardActionBarCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/TrelloCardActionBar.json'>Try it Yourself »</a>
-<script>renderCard('TrelloCardActionBarCard', {
-	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-    {
-      "type": "Container",
-      "speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "Card created: Publish Adaptive Card schema",
-          "weight": "bolder",
-          "size": "medium"
-        },
-        {
-          "type": "ColumnSet",
-          "columns": [
-            {
-              "type": "Column",
-              "size": "auto",
-              "items": [
-                {
-                  "type": "Image",
-                  "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-                  "size": "small",
-                  "style": "person"
-                }
-              ]
-            },
-            {
-              "type": "Column",
-              "size": "stretch",
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "**Miguel Garcia**",
-                  "wrap": true
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "9/13/2016, 3:34pm",
-                  "isSubtle": true,
-                  "wrap": true
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "ActionSet",
-      "actions": [
-        {
-          "type": "Action.ShowCard",
-          "title": "Set due date",
-          "card": {
-            "type": "AdaptiveCard",
-            "body": [
-              {
-                "type": "Input.Date",
-                "id": "dueDate",
-                "placeholder": "Select a date"
-              }
-            ],
-            "actions": [
-              {
-                "type": "Action.Submit",
-                "title": "OK"
-              }
-            ]
-          }
-        },
-        {
-          "type": "Action.ShowCard",
-          "title": "Comment",
-          "card": {
-            "type": "AdaptiveCard",
-            "body": [
-              {
-                "type": "Input.Text",
-                "id": "comment",
-                "isMultiline": true,
-                "placeholder": "Enter your comment"
-              }
-            ]
-          }
-        },
-        {
-          "type": "Action.OpenUrl",
-          "title": "View",
-          "url": "http://microsoft.com"
-        }
-      ]
-    },
-		{
-			"type": "Container",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-					"speak": "",
-					"wrap": true
-				},
-				{
-					"type": "FactSet",
-					"speak": "It has been assigned to: David Claux",
-					"facts": [
-						{
-							"title": "Board:",
-							"value": "Adaptive Card"
-						},
-						{
-							"title": "List:",
-							"value": "Backlog"
-						},
-						{
-							"title": "Assigned to:",
-							"value": "David Claux"
-						},
-						{
-							"title": "Due date:",
-							"value": "Not set"
-						}
-					]
-				}
-			]
-		}
-	]
-
-});</script>
-</div>
-<div class='element' id='TrelloCardCreatedContent' style='display:none'>
-<div id='TrelloCardCreatedCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/TrelloCardCreated.json'>Try it Yourself »</a>
-<script>renderCard('TrelloCardCreatedCard', {
-	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"body": [
-		{
-			"type": "Container",
-			"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "Card created: Publish Adaptive Card schema",
-					"weight": "bolder",
-					"size": "medium"
-				},
-				{
-					"type": "ColumnSet",
-					"columns": [
-						{
-							"type": "Column",
-							"size": "auto",
-							"items": [
-								{
-									"type": "Image",
-									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-									"size": "small",
-									"style": "person"
-								}
-							]
-						},
-						{
-							"type": "Column",
-							"size": "stretch",
-							"items": [
-								{
-									"type": "TextBlock",
-									"text": "**Miguel Garcia**",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"separation": "none",
-									"text": "Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}",
-									"isSubtle": true,
-									"wrap": true
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "Container",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-					"speak": "",
-					"wrap": true
-				},
-				{
-					"type": "FactSet",
-					"speak": "It has been assigned to: David Claux",
-					"facts": [
-						{
-							"title": "Board:",
-							"value": "Adaptive Card"
-						},
-						{
-							"title": "List:",
-							"value": "Backlog"
-						},
-						{
-							"title": "Assigned to:",
-							"value": "David Claux"
-						},
-						{
-							"title": "Due date:",
-							"value": "Not set"
-						}
-					]
-				}
-			]
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.ShowCard",
-			"title": "Set due date",
-			"card": {
-				"type": "AdaptiveCard",
-				"body": [
-					{
-						"type": "Input.Date",
-						"id": "dueDate",
-						"title": "Select due date"
-					}
-				],
-				"actions": [
-				    {
-				        "type": "Action.Http",
-				        "title": "OK",
-				        "url": "http://xyz.com",
-                        "headers": {
-							"content-type": "application/json"
-						},
-						"body": "{ 'comment' : '{{comment.value}}' }"
-				    }
-				]
-			}
-		},
-		{
-			"type": "Action.ShowCard",
-			"title": "Comment",
-			"card": {
-				"type": "AdaptiveCard",
-				"body": [
-					{
-						"type": "Input.Text",
-						"id": "comment",
-						"isMultiline": true,
-						"placeholder": "Enter your comment"
-					}
-				],
-				"actions": [
-					{
-						"type": "Action.Http",
-						"method": "POST",
-						"title": "OK",
-						"url": "http://xyz.com",
-						"headers": {
-							"content-type": "application/json"
-						},
-						"body": "{ 'comment' : '{{comment.value}}' }"
-					}
-				]
-			}
-		},
-		{
-			"type": "Action.OpenUrl",
-			"title": "View",
-			"url": "http://foo.com"
-		}
-	]
-});</script>
-</div>
-<div class='element' id='VSTSCardContent' style='display:none'>
-<div id='VSTSCardCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/VSTSCard.json'>Try it Yourself »</a>
-<script>renderCard('VSTSCardCard', {
-	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-		{
-			"type": "TextBlock",
-			"text": "Title of connector card",
-			"weight": "bolder",
-			"size": "medium"
-		},
-		{
-			"type": "ColumnSet",
-			"speak": "",
-			"columns": [
-				{
-					"type": "Column",
-					"size": "auto",
-					"items": [
-						{
-							"type": "Image",
-							"url": "https://microsoft.github.io/AdaptiveCards/assets/Closed%20bug%2092x92.png",
-							"size": "medium"
-						}
-					]
-				},
-				{
-					"type": "Column",
-					"size": "stretch",
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "Bug XXXXXX: This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. This bu has this issue that needs to be fixed. This will wrap to the second line to demonstrate max line. ",
-							"wrap": true
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "FactSet",
-			"facts": [
-				{
-					"title": "Work item type:",
-					"value": "Bug"
-				},
-				{
-					"title": "State:",
-					"value": "Closed"
-				},
-				{
-					"title": "Area Path:",
-					"value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines",
-					"speak": ""
-				},
-				{
-					"title": "Iteration Path:",
-					"value": "t365\\Tabs\\Extensibility\\longer to show",
-					"speak": ""
-				},
-				{
-					"title": "Priority:",
-					"value": "1"
-				}
-			]
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.Http",
-			"method": "POST",
-			"title": "View more work items",
-			"url": "http://someurl.com"
-		},
-		{
-			"type": "Action.Http",
-			"method": "POST",
-			"title": "View more work items",
-			"url": "http://someurl.com"
-		}
-	]
 });</script>
 </div>
 <div class='element' id='WeatherContent' style='display:none'>
