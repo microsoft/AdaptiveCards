@@ -41,9 +41,8 @@ namespace GenerateSamples
                 int i = 0;
                 foreach (var element in elements)
                 {
-                    string highlight = (i++ == 0) ? " w3-gray" : String.Empty;
                     var elementName = element.Replace(".", string.Empty);
-                    writer.WriteLine($"<a href=\"#{elementName}\" id='{elementName}Link' class=\"elementLink w3-bar-item w3-button{highlight}\">{element}</a>");
+                    writer.WriteLine($"<a href=\"#{elementName}\" id='{elementName}Link' class=\"elementLink w3-bar-item w3-button\">{element}</a>");
                 }
                 writer.WriteLine("</div>");
 
@@ -51,8 +50,7 @@ namespace GenerateSamples
                 i = 0;
                 foreach (var element in elements)
                 {
-                    string display = (i++ == 0) ? "inline-block" : "none";
-                    writer.WriteLine($"<div class='element' id='{element.Replace(".",String.Empty)}Content' style='display:{display}'>");
+                    writer.WriteLine($"<div class='element' id='{element.Replace(".",String.Empty)}Content' style='display:none'>");
                     writer.WriteLine($"<h1>{element}</h1>");
                     string path = $@"..\..\..\..\..\..\pages\schema\{element}.md";
                     if (File.Exists(path))

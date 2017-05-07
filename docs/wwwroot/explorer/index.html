@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="/content/shared.css">
 	<link rel="stylesheet" href="/explorer/explorer.css">
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src = "/node_modules/adaptive-cards/dist/adaptive-cards.js"></script> 
 	<script src="/explorer/explorer.js"></script>
 </head>
@@ -25,7 +26,7 @@
     <!-- side bar with accordion -->
 
 <div class="w3-sidebar w3-light-grey w3-card-2 w3-bar-block">
-<a href="#TextBlock" id='TextBlockLink' class="elementLink w3-bar-item w3-button w3-gray">TextBlock</a>
+<a href="#TextBlock" id='TextBlockLink' class="elementLink w3-bar-item w3-button">TextBlock</a>
 <a href="#Image" id='ImageLink' class="elementLink w3-bar-item w3-button">Image</a>
 <a href="#InputText" id='InputTextLink' class="elementLink w3-bar-item w3-button">Input.Text</a>
 <a href="#InputNumber" id='InputNumberLink' class="elementLink w3-bar-item w3-button">Input.Number</a>
@@ -45,7 +46,7 @@
 <a href="#ActionShowCard" id='ActionShowCardLink' class="elementLink w3-bar-item w3-button">Action.ShowCard</a>
 </div>
 <div class="w3-container content-sidebar">
-<div class='element' id='TextBlockContent' style='display:inline-block'>
+<div class='element' id='TextBlockContent' style='display:none'>
 <h1>TextBlock</h1>
 <p>The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.</p>
 <table>

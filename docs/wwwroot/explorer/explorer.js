@@ -206,3 +206,10 @@ function showElement(id) {
 window.addEventListener("hashchange", function () {
     showElement(window.location.hash.slice(1));
 }, false);
+
+$(document).ready(() => {
+    if (window.location.hash == '')
+        showElement("TextBlock");
+    else
+        showElement(window.location.hash.slice(1));
+});
