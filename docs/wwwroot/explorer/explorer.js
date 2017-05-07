@@ -202,3 +202,7 @@ function showElement(id) {
     var elementLink = document.getElementById(id + 'Link');
     elementLink.className = elementLink.className + " w3-gray";
 }
+
+window.addEventListener("hashchange", function () {
+    showElement(window.location.hash.slice(1));
+}, false);

@@ -14,10 +14,9 @@
     <!-- Nav bar-->
     <div class="w3-top">
 		<div class="w3-bar w3-black">
-			<a href="/"><img src="/content/icons_transparent/white-48.png" height="38" style="float:left;" /></a>
 			<a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
 			<a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
-			<a href="/explorer" class="w3-bar-item w3-button w3-mobile">Element Explorer</a>
+			<a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
 			<a href="/visualizer" class="w3-bar-item w3-button w3-mobile">Visualizer</a>
 			<a href="#" class="w3-bar-item w3-button w3-mobile">Samples</a>
 		</div> 

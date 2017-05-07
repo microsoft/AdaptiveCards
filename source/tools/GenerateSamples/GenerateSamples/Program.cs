@@ -43,7 +43,7 @@ namespace GenerateSamples
                 {
                     string highlight = (i++ == 0) ? " w3-gray" : String.Empty;
                     var elementName = element.Replace(".", string.Empty);
-                    writer.WriteLine($"<a href=\"#\" id='{elementName}Link' onclick=\"showElement('{elementName}')\" class=\"elementLink w3-bar-item w3-button{highlight}\">{element}</a>");
+                    writer.WriteLine($"<a href=\"#{elementName}\" id='{elementName}Link' class=\"elementLink w3-bar-item w3-button{highlight}\">{element}</a>");
                 }
                 writer.WriteLine("</div>");
 
