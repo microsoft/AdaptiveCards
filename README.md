@@ -39,12 +39,13 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 * `Actions` align horizontally if they fit; otherwise stack vertically.
 * `Input` includes text, multi-line, selections, dates, etc.
 
-# What's in the Toolkit
+# Check out [http://adaptivecards-staging.azurewebsites.net](http://adaptivecards-staging.azurewebsites.net)
+* Documentation
+* Element Explorer
+* Sample Cards
+* Interfative visualizer 
 
-* Documentation of the schema (see [Schema.md](docs/wwwroot/markdown/Schema.md))
-* Learn about the elements with the [Element Explorer](https://microsoft.github.io/AdaptiveCards/explorer)
-* An online live previewer  [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards) to preview and design Card payloads
-* Sample Cards (see [samples](samples/Scenarios))
+# What's in the Toolkit
 * The official Adaptive Card JSON schema (see [schemas/adaptive-card.json](schemas/adaptive-card.json))
 * The official Adaptive Card XML schema (see [schemas/adaptive-card.xsd](schemas/adaptive-card.xsd))
 * A Visual Code Live Preview Extension so you can see edits as you type (see [source/vscode](source/vscode))
