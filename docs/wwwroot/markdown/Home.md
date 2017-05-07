@@ -19,11 +19,6 @@ Open source libraries as nuget and npm modules to target multiple platforms and 
 * Client renderers: iOS, Android, WPF, UWP, XamarinForms
 * Server renderers: Image, Html Markup
 
-![outlook](docs/images/outlook.png) 
-![windows](docs/images/windows.png) 
-![weather](docs/images/weather.png) 
-![flightupdate](docs/images/flightupdate.png) 
-
 # How it works
 
 Developers describe the experience they want using a generic yet powerful JSON payload. With a properly described payload we take on the burden of presenting the best experience to a user wherever they are.

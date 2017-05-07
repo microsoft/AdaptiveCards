@@ -20,7 +20,7 @@ namespace Docs.Controllers
         }
 
         // GET api/markdown/file
-        [HttpGet("{file}")]
+        [HttpGet("{*file}")]
         public string Get(string file)
         {
             var path = Path.Combine(Path.Combine(_env.WebRootPath, "markdown"), file);

@@ -27,7 +27,7 @@ namespace Docs.Controllers
         [HttpGet]
         public RedirectResult Get()
         {
-            var path = Path.Combine(_env.WebRootPath, "content");
+            var path = Path.Combine(_env.WebRootPath, @"content\cats");
             var cats = Directory.EnumerateFiles(path, "Cat*.png").ToList();
             return new RedirectResult($"/api/cat/{rnd.Next(cats.Count)}");
         }
@@ -36,7 +36,7 @@ namespace Docs.Controllers
         [Route("{id}")]
         public FileContentResult Get(int id)
         {
-            var path = Path.Combine(_env.WebRootPath, "content");
+            var path = Path.Combine(_env.WebRootPath, @"content\cats");
             var cats = Directory.EnumerateFiles(path, "Cat*.png").ToList();
             return new FileContentResult(System.IO.File.ReadAllBytes(cats[id]), "image/png");
         }
