@@ -19,7 +19,7 @@
 			<a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
 			<a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
 			<a href="/visualizer" class="w3-bar-item w3-button w3-mobile">Visualizer</a>
-			<a href="#" class="w3-bar-item w3-button w3-mobile">Samples</a>
+			<a href="/samples" class="w3-bar-item w3-button w3-mobile">Samples</a>
 		</div> 
 	</div>
 
@@ -39,11 +39,19 @@
 <a href="#Column" id='ColumnLink' class="elementLink w3-bar-item w3-button">Column</a>
 <a href="#FactSet" id='FactSetLink' class="elementLink w3-bar-item w3-button">FactSet</a>
 <a href="#ImageSet" id='ImageSetLink' class="elementLink w3-bar-item w3-button">ImageSet</a>
-<a href="#ActionSet" id='ActionSetLink' class="elementLink w3-bar-item w3-button">ActionSet</a>
 <a href="#ActionOpenUrl" id='ActionOpenUrlLink' class="elementLink w3-bar-item w3-button">Action.OpenUrl</a>
 <a href="#ActionSubmit" id='ActionSubmitLink' class="elementLink w3-bar-item w3-button">Action.Submit</a>
 <a href="#ActionHttp" id='ActionHttpLink' class="elementLink w3-bar-item w3-button">Action.Http</a>
 <a href="#ActionShowCard" id='ActionShowCardLink' class="elementLink w3-bar-item w3-button">Action.ShowCard</a>
+
+<script>
+    $(document).ready(() => {
+        if (window.location.hash == '')
+            showElement('TextBlock');
+        else
+            showElement(window.location.hash.slice(1));
+    });
+</script>
 </div>
 <div class="w3-container content-sidebar">
 <div class='element' id='TextBlockContent' style='display:none'>
@@ -119,7 +127,7 @@
 <h2 onclick='toggleContent("TextBlock.ColorContent")'>TextBlock.Color</h2>
 <div id='TextBlock.ColorContent' style='display:block'>
 <div id='TextBlock.ColorCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Color.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.Color.json'>Try it Yourself »</a>
 </div><script>renderCard('TextBlock.ColorCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -165,7 +173,7 @@
 <h2 onclick='toggleContent("TextBlock.HorizontalAlignmentContent")'>TextBlock.HorizontalAlignment</h2>
 <div id='TextBlock.HorizontalAlignmentContent' style='display:block'>
 <div id='TextBlock.HorizontalAlignmentCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.HorizontalAlignment.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.HorizontalAlignment.json'>Try it Yourself »</a>
 </div><script>renderCard('TextBlock.HorizontalAlignmentCard', {
     "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -191,7 +199,7 @@
 <h2 onclick='toggleContent("TextBlock.IsSubtleContent")'>TextBlock.IsSubtle</h2>
 <div id='TextBlock.IsSubtleContent' style='display:block'>
 <div id='TextBlock.IsSubtleCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.IsSubtle.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.IsSubtle.json'>Try it Yourself »</a>
 </div><script>renderCard('TextBlock.IsSubtleCard', {
     "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -212,7 +220,7 @@
 <h2 onclick='toggleContent("TextBlock.MaxLinesContent")'>TextBlock.MaxLines</h2>
 <div id='TextBlock.MaxLinesContent' style='display:block'>
 <div id='TextBlock.MaxLinesCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.MaxLines.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.MaxLines.json'>Try it Yourself »</a>
 </div><script>renderCard('TextBlock.MaxLinesCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -235,7 +243,7 @@
 <h2 onclick='toggleContent("TextBlock.SeparationContent")'>TextBlock.Separation</h2>
 <div id='TextBlock.SeparationContent' style='display:block'>
 <div id='TextBlock.SeparationCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Separation.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.Separation.json'>Try it Yourself »</a>
 </div><script>renderCard('TextBlock.SeparationCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -266,7 +274,7 @@
 <h2 onclick='toggleContent("TextBlock.SizeContent")'>TextBlock.Size</h2>
 <div id='TextBlock.SizeContent' style='display:block'>
 <div id='TextBlock.SizeCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Size.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.Size.json'>Try it Yourself »</a>
 </div><script>renderCard('TextBlock.SizeCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -306,7 +314,7 @@
 <h2 onclick='toggleContent("TextBlock.TextContent")'>TextBlock.Text</h2>
 <div id='TextBlock.TextContent' style='display:block'>
 <div id='TextBlock.TextCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Text.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.Text.json'>Try it Yourself »</a>
 </div><script>renderCard('TextBlock.TextCard', {
     "$schema":"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -321,7 +329,7 @@
 <h2 onclick='toggleContent("TextBlock.WeightContent")'>TextBlock.Weight</h2>
 <div id='TextBlock.WeightContent' style='display:block'>
 <div id='TextBlock.WeightCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Weight.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.Weight.json'>Try it Yourself »</a>
 </div><script>renderCard('TextBlock.WeightCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -347,7 +355,7 @@
 <h2 onclick='toggleContent("TextBlock.WrapContent")'>TextBlock.Wrap</h2>
 <div id='TextBlock.WrapContent' style='display:block'>
 <div id='TextBlock.WrapCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/TextBlock.Wrap.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.Wrap.json'>Try it Yourself »</a>
 </div><script>renderCard('TextBlock.WrapCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -427,7 +435,7 @@
 <h2 onclick='toggleContent("Image.HorizontalAlignmentContent")'>Image.HorizontalAlignment</h2>
 <div id='Image.HorizontalAlignmentContent' style='display:block'>
 <div id='Image.HorizontalAlignmentCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.HorizontalAlignment.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Image.HorizontalAlignment.json'>Try it Yourself »</a>
 </div><script>renderCard('Image.HorizontalAlignmentCard', {
   "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -472,7 +480,7 @@
 <h2 onclick='toggleContent("Image.SelectActionContent")'>Image.SelectAction</h2>
 <div id='Image.SelectActionContent' style='display:block'>
 <div id='Image.SelectActionCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.SelectAction.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Image.SelectAction.json'>Try it Yourself »</a>
 </div><script>renderCard('Image.SelectActionCard', {
   "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -496,7 +504,7 @@
 <h2 onclick='toggleContent("Image.SeparationContent")'>Image.Separation</h2>
 <div id='Image.SeparationContent' style='display:block'>
 <div id='Image.SeparationCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.Separation.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Image.Separation.json'>Try it Yourself »</a>
 </div><script>renderCard('Image.SeparationCard', {
   "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -542,7 +550,7 @@
 <h2 onclick='toggleContent("Image.SizeContent")'>Image.Size</h2>
 <div id='Image.SizeContent' style='display:block'>
 <div id='Image.SizeCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.Size.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Image.Size.json'>Try it Yourself »</a>
 </div><script>renderCard('Image.SizeCard', {
   "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -607,7 +615,7 @@
 <h2 onclick='toggleContent("Image.StyleContent")'>Image.Style</h2>
 <div id='Image.StyleContent' style='display:block'>
 <div id='Image.StyleCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.Style.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Image.Style.json'>Try it Yourself »</a>
 </div><script>renderCard('Image.StyleCard', {
   "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -637,7 +645,7 @@
 <h2 onclick='toggleContent("Image.UrlContent")'>Image.Url</h2>
 <div id='Image.UrlContent' style='display:block'>
 <div id='Image.UrlCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Image.Url.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Image.Url.json'>Try it Yourself »</a>
 </div><script>renderCard('Image.UrlCard', {
   "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -727,7 +735,7 @@
 <h2 onclick='toggleContent("Input.TextContent")'>Input.Text</h2>
 <div id='Input.TextContent' style='display:block'>
 <div id='Input.TextCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Text.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Text.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.TextCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -747,7 +755,7 @@
 <h2 onclick='toggleContent("Input.Text.StyleContent")'>Input.Text.Style</h2>
 <div id='Input.Text.StyleContent' style='display:block'>
 <div id='Input.Text.StyleCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Text.Style.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Text.Style.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.Text.StyleCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -866,7 +874,7 @@
 <h2 onclick='toggleContent("Input.NumberContent")'>Input.Number</h2>
 <div id='Input.NumberContent' style='display:block'>
 <div id='Input.NumberCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Number.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Number.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.NumberCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -954,7 +962,7 @@
 <h2 onclick='toggleContent("Input.DateContent")'>Input.Date</h2>
 <div id='Input.DateContent' style='display:block'>
 <div id='Input.DateCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Date.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Date.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.DateCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1042,7 +1050,7 @@
 <h2 onclick='toggleContent("Input.TimeContent")'>Input.Time</h2>
 <div id='Input.TimeContent' style='display:block'>
 <div id='Input.TimeCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Time.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Time.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.TimeCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1131,7 +1139,7 @@
 <h2 onclick='toggleContent("Input.ToggleContent")'>Input.Toggle</h2>
 <div id='Input.ToggleContent' style='display:block'>
 <div id='Input.ToggleCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.Toggle.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Toggle.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.ToggleCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1257,7 +1265,7 @@
 <h2 onclick='toggleContent("Input.ChoiceSetContent")'>Input.ChoiceSet</h2>
 <div id='Input.ChoiceSetContent' style='display:block'>
 <div id='Input.ChoiceSetCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Input.ChoiceSet.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.ChoiceSet.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.ChoiceSetCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1441,7 +1449,7 @@
 <h2 onclick='toggleContent("Container.ActionsContent")'>Container.Actions</h2>
 <div id='Container.ActionsContent' style='display:block'>
 <div id='Container.ActionsCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Container.Actions.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Container.Actions.json'>Try it Yourself »</a>
 </div><script>renderCard('Container.ActionsCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1502,7 +1510,7 @@
 <h2 onclick='toggleContent("Container.ItemsContent")'>Container.Items</h2>
 <div id='Container.ItemsContent' style='display:block'>
 <div id='Container.ItemsCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Container.Items.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Container.Items.json'>Try it Yourself »</a>
 </div><script>renderCard('Container.ItemsCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1526,7 +1534,7 @@
 <h2 onclick='toggleContent("Container.SelectActionContent")'>Container.SelectAction</h2>
 <div id='Container.SelectActionContent' style='display:block'>
 <div id='Container.SelectActionCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Container.SelectAction.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Container.SelectAction.json'>Try it Yourself »</a>
 </div><script>renderCard('Container.SelectActionCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1555,7 +1563,7 @@
 <h2 onclick='toggleContent("Container.SeparationContent")'>Container.Separation</h2>
 <div id='Container.SeparationContent' style='display:block'>
 <div id='Container.SeparationCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Container.Separation.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Container.Separation.json'>Try it Yourself »</a>
 </div><script>renderCard('Container.SeparationCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1650,7 +1658,7 @@
 <h2 onclick='toggleContent("ColumnSet.ColumnsContent")'>ColumnSet.Columns</h2>
 <div id='ColumnSet.ColumnsContent' style='display:block'>
 <div id='ColumnSet.ColumnsCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/ColumnSet.Columns.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/ColumnSet.Columns.json'>Try it Yourself »</a>
 </div><script>renderCard('ColumnSet.ColumnsCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1706,7 +1714,7 @@
 <h2 onclick='toggleContent("ColumnSet.SeparationContent")'>ColumnSet.Separation</h2>
 <div id='ColumnSet.SeparationContent' style='display:block'>
 <div id='ColumnSet.SeparationCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/ColumnSet.Separation.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/ColumnSet.Separation.json'>Try it Yourself »</a>
 </div><script>renderCard('ColumnSet.SeparationCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1847,7 +1855,7 @@
 <h2 onclick='toggleContent("Column.SelectActionContent")'>Column.SelectAction</h2>
 <div id='Column.SelectActionContent' style='display:block'>
 <div id='Column.SelectActionCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Column.SelectAction.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Column.SelectAction.json'>Try it Yourself »</a>
 </div><script>renderCard('Column.SelectActionCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1917,7 +1925,7 @@
 <h2 onclick='toggleContent("Column.SeparationContent")'>Column.Separation</h2>
 <div id='Column.SeparationContent' style='display:block'>
 <div id='Column.SeparationCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Column.Separation.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Column.Separation.json'>Try it Yourself »</a>
 </div><script>renderCard('Column.SeparationCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -1988,7 +1996,7 @@
 <h2 onclick='toggleContent("Column.SizeContent")'>Column.Size</h2>
 <div id='Column.SizeContent' style='display:block'>
 <div id='Column.SizeCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Column.Size.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Column.Size.json'>Try it Yourself »</a>
 </div><script>renderCard('Column.SizeCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -2051,7 +2059,7 @@
 <h2 onclick='toggleContent("Column.SizeRatioContent")'>Column.SizeRatio</h2>
 <div id='Column.SizeRatioContent' style='display:block'>
 <div id='Column.SizeRatioCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Column.SizeRatio.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Column.SizeRatio.json'>Try it Yourself »</a>
 </div><script>renderCard('Column.SizeRatioCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -2138,7 +2146,7 @@
 <h2 onclick='toggleContent("FactSetContent")'>FactSet</h2>
 <div id='FactSetContent' style='display:block'>
 <div id='FactSetCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/FactSet.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/FactSet.json'>Try it Yourself »</a>
 </div><script>renderCard('FactSetCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -2205,7 +2213,7 @@
 <h2 onclick='toggleContent("ImageSet.ImageSizeContent")'>ImageSet.ImageSize</h2>
 <div id='ImageSet.ImageSizeContent' style='display:block'>
 <div id='ImageSet.ImageSizeCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/ImageSet.ImageSize.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/ImageSet.ImageSize.json'>Try it Yourself »</a>
 </div><script>renderCard('ImageSet.ImageSizeCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -2246,7 +2254,7 @@
 <h2 onclick='toggleContent("ImageSetContent")'>ImageSet</h2>
 <div id='ImageSetContent' style='display:block'>
 <div id='ImageSetCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/ImageSet.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/ImageSet.json'>Try it Yourself »</a>
 </div><script>renderCard('ImageSetCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -2284,15 +2292,12 @@
     ]
 });</script>
 </div>
-<div class='element' id='ActionSetContent' style='display:none'>
-<h1>ActionSet</h1>
-</div>
 <div class='element' id='ActionOpenUrlContent' style='display:none'>
 <h1>Action.OpenUrl</h1>
 <h2 onclick='toggleContent("Action.OpenUrlContent")'>Action.OpenUrl</h2>
 <div id='Action.OpenUrlContent' style='display:block'>
 <div id='Action.OpenUrlCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Action.OpenUrl.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Action.OpenUrl.json'>Try it Yourself »</a>
 </div><script>renderCard('Action.OpenUrlCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -2317,7 +2322,7 @@
 <h2 onclick='toggleContent("Action.SubmitContent")'>Action.Submit</h2>
 <div id='Action.SubmitContent' style='display:block'>
 <div id='Action.SubmitCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Action.Submit.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Action.Submit.json'>Try it Yourself »</a>
 </div><script>renderCard('Action.SubmitCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -2350,7 +2355,7 @@
 <h2 onclick='toggleContent("Action.HttpContent")'>Action.Http</h2>
 <div id='Action.HttpContent' style='display:block'>
 <div id='Action.HttpCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Action.Http.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Action.Http.json'>Try it Yourself »</a>
 </div><script>renderCard('Action.HttpCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
@@ -2386,7 +2391,7 @@
 <h2 onclick='toggleContent("Action.ShowCardContent")'>Action.ShowCard</h2>
 <div id='Action.ShowCardContent' style='display:block'>
 <div id='Action.ShowCardCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/AdaptiveCards/?card=https://microsoft.github.io/AdaptiveCards/samples/Elements/Action.ShowCard.json'>Try it Yourself »</a>
+<a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Action.ShowCard.json'>Try it Yourself »</a>
 </div><script>renderCard('Action.ShowCardCard', {
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",

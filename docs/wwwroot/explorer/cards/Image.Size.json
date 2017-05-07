@@ -1,0 +1,61 @@
+{
+  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "size:small",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "size": "small"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:medium",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "size": "medium"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:large",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "size": "large" 
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:auto",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "size": "auto"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:stretch",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "size": "stretch"
+    }
+  ]
+}

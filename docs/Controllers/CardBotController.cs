@@ -75,7 +75,7 @@ namespace Docs.Controllers
 
         private async Task<HttpResponseMessage> SendCard(Activity activity, string cardName)
         {
-            var path = Path.Combine(_env.WebRootPath, $@"samples\{cardName}.json");
+            var path = Path.Combine(_env.WebRootPath, $@"samples\cards\{cardName}.json");
             if (System.IO.File.Exists(path))
             {
                 string json = System.IO.File.ReadAllText(path);
@@ -94,7 +94,7 @@ namespace Docs.Controllers
         private async Task<HttpResponseMessage> ListCards(IMessageActivity message)
         {
             Activity activity = (Activity)message;
-            var path = Path.Combine(_env.WebRootPath, "samples");
+            var path = Path.Combine(_env.WebRootPath, @"samples\cards");
 
             StringBuilder sb = new StringBuilder();
             foreach (var file in Directory.GetFiles(path).Where(f => f.EndsWith(".json")))

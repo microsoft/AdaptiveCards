@@ -1,0 +1,22 @@
+{
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "weight:lighter",
+            "weight": "lighter"
+        },
+        {
+            "type": "TextBlock",
+            "text": "weight:normal",
+            "weight": "normal"
+        },
+        {
+            "type": "TextBlock",
+            "text": "weight:bolder",
+            "weight": "bolder"
+        }
+    ]
+}
