@@ -6,57 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\markdown\Partners\**" />
-    <Content Remove="wwwroot\markdown\Partners\**" />
-    <EmbeddedResource Remove="wwwroot\markdown\Partners\**" />
-    <None Remove="wwwroot\markdown\Partners\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot/explorer\explorer.css" />
-    <Content Remove="wwwroot/explorer\explorer.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Properties\PublishProfiles\adaptivecards - Web Deploy.pubxml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="wwwroot\content\cats\Cat_Sat_1_400x406.png" />
-    <Content Include="wwwroot\content\cats\Cat_Sat_2-Glasses_400x297.png" />
-    <Content Include="wwwroot\content\cats\Cat_Sat_2_400x297.png" />
-    <Content Include="wwwroot\content\shared.css" />
-    <Content Include="wwwroot\documentation\documentation.js" />
-    <Content Include="wwwroot\documentation\index.html" />
-    <Content Include="wwwroot\explorer\explorer.css" />
-    <Content Include="wwwroot\explorer\explorer.js" />
-    <Content Include="wwwroot\explorer\index.html">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\index.html" />
-    <Content Include="wwwroot\markdown\about\Future.md" />
-    <Content Include="wwwroot\markdown\about\Principles.md">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\markdown\about\ValueProp.md">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\markdown\about\Goals.md" />
-    <Content Include="wwwroot\markdown\create\CardSchema.md" />
-    <Content Include="wwwroot\markdown\create\Speech.md">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\markdown\create\GettingStarted.md" />
-    <Content Include="wwwroot\markdown\display\Actions.md" />
-    <Content Include="wwwroot\markdown\display\CustomizingRenderer.md" />
-    <Content Include="wwwroot\markdown\display\GettingStarted.md">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\markdown\display\HostConfigSchema.md" />
-    <Content Include="wwwroot\markdown\Home.md" />
-    <Content Include="wwwroot\samples\index.html" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="MarkedNet" Version="1.0.6" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
