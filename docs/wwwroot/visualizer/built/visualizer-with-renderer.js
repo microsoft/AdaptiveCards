@@ -24309,7 +24309,9 @@ var TextBlock = (function (_super) {
     TextBlock.prototype.internalRender = function () {
         if (!Utils.isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
-            element.style.fontFamily = hostConfig.fontFamily;
+            if (hostConfig.fontFamily) {
+                element.style.fontFamily = hostConfig.fontFamily;
+            }
             switch (this.horizontalAlignment) {
                 case "center":
                     element.style.textAlign = "center";
@@ -44292,7 +44294,7 @@ function setupContainerPicker() {
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", function () {
             // Update the query string
-            var htmlFileName = location.pathname.indexOf("index.html") >= 0 ? "index.html" : "dev.html";
+            var htmlFileName = location.pathname.indexOf("dev.html") >= 0 ? "dev.html" : "index.html";
             history.pushState(hostContainerPicker.value, "Visualizer - " + hostContainerPicker.value, htmlFileName + ("?hostApp=" + hostContainerPicker.value));
             loadStyleSheetAndConfig();
             tryRenderCard();
