@@ -1,16 +1,14 @@
-![blue-144.png](/content/icons_blue/blue-144.png) 
-
-# Introducing Adaptive Cards
+# Introducing adaptive cards 
 
 Adaptive Cards is a JSON format which gives developers the ability to deliver great looking cards to any device or client.
 
-## Developer Features
+### Developer Features
 * Simple but expresive JSON layout gives developers ability to easily create rich great looking cards across any device or client!
 * Rich Input controls (text, date, time, etc.) allows developer to collect information 
 * Speech enabled from day one!
 * Nuget and NPM libraries to make it easy to build cards in code
 
-## Client application Features
+### Client application Features
 * Client controls the rendered style, so cards from multiple sources look great together and like they were designed for the application.
 * Client doesn't have to keep updating itself to support new cards
 
@@ -19,7 +17,7 @@ Open source libraries as nuget and npm modules to target multiple platforms and 
 * Client renderers: iOS, Android, WPF, UWP, XamarinForms
 * Server renderers: Image, Html Markup
 
-# How it works
+## How it works
 
 Developers describe the experience they want using a generic yet powerful JSON payload. With a properly described payload we take on the burden of presenting the best experience to a user wherever they are.
 
@@ -34,7 +32,7 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 * `Actions` align horizontally if they fit; otherwise stack vertically.
 * `Input` includes text, multi-line, selections, dates, etc.
 
-# What's in the Toolkit
+## What's in the Toolkit
 
 * Documentation of the schema (see [Schema.md](docs/wwwroot/markdown/Schema.md))
 * Learn about the elements with the [Element Explorer](https://microsoft.github.io/AdaptiveCards/explorer)
@@ -45,12 +43,12 @@ Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, t
 * A Visual Code Live Preview Extension so you can see edits as you type (see [source/vscode](source/vscode))
 * Nuget and NPM libraries
 
-# Rendering Cards in your App or Web Site
+## Rendering Cards in your App or Web Site
 
 If you have the need to render Adaptive Cards inside your app or web site, the Toolkit provides a couple Renderers to help achieve this.
 
 
-## Shared Libraries
+### Shared Libraries
 * **AdaptiveCards** -> Defines Adaptive card object model for creating and serializing/deserializing adaptive cards
 * **AdaptiveCards.Html** -> Defines HTML markup generator (suitable for server side html generation)
 * **AdaptiveCards.WPF** -> defines stock XAML/WPF renderer

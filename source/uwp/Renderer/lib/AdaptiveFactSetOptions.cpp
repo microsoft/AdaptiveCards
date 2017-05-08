@@ -35,7 +35,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveFactSetOptions::get_Value(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextOptions** valueTextOptions)
     {
-        return MakeAndInitialize<AdaptiveTextOptions>(valueTextOptions, m_sharedFactSetOptions.title);
+        return MakeAndInitialize<AdaptiveTextOptions>(valueTextOptions, m_sharedFactSetOptions.value);
     }
 
     _Use_decl_annotations_

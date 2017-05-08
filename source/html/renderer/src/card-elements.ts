@@ -180,8 +180,11 @@ export class TextBlock extends CardElement {
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
-            element.style.fontFamily = hostConfig.fontFamily;
-
+            
+            if (hostConfig.fontFamily) {
+                element.style.fontFamily = hostConfig.fontFamily;
+            }
+        
             switch (this.horizontalAlignment) {
                 case "center":
                     element.style.textAlign = "center";

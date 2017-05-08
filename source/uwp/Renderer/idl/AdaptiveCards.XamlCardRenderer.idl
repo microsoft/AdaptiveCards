@@ -1077,21 +1077,6 @@ namespace AdaptiveCards
             [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions** value);
             [propput] HRESULT Padding([in] AdaptiveBoundaryOptions* value);
 
-            [propget] HRESULT BorderColor([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT BorderColor([in] Windows.UI.Color value);
-
-            [propget] HRESULT MaxActions([out][retval] UINT32* value);
-            [propput] HRESULT MaxActions([in] UINT32 value);
-
-            [propget] HRESULT ActionsOrientation([out][retval] ActionsOrientation* value);
-            [propput] HRESULT ActionsOrientation([in] ActionsOrientation value);
-
-            [propget] HRESULT ActionAlignment([out][retval] HAlignment* value);
-            [propput] HRESULT ActionAlignment([in] HAlignment value);
-
-            [propget] HRESULT TextColor([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT TextColor([in] Windows.UI.Color value);
-
             [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
             [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
         };
