@@ -6,12 +6,12 @@
 [CardElements](#CardElements) 
 * [TextBlock](#textblock) - display text
 * [Image](#image) - display an image
-* [Input.Text](#inputtext) - get text input from user
-* [Input.Date](#inputdate) - get date input from user
-* [Input.Time](#inputtime) - get time input from user
-* [Input.Number](#inputnumber) - get number input from user
-* [Input.Toggle](#inputtoggle) - get user to select betweeen two options
-* [Input.ChoiceSet](#inputchoiceset) - display set of choices to the user 
+* [Input.Text](#input-text) - get text input from user
+* [Input.Date](#input-date) - get date input from user
+* [Input.Time](#input-time) - get time input from user
+* [Input.Number](#input-number) - get number input from user
+* [Input.Toggle](#input-toggle) - get user to select betweeen two options
+* [Input.ChoiceSet](#input-choiceset) - display set of choices to the user 
     * [Choice](#choice) - choice object
 
 [Containers](#containers) 
@@ -23,10 +23,10 @@
     * [Fact](#fact) - fact object
 
 [Actions](#actions)
-* [Action.Http](#actionhttp) - defines action which collects input and does raw HTTP call to arbitrary Http endpoint
-* [Action.OpenUrl](#actionopenurl) - defines action which opens a url either in external browser or embedded browser
-* [Action.ShowCard](#actionshowcard) - defines action which shows a card to the user
-* [Action.Submit](#actionsubmit) - defines action which collects input and sends via client appropriate mechanism (it's up to client)
+* [Action.Http](#action-http) - defines action which collects input and does raw HTTP call to arbitrary Http endpoint
+* [Action.OpenUrl](#action-openurl) - defines action which opens a url either in external browser or embedded browser
+* [Action.ShowCard](#action-showcard) - defines action which shows a card to the user
+* [Action.Submit](#action-submit) - defines action which collects input and sends via client appropriate mechanism (it's up to client)
 
 # Cards
 
@@ -42,21 +42,7 @@ AdaptiveCard is top level object which represents a card
 | **minVersion** | string|false| if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore|
 | **fallbackText** | string|false| if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. |
 
-# Card Element
-
-A card element is a visual element to add to a container.  Shared properties 
-
-> NOTE: You cannot create an CardElement directly, only the derived types.
-
-| Property | Type |  Required |Description |
-|---|---|---|---|
-| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from preiovus element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
-
 ## Image 
-
-*Extends [CardElement](#CardElement)*
-
 The Image element allows for the inclusion of images in an Adaptive Card.
 
 | Property | Type | Required |Description |
@@ -66,12 +52,12 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 | **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
 | **selectAction** | [Action](#action) | false | Action to perform for a selection for this image, (this allows image to act as an action) |
 | **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the image. |
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **altText** | string  | false | Alternate text for the image for accessibility |
 | **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
 
 ## TextBlock 
-*Extends [CardElement](#CardElement)*
-
 The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.
 
 | Property | Type | Required | Description |
@@ -85,62 +71,14 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 | **wrap** | boolean | false | Indicates whether the text should be allowed to wrap |
 | **maxLines** | number | false | When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use. |
 | **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
-
-### Formatting Functions
-
-When sending TextBlock items with date or time information you need to be able to translate the date or time to the
-recipients timezone using their locale.  This is a task which is almost always way easier for the client to do then
-for the sender.  To make it easy for clients to do this we have the ability to invoke a DATE() and TIME() function
-inside text of the textblock.
-
-These functions can be invoked anywhere in the text of a text block like this:
-
-    "Your order was shipped {{DATE(2017-02-13T20:46:30Z, Long)}} and will arrive at {{TIME(2017-02-13T20:00:00Z, Short)}}" 
-
-#### Date Formatting Function
-
-The DATE function is passed an ISO-8601 formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing
-how you would like the date to be formatted for the user in the text string.
-
-The format is expressed as a binding clause like this:
-
-    {{DATE(..iso-8601.., Short|Long)}}
-
-Example for (en-us):
-
-    {{DATE(2017-02-13T20:46:30Z, Short)}} => 2/13/2017
-    {{DATE(2017-02-13T20:46:30Z, Long)}} => Monday, February 13, 2017
-
-> NOTE: The hint part of the function is optional and can be omitted like this:
-
-    {{DATE(2017-02-13T20:46:30z)}}
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
 
 
-#### Time Formatting Function
-
-The TIME function is passed an ISO-8601 formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing
-how you would like the time to be formatted for the user in the text string.
-
-The format is expressed as a binding clause like this:
-
-    {{TIME(..iso-8601.., Short|Long)}}
-
-Example for (en-us):
-
-    {{TIME(2017-02-13T20:46:30Z, Short)}} => 8:46 PM
-    {{TIME(2017-02-13T20:46:30Z, Long)}} => 8:46:30 PM
-
-> NOTE: The hint part of the function is optional and can be omitted like this:
-
-    {{TIME(2017-02-13T20:46:30z)}}
-
-
-## Inputs
+## Input Elements
 Input elements give you the ability to show input controls to the uer.
 
 ### Input Text
-
-*Extends [CardElement](#CardElement)*
 
 Input.Text collects text from the user
 
@@ -155,10 +93,10 @@ Input.Text collects text from the user
 | **style**| [TextInputStyle](#textinputstyle) | false | Hint of style of input, if client doesn't support the style it will become simple text input || **isMultiline** | bool | false | true to collect multiple lines of text (default is false)|
 | **maxLength** | number | false | hint of maximum length characters to collect *(may be ignored by some clients)* |
 | **isMultiline** | boolean | false | Do you want to allow multiple lines of input |
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
 
 ### Input Date
-
-*Extends [CardElement](#CardElement)*
 
 Input.Date collects text from the user in form of a date. 
 
@@ -174,10 +112,10 @@ Input.Date collects text from the user in form of a date.
 | **placeholder** | string | false | initial text descripting the input desired |
 | **min** | string | false | Minimum date in ISO-8601 format (Not all clients will be able to honor this)|
 | **max** | string  | false | Maximum date in ISO-8601 format (Not all clients will be able to honor this)|
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
 
 ### Input Time
-
-*Extends [CardElement](#CardElement)*
 
 Input.Time collects text from the user in form of a time of day.
 
@@ -193,10 +131,10 @@ Input.Time collects text from the user in form of a time of day.
 | **value** | string | false | The initial value for a field |
 | **min** | string | false | Minimum time (Not all clients will be able to honor this)|
 | **max** | string  | false | Maximum time (Not all clients will be able to honor this)|
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
 
 ### Input Number
-
-*Extends [CardElement](#CardElement)*
 
 Input.Number collects text from the user with a bias towards a number. 
 
@@ -212,10 +150,11 @@ Input.Number collects text from the user with a bias towards a number.
 | **value** | number | false | The initial value for a field |
 | **min** | number | false | Minimum number (Not all clients will be able to honor this)|
 | **max** | number | false | Maximum number (Not all clients will be able to honor this)|
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
+
 
 ### Input Toggle
-
-*Extends [CardElement](#CardElement)*
 
 Input.Toggle collects a selection between two values, with **value** representing the current selected toggle value (either value1 or value2).
 
@@ -229,6 +168,9 @@ Input.Toggle collects a selection between two values, with **value** representin
 | **valueOn** | string | false | The value to use when toggle is selected (default:true)| 
 | **valueOff** | string | false  | The value to use when toggle is not selected (default:false)| 
 | **value** | string | false  | The value current value (default:false) | 
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
+
 
 ### Input ChoiceSet
 
@@ -249,6 +191,9 @@ Shows an array of choices the to the user.
 | **style**| [ChoiceSetStyle](#choicesetstyle) | false | Hint of style of input |
 | **isMultiSelect** | boolean | false | allow multiple choices to be selected (Default=false)|
 | **choices** | Choice[] | true | the choice options |
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
+
 
 #### Choice
 Represents a single Choice
@@ -263,7 +208,6 @@ Represents a single Choice
 # Containers
 
 ## Container 
-*Extends [CardElement](#cardelement)*
 
 A  Container is a CardElement which contains a list of CardElements that are logically grouped.
 
@@ -274,9 +218,11 @@ A  Container is a CardElement which contains a list of CardElements that are log
 | **actions** | [Action](#action)[] | false | Actions associated with this container |
 | **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
 | **style** | normal, emphasis | normal | a container can group elements together in a normal or emphasized style |
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
+
 
 ## ColumnSet 
-*Extends [CardElement](#CardElement)*
 
 The column Set element adds the ability to have a set of Column objects.
 
@@ -284,9 +230,10 @@ The column Set element adds the ability to have a set of Column objects.
 |---|---|---|---|
 | **type**| **"ColumnSet"**  | true | |
 | **columns** | [Column](#column)[] | true | array of columns (each a container of items)  |
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
 
 ## Column
-*Extends [CardElement](#cardelement)*
 
 A Column is a container which contains a list of CardElements that are logically grouped.
 
@@ -296,9 +243,11 @@ A Column is a container which contains a list of CardElements that are logically
 | **size** | string | false | "auto", "stretch", or a number representing relative width of the column in the column Set (Default:Auto)|
 | **items** |  [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
+
 
 ## ImageSet 
-*Extends [CardElement](#CardElement)*
 
 The ImageSet allows for the inclusion of a collection images like a photoSet.
 
@@ -307,9 +256,11 @@ The ImageSet allows for the inclusion of a collection images like a photoSet.
 | **type**| **"ImageSet"** | true |  |
 | **images**| [Image](#image)[] | true | Array of Image objects |
 | **imageSize** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the Set. |
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
+
 
 ## FactSet 
-*Extends [CardElement](#CardElement)*
 
 The FactSet element makes it simple to display a series of "facts" (e.g. name/value pairs) in a tabular form.
 
@@ -317,6 +268,9 @@ The FactSet element makes it simple to display a series of "facts" (e.g. name/va
 |---|---|---|---|
 | **type**|  **"FactSet"** | true | |
 | **facts** | [Fact](#fact)[] | true| The facts to be displayed. |
+| **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
+| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |  Specifies what 
+
 
 ### Fact 
 Represents one "fact" in a [FactSet](#factset) element.
@@ -331,11 +285,7 @@ Represents one "fact" in a [FactSet](#factset) element.
 # Actions
 Actions define clickable targets that do something.
 
-## Action
-
 ## Action Http
-*Extends [Action](#action)*
-
 Action.Http represents the properties needed to do an Http request. All input properties are available for use via 
 data binding.  Properties can be data bound to the Uri and Body properties, allowing you to send a request
 to an arbitrary url.
@@ -351,7 +301,6 @@ to an arbitrary url.
 | **body** | string | false | content to post (can have binding information) |
 
 ## Action OpenUrl
-*Extends [Action](#action)*
 
 When Action.OpenUrl is invoked it will show the given url, either by launching it to an external web browser or showing in-situ 
 with embedded web browser
@@ -364,7 +313,6 @@ with embedded web browser
 | **url** | string | true | Default (browser) url to use  |
 
 ## Action ShowCard
-*Extends [Action](#action)*
 
 Action.ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
 
@@ -376,7 +324,6 @@ Action.ShowCard defines an inline AdaptiveCard which is shown to the user when i
 | **card** | [Container](#container) | true |inline container  defining the card to be shown when this action is invoked. It is up to client to decide how to show this inline card. |
 
 ## Action Submit
-*Extends [Action](#action)*
 
 Action.Submit gathers up input fields, merges with optional data field and generates event to 
 client asking for data to be submitted.  It is up to the client to determine how that data is processed.
