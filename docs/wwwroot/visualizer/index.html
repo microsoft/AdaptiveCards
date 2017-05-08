@@ -25,11 +25,14 @@
             <a href="/samples" class="w3-bar-item w3-button w3-mobile">Samples</a>
         </div>
 
-        <div class="uiHeader" style="display: flex;">
-            <div id="tabStrip" style="flex: 1 1 50%;">
+        <div class="uiHeader">
+            <div id="tabStrip" style="flex: 1 1 50%; display: flex; flex-wrap: wrap; margin-right: 20px;">
+                <div id="editCard" class="button" style="margin-right: 10px;">Card editor</div>
+                <div style="display: flex;">
+                    <div id="editConfig" class="button subdued">Configuration editor</div>
+                    <div style="padding-left: 15px; margin-left: 15px; border-left: 1px solid #CCCCCC;"></div>
+                </div>
                 <div id="loadSample" class="button">Load sample...</div>
-                <div id="editCard" class="button" style="margin-left:200px;">Card editor</div>
-                <div id="editConfig" class="button subdued" style="margin-left: 4px;">Configuration editor</div>
                 <div style="width: 0px; height: 0px; overflow: hidden">
                     <input type="file" id="filePicker" />
                 </div>
@@ -41,9 +44,7 @@
         </div>
         <div class="cardEditor">
             <div class="leftPane">
-                <div id="editor">
-
-                </div>
+                <div id="editor"></div>
             </div>
             <div class="rightPane">
                 <div id="errorContainer" class="errorContainer"></div>
