@@ -26,10 +26,24 @@ function showTopic(folder, topic) {
     var path = "/api/markdown/documentation/markdown";
     if (folder)
         path = path + "/" + folder;
-    path = path + "/" + topic +".md";
+    path = path + "/" + topic + ".md";
     $.get(path,
         null,
         function (data) {
             document.getElementById('topic').innerHTML = data;
         });
 }
+
+$(document).ready(() => {
+    if (window.location.hash == '')
+        showTopic("about", "overview");
+    else {
+        var parts = window.location.hash.slice(1).split('-');
+        showTopic(parts[0], parts[1]);
+    }
+});
+
+window.addEventListener("hashchange", function () {
+    var parts = window.location.hash.slice(1).split('-');
+    showTopic(parts[0], parts[1]);
+}, false);

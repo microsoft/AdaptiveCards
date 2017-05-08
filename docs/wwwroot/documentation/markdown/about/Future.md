@@ -1,13 +1,12 @@
 # Future work
-We have made a ton of progress defining adaptive cards to this point, there is still lots of work to do.  
-We will be working with developer communities like botness, as well as various partners like Slack, and Kik. 
+While we have made a ton of progress defining adaptive cards to this point, there is still lots of work to do. 
 
-Join us in defining the future of adaptive cards.  
+Our hope is that via active developer communities like botness, and great partners like Slack, and Kik we can create a great eco-system of cross platform cards.
 
-Some examples things that are coming up that we hope to tackle:
+Here are some future areas to explore:
 
 ## Making cards reactive
-Adaptive cards are adaptable to different devices, ux styles and and ui frameworks, but they are not reactive yet.  We
+One of the areas we plan to explore is making card layout reactive to available space. Adaptive cards are adaptable to different devices, ux styles and and ui frameworks, but they are not reactive yet.  We
 hope to define additional properties on elements which allow card producers to provide the necessary hints to the
 rendering libraries so that they can intelligently change the layout in a way which maintains the intent of the card.
 
