@@ -25,6 +25,7 @@ export enum ValidationError {
     CollectionCantBeEmpty,
     ElementTypeNotAllowed,
     InteractivityNotAllowed,
+    InvalidPropertyValue,
     MissingCardType,
     PropertyCantBeNull,
     TooManyActions,

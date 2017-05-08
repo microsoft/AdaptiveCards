@@ -7,8 +7,11 @@
 #include <windows.foundation.collections.h>
 
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
+using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -34,6 +37,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
+        m_sharedAdaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
         m_body = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
         if (m_body == nullptr)
         {
@@ -108,4 +112,37 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *elementType = ElementType::AdaptiveCard;
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_BackgroundImageUrl(IUriRuntimeClass** url)
+    {
+        *url = nullptr;
+        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
+        RETURN_IF_FAILED(GetActivationFactory(
+            HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
+            &uriActivationFactory));
+
+        HSTRING imageUri;
+        RETURN_IF_FAILED(UTF8ToHString(m_sharedAdaptiveCard->GetBackgroundImageUrl(), &imageUri));
+        RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, url));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_BackgroundImageUrl(IUriRuntimeClass* url) try
+    {
+        if (url == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        HString urlTemp;
+        url->get_AbsoluteUri(urlTemp.GetAddressOf());
+
+        std::string urlString;
+        RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
+        m_sharedAdaptiveCard->SetBackgroundImageUrl(urlString);
+
+        return S_OK;
+    } CATCH_RETURN;
 }}

@@ -28,10 +28,14 @@ public:
     unsigned int GetMaxLength() const;
     void SetMaxLength(const unsigned int value);
 
+    TextInputStyle GetTextInputStyle() const;
+    void SetTextInputStyle(const TextInputStyle value);
+
 private:
     std::string m_placeholder;
     std::string m_value;
     bool m_isMultiline;
-    int m_maxLength;
+    unsigned int m_maxLength;
+    TextInputStyle m_style;
 };
 }

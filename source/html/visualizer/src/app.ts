@@ -90,8 +90,8 @@ function filePickerChanged(evt) {
         let reader = new FileReader();
 
         reader.onload = function (e: ProgressEvent) {
-            // editor.session.setValue((e.target as FileReader).result);
-            setEditorText((e.target as FileReader).result);
+            currentCardPayload = (e.target as FileReader).result;
+            switchToCardEditor();
         }
 
         reader.readAsText(file);

@@ -122,7 +122,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *xamlTreeRoot = nullptr;
 
         ComPtr<IPanel> childElementContainer;
-        ComPtr<IUIElement> rootElement = CreateRootCardElement(&childElementContainer);
+        ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, &childElementContainer);
 
         // Enumerate the child items of the card and build xaml for them
         ComPtr<IVector<IAdaptiveCardElement*>> body;
@@ -190,12 +190,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT XamlBuilder::SetEnableXamlImageHandling(_In_ bool enableXamlImageHandling) noexcept
     {
         m_enableXamlImageHandling = enableXamlImageHandling;
-        return S_OK;
-    }
-
-    HRESULT XamlBuilder::SetBackgroundImageUri(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri) noexcept
-    {
-        m_backgroundImageUri = imageUri;
         return S_OK;
     }
 
@@ -295,7 +289,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(IPanel** childElementContainer)
+    ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(IAdaptiveCard* adaptiveCard, IPanel** childElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
         // properties.  From back to fron these are:
@@ -305,12 +299,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // StackPanel - The container for all the card's body elements
         ComPtr<IGrid> rootElement = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
 
-
         ComPtr<IPanel> rootAsPanel;
         THROW_IF_FAILED(rootElement.As(&rootAsPanel));
-        if (m_backgroundImageUri != nullptr)
+        ComPtr<IUriRuntimeClass> backgroundImageUrl;
+        if (SUCCEEDED(adaptiveCard->get_BackgroundImageUrl(&backgroundImageUrl)))
         {
-            ApplyBackgroundToRoot(rootAsPanel.Get());
+            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get());
         }
 
         // Now create the inner stack panel to serve as the root host for all the 
@@ -334,14 +328,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    void XamlBuilder::ApplyBackgroundToRoot(ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel)
+    void XamlBuilder::ApplyBackgroundToRoot(ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel, ABI::Windows::Foundation::IUriRuntimeClass* url)
     {
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
         ComPtr<IAdaptiveImage> adaptiveImage;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
-        adaptiveImage->put_Url(m_backgroundImageUri.Get());
-        adaptiveImage->put_Size(ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch);
+        adaptiveImage->put_Url(url);
+        adaptiveImage->put_Size(ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto);
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -962,16 +956,36 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 }
             }
 
+            // Determine if the column is auto, stretch, or percentage width, and set the column width appropriately
+            ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+
             HString adaptiveColumnSize;
             THROW_IF_FAILED(column->get_Size(adaptiveColumnSize.GetAddressOf()));
-            INT32 isAutoResult;
-            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"Auto").Get(), &isAutoResult));
 
-            // Determine if the column is auto or percentage width, and set the column width appropriately
-            ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+            INT32 isStretchResult;
+            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"stretch").Get(), &isStretchResult));
+
+            INT32 isAutoResult;
+            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"auto").Get(), &isAutoResult));
+
+            double sizeAsDouble = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+
             GridLength columnWidth;
-            columnWidth.GridUnitType = (isAutoResult == 0) ? GridUnitType::GridUnitType_Auto : GridUnitType::GridUnitType_Star;
-            columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+            if (isStretchResult == 0)
+            {
+                columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
+                columnWidth.Value = 0;
+            }
+            else if (!adaptiveColumnSize.IsValid() || (isAutoResult == 0) || (sizeAsDouble == 0))
+            {
+                columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+                columnWidth.Value = 1;
+            }
+            else
+            {
+                columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+                columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+            }
 
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
             THROW_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
@@ -1331,6 +1345,32 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HString placeHolderText;
         THROW_IF_FAILED(adaptiveInputText->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
+
+        ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle textInputStyle;
+        THROW_IF_FAILED(adaptiveInputText->get_TextInputStyle(&textInputStyle));
+
+        ComPtr<IInputScopeName> inputScopeName = XamlHelpers::CreateXamlClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
+        switch (textInputStyle)
+        {
+            case ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle::Email:
+                THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_EmailSmtpAddress));
+                break;
+
+            case ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle::Tel:
+                THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_TelephoneNumber));
+                break;
+
+            case ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle::Url:
+                THROW_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Url));
+                break;
+        }
+
+        ComPtr<IInputScope> inputScope = XamlHelpers::CreateXamlClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
+        ComPtr<IVector<InputScopeName*>> names;
+        THROW_IF_FAILED(inputScope->get_Names(names.GetAddressOf()));
+        THROW_IF_FAILED(names->Append(inputScopeName.Get()));
+
+        THROW_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
         // TODO: 11508861
         THROW_IF_FAILED(textBox.CopyTo(inputTextControl));

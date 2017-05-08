@@ -43,6 +43,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_FallbackText(_Out_ HSTRING *fallbackText);
         IFACEMETHODIMP put_FallbackText(_In_ HSTRING fallbackText);
 
+        IFACEMETHODIMP get_BackgroundImageUrl(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
+        IFACEMETHODIMP put_BackgroundImageUrl(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
+
         IFACEMETHODIMP get_Body(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** body);
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);

@@ -70,6 +70,7 @@ enum class AdaptiveCardSchemaKey
     Style,
     IsMultiSelect,
     IsRequired,
+    BackgroundImageUrl
 };
 
 enum class TextSize
@@ -115,6 +116,13 @@ enum class ImageSize {
     Small,
     Medium,
     Large
+};
+
+enum class TextInputStyle {
+    Text = 0,
+    Tel,
+    Url,
+    Email,
 };
 
 enum class CardElementType
@@ -207,4 +215,6 @@ ActionMode ActionModeFromString(const std::string& style);
 const std::string ChoiceSetStyleToString(ChoiceSetStyle type);
 ChoiceSetStyle ChoiceSetStyleFromString(const std::string& type);
 
+const std::string TextInputStyleToString(TextInputStyle style);
+TextInputStyle TextInputStyleFromString(const std::string & style);
 }

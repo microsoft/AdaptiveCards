@@ -1628,64 +1628,54 @@ class ActionCollection {
         this._actionCardContainer.style.backgroundColor = Utils.stringToCssColor(hostConfig.actions.showCard.backgroundColor);
 
         var renderedActions: number = 0;
+        var actionButtonStyle = ActionButtonStyle.Push;
+        var maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this.items.length) : this.items.length;
 
-        if (this.items.length == 1 && this.items[0] instanceof ShowCardAction) {
-            this.showActionCardPane(<ShowCardAction>this.items[0]);
-
-            renderedActions++;
-        }
-        else {
-            var actionButtonStyle = ActionButtonStyle.Push;
-
-            var maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this.items.length) : this.items.length;
-
-            for (var i = 0; i < maxActions; i++) {
-                if (this.items[i] instanceof ShowCardAction) {
-                    actionButtonStyle = ActionButtonStyle.Link;
-                    break;
-                }
+        for (var i = 0; i < maxActions; i++) {
+            if (this.items[i] instanceof ShowCardAction) {
+                actionButtonStyle = ActionButtonStyle.Link;
+                break;
             }
+        }
 
-            var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
+        var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
-            for (var i = 0; i < maxActions; i++) {
-                if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
-                    let actionButton = new ActionButton(this.items[i], actionButtonStyle);
-                    actionButton.element.style.overflow = "hidden";
-                    actionButton.element.style.overflow = "table-cell";
-                    actionButton.element.style.flex = hostConfig.actions.actionAlignment == "stretch" ? "0 1 100%" : "0 1 auto";
-                    actionButton.text = this.items[i].title;
-                    actionButton.onClick = (ab) => { this.actionClicked(ab); };
+        for (var i = 0; i < maxActions; i++) {
+            if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
+                let actionButton = new ActionButton(this.items[i], actionButtonStyle);
+                actionButton.element.style.overflow = "hidden";
+                actionButton.element.style.overflow = "table-cell";
+                actionButton.element.style.flex = hostConfig.actions.actionAlignment == "stretch" ? "0 1 100%" : "0 1 auto";
+                actionButton.text = this.items[i].title;
+                actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
-                    this._actionButtons.push(actionButton);
+                this._actionButtons.push(actionButton);
 
-                    buttonStrip.appendChild(actionButton.element);
+                buttonStrip.appendChild(actionButton.element);
 
-                    if (i < this.items.length - 1 && hostConfig.actions.buttonSpacing > 0) {
-                        var spacer = document.createElement("div");
+                if (i < this.items.length - 1 && hostConfig.actions.buttonSpacing > 0) {
+                    var spacer = document.createElement("div");
 
-                        if (hostConfig.actions.actionsOrientation == "horizontal") {
-                            spacer.style.flex = "0 0 auto";
-                            spacer.style.width = hostConfig.actions.buttonSpacing + "px";
-                        }
-                        else {
-                            spacer.style.height = hostConfig.actions.buttonSpacing + "px";
-                        }
-
-                        Utils.appendChild(buttonStrip, spacer);
+                    if (hostConfig.actions.actionsOrientation == "horizontal") {
+                        spacer.style.flex = "0 0 auto";
+                        spacer.style.width = hostConfig.actions.buttonSpacing + "px";
+                    }
+                    else {
+                        spacer.style.height = hostConfig.actions.buttonSpacing + "px";
                     }
 
-                    renderedActions++;
+                    Utils.appendChild(buttonStrip, spacer);
                 }
-            }
 
-            var buttonStripContainer = document.createElement("div");
-            buttonStripContainer.style.overflow = "hidden";
-            buttonStripContainer.appendChild(buttonStrip);
-            
-            Utils.appendChild(element, buttonStripContainer);
+                renderedActions++;
+            }
         }
 
+        var buttonStripContainer = document.createElement("div");
+        buttonStripContainer.style.overflow = "hidden";
+        buttonStripContainer.appendChild(buttonStrip);
+        
+        Utils.appendChild(element, buttonStripContainer);
         Utils.appendChild(element, this._actionCardContainer);
 
         return renderedActions > 0 ? element : null;
@@ -2056,10 +2046,39 @@ export class Column extends Container {
     parse(json: any) {
         super.parse(json);
 
-        var sizeValue = json["size"];
+        var parsedSize = json["size"];
+        var invalidSize = false;
 
-        if (sizeValue) {
-            this.size = sizeValue;
+        if (typeof parsedSize === "number") {
+            if (parsedSize <= 0) {
+                invalidSize = true;
+            }
+        }
+        else if (typeof parsedSize === "string") {
+            if (parsedSize != "auto" && parsedSize != "stretch") {
+                var sizeAsNumber = parseInt(parsedSize);
+
+                if (!isNaN(sizeAsNumber)) {
+                    parsedSize = sizeAsNumber;
+                }
+                else {
+                    invalidSize = true;
+                }
+            }
+        }
+        else {
+            invalidSize = true;
+        }
+
+        if (invalidSize) {
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "Invalid column size: " + parsedSize
+                });            
+        }
+        else {
+            this.size = parsedSize;
         }
     }
 

@@ -44,6 +44,7 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "style", AdaptiveCardSchemaKey::Style },
     { "isMultiSelect", AdaptiveCardSchemaKey::IsMultiSelect },
     { "isRequired", AdaptiveCardSchemaKey::IsRequired },
+    { "backgroundImageUrl", AdaptiveCardSchemaKey::BackgroundImageUrl}
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> AdaptiveCardSchemaKeyEnumToName =
@@ -88,6 +89,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Style, "style"},
     { AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect" },
     { AdaptiveCardSchemaKey::IsRequired, "isRequired" },
+    { AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl" },
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
@@ -185,7 +187,8 @@ static std::unordered_map<ImageSize, std::string, EnumHash> ImageSizeEnumToName 
     { ImageSize::Stretch, "Stretch" },
     { ImageSize::Small, "Small" },
     { ImageSize::Medium, "Medium" },
-    { ImageSize::Large, "Large" }
+    { ImageSize::Large, "Large" },
+    { ImageSize::Default, "Auto" },
 };
 
 static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> HorizontalAlignmentNameToEnum =
@@ -289,6 +292,22 @@ static std::unordered_map<ChoiceSetStyle, std::string, EnumHash> ChoiceSetStyleE
 {
     { ChoiceSetStyle::Compact, "Compact" },
     { ChoiceSetStyle::Expanded, "Expanded" }
+};
+
+static std::unordered_map<std::string, TextInputStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> InputTextStyleNameToEnum =
+{
+    { "Text", TextInputStyle::Text },
+    { "Tel", TextInputStyle::Tel },
+    { "Url", TextInputStyle::Url },
+    { "Email", TextInputStyle::Email },
+};
+
+static std::unordered_map<TextInputStyle, std::string, EnumHash> InputTextStyleEnumToName =
+{
+    { TextInputStyle::Text, "Text" },
+    { TextInputStyle::Tel, "Tel" },
+    { TextInputStyle::Url, "Url" },
+    { TextInputStyle::Email, "Email" },
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
@@ -534,5 +553,22 @@ ChoiceSetStyle ChoiceSetStyleFromString(const std::string & style)
         throw std::out_of_range("Invalid ChoiceSetStyle: " + style);
     }
     return ChoiceSetStyleNameToEnum[style];
+}
+
+const std::string TextInputStyleToString(TextInputStyle style)
+{
+    if (InputTextStyleEnumToName.find(style) == InputTextStyleEnumToName.end())
+    {
+        throw std::out_of_range("Invalid InputTextStyle");
+    }
+    return InputTextStyleEnumToName[style];
+}
+TextInputStyle TextInputStyleFromString(const std::string & style)
+{
+    if (InputTextStyleNameToEnum.find(style) == InputTextStyleNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid InputTextStyle: " + style);
+    }
+    return InputTextStyleNameToEnum[style];
 }
 }
