@@ -35,21 +35,12 @@ public class ColumnOptions {
     }
   }
 
-  public void setDefaultSeparation(SeparationOptions value) {
-    AdaptiveCardObjectModelJNI.ColumnOptions_defaultSeparation_set(swigCPtr, this, SeparationOptions.getCPtr(value), value);
+  public void setSeparation(SeparationOptions value) {
+    AdaptiveCardObjectModelJNI.ColumnOptions_separation_set(swigCPtr, this, SeparationOptions.getCPtr(value), value);
   }
 
-  public SeparationOptions getDefaultSeparation() {
-    long cPtr = AdaptiveCardObjectModelJNI.ColumnOptions_defaultSeparation_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SeparationOptions(cPtr, false);
-  }
-
-  public void setStrongSeparation(SeparationOptions value) {
-    AdaptiveCardObjectModelJNI.ColumnOptions_strongSeparation_set(swigCPtr, this, SeparationOptions.getCPtr(value), value);
-  }
-
-  public SeparationOptions getStrongSeparation() {
-    long cPtr = AdaptiveCardObjectModelJNI.ColumnOptions_strongSeparation_get(swigCPtr, this);
+  public SeparationOptions getSeparation() {
+    long cPtr = AdaptiveCardObjectModelJNI.ColumnOptions_separation_get(swigCPtr, this);
     return (cPtr == 0) ? null : new SeparationOptions(cPtr, false);
   }
 

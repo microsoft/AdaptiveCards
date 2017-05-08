@@ -8,13 +8,9 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public final class ImageSize {
-  public final static ImageSize Default = new ImageSize("Default", AdaptiveCardObjectModelJNI.ImageSize_Default_get());
-  public final static ImageSize Auto = new ImageSize("Auto");
-  public final static ImageSize Stretch = new ImageSize("Stretch");
-  public final static ImageSize Small = new ImageSize("Small");
-  public final static ImageSize Medium = new ImageSize("Medium");
-  public final static ImageSize Large = new ImageSize("Large");
+public final class ChoiceSetStyle {
+  public final static ChoiceSetStyle Compact = new ChoiceSetStyle("Compact", AdaptiveCardObjectModelJNI.ChoiceSetStyle_Compact_get());
+  public final static ChoiceSetStyle Expanded = new ChoiceSetStyle("Expanded");
 
   public final int swigValue() {
     return swigValue;
@@ -24,33 +20,33 @@ public final class ImageSize {
     return swigName;
   }
 
-  public static ImageSize swigToEnum(int swigValue) {
+  public static ChoiceSetStyle swigToEnum(int swigValue) {
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
     for (int i = 0; i < swigValues.length; i++)
       if (swigValues[i].swigValue == swigValue)
         return swigValues[i];
-    throw new IllegalArgumentException("No enum " + ImageSize.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + ChoiceSetStyle.class + " with value " + swigValue);
   }
 
-  private ImageSize(String swigName) {
+  private ChoiceSetStyle(String swigName) {
     this.swigName = swigName;
     this.swigValue = swigNext++;
   }
 
-  private ImageSize(String swigName, int swigValue) {
+  private ChoiceSetStyle(String swigName, int swigValue) {
     this.swigName = swigName;
     this.swigValue = swigValue;
     swigNext = swigValue+1;
   }
 
-  private ImageSize(String swigName, ImageSize swigEnum) {
+  private ChoiceSetStyle(String swigName, ChoiceSetStyle swigEnum) {
     this.swigName = swigName;
     this.swigValue = swigEnum.swigValue;
     swigNext = this.swigValue+1;
   }
 
-  private static ImageSize[] swigValues = { Default, Auto, Stretch, Small, Medium, Large };
+  private static ChoiceSetStyle[] swigValues = { Compact, Expanded };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

@@ -33,9 +33,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int TextColor_Default_get();
   public final static native int HorizontalAlignment_Left_get();
   public final static native int ImageStyle_Normal_get();
-  public final static native int ImageSize_Auto_get();
+  public final static native int ImageSize_Default_get();
   public final static native int CardElementType_Unsupported_get();
   public final static native int ActionType_ShowCard_get();
+  public final static native int ChoiceSetStyle_Compact_get();
   public final static native int SeparationStyle_Default_get();
   public final static native int ActionsOrientation_Vertical_get();
   public final static native int ActionMode_Inline_get();
@@ -63,6 +64,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int ActionsOrientationFromString(String jarg1);
   public final static native String ActionModeToString(int jarg1);
   public final static native int ActionModeFromString(String jarg1);
+  public final static native String ChoiceSetStyleToString(int jarg1);
+  public final static native int ChoiceSetStyleFromString(String jarg1);
   public final static native void delete_BaseCardElement(long jarg1);
   public final static native int BaseCardElement_GetSeparationStyle(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_SetSeparationStyle(long jarg1, BaseCardElement jarg1_, int jarg2);
@@ -272,10 +275,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ImageSetOptions_separation_get(long jarg1, ImageSetOptions jarg1_);
   public final static native long new_ImageSetOptions();
   public final static native void delete_ImageSetOptions(long jarg1);
-  public final static native void ColumnOptions_defaultSeparation_set(long jarg1, ColumnOptions jarg1_, long jarg2, SeparationOptions jarg2_);
-  public final static native long ColumnOptions_defaultSeparation_get(long jarg1, ColumnOptions jarg1_);
-  public final static native void ColumnOptions_strongSeparation_set(long jarg1, ColumnOptions jarg1_, long jarg2, SeparationOptions jarg2_);
-  public final static native long ColumnOptions_strongSeparation_get(long jarg1, ColumnOptions jarg1_);
+  public final static native void ColumnOptions_separation_set(long jarg1, ColumnOptions jarg1_, long jarg2, SeparationOptions jarg2_);
+  public final static native long ColumnOptions_separation_get(long jarg1, ColumnOptions jarg1_);
   public final static native long new_ColumnOptions();
   public final static native void delete_ColumnOptions(long jarg1);
   public final static native void ContainerOptions_separation_set(long jarg1, ContainerOptions jarg1_, long jarg2, SeparationOptions jarg2_);
