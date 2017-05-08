@@ -24,7 +24,6 @@
     <Content Include="wwwroot\documentation\markdown\display\Libraries.md" />
     <Content Include="wwwroot\documentation\markdown\display\Speech.md" />
     <Content Include="wwwroot\documentation\markdown\display\Styling.md" />
-    <Content Include="wwwroot\documentation\markdown\Home.md" />
     <Content Include="wwwroot\documentation\markdown\resources\Partners.md" />
     <Content Include="wwwroot\documentation\markdown\resources\Projects.md" />
     <Content Include="wwwroot\Home.md" />
