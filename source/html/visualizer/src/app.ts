@@ -241,7 +241,7 @@ function setupContainerPicker() {
         hostContainerPicker.addEventListener(
             "change", () => {
                 // Update the query string
-                var htmlFileName = location.pathname.indexOf("index.html") >= 0 ? "index.html" : "dev.html";
+                var htmlFileName = location.pathname.indexOf("dev.html") >= 0 ? "dev.html" : "index.html";
 
                 history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, htmlFileName + `?hostApp=${hostContainerPicker.value}`);
 
