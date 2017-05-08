@@ -87,10 +87,6 @@ export abstract class CardElement {
         return true;
     }
 
-    protected adjustLayout(element: HTMLElement) {
-        element.style.boxSizing = "border-box";
-    }
-
     protected get padding(): HostConfig.ISpacingDefinition {
         return { top: 0, right: 0, bottom: 0, left: 0 };
     }
@@ -135,7 +131,7 @@ export abstract class CardElement {
         let renderedElement = this.internalRender();
 
         if (renderedElement != null) {
-            this.adjustLayout(renderedElement);
+            renderedElement.style.boxSizing = "border-box";
         }
 
         return renderedElement;
@@ -686,12 +682,6 @@ export abstract class Input extends CardElement implements Utils.IInput {
     title: string;
     defaultValue: string;
 
-    protected adjustLayout(element: HTMLElement) {
-        super.adjustLayout(element);
-
-        element.style.width = "100%";
-    }
-
     abstract get value(): string;
 
     getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
@@ -741,6 +731,7 @@ export class TextInput extends Input {
     protected internalRender(): HTMLElement {
         this._textareaElement = document.createElement("textarea");
         this._textareaElement.className = "ac-input ac-textInput";
+        this._textareaElement.style.width = "100%";
 
         if (this.isMultiline) {
             this._textareaElement.classList.add("ac-multiline");
@@ -788,6 +779,7 @@ export class ToggleInput extends Input {
     protected internalRender(): HTMLElement {
         var element = document.createElement("div");
         element.className = "ac-input";
+        element.style.width = "100%";
 
         this._checkboxInputElement = document.createElement("input");
         this._checkboxInputElement.type = "checkbox";
@@ -856,6 +848,7 @@ export class ChoiceSetInput extends Input {
                 // Render as a combo box
                 this._selectElement = document.createElement("select");
                 this._selectElement.className = "ac-input ac-multichoiceInput";
+                this._selectElement.style.width = "100%";
 
                 var option = document.createElement("option");
                 option.selected = true;
@@ -882,6 +875,7 @@ export class ChoiceSetInput extends Input {
                 // Render as a series of radio buttons
                 var element = document.createElement("div");
                 element.className = "ac-input";
+                element.style.width = "100%";
 
                 this._toggleInputs = [];
 
@@ -918,7 +912,8 @@ export class ChoiceSetInput extends Input {
         else {
             // Render as a list of toggle inputs
             var element = document.createElement("div");
-            element.className = "input";
+            element.className = "ac-input";
+            element.style.width = "100%";
 
             this._toggleInputs = [];
 
@@ -1049,6 +1044,7 @@ export class NumberInput extends Input {
         this._numberInputElement.className = "ac-input ac-numberInput";
         this._numberInputElement.min = this.min;
         this._numberInputElement.max = this.max;
+        this._numberInputElement.style.width = "100%";
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._numberInputElement.value = this.defaultValue;
@@ -1083,6 +1079,7 @@ export class DateInput extends Input {
         this._dateInputElement = document.createElement("input");
         this._dateInputElement.type = "date";
         this._dateInputElement.className = "ac-input ac-dateInput";
+        this._dateInputElement.style.width = "100%";
 
         return this._dateInputElement;
     }
@@ -1103,6 +1100,7 @@ export class TimeInput extends Input {
         this._timeInputElement = document.createElement("input");
         this._timeInputElement.type = "time";
         this._timeInputElement.className = "ac-input ac-timeInput";
+        this._timeInputElement.style.width = "100%";
 
         return this._timeInputElement;
     }
@@ -2015,15 +2013,19 @@ export class Container extends ContainerBase {
 }
 
 export class Column extends Container {
+    private _computedWeight: number = 0;
+
     protected get padding(): HostConfig.ISpacingDefinition {
         return { left: 0, top: 0, right: 0, bottom: 0};
     }
 
-    protected adjustLayout(element: HTMLElement) {
+    protected internalRender(): HTMLElement {
+        var element = super.internalRender();
+
         element.style.minWidth = "0";
 
         if (typeof this.size === "number") {
-            element.style.flex = "1 1 " + this.size + "%";            
+            element.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.size) + "%";            
         }
         else if (this.size === "auto") {
             element.style.flex = "0 1 auto";
@@ -2031,6 +2033,8 @@ export class Column extends Container {
         else {
             element.style.flex = "1 1 auto";
         }
+
+        return element;
     }
 
     size: number | "auto" | "stretch" = "auto";
@@ -2066,7 +2070,7 @@ export class Column extends Container {
                 }
             }
         }
-        else {
+        else if (parsedSize) {
             invalidSize = true;
         }
 
@@ -2107,10 +2111,25 @@ export class ColumnSet extends CardElement {
                     element.style.justifyContent = "flex-start";
                     break;
             }
+
+            var totalWeight: number = 0;
             
+            for (let i = 0; i < this._columns.length; i++) {
+                if (typeof this._columns[i].size === "number") {
+                    totalWeight += <number>this._columns[i].size;
+                }
+            }
+
             var renderedColumnCount: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
+                if (typeof this._columns[i].size === "number" && totalWeight > 0) {
+                    var computedWeight = 100 / totalWeight * <number>this._columns[i].size;
+
+                    // Best way to emulate "internal" access I know of
+                    this._columns[i]["_computedWeight"] = computedWeight;
+                }
+                
                 var renderedColumn = this._columns[i].render();
 
                 if (renderedColumn != null) {
