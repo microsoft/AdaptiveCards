@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "AdaptiveCardParseException.h"
 #include "Enums.h"
-#include "json\json.h"
+#include "json/json.h"
 
 namespace AdaptiveCards
 {
@@ -26,6 +26,8 @@ public:
     static bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue);
 
     static unsigned int GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue);
+
+    static int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue);
 
     static CardElementType GetCardElementType(const Json::Value& json);
 

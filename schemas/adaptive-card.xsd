@@ -228,6 +228,12 @@
       <xs:enumeration value="Person" />
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="ContainerStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Normal" />
+      <xs:enumeration value="Emphasis" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="HorizontalAlignment">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Left" />
@@ -288,6 +294,7 @@
           <xs:element minOccurs="0" maxOccurs="1" name="SelectAction" type="ActionBase" />
           <xs:element minOccurs="0" maxOccurs="1" name="Actions" type="ArrayOfActionBase" />
         </xs:sequence>
+        <xs:attribute name="Style" type="ContainerStyle" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

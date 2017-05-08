@@ -13,15 +13,20 @@ namespace AdaptiveCards.Rendering
 
         public string Text
         {
-            get { return (Content as TextBox)?.Text; }
-            set
+            get => TextBlock.Text;
+            set => TextBlock.Text = value;
+        }
+
+        internal Xamarin.Forms.TextBlock TextBlock
+        {
+            get
             {
-                var textBox = Content as TextBox;
-                if(textBox == null)
+                var textblock = Content as Xamarin.Forms.TextBlock;
+                if (textblock == null)
                 {
-                    Content = textBox = new TextBox();
+                    Content = textblock = new Xamarin.Forms.TextBlock();
                 }
-                textBox.Text = value;
+                return textblock;
             }
         }
     }

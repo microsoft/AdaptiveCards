@@ -1,0 +1,44 @@
+{
+    "type": "CardCollection",
+    "views": [
+        {
+            "type:": "AdaptiveCard",
+            "targets": {
+                "Windows.Notification": {
+                    "appLogo": {
+                        "url": "",
+                        "alt": "",
+                        "crop": "circle"
+                    },
+                    "heroImage": {
+                        "url": "",
+                        "alt": ""
+                    },
+                    "audio": {
+                        "src": "",
+                        "loop": true
+                    }
+                },
+                "Windows.Tile": {
+                    "branding": "name",
+                    "displayName": "Monday, 22"
+                },
+                "Cortana.Car": {
+                    "greeting": "name"
+                }
+            },
+            "body": "*** WINDOWS TOAST AND TILE CONTENT ***"
+        },
+        {
+            "type:": "AdaptiveCard",
+            "targets": {
+                "GenericSmartWatch": {
+                    "Greeting": "Welcome"
+                },
+                "Default": {}
+            },
+            "body": "*** TOTALLY DIFFERENT RICH CONTENT ***",
+            "actions": []
+        }
+    ]
+}

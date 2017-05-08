@@ -1,0 +1,54 @@
+{
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "size":"10",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1 (10)"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "size":"30",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 2 (30)"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "size":"60",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 3 (60)"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "http://images.clipartpanda.com/free-clip-art-animals-Hippo_Animal_Clipart.png"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

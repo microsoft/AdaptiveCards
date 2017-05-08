@@ -14,7 +14,7 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "speak", AdaptiveCardSchemaKey::Speak },
     { "type", AdaptiveCardSchemaKey::Type },
     { "url", AdaptiveCardSchemaKey::Url },
-    { "imageStyle", AdaptiveCardSchemaKey::ImageStyle },
+    { "style", AdaptiveCardSchemaKey::ImageStyle },
     { "imageSize", AdaptiveCardSchemaKey::ImageSize },
     { "altText", AdaptiveCardSchemaKey::AltText },
     { "horizontalAlignment", AdaptiveCardSchemaKey::HorizontalAlignment },
@@ -31,6 +31,20 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "facts", AdaptiveCardSchemaKey::Facts },
     { "title", AdaptiveCardSchemaKey::Title },
     { "value", AdaptiveCardSchemaKey::Value },
+    { "images", AdaptiveCardSchemaKey::Images },
+    { "placeholder", AdaptiveCardSchemaKey::Placeholder },
+    { "isMultiline", AdaptiveCardSchemaKey::IsMultiline },
+    { "maxLength", AdaptiveCardSchemaKey::MaxLength },
+    { "valueOff", AdaptiveCardSchemaKey::ValueOff },
+    { "valueOn", AdaptiveCardSchemaKey::ValueOn },
+    { "max", AdaptiveCardSchemaKey::Max },
+    { "min", AdaptiveCardSchemaKey::Min },
+    { "choices", AdaptiveCardSchemaKey::Choices },
+    { "isSelected", AdaptiveCardSchemaKey::IsSelected },
+    { "style", AdaptiveCardSchemaKey::Style },
+    { "isMultiSelect", AdaptiveCardSchemaKey::IsMultiSelect },
+    { "isRequired", AdaptiveCardSchemaKey::IsRequired },
+    { "backgroundImageUrl", AdaptiveCardSchemaKey::BackgroundImageUrl}
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> AdaptiveCardSchemaKeyEnumToName =
@@ -45,7 +59,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Speak, "speak" },
     { AdaptiveCardSchemaKey::Type, "type" },
     { AdaptiveCardSchemaKey::Url, "url" },
-    { AdaptiveCardSchemaKey::ImageStyle, "imageStyle" },
+    { AdaptiveCardSchemaKey::ImageStyle, "style" },
     { AdaptiveCardSchemaKey::ImageSize, "imageSize" },
     { AdaptiveCardSchemaKey::AltText, "altText" },
     { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment" },
@@ -62,6 +76,20 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Facts, "facts" },
     { AdaptiveCardSchemaKey::Title, "title" },
     { AdaptiveCardSchemaKey::Value, "value" },
+    { AdaptiveCardSchemaKey::Images, "images" },
+    { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
+    { AdaptiveCardSchemaKey::IsMultiline, "isMultiline" },
+    { AdaptiveCardSchemaKey::MaxLength, "maxLength" },
+    { AdaptiveCardSchemaKey::ValueOff, "valueOff" },
+    { AdaptiveCardSchemaKey::ValueOn, "valueOn" },
+    { AdaptiveCardSchemaKey::Max, "max" },
+    { AdaptiveCardSchemaKey::Min, "min" },
+    { AdaptiveCardSchemaKey::Choices, "choices" },
+    { AdaptiveCardSchemaKey::IsSelected, "isSelected"},
+    { AdaptiveCardSchemaKey::Style, "style"},
+    { AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect" },
+    { AdaptiveCardSchemaKey::IsRequired, "isRequired" },
+    { AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl" },
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
@@ -73,10 +101,14 @@ static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, Cas
     { "Column", CardElementType::Column },
     { "FactSet", CardElementType::FactSet },
     { "Fact", CardElementType::Fact },
-    //{ "ImageGallery", CardElementType::ImageGallery },
-    //{ "ActionSet", CardElementType::ActionSet },
-    { "Container", CardElementType::Container }
-
+    { "ImageSet", CardElementType::ImageSet },
+    { "Container", CardElementType::Container },
+    { "Input.ChoiceSet", CardElementType::InputChoiceSet },
+    { "Input.Date", CardElementType::InputDate },
+    { "Input.Number", CardElementType::InputNumber },
+    { "Input.Text", CardElementType::InputText },
+    { "Input.Time", CardElementType::InputTime},
+    { "Input.Toggle", CardElementType::InputToggle },
 };
 
 static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTypeEnumToName =
@@ -88,35 +120,56 @@ static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTyp
     { CardElementType::ColumnSet, "ColumnSet"},
     { CardElementType::FactSet, "FactSet" },
     { CardElementType::Fact, "Fact" },
-    //{ CardElementType::ImageGallery, "ImageGallery" },
-    //{ CardElementType::ActionSet, "ActionSet" },
-    { CardElementType::Container, "Container" }
+    { CardElementType::ImageSet, "ImageSet" },
+    { CardElementType::Container, "Container" },
+    { CardElementType::InputChoiceSet, "Input.ChoiceSet" },
+    { CardElementType::InputDate, "Input.Date" },
+    { CardElementType::InputNumber, "Input.Number" },
+    { CardElementType::InputText, "Input.Text" },
+    { CardElementType::InputTime, "Input.Time" },
+    { CardElementType::InputToggle, "Input.Toggle" },
+};
+
+static std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionTypeNameToEnum =
+{
+    { "Action.Http", ActionType::Http },
+    { "Action.OpenUrl", ActionType::OpenUrl },
+    { "Action.ShowCard", ActionType::ShowCard },
+    { "Action.Submit", ActionType::Submit }
+};
+
+static std::unordered_map<ActionType, std::string, EnumHash> ActionTypeEnumToName =
+{
+    { ActionType::Http, "Action.Http" },
+    { ActionType::OpenUrl, "Action.OpenUrl" },
+    { ActionType::ShowCard, "Action.ShowCard" },
+    { ActionType::Submit, "Action.Submit" }
 };
 
 static std::unordered_map<std::string, SeparationStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> SeparationStyleNameToEnum =
 {
     { "default", SeparationStyle::Default },
     { "none", SeparationStyle::None },
-    { "strong", SeparationStyle::Strong},
+    { "strong", SeparationStyle::Strong}
 };
 
 static std::unordered_map<SeparationStyle, std::string, EnumHash> SeparationStyleEnumToName =
 {
     { SeparationStyle::Default, "default" },
     { SeparationStyle::None, "none" },
-    { SeparationStyle::Strong, "strong" },
+    { SeparationStyle::Strong, "strong" }
 };
 
 static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageStyleNameToEnum =
 {
     {"normal", ImageStyle::Normal},
-    {"person", ImageStyle::Person},
+    {"person", ImageStyle::Person}
 };
 
 static std::unordered_map<ImageStyle, std::string, EnumHash> ImageStyleEnumToName =
 {
     {ImageStyle::Normal, "normal"},
-    {ImageStyle::Person, "person"},
+    {ImageStyle::Person, "person"}
 };
 
 static std::unordered_map<std::string, ImageSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageSizeNameToEnum =
@@ -134,21 +187,22 @@ static std::unordered_map<ImageSize, std::string, EnumHash> ImageSizeEnumToName 
     { ImageSize::Stretch, "Stretch" },
     { ImageSize::Small, "Small" },
     { ImageSize::Medium, "Medium" },
-    { ImageSize::Large, "Large" }
+    { ImageSize::Large, "Large" },
+    { ImageSize::Default, "Auto" },
 };
 
 static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> HorizontalAlignmentNameToEnum =
 {
     {"Left", HorizontalAlignment::Left},
     {"Center", HorizontalAlignment::Center},
-    {"Right", HorizontalAlignment::Right},
+    {"Right", HorizontalAlignment::Right}
 };
 
 static std::unordered_map<HorizontalAlignment, std::string, EnumHash> HorizontalAlignmentEnumToName =
 {
     {HorizontalAlignment::Left, "Left"},
     {HorizontalAlignment::Center, "Center"},
-    {HorizontalAlignment::Right, "Right"},
+    {HorizontalAlignment::Right, "Right"}
 };
 
 static std::unordered_map<std::string, TextColor, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextColorNameToEnum =
@@ -159,7 +213,7 @@ static std::unordered_map<std::string, TextColor, CaseInsensitiveHash, CaseInsen
     {"Accent", TextColor::Accent},
     {"Good", TextColor::Good},
     {"Warning", TextColor::Warning},
-    {"Attention", TextColor::Attention},
+    {"Attention", TextColor::Attention}
 };
 
 static std::unordered_map<TextColor, std::string, EnumHash> TextColorEnumToName =
@@ -170,20 +224,20 @@ static std::unordered_map<TextColor, std::string, EnumHash> TextColorEnumToName 
     {TextColor::Accent, "Accent"},
     {TextColor::Good, "Good"},
     {TextColor::Warning, "Warning"},
-    {TextColor::Attention, "Attention"},
+    {TextColor::Attention, "Attention"}
 };
 
 static std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextWeightNameToEnum =
 {
     {"Lighter", TextWeight::Lighter},
     {"Normal", TextWeight::Normal},
-    {"Bolder", TextWeight::Bolder},
+    {"Bolder", TextWeight::Bolder}
 };
 static std::unordered_map<TextWeight, std::string, EnumHash> TextWeightEnumToName =
 {
     {TextWeight::Lighter, "Lighter"},
     {TextWeight::Normal, "Normal"},
-    {TextWeight::Bolder, "Bolder"},
+    {TextWeight::Bolder, "Bolder"}
 };
 
 static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextSizeNameToEnum =
@@ -192,7 +246,7 @@ static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsens
     {"Normal", TextSize::Normal},
     {"Medium", TextSize::Medium},
     {"Large", TextSize::Large},
-    {"ExtraLarge", TextSize::ExtraLarge},
+    {"ExtraLarge", TextSize::ExtraLarge}
 };
 
 static std::unordered_map<TextSize, std::string, EnumHash> TextSizeEnumToName =
@@ -201,7 +255,59 @@ static std::unordered_map<TextSize, std::string, EnumHash> TextSizeEnumToName =
     {TextSize::Normal, "Normal"},
     {TextSize::Medium, "Medium"},
     {TextSize::Large, "Large"},
-    {TextSize::ExtraLarge, "ExtraLarge"},
+    {TextSize::ExtraLarge, "ExtraLarge"}
+};
+
+static std::unordered_map<std::string, ActionsOrientation, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionsOrientationNameToEnum =
+{
+    { "Vertical", ActionsOrientation::Vertical },
+    { "Horizontal", ActionsOrientation::Horizontal }
+};
+
+static std::unordered_map<ActionsOrientation, std::string, EnumHash> ActionsOrientationEnumToName =
+{
+    { ActionsOrientation::Vertical, "Vertical" },
+    { ActionsOrientation::Horizontal, "Horizontal" }
+};
+
+static std::unordered_map<std::string, ActionMode, CaseInsensitiveHash, CaseInsensitiveEqualTo> ActionModeNameToEnum =
+{
+    { "Inline", ActionMode::Inline },
+    { "Popup", ActionMode::Popup }
+};
+
+static std::unordered_map<ActionMode, std::string, EnumHash> ActionModeEnumToName =
+{
+    { ActionMode::Inline, "Inline" },
+    { ActionMode::Popup, "Popup" }
+};
+
+static std::unordered_map<std::string, ChoiceSetStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ChoiceSetStyleNameToEnum =
+{
+    { "Compact", ChoiceSetStyle::Compact },
+    { "Expanded", ChoiceSetStyle::Expanded }
+};
+
+static std::unordered_map<ChoiceSetStyle, std::string, EnumHash> ChoiceSetStyleEnumToName =
+{
+    { ChoiceSetStyle::Compact, "Compact" },
+    { ChoiceSetStyle::Expanded, "Expanded" }
+};
+
+static std::unordered_map<std::string, TextInputStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> InputTextStyleNameToEnum =
+{
+    { "Text", TextInputStyle::Text },
+    { "Tel", TextInputStyle::Tel },
+    { "Url", TextInputStyle::Url },
+    { "Email", TextInputStyle::Email },
+};
+
+static std::unordered_map<TextInputStyle, std::string, EnumHash> InputTextStyleEnumToName =
+{
+    { TextInputStyle::Text, "Text" },
+    { TextInputStyle::Tel, "Tel" },
+    { TextInputStyle::Url, "Url" },
+    { TextInputStyle::Email, "Email" },
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
@@ -242,6 +348,26 @@ CardElementType CardElementTypeFromString(const std::string& elementType)
     }
 
     return CardElementTypeNameToEnum[elementType];
+}
+
+const std::string ActionTypeToString(ActionType actionType)
+{
+    if (ActionTypeEnumToName.find(actionType) == ActionTypeEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ActionType");
+    }
+
+    return ActionTypeEnumToName[actionType];
+}
+
+ActionType ActionTypeFromString(const std::string& actionType)
+{
+    if (ActionTypeNameToEnum.find(actionType) == ActionTypeNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ActionType: " + actionType);
+    }
+
+    return ActionTypeNameToEnum[actionType];
 }
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment type)
@@ -375,5 +501,74 @@ ImageStyle ImageStyleFromString(const std::string& style)
     }
 
     return ImageStyleNameToEnum[style];
+}
+
+const std::string ActionsOrientationToString(ActionsOrientation orientation)
+{
+    if (ActionsOrientationEnumToName.find(orientation) == ActionsOrientationEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ActionsOrientation type");
+    }
+    return ActionsOrientationEnumToName[orientation];
+}
+
+ActionsOrientation ActionsOrientationFromString(const std::string& orientation)
+{
+    if (ActionsOrientationNameToEnum.find(orientation) == ActionsOrientationNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ActionsOrientation: " + orientation);
+    }
+    return ActionsOrientationNameToEnum[orientation];
+}
+
+const std::string ActionModeToString(ActionMode mode)
+{
+    if (ActionModeEnumToName.find(mode) == ActionModeEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ActionMode type");
+    }
+    return ActionModeEnumToName[mode];
+}
+
+ActionMode ActionModeFromString(const std::string& mode)
+{
+    if (ActionModeNameToEnum.find(mode) == ActionModeNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ActionMode: " + mode);
+    }
+    return ActionModeNameToEnum[mode];
+}
+const std::string ChoiceSetStyleToString(ChoiceSetStyle style)
+{
+    if (ChoiceSetStyleEnumToName.find(style) == ChoiceSetStyleEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ChoiceSetStyle");
+    }
+    return ChoiceSetStyleEnumToName[style];
+}
+ChoiceSetStyle ChoiceSetStyleFromString(const std::string & style)
+{
+    if (ChoiceSetStyleNameToEnum.find(style) == ChoiceSetStyleNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ChoiceSetStyle: " + style);
+    }
+    return ChoiceSetStyleNameToEnum[style];
+}
+
+const std::string TextInputStyleToString(TextInputStyle style)
+{
+    if (InputTextStyleEnumToName.find(style) == InputTextStyleEnumToName.end())
+    {
+        throw std::out_of_range("Invalid InputTextStyle");
+    }
+    return InputTextStyleEnumToName[style];
+}
+TextInputStyle TextInputStyleFromString(const std::string & style)
+{
+    if (InputTextStyleNameToEnum.find(style) == InputTextStyleNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid InputTextStyle: " + style);
+    }
+    return InputTextStyleNameToEnum[style];
 }
 }

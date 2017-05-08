@@ -1,0 +1,15 @@
+{
+    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type":"Input.Toggle",
+            "id": "IsCool",
+            "title": "Cool?",
+            "value": "true",
+            "valueOn": "true",
+            "valueOff": "false"
+        }
+    ]
+}

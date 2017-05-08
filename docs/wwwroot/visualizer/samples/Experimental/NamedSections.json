@@ -1,0 +1,60 @@
+// Exploring what the payload would look like if we went with named sections vs the array
+{
+    "type": "AdaptiveCard",
+    "sections": {
+        "header": [
+            {
+                "type": "ColumnSet",
+                "columns": [
+                    {
+                        "type": "Column",
+                        "size": "auto",
+                        "items": [
+                            {
+                                "type": "Image",
+                                "size": "small",
+                                "url": "http://messagecardplayground.azurewebsites.net/assets/airplane in circle.png"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Column",
+                        "size": "stretch",
+                        "items": [
+                            {
+                                "type": "TextBlock",
+                                "horizontalAlignment": "right",
+                                "text": "Flight Status",
+                                "isSubtle": true
+                            },
+                            {
+                                "type": "TextBlock",
+                                "horizontalAlignment": "right",
+                                "size": "large",
+                                "text": "DELAYED"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "passengers": {
+        "separator": "bottom",
+        "title": "Passengers",
+        "items": [
+            {
+                "type": "TextBlock",
+                "text": "Sarah Hum"
+            },
+            {
+                "type": "TextBlock",
+                "text": "Jeremy Goldberg"
+            },
+            {
+                "type": "TextBlock",
+                "text": "Evan Litvak"
+            }
+        ]
+    }
+}

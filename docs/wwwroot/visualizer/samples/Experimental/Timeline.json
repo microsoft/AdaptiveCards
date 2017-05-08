@@ -1,0 +1,68 @@
+{
+    "appName": "Amazon.com | Edge",
+    "activationUri": "",
+    "visual": {
+        "backgroundImage": "",
+        "icon": "",
+        "title": "MVP Summit Prep.pptx",
+        "body": [
+            {
+                "type": "TextBlock",
+                "text": "Line 1",
+                "weight": "bolder",
+                "size": "medium"
+            },
+            {
+                "type": "FactSet",
+                "facts": [
+                    {
+                        "name": "File Type:",
+                        "value": "pptx"
+                    },
+                    {
+                        "name": "Last Modified",
+                        "value": "Jan 9, 2017 3:45 PM"
+                    },
+                    {
+                        "name": "Taco",
+                        "value": "Bell"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+// {
+// 	"type": "AdaptiveCard",
+// 	"sections": [
+// 		{
+// 			"items": [
+//         {
+//             "type": "TextBlock",
+//             "text": "MVP Summit Prep.pptx",
+//             "weight": "bolder",
+//             "size": "medium"
+//         },
+//         {
+//             "type": "FactSet",
+//             "items": [
+//                 {
+//                     "name": "File Type:",
+//                     "value": "pptx"
+//                 },
+//                 {
+//                     "name": "Last Modified",
+//                     "value": "Jan 9, 2017 3:45 PM"
+//                 },
+//                 {
+//                     "name": "Taco",
+//                     "value": "Bell"
+//                 }
+//             ]
+//         }
+    
+// 			]
+// 		}
+// 	]
+// }

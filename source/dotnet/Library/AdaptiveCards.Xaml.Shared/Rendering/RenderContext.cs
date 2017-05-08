@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using AdaptiveCards.Rendering.Config;
 #if XAMARIN
 using FrameworkElement = Xamarin.Forms.View;
 using Xamarin.Forms;
@@ -35,7 +36,7 @@ namespace AdaptiveCards.Rendering
             this._imageResolver = imageResolver;
         }
 
-        public HostOptions Options { get; set; } = new HostOptions();
+        public HostConfig Config { get; set; } = new HostConfig();
 
         public Dictionary<Type, Func<TypedElement, RenderContext, FrameworkElement>> ElementRenderers = new Dictionary<Type, Func<TypedElement, RenderContext, FrameworkElement>>();
 
@@ -83,7 +84,7 @@ namespace AdaptiveCards.Rendering
             this.OnMissingInput?.Invoke(sender, args);
         }
 #if WPF
-        private static Dictionary<string, SolidColorBrush> colors = new Dictionary<string, SolidColorBrush>();
+        private Dictionary<string, SolidColorBrush> colors = new Dictionary<string, SolidColorBrush>();
 
         public SolidColorBrush GetColorBrush(string color)
         {

@@ -10,7 +10,8 @@ TextBlock::TextBlock() :
     m_textColor(TextColor::Default),
     m_isSubtle(false),
     m_wrap(false),
-    m_hAlignment(HorizontalAlignment::Left)
+    m_hAlignment(HorizontalAlignment::Left),
+    m_maxLines(0)
 {
 }
 

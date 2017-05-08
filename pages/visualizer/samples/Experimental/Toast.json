@@ -1,0 +1,42 @@
+// TODO: Handle actions with input
+// TODO: What about inputs that don't have actions?
+// TODO: Can we go semantic with title, description, etc
+
+{
+	"type": "AdaptiveCard",
+	"title": "Adaptive Card design session",
+	"description1": "Conf Room 112/3377 (10)",
+	"description2": "12:30 PM - 1:30 PM",
+	"body": [
+	    {
+	        "type": "TextBlock",
+	        "text": "Snooze for"
+	    },
+	    {
+	        "type": "MultichoiceInput",
+	        "size": "stretch",
+	        "choices": [
+	            { "display": "5 minutes" },
+	            { "display": "15 minutes" },
+	            { "display": "30 minutes" }
+	        ]
+	    },
+	    {
+	        "type": "ActionGroup",
+	        "actions": [
+	            {
+	                "type": "HttpPOST",
+	                "name": "Snooze"
+	            },
+	            {
+	                "type": "HttpPOST",
+	                "name": "I'll be late"
+	            },
+	            {
+	                "type": "HttpPOST",
+	                "name": "Dismiss"
+	            }
+	        ]
+	    }
+	]
+}

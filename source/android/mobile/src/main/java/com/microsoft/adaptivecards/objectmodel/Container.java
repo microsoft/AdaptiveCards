@@ -62,6 +62,11 @@ public class Container extends BaseCardElement {
     return (cPtr == 0) ? null : new Container(cPtr, true);
   }
 
+  public static Container DeserializeFromString(String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.Container_DeserializeFromString(jsonString);
+    return (cPtr == 0) ? null : new Container(cPtr, true);
+  }
+
   public static Container dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.Container_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new Container(cPtr, true);

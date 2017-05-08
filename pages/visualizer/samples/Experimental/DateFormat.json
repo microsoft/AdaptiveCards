@@ -1,0 +1,13 @@
+{
+    "type": "TextBlock",
+    "text": "Your order will arrive at {{DATE(2/13/2017 10:08:39 PM, DateFormat.None, TimeFormat.Short)}}", //      10:08 PM
+    "text": "Your order will arrive at {{DATE(2/13/2017 10:08:39 PM, DateFormat.Short, TimeFormat.Short)}}", //     2/13/2017 10:08 PM
+    "text": "Your order will arrive at {{DATE(2/13/2017 10:08:39 PM, DateFormat.Long, TimeFormat.Short)}}", //      Monday, Feb 13 2017, 10:08 PM
+    "text": "Your order will arrive at {{DATE(2/13/2017 10:08:39 PM, DateFormat.Short, TimeFormat.None)}}", //      2/13/2017 
+    "text": "Your order will arrive at {{DATE(2/13/2017 10:08:39 PM, DateFormat.Short, TimeFormat.Short)}}", //     2/13/2017 10:08 PM
+    "text": "Your order will arrive at {{DATE(2/13/2017 10:08:39 PM, DateFormat.Short, TimeFormat.Long)}}", //      2/13/2017 10:08:30 PM
+
+
+
+    "text": "Your order will arrive on {{ DATE(2017-02-13T22:08:39, SHORT) }} at {{ TIME(2017-02-13T22:08:39, LONG) }}",
+},

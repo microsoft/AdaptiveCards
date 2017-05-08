@@ -57,6 +57,20 @@ enum class AdaptiveCardSchemaKey
     Facts,
     Title,
     Value,
+    Images,
+    Placeholder,
+    IsMultiline,
+    MaxLength,
+    ValueOff,
+    ValueOn,
+    Max,
+    Min,
+    Choices,
+    IsSelected,
+    Style,
+    IsMultiSelect,
+    IsRequired,
+    BackgroundImageUrl
 };
 
 enum class TextSize
@@ -96,11 +110,19 @@ enum class ImageStyle {
 };
 
 enum class ImageSize {
-    Auto = 0,
+    Default = 0,
+    Auto,
     Stretch,
     Small,
     Medium,
     Large
+};
+
+enum class TextInputStyle {
+    Text = 0,
+    Tel,
+    Url,
+    Email,
 };
 
 enum class CardElementType
@@ -114,8 +136,28 @@ enum class CardElementType
     ColumnSet,
     FactSet,
     Fact,
-    ImageGallery,
-    ActionGroup
+    ActionGroup,
+    ImageSet,
+    InputDate,
+    InputNumber,
+    InputText,
+    InputTime,
+    InputToggle,
+    InputChoiceSet,
+};
+
+enum class ActionType
+{
+    ShowCard = 0,
+    Submit,
+    Http,
+    OpenUrl
+};
+
+enum class ChoiceSetStyle
+{
+    Compact = 0,
+    Expanded
 };
 
 enum class SeparationStyle {
@@ -124,11 +166,24 @@ enum class SeparationStyle {
     Strong,
 };
 
+enum class ActionsOrientation {
+    Vertical = 0,
+    Horizontal
+};
+
+enum class ActionMode {
+    Inline = 0,
+    Popup
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 
 const std::string CardElementTypeToString(CardElementType elementType);
 CardElementType CardElementTypeFromString(const std::string& elementType);
+
+const std::string ActionTypeToString(ActionType elementType);
+ActionType ActionTypeFromString(const std::string& elementType);
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment type);
 HorizontalAlignment HorizontalAlignmentFromString(const std::string& type);
@@ -151,4 +206,15 @@ SeparationStyle SeparationStyleFromString(const std::string& type);
 const std::string ImageStyleToString(ImageStyle style);
 ImageStyle ImageStyleFromString(const std::string& style);
 
+const std::string ActionsOrientationToString(ActionsOrientation style);
+ActionsOrientation ActionsOrientationFromString(const std::string& style);
+
+const std::string ActionModeToString(ActionMode style);
+ActionMode ActionModeFromString(const std::string& style);
+
+const std::string ChoiceSetStyleToString(ChoiceSetStyle type);
+ChoiceSetStyle ChoiceSetStyleFromString(const std::string& type);
+
+const std::string TextInputStyleToString(TextInputStyle style);
+TextInputStyle TextInputStyleFromString(const std::string & style);
 }

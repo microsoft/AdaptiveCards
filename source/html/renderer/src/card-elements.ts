@@ -751,7 +751,7 @@ export class TextInput extends Input {
         }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
-            this._textareaElement.textContent = this.defaultValue;
+            this._textareaElement.value = this.defaultValue;
         }
 
         if (this.maxLength > 0) {
@@ -778,7 +778,7 @@ export class TextInput extends Input {
     }
 
     get value(): string {
-        return this._textareaElement ? this._textareaElement.textContent : null;
+        return this._textareaElement ? this._textareaElement.value : null;
     }
 }
 

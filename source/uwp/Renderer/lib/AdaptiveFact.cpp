@@ -42,13 +42,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveFact::get_Value(HSTRING* value)
+    HRESULT AdaptiveFact::get_Value(HSTRING* value)
     {
         return UTF8ToHString(m_sharedFact->GetValue(), value);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveFact::put_Value(HSTRING value)
+    HRESULT AdaptiveFact::put_Value(HSTRING value)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(value, out));
@@ -57,13 +57,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveFact::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveFact::get_Speak(HSTRING* speak)
     {
         return UTF8ToHString(m_sharedFact->GetSpeak(), speak);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveFact::put_Speak(HSTRING speak)
+    HRESULT AdaptiveFact::put_Speak(HSTRING speak)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(speak, out));

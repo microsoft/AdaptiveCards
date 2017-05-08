@@ -1,0 +1,92 @@
+{
+	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Seattle, Washington - January 20, 7:30 AM",
+					"isSubtle": true
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "ContainerSet",
+					"containers": [
+						{
+							"type": "Container",
+							"size": "auto",
+							"items": [
+								{
+									"type": "Image",
+									"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
+									"size": "small",
+									"horizontalAlignment": "center"
+								}
+							]
+						},
+						{
+							"type": "Container",
+							"size": "auto",
+							"items": [
+								{
+									"type": "ContainerSet",
+									"containers": [
+										{
+											"type": "Container",
+											"size": "auto",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "42",
+													"size": "extraLarge"
+												}
+											]
+										},
+										{
+											"type": "Container",
+											"size": "auto",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "°F",
+													"weight": "bolder"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "TextBlock",
+									"text": "Mostly Clear",
+									"isSubtle": true
+								}
+							]
+						},
+						{
+							"type": "Container",
+							"size": "auto",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Hi 51"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Lo 40"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

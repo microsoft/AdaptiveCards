@@ -1,0 +1,29 @@
+// TODO: Do we have MRT issues?
+// TODO: What about high contrast?
+// TODO: LTR and RTL
+// TODO: Should we add TileGeneric?
+// TODO: Narrator support
+
+{
+    "type": "AdaptiveCard.MultiView",
+    "views": {
+        "TileMedium": {
+            "type": "AdaptiveCard",
+            "visual": [],
+            "actions": [
+                {}
+            ]
+        },
+        "TileLarge": {
+            "type": "AdaptiveCard",
+            "visual": [],
+            "actions": [ // This is optional
+                {
+                    "type": "ShowView",
+                    "name": "Close",
+                    "value": "default"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "type": "AdaptiveCard",
+    "targets": {
+        "Windows.Activity": {
+            "title": "MVP Summit Prep.pptx",
+            "appName": "Amazon.com | Edge"
+        },
+        "Windows.Notification": {
+            "heroImage": "ms-appx://"
+        }
+    },
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Line 1",
+            "weight": "bolder",
+            "size": "medium"
+        },
+        {
+            "type": "FactSet",
+            "facts": [
+                {
+                    "name": "Work item type:",
+                    "value": "Bug"
+                },
+                {
+                    "name": "State:",
+                    "value": "Closed"
+                },
+                {
+                    "name": "Area Path:",
+                    "value": "t365\\Tabs\\Extensibility\\longer to show\\two\\lines"
+                },
+                {
+                    "name": "Iteration Path:",
+                    "value": "t365\\Tabs\\Extensibility\\longer to show"
+                },
+                {
+                    "name": "Priority:",
+                    "value": "1"
+                }
+            ]
+        }
+    ]
+}

@@ -34,6 +34,14 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/Fact.cpp
              ../../shared/cpp/ObjectModel/FactSet.cpp
              ../../shared/cpp/ObjectModel/Image.cpp
+             ../../shared/cpp/ObjectModel/ImageSet.cpp
+             ../../shared/cpp/ObjectModel/InputChoice.cpp
+             ../../shared/cpp/ObjectModel/InputChoiceSet.cpp
+             ../../shared/cpp/ObjectModel/InputDate.cpp
+             ../../shared/cpp/ObjectModel/InputNumber.cpp
+             ../../shared/cpp/ObjectModel/InputText.cpp
+             ../../shared/cpp/ObjectModel/InputTime.cpp
+             ../../shared/cpp/ObjectModel/InputToggle.cpp
              src/main/cpp/objectmodel_wrap.cpp
              src/main/cpp/native-lib.cpp
              )

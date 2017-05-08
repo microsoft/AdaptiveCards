@@ -5,6 +5,13 @@
 #include "TextBlock.h"
 #include "ColumnSet.h"
 #include "FactSet.h"
+#include "ImageSet.h"
+#include "InputChoiceSet.h"
+#include "InputDate.h"
+#include "InputNumber.h"
+#include "InputText.h"
+#include "InputTime.h"
+#include "InputToggle.h"
 
 using namespace AdaptiveCards;
 
@@ -14,24 +21,33 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
     { CardElementType::ColumnSet, ColumnSet::Deserialize },
     { CardElementType::FactSet, FactSet::Deserialize },
     { CardElementType::Image, Image::Deserialize },
+    { CardElementType::ImageSet, ImageSet::Deserialize },
     { CardElementType::TextBlock, TextBlock::Deserialize },
+    { CardElementType::InputChoiceSet, InputChoiceSet::Deserialize },
+    { CardElementType::InputDate, InputDate::Deserialize },
+    { CardElementType::InputNumber, InputNumber::Deserialize },
+    { CardElementType::InputText, InputText::Deserialize },
+    { CardElementType::InputTime, InputTime::Deserialize },
+    { CardElementType::InputToggle, InputToggle::Deserialize },
 };
 
 AdaptiveCard::AdaptiveCard()
 {
 }
 
-AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText) :
-    m_version(version),
-    m_minVersion(minVersion),
-    m_fallbackText(fallbackText)
-{
-}
-
-AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::vector<std::shared_ptr<BaseCardElement>>& body) :
+AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl) :
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
+    m_backgroundImageUrl(backgroundImageUrl)
+{
+}
+
+AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl, std::vector<std::shared_ptr<BaseCardElement>>& body) :
+    m_version(version),
+    m_minVersion(minVersion),
+    m_fallbackText(fallbackText),
+    m_backgroundImageUrl(backgroundImageUrl),
     m_body(body)
 {
 }
@@ -56,13 +72,14 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     std::string version = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Version);
     std::string minVersion = ParseUtil::GetString(json, AdaptiveCardSchemaKey::MinVersion);
     std::string fallbackText = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FallbackText);
+    std::string backgroundImageUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImageUrl);
 
     // Parse body
     auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers);
 
     // Parse actions
 
-    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, body);
+    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImageUrl, body);
     return result;
 }
 
@@ -101,6 +118,16 @@ std::string AdaptiveCard::GetFallbackText() const
 void AdaptiveCard::SetFallbackText(const std::string value)
 {
     m_fallbackText = value;
+}
+
+std::string AdaptiveCard::GetBackgroundImageUrl() const
+{
+    return m_backgroundImageUrl;
+}
+
+void AdaptiveCard::SetBackgroundImageUrl(const std::string value)
+{
+    m_backgroundImageUrl = value;
 }
 
 const CardElementType AdaptiveCard::GetElementType() const

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Config;
 #if WPF
 using System.Windows.Controls;
 using System.Windows.Shapes;
@@ -39,16 +40,16 @@ namespace AdaptiveCards.Rendering
                         // TOOD: check xamarin separator visual
                         //sep.VerticalAlignment = VerticalAlignment.Stretch;
 #endif
-                        SeparationOption sepStyle;
+                        SeparationConfig sepStyle;
                         switch (column.Separation)
                         {
                             case SeparationStyle.Strong:
-                                sepStyle = context.Options.Column.Separation.Strong;
+                                sepStyle = context.Config.GetSeparationForElement(element, true);
                                 break;
 
                             case SeparationStyle.Default:
                             default:
-                                sepStyle = context.Options.Column.Separation.Default;
+                                sepStyle = context.Config.GetSeparationForElement(element, false);
                                 break;
                         }
                         uiSep.Margin = new Thickness(sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2, 0);
