@@ -5,6 +5,9 @@
 
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>
+#include <unordered_map>
+#include <set>
+#include <ppltasks.h>
 
 // The #define of this in winbase.h windows.ui.xaml.media.animation.h's IStoryboard defintion
 // so we need to remove it
@@ -12,9 +15,5 @@
 #undef GetCurrentTime
 #endif
 
-#include <unordered_map>
-#include <set>
-
 #include "ErrorHandling.h"
-
-#include <ppltasks.h>
+#include "Util.h"
