@@ -23,7 +23,7 @@ function myDropFunc() {
 }
 
 function showTopic(folder, topic) {
-    var path = "/api/markdown";
+    var path = "/api/markdown/documentation/markdown";
     if (folder)
         path = path + "/" + folder;
     path = path + "/" + topic +".md";

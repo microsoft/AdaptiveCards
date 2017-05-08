@@ -23,7 +23,7 @@ namespace Docs.Controllers
         [HttpGet("{*file}")]
         public string Get(string file)
         {
-            var path = Path.Combine(Path.Combine(_env.WebRootPath, "markdown"), file);
+            var path = Path.Combine(_env.WebRootPath, file);
 
             Marked marked = new Marked();
             var text = System.IO.File.ReadAllText(path);
