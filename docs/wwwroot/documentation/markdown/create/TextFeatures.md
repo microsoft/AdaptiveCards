@@ -1,4 +1,4 @@
-# Extended Text features
+# Text features
 TextBlock is one of the core elements and has some special features in the interpretation of text.
 
 ## Markdown
