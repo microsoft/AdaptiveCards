@@ -627,13 +627,13 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSize_1Auto_1get(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSize_1Default_1get(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   AdaptiveCards::ImageSize result;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ImageSize)AdaptiveCards::ImageSize::Auto;
+  result = (AdaptiveCards::ImageSize)AdaptiveCards::ImageSize::Default;
   jresult = (jint)result; 
   return jresult;
 }
@@ -658,6 +658,18 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
   (void)jenv;
   (void)jcls;
   result = (AdaptiveCards::ActionType)AdaptiveCards::ActionType::ShowCard;
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetStyle_1Compact_1get(JNIEnv *jenv, jclass jcls) {
+  jint jresult = 0 ;
+  AdaptiveCards::ChoiceSetStyle result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::ChoiceSetStyle)AdaptiveCards::ChoiceSetStyle::Compact;
   jresult = (jint)result; 
   return jresult;
 }
@@ -1126,6 +1138,42 @@ SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
   arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
   result = (AdaptiveCards::ActionMode)AdaptiveCards::ActionModeFromString((std::string const &)*arg1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetStyleToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+  jstring jresult = 0 ;
+  AdaptiveCards::ChoiceSetStyle arg1 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (AdaptiveCards::ChoiceSetStyle)jarg1; 
+  result = AdaptiveCards::ChoiceSetStyleToString(arg1);
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetStyleFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+  jint jresult = 0 ;
+  std::string *arg1 = 0 ;
+  AdaptiveCards::ChoiceSetStyle result;
+  
+  (void)jenv;
+  (void)jcls;
+  if(!jarg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0); 
+  if (!arg1_pstr) return 0;
+  std::string arg1_str(arg1_pstr);
+  arg1 = &arg1_str;
+  jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
+  result = (AdaptiveCards::ChoiceSetStyle)AdaptiveCards::ChoiceSetStyleFromString((std::string const &)*arg1);
   jresult = (jint)result; 
   return jresult;
 }
@@ -4814,7 +4862,7 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnOptions_1defaultSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ColumnOptions *arg1 = (AdaptiveCards::ColumnOptions *) 0 ;
   AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
   
@@ -4824,11 +4872,11 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
   (void)jarg2_;
   arg1 = *(AdaptiveCards::ColumnOptions **)&jarg1; 
   arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
-  if (arg1) (arg1)->defaultSeparation = *arg2;
+  if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnOptions_1defaultSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ColumnOptions *arg1 = (AdaptiveCards::ColumnOptions *) 0 ;
   AdaptiveCards::SeparationOptions *result = 0 ;
@@ -4837,36 +4885,7 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::ColumnOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->defaultSeparation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnOptions_1strongSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColumnOptions *arg1 = (AdaptiveCards::ColumnOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColumnOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
-  if (arg1) (arg1)->strongSeparation = *arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnOptions_1strongSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  AdaptiveCards::ColumnOptions *arg1 = (AdaptiveCards::ColumnOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColumnOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->strongSeparation);
+  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
   *(AdaptiveCards::SeparationOptions **)&jresult = result; 
   return jresult;
 }

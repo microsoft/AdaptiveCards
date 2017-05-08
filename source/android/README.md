@@ -14,3 +14,6 @@ To compile:
 To generate APK:
 1. Follow "To compile" section
 2. Build->"Build APK" or "Generate Signed APK..."
+
+TODO:
+ImageStyle

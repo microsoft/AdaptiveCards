@@ -30,6 +30,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 #include "../../../shared/cpp/ObjectModel/Fact.h"
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
+#include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/HostOptions.h"
 %}
@@ -43,6 +44,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::ColumnSet)
 %shared_ptr(AdaptiveCards::Fact)
 %shared_ptr(AdaptiveCards::FactSet)
+%shared_ptr(AdaptiveCards::InputChoiceSet)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
 
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
@@ -153,6 +155,21 @@ namespace std {
     }
 };
 
+%exception AdaptiveCards::InputChoiceSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::InputChoiceSet {
+    static AdaptiveCards::InputChoiceSet *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::InputChoiceSet *>(baseCardElement);
+    }
+};
+
 #include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
@@ -164,5 +181,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 %include "../../../shared/cpp/ObjectModel/Fact.h"
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
+%include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/HostOptions.h"

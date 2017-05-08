@@ -120,10 +120,10 @@ public class ImageRenderer implements BaseCardElementRenderer
         ImageView imageView = new ImageView(context);
         new ImageLoaderAsync(imageView).execute(image.GetUrl());
         setImageSize(imageView, image.GetImageSize(), hostOptions.getImageSizes());
-        image.GetImageStyle().swigValue()
+        //image.GetImageStyle().swigValue()
         imageView.setMaxWidth(image.GetImageSize().swigValue());
-        image.GetHorizontalAlignment().swigValue()
-        imageView.setLayoutDirection(L);
+        //image.GetHorizontalAlignment().swigValue()
+        //imageView.setLayoutDirection(L);
         return viewGroup;
     }
 

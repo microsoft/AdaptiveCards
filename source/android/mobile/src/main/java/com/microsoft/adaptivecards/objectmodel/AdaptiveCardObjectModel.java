@@ -105,4 +105,12 @@ public class AdaptiveCardObjectModel {
     return ActionMode.swigToEnum(AdaptiveCardObjectModelJNI.ActionModeFromString(style));
   }
 
+  public static String ChoiceSetStyleToString(ChoiceSetStyle type) {
+    return AdaptiveCardObjectModelJNI.ChoiceSetStyleToString(type.swigValue());
+  }
+
+  public static ChoiceSetStyle ChoiceSetStyleFromString(String type) {
+    return ChoiceSetStyle.swigToEnum(AdaptiveCardObjectModelJNI.ChoiceSetStyleFromString(type));
+  }
+
 }
