@@ -5,7 +5,7 @@
 AdaptiveCards.setHostConfig({
     "supportsInteractivity": true,
     "strongSeparation": {
-        "spacing": 40,
+        "spacing": 10,
         "lineThickness": 1,
         "lineColor": "#EEEEEE"
     },
@@ -36,15 +36,15 @@ AdaptiveCards.setHostConfig({
             "subtle": "#882E89FC"
         },
         "attention": {
-            "normal": "#FFD800",
-            "subtle": "#DDFFD800"
+            "normal": "#FF00FF",
+            "subtle": "#DDFF00FF"
         },
         "good": {
-            "normal": "#00FF00",
-            "subtle": "#DD00FF00"
+            "normal": "#00a000",
+            "subtle": "#DD00a000"
         },
         "warning": {
-            "normal": "#FF0000",
+            "normal": "#c00000",
             "subtle": "#DDFF0000"
         }
     },
@@ -56,7 +56,7 @@ AdaptiveCards.setHostConfig({
     "actions": {
         "maxActions": 5,
         "separation": {
-            "spacing": 20
+            "spacing": 10
         },
         "buttonSpacing": 20,
         "stretch": false,
@@ -75,22 +75,22 @@ AdaptiveCards.setHostConfig({
         "actionAlignment": "left"
     },
     "adaptiveCard": {
-        "backgroundColor": "#00000000",
+        "backgroundColor": "#fafafa",
         "padding": {
-            "left": 20,
-            "top": 20,
-            "right": 20,
-            "bottom": 20
+            "left": 10,
+            "top": 10,
+            "right": 10,
+            "bottom": 10
         }
     },
     "container": {
         "separation": {
-            "spacing": 20
+            "spacing": 10
         },
         "normal": {},
         "emphasis": {
-            "backgroundColor": "#EEEEEE",
-            "borderColor": "#AAAAAA",
+            "backgroundColor": "#cccccc",
+            "borderColor": "#aaaaaa",
             "borderThickness": {
                 "top": 1,
                 "right": 1,
@@ -109,37 +109,37 @@ AdaptiveCards.setHostConfig({
         "color": "dark",
         "separations": {
             "small": {
-                "spacing": 20
+                "spacing": 10
             },
             "normal": {
-                "spacing": 20
+                "spacing": 10
             },
             "medium": {
-                "spacing": 20
+                "spacing": 10
             },
             "large": {
-                "spacing": 20
+                "spacing": 10
             },
             "extraLarge": {
-                "spacing": 20
+                "spacing": 10
             }
         }
     },
     "image": {
         "size": "medium",
         "separation": {
-            "spacing": 20
+            "spacing": 10
         }
     },
     "imageSet": {
         "imageSize": "medium",
         "separation": {
-            "spacing": 20
+            "spacing": 10
         }
     },
     "factSet": {
         "separation": {
-            "spacing": 20
+            "spacing": 10
         },
         "title": {
             "color": "dark",
@@ -157,17 +157,17 @@ AdaptiveCards.setHostConfig({
     },
     "input": {
         "separation": {
-            "spacing": 20
+            "spacing": 10
         }
     },
     "columnSet": {
         "separation": {
-            "spacing": 20
+            "spacing": 10
         }
     },
     "column": {
         "separation": {
-            "spacing": 20
+            "spacing": 10
         }
     }
 });
