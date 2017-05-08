@@ -1979,10 +1979,6 @@ export class Container extends ContainerBase {
 
         var styleDefinition = this.style == "normal" ? hostConfig.container.normal : hostConfig.container.emphasis;
 
-        if (styleDefinition.borderColor) {
-            renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
-        }
-
         if (styleDefinition.borderThickness) {
             renderedContainer.style.borderTop = styleDefinition.borderThickness.top + "px solid";
             renderedContainer.style.borderRight = styleDefinition.borderThickness.right + "px solid";
@@ -1990,6 +1986,10 @@ export class Container extends ContainerBase {
             renderedContainer.style.borderLeft = styleDefinition.borderThickness.left + "px solid";
         }
 
+        if (styleDefinition.borderColor) {
+            renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
+        }
+        
         return renderedContainer;
     }
 
