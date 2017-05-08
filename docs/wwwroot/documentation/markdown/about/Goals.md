@@ -1,3 +1,3 @@
-## Goals for this project
+# Goals for this project
 
 blah blah blah
