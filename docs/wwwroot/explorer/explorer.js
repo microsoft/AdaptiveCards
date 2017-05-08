@@ -63,8 +63,8 @@ AdaptiveCards.setHostConfig({
             "subtle": "#882E89FC"
         },
         "attention": {
-            "normal": "#FF00FF",
-            "subtle": "#DDFF00FF"
+            "normal": "#5D60B3",
+            "subtle": "#DD5D60B3"
         },
         "good": {
             "normal": "#00a000",
@@ -72,7 +72,7 @@ AdaptiveCards.setHostConfig({
         },
         "warning": {
             "normal": "#c00000",
-            "subtle": "#DDFF0000"
+            "subtle": "#DDc00000"
         }
     },
     "imageSizes": {
