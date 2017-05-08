@@ -188,12 +188,11 @@ function setupEditor() {
         var cardUrl = document.location.search.substring(1).split('card=')[1];
 
         if (cardUrl) {
+            currentCardPayload = "";
             var xhttp = new XMLHttpRequest();
-
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    currentCardPayload = xhttp.responseText;
-                }
+            xhttp.onload = function() {
+               currentCardPayload = xhttp.responseText;
+               setEditorText(currentCardPayload);
             };
         
             xhttp.open("GET", cardUrl, true);
