@@ -1,5 +1,32 @@
 ﻿AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
-    alert(JSON.stringify(action));
+    var message = "Action executed\n";
+    message += "    Title: " + action.title + "\n";
+
+    if (action instanceof AdaptiveCards.OpenUrlAction) {
+        message += "    Type: OpenUrl\n";
+        message += "    Url: " + action.url + "\n";
+    }
+    else if (action instanceof AdaptiveCards.SubmitAction) {
+        message += "    Type: Submit";
+        message += "    Data: " + JSON.stringify(action.data);
+    }
+    else if (action instanceof AdaptiveCards.HttpAction) {
+        var httpAction = action;
+        message += "    Type: Http\n";
+        message += "    Url: " + httpAction.url + "\n";
+        message += "    Method: " + httpAction.method + "\n";
+        message += "    Headers:\n";
+
+        for (var i = 0; i < httpAction.headers.length; i++) {
+            message += "        " + httpAction.headers[i].name + ": " + httpAction.headers[i].value + "\n";
+        }
+        message += "    Body: " + httpAction.body + "\n";
+    }
+    else {
+        message += "    Type: <unknown>";
+    }
+
+    alert(message);
 };
 
 AdaptiveCards.setHostConfig({

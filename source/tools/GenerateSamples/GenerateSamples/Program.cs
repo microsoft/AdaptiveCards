@@ -31,7 +31,7 @@ namespace GenerateSamples
             GenerateSamplesPage(header);
         }
 
-        private static void GenerateSchemaExplorerPage(string preamble, Marked marked)
+        private static void GenerateSchemaExplorerPage(string header, Marked marked)
         {
             string[] elements = new string[] {
                 "TextBlock", "Image",
@@ -41,7 +41,7 @@ namespace GenerateSamples
             };
             using (TextWriter writer = new StreamWriter(File.Open(@"..\..\..\..\..\..\docs\wwwroot\explorer\index.html", FileMode.Create)))
             {
-                writer.WriteLine(preamble);
+                writer.WriteLine(header.Replace("$PAGE$", "explorer"));
 
                 // side bar
                 writer.WriteLine("<div class=\"w3-sidebar w3-light-grey w3-card-2 w3-bar-block\">");
@@ -104,7 +104,8 @@ namespace GenerateSamples
         {
             using (TextWriter writer = new StreamWriter(File.Open(@"..\..\..\..\..\..\docs\wwwroot\samples\index.html", FileMode.Create)))
             {
-                writer.WriteLine(header);
+                writer.WriteLine(header.Replace("$PAGE$", "samples"));
+
                 // side bar
                 writer.WriteLine("<div class=\"w3-sidebar w3-light-grey w3-card-2 w3-bar-block\">");
                 string firstLink = null;

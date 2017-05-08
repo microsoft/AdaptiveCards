@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\content\card.css" />
     <Content Include="wwwroot\explorer\cards\Column.SelectAction.json" />
     <Content Include="wwwroot\explorer\cards\Column.Separation.json" />
     <Content Include="wwwroot\explorer\cards\Column.Size.json" />
