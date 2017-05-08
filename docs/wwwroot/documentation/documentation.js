@@ -39,11 +39,13 @@ $(document).ready(() => {
         showTopic("about", "overview");
     else {
         var parts = window.location.hash.slice(1).split('-');
-        showTopic(parts[0], parts[1]);
+        if (parts.length == 2)
+            showTopic(parts[0], parts[1]);
     }
 });
 
 window.addEventListener("hashchange", function () {
     var parts = window.location.hash.slice(1).split('-');
-    showTopic(parts[0], parts[1]);
+    if (parts.length == 2)
+        showTopic(parts[0], parts[1]);
 }, false);

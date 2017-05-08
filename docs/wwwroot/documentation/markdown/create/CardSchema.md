@@ -35,7 +35,7 @@ AdaptiveCard is top level object which represents a card
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"AdaptiveCard"** |
+| **type**| **"AdaptiveCard"** | true |  |
 | **body** | [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **actions** |[Action](#action)[]| false | Actions |
 | **version** | string| false | version of schema that this card was authored |
@@ -61,7 +61,7 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 
 | Property | Type | Required |Description |
 |---|---|---|---|
-| **type**| string | true | **"Image"** |
+| **type**| **"Image"** | true |  |
 | **url** | string | true | The URL to the image. |
 | **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
 | **selectAction** | [Action](#action) | false | Action to perform for a selection for this image, (this allows image to act as an action) |
@@ -76,7 +76,7 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"TextBlock"** |
+| **type**| **"TextBlock"** | true |  |
 | **text** | string | true |The actual text to display |
 | **size** | [TextSize](#textsize) | false |The size of the text |
 | **weight** | [TextWeight](#textweight) | false |The weight of the text |
@@ -138,7 +138,7 @@ Example for (en-us):
 ## Inputs
 Input elements give you the ability to show input controls to the uer.
 
-### Input.Text
+### Input Text
 
 *Extends [CardElement](#CardElement)*
 
@@ -146,7 +146,7 @@ Input.Text collects text from the user
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"Input.Text"** |
+| **type**| **"Input.Text"** | true |  |
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or Http action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
@@ -156,7 +156,7 @@ Input.Text collects text from the user
 | **maxLength** | number | false | hint of maximum length characters to collect *(may be ignored by some clients)* |
 | **isMultiline** | boolean | false | Do you want to allow multiple lines of input |
 
-### Input.Date
+### Input Date
 
 *Extends [CardElement](#CardElement)*
 
@@ -166,7 +166,7 @@ Input.Date collects text from the user in form of a date.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"Input.Date"** |
+| **type**| **"Input.Date"**  | true | |
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or Http action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
@@ -175,7 +175,7 @@ Input.Date collects text from the user in form of a date.
 | **min** | string | false | Minimum date in ISO-8601 format (Not all clients will be able to honor this)|
 | **max** | string  | false | Maximum date in ISO-8601 format (Not all clients will be able to honor this)|
 
-### Input.Time
+### Input Time
 
 *Extends [CardElement](#CardElement)*
 
@@ -185,7 +185,7 @@ Input.Time collects text from the user in form of a time of day.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"Input.Time"** |
+| **type**| **"Input.Time"** | true |  |
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or Http action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
@@ -194,7 +194,7 @@ Input.Time collects text from the user in form of a time of day.
 | **min** | string | false | Minimum time (Not all clients will be able to honor this)|
 | **max** | string  | false | Maximum time (Not all clients will be able to honor this)|
 
-### Input.Number
+### Input Number
 
 *Extends [CardElement](#CardElement)*
 
@@ -204,7 +204,7 @@ Input.Number collects text from the user with a bias towards a number.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"Input.Number"** |
+| **type**| **"Input.Number"** | true |  |
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or Http action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
@@ -213,7 +213,7 @@ Input.Number collects text from the user with a bias towards a number.
 | **min** | number | false | Minimum number (Not all clients will be able to honor this)|
 | **max** | number | false | Maximum number (Not all clients will be able to honor this)|
 
-### Input.Toggle
+### Input Toggle
 
 *Extends [CardElement](#CardElement)*
 
@@ -221,7 +221,7 @@ Input.Toggle collects a selection between two values, with **value** representin
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true |  **"Input.Toggle"** || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
+| **type**| **"Input.Toggle"** | true |   || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or Http action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
@@ -230,7 +230,7 @@ Input.Toggle collects a selection between two values, with **value** representin
 | **valueOff** | string | false  | The value to use when toggle is not selected (default:false)| 
 | **value** | string | false  | The value current value (default:false) | 
 
-### Input.ChoiceSet
+### Input ChoiceSet
 
 *Extends [CardElement](#CardElement)*
 
@@ -242,7 +242,7 @@ Shows an array of choices the to the user.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true |  **"Input.ChoiceSet"** || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
+| **type**| **"Input.ChoiceSet"** | true |   || **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice | 
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or Http action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
@@ -269,7 +269,7 @@ A  Container is a CardElement which contains a list of CardElements that are log
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"Container"** |
+| **type**| **"Container"**| true |  |
 | **items** |  [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **actions** | [Action](#action)[] | false | Actions associated with this container |
 | **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
@@ -282,7 +282,7 @@ The column Set element adds the ability to have a set of Column objects.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"ColumnSet"** |
+| **type**| **"ColumnSet"**  | true | |
 | **columns** | [Column](#column)[] | true | array of columns (each a container of items)  |
 
 ## Column
@@ -292,7 +292,7 @@ A Column is a container which contains a list of CardElements that are logically
 
 | Property | Type | Required |  Description |
 |---|---|---|---|
-| **type**| string | true |  **"Column"** |
+| **type**|  **"Column"** | true |  |
 | **size** | string | false | "auto", "stretch", or a number representing relative width of the column in the column Set (Default:Auto)|
 | **items** |  [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
@@ -304,7 +304,7 @@ The ImageSet allows for the inclusion of a collection images like a photoSet.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"ImageSet"** |
+| **type**| **"ImageSet"** | true |  |
 | **images**| [Image](#image)[] | true | Array of Image objects |
 | **imageSize** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the Set. |
 
@@ -315,7 +315,7 @@ The FactSet element makes it simple to display a series of "facts" (e.g. name/va
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"FactSet"** |
+| **type**|  **"FactSet"** | true | |
 | **facts** | [Fact](#fact)[] | true| The facts to be displayed. |
 
 ### Fact 
@@ -333,7 +333,7 @@ Actions define clickable targets that do something.
 
 ## Action
 
-## Action.Http
+## Action Http
 *Extends [Action](#action)*
 
 Action.Http represents the properties needed to do an Http request. All input properties are available for use via 
@@ -342,7 +342,7 @@ to an arbitrary url.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"HttpAction"** |
+| **type**| **"Action.Http"** | true |  |
 | **title** | string | true | Label for button or link that represents this action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **url** | string | true | url to use (can have binding information) |
@@ -350,7 +350,7 @@ to an arbitrary url.
 | **headers** | object | false | Object which represents headers Example: { "content-type":"application/json" }  |
 | **body** | string | false | content to post (can have binding information) |
 
-## Action.OpenUrl
+## Action OpenUrl
 *Extends [Action](#action)*
 
 When Action.OpenUrl is invoked it will show the given url, either by launching it to an external web browser or showing in-situ 
@@ -358,24 +358,24 @@ with embedded web browser
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"Action.OpenUrl"** |
+| **type**| **"Action.OpenUrl"** | true |  |
 | **title** | string | true | Label for button or link that represents this action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **url** | string | true | Default (browser) url to use  |
 
-## Action.ShowCard
+## Action ShowCard
 *Extends [Action](#action)*
 
 Action.ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **Action.ShowCard"** |
+| **type**| **Action.ShowCard"** | true |  |
 | **title** | string | true | Label for button or link that represents this action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **card** | [Container](#container) | true |inline container  defining the card to be shown when this action is invoked. It is up to client to decide how to show this inline card. |
 
-## Action.Submit
+## Action Submit
 *Extends [Action](#action)*
 
 Action.Submit gathers up input fields, merges with optional data field and generates event to 
@@ -384,7 +384,7 @@ For example: With BotFramework bots the client would send an activity through th
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"Action.Submit"** |
+| **type**| **"Action.Submit"** | true |  |
 | **title** | string | true | Label for button or link that represents this action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **data** | object | false | initial data that input fields will be combined with.  This is essentially 'hidden' properties |

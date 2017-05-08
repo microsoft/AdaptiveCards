@@ -1,5 +1,7 @@
 # Getting Started creating cards
+Creating a card is really easy.
 
-(To be written.)
+## Basic layout rules
+All elements are layed out in stacks of vertical blocks in a container.  The only exception to this is ColumnSet, which allows 
+you to define a list of containers 
 
-Please see the README for now.
