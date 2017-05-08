@@ -24309,7 +24309,9 @@ var TextBlock = (function (_super) {
     TextBlock.prototype.internalRender = function () {
         if (!Utils.isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
-            element.style.fontFamily = hostConfig.fontFamily;
+            if (hostConfig.fontFamily) {
+                element.style.fontFamily = hostConfig.fontFamily;
+            }
             switch (this.horizontalAlignment) {
                 case "center":
                     element.style.textAlign = "center";
@@ -25875,14 +25877,14 @@ var Container = (function (_super) {
     Container.prototype.internalRender = function () {
         var renderedContainer = _super.prototype.internalRender.call(this);
         var styleDefinition = this.style == "normal" ? hostConfig.container.normal : hostConfig.container.emphasis;
-        if (styleDefinition.borderColor) {
-            renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
-        }
         if (styleDefinition.borderThickness) {
             renderedContainer.style.borderTop = styleDefinition.borderThickness.top + "px solid";
             renderedContainer.style.borderRight = styleDefinition.borderThickness.right + "px solid";
             renderedContainer.style.borderBottom = styleDefinition.borderThickness.bottom + "px solid";
             renderedContainer.style.borderLeft = styleDefinition.borderThickness.left + "px solid";
+        }
+        if (styleDefinition.borderColor) {
+            renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
         }
         return renderedContainer;
     };
@@ -25959,7 +25961,7 @@ var Column = (function (_super) {
                 }
             }
         }
-        else {
+        else if (parsedSize) {
             invalidSize = true;
         }
         if (invalidSize) {
@@ -26549,7 +26551,7 @@ function parseContainerStyleDefinition(obj) {
         backgroundColor: obj["backgroundColor"],
         padding: parseSpacingDefinition(obj["padding"]),
         borderColor: obj["borderColor"],
-        borderThickness: obj["borderThickness"]
+        borderThickness: parseSpacingDefinition(obj["borderThickness"])
     } : null;
 }
 function parseContainerConfiguration(obj) {
@@ -44347,7 +44349,7 @@ function setupContainerPicker() {
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", function () {
             // Update the query string
-            var htmlFileName = location.pathname.indexOf("index.html") >= 0 ? "index.html" : "dev.html";
+            var htmlFileName = location.pathname.indexOf("dev.html") >= 0 ? "dev.html" : "index.html";
             history.pushState(hostContainerPicker.value, "Visualizer - " + hostContainerPicker.value, htmlFileName + ("?hostApp=" + hostContainerPicker.value));
             loadStyleSheetAndConfig();
             tryRenderCard();
