@@ -38,6 +38,12 @@ body {
     height: inherit;
 }
 
+.navBar {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+}
+
 .uiHeader {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 auto;
