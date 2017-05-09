@@ -35,35 +35,35 @@ public class BoundaryOptions {
     }
   }
 
-  public void setLeft(int value) {
+  public void setLeft(long value) {
     AdaptiveCardObjectModelJNI.BoundaryOptions_left_set(swigCPtr, this, value);
   }
 
-  public int getLeft() {
+  public long getLeft() {
     return AdaptiveCardObjectModelJNI.BoundaryOptions_left_get(swigCPtr, this);
   }
 
-  public void setRight(int value) {
+  public void setRight(long value) {
     AdaptiveCardObjectModelJNI.BoundaryOptions_right_set(swigCPtr, this, value);
   }
 
-  public int getRight() {
+  public long getRight() {
     return AdaptiveCardObjectModelJNI.BoundaryOptions_right_get(swigCPtr, this);
   }
 
-  public void setBottom(int value) {
+  public void setBottom(long value) {
     AdaptiveCardObjectModelJNI.BoundaryOptions_bottom_set(swigCPtr, this, value);
   }
 
-  public int getBottom() {
+  public long getBottom() {
     return AdaptiveCardObjectModelJNI.BoundaryOptions_bottom_get(swigCPtr, this);
   }
 
-  public void setTop(int value) {
+  public void setTop(long value) {
     AdaptiveCardObjectModelJNI.BoundaryOptions_top_set(swigCPtr, this, value);
   }
 
-  public int getTop() {
+  public long getTop() {
     return AdaptiveCardObjectModelJNI.BoundaryOptions_top_get(swigCPtr, this);
   }
 

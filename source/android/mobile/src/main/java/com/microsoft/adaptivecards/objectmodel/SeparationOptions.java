@@ -35,19 +35,19 @@ public class SeparationOptions {
     }
   }
 
-  public void setSpacing(int value) {
+  public void setSpacing(long value) {
     AdaptiveCardObjectModelJNI.SeparationOptions_spacing_set(swigCPtr, this, value);
   }
 
-  public int getSpacing() {
+  public long getSpacing() {
     return AdaptiveCardObjectModelJNI.SeparationOptions_spacing_get(swigCPtr, this);
   }
 
-  public void setLineThickness(int value) {
+  public void setLineThickness(long value) {
     AdaptiveCardObjectModelJNI.SeparationOptions_lineThickness_set(swigCPtr, this, value);
   }
 
-  public int getLineThickness() {
+  public long getLineThickness() {
     return AdaptiveCardObjectModelJNI.SeparationOptions_lineThickness_get(swigCPtr, this);
   }
 

@@ -30,8 +30,10 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 #include "../../../shared/cpp/ObjectModel/Fact.h"
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
+#include "../../../shared/cpp/ObjectModel/InputChoice.h"
 #include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
+#include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostOptions.h"
 %}
 
@@ -46,6 +48,24 @@ namespace std {
 %shared_ptr(AdaptiveCards::FactSet)
 %shared_ptr(AdaptiveCards::InputChoiceSet)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
+
+// Allow C++ exceptions to be handled in Java
+%typemap(throws, throws="java.io.IOException") AdaptiveCards::AdaptiveCardParseException {
+  jclass excep = jenv->FindClass("java/io/IOException");
+  if (excep)
+    jenv->ThrowNew(excep, $1.what());
+  return $null;
+}
+
+// Force the CustomException Java class to extend java.lang.Exception
+%typemap(javabase) AdaptiveCards::AdaptiveCardParseException "java.lang.Exception";
+
+// Override getMessage()
+%typemap(javacode) AdaptiveCards::AdaptiveCardParseException %{
+  public String getMessage() {
+    return what();
+  }
+%}
 
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
@@ -181,6 +201,8 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 %include "../../../shared/cpp/ObjectModel/Fact.h"
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
+%include "../../../shared/cpp/ObjectModel/InputChoice.h"
 %include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
+%include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostOptions.h"

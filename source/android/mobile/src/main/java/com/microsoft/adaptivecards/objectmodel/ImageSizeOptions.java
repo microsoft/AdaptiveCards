@@ -35,27 +35,27 @@ public class ImageSizeOptions {
     }
   }
 
-  public void setSmallSize(int value) {
+  public void setSmallSize(long value) {
     AdaptiveCardObjectModelJNI.ImageSizeOptions_smallSize_set(swigCPtr, this, value);
   }
 
-  public int getSmallSize() {
+  public long getSmallSize() {
     return AdaptiveCardObjectModelJNI.ImageSizeOptions_smallSize_get(swigCPtr, this);
   }
 
-  public void setMediumSize(int value) {
+  public void setMediumSize(long value) {
     AdaptiveCardObjectModelJNI.ImageSizeOptions_mediumSize_set(swigCPtr, this, value);
   }
 
-  public int getMediumSize() {
+  public long getMediumSize() {
     return AdaptiveCardObjectModelJNI.ImageSizeOptions_mediumSize_get(swigCPtr, this);
   }
 
-  public void setLargeSize(int value) {
+  public void setLargeSize(long value) {
     AdaptiveCardObjectModelJNI.ImageSizeOptions_largeSize_set(swigCPtr, this, value);
   }
 
-  public int getLargeSize() {
+  public long getLargeSize() {
     return AdaptiveCardObjectModelJNI.ImageSizeOptions_largeSize_get(swigCPtr, this);
   }
 

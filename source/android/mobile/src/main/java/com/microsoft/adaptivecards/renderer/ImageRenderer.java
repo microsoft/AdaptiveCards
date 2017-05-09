@@ -84,17 +84,17 @@ public class ImageRenderer implements BaseCardElementRenderer
         }
         else if (imageSize.swigValue() == ImageSize.Small.swigValue())
         {
-            imageView.setMaxWidth(imageSizeOptions.getSmallSize());
+            imageView.setMaxWidth((int)imageSizeOptions.getSmallSize());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else if (imageSize.swigValue() == ImageSize.Medium.swigValue())
         {
-            imageView.setMaxWidth(imageSizeOptions.getMediumSize());
+            imageView.setMaxWidth((int)imageSizeOptions.getMediumSize());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else if (imageSize.swigValue() == ImageSize.Large.swigValue())
         {
-            imageView.setMaxWidth(imageSizeOptions.getLargeSize());
+            imageView.setMaxWidth((int)imageSizeOptions.getLargeSize());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else

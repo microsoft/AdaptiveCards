@@ -52,11 +52,11 @@ public class AdaptiveCardOptions {
     return AdaptiveCardObjectModelJNI.AdaptiveCardOptions_borderColor_get(swigCPtr, this);
   }
 
-  public void setMaxActions(int value) {
+  public void setMaxActions(long value) {
     AdaptiveCardObjectModelJNI.AdaptiveCardOptions_maxActions_set(swigCPtr, this, value);
   }
 
-  public int getMaxActions() {
+  public long getMaxActions() {
     return AdaptiveCardObjectModelJNI.AdaptiveCardOptions_maxActions_get(swigCPtr, this);
   }
 

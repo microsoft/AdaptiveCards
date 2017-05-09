@@ -53,11 +53,11 @@ public class FactSetOptions {
     return (cPtr == 0) ? null : new TextOptions(cPtr, false);
   }
 
-  public void setSpacing(int value) {
+  public void setSpacing(long value) {
     AdaptiveCardObjectModelJNI.FactSetOptions_spacing_set(swigCPtr, this, value);
   }
 
-  public int getSpacing() {
+  public long getSpacing() {
     return AdaptiveCardObjectModelJNI.FactSetOptions_spacing_get(swigCPtr, this);
   }
 
