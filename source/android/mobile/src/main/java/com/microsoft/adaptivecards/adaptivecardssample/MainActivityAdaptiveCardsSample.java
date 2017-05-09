@@ -214,4 +214,9 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
     public native String stringFromJNI();
 
     private List<File> m_jsonFileList = new ArrayList<File>();
+
+    public void onClickFileBrowser(View view)
+    {
+        Toast.makeText(this, "Clicked on Button", Toast.LENGTH_LONG).show();
+    }
 }

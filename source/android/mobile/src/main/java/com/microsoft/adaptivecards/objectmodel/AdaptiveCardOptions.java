@@ -52,11 +52,19 @@ public class AdaptiveCardOptions {
     return AdaptiveCardObjectModelJNI.AdaptiveCardOptions_borderColor_get(swigCPtr, this);
   }
 
+<<<<<<< HEAD
   public void setMaxActions(long value) {
     AdaptiveCardObjectModelJNI.AdaptiveCardOptions_maxActions_set(swigCPtr, this, value);
   }
 
   public long getMaxActions() {
+=======
+  public void setMaxActions(int value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCardOptions_maxActions_set(swigCPtr, this, value);
+  }
+
+  public int getMaxActions() {
+>>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
     return AdaptiveCardObjectModelJNI.AdaptiveCardOptions_maxActions_get(swigCPtr, this);
   }
 

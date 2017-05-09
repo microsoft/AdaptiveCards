@@ -48,7 +48,10 @@ public final class AdaptiveCardSchemaKey {
   public final static AdaptiveCardSchemaKey Style = new AdaptiveCardSchemaKey("Style");
   public final static AdaptiveCardSchemaKey IsMultiSelect = new AdaptiveCardSchemaKey("IsMultiSelect");
   public final static AdaptiveCardSchemaKey IsRequired = new AdaptiveCardSchemaKey("IsRequired");
+<<<<<<< HEAD
   public final static AdaptiveCardSchemaKey BackgroundImageUrl = new AdaptiveCardSchemaKey("BackgroundImageUrl");
+=======
+>>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
 
   public final int swigValue() {
     return swigValue;
@@ -84,7 +87,11 @@ public final class AdaptiveCardSchemaKey {
     swigNext = this.swigValue+1;
   }
 
+<<<<<<< HEAD
   private static AdaptiveCardSchemaKey[] swigValues = { Type, Body, Version, MinVersion, FallbackText, BaseCardElement, Separation, Speak, Url, ImageStyle, ImageSize, AltText, HorizontalAlignment, Text, TextSize, TextWeight, TextColor, IsSubtle, Wrap, MaxLines, Items, Columns, Size, Facts, Title, Value, Images, Placeholder, IsMultiline, MaxLength, ValueOff, ValueOn, Max, Min, Choices, IsSelected, Style, IsMultiSelect, IsRequired, BackgroundImageUrl };
+=======
+  private static AdaptiveCardSchemaKey[] swigValues = { Type, Body, Version, MinVersion, FallbackText, BaseCardElement, Separation, Speak, Url, ImageStyle, ImageSize, AltText, HorizontalAlignment, Text, TextSize, TextWeight, TextColor, IsSubtle, Wrap, MaxLines, Items, Columns, Size, Facts, Title, Value, Images, Placeholder, IsMultiline, MaxLength, ValueOff, ValueOn, Max, Min, Choices, IsSelected, Style, IsMultiSelect, IsRequired };
+>>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

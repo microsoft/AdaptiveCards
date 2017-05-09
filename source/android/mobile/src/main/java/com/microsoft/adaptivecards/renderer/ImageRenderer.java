@@ -84,17 +84,29 @@ public class ImageRenderer implements BaseCardElementRenderer
         }
         else if (imageSize.swigValue() == ImageSize.Small.swigValue())
         {
+<<<<<<< HEAD
             imageView.setMaxWidth((int)imageSizeOptions.getSmallSize());
+=======
+            imageView.setMaxWidth(imageSizeOptions.getSmallSize());
+>>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else if (imageSize.swigValue() == ImageSize.Medium.swigValue())
         {
+<<<<<<< HEAD
             imageView.setMaxWidth((int)imageSizeOptions.getMediumSize());
+=======
+            imageView.setMaxWidth(imageSizeOptions.getMediumSize());
+>>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else if (imageSize.swigValue() == ImageSize.Large.swigValue())
         {
+<<<<<<< HEAD
             imageView.setMaxWidth((int)imageSizeOptions.getLargeSize());
+=======
+            imageView.setMaxWidth(imageSizeOptions.getLargeSize());
+>>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else

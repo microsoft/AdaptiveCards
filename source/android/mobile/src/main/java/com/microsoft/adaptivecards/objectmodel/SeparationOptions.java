@@ -35,6 +35,7 @@ public class SeparationOptions {
     }
   }
 
+<<<<<<< HEAD
   public void setSpacing(long value) {
     AdaptiveCardObjectModelJNI.SeparationOptions_spacing_set(swigCPtr, this, value);
   }
@@ -48,6 +49,21 @@ public class SeparationOptions {
   }
 
   public long getLineThickness() {
+=======
+  public void setSpacing(int value) {
+    AdaptiveCardObjectModelJNI.SeparationOptions_spacing_set(swigCPtr, this, value);
+  }
+
+  public int getSpacing() {
+    return AdaptiveCardObjectModelJNI.SeparationOptions_spacing_get(swigCPtr, this);
+  }
+
+  public void setLineThickness(int value) {
+    AdaptiveCardObjectModelJNI.SeparationOptions_lineThickness_set(swigCPtr, this, value);
+  }
+
+  public int getLineThickness() {
+>>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
     return AdaptiveCardObjectModelJNI.SeparationOptions_lineThickness_get(swigCPtr, this);
   }
 

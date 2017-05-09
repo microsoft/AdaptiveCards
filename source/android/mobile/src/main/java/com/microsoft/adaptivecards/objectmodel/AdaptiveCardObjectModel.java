@@ -113,6 +113,7 @@ public class AdaptiveCardObjectModel {
     return ChoiceSetStyle.swigToEnum(AdaptiveCardObjectModelJNI.ChoiceSetStyleFromString(type));
   }
 
+<<<<<<< HEAD
   public static String TextInputStyleToString(TextInputStyle style) {
     return AdaptiveCardObjectModelJNI.TextInputStyleToString(style.swigValue());
   }
@@ -121,4 +122,6 @@ public class AdaptiveCardObjectModel {
     return TextInputStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextInputStyleFromString(style));
   }
 
+=======
+>>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
 }

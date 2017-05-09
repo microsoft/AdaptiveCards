@@ -78,11 +78,19 @@ public class HostOptions {
     return (cPtr == 0) ? null : new ImageSizeOptions(cPtr, false);
   }
 
+<<<<<<< HEAD
   public void setMaxActions(long value) {
     AdaptiveCardObjectModelJNI.HostOptions_maxActions_set(swigCPtr, this, value);
   }
 
   public long getMaxActions() {
+=======
+  public void setMaxActions(int value) {
+    AdaptiveCardObjectModelJNI.HostOptions_maxActions_set(swigCPtr, this, value);
+  }
+
+  public int getMaxActions() {
+>>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
     return AdaptiveCardObjectModelJNI.HostOptions_maxActions_get(swigCPtr, this);
   }
 
