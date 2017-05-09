@@ -91,7 +91,7 @@ function parseContainerStyleDefinition(obj: any): IContainerStyleDefinition {
         backgroundColor: obj["backgroundColor"],
         padding: parseSpacingDefinition(obj["padding"]),
         borderColor: obj["borderColor"],
-        borderThickness: obj["borderThickness"]
+        borderThickness: parseSpacingDefinition(obj["borderThickness"])
     } : null;
 }
 

@@ -23,6 +23,8 @@ public:
 
     static std::string GetString(const Json::Value& json, AdaptiveCardSchemaKey key);
 
+    static std::string GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key);
+
     static bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue);
 
     static unsigned int GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue);

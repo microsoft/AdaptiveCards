@@ -38,3 +38,7 @@ h3 {
     height: 42px;
 }
 
+img {
+    margin-bottom: 0px; 
+    border-style: none;
+}

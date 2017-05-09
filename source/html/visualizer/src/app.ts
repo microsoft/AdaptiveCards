@@ -188,12 +188,11 @@ function setupEditor() {
         var cardUrl = document.location.search.substring(1).split('card=')[1];
 
         if (cardUrl) {
+            currentCardPayload = "";
             var xhttp = new XMLHttpRequest();
-
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    currentCardPayload = xhttp.responseText;
-                }
+            xhttp.onload = function() {
+               currentCardPayload = xhttp.responseText;
+               setEditorText(currentCardPayload);
             };
         
             xhttp.open("GET", cardUrl, true);
@@ -242,7 +241,7 @@ function setupContainerPicker() {
         hostContainerPicker.addEventListener(
             "change", () => {
                 // Update the query string
-                var htmlFileName = location.pathname.indexOf("index.html") >= 0 ? "index.html" : "dev.html";
+                var htmlFileName = location.pathname.indexOf("dev.html") >= 0 ? "dev.html" : "index.html";
 
                 history.pushState(hostContainerPicker.value, `Visualizer - ${hostContainerPicker.value}`, htmlFileName + `?hostApp=${hostContainerPicker.value}`);
 

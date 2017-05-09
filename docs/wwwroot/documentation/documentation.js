@@ -26,10 +26,33 @@ function showTopic(folder, topic) {
     var path = "/api/markdown/documentation/markdown";
     if (folder)
         path = path + "/" + folder;
-    path = path + "/" + topic +".md";
+    path = path + "/" + topic + ".md";
     $.get(path,
         null,
         function (data) {
             document.getElementById('topic').innerHTML = data;
+
+            var navLinks = document.getElementsByClassName("navLink");
+            for (var i = 0; i < navLinks.length; i++) {
+                navLinks[i].className = navLinks[i].className.replace(" w3-gray", "");
+            }
+            var navLink = document.getElementById(folder + '-' + topic + '-link');
+            navLink.className = navLink.className + " w3-gray";
         });
 }
+
+$(document).ready(() => {
+    if (window.location.hash == '')
+        showTopic("about", "overview");
+    else {
+        var parts = window.location.hash.slice(1).split('-');
+        if (parts.length == 3 && parts[2] == 'page')
+            showTopic(parts[0], parts[1]);
+    }
+});
+
+window.addEventListener("hashchange", function () {
+    var parts = window.location.hash.slice(1).split('-');
+    if (parts.length == 3 && parts[2] == 'page')
+        showTopic(parts[0], parts[1]);
+}, false);

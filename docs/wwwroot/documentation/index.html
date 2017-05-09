@@ -18,53 +18,48 @@
             <a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
             <a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
             <a href="/visualizer" class="w3-bar-item w3-button w3-mobile">Visualizer</a>
-            <a href="#" class="w3-bar-item w3-button w3-mobile">Samples</a>
+            <a href="/samples" class="w3-bar-item w3-button w3-mobile">Samples</a>
         </div>
     </div>
 
     <!-- side bar with accordion -->
     <div class="w3-sidebar w3-light-grey w3-card-2 w3-bar-block">
-        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('create')">About</button>
+        <button class="w3-button w3-block w3-left-align" >About</button>
         <div id="create" class="w3-bar-block w3-white w3-card-4">
-            <a id="about-overview-link" onclick="showTopic('about', 'overview')" class="w3-bar-item w3-button">Overview</a>
-            <a id="about-goals-link" onclick="showTopic('about', 'goals')" class="w3-bar-item w3-button">Goals</a>
-            <a id="about-principles-link" onclick="showTopic('about', 'principles')" class="w3-bar-item w3-button">Core principles</a>
-            <a id="about-valueprop-link" onclick="showTopic('about', 'valueprop')" class="w3-bar-item w3-button">Value proposition</a>
-            <a id="about-future-link" onclick="showTopic('about', 'future')" class="w3-bar-item w3-button">Future work</a>
+            <a id="about-overview-link" href='#about-overview-page' class="w3-bar-item w3-button navLink">Overview</a>
+            <a id="about-goals-link" href='#about-goals-page' class="w3-bar-item w3-button navLink">Goals</a>
+            <a id="about-principles-link" href='#about-principles-page' class="w3-bar-item w3-button navLink">Core principles</a>
+            <a id="about-valueprop-link" href='#about-valueprop-page' class="w3-bar-item w3-button navLink">Value proposition</a>
+            <a id="about-future-link" href='#about-future-page' class="w3-bar-item w3-button navLink">Future work</a>
         </div>
-        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('create')">Creating a card</button>
+        <button class="w3-button w3-block w3-left-align" )">Creating a card</button>
         <div id="create" class="w3-bar-block w3-white w3-card-4">
-            <a id="create-GettingStarted-link" onclick="showTopic('create','GettingStarted')" href="#" class="w3-bar-item w3-button">Getting started</a>
-            <a id="create-cardschema-link" onclick="showTopic('create', 'cardschema')" href="#" class="w3-bar-item w3-button">Card schema</a>
-            <a id="create-markdown-link" onclick="showTopic('create', 'markdown')" href="#" class="w3-bar-item w3-button">Using markdown</a>
-            <a id="create-speech-link" onclick="showTopic('create', 'speech')" href="#" class="w3-bar-item w3-button">Adding speech</a>
-            <a id="create-libraries-link" onclick="showTopic('create', 'libraries')" href="#" class="w3-bar-item w3-button">Libraries for building cards</a>
+            <a id="create-GettingStarted-link" href='#create-GettingStarted-page' class="w3-bar-item w3-button navLink">Getting started</a>
+            <a id="create-cardschema-link" href='#create-cardschema-page' class="w3-bar-item w3-button navLink">Card schema</a>
+            <a id="create-textfeatures-link" href='#create-textfeatures-page' class="w3-bar-item w3-button navLink">Text Features</a>
+            <a id="create-speech-link" href='#create-speech-page' class="w3-bar-item w3-button navLink">Adding speech</a>
+            <a id="create-libraries-link" href='#create-libraries-page' class="w3-bar-item w3-button navLink">Libraries for building cards</a>
         </div>
-        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('displayCard')">Displaying a card</button>
+        <button class="w3-button w3-block w3-left-align" >Displaying a card</button>
         <div id="displayCard" class="w3-bar-block w3-white w3-card-4">
-            <a id="display-gettingstarted-link" onclick="showTopic('display', 'gettingstarted')" href="#" class="w3-bar-item w3-button">Getting started</a>
-            <a id="display-styling-link" onclick="showTopic('display', 'styling')" href="#" class="w3-bar-item w3-button">Customizing style</a>
-            <a id="display-actions-link" onclick="showTopic('display', 'actions')" href="#" class="w3-bar-item w3-button">Handling actions</a>
-            <a id="display-hostconfigschema-link" onclick="showTopic('display', 'hostconfigschema')" href="#" class="w3-bar-item w3-button">HostConfig schema</a>
-            <a id="display-speech-link" onclick="showTopic('display', 'speech')" href="#" class="w3-bar-item w3-button">Supporting speech</a>
-            <a id="display-customizingrenderer-link" onclick="showTopic('display', 'customizingrenderer')" href="#" class="w3-bar-item w3-button">Customizing a renderer</a>
-            <a id="display-implementingrenderer-link" onclick="showTopic('display', 'implementingrenderer')" href="#" class="w3-bar-item w3-button">Implementing a renderer</a>
-            <a id="display-libraries-link" onclick="showTopic('display', 'libraries')" href="#" class="w3-bar-item w3-button">Libraries to display cards</a>
+            <a id="display-gettingstarted-link" href='#display-gettingstarted-page' class="w3-bar-item w3-button navLink">Getting started</a>
+            <a id="display-styling-link" href='#display-styling-page' class="w3-bar-item w3-button navLink">Customizing style</a>
+            <a id="display-actions-link" href='#display-actions-page' class="w3-bar-item w3-button navLink">Handling actions</a>
+            <a id="display-hostconfigschema-link" href='#display-hostconfigschema-page' class="w3-bar-item w3-button navLink">HostConfig schema</a>
+            <a id="display-speech-link" href='#display-speech-page' class="w3-bar-item w3-button navLink">Supporting speech</a>
+            <a id="display-customizingrenderer-link" href='#display-customizingrenderer-page' class="w3-bar-item w3-button navLink">Customizing a renderer</a>
+            <a id="display-implementingrenderer-link" href='#display-implementingrenderer-page' class="w3-bar-item w3-button navLink">Implementing a renderer</a>
+            <a id="display-libraries-link" href='#display-libraries-page' class="w3-bar-item w3-button navLink">Libraries to display cards</a>
         </div>
-        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc('resources')">Resources</button>
+        <button class="w3-button w3-block w3-left-align" >Resources</button>
         <div id="resources" class="w3-bar-block w3-white w3-card-4">
-            <a id="display-partners-link" onclick="showTopic('resources', 'partners')" href="#" class="w3-bar-item w3-button">Partners</a>
-            <a id="display-projects-link" onclick="showTopic('resources', 'projects')" href="#" class="w3-bar-item w3-button">Related projects</a>
+            <a id="display-partners-link" href='#resources-partners-page' class="w3-bar-item w3-button navLink">Partners</a>
+            <a id="display-projects-link" href='#resources-projects-page' class="w3-bar-item w3-button navLink">Related projects</a>
         </div>
     </div>
 
-    <div class="w3-container content-sidebar" id="topic">
+    <div class="w3-container content-sidebar" id="topic" style="max-width:1000px;">
     </div>
-    <script>
-        $(document).ready(function () {
-            showTopic("about", "overview");
-        });
-    </script>
 
 </body>
 </html>

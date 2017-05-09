@@ -10,8 +10,8 @@ struct BoundaryOptions
 {
     unsigned int left = 0;
     unsigned int right = 0;
-    unsigned int bottom = 0;
     unsigned int top = 0;
+    unsigned int bottom = 0;
 };
 
 struct FontSizeOptions
@@ -81,9 +81,19 @@ struct ColumnOptions
     SeparationOptions separation;
 };
 
+struct ContainerStyleConfig
+{
+    std::string backgroundColor;
+    std::string borderColor;
+    BoundaryOptions borderThickness;
+    BoundaryOptions padding;
+};
+
 struct ContainerOptions
 {
     SeparationOptions separation;
+    ContainerStyleConfig normal;
+    ContainerStyleConfig emphasis;
 };
 
 struct ColumnSetOptions
@@ -99,12 +109,7 @@ struct ImageOptions
 struct AdaptiveCardOptions
 {
     BoundaryOptions padding = { 8, 8, 8, 8 };
-    std::string borderColor = "#FFFFFFFF";
-    unsigned int maxActions = 5;
-    ActionsOrientation actionsOrientation = ActionsOrientation::Horizontal;
-    HorizontalAlignment actionAlignment = HorizontalAlignment::Center;
-    std::string textColor = "#FF000000";
-    std::string backgroundColor = "#FF5098FF";
+    std::string backgroundColor = "#FFFFFFFF";
 };
 
 struct FactSetOptions
