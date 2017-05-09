@@ -84,7 +84,6 @@ public class ActionOptions {
     return AdaptiveCardObjectModelJNI.ActionOptions_textColor_get(swigCPtr, this);
   }
 
-<<<<<<< HEAD
   public void setBorderThickness(long value) {
     AdaptiveCardObjectModelJNI.ActionOptions_borderThickness_set(swigCPtr, this, value);
   }
@@ -114,37 +113,6 @@ public class ActionOptions {
   }
 
   public long getSpacing() {
-=======
-  public void setBorderThickness(int value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_borderThickness_set(swigCPtr, this, value);
-  }
-
-  public int getBorderThickness() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_borderThickness_get(swigCPtr, this);
-  }
-
-  public void setFontWeight(int value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_fontWeight_set(swigCPtr, this, value);
-  }
-
-  public int getFontWeight() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_fontWeight_get(swigCPtr, this);
-  }
-
-  public void setFontSize(int value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_fontSize_set(swigCPtr, this, value);
-  }
-
-  public int getFontSize() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_fontSize_get(swigCPtr, this);
-  }
-
-  public void setSpacing(int value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_spacing_set(swigCPtr, this, value);
-  }
-
-  public int getSpacing() {
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
     return AdaptiveCardObjectModelJNI.ActionOptions_spacing_get(swigCPtr, this);
   }
 

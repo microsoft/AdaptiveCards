@@ -21,10 +21,7 @@ public final class CardElementType {
   public final static CardElementType ActionGroup = new CardElementType("ActionGroup");
   public final static CardElementType ImageSet = new CardElementType("ImageSet");
   public final static CardElementType InputDate = new CardElementType("InputDate");
-<<<<<<< HEAD
   public final static CardElementType InputNumber = new CardElementType("InputNumber");
-=======
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static CardElementType InputText = new CardElementType("InputText");
   public final static CardElementType InputTime = new CardElementType("InputTime");
   public final static CardElementType InputToggle = new CardElementType("InputToggle");
@@ -64,11 +61,7 @@ public final class CardElementType {
     swigNext = this.swigValue+1;
   }
 
-<<<<<<< HEAD
   private static CardElementType[] swigValues = { Unsupported, AdaptiveCard, TextBlock, Image, Container, Column, ColumnSet, FactSet, Fact, ActionGroup, ImageSet, InputDate, InputNumber, InputText, InputTime, InputToggle, InputChoiceSet };
-=======
-  private static CardElementType[] swigValues = { Unsupported, AdaptiveCard, TextBlock, Image, Container, Column, ColumnSet, FactSet, Fact, ActionGroup, ImageSet, InputDate, InputText, InputTime, InputToggle, InputChoiceSet };
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

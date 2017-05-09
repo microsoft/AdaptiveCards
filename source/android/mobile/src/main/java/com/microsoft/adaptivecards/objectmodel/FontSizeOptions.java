@@ -35,7 +35,6 @@ public class FontSizeOptions {
     }
   }
 
-<<<<<<< HEAD
   public void setSmallFontSize(long value) {
     AdaptiveCardObjectModelJNI.FontSizeOptions_smallFontSize_set(swigCPtr, this, value);
   }
@@ -73,45 +72,6 @@ public class FontSizeOptions {
   }
 
   public long getExtraLargeFontSize() {
-=======
-  public void setSmallFontSize(int value) {
-    AdaptiveCardObjectModelJNI.FontSizeOptions_smallFontSize_set(swigCPtr, this, value);
-  }
-
-  public int getSmallFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizeOptions_smallFontSize_get(swigCPtr, this);
-  }
-
-  public void setNormalFontSize(int value) {
-    AdaptiveCardObjectModelJNI.FontSizeOptions_normalFontSize_set(swigCPtr, this, value);
-  }
-
-  public int getNormalFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizeOptions_normalFontSize_get(swigCPtr, this);
-  }
-
-  public void setMediumFontSize(int value) {
-    AdaptiveCardObjectModelJNI.FontSizeOptions_mediumFontSize_set(swigCPtr, this, value);
-  }
-
-  public int getMediumFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizeOptions_mediumFontSize_get(swigCPtr, this);
-  }
-
-  public void setLargeFontSize(int value) {
-    AdaptiveCardObjectModelJNI.FontSizeOptions_largeFontSize_set(swigCPtr, this, value);
-  }
-
-  public int getLargeFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizeOptions_largeFontSize_get(swigCPtr, this);
-  }
-
-  public void setExtraLargeFontSize(int value) {
-    AdaptiveCardObjectModelJNI.FontSizeOptions_extraLargeFontSize_set(swigCPtr, this, value);
-  }
-
-  public int getExtraLargeFontSize() {
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
     return AdaptiveCardObjectModelJNI.FontSizeOptions_extraLargeFontSize_get(swigCPtr, this);
   }
 

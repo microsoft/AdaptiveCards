@@ -30,15 +30,10 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 #include "../../../shared/cpp/ObjectModel/Fact.h"
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
-<<<<<<< HEAD
 #include "../../../shared/cpp/ObjectModel/InputChoice.h"
 #include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
-=======
-#include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
-#include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
 #include "../../../shared/cpp/ObjectModel/HostOptions.h"
 %}
 
@@ -206,13 +201,8 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 %include "../../../shared/cpp/ObjectModel/Fact.h"
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
-<<<<<<< HEAD
 %include "../../../shared/cpp/ObjectModel/InputChoice.h"
 %include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
-=======
-%include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
-%include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
 %include "../../../shared/cpp/ObjectModel/HostOptions.h"

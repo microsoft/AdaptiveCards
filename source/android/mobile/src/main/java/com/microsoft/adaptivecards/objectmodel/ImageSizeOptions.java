@@ -35,7 +35,6 @@ public class ImageSizeOptions {
     }
   }
 
-<<<<<<< HEAD
   public void setSmallSize(long value) {
     AdaptiveCardObjectModelJNI.ImageSizeOptions_smallSize_set(swigCPtr, this, value);
   }
@@ -57,29 +56,6 @@ public class ImageSizeOptions {
   }
 
   public long getLargeSize() {
-=======
-  public void setSmallSize(int value) {
-    AdaptiveCardObjectModelJNI.ImageSizeOptions_smallSize_set(swigCPtr, this, value);
-  }
-
-  public int getSmallSize() {
-    return AdaptiveCardObjectModelJNI.ImageSizeOptions_smallSize_get(swigCPtr, this);
-  }
-
-  public void setMediumSize(int value) {
-    AdaptiveCardObjectModelJNI.ImageSizeOptions_mediumSize_set(swigCPtr, this, value);
-  }
-
-  public int getMediumSize() {
-    return AdaptiveCardObjectModelJNI.ImageSizeOptions_mediumSize_get(swigCPtr, this);
-  }
-
-  public void setLargeSize(int value) {
-    AdaptiveCardObjectModelJNI.ImageSizeOptions_largeSize_set(swigCPtr, this, value);
-  }
-
-  public int getLargeSize() {
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
     return AdaptiveCardObjectModelJNI.ImageSizeOptions_largeSize_get(swigCPtr, this);
   }
 

@@ -35,7 +35,6 @@ public class BoundaryOptions {
     }
   }
 
-<<<<<<< HEAD
   public void setLeft(long value) {
     AdaptiveCardObjectModelJNI.BoundaryOptions_left_set(swigCPtr, this, value);
   }
@@ -65,37 +64,6 @@ public class BoundaryOptions {
   }
 
   public long getTop() {
-=======
-  public void setLeft(int value) {
-    AdaptiveCardObjectModelJNI.BoundaryOptions_left_set(swigCPtr, this, value);
-  }
-
-  public int getLeft() {
-    return AdaptiveCardObjectModelJNI.BoundaryOptions_left_get(swigCPtr, this);
-  }
-
-  public void setRight(int value) {
-    AdaptiveCardObjectModelJNI.BoundaryOptions_right_set(swigCPtr, this, value);
-  }
-
-  public int getRight() {
-    return AdaptiveCardObjectModelJNI.BoundaryOptions_right_get(swigCPtr, this);
-  }
-
-  public void setBottom(int value) {
-    AdaptiveCardObjectModelJNI.BoundaryOptions_bottom_set(swigCPtr, this, value);
-  }
-
-  public int getBottom() {
-    return AdaptiveCardObjectModelJNI.BoundaryOptions_bottom_get(swigCPtr, this);
-  }
-
-  public void setTop(int value) {
-    AdaptiveCardObjectModelJNI.BoundaryOptions_top_set(swigCPtr, this, value);
-  }
-
-  public int getTop() {
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
     return AdaptiveCardObjectModelJNI.BoundaryOptions_top_get(swigCPtr, this);
   }
 

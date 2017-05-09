@@ -34,10 +34,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int HorizontalAlignment_Left_get();
   public final static native int ImageStyle_Normal_get();
   public final static native int ImageSize_Default_get();
-<<<<<<< HEAD
   public final static native int TextInputStyle_Text_get();
-=======
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native int CardElementType_Unsupported_get();
   public final static native int ActionType_ShowCard_get();
   public final static native int ChoiceSetStyle_Compact_get();
@@ -70,11 +67,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int ActionModeFromString(String jarg1);
   public final static native String ChoiceSetStyleToString(int jarg1);
   public final static native int ChoiceSetStyleFromString(String jarg1);
-<<<<<<< HEAD
   public final static native String TextInputStyleToString(int jarg1);
   public final static native int TextInputStyleFromString(String jarg1);
-=======
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native void delete_BaseCardElement(long jarg1);
   public final static native int BaseCardElement_GetSeparationStyle(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_SetSeparationStyle(long jarg1, BaseCardElement jarg1_, int jarg2);
@@ -181,7 +175,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long FactSet_DeserializeFromString(String jarg1);
   public final static native long FactSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_FactSet(long jarg1);
-<<<<<<< HEAD
   public final static native long new_InputChoice();
   public final static native String InputChoice_Serialize(long jarg1, InputChoice jarg1_);
   public final static native String InputChoice_GetTitle(long jarg1, InputChoice jarg1_);
@@ -210,8 +203,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long InputChoiceSet_DeserializeFromString(String jarg1);
   public final static native long InputChoiceSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_InputChoiceSet(long jarg1);
-=======
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native long new_AdaptiveCard__SWIG_0();
   public final static native long new_AdaptiveCard__SWIG_1(String jarg1, String jarg2, String jarg3, String jarg4);
   public final static native long new_AdaptiveCard__SWIG_2(String jarg1, String jarg2, String jarg3, String jarg4, long jarg5, BaseCardElementVector jarg5_);
@@ -229,7 +220,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long AdaptiveCard_Deserialize(long jarg1) throws java.io.IOException;
   public final static native long AdaptiveCard_DeserializeFromString(String jarg1) throws java.io.IOException;
   public final static native void delete_AdaptiveCard(long jarg1);
-<<<<<<< HEAD
   public final static native long new_AdaptiveCardParseException(String jarg1);
   public final static native void delete_AdaptiveCardParseException(long jarg1);
   public final static native String AdaptiveCardParseException_what(long jarg1, AdaptiveCardParseException jarg1_);
@@ -253,28 +243,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long FontSizeOptions_largeFontSize_get(long jarg1, FontSizeOptions jarg1_);
   public final static native void FontSizeOptions_extraLargeFontSize_set(long jarg1, FontSizeOptions jarg1_, long jarg2);
   public final static native long FontSizeOptions_extraLargeFontSize_get(long jarg1, FontSizeOptions jarg1_);
-=======
-  public final static native void BoundaryOptions_left_set(long jarg1, BoundaryOptions jarg1_, int jarg2);
-  public final static native int BoundaryOptions_left_get(long jarg1, BoundaryOptions jarg1_);
-  public final static native void BoundaryOptions_right_set(long jarg1, BoundaryOptions jarg1_, int jarg2);
-  public final static native int BoundaryOptions_right_get(long jarg1, BoundaryOptions jarg1_);
-  public final static native void BoundaryOptions_bottom_set(long jarg1, BoundaryOptions jarg1_, int jarg2);
-  public final static native int BoundaryOptions_bottom_get(long jarg1, BoundaryOptions jarg1_);
-  public final static native void BoundaryOptions_top_set(long jarg1, BoundaryOptions jarg1_, int jarg2);
-  public final static native int BoundaryOptions_top_get(long jarg1, BoundaryOptions jarg1_);
-  public final static native long new_BoundaryOptions();
-  public final static native void delete_BoundaryOptions(long jarg1);
-  public final static native void FontSizeOptions_smallFontSize_set(long jarg1, FontSizeOptions jarg1_, int jarg2);
-  public final static native int FontSizeOptions_smallFontSize_get(long jarg1, FontSizeOptions jarg1_);
-  public final static native void FontSizeOptions_normalFontSize_set(long jarg1, FontSizeOptions jarg1_, int jarg2);
-  public final static native int FontSizeOptions_normalFontSize_get(long jarg1, FontSizeOptions jarg1_);
-  public final static native void FontSizeOptions_mediumFontSize_set(long jarg1, FontSizeOptions jarg1_, int jarg2);
-  public final static native int FontSizeOptions_mediumFontSize_get(long jarg1, FontSizeOptions jarg1_);
-  public final static native void FontSizeOptions_largeFontSize_set(long jarg1, FontSizeOptions jarg1_, int jarg2);
-  public final static native int FontSizeOptions_largeFontSize_get(long jarg1, FontSizeOptions jarg1_);
-  public final static native void FontSizeOptions_extraLargeFontSize_set(long jarg1, FontSizeOptions jarg1_, int jarg2);
-  public final static native int FontSizeOptions_extraLargeFontSize_get(long jarg1, FontSizeOptions jarg1_);
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native long new_FontSizeOptions();
   public final static native void delete_FontSizeOptions(long jarg1);
   public final static native void ColorOption_normal_set(long jarg1, ColorOption jarg1_, String jarg2);
@@ -309,36 +277,20 @@ public class AdaptiveCardObjectModelJNI {
   public final static native boolean TextOptions_isSubtle_get(long jarg1, TextOptions jarg1_);
   public final static native long new_TextOptions();
   public final static native void delete_TextOptions(long jarg1);
-<<<<<<< HEAD
   public final static native void SeparationOptions_spacing_set(long jarg1, SeparationOptions jarg1_, long jarg2);
   public final static native long SeparationOptions_spacing_get(long jarg1, SeparationOptions jarg1_);
   public final static native void SeparationOptions_lineThickness_set(long jarg1, SeparationOptions jarg1_, long jarg2);
   public final static native long SeparationOptions_lineThickness_get(long jarg1, SeparationOptions jarg1_);
-=======
-  public final static native void SeparationOptions_spacing_set(long jarg1, SeparationOptions jarg1_, int jarg2);
-  public final static native int SeparationOptions_spacing_get(long jarg1, SeparationOptions jarg1_);
-  public final static native void SeparationOptions_lineThickness_set(long jarg1, SeparationOptions jarg1_, int jarg2);
-  public final static native int SeparationOptions_lineThickness_get(long jarg1, SeparationOptions jarg1_);
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native void SeparationOptions_lineColor_set(long jarg1, SeparationOptions jarg1_, String jarg2);
   public final static native String SeparationOptions_lineColor_get(long jarg1, SeparationOptions jarg1_);
   public final static native long new_SeparationOptions();
   public final static native void delete_SeparationOptions(long jarg1);
-<<<<<<< HEAD
   public final static native void ImageSizeOptions_smallSize_set(long jarg1, ImageSizeOptions jarg1_, long jarg2);
   public final static native long ImageSizeOptions_smallSize_get(long jarg1, ImageSizeOptions jarg1_);
   public final static native void ImageSizeOptions_mediumSize_set(long jarg1, ImageSizeOptions jarg1_, long jarg2);
   public final static native long ImageSizeOptions_mediumSize_get(long jarg1, ImageSizeOptions jarg1_);
   public final static native void ImageSizeOptions_largeSize_set(long jarg1, ImageSizeOptions jarg1_, long jarg2);
   public final static native long ImageSizeOptions_largeSize_get(long jarg1, ImageSizeOptions jarg1_);
-=======
-  public final static native void ImageSizeOptions_smallSize_set(long jarg1, ImageSizeOptions jarg1_, int jarg2);
-  public final static native int ImageSizeOptions_smallSize_get(long jarg1, ImageSizeOptions jarg1_);
-  public final static native void ImageSizeOptions_mediumSize_set(long jarg1, ImageSizeOptions jarg1_, int jarg2);
-  public final static native int ImageSizeOptions_mediumSize_get(long jarg1, ImageSizeOptions jarg1_);
-  public final static native void ImageSizeOptions_largeSize_set(long jarg1, ImageSizeOptions jarg1_, int jarg2);
-  public final static native int ImageSizeOptions_largeSize_get(long jarg1, ImageSizeOptions jarg1_);
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native long new_ImageSizeOptions();
   public final static native void delete_ImageSizeOptions(long jarg1);
   public final static native void TextBlockOptions_smallSeparation_set(long jarg1, TextBlockOptions jarg1_, long jarg2, SeparationOptions jarg2_);
@@ -379,13 +331,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long AdaptiveCardOptions_padding_get(long jarg1, AdaptiveCardOptions jarg1_);
   public final static native void AdaptiveCardOptions_borderColor_set(long jarg1, AdaptiveCardOptions jarg1_, String jarg2);
   public final static native String AdaptiveCardOptions_borderColor_get(long jarg1, AdaptiveCardOptions jarg1_);
-<<<<<<< HEAD
   public final static native void AdaptiveCardOptions_maxActions_set(long jarg1, AdaptiveCardOptions jarg1_, long jarg2);
   public final static native long AdaptiveCardOptions_maxActions_get(long jarg1, AdaptiveCardOptions jarg1_);
-=======
-  public final static native void AdaptiveCardOptions_maxActions_set(long jarg1, AdaptiveCardOptions jarg1_, int jarg2);
-  public final static native int AdaptiveCardOptions_maxActions_get(long jarg1, AdaptiveCardOptions jarg1_);
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native void AdaptiveCardOptions_actionsOrientation_set(long jarg1, AdaptiveCardOptions jarg1_, int jarg2);
   public final static native int AdaptiveCardOptions_actionsOrientation_get(long jarg1, AdaptiveCardOptions jarg1_);
   public final static native void AdaptiveCardOptions_actionAlignment_set(long jarg1, AdaptiveCardOptions jarg1_, int jarg2);
@@ -400,13 +347,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long FactSetOptions_title_get(long jarg1, FactSetOptions jarg1_);
   public final static native void FactSetOptions_value_set(long jarg1, FactSetOptions jarg1_, long jarg2, TextOptions jarg2_);
   public final static native long FactSetOptions_value_get(long jarg1, FactSetOptions jarg1_);
-<<<<<<< HEAD
   public final static native void FactSetOptions_spacing_set(long jarg1, FactSetOptions jarg1_, long jarg2);
   public final static native long FactSetOptions_spacing_get(long jarg1, FactSetOptions jarg1_);
-=======
-  public final static native void FactSetOptions_spacing_set(long jarg1, FactSetOptions jarg1_, int jarg2);
-  public final static native int FactSetOptions_spacing_get(long jarg1, FactSetOptions jarg1_);
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native void FactSetOptions_separation_set(long jarg1, FactSetOptions jarg1_, long jarg2, SeparationOptions jarg2_);
   public final static native long FactSetOptions_separation_get(long jarg1, FactSetOptions jarg1_);
   public final static native long new_FactSetOptions();
@@ -431,7 +373,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String ActionOptions_borderColor_get(long jarg1, ActionOptions jarg1_);
   public final static native void ActionOptions_textColor_set(long jarg1, ActionOptions jarg1_, String jarg2);
   public final static native String ActionOptions_textColor_get(long jarg1, ActionOptions jarg1_);
-<<<<<<< HEAD
   public final static native void ActionOptions_borderThickness_set(long jarg1, ActionOptions jarg1_, long jarg2);
   public final static native long ActionOptions_borderThickness_get(long jarg1, ActionOptions jarg1_);
   public final static native void ActionOptions_fontWeight_set(long jarg1, ActionOptions jarg1_, long jarg2);
@@ -440,16 +381,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ActionOptions_fontSize_get(long jarg1, ActionOptions jarg1_);
   public final static native void ActionOptions_spacing_set(long jarg1, ActionOptions jarg1_, long jarg2);
   public final static native long ActionOptions_spacing_get(long jarg1, ActionOptions jarg1_);
-=======
-  public final static native void ActionOptions_borderThickness_set(long jarg1, ActionOptions jarg1_, int jarg2);
-  public final static native int ActionOptions_borderThickness_get(long jarg1, ActionOptions jarg1_);
-  public final static native void ActionOptions_fontWeight_set(long jarg1, ActionOptions jarg1_, int jarg2);
-  public final static native int ActionOptions_fontWeight_get(long jarg1, ActionOptions jarg1_);
-  public final static native void ActionOptions_fontSize_set(long jarg1, ActionOptions jarg1_, int jarg2);
-  public final static native int ActionOptions_fontSize_get(long jarg1, ActionOptions jarg1_);
-  public final static native void ActionOptions_spacing_set(long jarg1, ActionOptions jarg1_, int jarg2);
-  public final static native int ActionOptions_spacing_get(long jarg1, ActionOptions jarg1_);
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native void ActionOptions_padding_set(long jarg1, ActionOptions jarg1_, long jarg2, BoundaryOptions jarg2_);
   public final static native long ActionOptions_padding_get(long jarg1, ActionOptions jarg1_);
   public final static native long new_ActionOptions();
@@ -488,13 +419,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long HostOptions_colors_get(long jarg1, HostOptions jarg1_);
   public final static native void HostOptions_imageSizes_set(long jarg1, HostOptions jarg1_, long jarg2, ImageSizeOptions jarg2_);
   public final static native long HostOptions_imageSizes_get(long jarg1, HostOptions jarg1_);
-<<<<<<< HEAD
   public final static native void HostOptions_maxActions_set(long jarg1, HostOptions jarg1_, long jarg2);
   public final static native long HostOptions_maxActions_get(long jarg1, HostOptions jarg1_);
-=======
-  public final static native void HostOptions_maxActions_set(long jarg1, HostOptions jarg1_, int jarg2);
-  public final static native int HostOptions_maxActions_get(long jarg1, HostOptions jarg1_);
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
   public final static native void HostOptions_strongSeparation_set(long jarg1, HostOptions jarg1_, long jarg2, SeparationOptions jarg2_);
   public final static native long HostOptions_strongSeparation_get(long jarg1, HostOptions jarg1_);
   public final static native void HostOptions_adaptiveCard_set(long jarg1, HostOptions jarg1_, long jarg2, AdaptiveCardOptions jarg2_);
@@ -536,8 +462,5 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long Column_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ColumnSet_SWIGSmartPtrUpcast(long jarg1);
   public final static native long FactSet_SWIGSmartPtrUpcast(long jarg1);
-<<<<<<< HEAD
   public final static native long InputChoiceSet_SWIGSmartPtrUpcast(long jarg1);
-=======
->>>>>>> 34c8d2900aa95e333523af2883e330d7762f39d6
 }
