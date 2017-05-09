@@ -7,8 +7,18 @@ UI content.
 A developer creates interactive content by creating a simple JSON object and sending it to the target application.
 The schema is made up of simple building blocks that can be combined in an endless number of combinations. 
 
-An adaptive card aware application uses an open source library for their platform/ui framework to renders the card
+An adaptive card aware application uses an open source library for their platform/ui framework to render the card
 natively into their application. 
+
+## Goals 
+The goals for adaptive cards are:
+
+* **Portable** - to any device and ui framework
+* **Open** - Libraries and schema are open source and shared.
+* **Automatically Styled** to the Host application UX and brand guidelines
+* **Low cost** - Easy to define, easy to consume
+* **Expressive** - Targeted at the long tail of content that developers want to produce.
+* **Purely declarative** - no code is needed or allowed
 
 ## Content developers
 If you are a developer of content adaptive cards are great because:
@@ -19,23 +29,13 @@ If you are a developer of content adaptive cards are great because:
 * **Better tooling** - Because there is a shared card ecosystem better tooling can be created that is shared by everyone.
 
 ## App developers
-If you are an app developer which displays content you will love adaptive cards because:
+If you are an app developer that wants to tap into an ecosystem of 3rd party content you will love adaptive cards because:
 * **Consistent user experience** - You get a consistent experience because you own the style of the rendered card
 * **Native performance** - You get native performance as it targets your ui framework directly
-* **Safe** - Content is delivered in safe payload, you don't have to open up your ui framework to raw html
+* **Safe** - Content is delivered in safe payload, you don't have to open up your ui framework to raw markup and scripting.
 * **Easy to implement** - You get off the shelf libraries to easily integrate 
 * **Free documentation** - You save time because you don't have invent schema, document schema, creating tooling around it, etc.
 * **Shared tooling** - You save time because you don't have tooling for your schema
-
-# Goals 
-The goals for adaptive cards are:
-
-* **Portable** - to any device and ui framework
-* **Open** - Libraries and schema are open source and shared.
-* **Automatically Styled** to the Host application UX and brand guidelines
-* **Low cost** - Easy to define, easy to consume
-* **Expressive** - Targeted at the long tail of content that developers want to produce.
-* **Purely declarative** - no code is needed or allowed
 
 ## Core Design Principles 
 The design of adaptive cards has been driven by some core principles that have been useful for keeping the 
