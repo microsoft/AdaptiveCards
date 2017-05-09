@@ -44,6 +44,24 @@ public class ContainerOptions {
     return (cPtr == 0) ? null : new SeparationOptions(cPtr, false);
   }
 
+  public void setNormal(ContainerStyleConfig value) {
+    AdaptiveCardObjectModelJNI.ContainerOptions_normal_set(swigCPtr, this, ContainerStyleConfig.getCPtr(value), value);
+  }
+
+  public ContainerStyleConfig getNormal() {
+    long cPtr = AdaptiveCardObjectModelJNI.ContainerOptions_normal_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ContainerStyleConfig(cPtr, false);
+  }
+
+  public void setEmphasis(ContainerStyleConfig value) {
+    AdaptiveCardObjectModelJNI.ContainerOptions_emphasis_set(swigCPtr, this, ContainerStyleConfig.getCPtr(value), value);
+  }
+
+  public ContainerStyleConfig getEmphasis() {
+    long cPtr = AdaptiveCardObjectModelJNI.ContainerOptions_emphasis_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ContainerStyleConfig(cPtr, false);
+  }
+
   public ContainerOptions() {
     this(AdaptiveCardObjectModelJNI.new_ContainerOptions(), true);
   }

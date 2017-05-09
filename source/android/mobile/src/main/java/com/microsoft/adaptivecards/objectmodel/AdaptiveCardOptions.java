@@ -44,46 +44,6 @@ public class AdaptiveCardOptions {
     return (cPtr == 0) ? null : new BoundaryOptions(cPtr, false);
   }
 
-  public void setBorderColor(String value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCardOptions_borderColor_set(swigCPtr, this, value);
-  }
-
-  public String getBorderColor() {
-    return AdaptiveCardObjectModelJNI.AdaptiveCardOptions_borderColor_get(swigCPtr, this);
-  }
-
-  public void setMaxActions(long value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCardOptions_maxActions_set(swigCPtr, this, value);
-  }
-
-  public long getMaxActions() {
-    return AdaptiveCardObjectModelJNI.AdaptiveCardOptions_maxActions_get(swigCPtr, this);
-  }
-
-  public void setActionsOrientation(ActionsOrientation value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCardOptions_actionsOrientation_set(swigCPtr, this, value.swigValue());
-  }
-
-  public ActionsOrientation getActionsOrientation() {
-    return ActionsOrientation.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCardOptions_actionsOrientation_get(swigCPtr, this));
-  }
-
-  public void setActionAlignment(HorizontalAlignment value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCardOptions_actionAlignment_set(swigCPtr, this, value.swigValue());
-  }
-
-  public HorizontalAlignment getActionAlignment() {
-    return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCardOptions_actionAlignment_get(swigCPtr, this));
-  }
-
-  public void setTextColor(String value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCardOptions_textColor_set(swigCPtr, this, value);
-  }
-
-  public String getTextColor() {
-    return AdaptiveCardObjectModelJNI.AdaptiveCardOptions_textColor_get(swigCPtr, this);
-  }
-
   public void setBackgroundColor(String value) {
     AdaptiveCardObjectModelJNI.AdaptiveCardOptions_backgroundColor_set(swigCPtr, this, value);
   }
