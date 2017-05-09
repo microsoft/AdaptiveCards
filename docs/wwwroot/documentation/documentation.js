@@ -45,8 +45,13 @@ function showTopic(hashmark) {
     $.get(path,
         null,
         function (data) {
+            // load content
             document.getElementById('topic').innerHTML = data;
 
+            // set table classes
+            $("table").addClass("w3-table w3-bordered");
+
+            // show selected
             var navLinks = document.getElementsByClassName("navLink");
             for (var i = 0; i < navLinks.length; i++) {
                 navLinks[i].className = navLinks[i].className.replace(" w3-gray", "");
