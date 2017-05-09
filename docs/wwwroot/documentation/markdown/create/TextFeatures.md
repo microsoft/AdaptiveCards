@@ -2,38 +2,37 @@
 TextBlock is one of the core elements and has some special features in the interpretation of text.
 
 ## Markdown
-To support inline markup adaptive cards supports a subset of *markdown*.  
+To support inline markup, adaptive cards supports a subset of Markdown syntax.
 
-Currently the following are supported:
-* **Bold**
-* *Italic*
+Supported:
+
+**Bold**
+*Italic*
 * Bulleted Lists
-* Numbered Lists
+1. Numbered Lists
 
-Headers, tables and images are not supported.
+Not supported:
+Headers, tables and images.
 
 ## Emojis
-The schema supports text-friendly emoji translation, so each renderer should properly translate the text to it's unicode character.
+The schema supports text-friendly emoji translation, so each renderer should properly translate the text to its unicode character.
 
 > ":umbrella:" => *unicode umbrella emojii character in the text*
 
 ## Formatting Functions
 
-When sending TextBlock items with date or time information you need to be able to translate the date or time to the
-recipients timezone using their locale.  This is a task which is almost always way easier for the client to do then
-for the sender.  To make it easy for clients to do this we have the ability to invoke a DATE() and TIME() function
-inside text of the textblock.
+When sending TextBlock items with date or time information, the date or time must be translated to the
+recipient's timezone.  This is a much easier task for the client than for the sender. To make it easy, the client can invoke a `DATE()` and `TIME()` function inside the text of a textblock.
 
-These functions can be invoked anywhere in the text of a text block like this:
+These functions can be invoked anywhere in the text of a text block.
 
 ```javascript
     "Your order was shipped {{DATE(2017-02-13T20:46:30Z, Long)}} and will arrive at {{TIME(2017-02-13T20:00:00Z, Short)}}" 
 ```
 
-### Date Formatting Function
+### Date formatting function
 
-The DATE function is passed an ISO-8601 formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing
-how you would like the date to be formatted for the user in the text string.
+The DATE function is passed an ISO-8601 formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing how to format the date in the text string.
 
 The format is expressed as a binding clause like this:
 
@@ -51,10 +50,9 @@ Example for (en-us):
     {{DATE(2017-02-13T20:46:30z)}}
 ```
 
-### Time Formatting Function
+### Time formatting function
 
-The TIME function is passed an ISO-8601 formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing
-how you would like the time to be formatted for the user in the text string.
+The TIME function is passed an ISO-8601 formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing how to format the time in the text string.
 
 The format is expressed as a binding clause like this:
 
@@ -66,7 +64,7 @@ Example for (en-us):
     {{TIME(2017-02-13T20:46:30Z, Short)}} => 8:46 PM
     {{TIME(2017-02-13T20:46:30Z, Long)}} => 8:46:30 PM
 ```
-> NOTE: The hint part of the function is optional and can be omitted like this:
+The Hint part of the function is optional and can be omitted.
 
 ```javascript
     {{TIME(2017-02-13T20:46:30z)}}

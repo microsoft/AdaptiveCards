@@ -6,21 +6,21 @@ This is available as a nuget packages.
 ```
 nuget install AdaptiveCards.Android
 ```
-## Create an instance of your renderer
-The next step is to create an instance of the renderer library. 
+## Create an instance of the renderer
+Create an instance of the renderer library. 
 ```csharp
 var renderer = new AndroidRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
 ```
 
 ## Hook up action callback
-To hook up action events you pass in a callback when you instantiate your renderer
+To hook up action events, pass in a callback when you instantiate the renderer.
 ```csharp
 var hostConfig = new HostConfig() { ... };
 var renderer = new AndroidRenderer(..., actionCallback:  _onAction);
 ```
 
 ## Render a card
-Now you get a card from some source and you want to render it.  This is super easy:
+Acquire a card from some source and render it.
 
 ```csharp
 var uiCard = renderer.RenderAdaptiveCard(card);
@@ -29,7 +29,7 @@ myGrid.Children.Add(uiCard);
 ```
 
 ## Example
-Here is an example from the Android renderer to give you a feel for how this works:
+Here is an example from the Android renderer.
 
 ```csharp
 var hostConfig = new HostConfig() { ... };
@@ -76,9 +76,9 @@ private void _OnMissingInput(object sender, MissingInputEventArgs args)
 ## Customization
 
 ### HostConfig 
-To customize the renderer you provide an instance of the HostConfig object. (See [Host Config Schema](/documentation/#display-hostconfigschema) for the full description.)
+To customize the renderer, provide an instance of the HostConfig object. See the [Host Config Schema](HostConfigSchema.md) for a full description. Since the HostConfig object will be instantiated with defaults, set only the properties you want to change.
 
-> The HostConfig object will be instantiated with defaults, so you can set just the properties you want to change.
+Passing it to the AndroidRenderer sets the default HostConfig to use for every card you render.
 
 Example:
 ```csharp
@@ -93,19 +93,16 @@ var hostConfig = new HostConfig()
     }
 };
 ```
-
-When you pass it in to the AndroidRenderer you are setting the default HostConfig to use for every card you render.
-
 ### Changing per element rendering
-The AndroidRenderer has a registration mechanism which allows you to set a function which is called to perform the
-rendering on a per element basis.  It exposes a method called SetRenderer<ElementT>(func); 
+The `AndroidRenderer` has a registration mechanism for specifying which function is called to perform the
+rendering on a per element basis.  It exposes a method called `SetRenderer<ElementT>(func);` 
 
-Let's say you want to override the rendering of a Input.Date element.  You would do something like this:
+This example overrides the rendering of a `Input.Date` element.
 ```csharp
 AndroidRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
 ```
 
-And the new date renderer would look like this:
+The new date renderer would look like this:
 ```csharp
 public static FrameworkElement Render(TypedElement element, RenderContext context)
 {
@@ -115,10 +112,8 @@ public static FrameworkElement Render(TypedElement element, RenderContext contex
     return datePicker;
 }
 ```
-
-
-### UI Framework styling
-If you pass in a Android ResourceDictionary you can further customize the Android behavior. This
+### UI framework styling
+Pass in a `Android ResourceDictionary` to further customize the Android behavior. This
 allows you to define roll over behaviors, animations, rounded buttons, etc.  Here is a table of the 
 style names that are used for each element.  
 
@@ -144,7 +139,7 @@ style names that are used for each element.
 | FactSet | Adaptive.FactSet, Adaptive.Fact.Title, Adaptive.Fact.Value|
 | TextBlock  | Adaptive.TextBlock |
 
-Here is a sample resource dictionary which adds a hover effect on elements with an Action defined on them:
+Here is a sample resource dictionary which adds a hover effect on elements that have an Action defined for them.
 ```xml
 <Window.Resources>
     <Style x:Key="Adaptive.Action.Tap" TargetType="Button">

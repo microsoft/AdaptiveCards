@@ -66,7 +66,7 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 | **selectAction** | [Action](#action) | false | Action to perform for a selection for this image, (this allows image to act as an action) |
 | **size** | [ImageSize](#imagesize) | false | Specifies the suggested size of the image. |
 | **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 | **altText** | string  | false | Alternate text for the image for accessibility. |
 | **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
 
@@ -85,7 +85,7 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 | **maxLines** | number | false | When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use. |
 | **horizontalAlignment** | [HorizontalAlignment](#horizontalalignment) | false |Specifies how the element should be aligned horizontally within its container. |
 | **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 
 ## Input Elements
@@ -99,7 +99,7 @@ Input elements give you the ability to show input controls to the uer.
 | **type**| **"Input.Text"** | true |  |
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or HTTP action |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **value** | string | false | The initial value for a field |
 | **placeholder** | string | false | initial text descripting the input desired |
 | **style**| [TextInputStyle](#textinputstyle) | false | Hint of style of input, if client doesn't support the style it will become simple text input |
@@ -107,7 +107,7 @@ Input elements give you the ability to show input controls to the uer.
 | **maxLength** | number | false | hint of maximum length characters to collect *(may be ignored by some clients)* |
 | **isMultiline** | boolean | false | Do you want to allow multiple lines of input |
 | **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 ### Input Date
 <a name="input-date"></a>Input.Date collects text from the user in form of a date. 
@@ -120,13 +120,13 @@ Input elements give you the ability to show input controls to the uer.
 | **type**| **"Input.Date"**  | true | |
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or HTTP action |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **value** | string | false | The initial value for a field |
 | **placeholder** | string | false | initial text descripting the input desired |
 | **min** | string | false | Minimum date in ISO-8601 format (Not all clients will be able to honor this)|
 | **max** | string  | false | Maximum date in ISO-8601 format (Not all clients will be able to honor this)|
 | **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 ### Input Time
 <a name="input-time"></a>Input.Time collects text from the user in form of a time of day.
@@ -139,13 +139,13 @@ Input elements give you the ability to show input controls to the uer.
 | **type**| **"Input.Time"** | true |  |
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or HTTP action |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **placeholder** | string | false | initial text descripting the input desired |
 | **value** | string | false | The initial value for a field |
 | **min** | string | false | Minimum time (Not all clients will be able to honor this)|
 | **max** | string  | false | Maximum time (Not all clients will be able to honor this)|
 | **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 ### Input Number
 <a name="input-number"></a>Input.Number collects text from the user with a bias towards a number. 
@@ -158,13 +158,13 @@ Input elements give you the ability to show input controls to the uer.
 | **type**| **"Input.Number"** | true |  |
 | **id** | string | true  | ID for the value. This will be used to identify collected input when SUBMIT is clicked. |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or HTTP action. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **placeholder** | string | false | Initial text describing the input desired |
 | **value** | number | false | The initial value for a field |
 | **min** | number | false | Minimum number (Not all clients will be able to honor this)|
 | **max** | number | false | Maximum number (Not all clients will be able to honor this)|
 | **separation** | [SeparationStyle](#separationstyle) | none | Visually separates this element from the previous element. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment |
+| **speak** | [Speak](Speech.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment |
 
 ### Input Toggle
 <a name="input-toggle"></a>Input.Toggle collects a selection between two values, with **value** representing the current selected toggle value (either value1 or value2).
@@ -175,13 +175,13 @@ Input elements give you the ability to show input controls to the uer.
 | **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice.| 
 | **id** | string | true  | Id for the value. This will be used to identify collected input when SUBMIT is clicked. |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or HTTP action. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **title** | string | true | The title for the toggle |
 | **valueOn** | string | false | The value to use when toggle is selected (default:true)| 
 | **valueOff** | string | false  | The value to use when toggle is not selected (default:false)| 
 | **value** | string | false  | The value current value (default:false) | 
 | **separation** | [SeparationStyle](#separationstyle) | none | Visually separate this element from previous element. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment |
+| **speak** | [Speak](Speech.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment |
 
 ### Input ChoiceSet
 <a name="input-choiceset"></a>*Extends [CardElement](#CardElement)*
@@ -197,12 +197,12 @@ Shows an array of choices the to the user.
 | **style** | [ChoiceInputStyle](#choiceinputstyle) | false | Style for choice. | 
 | **id** | string | true  | ID for the value. This will be used to identify collected input when SUBMIT is clicked. |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or HTTP action. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element. This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element. This is simple text or SSML fragment. |
 | **style**| [ChoiceSetStyle](#choicesetstyle) | false | Hint of style of input. |
 | **isMultiSelect** | boolean | false | Allow multiple choices to be selected (Default=false)|
 | **choices** | Choice[] | true | The choice options |
 | **separation** | [SeparationStyle](#separationstyle) | none | Visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 #### Choice
 <a name="choice"></a>Represents a single choice in a ChoiceSet.
@@ -212,7 +212,7 @@ Shows an array of choices the to the user.
 | **title** | string | true  | The title label for a choice|
 | **value** | string | true  | The raw value for the choice|
 | **isSelected** | bool |  false | Is the choice selected |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 
 # Containers
 
@@ -227,7 +227,7 @@ Shows an array of choices the to the user.
 | **selectAction** | [Action](#action) | false | Action to perform for a tap on this container. This allows the entire container to act as an action. |
 | **style** | normal, emphasis | normal | A container can group elements together in a normal or emphasized style. |
 | **separation** | [SeparationStyle](#separationstyle) | none | Visually separates this element from the previous element. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 
 ## ColumnSet 
@@ -238,7 +238,7 @@ Shows an array of choices the to the user.
 | **type**| **"ColumnSet"**  | true | |
 | **columns** | [Column](#column)[] | true | array of columns (each a container of items)  |
 | **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 ## Column
 <a name="column"></a>A Column is a container which contains a list of CardElements that are logically grouped.
@@ -250,7 +250,7 @@ Shows an array of choices the to the user.
 | **items** |  [CardElement](#CardElement)[] | true | The items that are to be displayed in this container. |
 | **selectAction** | [Action](#action) | false | Action to perform for a tap on this container, (this allows entire container to act as an action) |
 | **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 ## ImageSet 
 <a name="imageset"></a>The ImageSet allows for the inclusion of a collection images like a photoSet.
@@ -261,7 +261,7 @@ Shows an array of choices the to the user.
 | **images**| [Image](#image)[] | true | Array of Image objects |
 | **imageSize** | [ImageSize](#imagesize) | false | Specifies the suggested size of the images in the Set. |
 | **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 ## FactSet 
 <a name="factset"></a>The FactSet element makes it simple to display a series of "facts" (e.g. name/value pairs) in a tabular form.
@@ -271,7 +271,7 @@ Shows an array of choices the to the user.
 | **type**|  **"FactSet"** | true | |
 | **facts** | [Fact](#fact)[] | true| The facts to be displayed. |
 | **separation** | [SeparationStyle](#separationstyle) | none | visually separate this element from previous element |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false |Specifies what should be spoken for this entire element. This is a simple text or SSML fragment. |
 
 ### Fact 
 <a name="fact"></a>Represents one "fact" in a [FactSet](#factset) element.
@@ -280,7 +280,7 @@ Shows an array of choices the to the user.
 |---|---|---|---|
 | **title** | string | true | The fact's title. |
 | **value** | string | true |The fact's value. |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element. This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element. This is simple text or SSML fragment. |
 
 # Actions
 Actions define clickable targets that do something.
@@ -292,7 +292,7 @@ Actions define clickable targets that do something.
 |---|---|---|---|
 | **type**| **"Action.Http"** | true |  |
 | **title** | string | true | Label for button or link that represents this action |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **url** | string | true | url to use (can have binding information) |
 | **method** | string | true | HTTP method (Example: POST) |
 | **headers** | object | false | Object which represents headers Example: { "content-type":"application/json" }  |
@@ -305,7 +305,7 @@ Actions define clickable targets that do something.
 |---|---|---|---|
 | **type**| **"Action.OpenUrl"** | true |  |
 | **title** | string | true | Label for button or link that represents this action |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **url** | string | true | Default (browser) url to use  |
 
 ## Action ShowCard
@@ -315,7 +315,7 @@ Actions define clickable targets that do something.
 |---|---|---|---|
 | **type**| **Action.ShowCard"** | true |  |
 | **title** | string | true | Label for button or link that represents this action |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **card** | [Container](#container) | true |inline container  defining the card to be shown when this action is invoked. It is up to client to decide how to show this inline card. |
 
 ## Action Submit
@@ -325,7 +325,7 @@ Actions define clickable targets that do something.
 |---|---|---|---|
 | **type**| **"Action.Submit"** | true |  |
 | **title** | string | true | Label for button or link that represents this action |
-| **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
+| **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **data** | object | false | initial data that input fields will be combined with.  This is essentially 'hidden' properties |
 
 # Enumerations
