@@ -5,7 +5,7 @@ An adaptive card is nothing more then a serialized json object of a card object 
 To understand the object model which is represented by the json it is useful to understand the basic architecture of a card.  A card is made up of containers of elements, actions.  These are stacked vertically unless there is an ColumnSet element which allows you to define a collection of containers that live side by side.
 
 A simple example card which has a single line of text followed by an image
-```
+```javascript
 {
     "type": "AdaptiveCard",
     "version": "1.0",

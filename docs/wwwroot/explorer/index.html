@@ -1,4 +1,4 @@
-<html lang="en">
+﻿<html lang="en">
 <head>
     <meta charset = "utf-8" />
     <title>Adaptive Cards - Element Explorer</title>
@@ -15,6 +15,7 @@
     <!-- Nav bar-->
     <div class="w3-top">
 		<div class="w3-bar w3-black">
+            <a href="/"><img src="/content/icons_transparent/white-48.png" class="logo" /></a>
 			<a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
 			<a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
 			<a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
@@ -322,7 +323,7 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "This is some text"
+            "text": "Meow!"
         }
     ]
 });</script>
@@ -1460,7 +1461,7 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "Meow!"
                 },
                 {
                     "type": "Image",
@@ -1484,7 +1485,7 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "Meow!"
                 },
                 {
                     "type": "Image",
@@ -1507,63 +1508,53 @@
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
-    "body": [
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Purrrrr!, separation:none"
+    },
+    {
+      "type": "Container",
+      "separation": "none",
+      "items": [
         {
-            "type": "TextBlock",
-            "text": "SOME ELEMENT BEFORE THE CONTAINER"
-        },
-        {
-            "type": "Container",
-            "separation": "none",
-            "items": [
-                {
-                    "type": "TextBlock",
-                    "text": "separation:none",
-                    "weight": "bolder",
-                    "size": "large"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
-                    "size": "large"
-                }
-            ]
-        },
-        {
-            "type": "Container",
-            "separation": "default",
-            "items": [
-                {
-                    "type": "TextBlock",
-                    "text": "separation:default",
-                    "weight": "bolder",
-                    "size": "large"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
-                    "size": "large"
-                }
-            ]
-        },
-        {
-            "type": "Container",
-            "separation": "strong",
-            "items": [
-                {
-                    "type": "TextBlock",
-                    "text": "separation:strong",
-                    "weight": "bolder",
-                    "size": "large"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
-                    "size": "large"
-                }
-            ]
+          "type": "Image",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "size": "large"
         }
-    ]
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Purrrrr!, separation:default"
+    },
+    {
+      "type": "Container",
+      "separation": "default",
+      "items": [
+        {
+          "type": "Image",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "size": "large"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Purrrrr!, separation:strong"
+    },
+    {
+      "type": "Container",
+      "separation": "strong",
+      "items": [
+        {
+          "type": "Image",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "size": "large"
+        }
+      ]
+    }
+  ]
 });</script>
 </div>
 <div class='element' id='ColumnSetContent' style='display:none'>
@@ -1616,7 +1607,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0"
                         }
                     ]
                 },
@@ -1629,7 +1620,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/1"
                         }
                     ]
                 },
@@ -1642,7 +1633,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/2"
                         }
                     ]
                 }
@@ -1671,7 +1662,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0"
                         }
                     ]
                 },
@@ -1684,7 +1675,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/1"
                         }
                     ]
                 },
@@ -1697,7 +1688,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/2"
                         }
                     ]
                 }
@@ -1716,7 +1707,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0"
                         }
                     ]
                 },
@@ -1729,7 +1720,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/1"
                         }
                     ]
                 },
@@ -1742,7 +1733,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/2"
                         }
                     ]
                 }

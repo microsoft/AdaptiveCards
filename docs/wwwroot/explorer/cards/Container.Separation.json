@@ -2,61 +2,51 @@
     "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
-    "body": [
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Purrrrr!, separation:none"
+    },
+    {
+      "type": "Container",
+      "separation": "none",
+      "items": [
         {
-            "type": "TextBlock",
-            "text": "SOME ELEMENT BEFORE THE CONTAINER"
-        },
-        {
-            "type": "Container",
-            "separation": "none",
-            "items": [
-                {
-                    "type": "TextBlock",
-                    "text": "separation:none",
-                    "weight": "bolder",
-                    "size": "large"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
-                    "size": "large"
-                }
-            ]
-        },
-        {
-            "type": "Container",
-            "separation": "default",
-            "items": [
-                {
-                    "type": "TextBlock",
-                    "text": "separation:default",
-                    "weight": "bolder",
-                    "size": "large"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
-                    "size": "large"
-                }
-            ]
-        },
-        {
-            "type": "Container",
-            "separation": "strong",
-            "items": [
-                {
-                    "type": "TextBlock",
-                    "text": "separation:strong",
-                    "weight": "bolder",
-                    "size": "large"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
-                    "size": "large"
-                }
-            ]
+          "type": "Image",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "size": "large"
         }
-    ]
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Purrrrr!, separation:default"
+    },
+    {
+      "type": "Container",
+      "separation": "default",
+      "items": [
+        {
+          "type": "Image",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "size": "large"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Purrrrr!, separation:strong"
+    },
+    {
+      "type": "Container",
+      "separation": "strong",
+      "items": [
+        {
+          "type": "Image",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "size": "large"
+        }
+      ]
+    }
+  ]
 }
