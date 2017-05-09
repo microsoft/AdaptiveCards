@@ -5,7 +5,7 @@
   "body": [
     {
       "type": "TextBlock",
-      "text": "SOME ELEMENT BEFORE THE CONTAINER, separation:none"
+      "text": "Purrrrr!, separation:none"
     },
     {
       "type": "Container",
@@ -20,7 +20,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "SOME ELEMENT BEFORE THE CONTAINER, separation:default"
+      "text": "Purrrrr!, separation:default"
     },
     {
       "type": "Container",
@@ -35,7 +35,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "SOME ELEMENT BEFORE THE CONTAINER, separation:strong"
+      "text": "Purrrrr!, separation:strong"
     },
     {
       "type": "Container",

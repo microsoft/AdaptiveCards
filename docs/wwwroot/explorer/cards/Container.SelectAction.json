@@ -8,7 +8,7 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "Meow!"
                 },
                 {
                     "type": "Image",

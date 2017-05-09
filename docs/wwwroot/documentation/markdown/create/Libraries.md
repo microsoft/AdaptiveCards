@@ -14,7 +14,7 @@ nuget install AdaptiveCards
 ```
 
 ### Example creating 
-```
+```csharp
 var card = new AdaptiveCard();
 card.Body.Add(new TextBlock() 
 {
@@ -28,12 +28,12 @@ card.Body.Add(new Image()
 });
 ```
 ### Example saving using JSON.Net
-```
+```csharp
 var json = JsonConvert.SerializeObject(card);
 ```
 
 ### Example loading using JSON.Net
-```
+```csharp
 var card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
 ```
 
@@ -46,7 +46,7 @@ npm install adaptive-cards
 ```
 
 ### Example creating 
-```
+```javascript
 TODO
 var card = new AdaptiveCard();
 card.Body.Add(new TextBlock() 
@@ -61,7 +61,7 @@ card.Body.Add(new Image()
 });
 ```
 ### Example saving 
-```
+```javascript
 TODO
 var json = JsonConvert.SerializeObject(card);
 ```
@@ -76,7 +76,7 @@ var card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
 There is no javascript library, but for completeness 
 
 ### Example creating 
-```
+```javascript
 
 var card = {
     "type": "AdaptiveCard",
@@ -87,7 +87,7 @@ var card = {
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "Meow!"
                 },
                 {
                     "type": "Image",
@@ -99,12 +99,12 @@ var card = {
 };
 ```
 ### Example saving 
-```
+```javascript
 var json = JSON.stringify(card);
 ```
 
 ### Example loading 
-```
+```javascript
 var card = JSON.parse(json);
 ```
 

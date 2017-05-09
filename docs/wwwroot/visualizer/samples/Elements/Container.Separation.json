@@ -18,7 +18,7 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "Meow!"
                 },
                 {
                     "type": "Image",
@@ -38,7 +38,7 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "Meow!"
                 },
                 {
                     "type": "Image",
@@ -58,7 +58,7 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "Meow!"
                 },
                 {
                     "type": "Image",

@@ -23,7 +23,7 @@ namespace AdaptiveCards.Rendering
                 uiToggle.Content = input.Title;
 #endif
                 uiToggle.SetState(input.Value == (input.ValueOn ?? "true"));
-                uiToggle.Style = context.GetStyle($"Adaptive.input.Toggle");
+                uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
                 uiToggle.SetContext(input);
                 context.InputBindings.Add(input.Id, () =>
                 {

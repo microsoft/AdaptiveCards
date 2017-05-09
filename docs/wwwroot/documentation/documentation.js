@@ -22,11 +22,9 @@ function myDropFunc() {
     }
 }
 
-function showTopic(folder, topic) {
-    var path = "/api/markdown/documentation/markdown";
-    if (folder)
-        path = path + "/" + folder;
-    path = path + "/" + topic + ".md";
+function showTopic(hashmark) {
+    hashmark = hashmark.slice(1);
+    var path = "/api/markdown/documentation/markdown/" + hashmark.replace(/-/g,'/') + ".md";
     $.get(path,
         null,
         function (data) {
@@ -36,23 +34,27 @@ function showTopic(folder, topic) {
             for (var i = 0; i < navLinks.length; i++) {
                 navLinks[i].className = navLinks[i].className.replace(" w3-gray", "");
             }
-            var navLink = document.getElementById(folder + '-' + topic + '-link');
+            var navLink = document.getElementById(folder + '-' + hashmark + '-link');
             navLink.className = navLink.className + " w3-gray";
         });
 }
 
 $(document).ready(() => {
     if (window.location.hash == '')
-        showTopic("about", "overview");
+        showTopic("#about-overview");
     else {
-        var parts = window.location.hash.slice(1).split('-');
-        if (parts.length == 3 && parts[2] == 'page')
-            showTopic(parts[0], parts[1]);
+        if (window.location.hash.startsWith('#about') ||
+            window.location.hash.startsWith('#create') ||
+            window.location.hash.startsWith('#display') ||
+            window.location.hash.startsWith('#resources'))
+            showTopic(window.location.hash);
     }
 });
 
 window.addEventListener("hashchange", function () {
-    var parts = window.location.hash.slice(1).split('-');
-    if (parts.length == 3 && parts[2] == 'page')
-        showTopic(parts[0], parts[1]);
+    if (window.location.hash.startsWith('#about') ||
+        window.location.hash.startsWith('#create') ||
+        window.location.hash.startsWith('#display') ||
+        window.location.hash.startsWith('#resources'))
+        showTopic(window.location.hash);
 }, false);

@@ -17,13 +17,12 @@
     <Content Include="wwwroot\documentation\markdown\create\Markdown.md" />
     <Content Include="wwwroot\documentation\markdown\create\Speech.md" />
     <Content Include="wwwroot\documentation\markdown\display\Actions.md" />
-    <Content Include="wwwroot\documentation\markdown\display\CustomizingRenderer.md" />
     <Content Include="wwwroot\documentation\markdown\display\GettingStarted.md" />
     <Content Include="wwwroot\documentation\markdown\display\HostConfigSchema.md" />
     <Content Include="wwwroot\documentation\markdown\display\ImplementingRenderer.md" />
-    <Content Include="wwwroot\documentation\markdown\display\Libraries.md" />
+    <Content Include="wwwroot\documentation\markdown\display\libraries\AdaptiveCArds.Android.md" />
+    <Content Include="wwwroot\documentation\markdown\display\libraries\AdaptiveCards.iOS.md" />
     <Content Include="wwwroot\documentation\markdown\display\Speech.md" />
-    <Content Include="wwwroot\documentation\markdown\display\Styling.md" />
     <Content Include="wwwroot\documentation\markdown\resources\Partners.md" />
     <Content Include="wwwroot\documentation\markdown\resources\Projects.md" />
     <Content Include="wwwroot\Home.md" />
@@ -31,6 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="AdaptiveCards" Version="1.0.19" />
+    <PackageReference Include="ColorCode.Netstandard" Version="1.0.4.3" />
     <PackageReference Include="MarkedNet" Version="1.0.6" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
