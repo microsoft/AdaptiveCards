@@ -1,5 +1,5 @@
 # Javascript
-There is no javascript library, but for completeness 
+There is no javascript library, but javascript is already pretty good at manipulating JSON.
 
 ## Example creating 
 ```javascript
