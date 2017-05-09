@@ -15,7 +15,6 @@
     <!-- Nav bar-->
     <div class="w3-top">
 		<div class="w3-bar w3-black">
-            <a href="/"><img src="/content/icons_transparent/white-48.png" class="logo" /></a>
 			<a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
 			<a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
 			<a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
@@ -54,7 +53,7 @@
     });
 </script>
 </div>
-<div class="w3-container content-sidebar">
+<div class="w3-container content-sidebar maincontent">
 <div class='element' id='TextBlockContent' style='display:none'>
 <h1>TextBlock</h1>
 <p>The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.</p>
@@ -70,9 +69,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;TextBlock&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>text</strong></td>
@@ -390,9 +389,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Image&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>url</strong></td>
@@ -673,9 +672,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.Text&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>id</strong></td>
@@ -712,7 +711,8 @@
 <td><a href="#textinputstyle">TextInputStyle</a></td>
 <td>false</td>
 <td>Hint of style of input, if client doesn&#39;t support the style it will become simple text input</td>
-<td></td>
+</tr>
+<tr>
 <td><strong>isMultiline</strong></td>
 <td>bool</td>
 <td>false</td>
@@ -823,9 +823,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.Number&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>id</strong></td>
@@ -911,9 +911,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.Date&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>id</strong></td>
@@ -999,9 +999,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.Time&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>id</strong></td>
@@ -1083,10 +1083,11 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.ToggleChoice&quot;</strong></td>
+<td>true</td>
 <td></td>
+</tr>
+<tr>
 <td><strong>style</strong></td>
 <td><a href="#choiceinputstyle">ChoiceInputStyle</a></td>
 <td>false</td>
@@ -1177,10 +1178,11 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.ChoiceSet&quot;</strong></td>
+<td>true</td>
 <td></td>
+</tr>
+<tr>
 <td><strong>style</strong></td>
 <td><a href="#choiceinputstyle">ChoiceInputStyle</a></td>
 <td>false</td>
@@ -1396,9 +1398,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Container&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>items</strong></td>
@@ -1572,9 +1574,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;ColumnSet&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>columns</strong></td>
@@ -1757,9 +1759,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Column&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>size</strong></td>
@@ -2060,9 +2062,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;FactSet&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>facts</strong></td>
@@ -2121,9 +2123,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;ImageSet&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>images</strong></td>

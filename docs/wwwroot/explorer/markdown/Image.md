@@ -2,7 +2,7 @@ The Image element allows for the inclusion of images in an Adaptive Card.
 
 | Property | Type | Required |Description |
 |---|---|---|---|
-| **type**| string | true | **"Image"** |
+| **type**| **"Image"** | true | |
 | **url** | string | true | The URL to the image. |
 | **style** | [ImageStyle](#imagestyle) | false | The style in which the image is displayed. |
 | **selectAction** | [Action](#action) | false | Action to perform for a selection for this image, (this allows image to act as an action) |

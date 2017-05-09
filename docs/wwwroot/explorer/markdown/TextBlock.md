@@ -3,7 +3,7 @@ The TextBlock element allows for the inclusion of text, with various font sizes,
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"TextBlock"** |
+| **type**| **"TextBlock"**| true |  |
 | **text** | string | true |The actual text to display |
 | **size** | [TextSize](#textsize) | false |The size of the text |
 | **weight** | [TextWeight](#textweight) | false |The weight of the text |

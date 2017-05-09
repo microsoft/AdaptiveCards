@@ -3,7 +3,7 @@ with embedded web browser
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"Action.OpenUrl"** |
+| **type**| **"Action.OpenUrl"**| true |  |
 | **title** | string | true | Label for button or link that represents this action |
 | **speak** | [Speak](/Microsoft/AdaptiveCards/blob/master/docs/SpeechAndAdvancedCustomization.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment |
 | **url** | string | true | Default (browser) url to use  |
