@@ -2,10 +2,11 @@
 This is a ajax renderer for rendering cards in a browser
 
 ## Add a renderer
-This is available as a nuget packages. 
+This is available as a NPM package. 
 ```
 npm install adaptive-cards
 ```
+
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 
 ```javascript

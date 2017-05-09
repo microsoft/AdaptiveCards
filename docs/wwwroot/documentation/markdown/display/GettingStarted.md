@@ -19,7 +19,7 @@ In the adaptive cards github repo we have implemented a number of renderers that
 * UWP Windows/Xaml
 * WPF Windows/Xaml
 * Image renderer
-Over time, there may be more libraries available. 
+
 
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 

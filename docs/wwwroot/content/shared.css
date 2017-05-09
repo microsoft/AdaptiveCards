@@ -32,6 +32,11 @@ h3 {
     font-size: 15px;
     font-weight:600;
 }
+.logo {
+    float:left; 
+    margin-top:-4px;
+    margin-bottom:-4px;
+}
 
 .w3-bar-block .w3-bar-item {
     padding-left: 24px;
