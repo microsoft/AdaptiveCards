@@ -120,7 +120,7 @@ namespace GenerateSamples
                 writer.WriteLine("</div>");
                 WriteLoadFirstLink(writer, firstLink);
 
-                writer.WriteLine("<div class=\"w3-container content-sidebar\">");
+                writer.WriteLine("<div class=\"w3-container content-sidebar maincontent\">");
                 foreach (var file in files)
                 {
                     var id = Path.GetFileNameWithoutExtension(file).Replace(" ", "");

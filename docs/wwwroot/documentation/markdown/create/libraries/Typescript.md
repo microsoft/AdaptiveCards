@@ -11,31 +11,36 @@ The **adaptive-cards** npm package defines a Typescript library for working with
 ```javascript
 npm install adaptive-cards
 ```
+There are interface definitions in `schema.d.ts` which describe the shape of the schema.
 
-## Example: create
-```javascript
-TODO
-var card = new AdaptiveCard();
-card.Body.Add(new TextBlock() 
+```typescript
+let card :IAdaptiveCard = {
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Meow!"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                }
+            ]
+        }
+    ]
+};
+```
+
+There is also an object model for creating cards.
+
+```typescript
+let card :IAdaptiveCard =  new AdaptiveCard();
+card.body.add(new TextBlock() 
 {
-    Text = "Hello",
-    Size = TextSizes.ExtraLarge,
-    Color = TextColor.Attention
-});
-card.Body.Add(new Image() 
-{
-    Url = "http://someUrl.com/example.png"
+    text = "hello world"
 });
 ```
-## Example: save 
-```javascript
-TODO
-var json = JsonConvert.SerializeObject(card);
-```
-
-## Example: load
-```
-var card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
-```
-
-

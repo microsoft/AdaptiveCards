@@ -39,6 +39,9 @@
   font-weight: normal;
 }
 
-body,h1,h2,h3,h4,p,th,div,span,input,button,select {
-  font-family: "Segoe UI", sans-serif;
+h1,h2,h3,h4 {
+  font-family: "Segoe UI Semibold", sans-serif;
+}
+body, p, th, div, span, input, button, select {
+    font-family: "Segoe UI Semilight", sans-serif;
 }
