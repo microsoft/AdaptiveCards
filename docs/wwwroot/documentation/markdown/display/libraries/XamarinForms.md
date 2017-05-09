@@ -1,22 +1,22 @@
-# XXX Library
-This is a renderer which targets XXX.
+# XamarinForms Library
+This is a Xaml renderer which target Xamarin Forms on iOS, Android and UWP. 
 
 ## Add a renderer
 This is available as a nuget packages. 
 ```
-nuget install AdaptiveCards.XXX
+nuget install AdaptiveCards.Xaml.XamarinForms
 ```
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 
 ```csharp
-var renderer = new XXXRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
+var renderer = new XamlRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
 ```
 
 ## Hook up action callback
 To hook up action events you pass in a callback when you instantiate your renderer
 ```csharp
 var hostConfig = new HostConfig() { ... };
-var renderer = new XXXRenderer(..., actionCallback:  _onAction);
+var renderer = new XamlRenderer(..., actionCallback:  _onAction);
 ```
 
 ## Render a card
@@ -29,11 +29,11 @@ myGrid.Children.Add(uiCard);
 ```
 
 ## Example
-Here is an example from the XXX renderer to give you a feel for how this works:
+Here is an example from the Xaml renderer to give you a feel for how this works:
 
 ```csharp
 var hostConfig = new HostConfig() { ... };
-var renderer = new XXXRenderer(hostConfig, this.Resources, _onAction, _OnMissingInput);
+var renderer = new XamlRenderer(hostConfig, this.Resources, _onAction, _OnMissingInput);
 var uiCard = renderer.RenderAdaptiveCard(_card);
 myGrid.Children.Add(uiCard);
 ...
@@ -94,15 +94,15 @@ var hostConfig = new HostConfig()
 };
 ```
 
-When you pass it in to the XXXRenderer you are setting the default HostConfig to use for every card you render.
+When you pass it in to the XamlRenderer you are setting the default HostConfig to use for every card you render.
 
 ### Changing per element rendering
-The XXXRenderer has a registration mechanism which allows you to set a function which is called to perform the
+The XamlRenderer has a registration mechanism which allows you to set a function which is called to perform the
 rendering on a per element basis.  It exposes a method called SetRenderer<ElementT>(func); 
 
 Let's say you want to override the rendering of a Input.Date element.  You would do something like this:
 ```csharp
-XXXRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
+xamlRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
 ```
 
 And the new date renderer would look like this:
@@ -118,7 +118,7 @@ public static FrameworkElement Render(TypedElement element, RenderContext contex
 
 
 ### UI Framework styling
-If you pass in a XXX ResourceDictionary you can further customize the XXX behavior. This
+If you pass in a Xaml ResourceDictionary you can further customize the Xaml behavior. This
 allows you to define roll over behaviors, animations, rounded buttons, etc.  Here is a table of the 
 style names that are used for each element.  
 

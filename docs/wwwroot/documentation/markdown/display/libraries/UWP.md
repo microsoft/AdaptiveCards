@@ -1,23 +1,22 @@
-# AdaptiveCards.Xaml.WPF Library
-This is a WPF Xaml renderer which has no additional dependencies outside of standard windows components.  
-Because of this, it does not support Date and Time controls aas rich controls, but falls back to plain textbox.
+# UWP Library
+This is a renderer which targets UWP native controls.
 
 ## Add a renderer
 This is available as a nuget packages. 
 ```
-nuget install AdaptiveCards.Xaml.WPF
+nuget install AdaptiveCards.UWP
 ```
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 
 ```csharp
-var renderer = new XamlRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
+var renderer = new UWPRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
 ```
 
 ## Hook up action callback
 To hook up action events you pass in a callback when you instantiate your renderer
 ```csharp
 var hostConfig = new HostConfig() { ... };
-var renderer = new XamlRenderer(..., actionCallback:  _onAction);
+var renderer = new UWPRenderer(..., actionCallback:  _onAction);
 ```
 
 ## Render a card
@@ -30,11 +29,11 @@ myGrid.Children.Add(uiCard);
 ```
 
 ## Example
-Here is an example from the Xaml renderer to give you a feel for how this works:
+Here is an example from the UWP renderer to give you a feel for how this works:
 
 ```csharp
 var hostConfig = new HostConfig() { ... };
-var renderer = new XamlRenderer(hostConfig, this.Resources, _onAction, _OnMissingInput);
+var renderer = new UWPRenderer(hostConfig, this.Resources, _onAction, _OnMissingInput);
 var uiCard = renderer.RenderAdaptiveCard(_card);
 myGrid.Children.Add(uiCard);
 ...
@@ -95,15 +94,15 @@ var hostConfig = new HostConfig()
 };
 ```
 
-When you pass it in to the XamlRenderer you are setting the default HostConfig to use for every card you render.
+When you pass it in to the UWPRenderer you are setting the default HostConfig to use for every card you render.
 
 ### Changing per element rendering
-The XamlRenderer has a registration mechanism which allows you to set a function which is called to perform the
+The UWPRenderer has a registration mechanism which allows you to set a function which is called to perform the
 rendering on a per element basis.  It exposes a method called SetRenderer<ElementT>(func); 
 
 Let's say you want to override the rendering of a Input.Date element.  You would do something like this:
 ```csharp
-xamlRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
+UWPRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
 ```
 
 And the new date renderer would look like this:
@@ -119,7 +118,7 @@ public static FrameworkElement Render(TypedElement element, RenderContext contex
 
 
 ### UI Framework styling
-If you pass in a Xaml ResourceDictionary you can further customize the Xaml behavior. This
+If you pass in a UWP ResourceDictionary you can further customize the UWP behavior. This
 allows you to define roll over behaviors, animations, rounded buttons, etc.  Here is a table of the 
 style names that are used for each element.  
 

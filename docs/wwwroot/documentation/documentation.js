@@ -34,7 +34,7 @@ function showTopic(hashmark) {
             for (var i = 0; i < navLinks.length; i++) {
                 navLinks[i].className = navLinks[i].className.replace(" w3-gray", "");
             }
-            var navLink = document.getElementById(folder + '-' + hashmark + '-link');
+            var navLink = document.getElementById(hashmark + '-link');
             navLink.className = navLink.className + " w3-gray";
         });
 }

@@ -1,22 +1,23 @@
-# AdaptiveCards.Xaml.XamarinForms Library
-This is a Xaml renderer which target Xamarin Forms. 
+# WPF RichInput Library
+This library is a extension of the WPF renderer.  It adds a dependency on the 
+WPF Toolkit to add rich Email, Number, Telephone, Date and Time input controls.
 
 ## Add a renderer
 This is available as a nuget packages. 
 ```
-nuget install AdaptiveCards.Xaml.XamarinForms
+nuget install AdaptiveCards.Xaml.WPF.RichInput
 ```
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 
 ```csharp
-var renderer = new XamlRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
+var renderer = new XamlRendererExtended(hostConfig, this.Resources, onAction, OnMissingInput);
 ```
 
 ## Hook up action callback
 To hook up action events you pass in a callback when you instantiate your renderer
 ```csharp
 var hostConfig = new HostConfig() { ... };
-var renderer = new XamlRenderer(..., actionCallback:  _onAction);
+var renderer = new XamlRendererExtended(..., actionCallback:  _onAction);
 ```
 
 ## Render a card
@@ -33,7 +34,7 @@ Here is an example from the Xaml renderer to give you a feel for how this works:
 
 ```csharp
 var hostConfig = new HostConfig() { ... };
-var renderer = new XamlRenderer(hostConfig, this.Resources, _onAction, _OnMissingInput);
+var renderer = new XamlRendererExtended(hostConfig, this.Resources, _onAction, _OnMissingInput);
 var uiCard = renderer.RenderAdaptiveCard(_card);
 myGrid.Children.Add(uiCard);
 ...

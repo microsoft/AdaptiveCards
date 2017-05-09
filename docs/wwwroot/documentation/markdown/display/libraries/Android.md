@@ -1,23 +1,22 @@
-# AdaptiveCards.Xaml.WPF.RichInput Library
-This library is a specialization of the AdaptiveCards.Xaml.WPF renderer.  It adds a dependency on the 
-WPF Toolkit to add rich Email, Number, Telephone, Date and Time picker controls.
+# Android Library
+This is a renderer which targets Android native controls.
 
 ## Add a renderer
 This is available as a nuget packages. 
 ```
-nuget install AdaptiveCards.Xaml.WPF.RichInput
+nuget install AdaptiveCards.Android
 ```
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 
 ```csharp
-var renderer = new XamlRendererExtended(hostConfig, this.Resources, onAction, OnMissingInput);
+var renderer = new AndroidRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
 ```
 
 ## Hook up action callback
 To hook up action events you pass in a callback when you instantiate your renderer
 ```csharp
 var hostConfig = new HostConfig() { ... };
-var renderer = new XamlRendererExtended(..., actionCallback:  _onAction);
+var renderer = new AndroidRenderer(..., actionCallback:  _onAction);
 ```
 
 ## Render a card
@@ -30,11 +29,11 @@ myGrid.Children.Add(uiCard);
 ```
 
 ## Example
-Here is an example from the Xaml renderer to give you a feel for how this works:
+Here is an example from the Android renderer to give you a feel for how this works:
 
 ```csharp
 var hostConfig = new HostConfig() { ... };
-var renderer = new XamlRendererExtended(hostConfig, this.Resources, _onAction, _OnMissingInput);
+var renderer = new AndroidRenderer(hostConfig, this.Resources, _onAction, _OnMissingInput);
 var uiCard = renderer.RenderAdaptiveCard(_card);
 myGrid.Children.Add(uiCard);
 ...
@@ -95,15 +94,15 @@ var hostConfig = new HostConfig()
 };
 ```
 
-When you pass it in to the XamlRenderer you are setting the default HostConfig to use for every card you render.
+When you pass it in to the AndroidRenderer you are setting the default HostConfig to use for every card you render.
 
 ### Changing per element rendering
-The XamlRenderer has a registration mechanism which allows you to set a function which is called to perform the
+The AndroidRenderer has a registration mechanism which allows you to set a function which is called to perform the
 rendering on a per element basis.  It exposes a method called SetRenderer<ElementT>(func); 
 
 Let's say you want to override the rendering of a Input.Date element.  You would do something like this:
 ```csharp
-xamlRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
+AndroidRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
 ```
 
 And the new date renderer would look like this:
@@ -119,7 +118,7 @@ public static FrameworkElement Render(TypedElement element, RenderContext contex
 
 
 ### UI Framework styling
-If you pass in a Xaml ResourceDictionary you can further customize the Xaml behavior. This
+If you pass in a Android ResourceDictionary you can further customize the Android behavior. This
 allows you to define roll over behaviors, animations, rounded buttons, etc.  Here is a table of the 
 style names that are used for each element.  
 
