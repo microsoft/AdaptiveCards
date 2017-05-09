@@ -139,7 +139,7 @@ style names that are used for each element.
 | FactSet | Adaptive.FactSet, Adaptive.Fact.Title, Adaptive.Fact.Value|
 | TextBlock  | Adaptive.TextBlock |
 
-Here is a sample resource dictionary which adds a hover effect on elements that have an Action defined for them.
+Here is a sample resource dictionary which adds a hover effect on elements which have an Action defined for them.
 ```xml
 <Window.Resources>
     <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
@@ -176,9 +176,7 @@ Here is a sample resource dictionary which adds a hover effect on elements that 
 </Window.Resources>
 ```
 
-## Resources
-* [Libraries](/documentation/#display-libraries) 
-* [Implementing a renderer](/documentation/#disply-implementingrenderer) 
-* [Customizing a renderer](/documentation/#display-customizingrenderer) 
+* [Implement a renderer](../ImplementingRenderer.md) 
+* [Customize a renderer](/documentation/#display-customizingrenderer) 
 
 
