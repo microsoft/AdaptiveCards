@@ -28,9 +28,8 @@ h3 {
 
 .w3-sidebar {
     width: 256px;
-    font-family: "Segoe UI";
+    font-family: "Segoe UI Semibold", sans-serif;
     font-size: 15px;
-    font-weight:600;
 }
 
 .logo {
