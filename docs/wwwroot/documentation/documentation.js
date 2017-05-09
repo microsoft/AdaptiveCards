@@ -2,12 +2,16 @@
     var x = document.getElementById(sectionName);
     if (x.className.indexOf("w3-show") == -1) {
         x.className += " w3-show";
-        x.previousElementSibling.className += " w3-gray";
     } else {
         x.className = x.className.replace(" w3-show", "");
-        x.previousElementSibling.className =
-            x.previousElementSibling.className.replace(" w3-gray", "");
     }
+}
+
+function showSection(sectionName) {
+    var x = document.getElementById(sectionName);
+    if (x && x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } 
 }
 
 function myDropFunc() {
@@ -24,6 +28,19 @@ function myDropFunc() {
 
 function showTopic(hashmark) {
     hashmark = hashmark.slice(1);
+    var parts = hashmark.split('-');
+    var part ='';
+    // make sure it's visible
+    for (i= 0; i < parts.length;i++)
+    {
+        if (part[i] == "about")
+            part += "aboutPage";
+        else 
+            part += parts[i];
+        showSection(part);
+        part += '-';
+    }
+
     var path = "/api/markdown/documentation/markdown/" + hashmark.replace(/-/g,'/') + ".md";
     $.get(path,
         null,
@@ -40,8 +57,12 @@ function showTopic(hashmark) {
 }
 
 $(document).ready(() => {
-    if (window.location.hash == '')
+    if (window.location.hash == '') {
         showTopic("#about-overview");
+        var x = document.getElementById("aboutPage");
+        if (x.className.indexOf("w3-show") == -1) 
+            x.className += " w3-show";
+    }
     else {
         if (window.location.hash.startsWith('#about') ||
             window.location.hash.startsWith('#create') ||

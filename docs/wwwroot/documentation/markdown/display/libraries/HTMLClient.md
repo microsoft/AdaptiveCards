@@ -1,5 +1,5 @@
-# Ajax Library
-This is a ajax renderer for rendering cards in a browser
+# HTML Client Library
+This is a HTML renderer which works in the browser agains the DOM.
 
 ## Add a renderer
 This is available as a NPM package. 

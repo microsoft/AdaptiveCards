@@ -18,11 +18,11 @@ h3 {
 }
 
 .content {
-    margin-top: 39px;
+    margin-top: 40px;
 }
 
 .content-sidebar {
-    margin-top: 39px;
+    margin-top: 40px;
     margin-left: 256px;
 }
 
@@ -36,11 +36,6 @@ h3 {
     float:left; 
     margin-top:-4px;
     margin-bottom:-4px;
-}
-
-.w3-bar-block .w3-bar-item {
-    padding-left: 24px;
-    height: 42px;
 }
 
 img {

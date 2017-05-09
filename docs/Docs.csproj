@@ -6,8 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\documentation\markdown\create\libraries\Typescript.md">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\documentation\markdown\display\GettingStarted.md" />
     <Content Include="wwwroot\documentation\markdown\display\ImplementingRenderer.md" />
+    <Content Include="wwwroot\documentation\markdown\display\libraries\HTMLClient.md" />
     <Content Include="wwwroot\documentation\markdown\display\Speech.md" />
   </ItemGroup>
 

@@ -67,7 +67,7 @@ namespace Docs.Controllers
         [HttpGet("{*file}")]
         public string Get(string file)
         {
-            var path = Path.Combine(_env.WebRootPath, file);
+            var path = Path.Combine(_env.WebRootPath, file.Replace("/","\\"));
 
             Marked marked = new Marked();
             marked.Options.Renderer = new CodeMarkdown();
