@@ -26066,6 +26066,13 @@ var ColumnSet = (function (_super) {
             throw new Error("This column already belongs to another ColumnSet.");
         }
     };
+    ColumnSet.prototype.getAllInputs = function () {
+        var result = [];
+        for (var i = 0; i < this._columns.length; i++) {
+            result = result.concat(this._columns[i].getAllInputs());
+        }
+        return result;
+    };
     ColumnSet.prototype.renderSpeech = function () {
         if (this.speak != null) {
             return this.speak;
