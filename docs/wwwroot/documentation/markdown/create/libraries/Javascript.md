@@ -1,7 +1,7 @@
 # Javascript
-There is no javascript library, but for completeness 
+There is no javascript library, but for the sake of completeness, here are samples.
 
-## Example creating 
+## Example: creating 
 ```javascript
 
 var card = {
@@ -24,12 +24,12 @@ var card = {
     ]
 };
 ```
-## Example saving 
+## Example: saving 
 ```javascript
 var json = JSON.stringify(card);
 ```
 
-## Example loading 
+## Example: loading 
 ```javascript
 var card = JSON.parse(json);
 ```
