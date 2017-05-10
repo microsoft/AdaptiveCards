@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("0.5.*")]
 
 // Uncomment to delay-sign
-////[assembly: AssemblyKeyFileAttribute(@"..\..\35MSSharedLib1024.snk")]
-////[assembly: AssemblyDelaySignAttribute(true)]
+//[assembly: AssemblyKeyFileAttribute(@"..\..\35MSSharedLib1024.snk")]
+//[assembly: AssemblyDelaySignAttribute(true)]
