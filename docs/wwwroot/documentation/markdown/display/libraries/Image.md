@@ -99,7 +99,7 @@ Sample Xaml file which defines a round opacity mask on images of style "person".
 ## Next steps
 
 * [Implement a renderer](../ImplementingRenderer.md) 
-* <a href="/docs/wwwroot/documentation/markdown/create/libraries">Other libraries</a>
+* <a href="/docs/wwwroot/documentation/markdown/display/libraries">Other libraries</a>
 
 
 
