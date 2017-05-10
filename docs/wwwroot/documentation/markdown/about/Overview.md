@@ -1,6 +1,6 @@
 # Overview 
 
-Adaptive Cards are a open card exchange format enabling developers to exchange UI content in a common and consistent way.
+Adaptive Cards are an open card exchange format enabling developers to exchange UI content in a common and consistent way.
 
 ## How it works
 

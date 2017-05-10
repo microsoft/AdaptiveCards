@@ -11,11 +11,6 @@
     },
     {
       "type": "Container",
-      "selectAction": {
-        "type": "Action.OpenUrl",
-        "url": "http://msn.com",
-        "title": "Container action"
-      },
       "items": [
         {
           "type": "ColumnSet",
@@ -28,12 +23,7 @@
                   "type": "Image",
                   "url": "https://www.bing.com/th?id=AR_3934aff63dd6ff941034090a4b9d12e1&w=50&h=50&dpr=2&pid=AppEx",
                   "size": "small",
-                  "horizontalAlignment": "center",
-                  "selectAction": {
-                    "type": "Action.OpenUrl",
-                    "url": "http://so.cl",
-                    "title": "Image action"
-                  }
+                  "horizontalAlignment": "center"                  
                 },
                 {
                   "type": "TextBlock",
@@ -42,12 +32,7 @@
                   "size": "normal",
                   "weight": "bolder"
                 }
-              ],
-              "selectAction": {
-                "type": "Action.OpenUrl",
-                "title": "Column action",
-                "url": "http://msnbc.com"
-              }
+              ]
             },
             {
               "type": "Column",

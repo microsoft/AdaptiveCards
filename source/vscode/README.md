@@ -7,7 +7,7 @@ When you are editing a .json file with a adaptive card $schema property you can 
 
 ```javascript
 {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [

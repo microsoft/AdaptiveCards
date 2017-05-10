@@ -30,7 +30,7 @@
                                             {
                                                 "type": "Image",
                                                 "size": "large",
-                                                "url": "http://adaptivecards-staging.azurewebsites.net/content/AlkiBeach.jpg"
+                                                "url": "http://adaptivecards.io/content/AlkiBeach.jpg"
                                             }
                                         ]
                                     },
@@ -74,7 +74,7 @@
                                             {
                                                 "type": "Image",
                                                 "size": "large",
-                                                "url": "http://adaptivecards-staging.azurewebsites.net/content/GoldenGardensPark.jpg"
+                                                "url": "http://adaptivecards.io/content/GoldenGardensPark.jpg"
                                             }
                                         ]
                                     },
@@ -119,7 +119,7 @@
                                             {
                                                 "type": "Image",
                                                 "size": "large",
-                                                "url": "http://adaptivecards-staging.azurewebsites.net/content/BainbridgeIsland.jpg"
+                                                "url": "http://adaptivecards.io/content/BainbridgeIsland.jpg"
                                             }
                                         ]
                                     },
