@@ -3,6 +3,7 @@
     <meta charset = "utf-8" />
     <title>Adaptive Cards - Element Explorer</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/content/fonts.css">
 	<link rel="stylesheet" href="/content/shared.css">
 	<link rel="stylesheet" href="/content/card.css">
 	<link rel="stylesheet" href="/explorer/explorer.css">
@@ -15,6 +16,7 @@
     <!-- Nav bar-->
     <div class="w3-top">
 		<div class="w3-bar w3-black">
+            <a href='/'><img src='/content/icons_transparent/white-48.png' class='logo' /></a>
 			<a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
 			<a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
 			<a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
@@ -53,7 +55,7 @@
     });
 </script>
 </div>
-<div class="w3-container content-sidebar">
+<div class="w3-container content-sidebar maincontent">
 <div class='element' id='TextBlockContent' style='display:none'>
 <h1>TextBlock</h1>
 <p>The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.</p>
@@ -69,9 +71,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;TextBlock&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>text</strong></td>
@@ -322,7 +324,7 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "This is some text"
+            "text": "Meow!"
         }
     ]
 });</script>
@@ -389,9 +391,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Image&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>url</strong></td>
@@ -672,9 +674,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.Text&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>id</strong></td>
@@ -711,7 +713,8 @@
 <td><a href="#textinputstyle">TextInputStyle</a></td>
 <td>false</td>
 <td>Hint of style of input, if client doesn&#39;t support the style it will become simple text input</td>
-<td></td>
+</tr>
+<tr>
 <td><strong>isMultiline</strong></td>
 <td>bool</td>
 <td>false</td>
@@ -822,9 +825,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.Number&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>id</strong></td>
@@ -910,9 +913,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.Date&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>id</strong></td>
@@ -998,9 +1001,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.Time&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>id</strong></td>
@@ -1082,10 +1085,11 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.ToggleChoice&quot;</strong></td>
+<td>true</td>
 <td></td>
+</tr>
+<tr>
 <td><strong>style</strong></td>
 <td><a href="#choiceinputstyle">ChoiceInputStyle</a></td>
 <td>false</td>
@@ -1176,10 +1180,11 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Input.ChoiceSet&quot;</strong></td>
+<td>true</td>
 <td></td>
+</tr>
+<tr>
 <td><strong>style</strong></td>
 <td><a href="#choiceinputstyle">ChoiceInputStyle</a></td>
 <td>false</td>
@@ -1395,9 +1400,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Container&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>items</strong></td>
@@ -1460,7 +1465,7 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "Meow!"
                 },
                 {
                     "type": "Image",
@@ -1484,7 +1489,7 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "This is some text"
+                    "text": "Meow!"
                 },
                 {
                     "type": "Image",
@@ -1504,51 +1509,70 @@
 <div id='Container.SeparationCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Container.Separation.json'>Try it Yourself »</a>
 </div><script>renderCard('Container.SeparationCard', {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
+  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
   "body": [
     {
-      "type": "TextBlock",
-      "text": "SOME ELEMENT BEFORE THE CONTAINER, separation:none"
+      "type": "Container",
+      "separation": "none",
+      "style": "emphasis",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Purrrrr!"
+        },
+        {
+          "type": "Image",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0",
+          "size": "large"
+        }
+      ]
     },
     {
       "type": "Container",
       "separation": "none",
+      "style": "emphasis",
       "items": [
         {
+          "type": "TextBlock",
+          "text": "Purrrrr!, separation:none"
+        },
+        {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/1",
           "size": "large"
         }
       ]
-    },
-    {
-      "type": "TextBlock",
-      "text": "SOME ELEMENT BEFORE THE CONTAINER, separation:default"
     },
     {
       "type": "Container",
       "separation": "default",
+      "style": "emphasis",
       "items": [
         {
+          "type": "TextBlock",
+          "text": "Purrrrr!, separation:default"
+        },
+        {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/2",
           "size": "large"
         }
       ]
     },
     {
-      "type": "TextBlock",
-      "text": "SOME ELEMENT BEFORE THE CONTAINER, separation:strong"
-    },
-    {
       "type": "Container",
       "separation": "strong",
+      "style": "emphasis",
       "items": [
         {
+          "type": "TextBlock",
+          "text": "Purrrrr!, separation:strong"
+        },
+        {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0",
           "size": "large"
         }
       ]
@@ -1571,9 +1595,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;ColumnSet&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>columns</strong></td>
@@ -1606,7 +1630,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0"
                         }
                     ]
                 },
@@ -1619,7 +1643,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/1"
                         }
                     ]
                 },
@@ -1632,7 +1656,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/2"
                         }
                     ]
                 }
@@ -1661,7 +1685,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0"
                         }
                     ]
                 },
@@ -1674,7 +1698,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/1"
                         }
                     ]
                 },
@@ -1687,7 +1711,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/2"
                         }
                     ]
                 }
@@ -1706,7 +1730,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0"
                         }
                     ]
                 },
@@ -1719,7 +1743,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/1"
                         }
                     ]
                 },
@@ -1732,7 +1756,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/2"
                         }
                     ]
                 }
@@ -1756,9 +1780,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;Column&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>size</strong></td>
@@ -2059,9 +2083,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;FactSet&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>facts</strong></td>
@@ -2120,9 +2144,9 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td>string</td>
-<td>true</td>
 <td><strong>&quot;ImageSet&quot;</strong></td>
+<td>true</td>
+<td></td>
 </tr>
 <tr>
 <td><strong>images</strong></td>
