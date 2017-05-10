@@ -10,7 +10,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size": "small"
     },
     {
@@ -21,7 +21,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size": "medium"
     },
     {
@@ -32,7 +32,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size": "large" 
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size": "auto"
     },
     {
@@ -54,7 +54,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size": "stretch"
     }
   ]

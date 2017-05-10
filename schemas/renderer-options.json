@@ -1,7 +1,7 @@
 !  NOT COMPLETE !
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://microsoft.github.io/AdaptiveCards/schemas/renderer-options.json",
+  "id": "http://adaptivecards.io/schemas/renderer-options.json",
   "type": "object",
   "title": "Microsoft Adaptive Card Options Schema",
   "description": "Adaptive Card renderers use this as settings to control the style of the generated card.",

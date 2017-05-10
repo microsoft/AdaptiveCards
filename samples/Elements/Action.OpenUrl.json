@@ -1,11 +1,11 @@
 {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
         {
             "type": "Image",
-            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+            "url": "http://adaptivecards.io/api/cat"
         }
     ],
     "actions": [

@@ -9,7 +9,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size":"medium",
       "horizontalAlignment": "left"
     },
@@ -21,7 +21,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size":"medium",
       "horizontalAlignment": "center"
     },
@@ -33,7 +33,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size":"medium",
       "horizontalAlignment": "right"
     }

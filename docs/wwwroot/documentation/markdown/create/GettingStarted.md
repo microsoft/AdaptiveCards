@@ -12,7 +12,7 @@ A simple example card which has a single line of text followed by an image
     "body": [
         {
             "type": "Image",
-            "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+            "url": "http://adaptivecards.io/api/cat"
         },
         {
             "type": "TextBlock",
