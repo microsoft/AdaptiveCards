@@ -71,16 +71,16 @@ export class SkypeContainer extends HostContainer {
                     subtle: "#882E89FC" 
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
                     normal: "#FF0000",
                     subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
                 }
             },
             imageSizes: {
@@ -119,7 +119,7 @@ export class SkypeContainer extends HostContainer {
             },
             container: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 },
                 normal: {
                 },
@@ -144,37 +144,37 @@ export class SkypeContainer extends HostContainer {
                 color: "dark",
                 separations: {
                     small: {
-                        spacing: 10,
+                        spacing: 5,
                     },
                     normal: {
-                        spacing: 10
+                        spacing: 5
                     },
                     medium: {
-                        spacing: 10
+                        spacing: 5
                     },
                     large: {
-                        spacing: 10
+                        spacing: 5
                     },
                     extraLarge: {
-                        spacing: 10
+                        spacing: 5
                     }
                 }
             },
             image: {
                 size: "medium",
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             imageSet: {
                 imageSize: "medium",
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 },
                 title: {
                     color: "dark",
@@ -191,21 +191,21 @@ export class SkypeContainer extends HostContainer {
                     weight: "normal",
                     wrap: true,
                 },
-                spacing: 10
+                spacing: 5
             },
             input: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             column: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             }
         };
