@@ -1,27 +1,27 @@
 # iOS Library
-This is a renderer which targets iOS native controls.
+This renderer which targets iOS native controls.
 
 ## Add a renderer
 This is available as a nuget packages. 
-```
+```csharp
 nuget install AdaptiveCards.iOS
 ```
 
-## Create an instance of your renderer
-The next step is to create an instance of the renderer library. 
+## Create an instance of the renderer
+Create an instance of the renderer library. 
 ```csharp
 var renderer = new iOSRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
 ```
 
 ## Hook up action callback
-To hook up action events you pass in a callback when you instantiate your renderer
+To hook up action events, pass in a callback when you instantiate your renderer.
 ```csharp
 var hostConfig = new HostConfig() { ... };
 var renderer = new iOSRenderer(..., actionCallback:  _onAction);
 ```
 
 ## Render a card
-Now you get a card from some source and you want to render it.  This is super easy:
+Acquire a card from a source and render it.
 
 ```csharp
 var uiCard = renderer.RenderAdaptiveCard(card);
@@ -30,7 +30,7 @@ myGrid.Children.Add(uiCard);
 ```
 
 ## Example
-Here is an example from the iOS renderer to give you a feel for how this works:
+Here is an example from the iOS renderer.
 
 ```csharp
 var hostConfig = new HostConfig() { ... };
@@ -77,11 +77,9 @@ private void _OnMissingInput(object sender, MissingInputEventArgs args)
 ## Customization
 
 ### HostConfig 
-To customize the renderer you provide an instance of the HostConfig object. (See [Host Config Schema](/documentation/#display-hostconfigschema) for the full description.)
+To customize the renderer, provide an instance of the HostConfig object. See the [Host Config Schema](../HostConfigSchema.md) for a full description. Since the HostConfig object is instantiated with defaults, you only have to set the properties you want to change from the defaults.
+Passing it to the renderer sets the default HostConfig to use for every card you render.
 
-> The HostConfig object will be instantiated with defaults, so you can set just the properties you want to change.
-
-Example:
 ```csharp
 var hostConfig = new HostConfig() 
 {
@@ -95,18 +93,15 @@ var hostConfig = new HostConfig()
 };
 ```
 
-When you pass it in to the iOSRenderer you are setting the default HostConfig to use for every card you render.
-
 ### Changing per element rendering
-The iOSRenderer has a registration mechanism which allows you to set a function which is called to perform the
-rendering on a per element basis.  It exposes a method called SetRenderer<ElementT>(func); 
+The iOSRenderer has a registration mechanism which allows you to set a function that is called to perform the
+rendering on a per-element basis.  It exposes a method called SetRenderer<ElementT>(func); 
 
-Let's say you want to override the rendering of a Input.Date element.  You would do something like this:
+To override the rendering of a `Input.Date` element:
 ```csharp
 iOSRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
 ```
-
-And the new date renderer would look like this:
+The new date renderer would look like this:
 ```csharp
 public static FrameworkElement Render(TypedElement element, RenderContext context)
 {
@@ -119,8 +114,8 @@ public static FrameworkElement Render(TypedElement element, RenderContext contex
 
 
 ### UI Framework styling
-If you pass in a iOS ResourceDictionary you can further customize the iOS behavior. This
-allows you to define roll over behaviors, animations, rounded buttons, etc.  Here is a table of the 
+If you pass in a iOS ResourceDictionary you can customize the iOS behavior further. This
+allows you to define roll over behaviors, animations, rounded buttons, and so on.  Here is a table of the 
 style names that are used for each element.  
 
 | Element | Style names used|
@@ -145,7 +140,7 @@ style names that are used for each element.
 | FactSet | Adaptive.FactSet, Adaptive.Fact.Title, Adaptive.Fact.Value|
 | TextBlock  | Adaptive.TextBlock |
 
-Here is a sample resource dictionary which adds a hover effect on elements with an Action defined on them:
+Here is a sample resource dictionary which adds a hover effect to elements with an Action defined on them:
 ```xml
 <Window.Resources>
     <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
@@ -182,9 +177,8 @@ Here is a sample resource dictionary which adds a hover effect on elements with 
 </Window.Resources>
 ```
 
-## Resources
-* [Libraries](/documentation/#display-libraries) 
-* [Implementing a renderer](/documentation/#disply-implementingrenderer) 
-* [Customizing a renderer](/documentation/#display-customizingrenderer) 
+## Next steps
+
+* [Implement a renderer](../ImplementingRenderer.md) 
 
 
