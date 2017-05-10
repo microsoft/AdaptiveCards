@@ -73,6 +73,7 @@ enum class AdaptiveCardSchemaKey
     BackgroundImageUrl,
     Actions,
     Method,
+    Card,
 };
 
 enum class TextSize
