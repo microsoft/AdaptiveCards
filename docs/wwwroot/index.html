@@ -27,9 +27,15 @@
             background-color: #0B7ED3;
         }
 
+        @media(max-width: 594px) {
+            .content {
+                margin-top: 230px;
+            }
+        }
+
         @media(max-width: 1000px) {
-            .videobanner{
-                display:none;
+            .videobanner {
+                display: none;
             }
         }
     </style>
@@ -49,10 +55,12 @@
 
     <!-- main content -->
     <div id="vidbanner" class="videobanner">
-        <video style="width: 1000px; margin-left: 104px;" src="https://bot-framework.azureedge.net/videos/AdaptiveCardsSizzleLoop.mp4" autoplay="" loop=""></video>
+        <div style="text-align:center">
+            <video style="width: 1000px;" src="https://bot-framework.azureedge.net/videos/AdaptiveCardsSizzleLoop_1000.mp4" autoplay="" loop=""></video>
+        </div>
     </div>
 
-    <div class="w3-row w3-container content">
+    <div class="w3-row w3-container content" style="margin-left:auto;margin-right:auto;">
         <div id="home">
         </div>
         <!--<div class="w3-onethird" id="images" style="display:none">

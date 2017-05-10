@@ -1,6 +1,6 @@
 # Adaptive Cards Viewer for Visual Studio Code
 
-[Visual Studio Marketplace](https://marketplace.visualstudio.com/items/tomlm.vscode-AdaptiveCardsviewer)
+![extension](http://adaptivecards.io/content/vscode-extension.png)
 
 ## Usage 
 When you are editing a .json file with a adaptive card $schema property you can view by using **Ctrl+Shift+V A**.

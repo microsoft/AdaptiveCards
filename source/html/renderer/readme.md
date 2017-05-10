@@ -1,54 +1,8 @@
-'use strict';
-
-import * as vscode from 'vscode';
-import * as path from 'path';
-
-export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentContentProvider {
-    private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
-
-    public constructor(private _context: vscode.ExtensionContext) {}
-
-    public provideTextDocumentContent(uri: vscode.Uri): string {
-        return this.createAdaptiveCardSnippet();
-    }
-
-    get onDidChange(): vscode.Event<vscode.Uri> {
-        return this._onDidChange.event;
-    }
-
-    public update(uri: vscode.Uri) {
-        this._onDidChange.fire(uri);
-    }
-
-    private createAdaptiveCardSnippet() {
-        return this.extractSnippet();
-    }
-
-    private extractSnippet(): string {
-        let editor = vscode.window.activeTextEditor;
-        let text = editor ? editor.document.getText() : '';
-        let fileName = editor ? editor.document.fileName : '';
-        let snippet = this.snippet(fileName, text);
-        return snippet;
-    }
-
-    private errorSnippet(error: string): string {
-        return `
-                <body>
-                    ${error}
-                </body>`;
-    }
-
-    private getPath(p: string): string {
-        return path.join(this._context.extensionPath, p);
-    }
-
-    private snippet(fileName, json): string {
-        return `<!DOCTYPE html>
+`<!DOCTYPE html>
         <html>
             <head>
                 <link rel="stylesheet" type="text/css" href="${this.getPath('media/export.css')}">
-                <script src="${this.getPath('node_modules/microsoft-adaptivecards/dist/adaptive-cards.js')}"></script>
+                <script src="${this.getPath('node_modules/adaptive-cards/dist/adaptive-cards.js')}"></script>
             </head>
             <body>
                 <h1>Adaptive Card Preview</h1>
@@ -63,10 +17,10 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                         },
                         fontFamily: "Segoe UI",
                         fontSizes: {
-                            small: 13,
-                            normal: 15,
-                            medium: 18,
-                            large: 22,
+                            small: 12,
+                            normal: 14,
+                            medium: 17,
+                            large: 21,
                             extraLarge: 26
                         },
                         fontWeights: {
@@ -227,8 +181,183 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                         }
                     });
 
+                    AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
+                        var message = "Action executed\n";
+                        message += "    Title: " + action.title + "\n";
+
+                        if (action instanceof AdaptiveCards.OpenUrlAction) {
+                            message += "    Type: OpenUrl\n";
+                            message += "    Url: " + action.url + "\n";
+                        }
+                        else if (action instanceof AdaptiveCards.SubmitAction) {
+                            message += "    Type: Submit";
+                            message += "    Data: " + JSON.stringify(action.data);
+                        }
+                        else if (action instanceof AdaptiveCards.HttpAction) {
+                            var httpAction = action;
+                            message += "    Type: Http\n";
+                            message += "    Url: " + httpAction.url + "\n";
+                            message += "    Method: " + httpAction.method + "\n";
+                            message += "    Headers:\n";
+
+                            for (var i = 0; i < httpAction.headers.length; i++) {
+                                message += "        " + httpAction.headers[i].name + ": " + httpAction.headers[i].value + "\n";
+                            }
+                            message += "    Body: " + httpAction.body + "\n";
+                        }
+                        else {
+                            message += "    Type: <unknown>";
+                        }
+
+                        alert(message);
+                    }
+
                     var adaptiveCard = new AdaptiveCards.AdaptiveCard();
-                    adaptiveCard.parse(${json});
+                    adaptiveCard.parse({
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "Container",
+			"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Card created: Publish Adaptive Card schema",
+					"weight": "bolder",
+					"size": "medium"
+				},
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"size": "auto",
+							"items": [
+								{
+									"type": "Image",
+									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+									"size": "small",
+									"style": "person"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"size": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "**Miguel Garcia**",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"separation": "none",
+									"text": "Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}",
+									"isSubtle": true,
+									"wrap": true
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+					"speak": "",
+					"wrap": true
+				},
+				{
+					"type": "FactSet",
+					"speak": "It has been assigned to: David Claux",
+					"facts": [
+						{
+							"title": "Board:",
+							"value": "Adaptive Card"
+						},
+						{
+							"title": "List:",
+							"value": "Backlog"
+						},
+						{
+							"title": "Assigned to:",
+							"value": "David Claux"
+						},
+						{
+							"title": "Due date:",
+							"value": "Not set"
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Set due date",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Date",
+						"id": "dueDate",
+						"title": "Select due date"
+					}
+				],
+				"actions": [
+				    {
+				        "type": "Action.Http",
+				        "title": "OK",
+				        "url": "http://xyz.com",
+                        "headers": {
+							"content-type": "application/json"
+						},
+						"body": "{ 'comment' : '{{comment.value}}' }"
+				    }
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Comment",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"isMultiline": true,
+						"placeholder": "Enter your comment"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Http",
+						"method": "POST",
+						"title": "OK",
+						"url": "http://xyz.com",
+						"headers": {
+							"content-type": "application/json"
+						},
+						"body": "{ 'comment' : '{{comment.value}}' }"
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "View",
+			"url": "http://foo.com"
+		}
+	]
+});
                     var renderedCard = adaptiveCard.render();
                     
                     document.getElementById('previewDiv').appendChild(renderedCard);
@@ -236,9 +365,6 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                     {
                         alert(JSON.stringify(action));
                     };
-                    
                 </script>
             </body>
-        </html>`;
-    }
-}
+        </html>
