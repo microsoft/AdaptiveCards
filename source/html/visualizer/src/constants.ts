@@ -174,7 +174,7 @@ export const defaultConfigPayload: string = `{
 }`;
 
 export const defaultPayload: string = `{
-	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"body": [
 		{

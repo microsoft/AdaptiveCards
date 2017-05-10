@@ -4,14 +4,14 @@
     <id>$id$</id>
     <version>$version$</version>
     <authors>Microsoft</authors>
-    <iconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</iconUrl>
+    <iconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
     <projectUrl>https://github.com/Microsoft/AdaptiveCards</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Adaptive Card renderer for WPF Xaml which uses the Wpf Extension pack to have richer input controls</summary>
     <description>This library implements classes for rending adaptive card objects into XAML/WPF using the Extended WPF Toolkit input controls</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="AdaptiveCards.WPF" version="1.0.0.0" />
+      <dependency id="Microsoft.AdaptiveCards.WPF" version="0.5.0.0" />
     </dependencies>
   </metadata>
 </package>
