@@ -1,20 +1,20 @@
 # HTML Client Library
-This is a HTML renderer which works in the browser agains the DOM.
+This is a HTML renderer which works in the browser against the DOM.
 
 ## Add a renderer
 This is available as a NPM package. 
-```
+```javascript
 npm install adaptive-cards
 ```
 
-## Create an instance of your renderer
+## Create an instance of the renderer
 The next step is to create an instance of the renderer library. 
 ```javascript
 var ajaxRenderer = new AdaptiveCards.AdaptiveCard();
 ```
 
 ## Hook up action callback
-To hook up action events you register an onExecuteAction callback
+To hook up action events, register an `onExecuteAction` callback.
 
 ```javascript
 AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
@@ -23,8 +23,8 @@ AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
 ```
 
 ## Render a card
-To render a card, you instantiate an AdaptiveCard, parse the card object and call render() to get a HtmlElement that can be inserted
-into a div.
+To render a card, you instantiate an AdaptiveCard, parse the card object and call `render()` to get a HtmlElement that can be inserted
+into a \<div\>.
 
 ```javascript
 function renderCard(targetDiv, cardObject) {
@@ -36,7 +36,7 @@ function renderCard(targetDiv, cardObject) {
 ```
 
 ## Example
-Here is an example from the ajax renderer to give you a feel for how this works:
+Here is an example from the Ajax renderer.
 
 ```javascript
 var adaptiveCard = new AdaptiveCards.AdaptiveCard();
@@ -79,7 +79,7 @@ AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
 ## Customization
 
 ### HostConfig 
-To customize the renderer you provide an instance of the HostConfig object. (See [Host Config Schema](/documentation/#display-hostconfigschema) for the full description.)
+To customize the renderer, provide an instance of the HostConfig object. See [Host Config Schema](../HostConfigSchema.md) for the full description. When you register it, you are setting the global host config for all rendering actions you perform with the library.
 
 Example:
 ```javascript
@@ -254,28 +254,23 @@ AdaptiveCards.setHostConfig({
 });
 ```
 
-When you register it you are setting the global host config for all rendering actions you perform with the library.
-
 ### Changing per element rendering
-The ajax renderer has a callback registry for actions (AdaptiveCard.actionTypeRegistry) and elements(AdaptiveCard.elementTypeRegistry) which all you to set a function which is called to perform the
-rendering on a per element basis.
+The Ajax renderer has a callback registry for actions `AdaptiveCard.actionTypeRegistry` and elements `AdaptiveCard.elementTypeRegistry` which allow you to set a function that is called to perform the
+rendering on a per-element basis.
 
-AdaptiveCard.elementTypeRegistry
-
-Let's say you want to override the rendering of a Input.Date element.  You would do something like this:
+To override the rendering of a `Input.Date` element:
 ```javascript
 AdaptiveCard.elementTypeRegistry.registerType("Input.Date", () => { return new DateInput(); }); 
 ```
-
-And to override an action
+To override an `Action`:
 ```javascript
 AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });  
 ```
 
 ### UI Framework styling
-You can further style using standard CSS to change the behavior of the HTML.
+For additional styling, use standard CSS to change the behavior of the HTML.
 
-style names that are used for each element.  
+Here are the style names that apply to each element.  
 
 | style | use |
 |---|---|
@@ -292,7 +287,7 @@ style names that are used for each element.
 | .ac-timeInput | time input |
 | .ac-multichoiceInput | multichoice input|
 
-Here is a sample CSS which styles content for Tems style
+Here is a sample CSS which styles content for Tems style.
 ```css
 .ac-image.ac-selectable {
   cursor: pointer;
@@ -396,9 +391,8 @@ Here is a sample CSS which styles content for Tems style
 }
 ```
 
-## Resources
-* [Libraries](/documentation/#display-libraries) 
-* [Implementing a renderer](/documentation/#disply-implementingrenderer) 
-* [Customizing a renderer](/documentation/#display-customizingrenderer) 
+## Next steps
+
+* [Implement a renderer](../ImplementingRenderer.md)  
 
 
