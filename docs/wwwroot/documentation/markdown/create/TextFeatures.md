@@ -26,7 +26,7 @@ inside text of the textblock.
 
 These functions can be invoked anywhere in the text of a text block like this:
 
-```
+```javascript
     "Your order was shipped {{DATE(2017-02-13T20:46:30Z, Long)}} and will arrive at {{TIME(2017-02-13T20:00:00Z, Short)}}" 
 ```
 
@@ -37,17 +37,17 @@ how you would like the date to be formatted for the user in the text string.
 
 The format is expressed as a binding clause like this:
 
-```
+```javascript
     {{DATE(..iso-8601.., Short|Long)}}
 ```
 
 Example for (en-us):
-```
+```javascript
     {{DATE(2017-02-13T20:46:30Z, Short)}} => 2/13/2017
     {{DATE(2017-02-13T20:46:30Z, Long)}} => Monday, February 13, 2017
 ```
 > NOTE: The hint part of the function is optional and can be omitted like this:
-```
+```javascript
     {{DATE(2017-02-13T20:46:30z)}}
 ```
 
@@ -58,16 +58,16 @@ how you would like the time to be formatted for the user in the text string.
 
 The format is expressed as a binding clause like this:
 
-```
+```javascript
     {{TIME(..iso-8601.., Short|Long)}}
 ```
 Example for (en-us):
-```
+```javascript
     {{TIME(2017-02-13T20:46:30Z, Short)}} => 8:46 PM
     {{TIME(2017-02-13T20:46:30Z, Long)}} => 8:46:30 PM
 ```
 > NOTE: The hint part of the function is optional and can be omitted like this:
 
-```
+```javascript
     {{TIME(2017-02-13T20:46:30z)}}
 ```

@@ -17,7 +17,7 @@ This allows for clients to read each element to recipients with accessibility re
 
 ### Examples
 
-```
+```javascript
     "speak":"hello world!"
 
     "speak":"<s>This is sentence 1.</s><s>This is sentence two</s>"

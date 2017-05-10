@@ -34,3 +34,7 @@
     margin: 20px;
     text-decoration: none !important;
 }
+
+.maincontent {
+    max-width:1000px;
+}
