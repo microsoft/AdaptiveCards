@@ -5,7 +5,7 @@ WPF Toolkit to add rich Email, Number, Telephone, Date and Time input controls.
 ## Add a renderer
 This is available as a nuget packages. 
 ```
-nuget install AdaptiveCards.Xaml.WPF.RichInput
+nuget install Microsoft.AdaptiveCards.Xaml.WPF.RichInput
 ```
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 

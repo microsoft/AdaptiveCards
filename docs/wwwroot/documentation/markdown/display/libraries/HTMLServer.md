@@ -4,7 +4,7 @@ This is a .NET server side library for generating HTML markup to be sent to a cl
 ## Add a renderer
 This is available as a nuget packages. 
 ```
-nuget install AdaptiveCards.Html
+nuget install Microsoft.AdaptiveCards.Html
 ```
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 

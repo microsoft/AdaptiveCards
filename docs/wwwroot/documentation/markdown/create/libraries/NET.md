@@ -6,11 +6,11 @@ define a strongly typed class hierarchy that is easy to serialize/deserialize js
 You can use any tooling that you want to create the adaptive card json.
 
 ## .NET 
-The **AdaptiveCards** nuget package defines a class hierachy for working with adaptive cards in .NET
+The **Microsoft.AdaptiveCards** nuget package defines a class hierachy for working with adaptive cards in .NET
 
 ### To install
 ```
-nuget install AdaptiveCards 
+nuget install Microsoft.AdaptiveCards 
 ```
 
 ### Example creating 
