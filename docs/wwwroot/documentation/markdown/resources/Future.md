@@ -1,11 +1,11 @@
 # Future work
-While we have made a excellent progress defining adaptive cards, there is still lots of work to do. 
+While we have made excellent progress defining adaptive cards, there is still lots of work to do. 
 
 Our hope is that through active developer communities like botness, and great partners like Slack and Kik, we can create a great ecosystem of cross-platform cards.
 
 Here are some future areas we plan to explore:
 
-## Making cards reactive
+## Make cards reactive
 Card layouts should be reactive to available space. Adaptive cards are adaptable to different devices, ux styles and and ui frameworks, but they are not reactive yet. Additional properties must be defined on elements which allow card producers to provide the necessary hints to the rendering libraries so that they can intelligently change the layout in a way which maintains the intent of the card.
 
 ### Some ideas 
