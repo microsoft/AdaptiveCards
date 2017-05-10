@@ -1,40 +1,52 @@
 # What is HostConfig?
-Host config is an shared configuration object which defines parameters controlling how an Adaptive Card Renderer generates UI.  
+HostConfig is an shared configuration object which defines parameters controlling how an Adaptive Card Renderer generates UI.  
 
 This allows properties which are platform agnostic to be shared among renderers on different platforms and devices. It also allows tooling to be created which gives you an idea of the look and feel that card would have for a given environment.
+ 
+Examine [HostConfig.json](../samples/Themes/HostConfig.json) to see sample theme.
 
-> NOTE: You  can further customize the look and feel of the card using the styling mechanisms appropriate to the ui framework used
-to render the card.  For example: use CSS in HTML to change the look and behavior of action elements.
+> ![NOTE] 
+> You can customize the look and feel of the card further using the styling mechanisms appropriate to the UI framework 
+> used to render the card.  For example, use CSS in HTML to change the look and behavior of action elements.
 
-# HostConfig
+## HostConfig
 
 | Property | Type | default | Description |
 |---|---|---|---|
-| **actions** | [ActionsConfig](#actionsconfig) | - | Defines config for actions in general|
-| **adaptiveCard**| [AdaptiveCardConfig](#adaptivecardconfig) | - | Defines adaptive card config |
-| **choiceSet**| [ChoiceSetConfig](#choicesetconfig) | - | Defines ChoiceSet config |
-| **colors** | [ColorsConfig](#colorsconfig) | - | Defines color pallette|
-| **column** | [ColumnConfig](#columnconfig) | - | Defines config for Column element |
-| **columnSet** | [ColumnSetConfig](#columnsetconfig) | - | Defines config for ColumnSet element |
-| **container** | [ContainerConfig](#containerconfig) | - | Defines config for Container element |
-| **dateInput**| [DateInputConfig](#dateInputConfig) | - | Defines DateInput config |
-| **image**| [ImageConfig](#imageconfig) | - | Defines Image  config |
-| **imageSet** | [ImageSetConfig](#imagesetconfig) | - | Defines config for ImageSet element|
+| **actions** | [ActionsConfig](#actionsconfig) | - | Defines configuration for actions in general|
+| **actionAlignment** | [ActionAlignment](#actionalign) |  - |Controls how actions are horizontally positioned within their container | 
+| **actionSetConfig** | [ActionSetConfig](#actionSetconfig) |  - |Defines ActionSet configuration  | 
+| **actionOrientation** | [ActionOrientation](#actionorient) |  - |Controls how actions are oriented | 
+| **adaptiveCard**| [AdaptiveCardConfig](#adaptivecardconfig) | - | Defines adaptive card configuration |
+| **choiceSet**| [ChoiceSetConfig](#choicesetconfig) | - | Defines ChoiceSet configuration |
+| **colors** | [ColorsConfig](#colorsconfig) | - | Defines color palette|
+| **colorConfig** | [ColorConfig](#colorconfig) |  - |Defines color and subtle version of color | 
+| **column** | [ColumnConfig](#columnconfig) | - | Defines configuration for Column element |
+| **columnSet** | [ColumnSetConfig](#columnsetconfig) | - | Defines configuration for ColumnSet element |
+| **container** | [ContainerConfig](#containerconfig) | - | Defines configuration for Container element |
+| **containerStyleConfig** | [ContainerStyleConfig](#containerStyleconfig) |  - |Defines a style for a container | 
+| **dateInput**| [DateInputConfig](#dateInputConfig) | - | Defines DateInput configuration |
+| **image**| [ImageConfig](#imageconfig) | - | Defines Image configuration |
+| **imageSet** | [ImageSetConfig](#imagesetconfig) | - | Defines configuration for ImageSet element|
 | **imageSizes** | [ImageSizesConfig](#imagesizesconfig) | - | Defines the sizes for images |
-| **factSet** | [FactSetConfig](#factsetconfig) | - | Defines config for FactSet element|
+| **factSet** | [FactSetConfig](#factsetconfig) | - | Defines configuration for FactSet element|
 | **fontFamily**| string | "Calibri" | Defines comma delimited font-family to be used for card |
 | **fontSizes** | [FontSizesConfig](#fontsizesconfig) |  - | Defines font sizes to use for text. |
-| **numberInput**| [NumberInputConfig](#numberinputconfig) | - | Defines NumberInput config |
+| **numberInput**| [NumberInputConfig](#numberinputconfig) | - | Defines NumberInput configuration |
+| **showActionMode** | [ShowActionMode](#showAction) | - | Controls how to show the card for a ShowActionCard  | 
+| **showCardActionConfig** | [ShowCardActionConfig](#showCardconfig) |  - |The configuration for showing a card action.|
+| **spacingDefinition** | [SpacingDefinition](#spaceDef) |  - |Defines left, top, right and bottom number values | 
 | **strongSeparation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between vertical elements| 
 | **supportsInteractivity** | bool | true| Does the host want to support interactivity like actions and inputs |
-| **textBlock**| [TextBlockConfig](#textblockconfig) | - | Defines TextBlock config |
-| **textInput**| [TextInputConfig](#textinputconfig) | - | Defines TextInput config |
-| **timeInput**| [TimeInputConfig](#timeinputconfig) | - | Defines TimeInput config |
-| **toggleInput**| [ToggleInputConfig](#toggleinputconfig) | - | Defines ToggleInput config |
+| **textBlock**| [TextBlockConfig](#textblockconfig) | - | Defines TextBlock configuration |
+| **TextConfig** | [TextConfig](#textconfig) |  - |Defines text settings for things like FactSet Title. | 
+| **textInput**| [TextInputConfig](#textinputconfig) | - | Defines TextInput configuration |
+| **timeInput**| [TimeInputConfig](#timeinputconfig) | - | Defines TimeInput configuration |
+| **toggleInput**| [ToggleInputConfig](#toggleinputconfig) | - | Defines ToggleInput configuration |
 
 
 ## ActionsConfig
-Defines config for how actions should be rendered
+<a name="actionsconfig"></a>Defines config for how actions should be rendered
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -43,10 +55,10 @@ Defines config for how actions should be rendered
 | **buttonSpacing** | number | 8 | spacing between buttons in an actionSet|
 | **maxActions** | number | 5 | max number of actions that the app wants to support|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines separation between actionSet and previous elements | 
-| **showCard** | [ShowCardActionConfig](#showcardactionconfig)| - | Defines config for ShowCardAction|
+| **showCard** | [ShowCardActionConfig](#showcardactionconfig)| - | Defines configuration for ShowCardAction|
 
 ### ActionAlignment
-Controls how actions are horizontally positioned within their container
+<a name="actionalign"></a>Controls how actions are horizontally positioned within their container
 
 | Value | Meaning |
 |---|---|
@@ -56,14 +68,14 @@ Controls how actions are horizontally positioned within their container
 | **stretch** | actions should be be stretched to fit the width |
 
 ## ActionSetConfig
-Defines ActionSet config
+<a name="actionSetconfig"></a>Defines ActionSet configuration
 
 | Property | Type | default | Description |
 |---|---|---|---|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
 
 ### ActionOrientation
-Controls how actions are oriented
+<a name="actionorient"></a>Controls how actions are oriented
 
 | Value | Meaning |
 |---|---|
@@ -71,7 +83,7 @@ Controls how actions are oriented
 | **vertically** |actions should be laid out vertically|
 
 ## AdaptiveCardConfig
-Defines Card config
+<a name="adaptivecardconfig"></a>Defines Card configuration
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -79,14 +91,14 @@ Defines Card config
 | **padding**| [SpacingDefinition](#spacingdefinition) | 8,8,8,8 | Defines padding between card content and edge of card|
 
 ## ChoiceSetConfig
-Defines config for ChoiceSet input elements
+<a name="choicesetconfig"></a>Defines configuration for ChoiceSet input elements
 
 | Property | Type | default | Description |
 |---|---|---|---|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
 
 ## ColorsConfig
-ColorConfig defines the palette for the card
+<a name="colorsconfig"></a>Color configuration defines the palette for the card
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -99,7 +111,7 @@ ColorConfig defines the palette for the card
 | **attention**  | [ColorConfig](#colorconfig) | #FF8B0000 | attention color to use |
 
 ## ColorConfig
-Defines color and subtle version of color
+<a name="colorconfig"></a>Defines color and subtle version of color
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -107,14 +119,14 @@ Defines color and subtle version of color
 | **subtle** | string | - | subtle color to use (in #AARRGGBB)|
 
 ## ColumnSetConfig
-Defines ColumnSet config
+<a name="columnsetconfig"></a>Defines ColumnSet configuration
 
 | Property | Type | default | Description |
 |---|---|---|---|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
 
 ## ColumnConfig
-Defines column config
+<a name="columnconfig"></a>Defines column configuration
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -122,7 +134,7 @@ Defines column config
 
 
 ## ContainerConfig
-Defines container config
+<a name="containerconfig"></a>Defines container configuration
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -131,7 +143,7 @@ Defines container config
 | **emphasis**| [ContainerStyleConfig](#containerstyleconfig)| - | Defines an emphasized style for a container |
 
 ### ContainerStyleConfig
-Defines a style for a container
+<a name="containerStyleconfig"></a>Defines a style for a container
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -141,7 +153,7 @@ Defines a style for a container
 | **padding** | [SpacingDefinition](#spacingdefinition) | {0,0,0,0} | Defines background color for the container | 
 
 ## DateInputConfig
-Defines config for Date input elements
+<a name="dateInputConfig"></a>Defines configuration for Date input elements
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -149,7 +161,7 @@ Defines config for Date input elements
 
 
 ## ImageConfig
-Default Image config
+<a name="imageconfig"></a>Default Image configuration
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -157,7 +169,7 @@ Default Image config
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
 
 ## ImageSetConfig
-Default Image size for the imageset
+<a name="imagesetconfig"></a>Default Image size for the imageset
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -166,7 +178,7 @@ Default Image size for the imageset
 
 
 ## ImageSizesConfig
-Defines imageSize for the card
+<a name="imagesizesconfig"></a>Defines imageSize for the card
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -175,7 +187,7 @@ Defines imageSize for the card
 | **large**  | number | 120 | large image size|
 
 ## FactSetConfig
-Defines how factSets should look
+<a name="factsetconfig"></a>Defines how factSets should look
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -185,7 +197,7 @@ Defines how factSets should look
 | **value** | [TextConfig](#textconfig) | { } | sets how text for fact value should look|
 
 ## FontSizesConfig
-Font sizes you desire
+<a name="fontsizesconfig"></a>Defines font sizes 
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -196,21 +208,21 @@ Font sizes you desire
 | **extraLarge** | number | 20 | extraLarge font size|
 
 ## NumberInputConfig
-Defines config for Number input elements
+<a name="numberinputconfig"></a>Defines configuration for Number input elements
 
 | Property | Type | default | Description |
 |---|---|---|---|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
 
 ## TextBlockConfig
-Defines config for TextBlock elements
+<a name="textblockconfig"></a>Defines configuration for TextBlock elements
 
 | Property | Type | default | Description |
 |---|---|---|---|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
 
 ## TextConfig
-Defines text settings for things like FactSet Title.
+<a name="textconfig"></a>Defines text settings for things like FactSet Title.
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -221,27 +233,27 @@ Defines text settings for things like FactSet Title.
 | **isSubtle** | bool | false | should use subtle version of color |
 
 ## TextInputConfig
-Defines config for Text input elements
+<a name="textinputconfig"></a>Defines configuration for Text input elements
 
 | Property | Type | default | Description |
 |---|---|---|---|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
 
 ## TimeInputConfig
-Defines config for Time input elements
+<a name="timeinputconfig"></a>Defines configuration for Time input elements
 
 | Property | Type | default | Description |
 |---|---|---|---|
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
 
 ## ToggleInputConfig
-Defines config for Toggle input elements
+<a name="toggleinputconfig"></a>Defines configuration for Toggle input elements
 
 | Property | Type | default | Description |
 |---|---|---|---|
 
 ### SeparationConfig
-Properties which define spacing, line thickness and color for separating elements
+<a name="SeparationConfig"></a>Properties which define spacing, line thickness and color for separating elements
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -251,7 +263,7 @@ Properties which define spacing, line thickness and color for separating element
 
 
 ## ShowCardActionConfig
-The config for showing a card action.
+<a name="showCardconfig"></a>The configuration for showing a card action.
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -261,7 +273,7 @@ The config for showing a card action.
 | **padding** | [SpacingDefinition]](#spacingdefinition) | {16,16,16,16} | The padding for the card when shown inline  |
 
 ## SpacingDefinition
-Defines left,top, right and bottom number values
+<a name="spaceDef"></a>Defines left, top, right and bottom number values
 
 | Property | Type | default | Description |
 |---|---|---|---|
@@ -271,7 +283,7 @@ Defines left,top, right and bottom number values
 | **bottom**| number | 0 | define bottom value |
 
 ## ShowActionMode
-Controls how to show the card for a ShowActionCard 
+<a name="showAction"></a>Controls how to show the card for a ShowActionCard 
 
 | Value | Meaning |
 |---|---|
@@ -279,6 +291,5 @@ Controls how to show the card for a ShowActionCard
 | **Inline** | Show the card inline |
 | **Popup** | Popup a window to show the card |
 
-# Sample theme
-Go to [HostConfig.json](../samples/Themes/HostConfig.json) to see sample theme.
+
 
