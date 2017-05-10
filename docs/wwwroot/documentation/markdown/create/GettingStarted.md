@@ -26,7 +26,7 @@ A simple example card which has a single line of text followed by an image:
 
 ## Type property
 Every element has a `type` property which identifies what kind of object it is. Looking at the above card you can see we
-have 2 elements, one which is an `Image`, one which is a `TextBlock`.
+have two elements, one which is an `Image`, one which is a `TextBlock`.
 
 ## Basic elements
 The most fundamental basic elements are:
