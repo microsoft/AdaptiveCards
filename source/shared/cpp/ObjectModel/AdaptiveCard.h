@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Enums.h"
-#include "pch.h"
 #include "BaseCardElement.h"
 #include "BaseActionElement.h"
 #include "Container.h"
+#include "Enums.h"
+#include "pch.h"
 
 namespace AdaptiveCards
 {
@@ -28,7 +28,6 @@ public:
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetBody() const;
-
     const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
 
     const CardElementType GetElementType() const;

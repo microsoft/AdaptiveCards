@@ -1426,8 +1426,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveHttpAction : IInspectable
         {
-            [propget] HRESULT Url([out, retval] HSTRING* value);
-            [propput] HRESULT Url([in] HSTRING value);
+            [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
+            [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
 
             [propget] HRESULT Method([out, retval] HSTRING* value);
             [propput] HRESULT Method([in] HSTRING value);
@@ -1452,8 +1452,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveOpenUrlAction : IInspectable
         {
-            [propget] HRESULT Url([out, retval] HSTRING* value);
-            [propput] HRESULT Url([in] HSTRING value);
+            [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
+            [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
         };
 
         [

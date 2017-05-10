@@ -1,5 +1,5 @@
-#include "SubmitAction.h"
 #include "ParseUtil.h"
+#include "SubmitAction.h"
 
 using namespace AdaptiveCards;
 

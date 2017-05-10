@@ -21,11 +21,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING *speak);
+        IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
         IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
 
-        IFACEMETHODIMP get_Title(_Out_ HSTRING *text);
-        IFACEMETHODIMP put_Title(_In_ HSTRING text);
+        IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
+        IFACEMETHODIMP put_Title(_In_ HSTRING title);
     private:
         std::shared_ptr<AdaptiveCards::ShowCardAction> m_sharedShowCardAction;
     };

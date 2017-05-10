@@ -1,17 +1,16 @@
 #include "pch.h"
-#include "util.h"
 #include <locale>
 #include <codecvt>
 #include <string>
 
-#include "AdaptiveTextBlock.h"
-#include "AdaptiveImage.h"
-#include "AdaptiveImageSet.h"
-#include "AdaptiveContainer.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
+#include "AdaptiveContainer.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
+#include "AdaptiveHttpAction.h"
+#include "AdaptiveImage.h"
+#include "AdaptiveImageSet.h"
 #include "AdaptiveInputDate.h"
 #include "AdaptiveInputNumber.h"
 #include "AdaptiveInputText.h"
@@ -19,10 +18,11 @@
 #include "AdaptiveInputToggle.h"
 #include "AdaptiveInputChoice.h"
 #include "AdaptiveInputChoiceSet.h"
-#include "AdaptiveHttpAction.h"
 #include "AdaptiveOpenUrlAction.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveSubmitAction.h"
+#include "AdaptiveTextBlock.h"
+#include "util.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;

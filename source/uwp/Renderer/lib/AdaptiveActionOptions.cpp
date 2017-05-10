@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Util.h"
 #include "AdaptiveActionOptions.h"
 #include "AdaptiveSeparationOptions.h"
 #include "AdaptiveShowCardOptions.h"
+#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;

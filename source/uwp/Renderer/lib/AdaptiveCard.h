@@ -34,13 +34,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard);
 
         // IAdaptiveCard
-        IFACEMETHODIMP get_Version(_Out_ HSTRING *version);
+        IFACEMETHODIMP get_Version(_Out_ HSTRING* version);
         IFACEMETHODIMP put_Version(_In_ HSTRING version);
 
-        IFACEMETHODIMP get_MinVersion(_Out_ HSTRING *minVersion);
+        IFACEMETHODIMP get_MinVersion(_Out_ HSTRING* minVersion);
         IFACEMETHODIMP put_MinVersion(_In_ HSTRING minVersion);
 
-        IFACEMETHODIMP get_FallbackText(_Out_ HSTRING *fallbackText);
+        IFACEMETHODIMP get_FallbackText(_Out_ HSTRING* fallbackText);
         IFACEMETHODIMP put_FallbackText(_In_ HSTRING fallbackText);
 
         IFACEMETHODIMP get_BackgroundImageUrl(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);

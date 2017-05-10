@@ -189,7 +189,7 @@ ActionType ParseUtil::GetActionType(const Json::Value& json)
     }
     catch (const std::out_of_range&)
     {
-        throw AdaptiveCardParseException("Invalid CardElementType");
+        throw AdaptiveCardParseException("Invalid ActionType");
     }
 }
 

@@ -1,6 +1,8 @@
 #include "pch.h"
-#include "XamlBuilder.h"
 
+#include "AdaptiveColorOptions.h"
+#include "AdaptiveColorOption.h"
+#include "AdaptiveHostOptions.h"
 #include "AdaptiveImage.h"
 #include "DefaultResourceDictionary.h"
 #include <windows.foundation.collections.h>
@@ -9,11 +11,9 @@
 #include <windows.ui.xaml.shapes.h>
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
+#include "XamlBuilder.h"
 #include "XamlHelpers.h"
 #include "XamlStyleKeyGenerators.h"
-#include "AdaptiveHostOptions.h"
-#include "AdaptiveColorOptions.h"
-#include "AdaptiveColorOption.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -129,9 +129,15 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
         BuildPanelChildren(body.Get(), childElementContainer.Get(), [](IUIElement*) {});
 
-        ComPtr<IVector<IAdaptiveActionElement*>> actions;
-        THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
-        BuildActions(actions.Get(), childElementContainer.Get());
+        boolean supportsInteractivity;
+        THROW_IF_FAILED(m_hostOptions->get_SupportsInteractivity(&supportsInteractivity));
+
+        if (supportsInteractivity)
+        {
+            ComPtr<IVector<IAdaptiveActionElement*>> actions;
+            THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
+            BuildActions(actions.Get(), childElementContainer.Get());
+        }
 
         THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
 
@@ -560,8 +566,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // Create a stack panel for the action buttons
         ComPtr<IStackPanel> actionStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-        ComPtr<IPanel> actionsPanel;
-        THROW_IF_FAILED(actionStackPanel.As(&actionsPanel));
 
         ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation actionsOrientation;
         THROW_IF_FAILED(actionOptions->get_ActionsOrientation(&actionsOrientation));
@@ -611,6 +615,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(actionOptions->get_MaxActions(&maxActions));
 
         // Add the action buttons to the stack panel
+        ComPtr<IPanel> actionsPanel;
+        THROW_IF_FAILED(actionStackPanel.As(&actionsPanel));
+
         UINT currentAction = 0;
         XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child)
         {
@@ -633,6 +640,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             currentAction++;
         });
 
+        //TODO: Hook up action handlers
         XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), parentPanel);
     }
 

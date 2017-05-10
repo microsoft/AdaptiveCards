@@ -1,15 +1,9 @@
 #include "pch.h"
 #include "AdaptiveSubmitAction.h"
 #include "Util.h"
-#include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -27,35 +21,35 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_Title(HSTRING* text)
+    HRESULT AdaptiveSubmitAction::get_Title(HSTRING* title)
     {
-        return UTF8ToHString(m_sharedSubmitAction->GetTitle(), text);
+        return UTF8ToHString(m_sharedSubmitAction->GetTitle(), title);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::put_Title(HSTRING text)
+    HRESULT AdaptiveSubmitAction::put_Title(HSTRING title)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(text, out));
+        RETURN_IF_FAILED(HStringToUTF8(title, out));
         m_sharedSubmitAction->SetTitle(out);
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
     {
         *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::Submit;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveSubmitAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveSubmitAction::get_Speak(HSTRING* speak)
     {
         return UTF8ToHString(m_sharedSubmitAction->GetSpeak(), speak);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveSubmitAction::put_Speak(HSTRING speak)
+    HRESULT AdaptiveSubmitAction::put_Speak(HSTRING speak)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(speak, out));
