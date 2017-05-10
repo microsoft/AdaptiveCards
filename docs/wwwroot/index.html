@@ -24,7 +24,7 @@
             margin: -56px 0px 0px;
             width: 100%;
             float: left;
-            background-color: #0B7ED3;
+            background-color: #0078D7;
         }
 
         @media(max-width: 594px) {
@@ -72,8 +72,8 @@
     </div>
     <script>
         $(document).ready(function () {
-            if (navigator.userAgent.indexOf("Edge") > 0)
-                $("#vidbanner").css("background-color", "#0078D7");
+            //if (navigator.userAgent.indexOf("Edge") > 0)
+            //    $("#vidbanner").css("background-color", "#0078D7");
 
             $.get("/api/markdown/Home.md",
                 null,
