@@ -1,4 +1,4 @@
-# HTML Client Library
+# HTML client library
 This is a HTML renderer which works in the browser against the DOM.
 
 ## Add a renderer

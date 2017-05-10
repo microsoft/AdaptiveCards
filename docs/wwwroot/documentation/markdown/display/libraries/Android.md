@@ -1,4 +1,4 @@
-# Android Library
+# Android library
 This is a renderer which targets Android native controls.
 
 ## Add a renderer

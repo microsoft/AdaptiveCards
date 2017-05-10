@@ -1,9 +1,9 @@
-# WPF RichInput Library
+# WPF RichInput library
 This library is a extension of the WPF renderer.  It adds a dependency on the 
 WPF Toolkit to add rich Email, Number, Telephone, Date and Time input controls.
 
 ## Add a renderer
-This is available as a nuget packages. 
+This is available as a nuget package. 
 ```csharp
 nuget install AdaptiveCards.Xaml.WPF.RichInput
 ```

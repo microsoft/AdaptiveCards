@@ -1,8 +1,8 @@
-# UWP Library
+# UWP library
 This is a renderer which targets UWP native controls.
 
 ## Add a renderer
-This is available as a nuget packages. 
+This is available as a nuget package. 
 ```csharp
 nuget install AdaptiveCards.UWP
 ```

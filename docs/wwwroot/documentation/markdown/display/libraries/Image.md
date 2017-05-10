@@ -6,7 +6,7 @@ The important part is that it correctly implements all of the magic STA UI goo s
 > This is defined as part of the AdaptiveCards.Xaml.WPF library
 
 ## Add a renderer
-This is available as a nuget packages. 
+This is available as a nuget packags. 
 ```csharp
 nuget install AdaptiveCards.Xaml.WPF
 ```

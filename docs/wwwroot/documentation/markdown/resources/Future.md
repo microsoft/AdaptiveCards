@@ -9,8 +9,8 @@ Here are some future areas we plan to explore:
 Card layouts should be reactive to available space. Adaptive cards are adaptable to different devices, ux styles and and ui frameworks, but they are not reactive yet. Additional properties must be defined on elements which allow card producers to provide the necessary hints to the rendering libraries so that they can intelligently change the layout in a way which maintains the intent of the card.
 
 ### Some ideas 
-* Add an *importance* property which annotates importance of content. Less important content can be dropped to fit available space
-* Add *constraints* and *policy* properties describing how to react when constraints can't be met. 
+* Add an **importance** property which annotates importance of content. Less important content can be dropped to fit available space
+* Add **constraints** and **policy** properties describing how to react when constraints can't be met. 
   * Hide content or collapse content to smaller size.
   * Add a threshold that, when exceeded, changes `columnSet` to carousel of columns.
 

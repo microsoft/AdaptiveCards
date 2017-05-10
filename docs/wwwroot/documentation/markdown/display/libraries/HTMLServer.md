@@ -1,8 +1,8 @@
-# HTML Server Library
+# HTML server library
 This is a .NET server side library for generating HTML markup to be sent to a client.
 
 ## Add a renderer
-This is available as a nuget packages. 
+This is available as a nuget package. 
 ```csharp
 nuget install AdaptiveCards.Html
 ```

@@ -1,8 +1,8 @@
-# iOS Library
+# iOS library
 This renderer which targets iOS native controls.
 
 ## Add a renderer
-This is available as a nuget packages. 
+This is available as a nuget package. 
 ```csharp
 nuget install AdaptiveCards.iOS
 ```

@@ -1,8 +1,8 @@
-# XamarinForms Library
+# XamarinForms library
 This is a Xaml renderer which target Xamarin Forms on iOS, Android and UWP. 
 
 ## Add a renderer
-This is available as a nuget packages. 
+This is available as a nuget package. 
 ```csharp
 nuget install AdaptiveCards.Xaml.XamarinForms
 ```

@@ -9,9 +9,9 @@ Your renderer should implement a particular version of the schema. If you encoun
 
 An AdaptiveCard consists of a `body` and `actions`
 
-The `body` is a collection of `CardElement`s that you will enumerate and render. Each element is a "block level" element and should take up the width of it's container.
+The `body` is a collection of `CardElement`s that you will enumerate and render. Each element is a "block level" element and should take up the width of its container.
 
-Each `CardElement` from the  [Schema](../Schema.md)
+<!--Each `CardElement` from the  [Schema](../Schema.md) (wasn't sure where this was supposed to lead)-->
 
 ### TextBlock
 
@@ -26,11 +26,12 @@ Inputs should render with the highest fidelity possible. For example, an `Input.
 TODO: List the styles that should be supported on each platform -->
 
 ## Actions
+Actions add buttons to the card.  They don't define the logic of the actions, but use the predefined action types instead.
 
-* Action.Submit
-* Action.Http
-* Action.ShowCard
-* Action.OpenUrl
+* **Action.OpenUrl** - the button opens an external URL for viewing
+* **Action.ShowCard** - Requests a sub-card to be shown to the user.  
+* **Action.Http** - Requests that all of the input data is gathered up and sent via an HTTP call 
+* **Action.Submit** - Ask for all of the input elements to be gathered up into an object which is then sent to you through some method defined by the host application.
 
 ## Events
 
@@ -42,7 +43,7 @@ Raise this event when an action is tapped. You should pass along the properties 
 ## Data binding
 For a submit action, you should gather all inputs on the card and retrieve their values.
 
-Regex to get input values `/\{{2}([a-z0-9_$@]+).value\}{2}/gi;`
+Regex to get input values:   `/\{{2}([a-z0-9_$@]+).value\}{2}/gi;`
 
 ## RenderUnknownType
 Raise this event when an unknown `type` is encountered, allowing the host to handle the event and return UI as it sees fit.

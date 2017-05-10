@@ -3,7 +3,7 @@ HostConfig is an shared configuration object which defines parameters controllin
 
 This allows properties which are platform agnostic to be shared among renderers on different platforms and devices. It also allows tooling to be created which gives you an idea of the look and feel that card would have for a given environment.
  
-Examine [HostConfig.json](../samples/Themes/HostConfig.json) to see sample theme.
+Examine [HostConfig.json](../samples/Themes/HostConfig.json) to see a sample theme.
 
 > ![NOTE] 
 > You can customize the look and feel of the card further using the styling mechanisms appropriate to the UI framework 
