@@ -109,7 +109,7 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
             layout.removeAllViews();
             layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), adaptiveCard, new HostOptions()));
         }
-        catch (Exception ex)
+        catch (java.io.IOException ex)
         {
             if (showErrorToast)
             {

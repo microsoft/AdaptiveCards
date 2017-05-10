@@ -54,7 +54,12 @@ public class CardRendererRegistration
         m_typeToRendererMap.put(cardType, renderer);
     }
 
-    ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElementVector baseCardElementList, HostOptions hostOptions)
+    public BaseCardElementRenderer getRenderer(String cardElementType)
+    {
+        return m_typeToRendererMap.get(cardElementType);
+    }
+
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElementVector baseCardElementList, HostOptions hostOptions)
     {
         long size;
         if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)

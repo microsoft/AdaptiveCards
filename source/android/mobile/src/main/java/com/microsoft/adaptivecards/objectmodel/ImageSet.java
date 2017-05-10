@@ -45,8 +45,8 @@ public class ImageSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_1(separation.swigValue(), speak), true);
   }
 
-  public ImageSet(SeparationStyle separation, String speak, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Image_t_t images) {
-    this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_2(separation.swigValue(), speak, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Image_t_t.getCPtr(images)), true);
+  public ImageSet(SeparationStyle separation, String speak, ImageVector images) {
+    this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_2(separation.swigValue(), speak, ImageVector.getCPtr(images), images), true);
   }
 
   public String Serialize() {
@@ -61,8 +61,8 @@ public class ImageSet extends BaseCardElement {
     AdaptiveCardObjectModelJNI.ImageSet_SetImageSize(swigCPtr, this, value.swigValue());
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Image_t_t GetImages() {
-    return new SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Image_t_t(AdaptiveCardObjectModelJNI.ImageSet_GetImages__SWIG_0(swigCPtr, this), false);
+  public ImageVector GetImages() {
+    return new ImageVector(AdaptiveCardObjectModelJNI.ImageSet_GetImages__SWIG_0(swigCPtr, this), false);
   }
 
   public static ImageSet Deserialize(SWIGTYPE_p_Json__Value root) {

@@ -68,6 +68,8 @@ namespace std {
 %}
 
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
+%template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >; 
+
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
 %exception AdaptiveCards::Container::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {

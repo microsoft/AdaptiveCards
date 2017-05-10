@@ -153,11 +153,15 @@ public class TextBlockRenderer implements BaseCardElementRenderer
         textView.setText(textBlock.GetText());
         textView.setTypeface(null, m_textWeightMap.get(textBlock.GetTextWeight()));
         textView.setSingleLine(!textBlock.GetWrap());
-        textView.setMaxLines((int)textBlock.GetMaxLines());
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         setTextSize(textView, textBlock.GetTextSize(), hostOptions.getFontSizes());
         setTextColor(textView, textBlock.GetTextColor(), textBlock.GetIsSubtle(), hostOptions.getColors());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        int maxLines = (int)textBlock.GetMaxLines();
+        if (maxLines != 0)
+        {
+            textView.setMaxLines(maxLines);
+        }
 
         viewGroup.addView(textView);
         return viewGroup;

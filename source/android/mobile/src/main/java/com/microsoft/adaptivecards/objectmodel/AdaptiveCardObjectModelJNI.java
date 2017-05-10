@@ -20,6 +20,17 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseCardElementVector_get(long jarg1, BaseCardElementVector jarg1_, int jarg2);
   public final static native void BaseCardElementVector_set(long jarg1, BaseCardElementVector jarg1_, int jarg2, long jarg3, BaseCardElement jarg3_);
   public final static native void delete_BaseCardElementVector(long jarg1);
+  public final static native long new_ImageVector__SWIG_0();
+  public final static native long new_ImageVector__SWIG_1(long jarg1);
+  public final static native long ImageVector_size(long jarg1, ImageVector jarg1_);
+  public final static native long ImageVector_capacity(long jarg1, ImageVector jarg1_);
+  public final static native void ImageVector_reserve(long jarg1, ImageVector jarg1_, long jarg2);
+  public final static native boolean ImageVector_isEmpty(long jarg1, ImageVector jarg1_);
+  public final static native void ImageVector_clear(long jarg1, ImageVector jarg1_);
+  public final static native void ImageVector_add(long jarg1, ImageVector jarg1_, long jarg2, Image jarg2_);
+  public final static native long ImageVector_get(long jarg1, ImageVector jarg1_, int jarg2);
+  public final static native void ImageVector_set(long jarg1, ImageVector jarg1_, int jarg2, long jarg3, Image jarg3_);
+  public final static native void delete_ImageVector(long jarg1);
   public final static native long EnableSharedFromThisContainer_shared_from_this(long jarg1, EnableSharedFromThisContainer jarg1_);
   public final static native long new_EnumHash();
   public final static native void delete_EnumHash(long jarg1);
@@ -127,7 +138,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_Image(long jarg1);
   public final static native long new_ImageSet__SWIG_0();
   public final static native long new_ImageSet__SWIG_1(int jarg1, String jarg2);
-  public final static native long new_ImageSet__SWIG_2(int jarg1, String jarg2, long jarg3);
+  public final static native long new_ImageSet__SWIG_2(int jarg1, String jarg2, long jarg3, ImageVector jarg3_);
   public final static native String ImageSet_Serialize(long jarg1, ImageSet jarg1_);
   public final static native int ImageSet_GetImageSize(long jarg1, ImageSet jarg1_);
   public final static native void ImageSet_SetImageSize(long jarg1, ImageSet jarg1_, int jarg2);
