@@ -91,7 +91,7 @@ var hostConfig = new HostConfig()
     }
 };
 ```
-### Change per element rendering
+### Change per-element rendering
 The `AndroidRenderer` has a registration mechanism for specifying which function is called to perform the
 rendering on a per element basis.  It exposes a method called `SetRenderer<ElementT>(func);` 
 
@@ -110,7 +110,7 @@ public static FrameworkElement Render(TypedElement element, RenderContext contex
     return datePicker;
 }
 ```
-### UI framework styling
+### Style UI framework
 Pass in a `Android ResourceDictionary` to further customize the Android behavior. This
 allows you to define rollover behaviors, animations, rounded buttons, and so on.  Here is a table of the 
 style names used for each element.  

@@ -19,7 +19,7 @@ The schema supports text-friendly emoji translation, so each renderer should pro
 
 > `":umbrella:"`  => ":umbrella:" => *unicode umbrella emoji character in the text*
 
-## Formatting Functions
+## Formatting functions
 
 When sending TextBlock items with date or time information, the date or time must be translated to the
 recipient's timezone.  This is a much easier task for the client than for the sender. To make it easy, the client can invoke a `DATE()` and `TIME()` function inside the text of a textblock.

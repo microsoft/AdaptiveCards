@@ -1,7 +1,7 @@
 # Javascript
 There is no Javascript library, but Javascript is already pretty good at manipulating JSON.
 
-## Example: creating 
+## Example: create
 ```javascript
 
 var card = {
@@ -24,12 +24,12 @@ var card = {
     ]
 };
 ```
-## Example: saving 
+## Example: save 
 ```javascript
 var json = JSON.stringify(card);
 ```
 
-## Example: loading 
+## Example: load
 ```javascript
 var card = JSON.parse(json);
 ```

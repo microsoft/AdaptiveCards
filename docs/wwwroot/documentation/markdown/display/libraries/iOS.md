@@ -92,8 +92,7 @@ var hostConfig = new HostConfig()
     }
 };
 ```
-
-### Changing per element rendering
+### Change per-element rendering
 The iOSRenderer has a registration mechanism which allows you to set a function that is called to perform the
 rendering on a per-element basis.  It exposes a method called `SetRenderer<ElementT>(func);`. 
 
@@ -112,8 +111,7 @@ public static FrameworkElement Render(TypedElement element, RenderContext contex
 }
 ```
 
-
-### UI Framework styling
+### Style UI framework
 If you pass in a iOS ResourceDictionary you can customize the iOS behavior further. This
 allows you to define roll over behaviors, animations, rounded buttons, and so on.  Here is a table of the 
 style names that are used for each element.  

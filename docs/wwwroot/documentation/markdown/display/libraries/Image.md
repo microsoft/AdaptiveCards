@@ -55,7 +55,7 @@ If you want to customize the rendering, get access the renderer via the property
 imageRenderer.Renderer.SetRenderer<DateInput>(RenderMyCustomDate);
 ```
 
-### UI Framework styling
+### Style UI framework
 If you pass in a Xaml ResourceDictionary, you can customize the Xaml behavior further. This
 allows you to define roll over behaviors, animations, rounded buttons, and so forth.  Here is a table of the 
 style names that are used for each element.  

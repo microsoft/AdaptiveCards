@@ -92,8 +92,7 @@ var hostConfig = new HostConfig()
     }
 };
 ```
-
-### Change per element rendering
+### Change per-element rendering
 The XamlRenderer has a registration mechanism which allows you to set a function that is called to perform the
 rendering on a per-element basis.  It exposes a method called `SetRenderer<ElementT>(func); `
 
@@ -111,9 +110,7 @@ public static FrameworkElement Render(TypedElement element, RenderContext contex
     return datePicker;
 }
 ```
-
-
-### UI Framework styling
+### Style UI framework
 If you pass in a Xaml ResourceDictionary, you can customize the Xaml behavior further. This
 allows you to define roll over behaviors, animations, rounded buttons, and so forth.  Here is a table of the 
 style names that are used for each element.  

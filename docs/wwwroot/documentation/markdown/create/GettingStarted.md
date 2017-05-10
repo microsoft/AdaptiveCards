@@ -1,8 +1,8 @@
-# Getting Started 
+# Get Started 
 
 An Adaptive Card is nothing more than a JSON-serialized card object model.
 
-## Basic layout 
+## Basic card architecture 
 To understand the object model represented by the JSON, it is useful to understand the basic architecture of a card.  A card is made up of containers of elements and actions. These containers are stacked vertically unless there is an ColumnSet element which allows you to define a collection of containers that live side by side.
 
 A simple example card which has a single line of text followed by an image:
@@ -24,16 +24,16 @@ A simple example card which has a single line of text followed by an image:
 }
 ```
 
-## Type Property
+## Type property
 Every element has a `type` property which identifies what kind of object it is. Looking at the above card you can see we
 have 2 elements, one which is an `Image`, one which is a `TextBlock`.
 
-## Basic Elements
+## Basic elements
 The most fundamental basic elements are:
 * **TextBlock** - adds a block of text with properties to control what the text looks like
 * **Image** - adds an image with properties to control what the image looks like
 
-## Container Elements
+## Container elements
 A card is made up of one or more containers.  Each container has a collection of elements which are laid out vertically as blocks of the same width as the container. 
 
 * **Container** - Defines a a collection of elements 
@@ -41,7 +41,7 @@ A card is made up of one or more containers.  Each container has a collection of
 * **FactSet** - Container of Facts
 * **ImageSet** - Container of Images so that UI can show appropriate photo gallery experience for a collection of images.
 
-## Input Elements
+## Input elements
 Input elements allow you to ask for native UI to build simple forms:
 * **Input.Text** - get text content from the user
 * **Input.Date** - get a Date from the user
@@ -60,7 +60,7 @@ Actions add buttons to the card.  They don't define the logic of the actions, bu
 
 > **Example Action.Submit**: With Skype, an Action.Submit will send a Bot Framework bot activity back to the bot with the **Value** property containing an object with all of the input data on it.
 
-## Learn More
+## Learn more
 * The [Card Schema reference documentation](CardSchema.md) contains details of each element.
 * Examine the interactive card [samples](/samples) to see interactive cards.
 * The [Schema Explorer](../../../explorer/index.html) contains interactive examples of each element and its properties.

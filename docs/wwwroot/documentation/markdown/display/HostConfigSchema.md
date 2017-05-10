@@ -86,7 +86,7 @@ Defines config for ChoiceSet input elements
 | **separation** | [SeparationConfig](#separationconfig) | - | Defines spacing and color for separations between elements | 
 
 ## ColorsConfig
-ColorConfig defining the pallette for the card
+ColorConfig defines the palette for the card
 
 | Property | Type | default | Description |
 |---|---|---|---|

@@ -1,8 +1,8 @@
-# Overview 
+# Adaptive Cards Overview 
 
 Adaptive Cards are a open card exchange format enabling developers to exchange UI content in a common and consistent way.
 
-## How it works
+## How they work
 
 **Card Authors** describe their content as a simple JSON object. That content can then be rendered natively inside a **Host Application**, automatically adapting to the look and feel of the Host.
 

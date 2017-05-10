@@ -254,7 +254,7 @@ AdaptiveCards.setHostConfig({
 });
 ```
 
-### Changing per element rendering
+### Change per-element rendering
 The Ajax renderer has a callback registry for actions `AdaptiveCard.actionTypeRegistry` and elements `AdaptiveCard.elementTypeRegistry` which allow you to set a function that is called to perform the
 rendering on a per-element basis.
 
@@ -267,7 +267,7 @@ To override an `Action`:
 AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });  
 ```
 
-### UI Framework styling
+### Style UI framework
 For additional styling, use standard CSS to change the behavior of the HTML.
 
 Here are the style names that apply to each element.  

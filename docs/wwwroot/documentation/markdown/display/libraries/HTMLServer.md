@@ -68,7 +68,7 @@ protected static HtmlTag DateInputRender(TypedElement element, RenderContext con
     return htmlTag;
 }
 ```
-### UI Framework styling
+### Style UI framework
 This framework annotates all HtmlTags it outputs with the following class names so that you can use CSS to customize further.
 
 | Element | Style names used|
