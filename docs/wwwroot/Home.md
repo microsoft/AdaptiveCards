@@ -1,39 +1,19 @@
-# Introducing adaptive cards 
+# Introducing Adaptive Cards
 
-Adaptive Cards is a JSON format which gives developers the ability to deliver great looking cards to any device or client.
+Adaptive Cards are a new way for developers to exchange card content in a common and consistent way.
 
-### Developer Features
-* Simple but expresive JSON layout gives developers ability to easily create rich great looking cards across any device or client!
-* Rich Input controls (text, date, time, etc.) allows developer to collect information 
-* Speech enabled from day one!
-* Nuget and NPM libraries to make it easy to build cards in code
+# Express yourself
 
-### Client application Features
-* Client controls the rendered style, so cards from multiple sources look great together and like they were designed for the application.
-* Client doesn't have to keep updating itself to support new cards
+Break outside the box of templated cards. Adaptive Cards let you describe your content as you see fit and deliver it beautifully wherever your customers are.
 
-## How it works
+# Open framework, multiple platforms
 
-Developers describe the experience they want using a generic yet powerful JSON payload. With a properly described payload we take on the burden of presenting the best experience to a user wherever they are.
+A simple open card format enables an ecosystem of shared tooling, seamless integration between producers and consumers, and native cross-platorm performance on any device.
 
-The payload is designed to be expressive enough that it addresses the long-tail of scenarios, without imposing the burden of fine-grained design, development, and testing across every platform and application. 
+# Speech enabled from day one
 
-Adaptive Cards are comprised of `TextBlock`, `Images`, `Input`, and `Actions`, that may be `combined` together as necessary. 
+We live in an exciting era where users can talk to their devices. Adaptive Cards embrace this new world and were designed from the ground up to support these new experiences.
 
-* All content flows top-down in the order specified. 
-* `TextBlocks` takes up a single line (by default) and will be truncated as necessary. 
-* `Images` expand to the width of their container, while maintaining aspect ratio.
-* `Columns` allow developers to create rows and columns to partition elements
-* `Actions` align horizontally if they fit; otherwise stack vertically.
-* `Input` includes text, multi-line, selections, dates, etc.
+# Tap into a growing ecosystem of content
 
-## What's in the Toolkit
-
-* Documentation of the schema (see [Schema.md](docs/wwwroot/markdown/Schema.md))
-* Learn about the elements with the [Element Explorer](https://microsoft.github.io/AdaptiveCards/explorer)
-* An online live previewer  [Interactive Visualizer](https://microsoft.github.io/AdaptiveCards) to preview and design Card payloads
-* Sample Cards (see [samples](samples/Scenarios))
-* The official Adaptive Card JSON schema (see [schemas/adaptive-card.json](schemas/adaptive-card.json))
-* The official Adaptive Card XML schema (see [schemas/adaptive-card.xsd](schemas/adaptive-card.xsd))
-* A Visual Code Live Preview Extension so you can see edits as you type (see [source/vscode](source/vscode))
-* Nuget and NPM libraries
+It's never been easier to safely integrate UI from a vast network of content producers. With our open-source cross-platform libraries you will have the freedom to create high-performing, great-looking experiences for your users.

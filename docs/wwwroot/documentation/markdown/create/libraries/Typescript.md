@@ -27,7 +27,7 @@ let card :IAdaptiveCard = {
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards-staging.azurewebsites.net/api/cat"
+                    "url": "http://adaptivecards.io/api/cat"
                 }
             ]
         }
