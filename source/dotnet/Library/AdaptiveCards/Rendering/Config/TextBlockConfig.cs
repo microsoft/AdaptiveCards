@@ -72,7 +72,7 @@ namespace AdaptiveCards.Rendering.Config
         public TextBlockConfig()
         { }
 
-        public TextSizeSeparations Seperations { get; set; } = new TextSizeSeparations();
+        public TextSizeSeparations Separations { get; set; } = new TextSizeSeparations();
     }
 
 

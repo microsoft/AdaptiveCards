@@ -34,7 +34,7 @@ export class LiveTileContainer extends HostContainer {
         return {
             supportsInteractivity: false,
             strongSeparation: {
-                spacing: 40,
+                spacing: 5,
                 lineThickness: 1,
                 lineColor: "#EEEEEE"
             },
@@ -61,31 +61,31 @@ export class LiveTileContainer extends HostContainer {
                     subtle: "#88FFFFFF"
                 },
                 accent: {
-                    normal: "#2E89FC",
-                    subtle: "#882E89FC" 
+                    normal: "#00c2ff",
+                    subtle: "#8800c2ff" 
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
+                    normal: "#ffa700",
+                    subtle: "#DDffa700"
                 },
                 good: {
                     normal: "#00FF00",
                     subtle: "#DD00FF00"
                 },
                 warning: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
+                    normal: "#FFD800",
+                    subtle: "#DDFFD800"
                 }
             },
             imageSizes: {
                 small: 40,
                 medium: 80,
-                large: 160
+                large: 120
             },
             actions: {
                 maxActions: 5,
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 },
                 buttonSpacing: 20,
                 showCard: {
@@ -105,15 +105,15 @@ export class LiveTileContainer extends HostContainer {
             adaptiveCard: {
                 backgroundColor: "#0078D7",
                 padding: {
-                    left: 20,
-                    top: 20,
-                    right: 20,
-                    bottom: 20
+                    left: 10,
+                    top: 10,
+                    right: 10,
+                    bottom: 10
                 }
             },
             container: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 },
                 normal: {
                 },
@@ -138,37 +138,37 @@ export class LiveTileContainer extends HostContainer {
                 color: "light",
                 separations: {
                     small: {
-                        spacing: 20,
+                        spacing: 0,
                     },
                     normal: {
-                        spacing: 20
+                        spacing: 0
                     },
                     medium: {
-                        spacing: 20
+                        spacing: 0
                     },
                     large: {
-                        spacing: 20
+                        spacing: 0
                     },
                     extraLarge: {
-                        spacing: 20
+                        spacing: 0
                     }
                 }
             },
             image: {
                 size: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             imageSet: {
                 imageSize: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 },
                 title: {
                     color: "light",
@@ -189,17 +189,17 @@ export class LiveTileContainer extends HostContainer {
             },
             input: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             column: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             }
         };

@@ -1,5 +1,6 @@
 # Getting Started 
-An adaptive card is nothing more then a serialized JSON object of a card object model.  
+
+An Adaptive Card is nothing more than a JSON-serialized card object model.
 
 ## Basic layout 
 To understand the object model represented by the JSON, it is useful to understand the basic architecture of a card.  A card is made up of containers of elements and actions. These containers are stacked vertically unless there is an ColumnSet element which allows you to define a collection of containers that live side by side.
@@ -24,11 +25,11 @@ A simple example card which has a single line of text followed by an image:
 ```
 
 ## Type Property
-Every element has a type property which identifies what kind of object it is. Looking at the above card you can see we
-have 2 elements, one which is an Image, one which is a TextBlock.
+Every element has a `type` property which identifies what kind of object it is. Looking at the above card you can see we
+have 2 elements, one which is an `Image`, one which is a `TextBlock`.
 
 ## Basic Elements
-The most fundamantal basic elements are:
+The most fundamental basic elements are:
 * **TextBlock** - adds a block of text with properties to control what the text looks like
 * **Image** - adds an image with properties to control what the image looks like
 

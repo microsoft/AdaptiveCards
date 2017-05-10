@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AdaptiveCards</RootNamespace>
-    <AssemblyName>AdaptiveCards.Xaml.Wpf</AssemblyName>
+    <AssemblyName>Microsoft.AdaptiveCards.Xaml.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

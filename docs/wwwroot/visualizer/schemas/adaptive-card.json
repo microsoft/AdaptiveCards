@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
   "title": "Microsoft Adaptive Card Schema",
   "description": "Card schema for the adaptive card.",

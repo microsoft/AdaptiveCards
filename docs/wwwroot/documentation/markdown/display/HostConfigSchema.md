@@ -1,7 +1,7 @@
 # What is HostConfig?
 Host config is an shared configuration object which defines parameters controlling how an Adaptive Card Renderer generates UI.  
 
-This allows properties which are platform agnostic to be shared among renderers on different platoforms and devices. It also allows tooling to be created which gives you an idea of the look and feel that card would have for a given environment.
+This allows properties which are platform agnostic to be shared among renderers on different platforms and devices. It also allows tooling to be created which gives you an idea of the look and feel that card would have for a given environment.
 
 > NOTE: You  can further customize the look and feel of the card using the styling mechanisms appropriate to the ui framework used
 to render the card.  For example: use CSS in HTML to change the look and behavior of action elements.
