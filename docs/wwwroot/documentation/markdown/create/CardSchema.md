@@ -101,7 +101,7 @@ Input elements give you the ability to show input controls to the uer.
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or HTTP action |
 | **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
 | **value** | string | false | The initial value for a field |
-| **placeholder** | string | false | initial text descripting the input desired |
+| **placeholder** | string | false | initial text describing the input desired |
 | **style**| [TextInputStyle](#textinputstyle) | false | Hint of style of input, if client doesn't support the style it will become simple text input |
 | **isMultiline** | bool | false | true to collect multiple lines of text (default is false)|
 | **maxLength** | number | false | hint of maximum length characters to collect *(may be ignored by some clients)* |
@@ -140,7 +140,7 @@ Input elements give you the ability to show input controls to the uer.
 | **id** | string | true  | Id for the value (will be used to identify collected input when SUBMIT is clicked) |
 | **isRequired** | bool | false | The input must have a value for it to be part of a Submit or HTTP action |
 | **speak** | [Speak](Speech.md) | false | Specifies what should be spoken for this entire element.  This is simple text or SSML fragment. |
-| **placeholder** | string | false | initial text descripting the input desired |
+| **placeholder** | string | false | initial text describing the input desired |
 | **value** | string | false | The initial value for a field |
 | **min** | string | false | Minimum time (Not all clients will be able to honor this)|
 | **max** | string  | false | Maximum time (Not all clients will be able to honor this)|
@@ -391,7 +391,7 @@ The following enumerations are used by various element types.
 | **accent** | The accent color. |
 | **good** | Good (such as green) |
 | **warning** | Warning (such as yellow) |
-| **attention** | Highlight as needing attechment (such as red)|
+| **attention** | Highlight as needing attention (such as red)|
 
 ## ImageStyle
 <a name="ImageStyle"></a>Controls the way Image items are displayed.
@@ -425,5 +425,5 @@ The following enumerations are used by various element types.
 
 | Value | Meaning |
 |---|---|
-| **compact** | choices are preffered to be compactly displayed. Example: ComboBox ) |
+| **compact** | choices are preferred to be compactly displayed. Example: ComboBox ) |
 | **expanded** | choices are preferred to be displayed for easy input. Example: Checkbox or Radio buttons) |

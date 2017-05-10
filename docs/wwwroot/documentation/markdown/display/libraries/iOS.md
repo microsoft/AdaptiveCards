@@ -95,11 +95,11 @@ var hostConfig = new HostConfig()
 
 ### Changing per element rendering
 The iOSRenderer has a registration mechanism which allows you to set a function that is called to perform the
-rendering on a per-element basis.  It exposes a method called SetRenderer<ElementT>(func); 
+rendering on a per-element basis.  It exposes a method called `SetRenderer<ElementT>(func);`. 
 
 To override the rendering of a `Input.Date` element:
 ```csharp
-iOSRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
+iOSRenderer.SetRenderer<DateInput>(RenderMyCustomDate);
 ```
 The new date renderer would look like this:
 ```csharp

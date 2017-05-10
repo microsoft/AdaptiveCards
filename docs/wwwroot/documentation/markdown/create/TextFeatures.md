@@ -17,7 +17,7 @@ Headers, tables and images.
 ## Emojis
 The schema supports text-friendly emoji translation, so each renderer should properly translate the text to its unicode character.
 
-> `":umbrella:"`  => ":umbrella:" => *unicode umbrella emojii character in the text*
+> `":umbrella:"`  => ":umbrella:" => *unicode umbrella emoji character in the text*
 
 ## Formatting Functions
 

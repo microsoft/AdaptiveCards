@@ -9,7 +9,7 @@ nuget install AdaptiveCards.Html
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 
 ```csharp
-HtmlRenderer htmlRrenderer = new HtmlRenderer(new HostConfig() { SupportsInteractivity = false });
+HtmlRenderer htmlRenderer = new HtmlRenderer(new HostConfig() { SupportsInteractivity = false });
 ```
 
 ## Hook up action callback
@@ -19,7 +19,7 @@ This library doesn't currently support interactive cards.
 Acquire a card from a source and render it.
 
 ```csharp
-var html = htmlRrenderer.RenderAdaptiveCard(card);
+var html = htmlRenderer.RenderAdaptiveCard(card);
 ```
 
 ## Example
@@ -57,7 +57,7 @@ rendering on a per-element basis.  It exposes a method called `SetRenderer<Eleme
 
 To override the rendering of a `Input.Date` element:
 ```csharp
-htmlRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
+htmlRenderer.SetRenderer<DateInput>(RenderMyCustomDate);
 ```
 The new date renderer would look like this:
 ```csharp

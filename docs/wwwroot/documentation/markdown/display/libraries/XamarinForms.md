@@ -99,7 +99,7 @@ rendering on a per-element basis.  It exposes a method called `SetRenderer<Eleme
 
 To override the rendering of a `Input.Date` element:
 ```csharp
-xamlRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
+xamlRenderer.SetRenderer<DateInput>(RenderMyCustomDate);
 ```
 The new date renderer would look like this:
 ```csharp

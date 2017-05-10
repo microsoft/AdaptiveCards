@@ -216,7 +216,7 @@ Defines text settings for things like FactSet Title.
 |---|---|---|---|
 | **size** | TextSize | normal | desired size (small, normal, medium, large, extraLarge)  |
 | **weight** | TextWeight | normal | desired weight (lighter, normal, bolder)  |
-| **color** | TextColor | default | desired color from pallete |
+| **color** | TextColor | default | desired color from palette |
 | **wrap** | bool | false | can text be wrapped |
 | **isSubtle** | bool | false | should use subtle version of color |
 

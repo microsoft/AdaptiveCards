@@ -30,7 +30,7 @@ If you want to the action buttons to do something you need to hook up an action 
 * **Action.OpenUrl** - open the action.Url.  
 * **Action.Submit** - take  the result of the submit and sending it to the source. How you 
 send it to the source of the card is entirely up to you.
-* **Action.Http** -For this action you should do submit an HTTP request to the approprite url with Headers and Body set
+* **Action.Http** -For this action you should do submit an HTTP request to the appropriate url with Headers and Body set
 * **Action.ShowCard**  you should pop a dialog and render the sub card into that dialog. *(NOTE: You only need to handle this if you are using ShowCardActionMode set to popup)*
  
 
@@ -55,9 +55,7 @@ Most UI frameworks allow you to further style the output using UI framework styl
 the output of the renderer using CSS, and in XAML you can style the output of the renderer using XAML Styles.
 
 ## Resources
-* [Libraries](/documentation/#display-libraries) 
-* [Implementing a renderer](/documentation/#disply-implementingrenderer) 
-* [Customizing a renderer](/documentation/#display-customizingrenderer) 
+* [Implement a renderer](ImplementingRenderer.md) 
 
 
 
