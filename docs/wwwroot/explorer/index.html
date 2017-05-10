@@ -1509,51 +1509,70 @@
 <div id='Container.SeparationCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Container.Separation.json'>Try it Yourself »</a>
 </div><script>renderCard('Container.SeparationCard', {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
+  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
   "body": [
     {
-      "type": "TextBlock",
-      "text": "Purrrrr!, separation:none"
+      "type": "Container",
+      "separation": "none",
+      "style": "emphasis",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Purrrrr!"
+        },
+        {
+          "type": "Image",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0",
+          "size": "large"
+        }
+      ]
     },
     {
       "type": "Container",
       "separation": "none",
+      "style": "emphasis",
       "items": [
         {
+          "type": "TextBlock",
+          "text": "Purrrrr!, separation:none"
+        },
+        {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/1",
           "size": "large"
         }
       ]
-    },
-    {
-      "type": "TextBlock",
-      "text": "Purrrrr!, separation:default"
     },
     {
       "type": "Container",
       "separation": "default",
+      "style": "emphasis",
       "items": [
         {
+          "type": "TextBlock",
+          "text": "Purrrrr!, separation:default"
+        },
+        {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/2",
           "size": "large"
         }
       ]
     },
     {
-      "type": "TextBlock",
-      "text": "Purrrrr!, separation:strong"
-    },
-    {
       "type": "Container",
       "separation": "strong",
+      "style": "emphasis",
       "items": [
         {
+          "type": "TextBlock",
+          "text": "Purrrrr!, separation:strong"
+        },
+        {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0",
           "size": "large"
         }
       ]
