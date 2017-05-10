@@ -11,12 +11,20 @@
     <style>
         .cardImage {
             box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.16), 0px 2px 10px 0px rgba(0,0,0,0.12);
-            margin:20px;
+            margin: 20px;
         }
+
         .content {
             margin-top: 96px;
-            margin-left:88px;
-            max-width:1000px;
+            margin-left: 88px;
+            max-width: 1000px;
+        }
+
+        .videobanner {
+            margin: -56px 0px 0px;
+            width: 100%;
+            float: left;
+            background-color: #0B7ED3;
         }
     </style>
 </head>
@@ -34,7 +42,7 @@
     </div>
 
     <!-- main content -->
-    <div style="margin: -56px 0px 0px; width: 100%; float: left; background-color: #0B7ED3;">
+    <div id="vidbanner" class="videobanner">
         <video style="width: 1000px; margin-left: 104px;" src="https://bot-framework.azureedge.net/videos/AdaptiveCardsSizzleLoop.mp4" autoplay="" loop=""></video>
     </div>
 
@@ -50,6 +58,9 @@
     </div>
     <script>
         $(document).ready(function () {
+            if (navigator.userAgent.indexOf("Edge") > 0)
+                $("#vidbanner").css("background-color", "#0078D7");
+
             $.get("/api/markdown/Home.md",
                 null,
                 function (data) {
