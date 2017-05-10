@@ -34,13 +34,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard);
 
         // IAdaptiveCard
-        IFACEMETHODIMP get_Version(_Out_ HSTRING *version);
+        IFACEMETHODIMP get_Version(_Out_ HSTRING* version);
         IFACEMETHODIMP put_Version(_In_ HSTRING version);
 
-        IFACEMETHODIMP get_MinVersion(_Out_ HSTRING *minVersion);
+        IFACEMETHODIMP get_MinVersion(_Out_ HSTRING* minVersion);
         IFACEMETHODIMP put_MinVersion(_In_ HSTRING minVersion);
 
-        IFACEMETHODIMP get_FallbackText(_Out_ HSTRING *fallbackText);
+        IFACEMETHODIMP get_FallbackText(_Out_ HSTRING* fallbackText);
         IFACEMETHODIMP put_FallbackText(_In_ HSTRING fallbackText);
 
         IFACEMETHODIMP get_BackgroundImageUrl(_Out_ ABI::Windows::Foundation::IUriRuntimeClass** url);
@@ -48,10 +48,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         IFACEMETHODIMP get_Body(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** body);
 
+        IFACEMETHODIMP get_Actions(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>** actions);
+
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_body;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>> m_actions;
 
         std::shared_ptr<::AdaptiveCards::AdaptiveCard> m_sharedAdaptiveCard;
     };

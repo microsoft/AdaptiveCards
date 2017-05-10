@@ -1,17 +1,16 @@
 #include "pch.h"
-#include "util.h"
 #include <locale>
 #include <codecvt>
 #include <string>
 
-#include "AdaptiveTextBlock.h"
-#include "AdaptiveImage.h"
-#include "AdaptiveImageSet.h"
-#include "AdaptiveContainer.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
+#include "AdaptiveContainer.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
+#include "AdaptiveHttpAction.h"
+#include "AdaptiveImage.h"
+#include "AdaptiveImageSet.h"
 #include "AdaptiveInputDate.h"
 #include "AdaptiveInputNumber.h"
 #include "AdaptiveInputText.h"
@@ -19,6 +18,11 @@
 #include "AdaptiveInputToggle.h"
 #include "AdaptiveInputChoice.h"
 #include "AdaptiveInputChoiceSet.h"
+#include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveShowCardAction.h"
+#include "AdaptiveSubmitAction.h"
+#include "AdaptiveTextBlock.h"
+#include "util.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -115,6 +119,40 @@ HRESULT GenerateContainedElementsProjection(
             break;
         }
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateActionsProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* projectedParentContainer) noexcept try
+{
+    for (auto& containedAction : containedActions)
+    {
+        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement> projectedContainedAction;
+        switch (containedAction->GetElementType())
+        {
+            case ActionType::Http:
+                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveHttpAction>(&projectedContainedAction,
+                    std::static_pointer_cast<AdaptiveCards::HttpAction>(containedAction)));
+                break;
+            case ActionType::OpenUrl:
+                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveOpenUrlAction>(&projectedContainedAction,
+                    std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(containedAction)));
+                break;
+            case ActionType::ShowCard:
+                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveShowCardAction>(&projectedContainedAction,
+                    std::static_pointer_cast<AdaptiveCards::ShowCardAction>(containedAction)));
+                break;
+            case ActionType::Submit:
+                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveSubmitAction>(&projectedContainedAction,
+                    std::static_pointer_cast<AdaptiveCards::SubmitAction>(containedAction)));
+                break;
+            default:
+                return E_UNEXPECTED;
+                break;
+        }
+        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedAction.Detach()));
     }
     return S_OK;
 } CATCH_RETURN;

@@ -1,9 +1,10 @@
 #pragma once
 
+#include "BaseCardElement.h"
+#include "BaseActionElement.h"
+#include "Container.h"
 #include "Enums.h"
 #include "pch.h"
-#include "BaseCardElement.h"
-#include "Container.h"
 
 namespace AdaptiveCards
 {
@@ -14,7 +15,7 @@ class AdaptiveCard
 public:
     AdaptiveCard();
     AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl);
-    AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl, std::vector<std::shared_ptr<BaseCardElement>>& body);
+    AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl, std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
     std::string GetVersion() const;
     void SetVersion(const std::string value);
@@ -27,6 +28,7 @@ public:
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetBody() const;
+    const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
 
     const CardElementType GetElementType() const;
 
@@ -36,6 +38,7 @@ public:
 
 private:
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
+    static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> CardActionParsers;
 
     std::string m_version;
     std::string m_minVersion;
@@ -43,6 +46,7 @@ private:
     std::string m_backgroundImageUrl;
 
     std::vector<std::shared_ptr<BaseCardElement>> m_body;
+    std::vector<std::shared_ptr<BaseActionElement>> m_actions;
 
 };
 }

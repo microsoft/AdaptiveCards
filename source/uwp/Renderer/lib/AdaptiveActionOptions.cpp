@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Util.h"
 #include "AdaptiveActionOptions.h"
-#include "AdaptiveBoundaryOptions.h"
+#include "AdaptiveSeparationOptions.h"
 #include "AdaptiveShowCardOptions.h"
+#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
@@ -34,84 +34,44 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_Padding(IAdaptiveBoundaryOptions** boundaryOptions)
+    HRESULT AdaptiveActionOptions::get_ButtonSpacing(UINT32* value)
     {
-        return MakeAndInitialize<AdaptiveBoundaryOptions>(boundaryOptions, m_sharedActionOptions.padding);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_Padding(IAdaptiveBoundaryOptions* value)
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_BorderThickness(UINT32* value)
-    {
-        *value = m_sharedActionOptions.borderThickness;
+        *value = m_sharedActionOptions.buttonSpacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_BorderThickness(UINT32 value)
+    HRESULT AdaptiveActionOptions::put_ButtonSpacing(UINT32 value)
     {
-        m_sharedActionOptions.borderThickness = value;
+        m_sharedActionOptions.buttonSpacing = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_FontWeight(UINT32* value)
+        HRESULT AdaptiveActionOptions::get_MaxActions(UINT32* value)
     {
-        *value = m_sharedActionOptions.fontWeight;
+        *value = m_sharedActionOptions.maxActions;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_FontWeight(UINT32 value)
+        HRESULT AdaptiveActionOptions::put_MaxActions(UINT32 value)
     {
-        m_sharedActionOptions.fontWeight = value;
+        m_sharedActionOptions.maxActions = value;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_FontSize(UINT32* value)
+    HRESULT AdaptiveActionOptions::get_ActionAlignment(ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment* value)
     {
-        *value = m_sharedActionOptions.fontSize;
+        *value = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment>(m_sharedActionOptions.actionAlignment);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_FontSize(UINT32 value)
+    HRESULT AdaptiveActionOptions::put_ActionAlignment(ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment value)
     {
-        m_sharedActionOptions.fontSize = value;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_Spacing(UINT32* value)
-    {
-        *value = m_sharedActionOptions.spacing;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_Spacing(UINT32 value)
-    {
-        m_sharedActionOptions.spacing = value;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_ActionAlignment(HAlignment* value)
-    {
-        *value = static_cast<HAlignment>(m_sharedActionOptions.actionAlignment);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_ActionAlignment(HAlignment value)
-    {
-        m_sharedActionOptions.actionAlignment = static_cast<AdaptiveCards::HorizontalAlignment>(value);
+        m_sharedActionOptions.actionAlignment = static_cast<AdaptiveCards::ActionAlignment>(value);
         return S_OK;
     }
 
@@ -130,37 +90,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_BorderColor(Color* value)
+        HRESULT AdaptiveActionOptions::get_Separation(IAdaptiveSeparationOptions** separationOptions)
     {
-        return GetColorFromString(m_sharedActionOptions.borderColor, value);
+        return MakeAndInitialize<AdaptiveSeparationOptions>(separationOptions, m_sharedActionOptions.separation);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_BorderColor(Color value)
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_TextColor(Color* value)
-    {
-        return GetColorFromString(m_sharedActionOptions.textColor, value);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_TextColor(Color value)
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::get_BackgroundColor(Color* value)
-    {
-        return GetColorFromString(m_sharedActionOptions.backgroundColor, value);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionOptions::put_BackgroundColor(Color value)
+        HRESULT AdaptiveActionOptions::put_Separation(IAdaptiveSeparationOptions*)
     {
         return E_NOTIMPL;
     }
