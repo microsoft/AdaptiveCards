@@ -10,6 +10,7 @@
     <summary>Adaptive Card renderer for XAML/WPF</summary>
     <description>This library implements classes for rending adaptive card objects into XAML/WPF</description>
     <language>en-US</language>
+    <tags>adaptivecards</tags>
     <dependencies>
       <dependency id="Microsoft.AdaptiveCards" version="0.5.0" />
     </dependencies>
