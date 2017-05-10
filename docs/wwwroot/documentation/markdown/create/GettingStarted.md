@@ -62,5 +62,5 @@ Actions add buttons to the card.  They don't define the logic of the actions, bu
 
 ## Learn More
 * The [Card Schema reference documentation](CardSchema.md) contains details of each element.
-<!--* Visit the [Samples](/samples) to see interactive cards. -->
-<!--* Visit the [Schema Explorer](/Explorer) to see interactive examples of each element and its properties-->
+* Examine the interactive card [samples](/samples) to see interactive cards.
+* The [Schema Explorer](../../../explorer/index.html) contains interactive examples of each element and its properties.

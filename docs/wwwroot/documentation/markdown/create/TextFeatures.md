@@ -6,7 +6,7 @@ To support inline markup, adaptive cards supports a subset of Markdown syntax.
 
 Supported:
 
-**Bold**
+**Bold** </br>
 *Italic*
 * Bulleted Lists
 1. Numbered Lists
@@ -27,27 +27,28 @@ recipient's timezone.  This is a much easier task for the client than for the se
 These functions can be invoked anywhere in the text of a text block.
 
 ```javascript
-    "Your order was shipped {{DATE(2017-02-13T20:46:30Z, Long)}} and will arrive at {{TIME(2017-02-13T20:00:00Z, Short)}}" 
+"Your order was shipped {{DATE(2017-02-13T20:46:30Z, Long)}} and will arrive at {{TIME(2017-02-13T20:00:00Z, Short)}}" 
 ```
 
 ### Date formatting function
 
-The DATE function is passed an ISO-8601 formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing how to format the date in the text string.
+The DATE function is passed an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) formatted date-time record (example: 2017-02-13T20:46:30Z), and an optional hint expressing how to format the date in the text string.
 
 The format is expressed as a binding clause like this:
 
 ```javascript
-    {{DATE(..iso-8601.., Short|Long)}}
+{{DATE(..iso-8601.., Short|Long)}}
 ```
 
 Example for (en-us):
 ```javascript
-    {{DATE(2017-02-13T20:46:30Z, Short)}} => 2/13/2017
-    {{DATE(2017-02-13T20:46:30Z, Long)}} => Monday, February 13, 2017
+{{DATE(2017-02-13T20:46:30Z, Short)}} => 2/13/2017
+{{DATE(2017-02-13T20:46:30Z, Long)}} => Monday, February 13, 2017
 ```
-> NOTE: The hint part of the function is optional and can be omitted like this:
+The Hint part of the function is optional and can be omitted.
+
 ```javascript
-    {{DATE(2017-02-13T20:46:30z)}}
+{{DATE(2017-02-13T20:46:30z)}}
 ```
 
 ### Time formatting function
@@ -57,15 +58,15 @@ The TIME function is passed an ISO-8601 formatted date-time record (example: 201
 The format is expressed as a binding clause like this:
 
 ```javascript
-    {{TIME(..iso-8601.., Short|Long)}}
+{{TIME(..iso-8601.., Short|Long)}}
 ```
 Example for (en-us):
 ```javascript
-    {{TIME(2017-02-13T20:46:30Z, Short)}} => 8:46 PM
-    {{TIME(2017-02-13T20:46:30Z, Long)}} => 8:46:30 PM
+{{TIME(2017-02-13T20:46:30Z, Short)}} => 8:46 PM
+{{TIME(2017-02-13T20:46:30Z, Long)}} => 8:46:30 PM
 ```
 The Hint part of the function is optional and can be omitted.
 
 ```javascript
-    {{TIME(2017-02-13T20:46:30z)}}
+{{TIME(2017-02-13T20:46:30z)}}
 ```
