@@ -28,6 +28,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseActionElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\HttpAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoice.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Column.cpp" />
@@ -41,16 +43,21 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputText.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputTime.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\InputToggle.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseUtil.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseCardElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Container.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\jsoncpp.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ShowCardAction.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\SubmitAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\HttpAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoice.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
@@ -65,6 +72,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputText.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputTime.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\InputToggle.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseUtil.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseCardElement.h" />
@@ -73,6 +81,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\json\json-forwards.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\json\json.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\pch.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ShowCardAction.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\SubmitAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,109 +1,53 @@
-![adaptive-cards](assets/adaptive-cards-100.png)
 
-# Introducing Adaptive Cards
+# Adaptive Cards
+Adaptive Cards are a new way for developers to exchange card content in a common and consistent way.
 
-Adaptive Cards is a JSON format that gives developers the ability to deliver great looking cards to any device or client.
+![adaptive-cards](http://adaptivecards.io/content/overview.jpg)
 
-## Developer Features
-* Simple but expressive JSON layout gives developers ability to easily create rich great looking cards across any device or client
-* Rich Input controls (text, date, time, etc.) allows developer to collect information
-* Speech-enabled from day one
-* Nuget and NPM libraries to make it easy to build cards in code
+## Expressive
+Break outside the box of templated cards. Adaptive Cards let you describe your content as you see fit and deliver it beautifully wherever your customers are.
 
-## Client application Features
-* Client controls the rendered style, so cards from multiple sources look great together and like they were designed for the application
-* Client doesn't have to keep updating itself to support new cards
+## Open framework, multiple platforms
+A simple open card format enables an ecosystem of shared tooling, seamless integration between producers and consumers, and native cross-platorm performance on any device.
 
-Open source libraries as Nuget and npm modules to target multiple platforms and frameworks:
-* Browser renderers: HtmlDom, React, etc.
-* Client renderers: iOS, Android, WPF, UWP, XamarinForms
-* Server renderers: Image, Html Markup
+## Speech enabled from day one
+We live in an exciting era where users can talk to their devices. Adaptive Cards embrace this new world and were designed from the ground up to support these new experiences.
 
-![outlook](docs/images/outlook.png)
-![windows](docs/images/windows.png)
-![weather](docs/images/weather.png)
-![flightupdate](docs/images/flightupdate.png)
+## Tap into a growing ecosystem of content
+It's never been easier to safely integrate UI from a vast network of content producers. With our open-source cross-platform libraries you will have the freedom to create high-performing, great-looking experiences for your users.
 
-# How it works
+## Learn more at http://adaptivecards.io
+* [Documentation](http://adaptivecards.io/documentation/)
+* [Schema Explorer](http://adaptivecards.io/explorer/)
+* [Sample Cards](http://adaptivecards.io/samples/)
+* [Interactive visualizer](http://adaptivecards.io/visualizer/)
 
-Developers describe the experience they want using a generic yet powerful JSON payload. With a properly described payload we take on the burden of presenting the best experience to a user wherever they are.
+# Install and Build
 
-The payload is designed to be expressive enough that it addresses the long-tail of scenarios, without imposing the burden of fine-grained design, development, and testing across every platform and application.
+Adaptive Cards are designed to render anywhere that your users are. The following native platform renderers are under development right now.
 
-Adaptive Cards comprise `TextBlock`, `Images`, `Input`, and `Actions` that may be `combined` together as necessary.
+|Platform|Install|Build|Status|
+|---|---|---|---|
+|Android|*coming soon*|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/android)|Alpha|
+|HTML|`npm install microsoft-adaptivecards`|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/html)|Beta|
+|iOS|*coming soon*|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/ios)|Alpha|
+|WPF|`nuget install Microsoft.AdaptiveCards`|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/dotnet)|Beta|
+|UWP|*coming soon*|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/uwp)|Alpha|
+|Xamarin.Forms|*coming soon*|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/dotnet)|Alpha|
 
-* All content flows top-down in the order specified.
-* `TextBlocks` takes up a single line (by default) and will be truncated as necessary.
-* `Images` expand to the width of their container, while maintaining aspect ratio.
-* `Columns` allow developers to create rows and columns to partition elements
-* `Actions` align horizontally if they fit; otherwise stack vertically.
-* `Input` includes text, multi-line, selections, dates, etc.
+## Contribute
 
-# Check out [http://adaptivecards-staging.azurewebsites.net](http://adaptivecards-staging.azurewebsites.net)
-* Documentation
-* Element Explorer
-* Sample Cards
-* Interactive visualizer
+There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/blob/master/CONTRIBUTING.md) to Adaptive Cards.
+* [Submit bugs](https://github.com/Microsoft/AdaptiveCards/issues) and help us verify fixes as they are checked in.
+* Review the [source code changes](https://github.com/Microsoft/AdaptiveCards/pulls).
+* Engage with Adaptive Cards users and developers on [StackOverflow](http://stackoverflow.com/questions/tagged/adaptive-cards). 
+* Join the [#adaptivecards](http://twitter.com/#!/search/realtime/%23adaptivecards) discussion on Twitter.
+* [Contribute bug fixes](https://github.com/Microsoft/AdaptiveCards/blob/master/CONTRIBUTING.md).
 
-# What's in the Toolkit
-* The official Adaptive Card JSON schema (see [schemas/adaptive-card.json](schemas/adaptive-card.json))
-* The official Adaptive Card XML schema (see [schemas/adaptive-card.xsd](schemas/adaptive-card.xsd))
-* A Visual Code Live Preview Extension so you can see edits as you type (see [source/vscode](source/vscode))
-* Nuget and NPM libraries
-
-# Rendering Cards in your App or Web Site
-
-If you have the need to render Adaptive Cards inside your app or web site, the Toolkit provides a couple Renderers to help achieve this.
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see 
+the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 
-## Shared Libraries
-* **AdaptiveCards** -> Defines Adaptive card object model for creating and serializing/deserializing adaptive cards
-* **AdaptiveCards.Html** -> Defines HTML markup generator (suitable for server side html generation)
-* **AdaptiveCards.WPF** -> defines stock XAML/WPF renderer
-* **AdaptiveCards.WPF.Extended** -> Defines Enhanced XAML/WPF renderer which uses WPF Extended Control set
-* **Android** -> Coming soon
-* **iOS** -> Coming soon
-* **UWP** -> Coming soon
-* **AdaptiveCards.HtmlDom** -> TypeScript in browser renderer for html canvases
+## Roadmap
 
-All of the .NET libraries are available on Nuget
-> NOTE: Currently internal Microsoft package feed only.
-> https://fuselabs.visualstudio.com/Intercom/_packaging?feedName=packages&protocolType=NuGet&packageName=adaptivecards&packageVersion=1.0.0.4&_a=view
-
-Typescript package is available via NPM
-> NOTE: Currently internal Microsoft npm feed only
-> https://fuselabs.visualstudio.com/Intercom/_packaging?feedName=FuseNPM&protocolType=Npm&packageName=%40angular%2Fcli&packageVersion=1.0.0&_a=view
-
-We plan to cover this in greater detail on the [Rendering Cards page](docs/RenderingCards.md)
-
-## Install and build
-
-Since we build for multiple platforms they each have slightly different build mechanisms.
-
-See the `source` dir for a `README` in each platform for instructions.
-
-
-## Tools
-
-Visual Studio Code preview extension allows you to see in real-time the card you are building.
-
-To install:
-1. Download [AdaptiveCards.vsix](/source/vscode/vscode-adaptivecards-1.0.4.vsix)
-2. From a command line run: `code --install-extension adaptivecards.vsix`
-3. In an editor, create and save a new JSON file (helloworld.json) containing the following code:
-
-```javascript
-{
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type":"TextBlock",
-            "text":"Hello World",
-            "size":"extraLarge"
-        }
-    ]
-}
-```
-4. Hit **Ctrl+Shift+V** A to see previewer
+*Coming soon*

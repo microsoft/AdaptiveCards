@@ -2,24 +2,25 @@
 
   <PropertyGroup>
     <TargetFrameworks>net4.5.2;netstandard1.6</TargetFrameworks>
-    <PackageId>AdaptiveCards.Html</PackageId>
+    <PackageId>Microsoft.AdaptiveCards.Html</PackageId>
     <VersionPrefix>1.0.5</VersionPrefix>
     <Authors>Microsoft Corporation</Authors>
     <summary>Adaptive Card HTML Rednobject model for .NET</summary>
-    <Description>This library implements classes for rending adaptive card objects into HTML</Description>
+    <Description>This library implements classes for rendering adaptive card objects into HTML</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>adaptivecards</PackageTags>
-    <PackageProjectUrl>https://github.com/Microsoft/AdaptiveCards</PackageProjectUrl>
+    <PackageProjectUrl>http://adaptivecards.io</PackageProjectUrl>
     <PacakgeIconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</PacakgeIconUrl>
     <language>en-US</language>
     <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
     <Copyright>Microsoft Corporation</Copyright>
     <Company>Microsoft Corporation</Company>
-    <PackageIconUrl>https://bots.botframework.com/Client/Images/bot-framework-default-1.png</PackageIconUrl>
+    <PackageIconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <RepositoryType />
     <PackageReleaseNotes />
-    <Version>1.0.11</Version>
+    <Version>0.5.0</Version>
+    <Product>Microsoft.AdaptiveCards.Html</Product>
   </PropertyGroup>
 
   <ItemGroup>

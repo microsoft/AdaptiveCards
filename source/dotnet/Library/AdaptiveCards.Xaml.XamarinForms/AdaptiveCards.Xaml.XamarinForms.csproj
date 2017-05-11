@@ -6,6 +6,16 @@
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81</PackageTargetFallback>
     <RootNamespace>AdaptiveCards</RootNamespace>
     <AssemblyName>AdaptiveCards.Xaml.XamarinForms</AssemblyName>
+    <Version>0.5</Version>
+    <PackageId>Microsoft.AdaptiveCards.Xaml.XamarinForms</PackageId>
+    <Authors>Microsoft</Authors>
+    <Company>Microsoft</Company>
+    <Product>Microsoft AdaptiveCards</Product>
+    <Description>This library implements classes for rending adaptive card objects into XAML on Xamarin Forms</Description>
+    <Copyright>Microsoft</Copyright>
+    <PackageProjectUrl>http://adaptivecards.io</PackageProjectUrl>
+    <PackageIconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,7 +40,6 @@
     <PackageReference Include="Microsoft.MarkedNet" Version="1.0.11" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Xamarin.Forms" Version="2.3.4.221-pre6" />
-    <PackageReference Include="XFControls" Version="1.0.0.6" />
   </ItemGroup>
 
   <ItemGroup>

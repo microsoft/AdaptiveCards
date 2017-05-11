@@ -38,11 +38,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
         m_sharedAdaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
+       
         m_body = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
         if (m_body == nullptr)
         {
             return E_FAIL;
         }
+        
+        m_actions = Microsoft::WRL::Make<Vector<IAdaptiveActionElement*>>();
+        if (m_actions == nullptr)
+        {
+            return E_FAIL;
+        }        
+        
         return S_OK;
     }
 
@@ -52,7 +60,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         RETURN_IF_FAILED(RuntimeClassInitialize());
         m_sharedAdaptiveCard = sharedAdaptiveCard;
 
-        return GenerateContainedElementsProjection(m_sharedAdaptiveCard->GetBody(), m_body.Get());
+        RETURN_IF_FAILED(GenerateContainedElementsProjection(m_sharedAdaptiveCard->GetBody(), m_body.Get()));
+
+        RETURN_IF_FAILED(GenerateActionsProjection(m_sharedAdaptiveCard->GetActions(), m_actions.Get()));
+
+        return S_OK;
     }
 
     _Use_decl_annotations_
@@ -104,6 +116,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT AdaptiveCard::get_Body(IVector<IAdaptiveCardElement*>** body)
     {
         return m_body.CopyTo(body);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Actions(IVector<IAdaptiveActionElement*>** actions)
+    {
+        return m_actions.CopyTo(actions);
     }
 
     _Use_decl_annotations_

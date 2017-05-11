@@ -118,6 +118,7 @@
     <ClInclude Include="lib\AdaptiveBoundaryOptions.h" />
     <ClInclude Include="lib\AdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveCardOptions.h" />
+    <ClInclude Include="lib\AdaptiveHttpAction.h" />
     <ClInclude Include="lib\AdaptiveInputChoice.h" />
     <ClInclude Include="lib\AdaptiveInputChoiceSet.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputOptions.h" />
@@ -146,8 +147,11 @@
     <ClInclude Include="lib\AdaptiveInputTime.h" />
     <ClInclude Include="lib\AdaptiveInputToggle.h" />
     <ClInclude Include="lib\AdaptiveNumberInputOptions.h" />
+    <ClInclude Include="lib\AdaptiveOpenUrlAction.h" />
     <ClInclude Include="lib\AdaptiveSeparationOptions.h" />
+    <ClInclude Include="lib\AdaptiveShowCardAction.h" />
     <ClInclude Include="lib\AdaptiveShowCardOptions.h" />
+    <ClInclude Include="lib\AdaptiveSubmitAction.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
     <ClInclude Include="lib\AdaptiveTextBlockOptions.h" />
     <ClInclude Include="lib\AdaptiveTextInputOptions.h" />
@@ -169,6 +173,7 @@
     <ClCompile Include="lib\AdaptiveBoundaryOptions.cpp" />
     <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveCardOptions.cpp" />
+    <ClCompile Include="lib\AdaptiveHttpAction.cpp" />
     <ClCompile Include="lib\AdaptiveInputChoice.cpp" />
     <ClCompile Include="lib\AdaptiveInputChoiceSet.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInputOptions.cpp" />
@@ -197,8 +202,11 @@
     <ClCompile Include="lib\AdaptiveInputTime.cpp" />
     <ClCompile Include="lib\AdaptiveInputToggle.cpp" />
     <ClCompile Include="lib\AdaptiveNumberInputOptions.cpp" />
+    <ClCompile Include="lib\AdaptiveOpenUrlAction.cpp" />
     <ClCompile Include="lib\AdaptiveSeparationOptions.cpp" />
+    <ClCompile Include="lib\AdaptiveShowCardAction.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardOptions.cpp" />
+    <ClCompile Include="lib\AdaptiveSubmitAction.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlockOptions.cpp" />
     <ClCompile Include="lib\AdaptiveTextInputOptions.cpp" />

@@ -70,7 +70,10 @@ enum class AdaptiveCardSchemaKey
     Style,
     IsMultiSelect,
     IsRequired,
-    BackgroundImageUrl
+    BackgroundImageUrl,
+    Actions,
+    Method,
+    Card,
 };
 
 enum class TextSize
@@ -148,10 +151,19 @@ enum class CardElementType
 
 enum class ActionType
 {
-    ShowCard = 0,
+    Unsupported = 0, 
+    ShowCard,
     Submit,
     Http,
-    OpenUrl
+    OpenUrl,
+};
+
+enum class ActionAlignment
+{
+    Left = 0,
+    Center,
+    Right,
+    Stretch,
 };
 
 enum class ChoiceSetStyle

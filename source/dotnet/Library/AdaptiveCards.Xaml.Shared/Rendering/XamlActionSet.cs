@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 #elif XAMARIN
 using FrameworkElement = Xamarin.Forms.View;
-using AsNum.XFControls;
 using Xamarin.Forms;
 using Button = AdaptiveCards.Rendering.ContentButton;
 #endif

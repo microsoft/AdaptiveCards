@@ -15,9 +15,10 @@ Schema proposals are tracked through the [Schema](../../../projects/3) project
 
 Once a Schema proposal is approved (see above), submit a PR with the following items completed:
 
-1. Add a **schema definition** in `/schemas`
-1. Add a **sample payload** in `/samples`
-1. Add **tests** that validate the payload in `/tests`
-1. Add **renderer support** for each Renderer in `/Renderers`
+1. Update the **JSON-schema** in `/schemas`
+1. Add one or more **sample payloads** to verify it in `/samples`
+1. Add **tests** that validate the payload in `/source/tests` *(Coming soon)*
+1. Add **renderer support** for each Renderer in `/source/<platform>`
 1. **Verify** your payload in the Visualizer and ensure it behaves as expected
-1. TODO: How should we track implementation in the various renderers?
+
+1. TODO: Define new means of tracking implementation status in the various renderers
