@@ -10,7 +10,7 @@ A simple example card which has a single line of text followed by an image:
 ```javascript
 {
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "Image",
