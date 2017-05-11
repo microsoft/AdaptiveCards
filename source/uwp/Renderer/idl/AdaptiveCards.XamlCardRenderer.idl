@@ -1472,6 +1472,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveShowCardAction : IInspectable
         {
+            [propget] HRESULT Card([out, retval] AdaptiveCard** value);
+            [propput] HRESULT Card([in] AdaptiveCard* value);
         };
 
         [

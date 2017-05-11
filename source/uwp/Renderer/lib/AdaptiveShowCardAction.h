@@ -18,6 +18,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction);
 
+        // IAdaptiveShowCardAction
+        IFACEMETHODIMP get_Card(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card);
+        IFACEMETHODIMP put_Card(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card);
+
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType);
 

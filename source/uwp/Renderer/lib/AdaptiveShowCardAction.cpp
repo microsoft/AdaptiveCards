@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveCard.h"
 #include "AdaptiveShowCardAction.h"
 #include "Util.h"
 
@@ -18,6 +19,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_sharedShowCardAction = sharedShowCardAction;
         return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card)
+    {
+        return MakeAndInitialize<AdaptiveCard>(card, m_sharedShowCardAction->GetCard());
+    }
+
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card)
+    {
+        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
