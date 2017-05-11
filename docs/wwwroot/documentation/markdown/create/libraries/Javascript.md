@@ -6,11 +6,11 @@ define a strongly typed class hierarchy that is easy to serialize/deserialize js
 
 You can use any tooling that you want to create the adaptive card json.
 
-The **microsoft-adaptive-cards** npm package defines a library  for working with adaptive cards in javascript
+The **microsoft-adaptivecards** npm package defines a library  for working with adaptive cards in javascript
 
 ## To install
 ```
-npm install microsoft-adaptive-cards
+npm install microsoft-adaptivecards
 ```
 
 ## Example creating 
