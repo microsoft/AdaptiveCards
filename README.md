@@ -1,4 +1,4 @@
-![adaptive-cards](docs/wwwroot/content/icons_blue/blue-96.png)
+![adaptive-cards](http://adaptivecards.io/content/overview.jpg)
 
 # About Adaptive Cards
 Adaptive Cards are a new way for developers to exchange card content in a common and consistent way.
