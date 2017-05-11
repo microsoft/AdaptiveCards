@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\connect\index.html">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\explorer\markdown\Action.Http.md" />
     <Content Include="wwwroot\explorer\markdown\Action.OpenUrl.md" />
     <Content Include="wwwroot\explorer\markdown\Action.ShowCard.md" />
