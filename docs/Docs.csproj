@@ -7,16 +7,7 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/9ad09adf-c85f-43a0-96fe-18b146d1f90e/resourceGroups/AdaptiveCards/providers/microsoft.insights/components/adaptivecards-staging</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="wwwroot\documentation\markdown\create\libraries\Typescript.md">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\documentation\markdown\display\GettingStarted.md" />
-    <Content Include="wwwroot\documentation\markdown\display\ImplementingRenderer.md" />
-    <Content Include="wwwroot\documentation\markdown\display\libraries\HTMLClient.md" />
-    <Content Include="wwwroot\documentation\markdown\display\Speech.md" />
-  </ItemGroup>
-
+  
   
   <ItemGroup>
     <PackageReference Include="AdaptiveCards" Version="1.0.19" />
