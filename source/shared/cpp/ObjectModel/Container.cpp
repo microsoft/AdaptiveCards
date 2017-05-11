@@ -9,7 +9,6 @@
 #include "InputText.h"
 #include "InputTime.h"
 #include "InputToggle.h"
-#include "OpenUrlAction.h"
 #include "ParseUtil.h"
 #include "TextBlock.h"
 
@@ -31,23 +30,27 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
     { CardElementType::InputToggle, InputToggle::Deserialize },
 };
 
-Container::Container() : BaseCardElement(CardElementType::Container)
+Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::Normal)
 {
 }
 
 Container::Container(
     SeparationStyle separation,
     std::string speak,
+    ContainerStyle style,
     std::vector<std::shared_ptr<BaseCardElement>>& items) :
     BaseCardElement(CardElementType::Container, separation, speak),
+    m_style(style),
     m_items(items)
 {
 }
 
 Container::Container(
     SeparationStyle separation,
-    std::string speak) :
-    BaseCardElement(CardElementType::Container, separation, speak)
+    std::string speak,
+    ContainerStyle style) :
+    BaseCardElement(CardElementType::Container, separation, speak),
+    m_style(style)
 {
 }
 
@@ -61,11 +64,15 @@ std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
     return m_items;
 }
 
-void Container::SetItems(std::vector<std::shared_ptr<BaseCardElement>>& items)
+ContainerStyle Container::GetContainerStyle() const
 {
-    m_items = items;
+    return m_style;
 }
 
+void Container::SetContainerStyle(const ContainerStyle value)
+{
+    m_style = value;
+}
 
 std::string Container::Serialize()
 {
@@ -77,6 +84,9 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
     auto container = BaseCardElement::Deserialize<Container>(value);
+
+    container->SetContainerStyle(
+        ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::Normal, ContainerStyleFromString));
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, Container::CardElementParsers);

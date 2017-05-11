@@ -83,8 +83,8 @@ struct ColumnOptions
 
 struct ContainerStyleConfig
 {
-    std::string backgroundColor;
-    std::string borderColor;
+    std::string backgroundColor = "#00FFFFFF";
+    std::string borderColor = "#00FFFFFF";
     BoundaryOptions borderThickness;
     BoundaryOptions padding;
 };
@@ -93,7 +93,7 @@ struct ContainerOptions
 {
     SeparationOptions separation;
     ContainerStyleConfig normal;
-    ContainerStyleConfig emphasis;
+    ContainerStyleConfig emphasis = { "#FFEEEEEE", "#FFAAAAAA", BoundaryOptions{ 1, 1, 1, 1 }, BoundaryOptions{10, 10, 10, 10 } };
 };
 
 struct ColumnSetOptions

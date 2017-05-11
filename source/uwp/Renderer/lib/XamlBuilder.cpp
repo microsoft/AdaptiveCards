@@ -79,13 +79,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         Color lineColor;
         if (SUCCEEDED(separationOptions->get_LineColor(&lineColor)))
         {
-            ComPtr<ISolidColorBrush> colorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
-            colorBrush->put_Color(lineColor);
-            ComPtr<IBrush> asBrush;
-            THROW_IF_FAILED(colorBrush.As(&asBrush));
+            ComPtr<IBrush> lineColorBrush = GetSolidColorBrush(lineColor);
             ComPtr<IPanel> separatorAsPanel;
             THROW_IF_FAILED(separator.As(&separatorAsPanel));
-            separatorAsPanel->put_Background(asBrush.Get());
+            separatorAsPanel->put_Background(lineColorBrush.Get());
         }
 
         UINT32 spacing;
@@ -325,11 +322,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         Color backgroundColor;
         if (SUCCEEDED(adaptiveCardOptions->get_BackgroundColor(&backgroundColor)))
         {
-            ComPtr<ISolidColorBrush> solidColorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
-            THROW_IF_FAILED(solidColorBrush->put_Color(backgroundColor));
-            ComPtr<IBrush> asBrush;
-            THROW_IF_FAILED(solidColorBrush.As(&asBrush));
-            THROW_IF_FAILED(rootAsPanel->put_Background(asBrush.Get()));
+            ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
+            THROW_IF_FAILED(rootAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
         ComPtr<IUriRuntimeClass> backgroundImageUrl;
@@ -611,14 +605,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // Set the background color
         Color backgroundColor;
         THROW_IF_FAILED(showCardOptions->get_BackgroundColor(&backgroundColor));
-        ComPtr<ISolidColorBrush> solidColorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
-        THROW_IF_FAILED(solidColorBrush->put_Color(backgroundColor));
-        ComPtr<IBrush> asBrush;
-        THROW_IF_FAILED(solidColorBrush.As(&asBrush));
-
+        ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
         ComPtr<IPanel> showCardAsPanel;
         THROW_IF_FAILED(localUiShowCard.As(&showCardAsPanel));
-        THROW_IF_FAILED(showCardAsPanel->put_Background(asBrush.Get()));
+        THROW_IF_FAILED(showCardAsPanel->put_Background(backgroundColorBrush.Get()));
 
         // Set the visibility as Collapsed until the action is triggered
         THROW_IF_FAILED(localUiShowCard->put_Visibility(Visibility_Collapsed));
@@ -828,15 +818,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFrameworkElement* element)
     {
         ComPtr<IFrameworkElement> localElement(element);
-        UINT32 left;
-        THROW_IF_FAILED(boundaryOptions->get_Left(&left));
-        UINT32 top;
-        THROW_IF_FAILED(boundaryOptions->get_Top(&top));
-        UINT32 right;
-        THROW_IF_FAILED(boundaryOptions->get_Right(&right));
-        UINT32 bottom;
-        THROW_IF_FAILED(boundaryOptions->get_Bottom(&bottom));
-        Thickness margin = { (double)left, (double)top, (double)right, (double)bottom };
+        Thickness margin = ThicknessFromBoundaryOptions(boundaryOptions);
         THROW_IF_FAILED(localElement->put_Margin(margin));
     }
 
@@ -935,6 +917,30 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
         THROW_IF_FAILED(localSeparationOptions.CopyTo(separationOptions));
     }
+    _Use_decl_annotations_
+    ComPtr<IBrush> XamlBuilder::GetSolidColorBrush(_In_ ABI::Windows::UI::Color color)
+    {
+        ComPtr<ISolidColorBrush> solidColorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
+        THROW_IF_FAILED(solidColorBrush->put_Color(color));
+        ComPtr<IBrush> solidColorBrushAsBrush;
+        THROW_IF_FAILED(solidColorBrush.As(&solidColorBrushAsBrush));
+        return solidColorBrushAsBrush;
+    }
+
+    _Use_decl_annotations_
+    Thickness XamlBuilder::ThicknessFromBoundaryOptions(IAdaptiveBoundaryOptions* boundaryOptions)
+    {
+        UINT32 left;
+        THROW_IF_FAILED(boundaryOptions->get_Left(&left));
+        UINT32 top;
+        THROW_IF_FAILED(boundaryOptions->get_Top(&top));
+        UINT32 right;
+        THROW_IF_FAILED(boundaryOptions->get_Right(&right));
+        UINT32 bottom;
+        THROW_IF_FAILED(boundaryOptions->get_Bottom(&bottom));
+        Thickness margin = { (double)left, (double)top, (double)right, (double)bottom };
+        return margin;
+    }
 
     _Use_decl_annotations_
     void XamlBuilder::StyleXamlTextBlock(
@@ -978,11 +984,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         Color fontColor;
         THROW_IF_FAILED(isSubtle ? colorOption->get_Normal(&fontColor) : colorOption->get_Subtle(&fontColor));
 
-        ComPtr<ISolidColorBrush> solidColorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
-        solidColorBrush->put_Color(fontColor);
-        ComPtr<IBrush> solidColorBrushAsBrush;
-        THROW_IF_FAILED(solidColorBrush.As(&solidColorBrushAsBrush));
-        THROW_IF_FAILED(localTextBlock->put_Foreground(solidColorBrushAsBrush.Get()));
+        ComPtr<IBrush> fontColorBrush = GetSolidColorBrush(fontColor);
+        THROW_IF_FAILED(localTextBlock->put_Foreground(fontColorBrush.Get()));
 
         // Retrieve the Font Size from Host Options
         ComPtr<IAdaptiveFontSizeOptions> fontSizeOptions;
@@ -1259,6 +1262,41 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IStackPanel> xamlStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         xamlStackPanel->put_Orientation(Orientation::Orientation_Vertical);
 
+        ComPtr<IPanel> stackPanelAsPanel;
+        THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsPanel));
+        ComPtr<IVector<IAdaptiveCardElement*>> childItems;
+        THROW_IF_FAILED(adaptiveContainer->get_Items(&childItems));
+        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), [](IUIElement*) {});
+
+        // Add Border to container and style it from HostConfig
+        ComPtr<IAdaptiveContainerOptions> containerOptions;
+        THROW_IF_FAILED(m_hostOptions->get_Container(&containerOptions));
+        ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle containerStyle;
+        THROW_IF_FAILED(adaptiveContainer->get_Style(&containerStyle));
+        ComPtr<IAdaptiveContainerStyleConfig> containerStyleConfig;
+        THROW_IF_FAILED(containerStyle == ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle::Normal ?
+            containerOptions->get_Normal(&containerStyleConfig) :
+            containerOptions->get_Emphasis(&containerStyleConfig));
+
+        ComPtr<IBorder> containerBorder = XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+        Color borderColor;
+        THROW_IF_FAILED(containerStyleConfig->get_BorderColor(&borderColor));
+        ComPtr<IBrush> borderColorBrush = GetSolidColorBrush(borderColor);
+        THROW_IF_FAILED(containerBorder->put_BorderBrush(borderColorBrush.Get()));
+        Color backgroundColor;
+        THROW_IF_FAILED(containerStyleConfig->get_BackgroundColor(&backgroundColor));
+        ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
+        THROW_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
+
+        ComPtr<IAdaptiveBoundaryOptions> hostBorderOptions;
+        THROW_IF_FAILED(containerStyleConfig->get_BorderThickness(&hostBorderOptions));
+        Thickness borderThickness = ThicknessFromBoundaryOptions(hostBorderOptions.Get());
+        containerBorder->put_BorderThickness(borderThickness);
+
+        ComPtr<IUIElement> stackPanelAsUIElement;
+        THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsUIElement));
+        THROW_IF_FAILED(containerBorder->put_Child(stackPanelAsUIElement.Get()));
+
         ComPtr<IStyle> style;
         std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForContainer(adaptiveContainer.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
@@ -1268,13 +1306,28 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(stackPanelAsFrameworkElement->put_Style(style.Get()));
         }
 
+        THROW_IF_FAILED(containerBorder.CopyTo(containerControl));
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::BuildColumn(
+        IAdaptiveCardElement* adaptiveCardElement,
+        IUIElement** ColumnControl)
+    {
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveColumn> adaptiveColumn;
+        THROW_IF_FAILED(cardElement.As(&adaptiveColumn));
+
+        ComPtr<IStackPanel> xamlStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        xamlStackPanel->put_Orientation(Orientation::Orientation_Vertical);
+
         ComPtr<IPanel> stackPanelAsPanel;
         THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
-        THROW_IF_FAILED(adaptiveContainer->get_Items(&childItems));
+        THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
         BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), [](IUIElement*) {});
 
-        THROW_IF_FAILED(xamlStackPanel.CopyTo(containerControl));
+        THROW_IF_FAILED(xamlStackPanel.CopyTo(ColumnControl));
     }
 
     _Use_decl_annotations_
@@ -1290,7 +1343,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IGridStatics> gridStatics;
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
-        // Create 
         ComPtr<IVector<IAdaptiveColumn*>> columns;
         THROW_IF_FAILED(adaptiveColumnSet->get_Columns(&columns));
         int currentColumn = 0;
@@ -1364,9 +1416,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));
             THROW_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
 
-            // The column is a container, so build it
+            // Build the Column
             ComPtr<IUIElement> xamlColumn;
-            BuildContainer(columnAsCardElement.Get(), &xamlColumn);
+            BuildColumn(columnAsCardElement.Get(), &xamlColumn);
 
             // Mark the column container with the current column
             ComPtr<IFrameworkElement> columnAsFrameworkElement;
@@ -1438,6 +1490,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(titleTextBlock->put_Text(factTitle.Get()));
             ComPtr<IAdaptiveTextOptions> titleTextOptions;
             THROW_IF_FAILED(factSetOptions->get_Title(&titleTextOptions));
+
             StyleXamlTextBlock(titleTextOptions.Get(), titleTextBlock.Get());
 
             // Create the value xaml textblock and style it from Host options
@@ -1452,6 +1505,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             // Mark the column container with the current column
             ComPtr<IFrameworkElement> titleTextBlockAsFrameWorkElement;
             THROW_IF_FAILED(titleTextBlock.As(&titleTextBlockAsFrameWorkElement));
+            UINT32 spacing;
+            THROW_IF_FAILED(factSetOptions->get_Spacing(&spacing));
+            //Add spacing from hostconfig to right margin of title.
+            titleTextBlockAsFrameWorkElement->put_Margin({ 0, 0, (double)spacing, 0 });
             THROW_IF_FAILED(gridStatics->SetColumn(titleTextBlockAsFrameWorkElement.Get(), 0));
             THROW_IF_FAILED(gridStatics->SetRow(titleTextBlockAsFrameWorkElement.Get(), currentFact));
 
@@ -1472,8 +1529,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             XamlHelpers::AppendXamlElementToPanel(valueUIElement.Get(), gridAsPanel.Get());
             ++currentFact;
         });
-
-        // TODO: MSFT 11508861: [Adaptive Cards][Build] Support all styling properties for card Elements
 
         THROW_IF_FAILED(xamlGrid.CopyTo(factSetControl));
     }
