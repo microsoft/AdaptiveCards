@@ -50,16 +50,16 @@ export class TeamsContainer extends HostContainer {
                     subtle: "#882E89FC" 
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
+                    normal: "#cc3300",
+                    subtle: "#DDcc3300"
                 },
                 good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
                 },
                 warning: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
+                    normal: "#e69500",
+                    subtle: "#DDe69500"
                 }
             },
             imageSizes: {

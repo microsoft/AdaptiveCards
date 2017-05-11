@@ -98,15 +98,15 @@ namespace AdaptiveCards.Rendering.Config
                         switch (tb.Size)
                         {
                             case TextSize.Small:
-                                return this.TextBlock.Seperations.Small;
+                                return this.TextBlock.Separations.Small;
                             case TextSize.Normal:
-                                return this.TextBlock.Seperations.Normal;
+                                return this.TextBlock.Separations.Normal;
                             case TextSize.Medium:
-                                return this.TextBlock.Seperations.Medium;
+                                return this.TextBlock.Separations.Medium;
                             case TextSize.Large:
-                                return this.TextBlock.Seperations.Large;
+                                return this.TextBlock.Separations.Large;
                             case TextSize.ExtraLarge:
-                                return this.TextBlock.Seperations.ExtraLarge;
+                                return this.TextBlock.Separations.ExtraLarge;
                         }
                     }
                     break;

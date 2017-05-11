@@ -2,39 +2,41 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>Adaptive Cards</title>
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/content/fonts.css">
     <link rel="stylesheet" href="/content/shared.css">
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <style>
-        body {
-            font-family: 'Segoe UI';
-            font-weight: 400
-        }
-
-        h1 {
-            font-size: 34px;
-            font-weight: 300;
-        }
-
-        h2 {
-            font-size: 24px;
-            font-weight: 300;
-        }
-
-        h3 {
-            font-size: 15px;
-            font-weight: 600
-        }
-
         .cardImage {
             box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.16), 0px 2px 10px 0px rgba(0,0,0,0.12);
-            margin:20px;
+            margin: 20px;
         }
+
         .content {
             margin-top: 96px;
-            margin-left:88px;
+            margin-left: 88px;
+            max-width: 1000px;
+        }
+
+        .videobanner {
+            margin: -56px 0px 0px;
+            width: 100%;
+            float: left;
+            background-color: #0078D7;
+        }
+
+        @media(max-width: 594px) {
+            .content {
+                margin-top: 230px;
+            }
+        }
+
+        @media(max-width: 1000px) {
+            .videobanner {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -42,6 +44,7 @@
     <!-- Nav bar-->
     <div class="w3-top">
         <div class="w3-bar w3-black">
+            <a href="/"><img src="/content/icons_transparent/white-48.png" class="logo" /></a>
             <a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
             <a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
             <a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
@@ -51,8 +54,14 @@
     </div>
 
     <!-- main content -->
-    <div class="w3-row w3-container content">
-        <div class="w3-twothird" id="home">
+    <div id="vidbanner" class="videobanner">
+        <div style="text-align:center">
+            <video style="width: 1000px;" src="https://bot-framework.azureedge.net/videos/AdaptiveCardsSizzleLoop_1000.mp4" autoplay="" loop=""></video>
+        </div>
+    </div>
+
+    <div class="w3-row w3-container content" style="margin-left:auto;margin-right:auto;">
+        <div id="home">
         </div>
         <!--<div class="w3-onethird" id="images" style="display:none">
             <img src="/content/cards/windows.png" class="cardImage" />
@@ -63,6 +72,9 @@
     </div>
     <script>
         $(document).ready(function () {
+            //if (navigator.userAgent.indexOf("Edge") > 0)
+            //    $("#vidbanner").css("background-color", "#0078D7");
+
             $.get("/api/markdown/Home.md",
                 null,
                 function (data) {

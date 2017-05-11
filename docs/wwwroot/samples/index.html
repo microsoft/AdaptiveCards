@@ -1,8 +1,9 @@
 <html lang="en">
 <head>
     <meta charset = "utf-8" />
-    <title>Adaptive Cards - Element Explorer</title>
+    <title>Adaptive Cards</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/content/fonts.css">
 	<link rel="stylesheet" href="/content/shared.css">
 	<link rel="stylesheet" href="/content/card.css">
 	<link rel="stylesheet" href="/explorer/explorer.css">
@@ -15,6 +16,7 @@
     <!-- Nav bar-->
     <div class="w3-top">
 		<div class="w3-bar w3-black">
+            <a href='/'><img src='/content/icons_transparent/white-48.png' class='logo' /></a>
 			<a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
 			<a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
 			<a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
@@ -27,15 +29,14 @@
 
 <div class="w3-sidebar w3-light-grey w3-card-2 w3-bar-block">
 <a href="#ActivityUpdate" id='ActivityUpdateLink' class="elementLink w3-bar-item w3-button">Activity Update</a>
-<a href="#BingSports" id='BingSportsLink' class="elementLink w3-bar-item w3-button">Bing Sports</a>
-<a href="#BingStock" id='BingStockLink' class="elementLink w3-bar-item w3-button">Bing Stock</a>
-<a href="#BingWeather" id='BingWeatherLink' class="elementLink w3-bar-item w3-button">Bing Weather</a>
 <a href="#CalendarReminder" id='CalendarReminderLink' class="elementLink w3-bar-item w3-button">Calendar Reminder</a>
 <a href="#FlightItinerary" id='FlightItineraryLink' class="elementLink w3-bar-item w3-button">Flight Itinerary</a>
 <a href="#FlightUpdate" id='FlightUpdateLink' class="elementLink w3-bar-item w3-button">Flight Update</a>
 <a href="#ImageGallery" id='ImageGalleryLink' class="elementLink w3-bar-item w3-button">Image Gallery</a>
 <a href="#Restaurant" id='RestaurantLink' class="elementLink w3-bar-item w3-button">Restaurant</a>
-<a href="#Weather" id='WeatherLink' class="elementLink w3-bar-item w3-button">Weather</a>
+<a href="#StockUpdate" id='StockUpdateLink' class="elementLink w3-bar-item w3-button">Stock Update</a>
+<a href="#WeatherCompact" id='WeatherCompactLink' class="elementLink w3-bar-item w3-button">Weather Compact</a>
+<a href="#WeatherLarge" id='WeatherLargeLink' class="elementLink w3-bar-item w3-button">Weather Large</a>
 </div>
 
 <script>
@@ -46,12 +47,12 @@
             showElement(window.location.hash.slice(1));
     });
 </script>
-<div class="w3-container content-sidebar">
+<div class="w3-container content-sidebar maincontent">
 <div class='element' id='ActivityUpdateContent' style='display:none'>
 <div id='ActivityUpdateCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Activity Update.json'>Try it Yourself »</a>
 <script>renderCard('ActivityUpdateCard', {
-	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"body": [
 		{
@@ -196,286 +197,11 @@
 	]
 });</script>
 </div>
-<div class='element' id='BingSportsContent' style='display:none'>
-<div id='BingSportsCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Bing Sports.json'>Try it Yourself »</a>
-<script>renderCard('BingSportsCard', {
-  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-  "type": "AdaptiveCard",
-  "version": "1.0",
-  "speak": "The Seattle Seahawks beat the Carolina Panthers 40-7",
-  "body": [
-    {
-      "type": "TextBlock",
-      "text": "Seattle vs Panthers",
-      "isSubtle": true
-    },
-    {
-      "type": "Container",
-      "selectAction": {
-        "type": "Action.OpenUrl",
-        "url": "http://msn.com",
-        "title": "Container action"
-      },
-      "items": [
-        {
-          "type": "ColumnSet",
-          "columns": [
-            {
-              "type": "Column",
-              "size": "auto",
-              "items": [
-                {
-                  "type": "Image",
-                  "url": "https://www.bing.com/th?id=AR_3934aff63dd6ff941034090a4b9d12e1&w=50&h=50&dpr=2&pid=AppEx",
-                  "size": "small",
-                  "horizontalAlignment": "center",
-                  "selectAction": {
-                    "type": "Action.OpenUrl",
-                    "url": "http://so.cl",
-                    "title": "Image action"
-                  }
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "CAR",
-                  "horizontalAlignment": "center",
-                  "size": "normal",
-                  "weight": "bolder"
-                }
-              ],
-              "selectAction": {
-                "type": "Action.OpenUrl",
-                "title": "Column action",
-                "url": "http://msnbc.com"
-              }
-            },
-            {
-              "type": "Column",
-              "size": "stretch",
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Dec 4",
-                  "horizontalAlignment": "center"
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "Final",
-                  "horizontalAlignment": "center"
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "7 - 40",
-                  "size": "large",
-                  "horizontalAlignment": "center"
-                }
-              ]
-            },
-            {
-              "type": "Column",
-              "size": "auto",
-              "items": [
-                {
-                  "type": "Image",
-                  "url": "https://www.bing.com/th?id=AR_95e44d654968e8de2336993a1cf8a3cf&w=50&h=50&dpr=2&pid=AppEx",
-                  "size": "small",
-                  "horizontalAlignment": "center"
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "SEA",
-                  "horizontalAlignment": "center",
-                  "size": "normal",
-                  "weight": "bolder"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-});</script>
-</div>
-<div class='element' id='BingStockContent' style='display:none'>
-<div id='BingStockCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Bing Stock.json'>Try it Yourself »</a>
-<script>renderCard('BingStockCard', {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
-    "body": [
-        {
-            "type": "Container",
-            "items": [
-                {
-                    "type": "TextBlock",
-                    "text": "Microsoft Corp (NASDAQ: MSFT)",
-                    "isSubtle": true
-                },
-                {
-                    "type": "TextBlock",
-                    "text": "January 19, 4:00 PM EST",
-                    "isSubtle": true
-                }
-            ]
-        },
-        {
-            "type": "Container",
-            "items": [
-                {
-                    "type": "ColumnSet",
-                    "columns": [
-                        {
-                            "type": "Column",
-                            "size": 1,
-                            "items": [
-                                {
-                                    "type": "TextBlock",
-                                    "text": "62.30",
-                                    "size": "extraLarge"
-                                },
-                                {
-                                    "type": "TextBlock",
-                                    "text": "▼ 0.20 (0.32%)",
-                                    "size": "small",
-                                    "color": "attention"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "Column",
-                            "size": "auto",
-                            "items": [
-                                {
-                                    "type": "FactSet",
-                                    "facts": [
-                                        {
-                                            "title": "Open",
-                                            "value": "62.24"
-                                        },
-                                        {
-                                            "title": "High",
-                                            "value": "62.98"
-                                        },
-                                        {
-                                            "title": "Low",
-                                            "value": "62.20"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-});</script>
-</div>
-<div class='element' id='BingWeatherContent' style='display:none'>
-<div id='BingWeatherCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Bing Weather.json'>Try it Yourself »</a>
-<script>renderCard('BingWeatherCard', {
-	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
-	"body": [
-		{
-			"type": "Container",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "Seattle, Washington - January 20, 7:30 AM",
-					"isSubtle": true
-				}
-			]
-		},
-		{
-			"type": "Container",
-			"items": [
-				{
-					"type": "ColumnSet",
-					"columns": [
-						{
-							"type": "Column",
-							"size": "auto",
-							"items": [
-								{
-									"type": "Image",
-									"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
-									"size": "small",
-									"horizontalAlignment": "center"
-								}
-							]
-						},
-						{
-							"type": "Column",
-							"size": "auto",
-							"items": [
-								{
-									"type": "ColumnSet",
-									"columns": [
-										{
-											"type": "Column",
-											"size": "auto",
-											"items": [
-												{
-													"type": "TextBlock",
-													"text": "42",
-													"size": "extraLarge"
-												}
-											]
-										},
-										{
-											"type": "Column",
-											"size": "auto",
-											"items": [
-												{
-													"type": "TextBlock",
-													"text": "°F",
-													"weight": "bolder"
-												}
-											]
-										}
-									]
-								},
-								{
-									"type": "TextBlock",
-									"text": "Mostly Clear",
-									"isSubtle": true
-								}
-							]
-						},
-						{
-							"type": "Column",
-							"size": "auto",
-							"items": [
-								{
-									"type": "TextBlock",
-									"text": "Hi 51"
-								},
-								{
-									"type": "TextBlock",
-									"text": "Lo 40"
-								}
-							]
-						}
-					]
-				}
-			]
-		}
-	]
-});</script>
-</div>
 <div class='element' id='CalendarReminderContent' style='display:none'>
 <div id='CalendarReminderCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Calendar Reminder.json'>Try it Yourself »</a>
 <script>renderCard('CalendarReminderCard', {
-  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
   "speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at 12:30pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
@@ -548,7 +274,7 @@
 <div id='FlightItineraryCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Flight Itinerary.json'>Try it Yourself »</a>
 <script>renderCard('FlightItineraryCard', {
-	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"version": "1.0",
 	"type": "AdaptiveCard",
 	"speak": "<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>",
@@ -557,12 +283,11 @@
 			"type": "TextBlock",
 			"text": "Passengers",
 			"weight": "bolder",
-			"size": "extraLarge",
 			"isSubtle": false
 		},
 		{
 			"type": "TextBlock",
-			"text": "Sarah sadf lskfj lkj sdfjkl slkdjf lkjdsflkj  Hum"
+			"text": "Sarah Hum"
 		},
 		{
 			"type": "TextBlock",
@@ -576,7 +301,6 @@
 			"type": "TextBlock",
 			"text": "2 Stops",
 			"weight": "bolder",
-			"size": "extraLarge",
 			"separation": "strong"
 		},
 		{
@@ -586,6 +310,7 @@
 		},
 		{
 			"type": "ColumnSet",
+			"separation": "strong",
 			"columns": [
 				{
 					"type": "Column",
@@ -610,7 +335,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": " "
+							"text": "&nbsp;"
 						},
 						{
 							"type": "Image",
@@ -643,9 +368,10 @@
 		{
 			"type": "TextBlock",
 			"text": "Non-Stop",
-			"weight": "bolder",
-			"size": "extraLarge"
-		},
+						"separation": "strong",
+
+			"weight": "bolder"
+			},
 		{
 			"type": "TextBlock",
 			"text": "Fri, October 18 9:50 PM",
@@ -675,6 +401,10 @@
 					"type": "Column",
 					"size": "auto",
 					"items": [
+					    	{
+							"type": "TextBlock",
+							"text": "&nbsp;"
+						},
 						{
 							"type": "Image",
 							"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
@@ -706,6 +436,8 @@
 		},
 		{
 			"type": "ColumnSet",
+						"separation": "strong",
+
 			"columns": [
 				{
 					"type": "Column",
@@ -741,7 +473,7 @@
 <div id='FlightUpdateCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Flight Update.json'>Try it Yourself »</a>
 <script>renderCard('FlightUpdateCard', {
-	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
 	"body": [
@@ -959,7 +691,7 @@
 <div id='ImageGalleryCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Image Gallery.json'>Try it Yourself »</a>
 <script>renderCard('ImageGalleryCard', {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
@@ -1023,21 +755,21 @@
 <div id='RestaurantCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Restaurant.json'>Try it Yourself »</a>
 <script>renderCard('RestaurantCard', {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
         {
-            "speak": "<s>Serious Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
+            "speak": "<s>Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
             "type": "ColumnSet",
             "columns": [
                 {
                     "type": "Column",
-                    "size": "2",
+                    "size": 2,
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Serious Pie",
+                            "text": "Tom's Pie",
                             "weight": "bolder",
                             "size": "extraLarge"
                         },
@@ -1055,12 +787,12 @@
                 },
                 {
                     "type": "Column",
-                    "size": "1",
+                    "size": 1,
                     "items": [
                         {
                             "type": "Image",
                             "url": "http://res.cloudinary.com/sagacity/image/upload/c_crop,h_670,w_635,x_0,y_0/c_scale,w_640/v1397425743/Untitled-4_lviznp.jpg",
-                            "size":"auto"
+                            "size": "auto"
                         }
                     ]
                 }
@@ -1069,25 +801,191 @@
     ],
     "actions": [
         {
-            "type": "Action.Http",
-            "method": "POST",
+            "type": "Action.OpenUrl",
             "title": "More Info",
-            "url": "http://foo.com"
-        },
-        {
-            "type": "Action.Http",
-            "method": "POST",
-            "title": "View on Foursquare",
-            "url": "http://foo.com"
+            "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         }
     ]
 });</script>
 </div>
-<div class='element' id='WeatherContent' style='display:none'>
-<div id='WeatherCard' class='card' ></div>
-<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Weather.json'>Try it Yourself »</a>
-<script>renderCard('WeatherCard', {
-	"$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+<div class='element' id='StockUpdateContent' style='display:none'>
+<div id='StockUpdateCard' class='card' ></div>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Stock Update.json'>Try it Yourself »</a>
+<script>renderCard('StockUpdateCard', {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Microsoft Corp (NASDAQ: MSFT)",
+                    "isSubtle": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "January 19, 4:00 PM EST",
+                    "isSubtle": true
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "size": 1,
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "62.30",
+                                    "size": "extraLarge"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "▼ 0.20 (0.32%)",
+                                    "size": "small",
+                                    "color": "attention"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "size": "auto",
+                            "items": [
+                                {
+                                    "type": "FactSet",
+                                    "facts": [
+                                        {
+                                            "title": "Open",
+                                            "value": "62.24"
+                                        },
+                                        {
+                                            "title": "High",
+                                            "value": "62.98"
+                                        },
+                                        {
+                                            "title": "Low",
+                                            "value": "62.20"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+});</script>
+</div>
+<div class='element' id='WeatherCompactContent' style='display:none'>
+<div id='WeatherCompactCard' class='card' ></div>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Weather Compact.json'>Try it Yourself »</a>
+<script>renderCard('WeatherCompactCard', {
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Seattle, Washington - January 20, 7:30 AM",
+					"isSubtle": true
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"size": "auto",
+							"items": [
+								{
+									"type": "Image",
+									"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
+									"size": "small",
+									"horizontalAlignment": "center"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"size": "auto",
+							"items": [
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"size": "auto",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "42",
+													"size": "extraLarge"
+												}
+											]
+										},
+										{
+											"type": "Column",
+											"size": "auto",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "°F",
+													"weight": "bolder"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "TextBlock",
+									"text": "Mostly Clear",
+									"isSubtle": true
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"size": "auto",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Hi 51"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Lo 40"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+});</script>
+</div>
+<div class='element' id='WeatherLargeContent' style='display:none'>
+<div id='WeatherLargeCard' class='card' ></div>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Weather Large.json'>Try it Yourself »</a>
+<script>renderCard('WeatherLargeCard', {
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",

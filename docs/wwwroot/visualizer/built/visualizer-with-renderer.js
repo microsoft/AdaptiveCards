@@ -23053,7 +23053,7 @@ dom.importCssString(exports.cssText, exports.cssClass);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultConfigPayload = "{\n\t\"supportsInteractivity\": true,\n\t\"strongSeparation\": {\n\t\t\"spacing\": 40,\n\t\t\"lineThickness\": 1,\n\t\t\"lineColor\": \"#EEEEEE\"\n\t},\n\t\"fontFamily\": \"Segoe UI\",\n\t\"fontSizes\": {\n\t\t\"small\": 12,\n\t\t\"normal\": 14,\n\t\t\"medium\": 17,\n\t\t\"large\": 21,\n\t\t\"extraLarge\": 26\n\t},\n\t\"fontWeights\": {\n\t\t\"lighter\": 200,\n\t\t\"normal\": 400,\n\t\t\"bolder\": 600\n\t},\n\t\"colors\": {\n\t\t\"dark\": {\n\t\t\t\"normal\": \"#333333\",\n\t\t\t\"subtle\": \"#EE333333\"\n\t\t},\n\t\t\"light\": {\n\t\t\t\"normal\": \"#FFFFFF\",\n\t\t\t\"subtle\": \"#88FFFFFF\"\n\t\t},\n\t\t\"accent\": {\n\t\t\t\"normal\": \"#2E89FC\",\n\t\t\t\"subtle\": \"#882E89FC\"\n\t\t},\n\t\t\"attention\": {\n\t\t\t\"normal\": \"#FFD800\",\n\t\t\t\"subtle\": \"#DDFFD800\"\n\t\t},\n\t\t\"good\": {\n\t\t\t\"normal\": \"#00FF00\",\n\t\t\t\"subtle\": \"#DD00FF00\"\n\t\t},\n\t\t\"warning\": {\n\t\t\t\"normal\": \"#FF0000\",\n\t\t\t\"subtle\": \"#DDFF0000\"\n\t\t}\n\t},\n\t\"imageSizes\": {\n\t\t\"small\": 40,\n\t\t\"medium\": 80,\n\t\t\"large\": 160\n\t},\n\t\"actions\": {\n\t\t\"maxActions\": 5,\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t},\n\t\t\"buttonSpacing\": 20,\n\t\t\"stretch\": false,\n\t\t\"showCard\": {\n\t\t\t\"actionMode\": \"inlineEdgeToEdge\",\n\t\t\t\"inlineTopMargin\": 16,\n\t\t\t\"backgroundColor\": \"#08000000\",\n\t\t\t\"padding\": {\n\t\t\t\t\"top\": 16,\n\t\t\t\t\"right\": 16,\n\t\t\t\t\"bottom\": 16,\n\t\t\t\t\"left\": 16\n\t\t\t}\n\t\t},\n\t\t\"actionsOrientation\": \"horizontal\",\n\t\t\"actionAlignment\": \"left\"\n\t},\n\t\"adaptiveCard\": {\n\t\t\"backgroundColor\": \"#00000000\",\n\t\t\"padding\": {\n\t\t\t\"left\": 20,\n\t\t\t\"top\": 20,\n\t\t\t\"right\": 20,\n\t\t\t\"bottom\": 20\n\t\t}\n\t},\n\t\"container\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t},\n\t\t\"normal\": {},\n\t\t\"emphasis\": {\n\t\t\t\"backgroundColor\": \"#EEEEEE\",\n\t\t\t\"borderColor\": \"#AAAAAA\",\n\t\t\t\"borderThickness\": {\n\t\t\t\t\"top\": 1,\n\t\t\t\t\"right\": 1,\n\t\t\t\t\"bottom\": 1,\n\t\t\t\t\"left\": 1\n\t\t\t},\n\t\t\t\"padding\": {\n\t\t\t\t\"top\": 10,\n\t\t\t\t\"right\": 10,\n\t\t\t\t\"bottom\": 10,\n\t\t\t\t\"left\": 10\n\t\t\t}\n\t\t}\n\t},\n\t\"textBlock\": {\n\t\t\"color\": \"dark\",\n\t\t\"separations\": {\n\t\t\t\"small\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t},\n\t\t\t\"normal\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t},\n\t\t\t\"medium\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t},\n\t\t\t\"large\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t},\n\t\t\t\"extraLarge\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t}\n\t\t}\n\t},\n\t\"image\": {\n\t\t\"size\": \"medium\",\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t},\n\t\"imageSet\": {\n\t\t\"imageSize\": \"medium\",\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t},\n\t\"factSet\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t},\n\t\t\"title\": {\n\t\t\t\"color\": \"dark\",\n\t\t\t\"size\": \"normal\",\n\t\t\t\"isSubtle\": false,\n\t\t\t\"weight\": \"bolder\",\n\t\t\t\"wrap\": true,\n\t\t\t\"maxWidth\": 150\n\t\t},\n\t\t\"value\": {\n\t\t\t\"color\": \"dark\",\n\t\t\t\"size\": \"normal\",\n\t\t\t\"isSubtle\": false,\n\t\t\t\"weight\": \"normal\",\n\t\t\t\"wrap\": true\n\t\t},\n\t\t\"spacing\": 10\n\t},\n\t\"input\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t},\n\t\"columnSet\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t},\n\t\"column\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t}\n}";
-exports.defaultPayload = "{\n\t\"$schema\": \"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json\",\n\t\"type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"speak\": \"<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Card created: Publish Adaptive Card schema\",\n\t\t\t\t\t\"weight\": \"bolder\",\n\t\t\t\t\t\"size\": \"medium\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"ColumnSet\",\n\t\t\t\t\t\"columns\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"auto\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"Image\",\n\t\t\t\t\t\t\t\t\t\"url\": \"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n\t\t\t\t\t\t\t\t\t\"size\": \"small\",\n\t\t\t\t\t\t\t\t\t\"style\": \"person\"\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"stretch\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"text\": \"**Miguel Garcia**\",\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"separation\": \"none\",\n\t\t\t\t\t\t\t\t\t\"text\": \"Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}\",\n\t\t\t\t\t\t\t\t\t\"isSubtle\": true,\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.\",\n\t\t\t\t\t\"speak\": \"\",\n\t\t\t\t\t\"wrap\": true\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"FactSet\",\n\t\t\t\t\t\"speak\": \"It has been assigned to: David Claux\",\n\t\t\t\t\t\"facts\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Board:\",\n\t\t\t\t\t\t\t\"value\": \"Adaptive Card\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"List:\",\n\t\t\t\t\t\t\t\"value\": \"Backlog\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Assigned to:\",\n\t\t\t\t\t\t\t\"value\": \"David Claux\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Due date:\",\n\t\t\t\t\t\t\t\"value\": \"Not set\"\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t],\n\t\"actions\": [\n\t\t{\n\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\"title\": \"Set due date\",\n\t\t\t\"card\": {\n\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\"body\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Input.Date\",\n\t\t\t\t\t\t\"id\": \"dueDate\",\n\t\t\t\t\t\t\"title\": \"Select due date\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"actions\": [\n\t\t\t\t    {\n\t\t\t\t        \"type\": \"Action.Http\",\n\t\t\t\t        \"title\": \"OK\",\n\t\t\t\t        \"url\": \"http://xyz.com\",\n                        \"headers\": {\n\t\t\t\t\t\t\t\"content-type\": \"application/json\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"body\": \"{ 'comment' : '{{comment.value}}' }\"\n\t\t\t\t    }\n\t\t\t\t]\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\"title\": \"Comment\",\n\t\t\t\"card\": {\n\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\"body\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Input.Text\",\n\t\t\t\t\t\t\"id\": \"comment\",\n\t\t\t\t\t\t\"isMultiline\": true,\n\t\t\t\t\t\t\"placeholder\": \"Enter your comment\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"actions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Action.Http\",\n\t\t\t\t\t\t\"method\": \"POST\",\n\t\t\t\t\t\t\"title\": \"OK\",\n\t\t\t\t\t\t\"url\": \"http://xyz.com\",\n\t\t\t\t\t\t\"headers\": {\n\t\t\t\t\t\t\t\"content-type\": \"application/json\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"body\": \"{ 'comment' : '{{comment.value}}' }\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Action.OpenUrl\",\n\t\t\t\"title\": \"View\",\n\t\t\t\"url\": \"http://foo.com\"\n\t\t}\n\t]\n}";
+exports.defaultPayload = "{\n\t\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\n\t\"type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"speak\": \"<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Card created: Publish Adaptive Card schema\",\n\t\t\t\t\t\"weight\": \"bolder\",\n\t\t\t\t\t\"size\": \"medium\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"ColumnSet\",\n\t\t\t\t\t\"columns\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"auto\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"Image\",\n\t\t\t\t\t\t\t\t\t\"url\": \"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n\t\t\t\t\t\t\t\t\t\"size\": \"small\",\n\t\t\t\t\t\t\t\t\t\"style\": \"person\"\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"stretch\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"text\": \"**Miguel Garcia**\",\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"separation\": \"none\",\n\t\t\t\t\t\t\t\t\t\"text\": \"Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}\",\n\t\t\t\t\t\t\t\t\t\"isSubtle\": true,\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.\",\n\t\t\t\t\t\"speak\": \"\",\n\t\t\t\t\t\"wrap\": true\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"FactSet\",\n\t\t\t\t\t\"speak\": \"It has been assigned to: David Claux\",\n\t\t\t\t\t\"facts\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Board:\",\n\t\t\t\t\t\t\t\"value\": \"Adaptive Card\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"List:\",\n\t\t\t\t\t\t\t\"value\": \"Backlog\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Assigned to:\",\n\t\t\t\t\t\t\t\"value\": \"David Claux\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Due date:\",\n\t\t\t\t\t\t\t\"value\": \"Not set\"\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t],\n\t\"actions\": [\n\t\t{\n\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\"title\": \"Set due date\",\n\t\t\t\"card\": {\n\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\"body\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Input.Date\",\n\t\t\t\t\t\t\"id\": \"dueDate\",\n\t\t\t\t\t\t\"title\": \"Select due date\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"actions\": [\n\t\t\t\t    {\n\t\t\t\t        \"type\": \"Action.Http\",\n\t\t\t\t        \"title\": \"OK\",\n\t\t\t\t        \"url\": \"http://xyz.com\",\n                        \"headers\": {\n\t\t\t\t\t\t\t\"content-type\": \"application/json\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"body\": \"{ 'comment' : '{{comment.value}}' }\"\n\t\t\t\t    }\n\t\t\t\t]\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\"title\": \"Comment\",\n\t\t\t\"card\": {\n\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\"body\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Input.Text\",\n\t\t\t\t\t\t\"id\": \"comment\",\n\t\t\t\t\t\t\"isMultiline\": true,\n\t\t\t\t\t\t\"placeholder\": \"Enter your comment\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"actions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Action.Http\",\n\t\t\t\t\t\t\"method\": \"POST\",\n\t\t\t\t\t\t\"title\": \"OK\",\n\t\t\t\t\t\t\"url\": \"http://xyz.com\",\n\t\t\t\t\t\t\"headers\": {\n\t\t\t\t\t\t\t\"content-type\": \"application/json\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"body\": \"{ 'comment' : '{{comment.value}}' }\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Action.OpenUrl\",\n\t\t\t\"title\": \"View\",\n\t\t\t\"url\": \"http://foo.com\"\n\t\t}\n\t]\n}";
 
 
 /***/ }),
@@ -23097,7 +23097,7 @@ var LiveTileContainer = (function (_super) {
         return {
             supportsInteractivity: false,
             strongSeparation: {
-                spacing: 40,
+                spacing: 5,
                 lineThickness: 1,
                 lineColor: "#EEEEEE"
             },
@@ -23124,31 +23124,31 @@ var LiveTileContainer = (function (_super) {
                     subtle: "#88FFFFFF"
                 },
                 accent: {
-                    normal: "#2E89FC",
-                    subtle: "#882E89FC"
+                    normal: "#00c2ff",
+                    subtle: "#8800c2ff"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
+                    normal: "#ffa700",
+                    subtle: "#DDffa700"
                 },
                 good: {
                     normal: "#00FF00",
                     subtle: "#DD00FF00"
                 },
                 warning: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
+                    normal: "#FFD800",
+                    subtle: "#DDFFD800"
                 }
             },
             imageSizes: {
                 small: 40,
                 medium: 80,
-                large: 160
+                large: 120
             },
             actions: {
                 maxActions: 5,
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 },
                 buttonSpacing: 20,
                 showCard: {
@@ -23168,15 +23168,15 @@ var LiveTileContainer = (function (_super) {
             adaptiveCard: {
                 backgroundColor: "#0078D7",
                 padding: {
-                    left: 20,
-                    top: 20,
-                    right: 20,
-                    bottom: 20
+                    left: 10,
+                    top: 10,
+                    right: 10,
+                    bottom: 10
                 }
             },
             container: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 },
                 normal: {},
                 emphasis: {
@@ -23200,37 +23200,37 @@ var LiveTileContainer = (function (_super) {
                 color: "light",
                 separations: {
                     small: {
-                        spacing: 20,
+                        spacing: 0,
                     },
                     normal: {
-                        spacing: 20
+                        spacing: 0
                     },
                     medium: {
-                        spacing: 20
+                        spacing: 0
                     },
                     large: {
-                        spacing: 20
+                        spacing: 0
                     },
                     extraLarge: {
-                        spacing: 20
+                        spacing: 0
                     }
                 }
             },
             image: {
                 size: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             imageSet: {
                 imageSize: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 },
                 title: {
                     color: "light",
@@ -23251,17 +23251,17 @@ var LiveTileContainer = (function (_super) {
             },
             input: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             column: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             }
         };
@@ -23348,16 +23348,16 @@ var SkypeContainer = (function (_super) {
                     subtle: "#882E89FC"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
                     normal: "#FF0000",
                     subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
                 }
             },
             imageSizes: {
@@ -23396,7 +23396,7 @@ var SkypeContainer = (function (_super) {
             },
             container: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 },
                 normal: {},
                 emphasis: {
@@ -23420,37 +23420,37 @@ var SkypeContainer = (function (_super) {
                 color: "dark",
                 separations: {
                     small: {
-                        spacing: 10,
+                        spacing: 5,
                     },
                     normal: {
-                        spacing: 10
+                        spacing: 5
                     },
                     medium: {
-                        spacing: 10
+                        spacing: 5
                     },
                     large: {
-                        spacing: 10
+                        spacing: 5
                     },
                     extraLarge: {
-                        spacing: 10
+                        spacing: 5
                     }
                 }
             },
             image: {
                 size: "medium",
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             imageSet: {
                 imageSize: "medium",
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 },
                 title: {
                     color: "dark",
@@ -23467,21 +23467,21 @@ var SkypeContainer = (function (_super) {
                     weight: "normal",
                     wrap: true,
                 },
-                spacing: 10
+                spacing: 5
             },
             input: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             column: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             }
         };
@@ -23558,16 +23558,16 @@ var TeamsContainer = (function (_super) {
                     subtle: "#882E89FC"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
+                    normal: "#cc3300",
+                    subtle: "#DDcc3300"
                 },
                 good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
                 },
                 warning: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
+                    normal: "#e69500",
+                    subtle: "#DDe69500"
                 }
             },
             imageSizes: {
@@ -23993,16 +23993,16 @@ var WebChatContainer = (function (_super) {
                     subtle: "#882E89FC"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
                     normal: "#FF0000",
                     subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
                 }
             },
             imageSizes: {
@@ -26065,6 +26065,13 @@ var ColumnSet = (function (_super) {
         else {
             throw new Error("This column already belongs to another ColumnSet.");
         }
+    };
+    ColumnSet.prototype.getAllInputs = function () {
+        var result = [];
+        for (var i = 0; i < this._columns.length; i++) {
+            result = result.concat(this._columns[i].getAllInputs());
+        }
+        return result;
     };
     ColumnSet.prototype.renderSpeech = function () {
         if (this.speak != null) {
@@ -44131,6 +44138,13 @@ var skype_1 = __webpack_require__(36);
 var webchat_1 = __webpack_require__(39);
 var teams_1 = __webpack_require__(37);
 var toast_1 = __webpack_require__(38);
+var groupme_1 = __webpack_require__(158);
+var telegram_1 = __webpack_require__(157);
+var sms_1 = __webpack_require__(161);
+var slack_1 = __webpack_require__(160);
+var kik_1 = __webpack_require__(159);
+var facebook_1 = __webpack_require__(162);
+var bing_1 = __webpack_require__(163);
 var ace = __webpack_require__(31);
 __webpack_require__(32);
 __webpack_require__(33);
@@ -44286,11 +44300,18 @@ function setupEditor() {
     }
 }
 function setupContainerPicker() {
-    hostContainerOptions.push(new HostContainerOption("WebChat", new webchat_1.WebChatContainer("css/webchat.css")));
     hostContainerOptions.push(new HostContainerOption("Microsoft Teams", new teams_1.TeamsContainer("css/teams.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Toast Notification", new toast_1.ToastContainer(362, "css/toast.css")));
-    hostContainerOptions.push(new HostContainerOption("Large Live Tile", new live_tile_1.LiveTileContainer(310, 310, "css/liveTile.css")));
+    hostContainerOptions.push(new HostContainerOption("Windows Live Tile", new live_tile_1.LiveTileContainer(310, 310, "css/liveTile.css")));
     hostContainerOptions.push(new HostContainerOption("Skype", new skype_1.SkypeContainer(350, "css/skype.css")));
+    hostContainerOptions.push(new HostContainerOption("WebChat (Bot Framework)", new webchat_1.WebChatContainer("css/webchat.css")));
+    hostContainerOptions.push(new HostContainerOption("Bing (Bot Framework)", new bing_1.BingContainer(368, "css/skype.css")));
+    hostContainerOptions.push(new HostContainerOption("Kik (Bot Framework)", new kik_1.KikContainer(400, "css/kik.css")));
+    hostContainerOptions.push(new HostContainerOption("Slack (Bot Framework)", new slack_1.SlackContainer(500, "css/slack.css")));
+    hostContainerOptions.push(new HostContainerOption("Facebook (Bot Framework)", new facebook_1.FacebookContainer(450, "css/facebook.css")));
+    hostContainerOptions.push(new HostContainerOption("SMS (Bot Framework)", new sms_1.SMSContainer(400, "css/sms.css")));
+    hostContainerOptions.push(new HostContainerOption("Telegram (Bot Framework)", new telegram_1.TelegramContainer(400, "css/telegram.css")));
+    hostContainerOptions.push(new HostContainerOption("GroupMe (Bot Framework)", new groupme_1.GroupMeContainer(450, "css/groupme.css")));
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener("change", function () {
             // Update the query string
@@ -44901,6 +44922,1501 @@ module.exports = function(module) {
 	}
 	return module;
 };
+
+
+/***/ }),
+/* 157 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var host_container_1 = __webpack_require__(2);
+var TelegramContainer = (function (_super) {
+    __extends(TelegramContainer, _super);
+    function TelegramContainer(width, styleSheet) {
+        var _this = _super.call(this, styleSheet) || this;
+        _this._width = width;
+        _this.supportsActionBar = false;
+        return _this;
+    }
+    TelegramContainer.prototype.renderContainer = function (renderedCard) {
+        var outerElement = document.createElement("div");
+        outerElement.className = "telegramOuterContainer";
+        outerElement.style.width = this._width + "px";
+        outerElement.appendChild(renderedCard);
+        return outerElement;
+    };
+    TelegramContainer.prototype.getHostConfig = function () {
+        return {
+            supportsInteractivity: false,
+            strongSeparation: {
+                spacing: 20,
+                lineThickness: 1,
+                lineColor: "#EEEEEE"
+            },
+            fontFamily: "Tahoma,Verdana,Segoe,sans-serif;",
+            fontSizes: {
+                small: 12,
+                normal: 14,
+                medium: 16,
+                large: 19,
+                extraLarge: 22
+            },
+            fontWeights: {
+                lighter: 200,
+                normal: 400,
+                bolder: 600
+            },
+            colors: {
+                dark: {
+                    normal: "#333333",
+                    subtle: "#EE333333"
+                },
+                light: {
+                    normal: "#FFFFFF",
+                    subtle: "#88FFFFFF"
+                },
+                accent: {
+                    normal: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    normal: "#FF0000",
+                    subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
+                }
+            },
+            imageSizes: {
+                small: 60,
+                medium: 120,
+                large: 180
+            },
+            actions: {
+                maxActions: 5,
+                separation: {
+                    spacing: 10
+                },
+                buttonSpacing: 20,
+                showCard: {
+                    actionMode: "inlineEdgeToEdge",
+                    inlineTopMargin: 16,
+                    backgroundColor: "#08000000",
+                    padding: {
+                        top: 8,
+                        right: 8,
+                        bottom: 8,
+                        left: 8
+                    }
+                },
+                actionsOrientation: "horizontal",
+                actionAlignment: "left"
+            },
+            adaptiveCard: {
+                backgroundColor: "#FFFFFF",
+                padding: {
+                    left: 8,
+                    top: 8,
+                    right: 8,
+                    bottom: 8
+                }
+            },
+            container: {
+                separation: {
+                    spacing: 10
+                },
+                normal: {},
+                emphasis: {
+                    backgroundColor: "#EEEEEE",
+                    borderColor: "#AAAAAA",
+                    borderThickness: {
+                        top: 1,
+                        right: 1,
+                        bottom: 1,
+                        left: 1
+                    },
+                    padding: {
+                        top: 10,
+                        right: 10,
+                        bottom: 10,
+                        left: 10
+                    }
+                }
+            },
+            textBlock: {
+                color: "dark",
+                separations: {
+                    small: {
+                        spacing: 10,
+                    },
+                    normal: {
+                        spacing: 10
+                    },
+                    medium: {
+                        spacing: 10
+                    },
+                    large: {
+                        spacing: 10
+                    },
+                    extraLarge: {
+                        spacing: 10
+                    }
+                }
+            },
+            image: {
+                size: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            imageSet: {
+                imageSize: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            factSet: {
+                separation: {
+                    spacing: 10
+                },
+                title: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150
+                },
+                value: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "normal",
+                    wrap: true
+                },
+                spacing: 10
+            },
+            input: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            columnSet: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            column: {
+                separation: {
+                    spacing: 10
+                }
+            }
+        };
+    };
+    return TelegramContainer;
+}(host_container_1.HostContainer));
+exports.TelegramContainer = TelegramContainer;
+
+
+/***/ }),
+/* 158 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var host_container_1 = __webpack_require__(2);
+var GroupMeContainer = (function (_super) {
+    __extends(GroupMeContainer, _super);
+    function GroupMeContainer(width, styleSheet) {
+        var _this = _super.call(this, styleSheet) || this;
+        _this._width = width;
+        _this.supportsActionBar = false;
+        return _this;
+    }
+    GroupMeContainer.prototype.renderContainer = function (renderedCard) {
+        var outerElement = document.createElement("div");
+        outerElement.className = "groupmeOuterContainer";
+        outerElement.style.width = this._width + "px";
+        outerElement.appendChild(renderedCard);
+        return outerElement;
+    };
+    GroupMeContainer.prototype.getHostConfig = function () {
+        return {
+            supportsInteractivity: false,
+            strongSeparation: {
+                spacing: 20,
+                lineThickness: 1,
+                lineColor: "#EEEEEE"
+            },
+            fontFamily: "'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif",
+            fontSizes: {
+                small: 13,
+                normal: 15,
+                medium: 17,
+                large: 20,
+                extraLarge: 23
+            },
+            fontWeights: {
+                lighter: 200,
+                normal: 400,
+                bolder: 600
+            },
+            colors: {
+                dark: {
+                    normal: "#333333",
+                    subtle: "#EE333333"
+                },
+                light: {
+                    normal: "#FFFFFF",
+                    subtle: "#88FFFFFF"
+                },
+                accent: {
+                    normal: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    normal: "#FF0000",
+                    subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
+                }
+            },
+            imageSizes: {
+                small: 60,
+                medium: 120,
+                large: 180
+            },
+            actions: {
+                maxActions: 5,
+                separation: {
+                    spacing: 10
+                },
+                buttonSpacing: 20,
+                showCard: {
+                    actionMode: "inlineEdgeToEdge",
+                    inlineTopMargin: 16,
+                    backgroundColor: "#08000000",
+                    padding: {
+                        top: 8,
+                        right: 8,
+                        bottom: 8,
+                        left: 8
+                    }
+                },
+                actionsOrientation: "horizontal",
+                actionAlignment: "left"
+            },
+            adaptiveCard: {
+                backgroundColor: "#F7F7F7",
+                padding: {
+                    left: 8,
+                    top: 8,
+                    right: 8,
+                    bottom: 8
+                }
+            },
+            container: {
+                separation: {
+                    spacing: 10
+                },
+                normal: {},
+                emphasis: {
+                    backgroundColor: "#EEEEEE",
+                    borderColor: "#AAAAAA",
+                    borderThickness: {
+                        top: 1,
+                        right: 1,
+                        bottom: 1,
+                        left: 1
+                    },
+                    padding: {
+                        top: 10,
+                        right: 10,
+                        bottom: 10,
+                        left: 10
+                    }
+                }
+            },
+            textBlock: {
+                color: "dark",
+                separations: {
+                    small: {
+                        spacing: 10,
+                    },
+                    normal: {
+                        spacing: 10
+                    },
+                    medium: {
+                        spacing: 10
+                    },
+                    large: {
+                        spacing: 10
+                    },
+                    extraLarge: {
+                        spacing: 10
+                    }
+                }
+            },
+            image: {
+                size: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            imageSet: {
+                imageSize: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            factSet: {
+                separation: {
+                    spacing: 10
+                },
+                title: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150
+                },
+                value: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "normal",
+                    wrap: true
+                },
+                spacing: 10
+            },
+            input: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            columnSet: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            column: {
+                separation: {
+                    spacing: 10
+                }
+            }
+        };
+    };
+    return GroupMeContainer;
+}(host_container_1.HostContainer));
+exports.GroupMeContainer = GroupMeContainer;
+
+
+/***/ }),
+/* 159 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var host_container_1 = __webpack_require__(2);
+var KikContainer = (function (_super) {
+    __extends(KikContainer, _super);
+    function KikContainer(width, styleSheet) {
+        var _this = _super.call(this, styleSheet) || this;
+        _this._width = width;
+        _this.supportsActionBar = false;
+        return _this;
+    }
+    KikContainer.prototype.renderContainer = function (renderedCard) {
+        var outerElement = document.createElement("div");
+        outerElement.className = "kikOuterContainer";
+        outerElement.style.width = this._width + "px";
+        outerElement.appendChild(renderedCard);
+        return outerElement;
+    };
+    KikContainer.prototype.getHostConfig = function () {
+        return {
+            supportsInteractivity: false,
+            strongSeparation: {
+                spacing: 20,
+                lineThickness: 1,
+                lineColor: "#FF707070"
+            },
+            fontFamily: "Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;",
+            fontSizes: {
+                small: 12,
+                normal: 14,
+                medium: 16,
+                large: 19,
+                extraLarge: 22
+            },
+            fontWeights: {
+                lighter: 200,
+                normal: 400,
+                bolder: 600
+            },
+            colors: {
+                //                default: {
+                //                    normal: "#FF000000",
+                //                    subtle: "#b2000000"
+                //                },
+                accent: {
+                    normal: "#FF0000FF",
+                    subtle: "#b20000FF"
+                },
+                dark: {
+                    normal: "#FF101010",
+                    subtle: "#b2101010"
+                },
+                light: {
+                    normal: "#FFFFFFFF",
+                    subtle: "#b2FFFFFF"
+                },
+                good: {
+                    normal: "#FF008000",
+                    subtle: "#b2008000"
+                },
+                warning: {
+                    normal: "#FFFFD700",
+                    subtle: "#b2FFD700"
+                },
+                attention: {
+                    normal: "#FF8B0000",
+                    subtle: "#b28B0000"
+                }
+            },
+            imageSizes: {
+                small: 60,
+                medium: 120,
+                large: 180
+            },
+            actions: {
+                maxActions: 5,
+                separation: {
+                    spacing: 8
+                },
+                buttonSpacing: 10,
+                showCard: {
+                    actionMode: "inlineEdgeToEdge",
+                    inlineTopMargin: 16,
+                    backgroundColor: "#08000000",
+                    padding: {
+                        top: 8,
+                        right: 8,
+                        bottom: 8,
+                        left: 8
+                    }
+                },
+                actionsOrientation: "horizontal",
+                actionAlignment: "left"
+            },
+            adaptiveCard: {
+                backgroundColor: "#FFFFFF",
+                padding: {
+                    left: 8,
+                    top: 8,
+                    right: 8,
+                    bottom: 8
+                }
+            },
+            container: {
+                separation: {
+                    spacing: 8
+                },
+                normal: {},
+                emphasis: {
+                    backgroundColor: "#EEEEEE",
+                    borderColor: "#AAAAAA",
+                    borderThickness: {
+                        top: 1,
+                        right: 1,
+                        bottom: 1,
+                        left: 1
+                    },
+                    padding: {
+                        top: 10,
+                        right: 10,
+                        bottom: 10,
+                        left: 10
+                    }
+                }
+            },
+            textBlock: {
+                color: "dark",
+                separations: {
+                    small: {
+                        spacing: 8,
+                    },
+                    normal: {
+                        spacing: 8
+                    },
+                    medium: {
+                        spacing: 8
+                    },
+                    large: {
+                        spacing: 8
+                    },
+                    extraLarge: {
+                        spacing: 8
+                    }
+                }
+            },
+            image: {
+                size: "medium",
+                separation: {
+                    spacing: 8
+                }
+            },
+            imageSet: {
+                imageSize: "medium",
+                separation: {
+                    spacing: 8
+                }
+            },
+            factSet: {
+                separation: {
+                    spacing: 8
+                },
+                title: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150
+                },
+                value: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "normal",
+                    wrap: true
+                },
+                spacing: 10
+            },
+            input: {
+                separation: {
+                    spacing: 8
+                }
+            },
+            columnSet: {
+                separation: {
+                    spacing: 8
+                }
+            },
+            column: {
+                separation: {
+                    spacing: 8
+                }
+            }
+        };
+    };
+    return KikContainer;
+}(host_container_1.HostContainer));
+exports.KikContainer = KikContainer;
+
+
+/***/ }),
+/* 160 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var host_container_1 = __webpack_require__(2);
+var SlackContainer = (function (_super) {
+    __extends(SlackContainer, _super);
+    function SlackContainer(width, styleSheet) {
+        var _this = _super.call(this, styleSheet) || this;
+        _this._width = width;
+        _this.supportsActionBar = false;
+        return _this;
+    }
+    SlackContainer.prototype.renderContainer = function (renderedCard) {
+        var outerElement = document.createElement("div");
+        outerElement.className = "slackOuterContainer";
+        outerElement.style.width = this._width + "px";
+        outerElement.appendChild(renderedCard);
+        return outerElement;
+    };
+    SlackContainer.prototype.getHostConfig = function () {
+        return {
+            supportsInteractivity: false,
+            strongSeparation: {
+                spacing: 20,
+                lineThickness: 1,
+                lineColor: "#FF707070"
+            },
+            fontFamily: "Lato, Segoe UI, sans-serif",
+            fontSizes: {
+                small: 12,
+                normal: 14,
+                medium: 16,
+                large: 19,
+                extraLarge: 22
+            },
+            fontWeights: {
+                lighter: 200,
+                normal: 400,
+                bolder: 600
+            },
+            colors: {
+                //                default: {
+                //                    normal: "#FF000000",
+                //                    subtle: "#b2000000"
+                //                },
+                accent: {
+                    normal: "#FF0000FF",
+                    subtle: "#b20000FF"
+                },
+                dark: {
+                    normal: "#FF101010",
+                    subtle: "#b2101010"
+                },
+                light: {
+                    normal: "#FFFFFFFF",
+                    subtle: "#b2FFFFFF"
+                },
+                good: {
+                    normal: "#FF008000",
+                    subtle: "#b2008000"
+                },
+                warning: {
+                    normal: "#FFFFD700",
+                    subtle: "#b2FFD700"
+                },
+                attention: {
+                    normal: "#FF8B0000",
+                    subtle: "#b28B0000"
+                }
+            },
+            imageSizes: {
+                small: 60,
+                medium: 120,
+                large: 180
+            },
+            actions: {
+                maxActions: 5,
+                separation: {
+                    spacing: 20
+                },
+                buttonSpacing: 20,
+                showCard: {
+                    actionMode: "inlineEdgeToEdge",
+                    inlineTopMargin: 16,
+                    backgroundColor: "#08000000",
+                    padding: {
+                        top: 16,
+                        right: 16,
+                        bottom: 16,
+                        left: 16
+                    }
+                },
+                actionsOrientation: "horizontal",
+                actionAlignment: "left"
+            },
+            adaptiveCard: {
+                backgroundColor: "#00FFFFFF",
+                padding: {
+                    left: 8,
+                    top: 8,
+                    right: 8,
+                    bottom: 8
+                }
+            },
+            container: {
+                separation: {
+                    spacing: 10
+                },
+                normal: {},
+                emphasis: {
+                    backgroundColor: "#EEEEEE",
+                    borderColor: "#AAAAAA",
+                    borderThickness: {
+                        top: 1,
+                        right: 1,
+                        bottom: 1,
+                        left: 1
+                    },
+                    padding: {
+                        top: 10,
+                        right: 10,
+                        bottom: 10,
+                        left: 10
+                    }
+                }
+            },
+            textBlock: {
+                color: "dark",
+                separations: {
+                    small: {
+                        spacing: 10,
+                    },
+                    normal: {
+                        spacing: 10
+                    },
+                    medium: {
+                        spacing: 10
+                    },
+                    large: {
+                        spacing: 10
+                    },
+                    extraLarge: {
+                        spacing: 10
+                    }
+                }
+            },
+            image: {
+                size: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            imageSet: {
+                imageSize: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            factSet: {
+                separation: {
+                    spacing: 10
+                },
+                title: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150,
+                },
+                value: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "normal",
+                    wrap: true,
+                },
+                spacing: 20
+            },
+            input: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            columnSet: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            column: {
+                separation: {
+                    spacing: 10
+                }
+            }
+        };
+    };
+    return SlackContainer;
+}(host_container_1.HostContainer));
+exports.SlackContainer = SlackContainer;
+
+
+/***/ }),
+/* 161 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var host_container_1 = __webpack_require__(2);
+var SMSContainer = (function (_super) {
+    __extends(SMSContainer, _super);
+    function SMSContainer(width, styleSheet) {
+        var _this = _super.call(this, styleSheet) || this;
+        _this._width = width;
+        _this.supportsActionBar = false;
+        return _this;
+    }
+    SMSContainer.prototype.renderContainer = function (renderedCard) {
+        var outerElement = document.createElement("div");
+        outerElement.className = "smsOuterContainer";
+        outerElement.style.width = this._width + "px";
+        outerElement.appendChild(renderedCard);
+        return outerElement;
+    };
+    SMSContainer.prototype.getHostConfig = function () {
+        return {
+            supportsInteractivity: false,
+            strongSeparation: {
+                spacing: 20,
+                lineThickness: 1,
+                lineColor: "#FF707070"
+            },
+            fontFamily: "Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;",
+            fontSizes: {
+                small: 12,
+                normal: 14,
+                medium: 16,
+                large: 19,
+                extraLarge: 22
+            },
+            fontWeights: {
+                lighter: 200,
+                normal: 400,
+                bolder: 600
+            },
+            colors: {
+                //                default: {
+                //                    normal: "#FF000000",
+                //                    subtle: "#b2000000"
+                //                },
+                accent: {
+                    normal: "#FF0000FF",
+                    subtle: "#b20000FF"
+                },
+                dark: {
+                    normal: "#FF101010",
+                    subtle: "#b2101010"
+                },
+                light: {
+                    normal: "#FFFFFFFF",
+                    subtle: "#b2FFFFFF"
+                },
+                good: {
+                    normal: "#FF008000",
+                    subtle: "#b2008000"
+                },
+                warning: {
+                    normal: "#FFFFD700",
+                    subtle: "#b2FFD700"
+                },
+                attention: {
+                    normal: "#FF8B0000",
+                    subtle: "#b28B0000"
+                }
+            },
+            imageSizes: {
+                small: 60,
+                medium: 120,
+                large: 180
+            },
+            actions: {
+                maxActions: 5,
+                separation: {
+                    spacing: 8
+                },
+                buttonSpacing: 10,
+                showCard: {
+                    actionMode: "inlineEdgeToEdge",
+                    inlineTopMargin: 16,
+                    backgroundColor: "#08000000",
+                    padding: {
+                        top: 8,
+                        right: 8,
+                        bottom: 8,
+                        left: 8
+                    }
+                },
+                actionsOrientation: "horizontal",
+                actionAlignment: "left"
+            },
+            adaptiveCard: {
+                backgroundColor: "#FFFFFF",
+                padding: {
+                    left: 8,
+                    top: 8,
+                    right: 8,
+                    bottom: 8
+                }
+            },
+            container: {
+                separation: {
+                    spacing: 8
+                },
+                normal: {},
+                emphasis: {
+                    backgroundColor: "#EEEEEE",
+                    borderColor: "#AAAAAA",
+                    borderThickness: {
+                        top: 1,
+                        right: 1,
+                        bottom: 1,
+                        left: 1
+                    },
+                    padding: {
+                        top: 10,
+                        right: 10,
+                        bottom: 10,
+                        left: 10
+                    }
+                }
+            },
+            textBlock: {
+                color: "dark",
+                separations: {
+                    small: {
+                        spacing: 8,
+                    },
+                    normal: {
+                        spacing: 8
+                    },
+                    medium: {
+                        spacing: 8
+                    },
+                    large: {
+                        spacing: 8
+                    },
+                    extraLarge: {
+                        spacing: 8
+                    }
+                }
+            },
+            image: {
+                size: "medium",
+                separation: {
+                    spacing: 8
+                }
+            },
+            imageSet: {
+                imageSize: "medium",
+                separation: {
+                    spacing: 8
+                }
+            },
+            factSet: {
+                separation: {
+                    spacing: 8
+                },
+                title: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150
+                },
+                value: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "normal",
+                    wrap: true
+                },
+                spacing: 10
+            },
+            input: {
+                separation: {
+                    spacing: 8
+                }
+            },
+            columnSet: {
+                separation: {
+                    spacing: 8
+                }
+            },
+            column: {
+                separation: {
+                    spacing: 8
+                }
+            }
+        };
+    };
+    return SMSContainer;
+}(host_container_1.HostContainer));
+exports.SMSContainer = SMSContainer;
+
+
+/***/ }),
+/* 162 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var host_container_1 = __webpack_require__(2);
+var FacebookContainer = (function (_super) {
+    __extends(FacebookContainer, _super);
+    function FacebookContainer(width, styleSheet) {
+        var _this = _super.call(this, styleSheet) || this;
+        _this._width = width;
+        _this.supportsActionBar = false;
+        return _this;
+    }
+    FacebookContainer.prototype.renderContainer = function (renderedCard) {
+        var outerElement = document.createElement("div");
+        outerElement.className = "facebookOuterContainer";
+        outerElement.style.width = this._width + "px";
+        outerElement.appendChild(renderedCard);
+        return outerElement;
+    };
+    FacebookContainer.prototype.getHostConfig = function () {
+        return {
+            supportsInteractivity: false,
+            strongSeparation: {
+                spacing: 20,
+                lineThickness: 1,
+                lineColor: "#FF707070"
+            },
+            fontFamily: "Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;",
+            fontSizes: {
+                small: 12,
+                normal: 14,
+                medium: 16,
+                large: 19,
+                extraLarge: 22
+            },
+            fontWeights: {
+                lighter: 200,
+                normal: 400,
+                bolder: 600
+            },
+            colors: {
+                //                default: {
+                //                    normal: "#FF000000",
+                //                    subtle: "#b2000000"
+                //                },
+                accent: {
+                    normal: "#FF0000FF",
+                    subtle: "#b20000FF"
+                },
+                dark: {
+                    normal: "#FF101010",
+                    subtle: "#b2101010"
+                },
+                light: {
+                    normal: "#FFFFFFFF",
+                    subtle: "#b2FFFFFF"
+                },
+                good: {
+                    normal: "#FF008000",
+                    subtle: "#b2008000"
+                },
+                warning: {
+                    normal: "#FFFFD700",
+                    subtle: "#b2FFD700"
+                },
+                attention: {
+                    normal: "#FF8B0000",
+                    subtle: "#b28B0000"
+                }
+            },
+            imageSizes: {
+                small: 60,
+                medium: 120,
+                large: 180
+            },
+            actions: {
+                maxActions: 5,
+                separation: {
+                    spacing: 20
+                },
+                buttonSpacing: 20,
+                showCard: {
+                    actionMode: "inlineEdgeToEdge",
+                    inlineTopMargin: 16,
+                    backgroundColor: "#08000000",
+                    padding: {
+                        top: 16,
+                        right: 16,
+                        bottom: 16,
+                        left: 16
+                    }
+                },
+                actionsOrientation: "horizontal",
+                actionAlignment: "left"
+            },
+            adaptiveCard: {
+                backgroundColor: "#FFF5F5F5",
+                padding: {
+                    left: 8,
+                    top: 8,
+                    right: 8,
+                    bottom: 8
+                }
+            },
+            container: {
+                separation: {
+                    spacing: 10
+                },
+                normal: {},
+                emphasis: {
+                    backgroundColor: "#EEEEEE",
+                    borderColor: "#AAAAAA",
+                    borderThickness: {
+                        top: 1,
+                        right: 1,
+                        bottom: 1,
+                        left: 1
+                    },
+                    padding: {
+                        top: 10,
+                        right: 10,
+                        bottom: 10,
+                        left: 10
+                    }
+                }
+            },
+            textBlock: {
+                color: "dark",
+                separations: {
+                    small: {
+                        spacing: 10,
+                    },
+                    normal: {
+                        spacing: 10
+                    },
+                    medium: {
+                        spacing: 10
+                    },
+                    large: {
+                        spacing: 10
+                    },
+                    extraLarge: {
+                        spacing: 10
+                    }
+                }
+            },
+            image: {
+                size: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            imageSet: {
+                imageSize: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            factSet: {
+                separation: {
+                    spacing: 10
+                },
+                title: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150,
+                },
+                value: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "normal",
+                    wrap: true,
+                },
+                spacing: 20
+            },
+            input: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            columnSet: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            column: {
+                separation: {
+                    spacing: 10
+                }
+            }
+        };
+    };
+    return FacebookContainer;
+}(host_container_1.HostContainer));
+exports.FacebookContainer = FacebookContainer;
+
+
+/***/ }),
+/* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var host_container_1 = __webpack_require__(2);
+var BingContainer = (function (_super) {
+    __extends(BingContainer, _super);
+    function BingContainer(width, styleSheet) {
+        var _this = _super.call(this, styleSheet) || this;
+        _this._width = width;
+        return _this;
+    }
+    BingContainer.prototype.renderContainer = function (renderedCard) {
+        var element = document.createElement("div");
+        element.style.width = this._width + "px";
+        element.style.backgroundColor = BingContainer.backgroundColor;
+        element.style.overflow = "hidden";
+        renderedCard.style.height = "100%";
+        element.appendChild(renderedCard);
+        return element;
+    };
+    BingContainer.prototype.getHostConfig = function () {
+        return {
+            supportsInteractivity: true,
+            strongSeparation: {
+                spacing: 20,
+                lineThickness: 1,
+                lineColor: "#EEEEEE"
+            },
+            fontFamily: "Segoe UI",
+            fontSizes: {
+                small: 12,
+                normal: 14,
+                medium: 17,
+                large: 21,
+                extraLarge: 26
+            },
+            fontWeights: {
+                lighter: 200,
+                normal: 400,
+                bolder: 600
+            },
+            colors: {
+                dark: {
+                    normal: "#333333",
+                    subtle: "#EE333333"
+                },
+                light: {
+                    normal: "#FFFFFF",
+                    subtle: "#88FFFFFF"
+                },
+                accent: {
+                    normal: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    normal: "#FF0000",
+                    subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
+                }
+            },
+            imageSizes: {
+                small: 60,
+                medium: 120,
+                large: 180
+            },
+            actions: {
+                maxActions: 5,
+                separation: {
+                    spacing: 10
+                },
+                buttonSpacing: 10,
+                showCard: {
+                    actionMode: "inlineEdgeToEdge",
+                    inlineTopMargin: 16,
+                    backgroundColor: "#EFEFEF",
+                    padding: {
+                        top: 16,
+                        right: 16,
+                        bottom: 16,
+                        left: 16
+                    }
+                },
+                actionsOrientation: "vertical",
+                actionAlignment: "stretch"
+            },
+            adaptiveCard: {
+                backgroundColor: "#FFFFFF",
+                padding: {
+                    left: 20,
+                    top: 20,
+                    right: 20,
+                    bottom: 20
+                }
+            },
+            container: {
+                separation: {
+                    spacing: 10
+                },
+                normal: {},
+                emphasis: {
+                    backgroundColor: "#EEEEEE",
+                    borderColor: "#AAAAAA",
+                    borderThickness: {
+                        top: 1,
+                        right: 1,
+                        bottom: 1,
+                        left: 1
+                    },
+                    padding: {
+                        top: 10,
+                        right: 10,
+                        bottom: 10,
+                        left: 10
+                    }
+                }
+            },
+            textBlock: {
+                color: "dark",
+                separations: {
+                    small: {
+                        spacing: 10,
+                    },
+                    normal: {
+                        spacing: 10
+                    },
+                    medium: {
+                        spacing: 10
+                    },
+                    large: {
+                        spacing: 10
+                    },
+                    extraLarge: {
+                        spacing: 10
+                    }
+                }
+            },
+            image: {
+                size: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            imageSet: {
+                imageSize: "medium",
+                separation: {
+                    spacing: 10
+                }
+            },
+            factSet: {
+                separation: {
+                    spacing: 10
+                },
+                title: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "bolder",
+                    wrap: true,
+                    maxWidth: 150,
+                },
+                value: {
+                    color: "dark",
+                    size: "normal",
+                    isSubtle: false,
+                    weight: "normal",
+                    wrap: true,
+                },
+                spacing: 10
+            },
+            input: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            columnSet: {
+                separation: {
+                    spacing: 10
+                }
+            },
+            column: {
+                separation: {
+                    spacing: 10
+                }
+            }
+        };
+    };
+    return BingContainer;
+}(host_container_1.HostContainer));
+BingContainer.backgroundColor = "#fff";
+exports.BingContainer = BingContainer;
 
 
 /***/ })

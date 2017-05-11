@@ -2195,6 +2195,16 @@ export class ColumnSet extends CardElement {
         }
     }
 
+    getAllInputs(): Array<Input> {
+        var result: Array<Input> = [];
+
+        for (var i = 0; i < this._columns.length; i++) {
+            result = result.concat(this._columns[i].getAllInputs());
+        }
+
+        return result;
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak;

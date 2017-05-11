@@ -7,6 +7,13 @@ import { SkypeContainer } from "./containers/skype";
 import { WebChatContainer } from "./containers/webchat";
 import { TeamsContainer } from "./containers/teams";
 import { ToastContainer } from "./containers/toast";
+import { GroupMeContainer } from "./containers/groupme";
+import { TelegramContainer } from "./containers/telegram";
+import { SMSContainer } from "./containers/sms";
+import { SlackContainer } from "./containers/slack";
+import { KikContainer } from "./containers/kik";
+import { FacebookContainer } from "./containers/facebook";
+import { BingContainer } from "./containers/bing";
 
 import * as ace from "brace";
 import "brace/mode/json";
@@ -214,11 +221,6 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "WebChat",
-            new WebChatContainer("css/webchat.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
             "Microsoft Teams",
             new TeamsContainer("css/teams.css")));
 
@@ -229,13 +231,53 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(
         new HostContainerOption(
-            "Large Live Tile",
+            "Windows Live Tile",
             new LiveTileContainer(310, 310, "css/liveTile.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
             "Skype",
             new SkypeContainer(350, "css/skype.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "WebChat (Bot Framework)",
+            new WebChatContainer("css/webchat.css")));
+ 
+    hostContainerOptions.push( 
+        new HostContainerOption( 
+            "Bing (Bot Framework)", 
+            new BingContainer(368, "css/skype.css"))); 
+ 
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Kik (Bot Framework)",
+            new KikContainer(400, "css/kik.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Slack (Bot Framework)",
+            new SlackContainer(500,"css/slack.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Facebook (Bot Framework)",
+            new FacebookContainer(450, "css/facebook.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "SMS (Bot Framework)",
+            new SMSContainer(400, "css/sms.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Telegram (Bot Framework)",
+            new TelegramContainer(400, "css/telegram.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "GroupMe (Bot Framework)",
+            new GroupMeContainer(450, "css/groupme.css")));
 
     if (hostContainerPicker) {
         hostContainerPicker.addEventListener(

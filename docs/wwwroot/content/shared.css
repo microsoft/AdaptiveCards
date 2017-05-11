@@ -1,8 +1,8 @@
-﻿body {
+﻿/*body {
     font-family: 'Segoe UI', sans-serif;
-}
+}*/
 
-h1 {
+/*h1 {
     font-size: xx-large;
     cursor: pointer;
 }
@@ -15,30 +15,37 @@ h2 {
 h3 {
     font-size: medium;
     cursor: pointer;
-}
+}*/
 
 .content {
-    margin-top: 39px;
+    margin-top: 40px;
 }
 
 .content-sidebar {
-    margin-top: 39px;
+    margin-top: 40px;
     margin-left: 256px;
 }
 
 .w3-sidebar {
     width: 256px;
-    font-family: "Segoe UI";
+    font-family: "Segoe UI Semibold", sans-serif;
     font-size: 15px;
-    font-weight:600;
 }
 
-.w3-bar-block .w3-bar-item {
-    padding-left: 24px;
-    height: 42px;
+.logo {
+    float:left; 
+    margin-top:-4px;
+    margin-bottom:-4px;
 }
 
 img {
     margin-bottom: 0px; 
     border-style: none;
+}
+h1, h2, h3, h4 {
+    font-family: "Segoe UI Semibold", sans-serif;
+}
+
+body, p, th, div, span, input, button, select {
+    font-family: "Segoe UI Semilight", sans-serif;
 }

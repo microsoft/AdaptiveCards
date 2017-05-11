@@ -3,21 +3,41 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Adaptive Card Visualizer</title>
+    <title>Adaptive Cards</title>
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="/content/shared.css">
+    <link rel="stylesheet" href="/content/fonts.css">
+    <!--<link rel="stylesheet" href="/content/shared.css">-->
     <link rel="stylesheet" href="css/app.css" type="text/css" />
+    <style>
 
+        .content {
+            margin-top: 40px;
+        }
+
+        .logo {
+            float: left;
+            margin-top: -4px;
+            margin-bottom: -4px;
+        }
+
+        img {
+            margin-bottom: 0px;
+            border-style: none;
+        }
+
+    </style>
     <script src="node_modules/adaptive-cards/dist/adaptive-cards.js"></script>
     <script src="built/visualizer-with-renderer.js"></script>
     <script>
+
     </script>
 </head>
 <body>
     <div class="uiRoot">
         <!-- Nav bar-->
-        <div class="navBar w3-bar w3-black">
+        <div class="navBar w3-bar w3-black" style="font-family: 'Segoe UI Semilight', sans-serif;">
+            <a href="/"><img src="/content/icons_transparent/white-48.png" class="logo" /></a>
             <a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
             <a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
             <a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
@@ -42,7 +62,7 @@
                 <select id="hostContainerPicker" class="select"></select>
             </div>
         </div>
-        <div class="cardEditor">
+        <div class="cardEditor" >
             <div class="leftPane">
                 <div id="editor"></div>
             </div>

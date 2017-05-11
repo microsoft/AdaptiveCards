@@ -2,5 +2,5 @@ The FactSet element makes it simple to display a series of "facts" (e.g. name/va
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| **type**| string | true | **"FactSet"** |
+| **type**| **"FactSet"** | true | |
 | **facts** | [Fact](#fact)[] | true| The facts to be displayed. |

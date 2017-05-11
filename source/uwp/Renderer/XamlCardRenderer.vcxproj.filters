@@ -46,6 +46,10 @@
     <ClCompile Include="lib\AdaptiveInputChoice.cpp" />
     <ClCompile Include="lib\AdaptiveInputChoiceSet.cpp" />
     <ClCompile Include="lib\AdaptiveInputNumber.cpp" />
+    <ClCompile Include="lib\AdaptiveOpenUrlAction.cpp" />
+    <ClCompile Include="lib\AdaptiveHttpAction.cpp" />
+    <ClCompile Include="lib\AdaptiveShowCardAction.cpp" />
+    <ClCompile Include="lib\AdaptiveSubmitAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -101,6 +105,10 @@
     <ClInclude Include="lib\AdaptiveInputChoice.h" />
     <ClInclude Include="lib\AdaptiveInputChoiceSet.h" />
     <ClInclude Include="lib\AdaptiveInputNumber.h" />
+    <ClInclude Include="lib\AdaptiveOpenUrlAction.h" />
+    <ClInclude Include="lib\AdaptiveHttpAction.h" />
+    <ClInclude Include="lib\AdaptiveShowCardAction.h" />
+    <ClInclude Include="lib\AdaptiveSubmitAction.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

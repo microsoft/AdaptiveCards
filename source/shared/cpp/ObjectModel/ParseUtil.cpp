@@ -180,6 +180,31 @@ CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
     }
 }
 
+ActionType ParseUtil::GetActionType(const Json::Value& json)
+{
+    std::string actualType = GetTypeAsString(json);
+    try
+    {
+        return ActionTypeFromString(actualType);
+    }
+    catch (const std::out_of_range&)
+    {
+        throw AdaptiveCardParseException("Invalid ActionType");
+    }
+}
+
+ActionType ParseUtil::TryGetActionType(const Json::Value& json)
+{
+    try
+    {
+        return GetActionType(json);
+    }
+    catch (const AdaptiveCardParseException&)
+    {
+        return ActionType::Unsupported;
+    }
+}
+
 Json::Value ParseUtil::GetArray(
     const Json::Value& json,
     AdaptiveCardSchemaKey key)

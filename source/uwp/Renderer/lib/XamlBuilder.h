@@ -20,7 +20,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IImageLoadTrackerListener
         STDMETHODIMP AllImagesLoaded();
 
-        void BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard, _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot);
+        void BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard, _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot, boolean isOuterCard = true);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
         HRESULT RemoveListener(_In_ IXamlBuilderListener* listener) noexcept;
         HRESULT SetFixedDimensions(_In_ UINT width, _In_ UINT height) noexcept;
@@ -34,6 +34,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::unordered_map<ABI::AdaptiveCards::XamlCardRenderer::ElementType, 
             std::function<void(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*,
                 ABI::Windows::UI::Xaml::IUIElement**)>> m_adaptiveElementBuilder;
+
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IPropertyValueStatics> m_propertyValueStatics;
         ImageLoadTracker m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
@@ -90,6 +91,9 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
             _In_ std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
+        void BuildActions(
+            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,
+            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
         void GetSeparationOptionsForElement(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
             _In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation,

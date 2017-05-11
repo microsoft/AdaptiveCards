@@ -234,3 +234,7 @@ window.addEventListener("hashchange", function () {
     showElement(window.location.hash.slice(1));
 }, false);
 
+$(document).ready(() => {
+    // set table classes
+    $("table").addClass("w3-table w3-bordered");
+});

@@ -1,19 +1,19 @@
 {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
         {
-            "speak": "<s>Serious Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
+            "speak": "<s>Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
             "type": "ColumnSet",
             "columns": [
                 {
                     "type": "Column",
-                    "size": "2",
+                    "size": 2,
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Serious Pie",
+                            "text": "Tom's Pie",
                             "weight": "bolder",
                             "size": "extraLarge"
                         },
@@ -31,12 +31,12 @@
                 },
                 {
                     "type": "Column",
-                    "size": "1",
+                    "size": 1,
                     "items": [
                         {
                             "type": "Image",
                             "url": "http://res.cloudinary.com/sagacity/image/upload/c_crop,h_670,w_635,x_0,y_0/c_scale,w_640/v1397425743/Untitled-4_lviznp.jpg",
-                            "size":"auto"
+                            "size": "auto"
                         }
                     ]
                 }
@@ -45,16 +45,9 @@
     ],
     "actions": [
         {
-            "type": "Action.Http",
-            "method": "POST",
+            "type": "Action.OpenUrl",
             "title": "More Info",
-            "url": "http://foo.com"
-        },
-        {
-            "type": "Action.Http",
-            "method": "POST",
-            "title": "View on Foursquare",
-            "url": "http://foo.com"
+            "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         }
     ]
 }

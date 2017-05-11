@@ -2,9 +2,10 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>Adaptive Cards</title>
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/content/fonts.css">
     <link rel="stylesheet" href="/content/shared.css">
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/documentation/documentation.js"></script>
@@ -14,6 +15,7 @@
     <!-- Nav bar-->
     <div class="w3-top">
         <div class="w3-bar w3-black">
+            <a href="/"><img src="/content/icons_transparent/white-48.png" class="logo" /></a>
             <a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
             <a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
             <a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
@@ -23,38 +25,50 @@
     </div>
 
     <!-- side bar with accordion -->
-    <div class="w3-sidebar w3-light-grey w3-card-2 w3-bar-block">
-        <button class="w3-button w3-block w3-left-align" >About</button>
-        <div id="create" class="w3-bar-block w3-white w3-card-4">
-            <a id="about-overview-link" href='#about-overview-page' class="w3-bar-item w3-button navLink">Overview</a>
-            <a id="about-goals-link" href='#about-goals-page' class="w3-bar-item w3-button navLink">Goals</a>
-            <a id="about-principles-link" href='#about-principles-page' class="w3-bar-item w3-button navLink">Core principles</a>
-            <a id="about-valueprop-link" href='#about-valueprop-page' class="w3-bar-item w3-button navLink">Value proposition</a>
-            <a id="about-future-link" href='#about-future-page' class="w3-bar-item w3-button navLink">Future work</a>
+    <div class="w3-sidebar w3-light-grey w3-bar-block">
+        <a class="w3-bar-item w3-button  w3-left-align" onclick="myAccFunc('aboutPage')">About</a>
+        <div id="aboutPage" class="w3-bar-block  w3-hide" style="margin-left:10px;">
+            <a id="about-overview-link" href='#about-overview' class="w3-bar-item w3-button navLink">Overview</a>
         </div>
-        <button class="w3-button w3-block w3-left-align" )">Creating a card</button>
-        <div id="create" class="w3-bar-block w3-white w3-card-4">
-            <a id="create-GettingStarted-link" href='#create-GettingStarted-page' class="w3-bar-item w3-button navLink">Getting started</a>
-            <a id="create-cardschema-link" href='#create-cardschema-page' class="w3-bar-item w3-button navLink">Card schema</a>
-            <a id="create-textfeatures-link" href='#create-textfeatures-page' class="w3-bar-item w3-button navLink">Text Features</a>
-            <a id="create-speech-link" href='#create-speech-page' class="w3-bar-item w3-button navLink">Adding speech</a>
-            <a id="create-libraries-link" href='#create-libraries-page' class="w3-bar-item w3-button navLink">Libraries for building cards</a>
+        <a class="w3-bar-item w3-button  w3-left-align" onclick="myAccFunc('create')">Creating a card</a>
+        <div id="create" class="w3-bar-block  w3-hide" style="margin-left:10px">
+            <a id="create-GettingStarted-link" href='#create-GettingStarted' class="w3-bar-item w3-button navLink">Getting started</a>
+            <a id="create-cardschema-link" href='#create-cardschema' class="w3-bar-item w3-button navLink">Card schema</a>
+            <a id="create-textfeatures-link" href='#create-textfeatures' class="w3-bar-item w3-button navLink">Text Features</a>
+            <a id="create-speech-link" href='#create-speech' class="w3-bar-item w3-button navLink">Adding speech</a>
+            <a class="w3-bar-item w3-button" onclick="myAccFunc('create-libraries')" >Libraries for creating cards</a>
+            <div id="create-libraries" class="w3-bar-block  w3-hide" style="padding-left:20px;">
+                <a id="create-libraries-net-link" href='#create-libraries-net' class="w3-bar-item w3-button navLink">.NET</a>
+                <a id="create-libraries-javascript-link" href='#create-libraries-javascript' class="w3-bar-item w3-button navLink">Javascript</a>
+                <a id="create-libraries-typescript-link" href='#create-libraries-typescript' class="w3-bar-item w3-button navLink">Typescript</a>
+            </div>
         </div>
-        <button class="w3-button w3-block w3-left-align" >Displaying a card</button>
-        <div id="displayCard" class="w3-bar-block w3-white w3-card-4">
-            <a id="display-gettingstarted-link" href='#display-gettingstarted-page' class="w3-bar-item w3-button navLink">Getting started</a>
-            <a id="display-styling-link" href='#display-styling-page' class="w3-bar-item w3-button navLink">Customizing style</a>
-            <a id="display-actions-link" href='#display-actions-page' class="w3-bar-item w3-button navLink">Handling actions</a>
-            <a id="display-hostconfigschema-link" href='#display-hostconfigschema-page' class="w3-bar-item w3-button navLink">HostConfig schema</a>
-            <a id="display-speech-link" href='#display-speech-page' class="w3-bar-item w3-button navLink">Supporting speech</a>
-            <a id="display-customizingrenderer-link" href='#display-customizingrenderer-page' class="w3-bar-item w3-button navLink">Customizing a renderer</a>
-            <a id="display-implementingrenderer-link" href='#display-implementingrenderer-page' class="w3-bar-item w3-button navLink">Implementing a renderer</a>
-            <a id="display-libraries-link" href='#display-libraries-page' class="w3-bar-item w3-button navLink">Libraries to display cards</a>
+        <a class="w3-bar-item w3-button w3-left-align" onclick="myAccFunc('display')">Displaying a card</a>
+        <div id="display" class="w3-bar-block  w3-hide" style="margin-left:10px;">
+            <a id="display-gettingstarted-link" href='#display-gettingstarted' class="w3-bar-item w3-button navLink">Getting started</a>
+            <a id="display-hostconfigschema-link" href='#display-hostconfigschema' class="w3-bar-item w3-button navLink">HostConfig schema</a>
+            <!--<a id="display-speech-link" href='#display-speech' class="w3-bar-item w3-button navLink">Supporting speech</a>-->
+            <a class="w3-bar-item w3-button " onclick="myAccFunc('display-libraries')" >Libraries for displaying cards</a>
+            <div id="display-libraries" class="w3-bar-block  w3-hide" style="padding-left:20px;">
+                <a id="display-libraries-android-link" href='#display-libraries-android' class="w3-bar-item w3-button navLink">Android</a>
+                <a id="display-libraries-htmlclient-link" href='#display-libraries-htmlclient' class="w3-bar-item w3-button navLink">HTML Client</a>
+                <a id="display-libraries-htmlserver-link" href='#display-libraries-htmlserver' class="w3-bar-item w3-button navLink">HTML Server</a>
+                <a id="display-libraries-image-link" href='#display-libraries-image' class="w3-bar-item w3-button navLink">Image</a>
+                <a id="display-libraries-ios-link" href='#display-libraries-ios' class="w3-bar-item w3-button navLink">iOS</a>
+                <a id="display-libraries-uwp-link" href='#display-libraries-uwp' class="w3-bar-item w3-button navLink">UWP</a>
+                <a id="display-libraries-wpf-link" href='#display-libraries-wpf' class="w3-bar-item w3-button navLink">WPF</a>
+                <a id="display-libraries-wpf.richinput-link" href='#display-libraries-wpf.richinput' class="w3-bar-item w3-button navLink">WPF.RichInput</a>
+                <a id="display-libraries-xamarinforms-link" href='#display-libraries-xamarinforms' class="w3-bar-item w3-button navLink">XamarinForms</a>
+            </div>
+            <a id="display-implementingrenderer-link" href='#display-implementingrenderer' class="w3-bar-item w3-button navLink">Implement a renderer</a>
         </div>
-        <button class="w3-button w3-block w3-left-align" >Resources</button>
-        <div id="resources" class="w3-bar-block w3-white w3-card-4">
-            <a id="display-partners-link" href='#resources-partners-page' class="w3-bar-item w3-button navLink">Partners</a>
-            <a id="display-projects-link" href='#resources-projects-page' class="w3-bar-item w3-button navLink">Related projects</a>
+        <a class="w3-bar-item w3-button w3-left-align" onclick="myAccFunc('resources')">Resources</a>
+        <div id="resources" class="w3-bar-block  w3-hide" style="margin-left:10px;">
+            <a id="resources-tools-link" href='#resources-tools' class="w3-bar-item w3-button navLink">Tools and Samples</a>
+            <a id="resources-future-link" href='#resources-future' class="w3-bar-item w3-button navLink">Future work</a>
+            <!--<a id="resources-partners-link" href='#resources-partners' class="w3-bar-item w3-button navLink">Partners</a>-->
+            <!--<a id="resources-projects-link" href='#resources-projects' class="w3-bar-item w3-button navLink">Related projects</a>-->
+            <!--<a id="space" href='#resources-projects' class="w3-bar-item w3-button navLink"></a>-->
         </div>
     </div>
 
