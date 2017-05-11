@@ -21,19 +21,9 @@ It's never been easier to safely integrate UI from a vast network of content pro
 * [Sample Cards](http://adaptivecards.io/samples/)
 * [Interactive visualizer](http://adaptivecards.io/visualizer/)
 
-# Install
+# Install and Build
 
-## .NET
-`nuget install Microsoft.AdaptiveCards`
-
-## NPM
-`npm install microsoft-adaptivecards`
-
-## *More libraries coming soon*
-
-# Platforms
-
-Adaptive Cards are designed to render anywhere that your users are.
+Adaptive Cards are designed to render anywhere that your users are. The following native platform renderers are under development right now.
 
 |Platform|Install|Build|Status|
 |---|---|---|---|
@@ -43,13 +33,6 @@ Adaptive Cards are designed to render anywhere that your users are.
 |WPF|`nuget install Microsoft.AdaptiveCards`|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/dotnet)|Beta|
 |UWP|*coming soon*|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/uwp)|Alpha|
 |Xamarin.Forms|*coming soon*|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/dotnet)|Alpha|
-
-
-# Build
-
-Since we build for multiple platforms they each have slightly different build mechanisms.
-
-See the `source` dir for a `README` in each platform for instructions.
 
 ## Contribute
 
