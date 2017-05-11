@@ -18,7 +18,7 @@
                                     {
                                         "type": "Image",
                                         "size": "medium",
-                                        "url": "http://adaptivecards-staging.azurewebsites.net/content/FabrikamLogo.png"
+                                        "url": "http://adaptivecards.io/content/FabrikamLogo.png"
                                     }
                                 ]
                             },
@@ -73,7 +73,7 @@
                                     {
                                         "type": "Image",
                                         "size": "medium",
-                                        "url": "http://adaptivecards-staging.azurewebsites.net/content/MargiesTravel.png"
+                                        "url": "http://adaptivecards.io/content/MargiesTravel.png"
                                     }
                                 ]
                             },
@@ -128,7 +128,7 @@
                                     {
                                         "type": "Image",
                                         "size": "medium",
-                                        "url": "http://adaptivecards-staging.azurewebsites.net/content/Relecloud.png"
+                                        "url": "http://adaptivecards.io/content/Relecloud.png"
                                     }
                                 ]
                             },
@@ -183,7 +183,7 @@
                                     {
                                         "type": "Image",
                                         "size": "medium",
-                                        "url": "http://adaptivecards-staging.azurewebsites.net/content/AdventureWorksLogo.png"
+                                        "url": "http://adaptivecards.io/content/AdventureWorksLogo.png"
                                     }
                                 ]
                             },

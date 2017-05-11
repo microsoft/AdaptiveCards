@@ -41,16 +41,16 @@ public class ColumnSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_ColumnSet__SWIG_0(), true);
   }
 
-  public ColumnSet(SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Column_t_t columns) {
-    this(AdaptiveCardObjectModelJNI.new_ColumnSet__SWIG_1(SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Column_t_t.getCPtr(columns)), true);
+  public ColumnSet(ColumnVector columns) {
+    this(AdaptiveCardObjectModelJNI.new_ColumnSet__SWIG_1(ColumnVector.getCPtr(columns), columns), true);
   }
 
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.ColumnSet_Serialize(swigCPtr, this);
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Column_t_t GetColumns() {
-    return new SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Column_t_t(AdaptiveCardObjectModelJNI.ColumnSet_GetColumns__SWIG_0(swigCPtr, this), false);
+  public ColumnVector GetColumns() {
+    return new ColumnVector(AdaptiveCardObjectModelJNI.ColumnSet_GetColumns__SWIG_0(swigCPtr, this), false);
   }
 
   public static ColumnSet Deserialize(SWIGTYPE_p_Json__Value root) {

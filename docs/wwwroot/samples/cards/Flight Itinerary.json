@@ -8,12 +8,11 @@
 			"type": "TextBlock",
 			"text": "Passengers",
 			"weight": "bolder",
-			"size": "extraLarge",
 			"isSubtle": false
 		},
 		{
 			"type": "TextBlock",
-			"text": "Sarah sadf lskfj lkj sdfjkl slkdjf lkjdsflkj  Hum"
+			"text": "Sarah Hum"
 		},
 		{
 			"type": "TextBlock",
@@ -27,7 +26,6 @@
 			"type": "TextBlock",
 			"text": "2 Stops",
 			"weight": "bolder",
-			"size": "extraLarge",
 			"separation": "strong"
 		},
 		{
@@ -37,6 +35,7 @@
 		},
 		{
 			"type": "ColumnSet",
+			"separation": "strong",
 			"columns": [
 				{
 					"type": "Column",
@@ -61,7 +60,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": " "
+							"text": "&nbsp;"
 						},
 						{
 							"type": "Image",
@@ -94,9 +93,10 @@
 		{
 			"type": "TextBlock",
 			"text": "Non-Stop",
-			"weight": "bolder",
-			"size": "extraLarge"
-		},
+						"separation": "strong",
+
+			"weight": "bolder"
+			},
 		{
 			"type": "TextBlock",
 			"text": "Fri, October 18 9:50 PM",
@@ -126,6 +126,10 @@
 					"type": "Column",
 					"size": "auto",
 					"items": [
+					    	{
+							"type": "TextBlock",
+							"text": "&nbsp;"
+						},
 						{
 							"type": "Image",
 							"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
@@ -157,6 +161,8 @@
 		},
 		{
 			"type": "ColumnSet",
+						"separation": "strong",
+
 			"columns": [
 				{
 					"type": "Column",

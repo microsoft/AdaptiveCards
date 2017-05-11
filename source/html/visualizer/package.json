@@ -19,7 +19,7 @@
     "@types/markdown-it": "0.0.1",
     "@types/node": "0.0.2",
     "@types/vkbeautify": "^0.99.0",
-    "adaptive-cards": "*",
+    "microsoft-adaptivecards": "^0.5.4",
     "ajv-cli": "1.1.1",
     "autoprefixer": "^6.7.7",
     "brace": "^0.9.1",

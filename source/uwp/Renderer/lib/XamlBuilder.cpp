@@ -1,6 +1,8 @@
 #include "pch.h"
-#include "XamlBuilder.h"
 
+#include "AdaptiveColorOptions.h"
+#include "AdaptiveColorOption.h"
+#include "AdaptiveHostOptions.h"
 #include "AdaptiveImage.h"
 #include "DefaultResourceDictionary.h"
 #include <windows.foundation.collections.h>
@@ -9,11 +11,9 @@
 #include <windows.ui.xaml.shapes.h>
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
+#include "XamlBuilder.h"
 #include "XamlHelpers.h"
 #include "XamlStyleKeyGenerators.h"
-#include "AdaptiveHostOptions.h"
-#include "AdaptiveColorOptions.h"
-#include "AdaptiveColorOption.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -117,7 +117,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    void XamlBuilder::BuildXamlTreeFromAdaptiveCard(IAdaptiveCard* adaptiveCard, IUIElement** xamlTreeRoot)
+    void XamlBuilder::BuildXamlTreeFromAdaptiveCard(IAdaptiveCard* adaptiveCard, IUIElement** xamlTreeRoot, boolean isOuterCard)
     {
         *xamlTreeRoot = nullptr;
 
@@ -129,19 +129,32 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
         BuildPanelChildren(body.Get(), childElementContainer.Get(), [](IUIElement*) {});
 
+        boolean supportsInteractivity;
+        THROW_IF_FAILED(m_hostOptions->get_SupportsInteractivity(&supportsInteractivity));
+
+        if (supportsInteractivity)
+        {
+            ComPtr<IVector<IAdaptiveActionElement*>> actions;
+            THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
+            BuildActions(actions.Get(), childElementContainer.Get());
+        }
+
         THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
 
-        if (m_listeners.size() == 0)
+        if (isOuterCard)
         {
-            // If we're done and no one's listening for the images to load, make sure 
-            // any outstanding image loads are no longer tracked.
-            m_imageLoadTracker.AbandonOutstandingImages();
-        }
-        else if (m_imageLoadTracker.GetTotalImagesTracked() == 0)
-        {
-            // If there are no images to track, fire the all images loaded
-            // event to signal the xaml is ready
-            FireAllImagesLoaded();
+            if (m_listeners.size() == 0)
+            {
+                // If we're done and no one's listening for the images to load, make sure 
+                // any outstanding image loads are no longer tracked.
+                m_imageLoadTracker.AbandonOutstandingImages();
+            }
+            else if (m_imageLoadTracker.GetTotalImagesTracked() == 0)
+            {
+                // If there are no images to track, fire the all images loaded
+                // event to signal the xaml is ready
+                FireAllImagesLoaded();
+            }
         }
     }
 
@@ -537,6 +550,159 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 childCreatedCallback(newControl.Get());
             }
         });
+    }
+
+    _Use_decl_annotations_
+    void XamlBuilder::BuildActions(
+        IVector<IAdaptiveActionElement*>* children,
+        IPanel* parentPanel)
+    {
+        // Create a separator between the body and the actions
+        ComPtr<IAdaptiveActionOptions> actionOptions;
+        THROW_IF_FAILED(m_hostOptions->get_Actions(actionOptions.GetAddressOf()));
+
+        ComPtr<IAdaptiveSeparationOptions> separationOptions;
+        THROW_IF_FAILED(actionOptions->get_Separation(&separationOptions));
+            
+        auto separator = CreateSeparator(separationOptions.Get());
+        XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+
+        // Create a stack panel for the action buttons
+        ComPtr<IStackPanel> actionStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation actionsOrientation;
+        THROW_IF_FAILED(actionOptions->get_ActionsOrientation(&actionsOrientation));
+
+        auto uiOrientation = (actionsOrientation == ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation::Horizontal) ?
+            Orientation::Orientation_Horizontal :
+            Orientation::Orientation_Vertical;
+
+        THROW_IF_FAILED(actionStackPanel->put_Orientation(uiOrientation));
+
+        ComPtr<IFrameworkElement> actionsFrameworkElement;
+        THROW_IF_FAILED(actionStackPanel.As(&actionsFrameworkElement));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment actionAlignment;
+        THROW_IF_FAILED(actionOptions->get_ActionAlignment(&actionAlignment));
+
+        switch (actionAlignment)
+        {
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch);
+                break;
+        }
+
+        UINT32 buttonSpacing;
+        THROW_IF_FAILED(actionOptions->get_ButtonSpacing(&buttonSpacing));
+
+        Thickness buttonMargin = { 0, 0, 0, 0 };
+        if (actionsOrientation == ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation::Horizontal)
+        {
+            buttonMargin.Left = buttonMargin.Right = buttonSpacing / 2;
+        }
+        else
+        {
+            buttonMargin.Top = buttonMargin.Bottom = buttonSpacing / 2;
+        }
+
+        UINT32 maxActions;
+        THROW_IF_FAILED(actionOptions->get_MaxActions(&maxActions));
+
+        // Add the action buttons to the stack panel
+        ComPtr<IPanel> actionsPanel;
+        THROW_IF_FAILED(actionStackPanel.As(&actionsPanel));
+
+        UINT currentAction = 0;
+
+        std::shared_ptr<std::vector<ComPtr<IUIElement>>> allShowCards(new std::vector<ComPtr<IUIElement>>());
+        ComPtr<IStackPanel> showCardsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child)
+        {
+            if (currentAction < maxActions)
+            {
+                // Render a button for each action
+                ComPtr<IAdaptiveActionElement> action(child);
+                ComPtr<IButton> button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+
+                ComPtr<IFrameworkElement> buttonFrameworkElement;
+                THROW_IF_FAILED(button.As(&buttonFrameworkElement));
+
+                THROW_IF_FAILED(buttonFrameworkElement->put_Margin(buttonMargin));
+
+                HString title;
+                THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+                SetContent(button.Get(), title.Get());
+
+                ABI::AdaptiveCards::XamlCardRenderer::ActionType actionType;
+                THROW_IF_FAILED(action->get_ActionType(&actionType));
+
+                // If this is a show card action, render the card that will be shown
+                ComPtr<IUIElement> uiShowCard;
+                if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard)
+                {
+                    ComPtr<IAdaptiveShowCardAction> showCardAction;
+                    THROW_IF_FAILED(action.As(&showCardAction));
+
+                    ComPtr<IAdaptiveCard> showCard;
+                    THROW_IF_FAILED(showCardAction->get_Card(showCard.GetAddressOf()));
+
+                    BuildXamlTreeFromAdaptiveCard(showCard.Get(), uiShowCard.GetAddressOf(), false);
+
+                    THROW_IF_FAILED(uiShowCard->put_Visibility(Visibility_Collapsed));
+
+                    allShowCards->push_back(uiShowCard);
+
+                    ComPtr<IPanel> showCardsPanel;
+                    THROW_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));
+                    XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel.Get());
+                }
+                
+                // Add click handler
+                ComPtr<IButtonBase> buttonBase;
+                THROW_IF_FAILED(button.As(&buttonBase));
+
+                EventRegistrationToken clickToken;
+                buttonBase->add_Click(Callback<IRoutedEventHandler>([actionType, uiShowCard, allShowCards](IInspectable* sender, IRoutedEventArgs* args) -> HRESULT
+                {
+                    //TODO: Handle other action types
+                    if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard)
+                    {
+                        // Check if this show card is currently visible
+                        Visibility currentVisibility;
+                        THROW_IF_FAILED(uiShowCard->get_Visibility(&currentVisibility));
+
+                        // Collapse all cards to make sure that no other show cards are visible
+                        for (std::vector<ComPtr<IUIElement>>::iterator it = allShowCards->begin(); it != allShowCards->end(); ++it)
+                        {
+                            THROW_IF_FAILED((*it)->put_Visibility(Visibility_Collapsed));
+                        }
+
+                        // If the card had been collapsed before, show it now
+                        if (currentVisibility == Visibility_Collapsed)
+                        {
+                            THROW_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
+                        }
+                    }
+
+                    return S_OK;
+                }).Get(), &clickToken);
+
+                XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
+            }
+            currentAction++;
+        });
+
+        XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), parentPanel);
+        XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel.Get(), parentPanel);
     }
 
     template<typename T>

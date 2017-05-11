@@ -56,16 +56,16 @@ export class TelegramContainer extends HostContainer {
                     subtle: "#882E89FC" 
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
                     normal: "#FF0000",
                     subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
                 }
             },
             imageSizes: {

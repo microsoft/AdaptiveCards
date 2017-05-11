@@ -43,7 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 function checkNoAdaptiveCard(document: vscode.TextDocument, displayMessage: boolean = true) {
 
-    let isNGType = !(document.languageId === 'json') || document.getText().indexOf('https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json') < 0;
+    let isNGType = !(document.languageId === 'json') || document.getText().indexOf('http://adaptivecards.io/schemas/adaptive-card.json') < 0;
     if (isNGType && displayMessage) {
         vscode.window.showWarningMessage("Active editor doesn't show a AdaptiveCard JSON document.");
     }

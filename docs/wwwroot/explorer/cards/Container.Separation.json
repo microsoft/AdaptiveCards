@@ -14,7 +14,7 @@
         },
         {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0",
+          "url": "http://adaptivecards.io/api/cat/0",
           "size": "large"
         }
       ]
@@ -30,7 +30,7 @@
         },
         {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/1",
+          "url": "http://adaptivecards.io/api/cat/1",
           "size": "large"
         }
       ]
@@ -46,7 +46,7 @@
         },
         {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/2",
+          "url": "http://adaptivecards.io/api/cat/2",
           "size": "large"
         }
       ]
@@ -62,7 +62,7 @@
         },
         {
           "type": "Image",
-          "url": "http://adaptivecards-staging.azurewebsites.net/api/cat/0",
+          "url": "http://adaptivecards.io/api/cat/0",
           "size": "large"
         }
       ]

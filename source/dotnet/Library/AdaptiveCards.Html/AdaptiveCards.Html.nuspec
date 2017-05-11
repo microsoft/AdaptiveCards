@@ -11,10 +11,6 @@
     <description>This library generates HTML markup from adaptive card payloads, suitable for server side generation of html</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="AdaptiveCards" version="1.0.0.4" />
-      <dependency id="HtmlTags" version="4.2.0" />
-      <dependency id="MarkedNet" version="1.0.5.0" />
-      <dependency id="Newtonsoft.Json" version="9.0.1" />
     </dependencies>
   </metadata>
 </package>

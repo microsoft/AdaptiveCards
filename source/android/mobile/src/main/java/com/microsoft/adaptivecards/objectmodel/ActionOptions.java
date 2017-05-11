@@ -52,77 +52,37 @@ public class ActionOptions {
     return ActionsOrientation.swigToEnum(AdaptiveCardObjectModelJNI.ActionOptions_actionsOrientation_get(swigCPtr, this));
   }
 
-  public void setActionAlignment(HorizontalAlignment value) {
+  public void setActionAlignment(ActionAlignment value) {
     AdaptiveCardObjectModelJNI.ActionOptions_actionAlignment_set(swigCPtr, this, value.swigValue());
   }
 
-  public HorizontalAlignment getActionAlignment() {
-    return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.ActionOptions_actionAlignment_get(swigCPtr, this));
+  public ActionAlignment getActionAlignment() {
+    return ActionAlignment.swigToEnum(AdaptiveCardObjectModelJNI.ActionOptions_actionAlignment_get(swigCPtr, this));
   }
 
-  public void setBackgroundColor(String value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_backgroundColor_set(swigCPtr, this, value);
+  public void setButtonSpacing(long value) {
+    AdaptiveCardObjectModelJNI.ActionOptions_buttonSpacing_set(swigCPtr, this, value);
   }
 
-  public String getBackgroundColor() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_backgroundColor_get(swigCPtr, this);
+  public long getButtonSpacing() {
+    return AdaptiveCardObjectModelJNI.ActionOptions_buttonSpacing_get(swigCPtr, this);
   }
 
-  public void setBorderColor(String value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_borderColor_set(swigCPtr, this, value);
+  public void setMaxActions(long value) {
+    AdaptiveCardObjectModelJNI.ActionOptions_maxActions_set(swigCPtr, this, value);
   }
 
-  public String getBorderColor() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_borderColor_get(swigCPtr, this);
+  public long getMaxActions() {
+    return AdaptiveCardObjectModelJNI.ActionOptions_maxActions_get(swigCPtr, this);
   }
 
-  public void setTextColor(String value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_textColor_set(swigCPtr, this, value);
+  public void setSeparation(SeparationOptions value) {
+    AdaptiveCardObjectModelJNI.ActionOptions_separation_set(swigCPtr, this, SeparationOptions.getCPtr(value), value);
   }
 
-  public String getTextColor() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_textColor_get(swigCPtr, this);
-  }
-
-  public void setBorderThickness(long value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_borderThickness_set(swigCPtr, this, value);
-  }
-
-  public long getBorderThickness() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_borderThickness_get(swigCPtr, this);
-  }
-
-  public void setFontWeight(long value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_fontWeight_set(swigCPtr, this, value);
-  }
-
-  public long getFontWeight() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_fontWeight_get(swigCPtr, this);
-  }
-
-  public void setFontSize(long value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_fontSize_set(swigCPtr, this, value);
-  }
-
-  public long getFontSize() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_fontSize_get(swigCPtr, this);
-  }
-
-  public void setSpacing(long value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_spacing_set(swigCPtr, this, value);
-  }
-
-  public long getSpacing() {
-    return AdaptiveCardObjectModelJNI.ActionOptions_spacing_get(swigCPtr, this);
-  }
-
-  public void setPadding(BoundaryOptions value) {
-    AdaptiveCardObjectModelJNI.ActionOptions_padding_set(swigCPtr, this, BoundaryOptions.getCPtr(value), value);
-  }
-
-  public BoundaryOptions getPadding() {
-    long cPtr = AdaptiveCardObjectModelJNI.ActionOptions_padding_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new BoundaryOptions(cPtr, false);
+  public SeparationOptions getSeparation() {
+    long cPtr = AdaptiveCardObjectModelJNI.ActionOptions_separation_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new SeparationOptions(cPtr, false);
   }
 
   public ActionOptions() {

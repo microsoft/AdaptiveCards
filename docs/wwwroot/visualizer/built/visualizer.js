@@ -21178,7 +21178,7 @@ dom.importCssString(exports.cssText, exports.cssClass);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultConfigPayload = "{\n\t\"supportsInteractivity\": true,\n\t\"strongSeparation\": {\n\t\t\"spacing\": 40,\n\t\t\"lineThickness\": 1,\n\t\t\"lineColor\": \"#EEEEEE\"\n\t},\n\t\"fontFamily\": \"Segoe UI\",\n\t\"fontSizes\": {\n\t\t\"small\": 12,\n\t\t\"normal\": 14,\n\t\t\"medium\": 17,\n\t\t\"large\": 21,\n\t\t\"extraLarge\": 26\n\t},\n\t\"fontWeights\": {\n\t\t\"lighter\": 200,\n\t\t\"normal\": 400,\n\t\t\"bolder\": 600\n\t},\n\t\"colors\": {\n\t\t\"dark\": {\n\t\t\t\"normal\": \"#333333\",\n\t\t\t\"subtle\": \"#EE333333\"\n\t\t},\n\t\t\"light\": {\n\t\t\t\"normal\": \"#FFFFFF\",\n\t\t\t\"subtle\": \"#88FFFFFF\"\n\t\t},\n\t\t\"accent\": {\n\t\t\t\"normal\": \"#2E89FC\",\n\t\t\t\"subtle\": \"#882E89FC\"\n\t\t},\n\t\t\"attention\": {\n\t\t\t\"normal\": \"#FFD800\",\n\t\t\t\"subtle\": \"#DDFFD800\"\n\t\t},\n\t\t\"good\": {\n\t\t\t\"normal\": \"#00FF00\",\n\t\t\t\"subtle\": \"#DD00FF00\"\n\t\t},\n\t\t\"warning\": {\n\t\t\t\"normal\": \"#FF0000\",\n\t\t\t\"subtle\": \"#DDFF0000\"\n\t\t}\n\t},\n\t\"imageSizes\": {\n\t\t\"small\": 40,\n\t\t\"medium\": 80,\n\t\t\"large\": 160\n\t},\n\t\"actions\": {\n\t\t\"maxActions\": 5,\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t},\n\t\t\"buttonSpacing\": 20,\n\t\t\"stretch\": false,\n\t\t\"showCard\": {\n\t\t\t\"actionMode\": \"inlineEdgeToEdge\",\n\t\t\t\"inlineTopMargin\": 16,\n\t\t\t\"backgroundColor\": \"#08000000\",\n\t\t\t\"padding\": {\n\t\t\t\t\"top\": 16,\n\t\t\t\t\"right\": 16,\n\t\t\t\t\"bottom\": 16,\n\t\t\t\t\"left\": 16\n\t\t\t}\n\t\t},\n\t\t\"actionsOrientation\": \"horizontal\",\n\t\t\"actionAlignment\": \"left\"\n\t},\n\t\"adaptiveCard\": {\n\t\t\"backgroundColor\": \"#00000000\",\n\t\t\"padding\": {\n\t\t\t\"left\": 20,\n\t\t\t\"top\": 20,\n\t\t\t\"right\": 20,\n\t\t\t\"bottom\": 20\n\t\t}\n\t},\n\t\"container\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t},\n\t\t\"normal\": {},\n\t\t\"emphasis\": {\n\t\t\t\"backgroundColor\": \"#EEEEEE\",\n\t\t\t\"borderColor\": \"#AAAAAA\",\n\t\t\t\"borderThickness\": {\n\t\t\t\t\"top\": 1,\n\t\t\t\t\"right\": 1,\n\t\t\t\t\"bottom\": 1,\n\t\t\t\t\"left\": 1\n\t\t\t},\n\t\t\t\"padding\": {\n\t\t\t\t\"top\": 10,\n\t\t\t\t\"right\": 10,\n\t\t\t\t\"bottom\": 10,\n\t\t\t\t\"left\": 10\n\t\t\t}\n\t\t}\n\t},\n\t\"textBlock\": {\n\t\t\"color\": \"dark\",\n\t\t\"separations\": {\n\t\t\t\"small\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t},\n\t\t\t\"normal\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t},\n\t\t\t\"medium\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t},\n\t\t\t\"large\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t},\n\t\t\t\"extraLarge\": {\n\t\t\t\t\"spacing\": 20\n\t\t\t}\n\t\t}\n\t},\n\t\"image\": {\n\t\t\"size\": \"medium\",\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t},\n\t\"imageSet\": {\n\t\t\"imageSize\": \"medium\",\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t},\n\t\"factSet\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t},\n\t\t\"title\": {\n\t\t\t\"color\": \"dark\",\n\t\t\t\"size\": \"normal\",\n\t\t\t\"isSubtle\": false,\n\t\t\t\"weight\": \"bolder\",\n\t\t\t\"wrap\": true,\n\t\t\t\"maxWidth\": 150\n\t\t},\n\t\t\"value\": {\n\t\t\t\"color\": \"dark\",\n\t\t\t\"size\": \"normal\",\n\t\t\t\"isSubtle\": false,\n\t\t\t\"weight\": \"normal\",\n\t\t\t\"wrap\": true\n\t\t},\n\t\t\"spacing\": 10\n\t},\n\t\"input\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t},\n\t\"columnSet\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t},\n\t\"column\": {\n\t\t\"separation\": {\n\t\t\t\"spacing\": 20\n\t\t}\n\t}\n}";
-exports.defaultPayload = "{\n\t\"$schema\": \"https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json\",\n\t\"type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"speak\": \"<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Card created: Publish Adaptive Card schema\",\n\t\t\t\t\t\"weight\": \"bolder\",\n\t\t\t\t\t\"size\": \"medium\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"ColumnSet\",\n\t\t\t\t\t\"columns\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"auto\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"Image\",\n\t\t\t\t\t\t\t\t\t\"url\": \"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n\t\t\t\t\t\t\t\t\t\"size\": \"small\",\n\t\t\t\t\t\t\t\t\t\"style\": \"person\"\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"stretch\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"text\": \"**Miguel Garcia**\",\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"separation\": \"none\",\n\t\t\t\t\t\t\t\t\t\"text\": \"Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}\",\n\t\t\t\t\t\t\t\t\t\"isSubtle\": true,\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.\",\n\t\t\t\t\t\"speak\": \"\",\n\t\t\t\t\t\"wrap\": true\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"FactSet\",\n\t\t\t\t\t\"speak\": \"It has been assigned to: David Claux\",\n\t\t\t\t\t\"facts\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Board:\",\n\t\t\t\t\t\t\t\"value\": \"Adaptive Card\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"List:\",\n\t\t\t\t\t\t\t\"value\": \"Backlog\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Assigned to:\",\n\t\t\t\t\t\t\t\"value\": \"David Claux\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Due date:\",\n\t\t\t\t\t\t\t\"value\": \"Not set\"\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t],\n\t\"actions\": [\n\t\t{\n\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\"title\": \"Set due date\",\n\t\t\t\"card\": {\n\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\"body\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Input.Date\",\n\t\t\t\t\t\t\"id\": \"dueDate\",\n\t\t\t\t\t\t\"title\": \"Select due date\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"actions\": [\n\t\t\t\t    {\n\t\t\t\t        \"type\": \"Action.Http\",\n\t\t\t\t        \"title\": \"OK\",\n\t\t\t\t        \"url\": \"http://xyz.com\",\n                        \"headers\": {\n\t\t\t\t\t\t\t\"content-type\": \"application/json\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"body\": \"{ 'comment' : '{{comment.value}}' }\"\n\t\t\t\t    }\n\t\t\t\t]\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\"title\": \"Comment\",\n\t\t\t\"card\": {\n\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\"body\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Input.Text\",\n\t\t\t\t\t\t\"id\": \"comment\",\n\t\t\t\t\t\t\"isMultiline\": true,\n\t\t\t\t\t\t\"placeholder\": \"Enter your comment\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"actions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Action.Http\",\n\t\t\t\t\t\t\"method\": \"POST\",\n\t\t\t\t\t\t\"title\": \"OK\",\n\t\t\t\t\t\t\"url\": \"http://xyz.com\",\n\t\t\t\t\t\t\"headers\": {\n\t\t\t\t\t\t\t\"content-type\": \"application/json\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"body\": \"{ 'comment' : '{{comment.value}}' }\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Action.OpenUrl\",\n\t\t\t\"title\": \"View\",\n\t\t\t\"url\": \"http://foo.com\"\n\t\t}\n\t]\n}";
+exports.defaultPayload = "{\n\t\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\n\t\"type\": \"AdaptiveCard\",\n\t\"body\": [\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"speak\": \"<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Card created: Publish Adaptive Card schema\",\n\t\t\t\t\t\"weight\": \"bolder\",\n\t\t\t\t\t\"size\": \"medium\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"ColumnSet\",\n\t\t\t\t\t\"columns\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"auto\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"Image\",\n\t\t\t\t\t\t\t\t\t\"url\": \"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n\t\t\t\t\t\t\t\t\t\"size\": \"small\",\n\t\t\t\t\t\t\t\t\t\"style\": \"person\"\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"type\": \"Column\",\n\t\t\t\t\t\t\t\"size\": \"stretch\",\n\t\t\t\t\t\t\t\"items\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"text\": \"**Miguel Garcia**\",\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\t\t\t\t\"separation\": \"none\",\n\t\t\t\t\t\t\t\t\t\"text\": \"Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}\",\n\t\t\t\t\t\t\t\t\t\"isSubtle\": true,\n\t\t\t\t\t\t\t\t\t\"wrap\": true\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Container\",\n\t\t\t\"items\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"TextBlock\",\n\t\t\t\t\t\"text\": \"Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.\",\n\t\t\t\t\t\"speak\": \"\",\n\t\t\t\t\t\"wrap\": true\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"FactSet\",\n\t\t\t\t\t\"speak\": \"It has been assigned to: David Claux\",\n\t\t\t\t\t\"facts\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Board:\",\n\t\t\t\t\t\t\t\"value\": \"Adaptive Card\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"List:\",\n\t\t\t\t\t\t\t\"value\": \"Backlog\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Assigned to:\",\n\t\t\t\t\t\t\t\"value\": \"David Claux\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"title\": \"Due date:\",\n\t\t\t\t\t\t\t\"value\": \"Not set\"\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t],\n\t\"actions\": [\n\t\t{\n\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\"title\": \"Set due date\",\n\t\t\t\"card\": {\n\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\"body\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Input.Date\",\n\t\t\t\t\t\t\"id\": \"dueDate\",\n\t\t\t\t\t\t\"title\": \"Select due date\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"actions\": [\n\t\t\t\t    {\n\t\t\t\t        \"type\": \"Action.Http\",\n\t\t\t\t        \"title\": \"OK\",\n\t\t\t\t        \"url\": \"http://xyz.com\",\n                        \"headers\": {\n\t\t\t\t\t\t\t\"content-type\": \"application/json\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"body\": \"{ 'comment' : '{{comment.value}}' }\"\n\t\t\t\t    }\n\t\t\t\t]\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Action.ShowCard\",\n\t\t\t\"title\": \"Comment\",\n\t\t\t\"card\": {\n\t\t\t\t\"type\": \"AdaptiveCard\",\n\t\t\t\t\"body\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Input.Text\",\n\t\t\t\t\t\t\"id\": \"comment\",\n\t\t\t\t\t\t\"isMultiline\": true,\n\t\t\t\t\t\t\"placeholder\": \"Enter your comment\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"actions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"type\": \"Action.Http\",\n\t\t\t\t\t\t\"method\": \"POST\",\n\t\t\t\t\t\t\"title\": \"OK\",\n\t\t\t\t\t\t\"url\": \"http://xyz.com\",\n\t\t\t\t\t\t\"headers\": {\n\t\t\t\t\t\t\t\"content-type\": \"application/json\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"body\": \"{ 'comment' : '{{comment.value}}' }\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"Action.OpenUrl\",\n\t\t\t\"title\": \"View\",\n\t\t\t\"url\": \"http://foo.com\"\n\t\t}\n\t]\n}";
 
 
 /***/ }),
@@ -21222,7 +21222,7 @@ var LiveTileContainer = (function (_super) {
         return {
             supportsInteractivity: false,
             strongSeparation: {
-                spacing: 40,
+                spacing: 5,
                 lineThickness: 1,
                 lineColor: "#EEEEEE"
             },
@@ -21249,31 +21249,31 @@ var LiveTileContainer = (function (_super) {
                     subtle: "#88FFFFFF"
                 },
                 accent: {
-                    normal: "#2E89FC",
-                    subtle: "#882E89FC"
+                    normal: "#00c2ff",
+                    subtle: "#8800c2ff"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
+                    normal: "#ffa700",
+                    subtle: "#DDffa700"
                 },
                 good: {
                     normal: "#00FF00",
                     subtle: "#DD00FF00"
                 },
                 warning: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
+                    normal: "#FFD800",
+                    subtle: "#DDFFD800"
                 }
             },
             imageSizes: {
                 small: 40,
                 medium: 80,
-                large: 160
+                large: 120
             },
             actions: {
                 maxActions: 5,
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 },
                 buttonSpacing: 20,
                 showCard: {
@@ -21293,15 +21293,15 @@ var LiveTileContainer = (function (_super) {
             adaptiveCard: {
                 backgroundColor: "#0078D7",
                 padding: {
-                    left: 20,
-                    top: 20,
-                    right: 20,
-                    bottom: 20
+                    left: 10,
+                    top: 10,
+                    right: 10,
+                    bottom: 10
                 }
             },
             container: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 },
                 normal: {},
                 emphasis: {
@@ -21325,37 +21325,37 @@ var LiveTileContainer = (function (_super) {
                 color: "light",
                 separations: {
                     small: {
-                        spacing: 20,
+                        spacing: 0,
                     },
                     normal: {
-                        spacing: 20
+                        spacing: 0
                     },
                     medium: {
-                        spacing: 20
+                        spacing: 0
                     },
                     large: {
-                        spacing: 20
+                        spacing: 0
                     },
                     extraLarge: {
-                        spacing: 20
+                        spacing: 0
                     }
                 }
             },
             image: {
                 size: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             imageSet: {
                 imageSize: "medium",
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 },
                 title: {
                     color: "light",
@@ -21376,17 +21376,17 @@ var LiveTileContainer = (function (_super) {
             },
             input: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             },
             column: {
                 separation: {
-                    spacing: 20
+                    spacing: 0
                 }
             }
         };
@@ -21473,16 +21473,16 @@ var SkypeContainer = (function (_super) {
                     subtle: "#882E89FC"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
                     normal: "#FF0000",
                     subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
                 }
             },
             imageSizes: {
@@ -21521,7 +21521,7 @@ var SkypeContainer = (function (_super) {
             },
             container: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 },
                 normal: {},
                 emphasis: {
@@ -21545,37 +21545,37 @@ var SkypeContainer = (function (_super) {
                 color: "dark",
                 separations: {
                     small: {
-                        spacing: 10,
+                        spacing: 5,
                     },
                     normal: {
-                        spacing: 10
+                        spacing: 5
                     },
                     medium: {
-                        spacing: 10
+                        spacing: 5
                     },
                     large: {
-                        spacing: 10
+                        spacing: 5
                     },
                     extraLarge: {
-                        spacing: 10
+                        spacing: 5
                     }
                 }
             },
             image: {
                 size: "medium",
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             imageSet: {
                 imageSize: "medium",
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 },
                 title: {
                     color: "dark",
@@ -21592,21 +21592,21 @@ var SkypeContainer = (function (_super) {
                     weight: "normal",
                     wrap: true,
                 },
-                spacing: 10
+                spacing: 5
             },
             input: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             },
             column: {
                 separation: {
-                    spacing: 10
+                    spacing: 5
                 }
             }
         };
@@ -21683,16 +21683,16 @@ var TeamsContainer = (function (_super) {
                     subtle: "#882E89FC"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
+                    normal: "#cc3300",
+                    subtle: "#DDcc3300"
                 },
                 good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
                 },
                 warning: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
+                    normal: "#e69500",
+                    subtle: "#DDe69500"
                 }
             },
             imageSizes: {
@@ -22118,16 +22118,16 @@ var WebChatContainer = (function (_super) {
                     subtle: "#882E89FC"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
                     normal: "#FF0000",
                     subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
                 }
             },
             imageSizes: {
@@ -32351,16 +32351,16 @@ var TelegramContainer = (function (_super) {
                     subtle: "#882E89FC"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
                     normal: "#FF0000",
                     subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
                 }
             },
             imageSizes: {
@@ -32562,16 +32562,16 @@ var GroupMeContainer = (function (_super) {
                     subtle: "#882E89FC"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
                     normal: "#FF0000",
                     subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
                 }
             },
             imageSizes: {
@@ -33634,16 +33634,16 @@ var BingContainer = (function (_super) {
                     subtle: "#882E89FC"
                 },
                 attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
                     normal: "#FF0000",
                     subtle: "#DDFF0000"
+                },
+                good: {
+                    normal: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    normal: "#c3ab23",
+                    subtle: "#DDc3ab23"
                 }
             },
             imageSizes: {

@@ -5,6 +5,7 @@
 
 #include "AdaptiveCards.XamlCardRenderer.h"
 #include <BaseCardElement.h>
+#include <BaseActionElement.h>
 #include <Column.h>
 #include <Fact.h>
 #include <Image.h>
@@ -26,6 +27,10 @@ HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *col
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
+
+HRESULT GenerateActionsProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateColumnsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,

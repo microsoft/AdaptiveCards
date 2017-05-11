@@ -39,7 +39,7 @@ Adaptive Cards comprise `TextBlock`, `Images`, `Input`, and `Actions` that may b
 * `Actions` align horizontally if they fit; otherwise stack vertically.
 * `Input` includes text, multi-line, selections, dates, etc.
 
-# Check out [http://adaptivecards-staging.azurewebsites.net](http://adaptivecards-staging.azurewebsites.net)
+# Check out [http://adaptivecards.io](http://adaptivecards.io)
 * Documentation
 * Element Explorer
 * Sample Cards
@@ -94,7 +94,7 @@ To install:
 
 ```javascript
 {
-    "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [

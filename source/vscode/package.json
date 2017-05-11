@@ -2,8 +2,8 @@
   "name": "vscode-adaptivecards",
   "displayName": "Adaptive Card Viewer",
   "description": "Adaptive Card Viewer for Visual Studio Code.",
-  "version": "1.0.4",
-  "publisher": "Microsoft",
+  "version": "1.0.7",
+  "publisher": "tomlm",
   "engines": {
     "vscode": "^1.9.0"
   },
@@ -66,7 +66,7 @@
     "vscode": "^1.0.4"
   },
   "dependencies": {
-    "adaptive-cards": "^1.0.1"
+    "microsoft-adaptivecards": "^0.5.4"
   },
   "repository": {
     "type": "git",
@@ -81,10 +81,16 @@
   "bugs": {
     "url": "https://github.com/Microsoft/AdaptiveCards/issues"
   },
-  "homepage": "https://github.com/Microsoft/AdaptiveCards/blob/master/source/vscode/README.md",
+  "homepage": "http://adaptivecards.io",
   "keywords": [
     "adaptivecards",
+    "adaptive",
+    "cards",
     "viewer",
     "preview"
-  ]
+  ],
+  "galleryBanner": {
+    "color":"#404040",
+    "theme":"dark"
+  }
 }

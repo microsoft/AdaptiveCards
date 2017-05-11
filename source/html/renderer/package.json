@@ -1,10 +1,17 @@
 {
-  "name": "adaptive-cards",
-  "version": "0.1.0",
-  "description": "Adaptive Card toolkit for javascript",
+  "name": "microsoft-adaptivecards",
+  "version": "0.5.4",
+  "description": "Adaptive Card typescript/javascript library for Html Clients",
+  "homepage": "http://adaptivecards.io",
+  "keywords": [
+    "adaptivecards",
+    "adaptive",
+    "cards",
+    "microsoft",
+    "bot"
+  ],
   "main": "built/adaptive-cards.js",
   "types": "built/adaptive-cards.d.ts",
-  "private": true,
   "scripts": {
     "build-dist": "webpack",
     "tsc": "tsc -p .",
