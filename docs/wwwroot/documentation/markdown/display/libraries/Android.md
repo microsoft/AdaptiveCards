@@ -2,177 +2,33 @@
 This is a renderer which targets Android native controls.
 
 ## Add a renderer
-This is available as a nuget packages. 
-```csharp
-nuget install AdaptiveCards.Android
-```
-## Create an instance of the renderer
-Create an instance of the renderer library. 
 
-```csharp
-var renderer = new AndroidRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
-```
+*Coming soon*
+
+## Create an instance of your renderer
+*Coming soon*
+
 ## Hook up action callback
-To hook up action events, pass in a callback when you instantiate the renderer.
-```csharp
-var hostConfig = new HostConfig() { ... };
-var renderer = new AndroidRenderer(..., actionCallback:  _onAction);
-```
-## Render a card
-Acquire a card from a source and render it.
+*Coming soon*
 
-```csharp
-var uiCard = renderer.RenderAdaptiveCard(card);
-// add it to your ui
-myGrid.Children.Add(uiCard);
-```
+## Render a card
+*Coming soon*
 
 ## Example
-Here is an example from the Android renderer.
-
-```csharp
-var hostConfig = new HostConfig() { ... };
-var renderer = new AndroidRenderer(hostConfig, this.Resources, _onAction, _OnMissingInput);
-var uiCard = renderer.RenderAdaptiveCard(_card);
-myGrid.Children.Add(uiCard);
-...
-private void _onAction(object sender, ActionEventArgs e)
-{
-    if (e.Action is OpenUrlAction)
-    {
-        OpenUrlAction action = (OpenUrlAction)e.Action;
-        Process.Start(action.Url);
-    }
-    else if (e.Action is ShowCardAction)
-    {
-        ShowCardAction action = (ShowCardAction)e.Action;
-        ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
-        dialog.ShowDialog();
-    }
-    else if (e.Action is SubmitAction)
-    {
-        SubmitAction action = (SubmitAction)e.Action;
-        // Send e.Data to the source...
-        ...
-    }
-    else if (e.Action is AdaptiveCards.HttpAction)
-    {
-        AdaptiveCards.HttpAction action = (HttpAction)e.Action;
-        ... 
-        // action.Headers  has headers for HTTP operation
-        // action.Body has content body
-        // action.Method has method to use
-        // action.Url has url to post to
-    }
-}
-
-private void _OnMissingInput(object sender, MissingInputEventArgs args)
-{
-    MessageBox.Show($"Required input is missing.");
-}
-```
+*Coming soon*
 
 ## Customization
 <a name="customize"></a>
 ### HostConfig 
-To customize the renderer, provide an instance of the HostConfig object. See the [Host Config Schema](../HostConfigSchema.md) for a full description. Since the HostConfig object is instantiated with defaults, you only have to set the properties you want to change from the defaults.
-Passing it to the `AndroidRenderer` sets the default HostConfig to use for every card you render.
 
-Example:
-```csharp
-var hostConfig = new HostConfig() 
-{
-    FontSizes = {
-        Small = 15,
-        Normal =20,
-        Medium = 25,
-        Large = 30,
-        ExtraLarge= 40
-    }
-};
-```
-### Change per-element rendering
-The `AndroidRenderer` has a registration mechanism for specifying which function is called to perform the
-rendering on a per element basis.  It exposes a method called `SetRenderer<ElementT>(func);` 
+*Coming soon*
 
-This example overrides the rendering of a `Input.Date` element.
-```csharp
-AndroidRenderer.SetRenderer<DateInput>(RenderMyCustomDate);
-```
+### Changing per element rendering
+*Coming soon*
 
-The new date renderer would look like this:
-```csharp
-public static FrameworkElement Render(TypedElement element, RenderContext context)
-{
-    DateInput input = (DateInput)element;
-    var datePicker = new DatePicker();
-    ...
-    return datePicker;
-}
-```
-### Style UI framework
-Pass in a `Android ResourceDictionary` to further customize the Android behavior. This
-allows you to define rollover behaviors, animations, rounded buttons, and so on.  Here is a table of the 
-style names used for each element.  
 
-| Element | Style names used|
-|---|---|
-| AdaptiveCard | Adaptive.Card| 
-| Action.Http | Adaptive.Action.Http |
-| Action.OpenUrl  | Adaptive.Action.OpenUrl  |
-| Action.ShowCard | Adaptive.Action.ShowCard |
-| Action.Submit  | Adaptive.Action.Submit  |
-| ActionSet | Adaptive.ActionSet |
-| Column | Adaptive.Column, Adaptive.Action.Tap |
-| ColumnSet | Adaptive.ColumnSet, Adaptive.VerticalSeparator |
-| Container | Adaptive.Container|
-| Input.ChoiceSet | Adaptive.Input.ChoiceSet,  Adaptive.Input.ChoiceSet.ComboBox, Adaptive.Input.ChoiceSet.CheckBox,  Adaptive.Input.ChoiceSet.Radio,  Adaptive.Input.ChoiceSet.ComboBoxItem, |
-| Input.Date | Adaptive.Input.Text.Date
-| Input.Number | Adaptive.Input.Text.Number |
-| Input.Text | Adaptive.Input.Text |
-| Input.Time | Adaptive.Input.Text.Time |
-| Input.Toggle| Adaptive.Input.Toggle|
-| Image  | Adaptive.Image |
-| ImageSet  | Adaptive.ImageSet |
-| FactSet | Adaptive.FactSet, Adaptive.Fact.Title, Adaptive.Fact.Value|
-| TextBlock  | Adaptive.TextBlock |
-
-Here is a sample resource dictionary which adds a hover effect to elements which have an Action defined for them.
-```xml
-<Window.Resources>
-    <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Cursor" Value="Hand" />
-            </Trigger>
-            <EventTrigger RoutedEvent="UIElement.MouseEnter">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="0.7" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-            <EventTrigger RoutedEvent="UIElement.MouseLeave">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="1.0" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-
-        </Style.Triggers>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="Transparent">
-                        <ContentPresenter/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-</Window.Resources>
-```
+### UI Framework styling
+*Coming soon*
 
 ## Next steps
 

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>Adaptive Cards</title>
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/content/fonts.css">
@@ -11,12 +11,32 @@
     <style>
         .cardImage {
             box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.16), 0px 2px 10px 0px rgba(0,0,0,0.12);
-            margin:20px;
+            margin: 20px;
         }
+
         .content {
             margin-top: 96px;
-            margin-left:88px;
-            max-width:1000px;
+            margin-left: 88px;
+            max-width: 1000px;
+        }
+
+        .videobanner {
+            margin: -56px 0px 0px;
+            width: 100%;
+            float: left;
+            background-color: #0078D7;
+        }
+
+        @media(max-width: 594px) {
+            .content {
+                margin-top: 230px;
+            }
+        }
+
+        @media(max-width: 1000px) {
+            .videobanner {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -34,11 +54,13 @@
     </div>
 
     <!-- main content -->
-    <div style="margin: -56px 0px 0px; width: 100%; float: left; background-color: #0B7ED3;">
-        <video style="width: 1000px; margin-left: 104px;" src="https://bot-framework.azureedge.net/videos/AdaptiveCardsSizzleLoop.mp4" autoplay="" loop=""></video>
+    <div id="vidbanner" class="videobanner">
+        <div style="text-align:center">
+            <video style="width: 1000px;" src="https://bot-framework.azureedge.net/videos/AdaptiveCardsSizzleLoop_1000.mp4" autoplay="" loop=""></video>
+        </div>
     </div>
 
-    <div class="w3-row w3-container content">
+    <div class="w3-row w3-container content" style="margin-left:auto;margin-right:auto;">
         <div id="home">
         </div>
         <!--<div class="w3-onethird" id="images" style="display:none">
@@ -50,6 +72,9 @@
     </div>
     <script>
         $(document).ready(function () {
+            //if (navigator.userAgent.indexOf("Edge") > 0)
+            //    $("#vidbanner").css("background-color", "#0078D7");
+
             $.get("/api/markdown/Home.md",
                 null,
                 function (data) {

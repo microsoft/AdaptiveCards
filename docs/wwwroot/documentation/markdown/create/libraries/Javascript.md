@@ -1,10 +1,23 @@
-# Javascript
-There is no Javascript library, but Javascript is already pretty good at manipulating JSON.
 
-## Example: create
-```javascript
+# Javascript Libraries for creating cards
+As we described in the getting started section, an adaptive card is nothing more then a serialized json object of 
+a card object model.  To make it easy to manipulate the object model we have defined some libraries which 
+define a strongly typed class hierarchy that is easy to serialize/deserialize json.
 
-var card = {
+You can use any tooling that you want to create the adaptive card json.
+
+The **microsoft-adaptive-cards** npm package defines a library  for working with adaptive cards in javascript
+
+## To install
+```
+npm install microsoft-adaptive-cards
+```
+
+## Example creating 
+There are interface definitions in schema.d.ts which describe the shape of the schema
+
+```typescript
+let card = {
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
@@ -24,13 +37,3 @@ var card = {
     ]
 };
 ```
-## Example: save 
-```javascript
-var json = JSON.stringify(card);
-```
-
-## Example: load
-```javascript
-var card = JSON.parse(json);
-```
-

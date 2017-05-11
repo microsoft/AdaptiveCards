@@ -53,6 +53,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveHostOptions;
 
         interface IAdaptiveCardElement;
+        interface IAdaptiveActionElement;
         interface IAdaptiveTextBlock;
         interface IAdaptiveCard;
         interface IAdaptiveImage;
@@ -157,6 +158,16 @@ namespace AdaptiveCards
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ActionType
+        {
+            Unsupported = 0, 
+            ShowCard,
+            Submit,
+            Http,
+            OpenUrl
+        } ActionType;
+
+        [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ImageStyle {
             Normal = 0,
             Person
@@ -186,6 +197,14 @@ namespace AdaptiveCards
         } ActionsOrientation;
 
         [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ActionAlignment {
+            Left = 0,
+            Center,
+            Right,
+            Stretch,
+        } ActionAlignment;
+
+        [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ActionMode {
             Inline = 0,
             Popup
@@ -208,6 +227,7 @@ namespace AdaptiveCards
         declare
         {
             interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
+            interface Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveFact*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveInputChoice*>;
@@ -283,6 +303,8 @@ namespace AdaptiveCards
         interface IAdaptiveCard : IInspectable
         {
             [propget] HRESULT Body([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
+
+            [propget] HRESULT Actions([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>** value);
 
             [propget] HRESULT ElementType([out, retval] ElementType* value);
 
@@ -1158,32 +1180,17 @@ namespace AdaptiveCards
             [propget] HRESULT ActionsOrientation([out][retval] ActionsOrientation* value);
             [propput] HRESULT ActionsOrientation([in] ActionsOrientation value);
 
-            [propget] HRESULT ActionAlignment([out, retval] HAlignment* value);
-            [propput] HRESULT ActionAlignment([in] HAlignment value);
+            [propget] HRESULT ActionAlignment([out, retval] ActionAlignment* value);
+            [propput] HRESULT ActionAlignment([in] ActionAlignment value);
 
-            [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
+            [propget] HRESULT ButtonSpacing([out][retval] UINT32* value);
+            [propput] HRESULT ButtonSpacing([in] UINT32 value);
 
-            [propget] HRESULT BorderColor([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT BorderColor([in] Windows.UI.Color value);
+            [propget] HRESULT MaxActions([out][retval] UINT32* value);
+            [propput] HRESULT MaxActions([in] UINT32 value);
 
-            [propget] HRESULT TextColor([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT TextColor([in] Windows.UI.Color value);
-
-            [propget] HRESULT BorderThickness([out][retval] UINT32* value);
-            [propput] HRESULT BorderThickness([in] UINT32 value);
-
-            [propget] HRESULT FontWeight([out][retval] UINT32* value);
-            [propput] HRESULT FontWeight([in] UINT32 value);
-
-            [propget] HRESULT FontSize([out][retval] UINT32* value);
-            [propput] HRESULT FontSize([in] UINT32 value);
-
-            [propget] HRESULT Spacing([out][retval] UINT32* value);
-            [propput] HRESULT Spacing([in] UINT32 value);
-
-            [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions** value);
-            [propput] HRESULT Padding([in] AdaptiveBoundaryOptions* value);
+            [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
+            [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
         };
 
         [
@@ -1396,6 +1403,103 @@ namespace AdaptiveCards
         runtimeclass AdaptiveHostOptions
         {
             [default] interface IAdaptiveHostOptions;
+        };
+
+        [
+            uuid(f0076852-de82-4cc6-8cb3-26cf6ab3c196),
+            version(NTDDI_WIN10_RS1),
+        ]
+        interface IAdaptiveActionElement : IInspectable
+        {
+            [propget] HRESULT ActionType([out, retval] ActionType* value);
+
+            [propget] HRESULT Title([out, retval] HSTRING* value);
+            [propput] HRESULT Title([in] HSTRING value);
+
+            [propget] HRESULT Speak([out, retval] HSTRING* value);
+            [propput] HRESULT Speak([in] HSTRING value);
+        };
+
+        [
+            uuid(3d2b3b79-af79-46c5-9657-d862f2dee109),
+            version(NTDDI_WIN10_RS1),
+        ]
+        interface IAdaptiveHttpAction : IInspectable
+        {
+            [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
+            [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
+
+            [propget] HRESULT Method([out, retval] HSTRING* value);
+            [propput] HRESULT Method([in] HSTRING value);
+
+            [propget] HRESULT Body([out, retval] HSTRING* value);
+            [propput] HRESULT Body([in] HSTRING value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveHttpAction
+        {
+            [default] interface IAdaptiveHttpAction;
+            interface IAdaptiveActionElement;
+        };
+
+        [
+            uuid(d70a58cb-4d51-4f96-bb6b-2698eced32ff),
+            version(NTDDI_WIN10_RS1),
+        ]
+        interface IAdaptiveOpenUrlAction : IInspectable
+        {
+            [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
+            [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveOpenUrlAction
+        {
+            [default] interface IAdaptiveOpenUrlAction;
+            interface IAdaptiveActionElement;
+        };
+
+        [
+            uuid(435ea974-33c7-43b0-a6ac-8137c1b7bb44),
+            version(NTDDI_WIN10_RS1),
+        ]
+        interface IAdaptiveShowCardAction : IInspectable
+        {
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveShowCardAction
+        {
+            [default] interface IAdaptiveShowCardAction;
+            interface IAdaptiveActionElement;
+        };
+
+        [
+            uuid(97b9b3a3-657b-4d38-a136-154cc8da19a9),
+            version(NTDDI_WIN10_RS1),
+        ]
+        interface IAdaptiveSubmitAction : IInspectable
+        {
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveSubmitAction
+        {
+            [default] interface IAdaptiveSubmitAction;
+            interface IAdaptiveActionElement;
         };
     }
 }

@@ -1,10 +1,9 @@
 #include "AdaptiveCard.h"
-#include "ParseUtil.h"
-#include "Image.h"
-#include "Container.h"
-#include "TextBlock.h"
 #include "ColumnSet.h"
+#include "Container.h"
 #include "FactSet.h"
+#include "HttpAction.h"
+#include "Image.h"
 #include "ImageSet.h"
 #include "InputChoiceSet.h"
 #include "InputDate.h"
@@ -12,8 +11,21 @@
 #include "InputText.h"
 #include "InputTime.h"
 #include "InputToggle.h"
+#include "OpenUrlAction.h"
+#include "ParseUtil.h"
+#include "TextBlock.h"
+#include "ShowCardAction.h"
+#include "SubmitAction.h"
 
 using namespace AdaptiveCards;
+
+const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> AdaptiveCard::CardActionParsers =
+{
+    { ActionType::Http, HttpAction::Deserialize },
+    { ActionType::OpenUrl, OpenUrlAction::Deserialize },
+    { ActionType::ShowCard, ShowCardAction::Deserialize },
+    { ActionType::Submit, SubmitAction::Deserialize },
+};
 
 const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> AdaptiveCard::CardElementParsers =
 {
@@ -43,12 +55,13 @@ AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::str
 {
 }
 
-AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl, std::vector<std::shared_ptr<BaseCardElement>>& body) :
+AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl, std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
     m_backgroundImageUrl(backgroundImageUrl),
-    m_body(body)
+    m_body(body),
+    m_actions(actions)
 {
 }
 
@@ -77,9 +90,16 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     // Parse body
     auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers);
 
-    // Parse actions
+    // Parse actions if present
+    std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
+    auto elementArray = json.get(propertyName, Json::Value());
+    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> actions;
+    if (!elementArray.empty())
+    {
+        actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, AdaptiveCard::CardActionParsers);
+    }
 
-    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImageUrl, body);
+    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImageUrl, body, actions);
     return result;
 }
 
@@ -143,4 +163,9 @@ const std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody() con
 std::vector<std::shared_ptr<BaseCardElement>>& AdaptiveCard::GetBody()
 {
     return m_body;
+}
+
+const std::vector<std::shared_ptr<BaseActionElement>>& AdaptiveCard::GetActions() const
+{
+    return m_actions;
 }

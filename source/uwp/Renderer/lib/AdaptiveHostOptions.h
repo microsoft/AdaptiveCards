@@ -17,7 +17,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize() noexcept;
 
         // IAdaptiveHostOptions
-        IFACEMETHODIMP get_FontFamily(_Out_ HSTRING *text);
+        IFACEMETHODIMP get_FontFamily(_Out_ HSTRING* text);
         IFACEMETHODIMP put_FontFamily(_In_ HSTRING text);
 
         IFACEMETHODIMP get_FontSizes(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveFontSizeOptions** fontSize);

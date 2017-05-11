@@ -3,9 +3,9 @@ This is a renderer which targets WPF Xaml.  It has no dependencies outside of st
 which means it supports `Date` and `Time` controls as simple textbox controls.
 
 ## Add a renderer
-This is available as a nuget package. 
-```csharp
-nuget install AdaptiveCards.Xaml.WPF
+This is available as a nuget packages. 
+```
+nuget install Microsoft.AdaptiveCards.Xaml.WPF
 ```
 ## Create an instance of the renderer
 Create an instance of the renderer library. 

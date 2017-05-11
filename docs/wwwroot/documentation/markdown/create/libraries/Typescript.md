@@ -5,11 +5,11 @@ define a strongly-typed class hierarchy that makes it easy to serialize/deserial
 
 You can use any tooling you want to create the adaptive card JSON.
 
-The **adaptive-cards** npm package defines a Typescript library for working with adaptive cards in Typescript.
+The **microsoft-adaptive-cards** npm package defines a typescript library  for working with adaptive cards in Typescript
 
-## Install
-```javascript
-npm install adaptive-cards
+## To install
+```
+npm install microsoft-adaptive-cards
 ```
 There are interface definitions in `schema.d.ts` which describe the shape of the schema.
 

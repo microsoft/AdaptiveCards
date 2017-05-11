@@ -2,28 +2,20 @@
 This is a renderer which targets UWP native controls.
 
 ## Add a renderer
-This is available as a nuget package. 
-```csharp
-nuget install AdaptiveCards.UWP
-```
+
+Coming Soon... 
+
 ## Create an instance of your renderer
 Create an instance of the renderer library. 
 ```csharp
-var renderer = new UWPRenderer(hostConfig, this.Resources, onAction, OnMissingInput);
-```
-
-## Hook up action callback
-To hook up action events, pass in a callback when you instantiate the renderer.
-```csharp
-var hostConfig = new HostConfig() { ... };
-var renderer = new UWPRenderer(..., actionCallback:  _onAction);
+var renderer = new XamlCardRenderer();
 ```
 
 ## Render a card
 Acquire a card from a source and render it.
 
 ```csharp
-var uiCard = renderer.RenderAdaptiveCard(card);
+var uiCard = await renderer.RenderCardAsXamlAsync(card);
 // add it to your ui
 myGrid.Children.Add(uiCard);
 ```
@@ -32,147 +24,40 @@ myGrid.Children.Add(uiCard);
 Here is an example from the UWP renderer.
 
 ```csharp
-var hostConfig = new HostConfig() { ... };
-var renderer = new UWPRenderer(hostConfig, this.Resources, _onAction, _OnMissingInput);
-var uiCard = renderer.RenderAdaptiveCard(_card);
+var renderer = new XamlCardRenderer();
+var uiCard = await renderer.RenderCardAsXamlAsync(_card);
 myGrid.Children.Add(uiCard);
 ...
-private void _onAction(object sender, ActionEventArgs e)
-{
-    if (e.Action is OpenUrlAction)
-    {
-        OpenUrlAction action = (OpenUrlAction)e.Action;
-        Process.Start(action.Url);
-    }
-    else if (e.Action is ShowCardAction)
-    {
-        ShowCardAction action = (ShowCardAction)e.Action;
-        ShowCardWindow dialog = new ShowCardWindow(action.Title, action, this.Resources);
-        dialog.ShowDialog();
-    }
-    else if (e.Action is SubmitAction)
-    {
-        SubmitAction action = (SubmitAction)e.Action;
-        // Send e.Data to the source...
-        ...
-    }
-    else if (e.Action is AdaptiveCards.HttpAction)
-    {
-        AdaptiveCards.HttpAction action = (HttpAction)e.Action;
-        ... 
-        // action.Headers  has headers for HTTP operation
-        // action.Body has content body
-        // action.Method has method to use
-        // action.Url has url to post to
-    }
-}
-
-private void _OnMissingInput(object sender, MissingInputEventArgs args)
-{
-    MessageBox.Show($"Required input is missing.");
-}
 ```
 
-## Customization
-
 ### HostConfig 
-To customize the renderer, provide an instance of the HostConfig object. See the [Host Config Schema](../HostConfigSchema.md) for a full description. Since the HostConfig object is instantiated with defaults, you only have to set the properties you want to change from the defaults.
-Passing it to the UWPRenderer sets the default HostConfig to use for every card you render.
+
+To customize the renderer you provide an instance of the HostConfig object. (See [Host Config Schema](/documentation/#display-hostconfigschema) for the full description.)
+
+> The HostConfig object will be instantiated with defaults, so you can set just the properties you want to change.
+
 
 Example:
 ```csharp
-var hostConfig = new HostConfig() 
+var hostOptions = new AdaptiveHostOptions() 
 {
     FontSizes = {
         Small = 15,
-        Normal =20,
+        Normal = 20,
         Medium = 25,
         Large = 30,
         ExtraLarge= 40
     }
 };
+renderer.HostOptions = hostConfig;
 ```
-### Change per-element rendering
-The UWPRenderer has a registration mechanism which allows you to set a function that is called to perform the
-rendering on a per-element basis.  It exposes a method called `SetRenderer<ElementT>(func);`. 
+When you pass it in to the UWPRenderer you are setting the default HostConfig to use for every card you render.
 
-To override the rendering of a `Input.Date` element:
-```csharp
-UWPRenderer.SetRenderer<DateInput>(RenderMyCustomDate);
-```
-The new date renderer would look like this:
-```csharp
-public static FrameworkElement Render(TypedElement element, RenderContext context)
-{
-    DateInput input = (DateInput)element;
-    var datePicker = new DatePicker();
-    ...
-    return datePicker;
-}
-```
-### Style UI framework
-If you pass in a UWP ResourceDictionary you can customize the iOS behavior further. This
-allows you to define roll over behaviors, animations, rounded buttons, and so on.  Here is a table of the 
-style names that are used for each element.   
+### Changing per element rendering
+*Coming soon*
 
-| Element | Style names used|
-|---|---|
-| AdaptiveCard | Adaptive.Card| 
-| Action.Http | Adaptive.Action.Http |
-| Action.OpenUrl  | Adaptive.Action.OpenUrl  |
-| Action.ShowCard | Adaptive.Action.ShowCard |
-| Action.Submit  | Adaptive.Action.Submit  |
-| ActionSet | Adaptive.ActionSet |
-| Column | Adaptive.Column, Adaptive.Action.Tap |
-| ColumnSet | Adaptive.ColumnSet, Adaptive.VerticalSeparator |
-| Container | Adaptive.Container|
-| Input.ChoiceSet | Adaptive.Input.ChoiceSet,  Adaptive.Input.ChoiceSet.ComboBox, Adaptive.Input.ChoiceSet.CheckBox,  Adaptive.Input.ChoiceSet.Radio,  Adaptive.Input.ChoiceSet.ComboBoxItem, |
-| Input.Date | Adaptive.Input.Text.Date
-| Input.Number | Adaptive.Input.Text.Number |
-| Input.Text | Adaptive.Input.Text |
-| Input.Time | Adaptive.Input.Text.Time |
-| Input.Toggle| Adaptive.Input.Toggle|
-| Image  | Adaptive.Image |
-| ImageSet  | Adaptive.ImageSet |
-| FactSet | Adaptive.FactSet, Adaptive.Fact.Title, Adaptive.Fact.Value|
-| TextBlock  | Adaptive.TextBlock |
-
-Here is a sample resource dictionary which adds a hover effect on elements with an Action defined on them:
-```xml
-<Window.Resources>
-    <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Cursor" Value="Hand" />
-            </Trigger>
-            <EventTrigger RoutedEvent="UIElement.MouseEnter">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="0.7" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-            <EventTrigger RoutedEvent="UIElement.MouseLeave">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="1.0" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-
-        </Style.Triggers>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="Transparent">
-                        <ContentPresenter/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-</Window.Resources>
-```
+### UI Framework styling
+*Coming soon*
 
 ## Next steps
 

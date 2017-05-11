@@ -3,8 +3,8 @@ This is a HTML renderer which works in the browser against the DOM.
 
 ## Add a renderer
 This is available as a NPM package. 
-```javascript
-npm install adaptive-cards
+```
+npm install microsoft-adaptive-cards
 ```
 
 ## Create an instance of the renderer
