@@ -2,12 +2,12 @@
 This is a WPF based renderer which renders to an png image. 
 The importnt part is it correctly implements all of the magic STA UI goo so that it can be used on a server safely. 
 
->NOTE: This is defined as part of the AdaptiveCards.Xaml.WPF library
+>NOTE: This is defined as part of the Microsoft.AdaptiveCards.Xaml.WPF library
 
 ## Add a renderer
 This is available as a nuget packages. 
 ```
-nuget install AdaptiveCards.Xaml.WPF
+nuget install Microsoft.AdaptiveCards.Xaml.WPF
 ```
 ## Create an instance of your renderer
 The next step is to create an instance of the renderer library. 

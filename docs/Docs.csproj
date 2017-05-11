@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
+    <ApplicationInsightsResourceId>/subscriptions/9ad09adf-c85f-43a0-96fe-18b146d1f90e/resourcegroups/AdaptiveCards/providers/microsoft.insights/components/adaptivecards-staging</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/9ad09adf-c85f-43a0-96fe-18b146d1f90e/resourceGroups/AdaptiveCards/providers/microsoft.insights/components/adaptivecards-staging</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

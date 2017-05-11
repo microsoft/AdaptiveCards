@@ -4,7 +4,7 @@ This is a HTML renderer which works in the browser agains the DOM.
 ## Add a renderer
 This is available as a NPM package. 
 ```
-npm install adaptive-cards
+npm install microsoft-adaptive-cards
 ```
 
 ## Create an instance of your renderer

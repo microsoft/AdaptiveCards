@@ -1,5 +1,5 @@
 {
-  "$schema": "https://microsoft.github.io/AdaptiveCards/schemas/adaptive-card.json",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "body": [
     {
@@ -10,7 +10,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size":"medium",
       "separation": "none"
     },
@@ -22,7 +22,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size":"medium",
       "separation": "default"
     },
@@ -34,7 +34,7 @@
     },
     {
       "type": "Image",
-      "url": "http://adaptivecards-staging.azurewebsites.net/api/cat",
+      "url": "http://adaptivecards.io/api/cat",
       "size":"medium",
       "separation": "strong"
     }

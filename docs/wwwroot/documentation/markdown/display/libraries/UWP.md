@@ -2,6 +2,7 @@
 This is a renderer which targets UWP native controls.
 
 ## Add a renderer
+
 Coming Soon... 
 
 ## Create an instance of your renderer
@@ -29,6 +30,7 @@ myGrid.Children.Add(uiCard);
 ```
 
 ### HostConfig 
+
 To customize the renderer you provide an instance of the HostConfig object. (See [Host Config Schema](/documentation/#display-hostconfigschema) for the full description.)
 
 > The HostConfig object will be instantiated with defaults, so you can set just the properties you want to change.
@@ -48,6 +50,15 @@ var hostOptions = new AdaptiveHostOptions()
 renderer.HostOptions = hostConfig;
 ```
 When you pass it in to the UWPRenderer you are setting the default HostConfig to use for every card you render.
+
+
+*Coming soon*
+
+### Changing per element rendering
+*Coming soon*
+
+### UI Framework styling
+*Coming soon*
 
 ## Resources
 * [Libraries](/documentation/#display-libraries) 

@@ -19,10 +19,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::InputText>& sharedInputText);
 
         // IAdaptiveInputText
-        IFACEMETHODIMP get_Placeholder(_Out_ HSTRING *placeholder);
+        IFACEMETHODIMP get_Placeholder(_Out_ HSTRING* placeholder);
         IFACEMETHODIMP put_Placeholder(_In_ HSTRING placeholder);
 
-        IFACEMETHODIMP get_Value(_Out_ HSTRING *text);
+        IFACEMETHODIMP get_Value(_Out_ HSTRING* text);
         IFACEMETHODIMP put_Value(_In_ HSTRING text);
 
         IFACEMETHODIMP get_IsMultiline(_Out_ boolean* isMultiline);
@@ -40,7 +40,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
         IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING *speak);
+        IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
         IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
 
     private:

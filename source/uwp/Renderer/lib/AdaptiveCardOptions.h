@@ -20,9 +20,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Padding(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions** value);
         IFACEMETHODIMP put_Padding(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions* value);
 
-        IFACEMETHODIMP get_ActionsOrientation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation* value);
-        IFACEMETHODIMP put_ActionsOrientation(_In_ ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation value);
-
         IFACEMETHODIMP get_BackgroundColor(_Out_ ABI::Windows::UI::Color* value);
         IFACEMETHODIMP put_BackgroundColor(_In_ ABI::Windows::UI::Color value);
 
