@@ -39,7 +39,7 @@ namespace GenerateSamples
                 "Container", "ColumnSet", "Column", "FactSet", "ImageSet",/* "ActionSet",*/
                 "Action.OpenUrl", "Action.Submit", "Action.Http","Action.ShowCard"
             };
-            using (TextWriter writer = new StreamWriter(File.Open(@"..\..\..\..\..\..\docs\wwwroot\explorer\index.html", FileMode.Create)))
+            using (TextWriter writer = new StreamWriter(File.Open(@"..\..\..\..\..\website\wwwroot\explorer\index.html", FileMode.Create)))
             {
                 writer.WriteLine(header.Replace("$PAGE$", "explorer"));
 
@@ -61,14 +61,14 @@ namespace GenerateSamples
                 {
                     writer.WriteLine($"<div class='element' id='{element.Replace(".", String.Empty)}Content' style='display:none'>");
                     writer.WriteLine($"<h1>{element}</h1>");
-                    string path = $@"..\..\..\..\..\..\docs\wwwroot\explorer\markdown\{element}.md";
+                    string path = $@"..\..\..\..\..\website\wwwroot\explorer\markdown\{element}.md";
                     if (File.Exists(path))
                     {
                         string markdown = File.ReadAllText(path);
                         writer.WriteLine(marked.Parse(markdown));
                     }
 
-                    foreach (var file in Directory.GetFiles($@"..\..\..\..\..\..\docs\wwwroot\explorer\cards", element + "*.json").Where(f => f.Contains(element + ".")))
+                    foreach (var file in Directory.GetFiles($@"..\..\..\..\..\website\wwwroot\explorer\cards", element + "*.json").Where(f => f.Contains(element + ".")))
                     {
                         var name = Path.GetFileNameWithoutExtension(file);
                         writer.WriteLine($"<h2 onclick='toggleContent(\"{name}Content\")'>{name}</h2>");
@@ -102,14 +102,14 @@ namespace GenerateSamples
 
         private static void GenerateSamplesPage(string header)
         {
-            using (TextWriter writer = new StreamWriter(File.Open(@"..\..\..\..\..\..\docs\wwwroot\samples\index.html", FileMode.Create)))
+            using (TextWriter writer = new StreamWriter(File.Open(@"..\..\..\..\..\website\wwwroot\samples\index.html", FileMode.Create)))
             {
                 writer.WriteLine(header.Replace("$PAGE$", "samples"));
 
                 // side bar
                 writer.WriteLine("<div class=\"w3-sidebar w3-light-grey w3-card-2 w3-bar-block\">");
                 string firstLink = null;
-                var files = Directory.EnumerateFiles(@"..\..\..\..\..\..\docs\wwwroot\samples\cards", "*.json").ToList();
+                var files = Directory.EnumerateFiles(@"..\..\..\..\..\website\wwwroot\samples\cards", "*.json").ToList();
                 foreach (var file in files)
                 {
                     var id = Path.GetFileNameWithoutExtension(file).Replace(" ", "");
