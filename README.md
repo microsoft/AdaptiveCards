@@ -1,7 +1,8 @@
-![adaptive-cards](http://adaptivecards.io/content/overview.jpg)
 
-# About Adaptive Cards
+# Adaptive Cards
 Adaptive Cards are a new way for developers to exchange card content in a common and consistent way.
+
+![adaptive-cards](http://adaptivecards.io/content/overview.jpg)
 
 ## Expressive
 Break outside the box of templated cards. Adaptive Cards let you describe your content as you see fit and deliver it beautifully wherever your customers are.
