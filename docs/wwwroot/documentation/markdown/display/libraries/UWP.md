@@ -51,9 +51,6 @@ renderer.HostOptions = hostConfig;
 ```
 When you pass it in to the UWPRenderer you are setting the default HostConfig to use for every card you render.
 
-
-*Coming soon*
-
 ### Changing per element rendering
 *Coming soon*
 
