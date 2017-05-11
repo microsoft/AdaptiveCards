@@ -1792,6 +1792,12 @@ export abstract class ContainerBase extends CardElement {
         this._element = document.createElement("div");
         this._element.className = "ac-container";
 
+        if (this.backgroundImage) {
+            this._element.style.backgroundImage = "url(" + this.backgroundImage + ")";
+            this._element.style.backgroundRepeat = "no-repeat";
+            this._element.style.backgroundSize = "cover";
+        }
+
         var backgroundColor = this.getBackgroundColor();
 
         if (backgroundColor) {
@@ -1847,6 +1853,7 @@ export abstract class ContainerBase extends CardElement {
     }
 
     selectAction: ExternalAction;
+    backgroundImage: string;
 
     isLastItem(item: CardElement): boolean {
         return this._items.indexOf(item) == (this._items.length - 1);
@@ -1884,6 +1891,8 @@ export abstract class ContainerBase extends CardElement {
 
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
+
+        this.backgroundImage = json["backgroundImage"];
 
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName] as Array<any>;
