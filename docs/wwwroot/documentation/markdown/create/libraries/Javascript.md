@@ -1,3 +1,4 @@
+
 # Javascript Libraries for creating cards
 As we described in the getting started section, an adaptive card is nothing more then a serialized json object of 
 a card object model.  To make it easy to manipulate the object model we have defined some libraries which 
@@ -36,4 +37,3 @@ let card = {
     ]
 };
 ```
-

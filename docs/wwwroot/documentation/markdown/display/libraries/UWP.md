@@ -1,4 +1,4 @@
-# UWP Library
+# UWP library
 This is a renderer which targets UWP native controls.
 
 ## Add a renderer
@@ -6,12 +6,13 @@ This is a renderer which targets UWP native controls.
 Coming Soon... 
 
 ## Create an instance of your renderer
-The next step is to create an instance of the renderer library. 
+Create an instance of the renderer library. 
 ```csharp
 var renderer = new XamlCardRenderer();
 ```
+
 ## Render a card
-Now you get a card from some source and you want to render it.  This is super easy:
+Acquire a card from a source and render it.
 
 ```csharp
 var uiCard = await renderer.RenderCardAsXamlAsync(card);
@@ -20,7 +21,7 @@ myGrid.Children.Add(uiCard);
 ```
 
 ## Example
-Here is an example from the UWP renderer to give you a feel for how this works:
+Here is an example from the UWP renderer.
 
 ```csharp
 var renderer = new XamlCardRenderer();
@@ -34,6 +35,7 @@ myGrid.Children.Add(uiCard);
 To customize the renderer you provide an instance of the HostConfig object. (See [Host Config Schema](/documentation/#display-hostconfigschema) for the full description.)
 
 > The HostConfig object will be instantiated with defaults, so you can set just the properties you want to change.
+
 
 Example:
 ```csharp
@@ -57,9 +59,8 @@ When you pass it in to the UWPRenderer you are setting the default HostConfig to
 ### UI Framework styling
 *Coming soon*
 
-## Resources
-* [Libraries](/documentation/#display-libraries) 
-* [Implementing a renderer](/documentation/#disply-implementingrenderer) 
-* [Customizing a renderer](/documentation/#display-customizingrenderer) 
+## Next steps
+
+* [Implement a renderer](../ImplementingRenderer.md) 
 
 

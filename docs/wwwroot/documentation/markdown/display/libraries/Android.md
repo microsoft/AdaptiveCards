@@ -1,7 +1,8 @@
-# Android Library
+# Android library
 This is a renderer which targets Android native controls.
 
 ## Add a renderer
+
 *Coming soon*
 
 ## Create an instance of your renderer
@@ -17,8 +18,9 @@ This is a renderer which targets Android native controls.
 *Coming soon*
 
 ## Customization
-
+<a name="customize"></a>
 ### HostConfig 
+
 *Coming soon*
 
 ### Changing per element rendering
@@ -28,9 +30,6 @@ This is a renderer which targets Android native controls.
 ### UI Framework styling
 *Coming soon*
 
-## Resources
-* [Libraries](/documentation/#display-libraries) 
-* [Implementing a renderer](/documentation/#disply-implementingrenderer) 
-* [Customizing a renderer](/documentation/#display-customizingrenderer) 
+## Next steps
 
-
+* [Implement a renderer](../ImplementingRenderer.md)  

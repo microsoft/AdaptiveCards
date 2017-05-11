@@ -1,4 +1,4 @@
-# WPF RichInput Library
+# WPF RichInput library
 This library is a extension of the WPF renderer.  It adds a dependency on the 
 WPF Toolkit to add rich Email, Number, Telephone, Date and Time input controls.
 
@@ -8,7 +8,7 @@ This is available as a nuget packages.
 nuget install Microsoft.AdaptiveCards.Xaml.WPF.RichInput
 ```
 ## Create an instance of your renderer
-The next step is to create an instance of the renderer library. 
+Create an instance of the renderer library. 
 ```csharp
 var renderer = new XamlRendererExtended(hostConfig, this.Resources, onAction, OnMissingInput);
 ```
@@ -21,7 +21,7 @@ var renderer = new XamlRendererExtended(..., actionCallback:  _onAction);
 ```
 
 ## Render a card
-Now you get a card from some source and you want to render it.  This is super easy:
+Acquire a card from a source and render it.
 
 ```csharp
 var uiCard = renderer.RenderAdaptiveCard(card);
@@ -30,7 +30,7 @@ myGrid.Children.Add(uiCard);
 ```
 
 ## Example
-Here is an example from the Xaml renderer to give you a feel for how this works:
+Here is an example from the Xaml renderer.
 
 ```csharp
 var hostConfig = new HostConfig() { ... };
@@ -77,9 +77,8 @@ private void _OnMissingInput(object sender, MissingInputEventArgs args)
 ## Customization
 
 ### HostConfig 
-To customize the renderer you provide an instance of the HostConfig object. (See [Host Config Schema](/documentation/#display-hostconfigschema) for the full description.)
-
-> The HostConfig object will be instantiated with defaults, so you can set just the properties you want to change.
+To customize the renderer, provide an instance of the HostConfig object. See the [Host Config Schema](../HostConfigSchema.md) for a full description. Since the HostConfig object is instantiated with defaults, you only have to set the properties you want to change from the defaults.
+Passing it to the XamlRenderer sets the default HostConfig to use for every card you render.
 
 Example:
 ```csharp
@@ -95,18 +94,15 @@ var hostConfig = new HostConfig()
 };
 ```
 
-When you pass it in to the XamlRenderer you are setting the default HostConfig to use for every card you render.
+### Change per element rendering
+The XamlRenderer has a registration mechanism which allows you to set a function that is called to perform the
+rendering on a per-element basis.  It exposes a method called `SetRenderer<ElementT>(func);`.
 
-### Changing per element rendering
-The XamlRenderer has a registration mechanism which allows you to set a function which is called to perform the
-rendering on a per element basis.  It exposes a method called SetRenderer<ElementT>(func); 
-
-Let's say you want to override the rendering of a Input.Date element.  You would do something like this:
+To override the rendering of a `Input.Date` element:
 ```csharp
-xamlRenderer.SetRenderer<DateInput>(RenderMyCustomeDate);
+xamlRenderer.SetRenderer<DateInput>(RenderMyCustomDate);
 ```
-
-And the new date renderer would look like this:
+The new date renderer would look like this:
 ```csharp
 public static FrameworkElement Render(TypedElement element, RenderContext context)
 {
@@ -116,11 +112,9 @@ public static FrameworkElement Render(TypedElement element, RenderContext contex
     return datePicker;
 }
 ```
-
-
-### UI Framework styling
-If you pass in a Xaml ResourceDictionary you can further customize the Xaml behavior. This
-allows you to define roll over behaviors, animations, rounded buttons, etc.  Here is a table of the 
+### Style UI framework
+If you pass in a Xaml ResourceDictionary, you can customize the Xaml behavior further. This
+allows you to define roll over behaviors, animations, rounded buttons, and so forth.  Here is a table of the 
 style names that are used for each element.  
 
 | Element | Style names used|
@@ -182,9 +176,8 @@ Here is a sample resource dictionary which adds a hover effect on elements with 
 </Window.Resources>
 ```
 
-## Resources
-* [Libraries](/documentation/#display-libraries) 
-* [Implementing a renderer](/documentation/#disply-implementingrenderer) 
-* [Customizing a renderer](/documentation/#display-customizingrenderer) 
+## Next steps
+
+* [Implement a renderer](../ImplementingRenderer.md) 
 
 

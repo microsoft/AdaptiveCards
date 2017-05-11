@@ -11,4 +11,3 @@ There are 2 patterns for speak property usage by a host application:
 * **on demand** - In order to support a richer accessibility model the schema supports a speak tag per element.  
 This allows for clients to read each element to recipients with accessibility requirements.
 
-To play a card you will need to use 
