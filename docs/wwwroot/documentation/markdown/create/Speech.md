@@ -4,9 +4,9 @@ to support speech, enabling cool new hands-full scenarios.
 
 The `speak` tag enables the adaptive card to be delivered to an environment where a visual display is not primary experience, such as to a car dashboard while driving. 
 
-## Speak croperty
+## Speak property
 To support speech we have a *speak* property which contains text to say to the user. The text can be annotated using speech synthesis markup language
-([SSML](https://msdn.microsoft.com/en-us/library/office/hh361578(v=office.14).aspx)). SSML controls the speed, tone, and inflection of the speech.  It even allows you to stream audio or a render a TTS audio stream
+([SSML](https://msdn.microsoft.com/en-us/library/office/hh361578)). SSML controls the speed, tone, and inflection of the speech.  It even allows you to stream audio or a render a TTS audio stream
 from your own service, giving you a great deal of flexibility for customization.
 
 There are two patterns for speak property usage by a host application:
