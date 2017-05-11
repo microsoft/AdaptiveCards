@@ -47,7 +47,7 @@ public class TextBlockRenderer implements BaseCardElementRenderer
         return s_instance;
     }
 
-    private static void setTextSize(TextView textView, TextSize textSize, FontSizeOptions fontSizeOptions)
+    static void setTextSize(TextView textView, TextSize textSize, FontSizeOptions fontSizeOptions)
     {
         if (textSize.swigValue() == TextSize.ExtraLarge.swigValue())
         {
@@ -75,7 +75,7 @@ public class TextBlockRenderer implements BaseCardElementRenderer
         }
     }
 
-    private static void setTextColor(TextView textView, TextColor textColor, boolean isSubtle, ColorOptions colorOptions)
+    static void setTextColor(TextView textView, TextColor textColor, boolean isSubtle, ColorOptions colorOptions)
     {
         com.microsoft.adaptivecards.objectmodel.ColorOption colorOption;
         if (textColor.swigValue() == TextColor.Accent.swigValue())
@@ -114,7 +114,7 @@ public class TextBlockRenderer implements BaseCardElementRenderer
         textView.setTextColor(Color.parseColor(isSubtle ? colorOption.getSubtle() : colorOption.getNormal()));
     }
 
-    private static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
+    static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
         int alignment;
         if (textAlignment.swigValue() == HorizontalAlignment.Center.swigValue())
@@ -137,6 +137,11 @@ public class TextBlockRenderer implements BaseCardElementRenderer
         textView.setGravity(alignment);
     }
 
+    void setTextWeight(TextView textView, TextWeight textWeight)
+    {
+        textView.setTypeface(null, m_textWeightMap.get(textWeight));
+    }
+
     public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions)
     {
         TextBlock textBlock = null;
@@ -151,8 +156,8 @@ public class TextBlockRenderer implements BaseCardElementRenderer
 
         TextView textView = new TextView(context);
         textView.setText(textBlock.GetText());
-        textView.setTypeface(null, m_textWeightMap.get(textBlock.GetTextWeight()));
         textView.setSingleLine(!textBlock.GetWrap());
+        setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(textView, textBlock.GetTextSize(), hostOptions.getFontSizes());
         setTextColor(textView, textBlock.GetTextColor(), textBlock.GetIsSubtle(), hostOptions.getColors());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
