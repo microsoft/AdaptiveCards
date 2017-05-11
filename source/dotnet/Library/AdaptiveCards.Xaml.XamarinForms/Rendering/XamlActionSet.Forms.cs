@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AsNum.XFControls;
 using Xamarin.Forms;
 
 
@@ -14,8 +13,11 @@ namespace AdaptiveCards.Rendering
                 .Take(context.Config.Actions.MaxActions).ToList();
             if (!actionsToProcess.Any())
                 return;                
-                   
-            var uiActionBar = new UniformGrid();
+             
+            // TODO: Bring back UniformGrid
+            //var uiActionBar = new UniformGrid();
+
+            var uiActionBar = new Grid();
             //uiActionBar.Rows = 1;
             //uiActionBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             //uiActionBar.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
