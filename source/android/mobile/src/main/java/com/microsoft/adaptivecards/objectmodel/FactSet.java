@@ -45,16 +45,16 @@ public class FactSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_1(separation.swigValue(), speak), true);
   }
 
-  public FactSet(SeparationStyle separation, String speak, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Fact_t_t facts) {
-    this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_2(separation.swigValue(), speak, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Fact_t_t.getCPtr(facts)), true);
+  public FactSet(SeparationStyle separation, String speak, FactVector facts) {
+    this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_2(separation.swigValue(), speak, FactVector.getCPtr(facts), facts), true);
   }
 
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.FactSet_Serialize(swigCPtr, this);
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Fact_t_t GetFacts() {
-    return new SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Fact_t_t(AdaptiveCardObjectModelJNI.FactSet_GetFacts__SWIG_0(swigCPtr, this), false);
+  public FactVector GetFacts() {
+    return new FactVector(AdaptiveCardObjectModelJNI.FactSet_GetFacts__SWIG_0(swigCPtr, this), false);
   }
 
   public static FactSet Deserialize(SWIGTYPE_p_Json__Value root) {

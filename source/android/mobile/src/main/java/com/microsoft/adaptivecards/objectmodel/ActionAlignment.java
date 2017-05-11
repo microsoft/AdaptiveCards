@@ -8,12 +8,11 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public final class ActionType {
-  public final static ActionType Unsupported = new ActionType("Unsupported", AdaptiveCardObjectModelJNI.ActionType_Unsupported_get());
-  public final static ActionType ShowCard = new ActionType("ShowCard");
-  public final static ActionType Submit = new ActionType("Submit");
-  public final static ActionType Http = new ActionType("Http");
-  public final static ActionType OpenUrl = new ActionType("OpenUrl");
+public final class ActionAlignment {
+  public final static ActionAlignment Left = new ActionAlignment("Left", AdaptiveCardObjectModelJNI.ActionAlignment_Left_get());
+  public final static ActionAlignment Center = new ActionAlignment("Center");
+  public final static ActionAlignment Right = new ActionAlignment("Right");
+  public final static ActionAlignment Stretch = new ActionAlignment("Stretch");
 
   public final int swigValue() {
     return swigValue;
@@ -23,33 +22,33 @@ public final class ActionType {
     return swigName;
   }
 
-  public static ActionType swigToEnum(int swigValue) {
+  public static ActionAlignment swigToEnum(int swigValue) {
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
     for (int i = 0; i < swigValues.length; i++)
       if (swigValues[i].swigValue == swigValue)
         return swigValues[i];
-    throw new IllegalArgumentException("No enum " + ActionType.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + ActionAlignment.class + " with value " + swigValue);
   }
 
-  private ActionType(String swigName) {
+  private ActionAlignment(String swigName) {
     this.swigName = swigName;
     this.swigValue = swigNext++;
   }
 
-  private ActionType(String swigName, int swigValue) {
+  private ActionAlignment(String swigName, int swigValue) {
     this.swigName = swigName;
     this.swigValue = swigValue;
     swigNext = swigValue+1;
   }
 
-  private ActionType(String swigName, ActionType swigEnum) {
+  private ActionAlignment(String swigName, ActionAlignment swigEnum) {
     this.swigName = swigName;
     this.swigValue = swigEnum.swigValue;
     swigNext = this.swigValue+1;
   }
 
-  private static ActionType[] swigValues = { Unsupported, ShowCard, Submit, Http, OpenUrl };
+  private static ActionAlignment[] swigValues = { Left, Center, Right, Stretch };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

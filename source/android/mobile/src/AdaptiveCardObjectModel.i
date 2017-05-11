@@ -22,6 +22,7 @@ namespace std {
 #include <memory>
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
+#include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
@@ -38,6 +39,7 @@ namespace std {
 %}
 
 %shared_ptr(AdaptiveCards::BaseCardElement)
+%shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::Container)
 %shared_ptr(AdaptiveCards::TextBlock)
 %shared_ptr(AdaptiveCards::Image)
@@ -69,6 +71,8 @@ namespace std {
 
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
 %template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >; 
+%template(FactVector) std::vector<std::shared_ptr<AdaptiveCards::Fact> >; 
+%template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >; 
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -192,9 +196,10 @@ namespace std {
     }
 };
 
-#include "../../../shared/cpp/ObjectModel/pch.h"
+%include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
+%include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"

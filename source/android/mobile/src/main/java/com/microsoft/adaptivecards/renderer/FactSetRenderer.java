@@ -2,8 +2,10 @@ package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
+import com.microsoft.adaptivecards.objectmodel.FactVector;
 import com.microsoft.adaptivecards.objectmodel.HostOptions;
 import com.microsoft.adaptivecards.objectmodel.FactSet;
 
@@ -39,6 +41,8 @@ public class FactSetRenderer implements BaseCardElementRenderer
             return viewGroup;
         }
 
+        FactVector factVector = factSet.GetFacts();
+        GridLayout gridLayout = new GridLayout(context);
         return viewGroup;
     }
 
