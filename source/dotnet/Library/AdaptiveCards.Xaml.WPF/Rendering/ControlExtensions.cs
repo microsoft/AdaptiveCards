@@ -72,7 +72,7 @@ namespace AdaptiveCards.Rendering
 
         public static void  SetPlaceholder (this TextBox textBlock, string placeholder)
 		{
-			textBlock.Text = placeholder;
+			//UWP doesnt have the concept of placeholder for TextBox
 		}
     }
 }
