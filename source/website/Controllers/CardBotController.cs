@@ -1,4 +1,6 @@
 using AdaptiveCards;
+using AdaptiveCards.Rendering;
+using AdaptiveCards.Rendering.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -64,6 +66,10 @@ namespace Docs.Controllers
                 {
                     AdaptiveCard card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
 
+#if HTML
+                    var hostConfig = new HostConfig() { SupportsInteractivity = false };
+                    HtmlRenderer renderer = new HtmlRenderer(hostConfig);
+                    var html = renderer.RenderAdaptiveCard(card);
                     return new ContentResult()
                     {
                         Content = $@"
@@ -97,6 +103,52 @@ body {{
 </html>",
                         ContentType = "text/html"
                     };
+#else
+                    var hostConfig = new HostConfig() { SupportsInteractivity = false, };
+                    hostConfig.TextBlock.Separations.Small.Spacing = 2;
+                    hostConfig.TextBlock.Separations.Medium.Spacing = 2;
+                    hostConfig.TextBlock.Separations.Large.Spacing = 2;
+                    hostConfig.TextBlock.Separations.ExtraLarge.Spacing = 2;
+                    hostConfig.TextBlock.Separations.Normal.Spacing = 2;
+                    hostConfig.Image.Separation.Spacing = 2;
+                    hostConfig.Container.Separation.Spacing = 2;
+                    hostConfig.Column.Separation.Spacing = 2;
+                    hostConfig.ColumnSet.Separation.Spacing = 2;
+                    hostConfig.FactSet.Separation.Spacing = 2;
+                    hostConfig.ImageSet.Separation.Spacing = 2;
+                    hostConfig.StrongSeparation.Spacing = 6;
+                    HtmlRenderer renderer = new HtmlRenderer(hostConfig);
+                    var html = renderer.RenderAdaptiveCard(card);
+                    return new ContentResult()
+                    {
+                        Content = $@"
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <title>Adaptive Cards</title>
+    <meta name='viewport' content='width=220, initial-scale=1'/>
+
+    <link rel='stylesheet' href='/content/fonts.css'/>
+	<link rel='stylesheet' href='/content/shared.css'/>
+	<link rel='stylesheet' href='/content/card.css'/>
+<style>
+body {{
+    margin:0px;
+    width:220px;
+}}
+.card {{
+    padding:10px 10px 10px 10px;
+}}                            
+</style>
+
+</head>
+<body>
+<div id='kikCard' class='card' >{html.ToString()}</div>
+</body>
+</html>",
+                        ContentType = "text/html"
+                    };
+#endif
                 }
             }
             return null;
@@ -141,7 +193,7 @@ body {{
             'type': 'widget',
             'chatId': '{incomingChannelData.messages[0].chatId}',
             'to': '{incomingChannelData.messages[0].from}',
-            'url': 'http://adaptivecards-staging.azurewebsites.net/api/CardBot?cardName={cardName.Replace(" ","_")}',
+            'url': 'http://adaptivecards-staging.azurewebsites.net/api/CardBot?cardName={cardName.Replace(" ", "_")}',
             'size': {{
                 'width': 220,
                 'height': 220
