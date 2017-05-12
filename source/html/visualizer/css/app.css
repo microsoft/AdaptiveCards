@@ -20,7 +20,7 @@ body {
     background-color: white;
     box-shadow: 0 0 15px -5px rgba(0,0,0,.4);
     padding: 20px;
-    width: 300px;
+    min-width: 300px;
 }
 
 .errorContainer {
