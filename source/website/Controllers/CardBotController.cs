@@ -167,9 +167,9 @@ body {{
 
         private async Task<HttpResponseMessage> ProcessMessage(IMessageActivity message)
         {
-            if (message.Text.Contains("cards"))
+            if (message.Text.ToLower().Contains("cards"))
                 return await ListCards(message);
-            if (message.Text.Contains("help"))
+            if (message.Text.ToLower().Contains("help"))
                 return await SendHelp(message);
 
             return await SendCard((Activity)message, message.Text.ToLower());

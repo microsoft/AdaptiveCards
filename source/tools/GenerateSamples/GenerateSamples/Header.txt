@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="/content/card.css">
 	<link rel="stylesheet" href="/explorer/explorer.css">
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src = "/node_modules/adaptive-cards/dist/adaptive-cards.js"></script> 
+    <script src = "/node_modules/microsoft-adaptivecards/dist/adaptive-cards.js"></script> 
 	<script src="/$PAGE$/$PAGE$.js"></script>
 	<style>
         @media(max-width: 600px) {

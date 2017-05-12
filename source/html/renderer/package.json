@@ -1,6 +1,6 @@
 {
   "name": "microsoft-adaptivecards",
-  "version": "0.5.4",
+  "version": "0.5.6",
   "description": "Adaptive Card typescript/javascript library for Html Clients",
   "homepage": "http://adaptivecards.io",
   "keywords": [
