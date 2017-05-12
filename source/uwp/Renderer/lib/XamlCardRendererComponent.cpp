@@ -31,6 +31,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     HRESULT XamlCardRenderer::RuntimeClassInitialize()
     {
+        m_events.reset(new ActionEventSource);
         return S_OK;
     }
 
@@ -52,6 +53,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_hostOptions = hostOptions;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::add_Action(
+        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionEventArgs*>* handler,
+        EventRegistrationToken* token)
+    {
+        return m_events->Add(handler, token);
+    }
+
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::remove_Action(EventRegistrationToken token)
+    {
+        return m_events->Remove(token);
     }
 
     _Use_decl_annotations_
@@ -81,7 +96,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             // that automatically
             builder.SetEnableXamlImageHandling(true);
 
-            builder.BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot);
+            builder.BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this);
             *result = xamlTreeRoot.Detach();
         }
 
@@ -93,7 +108,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IAdaptiveCard* adaptiveCard,
         IAsyncOperation<UIElement*>** result)
     {
-        *result = Make<RenderCardAsXamlAsyncOperation>(adaptiveCard).Detach();
+        *result = Make<RenderCardAsXamlAsyncOperation>(adaptiveCard, this).Detach();
         return S_OK;
     }
 
@@ -126,6 +141,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
         RETURN_IF_FAILED(adaptiveCardStatics->CreateCardFromJson(adaptiveJson, adaptiveCard));
         return S_OK;
+    }
+
+    HRESULT XamlCardRenderer::SendActionEvent(IAdaptiveActionEventArgs* eventArgs)
+    {
+        return m_events->InvokeAll(this, eventArgs);
     }
 
 }}

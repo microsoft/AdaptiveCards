@@ -64,6 +64,16 @@ namespace XamlCardVisualizer
 
             m_renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();
 
+            m_renderer.Action += async (sender, e) =>
+            {
+                ContentDialog dialog = new ContentDialog();
+
+                dialog.Content = "We got an action!\n" + e.ActionType;
+                dialog.PrimaryButtonText = "OK";
+
+                await dialog.ShowAsync();
+            };
+
             PopulateXamlContent(card);
         }
 
