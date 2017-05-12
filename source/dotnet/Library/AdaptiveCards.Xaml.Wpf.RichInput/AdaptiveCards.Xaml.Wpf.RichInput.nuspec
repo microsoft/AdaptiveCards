@@ -8,7 +8,7 @@
     <projectUrl>https://github.com/Microsoft/AdaptiveCards</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Adaptive Card renderer for WPF Xaml which uses the Wpf Extension pack to have richer input controls</summary>
-    <description>This library implements classes for rending adaptive card objects into XAML/WPF using the Extended WPF Toolkit input controls</description>
+    <description>This library implements classes for rendering adaptive card objects into XAML/WPF using the Extended WPF Toolkit input controls</description>
     <language>en-US</language>
     <tags>adaptivecards</tags>
     <dependencies>

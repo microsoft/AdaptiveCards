@@ -8,7 +8,7 @@
     <projectUrl>https://github.com/Microsoft/AdaptiveCards</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Adaptive Card renderer for XAML/WPF</summary>
-    <description>This library implements classes for rending adaptive card objects into XAML/WPF</description>
+    <description>This library implements classes for rendering adaptive card objects into XAML/WPF</description>
     <language>en-US</language>
     <tags>adaptivecards</tags>
     <dependencies>
