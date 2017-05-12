@@ -52,11 +52,11 @@ struct SeparationOptions
 {
     unsigned int spacing = 10;
     unsigned int lineThickness = 0;
-    std::string lineColor;
+    std::string lineColor = "#FF101010";
 };
 struct ImageSizeOptions
 {
-    unsigned int smallSize = 60;
+    unsigned int smallSize = 80;
     unsigned int mediumSize = 120;
     unsigned int largeSize = 180;
 };

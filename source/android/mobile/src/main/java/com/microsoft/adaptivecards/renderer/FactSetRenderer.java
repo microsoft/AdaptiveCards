@@ -17,7 +17,7 @@ import com.microsoft.adaptivecards.objectmodel.TextOptions;
  * Created by bekao on 4/27/2017.
  */
 
-public class FactSetRenderer implements BaseCardElementRenderer
+public class FactSetRenderer extends BaseCardElementRenderer
 {
     private FactSetRenderer()
     {
@@ -38,7 +38,7 @@ public class FactSetRenderer implements BaseCardElementRenderer
         TextView textView = new TextView(context);
         textView.setText(text);
         TextBlockRenderer.setTextColor(textView, textOptions.getColor(), textOptions.getIsSubtle(), hostOptions.getColors());
-        TextBlockRenderer.setTextSize(textView, textOptions.getSize(), hostOptions.getFontSizes());
+        TextBlockRenderer.setTextSize(textView, textOptions.getSize(), hostOptions);
         TextBlockRenderer.getInstance().setTextWeight(textView, textOptions.getWeight());
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
                 GridLayout.spec(GridLayout.UNDEFINED, 1f),

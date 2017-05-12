@@ -4,12 +4,12 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.HostOptions;
-import com.microsoft.adaptivecards.objectmodel.TextBlock;
 
 import java.util.HashMap;
 
@@ -40,7 +40,7 @@ public class CardRendererRegistration
         return s_instance;
     }
 
-    public void registerRenderer(String cardType, BaseCardElementRenderer renderer)
+    public void registerRenderer(String cardType, IBaseCardElementRenderer renderer)
     {
         if (TextUtils.isEmpty(cardType))
         {
@@ -54,7 +54,7 @@ public class CardRendererRegistration
         m_typeToRendererMap.put(cardType, renderer);
     }
 
-    public BaseCardElementRenderer getRenderer(String cardElementType)
+    public IBaseCardElementRenderer getRenderer(String cardElementType)
     {
         return m_typeToRendererMap.get(cardElementType);
     }
@@ -78,10 +78,11 @@ public class CardRendererRegistration
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
-            BaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementType().toString());
+            IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementType().toString());
             if (renderer == null)
             {
-                throw new IllegalArgumentException("Unsupported card element type: " + cardElement.GetElementType().toString());
+                Toast.makeText(context, "Unsupported card element type: " + cardElement.GetElementType().toString(), Toast.LENGTH_SHORT);
+                continue;
             }
 
             renderer.render(context, layout, cardElement, hostOptions);
@@ -92,5 +93,5 @@ public class CardRendererRegistration
 
     private static CardRendererRegistration s_instance = null;
 
-    private HashMap<String, BaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, BaseCardElementRenderer>();
+    private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
 }

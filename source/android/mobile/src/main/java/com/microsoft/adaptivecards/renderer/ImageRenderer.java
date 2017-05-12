@@ -14,9 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
-import com.microsoft.adaptivecards.objectmodel.FontSizeOptions;
 import com.microsoft.adaptivecards.objectmodel.HorizontalAlignment;
 import com.microsoft.adaptivecards.objectmodel.HostOptions;
 import com.microsoft.adaptivecards.objectmodel.Image;
@@ -32,7 +32,7 @@ import java.net.URL;
  * Created by bekao on 4/27/2017.
  */
 
-public class ImageRenderer implements BaseCardElementRenderer
+public class ImageRenderer extends BaseCardElementRenderer
 {
     private ImageRenderer()
     {
@@ -50,8 +50,9 @@ public class ImageRenderer implements BaseCardElementRenderer
 
     private class ImageLoaderAsync extends AsyncTask<String, Void, Bitmap>
     {
-        ImageLoaderAsync(ImageView imageView, ImageStyle imageStyle)
+        ImageLoaderAsync(Context context, ImageView imageView, ImageStyle imageStyle)
         {
+            m_context = context;
             m_imageView = imageView;
             m_imageStyle = imageStyle;
         }
@@ -59,9 +60,11 @@ public class ImageRenderer implements BaseCardElementRenderer
         @Override
         protected Bitmap doInBackground(String... args)
         {
+            String url = args[0];
             try
             {
-                Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(args[0]).getContent());
+                InputStream inputStream = new java.net.URL(url).openStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
                 if (m_imageStyle == ImageStyle.Person)
                 {
@@ -78,6 +81,7 @@ public class ImageRenderer implements BaseCardElementRenderer
             }
             catch (IOException ioExcep)
             {
+                errorString = ioExcep.getMessage();
                 // TODO: Where to log?
             }
 
@@ -91,10 +95,16 @@ public class ImageRenderer implements BaseCardElementRenderer
             {
                 m_imageView.setImageBitmap(result);
             }
+            else
+            {
+                Toast.makeText(m_context, "Unable to load image: " + errorString, Toast.LENGTH_SHORT);
+            }
         }
 
+        private Context m_context;
         private ImageView m_imageView;
         private ImageStyle m_imageStyle;
+        private String errorString;
     }
 
     private static void setImageSize(ImageView imageView, ImageSize imageSize, ImageSizeOptions imageSizeOptions)
@@ -175,9 +185,10 @@ public class ImageRenderer implements BaseCardElementRenderer
         }
 
         ImageView imageView = new ImageView(context);
-        new ImageLoaderAsync(imageView, image.GetImageStyle()).execute(image.GetUrl());
+        new ImageLoaderAsync(context, imageView, image.GetImageStyle()).execute(image.GetUrl());
         setImageSize(imageView, image.GetImageSize(), hostOptions.getImageSizes());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        setSeparationOptions(context, viewGroup, image.GetSeparationStyle(), hostOptions.getImage().getSeparation(), hostOptions.getStrongSeparation(), true /* horizontal line */);
         viewGroup.addView(setHorizontalAlignment(context, imageView, image.GetHorizontalAlignment()));
         return viewGroup;
     }

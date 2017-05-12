@@ -1,11 +1,8 @@
 package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
-import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
@@ -15,13 +12,11 @@ import com.microsoft.adaptivecards.objectmodel.ImageSet;
 import com.microsoft.adaptivecards.objectmodel.ImageSize;
 import com.microsoft.adaptivecards.objectmodel.ImageVector;
 
-import java.util.Vector;
-
 /**
  * Created by bekao on 4/27/2017.
  */
 
-public class ImageSetRenderer implements BaseCardElementRenderer
+public class ImageSetRenderer implements IBaseCardElementRenderer
 {
     private ImageSetRenderer()
     {
@@ -49,7 +44,7 @@ public class ImageSetRenderer implements BaseCardElementRenderer
             return viewGroup;
         }
 
-        BaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
+        IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
         if (imageRenderer == null)
         {
             throw new IllegalArgumentException("No renderer registered for: " + CardElementType.Image.toString());

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,12 +13,12 @@ import com.microsoft.adaptivecards.objectmodel.ColorOptions;
 import com.microsoft.adaptivecards.objectmodel.FontSizeOptions;
 import com.microsoft.adaptivecards.objectmodel.HorizontalAlignment;
 import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.SeparationOptions;
+import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
 import com.microsoft.adaptivecards.objectmodel.TextBlock;
 import com.microsoft.adaptivecards.objectmodel.TextColor;
 import com.microsoft.adaptivecards.objectmodel.TextSize;
 import com.microsoft.adaptivecards.objectmodel.TextWeight;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -27,7 +26,7 @@ import java.util.HashMap;
  * Created by bekao on 2/11/2017.
  */
 
-public class TextBlockRenderer implements BaseCardElementRenderer
+public class TextBlockRenderer extends BaseCardElementRenderer
 {
     private TextBlockRenderer()
     {
@@ -47,32 +46,47 @@ public class TextBlockRenderer implements BaseCardElementRenderer
         return s_instance;
     }
 
-    static void setTextSize(TextView textView, TextSize textSize, FontSizeOptions fontSizeOptions)
+    static SeparationOptions setTextSize(TextView textView, TextSize textSize, HostOptions hostOptions)
     {
+        FontSizeOptions fontSizeOptions = hostOptions.getFontSizes();
+        SeparationOptions separationOptions;
         if (textSize.swigValue() == TextSize.ExtraLarge.swigValue())
         {
             textView.setTextSize(fontSizeOptions.getExtraLargeFontSize());
+            separationOptions = hostOptions.getTextBlock().getExtraLargeSeparation();
         }
         else if (textSize.swigValue() == TextSize.Large.swigValue())
         {
             textView.setTextSize(fontSizeOptions.getLargeFontSize());
+            separationOptions = hostOptions.getTextBlock().getLargeSeparation();
         }
         else if (textSize.swigValue() == TextSize.Medium.swigValue())
         {
             textView.setTextSize(fontSizeOptions.getMediumFontSize());
+            separationOptions = hostOptions.getTextBlock().getMediumSeparation();
         }
         else if (textSize.swigValue() == TextSize.Normal.swigValue())
         {
             textView.setTextSize(fontSizeOptions.getNormalFontSize());
+            separationOptions = hostOptions.getTextBlock().getNormalSeparation();
         }
         else if (textSize.swigValue() == TextSize.Small.swigValue())
         {
             textView.setTextSize(fontSizeOptions.getSmallFontSize());
+            separationOptions = hostOptions.getTextBlock().getSmallSeparation();
         }
         else
         {
             throw new IllegalArgumentException("Unknown text size: " + textSize.toString());
         }
+
+        return separationOptions;
+    }
+
+    static void setTextSizeAndSeparationOptions(Context context, TextView textView, ViewGroup viewGroup, TextSize textSize, SeparationStyle separationStyle, HostOptions hostOptions)
+    {
+        SeparationOptions separationOptions = setTextSize(textView, textSize, hostOptions);
+        setSeparationOptions(context, viewGroup, separationStyle, separationOptions, hostOptions.getStrongSeparation(), true /* horizontal line */);
     }
 
     static void setTextColor(TextView textView, TextColor textColor, boolean isSubtle, ColorOptions colorOptions)
@@ -158,10 +172,10 @@ public class TextBlockRenderer implements BaseCardElementRenderer
         textView.setText(textBlock.GetText());
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());
-        setTextSize(textView, textBlock.GetTextSize(), hostOptions.getFontSizes());
+        setTextSizeAndSeparationOptions(context, textView, viewGroup, textBlock.GetTextSize(), textBlock.GetSeparationStyle(), hostOptions);
         setTextColor(textView, textBlock.GetTextColor(), textBlock.GetIsSubtle(), hostOptions.getColors());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         int maxLines = (int)textBlock.GetMaxLines();
         if (maxLines != 0)
         {
@@ -177,7 +191,7 @@ public class TextBlockRenderer implements BaseCardElementRenderer
     private HashMap<TextWeight, Integer> m_textWeightMap = new HashMap<TextWeight, Integer>();
 
     // Text Weight Constants
-    private int g_textWeightNormal = Typeface.NORMAL;
-    private int g_textWeightBolder = Typeface.BOLD;
-    private int g_textWeightLighter = Typeface.ITALIC;
+    private final int g_textWeightNormal = Typeface.NORMAL;
+    private final int g_textWeightBolder = Typeface.BOLD;
+    private final int g_textWeightLighter = Typeface.ITALIC;
 }

@@ -2,22 +2,16 @@ package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
-import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
-import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.Container;
 import com.microsoft.adaptivecards.objectmodel.HostOptions;
-import com.microsoft.adaptivecards.objectmodel.TextBlock;
-
-import static android.R.attr.type;
 
 /**
  * Created by bekao on 2/11/2017.
  */
 
-public class ContainerRenderer implements BaseCardElementRenderer
+public class ContainerRenderer extends BaseCardElementRenderer
 {
     private ContainerRenderer()
     {
@@ -46,6 +40,7 @@ public class ContainerRenderer implements BaseCardElementRenderer
             return viewGroup;
         }
 
+        //setSeparationOptions(context, viewGroup, container.GetSeparationStyle(), hostOptions.getContainer().getSeparation(), hostOptions.getStrongSeparation(), true /* horizontal line */);
         return CardRendererRegistration.getInstance().render(context, viewGroup, container.GetItems(), hostOptions);
     }
 

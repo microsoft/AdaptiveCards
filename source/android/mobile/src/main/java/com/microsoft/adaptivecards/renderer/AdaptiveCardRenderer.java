@@ -30,12 +30,20 @@ public class AdaptiveCardRenderer
 
     public ViewGroup render(Context context, AdaptiveCard adaptiveCard, HostOptions hostOptions)
     {
-        LinearLayout layout = new LinearLayout(context);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        layout.setOrientation(LinearLayout.VERTICAL);
+        try
+        {
+            LinearLayout layout = new LinearLayout(context);
+            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            layout.setOrientation(LinearLayout.VERTICAL);
 
-        BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
-        return (baseCardElementList == null ? null : CardRendererRegistration.getInstance().render(context, layout, baseCardElementList, hostOptions));
+            BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
+            return (baseCardElementList == null ? null : CardRendererRegistration.getInstance().render(context, layout, baseCardElementList, hostOptions));
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     private static AdaptiveCardRenderer s_instance = null;
