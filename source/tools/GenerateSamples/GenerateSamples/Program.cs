@@ -44,7 +44,7 @@ namespace GenerateSamples
                 writer.WriteLine(header.Replace("$PAGE$", "explorer"));
 
                 // side bar
-                writer.WriteLine("<div class=\"w3-sidebar w3-light-grey w3-card-2 w3-bar-block\">");
+                writer.WriteLine("<div id=\"sidebar\" class=\"w3-sidebar w3-light-grey w3-hide-small w3-bar-block\">");
                 string firstLink = null;
                 foreach (var element in elements)
                 {
@@ -107,7 +107,7 @@ namespace GenerateSamples
                 writer.WriteLine(header.Replace("$PAGE$", "samples"));
 
                 // side bar
-                writer.WriteLine("<div class=\"w3-sidebar w3-light-grey w3-card-2 w3-bar-block\">");
+                writer.WriteLine("<div id=\"sidebar\" class=\"w3-sidebar w3-light-grey w3-bar-block w3-hide-small \">");
                 string firstLink = null;
                 var files = Directory.EnumerateFiles(@"..\..\..\..\..\website\wwwroot\samples\cards", "*.json").ToList();
                 foreach (var file in files)

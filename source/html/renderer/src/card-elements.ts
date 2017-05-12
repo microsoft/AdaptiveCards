@@ -33,7 +33,7 @@ function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<str
             }
         }
     }
-    
+
     return true;
 }
 
@@ -120,7 +120,7 @@ export abstract class CardElement {
     parse(json: any) {
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
-        this.separation = Utils.getValueOrDefault<Enums.Separation>(json["separation"], "default");        
+        this.separation = Utils.getValueOrDefault<Enums.Separation>(json["separation"], "default");
     }
 
     validate(): Array<IValidationError> {
@@ -180,11 +180,11 @@ export class TextBlock extends CardElement {
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
-            
+
             if (hostConfig.fontFamily) {
                 element.style.fontFamily = hostConfig.fontFamily;
             }
-        
+
             switch (this.horizontalAlignment) {
                 case "center":
                     element.style.textAlign = "center";
@@ -196,7 +196,7 @@ export class TextBlock extends CardElement {
                     element.style.textAlign = "left";
                     break;
             }
-            
+
             var cssStyle = "text ";
             var fontSize: number;
 
@@ -275,7 +275,7 @@ export class TextBlock extends CardElement {
             element.innerHTML = Utils.processMarkdown(formattedText);
 
             if (element.firstElementChild instanceof HTMLElement) {
-                var firstElementChild = <HTMLElement>element.firstElementChild;                
+                var firstElementChild = <HTMLElement>element.firstElementChild;
                 firstElementChild.style.marginTop = "0px";
                 firstElementChild.style.width = "100%";
 
@@ -323,7 +323,7 @@ export class TextBlock extends CardElement {
         this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], hostConfig.textBlock.color);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"] === undefined ? false : json["wrap"];
-        this.maxLines = json["maxLines"];        
+        this.maxLines = json["maxLines"];
     }
 
     getJsonTypeName(): string {
@@ -449,7 +449,7 @@ export class FactSet extends CardElement {
 
     parse(json: any) {
         super.parse(json);
-        
+
         if (json["facts"] != null) {
             var jsonFacts = json["facts"] as Array<any>;
 
@@ -525,7 +525,7 @@ export class Image extends CardElement {
                     element.style.justifyContent = "flex-start";
                     break;
             }
-            
+
             var imageElement = document.createElement("img");
             imageElement.style.width = "100%";
 
@@ -583,7 +583,7 @@ export class Image extends CardElement {
         if (selectActionJson != undefined) {
             this.selectAction = <ExternalAction>Action.createAction(selectActionJson);
             invokeSetParent(this.selectAction, this);
-        }        
+        }
     }
 
     renderSpeech(): string {
@@ -634,7 +634,7 @@ export class ImageSet extends CardElement {
 
     parse(json: any) {
         super.parse(json);
-        
+
         this.imageSize = Utils.getValueOrDefault<Enums.Size>(json["imageSize"], "medium");
 
         if (json["images"] != null) {
@@ -693,7 +693,7 @@ export abstract class Input extends CardElement implements Utils.IInput {
 
     validate(): Array<IValidationError> {
         if (!this.id) {
-            return [ { error: Enums.ValidationError.PropertyCantBeNull, message: "All inputs must have a unique Id" } ];
+            return [{ error: Enums.ValidationError.PropertyCantBeNull, message: "All inputs must have a unique Id" }];
         }
         else {
             return [];
@@ -720,7 +720,7 @@ export abstract class Input extends CardElement implements Utils.IInput {
     }
 
     getAllInputs(): Array<Input> {
-        return [ this ];
+        return [this];
     }
 
     get isInteractive(): boolean {
@@ -963,12 +963,12 @@ export class ChoiceSetInput extends Input {
         var result: Array<IValidationError> = [];
 
         if (this.choices.length == 0) {
-            result = [ { error: Enums.ValidationError.CollectionCantBeEmpty, message: "An Input.ChoiceSet must have at least one choice defined." } ];
+            result = [{ error: Enums.ValidationError.CollectionCantBeEmpty, message: "An Input.ChoiceSet must have at least one choice defined." }];
         }
 
         for (var i = 0; i < this.choices.length; i++) {
             if (!this.choices[i].title || !this.choices[i].value) {
-                result = result.concat([ { error: Enums.ValidationError.PropertyCantBeNull, message: "All choices in an Input.ChoiceSet must have their title and value properties set." } ])
+                result = result.concat([{ error: Enums.ValidationError.PropertyCantBeNull, message: "All choices in an Input.ChoiceSet must have their title and value properties set." }])
                 break;
             }
         }
@@ -1020,7 +1020,7 @@ export class ChoiceSetInput extends Input {
             if (this._toggleInputs.length == 0) {
                 return null;
             }
-            
+
             var result: string = "";
 
             for (var i = 0; i < this._toggleInputs.length; i++) {
@@ -1235,7 +1235,7 @@ export abstract class Action {
     };
 
     parse(json: any) {
-        this.title = json["title"];        
+        this.title = json["title"];
     }
 
     getAllInputs(): Array<Input> {
@@ -1269,7 +1269,7 @@ export class SubmitAction extends ExternalAction {
             this._processedData = JSON.parse(JSON.stringify(this._originalData));
         }
         else {
-            this._processedData = { };
+            this._processedData = {};
         }
 
         for (var i = 0; i < inputs.length; i++) {
@@ -1286,7 +1286,7 @@ export class SubmitAction extends ExternalAction {
     parse(json: any) {
         super.parse(json);
 
-        this.data = json["data"];        
+        this.data = json["data"];
     }
 
     get data(): Object {
@@ -1305,10 +1305,10 @@ export class OpenUrlAction extends ExternalAction {
     getJsonTypeName(): string {
         return "Action.OpenUrl";
     }
-    
+
     validate(): Array<IValidationError> {
         if (!this.url) {
-            return [ { error: Enums.ValidationError.PropertyCantBeNull, message: "An Action.OpenUrl must have its url property set." }];
+            return [{ error: Enums.ValidationError.PropertyCantBeNull, message: "An Action.OpenUrl must have its url property set." }];
         }
         else {
             return [];
@@ -1318,7 +1318,7 @@ export class OpenUrlAction extends ExternalAction {
     parse(json: any) {
         super.parse(json);
 
-        this.url = json["url"];        
+        this.url = json["url"];
     }
 }
 
@@ -1350,18 +1350,18 @@ export class HttpAction extends ExternalAction {
     getJsonTypeName(): string {
         return "Action.Http";
     }
-    
+
     validate(): Array<IValidationError> {
         var result: Array<IValidationError> = [];
 
         if (!this.url) {
-            result = [ { error: Enums.ValidationError.PropertyCantBeNull, message: "An Action.Http must have its url property set." }];
+            result = [{ error: Enums.ValidationError.PropertyCantBeNull, message: "An Action.Http must have its url property set." }];
         }
 
         if (this.headers.length > 0) {
             for (var i = 0; i < this.headers.length; i++) {
                 if (!this.headers[i].name || !this.headers[i].value) {
-                    result = result.concat([ { error: Enums.ValidationError.PropertyCantBeNull, message: "All headers of an Action.Http must have their name and value properties set."  } ]);
+                    result = result.concat([{ error: Enums.ValidationError.PropertyCantBeNull, message: "All headers of an Action.Http must have their name and value properties set." }]);
                     break;
                 }
             }
@@ -1397,7 +1397,7 @@ export class HttpAction extends ExternalAction {
 
                 this.headers.push(httpHeader);
             }
-        }        
+        }
     }
 
     get url(): string {
@@ -1439,7 +1439,7 @@ export class ShowCardAction extends Action {
     getJsonTypeName(): string {
         return "Action.ShowCard";
     }
-    
+
     validate(): Array<IValidationError> {
         return this.card.validate();
     }
@@ -1681,7 +1681,7 @@ class ActionCollection {
         var buttonStripContainer = document.createElement("div");
         buttonStripContainer.style.overflow = "hidden";
         buttonStripContainer.appendChild(buttonStrip);
-        
+
         Utils.appendChild(element, buttonStripContainer);
         Utils.appendChild(element, this._actionCardContainer);
 
@@ -1722,7 +1722,7 @@ export class ActionSet extends CardElement {
     protected internalRender(): HTMLElement {
         return this._actionCollection.render();
     }
-    
+
     constructor() {
         super();
 
@@ -1799,15 +1799,15 @@ export abstract class ContainerBase extends CardElement {
         this._element.className = "ac-container";
 
         if (this.backgroundImage) {
-            this._element.style.backgroundImage = "url(" + this.backgroundImage + ")";
+            this._element.style.backgroundImage = "url('" + this.backgroundImage + "')";
             this._element.style.backgroundRepeat = "no-repeat";
             this._element.style.backgroundSize = "cover";
         }
 
-        var backgroundColor = this.getBackgroundColor();
+            var backgroundColor = this.getBackgroundColor();
 
-        if (backgroundColor) {
-            this._element.style.backgroundColor = Utils.stringToCssColor(backgroundColor);
+            if (backgroundColor) {
+                this._element.style.backgroundColor = Utils.stringToCssColor(backgroundColor);
         }
 
         if (this.selectAction) {
@@ -1856,7 +1856,7 @@ export abstract class ContainerBase extends CardElement {
     protected _element: HTMLDivElement;
 
     protected get padding(): HostConfig.ISpacingDefinition {
-        return { left: 0, top: 0, right: 0, bottom: 0};
+        return { left: 0, top: 0, right: 0, bottom: 0 };
     }
 
     selectAction: ExternalAction;
@@ -2008,7 +2008,7 @@ export class Container extends ContainerBase {
         if (styleDefinition.borderColor) {
             renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
         }
-        
+
         return renderedContainer;
     }
 
@@ -2018,7 +2018,7 @@ export class Container extends ContainerBase {
         return styleDefinition.padding ? styleDefinition.padding : { top: 0, right: 0, bottom: 0, left: 0 };
     }
 
-    style: Enums.ContainerStyle = "normal";    
+    style: Enums.ContainerStyle = "normal";
 
     getJsonTypeName(): string {
         return "Container";
@@ -2035,7 +2035,7 @@ export class Column extends Container {
     private _computedWeight: number = 0;
 
     protected get padding(): HostConfig.ISpacingDefinition {
-        return { left: 0, top: 0, right: 0, bottom: 0};
+        return { left: 0, top: 0, right: 0, bottom: 0 };
     }
 
     protected internalRender(): HTMLElement {
@@ -2044,7 +2044,7 @@ export class Column extends Container {
         element.style.minWidth = "0";
 
         if (typeof this.size === "number") {
-            element.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.size) + "%";            
+            element.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.size) + "%";
         }
         else if (this.size === "auto") {
             element.style.flex = "0 1 auto";
@@ -2098,7 +2098,7 @@ export class Column extends Container {
                 {
                     error: Enums.ValidationError.InvalidPropertyValue,
                     message: "Invalid column size: " + parsedSize
-                });            
+                });
         }
         else {
             this.size = parsedSize;
@@ -2132,7 +2132,7 @@ export class ColumnSet extends CardElement {
             }
 
             var totalWeight: number = 0;
-            
+
             for (let i = 0; i < this._columns.length; i++) {
                 if (typeof this._columns[i].size === "number") {
                     totalWeight += <number>this._columns[i].size;
@@ -2148,7 +2148,7 @@ export class ColumnSet extends CardElement {
                     // Best way to emulate "internal" access I know of
                     this._columns[i]["_computedWeight"] = computedWeight;
                 }
-                
+
                 var renderedColumn = this._columns[i].render();
 
                 if (renderedColumn != null) {
@@ -2186,7 +2186,7 @@ export class ColumnSet extends CardElement {
 
     parse(json: any) {
         super.parse(json);
-        
+
         if (json["columns"] != null) {
             let jsonColumns = json["columns"] as Array<any>;
 
@@ -2310,7 +2310,7 @@ export class TypeRegistry<T> {
 
     unregisterType(typeName: string) {
         for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].typeName === typeName) {                
+            if (this._items[i].typeName === typeName) {
                 this._items = this._items.splice(i, 1);
 
                 return;
@@ -2338,7 +2338,7 @@ export abstract class ContainerWithActions extends ContainerBase {
             Utils.appendChild(this._element, renderedActions);
         }
 
-        return this._element.children.length > 0 ? this._element : null;        
+        return this._element.children.length > 0 ? this._element : null;
     }
 
     constructor() {
@@ -2433,7 +2433,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     private _cardTypeName: string;
-    
+
     protected getBackgroundColor(): string {
         return hostConfig.adaptiveCard.backgroundColor;
     }
@@ -2516,7 +2516,7 @@ class InlineAdaptiveCard extends AdaptiveCard {
     }
 
     getForbiddenActionTypes(): Array<any> {
-        return [ ShowCardAction ];
+        return [ShowCardAction];
     }
 }
 
@@ -2551,7 +2551,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         },
         accent: {
             normal: "#0000FF",
-            subtle: "#0000DD" 
+            subtle: "#0000DD"
         },
         attention: {
             normal: "#FF6600",

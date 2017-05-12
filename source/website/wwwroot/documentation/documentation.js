@@ -47,7 +47,7 @@ function showTopic(hashmark) {
         function (data) {
             // load content
             document.getElementById('topic').innerHTML = data;
-
+            document.getElementById("sidebar").style = "";
             // set table classes
             $("table").addClass("w3-table w3-bordered");
 
@@ -59,6 +59,13 @@ function showTopic(hashmark) {
             var navLink = document.getElementById(hashmark + '-link');
             navLink.className = navLink.className + " w3-gray";
         });
+}
+
+function showSideBar() {
+    var x = document.getElementById("sidebar");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.style = "display: block!important";
+    } 
 }
 
 $(document).ready(() => {

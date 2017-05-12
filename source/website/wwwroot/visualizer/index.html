@@ -4,13 +4,12 @@
 <head>
     <meta charset="utf-8" />
     <title>Adaptive Cards</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/content/fonts.css">
     <!--<link rel="stylesheet" href="/content/shared.css">-->
     <link rel="stylesheet" href="css/app.css" type="text/css" />
     <style>
-
         .content {
             margin-top: 40px;
         }
@@ -25,7 +24,6 @@
             margin-bottom: 0px;
             border-style: none;
         }
-
     </style>
     <!--<script src="node_modules/microsoft-adaptivecards/dist/adaptive-cards.js"></script>-->
     <script src="built/visualizer-with-renderer.js"></script>
@@ -36,16 +34,40 @@
 <body>
     <div class="uiRoot">
         <!-- Nav bar-->
-        <div class="navBar w3-bar w3-black" style="font-family: 'Segoe UI Semilight', sans-serif;">
-            <a href="/"><img src="/content/icons_transparent/white-48.png" class="logo" /></a>
-            <a href="/" class="w3-bar-item w3-button w3-mobile">Adaptive Cards</a>
-            <a href="/documentation" class="w3-bar-item w3-button w3-mobile">Documentation</a>
-            <a href="/explorer" class="w3-bar-item w3-button w3-mobile">Schema Explorer</a>
-            <a href="/visualizer" class="w3-bar-item w3-button w3-mobile">Visualizer</a>
-            <a href="/samples" class="w3-bar-item w3-button w3-mobile">Samples</a>
-        </div>
+        <div class="w3-top">
+            <div class="w3-bar w3-black">
+                <a href="javascript:void(0)" onclick="showSideBar()"><img src="/content/icons_transparent/white-48.png" class="logo" /></a>
+                <a href="/" class="w3-bar-item w3-button ">Adaptive Cards</a>
+                <a href="/documentation" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Documentation</a>
+                <a href="/explorer" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Schema Explorer</a>
+                <a href="/visualizer" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Visualizer</a>
+                <a href="/samples" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Samples</a>
+                <a href="/connect" class="w3-bar-item w3-button w3-mobile w3-hide-small w3-hide-medium">Connect</a>
+                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-hide-large w3-right " onclick="showNav()">&#9776;</a>
 
-        <div class="uiHeader">
+            </div>
+        </div>
+        <!-- nav bar small-->
+        <div id="navBarSmall" class="w3-bar-block w3-black w3-hide w3-hide-large ">
+            <a href="/" class="w3-bar-item w3-button ">Adaptive Cards</a>
+            <a href="/documentation" class="w3-bar-item w3-button ">Documentation</a>
+            <a href="/explorer" class="w3-bar-item w3-button ">Schema Explorer</a>
+            <a href="/visualizer" class="w3-bar-item w3-button ">Visualizer</a>
+            <a href="/samples" class="w3-bar-item w3-button ">Samples</a>
+            <a href="/connect" class="w3-bar-item w3-button ">Connect</a>
+        </div>
+        <script>
+            function showNav() {
+                var x = document.getElementById("navBarSmall");
+                if (x.className.indexOf("w3-show") == -1) {
+                    x.className += " w3-show";
+                } else {
+                    x.className = x.className.replace(" w3-show", "");
+                }
+            }
+        </script>
+
+        <div class="uiHeader w3-container" style="margin-top:40px">
             <div id="tabStrip" style="flex: 1 1 50%; display: flex; flex-wrap: wrap; margin-right: 20px;">
                 <div id="editCard" class="button" style="margin-right: 10px;">Card editor</div>
                 <div style="display: flex;">
@@ -62,7 +84,7 @@
                 <select id="hostContainerPicker" class="select"></select>
             </div>
         </div>
-        <div class="cardEditor" >
+        <div class="cardEditor">
             <div class="leftPane">
                 <div id="editor"></div>
             </div>

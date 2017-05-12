@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\connect\index.html">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\explorer\markdown\Action.Http.md" />
     <Content Include="wwwroot\explorer\markdown\Action.OpenUrl.md" />
     <Content Include="wwwroot\explorer\markdown\Action.ShowCard.md" />
@@ -17,9 +20,9 @@
   
   
   <ItemGroup>
-    <PackageReference Include="AdaptiveCards" Version="1.0.19" />
     <PackageReference Include="ColorCode.Netstandard" Version="1.0.4.3" />
     <PackageReference Include="MarkedNet" Version="1.0.6" />
+    <PackageReference Include="Microsoft.AdaptiveCards.Html" Version="0.5.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
