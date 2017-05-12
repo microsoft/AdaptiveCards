@@ -196,7 +196,7 @@ body {{
             'url': 'http://adaptivecards-staging.azurewebsites.net/api/CardBot?cardName={cardName.Replace(" ", "_")}',
             'size': {{
                 'width': 220,
-                'height': 220
+                'height': 300
             }},
             'static': false,
         }}
