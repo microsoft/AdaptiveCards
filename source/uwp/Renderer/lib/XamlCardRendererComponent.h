@@ -23,7 +23,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP SetHostOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostOptions* hostOptions);
 
         IFACEMETHODIMP add_Action(
-            _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionEventArgs*>* handler,
+            _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>* handler,
             _Out_ EventRegistrationToken* token);
 
         IFACEMETHODIMP remove_Action(

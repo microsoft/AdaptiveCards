@@ -48,4 +48,4 @@ HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::InputChoice>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoice*>* projectedParentContainer) noexcept;
 
-typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionEventArgs*>> ActionEventSource;
+typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;
