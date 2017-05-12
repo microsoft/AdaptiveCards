@@ -69,5 +69,10 @@ namespace AdaptiveCards.Rendering
         {
             textBlock.FontWeight = FontWeight.FromOpenTypeWeight(weight);
         }
+
+        public static void  SetPlaceholder (this TextBox textBlock, string placeholder)
+		{
+			textBlock.Text = placeholder;
+		}
     }
 }
