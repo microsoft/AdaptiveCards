@@ -214,6 +214,8 @@ function toggleContent(id) {
 
 function showElement(id) {
     var elements = document.getElementsByClassName("element");
+    document.getElementById("sidebar").style = "";
+
     // hide all elements
     for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
@@ -228,6 +230,13 @@ function showElement(id) {
     }
     var elementLink = document.getElementById(id + 'Link');
     elementLink.className = elementLink.className + " w3-gray";
+}
+
+function showSideBar() {
+    var x = document.getElementById("sidebar");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.style = "display: block!important";
+    }
 }
 
 window.addEventListener("hashchange", function () {
