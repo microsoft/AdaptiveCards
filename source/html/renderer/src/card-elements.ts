@@ -499,15 +499,20 @@ export class Image extends CardElement {
 
         if (!Utils.isNullOrEmpty(this.url)) {
             element = document.createElement("div");
+            element.classList.add("ac-image");
             element.style.display = "flex";
             element.style.alignItems = "flex-start";
+
+            if (this.selectAction != null) {
+                element.classList.add("ac-selectable");
+            }
+
             element.onclick = (e) => {
-                if (this.selectAction != null) {
-                    raiseExecuteActionEvent(this.selectAction);
+                if (this.selectAction) {
+                    this.selectAction.execute();
                     e.cancelBubble = true;
                 }
             }
-            element.classList.add("ac-image");
 
             switch (this.horizontalAlignment) {
                 case "center":
@@ -519,10 +524,6 @@ export class Image extends CardElement {
                 default:
                     element.style.justifyContent = "flex-start";
                     break;
-            }
-
-            if (this.selectAction != null) {
-                element.classList.add("ac-selectable");
             }
 
             var imageElement = document.createElement("img");
@@ -641,9 +642,8 @@ export class ImageSet extends CardElement {
 
             for (let i = 0; i < jsonImages.length; i++) {
                 var image = new Image();
-
+                image.parse(jsonImages[i]);
                 image.size = this.imageSize;
-                image.url = jsonImages[i]["url"];
 
                 this.addImage(image);
             }
@@ -1224,6 +1224,7 @@ export abstract class Action {
     }
 
     abstract getJsonTypeName(): string;
+    abstract execute();
 
     validate(): Array<IValidationError> {
         return [];
@@ -1249,6 +1250,9 @@ export abstract class Action {
 }
 
 export abstract class ExternalAction extends Action {
+    execute() {
+        raiseExecuteActionEvent(this);
+    }
 }
 
 export class SubmitAction extends ExternalAction {
@@ -1428,6 +1432,10 @@ export class ShowCardAction extends Action {
 
     title: string;
 
+    execute() {
+        raiseShowPopupCardEvent(this);
+    }
+
     getJsonTypeName(): string {
         return "Action.ShowCard";
     }
@@ -1507,13 +1515,11 @@ class ActionCollection {
 
             this.hideActionCardPane();
 
-            raiseExecuteActionEvent(<ExternalAction>actionButton.action);
+            actionButton.action.execute();
         }
         else {
             if (hostConfig.actions.showCard.actionMode == "popup") {
-                var actionShowCard = <ShowCardAction>actionButton.action;
-
-                raiseShowPopupCardEvent(actionShowCard);
+                actionButton.action.execute();
             }
             else if (actionButton.action === this._expandedAction) {
                 for (var i = 0; i < this._actionButtons.length; i++) {
@@ -1812,9 +1818,10 @@ export abstract class ContainerBase extends CardElement {
         this._element.style.paddingRight = this.padding.right + "px";
         this._element.style.paddingBottom = this.padding.bottom + "px";
         this._element.style.paddingLeft = this.padding.left + "px";
+        
         this._element.onclick = (e) => {
             if (this.selectAction != null) {
-                raiseExecuteActionEvent(this.selectAction);
+                this.selectAction.execute();
                 e.cancelBubble = true;
             }
         }
