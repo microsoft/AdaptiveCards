@@ -1,4 +1,4 @@
-﻿import * as Adaptive from "adaptive-cards";
+﻿import * as Adaptive from "microsoft-adaptivecards";
 import * as Constants from "./constants";
 
 import { HostContainer } from "./containers/host-container";
@@ -14,6 +14,7 @@ import { SlackContainer } from "./containers/slack";
 import { KikContainer } from "./containers/kik";
 import { FacebookContainer } from "./containers/facebook";
 import { BingContainer } from "./containers/bing";
+import { TimelineContainer } from "./containers/timeline";
 
 import * as ace from "brace";
 import "brace/mode/json";
@@ -228,6 +229,11 @@ function setupContainerPicker() {
         new HostContainerOption(
             "Windows Toast Notification",
             new ToastContainer(362, "css/toast.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Windows Timeline",
+            new TimelineContainer(320, 180, "css/timeline.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(

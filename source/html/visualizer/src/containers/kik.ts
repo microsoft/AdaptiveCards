@@ -1,5 +1,5 @@
 import { HostContainer } from "./host-container";
-import * as Adaptive from "adaptive-cards";
+import * as Adaptive from "microsoft-adaptivecards";
 import * as Utils from "../utils";
 
 export class KikContainer extends HostContainer {

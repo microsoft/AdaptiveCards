@@ -14,7 +14,7 @@ They are built independently, so to make local testing easier, you can use `npm 
 ## To build the Visualizer tool
 
 1. `cd ../visualizer`
-1. `npm link adaptive-cards` (creates the symlink to the renderer)
+1. `npm link microsoft-adaptivecards` (creates the symlink to the renderer)
 1. `npm install`
 1. `npm run build`
 

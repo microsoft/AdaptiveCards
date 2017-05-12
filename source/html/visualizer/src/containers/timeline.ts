@@ -2,112 +2,118 @@ import { HostContainer } from "./host-container";
 import * as Adaptive from "microsoft-adaptivecards";
 import * as Utils from "../utils";
 
-export class SMSContainer extends HostContainer {
-    private _width: number;
+export class TimelineContainer extends HostContainer {
+    // static backgroundColor: string = "#0078D7";
 
-    constructor(width: number, styleSheet: string) {
+    private _width: number;
+    private _height: number;
+
+    constructor(width: number, height: number, styleSheet: string) {
         super(styleSheet);
 
         this._width = width;
+        this._height = height;
         this.supportsActionBar = false;
     }
 
     protected renderContainer(renderedCard: HTMLElement): HTMLElement {
-        var outerElement = document.createElement("div");
-        outerElement.className = "smsOuterContainer";
-        outerElement.style.width = this._width + "px";
-        outerElement.appendChild(renderedCard);
-        return outerElement;
+        var element = document.createElement("div");
+        element.style.width = this._width + "px";
+        element.style.height = this._height + "px";
+        // element.style.backgroundColor = TimelineContainer.backgroundColor;
+        element.style.overflow = "hidden";
+
+        renderedCard.style.height = "100%";
+
+        element.appendChild(renderedCard);
+
+        return element;
     }
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
             supportsInteractivity: false,
             strongSeparation: {
-                spacing: 20,
+                spacing: 10,
                 lineThickness: 1,
-                lineColor: "#FF707070"
+                lineColor: "#22FFFFFF"
             },
-            fontFamily: "Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;",
+            fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
-                normal: 14,
-                medium: 16,
-                large: 19,
-                extraLarge: 22
+                normal: 13,
+                medium: 20,
+                large: 24,
+                extraLarge: 26
             },
             fontWeights: {
                 lighter: 200,
                 normal: 400,
                 bolder: 600
             },
-            colors:{
-//                default: {
-//                    normal: "#FF000000",
-//                    subtle: "#b2000000"
-//                },
-                accent: {
-                    normal: "#FF0000FF",
-                    subtle: "#b20000FF"
-                },
+            colors: {
                 dark: {
-                    normal: "#FF101010",
-                    subtle: "#b2101010"
+                    "normal": "#333333",
+                    "subtle": "#EE333333"
                 },
                 light: {
-                    normal: "#FFFFFFFF",
-                    subtle: "#b2FFFFFF"
+                    "normal": "#FFFFFF",
+                    "subtle": "#9C9E9F"
                 },
-                good: {
-                    normal: "#FF008000",
-                    subtle: "#b2008000"
-                },
-                warning: {
-                    normal: "#FFFFD700",
-                    subtle: "#b2FFD700"
+                accent: {
+                    "normal": "#2E89FC",
+                    "subtle": "#882E89FC"
                 },
                 attention: {
-                    normal: "#FF8B0000",
-                    subtle: "#b28B0000"
+                    "normal": "#FF0000",
+                    "subtle": "#DDFF0000"
+                },
+                good: {
+                    "normal": "#00FF00",
+                    "subtle": "#DD00FF00"
+                },
+                warning: {
+                    "normal": "#FFD800",
+                    "subtle": "#DDFFD800"
                 }
             },
             imageSizes: {
-                small: 60,
-                medium: 120,
-                large: 180
+                small: 40,
+                medium: 80,
+                large: 120
             },
             actions: {
                 maxActions: 5,
                 separation: {
-                    spacing: 8
+                    spacing: 0
                 },
-                buttonSpacing: 10,
+                buttonSpacing: 20,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
                     backgroundColor: "#08000000",
                     padding: {
-                        top: 8,
-                        right: 8,
-                        bottom: 8,
-                        left: 8
+                        top: 16,
+                        right: 16,
+                        bottom: 16,
+                        left: 16
                     }
                 },
                 actionsOrientation: "horizontal",
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#FFFFFF",
+                backgroundColor: "#535454",
                 padding: {
-                    left: 8,
-                    top: 8,
-                    right: 8,
-                    bottom: 8
+                    left: 16,
+                    top: 22,
+                    right: 16,
+                    bottom: 24
                 }
             },
             container: {
                 separation: {
-                    spacing: 8
+                    spacing: 10
                 },
                 normal: {
                 },
@@ -129,71 +135,71 @@ export class SMSContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: "dark",
+                color: "light",
                 separations: {
                     small: {
-                        spacing: 8,
+                        spacing: 0,
                     },
                     normal: {
-                        spacing: 8
+                        spacing: 0
                     },
                     medium: {
-                        spacing: 8
+                        spacing: 0
                     },
                     large: {
-                        spacing: 8
+                        spacing: 0
                     },
                     extraLarge: {
-                        spacing: 8
+                        spacing: 0
                     }
                 }
             },
             image: {
                 size: "medium",
                 separation: {
-                    spacing: 8
+                    spacing: 10
                 }
             },
             imageSet: {
                 imageSize: "medium",
                 separation: {
-                    spacing: 8
+                    spacing: 10
                 }
             },
             factSet: {
                 separation: {
-                    spacing: 8
+                    spacing: 10
                 },
                 title: {
-                    color: "dark",
+                    color: "light",
                     size: "normal",
-                    isSubtle: false,
+                    isSubtle: true,
                     weight: "bolder",
-                    wrap: true,
-                    maxWidth: 150
+                    wrap: false,
+                    maxWidth: 150,
                 },
                 value: {
-                    color: "dark",
+                    color: "light",
                     size: "normal",
-                    isSubtle: false,
+                    isSubtle: true,
                     weight: "normal",
-                    wrap: true
+                    wrap: true,
                 },
                 spacing: 10
             },
             input: {
                 separation: {
-                    spacing: 8
+                    spacing: 10
                 }
             },
             columnSet: {
                 separation: {
-                    spacing: 8
+                    spacing: 10
                 }
             },
             column: {
                 separation: {
-                    spacing: 8
+                    spacing: 10
                 }
             }
         };
