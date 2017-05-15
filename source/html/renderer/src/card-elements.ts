@@ -1846,7 +1846,7 @@ export abstract class ContainerBase extends CardElement {
             }
         }
 
-        return renderedElementCount > 0 ? this._element : null;
+        return this._element;
     }
 
     protected getBackgroundColor(): string {
@@ -2041,16 +2041,18 @@ export class Column extends Container {
     protected internalRender(): HTMLElement {
         var element = super.internalRender();
 
-        element.style.minWidth = "0";
+        if (element) {
+            element.style.minWidth = "0";
 
-        if (typeof this.size === "number") {
-            element.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.size) + "%";
-        }
-        else if (this.size === "auto") {
-            element.style.flex = "0 1 auto";
-        }
-        else {
-            element.style.flex = "1 1 auto";
+            if (typeof this.size === "number") {
+                element.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.size) + "%";
+            }
+            else if (this.size === "auto") {
+                element.style.flex = "0 1 auto";
+            }
+            else {
+                element.style.flex = "1 1 auto";
+            }
         }
 
         return element;
