@@ -2,21 +2,16 @@ package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
-import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
-import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.Container;
-import com.microsoft.adaptivecards.objectmodel.TextBlock;
-
-import static android.R.attr.type;
+import com.microsoft.adaptivecards.objectmodel.HostOptions;
 
 /**
  * Created by bekao on 2/11/2017.
  */
 
-public class ContainerRenderer implements BaseCardElementRenderer
+public class ContainerRenderer extends BaseCardElementRenderer
 {
     private ContainerRenderer()
     {
@@ -32,36 +27,8 @@ public class ContainerRenderer implements BaseCardElementRenderer
         return s_instance;
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElementVector baseCardElementList)
-    {
-        long size;
-        if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
-        {
-            return viewGroup;
-        }
-
-        LinearLayout layout = new LinearLayout(context);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        layout.setOrientation(LinearLayout.VERTICAL);
-        if (viewGroup != null)
-        {
-            viewGroup.addView(layout);
-        }
-
-        for (int i = 0; i < size; i++)
-        {
-            BaseCardElement cardElement = baseCardElementList.get(i);
-            if (cardElement.GetElementType() == CardElementType.TextBlock)
-            {
-                TextBlockRenderer.getInstance().render(context, layout, cardElement);
-            }
-        }
-
-        return viewGroup == null ? layout : viewGroup;
-    }
-
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement)
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions)
     {
         Container container = null;
         if (baseCardElement instanceof Container)
@@ -73,7 +40,8 @@ public class ContainerRenderer implements BaseCardElementRenderer
             return viewGroup;
         }
 
-        return render(context, viewGroup, container.GetItems());
+        //setSeparationOptions(context, viewGroup, container.GetSeparationStyle(), hostOptions.getContainer().getSeparation(), hostOptions.getStrongSeparation(), true /* horizontal line */);
+        return CardRendererRegistration.getInstance().render(context, viewGroup, container.GetItems(), hostOptions);
     }
 
     private static ContainerRenderer s_instance = null;

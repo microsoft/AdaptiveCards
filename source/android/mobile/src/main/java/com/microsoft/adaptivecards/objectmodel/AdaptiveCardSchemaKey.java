@@ -36,6 +36,22 @@ public final class AdaptiveCardSchemaKey {
   public final static AdaptiveCardSchemaKey Title = new AdaptiveCardSchemaKey("Title");
   public final static AdaptiveCardSchemaKey Value = new AdaptiveCardSchemaKey("Value");
   public final static AdaptiveCardSchemaKey Images = new AdaptiveCardSchemaKey("Images");
+  public final static AdaptiveCardSchemaKey Placeholder = new AdaptiveCardSchemaKey("Placeholder");
+  public final static AdaptiveCardSchemaKey IsMultiline = new AdaptiveCardSchemaKey("IsMultiline");
+  public final static AdaptiveCardSchemaKey MaxLength = new AdaptiveCardSchemaKey("MaxLength");
+  public final static AdaptiveCardSchemaKey ValueOff = new AdaptiveCardSchemaKey("ValueOff");
+  public final static AdaptiveCardSchemaKey ValueOn = new AdaptiveCardSchemaKey("ValueOn");
+  public final static AdaptiveCardSchemaKey Max = new AdaptiveCardSchemaKey("Max");
+  public final static AdaptiveCardSchemaKey Min = new AdaptiveCardSchemaKey("Min");
+  public final static AdaptiveCardSchemaKey Choices = new AdaptiveCardSchemaKey("Choices");
+  public final static AdaptiveCardSchemaKey IsSelected = new AdaptiveCardSchemaKey("IsSelected");
+  public final static AdaptiveCardSchemaKey Style = new AdaptiveCardSchemaKey("Style");
+  public final static AdaptiveCardSchemaKey IsMultiSelect = new AdaptiveCardSchemaKey("IsMultiSelect");
+  public final static AdaptiveCardSchemaKey IsRequired = new AdaptiveCardSchemaKey("IsRequired");
+  public final static AdaptiveCardSchemaKey BackgroundImageUrl = new AdaptiveCardSchemaKey("BackgroundImageUrl");
+  public final static AdaptiveCardSchemaKey Actions = new AdaptiveCardSchemaKey("Actions");
+  public final static AdaptiveCardSchemaKey Method = new AdaptiveCardSchemaKey("Method");
+  public final static AdaptiveCardSchemaKey Card = new AdaptiveCardSchemaKey("Card");
 
   public final int swigValue() {
     return swigValue;
@@ -71,7 +87,7 @@ public final class AdaptiveCardSchemaKey {
     swigNext = this.swigValue+1;
   }
 
-  private static AdaptiveCardSchemaKey[] swigValues = { Type, Body, Version, MinVersion, FallbackText, BaseCardElement, Separation, Speak, Url, ImageStyle, ImageSize, AltText, HorizontalAlignment, Text, TextSize, TextWeight, TextColor, IsSubtle, Wrap, MaxLines, Items, Columns, Size, Facts, Title, Value, Images };
+  private static AdaptiveCardSchemaKey[] swigValues = { Type, Body, Version, MinVersion, FallbackText, BaseCardElement, Separation, Speak, Url, ImageStyle, ImageSize, AltText, HorizontalAlignment, Text, TextSize, TextWeight, TextColor, IsSubtle, Wrap, MaxLines, Items, Columns, Size, Facts, Title, Value, Images, Placeholder, IsMultiline, MaxLength, ValueOff, ValueOn, Max, Min, Choices, IsSelected, Style, IsMultiSelect, IsRequired, BackgroundImageUrl, Actions, Method, Card };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

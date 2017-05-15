@@ -21,8 +21,9 @@ public:
     typedef ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*> HandlerType;
 
     RenderAsyncBase(
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card)
-        : m_card(card)
+        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card, AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer)
+        : m_card(card), 
+          m_renderer(renderer)
     {
         // Get the dispatcher to we can run an async operation to build the xaml tree
         ComPtr<ABI::Windows::UI::Core::ICoreWindowStatic> coreWindowStatic;
@@ -56,6 +57,7 @@ protected:
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Core::ICoreDispatcher> m_dispatcher;
     Microsoft::WRL::ComPtr<AdaptiveCards::XamlCardRenderer::XamlBuilder> m_builder;
     Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard> m_card;
+    Microsoft::WRL::ComPtr<AdaptiveCards::XamlCardRenderer::XamlCardRenderer> m_renderer;
 
     HRESULT OnStart(void) override
     {
@@ -64,7 +66,7 @@ protected:
             MakeAgileDispatcherCallback([this]() -> HRESULT
         {
             m_builder->AddListener(this);
-            m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement);
+            m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get());
             return S_OK;
         }).Get(),
             &dispatcherAsyncAction);
@@ -100,8 +102,9 @@ class RenderCardAsXamlAsyncOperation :
 {
 public:
     RenderCardAsXamlAsyncOperation(
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card) 
-        : RenderAsyncBase<ABI::Windows::UI::Xaml::UIElement>(card)
+        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card,
+        AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer)
+        : RenderAsyncBase<ABI::Windows::UI::Xaml::UIElement>(card, renderer)
     {
         AsyncBase::Start();
     }

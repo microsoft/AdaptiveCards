@@ -4,6 +4,7 @@
 #include "ImageLoadTracker.h"
 #include "IXamlBuilderListener.h"
 #include "IImageLoadTrackerListener.h"
+#include "XamlCardRendererComponent.h"
 #include <windows.storage.h>
 
 namespace AdaptiveCards { namespace XamlCardRenderer
@@ -20,7 +21,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IImageLoadTrackerListener
         STDMETHODIMP AllImagesLoaded();
 
-        void BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard, _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot, boolean isOuterCard = true);
+        void BuildXamlTreeFromAdaptiveCard(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard, 
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot, 
+            AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
+            boolean isOuterCard = true);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
         HRESULT RemoveListener(_In_ IXamlBuilderListener* listener) noexcept;
         HRESULT SetFixedDimensions(_In_ UINT width, _In_ UINT height) noexcept;
@@ -93,6 +98,7 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _In_ std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,
+            AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
         void GetSeparationOptionsForElement(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,

@@ -25,6 +25,14 @@ public class AdaptiveCardObjectModel {
     return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.CardElementTypeFromString(elementType));
   }
 
+  public static String ActionTypeToString(ActionType elementType) {
+    return AdaptiveCardObjectModelJNI.ActionTypeToString(elementType.swigValue());
+  }
+
+  public static ActionType ActionTypeFromString(String elementType) {
+    return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.ActionTypeFromString(elementType));
+  }
+
   public static String HorizontalAlignmentToString(HorizontalAlignment type) {
     return AdaptiveCardObjectModelJNI.HorizontalAlignmentToString(type.swigValue());
   }
@@ -79,6 +87,38 @@ public class AdaptiveCardObjectModel {
 
   public static ImageStyle ImageStyleFromString(String style) {
     return ImageStyle.swigToEnum(AdaptiveCardObjectModelJNI.ImageStyleFromString(style));
+  }
+
+  public static String ActionsOrientationToString(ActionsOrientation style) {
+    return AdaptiveCardObjectModelJNI.ActionsOrientationToString(style.swigValue());
+  }
+
+  public static ActionsOrientation ActionsOrientationFromString(String style) {
+    return ActionsOrientation.swigToEnum(AdaptiveCardObjectModelJNI.ActionsOrientationFromString(style));
+  }
+
+  public static String ActionModeToString(ActionMode style) {
+    return AdaptiveCardObjectModelJNI.ActionModeToString(style.swigValue());
+  }
+
+  public static ActionMode ActionModeFromString(String style) {
+    return ActionMode.swigToEnum(AdaptiveCardObjectModelJNI.ActionModeFromString(style));
+  }
+
+  public static String ChoiceSetStyleToString(ChoiceSetStyle type) {
+    return AdaptiveCardObjectModelJNI.ChoiceSetStyleToString(type.swigValue());
+  }
+
+  public static ChoiceSetStyle ChoiceSetStyleFromString(String type) {
+    return ChoiceSetStyle.swigToEnum(AdaptiveCardObjectModelJNI.ChoiceSetStyleFromString(type));
+  }
+
+  public static String TextInputStyleToString(TextInputStyle style) {
+    return AdaptiveCardObjectModelJNI.TextInputStyleToString(style.swigValue());
+  }
+
+  public static TextInputStyle TextInputStyleFromString(String style) {
+    return TextInputStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextInputStyleFromString(style));
   }
 
 }
