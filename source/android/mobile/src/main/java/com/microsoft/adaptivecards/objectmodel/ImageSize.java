@@ -9,7 +9,8 @@
 package com.microsoft.adaptivecards.objectmodel;
 
 public final class ImageSize {
-  public final static ImageSize Auto = new ImageSize("Auto", AdaptiveCardObjectModelJNI.ImageSize_Auto_get());
+  public final static ImageSize Default = new ImageSize("Default", AdaptiveCardObjectModelJNI.ImageSize_Default_get());
+  public final static ImageSize Auto = new ImageSize("Auto");
   public final static ImageSize Stretch = new ImageSize("Stretch");
   public final static ImageSize Small = new ImageSize("Small");
   public final static ImageSize Medium = new ImageSize("Medium");
@@ -49,7 +50,7 @@ public final class ImageSize {
     swigNext = this.swigValue+1;
   }
 
-  private static ImageSize[] swigValues = { Auto, Stretch, Small, Medium, Large };
+  private static ImageSize[] swigValues = { Default, Auto, Stretch, Small, Medium, Large };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

@@ -26,6 +26,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/ParseUtil.cpp
              ../../shared/cpp/ObjectModel/Enums.cpp
              ../../shared/cpp/ObjectModel/BaseCardElement.cpp
+             ../../shared/cpp/ObjectModel/BaseActionElement.cpp
              ../../shared/cpp/ObjectModel/Container.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCard.cpp
              ../../shared/cpp/ObjectModel/TextBlock.cpp
@@ -42,6 +43,10 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/InputText.cpp
              ../../shared/cpp/ObjectModel/InputTime.cpp
              ../../shared/cpp/ObjectModel/InputToggle.cpp
+             ../../shared/cpp/ObjectModel/HttpAction.cpp
+             ../../shared/cpp/ObjectModel/OpenUrlAction.cpp
+             ../../shared/cpp/ObjectModel/ShowCardAction.cpp
+             ../../shared/cpp/ObjectModel/SubmitAction.cpp
              src/main/cpp/objectmodel_wrap.cpp
              src/main/cpp/native-lib.cpp
              )

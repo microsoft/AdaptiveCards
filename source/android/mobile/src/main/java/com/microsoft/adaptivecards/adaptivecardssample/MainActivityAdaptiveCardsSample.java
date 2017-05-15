@@ -1,12 +1,18 @@
 package com.microsoft.adaptivecards.adaptivecardssample;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,11 +26,18 @@ import android.widget.Toast;
 import com.microsoft.adaptivecards.objectmodel.*;
 import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
 
@@ -40,60 +53,136 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        populateSpinnerJSONFileList();
-    }
+        //populateSpinnerJSONFileList();
+        setupTabs();
 
-    protected void populateSpinnerJSONFileList()
-    {
-        File location = getExternalFilesDir(null);
-        List<String> list = new ArrayList<String>();
-        m_jsonFileList.clear();
-        for (File file : location.listFiles())
-        {
-            if (file.getName().toLowerCase().endsWith(".json"))
-            {
-                m_jsonFileList.add(file);
-                list.add(file.getName());
-            }
-        }
-
-        ArrayAdapter<String> adapter  = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        Spinner spinnerJSONFileList = (Spinner) findViewById(R.id.spinnerJsonFileList);
-        spinnerJSONFileList.setAdapter(adapter);
-        spinnerJSONFileList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        // Add text change handler
+        final EditText jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
+        jsonEditText.addTextChangedListener(new TextWatcher()
         {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            public void afterTextChanged(Editable editable)
             {
-                ((TextView) view).setTextColor(Color.BLACK);
-
-                // Showing selected spinner item
-                Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
-
-                renderAdaptiveCard(m_jsonFileList.get(position));
+                m_timer.cancel();
+                m_timer = new Timer();
+                m_timer.schedule(new TimerTask()
+                {
+                    public void run()
+                    {
+                        jsonEditText.post(new Runnable()
+                        {
+                            public void run()
+                            {
+                                renderAdaptiveCard(jsonEditText.getText().toString(), false);
+                            }
+                        });
+                    }
+                }, DELAY);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            private Timer m_timer=new Timer();
+            private final long DELAY = 500; // milliseconds
         });
     }
 
-    private void renderAdaptiveCard(File jsonFile)
+    protected void setupTabs()
+    {
+        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
+        tabHost.setup();
+        tabHost.addTab(tabHost.newTabSpec("tab_visual").setIndicator("Visual").setContent(R.id.Visual));
+        tabHost.addTab(tabHost.newTabSpec("tab_json").setIndicator("JSON").setContent(R.id.JSON));
+        tabHost.setCurrentTab(0);
+    }
+
+    private void renderAdaptiveCard(String jsonText, boolean showErrorToast)
     {
         try
         {
-            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromFile(jsonFile.getAbsolutePath());
-            LinearLayout layout = (LinearLayout) findViewById(R.id.layoutAdaptiveCard);
+            AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
+            LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            AdaptiveCardRenderer.getInstance().render(getApplicationContext(), layout, adaptiveCard);
+            layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), adaptiveCard, new HostOptions()));
         }
-        catch (Exception ex)
+        catch (java.io.IOException ex)
         {
+            if (showErrorToast)
+            {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    private static final int FILE_SELECT_CODE = 0;
+    public void onClickFileBrowser(View view)
+    {
+        Intent fileBrowserIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        fileBrowserIntent.setType("*/*");
+        fileBrowserIntent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(
+                    Intent.createChooser(fileBrowserIntent, "Select a JSON File to Open"),
+                    FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri uri = data.getData();
+                    if (uri == null)
+                    {
+                        Toast.makeText(this, "File was not selected.", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    // TODO: Move this outside of UI thread
+                    InputStream inputStream = null;
+                    try
+                    {
+                        inputStream = getContentResolver().openInputStream(uri);
+                        BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+                        StringBuilder total = new StringBuilder();
+                        String line;
+
+                        while ((line = r.readLine()) != null)
+                        {
+                            total.append(line + "\n");
+                        }
+
+                        EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
+                        String fullString = total.toString();
+                        jsonText.setText(fullString);
+                        renderAdaptiveCard(fullString, true);
+
+                        EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
+                        List path = uri.getPathSegments();
+                        fileEditText.setText((String)path.get(path.size()-1));
+                    }
+                    catch (FileNotFoundException e)
+                    {
+                        Toast.makeText(this, "File " + uri.getPath() + " was not found.", Toast.LENGTH_SHORT).show();
+                    }
+                    catch (IOException ioExcep)
+                    {
+
+                    }
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -103,7 +192,7 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -116,7 +205,7 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     /**
      * A native method that is implemented by the 'native-lib' native library,
