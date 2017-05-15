@@ -50,6 +50,9 @@
     <ClCompile Include="lib\AdaptiveHttpAction.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardAction.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitAction.cpp" />
+    <ClCompile Include="lib\AdaptiveHttpActionEventArgs.cpp" />
+    <ClCompile Include="lib\AdaptiveOpenUrlActionEventArgs.cpp" />
+    <ClCompile Include="lib\AdaptiveSubmitActionEventArgs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -109,6 +112,9 @@
     <ClInclude Include="lib\AdaptiveHttpAction.h" />
     <ClInclude Include="lib\AdaptiveShowCardAction.h" />
     <ClInclude Include="lib\AdaptiveSubmitAction.h" />
+    <ClInclude Include="lib\AdaptiveHttpActionEventArgs.h" />
+    <ClInclude Include="lib\AdaptiveOpenUrlActionEventArgs.h" />
+    <ClInclude Include="lib\AdaptiveSubmitActionEventArgs.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

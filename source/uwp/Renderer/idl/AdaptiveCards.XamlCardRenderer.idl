@@ -51,6 +51,9 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTextInputOptions;
         runtimeclass AdaptiveChoiceSetInputOptions;
         runtimeclass AdaptiveHostOptions;
+        runtimeclass AdaptiveHttpActionEventArgs;
+        runtimeclass AdaptiveOpenUrlActionEventArgs;
+        runtimeclass AdaptiveSubmitActionEventArgs;
 
         interface IAdaptiveCardElement;
         interface IAdaptiveActionElement;
@@ -95,6 +98,7 @@ namespace AdaptiveCards
         interface IAdaptiveTextInputOptions;
         interface IAdaptiveChoiceSetInputOptions;
         interface IAdaptiveHostOptions;
+        interface IAdaptiveActionEventArgs;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -740,6 +744,9 @@ namespace AdaptiveCards
 
             HRESULT RenderAdaptiveJsonAsXaml([in] HSTRING adaptiveJson, [out, retval] Windows.UI.Xaml.UIElement** result);
             HRESULT RenderAdaptiveJsonAsXamlAsync([in] HSTRING adaptiveJson, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
+
+            [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<XamlCardRenderer*, IAdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
+            [eventremove] HRESULT Action([in] EventRegistrationToken token);
         };
 
         [
@@ -749,6 +756,72 @@ namespace AdaptiveCards
         runtimeclass XamlCardRenderer
         {
             [default] interface IXamlCardRenderer;
+        };
+
+        [
+            uuid(6853cff8-60ee-4270-9cd2-23b25cd8703f),
+            version(NTDDI_WIN10_RS1),
+        ]
+        interface IAdaptiveActionEventArgs : IInspectable
+        {
+            [propget] HRESULT ActionType([out, retval] ActionType* value);
+        }
+
+        [
+            uuid(c06e6789-46a2-40f2-af5b-e06945cd2688),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveHttpActionEventArgs),
+        ]
+        interface IAdaptiveHttpActionEventArgs : IInspectable
+        {
+        }
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+        ]
+        runtimeclass AdaptiveHttpActionEventArgs
+        {
+            [default] interface IAdaptiveHttpActionEventArgs;
+            interface IAdaptiveActionEventArgs;
+        };
+
+        [
+            uuid(2084de4a-91a2-42d6-b36a-6163a789dd11),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveOpenUrlActionEventArgs),
+        ]
+        interface IAdaptiveOpenUrlActionEventArgs : IInspectable
+        {
+        }
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+        ]
+        runtimeclass AdaptiveOpenUrlActionEventArgs
+        {
+            [default] interface IAdaptiveOpenUrlActionEventArgs;
+            interface IAdaptiveActionEventArgs;
+        };
+
+        [
+            uuid(9f133572-c20c-41b7-baf8-dc954012e844),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveSubmitActionEventArgs),
+        ]
+        interface IAdaptiveSubmitActionEventArgs : IInspectable
+        {
+        }
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+        ]
+        runtimeclass AdaptiveSubmitActionEventArgs
+        {
+            [default] interface IAdaptiveSubmitActionEventArgs;
+            interface IAdaptiveActionEventArgs;
         };
 
         [
