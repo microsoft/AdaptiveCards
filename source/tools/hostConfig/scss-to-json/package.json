@@ -1,0 +1,22 @@
+{
+  "name": "microsoft-adaptivecards-scss-to-json",
+  "version": "1.0.0",
+  "description": "Converts SCSS to CSS to JSON",
+  "main": "index.js",
+  "bin": {
+    "ac-scss2json": "index.js"
+  },
+  "scripts": {
+    "testcli": "ac-scss2json ./test.scss",
+    "testcli-exec": "ac-scss2json ./test.scss -exec",
+    "test": "node ./test.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node-sass": "^3.10.32",
+    "color-string": "^1.5.2",
+    "css2json": "0.0.4",
+    "node-sass": "^4.5.2"
+  }
+}
