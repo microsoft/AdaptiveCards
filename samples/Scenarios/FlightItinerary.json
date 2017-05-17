@@ -92,10 +92,9 @@
 		{
 			"type": "TextBlock",
 			"text": "Non-Stop",
-						"separation": "strong",
-
+			"separation": "strong",
 			"weight": "bolder"
-			},
+		},
 		{
 			"type": "TextBlock",
 			"text": "Fri, October 18 9:50 PM",
@@ -125,7 +124,7 @@
 					"type": "Column",
 					"size": "auto",
 					"items": [
-					    	{
+						{
 							"type": "TextBlock",
 							"text": "&nbsp;"
 						},
@@ -148,7 +147,6 @@
 						},
 						{
 							"type": "TextBlock",
-							"topSpacing": "none",
 							"horizontalAlignment": "right",
 							"size": "extraLarge",
 							"color": "accent",
@@ -160,8 +158,7 @@
 		},
 		{
 			"type": "ColumnSet",
-						"separation": "strong",
-
+			"separation": "strong",
 			"columns": [
 				{
 					"type": "Column",
