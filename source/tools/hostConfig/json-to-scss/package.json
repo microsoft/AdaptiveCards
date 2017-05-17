@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^7.0.18",
     "color-string": "^1.5.2"
   }
 }
