@@ -16,7 +16,7 @@ There are interface definitions in `schema.d.ts` which describe the shape of the
 ```typescript
 let card :IAdaptiveCard = {
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "Container",
