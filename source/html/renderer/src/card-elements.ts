@@ -470,7 +470,7 @@ export class FactSet extends CardElement {
             return this.speak + '\n';
         }
 
-        // render each fact 
+        // render each fact
         let speak = null;
 
         if (this.facts.length > 0) {
@@ -839,6 +839,7 @@ export class ToggleInput extends Input {
 export class Choice {
     title: string;
     value: string;
+    isSelected: boolean;
 }
 
 export class ChoiceSetInput extends Input {
@@ -868,6 +869,7 @@ export class ChoiceSetInput extends Input {
                     var option = document.createElement("option");
                     option.value = this.choices[i].value;
                     option.text = this.choices[i].title;
+                    option.selected = this.choices[i].isSelected;
 
                     Utils.appendChild(this._selectElement, option);
                 }
@@ -890,6 +892,7 @@ export class ChoiceSetInput extends Input {
                     radioInput.style.verticalAlign = "middle";
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
+                    radioInput.checked = this.choices[i].isSelected;
 
                     this._toggleInputs.push(radioInput);
 
@@ -927,6 +930,7 @@ export class ChoiceSetInput extends Input {
                 checkboxInput.style.display = "inline-block";
                 checkboxInput.style.verticalAlign = "middle";
                 checkboxInput.value = this.choices[i].value;
+                checkboxInput.checked = this.choices[i].isSelected;
 
                 this._toggleInputs.push(checkboxInput);
 
@@ -991,6 +995,7 @@ export class ChoiceSetInput extends Input {
 
                 choice.title = choiceArray[i]["title"];
                 choice.value = choiceArray[i]["value"];
+                choice.isSelected = choiceArray[i]["isSelected"];
 
                 this.choices.push(choice);
             }
@@ -1818,7 +1823,7 @@ export abstract class ContainerBase extends CardElement {
         this._element.style.paddingRight = this.padding.right + "px";
         this._element.style.paddingBottom = this.padding.bottom + "px";
         this._element.style.paddingLeft = this.padding.left + "px";
-        
+
         this._element.onclick = (e) => {
             if (this.selectAction != null) {
                 this.selectAction.execute();
