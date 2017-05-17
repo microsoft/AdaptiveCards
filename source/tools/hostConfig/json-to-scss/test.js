@@ -85,6 +85,7 @@ var config = {
             spacing: 20
         },
         normal: {
+            backgroundColor: "#FFFFFF",
         },
         emphasis: {
             backgroundColor: "#EEEEEE",
