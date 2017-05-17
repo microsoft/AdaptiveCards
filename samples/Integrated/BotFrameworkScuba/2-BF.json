@@ -25,17 +25,17 @@
                                 "columns": [
                                     {
                                         "type": "Column",
-                                        "size": "auto",
+                                        "size": "1",
                                         "items": [
                                             {
                                                 "type": "Image",
-                                                "size": "large",
                                                 "url": "http://adaptivecards.io/content/AlkiBeach.jpg"
                                             }
                                         ]
                                     },
                                     {
                                         "type": "Column",
+                                        "size": "3",
                                         "items": [
                                             {
                                                 "type": "TextBlock",
@@ -69,18 +69,17 @@
                                 "columns": [
                                     {
                                         "type": "Column",
-                                        "size": "auto",
+                                        "size": "1",
                                         "items": [
                                             {
                                                 "type": "Image",
-                                                "size": "large",
                                                 "url": "http://adaptivecards.io/content/GoldenGardensPark.jpg"
                                             }
                                         ]
                                     },
                                     {
                                         "type": "Column",
-                                        "size": "stretch",
+                                        "size": "3",
                                         "items": [
                                             {
                                                 "type": "TextBlock",
@@ -114,7 +113,7 @@
                                 "columns": [
                                     {
                                         "type": "Column",
-                                        "size": "auto",
+                                        "size": "100",
                                         "items": [
                                             {
                                                 "type": "Image",
@@ -125,7 +124,7 @@
                                     },
                                     {
                                         "type": "Column",
-                                        "size": "stretch",
+                                        "size": "320",
                                         "items": [
                                             {
                                                 "type": "TextBlock",
