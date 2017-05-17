@@ -1,3 +1,3 @@
 var convert = require('./index');
 
-console.log(JSON.stringify(convert('./test.scss'), null, 2));
+console.log(JSON.stringify(convert('./sample.scss'), null, 2));
