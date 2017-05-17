@@ -869,6 +869,10 @@ export class ChoiceSetInput extends Input {
                     option.value = this.choices[i].value;
                     option.text = this.choices[i].title;
 
+                    if (this.choices[i].value == this.defaultValue) {
+                        option.selected = true;
+                    }
+
                     Utils.appendChild(this._selectElement, option);
                 }
 
@@ -890,6 +894,10 @@ export class ChoiceSetInput extends Input {
                     radioInput.style.verticalAlign = "middle";
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
+
+                    if (this.choices[i].value == this.defaultValue) {
+                        radioInput.checked = true;
+                    }
 
                     this._toggleInputs.push(radioInput);
 
@@ -914,6 +922,8 @@ export class ChoiceSetInput extends Input {
         }
         else {
             // Render as a list of toggle inputs
+            var defaultValues = this.defaultValue ? this.defaultValue.split(",") : null;
+
             var element = document.createElement("div");
             element.className = "ac-input";
             element.style.width = "100%";
@@ -927,6 +937,12 @@ export class ChoiceSetInput extends Input {
                 checkboxInput.style.display = "inline-block";
                 checkboxInput.style.verticalAlign = "middle";
                 checkboxInput.value = this.choices[i].value;
+
+                if (defaultValues) {
+                    if (defaultValues.indexOf(this.choices[i].value) >= 0) {
+                        checkboxInput.checked = true;
+                    }
+                }
 
                 this._toggleInputs.push(checkboxInput);
 
