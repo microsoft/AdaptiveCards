@@ -22,7 +22,7 @@ function convertToAdaptiveCardConfigValue(value: string) {
     if (!isNaN(n)) {
         return n;
     }
-    return value;
+    return JSON.parse(value);
 }
 
 function travel(hostConfig: any, route: string, content: string) {
@@ -84,11 +84,14 @@ if (require.main === module) {
     var hostConfig = convert(process.argv[2]);
     var output = JSON.stringify(hostConfig, null, 2);
 
-    if (process.argv[3] === '-exec') {
-        process.stdout.write('AdaptiveCards.setHostConfig(' + output + ');\n');
-    } else {
-        process.stdout.write(output);
-    }
+    //add BOM http://stackoverflow.com/questions/17879198/adding-utf-8-bom-to-string-blob
+    //so that output works with unix-style redirects e.g. ">"
+    const BOM = '\ufeff';
 
+    if (process.argv[3] === '--exec') {
+        process.stdout.write(BOM + 'AdaptiveCards.setHostConfig(' + output + ');\n');
+    } else {
+        process.stdout.write(BOM + output);
+    }
 
 }

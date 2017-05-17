@@ -17,7 +17,7 @@ function convertToAdaptiveCardConfigValue(value) {
     if (!isNaN(n)) {
         return n;
     }
-    return value;
+    return JSON.parse(value);
 }
 function travel(hostConfig, route, content) {
     var split = route.split('.');
@@ -71,11 +71,14 @@ function convert(scssFile) {
 if (require.main === module) {
     var hostConfig = convert(process.argv[2]);
     var output = JSON.stringify(hostConfig, null, 2);
-    if (process.argv[3] === '-exec') {
-        process.stdout.write('AdaptiveCards.setHostConfig(' + output + ');\n');
+    //add BOM http://stackoverflow.com/questions/17879198/adding-utf-8-bom-to-string-blob
+    //so that output works with unix-style redirects e.g. ">"
+    var BOM = '\ufeff';
+    if (process.argv[3] === '--exec') {
+        process.stdout.write(BOM + 'AdaptiveCards.setHostConfig(' + output + ');\n');
     }
     else {
-        process.stdout.write(output);
+        process.stdout.write(BOM + output);
     }
 }
 module.exports = convert;
