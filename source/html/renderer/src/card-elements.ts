@@ -470,7 +470,7 @@ export class FactSet extends CardElement {
             return this.speak + '\n';
         }
 
-        // render each fact 
+        // render each fact
         let speak = null;
 
         if (this.facts.length > 0) {
@@ -1083,6 +1083,10 @@ export class DateInput extends Input {
         this._dateInputElement.type = "date";
         this._dateInputElement.className = "ac-input ac-dateInput";
         this._dateInputElement.style.width = "100%";
+
+        if (!Utils.isNullOrEmpty(this.defaultValue)) {
+            this._dateInputElement.value = this.defaultValue;
+        }
 
         return this._dateInputElement;
     }
@@ -1818,7 +1822,7 @@ export abstract class ContainerBase extends CardElement {
         this._element.style.paddingRight = this.padding.right + "px";
         this._element.style.paddingBottom = this.padding.bottom + "px";
         this._element.style.paddingLeft = this.padding.left + "px";
-        
+
         this._element.onclick = (e) => {
             if (this.selectAction != null) {
                 this.selectAction.execute();
