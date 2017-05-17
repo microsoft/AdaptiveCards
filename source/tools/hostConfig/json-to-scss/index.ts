@@ -15,8 +15,6 @@ function convertToCssValue(value: any) {
                 color.value.push(color.value.shift());
             }
 
-            console.log(value + ' ' + colorString.to.rgb(color.value));
-
             return colorString.to.rgb(color.value);
         }
     }

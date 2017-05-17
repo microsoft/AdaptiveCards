@@ -13,7 +13,6 @@ function convertToCssValue(value) {
             if (color.value[3] !== 1) {
                 color.value.push(color.value.shift());
             }
-            console.log(value + ' ' + colorString.to.rgb(color.value));
             return colorString.to.rgb(color.value);
         }
     }
