@@ -1089,8 +1089,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IEllipse> ellipse = XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
             SetImageOnUIElement(imageUri.Get(), ellipse.Get());
 
-            // Set both Auto and Stretch to Stretch_UniformToFill.  An ellipse set to Stretch_Uniform ends up with size 0.
+            // Set both Auto, Default, and Stretch to Stretch_UniformToFill.  An ellipse set to Stretch_Uniform ends up with size 0.
             if (size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto ||
+                size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Default ||
                 size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch)
             {
                 ComPtr<IShape> ellipseAsShape;
