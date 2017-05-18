@@ -1,16 +1,36 @@
 {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "0.5",
-    "body": [
-        {
-            "type": "Input.Text",
-            "id": "1234",
-            "placeholder": "enter comment",
-            "maxLength": 500,
-            "isMultiline": false,
-            "speak":"What comments do you have?",
-            "value": "This is a pre-filled value"
-        }
-    ]
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "0.5",
+  "body": [
+    {
+      "type": "Input.Text",
+      "id": "comment",
+      "placeholder": "enter comment",
+      "maxLength": 500,
+      "isMultiline": false,
+      "speak": "What comments do you have?",
+      "value": "This is a pre-filled value"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Action.Submit data",
+      "data": {
+        "myProperty": 12
+      }
+    },
+    {
+      "type": "Action.Http",
+      "method": "POST",
+      "url": "http://some.com/webhook",
+      "title": "Action.Http POST data",
+      "body": "myProperty=12\\ncomment={{comment.Value}}",
+      "headers": {
+        "content-type": "xyz"
+      }
+    }
+
+  ]
 }

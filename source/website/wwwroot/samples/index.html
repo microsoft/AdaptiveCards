@@ -64,6 +64,7 @@
 <a href="#FlightItinerary" id='FlightItineraryLink' class="elementLink w3-bar-item w3-button">Flight Itinerary</a>
 <a href="#FlightUpdate" id='FlightUpdateLink' class="elementLink w3-bar-item w3-button">Flight Update</a>
 <a href="#ImageGallery" id='ImageGalleryLink' class="elementLink w3-bar-item w3-button">Image Gallery</a>
+<a href="#InputForm" id='InputFormLink' class="elementLink w3-bar-item w3-button">Input Form</a>
 <a href="#Restaurant" id='RestaurantLink' class="elementLink w3-bar-item w3-button">Restaurant</a>
 <a href="#StockUpdate" id='StockUpdateLink' class="elementLink w3-bar-item w3-button">Stock Update</a>
 <a href="#WeatherCompact" id='WeatherCompactLink' class="elementLink w3-bar-item w3-button">Weather Compact</a>
@@ -188,7 +189,7 @@
                         "headers": {
 							"content-type": "application/json"
 						},
-						"body": "{ 'comment' : '{{comment.value}}' }"
+						"body": "{ 'comment' : '{{dueDate.value}}' }"
 				    }
 				]
 			}
@@ -781,6 +782,99 @@
         }
     ]
 });</script>
+</div>
+<div class='element' id='InputFormContent' style='display:none'>
+<div id='InputFormCard' class='card' ></div>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Input Form.json'>Try it Yourself »</a>
+<script>renderCard('InputFormCard', {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "type": "AdaptiveCard",
+        "version": "0.5",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "size": 2,
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Tell us about yourself...",
+                    "weight": "bolder",
+                    "size": "large"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "We just need a few more details to get you booked for the trip of a lifetime!",
+                    "isSubtle": true,
+                    "wrap": true
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "Don't worry, we'll never share or sell your information.",
+                    "isSubtle": true,
+                    "wrap": true,
+                    "size": "small"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "Your name",
+                    "wrap": true
+                  },
+                  {
+                    "type": "Input.Text",
+                    "id": "myName",
+                    "placeholder": "Last, First",
+                    "separataion": "none"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "Your email",
+                    "wrap": true
+                  },
+                  {
+                    "type": "Input.Text",
+                    "id": "myEmail",
+                    "placeholder": "youremail@example.com",
+                    "style": "email",
+                    "separataion": "none"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "Phone Number"
+                  },
+                  {
+                    "type": "Input.Text",
+                    "id": "myTel",
+                    "placeholder": "xxx.xxx.xxxx",
+                    "style": "tel"
+                  }
+                ]
+              },
+              {
+                "type": "Column",
+                "size": 1,
+                "items": [
+                  {
+                    "type": "Image",
+                    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg",
+                    "size": "auto"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title":  "Submit" 
+          }
+        ]
+          
+      }
+);</script>
 </div>
 <div class='element' id='RestaurantContent' style='display:none'>
 <div id='RestaurantCard' class='card' ></div>
