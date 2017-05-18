@@ -1,22 +1,27 @@
-/// <reference path="../color-string.d.ts" />
-const colorString = require('color-string') as typeof ColorString;
+function stringToCssColor(color: string): string {
+    var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+
+    var matches = regEx.exec(color);
+
+    if (matches[4]) {
+        var a = parseInt(matches[1], 16) / 255;
+        var r = parseInt(matches[2], 16);
+        var g = parseInt(matches[3], 16);
+        var b = parseInt(matches[4], 16);
+
+        return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+    }
+    else {
+        return color;
+    }
+}
 
 function convertToCssValue(value: any) {
     if (typeof value === 'number') {
         return value + 'px';
     }
-    if (typeof value === 'string') {
-        const color = colorString.get(value);
-        if (color) {
-
-            //Xaml is AARRGGBB, but hex is parsed as RRGGBBAA, so move Alpha to front
-            //only when the Alpha is not 1, because 1 is the default when Alpha is not present
-            if (color.value[3] !== 1) {
-                color.value.push(color.value.shift());
-            }
-
-            return colorString.to.rgb(color.value);
-        }
+    if (typeof value === 'string' && value[0] === '#') {
+        return stringToCssColor(value);
     }
     return JSON.stringify(value);
 }
