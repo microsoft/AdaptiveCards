@@ -1242,25 +1242,29 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IPanel> gridAsPanel;
             THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
 
-            // Add Separator to the columnSet
-            ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation;
-            THROW_IF_FAILED(columnAsCardElement->get_Separation(&separation));
-            if (separation != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
+            // If not the first column
+            if (currentColumn > 0)
             {
-                ComPtr<IAdaptiveSeparationOptions> separationOptions;
-                GetSeparationOptionsForElement(columnAsCardElement.Get(), separation, &separationOptions);
-                if (separationOptions != nullptr)
+                // Add Separator to the columnSet
+                ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation;
+                THROW_IF_FAILED(columnAsCardElement->get_Separation(&separation));
+                if (separation != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
                 {
-                    //Create a new ColumnDefinition for the separator
-                    ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-                    THROW_IF_FAILED(separatorColumnDefinition->put_Width({ 1.0, GridUnitType::GridUnitType_Auto }));
-                    THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
+                    ComPtr<IAdaptiveSeparationOptions> separationOptions;
+                    GetSeparationOptionsForElement(columnAsCardElement.Get(), separation, &separationOptions);
+                    if (separationOptions != nullptr)
+                    {
+                        //Create a new ColumnDefinition for the separator
+                        ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+                        THROW_IF_FAILED(separatorColumnDefinition->put_Width({ 1.0, GridUnitType::GridUnitType_Auto }));
+                        THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
 
-                    auto separator = CreateSeparator(separationOptions.Get(), false);
-                    ComPtr<IFrameworkElement> separatorAsFrameworkElement;
-                    THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
-                    gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
-                    XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
+                        auto separator = CreateSeparator(separationOptions.Get(), false);
+                        ComPtr<IFrameworkElement> separatorAsFrameworkElement;
+                        THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
+                        gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
+                        XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
+                    }
                 }
             }
 
