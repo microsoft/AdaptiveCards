@@ -104,7 +104,7 @@
                         "headers": {
 							"content-type": "application/json"
 						},
-						"body": "{ 'comment' : '{{dueDate.value}}' }"
+						"body": "{ 'dueDate' : '{{dueDate.value}}' }"
 				    }
 				]
 			}
@@ -139,7 +139,7 @@
 		{
 			"type": "Action.OpenUrl",
 			"title": "View",
-			"url": "http://foo.com"
+			"url": "http://microsoft.com"
 		}
 	]
 }
