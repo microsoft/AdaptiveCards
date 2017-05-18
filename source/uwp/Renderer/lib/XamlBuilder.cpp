@@ -1469,6 +1469,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         ComPtr<IComboBox> comboBox = XamlHelpers::CreateXamlClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
 
+        // Set HorizontalAlignment to Stretch (defaults to Left for combo boxes)
+        ComPtr<IFrameworkElement> comboBoxAsFrameworkElement;
+        THROW_IF_FAILED(comboBox.As(&comboBoxAsFrameworkElement));
+        THROW_IF_FAILED(comboBoxAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+
         ComPtr<IItemsControl> itemsControl;
         THROW_IF_FAILED(comboBox.As(&itemsControl));
 
