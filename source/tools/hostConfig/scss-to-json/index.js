@@ -3,6 +3,7 @@
 var path = require("path");
 var sass = require("node-sass");
 var css2json = require('css2json');
+var cssColorNames = require('css-color-names');
 var boolean = { "true": true, "false": false };
 function parseNumericList(s) {
     var result = [];
@@ -29,6 +30,9 @@ function convertToAdaptiveCardConfigValue(value) {
     }
     if (typeof value === 'string' && value.indexOf('rgb') === 0) {
         return rgbToAARRGGBB(value);
+    }
+    if (value in cssColorNames) {
+        return cssColorNames[value];
     }
     if (value in boolean) {
         return boolean[value];

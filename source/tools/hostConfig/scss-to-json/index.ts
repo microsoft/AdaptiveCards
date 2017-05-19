@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as sass from 'node-sass';
 
 const css2json = require('css2json') as { (css: string): { [selector: string]: { content: string } } };
-
+const cssColorNames = require('css-color-names') as { [name: string]: string };
 const boolean = { "true": true, "false": false };
 
 function parseNumericList(s: string): number[] {
@@ -37,6 +37,9 @@ function convertToAdaptiveCardConfigValue(value: string) {
     }
     if (typeof value === 'string' && value.indexOf('rgb') === 0) {
         return rgbToAARRGGBB(value);
+    }
+    if (value in cssColorNames) {
+        return cssColorNames[value];
     }
     if (value in boolean) {
         return boolean[value];
