@@ -1,10 +1,17 @@
-#include "Container.h"
-#include "ParseUtil.h"
-#include "Image.h"
-#include "TextBlock.h"
 #include "ColumnSet.h"
+#include "Container.h"
 #include "FactSet.h"
+#include "Image.h"
 #include "ImageSet.h"
+#include "InputChoiceSet.h"
+#include "InputDate.h"
+#include "InputNumber.h"
+#include "InputText.h"
+#include "InputTime.h"
+#include "InputToggle.h"
+#include "OpenUrlAction.h"
+#include "ParseUtil.h"
+#include "TextBlock.h"
 
 using namespace AdaptiveCards;
 
@@ -16,6 +23,12 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
     { CardElementType::Image, Image::Deserialize },
     { CardElementType::ImageSet, ImageSet::Deserialize },
     { CardElementType::TextBlock, TextBlock::Deserialize },
+    { CardElementType::InputChoiceSet, InputChoiceSet::Deserialize },
+    { CardElementType::InputDate, InputDate::Deserialize },
+    { CardElementType::InputNumber, InputNumber::Deserialize },
+    { CardElementType::InputText, InputText::Deserialize },
+    { CardElementType::InputTime, InputTime::Deserialize },
+    { CardElementType::InputToggle, InputToggle::Deserialize },
 };
 
 Container::Container() : BaseCardElement(CardElementType::Container)
