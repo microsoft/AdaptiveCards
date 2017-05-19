@@ -1,0 +1,177 @@
+$my-line-color: red;
+$my-background-color: rgba(0, 255, 0, 0.5);
+$my-margin: 13px;
+
+$hostConfig: (
+  supportsInteractivity: true,
+  strongSeparation: (
+    spacing: 40px,
+    lineThickness: 1px,
+    lineColor: $my-line-color
+  ),
+  fontFamily: "Segoe UI",
+  fontSizes: (
+    small: 8px,
+    normal: 10px,
+    medium: 12px,
+    large: 14px,
+    extraLarge: 16px
+  ),
+  fontWeights: (
+    lighter: 200px,
+    normal: 400px,
+    bolder: 600px
+  ),
+  colors: (
+    dark: (
+      normal: #0000FF,
+      subtle: #222222
+    ),
+    light: (
+      normal: #FFFFFF,
+      subtle: #DDDDDD
+    ),
+    accent: (
+      normal: #0000FF,
+      subtle: #0000DD
+    ),
+    attention: (
+      normal: #FF6600,
+      subtle: #DD4400
+    ),
+    good: (
+      normal: #00FF00,
+      subtle: #00DD00
+    ),
+    warning: (
+      normal: #FF0000,
+      subtle: #DD0000
+    )
+  ),
+  imageSizes: (
+    small: 40px,
+    medium: 80px,
+    large: 160px
+  ),
+  actions: (
+    maxActions: 5px,
+    separation: (
+      spacing: $my-margin
+    ),
+    buttonSpacing: $my-margin,
+    showCard: (
+      actionMode: "inlineEdgeToEdge",
+      inlineTopMargin: 16px,
+      backgroundColor: $my-background-color,
+      padding: (
+        top: 16px,
+        right: 16px,
+        bottom: 16px,
+        left: 16px
+      )
+    ),
+    actionsOrientation: "horizontal",
+    actionAlignment: "left"
+  ),
+  adaptiveCard: (
+    backgroundColor: $my-background-color,
+    padding: (
+      left: $my-margin,
+      top: $my-margin,
+      right: $my-margin,
+      bottom: $my-margin
+    )
+  ),
+  container: (
+    separation: (
+      spacing: $my-margin
+    ),
+    normal: (
+      backgroundColor: $my-background-color
+    ),
+    emphasis: (
+      backgroundColor: $my-background-color,
+      borderColor: #AAAAAA,
+      borderThickness: (
+        top: 1px,
+        right: 1px,
+        bottom: 1px,
+        left: 1px
+      ),
+      padding: (
+        top: 10px,
+        right: 10px,
+        bottom: 10px,
+        left: 10px
+      )
+    )
+  ),
+  textBlock: (
+    color: "dark",
+    separations: (
+      small: (
+        spacing: $my-margin
+      ),
+      normal: (
+        spacing: $my-margin
+      ),
+      medium: (
+        spacing: $my-margin
+      ),
+      large: (
+        spacing: $my-margin
+      ),
+      extraLarge: (
+        spacing: $my-margin
+      )
+    )
+  ),
+  image: (
+    size: "medium",
+    separation: (
+      spacing: $my-margin
+    )
+  ),
+  imageSet: (
+    imageSize: "medium",
+    separation: (
+      spacing: $my-margin
+    )
+  ),
+  factSet: (
+    separation: (
+      spacing: $my-margin
+    ),
+    title: (
+      color: "dark",
+      size: "normal",
+      isSubtle: false,
+      weight: "bolder",
+      wrap: true,
+      maxWidth: 150px
+    ),
+    value: (
+      color: "dark",
+      size: "normal",
+      isSubtle: false,
+      weight: "normal",
+      wrap: true
+    ),
+    spacing: 10px
+  ),
+  input: (
+    separation: (
+      spacing: $my-margin
+    )
+  ),
+  columnSet: (
+    separation: (
+      spacing: $my-margin
+    )
+  ),
+  column: (
+    separation: (
+      spacing: $my-margin
+    )
+  )
+);
