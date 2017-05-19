@@ -63,6 +63,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_RandomAccessStream).Get(), &m_randomAccessStreamStatics));
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &m_propertyValueStatics));
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Text_FontWeights).Get(), &m_fontWeightsStatics));
 
         InitializeDefaultResourceDictionary();
     }
@@ -1006,6 +1007,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             break;
         }
         THROW_IF_FAILED(localTextBlock->put_FontSize((double)fontSize));
+
+        ABI::Windows::UI::Text::FontWeight xamlFontWeight;
+        switch (weight)
+        {
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Lighter:
+            THROW_IF_FAILED(m_fontWeightsStatics->get_Light(&xamlFontWeight));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Normal:
+            THROW_IF_FAILED(m_fontWeightsStatics->get_Normal(&xamlFontWeight));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Bolder:
+            THROW_IF_FAILED(m_fontWeightsStatics->get_Bold(&xamlFontWeight));
+            break;
+        }
+        THROW_IF_FAILED(localTextBlock->put_FontWeight(xamlFontWeight));
     }
 
     _Use_decl_annotations_
