@@ -17,6 +17,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IAdaptiveActionEventArgs
         IFACEMETHODIMP get_Action(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement** action);
 
+    private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement> m_action;
     };
 }}

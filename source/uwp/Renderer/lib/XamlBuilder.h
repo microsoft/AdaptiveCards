@@ -96,6 +96,11 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
             _In_ std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
+        void BuildShowCard(
+            AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveShowCardOptions* showCardOptions,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* action,
+            ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,
             AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
