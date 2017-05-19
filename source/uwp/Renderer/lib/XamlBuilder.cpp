@@ -1051,6 +1051,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         ComPtr<ITextBlock> xamlTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
 
+        // ITextBlock2 will be used later on
+        ComPtr<ITextBlock2> xamlTextBlock2;
+        THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
+
         HString text;
         adaptiveTextBlock->get_Text(text.GetAddressOf());
         xamlTextBlock->put_Text(text.Get());
@@ -1090,8 +1094,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // Set the maximum number of lines the text block should show in cases where wrapping is enabled.
         if (shouldWrap)
         {
-            ComPtr<ITextBlock2> xamlTextBlock2;
-            THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
             UINT maxLines;
             THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
             THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
@@ -1118,6 +1120,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight;
         THROW_IF_FAILED(adaptiveTextBlock->get_Weight(&textWeight));
+
+        // Ensure left edge of text is consistent regardless of font size, so both small and large fonts
+        // are flush on the left edge of the card by enabling TrimSideBearings
+        THROW_IF_FAILED(xamlTextBlock2->put_OpticalMarginAlignment(OpticalMarginAlignment_TrimSideBearings));
 
         //Style the TextBlock using Host Options
         StyleXamlTextBlock(textblockSize, textColor, isSubtle, textWeight, xamlTextBlock.Get());
