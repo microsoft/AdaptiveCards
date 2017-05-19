@@ -15,7 +15,6 @@
   "license": "MIT",
   "dependencies": {
     "@types/node-sass": "^3.10.32",
-    "color-string": "^1.5.2",
     "css2json": "0.0.4",
     "node-sass": "^4.5.2"
   }

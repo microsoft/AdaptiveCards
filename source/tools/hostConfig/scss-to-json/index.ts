@@ -1,19 +1,42 @@
 #! /usr/bin/env node
-/// <reference path="../color-string.d.ts" />
 
 import * as path from 'path';
 import * as sass from 'node-sass';
-
-const colorString = require('color-string') as typeof ColorString;
 
 const css2json = require('css2json') as { (css: string): { [selector: string]: { content: string } } };
 
 const boolean = { "true": true, "false": false };
 
+function parseNumericList(s: string): number[] {
+    var result: number[] = [];
+
+    var re = /[\.-]?(?:0|[1-9]\d*)(?:\.\d*)?/g;
+    var matches: RegExpExecArray;
+
+    while ((matches = re.exec(s)) !== null) {
+        if (matches.index === re.lastIndex) {
+            re.lastIndex++;
+        }
+        result.push(parseFloat(matches[0]));
+    }
+
+    return result;
+}
+
+function rgbToAARRGGBB(value: string) {
+    const rgba = parseNumericList(value);
+    const alpha = Math.round((rgba[3] || 1) * 255);
+    const argb = [alpha].concat(rgba.slice(0, 3));
+    const hex = argb.map(n => ('0' + n.toString(16).toUpperCase()).substr(-2));
+    return '#' + hex.join('');
+}
+
 function convertToAdaptiveCardConfigValue(value: string) {
-    const color = colorString.get(value);
-    if (color) {
-        return colorString.to.rgb(color.value);
+    if (typeof value === 'string' && value.indexOf('#') === 0) {
+        return value;
+    }
+    if (typeof value === 'string' && value.indexOf('rgb') === 0) {
+        return rgbToAARRGGBB(value);
     }
     if (value in boolean) {
         return boolean[value];
@@ -65,6 +88,7 @@ function mixin(absPath: string) {
 function convert(scssFile: string) {
     const result = sass.renderSync({ data: mixin(path.resolve(scssFile).replace(/\\/g, '/')) });
     const css = result.css.toString();
+
     const cssJson = css2json(css);
     const hostConfig = {};
 

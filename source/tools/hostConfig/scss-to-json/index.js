@@ -2,13 +2,33 @@
 "use strict";
 var path = require("path");
 var sass = require("node-sass");
-var colorString = require('color-string');
 var css2json = require('css2json');
 var boolean = { "true": true, "false": false };
+function parseNumericList(s) {
+    var result = [];
+    var re = /[\.-]?(?:0|[1-9]\d*)(?:\.\d*)?/g;
+    var matches;
+    while ((matches = re.exec(s)) !== null) {
+        if (matches.index === re.lastIndex) {
+            re.lastIndex++;
+        }
+        result.push(parseFloat(matches[0]));
+    }
+    return result;
+}
+function rgbToAARRGGBB(value) {
+    var rgba = parseNumericList(value);
+    var alpha = Math.round((rgba[3] || 1) * 255);
+    var argb = [alpha].concat(rgba.slice(0, 3));
+    var hex = argb.map(function (n) { return ('0' + n.toString(16).toUpperCase()).substr(-2); });
+    return '#' + hex.join('');
+}
 function convertToAdaptiveCardConfigValue(value) {
-    var color = colorString.get(value);
-    if (color) {
-        return colorString.to.rgb(color.value);
+    if (typeof value === 'string' && value.indexOf('#') === 0) {
+        return value;
+    }
+    if (typeof value === 'string' && value.indexOf('rgb') === 0) {
+        return rgbToAARRGGBB(value);
     }
     if (value in boolean) {
         return boolean[value];
