@@ -5,15 +5,15 @@ var config = {
     strongSeparation: {
         spacing: 40,
         lineThickness: 1,
-        lineColor: "#EEEEEE"
+        lineColor: "#80EEEEEE"
     },
     fontFamily: "Segoe UI",
     fontSizes: {
-        small: 8,
-        normal: 10,
-        medium: 12,
-        large: 14,
-        extraLarge: 16
+        small: 12,
+        normal: 14,
+        medium: 17,
+        large: 21,
+        extraLarge: 26
     },
     fontWeights: {
         lighter: 200,
@@ -22,28 +22,28 @@ var config = {
     },
     colors: {
         dark: {
-            normal: "#0000FF",
-            subtle: "#222222"
+            normal: "#333333",
+            subtle: "#EE333333"
         },
         light: {
             normal: "#FFFFFF",
-            subtle: "#DDDDDD"
+            subtle: "#88FFFFFF"
         },
         accent: {
-            normal: "#0000FF",
-            subtle: "#0000DD" 
+            normal: "#2E89FC",
+            subtle: "#882E89FC"
         },
         attention: {
-            normal: "#FF6600",
-            subtle: "#DD4400"
+            normal: "#FFD800",
+            subtle: "#DDFFD800"
         },
         good: {
             normal: "#00FF00",
-            subtle: "#00DD00"
+            subtle: "#DD00FF00"
         },
         warning: {
             normal: "#FF0000",
-            subtle: "#DD0000"
+            subtle: "#DDFF0000"
         }
     },
     imageSizes: {
@@ -54,38 +54,38 @@ var config = {
     actions: {
         maxActions: 5,
         separation: {
-            spacing: 20
+            spacing: 8
         },
         buttonSpacing: 20,
+        stretch: false,
         showCard: {
             actionMode: "inlineEdgeToEdge",
             inlineTopMargin: 16,
-            backgroundColor: "#22000000",
+            backgroundColor: "#08000000",
             padding: {
-                top: 16,
-                right: 16,
-                bottom: 16,
-                left: 16
+                top: 8,
+                right: 8,
+                bottom: 8,
+                left: 8
             }
         },
         actionsOrientation: "horizontal",
         actionAlignment: "left"
     },
     adaptiveCard: {
-        backgroundColor: "#00000000",
+        backgroundColor: "#FFFFFF",
         padding: {
-            left: 20,
-            top: 20,
-            right: 20,
-            bottom: 20
+            left: 8,
+            top: 8,
+            right: 8,
+            bottom: 8
         }
     },
     container: {
         separation: {
-            spacing: 20
+            spacing: 8
         },
         normal: {
-            backgroundColor: "#FFFFFF",
         },
         emphasis: {
             backgroundColor: "#EEEEEE",
@@ -108,37 +108,37 @@ var config = {
         color: "dark",
         separations: {
             small: {
-                spacing: 20,
+                spacing: 8,
             },
             normal: {
-                spacing: 20
+                spacing: 8
             },
             medium: {
-                spacing: 20
+                spacing: 8
             },
             large: {
-                spacing: 20
+                spacing: 8
             },
             extraLarge: {
-                spacing: 20
+                spacing: 8
             }
         }
     },
     image: {
         size: "medium",
         separation: {
-            spacing: 20
+            spacing: 8
         }
     },
     imageSet: {
         imageSize: "medium",
         separation: {
-            spacing: 20
+            spacing: 8
         }
     },
     factSet: {
         separation: {
-            spacing: 20
+            spacing: 8
         },
         title: {
             color: "dark",
@@ -159,17 +159,17 @@ var config = {
     },
     input: {
         separation: {
-            spacing: 20
+            spacing: 8
         }
     },
     columnSet: {
         separation: {
-            spacing: 20
+            spacing: 8
         }
     },
     column: {
         separation: {
-            spacing: 20
+            spacing: 8
         }
     }
 };
