@@ -37,7 +37,12 @@ function convertToAdaptiveCardConfigValue(value) {
     if (!isNaN(n)) {
         return n;
     }
-    return JSON.parse(value);
+    try {
+        return JSON.parse(value);
+    }
+    catch (e) {
+        return value;
+    }
 }
 function travel(hostConfig, route, content) {
     var split = route.split('.');
