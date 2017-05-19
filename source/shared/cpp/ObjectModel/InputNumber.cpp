@@ -26,9 +26,7 @@ std::shared_ptr<InputNumber> InputNumber::Deserialize(const Json::Value& json)
 
 std::shared_ptr<InputNumber> InputNumber::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputNumber::Deserialize(jsonValue);
+    return InputNumber::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputNumber::Serialize()

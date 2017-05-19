@@ -80,3 +80,8 @@ std::shared_ptr<ImageSet> ImageSet::Deserialize(const Json::Value& value)
 
     return imageSet;
 }
+
+std::shared_ptr<ImageSet> ImageSet::DeserializeFromString(const std::string& jsonString)
+{
+    return ImageSet::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
+}

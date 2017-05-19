@@ -98,8 +98,6 @@ void AdaptiveCards::Image::SetHorizontalAlignment(const HorizontalAlignment valu
 
 std::shared_ptr<Image> Image::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return Image::Deserialize(jsonValue);
+    return Image::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 

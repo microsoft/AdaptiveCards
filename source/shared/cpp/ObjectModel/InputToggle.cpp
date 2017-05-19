@@ -24,9 +24,7 @@ std::shared_ptr<InputToggle> InputToggle::Deserialize(const Json::Value& json)
 
 std::shared_ptr<InputToggle> InputToggle::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputToggle::Deserialize(jsonValue);
+    return InputToggle::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputToggle::Serialize()

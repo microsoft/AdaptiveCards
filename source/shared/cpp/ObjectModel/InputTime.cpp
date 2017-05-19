@@ -24,9 +24,7 @@ std::shared_ptr<InputTime> InputTime::Deserialize(const Json::Value& json)
 
 std::shared_ptr<InputTime> InputTime::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputTime::Deserialize(jsonValue);
+    return InputTime::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputTime::Serialize()
