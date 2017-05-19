@@ -103,7 +103,7 @@
           "value": "3"
         }
       ],
-      "id": "SingleSelectVal"
+      "id": "CompactSelectVal"
     },
     {
       "type": "TextBlock",
@@ -127,7 +127,7 @@
           "value": "3"
         }
       ],
-      "id": "CompactSelectVal"
+      "id": "SingleSelectVal"
     },
     {
       "type": "TextBlock",

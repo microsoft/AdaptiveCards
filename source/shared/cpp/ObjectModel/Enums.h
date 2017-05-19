@@ -72,6 +72,7 @@ enum class AdaptiveCardSchemaKey
     FontSizes,
     Good,
     HorizontalAlignment,
+    Id,
     Image,
     Images,
     ImageSet,

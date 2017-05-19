@@ -87,6 +87,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveInputToggle::get_Id(HSTRING* speak)
+    {
+        return UTF8ToHString(m_sharedInputToggle->GetId(), speak);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveInputToggle::put_Id(HSTRING speak)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(speak, out));
+        m_sharedInputToggle->SetId(out);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveInputToggle::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::InputToggle;

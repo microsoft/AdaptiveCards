@@ -9,6 +9,12 @@
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
+    struct InputItem
+    {
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement> adaptiveInputElement;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> uiInputElement;
+    };
+
     class XamlBuilder : public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
         Microsoft::WRL::FtmBase,
@@ -37,6 +43,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     private:
         std::unordered_map<ABI::AdaptiveCards::XamlCardRenderer::ElementType, 
             std::function<void(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*,
+                std::shared_ptr<std::vector<InputItem>> inputElements,
                 ABI::Windows::UI::Xaml::IUIElement**)>> m_adaptiveElementBuilder;
 
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IPropertyValueStatics> m_propertyValueStatics;
@@ -96,6 +103,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         void BuildPanelChildren(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _In_ std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
         void BuildShowCard(
             AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
@@ -105,6 +113,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,
             AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
         void GetSeparationOptionsForElement(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
@@ -112,30 +121,38 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _COM_Outptr_result_maybenull_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions** separationOptions);
 
         template<typename T>
-        void SetContent(T* item, HSTRING contentString);
-        template<typename T>
-        void SetToggleValue(T* item, boolean isChecked);
+        void AddInputItemToVector(
+            std::shared_ptr<std::vector<InputItem>> inputElements,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* cardElement,
+            T* tElement);
 
         void BuildTextBlock(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBlockControl);
         void BuildImage(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
         void BuildContainer(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);
         void BuildColumn(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnControl);
         void BuildColumnSet(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnSetControl);
         void BuildFactSet(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** factSetControl);
         void BuildImageSet(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageSetControl);
         void BuildCompactInputChoiceSet(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
@@ -146,21 +163,27 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
         void BuildInputChoiceSet(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
         void BuildInputDate(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputDateControl);
         void BuildInputNumber(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputDateControl);
         void BuildInputText(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputTextControl);
         void BuildInputTime(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputTimeControl);
         void BuildInputToggle(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputToggleControl);
     };
 }}

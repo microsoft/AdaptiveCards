@@ -11,6 +11,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveInputChoiceSet, BaseTrust)
@@ -33,6 +34,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_ChoiceSetStyle(_In_ ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle choiceSetStyle);
 
         IFACEMETHODIMP get_Choices(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoice*>** columns);
+
+        // IAdaptiveInputElement
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* text);
+        IFACEMETHODIMP put_Id(_In_ HSTRING text);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);

@@ -80,7 +80,7 @@ namespace XamlCardVisualizer
                 }
                 else
                 {
-                    m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType;
+                    m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs;
                 }
 
                 m_actionDialog.PrimaryButtonText = "Close";

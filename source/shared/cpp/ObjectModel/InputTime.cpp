@@ -4,7 +4,7 @@
 using namespace AdaptiveCards;
 
 InputTime::InputTime() :
-    BaseCardElement(CardElementType::InputTime)
+    BaseInputElement(CardElementType::InputTime)
 {
 }
 
@@ -12,7 +12,7 @@ std::shared_ptr<InputTime> InputTime::Deserialize(const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::InputTime);
 
-    std::shared_ptr<InputTime> inputTime = BaseCardElement::Deserialize<InputTime>(json);
+    std::shared_ptr<InputTime> inputTime = BaseInputElement::Deserialize<InputTime>(json);
 
     inputTime->SetMax(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Max));
     inputTime->SetMin(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Min));
