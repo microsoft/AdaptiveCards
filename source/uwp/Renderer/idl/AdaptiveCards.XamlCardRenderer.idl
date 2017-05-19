@@ -51,9 +51,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTextInputOptions;
         runtimeclass AdaptiveChoiceSetInputOptions;
         runtimeclass AdaptiveHostOptions;
-        runtimeclass AdaptiveHttpActionEventArgs;
-        runtimeclass AdaptiveOpenUrlActionEventArgs;
-        runtimeclass AdaptiveSubmitActionEventArgs;
+        runtimeclass AdaptiveActionEventArgs;
 
         interface IAdaptiveCardElement;
         interface IAdaptiveActionElement;
@@ -210,7 +208,8 @@ namespace AdaptiveCards
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ActionMode {
-            Inline = 0,
+            InlineEdgeToEdge = 0,
+            Inline,
             Popup
         } ActionMode;
 
@@ -745,7 +744,7 @@ namespace AdaptiveCards
             HRESULT RenderAdaptiveJsonAsXaml([in] HSTRING adaptiveJson, [out, retval] Windows.UI.Xaml.UIElement** result);
             HRESULT RenderAdaptiveJsonAsXamlAsync([in] HSTRING adaptiveJson, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
 
-            [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<XamlCardRenderer*, IAdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
+            [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<XamlCardRenderer*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
             [eventremove] HRESULT Action([in] EventRegistrationToken token);
         };
 
@@ -761,67 +760,19 @@ namespace AdaptiveCards
         [
             uuid(6853cff8-60ee-4270-9cd2-23b25cd8703f),
             version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveActionEventArgs)
         ]
         interface IAdaptiveActionEventArgs : IInspectable
         {
-            [propget] HRESULT ActionType([out, retval] ActionType* value);
-        }
-
-        [
-            uuid(c06e6789-46a2-40f2-af5b-e06945cd2688),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveHttpActionEventArgs),
-        ]
-        interface IAdaptiveHttpActionEventArgs : IInspectable
-        {
+            [propget] HRESULT Action([out, retval] IAdaptiveActionElement** action);
         }
 
         [
             version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1),
         ]
-        runtimeclass AdaptiveHttpActionEventArgs
+        runtimeclass AdaptiveActionEventArgs
         {
-            [default] interface IAdaptiveHttpActionEventArgs;
-            interface IAdaptiveActionEventArgs;
-        };
-
-        [
-            uuid(2084de4a-91a2-42d6-b36a-6163a789dd11),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveOpenUrlActionEventArgs),
-        ]
-        interface IAdaptiveOpenUrlActionEventArgs : IInspectable
-        {
-        }
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1),
-        ]
-        runtimeclass AdaptiveOpenUrlActionEventArgs
-        {
-            [default] interface IAdaptiveOpenUrlActionEventArgs;
-            interface IAdaptiveActionEventArgs;
-        };
-
-        [
-            uuid(9f133572-c20c-41b7-baf8-dc954012e844),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveSubmitActionEventArgs),
-        ]
-        interface IAdaptiveSubmitActionEventArgs : IInspectable
-        {
-        }
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1),
-        ]
-        runtimeclass AdaptiveSubmitActionEventArgs
-        {
-            [default] interface IAdaptiveSubmitActionEventArgs;
-            interface IAdaptiveActionEventArgs;
+            [default] interface IAdaptiveActionEventArgs;
         };
 
         [
@@ -1227,8 +1178,11 @@ namespace AdaptiveCards
             [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
             [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
 
-            [propget] HRESULT AutoPadding([out, retval] boolean* value);
-            [propput] HRESULT AutoPadding([in] boolean value);
+            [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions** value);
+            [propput] HRESULT Padding([in] AdaptiveBoundaryOptions* value);
+
+            [propget] HRESULT InlineTopMargin([out, retval] UINT32 *value);
+            [propput] HRESULT InlineTopMargin([in] UINT32 value);
         };
 
         [

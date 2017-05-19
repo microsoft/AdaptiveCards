@@ -66,12 +66,26 @@ namespace XamlCardVisualizer
 
             m_renderer.Action += async (sender, e) =>
             {
-                ContentDialog dialog = new ContentDialog();
+                if (m_actionDialog != null)
+                {
+                    m_actionDialog.Hide();
+                }
 
-                dialog.Content = "We got an action!\n" + e.ActionType;
-                dialog.PrimaryButtonText = "OK";
+                m_actionDialog = new ContentDialog();
 
-                await dialog.ShowAsync();
+                if (e.Action.ActionType == ActionType.ShowCard)
+                {
+                    AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
+                    m_actionDialog.Content = await m_renderer.RenderCardAsXamlAsync(showCardAction.Card);
+                }
+                else
+                {
+                    m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType;
+                }
+
+                m_actionDialog.PrimaryButtonText = "Close";
+
+                await m_actionDialog.ShowAsync();
             };
 
             PopulateXamlContent(card);
@@ -125,5 +139,6 @@ namespace XamlCardVisualizer
         }
 
         private AdaptiveCards.XamlCardRenderer.XamlCardRenderer m_renderer;
+        private ContentDialog m_actionDialog;
     }
 }

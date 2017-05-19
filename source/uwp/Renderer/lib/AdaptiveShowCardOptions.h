@@ -23,8 +23,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_BackgroundColor(_Out_ ABI::Windows::UI::Color* value);
         IFACEMETHODIMP put_BackgroundColor(_In_ ABI::Windows::UI::Color value);
 
-        IFACEMETHODIMP get_AutoPadding(_Out_ boolean* autoPadding);
-        IFACEMETHODIMP put_AutoPadding(_In_ boolean autoPadding);
+        IFACEMETHODIMP get_Padding(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions** value);
+        IFACEMETHODIMP put_Padding(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions* value);
+
+        IFACEMETHODIMP get_InlineTopMargin(_Out_ UINT32* value);
+        IFACEMETHODIMP put_InlineTopMargin(_In_ UINT32 value);
 
     private:
         AdaptiveCards::ShowCardOptions m_sharedShowCardOptions;
