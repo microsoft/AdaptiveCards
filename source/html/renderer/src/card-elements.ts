@@ -470,7 +470,7 @@ export class FactSet extends CardElement {
             return this.speak + '\n';
         }
 
-        // render each fact 
+        // render each fact
         let speak = null;
 
         if (this.facts.length > 0) {
@@ -684,6 +684,7 @@ export abstract class Input extends CardElement implements Utils.IInput {
     id: string;
     title: string;
     defaultValue: string;
+    isRequired: boolean;
 
     abstract get value(): string;
 
@@ -705,6 +706,7 @@ export abstract class Input extends CardElement implements Utils.IInput {
 
         this.id = json["id"];
         this.defaultValue = json["value"];
+        this.isRequired = json["isRequired"];
     }
 
     renderSpeech(): string {
@@ -735,6 +737,7 @@ export class TextInput extends Input {
         this._textareaElement = document.createElement("textarea");
         this._textareaElement.className = "ac-input ac-textInput";
         this._textareaElement.style.width = "100%";
+        this._textareaElement.required = this.isRequired;
 
         if (this.isMultiline) {
             this._textareaElement.classList.add("ac-multiline");
@@ -852,6 +855,7 @@ export class ChoiceSetInput extends Input {
                 this._selectElement = document.createElement("select");
                 this._selectElement.className = "ac-input ac-multichoiceInput";
                 this._selectElement.style.width = "100%";
+                this._selectElement.required = this.isRequired;
 
                 var option = document.createElement("option");
                 option.selected = true;
@@ -894,6 +898,7 @@ export class ChoiceSetInput extends Input {
                     radioInput.style.verticalAlign = "middle";
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
+                    radioInput.required = this.isRequired;
 
                     if (this.choices[i].value == this.defaultValue) {
                         radioInput.checked = true;
@@ -1064,6 +1069,7 @@ export class NumberInput extends Input {
         this._numberInputElement.min = this.min;
         this._numberInputElement.max = this.max;
         this._numberInputElement.style.width = "100%";
+        this._numberInputElement.required = this.isRequired;
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._numberInputElement.value = this.defaultValue;
@@ -1099,6 +1105,7 @@ export class DateInput extends Input {
         this._dateInputElement.type = "date";
         this._dateInputElement.className = "ac-input ac-dateInput";
         this._dateInputElement.style.width = "100%";
+        this._dateInputElement.required = this.isRequired;
 
         return this._dateInputElement;
     }
@@ -1120,6 +1127,7 @@ export class TimeInput extends Input {
         this._timeInputElement.type = "time";
         this._timeInputElement.className = "ac-input ac-timeInput";
         this._timeInputElement.style.width = "100%";
+        this._timeInputElement.required = this.isRequired;
 
         return this._timeInputElement;
     }
@@ -1834,7 +1842,7 @@ export abstract class ContainerBase extends CardElement {
         this._element.style.paddingRight = this.padding.right + "px";
         this._element.style.paddingBottom = this.padding.bottom + "px";
         this._element.style.paddingLeft = this.padding.left + "px";
-        
+
         this._element.onclick = (e) => {
             if (this.selectAction != null) {
                 this.selectAction.execute();
