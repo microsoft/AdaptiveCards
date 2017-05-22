@@ -11,8 +11,6 @@ std::shared_ptr<SubmitAction> SubmitAction::Deserialize(const Json::Value& json)
 {
     std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(json);
 
-    submitAction->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
-
     return submitAction;
 }
 

@@ -33,7 +33,7 @@ std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
 
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
-    image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url));
+    image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
     image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::ImageStyle, ImageStyle::Normal, ImageStyleFromString));
     image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::Default, ImageSizeFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));

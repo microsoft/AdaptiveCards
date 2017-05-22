@@ -47,13 +47,20 @@ std::string ParseUtil::TryGetTypeAsString(const Json::Value& json)
 
 }
 
-std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey key)
+std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
 {
     std::string propertyName = AdaptiveCardSchemaKeyToString(key);
     auto propertyValue = json.get(propertyName, Json::Value());
     if (propertyValue.empty())
     {
-        return "";
+        if (isRequired)
+        {
+            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+        }
+        else
+        {
+            return "";
+        }
     }
 
     if (!propertyValue.isString())
@@ -64,25 +71,39 @@ std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey 
     return propertyValue.asString();
 }
 
-std::string ParseUtil::GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key)
+std::string ParseUtil::GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
 {
     std::string propertyName = AdaptiveCardSchemaKeyToString(key);
     auto propertyValue = json.get(propertyName, Json::Value());
     if (propertyValue.empty())
     {
-        return "";
+        if (isRequired)
+        {
+            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+        }
+        else
+        {
+            return "";
+        }
     }
 
     return propertyValue.asString();
 }
 
-bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue)
+bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired)
 {
     std::string propertyName = AdaptiveCardSchemaKeyToString(key);
     auto propertyValue = json.get(propertyName, Json::Value());
     if (propertyValue.empty())
     {
-        return defaultValue;
+        if (isRequired)
+        {
+            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+        }
+        else
+        {
+            return defaultValue;
+        }
     }
 
     if (!propertyValue.isBool())
@@ -93,13 +114,20 @@ bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool
     return propertyValue.asBool();
 }
 
-unsigned int ParseUtil::GetUInt(const Json::Value & json, AdaptiveCardSchemaKey key, unsigned int defaultValue)
+unsigned int ParseUtil::GetUInt(const Json::Value & json, AdaptiveCardSchemaKey key, unsigned int defaultValue, bool isRequired)
 {
     std::string propertyName = AdaptiveCardSchemaKeyToString(key);
     auto propertyValue = json.get(propertyName, Json::Value());
     if (propertyValue.empty())
     {
-        return defaultValue;
+        if (isRequired)
+        {
+            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+        }
+        else
+        {
+            return defaultValue;
+        }
     }
 
     if (!propertyValue.isUInt())
@@ -110,13 +138,20 @@ unsigned int ParseUtil::GetUInt(const Json::Value & json, AdaptiveCardSchemaKey 
     return propertyValue.asUInt();
 }
 
-int ParseUtil::GetInt(const Json::Value & json, AdaptiveCardSchemaKey key, int defaultValue)
+int ParseUtil::GetInt(const Json::Value & json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired)
 {
     std::string propertyName = AdaptiveCardSchemaKeyToString(key);
     auto propertyValue = json.get(propertyName, Json::Value());
     if (propertyValue.empty())
     {
-        return defaultValue;
+        if (isRequired)
+        {
+            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+        }
+        else
+        {
+            return defaultValue;
+        }
     }
 
     if (!propertyValue.isInt())
@@ -207,14 +242,19 @@ ActionType ParseUtil::TryGetActionType(const Json::Value& json)
 
 Json::Value ParseUtil::GetArray(
     const Json::Value& json,
-    AdaptiveCardSchemaKey key)
+    AdaptiveCardSchemaKey key,
+    bool isRequired)
 {
     std::string propertyName = AdaptiveCardSchemaKeyToString(key);
     auto elementArray = json.get(propertyName, Json::Value());
-
-    if (!elementArray.isArray() || elementArray.empty())
+    if (isRequired && elementArray.empty())
     {
-        throw AdaptiveCardParseException("Could not parse specified key " + propertyName + ". It was not an array");
+        throw AdaptiveCardParseException("Could not parse required key: " + propertyName + ". It was not found");
+    }
+
+    if (!elementArray.empty() && !elementArray.isArray())
+    {
+        throw AdaptiveCardParseException("Could not parse specified key: " + propertyName + ". It was not an array");
     }
     return elementArray;
 }

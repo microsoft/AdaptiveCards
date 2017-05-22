@@ -11,10 +11,9 @@ std::shared_ptr<HttpAction> HttpAction::Deserialize(const Json::Value& json)
 {
     std::shared_ptr<HttpAction> httpAction = BaseActionElement::Deserialize<HttpAction>(json);
 
-    httpAction->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
-    httpAction->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url));
+    httpAction->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
     httpAction->SetBody(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Body));
-    httpAction->SetMethod(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Method));
+    httpAction->SetMethod(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Method, true));
 
     return httpAction;
 }
