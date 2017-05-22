@@ -1291,7 +1291,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IAdaptiveBoundaryOptions> hostBorderOptions;
         THROW_IF_FAILED(containerStyleConfig->get_BorderThickness(&hostBorderOptions));
         Thickness borderThickness = ThicknessFromBoundaryOptions(hostBorderOptions.Get());
-        containerBorder->put_BorderThickness(borderThickness);
+        THROW_IF_FAILED(containerBorder->put_BorderThickness(borderThickness));
 
         ComPtr<IUIElement> stackPanelAsUIElement;
         THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsUIElement));

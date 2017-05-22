@@ -8,7 +8,7 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class Column extends Container {
+public class Column extends BaseCardElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -63,16 +63,16 @@ public class Column extends Container {
     return (cPtr == 0) ? null : new Column(cPtr, true);
   }
 
-  public CardElementType GetElementType() {
-    return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.Column_GetElementType(swigCPtr, this));
-  }
-
   public String GetSize() {
     return AdaptiveCardObjectModelJNI.Column_GetSize(swigCPtr, this);
   }
 
   public void SetSize(String value) {
     AdaptiveCardObjectModelJNI.Column_SetSize(swigCPtr, this, value);
+  }
+
+  public BaseCardElementVector GetItems() {
+    return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Column_GetItems__SWIG_0(swigCPtr, this), false);
   }
 
   public static Column dynamic_cast(BaseCardElement baseCardElement) {
