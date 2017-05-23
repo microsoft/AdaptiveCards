@@ -164,7 +164,7 @@
 </div><script>renderCard('TextBlock.ColorCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",
@@ -257,7 +257,7 @@
 </div><script>renderCard('TextBlock.MaxLinesCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",
@@ -280,7 +280,7 @@
 </div><script>renderCard('TextBlock.SeparationCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",
@@ -311,7 +311,7 @@
 </div><script>renderCard('TextBlock.SizeCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",
@@ -351,7 +351,7 @@
 </div><script>renderCard('TextBlock.TextCard', {
     "$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",
@@ -366,7 +366,7 @@
 </div><script>renderCard('TextBlock.WeightCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",
@@ -392,7 +392,7 @@
 </div><script>renderCard('TextBlock.WrapCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",
@@ -771,20 +771,40 @@
 <div id='Input.TextCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Text.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.TextCard', {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "Input.Text",
-            "id": "1234",
-            "placeholder": "enter comment",
-            "maxLength": 500,
-            "isMultiline": false,
-            "speak":"What comments do you have?",
-            "value": "This is a pre-filled value"
-        }
-    ]
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "0.5",
+  "body": [
+    {
+      "type": "Input.Text",
+      "id": "comment",
+      "placeholder": "enter comment",
+      "maxLength": 500,
+      "isMultiline": false,
+      "speak": "What comments do you have?",
+      "value": "This is a pre-filled value"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Action.Submit data",
+      "data": {
+        "myProperty": 12
+      }
+    },
+    {
+      "type": "Action.Http",
+      "method": "POST",
+      "url": "http://some.com/webhook",
+      "title": "Action.Http POST data",
+      "body": "myProperty=12\\ncomment={{comment.Value}}",
+      "headers": {
+        "content-type": "xyz"
+      }
+    }
+
+  ]
 });</script>
 <h2 onclick='toggleContent("Input.Text.StyleContent")'>Input.Text.Style</h2>
 <div id='Input.Text.StyleContent' style='display:block'>
@@ -793,7 +813,7 @@
 </div><script>renderCard('Input.Text.StyleCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",
@@ -910,20 +930,40 @@
 <div id='Input.NumberCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Number.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.NumberCard', {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "Input.Number",
-            "id": "1234",
-            "placeholder": "Enter a number",
-            "speak": "How many do you want?",
-            "min": 1,
-            "max": 10,
-            "value": 3
-        }
-    ]
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "0.5",
+  "body": [
+    {
+      "type": "Input.Number",
+      "id": "quantity",
+      "placeholder": "Enter a number",
+      "speak": "How many do you want?",
+      "min": 1,
+      "max": 10,
+      "value": 3
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Action.Submit data",
+      "data": {
+        "myProperty": 12
+      }
+    },
+    {
+      "type": "Action.Http",
+      "method": "POST",
+      "url": "http://some.com/webhook",
+      "title": "Action.Http POST data",
+      "body": "myProperty=12\\nquantity={{quantity.Value}}",
+      "headers": {
+        "content-type": "xyz"
+      }
+    }
+
+  ]
 });</script>
 </div>
 <div class='element' id='InputDateContent' style='display:none'>
@@ -998,20 +1038,40 @@
 <div id='Input.DateCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Date.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.DateCard', {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "Input.Date",
-            "id": "1234",
-            "placeholder": "Enter a date",
-            "speak":"What is the due date?",
-            "min": "1/1/2017",
-            "max": "6/1/2017",
-            "value": "3/1/2017"
-        }
-    ]
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "0.5",
+  "body": [
+    {
+      "type": "Input.Date",
+      "id": "dueDate",
+      "placeholder": "Enter a date",
+      "speak": "What is the due date?",
+      "min": "1/1/2017",
+      "max": "6/1/2017",
+      "value": "3/1/2017"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Action.Submit data",
+      "data": {
+        "myProperty": 12
+      }
+    },
+    {
+      "type": "Action.Http",
+      "method": "POST",
+      "url": "http://some.com/webhook",
+      "title": "Action.Http POST data",
+      "body": "myProperty=12\\ndueDate={{dueDate.Value}}",
+      "headers": {
+        "content-type": "xyz"
+      }
+    }
+
+  ]
 });</script>
 </div>
 <div class='element' id='InputTimeContent' style='display:none'>
@@ -1086,19 +1146,39 @@
 <div id='Input.TimeCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Time.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.TimeCard', {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "Input.Time",
-            "id": "1234",
-            "placeholder": "What time do you want to meet?",
-            "min": "9:00 AM",
-            "max": "5:00 PM",
-            "value": "11:00 AM"
-        }
-    ]
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "0.5",
+  "body": [
+    {
+      "type": "Input.Time",
+      "id": "meetingTime",
+      "placeholder": "What time do you want to meet?",
+      "min": "9:00 AM",
+      "max": "5:00 PM",
+      "value": "11:00 AM"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Action.Submit data",
+      "data": {
+        "myProperty": 12
+      }
+    },
+    {
+      "type": "Action.Http",
+      "method": "POST",
+      "url": "http://some.com/webhook",
+      "title": "Action.Http POST data",
+      "body": "myProperty=12\\nmeetingTime={{meetingTime.Value}}",
+      "headers": {
+        "content-type": "xyz"
+      }
+    }
+
+  ]
 });</script>
 </div>
 <div class='element' id='InputToggleContent' style='display:none'>
@@ -1176,19 +1256,39 @@
 <div id='Input.ToggleCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.Toggle.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.ToggleCard', {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type":"Input.Toggle",
-            "id": "IsCool",
-            "title": "Cool?",
-            "value": "true",
-            "valueOn": "true",
-            "valueOff": "false"
-        }
-    ]
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "0.5",
+  "body": [
+    {
+      "type": "Input.Toggle",
+      "id": "IsCool",
+      "title": "Cool?",
+      "value": "true",
+      "valueOn": "true",
+      "valueOff": "false"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Action.Submit data",
+      "data": {
+        "myProperty": 12
+      }
+    },
+    {
+      "type": "Action.Http",
+      "method": "POST",
+      "url": "http://some.com/webhook",
+      "title": "Action.Http POST data",
+      "body": "myProperty=12\\nIsCool={{IsCool.Value}}",
+      "headers": {
+        "content-type": "xyz"
+      }
+    }
+
+  ]
 });</script>
 </div>
 <div class='element' id='InputChoiceSetContent' style='display:none'>
@@ -1303,117 +1403,137 @@
 <div id='Input.ChoiceSetCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/Input.ChoiceSet.json'>Try it Yourself »</a>
 </div><script>renderCard('Input.ChoiceSetCard', {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "What color do you want? *(isMultiSelect:false, style:compact)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor",
+      "style": "compact",
+      "isMultiSelect": false,
+      "value": "1",
+      "choices": [
         {
-            "type": "TextBlock",
-            "text": "What color do you want? *(isMultiSelect:false, style:compact)*"
+          "title": "Red",
+          "value": "1",
+          "isSelected": true
         },
         {
-            "type": "Input.ChoiceSet",
-            "id": "myColor",
-            "style": "compact",
-            "isMultiSelect": false,
-            "value": "1",
-            "choices": [
-                {
-                    "title": "Red",
-                    "value": "1",
-                    "isSelected": true
-                },
-                {
-                    "title": "Green",
-                    "value": "2"
-                },
-                {
-                    "title": "Blue",
-                    "value": "3"
-                }
-            ]
+          "title": "Green",
+          "value": "2"
         },
         {
-            "type": "TextBlock",
-            "text": "What color do you want? *(isMultiSelect:false, style:expanded)*"
-        },
-        {
-            "type": "Input.ChoiceSet",
-            "id": "myColor2",
-            "style": "expanded",
-            "isMultiSelect": false,
-            "value": "1",
-            "choices": [
-                {
-                    "title": "Red",
-                    "value": "1",
-                    "isSelected": true
-                },
-                {
-                    "title": "Green",
-                    "value": "2"
-                },
-                {
-                    "title": "Blue",
-                    "value": "3"
-                }
-            ]
-        },
-        {
-            "type": "TextBlock",
-            "text": "What colors do you want? *(isMultiSelect:true, style:compact)*"
-        },
-        {
-            "type": "Input.ChoiceSet",
-            "id": "myColor3",
-            "isMultiSelect": true,
-            "value": "1,3",
-            "style": "compact",
-            "choices": [
-                {
-                    "title": "Red",
-                    "value": "1",
-                    "isSelected": true
-                },
-                {
-                    "title": "Green",
-                    "value": "2"
-                },
-                {
-                    "title": "Blue",
-                    "value": "3",
-                    "isSelected": true
-                }
-            ]
-        },
-        {
-            "type": "TextBlock",
-            "text": "What colors do you want? *(isMultiSelect:true, style:expanded)*"
-        },
-        {
-            "type": "Input.ChoiceSet",
-            "id": "myColor3",
-            "isMultiSelect": true,
-            "value": "1",
-            "style": "expanded",
-            "choices": [
-                {
-                    "title": "Red",
-                    "value": "1",
-                    "isSelected": true
-                },
-                {
-                    "title": "Green",
-                    "value": "2"
-                },
-                {
-                    "title": "Blue",
-                    "value": "3",
-                    "isSelected": true
-                }
-            ]
+          "title": "Blue",
+          "value": "3"
         }
-    ]
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What color do you want? *(isMultiSelect:false, style:expanded)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor2",
+      "style": "expanded",
+      "isMultiSelect": false,
+      "value": "1",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1",
+          "isSelected": true
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What colors do you want? *(isMultiSelect:true, style:compact)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor3",
+      "isMultiSelect": true,
+      "value": "1,3",
+      "style": "compact",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1",
+          "isSelected": true
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3",
+          "isSelected": true
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What colors do you want? *(isMultiSelect:true, style:expanded)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor4",
+      "isMultiSelect": true,
+      "value": "1",
+      "style": "expanded",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1",
+          "isSelected": true
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3",
+          "isSelected": true
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Action.Submit data",
+      "data": {
+        "myProperty": 12
+      }
+    },
+    {
+      "type": "Action.Http",
+      "method": "POST",
+      "url": "http://some.com/webhook",
+      "title": "Action.Http POST data",
+      "body": "myProperty=12\ncolor1={{myColor.Value}}\ncolor2={{myColor2.Value}}\ncolor3={{myColor3.Value}}\ncolor4={{myColor4.Value}}",
+      "headers": {
+        "content-type": "xyz"
+      }
+    }
+
+  ]
 });</script>
 </div>
 <div class='element' id='ContainerContent' style='display:none'>
@@ -1489,7 +1609,7 @@
 </div><script>renderCard('Container.ItemsCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "Container",
@@ -1513,7 +1633,7 @@
 </div><script>renderCard('Container.SelectActionCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "Container",
@@ -1542,7 +1662,7 @@
 </div><script>renderCard('Container.SeparationCard', {
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
-  "version": "1.0",
+  "version": "0.5",
   "body": [
     {
       "type": "Container",
@@ -1646,7 +1766,7 @@
 </div><script>renderCard('ColumnSet.ColumnsCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "ColumnSet",
@@ -1702,7 +1822,7 @@
 </div><script>renderCard('ColumnSet.SeparationCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "ColumnSet",
@@ -1843,7 +1963,7 @@
 </div><script>renderCard('Column.SelectActionCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "ColumnSet",
@@ -1913,7 +2033,7 @@
 </div><script>renderCard('Column.SeparationCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "ColumnSet",
@@ -1984,7 +2104,7 @@
 </div><script>renderCard('Column.SizeCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "ColumnSet",
@@ -2047,7 +2167,7 @@
 </div><script>renderCard('Column.SizeRatioCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "ColumnSet",
@@ -2134,7 +2254,7 @@
 </div><script>renderCard('FactSetCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "FactSet",
@@ -2201,7 +2321,7 @@
 </div><script>renderCard('ImageSet.ImageSizeCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "ImageSet",
@@ -2242,7 +2362,7 @@
 </div><script>renderCard('ImageSetCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "ImageSet",
@@ -2270,7 +2390,7 @@
                 {
                     "type": "Image",
                     "url": "http://adaptivecards.io/api/cat/0"
-                },
+                }
             ]
         }
     ]
@@ -2324,7 +2444,7 @@ with embedded web browser</p>
 </div><script>renderCard('Action.OpenUrlCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "Image",
@@ -2389,7 +2509,7 @@ For example: With BotFramework bots the client would send an activity through th
 </div><script>renderCard('Action.SubmitCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "Input.Text",
@@ -2480,7 +2600,7 @@ to an arbitrary url.</p>
 </div><script>renderCard('Action.HttpCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "Input.Text",
@@ -2554,7 +2674,7 @@ to an arbitrary url.</p>
 </div><script>renderCard('Action.ShowCardCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",

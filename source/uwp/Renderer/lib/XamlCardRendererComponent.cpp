@@ -57,7 +57,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     _Use_decl_annotations_
     HRESULT XamlCardRenderer::add_Action(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionEventArgs*>* handler,
+        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>* handler,
         EventRegistrationToken* token)
     {
         return m_events->Add(handler, token);

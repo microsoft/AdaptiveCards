@@ -64,6 +64,7 @@
 <a href="#FlightItinerary" id='FlightItineraryLink' class="elementLink w3-bar-item w3-button">Flight Itinerary</a>
 <a href="#FlightUpdate" id='FlightUpdateLink' class="elementLink w3-bar-item w3-button">Flight Update</a>
 <a href="#ImageGallery" id='ImageGalleryLink' class="elementLink w3-bar-item w3-button">Image Gallery</a>
+<a href="#InputForm" id='InputFormLink' class="elementLink w3-bar-item w3-button">Input Form</a>
 <a href="#Restaurant" id='RestaurantLink' class="elementLink w3-bar-item w3-button">Restaurant</a>
 <a href="#StockUpdate" id='StockUpdateLink' class="elementLink w3-bar-item w3-button">Stock Update</a>
 <a href="#WeatherCompact" id='WeatherCompactLink' class="elementLink w3-bar-item w3-button">Weather Compact</a>
@@ -188,7 +189,7 @@
                         "headers": {
 							"content-type": "application/json"
 						},
-						"body": "{ 'comment' : '{{comment.value}}' }"
+						"body": "{ 'comment' : '{{dueDate.value}}' }"
 				    }
 				]
 			}
@@ -234,7 +235,7 @@
 <script>renderCard('CalendarReminderCard', {
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
-  "version": "1.0",
+  "version": "0.5",
   "speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at 12:30pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
   "body": [
     {
@@ -306,7 +307,7 @@
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Flight Itinerary.json'>Try it Yourself »</a>
 <script>renderCard('FlightItineraryCard', {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"version": "1.0",
+	"version": "0.5",
 	"type": "AdaptiveCard",
 	"speak": "<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>",
 	"body": [
@@ -724,7 +725,7 @@
 <script>renderCard('ImageGalleryCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "TextBlock",
@@ -782,13 +783,106 @@
     ]
 });</script>
 </div>
+<div class='element' id='InputFormContent' style='display:none'>
+<div id='InputFormCard' class='card' ></div>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Input Form.json'>Try it Yourself »</a>
+<script>renderCard('InputFormCard', {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "type": "AdaptiveCard",
+        "version": "0.5",
+        "body": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "size": 2,
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Tell us about yourself...",
+                    "weight": "bolder",
+                    "size": "large"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "We just need a few more details to get you booked for the trip of a lifetime!",
+                    "isSubtle": true,
+                    "wrap": true
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "Don't worry, we'll never share or sell your information.",
+                    "isSubtle": true,
+                    "wrap": true,
+                    "size": "small"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "Your name",
+                    "wrap": true
+                  },
+                  {
+                    "type": "Input.Text",
+                    "id": "myName",
+                    "placeholder": "Last, First",
+                    "separataion": "none"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "Your email",
+                    "wrap": true
+                  },
+                  {
+                    "type": "Input.Text",
+                    "id": "myEmail",
+                    "placeholder": "youremail@example.com",
+                    "style": "email",
+                    "separataion": "none"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "Phone Number"
+                  },
+                  {
+                    "type": "Input.Text",
+                    "id": "myTel",
+                    "placeholder": "xxx.xxx.xxxx",
+                    "style": "tel"
+                  }
+                ]
+              },
+              {
+                "type": "Column",
+                "size": 1,
+                "items": [
+                  {
+                    "type": "Image",
+                    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg",
+                    "size": "auto"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title":  "Submit" 
+          }
+        ]
+          
+      }
+);</script>
+</div>
 <div class='element' id='RestaurantContent' style='display:none'>
 <div id='RestaurantCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Restaurant.json'>Try it Yourself »</a>
 <script>renderCard('RestaurantCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "speak": "<s>Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
@@ -845,7 +939,7 @@
 <script>renderCard('StockUpdateCard', {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
     "body": [
         {
@@ -922,7 +1016,7 @@
 <script>renderCard('WeatherCompactCard', {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "0.5",
 	"speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
 	"body": [
 		{
@@ -1018,7 +1112,7 @@
 <script>renderCard('WeatherLargeCard', {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "0.5",
 	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
 	"backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Background-Dark.jpg",
 	"body": [

@@ -3,10 +3,8 @@
 #include "AdaptiveColorOptions.h"
 #include "AdaptiveColorOption.h"
 #include "AdaptiveHostOptions.h"
-#include "AdaptiveHttpActionEventArgs.h"
-#include "AdaptiveOpenUrlActionEventArgs.h"
 #include "AdaptiveImage.h"
-#include "AdaptiveSubmitActionEventArgs.h"
+#include "AdaptiveActionEventArgs.h"
 #include "DefaultResourceDictionary.h"
 #include <windows.foundation.collections.h>
 #include <windows.storage.h>
@@ -65,6 +63,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_RandomAccessStream).Get(), &m_randomAccessStreamStatics));
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &m_propertyValueStatics));
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Text_FontWeights).Get(), &m_fontWeightsStatics));
 
         InitializeDefaultResourceDictionary();
     }
@@ -559,6 +558,74 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         });
     }
 
+    void XamlBuilder::BuildShowCard(
+        XamlCardRenderer* renderer,
+        IAdaptiveShowCardOptions* showCardOptions,
+        IAdaptiveActionElement* action,
+        IUIElement** uiShowCard)
+    {
+        ComPtr<IAdaptiveActionElement> localAction(action);
+        ComPtr<IAdaptiveShowCardAction> showCardAction;
+        THROW_IF_FAILED(localAction.As(&showCardAction));
+
+        ComPtr<IAdaptiveCard> showCard;
+        THROW_IF_FAILED(showCardAction->get_Card(showCard.GetAddressOf()));
+
+        ComPtr<IUIElement> localUiShowCard;
+        BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), renderer, false);
+
+        ComPtr<IGrid2> showCardGrid;
+        THROW_IF_FAILED(localUiShowCard.As(&showCardGrid));
+
+        // Set the padding
+        ComPtr<IAdaptiveBoundaryOptions> cardPadding;
+        THROW_IF_FAILED(showCardOptions->get_Padding(&cardPadding));
+
+        UINT32 top, bottom;
+        THROW_IF_FAILED(cardPadding->get_Top(&top));
+        THROW_IF_FAILED(cardPadding->get_Bottom(&bottom));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ActionMode showCardActionMode;
+        THROW_IF_FAILED(showCardOptions->get_ActionMode(&showCardActionMode));
+
+        UINT32 left = 0;
+        UINT32 right = 0;
+        if (showCardActionMode != ActionMode_InlineEdgeToEdge)
+        {
+            THROW_IF_FAILED(cardPadding->get_Left(&left));
+            THROW_IF_FAILED(cardPadding->get_Right(&right));
+        }
+
+        Thickness padding = { (double)left, (double)top, (double)right, (double)bottom };
+        THROW_IF_FAILED(showCardGrid->put_Padding(padding));
+
+        // Set the top margin
+        ComPtr<IFrameworkElement> showCardFrameworkElement;
+        THROW_IF_FAILED(localUiShowCard.As(&showCardFrameworkElement));
+
+        UINT32 inlineTopMargin;
+        THROW_IF_FAILED(showCardOptions->get_InlineTopMargin(&inlineTopMargin));
+        Thickness margin = { 0, (double)inlineTopMargin, 0, 0 };
+        THROW_IF_FAILED(showCardFrameworkElement->put_Margin(margin));
+
+        // Set the background color
+        Color backgroundColor;
+        THROW_IF_FAILED(showCardOptions->get_BackgroundColor(&backgroundColor));
+        ComPtr<ISolidColorBrush> solidColorBrush = XamlHelpers::CreateXamlClass<ISolidColorBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_SolidColorBrush));
+        THROW_IF_FAILED(solidColorBrush->put_Color(backgroundColor));
+        ComPtr<IBrush> asBrush;
+        THROW_IF_FAILED(solidColorBrush.As(&asBrush));
+
+        ComPtr<IPanel> showCardAsPanel;
+        THROW_IF_FAILED(localUiShowCard.As(&showCardAsPanel));
+        THROW_IF_FAILED(showCardAsPanel->put_Background(asBrush.Get()));
+
+        // Set the visibility as Collapsed until the action is triggered
+        THROW_IF_FAILED(localUiShowCard->put_Visibility(Visibility_Collapsed));
+
+        *uiShowCard = localUiShowCard.Detach();
+    }
+
     _Use_decl_annotations_
     void XamlBuilder::BuildActions(
         IVector<IAdaptiveActionElement*>* children,
@@ -625,6 +692,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         UINT32 maxActions;
         THROW_IF_FAILED(actionOptions->get_MaxActions(&maxActions));
 
+        ComPtr<IAdaptiveShowCardOptions> showCardOptions;
+        THROW_IF_FAILED(actionOptions->get_ShowCard(&showCardOptions));
+
+        ABI::AdaptiveCards::XamlCardRenderer::ActionMode showCardActionMode;
+        THROW_IF_FAILED(showCardOptions->get_ActionMode(&showCardActionMode));
+
         // Add the action buttons to the stack panel
         ComPtr<IPanel> actionsPanel;
         THROW_IF_FAILED(actionStackPanel.As(&actionsPanel));
@@ -654,20 +727,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 ABI::AdaptiveCards::XamlCardRenderer::ActionType actionType;
                 THROW_IF_FAILED(action->get_ActionType(&actionType));
 
-                // If this is a show card action, render the card that will be shown
+                // If this is a show card action and we're rendering the actions inline, render the card that will be shown
                 ComPtr<IUIElement> uiShowCard;
-                if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard)
+                if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard && 
+                    showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
                 {
-                    ComPtr<IAdaptiveShowCardAction> showCardAction;
-                    THROW_IF_FAILED(action.As(&showCardAction));
-
-                    ComPtr<IAdaptiveCard> showCard;
-                    THROW_IF_FAILED(showCardAction->get_Card(showCard.GetAddressOf()));
-
-                    BuildXamlTreeFromAdaptiveCard(showCard.Get(), uiShowCard.GetAddressOf(), strongRenderer.Get(), false);
-
-                    THROW_IF_FAILED(uiShowCard->put_Visibility(Visibility_Collapsed));
-
+                    BuildShowCard(strongRenderer.Get(), showCardOptions.Get(), action.Get(), uiShowCard.GetAddressOf());
                     allShowCards->push_back(uiShowCard);
 
                     ComPtr<IPanel> showCardsPanel;
@@ -680,54 +745,33 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 THROW_IF_FAILED(button.As(&buttonBase));
 
                 EventRegistrationToken clickToken;
-                THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([actionType, uiShowCard, allShowCards, strongRenderer](IInspectable* sender, IRoutedEventArgs* args) -> HRESULT
+                THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, strongRenderer](IInspectable* sender, IRoutedEventArgs* args) -> HRESULT
                 {
-                    switch (actionType)
+                    if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard &&
+                        showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
                     {
-                        case ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard:
-                        {
-                            // TODO: Handle non-inline show cards
-                            // Check if this show card is currently visible
-                            Visibility currentVisibility;
-                            THROW_IF_FAILED(uiShowCard->get_Visibility(&currentVisibility));
+                        // Check if this show card is currently visible
+                        Visibility currentVisibility;
+                        THROW_IF_FAILED(uiShowCard->get_Visibility(&currentVisibility));
 
-                            // Collapse all cards to make sure that no other show cards are visible
-                            for (std::vector<ComPtr<IUIElement>>::iterator it = allShowCards->begin(); it != allShowCards->end(); ++it)
-                            {
-                                THROW_IF_FAILED((*it)->put_Visibility(Visibility_Collapsed));
-                            }
+                        // Collapse all cards to make sure that no other show cards are visible
+                        for (std::vector<ComPtr<IUIElement>>::iterator it = allShowCards->begin(); it != allShowCards->end(); ++it)
+                        {
+                            THROW_IF_FAILED((*it)->put_Visibility(Visibility_Collapsed));
+                        }
 
-                            // If the card had been collapsed before, show it now
-                            if (currentVisibility == Visibility_Collapsed)
-                            {
-                                THROW_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
-                            }
-                            break;
-                        }
-                        case ABI::AdaptiveCards::XamlCardRenderer::ActionType::Http:
+                        // If the card had been collapsed before, show it now
+                        if (currentVisibility == Visibility_Collapsed)
                         {
-                            // TODO: populate event args for Http
-                            ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                            THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveHttpActionEventArgs>(&eventArgs));
-                            THROW_IF_FAILED(strongRenderer->SendActionEvent(eventArgs.Get()));
-                            break;
+                            THROW_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
                         }
-                        case ABI::AdaptiveCards::XamlCardRenderer::ActionType::OpenUrl:
-                        {
-                            // TODO: populate event args for OpenUrl
-                            ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                            THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveOpenUrlActionEventArgs>(&eventArgs));
-                            THROW_IF_FAILED(strongRenderer->SendActionEvent(eventArgs.Get()));
-                            break;
-                        }
-                        case ABI::AdaptiveCards::XamlCardRenderer::ActionType::Submit:
-                        {
-                            // TODO: populate event args for Submit
-                            ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                            THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveSubmitActionEventArgs>(&eventArgs));
-                            THROW_IF_FAILED(strongRenderer->SendActionEvent(eventArgs.Get()));
-                            break;
-                        }
+                    }
+                    else
+                    {
+                        // TODO: populate event args with values from inputs for Http, OpenUrl, and Submit
+                        ComPtr<IAdaptiveActionEventArgs> eventArgs;
+                        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs>(&eventArgs, action.Get()));
+                        THROW_IF_FAILED(strongRenderer->SendActionEvent(eventArgs.Get()));
                     }
 
                     return S_OK;
@@ -739,6 +783,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         });
 
         XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), parentPanel);
+
+        // TODO: EdgeToEdge show cards should not go in "parentPanel", which has margins applied to it from the adaptive card options
         XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel.Get(), parentPanel);
     }
 
@@ -961,6 +1007,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             break;
         }
         THROW_IF_FAILED(localTextBlock->put_FontSize((double)fontSize));
+
+        ABI::Windows::UI::Text::FontWeight xamlFontWeight;
+        switch (weight)
+        {
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Lighter:
+            THROW_IF_FAILED(m_fontWeightsStatics->get_Light(&xamlFontWeight));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Normal:
+            THROW_IF_FAILED(m_fontWeightsStatics->get_Normal(&xamlFontWeight));
+            break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Bolder:
+            THROW_IF_FAILED(m_fontWeightsStatics->get_Bold(&xamlFontWeight));
+            break;
+        }
+        THROW_IF_FAILED(localTextBlock->put_FontWeight(xamlFontWeight));
     }
 
     _Use_decl_annotations_
@@ -989,6 +1050,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(cardElement.As(&adaptiveTextBlock));
 
         ComPtr<ITextBlock> xamlTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+
+        // ITextBlock2 will be used later on
+        ComPtr<ITextBlock2> xamlTextBlock2;
+        THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
 
         HString text;
         adaptiveTextBlock->get_Text(text.GetAddressOf());
@@ -1029,8 +1094,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // Set the maximum number of lines the text block should show in cases where wrapping is enabled.
         if (shouldWrap)
         {
-            ComPtr<ITextBlock2> xamlTextBlock2;
-            THROW_IF_FAILED(xamlTextBlock.As(&xamlTextBlock2));
             UINT maxLines;
             THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
             THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
@@ -1057,6 +1120,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight;
         THROW_IF_FAILED(adaptiveTextBlock->get_Weight(&textWeight));
+
+        // Ensure left edge of text is consistent regardless of font size, so both small and large fonts
+        // are flush on the left edge of the card by enabling TrimSideBearings
+        THROW_IF_FAILED(xamlTextBlock2->put_OpticalMarginAlignment(OpticalMarginAlignment_TrimSideBearings));
 
         //Style the TextBlock using Host Options
         StyleXamlTextBlock(textblockSize, textColor, isSubtle, textWeight, xamlTextBlock.Get());
@@ -1089,8 +1156,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IEllipse> ellipse = XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
             SetImageOnUIElement(imageUri.Get(), ellipse.Get());
 
-            // Set both Auto and Stretch to Stretch_UniformToFill.  An ellipse set to Stretch_Uniform ends up with size 0.
+            // Set both Auto, Default, and Stretch to Stretch_UniformToFill.  An ellipse set to Stretch_Uniform ends up with size 0.
             if (size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Auto ||
+                size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Default ||
                 size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::Stretch)
             {
                 ComPtr<IShape> ellipseAsShape;
@@ -1242,25 +1310,29 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ComPtr<IPanel> gridAsPanel;
             THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
 
-            // Add Separator to the columnSet
-            ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation;
-            THROW_IF_FAILED(columnAsCardElement->get_Separation(&separation));
-            if (separation != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
+            // If not the first column
+            if (currentColumn > 0)
             {
-                ComPtr<IAdaptiveSeparationOptions> separationOptions;
-                GetSeparationOptionsForElement(columnAsCardElement.Get(), separation, &separationOptions);
-                if (separationOptions != nullptr)
+                // Add Separator to the columnSet
+                ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation;
+                THROW_IF_FAILED(columnAsCardElement->get_Separation(&separation));
+                if (separation != ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle::None)
                 {
-                    //Create a new ColumnDefinition for the separator
-                    ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-                    THROW_IF_FAILED(separatorColumnDefinition->put_Width({ 1.0, GridUnitType::GridUnitType_Auto }));
-                    THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
+                    ComPtr<IAdaptiveSeparationOptions> separationOptions;
+                    GetSeparationOptionsForElement(columnAsCardElement.Get(), separation, &separationOptions);
+                    if (separationOptions != nullptr)
+                    {
+                        //Create a new ColumnDefinition for the separator
+                        ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+                        THROW_IF_FAILED(separatorColumnDefinition->put_Width({ 1.0, GridUnitType::GridUnitType_Auto }));
+                        THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
 
-                    auto separator = CreateSeparator(separationOptions.Get(), false);
-                    ComPtr<IFrameworkElement> separatorAsFrameworkElement;
-                    THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
-                    gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
-                    XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
+                        auto separator = CreateSeparator(separationOptions.Get(), false);
+                        ComPtr<IFrameworkElement> separatorAsFrameworkElement;
+                        THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
+                        gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
+                        XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
+                    }
                 }
             }
 
@@ -1464,6 +1536,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IUIElement** inputChoiceSet)
     {
         ComPtr<IComboBox> comboBox = XamlHelpers::CreateXamlClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
+
+        // Set HorizontalAlignment to Stretch (defaults to Left for combo boxes)
+        ComPtr<IFrameworkElement> comboBoxAsFrameworkElement;
+        THROW_IF_FAILED(comboBox.As(&comboBoxAsFrameworkElement));
+        THROW_IF_FAILED(comboBoxAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
 
         ComPtr<IItemsControl> itemsControl;
         THROW_IF_FAILED(comboBox.As(&itemsControl));

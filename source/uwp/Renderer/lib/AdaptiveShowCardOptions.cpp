@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Util.h"
+#include "AdaptiveBoundaryOptions.h"
 #include "AdaptiveShowCardOptions.h"
 
 using namespace Microsoft::WRL;
@@ -45,15 +46,29 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return E_NOTIMPL;
     }
 
-    IFACEMETHODIMP AdaptiveShowCardOptions::get_AutoPadding(boolean * autoPadding)
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardOptions::get_Padding(IAdaptiveBoundaryOptions** boundaryOptions)
     {
-        *autoPadding = m_sharedShowCardOptions.autoPadding;
+        return MakeAndInitialize<AdaptiveBoundaryOptions>(boundaryOptions, m_sharedShowCardOptions.padding);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardOptions::put_Padding(IAdaptiveBoundaryOptions* value)
+    {
+        return E_NOTIMPL;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardOptions::get_InlineTopMargin(UINT32* inlineTopMargin)
+    {
+        *inlineTopMargin = m_sharedShowCardOptions.inlineTopMargin;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveShowCardOptions::put_AutoPadding(boolean autoPadding)
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardOptions::put_InlineTopMargin(UINT32 inlineTopMargin)
     {
-        m_sharedShowCardOptions.autoPadding = Boolify(autoPadding);
+        m_sharedShowCardOptions.inlineTopMargin = inlineTopMargin;
         return S_OK;
     }
 }}

@@ -19,7 +19,7 @@ There are interface definitions in schema.d.ts which describe the shape of the s
 ```typescript
 let card = {
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "0.5",
     "body": [
         {
             "type": "Container",

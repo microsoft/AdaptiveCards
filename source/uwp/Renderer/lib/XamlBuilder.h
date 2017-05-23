@@ -44,11 +44,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ImageLoadTracker m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
         Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;
-std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
+        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT64, UINT64>>> m_copyStreamOperations;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostOptions> m_hostOptions;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Text::IFontWeightsStatics> m_fontWeightsStatics;
 
         UINT m_fixedWidth = 0;
         UINT m_fixedHeight = 0;
@@ -96,6 +97,11 @@ std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWith
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
             _In_ std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
+        void BuildShowCard(
+            AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveShowCardOptions* showCardOptions,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* action,
+            ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,
             AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,

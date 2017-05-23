@@ -79,7 +79,7 @@ AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
 ## Customization
 
 ### HostConfig 
-To customize the renderer, provide an instance of the HostConfig object. See [Host Config Schema](../HostConfigSchema.md) for the full description. When you register it, you are setting the global host config for all rendering actions you perform with the library.
+To customize the renderer, provide an instance of the HostConfig object. See [Host Config Schema](/documentation/#display-hostconfigschema) for the full description. When you register it, you are setting the global host config for all rendering actions you perform with the library.
 
 Example:
 ```javascript

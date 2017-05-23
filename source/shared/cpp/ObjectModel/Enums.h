@@ -184,7 +184,8 @@ enum class ActionsOrientation {
 };
 
 enum class ActionMode {
-    Inline = 0,
+    InlineEdgeToEdge = 0,
+    Inline,
     Popup
 };
 

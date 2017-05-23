@@ -13,11 +13,6 @@ namespace GenerateSamples
     {
         static void Main(string[] args)
         {
-            if (args.Length != 1)
-            {
-                Console.WriteLine("GenerateSamples pathtosamples");
-                return;
-            }
             string header;
             using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("GenerateSamples.Header.txt"))
             using (StreamReader reader = new StreamReader(stream))
