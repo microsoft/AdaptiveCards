@@ -170,11 +170,12 @@ function setupEditor() {
     editor.setTheme("ace/theme/chrome");
     editor.setOptions(
         {
-            "showPrintMargin": false,
-            "displayIndentGuides": false,
-            "showFoldWidgets": true,
-            "highlightSelectedWord": false,
-            "fontSize": "14px",
+            showPrintMargin: false,
+            displayIndentGuides: false,
+            showFoldWidgets: true,
+            highlightSelectedWord: false,
+            fontFamily: "Consolas",
+            fontSize: "14px"
         });
     editor.getSession().setMode("ace/mode/json");
     editor.getSession().on(
