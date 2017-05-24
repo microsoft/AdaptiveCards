@@ -2012,17 +2012,19 @@ export class Container extends ContainerBase {
     protected internalRender(): HTMLElement {
         var renderedContainer = super.internalRender();
 
-        var styleDefinition = this.style == "normal" ? hostConfig.container.normal : hostConfig.container.emphasis;
+        if (renderedContainer) {
+            var styleDefinition = this.style == "normal" ? hostConfig.container.normal : hostConfig.container.emphasis;
 
-        if (styleDefinition.borderThickness) {
-            renderedContainer.style.borderTop = styleDefinition.borderThickness.top + "px solid";
-            renderedContainer.style.borderRight = styleDefinition.borderThickness.right + "px solid";
-            renderedContainer.style.borderBottom = styleDefinition.borderThickness.bottom + "px solid";
-            renderedContainer.style.borderLeft = styleDefinition.borderThickness.left + "px solid";
-        }
+            if (styleDefinition.borderThickness) {
+                renderedContainer.style.borderTop = styleDefinition.borderThickness.top + "px solid";
+                renderedContainer.style.borderRight = styleDefinition.borderThickness.right + "px solid";
+                renderedContainer.style.borderBottom = styleDefinition.borderThickness.bottom + "px solid";
+                renderedContainer.style.borderLeft = styleDefinition.borderThickness.left + "px solid";
+            }
 
-        if (styleDefinition.borderColor) {
-            renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
+            if (styleDefinition.borderColor) {
+                renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
+            }
         }
 
         return renderedContainer;
