@@ -48,6 +48,7 @@ static std::unordered_map<std::string, AdaptiveCardSchemaKey, CaseInsensitiveHas
     { "actions", AdaptiveCardSchemaKey::Actions },
     { "method", AdaptiveCardSchemaKey::Method },
     { "card", AdaptiveCardSchemaKey::Card },
+    { "style", AdaptiveCardSchemaKey::ContainerStyle },
 };
 
 static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> AdaptiveCardSchemaKeyEnumToName =
@@ -96,6 +97,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Actions, "actions" },
     { AdaptiveCardSchemaKey::Method, "method" },
     { AdaptiveCardSchemaKey::Card, "card" },
+    { AdaptiveCardSchemaKey::ContainerStyle, "style" },
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> CardElementTypeNameToEnum =
@@ -314,6 +316,18 @@ static std::unordered_map<TextInputStyle, std::string, EnumHash> InputTextStyleE
     { TextInputStyle::Tel, "Tel" },
     { TextInputStyle::Url, "Url" },
     { TextInputStyle::Email, "Email" },
+};
+
+static std::unordered_map<std::string, ContainerStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ContainerStyleNameToEnum =
+{
+    { "Normal", ContainerStyle::Normal},
+    { "Emphasis", ContainerStyle::Emphasis },
+};
+
+static std::unordered_map<ContainerStyle, std::string, EnumHash> ContainerStyleEnumToName =
+{
+    { ContainerStyle::Normal, "Normal" },
+    { ContainerStyle::Emphasis, "Emphasis" },
 };
 
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
@@ -576,5 +590,22 @@ TextInputStyle TextInputStyleFromString(const std::string & style)
         throw std::out_of_range("Invalid InputTextStyle: " + style);
     }
     return InputTextStyleNameToEnum[style];
+}
+
+const std::string ContainerStyleToString(ContainerStyle style)
+{
+    if (ContainerStyleEnumToName.find(style) == ContainerStyleEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ContainerStyle");
+    }
+    return ContainerStyleEnumToName[style];
+}
+ContainerStyle ContainerStyleFromString(const std::string & style)
+{
+    if (ContainerStyleNameToEnum.find(style) == ContainerStyleNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ContainerStyle: " + style);
+    }
+    return ContainerStyleNameToEnum[style];
 }
 }

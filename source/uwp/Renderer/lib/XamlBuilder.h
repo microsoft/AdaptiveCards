@@ -31,7 +31,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT SetFixedDimensions(_In_ UINT width, _In_ UINT height) noexcept;
         HRESULT SetRenderOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::RenderOptions renderOptions) noexcept;
         HRESULT SetEnableXamlImageHandling(_In_ bool enableXamlImageHandling) noexcept;
-        HRESULT SetBackgroundImageUri(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri) noexcept;
         HRESULT SetOverrideDictionary(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) noexcept;
         HRESULT SetHostOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostOptions* hostOptions) noexcept;
 
@@ -63,7 +62,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         static void ApplyMarginToXamlElement(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions* boundaryOptions,
             _Inout_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
-
+        static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
+        static ABI::Windows::UI::Xaml::Thickness ThicknessFromBoundaryOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveBoundaryOptions* boundaryOptions);
         void StyleXamlTextBlock(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::TextSize size,
             _In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor color,
@@ -110,6 +110,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
             _In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation,
             _COM_Outptr_result_maybenull_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions** separationOptions);
+
         template<typename T>
         void SetContent(T* item, HSTRING contentString);
         template<typename T>
@@ -124,9 +125,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         void BuildContainer(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);
-        void BuildColumnSet(
+        void BuildColumn(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnControl);
+        void BuildColumnSet(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnSetControl);
         void BuildFactSet(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** factSetControl);

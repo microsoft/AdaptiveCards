@@ -8,10 +8,9 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public final class ActionMode {
-  public final static ActionMode InlineEdgeToEdge = new ActionMode("InlineEdgeToEdge", AdaptiveCardObjectModelJNI.ActionMode_InlineEdgeToEdge_get());
-  public final static ActionMode Inline = new ActionMode("Inline");
-  public final static ActionMode Popup = new ActionMode("Popup");
+public final class ContainerStyle {
+  public final static ContainerStyle Normal = new ContainerStyle("Normal", AdaptiveCardObjectModelJNI.ContainerStyle_Normal_get());
+  public final static ContainerStyle Emphasis = new ContainerStyle("Emphasis");
 
   public final int swigValue() {
     return swigValue;
@@ -21,33 +20,33 @@ public final class ActionMode {
     return swigName;
   }
 
-  public static ActionMode swigToEnum(int swigValue) {
+  public static ContainerStyle swigToEnum(int swigValue) {
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
     for (int i = 0; i < swigValues.length; i++)
       if (swigValues[i].swigValue == swigValue)
         return swigValues[i];
-    throw new IllegalArgumentException("No enum " + ActionMode.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + ContainerStyle.class + " with value " + swigValue);
   }
 
-  private ActionMode(String swigName) {
+  private ContainerStyle(String swigName) {
     this.swigName = swigName;
     this.swigValue = swigNext++;
   }
 
-  private ActionMode(String swigName, int swigValue) {
+  private ContainerStyle(String swigName, int swigValue) {
     this.swigName = swigName;
     this.swigValue = swigValue;
     swigNext = swigValue+1;
   }
 
-  private ActionMode(String swigName, ActionMode swigEnum) {
+  private ContainerStyle(String swigName, ContainerStyle swigEnum) {
     this.swigName = swigName;
     this.swigValue = swigEnum.swigValue;
     swigNext = this.swigValue+1;
   }
 
-  private static ActionMode[] swigValues = { InlineEdgeToEdge, Inline, Popup };
+  private static ContainerStyle[] swigValues = { Normal, Emphasis };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

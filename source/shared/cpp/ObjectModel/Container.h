@@ -10,22 +10,24 @@ class Container : public BaseCardElement
 {
 public:
     Container();
-    Container(SeparationStyle separation, std::string speak);
-    Container(SeparationStyle separation, std::string speak, std::vector<std::shared_ptr<BaseCardElement>>& items);
+    Container(SeparationStyle separation, std::string speak, ContainerStyle style);
+    Container(SeparationStyle separation, std::string speak, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual std::string Serialize();
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
+    ContainerStyle GetContainerStyle() const;
+    void SetContainerStyle(const ContainerStyle value);
+
     static std::shared_ptr<Container> Deserialize(const Json::Value& root);
     static std::shared_ptr<Container> DeserializeFromString(const std::string& jsonString);
 
-protected:
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
-    void SetItems(std::vector<std::shared_ptr<BaseCardElement>>& items);
-
 private:
+    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
+
+    ContainerStyle m_style;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
 };
 }

@@ -48,6 +48,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style)
+    {
+        *style = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle>(m_sharedContainer->GetContainerStyle());
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style)
+    {
+        m_sharedContainer->SetContainerStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveContainer::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
     {
         *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedContainer->GetSeparationStyle());

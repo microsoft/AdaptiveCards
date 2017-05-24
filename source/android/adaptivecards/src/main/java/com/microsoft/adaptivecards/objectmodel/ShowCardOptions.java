@@ -51,12 +51,21 @@ public class ShowCardOptions {
     return AdaptiveCardObjectModelJNI.ShowCardOptions_backgroundColor_get(swigCPtr, this);
   }
 
-  public void setAutoPadding(boolean value) {
-    AdaptiveCardObjectModelJNI.ShowCardOptions_autoPadding_set(swigCPtr, this, value);
+  public void setInlineTopMargin(long value) {
+    AdaptiveCardObjectModelJNI.ShowCardOptions_inlineTopMargin_set(swigCPtr, this, value);
   }
 
-  public boolean getAutoPadding() {
-    return AdaptiveCardObjectModelJNI.ShowCardOptions_autoPadding_get(swigCPtr, this);
+  public long getInlineTopMargin() {
+    return AdaptiveCardObjectModelJNI.ShowCardOptions_inlineTopMargin_get(swigCPtr, this);
+  }
+
+  public void setPadding(BoundaryOptions value) {
+    AdaptiveCardObjectModelJNI.ShowCardOptions_padding_set(swigCPtr, this, BoundaryOptions.getCPtr(value), value);
+  }
+
+  public BoundaryOptions getPadding() {
+    long cPtr = AdaptiveCardObjectModelJNI.ShowCardOptions_padding_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new BoundaryOptions(cPtr, false);
   }
 
   public ShowCardOptions() {
