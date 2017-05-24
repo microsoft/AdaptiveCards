@@ -911,12 +911,55 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 }
                 break;
             }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputChoiceSet:
+            {
+                ComPtr<IAdaptiveChoiceSetInputOptions> choiceSetOptions;
+                THROW_IF_FAILED(m_hostOptions->get_ChoiceSetInput(&choiceSetOptions));
+                THROW_IF_FAILED(choiceSetOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputDate:
+            {
+                ComPtr<IAdaptiveDateInputOptions> dateOptions;
+                THROW_IF_FAILED(m_hostOptions->get_DateInput(&dateOptions));
+                THROW_IF_FAILED(dateOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputNumber:
+            {
+                ComPtr<IAdaptiveNumberInputOptions> numberOptions;
+                THROW_IF_FAILED(m_hostOptions->get_NumberInput(&numberOptions));
+                THROW_IF_FAILED(numberOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputText:
+            {
+                ComPtr<IAdaptiveTextInputOptions> textOptions;
+                THROW_IF_FAILED(m_hostOptions->get_TextInput(&textOptions));
+                THROW_IF_FAILED(textOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputTime:
+            {
+                ComPtr<IAdaptiveTimeInputOptions> timeOptions;
+                THROW_IF_FAILED(m_hostOptions->get_TimeInput(&timeOptions));
+                THROW_IF_FAILED(timeOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputToggle:
+            {
+                ComPtr<IAdaptiveToggleInputOptions> toggleOptions;
+                THROW_IF_FAILED(m_hostOptions->get_ToggleInput(&toggleOptions));
+                THROW_IF_FAILED(toggleOptions->get_Separation(&localSeparationOptions));
+                break;
+            }
             }
         default:
             break;
         }
         THROW_IF_FAILED(localSeparationOptions.CopyTo(separationOptions));
     }
+
     _Use_decl_annotations_
     ComPtr<IBrush> XamlBuilder::GetSolidColorBrush(_In_ ABI::Windows::UI::Color color)
     {
