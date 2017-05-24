@@ -331,21 +331,27 @@ export abstract class HostContainer {
 
     render(renderedCard: HTMLElement, speechString: string, showSpeechXml: boolean = false): HTMLElement {
         var element = document.createElement("div");
-        var renderedContainer = this.renderContainer(renderedCard);
 
-        if (renderedContainer) {
-            element.appendChild(renderedContainer);
+        if (renderedCard) {
+            var renderedContainer = this.renderContainer(renderedCard);
 
-            var separator = document.createElement("div");
-            separator.style.height = "20px";
+            if (renderedContainer) {
+                element.appendChild(renderedContainer);
 
-            element.appendChild(separator);
+                var separator = document.createElement("div");
+                separator.style.height = "20px";
+
+                element.appendChild(separator);
+            }
+
+            var renderedSpeech = this.renderSpeech(speechString);
+
+            if (renderedSpeech) {
+                element.appendChild(renderedSpeech);
+            }
         }
-
-        var renderedSpeech = this.renderSpeech(speechString);
-
-        if (renderedSpeech) {
-            element.appendChild(renderedSpeech);
+        else {
+            element.innerText = "The card is empty."
         }
 
         return element;
