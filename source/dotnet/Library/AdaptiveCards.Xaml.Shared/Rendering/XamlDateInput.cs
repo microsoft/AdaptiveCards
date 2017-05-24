@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering
             if (context.Config.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };
-                textBox.Text = input.Placeholder;
+				textBox.SetPlaceholder(input.Placeholder);
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.Date");
                 textBox.SetContext(input);
                 context.InputBindings.Add(input.Id, () => textBox.Text);
