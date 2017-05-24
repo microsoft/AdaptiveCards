@@ -24,9 +24,7 @@ std::shared_ptr<InputDate> InputDate::Deserialize(const Json::Value& json)
 
 std::shared_ptr<InputDate> InputDate::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputDate::Deserialize(jsonValue);
+    return InputDate::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputDate::Serialize()

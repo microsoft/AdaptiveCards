@@ -27,9 +27,7 @@ std::shared_ptr<InputText> InputText::Deserialize(const Json::Value& json)
 
 std::shared_ptr<InputText> InputText::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputText::Deserialize(jsonValue);
+    return InputText::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputText::Serialize()

@@ -65,7 +65,5 @@ std::shared_ptr<FactSet> FactSet::Deserialize(const Json::Value& value)
 
 std::shared_ptr<FactSet> FactSet::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return FactSet::Deserialize(jsonValue);
+    return FactSet::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }

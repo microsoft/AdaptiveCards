@@ -41,6 +41,8 @@ public:
 
     static Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
+    static Json::Value GetJsonValueFromString(const std::string jsonString);
+
     template <typename T>
     static T GetEnumValue(
         const Json::Value& json,

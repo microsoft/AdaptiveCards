@@ -20,9 +20,7 @@ std::shared_ptr<ShowCardAction> ShowCardAction::Deserialize(const Json::Value& j
 
 std::shared_ptr<ShowCardAction> ShowCardAction::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return ShowCardAction::Deserialize(jsonValue);
+    return ShowCardAction::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string ShowCardAction::Serialize()

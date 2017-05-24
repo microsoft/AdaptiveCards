@@ -16,9 +16,7 @@ std::shared_ptr<SubmitAction> SubmitAction::Deserialize(const Json::Value& json)
 
 std::shared_ptr<SubmitAction> SubmitAction::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return SubmitAction::Deserialize(jsonValue);
+    return SubmitAction::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string SubmitAction::Serialize()

@@ -24,9 +24,7 @@ std::shared_ptr<Fact> Fact::Deserialize(const Json::Value& json)
 
 std::shared_ptr<Fact> Fact::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return Fact::Deserialize(jsonValue);
+    return Fact::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string Fact::Serialize()

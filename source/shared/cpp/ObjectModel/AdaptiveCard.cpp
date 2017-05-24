@@ -99,14 +99,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
 
 std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException)
 {
-    Json::Reader reader;
-    Json::Value jsonValue;
-    if (!reader.parse(jsonString.c_str(), jsonValue))
-    {
-        throw AdaptiveCardParseException("Expected JSON Object\n");
-    }
-
-    return AdaptiveCard::Deserialize(jsonValue);
+    return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string AdaptiveCard::GetVersion() const

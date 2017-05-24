@@ -94,7 +94,5 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
 
 std::shared_ptr<Column> Column::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return Column::Deserialize(jsonValue);
+    return Column::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }

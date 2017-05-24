@@ -96,7 +96,5 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
 
 std::shared_ptr<Container> Container::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return Container::Deserialize(jsonValue);
+    return Container::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }

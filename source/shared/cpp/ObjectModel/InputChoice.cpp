@@ -23,9 +23,7 @@ std::shared_ptr<InputChoice> InputChoice::Deserialize(const Json::Value& json)
 
 std::shared_ptr<InputChoice> InputChoice::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputChoice::Deserialize(jsonValue);
+    return InputChoice::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputChoice::Serialize()

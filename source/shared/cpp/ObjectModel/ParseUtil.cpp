@@ -259,6 +259,17 @@ Json::Value ParseUtil::GetArray(
     return elementArray;
 }
 
+Json::Value ParseUtil::GetJsonValueFromString(const std::string jsonString)
+{
+    Json::Reader reader;
+    Json::Value jsonValue;
+    if (!reader.parse(jsonString.c_str(), jsonValue))
+    {
+        throw AdaptiveCardParseException("Expected JSON Object\n");
+    }
+    return jsonValue;
+}
+
 ParseUtil::ParseUtil()
 {
 }

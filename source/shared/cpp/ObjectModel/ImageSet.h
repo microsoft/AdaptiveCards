@@ -23,6 +23,7 @@ namespace AdaptiveCards
             std::vector<std::shared_ptr<Image>>& GetImages();
             const std::vector<std::shared_ptr<Image>>& GetImages() const;
             static std::shared_ptr<ImageSet> Deserialize(const Json::Value& root);
+            static std::shared_ptr<ImageSet> DeserializeFromString(const std::string& jsonString);
 
             private:
             std::vector<std::shared_ptr<Image>> m_images;
