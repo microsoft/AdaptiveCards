@@ -80,7 +80,7 @@ std::shared_ptr<InputChoiceSet> InputChoiceSet::Deserialize(const Json::Value& j
     choiceSet->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
     
     // Parse Choices
-    auto choicesArray = ParseUtil::GetArray(json, AdaptiveCardSchemaKey::Choices);
+    auto choicesArray = ParseUtil::GetArray(json, AdaptiveCardSchemaKey::Choices, true);
     std::vector<std::shared_ptr<InputChoice>> choices;
 
     // Deserialize every choice in the array

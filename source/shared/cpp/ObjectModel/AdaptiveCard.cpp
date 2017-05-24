@@ -88,16 +88,10 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     std::string backgroundImageUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImageUrl);
 
     // Parse body
-    auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers);
+    auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers, true);
 
     // Parse actions if present
-    std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
-    auto elementArray = json.get(propertyName, Json::Value());
-    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> actions;
-    if (!elementArray.empty())
-    {
-        actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, AdaptiveCard::CardActionParsers);
-    }
+    auto actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, AdaptiveCard::CardActionParsers);
 
     auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImageUrl, body, actions);
     return result;

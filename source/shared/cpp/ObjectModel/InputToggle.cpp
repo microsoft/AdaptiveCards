@@ -14,7 +14,7 @@ std::shared_ptr<InputToggle> InputToggle::Deserialize(const Json::Value& json)
 
     std::shared_ptr<InputToggle> inputToggle = BaseCardElement::Deserialize<InputToggle>(json);
 
-    inputToggle->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
+    inputToggle->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     inputToggle->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
     inputToggle->SetValueOff(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOff));
     inputToggle->SetValueOn(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOn));

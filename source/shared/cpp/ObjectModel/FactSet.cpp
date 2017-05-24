@@ -46,7 +46,7 @@ std::shared_ptr<FactSet> FactSet::Deserialize(const Json::Value& value)
     auto factSet = BaseCardElement::Deserialize<FactSet>(value);
 
     // Parse Facts
-    auto factsArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Facts);
+    auto factsArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Facts, true);
     std::vector<std::shared_ptr<Fact>> facts;
 
     // Deserialize every fact in the array
