@@ -60,7 +60,7 @@ std::shared_ptr<ImageSet> ImageSet::Deserialize(const Json::Value& value)
     auto imageSet = BaseCardElement::Deserialize<ImageSet>(value);
 
     // Get ImageSize
-    imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::Size, ImageSize::Auto, ImageSizeFromString);
+    imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::Auto, ImageSizeFromString);
 
     // Parse Images
     auto imagesArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Images, true);

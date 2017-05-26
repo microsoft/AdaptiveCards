@@ -47,6 +47,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Image, "image" },
     { AdaptiveCardSchemaKey::Images, "images" },
     { AdaptiveCardSchemaKey::ImageSet, "imageSet" },
+    { AdaptiveCardSchemaKey::ImageSize, "imageSize" },
     { AdaptiveCardSchemaKey::ImageSizes, "imageSizes" },
     { AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin" },
     { AdaptiveCardSchemaKey::IsMultiline, "isMultiline" },

@@ -75,6 +75,7 @@ enum class AdaptiveCardSchemaKey
     Image,
     Images,
     ImageSet,
+    ImageSize,
     ImageSizes,
     InlineTopMargin,
     IsMultiline,
