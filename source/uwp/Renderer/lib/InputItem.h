@@ -18,11 +18,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         void Serialize(Json::Value& jsonValue);
 
     private:
-        void SerializeChoiceSetInput(Json::Value& jsonValue, const char * idString);
-        void SerializeDateInput(Json::Value& jsonValue, const char * idString);
-        void SerializeTextInput(Json::Value& jsonValue, const char * idString);
-        void SerializeTimeInput(Json::Value& jsonValue, const char * idString);
-        void SerializeToggleInput(Json::Value& jsonValue, const char * idString);
+        void SerializeChoiceSetInput(Json::Value& jsonValue, const char* idString);
+        void SerializeDateInput(Json::Value& jsonValue, const char* idString);
+        void SerializeTextInput(Json::Value& jsonValue, const char* idString);
+        void SerializeTimeInput(Json::Value& jsonValue, const char* idString);
+        void SerializeToggleInput(Json::Value& jsonValue, const char* idString);
 
         void GetChoiceValue(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet* choiceInput, INT32 selectedIndex, std::string& choiceValue);
 
