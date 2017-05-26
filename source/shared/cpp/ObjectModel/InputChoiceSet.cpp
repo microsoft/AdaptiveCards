@@ -4,7 +4,7 @@
 
 using namespace AdaptiveCards;
 
-InputChoiceSet::InputChoiceSet() : BaseCardElement(CardElementType::InputChoiceSet)
+InputChoiceSet::InputChoiceSet() : BaseInputElement(CardElementType::InputChoiceSet)
 {
 }
 
@@ -12,7 +12,7 @@ InputChoiceSet::InputChoiceSet(
     SeparationStyle separation,
     std::string speak,
     std::vector<std::shared_ptr<InputChoice>>& choices) :
-    BaseCardElement(CardElementType::InputChoiceSet, separation, speak),
+    BaseInputElement(CardElementType::InputChoiceSet, separation, speak),
     m_choices(choices)
 {
 }
@@ -20,7 +20,7 @@ InputChoiceSet::InputChoiceSet(
 InputChoiceSet::InputChoiceSet(
     SeparationStyle separation,
     std::string speak) :
-    BaseCardElement(CardElementType::InputChoiceSet, separation, speak)
+    BaseInputElement(CardElementType::InputChoiceSet, separation, speak)
 {
 }
 
@@ -73,7 +73,7 @@ std::shared_ptr<InputChoiceSet> InputChoiceSet::Deserialize(const Json::Value& j
 {
     ParseUtil::ExpectTypeString(json, CardElementType::InputChoiceSet);
 
-    auto choiceSet = BaseCardElement::Deserialize<InputChoiceSet>(json);
+    auto choiceSet = BaseInputElement::Deserialize<InputChoiceSet>(json);
 
     choiceSet->SetChoiceSetStyle(ParseUtil::GetEnumValue<ChoiceSetStyle>(json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));
     choiceSet->SetIsMultiSelect(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiSelect, false));

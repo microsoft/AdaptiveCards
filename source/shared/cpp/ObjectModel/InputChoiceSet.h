@@ -3,12 +3,12 @@
 #include "pch.h"
 #include "Enums.h"
 #include "InputChoice.h"
-#include "BaseCardElement.h"
+#include "BaseInputElement.h"
 
 namespace AdaptiveCards
 {
-class BaseCardElement;
-class InputChoiceSet : public BaseCardElement
+class BaseInputElement;
+class InputChoiceSet : public BaseInputElement
 {
 public:
     InputChoiceSet();

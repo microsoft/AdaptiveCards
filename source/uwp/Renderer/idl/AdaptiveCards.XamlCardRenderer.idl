@@ -408,6 +408,16 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(9b10f5ef-26e8-4d65-ba76-b986b5e90586),
+            version(NTDDI_WIN10_RS1),
+        ]
+        interface IAdaptiveInputElement : IInspectable
+        {
+            [propget] HRESULT Id([out, retval] HSTRING* value);
+            [propput] HRESULT Id([in] HSTRING value);
+        };
+
+        [
             uuid(99797dfe-d39c-43a4-9f2b-d457cc358e1e),
             version(NTDDI_WIN10_RS1)
         ]
@@ -462,6 +472,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputChoiceSet
         {
             [default] interface IAdaptiveInputChoiceSet;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -492,6 +503,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputDate
         {
             [default] interface IAdaptiveInputDate;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -522,6 +534,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputNumber
         {
             [default] interface IAdaptiveInputNumber;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -555,6 +568,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputText
         {
             [default] interface IAdaptiveInputText;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -585,6 +599,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputTime
         {
             [default] interface IAdaptiveInputTime;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -615,6 +630,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputToggle
         {
             [default] interface IAdaptiveInputToggle;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -777,6 +793,7 @@ namespace AdaptiveCards
         interface IAdaptiveActionEventArgs : IInspectable
         {
             [propget] HRESULT Action([out, retval] IAdaptiveActionElement** action);
+            [propget] HRESULT Inputs([out, retval] HSTRING* value);
         }
 
         [

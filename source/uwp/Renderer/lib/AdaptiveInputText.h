@@ -10,6 +10,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputText,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveInputText, BaseTrust)
@@ -33,6 +34,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle *textInputStyle);
         IFACEMETHODIMP put_TextInputStyle(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle textInputStyle);
+
+        // IAdaptiveInputElement
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);

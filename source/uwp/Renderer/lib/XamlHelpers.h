@@ -64,5 +64,61 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
             THROW_IF_FAILED(panelChildren->Append(elementToAppend.Get()));
         }
+
+        template<typename T>
+        static void SetToggleValue(
+            T* item,
+            boolean isChecked)
+        {
+            ComPtr<IPropertyValueStatics> propertyValueStatics;
+            ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
+
+            ComPtr<IPropertyValue> propertyValue;
+            propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
+
+            ComPtr<ABI::Windows::Foundation::IReference<bool>> boolProperty;
+            propertyValue.As(&boolProperty);
+
+            ComPtr<T> localItem(item);
+            ComPtr<IToggleButton> toggleButton;
+            THROW_IF_FAILED(localItem.As(&toggleButton));
+            THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
+        }
+
+        template<typename T>
+        static void GetToggleValue(
+            T* item,
+            boolean* isChecked)
+        {
+            ComPtr<T> localItem(item);
+            ComPtr<IToggleButton> toggleButton;
+            THROW_IF_FAILED(localItem.As(&toggleButton));
+
+            ComPtr<IReference<bool>> isCheckedReference;
+            THROW_IF_FAILED(toggleButton->get_IsChecked(&isCheckedReference));
+
+            if (isCheckedReference != nullptr)
+            {
+                THROW_IF_FAILED(isCheckedReference->get_Value(isChecked));
+            }
+            else
+            {
+                *isChecked = false;
+            }
+        }
+
+        template<typename T>
+        static void SetContent(
+            T* item,
+            HSTRING contentString)
+        {
+            ComPtr<T> localItem(item);
+            ComPtr<IContentControl> contentControl;
+            THROW_IF_FAILED(localItem.As(&contentControl));
+
+            ComPtr<ITextBlock> content = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            THROW_IF_FAILED(content->put_Text(contentString));
+            THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+        }
     };
 }}

@@ -4,7 +4,7 @@
 using namespace AdaptiveCards;
 
 InputDate::InputDate() :
-    BaseCardElement(CardElementType::InputDate)
+    BaseInputElement(CardElementType::InputDate)
 {
 }
 
@@ -12,7 +12,7 @@ std::shared_ptr<InputDate> InputDate::Deserialize(const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::InputDate);
 
-    std::shared_ptr<InputDate> inputDate = BaseCardElement::Deserialize<InputDate>(json);
+    std::shared_ptr<InputDate> inputDate = BaseInputElement::Deserialize<InputDate>(json);
 
     inputDate->SetMax(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Max));
     inputDate->SetMin(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Min));
