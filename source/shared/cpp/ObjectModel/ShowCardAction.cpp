@@ -28,16 +28,6 @@ std::string ShowCardAction::Serialize()
     return "";
 }
 
-std::string ShowCardAction::GetTitle() const
-{
-    return m_title;
-}
-
-void ShowCardAction::SetTitle(const std::string value)
-{
-    m_title = value;
-}
-
 std::shared_ptr<AdaptiveCard> AdaptiveCards::ShowCardAction::GetCard() const
 {
     return m_card;

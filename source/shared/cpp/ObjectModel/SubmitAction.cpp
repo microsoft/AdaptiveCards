@@ -24,14 +24,4 @@ std::string SubmitAction::Serialize()
     return "";
 }
 
-std::string SubmitAction::GetTitle() const
-{
-    return m_title;
-}
-
-void SubmitAction::SetTitle(const std::string value)
-{
-    m_title = value;
-}
-
 
