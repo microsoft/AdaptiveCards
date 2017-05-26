@@ -17,8 +17,6 @@
 #include "XamlStyleKeyGenerators.h"
 #include "json/json.h"
 
-#include "windows.globalization.datetimeformatting.h"
-
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
@@ -38,7 +36,6 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Input;
 using namespace ABI::Windows::Web::Http;
 using namespace ABI::Windows::Web::Http::Filters;
-using namespace ABI::Windows::Globalization::DateTimeFormatting;
 
 const PCWSTR c_TextBlockSubtleOpacityKey = L"TextBlock.SubtleOpacity";
 const PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
@@ -133,8 +130,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // Enumerate the child items of the card and build xaml for them
         ComPtr<IVector<IAdaptiveCardElement*>> body;
-        std::shared_ptr<std::vector<InputItem>> inputElements(new std::vector<InputItem>());
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
+
+        std::shared_ptr<std::vector<InputItem>> inputElements = std::make_shared<std::vector<InputItem>>();
         BuildPanelChildren(body.Get(), childElementContainer.Get(), inputElements, [](IUIElement*) {});
 
         boolean supportsInteractivity;
@@ -622,267 +620,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *uiShowCard = localUiShowCard.Detach();
     }
 
-    void SerializeTextInput(
-        Json::Value& jsonValue,
-        const char * idString,
-        InputItem* inputItem)
-    {
-        ComPtr<ITextBox> textBox;
-        THROW_IF_FAILED(inputItem->uiInputElement.As(&textBox));
-
-        HString text;
-        THROW_IF_FAILED(textBox->get_Text(text.GetAddressOf()));
-
-        std::string textString;
-        if (text.IsValid())
-        {
-            THROW_IF_FAILED(HStringToUTF8(text.Get(), textString));
-        }
-
-        jsonValue[idString] = textString.c_str();
-    }
-
-    void SerializeDateInput(
-        Json::Value& jsonValue,
-        const char * idString,
-        InputItem* inputItem)
-    {
-        ComPtr<ICalendarDatePicker> datePicker;
-        THROW_IF_FAILED(inputItem->uiInputElement.As(&datePicker));
-
-        ComPtr<IReference<DateTime>> dateRef;
-        THROW_IF_FAILED(datePicker->get_Date(&dateRef));
-
-        std::string value;
-        if (dateRef != nullptr)
-        {
-            DateTime date;
-            THROW_IF_FAILED(dateRef->get_Value(&date));
-
-            ComPtr<IDateTimeFormatterStatics> dateTimeStatics;
-            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Globalization_DateTimeFormatting_DateTimeFormatter).Get(), &dateTimeStatics));
-
-            // TODO: Confirm desired date format
-            ComPtr<IDateTimeFormatter> dateTimeFormatter;
-            THROW_IF_FAILED(dateTimeStatics->get_ShortDate(&dateTimeFormatter));
-
-            HString formattedDate;
-            THROW_IF_FAILED(dateTimeFormatter->Format(date, formattedDate.GetAddressOf()));
-
-            THROW_IF_FAILED(HStringToUTF8(formattedDate.Get(), value));
-        }
-
-        jsonValue[idString] = value;
-    }
-
-    void SerializeTimeInput(
-        Json::Value& jsonValue,
-        const char * idString,
-        InputItem* inputItem)
-    {
-        ComPtr<ITimePicker> timePicker;
-        THROW_IF_FAILED(inputItem->uiInputElement.As(&timePicker));
-
-        TimeSpan timeSpan;
-        THROW_IF_FAILED(timePicker->get_Time(&timeSpan));
-
-        UINT64 totalMinutes = timeSpan.Duration / 10000000 / 60;
-        UINT64 hours = totalMinutes / 60;
-        UINT64 minutesPastTheHour = totalMinutes - (hours * 60);
-
-        // TODO: Confirm desired time format
-        char buffer[6];
-        sprintf_s(buffer, sizeof(buffer), "%02llu:%02llu", hours, minutesPastTheHour);
-
-        jsonValue[idString] = buffer;
-    }
-
-    void SerializeToggleInput(
-        Json::Value& jsonValue,
-        const char * idString,
-        InputItem* inputItem)
-    {
-        boolean checkedValue = false;
-        XamlHelpers::GetToggleValue(inputItem->uiInputElement.Get(), &checkedValue);
-
-        ComPtr<IAdaptiveInputToggle> toggleInput;
-        THROW_IF_FAILED(inputItem->adaptiveInputElement.As(&toggleInput));
-
-        HString value;
-        if (checkedValue)
-        {
-            THROW_IF_FAILED(toggleInput->get_ValueOn(value.GetAddressOf()));
-        }
-        else
-        {
-            THROW_IF_FAILED(toggleInput->get_ValueOff(value.GetAddressOf()));
-        }
-
-        std::string utf8Value;
-        THROW_IF_FAILED(HStringToUTF8(value.Get(), utf8Value));
-
-        jsonValue[idString] = utf8Value;
-    }
-
-    void GetChoiceValue(
-        IAdaptiveInputChoiceSet* choiceInput,
-        INT32 selectedIndex,
-        std::string& choiceValue)
-    {
-        if (selectedIndex != -1)
-        {
-            ComPtr<IVector<IAdaptiveInputChoice*>> choices;
-            THROW_IF_FAILED(choiceInput->get_Choices(&choices));
-
-            ComPtr<IAdaptiveInputChoice> choice;
-            THROW_IF_FAILED(choices->GetAt(selectedIndex, &choice));
-
-            HString value;
-            THROW_IF_FAILED(choice->get_Value(value.GetAddressOf()));
-
-            THROW_IF_FAILED(HStringToUTF8(value.Get(), choiceValue));
-        }
-    }
-
-    void SerializeChoiceSetInput(
-        Json::Value& jsonValue,
-        const char * idString,
-        InputItem* inputItem)
-    {
-        ComPtr<IAdaptiveInputChoiceSet> choiceInput;
-        THROW_IF_FAILED(inputItem->adaptiveInputElement.As(&choiceInput));
-
-        ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle choiceSetStyle;
-        THROW_IF_FAILED(choiceInput->get_ChoiceSetStyle(&choiceSetStyle));
-
-        boolean isMultiSelect;
-        THROW_IF_FAILED(choiceInput->get_IsMultiSelect(&isMultiSelect));
-
-        if (choiceSetStyle == ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle_Compact && !isMultiSelect)
-        {
-            // Handle compact style
-            ComPtr<ISelector> selector;
-            THROW_IF_FAILED(inputItem->uiInputElement.As(&selector));
-
-            INT32 selectedIndex;
-            THROW_IF_FAILED(selector->get_SelectedIndex(&selectedIndex));
-
-            std::string choiceValue;
-            GetChoiceValue(choiceInput.Get(), selectedIndex, choiceValue);
-            jsonValue[idString] = choiceValue;
-        }
-        else
-        {
-            // For expanded style, get the panel children
-            ComPtr<IPanel> panel;
-            THROW_IF_FAILED(inputItem->uiInputElement.As(&panel));
-
-            ComPtr<IVector<UIElement*>> panelChildren;
-            THROW_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
-
-            UINT size;
-            THROW_IF_FAILED(panelChildren->get_Size(&size));
-
-            if (isMultiSelect)
-            {
-                // For multiselect, gather all the inputs in a Json::arrayValue
-                Json::Value multiSelectValues(Json::arrayValue);
-                for (UINT i = 0; i < size; i++)
-                {
-                    ComPtr<IUIElement> currentElement;
-                    THROW_IF_FAILED(panelChildren->GetAt(i, &currentElement));
-
-                    boolean checkedValue = false;
-                    XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
-
-                    if (checkedValue)
-                    {
-                        std::string choiceValue;
-                        GetChoiceValue(choiceInput.Get(), i, choiceValue);
-                        multiSelectValues.append(Json::Value(choiceValue.c_str()));
-                    }
-                }
-                jsonValue[idString] = multiSelectValues;
-            }
-            else
-            {
-                // Look for the single selected choice
-                INT32 selectedIndex;
-                for (UINT i = 0; i < size; i++)
-                {
-                    ComPtr<IUIElement> currentElement;
-                    THROW_IF_FAILED(panelChildren->GetAt(i, &currentElement));
-
-                    boolean checkedValue = false;
-                    XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
-
-                    if (checkedValue)
-                    {
-                        selectedIndex = i;
-                        break;
-                    }
-                }
-                std::string choiceValue;
-                GetChoiceValue(choiceInput.Get(), selectedIndex, choiceValue);
-                jsonValue[idString] = choiceValue;
-            }
-        }
-    }
-
-    void SerializeInputs(
-        std::shared_ptr<std::vector<InputItem>> inputElements,
-        std::string* inputString)
-    {
-        Json::Value jsonValue;
-        for (std::vector<InputItem>::iterator inputItem = inputElements->begin(); inputItem != inputElements->end(); ++inputItem)
-        {
-            ComPtr<IAdaptiveInputElement> localInputElement(inputItem->adaptiveInputElement);
-            ComPtr<IAdaptiveCardElement> cardElement;
-            THROW_IF_FAILED(localInputElement.As(&cardElement));
-
-            ABI::AdaptiveCards::XamlCardRenderer::ElementType elementType;
-            THROW_IF_FAILED(cardElement->get_ElementType(&elementType));
-
-            HString id;
-            THROW_IF_FAILED(inputItem->adaptiveInputElement->get_Id(id.GetAddressOf()));
-
-            std::string idString;
-            THROW_IF_FAILED(HStringToUTF8(id.Get(), idString));
-
-            switch (elementType)
-            {
-                case ElementType_InputText:
-                case ElementType_InputNumber:
-                {
-                    SerializeTextInput(jsonValue, idString.c_str(), &(*inputItem));
-                    break;
-                }
-                case ElementType_InputDate:
-                {
-                    SerializeDateInput(jsonValue, idString.c_str(), &(*inputItem));
-                    break;
-                }
-                case ElementType_InputTime:
-                {
-                    SerializeTimeInput(jsonValue, idString.c_str(), &(*inputItem));
-                    break;
-                }
-                case ElementType_InputToggle:
-                {
-                    SerializeToggleInput(jsonValue, idString.c_str(), &(*inputItem));
-                    break;
-                }
-                case ElementType_InputChoiceSet:
-                {
-                    SerializeChoiceSetInput(jsonValue, idString.c_str(), &(*inputItem));
-                    break;
-                }
-            }
-        }
-        Json::StyledWriter writer;
-        *inputString = writer.write(jsonValue);
-    }
-
     _Use_decl_annotations_
     void XamlBuilder::BuildActions(
         IVector<IAdaptiveActionElement*>* children,
@@ -963,7 +700,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         UINT currentAction = 0;
 
         ComPtr<XamlCardRenderer> strongRenderer(renderer);
-        std::shared_ptr<std::vector<ComPtr<IUIElement>>> allShowCards(new std::vector<ComPtr<IUIElement>>());
+        std::shared_ptr<std::vector<ComPtr<IUIElement>>> allShowCards = std::make_shared<std::vector<ComPtr<IUIElement>>>();
         ComPtr<IStackPanel> showCardsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child)
         {
@@ -1026,8 +763,15 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                     }
                     else
                     {
-                        std::string inputString;
-                        SerializeInputs(inputElements, &inputString);
+                        // Serialize the inputElements into Json.
+                        Json::Value jsonValue;
+                        for (auto& inputElement : *inputElements)
+                        {
+                            inputElement.Serialize(jsonValue);
+                        }
+
+                        Json::StyledWriter writer;
+                        std::string inputString = writer.write(jsonValue);
 
                         HString inputHString;
                         THROW_IF_FAILED(UTF8ToHString(inputString, inputHString.GetAddressOf()));
@@ -1890,7 +1634,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IUIElement> uiElement;
         THROW_IF_FAILED(localTElement.As(&uiElement));
 
-        InputItem item = { inputElement, uiElement };
+        InputItem item(inputElement.Get(), uiElement.Get());
         inputElements->push_back(item);
     }
 

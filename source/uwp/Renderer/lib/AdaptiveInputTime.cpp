@@ -87,16 +87,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputTime::get_Id(HSTRING* speak)
+    HRESULT AdaptiveInputTime::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedInputTime->GetId(), speak);
+        return UTF8ToHString(m_sharedInputTime->GetId(), id);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputTime::put_Id(HSTRING speak)
+    HRESULT AdaptiveInputTime::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
         m_sharedInputTime->SetId(out);
         return S_OK;
     }

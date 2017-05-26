@@ -6,15 +6,10 @@
 #include "IImageLoadTrackerListener.h"
 #include "XamlCardRendererComponent.h"
 #include <windows.storage.h>
+#include "InputItem.h"
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    struct InputItem
-    {
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement> adaptiveInputElement;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> uiInputElement;
-    };
-
     class XamlBuilder : public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
         Microsoft::WRL::FtmBase,

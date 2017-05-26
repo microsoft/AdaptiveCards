@@ -26,7 +26,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *action = localAction.Detach();
         return S_OK;
     }
-    IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(HSTRING * inputs)
+    IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(HSTRING* inputs)
     {
         return m_inputs.CopyTo(inputs);
     }

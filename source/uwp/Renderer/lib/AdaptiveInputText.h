@@ -36,8 +36,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_TextInputStyle(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle textInputStyle);
 
         // IAdaptiveInputElement
-        IFACEMETHODIMP get_Id(_Out_ HSTRING* text);
-        IFACEMETHODIMP put_Id(_In_ HSTRING text);
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);

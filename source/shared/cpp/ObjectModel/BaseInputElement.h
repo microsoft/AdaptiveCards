@@ -31,7 +31,7 @@ std::shared_ptr<T> BaseInputElement::Deserialize(const Json::Value& json)
 
     ParseUtil::ThrowIfNotJsonObject(json);
 
-    baseInputElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
+    baseInputElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id, true));
 
     return baseInputElement;
 }
