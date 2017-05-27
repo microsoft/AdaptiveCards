@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 "use strict";
+var fs = require("fs");
 var path = require("path");
 var sass = require("node-sass");
 var css2json = require('css2json');
@@ -105,6 +106,15 @@ if (require.main === module) {
     var BOM = '\ufeff';
     if (process.argv[3] === '--exec') {
         process.stdout.write(BOM + 'AdaptiveCards.setHostConfig(' + output + ');\n');
+    }
+    else if (process.argv[3].indexOf('--css') === 0) {
+        var css = '#ac-hostConfig {\n content: ' + JSON.stringify(JSON.stringify(hostConfig)) + ';\n}\n';
+        if (process.argv[3] === '--css-append') {
+            fs.appendFileSync(process.argv[4], '\n' + css);
+        }
+        else {
+            process.stdout.write(BOM + css);
+        }
     }
     else {
         process.stdout.write(BOM + output);

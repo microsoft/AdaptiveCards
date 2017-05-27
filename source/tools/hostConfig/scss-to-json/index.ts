@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 
+import * as fs from 'fs';
 import * as path from 'path';
 import * as sass from 'node-sass';
 
@@ -122,6 +123,17 @@ if (require.main === module) {
 
     if (process.argv[3] === '--exec') {
         process.stdout.write(BOM + 'AdaptiveCards.setHostConfig(' + output + ');\n');
+
+    } else if (process.argv[3].indexOf('--css') === 0) {
+        const css = '#ac-hostConfig {\n content: ' + JSON.stringify(JSON.stringify(hostConfig)) + ';\n}\n';
+
+        if (process.argv[3] === '--css-append') {
+            fs.appendFileSync(process.argv[4], '\n' + css);
+
+        } else {
+            process.stdout.write(BOM + css);
+        }
+
     } else {
         process.stdout.write(BOM + output);
     }
