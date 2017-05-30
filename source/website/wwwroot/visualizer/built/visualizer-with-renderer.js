@@ -958,16 +958,21 @@ var HostContainer = (function () {
     HostContainer.prototype.render = function (renderedCard, speechString, showSpeechXml) {
         if (showSpeechXml === void 0) { showSpeechXml = false; }
         var element = document.createElement("div");
-        var renderedContainer = this.renderContainer(renderedCard);
-        if (renderedContainer) {
-            element.appendChild(renderedContainer);
-            var separator = document.createElement("div");
-            separator.style.height = "20px";
-            element.appendChild(separator);
+        if (renderedCard) {
+            var renderedContainer = this.renderContainer(renderedCard);
+            if (renderedContainer) {
+                element.appendChild(renderedContainer);
+                var separator = document.createElement("div");
+                separator.style.height = "20px";
+                element.appendChild(separator);
+            }
+            var renderedSpeech = this.renderSpeech(speechString);
+            if (renderedSpeech) {
+                element.appendChild(renderedSpeech);
+            }
         }
-        var renderedSpeech = this.renderSpeech(speechString);
-        if (renderedSpeech) {
-            element.appendChild(renderedSpeech);
+        else {
+            element.innerText = "The card is empty.";
         }
         return element;
     };
@@ -26495,22 +26500,37 @@ var TextInput = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     TextInput.prototype.internalRender = function () {
-        this._textareaElement = document.createElement("textarea");
-        this._textareaElement.className = "ac-input ac-textInput";
-        this._textareaElement.style.width = "100%";
         if (this.isMultiline) {
-            this._textareaElement.classList.add("ac-multiline");
+            this._textareaElement = document.createElement("textarea");
+            this._textareaElement.className = "ac-input ac-textInput ac-multiline";
+            this._textareaElement.style.width = "100%";
+            if (!Utils.isNullOrEmpty(this.placeholder)) {
+                this._textareaElement.placeholder = this.placeholder;
+            }
+            if (!Utils.isNullOrEmpty(this.defaultValue)) {
+                this._textareaElement.value = this.defaultValue;
+            }
+            if (this.maxLength > 0) {
+                this._textareaElement.maxLength = this.maxLength;
+            }
+            return this._textareaElement;
         }
-        if (!Utils.isNullOrEmpty(this.placeholder)) {
-            this._textareaElement.placeholder = this.placeholder;
+        else {
+            this._inputElement = document.createElement("input");
+            this._inputElement.type = "text";
+            this._inputElement.className = "ac-input ac-textInput";
+            this._inputElement.style.width = "100%";
+            if (!Utils.isNullOrEmpty(this.placeholder)) {
+                this._inputElement.placeholder = this.placeholder;
+            }
+            if (!Utils.isNullOrEmpty(this.defaultValue)) {
+                this._inputElement.value = this.defaultValue;
+            }
+            if (this.maxLength > 0) {
+                this._inputElement.maxLength = this.maxLength;
+            }
+            return this._inputElement;
         }
-        if (!Utils.isNullOrEmpty(this.defaultValue)) {
-            this._textareaElement.value = this.defaultValue;
-        }
-        if (this.maxLength > 0) {
-            this._textareaElement.maxLength = this.maxLength;
-        }
-        return this._textareaElement;
     };
     TextInput.prototype.getJsonTypeName = function () {
         return "Input.Text";
@@ -26523,7 +26543,12 @@ var TextInput = (function (_super) {
     };
     Object.defineProperty(TextInput.prototype, "value", {
         get: function () {
-            return this._textareaElement ? this._textareaElement.value : null;
+            if (this.isMultiline) {
+                return this._textareaElement ? this._textareaElement.value : null;
+            }
+            else {
+                return this._inputElement ? this._inputElement.value : null;
+            }
         },
         enumerable: true,
         configurable: true
@@ -27609,15 +27634,17 @@ var Container = (function (_super) {
     };
     Container.prototype.internalRender = function () {
         var renderedContainer = _super.prototype.internalRender.call(this);
-        var styleDefinition = this.style == "normal" ? hostConfig.container.normal : hostConfig.container.emphasis;
-        if (styleDefinition.borderThickness) {
-            renderedContainer.style.borderTop = styleDefinition.borderThickness.top + "px solid";
-            renderedContainer.style.borderRight = styleDefinition.borderThickness.right + "px solid";
-            renderedContainer.style.borderBottom = styleDefinition.borderThickness.bottom + "px solid";
-            renderedContainer.style.borderLeft = styleDefinition.borderThickness.left + "px solid";
-        }
-        if (styleDefinition.borderColor) {
-            renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
+        if (renderedContainer) {
+            var styleDefinition = this.style == "normal" ? hostConfig.container.normal : hostConfig.container.emphasis;
+            if (styleDefinition.borderThickness) {
+                renderedContainer.style.borderTop = styleDefinition.borderThickness.top + "px solid";
+                renderedContainer.style.borderRight = styleDefinition.borderThickness.right + "px solid";
+                renderedContainer.style.borderBottom = styleDefinition.borderThickness.bottom + "px solid";
+                renderedContainer.style.borderLeft = styleDefinition.borderThickness.left + "px solid";
+            }
+            if (styleDefinition.borderColor) {
+                renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
+            }
         }
         return renderedContainer;
     };
