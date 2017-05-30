@@ -1149,6 +1149,10 @@ export class TimeInput extends Input {
         this._timeInputElement.className = "ac-input ac-timeInput";
         this._timeInputElement.style.width = "100%";
 
+        if (!Utils.isNullOrEmpty(this.defaultValue)) {
+            this._timeInputElement.value = this.defaultValue;
+        }
+
         return this._timeInputElement;
     }
 
