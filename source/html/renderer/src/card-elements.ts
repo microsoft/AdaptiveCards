@@ -730,29 +730,48 @@ export abstract class Input extends CardElement implements Utils.IInput {
 
 export class TextInput extends Input {
     private _textareaElement: HTMLTextAreaElement;
+    private _inputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
-        this._textareaElement = document.createElement("textarea");
-        this._textareaElement.className = "ac-input ac-textInput";
-        this._textareaElement.style.width = "100%";
-
         if (this.isMultiline) {
-            this._textareaElement.classList.add("ac-multiline");
-        }
+            this._textareaElement = document.createElement("textarea");
+            this._textareaElement.className = "ac-input ac-textInput ac-multiline";
+            this._textareaElement.style.width = "100%";
 
-        if (!Utils.isNullOrEmpty(this.placeholder)) {
-            this._textareaElement.placeholder = this.placeholder;
-        }
+            if (!Utils.isNullOrEmpty(this.placeholder)) {
+                this._textareaElement.placeholder = this.placeholder;
+            }
 
-        if (!Utils.isNullOrEmpty(this.defaultValue)) {
-            this._textareaElement.value = this.defaultValue;
-        }
+            if (!Utils.isNullOrEmpty(this.defaultValue)) {
+                this._textareaElement.value = this.defaultValue;
+            }
 
-        if (this.maxLength > 0) {
-            this._textareaElement.maxLength = this.maxLength;
-        }
+            if (this.maxLength > 0) {
+                this._textareaElement.maxLength = this.maxLength;
+            }
 
-        return this._textareaElement;
+            return this._textareaElement;
+        }
+        else {
+            this._inputElement = document.createElement("input");
+            this._inputElement.type = "text";
+            this._inputElement.className = "ac-input ac-textInput";
+            this._inputElement.style.width = "100%";
+
+            if (!Utils.isNullOrEmpty(this.placeholder)) {
+                this._inputElement.placeholder = this.placeholder;
+            }
+
+            if (!Utils.isNullOrEmpty(this.defaultValue)) {
+                this._inputElement.value = this.defaultValue;
+            }
+
+            if (this.maxLength > 0) {
+                this._inputElement.maxLength = this.maxLength;
+            }
+
+            return this._inputElement;
+        }
     }
 
     maxLength: number;
@@ -772,7 +791,12 @@ export class TextInput extends Input {
     }
 
     get value(): string {
-        return this._textareaElement ? this._textareaElement.value : null;
+        if (this.isMultiline) {
+            return this._textareaElement ? this._textareaElement.value : null;
+        }
+        else {
+            return this._inputElement ? this._inputElement.value : null;
+        }
     }
 }
 
