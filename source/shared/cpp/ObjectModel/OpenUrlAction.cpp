@@ -11,17 +11,14 @@ std::shared_ptr<OpenUrlAction> OpenUrlAction::Deserialize(const Json::Value& jso
 {
     std::shared_ptr<OpenUrlAction> openUrlAction = BaseActionElement::Deserialize<OpenUrlAction>(json);
 
-    openUrlAction->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
-    openUrlAction->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url));
+    openUrlAction->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
 
     return openUrlAction;
 }
 
 std::shared_ptr<OpenUrlAction> OpenUrlAction::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return OpenUrlAction::Deserialize(jsonValue);
+    return OpenUrlAction::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string OpenUrlAction::Serialize()

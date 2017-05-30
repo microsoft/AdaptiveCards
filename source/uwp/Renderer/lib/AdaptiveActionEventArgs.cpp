@@ -12,9 +12,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize(IAdaptiveActionElement* action)
+    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize(IAdaptiveActionElement* action, HSTRING inputs)
     {
         m_action = action;
+        m_inputs.Attach(inputs);
         return S_OK;
     }
 
@@ -24,5 +25,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IAdaptiveActionElement> localAction(m_action);
         *action = localAction.Detach();
         return S_OK;
+    }
+    IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(HSTRING* inputs)
+    {
+        return m_inputs.CopyTo(inputs);
     }
 }}

@@ -29,6 +29,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HttpAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ShowCardAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SubmitAction.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseInputElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
@@ -64,6 +65,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HttpAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ShowCardAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SubmitAction.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

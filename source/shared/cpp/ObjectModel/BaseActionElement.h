@@ -43,6 +43,7 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
 
     ParseUtil::ThrowIfNotJsonObject(json);
 
+    BaseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     BaseActionElement->SetSpeak(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak));
 
     return cardElement;

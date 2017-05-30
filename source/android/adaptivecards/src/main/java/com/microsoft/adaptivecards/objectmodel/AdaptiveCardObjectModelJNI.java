@@ -74,7 +74,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int ChoiceSetStyle_Compact_get();
   public final static native int SeparationStyle_Default_get();
   public final static native int ActionsOrientation_Vertical_get();
-  public final static native int ActionMode_Inline_get();
+  public final static native int ActionMode_InlineEdgeToEdge_get();
+  public final static native int ContainerStyle_Normal_get();
   public final static native String AdaptiveCardSchemaKeyToString(int jarg1);
   public final static native int AdaptiveCardSchemaKeyFromString(String jarg1);
   public final static native String CardElementTypeToString(int jarg1);
@@ -103,6 +104,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int ChoiceSetStyleFromString(String jarg1);
   public final static native String TextInputStyleToString(int jarg1);
   public final static native int TextInputStyleFromString(String jarg1);
+  public final static native String ContainerStyleToString(int jarg1);
+  public final static native int ContainerStyleFromString(String jarg1);
   public final static native void delete_BaseCardElement(long jarg1);
   public final static native int BaseCardElement_GetSeparationStyle(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_SetSeparationStyle(long jarg1, BaseCardElement jarg1_, int jarg2);
@@ -118,10 +121,12 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
   public final static native String BaseActionElement_Serialize(long jarg1, BaseActionElement jarg1_);
   public final static native long new_Container__SWIG_0();
-  public final static native long new_Container__SWIG_1(int jarg1, String jarg2);
-  public final static native long new_Container__SWIG_2(int jarg1, String jarg2, long jarg3, BaseCardElementVector jarg3_);
+  public final static native long new_Container__SWIG_1(int jarg1, String jarg2, int jarg3);
+  public final static native long new_Container__SWIG_2(int jarg1, String jarg2, int jarg3, long jarg4, BaseCardElementVector jarg4_);
   public final static native String Container_Serialize(long jarg1, Container jarg1_);
   public final static native long Container_GetItems__SWIG_0(long jarg1, Container jarg1_);
+  public final static native int Container_GetContainerStyle(long jarg1, Container jarg1_);
+  public final static native void Container_SetContainerStyle(long jarg1, Container jarg1_, int jarg2);
   public final static native long Container_Deserialize(long jarg1);
   public final static native long Container_DeserializeFromString(String jarg1);
   public final static native long Container_dynamic_cast(long jarg1, BaseCardElement jarg1_);
@@ -182,9 +187,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String Column_Serialize(long jarg1, Column jarg1_);
   public final static native long Column_Deserialize(long jarg1);
   public final static native long Column_DeserializeFromString(String jarg1);
-  public final static native int Column_GetElementType(long jarg1, Column jarg1_);
   public final static native String Column_GetSize(long jarg1, Column jarg1_);
   public final static native void Column_SetSize(long jarg1, Column jarg1_, String jarg2);
+  public final static native long Column_GetItems__SWIG_0(long jarg1, Column jarg1_);
   public final static native long Column_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Column(long jarg1);
   public final static native long new_ColumnSet__SWIG_0();
@@ -403,8 +408,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int ShowCardOptions_actionMode_get(long jarg1, ShowCardOptions jarg1_);
   public final static native void ShowCardOptions_backgroundColor_set(long jarg1, ShowCardOptions jarg1_, String jarg2);
   public final static native String ShowCardOptions_backgroundColor_get(long jarg1, ShowCardOptions jarg1_);
-  public final static native void ShowCardOptions_autoPadding_set(long jarg1, ShowCardOptions jarg1_, boolean jarg2);
-  public final static native boolean ShowCardOptions_autoPadding_get(long jarg1, ShowCardOptions jarg1_);
+  public final static native void ShowCardOptions_inlineTopMargin_set(long jarg1, ShowCardOptions jarg1_, long jarg2);
+  public final static native long ShowCardOptions_inlineTopMargin_get(long jarg1, ShowCardOptions jarg1_);
+  public final static native void ShowCardOptions_padding_set(long jarg1, ShowCardOptions jarg1_, long jarg2, BoundaryOptions jarg2_);
+  public final static native long ShowCardOptions_padding_get(long jarg1, ShowCardOptions jarg1_);
   public final static native long new_ShowCardOptions();
   public final static native void delete_ShowCardOptions(long jarg1);
   public final static native void ActionOptions_showCard_set(long jarg1, ActionOptions jarg1_, long jarg2, ShowCardOptions jarg2_);

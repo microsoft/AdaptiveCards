@@ -4,7 +4,7 @@
 using namespace AdaptiveCards;
 
 InputText::InputText() :
-    BaseCardElement(CardElementType::InputText),
+    BaseInputElement(CardElementType::InputText),
     m_isMultiline(false),
     m_maxLength(0)
 {
@@ -14,7 +14,7 @@ std::shared_ptr<InputText> InputText::Deserialize(const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::InputText);
 
-    std::shared_ptr<InputText> inputText = BaseCardElement::Deserialize<InputText>(json);
+    std::shared_ptr<InputText> inputText = BaseInputElement::Deserialize<InputText>(json);
 
     inputText->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
     inputText->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
@@ -27,9 +27,7 @@ std::shared_ptr<InputText> InputText::Deserialize(const Json::Value& json)
 
 std::shared_ptr<InputText> InputText::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputText::Deserialize(jsonValue);
+    return InputText::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputText::Serialize()

@@ -38,6 +38,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageSetOptions;
         runtimeclass AdaptiveColumnOptions;
         runtimeclass AdaptiveContainerOptions;
+        runtimeclass AdaptiveContainerStyleConfig;
         runtimeclass AdaptiveColumnSetOptions;
         runtimeclass AdaptiveImageOptions;
         runtimeclass AdaptiveCardOptions;
@@ -82,6 +83,7 @@ namespace AdaptiveCards
         interface IAdaptiveTextBlockOptions;
         interface IAdaptiveImageSetOptions;
         interface IAdaptiveColumnOptions;
+        interface IAdaptiveContainerStyleConfig;
         interface IAdaptiveContainerOptions;
         interface IAdaptiveColumnSetOptions;
         interface IAdaptiveImageOptions;
@@ -226,6 +228,12 @@ namespace AdaptiveCards
             Url,
             Email,
         } TextInputStyle;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum ContainerStyle {
+            Normal = 0,
+            Emphasis
+        } ContainerStyle;
 
         declare
         {
@@ -400,6 +408,16 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(9b10f5ef-26e8-4d65-ba76-b986b5e90586),
+            version(NTDDI_WIN10_RS1),
+        ]
+        interface IAdaptiveInputElement : IInspectable
+        {
+            [propget] HRESULT Id([out, retval] HSTRING* value);
+            [propput] HRESULT Id([in] HSTRING value);
+        };
+
+        [
             uuid(99797dfe-d39c-43a4-9f2b-d457cc358e1e),
             version(NTDDI_WIN10_RS1)
         ]
@@ -454,6 +472,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputChoiceSet
         {
             [default] interface IAdaptiveInputChoiceSet;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -484,6 +503,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputDate
         {
             [default] interface IAdaptiveInputDate;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -514,6 +534,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputNumber
         {
             [default] interface IAdaptiveInputNumber;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -547,6 +568,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputText
         {
             [default] interface IAdaptiveInputText;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -577,6 +599,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputTime
         {
             [default] interface IAdaptiveInputTime;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -607,6 +630,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputToggle
         {
             [default] interface IAdaptiveInputToggle;
+            interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
 
@@ -616,6 +640,9 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveContainer : IInspectable
         {
+            [propget] HRESULT Style([out, retval] ContainerStyle* value);
+            [propput] HRESULT Style([in] ContainerStyle value);
+
             [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
         };
 
@@ -637,6 +664,8 @@ namespace AdaptiveCards
         {
             [propget] HRESULT Size([out, retval] HSTRING* value);
             [propput] HRESULT Size([in] HSTRING value);
+
+            [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
         };
 
         [
@@ -646,7 +675,6 @@ namespace AdaptiveCards
         runtimeclass AdaptiveColumn
         {
             [default] interface IAdaptiveColumn;
-            interface IAdaptiveContainer;
             interface IAdaptiveCardElement;
         };
 
@@ -765,6 +793,7 @@ namespace AdaptiveCards
         interface IAdaptiveActionEventArgs : IInspectable
         {
             [propget] HRESULT Action([out, retval] IAdaptiveActionElement** action);
+            [propget] HRESULT Inputs([out, retval] HSTRING* value);
         }
 
         [
@@ -1054,6 +1083,35 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(51b57d16-6155-4bbe-bf1a-516382ac9e81),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveContainerStyleConfig)
+        ]
+        interface IAdaptiveContainerStyleConfig : IInspectable
+        {
+            [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
+
+            [propget] HRESULT BorderColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT BorderColor([in] Windows.UI.Color value);
+
+            [propget] HRESULT Padding([out, retval] AdaptiveBoundaryOptions** value);
+            [propput] HRESULT Padding([in] AdaptiveBoundaryOptions* value);
+
+            [propget] HRESULT BorderThickness([out, retval] AdaptiveBoundaryOptions** value);
+            [propput] HRESULT BorderThickness([in] AdaptiveBoundaryOptions* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveContainerStyleConfig
+        {
+            [default] interface IAdaptiveContainerStyleConfig;
+        };
+
+        [
             uuid(740419b1-29de-435d-b8da-e34f1bd5afee),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveContainerOptions)
@@ -1062,6 +1120,13 @@ namespace AdaptiveCards
         {
             [propget] HRESULT Separation([out, retval] AdaptiveSeparationOptions** value);
             [propput] HRESULT Separation([in] AdaptiveSeparationOptions* value);
+
+            [propget] HRESULT Normal([out, retval] AdaptiveContainerStyleConfig** value);
+            [propput] HRESULT Normal([in] AdaptiveContainerStyleConfig* value);
+
+            [propget] HRESULT Emphasis([out, retval] AdaptiveContainerStyleConfig** value);
+            [propput] HRESULT Emphasis([in] AdaptiveContainerStyleConfig* value);
+
         };
 
         [

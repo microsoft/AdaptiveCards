@@ -11,7 +11,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColumn,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainer,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveColumn, BaseTrust)
@@ -24,8 +23,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IAdaptiveColumn
         IFACEMETHODIMP get_Size(_Out_ HSTRING* size);
         IFACEMETHODIMP put_Size(_In_ HSTRING size);
-
-        // IAdaptiveContainer
 
         IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** items);
 

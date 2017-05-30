@@ -1,6 +1,6 @@
 # Install and Build
 
-This folder contains the HTML Renderer and the Visualizer tool. 
+This folder contains the HTML Renderer and the Visualizer tool.
 
 They are built independently, so to make local testing easier, you can use `npm link` below
 
@@ -8,7 +8,7 @@ They are built independently, so to make local testing easier, you can use `npm 
 
 1. `cd renderer`
 1. `npm install`
-1. `npm link` (allows the visualizer to take a local symlink dep to this pacakge)
+1. `npm link` (allows the visualizer to take a local symlink dep to this package)
 1. `npm run build` (or `npm run watch`)
 
 ## To build the Visualizer tool

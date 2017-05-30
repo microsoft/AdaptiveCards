@@ -4,7 +4,7 @@
 using namespace AdaptiveCards;
 
 InputNumber::InputNumber() :
-    BaseCardElement(CardElementType::InputNumber),
+    BaseInputElement(CardElementType::InputNumber),
     m_min(std::numeric_limits<int>::min()),
     m_max(std::numeric_limits<int>::max())
 {
@@ -14,7 +14,7 @@ std::shared_ptr<InputNumber> InputNumber::Deserialize(const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::InputNumber);
 
-    std::shared_ptr<InputNumber> inputNumber = BaseCardElement::Deserialize<InputNumber>(json);
+    std::shared_ptr<InputNumber> inputNumber = BaseInputElement::Deserialize<InputNumber>(json);
 
     inputNumber->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
     inputNumber->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));
@@ -26,9 +26,7 @@ std::shared_ptr<InputNumber> InputNumber::Deserialize(const Json::Value& json)
 
 std::shared_ptr<InputNumber> InputNumber::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputNumber::Deserialize(jsonValue);
+    return InputNumber::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputNumber::Serialize()

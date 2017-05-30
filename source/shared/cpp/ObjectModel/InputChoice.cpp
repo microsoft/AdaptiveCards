@@ -13,8 +13,8 @@ std::shared_ptr<InputChoice> InputChoice::Deserialize(const Json::Value& json)
 {
     auto choice = std::make_shared<InputChoice>();
 
-    choice->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
-    choice->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
+    choice->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
+    choice->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, true));
     choice->SetSpeak(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak));
     choice->SetIsSelected(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSelected, false));
 
@@ -23,9 +23,7 @@ std::shared_ptr<InputChoice> InputChoice::Deserialize(const Json::Value& json)
 
 std::shared_ptr<InputChoice> InputChoice::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputChoice::Deserialize(jsonValue);
+    return InputChoice::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputChoice::Serialize()

@@ -66,5 +66,10 @@ namespace AdaptiveCards.Rendering
         {
            // text.font
         }
-    }
+		public static void SetPlaceholder (this TextBox textBlock, string placeholder)
+		{
+			textBlock.Placeholder = placeholder;
+		}
+
+	}
 }

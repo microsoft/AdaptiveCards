@@ -34,7 +34,7 @@ namespace AdaptiveCards.Rendering
 #elif XAMARIN 
                     // TODO 
 #endif
-                textBox.Text = input.Placeholder;
+                textBox.SetPlaceholder (input.Placeholder);
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
                 textBox.SetContext(input);
                 context.InputBindings.Add(input.Id, () => textBox.Text);

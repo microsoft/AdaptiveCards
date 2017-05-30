@@ -40,14 +40,12 @@ std::shared_ptr<ColumnSet> ColumnSet::Deserialize(const Json::Value& value)
     auto container = BaseCardElement::Deserialize<ColumnSet>(value);
 
     // Parse Columns
-    auto cardElements = ParseUtil::GetElementCollection<Column>(value, AdaptiveCardSchemaKey::Columns, ColumnParser);
+    auto cardElements = ParseUtil::GetElementCollection<Column>(value, AdaptiveCardSchemaKey::Columns, ColumnParser, true);
     container->m_columns = std::move(cardElements);
     return container;
 }
 
 std::shared_ptr<ColumnSet> ColumnSet::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return ColumnSet::Deserialize(jsonValue);
+    return ColumnSet::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }

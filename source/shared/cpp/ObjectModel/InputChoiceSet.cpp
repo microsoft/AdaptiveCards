@@ -4,7 +4,7 @@
 
 using namespace AdaptiveCards;
 
-InputChoiceSet::InputChoiceSet() : BaseCardElement(CardElementType::InputChoiceSet)
+InputChoiceSet::InputChoiceSet() : BaseInputElement(CardElementType::InputChoiceSet)
 {
 }
 
@@ -12,7 +12,7 @@ InputChoiceSet::InputChoiceSet(
     SeparationStyle separation,
     std::string speak,
     std::vector<std::shared_ptr<InputChoice>>& choices) :
-    BaseCardElement(CardElementType::InputChoiceSet, separation, speak),
+    BaseInputElement(CardElementType::InputChoiceSet, separation, speak),
     m_choices(choices)
 {
 }
@@ -20,7 +20,7 @@ InputChoiceSet::InputChoiceSet(
 InputChoiceSet::InputChoiceSet(
     SeparationStyle separation,
     std::string speak) :
-    BaseCardElement(CardElementType::InputChoiceSet, separation, speak)
+    BaseInputElement(CardElementType::InputChoiceSet, separation, speak)
 {
 }
 
@@ -73,14 +73,14 @@ std::shared_ptr<InputChoiceSet> InputChoiceSet::Deserialize(const Json::Value& j
 {
     ParseUtil::ExpectTypeString(json, CardElementType::InputChoiceSet);
 
-    auto choiceSet = BaseCardElement::Deserialize<InputChoiceSet>(json);
+    auto choiceSet = BaseInputElement::Deserialize<InputChoiceSet>(json);
 
     choiceSet->SetChoiceSetStyle(ParseUtil::GetEnumValue<ChoiceSetStyle>(json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));
     choiceSet->SetIsMultiSelect(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiSelect, false));
     choiceSet->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
     
     // Parse Choices
-    auto choicesArray = ParseUtil::GetArray(json, AdaptiveCardSchemaKey::Choices);
+    auto choicesArray = ParseUtil::GetArray(json, AdaptiveCardSchemaKey::Choices, true);
     std::vector<std::shared_ptr<InputChoice>> choices;
 
     // Deserialize every choice in the array
@@ -99,7 +99,5 @@ std::shared_ptr<InputChoiceSet> InputChoiceSet::Deserialize(const Json::Value& j
 
 std::shared_ptr<InputChoiceSet> InputChoiceSet::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputChoiceSet::Deserialize(jsonValue);
+    return InputChoiceSet::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }

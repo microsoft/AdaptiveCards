@@ -31,49 +31,109 @@ struct CaseInsensitiveHash {
 
 enum class AdaptiveCardSchemaKey
 {
-    Type = 0,
-    Body,
-    Version,
-    MinVersion,
-    FallbackText,
-    BaseCardElement,
-    Separation,
-    Speak,
-    Url,
-    ImageStyle,
-    ImageSize,
+    Accent = 0,
+    ActionAlignment,
+    ActionMode,
+    ActionOrientation,
+    Actions,
+    ActionSetConfig,
+    ActionsOrientation,
+    AdaptiveCard,
     AltText,
-    HorizontalAlignment,
-    Text,
-    TextSize,
-    TextWeight,
-    TextColor,
-    IsSubtle,
-    Wrap,
-    MaxLines,
-    Items,
-    Columns,
-    Size,
-    Facts,
-    Title,
-    Value,
-    Images,
-    Placeholder,
-    IsMultiline,
-    MaxLength,
-    ValueOff,
-    ValueOn,
-    Max,
-    Min,
+    Attention,
+    BackgroundColor,
+    BackgroundImageUrl,
+    BaseCardElement,
+    Body,
+    BorderColor,
+    BorderThickness,
+    ButtonSpacing,
+    Card,
+    Center,
     Choices,
-    IsSelected,
-    Style,
+    ChoiceSet,
+    Color,
+    ColorConfig,
+    Colors,
+    Column,
+    Columns,
+    ColumnSet,
+    Container,
+    ContainerStyleConfig,
+    Dark,
+    DateInput,
+    Default,
+    Emphasis,
+    ExtraLarge,
+    Facts,
+    FactSet,
+    FallbackText,
+    FontFamily,
+    FontSizes,
+    Good,
+    HorizontalAlignment,
+    Id,
+    Image,
+    Images,
+    ImageSet,
+    ImageSize,
+    ImageSizes,
+    InlineTopMargin,
+    IsMultiline,
     IsMultiSelect,
     IsRequired,
-    BackgroundImageUrl,
-    Actions,
+    IsSelected,
+    IsSubtle,
+    Items,
+    Large,
+    Left,
+    Light,
+    LineColor,
+    LineThickness,
+    Max,
+    MaxActions,
+    MaxLength,
+    MaxLines,
+    Medium,
     Method,
-    Card,
+    Min,
+    MinVersion,
+    Normal,
+    NumberInput,
+    Padding,
+    Placeholder,
+    Right,
+    Separation,
+    ShowActionMode,
+    ShowCard,
+    ShowCardActionConfig,
+    Size,
+    Small,
+    Spacing,
+    SpacingDefinition,
+    Speak,
+    Stretch,
+    StrongSeparation,
+    Style,
+    Subtle,
+    SupportsInteractivity,
+    Text,
+    TextBlock,
+    TextConfig,
+    TextInput,
+    TextWeight,
+    TimeInput,
+    Title,
+    ToggleInput,
+    Type,
+    Url,
+    Value,
+    ValueOff,
+    ValueOn,
+    Version,
+    Warning,
+    Weight,
+    Wrap,
 };
 
 enum class TextSize
@@ -189,6 +249,11 @@ enum class ActionMode {
     Popup
 };
 
+enum class ContainerStyle {
+    Normal = 0,
+    Emphasis
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 
@@ -229,5 +294,20 @@ const std::string ChoiceSetStyleToString(ChoiceSetStyle type);
 ChoiceSetStyle ChoiceSetStyleFromString(const std::string& type);
 
 const std::string TextInputStyleToString(TextInputStyle style);
-TextInputStyle TextInputStyleFromString(const std::string & style);
+TextInputStyle TextInputStyleFromString(const std::string& style);
+
+const std::string ContainerStyleToString(ContainerStyle style);
+ContainerStyle ContainerStyleFromString(const std::string& style);
+
+template <typename T>
+const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+GenerateStringToEnumMap(const std::unordered_map<T, std::string, EnumHash>& keyToStringMap)
+{
+    std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo> result;
+    for (auto& kv : keyToStringMap)
+    {
+        result[kv.second] = kv.first;
+    }
+    return result;
+}
 }

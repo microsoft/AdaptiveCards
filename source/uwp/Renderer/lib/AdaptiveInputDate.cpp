@@ -87,6 +87,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveInputDate::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedInputDate->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveInputDate::put_Id(HSTRING id)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedInputDate->SetId(out);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveInputDate::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::InputDate;

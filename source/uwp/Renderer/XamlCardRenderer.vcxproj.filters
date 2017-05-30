@@ -51,6 +51,8 @@
     <ClCompile Include="lib\AdaptiveShowCardAction.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitAction.cpp" />
     <ClCompile Include="lib\AdaptiveActionEventArgs.cpp" />
+    <ClCompile Include="lib\AdaptiveContainerStyleConfig.cpp" />
+    <ClCompile Include="lib\InputItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -111,6 +113,8 @@
     <ClInclude Include="lib\AdaptiveShowCardAction.h" />
     <ClInclude Include="lib\AdaptiveSubmitAction.h" />
     <ClInclude Include="lib\AdaptiveActionEventArgs.h" />
+    <ClInclude Include="lib\AdaptiveContainerStyleConfig.h" />
+    <ClInclude Include="lib\InputItem.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

@@ -20,6 +20,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions** separationOptions);
         IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationOptions* separationOptions);
 
+        IFACEMETHODIMP get_Normal(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleConfig** containerStyleconfig);
+        IFACEMETHODIMP put_Normal(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleConfig* containerStyleconfig);
+
+        IFACEMETHODIMP get_Emphasis(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleConfig** containerStyleconfig);
+        IFACEMETHODIMP put_Emphasis(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleConfig* containerStyleconfig);
+
     private:
         ContainerOptions m_sharedContainerOptions;
     };

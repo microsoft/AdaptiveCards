@@ -33,8 +33,8 @@ std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
 
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
-    image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url));
-    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::ImageStyle, ImageStyle::Normal, ImageStyleFromString));
+    image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
+    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Normal, ImageStyleFromString));
     image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::Default, ImageSizeFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
@@ -98,8 +98,6 @@ void AdaptiveCards::Image::SetHorizontalAlignment(const HorizontalAlignment valu
 
 std::shared_ptr<Image> Image::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return Image::Deserialize(jsonValue);
+    return Image::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
