@@ -69,5 +69,10 @@ namespace AdaptiveCards.Rendering
         {
             textBlock.FontWeight = FontWeight.FromOpenTypeWeight(weight);
         }
+
+        public static void  SetPlaceholder (this TextBox textBlock, string placeholder)
+		{
+			//UWP doesnt have the concept of placeholder for TextBox
+		}
     }
 }

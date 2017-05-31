@@ -23,15 +23,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
 
-        Json::Value adaptiveJsonRoot;
-        Json::Reader jsonRreader;
-        bool parsingSuccessful = jsonRreader.parse(adaptiveJsonString, adaptiveJsonRoot);
-        if (!parsingSuccessful)
-        {
-            return E_FAIL;
-        }
-
-        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::Deserialize(adaptiveJsonRoot);
+        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(adaptiveJsonString);
         return MakeAndInitialize<AdaptiveCard>(card, sharedAdaptiveCard);
     } CATCH_RETURN;
 

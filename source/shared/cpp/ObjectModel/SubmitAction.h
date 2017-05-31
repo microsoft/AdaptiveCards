@@ -15,11 +15,5 @@ public:
     static std::shared_ptr<SubmitAction> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
-
-    std::string GetTitle() const;
-    void SetTitle(const std::string value);
-    
-private:
-    std::string m_title;
 };
 }

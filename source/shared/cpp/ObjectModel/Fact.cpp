@@ -14,8 +14,8 @@ Fact::Fact(std::string title, std::string value, std::string speak) :
 
 std::shared_ptr<Fact> Fact::Deserialize(const Json::Value& json)
 {
-    std::string title = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title);
-    std::string value = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value);
+    std::string title = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true);
+    std::string value = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, true);
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
 
     auto fact = std::make_shared<Fact>(title, value, speak);
@@ -24,9 +24,7 @@ std::shared_ptr<Fact> Fact::Deserialize(const Json::Value& json)
 
 std::shared_ptr<Fact> Fact::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return Fact::Deserialize(jsonValue);
+    return Fact::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string Fact::Serialize()

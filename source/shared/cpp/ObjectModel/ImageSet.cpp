@@ -63,7 +63,7 @@ std::shared_ptr<ImageSet> ImageSet::Deserialize(const Json::Value& value)
     imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::Auto, ImageSizeFromString);
 
     // Parse Images
-    auto imagesArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Images);
+    auto imagesArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Images, true);
     std::vector<std::shared_ptr<Image>> images;
 
     // Deserialize every image in the array
@@ -79,4 +79,9 @@ std::shared_ptr<ImageSet> ImageSet::Deserialize(const Json::Value& value)
     imageSet->m_images = std::move(images);
 
     return imageSet;
+}
+
+std::shared_ptr<ImageSet> ImageSet::DeserializeFromString(const std::string& jsonString)
+{
+    return ImageSet::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }

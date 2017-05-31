@@ -17,14 +17,10 @@ public:
 
     virtual std::string Serialize();
 
-    std::string GetTitle() const;
-    void SetTitle(const std::string value);
-
     std::shared_ptr<AdaptiveCard> GetCard() const;
     void SetCard(const std::shared_ptr<AdaptiveCard>);
 
 private:
-    std::string m_title;
     std::shared_ptr<AdaptiveCard> m_card;
 };
 }

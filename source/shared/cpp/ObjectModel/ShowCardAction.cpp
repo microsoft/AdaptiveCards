@@ -12,8 +12,6 @@ std::shared_ptr<ShowCardAction> ShowCardAction::Deserialize(const Json::Value& j
 {
     std::shared_ptr<ShowCardAction> showCardAction = BaseActionElement::Deserialize<ShowCardAction>(json);
 
-    showCardAction->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
-
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card);
     showCardAction->SetCard(AdaptiveCard::Deserialize(json.get(propertyName, Json::Value())));
 
@@ -22,24 +20,12 @@ std::shared_ptr<ShowCardAction> ShowCardAction::Deserialize(const Json::Value& j
 
 std::shared_ptr<ShowCardAction> ShowCardAction::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return ShowCardAction::Deserialize(jsonValue);
+    return ShowCardAction::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string ShowCardAction::Serialize()
 {
     return "";
-}
-
-std::string ShowCardAction::GetTitle() const
-{
-    return m_title;
-}
-
-void ShowCardAction::SetTitle(const std::string value)
-{
-    m_title = value;
 }
 
 std::shared_ptr<AdaptiveCard> AdaptiveCards::ShowCardAction::GetCard() const

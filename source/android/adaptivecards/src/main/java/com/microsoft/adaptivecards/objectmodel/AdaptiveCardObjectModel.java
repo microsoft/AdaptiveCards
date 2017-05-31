@@ -121,4 +121,12 @@ public class AdaptiveCardObjectModel {
     return TextInputStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextInputStyleFromString(style));
   }
 
+  public static String ContainerStyleToString(ContainerStyle style) {
+    return AdaptiveCardObjectModelJNI.ContainerStyleToString(style.swigValue());
+  }
+
+  public static ContainerStyle ContainerStyleFromString(String style) {
+    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ContainerStyleFromString(style));
+  }
+
 }

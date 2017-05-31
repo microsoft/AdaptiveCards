@@ -1,12 +1,12 @@
 #pragma once
 
 #include "pch.h"
-#include "BaseCardElement.h"
+#include "BaseInputElement.h"
 #include "Enums.h"
 
 namespace AdaptiveCards
 {
-class InputDate : public BaseCardElement
+class InputDate : public BaseInputElement
 {
 public:
     InputDate();

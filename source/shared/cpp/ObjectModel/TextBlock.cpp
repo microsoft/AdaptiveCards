@@ -43,9 +43,9 @@ std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
 
     std::shared_ptr<TextBlock> textBlock = BaseCardElement::Deserialize<TextBlock>(json);
 
-    textBlock->SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text));
-    textBlock->SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::TextSize, TextSize::Normal, TextSizeFromString));
-    textBlock->SetTextColor(ParseUtil::GetEnumValue<TextColor>(json, AdaptiveCardSchemaKey::TextColor, TextColor::Default, TextColorFromString));
+    textBlock->SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
+    textBlock->SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Normal, TextSizeFromString));
+    textBlock->SetTextColor(ParseUtil::GetEnumValue<TextColor>(json, AdaptiveCardSchemaKey::Color, TextColor::Default, TextColorFromString));
     textBlock->SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Normal, TextWeightFromString));
     textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
     textBlock->SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
@@ -57,9 +57,7 @@ std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
 
 std::shared_ptr<TextBlock> TextBlock::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return TextBlock::Deserialize(jsonValue);
+    return TextBlock::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string TextBlock::Serialize()

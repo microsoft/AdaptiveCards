@@ -118,6 +118,7 @@
     <ClInclude Include="lib\AdaptiveBoundaryOptions.h" />
     <ClInclude Include="lib\AdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveCardOptions.h" />
+    <ClInclude Include="lib\AdaptiveContainerStyleConfig.h" />
     <ClInclude Include="lib\AdaptiveHttpAction.h" />
     <ClInclude Include="lib\AdaptiveInputChoice.h" />
     <ClInclude Include="lib\AdaptiveInputChoiceSet.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\IImageLoadTrackerListener.h" />
     <ClInclude Include="lib\ImageLoadTracker.h" />
+    <ClInclude Include="lib\InputItem.h" />
     <ClInclude Include="lib\IXamlBuilderListener.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\Util.h" />
@@ -174,6 +176,7 @@
     <ClCompile Include="lib\AdaptiveBoundaryOptions.cpp" />
     <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveCardOptions.cpp" />
+    <ClCompile Include="lib\AdaptiveContainerStyleConfig.cpp" />
     <ClCompile Include="lib\AdaptiveHttpAction.cpp" />
     <ClCompile Include="lib\AdaptiveInputChoice.cpp" />
     <ClCompile Include="lib\AdaptiveInputChoiceSet.cpp" />
@@ -216,6 +219,7 @@
     <ClCompile Include="lib\AdaptiveTimeInputOptions.cpp" />
     <ClCompile Include="lib\AdaptiveToggleInputOptions.cpp" />
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
+    <ClCompile Include="lib\InputItem.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />

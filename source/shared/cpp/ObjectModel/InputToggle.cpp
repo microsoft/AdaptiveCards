@@ -4,7 +4,9 @@
 using namespace AdaptiveCards;
 
 InputToggle::InputToggle() :
-    BaseCardElement(CardElementType::InputToggle)
+    BaseInputElement(CardElementType::InputToggle),
+    m_valueOn("true"),
+    m_valueOff("false")
 {
 }
 
@@ -12,21 +14,29 @@ std::shared_ptr<InputToggle> InputToggle::Deserialize(const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::InputToggle);
 
-    std::shared_ptr<InputToggle> inputToggle = BaseCardElement::Deserialize<InputToggle>(json);
+    std::shared_ptr<InputToggle> inputToggle = BaseInputElement::Deserialize<InputToggle>(json);
 
-    inputToggle->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
+    inputToggle->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     inputToggle->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
-    inputToggle->SetValueOff(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOff));
-    inputToggle->SetValueOn(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOn));
+
+    std::string valueOff = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOff);
+    if (valueOff != "")
+    {
+        inputToggle->SetValueOff(valueOff);
+    }
+
+    std::string valueOn = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ValueOn);
+    if (valueOn != "")
+    {
+        inputToggle->SetValueOn(valueOn);
+    }
 
     return inputToggle;
 }
 
 std::shared_ptr<InputToggle> InputToggle::DeserializeFromString(const std::string& jsonString)
 {
-    Json::Value jsonValue(jsonString);
-
-    return InputToggle::Deserialize(jsonValue);
+    return InputToggle::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string InputToggle::Serialize()
