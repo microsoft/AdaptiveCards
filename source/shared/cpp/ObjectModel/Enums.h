@@ -199,14 +199,13 @@ enum class CardElementType
     ColumnSet,
     FactSet,
     Fact,
-    ActionGroup,
     ImageSet,
-    InputDate,
-    InputNumber,
-    InputText,
-    InputTime,
-    InputToggle,
-    InputChoiceSet,
+    DateInput,
+    NumberInput,
+    TextInput,
+    TimeInput,
+    ToggleInput,
+    ChoiceSetInput,
 };
 
 enum class ActionType

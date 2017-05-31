@@ -1,28 +1,28 @@
 #pragma once
 
 #include "AdaptiveCards.XamlCardRenderer.h"
+#include "ChoiceSetInput.h"
 #include "Enums.h"
-#include "InputChoiceSet.h"
 #include <windows.foundation.h>
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    class AdaptiveInputChoiceSet :
+    class AdaptiveChoiceSetInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceSetInput,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveInputChoiceSet, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveChoiceSetInput, BaseTrust)
 
     public:
-        AdaptiveInputChoiceSet();
+        AdaptiveChoiceSetInput();
 
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::InputChoiceSet>& sharedInputChoiceSet);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ChoiceSetInput>& sharedChoiceSetInput);
 
-        // IAdaptiveInputChoiceSet
+        // IAdaptiveChoiceSetInput
 
         IFACEMETHODIMP get_IsMultiSelect(_Out_ boolean* isMultiSelect);
         IFACEMETHODIMP put_IsMultiSelect(_In_ boolean isMultiSelect);
@@ -33,7 +33,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle* choiceSetStyle);
         IFACEMETHODIMP put_ChoiceSetStyle(_In_ ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle choiceSetStyle);
 
-        IFACEMETHODIMP get_Choices(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoice*>** columns);
+        IFACEMETHODIMP get_Choices(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput*>** columns);
 
         // IAdaptiveInputElement
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
@@ -50,11 +50,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     private:
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoice*>> m_InputChoices;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput*>> m_choices;
 
         //Using a Container as backing element for now
-        std::shared_ptr<AdaptiveCards::InputChoiceSet> m_sharedInputChoiceSet;
+        std::shared_ptr<AdaptiveCards::ChoiceSetInput> m_sharedChoiceSetInput;
     };
 
-    ActivatableClass(AdaptiveInputChoiceSet);
+    ActivatableClass(AdaptiveChoiceSetInput);
 }}

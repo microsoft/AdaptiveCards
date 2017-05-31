@@ -6,13 +6,13 @@
 
 namespace AdaptiveCards
 {
-class InputToggle : public BaseInputElement
+class ToggleInput : public BaseInputElement
 {
 public:
-    InputToggle();
+    ToggleInput();
 
-    static std::shared_ptr<InputToggle> Deserialize(const Json::Value& root);
-    static std::shared_ptr<InputToggle> DeserializeFromString(const std::string& jsonString);
+    static std::shared_ptr<ToggleInput> Deserialize(const Json::Value& root);
+    static std::shared_ptr<ToggleInput> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
 

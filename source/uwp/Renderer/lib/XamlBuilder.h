@@ -149,36 +149,36 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageSetControl);
-        void BuildCompactInputChoiceSet(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
-        void BuildExpandedInputChoiceSet(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
+        void BuildCompactChoiceSetInput(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSetControl);
+        void BuildExpandedChoiceSetInput(
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceSetInput* adaptiveChoiceInputSet,
             boolean isMultiSelect,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
-        void BuildInputChoiceSet(
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceSetInputControl);
+        void BuildChoiceSetInput(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             std::shared_ptr<std::vector<InputItem>> inputElements,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputChoiceSetControl);
-        void BuildInputDate(
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceSetInputControl);
+        void BuildDateInput(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             std::shared_ptr<std::vector<InputItem>> inputElements,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputDateControl);
-        void BuildInputNumber(
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** dateInputControl);
+        void BuildNumberInput(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             std::shared_ptr<std::vector<InputItem>> inputElements,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputDateControl);
-        void BuildInputText(
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** numberInputControl);
+        void BuildTextInput(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             std::shared_ptr<std::vector<InputItem>> inputElements,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputTextControl);
-        void BuildInputTime(
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textInputControl);
+        void BuildTimeInput(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             std::shared_ptr<std::vector<InputItem>> inputElements,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputTimeControl);
-        void BuildInputToggle(
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** timeInputControl);
+        void BuildToggleInput(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             std::shared_ptr<std::vector<InputItem>> inputElements,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** inputToggleControl);
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
     };
 }}

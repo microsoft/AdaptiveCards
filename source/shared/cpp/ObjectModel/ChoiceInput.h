@@ -6,10 +6,10 @@
 
 namespace AdaptiveCards
 {
-class InputChoice
+class ChoiceInput
 {
 public:
-    InputChoice();
+    ChoiceInput();
 
     std::string Serialize();
 
@@ -25,8 +25,8 @@ public:
     std::string GetSpeak() const;
     void SetSpeak(const std::string value);
 
-    static std::shared_ptr<InputChoice> Deserialize(const Json::Value& root);
-    static std::shared_ptr<InputChoice> DeserializeFromString(const std::string& jsonString);
+    static std::shared_ptr<ChoiceInput> Deserialize(const Json::Value& root);
+    static std::shared_ptr<ChoiceInput> DeserializeFromString(const std::string& jsonString);
 
 private:
     std::string m_title;

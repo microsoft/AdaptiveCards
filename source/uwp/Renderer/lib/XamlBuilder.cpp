@@ -51,12 +51,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_adaptiveElementBuilder[ElementType::ColumnSet] = std::bind(&XamlBuilder::BuildColumnSet, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
         m_adaptiveElementBuilder[ElementType::FactSet] = std::bind(&XamlBuilder::BuildFactSet, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
         m_adaptiveElementBuilder[ElementType::ImageSet] = std::bind(&XamlBuilder::BuildImageSet, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-        m_adaptiveElementBuilder[ElementType::InputChoiceSet] = std::bind(&XamlBuilder::BuildInputChoiceSet, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-        m_adaptiveElementBuilder[ElementType::InputDate] = std::bind(&XamlBuilder::BuildInputDate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-        m_adaptiveElementBuilder[ElementType::InputNumber] = std::bind(&XamlBuilder::BuildInputNumber, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-        m_adaptiveElementBuilder[ElementType::InputText] = std::bind(&XamlBuilder::BuildInputText, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-        m_adaptiveElementBuilder[ElementType::InputTime] = std::bind(&XamlBuilder::BuildInputTime, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-        m_adaptiveElementBuilder[ElementType::InputToggle] = std::bind(&XamlBuilder::BuildInputToggle, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+        m_adaptiveElementBuilder[ElementType::ChoiceSetInput] = std::bind(&XamlBuilder::BuildChoiceSetInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+        m_adaptiveElementBuilder[ElementType::DateInput] = std::bind(&XamlBuilder::BuildDateInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+        m_adaptiveElementBuilder[ElementType::NumberInput] = std::bind(&XamlBuilder::BuildNumberInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+        m_adaptiveElementBuilder[ElementType::TextInput] = std::bind(&XamlBuilder::BuildTextInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+        m_adaptiveElementBuilder[ElementType::TimeInput] = std::bind(&XamlBuilder::BuildTimeInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+        m_adaptiveElementBuilder[ElementType::ToggleInput] = std::bind(&XamlBuilder::BuildToggleInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
         m_hostOptions = Make<AdaptiveHostOptions>();
 
@@ -895,42 +895,42 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 }
                 break;
             }
-            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputChoiceSet:
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::ChoiceSetInput:
             {
                 ComPtr<IAdaptiveChoiceSetInputOptions> choiceSetOptions;
                 THROW_IF_FAILED(m_hostOptions->get_ChoiceSetInput(&choiceSetOptions));
                 THROW_IF_FAILED(choiceSetOptions->get_Separation(&localSeparationOptions));
                 break;
             }
-            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputDate:
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::DateInput:
             {
                 ComPtr<IAdaptiveDateInputOptions> dateOptions;
                 THROW_IF_FAILED(m_hostOptions->get_DateInput(&dateOptions));
                 THROW_IF_FAILED(dateOptions->get_Separation(&localSeparationOptions));
                 break;
             }
-            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputNumber:
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::NumberInput:
             {
                 ComPtr<IAdaptiveNumberInputOptions> numberOptions;
                 THROW_IF_FAILED(m_hostOptions->get_NumberInput(&numberOptions));
                 THROW_IF_FAILED(numberOptions->get_Separation(&localSeparationOptions));
                 break;
             }
-            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputText:
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::TextInput:
             {
                 ComPtr<IAdaptiveTextInputOptions> textOptions;
                 THROW_IF_FAILED(m_hostOptions->get_TextInput(&textOptions));
                 THROW_IF_FAILED(textOptions->get_Separation(&localSeparationOptions));
                 break;
             }
-            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputTime:
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::TimeInput:
             {
                 ComPtr<IAdaptiveTimeInputOptions> timeOptions;
                 THROW_IF_FAILED(m_hostOptions->get_TimeInput(&timeOptions));
                 THROW_IF_FAILED(timeOptions->get_Separation(&localSeparationOptions));
                 break;
             }
-            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::InputToggle:
+            case ABI::AdaptiveCards::XamlCardRenderer::ElementType::ToggleInput:
             {
                 ComPtr<IAdaptiveToggleInputOptions> toggleOptions;
                 THROW_IF_FAILED(m_hostOptions->get_ToggleInput(&toggleOptions));
@@ -1638,9 +1638,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         inputElements->push_back(item);
     }
 
-    void XamlBuilder::BuildCompactInputChoiceSet(
-        IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
-        IUIElement** inputChoiceSet)
+    void XamlBuilder::BuildCompactChoiceSetInput(
+        IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+        IUIElement** choiceInputSet)
     {
         ComPtr<IComboBox> comboBox = XamlHelpers::CreateXamlClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
 
@@ -1658,22 +1658,22 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IVector<IInspectable*>> itemsVector;
         THROW_IF_FAILED(items.As(&itemsVector));
 
-        ComPtr<IVector<IAdaptiveInputChoice*>> choices;
-        THROW_IF_FAILED(adaptiveInputChoiceSet->get_Choices(&choices));
+        ComPtr<IVector<IAdaptiveChoiceInput*>> choices;
+        THROW_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
 
         int currentIndex = 0;
         int selectedIndex = -1;
-        XamlHelpers::IterateOverVector<IAdaptiveInputChoice>(choices.Get(), [this, &currentIndex, &selectedIndex, itemsVector](IAdaptiveInputChoice* adaptiveInputChoice)
+        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [this, &currentIndex, &selectedIndex, itemsVector](IAdaptiveChoiceInput* adaptiveChoiceInput)
         {
             HString title;
-            THROW_IF_FAILED(adaptiveInputChoice->get_Title(title.GetAddressOf()));
+            THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
 
             ComPtr<IComboBoxItem> comboBoxItem = XamlHelpers::CreateXamlClass<IComboBoxItem>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBoxItem));
 
             XamlHelpers::SetContent(comboBoxItem.Get(), title.Get());
 
             boolean isSelected;
-            THROW_IF_FAILED(adaptiveInputChoice->get_IsSelected(&isSelected));
+            THROW_IF_FAILED(adaptiveChoiceInput->get_IsSelected(&isSelected));
             if (isSelected)
             {
                 selectedIndex = currentIndex;
@@ -1691,16 +1691,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(selector->put_SelectedIndex(selectedIndex));
 
         // TODO: 11508861
-        THROW_IF_FAILED(comboBox.CopyTo(inputChoiceSet));
+        THROW_IF_FAILED(comboBox.CopyTo(choiceInputSet));
     }
 
-    void XamlBuilder::BuildExpandedInputChoiceSet(
-        IAdaptiveInputChoiceSet* adaptiveInputChoiceSet,
+    void XamlBuilder::BuildExpandedChoiceSetInput(
+        IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
         boolean isMultiSelect,
-        IUIElement** inputChoiceSet)
+        IUIElement** choiceInputSet)
     {
-        ComPtr<IVector<IAdaptiveInputChoice*>> choices;
-        THROW_IF_FAILED(adaptiveInputChoiceSet->get_Choices(&choices));
+        ComPtr<IVector<IAdaptiveChoiceInput*>> choices;
+        THROW_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
 
         ComPtr<IStackPanel> stackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         stackPanel->put_Orientation(Orientation::Orientation_Vertical);
@@ -1708,7 +1708,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IPanel> panel;
         THROW_IF_FAILED(stackPanel.As(&panel));
 
-        XamlHelpers::IterateOverVector<IAdaptiveInputChoice>(choices.Get(), [this, panel, isMultiSelect](IAdaptiveInputChoice* adaptiveInputChoice)
+        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [this, panel, isMultiSelect](IAdaptiveChoiceInput* adaptiveChoiceInput)
         {
             ComPtr<IInspectable> choiceItem;
             if (isMultiSelect)
@@ -1723,61 +1723,61 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             }
 
             HString title;
-            THROW_IF_FAILED(adaptiveInputChoice->get_Title(title.GetAddressOf()));
+            THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
             XamlHelpers::SetContent(choiceItem.Get(), title.Get());
 
             boolean isSelected;
-            THROW_IF_FAILED(adaptiveInputChoice->get_IsSelected(&isSelected));
+            THROW_IF_FAILED(adaptiveChoiceInput->get_IsSelected(&isSelected));
             XamlHelpers::SetToggleValue(choiceItem.Get(), isSelected);
 
             XamlHelpers::AppendXamlElementToPanel(choiceItem.Get(), panel.Get());
         });
 
         // TODO: 11508861
-        THROW_IF_FAILED(stackPanel.CopyTo(inputChoiceSet));
+        THROW_IF_FAILED(stackPanel.CopyTo(choiceInputSet));
     }
 
-    void XamlBuilder::BuildInputChoiceSet(
+    void XamlBuilder::BuildChoiceSetInput(
         IAdaptiveCardElement* adaptiveCardElement,
         std::shared_ptr<std::vector<InputItem>> inputElements,
-        IUIElement** inputChoiceSet)
+        IUIElement** choiceInputSet)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveInputChoiceSet> adaptiveInputChoiceSet;
-        THROW_IF_FAILED(cardElement.As(&adaptiveInputChoiceSet));
+        ComPtr<IAdaptiveChoiceSetInput> adaptiveChoiceSetInput;
+        THROW_IF_FAILED(cardElement.As(&adaptiveChoiceSetInput));
 
         ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle choiceSetStyle;
-        THROW_IF_FAILED(adaptiveInputChoiceSet->get_ChoiceSetStyle(&choiceSetStyle));
+        THROW_IF_FAILED(adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
         boolean isMultiSelect;
-        THROW_IF_FAILED(adaptiveInputChoiceSet->get_IsMultiSelect(&isMultiSelect));
+        THROW_IF_FAILED(adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
 
         if (choiceSetStyle == ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle_Compact &&
             !isMultiSelect)
         {
-            BuildCompactInputChoiceSet(adaptiveInputChoiceSet.Get(), inputChoiceSet);
+            BuildCompactChoiceSetInput(adaptiveChoiceSetInput.Get(), choiceInputSet);
         }
         else
         {
-            BuildExpandedInputChoiceSet(adaptiveInputChoiceSet.Get(), isMultiSelect, inputChoiceSet);
+            BuildExpandedChoiceSetInput(adaptiveChoiceSetInput.Get(), isMultiSelect, choiceInputSet);
         }
 
-        AddInputItemToVector(inputElements, adaptiveCardElement, *inputChoiceSet);
+        AddInputItemToVector(inputElements, adaptiveCardElement, *choiceInputSet);
     }
 
-    void XamlBuilder::BuildInputDate(
+    void XamlBuilder::BuildDateInput(
         IAdaptiveCardElement* adaptiveCardElement,
         std::shared_ptr<std::vector<InputItem>> inputElements,
-        IUIElement** inputDateControl)
+        IUIElement** dateInputControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveInputDate> adaptiveInputDate;
-        THROW_IF_FAILED(cardElement.As(&adaptiveInputDate));
+        ComPtr<IAdaptiveDateInput> adaptiveDateInput;
+        THROW_IF_FAILED(cardElement.As(&adaptiveDateInput));
 
         ComPtr<ICalendarDatePicker> datePicker = XamlHelpers::CreateXamlClass<ICalendarDatePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CalendarDatePicker));
 
         HString placeHolderText;
-        THROW_IF_FAILED(adaptiveInputDate->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveDateInput->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(datePicker->put_PlaceholderText(placeHolderText.Get()));
 
         AddInputItemToVector(inputElements, adaptiveCardElement, datePicker.Get());
@@ -1785,17 +1785,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // TODO: Handle parsing dates for min/max and value
 
         // TODO: 11508861
-        THROW_IF_FAILED(datePicker.CopyTo(inputDateControl));
+        THROW_IF_FAILED(datePicker.CopyTo(dateInputControl));
     }
 
-    void XamlBuilder::BuildInputNumber(
+    void XamlBuilder::BuildNumberInput(
         IAdaptiveCardElement* adaptiveCardElement,
         std::shared_ptr<std::vector<InputItem>> inputElements,
-        IUIElement** inputNumberControl)
+        IUIElement** numberInputControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveInputNumber> adaptiveInputNumber;
-        THROW_IF_FAILED(cardElement.As(&adaptiveInputNumber));
+        ComPtr<IAdaptiveNumberInput> adaptiveNumberInput;
+        THROW_IF_FAILED(cardElement.As(&adaptiveNumberInput));
 
         ComPtr<ITextBox> textBox = XamlHelpers::CreateXamlClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
 
@@ -1810,7 +1810,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
         INT32 value;
-        THROW_IF_FAILED(adaptiveInputNumber->get_Value(&value));
+        THROW_IF_FAILED(adaptiveNumberInput->get_Value(&value));
 
         std::wstring stringValue = std::to_wstring(value);
         THROW_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
@@ -1819,48 +1819,48 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(textBox.As(&textBox2));
 
         HString placeHolderText;
-        THROW_IF_FAILED(adaptiveInputNumber->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveNumberInput->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
 
         AddInputItemToVector(inputElements, adaptiveCardElement, textBox.Get());
 
         // TODO: Handle max and min?
 
-        THROW_IF_FAILED(textBox.CopyTo(inputNumberControl));
+        THROW_IF_FAILED(textBox.CopyTo(numberInputControl));
     }
 
-    void XamlBuilder::BuildInputText(
+    void XamlBuilder::BuildTextInput(
         IAdaptiveCardElement* adaptiveCardElement,
         std::shared_ptr<std::vector<InputItem>> inputElements,
-        IUIElement** inputTextControl)
+        IUIElement** textInputControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveInputText> adaptiveInputText;
-        THROW_IF_FAILED(cardElement.As(&adaptiveInputText));
+        ComPtr<IAdaptiveTextInput> adaptiveTextInput;
+        THROW_IF_FAILED(cardElement.As(&adaptiveTextInput));
 
         ComPtr<ITextBox> textBox = XamlHelpers::CreateXamlClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
 
         boolean isMultiLine;
-        THROW_IF_FAILED(adaptiveInputText->get_IsMultiline(&isMultiLine));
+        THROW_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiLine));
         THROW_IF_FAILED(textBox->put_AcceptsReturn(isMultiLine));
 
         HString textValue;
-        THROW_IF_FAILED(adaptiveInputText->get_Value(textValue.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveTextInput->get_Value(textValue.GetAddressOf()));
         THROW_IF_FAILED(textBox->put_Text(textValue.Get()));
 
         UINT32 maxLength;
-        THROW_IF_FAILED(adaptiveInputText->get_MaxLength(&maxLength));
+        THROW_IF_FAILED(adaptiveTextInput->get_MaxLength(&maxLength));
         THROW_IF_FAILED(textBox->put_MaxLength(maxLength));
 
         ComPtr<ITextBox2> textBox2;
         THROW_IF_FAILED(textBox.As(&textBox2));
 
         HString placeHolderText;
-        THROW_IF_FAILED(adaptiveInputText->get_Placeholder(placeHolderText.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveTextInput->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
 
         ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle textInputStyle;
-        THROW_IF_FAILED(adaptiveInputText->get_TextInputStyle(&textInputStyle));
+        THROW_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));
 
         ComPtr<IInputScopeName> inputScopeName = XamlHelpers::CreateXamlClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
         switch (textInputStyle)
@@ -1888,13 +1888,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         AddInputItemToVector(inputElements, adaptiveCardElement, textBox.Get());
 
         // TODO: 11508861
-        THROW_IF_FAILED(textBox.CopyTo(inputTextControl));
+        THROW_IF_FAILED(textBox.CopyTo(textInputControl));
     }
 
-    void XamlBuilder::BuildInputTime(
+    void XamlBuilder::BuildTimeInput(
         IAdaptiveCardElement* adaptiveCardElement,
         std::shared_ptr<std::vector<InputItem>> inputElements,
-        IUIElement** inputTimeControl)
+        IUIElement** timeInputControl)
     {
         ComPtr<ITimePicker> timePicker = XamlHelpers::CreateXamlClass<ITimePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TimePicker));
 
@@ -1903,30 +1903,30 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // TODO: Handle placeholder text and parsing times for min/max and value
 
         // TODO: 11508861
-        THROW_IF_FAILED(timePicker.CopyTo(inputTimeControl));
+        THROW_IF_FAILED(timePicker.CopyTo(timeInputControl));
     }
 
-    void XamlBuilder::BuildInputToggle(
+    void XamlBuilder::BuildToggleInput(
         IAdaptiveCardElement* adaptiveCardElement,
         std::shared_ptr<std::vector<InputItem>> inputElements,
-        IUIElement** inputToggleControl)
+        IUIElement** toggleInputControl)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveInputToggle> adaptiveInputToggle;
-        THROW_IF_FAILED(cardElement.As(&adaptiveInputToggle));
+        ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
+        THROW_IF_FAILED(cardElement.As(&adaptiveToggleInput));
 
         ComPtr<ICheckBox> checkBox = XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
 
         HString title;
-        THROW_IF_FAILED(adaptiveInputToggle->get_Title(title.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveToggleInput->get_Title(title.GetAddressOf()));
 
         XamlHelpers::SetContent(checkBox.Get(), title.Get());
 
         HString value;
-        THROW_IF_FAILED(adaptiveInputToggle->get_Value(value.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveToggleInput->get_Value(value.GetAddressOf()));
 
         HString valueOn;
-        THROW_IF_FAILED(adaptiveInputToggle->get_ValueOn(valueOn.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveToggleInput->get_ValueOn(valueOn.GetAddressOf()));
 
         INT32 compareValueOn;
         THROW_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), valueOn.Get(), &compareValueOn));
@@ -1936,6 +1936,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         AddInputItemToVector(inputElements, adaptiveCardElement, checkBox.Get());
 
         // TODO: 11508861
-        THROW_IF_FAILED(checkBox.CopyTo(inputToggleControl));
+        THROW_IF_FAILED(checkBox.CopyTo(toggleInputControl));
     }
 }}

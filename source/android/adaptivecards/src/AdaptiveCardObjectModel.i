@@ -23,6 +23,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
+#include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
@@ -31,8 +32,8 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 #include "../../../shared/cpp/ObjectModel/Fact.h"
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
-#include "../../../shared/cpp/ObjectModel/InputChoice.h"
-#include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
+#include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
+#include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostOptions.h"
@@ -40,6 +41,7 @@ namespace std {
 
 %shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::BaseActionElement)
+%shared_ptr(AdaptiveCards::BaseInputElement)
 %shared_ptr(AdaptiveCards::Container)
 %shared_ptr(AdaptiveCards::TextBlock)
 %shared_ptr(AdaptiveCards::Image)
@@ -48,7 +50,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::ColumnSet)
 %shared_ptr(AdaptiveCards::Fact)
 %shared_ptr(AdaptiveCards::FactSet)
-%shared_ptr(AdaptiveCards::InputChoiceSet)
+%shared_ptr(AdaptiveCards::ChoiceSetInput)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
 
 // Allow C++ exceptions to be handled in Java
@@ -181,7 +183,7 @@ namespace std {
     }
 };
 
-%exception AdaptiveCards::InputChoiceSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+%exception AdaptiveCards::ChoiceSetInput::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
     $action
     if (!result) {
         jclass excep = jenv->FindClass("java/lang/ClassCastException");
@@ -190,9 +192,9 @@ namespace std {
         }
     }
 }
-%extend AdaptiveCards::InputChoiceSet {
-    static AdaptiveCards::InputChoiceSet *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
-        return dynamic_cast<AdaptiveCards::InputChoiceSet *>(baseCardElement);
+%extend AdaptiveCards::ChoiceSetInput {
+    static AdaptiveCards::ChoiceSetInput *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::ChoiceSetInput *>(baseCardElement);
     }
 };
 
@@ -200,6 +202,7 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
+%include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/Image.h"
@@ -208,8 +211,8 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 %include "../../../shared/cpp/ObjectModel/Fact.h"
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
-%include "../../../shared/cpp/ObjectModel/InputChoice.h"
-%include "../../../shared/cpp/ObjectModel/InputChoiceSet.h"
+%include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
+%include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostOptions.h"
