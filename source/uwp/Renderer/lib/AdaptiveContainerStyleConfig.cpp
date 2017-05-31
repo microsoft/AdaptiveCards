@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Util.h"
 #include "AdaptiveContainerStyleConfig.h"
-#include "AdaptiveBoundaryOptions.h"
+#include "AdaptiveSpacingDefinition.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
@@ -45,25 +45,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::get_BorderThickness(IAdaptiveBoundaryOptions** boundaryOptions)
+    HRESULT AdaptiveContainerStyleConfig::get_BorderThickness(IAdaptiveSpacingDefinition** spacingDefinition)
     {
-        return MakeAndInitialize<AdaptiveBoundaryOptions>(boundaryOptions, m_sharedContainerStyleConfig.borderThickness);
+        return MakeAndInitialize<AdaptiveSpacingDefinition>(spacingDefinition, m_sharedContainerStyleConfig.borderThickness);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::put_BorderThickness(IAdaptiveBoundaryOptions* value)
+    HRESULT AdaptiveContainerStyleConfig::put_BorderThickness(IAdaptiveSpacingDefinition* value)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::get_Padding(IAdaptiveBoundaryOptions** boundaryOptions)
+    HRESULT AdaptiveContainerStyleConfig::get_Padding(IAdaptiveSpacingDefinition** spacingDefinition)
     {
-        return MakeAndInitialize<AdaptiveBoundaryOptions>(boundaryOptions, m_sharedContainerStyleConfig.padding);
+        return MakeAndInitialize<AdaptiveSpacingDefinition>(spacingDefinition, m_sharedContainerStyleConfig.padding);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::put_Padding(IAdaptiveBoundaryOptions* value)
+    HRESULT AdaptiveContainerStyleConfig::put_Padding(IAdaptiveSpacingDefinition* value)
     {
         return E_NOTIMPL;
     }

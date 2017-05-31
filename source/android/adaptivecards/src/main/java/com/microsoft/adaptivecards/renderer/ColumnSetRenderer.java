@@ -10,7 +10,7 @@ import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.Column;
 import com.microsoft.adaptivecards.objectmodel.ColumnSet;
 import com.microsoft.adaptivecards.objectmodel.ColumnVector;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -32,7 +32,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions)
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         ColumnSet columnSet = null;
         if (baseCardElement instanceof ColumnSet)
@@ -57,8 +57,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
-            //setSeparationOptions(context, gridLayout, columnSet.GetSeparationStyle(), hostOptions.getContainer().getSeparation(), hostOptions.getStrongSeparation(), false /* horizontal line */);
-            ((ColumnRenderer)columnRenderer).render(context, gridLayout, column, i, hostOptions);
+            //setSeparationConfig(context, gridLayout, columnSet.GetSeparationStyle(), hostConfig.getContainer().getSeparation(), hostConfig.getStrongSeparation(), false /* horizontal line */);
+            ((ColumnRenderer)columnRenderer).render(context, gridLayout, column, i, hostConfig);
         }
 
         viewGroup.addView(gridLayout);

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
 
 /**
  * Created by bekao on 2/12/2017.
@@ -12,5 +12,5 @@ import com.microsoft.adaptivecards.objectmodel.HostOptions;
 
 public interface IBaseCardElementRenderer
 {
-    ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions);
+    ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig);
 }

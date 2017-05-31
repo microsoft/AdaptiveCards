@@ -259,7 +259,7 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
-#include "../../../shared/cpp/ObjectModel/HostOptions.h"
+#include "../../../shared/cpp/ObjectModel/HostConfig.h"
 
 SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::const_reference std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__get(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,int i){
                 int size = int(self->size());
@@ -5219,310 +5219,310 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BoundaryOptions_1left_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::BoundaryOptions *arg1 = (AdaptiveCards::BoundaryOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingDefinition_1left_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::SpacingDefinition *arg1 = (AdaptiveCards::SpacingDefinition *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::BoundaryOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SpacingDefinition **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->left = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BoundaryOptions_1left_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingDefinition_1left_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::BoundaryOptions *arg1 = (AdaptiveCards::BoundaryOptions *) 0 ;
+  AdaptiveCards::SpacingDefinition *arg1 = (AdaptiveCards::SpacingDefinition *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::BoundaryOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SpacingDefinition **)&jarg1; 
   result = (unsigned int) ((arg1)->left);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BoundaryOptions_1right_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::BoundaryOptions *arg1 = (AdaptiveCards::BoundaryOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingDefinition_1right_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::SpacingDefinition *arg1 = (AdaptiveCards::SpacingDefinition *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::BoundaryOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SpacingDefinition **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->right = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BoundaryOptions_1right_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingDefinition_1right_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::BoundaryOptions *arg1 = (AdaptiveCards::BoundaryOptions *) 0 ;
+  AdaptiveCards::SpacingDefinition *arg1 = (AdaptiveCards::SpacingDefinition *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::BoundaryOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SpacingDefinition **)&jarg1; 
   result = (unsigned int) ((arg1)->right);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BoundaryOptions_1top_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::BoundaryOptions *arg1 = (AdaptiveCards::BoundaryOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingDefinition_1top_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::SpacingDefinition *arg1 = (AdaptiveCards::SpacingDefinition *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::BoundaryOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SpacingDefinition **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->top = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BoundaryOptions_1top_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingDefinition_1top_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::BoundaryOptions *arg1 = (AdaptiveCards::BoundaryOptions *) 0 ;
+  AdaptiveCards::SpacingDefinition *arg1 = (AdaptiveCards::SpacingDefinition *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::BoundaryOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SpacingDefinition **)&jarg1; 
   result = (unsigned int) ((arg1)->top);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BoundaryOptions_1bottom_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::BoundaryOptions *arg1 = (AdaptiveCards::BoundaryOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingDefinition_1bottom_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::SpacingDefinition *arg1 = (AdaptiveCards::SpacingDefinition *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::BoundaryOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SpacingDefinition **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->bottom = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BoundaryOptions_1bottom_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SpacingDefinition_1bottom_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::BoundaryOptions *arg1 = (AdaptiveCards::BoundaryOptions *) 0 ;
+  AdaptiveCards::SpacingDefinition *arg1 = (AdaptiveCards::SpacingDefinition *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::BoundaryOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SpacingDefinition **)&jarg1; 
   result = (unsigned int) ((arg1)->bottom);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BoundaryOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SpacingDefinition(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::BoundaryOptions *result = 0 ;
+  AdaptiveCards::SpacingDefinition *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::BoundaryOptions *)new AdaptiveCards::BoundaryOptions();
-  *(AdaptiveCards::BoundaryOptions **)&jresult = result; 
+  result = (AdaptiveCards::SpacingDefinition *)new AdaptiveCards::SpacingDefinition();
+  *(AdaptiveCards::SpacingDefinition **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BoundaryOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::BoundaryOptions *arg1 = (AdaptiveCards::BoundaryOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SpacingDefinition(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::SpacingDefinition *arg1 = (AdaptiveCards::SpacingDefinition *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::BoundaryOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SpacingDefinition **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1smallFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1smallFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->smallFontSize = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1smallFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1smallFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->smallFontSize);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1normalFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1normalFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->normalFontSize = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1normalFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1normalFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->normalFontSize);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1mediumFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1mediumFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->mediumFontSize = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1mediumFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1mediumFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->mediumFontSize);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1largeFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1largeFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->largeFontSize = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1largeFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1largeFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->largeFontSize);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1extraLargeFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1extraLargeFontSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->extraLargeFontSize = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizeOptions_1extraLargeFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontSizesConfig_1extraLargeFontSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->extraLargeFontSize);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FontSizeOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FontSizesConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::FontSizeOptions *result = 0 ;
+  AdaptiveCards::FontSizesConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::FontSizeOptions *)new AdaptiveCards::FontSizeOptions();
-  *(AdaptiveCards::FontSizeOptions **)&jresult = result; 
+  result = (AdaptiveCards::FontSizesConfig *)new AdaptiveCards::FontSizesConfig();
+  *(AdaptiveCards::FontSizesConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FontSizeOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::FontSizeOptions *arg1 = (AdaptiveCards::FontSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FontSizesConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::FontSizesConfig *arg1 = (AdaptiveCards::FontSizesConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::FontSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOption_1normal_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  AdaptiveCards::ColorOption *arg1 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1normal_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOption **)&jarg1; 
+  arg1 = *(AdaptiveCards::ColorConfig **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -5536,29 +5536,29 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOption_1normal_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1normal_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  AdaptiveCards::ColorOption *arg1 = (AdaptiveCards::ColorOption *) 0 ;
+  AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOption **)&jarg1; 
+  arg1 = *(AdaptiveCards::ColorConfig **)&jarg1; 
   result = (std::string *) & ((arg1)->normal);
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOption_1subtle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  AdaptiveCards::ColorOption *arg1 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1subtle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOption **)&jarg1; 
+  arg1 = *(AdaptiveCards::ColorConfig **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -5572,466 +5572,466 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOption_1subtle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorConfig_1subtle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  AdaptiveCards::ColorOption *arg1 = (AdaptiveCards::ColorOption *) 0 ;
+  AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOption **)&jarg1; 
+  arg1 = *(AdaptiveCards::ColorConfig **)&jarg1; 
   result = (std::string *) & ((arg1)->subtle);
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColorOption(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColorConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColorOption *result = 0 ;
+  AdaptiveCards::ColorConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ColorOption *)new AdaptiveCards::ColorOption();
-  *(AdaptiveCards::ColorOption **)&jresult = result; 
+  result = (AdaptiveCards::ColorConfig *)new AdaptiveCards::ColorConfig();
+  *(AdaptiveCards::ColorConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColorOption(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ColorOption *arg1 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColorConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ColorConfig *arg1 = (AdaptiveCards::ColorConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ColorOption **)&jarg1; 
+  arg1 = *(AdaptiveCards::ColorConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1defaultColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *arg2 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1defaultColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColorOption **)&jarg2; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColorConfig **)&jarg2; 
   if (arg1) (arg1)->defaultColor = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1defaultColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1defaultColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *result = 0 ;
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  result = (AdaptiveCards::ColorOption *)& ((arg1)->defaultColor);
-  *(AdaptiveCards::ColorOption **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  result = (AdaptiveCards::ColorConfig *)& ((arg1)->defaultColor);
+  *(AdaptiveCards::ColorConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1accent_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *arg2 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1accent_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColorOption **)&jarg2; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColorConfig **)&jarg2; 
   if (arg1) (arg1)->accent = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1accent_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1accent_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *result = 0 ;
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  result = (AdaptiveCards::ColorOption *)& ((arg1)->accent);
-  *(AdaptiveCards::ColorOption **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  result = (AdaptiveCards::ColorConfig *)& ((arg1)->accent);
+  *(AdaptiveCards::ColorConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1dark_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *arg2 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1dark_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColorOption **)&jarg2; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColorConfig **)&jarg2; 
   if (arg1) (arg1)->dark = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1dark_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1dark_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *result = 0 ;
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  result = (AdaptiveCards::ColorOption *)& ((arg1)->dark);
-  *(AdaptiveCards::ColorOption **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  result = (AdaptiveCards::ColorConfig *)& ((arg1)->dark);
+  *(AdaptiveCards::ColorConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1light_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *arg2 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1light_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColorOption **)&jarg2; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColorConfig **)&jarg2; 
   if (arg1) (arg1)->light = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1light_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1light_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *result = 0 ;
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  result = (AdaptiveCards::ColorOption *)& ((arg1)->light);
-  *(AdaptiveCards::ColorOption **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  result = (AdaptiveCards::ColorConfig *)& ((arg1)->light);
+  *(AdaptiveCards::ColorConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1good_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *arg2 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1good_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColorOption **)&jarg2; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColorConfig **)&jarg2; 
   if (arg1) (arg1)->good = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1good_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1good_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *result = 0 ;
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  result = (AdaptiveCards::ColorOption *)& ((arg1)->good);
-  *(AdaptiveCards::ColorOption **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  result = (AdaptiveCards::ColorConfig *)& ((arg1)->good);
+  *(AdaptiveCards::ColorConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1warning_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *arg2 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1warning_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColorOption **)&jarg2; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColorConfig **)&jarg2; 
   if (arg1) (arg1)->warning = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1warning_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1warning_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *result = 0 ;
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  result = (AdaptiveCards::ColorOption *)& ((arg1)->warning);
-  *(AdaptiveCards::ColorOption **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  result = (AdaptiveCards::ColorConfig *)& ((arg1)->warning);
+  *(AdaptiveCards::ColorConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1attention_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *arg2 = (AdaptiveCards::ColorOption *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1attention_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *arg2 = (AdaptiveCards::ColorConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColorOption **)&jarg2; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColorConfig **)&jarg2; 
   if (arg1) (arg1)->attention = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorOptions_1attention_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColorsConfig_1attention_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
-  AdaptiveCards::ColorOption *result = 0 ;
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
+  AdaptiveCards::ColorConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
-  result = (AdaptiveCards::ColorOption *)& ((arg1)->attention);
-  *(AdaptiveCards::ColorOption **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
+  result = (AdaptiveCards::ColorConfig *)& ((arg1)->attention);
+  *(AdaptiveCards::ColorConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColorOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColorsConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColorOptions *result = 0 ;
+  AdaptiveCards::ColorsConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ColorOptions *)new AdaptiveCards::ColorOptions();
-  *(AdaptiveCards::ColorOptions **)&jresult = result; 
+  result = (AdaptiveCards::ColorsConfig *)new AdaptiveCards::ColorsConfig();
+  *(AdaptiveCards::ColorsConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColorOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ColorOptions *arg1 = (AdaptiveCards::ColorOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColorsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ColorsConfig *arg1 = (AdaptiveCards::ColorsConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ColorOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ColorsConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextOptions_1weight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  AdaptiveCards::TextOptions *arg1 = (AdaptiveCards::TextOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1weight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextWeight arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   arg2 = (AdaptiveCards::TextWeight)jarg2; 
   if (arg1) (arg1)->weight = arg2;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextOptions_1weight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1weight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::TextOptions *arg1 = (AdaptiveCards::TextOptions *) 0 ;
+  AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextWeight result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   result = (AdaptiveCards::TextWeight) ((arg1)->weight);
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextOptions_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  AdaptiveCards::TextOptions *arg1 = (AdaptiveCards::TextOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextSize arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   arg2 = (AdaptiveCards::TextSize)jarg2; 
   if (arg1) (arg1)->size = arg2;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextOptions_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::TextOptions *arg1 = (AdaptiveCards::TextOptions *) 0 ;
+  AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextSize result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   result = (AdaptiveCards::TextSize) ((arg1)->size);
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextOptions_1color_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  AdaptiveCards::TextOptions *arg1 = (AdaptiveCards::TextOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1color_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextColor arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   arg2 = (AdaptiveCards::TextColor)jarg2; 
   if (arg1) (arg1)->color = arg2;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextOptions_1color_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1color_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::TextOptions *arg1 = (AdaptiveCards::TextOptions *) 0 ;
+  AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   AdaptiveCards::TextColor result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   result = (AdaptiveCards::TextColor) ((arg1)->color);
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextOptions_1isSubtle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
-  AdaptiveCards::TextOptions *arg1 = (AdaptiveCards::TextOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1isSubtle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   bool arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   arg2 = jarg2 ? true : false; 
   if (arg1) (arg1)->isSubtle = arg2;
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextOptions_1isSubtle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextConfig_1isSubtle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  AdaptiveCards::TextOptions *arg1 = (AdaptiveCards::TextOptions *) 0 ;
+  AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   result = (bool) ((arg1)->isSubtle);
   jresult = (jboolean)result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextOptions *result = 0 ;
+  AdaptiveCards::TextConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::TextOptions *)new AdaptiveCards::TextOptions();
-  *(AdaptiveCards::TextOptions **)&jresult = result; 
+  result = (AdaptiveCards::TextConfig *)new AdaptiveCards::TextConfig();
+  *(AdaptiveCards::TextConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::TextOptions *arg1 = (AdaptiveCards::TextOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::TextConfig *arg1 = (AdaptiveCards::TextConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::TextOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationOptions_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::SeparationOptions *arg1 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationConfig_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::SeparationConfig *arg1 = (AdaptiveCards::SeparationConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::SeparationOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SeparationConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->spacing = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationOptions_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationConfig_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::SeparationOptions *arg1 = (AdaptiveCards::SeparationOptions *) 0 ;
+  AdaptiveCards::SeparationConfig *arg1 = (AdaptiveCards::SeparationConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::SeparationOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SeparationConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->spacing);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationOptions_1lineThickness_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::SeparationOptions *arg1 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationConfig_1lineThickness_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::SeparationConfig *arg1 = (AdaptiveCards::SeparationConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::SeparationOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SeparationConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->lineThickness = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationOptions_1lineThickness_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationConfig_1lineThickness_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::SeparationOptions *arg1 = (AdaptiveCards::SeparationOptions *) 0 ;
+  AdaptiveCards::SeparationConfig *arg1 = (AdaptiveCards::SeparationConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::SeparationOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SeparationConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->lineThickness);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationOptions_1lineColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  AdaptiveCards::SeparationOptions *arg1 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationConfig_1lineColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  AdaptiveCards::SeparationConfig *arg1 = (AdaptiveCards::SeparationConfig *) 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::SeparationOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SeparationConfig **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -6045,442 +6045,442 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationOptions_1lineColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SeparationConfig_1lineColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  AdaptiveCards::SeparationOptions *arg1 = (AdaptiveCards::SeparationOptions *) 0 ;
+  AdaptiveCards::SeparationConfig *arg1 = (AdaptiveCards::SeparationConfig *) 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::SeparationOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SeparationConfig **)&jarg1; 
   result = (std::string *) & ((arg1)->lineColor);
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SeparationOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1SeparationConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::SeparationOptions *)new AdaptiveCards::SeparationOptions();
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  result = (AdaptiveCards::SeparationConfig *)new AdaptiveCards::SeparationConfig();
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SeparationOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::SeparationOptions *arg1 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1SeparationConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::SeparationConfig *arg1 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::SeparationOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::SeparationConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeOptions_1smallSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::ImageSizeOptions *arg1 = (AdaptiveCards::ImageSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1smallSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSizesConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->smallSize = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeOptions_1smallSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1smallSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ImageSizeOptions *arg1 = (AdaptiveCards::ImageSizeOptions *) 0 ;
+  AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSizesConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->smallSize);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeOptions_1mediumSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::ImageSizeOptions *arg1 = (AdaptiveCards::ImageSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1mediumSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSizesConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->mediumSize = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeOptions_1mediumSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1mediumSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ImageSizeOptions *arg1 = (AdaptiveCards::ImageSizeOptions *) 0 ;
+  AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSizesConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->mediumSize);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeOptions_1largeSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::ImageSizeOptions *arg1 = (AdaptiveCards::ImageSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1largeSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSizesConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->largeSize = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizeOptions_1largeSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSizesConfig_1largeSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ImageSizeOptions *arg1 = (AdaptiveCards::ImageSizeOptions *) 0 ;
+  AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSizesConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->largeSize);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSizeOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSizesConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ImageSizeOptions *result = 0 ;
+  AdaptiveCards::ImageSizesConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ImageSizeOptions *)new AdaptiveCards::ImageSizeOptions();
-  *(AdaptiveCards::ImageSizeOptions **)&jresult = result; 
+  result = (AdaptiveCards::ImageSizesConfig *)new AdaptiveCards::ImageSizesConfig();
+  *(AdaptiveCards::ImageSizesConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSizeOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ImageSizeOptions *arg1 = (AdaptiveCards::ImageSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSizesConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ImageSizesConfig *arg1 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ImageSizeOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSizesConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1smallSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1smallSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->smallSeparation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1smallSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1smallSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->smallSeparation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->smallSeparation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1normalSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1normalSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->normalSeparation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1normalSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1normalSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->normalSeparation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->normalSeparation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1mediumSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1mediumSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->mediumSeparation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1mediumSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1mediumSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->mediumSeparation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->mediumSeparation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1largeSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1largeSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->largeSeparation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1largeSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1largeSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->largeSeparation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->largeSeparation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1extraLargeSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1extraLargeSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->extraLargeSeparation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockOptions_1extraLargeSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextBlockConfig_1extraLargeSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->extraLargeSeparation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->extraLargeSeparation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlockOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextBlockConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextBlockOptions *result = 0 ;
+  AdaptiveCards::TextBlockConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::TextBlockOptions *)new AdaptiveCards::TextBlockOptions();
-  *(AdaptiveCards::TextBlockOptions **)&jresult = result; 
+  result = (AdaptiveCards::TextBlockConfig *)new AdaptiveCards::TextBlockConfig();
+  *(AdaptiveCards::TextBlockConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextBlockOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::TextBlockOptions *arg1 = (AdaptiveCards::TextBlockOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextBlockConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::TextBlockConfig *arg1 = (AdaptiveCards::TextBlockConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::TextBlockOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextBlockConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetOptions_1imageSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  AdaptiveCards::ImageSetOptions *arg1 = (AdaptiveCards::ImageSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1imageSize_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
   AdaptiveCards::ImageSize arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageSetOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSetConfig **)&jarg1; 
   arg2 = (AdaptiveCards::ImageSize)jarg2; 
   if (arg1) (arg1)->imageSize = arg2;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetOptions_1imageSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1imageSize_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::ImageSetOptions *arg1 = (AdaptiveCards::ImageSetOptions *) 0 ;
+  AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
   AdaptiveCards::ImageSize result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageSetOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSetConfig **)&jarg1; 
   result = (AdaptiveCards::ImageSize) ((arg1)->imageSize);
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ImageSetOptions *arg1 = (AdaptiveCards::ImageSetOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ImageSetOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ImageSetConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageSetConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ImageSetOptions *arg1 = (AdaptiveCards::ImageSetOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageSetOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ImageSetConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSetOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageSetConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ImageSetOptions *result = 0 ;
+  AdaptiveCards::ImageSetConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ImageSetOptions *)new AdaptiveCards::ImageSetOptions();
-  *(AdaptiveCards::ImageSetOptions **)&jresult = result; 
+  result = (AdaptiveCards::ImageSetConfig *)new AdaptiveCards::ImageSetConfig();
+  *(AdaptiveCards::ImageSetConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSetOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ImageSetOptions *arg1 = (AdaptiveCards::ImageSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageSetConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ImageSetConfig *arg1 = (AdaptiveCards::ImageSetConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ImageSetOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageSetConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColumnOptions *arg1 = (AdaptiveCards::ColumnOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColumnConfig *arg1 = (AdaptiveCards::ColumnConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColumnOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ColumnConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColumnOptions *arg1 = (AdaptiveCards::ColumnOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::ColumnConfig *arg1 = (AdaptiveCards::ColumnConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColumnOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ColumnConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColumnOptions *result = 0 ;
+  AdaptiveCards::ColumnConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ColumnOptions *)new AdaptiveCards::ColumnOptions();
-  *(AdaptiveCards::ColumnOptions **)&jresult = result; 
+  result = (AdaptiveCards::ColumnConfig *)new AdaptiveCards::ColumnConfig();
+  *(AdaptiveCards::ColumnConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ColumnOptions *arg1 = (AdaptiveCards::ColumnOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ColumnConfig *arg1 = (AdaptiveCards::ColumnConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ColumnOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ColumnConfig **)&jarg1; 
   delete arg1;
 }
 
@@ -6559,14 +6559,14 @@ SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_Adaptive
 
 SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleConfig_1borderThickness_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ContainerStyleConfig *arg1 = (AdaptiveCards::ContainerStyleConfig *) 0 ;
-  AdaptiveCards::BoundaryOptions *arg2 = (AdaptiveCards::BoundaryOptions *) 0 ;
+  AdaptiveCards::SpacingDefinition *arg2 = (AdaptiveCards::SpacingDefinition *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(AdaptiveCards::ContainerStyleConfig **)&jarg1; 
-  arg2 = *(AdaptiveCards::BoundaryOptions **)&jarg2; 
+  arg2 = *(AdaptiveCards::SpacingDefinition **)&jarg2; 
   if (arg1) (arg1)->borderThickness = *arg2;
 }
 
@@ -6574,28 +6574,28 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleConfig_1borderThickness_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerStyleConfig *arg1 = (AdaptiveCards::ContainerStyleConfig *) 0 ;
-  AdaptiveCards::BoundaryOptions *result = 0 ;
+  AdaptiveCards::SpacingDefinition *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::ContainerStyleConfig **)&jarg1; 
-  result = (AdaptiveCards::BoundaryOptions *)& ((arg1)->borderThickness);
-  *(AdaptiveCards::BoundaryOptions **)&jresult = result; 
+  result = (AdaptiveCards::SpacingDefinition *)& ((arg1)->borderThickness);
+  *(AdaptiveCards::SpacingDefinition **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleConfig_1padding_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::ContainerStyleConfig *arg1 = (AdaptiveCards::ContainerStyleConfig *) 0 ;
-  AdaptiveCards::BoundaryOptions *arg2 = (AdaptiveCards::BoundaryOptions *) 0 ;
+  AdaptiveCards::SpacingDefinition *arg2 = (AdaptiveCards::SpacingDefinition *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   arg1 = *(AdaptiveCards::ContainerStyleConfig **)&jarg1; 
-  arg2 = *(AdaptiveCards::BoundaryOptions **)&jarg2; 
+  arg2 = *(AdaptiveCards::SpacingDefinition **)&jarg2; 
   if (arg1) (arg1)->padding = *arg2;
 }
 
@@ -6603,14 +6603,14 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStyleConfig_1padding_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::ContainerStyleConfig *arg1 = (AdaptiveCards::ContainerStyleConfig *) 0 ;
-  AdaptiveCards::BoundaryOptions *result = 0 ;
+  AdaptiveCards::SpacingDefinition *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::ContainerStyleConfig **)&jarg1; 
-  result = (AdaptiveCards::BoundaryOptions *)& ((arg1)->padding);
-  *(AdaptiveCards::BoundaryOptions **)&jresult = result; 
+  result = (AdaptiveCards::SpacingDefinition *)& ((arg1)->padding);
+  *(AdaptiveCards::SpacingDefinition **)&jresult = result; 
   return jresult;
 }
 
@@ -6637,254 +6637,254 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ContainerOptions *arg1 = (AdaptiveCards::ContainerOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ContainerConfig *arg1 = (AdaptiveCards::ContainerConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ContainerOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ContainerConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ContainerOptions *arg1 = (AdaptiveCards::ContainerOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::ContainerConfig *arg1 = (AdaptiveCards::ContainerConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ContainerOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ContainerConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerOptions_1normal_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ContainerOptions *arg1 = (AdaptiveCards::ContainerOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerConfig_1normal_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ContainerConfig *arg1 = (AdaptiveCards::ContainerConfig *) 0 ;
   AdaptiveCards::ContainerStyleConfig *arg2 = (AdaptiveCards::ContainerStyleConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ContainerOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ContainerConfig **)&jarg1; 
   arg2 = *(AdaptiveCards::ContainerStyleConfig **)&jarg2; 
   if (arg1) (arg1)->normal = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerOptions_1normal_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerConfig_1normal_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ContainerOptions *arg1 = (AdaptiveCards::ContainerOptions *) 0 ;
+  AdaptiveCards::ContainerConfig *arg1 = (AdaptiveCards::ContainerConfig *) 0 ;
   AdaptiveCards::ContainerStyleConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ContainerOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ContainerConfig **)&jarg1; 
   result = (AdaptiveCards::ContainerStyleConfig *)& ((arg1)->normal);
   *(AdaptiveCards::ContainerStyleConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerOptions_1emphasis_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ContainerOptions *arg1 = (AdaptiveCards::ContainerOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerConfig_1emphasis_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ContainerConfig *arg1 = (AdaptiveCards::ContainerConfig *) 0 ;
   AdaptiveCards::ContainerStyleConfig *arg2 = (AdaptiveCards::ContainerStyleConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ContainerOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ContainerConfig **)&jarg1; 
   arg2 = *(AdaptiveCards::ContainerStyleConfig **)&jarg2; 
   if (arg1) (arg1)->emphasis = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerOptions_1emphasis_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerConfig_1emphasis_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ContainerOptions *arg1 = (AdaptiveCards::ContainerOptions *) 0 ;
+  AdaptiveCards::ContainerConfig *arg1 = (AdaptiveCards::ContainerConfig *) 0 ;
   AdaptiveCards::ContainerStyleConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ContainerOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ContainerConfig **)&jarg1; 
   result = (AdaptiveCards::ContainerStyleConfig *)& ((arg1)->emphasis);
   *(AdaptiveCards::ContainerStyleConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ContainerOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ContainerConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ContainerOptions *result = 0 ;
+  AdaptiveCards::ContainerConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ContainerOptions *)new AdaptiveCards::ContainerOptions();
-  *(AdaptiveCards::ContainerOptions **)&jresult = result; 
+  result = (AdaptiveCards::ContainerConfig *)new AdaptiveCards::ContainerConfig();
+  *(AdaptiveCards::ContainerConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ContainerOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ContainerOptions *arg1 = (AdaptiveCards::ContainerOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ContainerConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ContainerConfig *arg1 = (AdaptiveCards::ContainerConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ContainerOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ContainerConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ColumnSetOptions *arg1 = (AdaptiveCards::ColumnSetOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ColumnSetConfig *arg1 = (AdaptiveCards::ColumnSetConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ColumnSetOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ColumnSetConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ColumnSetConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColumnSetOptions *arg1 = (AdaptiveCards::ColumnSetOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::ColumnSetConfig *arg1 = (AdaptiveCards::ColumnSetConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ColumnSetOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ColumnSetConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnSetOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnSetConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ColumnSetOptions *result = 0 ;
+  AdaptiveCards::ColumnSetConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ColumnSetOptions *)new AdaptiveCards::ColumnSetOptions();
-  *(AdaptiveCards::ColumnSetOptions **)&jresult = result; 
+  result = (AdaptiveCards::ColumnSetConfig *)new AdaptiveCards::ColumnSetConfig();
+  *(AdaptiveCards::ColumnSetConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnSetOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ColumnSetOptions *arg1 = (AdaptiveCards::ColumnSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ColumnSetConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ColumnSetConfig *arg1 = (AdaptiveCards::ColumnSetConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ColumnSetOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ColumnSetConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ImageOptions *arg1 = (AdaptiveCards::ImageOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ImageConfig *arg1 = (AdaptiveCards::ImageConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ImageOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ImageConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ImageConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ImageOptions *arg1 = (AdaptiveCards::ImageOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::ImageConfig *arg1 = (AdaptiveCards::ImageConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ImageOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ImageConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ImageOptions *result = 0 ;
+  AdaptiveCards::ImageConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ImageOptions *)new AdaptiveCards::ImageOptions();
-  *(AdaptiveCards::ImageOptions **)&jresult = result; 
+  result = (AdaptiveCards::ImageConfig *)new AdaptiveCards::ImageConfig();
+  *(AdaptiveCards::ImageConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ImageOptions *arg1 = (AdaptiveCards::ImageOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ImageConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ImageConfig *arg1 = (AdaptiveCards::ImageConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ImageOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ImageConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardOptions_1padding_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::AdaptiveCardOptions *arg1 = (AdaptiveCards::AdaptiveCardOptions *) 0 ;
-  AdaptiveCards::BoundaryOptions *arg2 = (AdaptiveCards::BoundaryOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1padding_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::AdaptiveCardConfig *arg1 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
+  AdaptiveCards::SpacingDefinition *arg2 = (AdaptiveCards::SpacingDefinition *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::AdaptiveCardOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::BoundaryOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::AdaptiveCardConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SpacingDefinition **)&jarg2; 
   if (arg1) (arg1)->padding = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardOptions_1padding_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1padding_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::AdaptiveCardOptions *arg1 = (AdaptiveCards::AdaptiveCardOptions *) 0 ;
-  AdaptiveCards::BoundaryOptions *result = 0 ;
+  AdaptiveCards::AdaptiveCardConfig *arg1 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
+  AdaptiveCards::SpacingDefinition *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::AdaptiveCardOptions **)&jarg1; 
-  result = (AdaptiveCards::BoundaryOptions *)& ((arg1)->padding);
-  *(AdaptiveCards::BoundaryOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::AdaptiveCardConfig **)&jarg1; 
+  result = (AdaptiveCards::SpacingDefinition *)& ((arg1)->padding);
+  *(AdaptiveCards::SpacingDefinition **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardOptions_1backgroundColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  AdaptiveCards::AdaptiveCardOptions *arg1 = (AdaptiveCards::AdaptiveCardOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1backgroundColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  AdaptiveCards::AdaptiveCardConfig *arg1 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::AdaptiveCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::AdaptiveCardConfig **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -6898,216 +6898,216 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardOptions_1backgroundColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCardConfig_1backgroundColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  AdaptiveCards::AdaptiveCardOptions *arg1 = (AdaptiveCards::AdaptiveCardOptions *) 0 ;
+  AdaptiveCards::AdaptiveCardConfig *arg1 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::AdaptiveCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::AdaptiveCardConfig **)&jarg1; 
   result = (std::string *) & ((arg1)->backgroundColor);
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCardOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCardConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::AdaptiveCardOptions *result = 0 ;
+  AdaptiveCards::AdaptiveCardConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::AdaptiveCardOptions *)new AdaptiveCards::AdaptiveCardOptions();
-  *(AdaptiveCards::AdaptiveCardOptions **)&jresult = result; 
+  result = (AdaptiveCards::AdaptiveCardConfig *)new AdaptiveCards::AdaptiveCardConfig();
+  *(AdaptiveCards::AdaptiveCardConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCardOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::AdaptiveCardOptions *arg1 = (AdaptiveCards::AdaptiveCardOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCardConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::AdaptiveCardConfig *arg1 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::AdaptiveCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::AdaptiveCardConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetOptions_1title_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::FactSetOptions *arg1 = (AdaptiveCards::FactSetOptions *) 0 ;
-  AdaptiveCards::TextOptions *arg2 = (AdaptiveCards::TextOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1title_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
+  AdaptiveCards::TextConfig *arg2 = (AdaptiveCards::TextConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::FactSetOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::TextOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::FactSetConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::TextConfig **)&jarg2; 
   if (arg1) (arg1)->title = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetOptions_1title_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1title_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::FactSetOptions *arg1 = (AdaptiveCards::FactSetOptions *) 0 ;
-  AdaptiveCards::TextOptions *result = 0 ;
+  AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
+  AdaptiveCards::TextConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FactSetOptions **)&jarg1; 
-  result = (AdaptiveCards::TextOptions *)& ((arg1)->title);
-  *(AdaptiveCards::TextOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::FactSetConfig **)&jarg1; 
+  result = (AdaptiveCards::TextConfig *)& ((arg1)->title);
+  *(AdaptiveCards::TextConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetOptions_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::FactSetOptions *arg1 = (AdaptiveCards::FactSetOptions *) 0 ;
-  AdaptiveCards::TextOptions *arg2 = (AdaptiveCards::TextOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
+  AdaptiveCards::TextConfig *arg2 = (AdaptiveCards::TextConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::FactSetOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::TextOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::FactSetConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::TextConfig **)&jarg2; 
   if (arg1) (arg1)->value = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetOptions_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::FactSetOptions *arg1 = (AdaptiveCards::FactSetOptions *) 0 ;
-  AdaptiveCards::TextOptions *result = 0 ;
+  AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
+  AdaptiveCards::TextConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FactSetOptions **)&jarg1; 
-  result = (AdaptiveCards::TextOptions *)& ((arg1)->value);
-  *(AdaptiveCards::TextOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::FactSetConfig **)&jarg1; 
+  result = (AdaptiveCards::TextConfig *)& ((arg1)->value);
+  *(AdaptiveCards::TextConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetOptions_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::FactSetOptions *arg1 = (AdaptiveCards::FactSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FactSetOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FactSetConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->spacing = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetOptions_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::FactSetOptions *arg1 = (AdaptiveCards::FactSetOptions *) 0 ;
+  AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FactSetOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FactSetConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->spacing);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::FactSetOptions *arg1 = (AdaptiveCards::FactSetOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::FactSetOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::FactSetConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FactSetConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::FactSetOptions *arg1 = (AdaptiveCards::FactSetOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::FactSetOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::FactSetConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSetOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactSetConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::FactSetOptions *result = 0 ;
+  AdaptiveCards::FactSetConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::FactSetOptions *)new AdaptiveCards::FactSetOptions();
-  *(AdaptiveCards::FactSetOptions **)&jresult = result; 
+  result = (AdaptiveCards::FactSetConfig *)new AdaptiveCards::FactSetConfig();
+  *(AdaptiveCards::FactSetConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactSetOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::FactSetOptions *arg1 = (AdaptiveCards::FactSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1FactSetConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::FactSetConfig *arg1 = (AdaptiveCards::FactSetConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::FactSetOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::FactSetConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardOptions_1actionMode_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  AdaptiveCards::ShowCardOptions *arg1 = (AdaptiveCards::ShowCardOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1actionMode_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   AdaptiveCards::ActionMode arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ShowCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ShowCardActionConfig **)&jarg1; 
   arg2 = (AdaptiveCards::ActionMode)jarg2; 
   if (arg1) (arg1)->actionMode = arg2;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardOptions_1actionMode_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1actionMode_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::ShowCardOptions *arg1 = (AdaptiveCards::ShowCardOptions *) 0 ;
+  AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   AdaptiveCards::ActionMode result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ShowCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ShowCardActionConfig **)&jarg1; 
   result = (AdaptiveCards::ActionMode) ((arg1)->actionMode);
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardOptions_1backgroundColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  AdaptiveCards::ShowCardOptions *arg1 = (AdaptiveCards::ShowCardOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1backgroundColor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ShowCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ShowCardActionConfig **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -7121,606 +7121,606 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardOptions_1backgroundColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1backgroundColor_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  AdaptiveCards::ShowCardOptions *arg1 = (AdaptiveCards::ShowCardOptions *) 0 ;
+  AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ShowCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ShowCardActionConfig **)&jarg1; 
   result = (std::string *) & ((arg1)->backgroundColor);
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardOptions_1inlineTopMargin_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::ShowCardOptions *arg1 = (AdaptiveCards::ShowCardOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1inlineTopMargin_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ShowCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ShowCardActionConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->inlineTopMargin = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardOptions_1inlineTopMargin_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1inlineTopMargin_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ShowCardOptions *arg1 = (AdaptiveCards::ShowCardOptions *) 0 ;
+  AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ShowCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ShowCardActionConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->inlineTopMargin);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardOptions_1padding_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ShowCardOptions *arg1 = (AdaptiveCards::ShowCardOptions *) 0 ;
-  AdaptiveCards::BoundaryOptions *arg2 = (AdaptiveCards::BoundaryOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1padding_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
+  AdaptiveCards::SpacingDefinition *arg2 = (AdaptiveCards::SpacingDefinition *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ShowCardOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::BoundaryOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ShowCardActionConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SpacingDefinition **)&jarg2; 
   if (arg1) (arg1)->padding = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardOptions_1padding_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ShowCardActionConfig_1padding_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ShowCardOptions *arg1 = (AdaptiveCards::ShowCardOptions *) 0 ;
-  AdaptiveCards::BoundaryOptions *result = 0 ;
+  AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
+  AdaptiveCards::SpacingDefinition *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ShowCardOptions **)&jarg1; 
-  result = (AdaptiveCards::BoundaryOptions *)& ((arg1)->padding);
-  *(AdaptiveCards::BoundaryOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ShowCardActionConfig **)&jarg1; 
+  result = (AdaptiveCards::SpacingDefinition *)& ((arg1)->padding);
+  *(AdaptiveCards::SpacingDefinition **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ShowCardOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ShowCardActionConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ShowCardOptions *result = 0 ;
+  AdaptiveCards::ShowCardActionConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ShowCardOptions *)new AdaptiveCards::ShowCardOptions();
-  *(AdaptiveCards::ShowCardOptions **)&jresult = result; 
+  result = (AdaptiveCards::ShowCardActionConfig *)new AdaptiveCards::ShowCardActionConfig();
+  *(AdaptiveCards::ShowCardActionConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ShowCardOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ShowCardOptions *arg1 = (AdaptiveCards::ShowCardOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ShowCardActionConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ShowCardActionConfig *arg1 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ShowCardOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ShowCardActionConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1showCard_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
-  AdaptiveCards::ShowCardOptions *arg2 = (AdaptiveCards::ShowCardOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1showCard_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
+  AdaptiveCards::ShowCardActionConfig *arg2 = (AdaptiveCards::ShowCardActionConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ShowCardOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ShowCardActionConfig **)&jarg2; 
   if (arg1) (arg1)->showCard = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1showCard_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1showCard_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
-  AdaptiveCards::ShowCardOptions *result = 0 ;
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
+  AdaptiveCards::ShowCardActionConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
-  result = (AdaptiveCards::ShowCardOptions *)& ((arg1)->showCard);
-  *(AdaptiveCards::ShowCardOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
+  result = (AdaptiveCards::ShowCardActionConfig *)& ((arg1)->showCard);
+  *(AdaptiveCards::ShowCardActionConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1actionsOrientation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionsOrientation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ActionsOrientation arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
   arg2 = (AdaptiveCards::ActionsOrientation)jarg2; 
   if (arg1) (arg1)->actionsOrientation = arg2;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1actionsOrientation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionsOrientation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ActionsOrientation result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
   result = (AdaptiveCards::ActionsOrientation) ((arg1)->actionsOrientation);
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1actionAlignment_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionAlignment_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ActionAlignment arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
   arg2 = (AdaptiveCards::ActionAlignment)jarg2; 
   if (arg1) (arg1)->actionAlignment = arg2;
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1actionAlignment_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1actionAlignment_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   AdaptiveCards::ActionAlignment result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
   result = (AdaptiveCards::ActionAlignment) ((arg1)->actionAlignment);
   jresult = (jint)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1buttonSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1buttonSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->buttonSpacing = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1buttonSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1buttonSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->buttonSpacing);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1maxActions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1maxActions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->maxActions = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1maxActions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1maxActions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->maxActions);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ActionsConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ActionOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ActionsConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ActionOptions *result = 0 ;
+  AdaptiveCards::ActionsConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ActionOptions *)new AdaptiveCards::ActionOptions();
-  *(AdaptiveCards::ActionOptions **)&jresult = result; 
+  result = (AdaptiveCards::ActionsConfig *)new AdaptiveCards::ActionsConfig();
+  *(AdaptiveCards::ActionsConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ActionOptions *arg1 = (AdaptiveCards::ActionOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ActionsConfig *arg1 = (AdaptiveCards::ActionsConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ActionOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ActionsConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::DateInputOptions *arg1 = (AdaptiveCards::DateInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::DateInputConfig *arg1 = (AdaptiveCards::DateInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::DateInputOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::DateInputConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateInputConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::DateInputOptions *arg1 = (AdaptiveCards::DateInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::DateInputConfig *arg1 = (AdaptiveCards::DateInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::DateInputOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::DateInputConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateInputOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateInputConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::DateInputOptions *result = 0 ;
+  AdaptiveCards::DateInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::DateInputOptions *)new AdaptiveCards::DateInputOptions();
-  *(AdaptiveCards::DateInputOptions **)&jresult = result; 
+  result = (AdaptiveCards::DateInputConfig *)new AdaptiveCards::DateInputConfig();
+  *(AdaptiveCards::DateInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateInputOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::DateInputOptions *arg1 = (AdaptiveCards::DateInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateInputConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::DateInputConfig *arg1 = (AdaptiveCards::DateInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::DateInputOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::DateInputConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::TimeInputOptions *arg1 = (AdaptiveCards::TimeInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::TimeInputConfig *arg1 = (AdaptiveCards::TimeInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::TimeInputOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::TimeInputConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TimeInputConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::TimeInputOptions *arg1 = (AdaptiveCards::TimeInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::TimeInputConfig *arg1 = (AdaptiveCards::TimeInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TimeInputOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::TimeInputConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TimeInputOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TimeInputConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::TimeInputOptions *result = 0 ;
+  AdaptiveCards::TimeInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::TimeInputOptions *)new AdaptiveCards::TimeInputOptions();
-  *(AdaptiveCards::TimeInputOptions **)&jresult = result; 
+  result = (AdaptiveCards::TimeInputConfig *)new AdaptiveCards::TimeInputConfig();
+  *(AdaptiveCards::TimeInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TimeInputOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::TimeInputOptions *arg1 = (AdaptiveCards::TimeInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TimeInputConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::TimeInputConfig *arg1 = (AdaptiveCards::TimeInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::TimeInputOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TimeInputConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::NumberInputOptions *arg1 = (AdaptiveCards::NumberInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::NumberInputConfig *arg1 = (AdaptiveCards::NumberInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::NumberInputOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::NumberInputConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInputConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::NumberInputOptions *arg1 = (AdaptiveCards::NumberInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::NumberInputConfig *arg1 = (AdaptiveCards::NumberInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::NumberInputOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::NumberInputConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1NumberInputOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1NumberInputConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::NumberInputOptions *result = 0 ;
+  AdaptiveCards::NumberInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::NumberInputOptions *)new AdaptiveCards::NumberInputOptions();
-  *(AdaptiveCards::NumberInputOptions **)&jresult = result; 
+  result = (AdaptiveCards::NumberInputConfig *)new AdaptiveCards::NumberInputConfig();
+  *(AdaptiveCards::NumberInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1NumberInputOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::NumberInputOptions *arg1 = (AdaptiveCards::NumberInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1NumberInputConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::NumberInputConfig *arg1 = (AdaptiveCards::NumberInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::NumberInputOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::NumberInputConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ToggleInputOptions *arg1 = (AdaptiveCards::ToggleInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ToggleInputConfig *arg1 = (AdaptiveCards::ToggleInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ToggleInputOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ToggleInputConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleInputConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ToggleInputOptions *arg1 = (AdaptiveCards::ToggleInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::ToggleInputConfig *arg1 = (AdaptiveCards::ToggleInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ToggleInputOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ToggleInputConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ToggleInputOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ToggleInputConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ToggleInputOptions *result = 0 ;
+  AdaptiveCards::ToggleInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ToggleInputOptions *)new AdaptiveCards::ToggleInputOptions();
-  *(AdaptiveCards::ToggleInputOptions **)&jresult = result; 
+  result = (AdaptiveCards::ToggleInputConfig *)new AdaptiveCards::ToggleInputConfig();
+  *(AdaptiveCards::ToggleInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ToggleInputOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ToggleInputOptions *arg1 = (AdaptiveCards::ToggleInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ToggleInputConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ToggleInputConfig *arg1 = (AdaptiveCards::ToggleInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ToggleInputOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ToggleInputConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::TextInputOptions *arg1 = (AdaptiveCards::TextInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::TextInputConfig *arg1 = (AdaptiveCards::TextInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::TextInputOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::TextInputConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInputConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextInputOptions *arg1 = (AdaptiveCards::TextInputOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::TextInputConfig *arg1 = (AdaptiveCards::TextInputConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::TextInputOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::TextInputConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextInputOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TextInputConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::TextInputOptions *result = 0 ;
+  AdaptiveCards::TextInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::TextInputOptions *)new AdaptiveCards::TextInputOptions();
-  *(AdaptiveCards::TextInputOptions **)&jresult = result; 
+  result = (AdaptiveCards::TextInputConfig *)new AdaptiveCards::TextInputConfig();
+  *(AdaptiveCards::TextInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextInputOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::TextInputOptions *arg1 = (AdaptiveCards::TextInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TextInputConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::TextInputConfig *arg1 = (AdaptiveCards::TextInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::TextInputOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::TextInputConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetOptions_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::ChoiceSetOptions *arg1 = (AdaptiveCards::ChoiceSetOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetConfig_1separation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ChoiceSetConfig *arg1 = (AdaptiveCards::ChoiceSetConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::ChoiceSetOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::ChoiceSetConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->separation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetOptions_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ChoiceSetConfig_1separation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::ChoiceSetOptions *arg1 = (AdaptiveCards::ChoiceSetOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::ChoiceSetConfig *arg1 = (AdaptiveCards::ChoiceSetConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::ChoiceSetOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->separation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::ChoiceSetConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->separation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceSetConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::ChoiceSetOptions *result = 0 ;
+  AdaptiveCards::ChoiceSetConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::ChoiceSetOptions *)new AdaptiveCards::ChoiceSetOptions();
-  *(AdaptiveCards::ChoiceSetOptions **)&jresult = result; 
+  result = (AdaptiveCards::ChoiceSetConfig *)new AdaptiveCards::ChoiceSetConfig();
+  *(AdaptiveCards::ChoiceSetConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceSetOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::ChoiceSetOptions *arg1 = (AdaptiveCards::ChoiceSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ChoiceSetConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ChoiceSetConfig *arg1 = (AdaptiveCards::ChoiceSetConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::ChoiceSetOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::ChoiceSetConfig **)&jarg1; 
   delete arg1;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1fontFamily_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontFamily_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   std::string *arg2 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
@@ -7734,646 +7734,646 @@ SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCar
 }
 
 
-SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1fontFamily_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontFamily_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   std::string *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   result = (std::string *) & ((arg1)->fontFamily);
   jresult = jenv->NewStringUTF(result->c_str()); 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1fontSizes_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::FontSizeOptions *arg2 = (AdaptiveCards::FontSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontSizes_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::FontSizesConfig *arg2 = (AdaptiveCards::FontSizesConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::FontSizeOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::FontSizesConfig **)&jarg2; 
   if (arg1) (arg1)->fontSizes = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1fontSizes_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1fontSizes_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::FontSizeOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::FontSizesConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::FontSizeOptions *)& ((arg1)->fontSizes);
-  *(AdaptiveCards::FontSizeOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::FontSizesConfig *)& ((arg1)->fontSizes);
+  *(AdaptiveCards::FontSizesConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1supportsInteractivity_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1supportsInteractivity_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   bool arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   arg2 = jarg2 ? true : false; 
   if (arg1) (arg1)->supportsInteractivity = arg2;
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1supportsInteractivity_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1supportsInteractivity_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   result = (bool) ((arg1)->supportsInteractivity);
   jresult = (jboolean)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1colors_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ColorOptions *arg2 = (AdaptiveCards::ColorOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1colors_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ColorsConfig *arg2 = (AdaptiveCards::ColorsConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColorOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColorsConfig **)&jarg2; 
   if (arg1) (arg1)->colors = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1colors_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1colors_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ColorOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ColorsConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ColorOptions *)& ((arg1)->colors);
-  *(AdaptiveCards::ColorOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ColorsConfig *)& ((arg1)->colors);
+  *(AdaptiveCards::ColorsConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1imageSizes_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ImageSizeOptions *arg2 = (AdaptiveCards::ImageSizeOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSizes_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ImageSizesConfig *arg2 = (AdaptiveCards::ImageSizesConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ImageSizeOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ImageSizesConfig **)&jarg2; 
   if (arg1) (arg1)->imageSizes = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1imageSizes_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSizes_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ImageSizeOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ImageSizesConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ImageSizeOptions *)& ((arg1)->imageSizes);
-  *(AdaptiveCards::ImageSizeOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ImageSizesConfig *)& ((arg1)->imageSizes);
+  *(AdaptiveCards::ImageSizesConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1maxActions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1maxActions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   if (arg1) (arg1)->maxActions = arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1maxActions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1maxActions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   result = (unsigned int) ((arg1)->maxActions);
   jresult = (jlong)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1strongSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *arg2 = (AdaptiveCards::SeparationOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1strongSeparation_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *arg2 = (AdaptiveCards::SeparationConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::SeparationOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::SeparationConfig **)&jarg2; 
   if (arg1) (arg1)->strongSeparation = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1strongSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1strongSeparation_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::SeparationOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::SeparationConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::SeparationOptions *)& ((arg1)->strongSeparation);
-  *(AdaptiveCards::SeparationOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::SeparationConfig *)& ((arg1)->strongSeparation);
+  *(AdaptiveCards::SeparationConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1adaptiveCard_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::AdaptiveCardOptions *arg2 = (AdaptiveCards::AdaptiveCardOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1adaptiveCard_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::AdaptiveCardConfig *arg2 = (AdaptiveCards::AdaptiveCardConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::AdaptiveCardOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::AdaptiveCardConfig **)&jarg2; 
   if (arg1) (arg1)->adaptiveCard = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1adaptiveCard_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1adaptiveCard_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::AdaptiveCardOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::AdaptiveCardConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::AdaptiveCardOptions *)& ((arg1)->adaptiveCard);
-  *(AdaptiveCards::AdaptiveCardOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::AdaptiveCardConfig *)& ((arg1)->adaptiveCard);
+  *(AdaptiveCards::AdaptiveCardConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1imageSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ImageSetOptions *arg2 = (AdaptiveCards::ImageSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ImageSetConfig *arg2 = (AdaptiveCards::ImageSetConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ImageSetOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ImageSetConfig **)&jarg2; 
   if (arg1) (arg1)->imageSet = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1imageSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1imageSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ImageSetOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ImageSetConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ImageSetOptions *)& ((arg1)->imageSet);
-  *(AdaptiveCards::ImageSetOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ImageSetConfig *)& ((arg1)->imageSet);
+  *(AdaptiveCards::ImageSetConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1image_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ImageOptions *arg2 = (AdaptiveCards::ImageOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1image_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ImageConfig *arg2 = (AdaptiveCards::ImageConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ImageOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ImageConfig **)&jarg2; 
   if (arg1) (arg1)->image = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1image_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1image_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ImageOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ImageConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ImageOptions *)& ((arg1)->image);
-  *(AdaptiveCards::ImageOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ImageConfig *)& ((arg1)->image);
+  *(AdaptiveCards::ImageConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1factSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::FactSetOptions *arg2 = (AdaptiveCards::FactSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1factSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::FactSetConfig *arg2 = (AdaptiveCards::FactSetConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::FactSetOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::FactSetConfig **)&jarg2; 
   if (arg1) (arg1)->factSet = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1factSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1factSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::FactSetOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::FactSetConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::FactSetOptions *)& ((arg1)->factSet);
-  *(AdaptiveCards::FactSetOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::FactSetConfig *)& ((arg1)->factSet);
+  *(AdaptiveCards::FactSetConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1column_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ColumnOptions *arg2 = (AdaptiveCards::ColumnOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1column_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ColumnConfig *arg2 = (AdaptiveCards::ColumnConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColumnOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColumnConfig **)&jarg2; 
   if (arg1) (arg1)->column = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1column_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1column_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ColumnOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ColumnConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ColumnOptions *)& ((arg1)->column);
-  *(AdaptiveCards::ColumnOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ColumnConfig *)& ((arg1)->column);
+  *(AdaptiveCards::ColumnConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1container_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ContainerOptions *arg2 = (AdaptiveCards::ContainerOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1container_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ContainerConfig *arg2 = (AdaptiveCards::ContainerConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ContainerOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ContainerConfig **)&jarg2; 
   if (arg1) (arg1)->container = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1container_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1container_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ContainerOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ContainerConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ContainerOptions *)& ((arg1)->container);
-  *(AdaptiveCards::ContainerOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ContainerConfig *)& ((arg1)->container);
+  *(AdaptiveCards::ContainerConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1columnSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ColumnSetOptions *arg2 = (AdaptiveCards::ColumnSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1columnSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ColumnSetConfig *arg2 = (AdaptiveCards::ColumnSetConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ColumnSetOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ColumnSetConfig **)&jarg2; 
   if (arg1) (arg1)->columnSet = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1columnSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1columnSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ColumnSetOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ColumnSetConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ColumnSetOptions *)& ((arg1)->columnSet);
-  *(AdaptiveCards::ColumnSetOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ColumnSetConfig *)& ((arg1)->columnSet);
+  *(AdaptiveCards::ColumnSetConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1textBlock_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::TextBlockOptions *arg2 = (AdaptiveCards::TextBlockOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1textBlock_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::TextBlockConfig *arg2 = (AdaptiveCards::TextBlockConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::TextBlockOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::TextBlockConfig **)&jarg2; 
   if (arg1) (arg1)->textBlock = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1textBlock_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1textBlock_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::TextBlockOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::TextBlockConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::TextBlockOptions *)& ((arg1)->textBlock);
-  *(AdaptiveCards::TextBlockOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::TextBlockConfig *)& ((arg1)->textBlock);
+  *(AdaptiveCards::TextBlockConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1dateInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::DateInputOptions *arg2 = (AdaptiveCards::DateInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1dateInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::DateInputConfig *arg2 = (AdaptiveCards::DateInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::DateInputOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::DateInputConfig **)&jarg2; 
   if (arg1) (arg1)->dateInput = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1dateInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1dateInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::DateInputOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::DateInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::DateInputOptions *)& ((arg1)->dateInput);
-  *(AdaptiveCards::DateInputOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::DateInputConfig *)& ((arg1)->dateInput);
+  *(AdaptiveCards::DateInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1timeInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::TimeInputOptions *arg2 = (AdaptiveCards::TimeInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1timeInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::TimeInputConfig *arg2 = (AdaptiveCards::TimeInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::TimeInputOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::TimeInputConfig **)&jarg2; 
   if (arg1) (arg1)->timeInput = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1timeInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1timeInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::TimeInputOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::TimeInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::TimeInputOptions *)& ((arg1)->timeInput);
-  *(AdaptiveCards::TimeInputOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::TimeInputConfig *)& ((arg1)->timeInput);
+  *(AdaptiveCards::TimeInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1numberInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::NumberInputOptions *arg2 = (AdaptiveCards::NumberInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1numberInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::NumberInputConfig *arg2 = (AdaptiveCards::NumberInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::NumberInputOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::NumberInputConfig **)&jarg2; 
   if (arg1) (arg1)->numberInput = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1numberInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1numberInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::NumberInputOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::NumberInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::NumberInputOptions *)& ((arg1)->numberInput);
-  *(AdaptiveCards::NumberInputOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::NumberInputConfig *)& ((arg1)->numberInput);
+  *(AdaptiveCards::NumberInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1toggleInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ToggleInputOptions *arg2 = (AdaptiveCards::ToggleInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1toggleInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ToggleInputConfig *arg2 = (AdaptiveCards::ToggleInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ToggleInputOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ToggleInputConfig **)&jarg2; 
   if (arg1) (arg1)->toggleInput = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1toggleInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1toggleInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ToggleInputOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ToggleInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ToggleInputOptions *)& ((arg1)->toggleInput);
-  *(AdaptiveCards::ToggleInputOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ToggleInputConfig *)& ((arg1)->toggleInput);
+  *(AdaptiveCards::ToggleInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1textInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::TextInputOptions *arg2 = (AdaptiveCards::TextInputOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1textInput_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::TextInputConfig *arg2 = (AdaptiveCards::TextInputConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::TextInputOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::TextInputConfig **)&jarg2; 
   if (arg1) (arg1)->textInput = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1textInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1textInput_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::TextInputOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::TextInputConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::TextInputOptions *)& ((arg1)->textInput);
-  *(AdaptiveCards::TextInputOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::TextInputConfig *)& ((arg1)->textInput);
+  *(AdaptiveCards::TextInputConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1choiceSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ChoiceSetOptions *arg2 = (AdaptiveCards::ChoiceSetOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1choiceSet_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ChoiceSetConfig *arg2 = (AdaptiveCards::ChoiceSetConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ChoiceSetOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ChoiceSetConfig **)&jarg2; 
   if (arg1) (arg1)->choiceSet = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1choiceSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1choiceSet_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ChoiceSetOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ChoiceSetConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ChoiceSetOptions *)& ((arg1)->choiceSet);
-  *(AdaptiveCards::ChoiceSetOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ChoiceSetConfig *)& ((arg1)->choiceSet);
+  *(AdaptiveCards::ChoiceSetConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1actions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ActionOptions *arg2 = (AdaptiveCards::ActionOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1actions_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ActionsConfig *arg2 = (AdaptiveCards::ActionsConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  arg2 = *(AdaptiveCards::ActionOptions **)&jarg2; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ActionsConfig **)&jarg2; 
   if (arg1) (arg1)->actions = *arg2;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostOptions_1actions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1actions_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
-  AdaptiveCards::ActionOptions *result = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ActionsConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
-  result = (AdaptiveCards::ActionOptions *)& ((arg1)->actions);
-  *(AdaptiveCards::ActionOptions **)&jresult = result; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = (AdaptiveCards::ActionsConfig *)& ((arg1)->actions);
+  *(AdaptiveCards::ActionsConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1HostOptions(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1HostConfig(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  AdaptiveCards::HostOptions *result = 0 ;
+  AdaptiveCards::HostConfig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (AdaptiveCards::HostOptions *)new AdaptiveCards::HostOptions();
-  *(AdaptiveCards::HostOptions **)&jresult = result; 
+  result = (AdaptiveCards::HostConfig *)new AdaptiveCards::HostConfig();
+  *(AdaptiveCards::HostConfig **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1HostOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  AdaptiveCards::HostOptions *arg1 = (AdaptiveCards::HostOptions *) 0 ;
+SWIGEXPORT void JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1HostConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(AdaptiveCards::HostOptions **)&jarg1; 
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   delete arg1;
 }
 

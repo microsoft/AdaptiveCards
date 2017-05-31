@@ -11,9 +11,9 @@ namespace AdaptiveCards
 struct EnumHash
 {
     template <typename T>
-    std::size_t operator()(T t) const
+    size_t operator()(T t) const
     {
-        return static_cast<std::size_t>(t);
+        return static_cast<size_t>(t);
     }
 };
 
@@ -25,7 +25,7 @@ struct CaseInsensitiveEqualTo {
 
 struct CaseInsensitiveHash {
     size_t operator() (const std::string& keyval) const {
-        return std::accumulate(keyval.begin(), keyval.end(), 0, [](size_t acc, char c) { return acc + (size_t)std::tolower(c); });
+        return std::accumulate(keyval.begin(), keyval.end(), size_t{ 0 }, [](size_t acc, char c) { return acc + static_cast<size_t>(std::tolower(c)); });
     }
 };
 

@@ -18,10 +18,10 @@ import android.widget.Toast;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.HorizontalAlignment;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.Image;
 import com.microsoft.adaptivecards.objectmodel.ImageSize;
-import com.microsoft.adaptivecards.objectmodel.ImageSizeOptions;
+import com.microsoft.adaptivecards.objectmodel.ImageSizesConfig;
 import com.microsoft.adaptivecards.objectmodel.ImageStyle;
 
 import java.io.IOException;
@@ -107,7 +107,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         private String errorString;
     }
 
-    private static void setImageSize(ImageView imageView, ImageSize imageSize, ImageSizeOptions imageSizeOptions)
+    private static void setImageSize(ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig)
     {
         if (imageSize.swigValue() == ImageSize.Auto.swigValue())
         {
@@ -119,17 +119,17 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else if (imageSize.swigValue() == ImageSize.Small.swigValue())
         {
-            imageView.setMaxWidth((int)imageSizeOptions.getSmallSize());
+            imageView.setMaxWidth((int)imageSizesConfig.getSmallSize());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else if (imageSize.swigValue() == ImageSize.Medium.swigValue())
         {
-            imageView.setMaxWidth((int)imageSizeOptions.getMediumSize());
+            imageView.setMaxWidth((int)imageSizesConfig.getMediumSize());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else if (imageSize.swigValue() == ImageSize.Large.swigValue())
         {
-            imageView.setMaxWidth((int)imageSizeOptions.getLargeSize());
+            imageView.setMaxWidth((int)imageSizesConfig.getLargeSize());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
         else if (imageSize.swigValue() == ImageSize.Default.swigValue())
@@ -172,7 +172,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions)
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         Image image = null;
         if (baseCardElement instanceof Image)
@@ -186,9 +186,9 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         new ImageLoaderAsync(context, imageView, image.GetImageStyle()).execute(image.GetUrl());
-        setImageSize(imageView, image.GetImageSize(), hostOptions.getImageSizes());
+        setImageSize(imageView, image.GetImageSize(), hostConfig.getImageSizes());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        setSeparationOptions(context, viewGroup, image.GetSeparationStyle(), hostOptions.getImage().getSeparation(), hostOptions.getStrongSeparation(), true /* horizontal line */);
+        setSeparationConfig(context, viewGroup, image.GetSeparationStyle(), hostConfig.getImage().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
         viewGroup.addView(setHorizontalAlignment(context, imageView, image.GetHorizontalAlignment()));
         return viewGroup;
     }

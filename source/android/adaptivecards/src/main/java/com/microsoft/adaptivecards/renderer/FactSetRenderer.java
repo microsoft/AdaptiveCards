@@ -9,9 +9,9 @@ import android.widget.TextView;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.Fact;
 import com.microsoft.adaptivecards.objectmodel.FactVector;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.FactSet;
-import com.microsoft.adaptivecards.objectmodel.TextOptions;
+import com.microsoft.adaptivecards.objectmodel.TextConfig;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -33,13 +33,13 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, String text, TextOptions textOptions, HostOptions hostOptions)
+    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
-        TextBlockRenderer.setTextColor(textView, textOptions.getColor(), textOptions.getIsSubtle(), hostOptions.getColors());
-        TextBlockRenderer.setTextSize(textView, textOptions.getSize(), hostOptions);
-        TextBlockRenderer.getInstance().setTextWeight(textView, textOptions.getWeight());
+        TextBlockRenderer.setTextColor(textView, textConfig.getColor(), textConfig.getIsSubtle(), hostConfig.getColors());
+        TextBlockRenderer.setTextSize(textView, textConfig.getSize(), hostConfig);
+        TextBlockRenderer.getInstance().setTextWeight(textView, textConfig.getWeight());
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
                 GridLayout.spec(GridLayout.UNDEFINED, 1f),
                 GridLayout.spec(GridLayout.UNDEFINED, 1f));
@@ -47,7 +47,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return textView;
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions)
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         FactSet factSet = null;
         if (baseCardElement instanceof FactSet)
@@ -70,8 +70,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
             Fact fact = factVector.get(i);
             String speak = fact.GetSpeak(); // TODO
 
-            gridLayout.addView(createTextView(context, fact.GetTitle(), hostOptions.getFactSet().getTitle(), hostOptions));
-            gridLayout.addView(createTextView(context, fact.GetValue(), hostOptions.getFactSet().getValue(), hostOptions));
+            gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig));
+            gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig));
         }
 
         viewGroup.addView(gridLayout);

@@ -7,7 +7,7 @@
 #include <Windows.UI.Xaml.h>
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
-#include "AdaptiveHostOptions.h"
+#include "AdaptiveHostConfig.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
@@ -49,9 +49,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  XamlCardRenderer::SetHostOptions(IAdaptiveHostOptions* hostOptions)
+    HRESULT  XamlCardRenderer::SetHostConfig(IAdaptiveHostConfig* hostConfig)
     {
-        m_hostOptions = hostOptions;
+        m_hostConfig = hostConfig;
         return S_OK;
     }
 
@@ -86,9 +86,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 builder.SetOverrideDictionary(m_overrideDictionary.Get());
             }
 
-            if (m_hostOptions != nullptr)
+            if (m_hostConfig != nullptr)
             {
-                builder.SetHostOptions(m_hostOptions.Get());
+                builder.SetHostConfig(m_hostConfig.Get());
             }
 
             // This path is used for synchronous Xaml card rendering, so we don't want

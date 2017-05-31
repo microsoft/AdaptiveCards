@@ -7,7 +7,7 @@ import android.widget.GridLayout;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.Column;
 
 /**
@@ -30,8 +30,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions) { return viewGroup; }
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, int index, HostOptions hostOptions)
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig) { return viewGroup; }
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, int index, HostConfig hostConfig)
     {
         Column column = null;
         if (baseCardElement instanceof Column)
@@ -44,7 +44,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
 
         BaseCardElementVector baseCardElementVector = column.GetItems();
-        ViewGroup returnedViewGroup = CardRendererRegistration.getInstance().render(context, null,baseCardElementVector, hostOptions);
+        ViewGroup returnedViewGroup = CardRendererRegistration.getInstance().render(context, null,baseCardElementVector, hostConfig);
         String columnSize = column.GetSize().toLowerCase();
         if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeAuto))
         {

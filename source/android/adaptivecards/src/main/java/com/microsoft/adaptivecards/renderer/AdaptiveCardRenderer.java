@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 
 import com.microsoft.adaptivecards.objectmodel.AdaptiveCard;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
 
 /**
  * Created by bekao on 2/11/2017.
@@ -28,7 +28,7 @@ public class AdaptiveCardRenderer
         return s_instance;
     }
 
-    public ViewGroup render(Context context, AdaptiveCard adaptiveCard, HostOptions hostOptions)
+    public ViewGroup render(Context context, AdaptiveCard adaptiveCard, HostConfig hostConfig)
     {
         try
         {
@@ -37,7 +37,7 @@ public class AdaptiveCardRenderer
             layout.setOrientation(LinearLayout.VERTICAL);
 
             BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
-            return (baseCardElementList == null ? null : CardRendererRegistration.getInstance().render(context, layout, baseCardElementList, hostOptions));
+            return (baseCardElementList == null ? null : CardRendererRegistration.getInstance().render(context, layout, baseCardElementList, hostConfig));
         }
         catch (Exception ex)
         {
