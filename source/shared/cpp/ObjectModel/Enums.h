@@ -61,6 +61,7 @@ enum class AdaptiveCardSchemaKey
     Container,
     ContainerStyleConfig,
     Dark,
+    Data,
     DateInput,
     Default,
     Emphasis,

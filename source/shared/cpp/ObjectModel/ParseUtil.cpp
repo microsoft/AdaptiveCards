@@ -71,6 +71,25 @@ std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey 
     return propertyValue.asString();
 }
 
+std::string ParseUtil::GetJsonString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
+{
+    std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+    auto propertyValue = json.get(propertyName, Json::Value());
+    if (propertyValue.empty())
+    {
+        if (isRequired)
+        {
+            throw AdaptiveCardParseException("Property is required but was found empty: " + propertyName);
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    return propertyValue.toStyledString();
+}
+
 std::string ParseUtil::GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
 {
     std::string propertyName = AdaptiveCardSchemaKeyToString(key);
