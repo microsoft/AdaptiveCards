@@ -121,12 +121,12 @@ static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTyp
     { CardElementType::FactSet, "FactSet" },
     { CardElementType::Image, "Image" },
     { CardElementType::ImageSet, "ImageSet" },
-    { CardElementType::InputChoiceSet, "Input.ChoiceSet" },
-    { CardElementType::InputDate, "Input.Date" },
-    { CardElementType::InputNumber, "Input.Number" },
-    { CardElementType::InputText, "Input.Text" },
-    { CardElementType::InputTime, "Input.Time" },
-    { CardElementType::InputToggle, "Input.Toggle" },
+    { CardElementType::ChoiceSetInput, "Input.ChoiceSet" },
+    { CardElementType::DateInput, "Input.Date" },
+    { CardElementType::NumberInput, "Input.Number" },
+    { CardElementType::TextInput, "Input.Text" },
+    { CardElementType::TimeInput, "Input.Time" },
+    { CardElementType::ToggleInput, "Input.Toggle" },
     { CardElementType::TextBlock, "TextBlock" },
 };
 
@@ -258,7 +258,7 @@ static std::unordered_map<TextInputStyle, std::string, EnumHash> TextInputStyleE
 };
 
 static std::unordered_map<std::string, TextInputStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-InputTextStyleNameToEnum = GenerateStringToEnumMap<TextInputStyle>(TextInputStyleEnumToName);
+TextInputStyleNameToEnum = GenerateStringToEnumMap<TextInputStyle>(TextInputStyleEnumToName);
 
 static std::unordered_map<ContainerStyle, std::string, EnumHash> ContainerStyleEnumToName =
 {
@@ -518,17 +518,17 @@ const std::string TextInputStyleToString(TextInputStyle style)
 {
     if (TextInputStyleEnumToName.find(style) == TextInputStyleEnumToName.end())
     {
-        throw std::out_of_range("Invalid InputTextStyle");
+        throw std::out_of_range("Invalid TextInputStyle");
     }
     return TextInputStyleEnumToName[style];
 }
 TextInputStyle TextInputStyleFromString(const std::string & style)
 {
-    if (InputTextStyleNameToEnum.find(style) == InputTextStyleNameToEnum.end())
+    if (TextInputStyleNameToEnum.find(style) == TextInputStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid InputTextStyle: " + style);
+        throw std::out_of_range("Invalid TextInputStyle: " + style);
     }
-    return InputTextStyleNameToEnum[style];
+    return TextInputStyleNameToEnum[style];
 }
 
 const std::string ContainerStyleToString(ContainerStyle style)

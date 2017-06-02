@@ -19,13 +19,13 @@ namespace AdaptiveCards
         runtimeclass AdaptiveColumnSet;
         runtimeclass AdaptiveFact;
         runtimeclass AdaptiveFactSet;
-        runtimeclass AdaptiveInputChoice;
-        runtimeclass AdaptiveInputChoiceSet;
-        runtimeclass AdaptiveInputDate;
-        runtimeclass AdaptiveInputNumber;
-        runtimeclass AdaptiveInputText;
-        runtimeclass AdaptiveInputTime;
-        runtimeclass AdaptiveInputToggle;
+        runtimeclass AdaptiveChoiceInput;
+        runtimeclass AdaptiveChoiceSetInput;
+        runtimeclass AdaptiveDateInput;
+        runtimeclass AdaptiveNumberInput;
+        runtimeclass AdaptiveTextInput;
+        runtimeclass AdaptiveTimeInput;
+        runtimeclass AdaptiveToggleInput;
 
         runtimeclass AdaptiveBoundaryOptions;
         runtimeclass AdaptiveFontSizeOptions;
@@ -65,13 +65,13 @@ namespace AdaptiveCards
         interface IAdaptiveColumnSet;
         interface IAdaptiveFact;
         interface IAdaptiveFactSet;
-        interface IAdaptiveInputChoice;
-        interface IAdaptiveInputChoiceSet;
-        interface IAdaptiveInputDate;
-        interface IAdaptiveInputText;
-        interface IAdaptiveInputNumber;
-        interface IAdaptiveInputTime;
-        interface IAdaptiveInputToggle;
+        interface IAdaptiveChoiceInput;
+        interface IAdaptiveChoiceSetInput;
+        interface IAdaptiveDateInput;
+        interface IAdaptiveTextInput;
+        interface IAdaptiveNumberInput;
+        interface IAdaptiveTimeInput;
+        interface IAdaptiveToggleInput;
 
         interface IAdaptiveBoundaryOptions;
         interface IAdaptiveFontSizeOptions;
@@ -151,14 +151,13 @@ namespace AdaptiveCards
             FactSet,
             Fact,
             ImageSet,
-            ActionGroup,
-            InputChoice,
-            InputChoiceSet,
-            InputDate,
-            InputNumber,
-            InputText,
-            InputTime,
-            InputToggle,
+            ChoiceInput,
+            ChoiceSetInput,
+            DateInput,
+            NumberInput,
+            TextInput,
+            TimeInput,
+            ToggleInput,
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -241,7 +240,7 @@ namespace AdaptiveCards
             interface Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IVector<IAdaptiveFact*>;
-            interface Windows.Foundation.Collections.IVector<IAdaptiveInputChoice*>;
+            interface Windows.Foundation.Collections.IVector<IAdaptiveChoiceInput*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
             interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
@@ -421,7 +420,7 @@ namespace AdaptiveCards
             uuid(99797dfe-d39c-43a4-9f2b-d457cc358e1e),
             version(NTDDI_WIN10_RS1)
         ]
-        interface IAdaptiveInputChoice : IInspectable
+        interface IAdaptiveChoiceInput : IInspectable
         {
             [propget] HRESULT ElementType([out, retval] ElementType* value);
 
@@ -442,16 +441,16 @@ namespace AdaptiveCards
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveInputChoice
+        runtimeclass AdaptiveChoiceInput
         {
-            [default] interface IAdaptiveInputChoice;
+            [default] interface IAdaptiveChoiceInput;
         };
 
         [
             uuid(ce0735ef-f983-4a5e-bdad-f5eb7f962faa),
             version(NTDDI_WIN10_RS1)
         ]
-        interface IAdaptiveInputChoiceSet : IInspectable
+        interface IAdaptiveChoiceSetInput : IInspectable
         {
             [propget] HRESULT IsMultiSelect([out, retval] boolean* value);
             [propput] HRESULT IsMultiSelect([in] boolean value);
@@ -462,16 +461,16 @@ namespace AdaptiveCards
             [propget] HRESULT ChoiceSetStyle([out, retval] ChoiceSetStyle* value);
             [propput] HRESULT ChoiceSetStyle([in] ChoiceSetStyle value);
 
-            [propget] HRESULT Choices([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveInputChoice*>** value);
+            [propget] HRESULT Choices([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveChoiceInput*>** value);
         };
 
         [
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveInputChoiceSet
+        runtimeclass AdaptiveChoiceSetInput
         {
-            [default] interface IAdaptiveInputChoiceSet;
+            [default] interface IAdaptiveChoiceSetInput;
             interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
@@ -479,9 +478,9 @@ namespace AdaptiveCards
         [
             uuid(359e2cc5-9b8d-40bf-bbb2-2d3494d30991),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveInputDate)
+            exclusiveto(AdaptiveDateInput)
         ]
-        interface IAdaptiveInputDate : IInspectable
+        interface IAdaptiveDateInput : IInspectable
         {
             [propget] HRESULT Max([out, retval] HSTRING* value);
             [propput] HRESULT Max([in] HSTRING value);
@@ -500,9 +499,9 @@ namespace AdaptiveCards
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveInputDate
+        runtimeclass AdaptiveDateInput
         {
-            [default] interface IAdaptiveInputDate;
+            [default] interface IAdaptiveDateInput;
             interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
@@ -510,9 +509,9 @@ namespace AdaptiveCards
         [
             uuid(3bd0868c-5fbd-4341-91ff-4b07eb2bd54c),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveInputNumber)
+            exclusiveto(AdaptiveNumberInput)
         ]
-        interface IAdaptiveInputNumber : IInspectable
+        interface IAdaptiveNumberInput : IInspectable
         {
             [propget] HRESULT Max([out, retval] INT32 *value);
             [propput] HRESULT Max([in] INT32 value);
@@ -531,9 +530,9 @@ namespace AdaptiveCards
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveInputNumber
+        runtimeclass AdaptiveNumberInput
         {
-            [default] interface IAdaptiveInputNumber;
+            [default] interface IAdaptiveNumberInput;
             interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
@@ -541,9 +540,9 @@ namespace AdaptiveCards
         [
             uuid(ab30772b-172d-4595-bcd2-01001df19d1e),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveInputText)
+            exclusiveto(AdaptiveTextInput)
         ]
-        interface IAdaptiveInputText : IInspectable
+        interface IAdaptiveTextInput : IInspectable
         {
             [propget] HRESULT IsMultiline([out, retval] boolean* value);
             [propput] HRESULT IsMultiline([in] boolean value);
@@ -565,9 +564,9 @@ namespace AdaptiveCards
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveInputText
+        runtimeclass AdaptiveTextInput
         {
-            [default] interface IAdaptiveInputText;
+            [default] interface IAdaptiveTextInput;
             interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
@@ -575,9 +574,9 @@ namespace AdaptiveCards
         [
             uuid(1ee90aff-93e8-4292-ac49-39d4c3289cd9),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveInputTime)
+            exclusiveto(AdaptiveTimeInput)
         ]
-        interface IAdaptiveInputTime : IInspectable
+        interface IAdaptiveTimeInput : IInspectable
         {
             [propget] HRESULT Max([out, retval] HSTRING* value);
             [propput] HRESULT Max([in] HSTRING value);
@@ -596,9 +595,9 @@ namespace AdaptiveCards
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveInputTime
+        runtimeclass AdaptiveTimeInput
         {
-            [default] interface IAdaptiveInputTime;
+            [default] interface IAdaptiveTimeInput;
             interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };
@@ -606,9 +605,9 @@ namespace AdaptiveCards
         [
             uuid(e8af72a5-597c-4a19-b9c2-1a597db1c79a),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveInputToggle)
+            exclusiveto(AdaptiveToggleInput)
         ]
-        interface IAdaptiveInputToggle : IInspectable
+        interface IAdaptiveToggleInput : IInspectable
         {
             [propget] HRESULT Title([out, retval] HSTRING* value);
             [propput] HRESULT Title([in] HSTRING value);
@@ -627,9 +626,9 @@ namespace AdaptiveCards
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveInputToggle
+        runtimeclass AdaptiveToggleInput
         {
-            [default] interface IAdaptiveInputToggle;
+            [default] interface IAdaptiveToggleInput;
             interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
         };

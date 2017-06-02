@@ -6,13 +6,13 @@
 
 namespace AdaptiveCards
 {
-class InputNumber : public BaseInputElement
+class NumberInput : public BaseInputElement
 {
 public:
-    InputNumber();
+    NumberInput();
 
-    static std::shared_ptr<InputNumber> Deserialize(const Json::Value& root);
-    static std::shared_ptr<InputNumber> DeserializeFromString(const std::string& jsonString);
+    static std::shared_ptr<NumberInput> Deserialize(const Json::Value& root);
+    static std::shared_ptr<NumberInput> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
 

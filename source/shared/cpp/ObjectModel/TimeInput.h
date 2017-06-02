@@ -6,13 +6,13 @@
 
 namespace AdaptiveCards
 {
-class InputDate : public BaseInputElement
+class TimeInput : public BaseInputElement
 {
 public:
-    InputDate();
+    TimeInput();
 
-    static std::shared_ptr<InputDate> Deserialize(const Json::Value& root);
-    static std::shared_ptr<InputDate> DeserializeFromString(const std::string& jsonString);
+    static std::shared_ptr<TimeInput> Deserialize(const Json::Value& root);
+    static std::shared_ptr<TimeInput> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
 

@@ -2,22 +2,22 @@
 
 #include "AdaptiveCards.XamlCardRenderer.h"
 #include "Enums.h"
-#include "InputChoice.h"
+#include "ChoiceInput.h"
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    class AdaptiveInputChoice :
+    class AdaptiveChoiceInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoice>
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveInputChoice, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveChoiceInput, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::InputChoice>& sharedInputChoice);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedChoiceInput);
 
-        // IAdaptiveInputChoice
+        // IAdaptiveChoiceInput
         IFACEMETHODIMP get_Title(_In_ HSTRING* title);
         IFACEMETHODIMP put_Title(_Out_ HSTRING title);
 
@@ -33,8 +33,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
     private:
-        std::shared_ptr<AdaptiveCards::InputChoice> m_sharedInputChoice;
+        std::shared_ptr<AdaptiveCards::ChoiceInput> m_sharedChoiceInput;
     };
 
-    ActivatableClass(AdaptiveInputChoice);
+    ActivatableClass(AdaptiveChoiceInput);
 }}

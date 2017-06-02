@@ -39,13 +39,6 @@
     <ClCompile Include="lib\AdaptiveActionOptions.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardOptions.cpp" />
     <ClCompile Include="lib\AdaptiveFactSetOptions.cpp" />
-    <ClCompile Include="lib\AdaptiveInputText.cpp" />
-    <ClCompile Include="lib\AdaptiveInputToggle.cpp" />
-    <ClCompile Include="lib\AdaptiveInputDate.cpp" />
-    <ClCompile Include="lib\AdaptiveInputTime.cpp" />
-    <ClCompile Include="lib\AdaptiveInputChoice.cpp" />
-    <ClCompile Include="lib\AdaptiveInputChoiceSet.cpp" />
-    <ClCompile Include="lib\AdaptiveInputNumber.cpp" />
     <ClCompile Include="lib\AdaptiveOpenUrlAction.cpp" />
     <ClCompile Include="lib\AdaptiveHttpAction.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardAction.cpp" />
@@ -53,6 +46,13 @@
     <ClCompile Include="lib\AdaptiveActionEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStyleConfig.cpp" />
     <ClCompile Include="lib\InputItem.cpp" />
+    <ClCompile Include="lib\AdaptiveChoiceInput.cpp" />
+    <ClCompile Include="lib\AdaptiveChoiceSetInput.cpp" />
+    <ClCompile Include="lib\AdaptiveDateInput.cpp" />
+    <ClCompile Include="lib\AdaptiveNumberInput.cpp" />
+    <ClCompile Include="lib\AdaptiveTextInput.cpp" />
+    <ClCompile Include="lib\AdaptiveTimeInput.cpp" />
+    <ClCompile Include="lib\AdaptiveToggleInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -101,13 +101,6 @@
     <ClInclude Include="lib\AdaptiveActionOptions.h" />
     <ClInclude Include="lib\AdaptiveShowCardOptions.h" />
     <ClInclude Include="lib\AdaptiveFactSetOptions.h" />
-    <ClInclude Include="lib\AdaptiveInputText.h" />
-    <ClInclude Include="lib\AdaptiveInputToggle.h" />
-    <ClInclude Include="lib\AdaptiveInputDate.h" />
-    <ClInclude Include="lib\AdaptiveInputTime.h" />
-    <ClInclude Include="lib\AdaptiveInputChoice.h" />
-    <ClInclude Include="lib\AdaptiveInputChoiceSet.h" />
-    <ClInclude Include="lib\AdaptiveInputNumber.h" />
     <ClInclude Include="lib\AdaptiveOpenUrlAction.h" />
     <ClInclude Include="lib\AdaptiveHttpAction.h" />
     <ClInclude Include="lib\AdaptiveShowCardAction.h" />
@@ -115,6 +108,13 @@
     <ClInclude Include="lib\AdaptiveActionEventArgs.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleConfig.h" />
     <ClInclude Include="lib\InputItem.h" />
+    <ClInclude Include="lib\AdaptiveChoiceInput.h" />
+    <ClInclude Include="lib\AdaptiveChoiceSetInput.h" />
+    <ClInclude Include="lib\AdaptiveDateInput.h" />
+    <ClInclude Include="lib\AdaptiveNumberInput.h" />
+    <ClInclude Include="lib\AdaptiveTextInput.h" />
+    <ClInclude Include="lib\AdaptiveTimeInput.h" />
+    <ClInclude Include="lib\AdaptiveToggleInput.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

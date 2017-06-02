@@ -1,36 +1,36 @@
 #pragma once
 
 #include "AdaptiveCards.XamlCardRenderer.h"
+#include "DateInput.h"
 #include "Enums.h"
-#include "InputToggle.h"
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    class AdaptiveInputToggle :
+    class AdaptiveDateInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputToggle,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveDateInput,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveInputToggle, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveDateInput, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::InputToggle>& sharedInputToggle);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::DateInput>& sharedDateInput);
 
-        // IAdaptiveInputToggle
-        IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
-        IFACEMETHODIMP put_Title(_In_ HSTRING title);
+        // IAdaptiveDateInput
+        IFACEMETHODIMP get_Max(_Out_ HSTRING* max);
+        IFACEMETHODIMP put_Max(_In_ HSTRING max);
+
+        IFACEMETHODIMP get_Min(_Out_ HSTRING* min);
+        IFACEMETHODIMP put_Min(_In_ HSTRING min);
+
+        IFACEMETHODIMP get_Placeholder(_Out_ HSTRING* placeholder);
+        IFACEMETHODIMP put_Placeholder(_In_ HSTRING placeholder);
 
         IFACEMETHODIMP get_Value(_Out_ HSTRING* value);
         IFACEMETHODIMP put_Value(_In_ HSTRING value);
-
-        IFACEMETHODIMP get_ValueOff(_Out_ HSTRING* value);
-        IFACEMETHODIMP put_ValueOff(_In_ HSTRING value);
-
-        IFACEMETHODIMP get_ValueOn(_Out_ HSTRING* value);
-        IFACEMETHODIMP put_ValueOn(_In_ HSTRING value);
 
         // IAdaptiveInputElement
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
@@ -46,8 +46,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
 
     private:
-        std::shared_ptr<AdaptiveCards::InputToggle> m_sharedInputToggle;
+        std::shared_ptr<AdaptiveCards::DateInput> m_sharedDateInput;
     };
 
-    ActivatableClass(AdaptiveInputToggle);
+    ActivatableClass(AdaptiveDateInput);
 }}

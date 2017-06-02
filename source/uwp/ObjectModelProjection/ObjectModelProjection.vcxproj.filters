@@ -17,19 +17,19 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Fact.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FactSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ImageSet.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputText.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputToggle.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputDate.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputTime.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputChoice.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\InputNumber.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HttpAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ShowCardAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SubmitAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseInputElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\DateInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\NumberInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TextInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TimeInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCard.h" />
@@ -53,19 +53,19 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostOptions.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\pch.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputText.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputToggle.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputDate.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputTime.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoiceSet.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputChoice.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\InputNumber.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HttpAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ShowCardAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SubmitAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\DateInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TextInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TimeInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleInput.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

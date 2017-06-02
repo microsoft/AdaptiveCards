@@ -1,33 +1,33 @@
+#include "ChoiceSetInput.h"
 #include "ColumnSet.h"
 #include "Container.h"
 #include "FactSet.h"
 #include "Image.h"
 #include "ImageSet.h"
-#include "InputChoiceSet.h"
-#include "InputDate.h"
-#include "InputNumber.h"
-#include "InputText.h"
-#include "InputTime.h"
-#include "InputToggle.h"
+#include "DateInput.h"
+#include "NumberInput.h"
 #include "ParseUtil.h"
 #include "TextBlock.h"
+#include "TextInput.h"
+#include "TimeInput.h"
+#include "ToggleInput.h"
 
 using namespace AdaptiveCards;
 
 const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> Container::CardElementParsers =
 {
+    { CardElementType::ChoiceSetInput, ChoiceSetInput::Deserialize },
     { CardElementType::Container, Container::Deserialize },
     { CardElementType::ColumnSet, ColumnSet::Deserialize },
     { CardElementType::FactSet, FactSet::Deserialize },
     { CardElementType::Image, Image::Deserialize },
     { CardElementType::ImageSet, ImageSet::Deserialize },
     { CardElementType::TextBlock, TextBlock::Deserialize },
-    { CardElementType::InputChoiceSet, InputChoiceSet::Deserialize },
-    { CardElementType::InputDate, InputDate::Deserialize },
-    { CardElementType::InputNumber, InputNumber::Deserialize },
-    { CardElementType::InputText, InputText::Deserialize },
-    { CardElementType::InputTime, InputTime::Deserialize },
-    { CardElementType::InputToggle, InputToggle::Deserialize },
+    { CardElementType::DateInput, DateInput::Deserialize },
+    { CardElementType::NumberInput, NumberInput::Deserialize },
+    { CardElementType::TextInput, TextInput::Deserialize },
+    { CardElementType::TimeInput, TimeInput::Deserialize },
+    { CardElementType::ToggleInput, ToggleInput::Deserialize },
 };
 
 Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::Normal)
