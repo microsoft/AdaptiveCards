@@ -1583,6 +1583,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveSubmitAction : IInspectable
         {
+            [propget] HRESULT DataJson([out, retval] HSTRING* value);
+            [propput] HRESULT DataJson([in] HSTRING value);
         };
 
         [

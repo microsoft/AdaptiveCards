@@ -33,6 +33,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Container, "container" },
     { AdaptiveCardSchemaKey::ContainerStyleConfig, "containerStyleConfig" },
     { AdaptiveCardSchemaKey::Dark, "dark" },
+    { AdaptiveCardSchemaKey::Data, "data"},
     { AdaptiveCardSchemaKey::DateInput, "dateInput" },
     { AdaptiveCardSchemaKey::Default, "default" },
     { AdaptiveCardSchemaKey::Emphasis, "emphasis" },

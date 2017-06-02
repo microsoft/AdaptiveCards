@@ -56,4 +56,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedSubmitAction->SetSpeak(out);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::get_DataJson(HSTRING* data)
+    {
+        return UTF8ToHString(m_sharedSubmitAction->GetDataJson(), data);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::put_DataJson(HSTRING data)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(data, out));
+        m_sharedSubmitAction->SetDataJson(out);
+        return S_OK;
+    }
 }}
