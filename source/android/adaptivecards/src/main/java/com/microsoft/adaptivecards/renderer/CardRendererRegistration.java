@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
 
 import java.util.HashMap;
 
@@ -59,7 +59,7 @@ public class CardRendererRegistration
         return m_typeToRendererMap.get(cardElementType);
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElementVector baseCardElementList, HostOptions hostOptions)
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElementVector baseCardElementList, HostConfig hostConfig)
     {
         long size;
         if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
@@ -85,7 +85,7 @@ public class CardRendererRegistration
                 continue;
             }
 
-            renderer.render(context, layout, cardElement, hostOptions);
+            renderer.render(context, layout, cardElement, hostConfig);
         }
 
         return viewGroup == null ? layout : viewGroup;

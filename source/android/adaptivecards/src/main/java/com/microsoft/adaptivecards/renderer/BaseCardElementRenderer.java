@@ -9,8 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
-import com.microsoft.adaptivecards.objectmodel.SeparationOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
+import com.microsoft.adaptivecards.objectmodel.SeparationConfig;
 import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
 
 /**
@@ -19,12 +19,12 @@ import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
 
 public class BaseCardElementRenderer implements IBaseCardElementRenderer
 {
-    protected static void setSeparationOptions(
+    protected static void setSeparationConfig(
             Context context,
             ViewGroup viewGroup,
             SeparationStyle separationStyle,
-            SeparationOptions defaultSeparationOptions,
-            SeparationOptions strongSeparationOptions,
+            SeparationConfig defaultSeparationConfig,
+            SeparationConfig strongSeparationConfig,
             boolean horizontalLine)
     {
         if (separationStyle.swigValue() == SeparationStyle.None.swigValue())
@@ -32,14 +32,14 @@ public class BaseCardElementRenderer implements IBaseCardElementRenderer
             return;
         }
 
-        SeparationOptions separationOptions;
+        SeparationConfig separationConfig;
         if (separationStyle.swigValue() == SeparationStyle.Default.swigValue())
         {
-            separationOptions = defaultSeparationOptions;
+            separationConfig = defaultSeparationConfig;
         }
         else if (separationStyle.swigValue() == SeparationStyle.Strong.swigValue())
         {
-            separationOptions = strongSeparationOptions;
+            separationConfig = strongSeparationConfig;
         }
         else
         {
@@ -47,14 +47,14 @@ public class BaseCardElementRenderer implements IBaseCardElementRenderer
         }
 
         View view = new ImageView(context);
-        long lineThickness = separationOptions.getLineThickness();
+        long lineThickness = separationConfig.getLineThickness();
         LinearLayout.LayoutParams params;
         if (lineThickness > 0)
         {
-            view.setBackgroundColor(Color.parseColor(separationOptions.getLineColor()));
+            view.setBackgroundColor(Color.parseColor(separationConfig.getLineColor()));
             params = new LinearLayout.LayoutParams(
-                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : (int) separationOptions.getLineThickness(),
-                    horizontalLine ? (int) separationOptions.getLineThickness() : LinearLayout.LayoutParams.MATCH_PARENT);
+                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : (int) separationConfig.getLineThickness(),
+                    horizontalLine ? (int) separationConfig.getLineThickness() : LinearLayout.LayoutParams.MATCH_PARENT);
         }
         else
         {
@@ -63,15 +63,15 @@ public class BaseCardElementRenderer implements IBaseCardElementRenderer
                     horizontalLine ? LinearLayout.LayoutParams.WRAP_CONTENT : LinearLayout.LayoutParams.MATCH_PARENT);
         }
         params.setMargins(
-                horizontalLine ? 0 : (int)separationOptions.getSpacing() /* left */,
-                horizontalLine ? (int)separationOptions.getSpacing() : 0 /* top */,
-                horizontalLine ? 0 : (int)separationOptions.getSpacing() /* right */,
-                horizontalLine ? (int)separationOptions.getSpacing() : 0 /* bottom */);
+                horizontalLine ? 0 : (int)separationConfig.getSpacing() /* left */,
+                horizontalLine ? (int)separationConfig.getSpacing() : 0 /* top */,
+                horizontalLine ? 0 : (int)separationConfig.getSpacing() /* right */,
+                horizontalLine ? (int)separationConfig.getSpacing() : 0 /* bottom */);
         view.setLayoutParams(params);
         viewGroup.addView(view);
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions)
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         return viewGroup;
     }

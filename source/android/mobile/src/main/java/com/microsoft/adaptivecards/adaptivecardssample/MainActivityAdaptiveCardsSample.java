@@ -107,7 +107,7 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), adaptiveCard, new HostOptions()));
+            layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), adaptiveCard, new HostConfig()));
         }
         catch (java.io.IOException ex)
         {

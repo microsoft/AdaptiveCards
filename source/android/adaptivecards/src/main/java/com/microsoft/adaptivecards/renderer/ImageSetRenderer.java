@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.Image;
 import com.microsoft.adaptivecards.objectmodel.ImageSet;
 import com.microsoft.adaptivecards.objectmodel.ImageSize;
@@ -32,7 +32,7 @@ public class ImageSetRenderer implements IBaseCardElementRenderer
         return s_instance;
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions)
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         ImageSet imageSet = null;
         if (baseCardElement instanceof ImageSet)
@@ -60,7 +60,7 @@ public class ImageSetRenderer implements IBaseCardElementRenderer
 
             // TODO: temporary - this will be handled in the object model
             image.SetImageSize(imageSize);
-            imageRenderer.render(context, horizFlowLayout, image, hostOptions);
+            imageRenderer.render(context, horizFlowLayout, image, hostConfig);
         }
 
         viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));

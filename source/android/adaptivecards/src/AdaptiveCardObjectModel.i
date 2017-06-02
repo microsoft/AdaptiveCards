@@ -36,7 +36,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
-#include "../../../shared/cpp/ObjectModel/HostOptions.h"
+#include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseCardElement)
@@ -215,4 +215,4 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
-%include "../../../shared/cpp/ObjectModel/HostOptions.h"
+%include "../../../shared/cpp/ObjectModel/HostConfig.h"

@@ -66,7 +66,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\HostOptions.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateInput.h" />
