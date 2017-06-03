@@ -11,5 +11,8 @@
 
 @interface ADCIOSPresentationViewController : UIViewController
 
+@property (readonly) NSString* jsonStr;
+
+- (id) init:(NSString*) str;
 
 @end

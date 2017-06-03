@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
+@property (strong, nonatomic) UILabel *JSLab;
+@property (readonly) NSArray* inputs;
+@property int idx;
+@property UIView* curView;
+@property (weak, nonatomic) IBOutlet UIStackView *StkView;
 
 
 @end

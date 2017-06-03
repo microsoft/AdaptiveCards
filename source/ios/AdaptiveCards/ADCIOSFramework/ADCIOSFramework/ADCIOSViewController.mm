@@ -25,7 +25,7 @@ std::shared_ptr<AdaptiveCard> adc;
 }
 - (void) loadView {
     UIStackView* mainView = [[UIStackView alloc] init];
-    mainView.axis = UILayoutConstraintAxisHorizontal;
+    mainView.axis = UILayoutConstraintAxisVertical;
     mainView.distribution = UIStackViewDistributionEqualSpacing;
     mainView.translatesAutoresizingMaskIntoConstraints = false;
     self.view = mainView;

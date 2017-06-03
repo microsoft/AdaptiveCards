@@ -12,24 +12,28 @@
 
 @implementation ADCIOSPresentationViewController
 
+- (id) init:(NSString*) str{
+    self = [super init];
+    
+    if(self){
+        _jsonStr = nil;
+        _jsonStr = str;
+    }
+    
+    return self;
+}
+
 - (void) viewDidLoad {
 
     [super viewDidLoad];
-    NSString* str1 = @"{\
-                          \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                          \"type\": \"AdaptiveCard\",\
-                          \"version\": \"0.5\",\
-                          \"body\": [\
-                              {\
-                                  \"type\": \"TextBlock\",\
-                                  \"text\": \"Meow!\"\
-                              }\
-                          ]\
-                     }";
-    ADCIOSViewController* adcVc = [[ADCIOSViewController alloc] init: str1];
-    [self.view addSubview: adcVc.view];
     
-    [NSLayoutConstraint activateConstraints:@[[adcVc.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor], [adcVc.view.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
+    if(self.jsonStr){
+        ADCIOSViewController* adcVc = [[ADCIOSViewController alloc] init: self.jsonStr];
+        
+        [self.view addSubview: adcVc.view];
+    
+        [NSLayoutConstraint activateConstraints:@[[adcVc.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor], [adcVc.view.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
+    }
     // Do any additional setup after loading the view, typically from a nib.
 }
 
