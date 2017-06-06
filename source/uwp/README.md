@@ -2,7 +2,7 @@
 
 This directory contains the renderers and tooling for the UWP platform. 
 
-# Requirements
+## Requirements
 
 1. Visual Studio 2017 with C++ tooling
 
