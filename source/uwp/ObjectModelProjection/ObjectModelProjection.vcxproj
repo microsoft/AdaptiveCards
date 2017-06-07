@@ -30,6 +30,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseInputElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\HostConfig.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HttpAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.cpp" />

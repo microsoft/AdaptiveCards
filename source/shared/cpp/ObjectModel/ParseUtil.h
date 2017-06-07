@@ -46,6 +46,8 @@ public:
 
     static Json::Value GetJsonValueFromString(const std::string jsonString);
 
+    static Json::Value ExtractJsonValue(const Json::Value& jsonRoot, AdaptiveCardSchemaKey key, bool isRequired = false);
+
     template <typename T>
     static T GetEnumValue(
         const Json::Value& json,
@@ -67,6 +69,13 @@ public:
         AdaptiveCardSchemaKey key,
         const std::unordered_map<ActionType, std::function<std::shared_ptr<T>(const Json::Value&)>, EnumHash>& parsers,
         bool isRequired = false);
+
+    template <typename T>
+    static T ExtractJsonValueAndMergeWithDefault(
+        const Json::Value& rootJson,
+        AdaptiveCardSchemaKey key,
+        const T &defaultValue,
+        const std::function<T(const Json::Value&, const T&)>& deserializer);
 
     static void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
 
@@ -179,6 +188,18 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetActionCollection(
     }
 
     return elements;
+}
+
+template <typename T>
+T ParseUtil::ExtractJsonValueAndMergeWithDefault(
+    const Json::Value& rootJson,
+    AdaptiveCardSchemaKey key,
+    const T& defaultValue,
+    const std::function<T(const Json::Value&, const T&)>& deserializer)
+{
+    auto jsonObject = ParseUtil::ExtractJsonValue(rootJson, key);
+    T result = jsonObject.empty() ? defaultValue : deserializer(jsonObject, defaultValue);
+    return result;
 }
 
 }

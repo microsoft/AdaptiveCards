@@ -19,6 +19,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Body, "body" },
     { AdaptiveCardSchemaKey::BorderColor, "borderColor" },
     { AdaptiveCardSchemaKey::BorderThickness, "borderThickness" },
+    { AdaptiveCardSchemaKey::Bottom, "bottom" },
     { AdaptiveCardSchemaKey::ButtonSpacing, "buttonSpacing" },
     { AdaptiveCardSchemaKey::Card, "card" },
     { AdaptiveCardSchemaKey::Center, "center" },
@@ -98,6 +99,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::TimeInput, "timeInput" },
     { AdaptiveCardSchemaKey::Title, "title" },
     { AdaptiveCardSchemaKey::ToggleInput, "toggleInput" },
+    { AdaptiveCardSchemaKey::Top, "top" },
     { AdaptiveCardSchemaKey::Type, "type" },
     { AdaptiveCardSchemaKey::Url, "url" },
     { AdaptiveCardSchemaKey::Value, "value" },
@@ -270,6 +272,17 @@ static std::unordered_map<ContainerStyle, std::string, EnumHash> ContainerStyleE
 static std::unordered_map<std::string, ContainerStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo>
 ContainerStyleNameToEnum = GenerateStringToEnumMap<ContainerStyle>(ContainerStyleEnumToName);
 
+static std::unordered_map<ActionAlignment, std::string, EnumHash> ActionAlignmentEnumToName =
+{
+    { ActionAlignment::Left, "Left" },
+    { ActionAlignment::Center, "Center" },
+    { ActionAlignment::Right, "Right" },
+    { ActionAlignment::Stretch, "Stretch" },
+};
+
+static std::unordered_map<std::string, ActionAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+ActionAlignmentNameToEnum = GenerateStringToEnumMap<ActionAlignment>(ActionAlignmentEnumToName);
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
 {
     if (AdaptiveCardSchemaKeyEnumToName.find(type) == AdaptiveCardSchemaKeyEnumToName.end())
@@ -330,99 +343,99 @@ ActionType ActionTypeFromString(const std::string& actionType)
     return ActionTypeNameToEnum[actionType];
 }
 
-const std::string HorizontalAlignmentToString(HorizontalAlignment type)
+const std::string HorizontalAlignmentToString(HorizontalAlignment alignment)
 {
-    if (HorizontalAlignmentEnumToName.find(type) == HorizontalAlignmentEnumToName.end())
+    if (HorizontalAlignmentEnumToName.find(alignment) == HorizontalAlignmentEnumToName.end())
     {
         throw std::out_of_range("Invalid HorizontalAlignment type");
     }
-    return HorizontalAlignmentEnumToName[type];
+    return HorizontalAlignmentEnumToName[alignment];
 }
 
-HorizontalAlignment HorizontalAlignmentFromString(const std::string& type)
+HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment)
 {
-    if (HorizontalAlignmentNameToEnum.find(type) == HorizontalAlignmentNameToEnum.end())
+    if (HorizontalAlignmentNameToEnum.find(alignment) == HorizontalAlignmentNameToEnum.end())
     {
-        throw std::out_of_range("Invalid HorizontalAlignment: " + type);
+        throw std::out_of_range("Invalid HorizontalAlignment: " + alignment);
     }
 
-    return HorizontalAlignmentNameToEnum[type];
+    return HorizontalAlignmentNameToEnum[alignment];
 }
 
-const std::string TextColorToString(TextColor type)
+const std::string TextColorToString(TextColor color)
 {
-    if (TextColorEnumToName.find(type) == TextColorEnumToName.end())
+    if (TextColorEnumToName.find(color) == TextColorEnumToName.end())
     {
         throw std::out_of_range("Invalid TextColor type");
     }
-    return TextColorEnumToName[type];
+    return TextColorEnumToName[color];
 }
 
-TextColor TextColorFromString(const std::string& type)
+TextColor TextColorFromString(const std::string& color)
 {
-    if (TextColorNameToEnum.find(type) == TextColorNameToEnum.end())
+    if (TextColorNameToEnum.find(color) == TextColorNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextColor: " + type);
+        throw std::out_of_range("Invalid TextColor: " + color);
     }
 
-    return TextColorNameToEnum[type];
+    return TextColorNameToEnum[color];
 }
 
-const std::string TextWeightToString(TextWeight type)
+const std::string TextWeightToString(TextWeight weight)
 {
-    if (TextWeightEnumToName.find(type) == TextWeightEnumToName.end())
+    if (TextWeightEnumToName.find(weight) == TextWeightEnumToName.end())
     {
         throw std::out_of_range("Invalid TextWeight type");
     }
-    return TextWeightEnumToName[type];
+    return TextWeightEnumToName[weight];
 }
 
-TextWeight TextWeightFromString(const std::string& type)
+TextWeight TextWeightFromString(const std::string& weight)
 {
-    if (TextWeightNameToEnum.find(type) == TextWeightNameToEnum.end())
+    if (TextWeightNameToEnum.find(weight) == TextWeightNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextWeight: " + type);
+        throw std::out_of_range("Invalid TextWeight: " + weight);
     }
 
-    return TextWeightNameToEnum[type];
+    return TextWeightNameToEnum[weight];
 }
 
-const std::string TextSizeToString(TextSize type)
+const std::string TextSizeToString(TextSize size)
 {
-    if (TextSizeEnumToName.find(type) == TextSizeEnumToName.end())
+    if (TextSizeEnumToName.find(size) == TextSizeEnumToName.end())
     {
         throw std::out_of_range("Invalid TextSize type");
     }
-    return TextSizeEnumToName[type];
+    return TextSizeEnumToName[size];
 }
 
-TextSize TextSizeFromString(const std::string& type)
+TextSize TextSizeFromString(const std::string& size)
 {
-    if (TextSizeNameToEnum.find(type) == TextSizeNameToEnum.end())
+    if (TextSizeNameToEnum.find(size) == TextSizeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextSize: " + type);
+        throw std::out_of_range("Invalid TextSize: " + size);
     }
 
-    return TextSizeNameToEnum[type];
+    return TextSizeNameToEnum[size];
 }
 
-const std::string ImageSizeToString(ImageSize type)
+const std::string ImageSizeToString(ImageSize size)
 {
-    if (ImageSizeEnumToName.find(type) == ImageSizeEnumToName.end())
+    if (ImageSizeEnumToName.find(size) == ImageSizeEnumToName.end())
     {
         throw std::out_of_range("Invalid ImageSize type");
     }
-    return ImageSizeEnumToName[type];
+    return ImageSizeEnumToName[size];
 }
 
-ImageSize ImageSizeFromString(const std::string& type)
+ImageSize ImageSizeFromString(const std::string& size)
 {
-    if (ImageSizeNameToEnum.find(type) == ImageSizeNameToEnum.end())
+    if (ImageSizeNameToEnum.find(size) == ImageSizeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ImageSize: " + type);
+        throw std::out_of_range("Invalid ImageSize: " + size);
     }
 
-    return ImageSizeNameToEnum[type];
+    return ImageSizeNameToEnum[size];
 }
 
 const std::string SeparationStyleToString(SeparationStyle type)
@@ -434,14 +447,14 @@ const std::string SeparationStyleToString(SeparationStyle type)
     return SeparationStyleEnumToName[type];
 }
 
-SeparationStyle SeparationStyleFromString(const std::string& type)
+SeparationStyle SeparationStyleFromString(const std::string& style)
 {
-    if (SeparationStyleNameToEnum.find(type) == SeparationStyleNameToEnum.end())
+    if (SeparationStyleNameToEnum.find(style) == SeparationStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid SeparationStyle: " + type);
+        throw std::out_of_range("Invalid SeparationStyle: " + style);
     }
 
-    return SeparationStyleNameToEnum[type];
+    return SeparationStyleNameToEnum[style];
 }
 
 const std::string ImageStyleToString(ImageStyle style)
@@ -549,4 +562,20 @@ ContainerStyle ContainerStyleFromString(const std::string & style)
     return ContainerStyleNameToEnum[style];
 }
 
+const std::string ActionAlignmentToString(ActionAlignment alignment)
+{
+    if (ActionAlignmentEnumToName.find(alignment) == ActionAlignmentEnumToName.end())
+    {
+        throw std::out_of_range("Invalid ActionAlignment");
+    }
+    return ActionAlignmentEnumToName[alignment];
+}
+ActionAlignment ActionAlignmentFromString(const std::string & alignment)
+{
+    if (ActionAlignmentNameToEnum.find(alignment) == ActionAlignmentNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid ActionAlignment: " + alignment);
+    }
+    return ActionAlignmentNameToEnum[alignment];
+}
 }
