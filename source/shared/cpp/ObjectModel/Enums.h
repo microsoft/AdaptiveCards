@@ -179,7 +179,8 @@ enum class ImageSize {
     Stretch,
     Small,
     Medium,
-    Large
+    Large,
+    SquareImageButton
 };
 
 enum class TextInputStyle {

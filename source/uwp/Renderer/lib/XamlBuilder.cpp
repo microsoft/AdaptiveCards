@@ -1255,6 +1255,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
                 break;
             }
+
+            case ABI::AdaptiveCards::XamlCardRenderer::ImageSize::SquareImageButton:
+            {
+                UINT32 imageSize;
+                THROW_IF_FAILED(sizeOptions->get_SquareImageButton(&imageSize));
+
+                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                break;
+            }
         }
 
         ABI::AdaptiveCards::XamlCardRenderer::HAlignment adaptiveHorizontalAlignment;

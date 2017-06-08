@@ -171,6 +171,7 @@ static std::unordered_map<ImageSize, std::string, EnumHash> ImageSizeEnumToName 
     { ImageSize::Large, "Large" },
     { ImageSize::Medium, "Medium" },
     { ImageSize::Small, "Small" },
+    { ImageSize::SquareImageButton, "SquareImageButton" },
     { ImageSize::Stretch, "Stretch" },
 };
 

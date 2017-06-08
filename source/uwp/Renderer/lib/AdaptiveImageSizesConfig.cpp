@@ -59,5 +59,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedImageSizesConfig.largeSize = largeSize;
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSizesConfig::get_SquareImageButton(UINT32* squareImageButtonSize)
+    {
+        *squareImageButtonSize = m_sharedImageSizesConfig.squareImageButtonSize;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSizesConfig::put_SquareImageButton(UINT32 squareImageButtonSize)
+    {
+        m_sharedImageSizesConfig.largeSize = squareImageButtonSize;
+        return S_OK;
+    }
 }
 }

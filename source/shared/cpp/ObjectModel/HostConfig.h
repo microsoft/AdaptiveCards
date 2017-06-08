@@ -59,6 +59,7 @@ struct ImageSizesConfig
     unsigned int smallSize = 80;
     unsigned int mediumSize = 120;
     unsigned int largeSize = 180;
+    unsigned int squareImageButtonSize = 32;
 };
 
 struct TextBlockConfig

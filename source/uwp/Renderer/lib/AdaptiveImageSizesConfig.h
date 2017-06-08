@@ -26,6 +26,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Large(_Out_ UINT32 *value);
         IFACEMETHODIMP put_Large(_In_ UINT32 value);
 
+        IFACEMETHODIMP get_SquareImageButton(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_SquareImageButton(_In_ UINT32 value);
+
     private:
         ImageSizesConfig m_sharedImageSizesConfig;
     };

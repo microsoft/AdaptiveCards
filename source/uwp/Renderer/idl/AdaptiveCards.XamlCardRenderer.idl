@@ -183,7 +183,8 @@ namespace AdaptiveCards
             Stretch,
             Small,
             Medium,
-            Large
+            Large,
+            SquareImageButton
         } ImageSize;
 
         [version(NTDDI_WIN10_RS1)]
@@ -995,6 +996,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT Large([out, retval] UINT32 *value);
             [propput] HRESULT Large([in] UINT32 value);
+
+            [propget] HRESULT SquareImageButton([out, retval] UINT32 *value);
+            [propput] HRESULT SquareImageButton([in] UINT32 value);
         };
 
         [
