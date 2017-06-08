@@ -47,3 +47,12 @@ const CardElementType AdaptiveCards::BaseCardElement::GetElementType() const
     return m_type;
 }
 
+Json::Value BaseCardElement::SerializeToJsonValue()
+ {
+    Json::Value root;
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(GetElementType());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separation)] = SeparationStyleToString(GetSeparationStyle());
+    return root;
+}
+

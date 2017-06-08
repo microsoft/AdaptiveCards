@@ -31,7 +31,20 @@ std::shared_ptr<NumberInput> NumberInput::DeserializeFromString(const std::strin
 
 std::string NumberInput::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value NumberInput::SerializeToJsonValue()
+{
+    Json::Value root = BaseInputElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = GetMax();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = GetMin();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = GetPlaceholder();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+
+    return root;
 }
 
 std::string NumberInput::GetPlaceholder() const

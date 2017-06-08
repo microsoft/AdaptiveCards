@@ -97,6 +97,38 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     return result;
 }
 
+Json::Value AdaptiveCard::SerializeToJsonValue()
+{
+    Json::Value root;
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(CardElementType::AdaptiveCard);
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Version)] = GetVersion();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinVersion)] = GetMinVersion();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FallbackText)] = GetFallbackText();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImageUrl)] = GetBackgroundImageUrl();
+
+    std::string bodyPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body);
+    root[bodyPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& cardElement : GetBody())
+    {
+        root[bodyPropertyName].append(cardElement->SerializeToJsonValue());
+    }
+
+    std::string actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
+    root[actionsPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& action : GetActions())
+    {
+        root[actionsPropertyName].append(action->SerializeToJsonValue());
+    }
+
+    return root;
+}
+
+std::string AdaptiveCard::Serialize()
+{
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
 std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException)
 {
     return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));

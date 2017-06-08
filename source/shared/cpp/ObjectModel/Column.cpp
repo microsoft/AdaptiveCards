@@ -74,7 +74,24 @@ std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
 
 std::string Column::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value Column::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = GetSize();
+
+    std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    root[propertyName] = Json::Value(Json::arrayValue);
+    for (const auto& cardElement : GetItems())
+    {
+        root[propertyName].append(cardElement->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
 std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)

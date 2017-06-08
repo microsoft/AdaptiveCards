@@ -18,6 +18,7 @@ public:
     static std::shared_ptr<SubmitAction> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
 private:
     std::string m_dataJson;

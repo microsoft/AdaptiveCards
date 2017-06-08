@@ -25,7 +25,17 @@ std::shared_ptr<ShowCardAction> ShowCardAction::DeserializeFromString(const std:
 
 std::string ShowCardAction::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value ShowCardAction::SerializeToJsonValue()
+{
+    Json::Value root = BaseActionElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card)] = GetCard()->SerializeToJsonValue();
+
+    return root;
 }
 
 std::shared_ptr<AdaptiveCard> AdaptiveCards::ShowCardAction::GetCard() const

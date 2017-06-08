@@ -43,7 +43,22 @@ std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
 
 std::string Image::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value Image::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = ImageSizeToString(GetImageSize());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ImageStyleToString(GetImageStyle());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url)] = GetUrl();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
+        HorizontalAlignmentToString(GetHorizontalAlignment());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText)] = GetAltText();
+
+    return root;
 }
 
 std::string AdaptiveCards::Image::GetUrl() const

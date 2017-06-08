@@ -36,7 +36,22 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
 
 std::string FactSet::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value FactSet::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    std::string factsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts);
+    root[factsPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& fact : GetFacts())
+    {
+        root[factsPropertyName].append(fact->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
 std::shared_ptr<FactSet> FactSet::Deserialize(const Json::Value& value)

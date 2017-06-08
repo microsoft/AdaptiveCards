@@ -29,7 +29,18 @@ std::shared_ptr<Fact> Fact::DeserializeFromString(const std::string& jsonString)
 
 std::string Fact::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value Fact::SerializeToJsonValue()
+{
+    Json::Value root;
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+
+    return root;
 }
 
 std::string Fact::GetTitle() const

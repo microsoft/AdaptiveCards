@@ -25,6 +25,7 @@ public:
     static std::shared_ptr<TextBlock> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
     std::string GetText() const;
     void SetText(const std::string value);

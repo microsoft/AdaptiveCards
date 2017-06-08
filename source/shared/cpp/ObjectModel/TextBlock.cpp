@@ -62,7 +62,25 @@ std::shared_ptr<TextBlock> TextBlock::DeserializeFromString(const std::string& j
 
 std::string TextBlock::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value TextBlock::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(GetTextSize());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = TextColorToString(GetTextColor());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(GetTextWeight());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = 
+        HorizontalAlignmentToString(GetHorizontalAlignment());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines)] = GetMaxLines();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = GetIsSubtle();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = GetWrap();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = GetText();
+
+    return root;
 }
 
 std::string TextBlock::GetText() const

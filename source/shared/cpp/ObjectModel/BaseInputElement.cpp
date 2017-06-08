@@ -32,3 +32,13 @@ void BaseInputElement::SetIsRequired(const bool value)
 {
     m_isRequired = value;
 }
+
+Json::Value BaseInputElement::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
+
+    return root;
+}
+

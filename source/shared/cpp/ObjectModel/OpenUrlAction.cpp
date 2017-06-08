@@ -23,7 +23,17 @@ std::shared_ptr<OpenUrlAction> OpenUrlAction::DeserializeFromString(const std::s
 
 std::string OpenUrlAction::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value OpenUrlAction::SerializeToJsonValue()
+{
+    Json::Value root = BaseActionElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url)] = GetUrl();
+
+    return root;
 }
 
 std::string OpenUrlAction::GetUrl() const

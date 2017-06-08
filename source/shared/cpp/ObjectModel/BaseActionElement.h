@@ -7,7 +7,6 @@
 
 namespace AdaptiveCards
 {
-class Container;
 class BaseActionElement
 {
 public:
@@ -25,6 +24,7 @@ public:
     const ActionType GetElementType() const;
 
     virtual std::string Serialize() = 0;
+    virtual Json::Value SerializeToJsonValue();
 
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);

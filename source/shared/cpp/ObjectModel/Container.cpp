@@ -76,7 +76,24 @@ void Container::SetContainerStyle(const ContainerStyle value)
 
 std::string Container::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value Container::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetContainerStyle());
+
+    std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    root[itemsPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& cardElement : GetItems())
+    {
+        root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
 std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
