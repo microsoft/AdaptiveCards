@@ -1435,18 +1435,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             double sizeAsDouble = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
 
             GridLength columnWidth;
-            if (isStretchResult == 0)
+            if (isAutoResult == 0)
             {
+                // If auto specified, use auto width
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
                 columnWidth.Value = 0;
             }
-            else if (!adaptiveColumnSize.IsValid() || (isAutoResult == 0) || (sizeAsDouble == 0))
+            else if (isStretchResult == 0 || !adaptiveColumnSize.IsValid() || (sizeAsDouble <= 0))
             {
+                // If stretch specified, or column size invalid or set to non-positive, use stretch with default of 1
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
                 columnWidth.Value = 1;
             }
             else
             {
+                // If user specified specific valid size, use that star size
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
                 columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
             }
