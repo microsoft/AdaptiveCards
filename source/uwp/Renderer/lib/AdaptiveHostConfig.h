@@ -15,6 +15,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
+        HRESULT RuntimeClassInitialize(_In_ const HostConfig& config);
 
         // IAdaptiveHostConfig
         IFACEMETHODIMP get_FontFamily(_Out_ HSTRING* text);
@@ -85,6 +86,22 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     private:
         HostConfig m_sharedHostConfig;
+    };
+
+    class AdaptiveHostConfigStaticsImpl WrlFinal
+        : public Microsoft::WRL::AgileActivationFactory<
+        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfigStatics>
+    {
+        InspectableClassStatic(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveHostConfig, TrustLevel::BaseTrust);
+
+    public:
+        IFACEMETHOD(ActivateInstance)(_COM_Outptr_ IInspectable** ppvObject) noexcept override
+        {
+            return Microsoft::WRL::Details::MakeAndInitialize<AdaptiveHostConfig>(ppvObject);
+        }
+
+        // IAdaptiveHostConfigStatics
+        IFACEMETHODIMP CreateHostConfigFromJson(_In_ HSTRING hostConfigJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig** config) noexcept;
     };
 
     ActivatableClass(AdaptiveHostConfig);

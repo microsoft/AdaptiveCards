@@ -26,10 +26,51 @@ namespace XamlCardVisualizer
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        //Use Literal Host Config String while Visualizer is updated with HostConfig Panel
+        const string hostConfigString = @"{
+                ""fontSizes"": {
+                    ""small"": 10,
+                    ""normal"" : 20,
+                    ""medium"" : 30,
+                    ""large"" : 40,
+                    ""extraLarge"" : 50
+                },
+                ""colors"": {
+                    ""default"": {
+                        ""normal"": ""#FF000000"",
+                        ""subtle"" : ""#b2000000""
+                        },
+                    ""accent"" : {
+                        ""normal"": ""#FF0000FF"",
+                        ""subtle"" : ""#b20000FF""
+                        },
+                    ""dark"" : {
+                        ""normal"": ""#FF101010"",
+                        ""subtle"" : ""#b2101010""
+                        },
+                        ""light"" : {
+                            ""normal"": ""#FFFFFFFF"",
+                            ""subtle"" : ""#b2FFFFFF""
+                        },
+                        ""good"" : {
+                            ""normal"": ""#FF008000"",
+                            ""subtle"" : ""#b2008000""
+                            },
+                        ""warning"" : {
+                            ""normal"": ""#FFFFD700"",
+                            ""subtle"" : ""#b2FFD700""
+                        },
+                        ""attention"" : {
+                        ""normal"": ""#FF8B0000"",
+                        ""subtle"" : ""#b28B0000""
+                        }}
+                }";
+
         public MainPage()
         {
-            this.InitializeComponent();
 
+
+            this.InitializeComponent();
             // Construct a temporary object model tree until the parser is available
             AdaptiveCard card = new AdaptiveCard();
             AdaptiveContainer container1 = new AdaptiveContainer();
@@ -63,6 +104,9 @@ namespace XamlCardVisualizer
             card.Body.Add(image);
 
             m_renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();
+
+            AdaptiveHostConfig hostConfig = AdaptiveHostConfig.CreateHostConfigFromJson(hostConfigString);
+            m_renderer.SetHostConfig(hostConfig);
 
             m_renderer.Action += async (sender, e) =>
             {
@@ -118,7 +162,6 @@ namespace XamlCardVisualizer
 
             string adaptiveJsonText;
             this.adaptiveJson.Document.GetText(Windows.UI.Text.TextGetOptions.None, out adaptiveJsonText);
-
             try
             {
                 renderedXamlPresenter.Content = await m_renderer.RenderAdaptiveJsonAsXamlAsync(adaptiveJsonText);

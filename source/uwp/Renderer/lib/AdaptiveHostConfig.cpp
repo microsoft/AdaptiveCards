@@ -26,10 +26,33 @@ using namespace ABI::AdaptiveCards::XamlCardRenderer;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfigStaticsImpl::CreateHostConfigFromJson(HSTRING adaptiveJson, IAdaptiveHostConfig** config) noexcept try
+    {
+        *config = nullptr;
+
+        std::string adaptiveJsonString;
+        RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
+
+        HostConfig sharedHostConfig = HostConfig::DeserializeFromString(adaptiveJsonString);
+        return MakeAndInitialize<AdaptiveHostConfig>(config, sharedHostConfig);
+    } CATCH_RETURN;
+
     HRESULT AdaptiveHostConfig::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
     } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::RuntimeClassInitialize(const HostConfig& sharedHostConfig)
+    {
+        RETURN_IF_FAILED(RuntimeClassInitialize());
+        m_sharedHostConfig = sharedHostConfig;
+
+        //TODO: Generate projections for HostConfig
+
+        return S_OK;
+    }
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_FontFamily(HSTRING* text)
