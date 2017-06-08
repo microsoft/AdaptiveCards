@@ -863,6 +863,7 @@ export class ToggleInput extends Input {
 export class Choice {
     title: string;
     value: string;
+    isSelected: boolean;
 }
 
 export class ChoiceSetInput extends Input {
@@ -892,6 +893,7 @@ export class ChoiceSetInput extends Input {
                     var option = document.createElement("option");
                     option.value = this.choices[i].value;
                     option.text = this.choices[i].title;
+                    option.selected = this.choices[i].isSelected;
 
                     if (this.choices[i].value == this.defaultValue) {
                         option.selected = true;
@@ -918,6 +920,7 @@ export class ChoiceSetInput extends Input {
                     radioInput.style.verticalAlign = "middle";
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
+                    radioInput.checked = this.choices[i].isSelected;
 
                     if (this.choices[i].value == this.defaultValue) {
                         radioInput.checked = true;
@@ -961,6 +964,7 @@ export class ChoiceSetInput extends Input {
                 checkboxInput.style.display = "inline-block";
                 checkboxInput.style.verticalAlign = "middle";
                 checkboxInput.value = this.choices[i].value;
+                checkboxInput.checked = this.choices[i].isSelected;
 
                 if (defaultValues) {
                     if (defaultValues.indexOf(this.choices[i].value) >= 0) {
@@ -1031,6 +1035,7 @@ export class ChoiceSetInput extends Input {
 
                 choice.title = choiceArray[i]["title"];
                 choice.value = choiceArray[i]["value"];
+                choice.isSelected = choiceArray[i]["isSelected"];
 
                 this.choices.push(choice);
             }
