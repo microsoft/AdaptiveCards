@@ -113,7 +113,7 @@ function convert(scssFile: string) {
 
 export = convert;
 
-if (require.main === module) {
+function executeCommandLine() {
     var hostConfig = convert(process.argv[2]);
     var output = JSON.stringify(hostConfig, null, 2);
 
@@ -121,21 +121,28 @@ if (require.main === module) {
     //so that output works with unix-style redirects e.g. ">"
     const BOM = '\ufeff';
 
-    if (process.argv[3] === '--exec') {
-        process.stdout.write(BOM + 'AdaptiveCards.setHostConfig(' + output + ');\n');
+    if (process.argv.length > 3) {
+        if (process.argv[3] === '--exec') {
+            process.stdout.write(BOM + 'AdaptiveCards.setHostConfig(' + output + ');\n');
+            return;
 
-    } else if (process.argv[3].indexOf('--css') === 0) {
-        const css = '#ac-hostConfig {\n content: ' + JSON.stringify(JSON.stringify(hostConfig)) + ';\n}\n';
+        } else if (process.argv[3].indexOf('--css') === 0) {
+            const css = '#ac-hostConfig {\n content: ' + JSON.stringify(JSON.stringify(hostConfig)) + ';\n}\n';
 
-        if (process.argv[3] === '--css-append') {
-            fs.appendFileSync(process.argv[4], '\n' + css);
+            if (process.argv[3] === '--css-append') {
+                fs.appendFileSync(process.argv[4], '\n' + css);
+                return;
 
-        } else {
-            process.stdout.write(BOM + css);
+            } else {
+                process.stdout.write(BOM + css);
+                return;
+            }
         }
-
-    } else {
-        process.stdout.write(BOM + output);
     }
 
+    process.stdout.write(BOM + output);
+}
+
+if (require.main === module) {
+    executeCommandLine();
 }
