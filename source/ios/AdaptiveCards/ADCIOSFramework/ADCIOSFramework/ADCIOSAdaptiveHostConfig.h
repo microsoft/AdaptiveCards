@@ -6,24 +6,26 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#pragma once
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "TextBlock.h"
+#import "Image.h"
+#import "HostConfig.h"
 
-#include "HostConfig.h"
+using namespace AdaptiveCards;
 
-//namespace AdaptiveCards {
-namespace AdaptiveCards
-{
+@interface ADCIOSAdaptiveHostConfig:NSObject
 
-class ADCIOSAdaptiveHostConfig{
-    
-public:
-    
-    ADCIOSAdaptiveHostConfig();
-    //void get_ImageSizes();
-    
-private:
+- (CGSize) getImageSize:(std::shared_ptr<Image>) imgBlock;
 
-    HostConfig m_hostConfig;
-};
-    
-}
+- (UIColor* ) getTextBlockColor:(std::shared_ptr<AdaptiveCards::TextBlock>) txtBlock;
+
+- (int) getTextBlockTexSize:(std::shared_ptr<TextBlock>)txtBlock;
+
+- (NSTextAlignment) getTextBlockAlignment:(std::shared_ptr<TextBlock>) txtBlock;
+
+- (NSNumber* ) getTextBlockTextWeight:(std::shared_ptr<TextBlock>) txtBlock;
+
+@property std::shared_ptr<HostConfig> m_hostConfig;
+
+@end    
