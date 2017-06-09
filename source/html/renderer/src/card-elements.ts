@@ -95,7 +95,7 @@ export abstract class CardElement {
 
     speak: string;
     horizontalAlignment: Enums.HorizontalAlignment = "left";
-    separation: Enums.Separation;
+    separation: Enums.Separation = "default";
 
     abstract getJsonTypeName(): string;
     abstract getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition;
@@ -527,11 +527,15 @@ export class Image extends CardElement {
             }
 
             var imageElement = document.createElement("img");
-            imageElement.style.width = "100%";
+            imageElement.style.maxHeight = "100%";
 
             switch (this.size) {
+                case "stretch":
+                    imageElement.style.width = "100%";
+                    break;
                 case "auto":
                     imageElement.style.maxWidth = "100%";
+                    imageElement.style.maxHeight = "500px";
                     break;
                 case "small":
                     imageElement.style.maxWidth = hostConfig.imageSizes.small + "px";
@@ -603,17 +607,16 @@ export class ImageSet extends CardElement {
 
         if (this._images.length > 0) {
             element = document.createElement("div");
+            element.style.display = "flex";
+            element.style.flexWrap = "wrap";
 
             for (var i = 0; i < this._images.length; i++) {
                 let renderedImage = this._images[i].render();
 
-                // Default display for Image is "block" but that forces them to stack vertically
-                // in a div. So we need to override display and set it to "inline-block". The
-                // drawback is that it adds a small spacing at the bottom of each image, which
-                // simply can't be removed cleanly in a cross-browser compatible way.
-                renderedImage.style.display = "inline-block";
+                renderedImage.style.display = "inline-flex";
                 renderedImage.style.margin = "0px";
                 renderedImage.style.marginRight = "10px";
+                renderedImage.style.height = "100px";
 
                 Utils.appendChild(element, renderedImage);
             }
@@ -1165,11 +1168,6 @@ export class TimeInput extends Input {
     }
 }
 
-enum ActionButtonStyle {
-    Link,
-    Push
-}
-
 enum ActionButtonState {
     Normal,
     Expanded,
@@ -1178,7 +1176,7 @@ enum ActionButtonState {
 
 class ActionButton {
     private _action: Action;
-    private _style: ActionButtonStyle;
+    private _style: Enums.ActionStyle = "button";
     private _element: HTMLElement = null;
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
@@ -1190,19 +1188,23 @@ class ActionButton {
     }
 
     private updateCssStyle() {
-        this._element.className = this._style == ActionButtonStyle.Link ? "ac-linkButton " : "ac-pushButton ";
+        this._element.className = this._style == "link" ? "ac-linkButton" : "ac-pushButton";
+
+        if (this._action instanceof ShowCardAction) {
+            this._element.classList.add("expandable");
+        }
 
         switch (this._state) {
             case ActionButtonState.Expanded:
-                this._element.classList.add("ac-expanded");
+                this._element.classList.add("expanded");
                 break;
             case ActionButtonState.Subdued:
-                this._element.classList.add("ac-subdued");
+                this._element.classList.add("subdued");
                 break;
         }
     }
 
-    constructor(action: Action, style: ActionButtonStyle) {
+    constructor(action: Action, style: Enums.ActionStyle) {
         this._action = action;
         this._style = style;
 
@@ -1591,6 +1593,7 @@ class ActionCollection {
     }
 
     items: Array<Action> = [];
+    actionStyle: Enums.ActionStyle = "button";
     onHideActionCardPane: () => void = null;
     onShowActionCardPane: (action: ShowCardAction) => void = null;
 
@@ -1683,21 +1686,13 @@ class ActionCollection {
         this._actionCardContainer.style.backgroundColor = Utils.stringToCssColor(hostConfig.actions.showCard.backgroundColor);
 
         var renderedActions: number = 0;
-        var actionButtonStyle = ActionButtonStyle.Push;
         var maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this.items.length) : this.items.length;
-
-        for (var i = 0; i < maxActions; i++) {
-            if (this.items[i] instanceof ShowCardAction) {
-                actionButtonStyle = ActionButtonStyle.Link;
-                break;
-            }
-        }
 
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
         for (var i = 0; i < maxActions; i++) {
             if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
-                let actionButton = new ActionButton(this.items[i], actionButtonStyle);
+                var actionButton = new ActionButton(this.items[i], this.actionStyle);
                 actionButton.element.style.overflow = "hidden";
                 actionButton.element.style.overflow = "table-cell";
                 actionButton.element.style.flex = hostConfig.actions.actionAlignment == "stretch" ? "0 1 100%" : "0 1 auto";
@@ -1768,8 +1763,12 @@ export class ActionSet extends CardElement {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
+        this._actionCollection.actionStyle = this.actionStyle;
+        
         return this._actionCollection.render();
     }
+
+    actionStyle: Enums.ActionStyle = "button";
 
     constructor() {
         super();
@@ -1793,6 +1792,8 @@ export class ActionSet extends CardElement {
 
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
+
+        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], "button");
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
@@ -2383,6 +2384,8 @@ export abstract class ContainerWithActions extends ContainerBase {
     protected internalRender(): HTMLElement {
         super.internalRender();
 
+        this._actionCollection.actionStyle = this.actionStyle;
+
         var renderedActions = this._actionCollection.render();
 
         if (renderedActions) {
@@ -2392,6 +2395,8 @@ export abstract class ContainerWithActions extends ContainerBase {
 
         return this._element.children.length > 0 ? this._element : null;
     }
+
+    actionStyle: Enums.ActionStyle = "button";
 
     constructor() {
         super();
@@ -2403,6 +2408,8 @@ export abstract class ContainerWithActions extends ContainerBase {
 
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json, itemsCollectionPropertyName);
+
+        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], "button");
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
