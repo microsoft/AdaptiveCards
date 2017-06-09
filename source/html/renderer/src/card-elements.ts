@@ -1046,7 +1046,7 @@ export class ChoiceSetInput extends Input {
                 return this._selectElement ? this._selectElement.value : null;
             }
             else {
-                if (this._toggleInputs.length == 0) {
+                if (!this._toggleInputs || this._toggleInputs.length == 0) {
                     return null;
                 }
 
@@ -1060,7 +1060,7 @@ export class ChoiceSetInput extends Input {
             }
         }
         else {
-            if (this._toggleInputs.length == 0) {
+            if (!this._toggleInputs || this._toggleInputs.length == 0) {
                 return null;
             }
 
