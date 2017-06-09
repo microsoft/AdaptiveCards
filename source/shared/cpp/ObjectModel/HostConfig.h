@@ -12,6 +12,7 @@ struct SpacingDefinition
     unsigned int right = 0;
     unsigned int top = 0;
     unsigned int bottom = 0;
+    SpacingDefinition(int left = 0, int right = 0, int top = 0, int bottom = 0):left(left), right(right), top(top), bottom(bottom){};
 };
 
 struct FontSizesConfig
@@ -46,6 +47,9 @@ struct TextConfig
     TextSize size = TextSize::Normal;
     TextColor color = TextColor::Default;
     bool isSubtle = false;
+    TextConfig(TextWeight w = TextWeight::Normal, TextSize s = TextSize::Normal,
+               TextColor c = TextColor::Default, bool b = false):
+    weight(w), size(s), color(c), isSubtle(b){};
 };
 
 struct SeparationConfig
@@ -53,6 +57,8 @@ struct SeparationConfig
     unsigned int spacing = 10;
     unsigned int lineThickness = 0;
     std::string lineColor = "#FF101010";
+    SeparationConfig(int s = 10, int lTh = 0, std::string lC = "#FF101010"): spacing(s),
+    lineThickness(lTh), lineColor(lC){};
 };
 struct ImageSizesConfig
 {
@@ -87,6 +93,8 @@ struct ContainerStyleConfig
     std::string borderColor = "#00FFFFFF";
     SpacingDefinition borderThickness;
     SpacingDefinition padding;
+    ContainerStyleConfig(std::string bgC = "#00FFFFFF", std::string brdC = "#00FFFFFF", SpacingDefinition brdTh = SpacingDefinition(), SpacingDefinition pad = SpacingDefinition()):
+    backgroundColor(bgC), borderColor(brdC), borderThickness(brdTh), padding(pad) {};
 };
 
 struct ContainerConfig
@@ -170,6 +178,7 @@ struct ChoiceSetConfig
 
 struct HostConfig
 {
+//#if 0
     std::string fontFamily = "Calibri";
     FontSizesConfig fontSizes;
     bool supportsInteractivity = true;

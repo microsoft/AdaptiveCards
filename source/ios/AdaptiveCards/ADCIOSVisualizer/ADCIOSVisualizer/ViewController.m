@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _idx = 2;
+    _idx = 3;
     _inputs = @[@"{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\n\
                 \"type\": \"AdaptiveCard\",\n\
@@ -107,7 +107,23 @@
                 \"color\": \"dark\"\n\
                 }\n\
                 ]\n\
-                }"];
+                }",
+                @"{\
+                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\n\
+                \"type\": \"AdaptiveCard\",\n\
+                \"version\": \"0.5\",\n\
+                \"body\": [\n\
+                {\n\
+                \"type\": \"Image\",\n\
+                \"url\": \"https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n\
+                \"size\": \"large\",\n\
+                \"style\": \"person\",\n\
+                \"horizontalAlignment\": \"left\"\
+                }\n\
+                ]\n\
+                }",
+
+                ];
 
     self.JSLab = [[UILabel alloc] init];
     self.JSLab.numberOfLines = 50;
@@ -137,7 +153,7 @@
 - (void) changeView: (id) sender {
     
     self.idx = self.idx + 1;
-    self.idx = self.idx % 3;
+    self.idx = self.idx % 4;
     self.JSLab.text = self.inputs[self.idx];
     [self.StkView removeArrangedSubview:self.curView];
     [self.curView removeFromSuperview];

@@ -9,16 +9,21 @@
 #import "ADCIOSViewController.h"
 #import "AdaptiveCard.h"
 #import "TextBlock.h"
+#import "Image.h"
+#import "HostConfig.h"
+#import <AVFoundation/AVFoundation.h>
 
 using namespace AdaptiveCards;
 
 @implementation ADCIOSViewController
 std::shared_ptr<AdaptiveCard> adc;
+std::shared_ptr<HostConfig> hostConfig;
 
 -(id) init: (NSString*) str {
     self = [super init];
     if(self) {
         self.jsaonString = str;
+        hostConfig = std::make_shared<HostConfig>();
     }
     
     return self;
@@ -38,17 +43,53 @@ std::shared_ptr<AdaptiveCard> adc;
 
 -(void) buildViewFromADC:(NSString*) str{
     adc = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
-    
+    UIStackView* mainView = (UIStackView*) self.view;
     std::vector<std::shared_ptr<BaseCardElement>> body = adc->GetBody();
+    
     for(auto elem: body)
     {
-        if(elem->GetElementType() == CardElementType::TextBlock)
-        {
-            std::shared_ptr<TextBlock> pblock = std::dynamic_pointer_cast<TextBlock>(elem);
-            UIStackView* mainView = (UIStackView*) self.view;
-            [mainView addArrangedSubview:[self buildTextBlock:pblock]];
+        switch(elem->GetElementType()){
+            case CardElementType::TextBlock:
+            {
+                std::shared_ptr<TextBlock> tblock = std::dynamic_pointer_cast<TextBlock>(elem);
+                [mainView addArrangedSubview:[self buildTextBlock:tblock]];
+                break;
+            }
+            case CardElementType::Image:
+            {
+                std::shared_ptr<Image> iblock = std::dynamic_pointer_cast<Image>(elem);
+                [mainView addArrangedSubview:[self buildImageBlock:iblock]];
+                break;
+            }
+            default:;
         }
     }
+}
+
+-(UIImageView* ) buildImageBlock:(std::shared_ptr<Image>) blck{
+   
+    NSURL *url = [NSURL URLWithString:
+                  [NSString stringWithCString: blck->GetUrl().c_str()
+                                     encoding:[NSString defaultCStringEncoding]]];
+    
+    UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    
+    CGSize cgsize = [self UIImageMappingSize: blck];
+
+    UIGraphicsBeginImageContext(cgsize);
+    UIImageView* view = [[UIImageView alloc]
+                         initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
+    [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
+    img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    view.image = img;
+
+    if(blck->GetImageStyle() == ImageStyle::Person) {
+        CALayer* imgLayer = view.layer;
+        [imgLayer setCornerRadius:cgsize.width/2];
+        [imgLayer setMasksToBounds:YES];
+    }
+    return view;
 }
 
 -(UILabel*) buildTextBlock:(std::shared_ptr<TextBlock>) blck{
@@ -73,20 +114,49 @@ std::shared_ptr<AdaptiveCard> adc;
     return lab;
 }
 
+-(CGSize) UIImageMappingSize:(std::shared_ptr<Image>) imgBlock {
+    float sz = hostConfig->imageSizes.mediumSize;
+    switch (imgBlock->GetImageSize()){
+        case ImageSize::Large:
+        {
+            sz = hostConfig->imageSizes.largeSize;
+            break;
+        }
+        case ImageSize::Medium:
+        {
+            sz = hostConfig->imageSizes.mediumSize;
+            break;
+        }
+
+        case ImageSize::Small:
+        {
+            sz = hostConfig->imageSizes.smallSize;
+            break;
+        }
+
+        default:
+        {
+            NSLog(@"unimplemented");
+        }
+    }
+    CGSize cgSize = CGSizeMake(sz, sz);
+    return cgSize;
+}
+
 - (int) UITextMappingSize:(std::shared_ptr<TextBlock>)txtBlock {
     switch (txtBlock->GetTextSize()){
         case TextSize::Small:
-            return 10;
+            return hostConfig->fontSizes.smallFontSize;
         case TextSize::Normal:
-            return 12;
+            return hostConfig->fontSizes.normalFontSize;
         case TextSize::Medium:
-            return 14;
+            return hostConfig->fontSizes.mediumFontSize;
         case TextSize::Large:
-            return 17;
+            return hostConfig->fontSizes.largeFontSize;
         case TextSize::ExtraLarge:
-            return 20;
+            return hostConfig->fontSizes.extraLargeFontSize;
         default:
-            return 12;
+            return hostConfig->fontSizes.normalFontSize;
     }
 }
     
@@ -115,22 +185,56 @@ std::shared_ptr<AdaptiveCard> adc;
 }
                                           
 -(UIColor* ) UIMappingColor:(std::shared_ptr<TextBlock>) txtBlock{
+    u_int32_t num = 0;
+    NSScanner* scanner;
+    std::string str;
     switch (txtBlock->GetTextColor()) {
-        case TextColor::Dark:
-            return [UIColor blackColor];
+        case TextColor::Dark: 
+        {	
+            str = hostConfig->colors.dark.normal;
+            break;
+        }
         case TextColor::Light:
-            return [UIColor clearColor];
+        {
+            str = hostConfig->colors.light.normal;
+            break;
+        }
         case TextColor::Accent:
-            return [UIColor greenColor];
+        {
+            str = hostConfig->colors.accent.normal;
+            break;
+        }
         case TextColor::Good:
-            return [UIColor purpleColor];
+        {
+            str = hostConfig->colors.good.normal;
+            break;
+        }
         case TextColor::Warning:
-            return [UIColor magentaColor];
+        {
+            str = hostConfig->colors.warning.normal;
+            break;
+        }
         case TextColor::Attention:
-            return [UIColor brownColor];
+        {
+            str = hostConfig->colors.attention.normal;
+            break;
+        }
     default:
-            return [UIColor blackColor];
+        {
+            str = hostConfig->colors.good.normal;
+            break;
+        }
     }
+    
+    scanner = [NSScanner scannerWithString:
+               [[NSString alloc] initWithCString:str.c_str()
+                                        encoding:[NSString defaultCStringEncoding]]];
+    [scanner setScanLocation:1];
+    [scanner scanHexInt:&num];
+    return [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255
+                           green:((num & 0x0000FF00) >> 8)  / 255
+                            blue:((num & 0x000000FF))       / 255
+                           alpha:((num & 0xFF000000) >> 24) / 255];
 }
 
 @end
