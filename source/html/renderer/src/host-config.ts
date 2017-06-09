@@ -222,6 +222,7 @@ export interface IActionsConfig {
     separation: ISeparationDefinition,
     buttonSpacing: number,
     showCard: IShowCardActionConfig,
+    preExpandSingleShowCardAction?: boolean,    
     actionsOrientation: Enums.Orientation,
     actionAlignment: Enums.ActionAlignment
 }
@@ -232,6 +233,7 @@ function parseActionsConfiguration(obj: any): IActionsConfig {
         separation: parseSeparationDefinition(obj["separation"]),
         buttonSpacing: obj["buttonSpacing"],
         showCard: parseShowCardActionConfiguration(obj["showCard"]),
+        preExpandSingleShowCardAction: Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false),
         actionsOrientation: Utils.getValueOrDefault<Enums.Orientation>(obj["actionsOrientation"], "horizontal"),
         actionAlignment: Utils.getValueOrDefault<Enums.ActionAlignment>(obj["actionAlignment"], "left"),
     } : null;

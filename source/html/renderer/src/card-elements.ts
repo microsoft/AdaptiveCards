@@ -1510,6 +1510,7 @@ class ActionCollection {
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
     private _expandedAction: ShowCardAction = null;
+    private _renderedActionCount: number = 0;
 
     private hideActionCardPane() {
         this._actionCardContainer.innerHTML = '';
@@ -1535,7 +1536,7 @@ class ActionCollection {
         var renderedCard = action.card.render();
 
         this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.marginTop = this.items.length > 1 ? hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
+        this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
 
         if (hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
             var padding = this._owner.getNonZeroPadding();
@@ -1645,90 +1646,99 @@ class ActionCollection {
 
         var element = document.createElement("div");
 
-        var buttonStrip = document.createElement("div");
-        buttonStrip.style.display = "flex";
-
-        if (hostConfig.actions.actionsOrientation == "horizontal") {
-            buttonStrip.style.flexDirection = "row";
-
-            switch (hostConfig.actions.actionAlignment) {
-                case "center":
-                    buttonStrip.style.justifyContent = "center";
-                    break;
-                case "right":
-                    buttonStrip.style.justifyContent = "flex-end";
-                    break;
-                default:
-                    buttonStrip.style.justifyContent = "flex-start";
-                    break;
-            }
-        }
-        else {
-            buttonStrip.style.flexDirection = "column";
-
-            switch (hostConfig.actions.actionAlignment) {
-                case "center":
-                    buttonStrip.style.alignItems = "center";
-                    break;
-                case "right":
-                    buttonStrip.style.alignItems = "flex-end";
-                    break;
-                case "stretch":
-                    buttonStrip.style.alignItems = "stretch";
-                    break;
-                default:
-                    buttonStrip.style.alignItems = "flex-start";
-                    break;
-            }
-        }
-
         this._actionCardContainer = document.createElement("div");
         this._actionCardContainer.style.backgroundColor = Utils.stringToCssColor(hostConfig.actions.showCard.backgroundColor);
 
-        var renderedActions: number = 0;
+        this._renderedActionCount = 0;
+
         var maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this.items.length) : this.items.length;
 
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
-        for (var i = 0; i < maxActions; i++) {
-            if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
-                var actionButton = new ActionButton(this.items[i], this.actionStyle);
-                actionButton.element.style.overflow = "hidden";
-                actionButton.element.style.overflow = "table-cell";
-                actionButton.element.style.flex = hostConfig.actions.actionAlignment == "stretch" ? "0 1 100%" : "0 1 auto";
-                actionButton.text = this.items[i].title;
-                actionButton.onClick = (ab) => { this.actionClicked(ab); };
+        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
+            this.showActionCardPane(<ShowCardAction>this.items[0]);
 
-                this._actionButtons.push(actionButton);
+            this._renderedActionCount = 1;
+        }
+        else {
+            var buttonStrip = document.createElement("div");
+            buttonStrip.style.display = "flex";
 
-                buttonStrip.appendChild(actionButton.element);
+            if (hostConfig.actions.actionsOrientation == "horizontal") {
+                buttonStrip.style.flexDirection = "row";
 
-                if (i < this.items.length - 1 && hostConfig.actions.buttonSpacing > 0) {
-                    var spacer = document.createElement("div");
-
-                    if (hostConfig.actions.actionsOrientation == "horizontal") {
-                        spacer.style.flex = "0 0 auto";
-                        spacer.style.width = hostConfig.actions.buttonSpacing + "px";
-                    }
-                    else {
-                        spacer.style.height = hostConfig.actions.buttonSpacing + "px";
-                    }
-
-                    Utils.appendChild(buttonStrip, spacer);
+                switch (hostConfig.actions.actionAlignment) {
+                    case "center":
+                        buttonStrip.style.justifyContent = "center";
+                        break;
+                    case "right":
+                        buttonStrip.style.justifyContent = "flex-end";
+                        break;
+                    default:
+                        buttonStrip.style.justifyContent = "flex-start";
+                        break;
                 }
-
-                renderedActions++;
             }
+            else {
+                buttonStrip.style.flexDirection = "column";
+
+                switch (hostConfig.actions.actionAlignment) {
+                    case "center":
+                        buttonStrip.style.alignItems = "center";
+                        break;
+                    case "right":
+                        buttonStrip.style.alignItems = "flex-end";
+                        break;
+                    case "stretch":
+                        buttonStrip.style.alignItems = "stretch";
+                        break;
+                    default:
+                        buttonStrip.style.alignItems = "flex-start";
+                        break;
+                }
+            }
+
+            for (var i = 0; i < maxActions; i++) {
+                if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
+                    var actionButton = new ActionButton(this.items[i], this.actionStyle);
+                    actionButton.element.style.overflow = "hidden";
+                    actionButton.element.style.overflow = "table-cell";
+                    actionButton.element.style.flex = hostConfig.actions.actionAlignment == "stretch" ? "0 1 100%" : "0 1 auto";
+                    actionButton.text = this.items[i].title;
+                    actionButton.onClick = (ab) => { this.actionClicked(ab); };
+
+                    this._actionButtons.push(actionButton);
+
+                    buttonStrip.appendChild(actionButton.element);
+
+                    if (i < this.items.length - 1 && hostConfig.actions.buttonSpacing > 0) {
+                        var spacer = document.createElement("div");
+
+                        if (hostConfig.actions.actionsOrientation == "horizontal") {
+                            spacer.style.flex = "0 0 auto";
+                            spacer.style.width = hostConfig.actions.buttonSpacing + "px";
+                        }
+                        else {
+                            spacer.style.height = hostConfig.actions.buttonSpacing + "px";
+                        }
+
+                        Utils.appendChild(buttonStrip, spacer);
+                    }
+
+                    this._renderedActionCount++;
+                }
+            }
+
+            var buttonStripContainer = document.createElement("div");
+            buttonStripContainer.style.overflow = "hidden";
+            buttonStripContainer.appendChild(buttonStrip);
+
+            Utils.appendChild(element, buttonStripContainer);
         }
 
-        var buttonStripContainer = document.createElement("div");
-        buttonStripContainer.style.overflow = "hidden";
-        buttonStripContainer.appendChild(buttonStrip);
-
-        Utils.appendChild(element, buttonStripContainer);
         Utils.appendChild(element, this._actionCardContainer);
 
-        return renderedActions > 0 ? element : null;
+        return this._renderedActionCount > 0 ? element : null;
     }
 
     addAction(action: Action) {
