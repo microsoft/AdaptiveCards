@@ -48,6 +48,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/OpenUrlAction.cpp
              ../../shared/cpp/ObjectModel/ShowCardAction.cpp
              ../../shared/cpp/ObjectModel/SubmitAction.cpp
+             ../../shared/cpp/ObjectModel/HostConfig.cpp
              src/main/cpp/objectmodel_wrap.cpp
              src/main/cpp/native-lib.cpp
              )

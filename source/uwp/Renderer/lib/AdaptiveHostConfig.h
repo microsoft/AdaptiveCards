@@ -104,5 +104,5 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP CreateHostConfigFromJson(_In_ HSTRING hostConfigJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig** config) noexcept;
     };
 
-    ActivatableClass(AdaptiveHostConfig);
+    ActivatableClassWithFactory(AdaptiveHostConfig, AdaptiveHostConfigStaticsImpl);
 }}

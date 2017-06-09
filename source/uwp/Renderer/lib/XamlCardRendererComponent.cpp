@@ -148,7 +148,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return m_events->InvokeAll(this, eventArgs);
     }
 
-    const IAdaptiveHostConfig* XamlCardRenderer::GetHostConfig()
+    IAdaptiveHostConfig* XamlCardRenderer::GetHostConfig()
     {
         return m_hostConfig.Get();
     }

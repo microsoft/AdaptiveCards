@@ -40,7 +40,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::Windows::UI::Xaml::UIElement*>** result);
 
         HRESULT SendActionEvent(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionEventArgs* eventArgs);
-        const ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* GetHostConfig();
+        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* GetHostConfig();
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
