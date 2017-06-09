@@ -27,6 +27,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/Enums.cpp
              ../../shared/cpp/ObjectModel/BaseCardElement.cpp
              ../../shared/cpp/ObjectModel/BaseActionElement.cpp
+             ../../shared/cpp/ObjectModel/BaseInputElement.cpp
              ../../shared/cpp/ObjectModel/Container.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCard.cpp
              ../../shared/cpp/ObjectModel/TextBlock.cpp
@@ -36,13 +37,13 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/FactSet.cpp
              ../../shared/cpp/ObjectModel/Image.cpp
              ../../shared/cpp/ObjectModel/ImageSet.cpp
-             ../../shared/cpp/ObjectModel/InputChoice.cpp
-             ../../shared/cpp/ObjectModel/InputChoiceSet.cpp
-             ../../shared/cpp/ObjectModel/InputDate.cpp
-             ../../shared/cpp/ObjectModel/InputNumber.cpp
-             ../../shared/cpp/ObjectModel/InputText.cpp
-             ../../shared/cpp/ObjectModel/InputTime.cpp
-             ../../shared/cpp/ObjectModel/InputToggle.cpp
+             ../../shared/cpp/ObjectModel/ChoiceInput.cpp
+             ../../shared/cpp/ObjectModel/ChoiceSetInput.cpp
+             ../../shared/cpp/ObjectModel/DateInput.cpp
+             ../../shared/cpp/ObjectModel/NumberInput.cpp
+             ../../shared/cpp/ObjectModel/TextInput.cpp
+             ../../shared/cpp/ObjectModel/TimeInput.cpp
+             ../../shared/cpp/ObjectModel/ToggleInput.cpp
              ../../shared/cpp/ObjectModel/HttpAction.cpp
              ../../shared/cpp/ObjectModel/OpenUrlAction.cpp
              ../../shared/cpp/ObjectModel/ShowCardAction.cpp

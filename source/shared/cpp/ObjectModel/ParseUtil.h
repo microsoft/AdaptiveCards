@@ -23,6 +23,9 @@ public:
 
     static std::string GetString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
+    // Gets the specified property and returns a JSON string of the value
+    static std::string GetJsonString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+
     static std::string GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
     static bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired = false);

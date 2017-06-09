@@ -24,7 +24,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         void SerializeTimeInput(Json::Value& jsonValue, const char* idString);
         void SerializeToggleInput(Json::Value& jsonValue, const char* idString);
 
-        void GetChoiceValue(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoiceSet* choiceInput, INT32 selectedIndex, std::string& choiceValue);
+        void GetChoiceValue(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex, std::string& choiceValue);
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputElement> m_adaptiveInputElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_uiInputElement;

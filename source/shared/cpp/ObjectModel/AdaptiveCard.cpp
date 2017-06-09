@@ -1,19 +1,19 @@
 #include "AdaptiveCard.h"
+#include "ChoiceSetInput.h"
 #include "ColumnSet.h"
 #include "Container.h"
+#include "DateInput.h"
 #include "FactSet.h"
 #include "HttpAction.h"
 #include "Image.h"
 #include "ImageSet.h"
-#include "InputChoiceSet.h"
-#include "InputDate.h"
-#include "InputNumber.h"
-#include "InputText.h"
-#include "InputTime.h"
-#include "InputToggle.h"
+#include "NumberInput.h"
 #include "OpenUrlAction.h"
 #include "ParseUtil.h"
 #include "TextBlock.h"
+#include "TextInput.h"
+#include "TimeInput.h"
+#include "ToggleInput.h"
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
 
@@ -35,12 +35,12 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
     { CardElementType::Image, Image::Deserialize },
     { CardElementType::ImageSet, ImageSet::Deserialize },
     { CardElementType::TextBlock, TextBlock::Deserialize },
-    { CardElementType::InputChoiceSet, InputChoiceSet::Deserialize },
-    { CardElementType::InputDate, InputDate::Deserialize },
-    { CardElementType::InputNumber, InputNumber::Deserialize },
-    { CardElementType::InputText, InputText::Deserialize },
-    { CardElementType::InputTime, InputTime::Deserialize },
-    { CardElementType::InputToggle, InputToggle::Deserialize },
+    { CardElementType::ChoiceSetInput, ChoiceSetInput::Deserialize },
+    { CardElementType::DateInput, DateInput::Deserialize },
+    { CardElementType::NumberInput, NumberInput::Deserialize },
+    { CardElementType::TextInput, TextInput::Deserialize },
+    { CardElementType::TimeInput, TimeInput::Deserialize },
+    { CardElementType::ToggleInput, ToggleInput::Deserialize },
 };
 
 AdaptiveCard::AdaptiveCard()

@@ -7,9 +7,21 @@ SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit)
 {
 }
 
+std::string SubmitAction::GetDataJson() const
+{
+    return m_dataJson;
+}
+
+void SubmitAction::SetDataJson(const std::string value)
+{
+    m_dataJson = value;
+}
+
 std::shared_ptr<SubmitAction> SubmitAction::Deserialize(const Json::Value& json)
 {
     std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(json);
+
+    submitAction->SetDataJson(ParseUtil::GetJsonString(json, AdaptiveCardSchemaKey::Data));
 
     return submitAction;
 }

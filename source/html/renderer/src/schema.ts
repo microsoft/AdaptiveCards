@@ -27,6 +27,8 @@ export interface ICard extends ITypedElement {
 }
 export interface ICardElement extends ITypedElement {
     speak?: string;
+    horizontalAlignment?: HorizontalAlignment;
+    separation?: Separation;
 }
 export interface IColumn extends IContainer {
     size?: string;
@@ -55,7 +57,6 @@ export interface IFactSet extends ICardElement {
 }
 export interface IImage extends ICardElement {
     altText?: string;
-    horizontalAlignment?: HorizontalAlignment;
     selectAction?: IActionBase;
     size?: ImageSize;
     style?: ImageStyle;
@@ -101,7 +102,6 @@ export interface IInputToggle extends IInput {
 }
 export interface ITextBlock extends ICardElement {
     color?: TextColor;
-    horizontalAlignment?: HorizontalAlignment;
     isSubtle?: boolean;
     maxLines?: number;
     size?: TextSize;
@@ -120,7 +120,7 @@ export type TextColor = "default" | "dark" | "light" | "accent" | "good" | "warn
 export type TextInputStyle = "text" | "tel" | "url" | "email";
 export type TextSize = "small" | "normal" | "medium" | "large" | "extraLarge";
 export type TextWeight = "lighter" | "normal" | "bolder";
-
+export type Separation = "none" | "default" | "strong";
 
 export class TypedElement implements ITypedElement {
     public constructor(type: string) {

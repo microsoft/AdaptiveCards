@@ -6,22 +6,22 @@
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
 #include "AdaptiveContainer.h"
+#include "AdaptiveChoiceInput.h"
+#include "AdaptiveChoiceSetInput.h"
+#include "AdaptiveDateInput.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
 #include "AdaptiveHttpAction.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveImageSet.h"
-#include "AdaptiveInputDate.h"
-#include "AdaptiveInputNumber.h"
-#include "AdaptiveInputText.h"
-#include "AdaptiveInputTime.h"
-#include "AdaptiveInputToggle.h"
-#include "AdaptiveInputChoice.h"
-#include "AdaptiveInputChoiceSet.h"
+#include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveTextBlock.h"
+#include "AdaptiveTextInput.h"
+#include "AdaptiveTimeInput.h"
+#include "AdaptiveToggleInput.h"
 #include "util.h"
 
 using namespace AdaptiveCards;
@@ -90,29 +90,29 @@ HRESULT GenerateContainedElementsProjection(
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveImageSet>(&projectedContainedElement,
                 std::static_pointer_cast<AdaptiveCards::ImageSet>(containedElement)));
             break;
-        case CardElementType::InputChoiceSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputChoiceSet>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::InputChoiceSet>(containedElement)));
+        case CardElementType::ChoiceSetInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveChoiceSetInput>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::ChoiceSetInput>(containedElement)));
             break;
-        case CardElementType::InputDate:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputDate>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::InputDate>(containedElement)));
+        case CardElementType::DateInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveDateInput>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::DateInput>(containedElement)));
             break;
-        case CardElementType::InputNumber:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputNumber>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::InputNumber>(containedElement)));
+        case CardElementType::NumberInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveNumberInput>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::NumberInput>(containedElement)));
             break;
-        case CardElementType::InputText:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputText>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::InputText>(containedElement)));
+        case CardElementType::TextInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveTextInput>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::TextInput>(containedElement)));
             break;
-        case CardElementType::InputTime:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputTime>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::InputTime>(containedElement)));
+        case CardElementType::TimeInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveTimeInput>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::TimeInput>(containedElement)));
             break;
-        case CardElementType::InputToggle:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputToggle>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::InputToggle>(containedElement)));
+        case CardElementType::ToggleInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveToggleInput>(&projectedContainedElement,
+                std::static_pointer_cast<AdaptiveCards::ToggleInput>(containedElement)));
             break;
         default:
             return E_UNEXPECTED;
@@ -203,14 +203,14 @@ HRESULT GenerateImagesProjection(
 } CATCH_RETURN;
 
 HRESULT GenerateInputChoicesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::InputChoice>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoice*>* projectedParentContainer) noexcept try
+    const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputChoice> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveInputChoice>(&projectedContainedElement,
-            std::static_pointer_cast<AdaptiveCards::InputChoice>(containedElement)));
+        ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveChoiceInput>(&projectedContainedElement,
+            std::static_pointer_cast<AdaptiveCards::ChoiceInput>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }

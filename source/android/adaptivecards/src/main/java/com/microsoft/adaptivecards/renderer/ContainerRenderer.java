@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.Container;
-import com.microsoft.adaptivecards.objectmodel.HostOptions;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
 
 /**
  * Created by bekao on 2/11/2017.
@@ -28,7 +28,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostOptions hostOptions)
+    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         Container container = null;
         if (baseCardElement instanceof Container)
@@ -40,8 +40,8 @@ public class ContainerRenderer extends BaseCardElementRenderer
             return viewGroup;
         }
 
-        //setSeparationOptions(context, viewGroup, container.GetSeparationStyle(), hostOptions.getContainer().getSeparation(), hostOptions.getStrongSeparation(), true /* horizontal line */);
-        return CardRendererRegistration.getInstance().render(context, viewGroup, container.GetItems(), hostOptions);
+        //setSeparationConfig(context, viewGroup, container.GetSeparationStyle(), hostConfig.getContainer().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
+        return CardRendererRegistration.getInstance().render(context, viewGroup, container.GetItems(), hostConfig);
     }
 
     private static ContainerRenderer s_instance = null;

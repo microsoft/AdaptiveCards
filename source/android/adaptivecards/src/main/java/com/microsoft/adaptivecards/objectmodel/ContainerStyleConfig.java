@@ -51,22 +51,22 @@ public class ContainerStyleConfig {
     return AdaptiveCardObjectModelJNI.ContainerStyleConfig_borderColor_get(swigCPtr, this);
   }
 
-  public void setBorderThickness(BoundaryOptions value) {
-    AdaptiveCardObjectModelJNI.ContainerStyleConfig_borderThickness_set(swigCPtr, this, BoundaryOptions.getCPtr(value), value);
+  public void setBorderThickness(SpacingDefinition value) {
+    AdaptiveCardObjectModelJNI.ContainerStyleConfig_borderThickness_set(swigCPtr, this, SpacingDefinition.getCPtr(value), value);
   }
 
-  public BoundaryOptions getBorderThickness() {
+  public SpacingDefinition getBorderThickness() {
     long cPtr = AdaptiveCardObjectModelJNI.ContainerStyleConfig_borderThickness_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new BoundaryOptions(cPtr, false);
+    return (cPtr == 0) ? null : new SpacingDefinition(cPtr, false);
   }
 
-  public void setPadding(BoundaryOptions value) {
-    AdaptiveCardObjectModelJNI.ContainerStyleConfig_padding_set(swigCPtr, this, BoundaryOptions.getCPtr(value), value);
+  public void setPadding(SpacingDefinition value) {
+    AdaptiveCardObjectModelJNI.ContainerStyleConfig_padding_set(swigCPtr, this, SpacingDefinition.getCPtr(value), value);
   }
 
-  public BoundaryOptions getPadding() {
+  public SpacingDefinition getPadding() {
     long cPtr = AdaptiveCardObjectModelJNI.ContainerStyleConfig_padding_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new BoundaryOptions(cPtr, false);
+    return (cPtr == 0) ? null : new SpacingDefinition(cPtr, false);
   }
 
   public ContainerStyleConfig() {

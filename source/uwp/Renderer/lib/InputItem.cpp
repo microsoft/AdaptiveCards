@@ -93,7 +93,7 @@ void InputItem::SerializeToggleInput(
     boolean checkedValue = false;
     XamlHelpers::GetToggleValue(m_uiInputElement.Get(), &checkedValue);
 
-    ComPtr<IAdaptiveInputToggle> toggleInput;
+    ComPtr<IAdaptiveToggleInput> toggleInput;
     THROW_IF_FAILED(m_adaptiveInputElement.As(&toggleInput));
 
     HString value;
@@ -113,16 +113,16 @@ void InputItem::SerializeToggleInput(
 }
 
 void InputItem::GetChoiceValue(
-    IAdaptiveInputChoiceSet* choiceInput,
+    IAdaptiveChoiceSetInput* choiceInput,
     INT32 selectedIndex,
     std::string& choiceValue)
 {
     if (selectedIndex != -1)
     {
-        ComPtr<IVector<IAdaptiveInputChoice*>> choices;
+        ComPtr<IVector<IAdaptiveChoiceInput*>> choices;
         THROW_IF_FAILED(choiceInput->get_Choices(&choices));
 
-        ComPtr<IAdaptiveInputChoice> choice;
+        ComPtr<IAdaptiveChoiceInput> choice;
         THROW_IF_FAILED(choices->GetAt(selectedIndex, &choice));
 
         HString value;
@@ -136,7 +136,7 @@ void InputItem::SerializeChoiceSetInput(
     Json::Value& jsonValue,
     const char * idString)
 {
-    ComPtr<IAdaptiveInputChoiceSet> choiceInput;
+    ComPtr<IAdaptiveChoiceSetInput> choiceInput;
     THROW_IF_FAILED(m_adaptiveInputElement.As(&choiceInput));
 
     ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle choiceSetStyle;
@@ -232,28 +232,28 @@ void InputItem::Serialize(Json::Value & jsonValue)
 
     switch (elementType)
     {
-        case ElementType_InputText:
-        case ElementType_InputNumber:
+        case ElementType_TextInput:
+        case ElementType_NumberInput:
         {
             SerializeTextInput(jsonValue, idString.c_str());
             break;
         }
-        case ElementType_InputDate:
+        case ElementType_DateInput:
         {
             SerializeDateInput(jsonValue, idString.c_str());
             break;
         }
-        case ElementType_InputTime:
+        case ElementType_TimeInput:
         {
             SerializeTimeInput(jsonValue, idString.c_str());
             break;
         }
-        case ElementType_InputToggle:
+        case ElementType_ToggleInput:
         {
             SerializeToggleInput(jsonValue, idString.c_str());
             break;
         }
-        case ElementType_InputChoiceSet:
+        case ElementType_ChoiceSetInput:
         {
             SerializeChoiceSetInput(jsonValue, idString.c_str());
             break;
