@@ -10,6 +10,8 @@ export type HorizontalAlignment = "left" | "center" | "right";
 
 export type ActionAlignment = "left" | "center" | "right" | "stretch";
 
+export type ActionStyle = "button" | "link";
+
 export type ContainerStyle = "normal" | "emphasis";
 
 export type ImageStyle = "normal" | "person";

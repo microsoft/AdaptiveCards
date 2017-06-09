@@ -339,7 +339,7 @@ function actionExecuted(action: Adaptive.Action) {
         var httpAction = <Adaptive.HttpAction>action;
         message += "    Type: Http\n";
         message += "    Url: " + httpAction.url + "\n";
-        message += "    Methid: " + httpAction.method + "\n";
+        message += "    Method: " + httpAction.method + "\n";
         message += "    Headers:\n";
 
         for (var i = 0; i < httpAction.headers.length; i++) {
