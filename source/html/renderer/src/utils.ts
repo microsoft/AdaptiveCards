@@ -54,7 +54,7 @@ export function stringToCssColor(color: string): string {
 
     var matches = regEx.exec(color);
 
-    if (matches[4]) {
+    if (matches && matches[4]) {
         var a = parseInt(matches[1], 16) / 255;
         var r = parseInt(matches[2], 16);
         var g = parseInt(matches[3], 16);

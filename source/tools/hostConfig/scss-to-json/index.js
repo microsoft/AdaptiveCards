@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 "use strict";
+var fs = require("fs");
 var path = require("path");
 var sass = require("node-sass");
 var css2json = require('css2json');
@@ -97,17 +98,32 @@ function convert(scssFile) {
     }
     return hostConfig;
 }
-if (require.main === module) {
+function executeCommandLine() {
     var hostConfig = convert(process.argv[2]);
     var output = JSON.stringify(hostConfig, null, 2);
     //add BOM http://stackoverflow.com/questions/17879198/adding-utf-8-bom-to-string-blob
     //so that output works with unix-style redirects e.g. ">"
     var BOM = '\ufeff';
-    if (process.argv[3] === '--exec') {
-        process.stdout.write(BOM + 'AdaptiveCards.setHostConfig(' + output + ');\n');
+    if (process.argv.length > 3) {
+        if (process.argv[3] === '--exec') {
+            process.stdout.write(BOM + 'AdaptiveCards.setHostConfig(' + output + ');\n');
+            return;
+        }
+        else if (process.argv[3].indexOf('--css') === 0) {
+            var css = '#ac-hostConfig {\n content: ' + JSON.stringify(JSON.stringify(hostConfig)) + ';\n}\n';
+            if (process.argv[3] === '--css-append') {
+                fs.appendFileSync(process.argv[4], '\n' + css);
+                return;
+            }
+            else {
+                process.stdout.write(BOM + css);
+                return;
+            }
+        }
     }
-    else {
-        process.stdout.write(BOM + output);
-    }
+    process.stdout.write(BOM + output);
+}
+if (require.main === module) {
+    executeCommandLine();
 }
 module.exports = convert;
