@@ -6,22 +6,6 @@
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    class AdaptiveCardStaticsImpl WrlFinal
-        : public Microsoft::WRL::AgileActivationFactory<
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardStatics>
-    {
-        InspectableClassStatic(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveCard, TrustLevel::BaseTrust);
-
-    public:
-        IFACEMETHOD(ActivateInstance)(_COM_Outptr_ IInspectable** /*inspectable*/) noexcept override
-        {
-            return E_NOTIMPL;
-        }
-
-        // IAdaptiveCardStatics
-        IFACEMETHODIMP CreateCardFromJson(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card) noexcept;
-    };
-
     class AdaptiveCard :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
@@ -59,5 +43,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::shared_ptr<::AdaptiveCards::AdaptiveCard> m_sharedAdaptiveCard;
     };
 
-    ActivatableClass(AdaptiveCard);
+    class AdaptiveCardStaticsImpl WrlFinal
+        : public Microsoft::WRL::AgileActivationFactory<
+        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardStatics>
+    {
+        InspectableClassStatic(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveCard, TrustLevel::BaseTrust);
+
+    public:
+        IFACEMETHOD(ActivateInstance)(_COM_Outptr_ IInspectable** ppvObject) noexcept override
+        {
+            return Microsoft::WRL::Details::MakeAndInitialize<AdaptiveCard>(ppvObject);
+        }
+
+        // IAdaptiveCardStatics
+        IFACEMETHODIMP CreateCardFromJson(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card) noexcept;
+    };
+
+    ActivatableClassWithFactory(AdaptiveCard, AdaptiveCardStaticsImpl);
 }}
