@@ -35,7 +35,6 @@ using namespace AdaptiveCards;
 
 - (UIColor* ) getTextBlockColor:(std::shared_ptr<TextBlock>) txtBlock{
     u_int32_t num = 0;
-    NSScanner* scanner;
     std::string str;
     switch (txtBlock->GetTextColor()) {
         case TextColor::Dark: {	
@@ -68,11 +67,9 @@ using namespace AdaptiveCards;
         }
     }
     
-    [self retrieveIntFromHostConfigString:[[NSString alloc] initWithCString:str.c_str()
+    num = [self retrieveIntFromHostConfigString:[[NSString alloc] initWithCString:str.c_str()
                                 encoding:[NSString defaultCStringEncoding]]];
 
-    [scanner setScanLocation:1];
-    [scanner scanHexInt:&num];
     return [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255
                            green:((num & 0x0000FF00) >> 8)  / 255
                             blue:((num & 0x000000FF))       / 255
