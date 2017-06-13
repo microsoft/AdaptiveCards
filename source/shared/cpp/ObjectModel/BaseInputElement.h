@@ -20,8 +20,12 @@ public:
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
+    bool GetIsRequired() const;
+    void SetIsRequired(const bool isRequired);
+
 private:
     std::string m_id;
+    bool m_isRequired;
 };
 
 template <typename T>
@@ -32,6 +36,7 @@ std::shared_ptr<T> BaseInputElement::Deserialize(const Json::Value& json)
     ParseUtil::ThrowIfNotJsonObject(json);
 
     baseInputElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id, true));
+    baseInputElement->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
 
     return baseInputElement;
 }

@@ -20,9 +20,6 @@ public:
     bool GetIsMultiSelect() const;
     void SetIsMultiSelect(const bool isMultiSelect);
 
-    bool GetIsRequired() const;
-    void SetIsRequired(const bool isRequired);
-
     ChoiceSetStyle GetChoiceSetStyle() const;
     void SetChoiceSetStyle(const ChoiceSetStyle choiceSetStyle);
 
@@ -34,7 +31,6 @@ public:
 
 private:
     bool m_isMultiSelect;
-    bool m_isRequired;
     ChoiceSetStyle m_choiceSetStyle;
 
     std::vector<std::shared_ptr<ChoiceInput>> m_choices; 

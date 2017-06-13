@@ -49,16 +49,6 @@ void AdaptiveCards::ChoiceSetInput::SetIsMultiSelect(const bool isMultiSelect)
     m_isMultiSelect = isMultiSelect;
 }
 
-bool AdaptiveCards::ChoiceSetInput::GetIsRequired() const
-{
-    return m_isRequired;
-}
-
-void AdaptiveCards::ChoiceSetInput::SetIsRequired(const bool isRequired)
-{
-    m_isRequired = isRequired;
-}
-
 ChoiceSetStyle AdaptiveCards::ChoiceSetInput::GetChoiceSetStyle() const
 {
     return m_choiceSetStyle;
@@ -77,8 +67,7 @@ std::shared_ptr<ChoiceSetInput> ChoiceSetInput::Deserialize(const Json::Value& j
 
     choiceSet->SetChoiceSetStyle(ParseUtil::GetEnumValue<ChoiceSetStyle>(json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));
     choiceSet->SetIsMultiSelect(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiSelect, false));
-    choiceSet->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
-    
+
     // Parse Choices
     auto choicesArray = ParseUtil::GetArray(json, AdaptiveCardSchemaKey::Choices, true);
     std::vector<std::shared_ptr<ChoiceInput>> choices;

@@ -137,4 +137,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveToggleInput::get_IsRequired(boolean* isRequired)
+    {
+        *isRequired = m_sharedToggleInput->GetIsRequired();
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveToggleInput::put_IsRequired(boolean isRequired)
+    {
+        m_sharedToggleInput->SetIsRequired(isRequired);
+        return S_OK;
+    }
+
 }}
