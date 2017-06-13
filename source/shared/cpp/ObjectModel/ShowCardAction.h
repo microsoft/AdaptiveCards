@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pch.h"
-#include "AdaptiveCard.h"
+#include "SharedAdaptiveCard.h"
 #include "BaseActionElement.h"
 #include "Enums.h"
 
