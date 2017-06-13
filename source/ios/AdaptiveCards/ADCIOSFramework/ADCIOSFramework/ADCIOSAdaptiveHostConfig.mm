@@ -80,25 +80,21 @@ using namespace AdaptiveCards;
 - (CGSize) getImageSize:(std::shared_ptr<Image>) imgBlock {
     float sz = self.m_hostConfig->imageSizes.mediumSize;
     switch (imgBlock->GetImageSize()){
-        case ImageSize::Large:
-        {
+        case ImageSize::Large: {
             sz = self.m_hostConfig->imageSizes.largeSize;
             break;
         }
-        case ImageSize::Medium:
-        {
+        case ImageSize::Medium: {
             sz = self.m_hostConfig->imageSizes.mediumSize;
             break;
         }
 
-        case ImageSize::Small:
-        {
+        case ImageSize::Small: {
             sz = self.m_hostConfig->imageSizes.smallSize;
             break;
         }
 
-        default:
-        {
+        default: {
             NSLog(@"unimplemented");
         }
     }

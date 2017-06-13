@@ -34,7 +34,8 @@ ADCIOSAdaptiveHostConfig* m_hostConfig;
 }
 
 -(void) createRootCardElement {
-
+    // work in progress
+    // to-do add support for container / column set / columns 
     UIStackView* mainView = [[UIStackView alloc] init];
     mainView.axis = UILayoutConstraintAxisVertical;
     mainView.distribution = UIStackViewDistributionEqualSpacing;
@@ -53,6 +54,8 @@ ADCIOSAdaptiveHostConfig* m_hostConfig;
     
     std::vector<std::shared_ptr<BaseCardElement>> body = adc->GetBody();
     
+    // work in progress; simplified version to verify TextBlock and Image
+    // to-do add support for container / column set / columns 
     for(auto elem: body)
     {
         switch(elem->GetElementType()){
