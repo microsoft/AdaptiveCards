@@ -1490,8 +1490,19 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(b90caf09-4257-4b00-a9d0-8c3cc4f8b76e),
             version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
+            exclusiveto(AdaptiveHostConfig),
+        ]
+        interface IAdaptiveHostConfigStatics : IInspectable
+        {
+            HRESULT CreateHostConfigFromJson([in] HSTRING hostConfigJson, [out, retval] AdaptiveHostConfig** config);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+            static(IAdaptiveHostConfigStatics, NTDDI_WIN10_RS1)
         ]
         runtimeclass AdaptiveHostConfig
         {

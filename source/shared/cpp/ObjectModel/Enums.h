@@ -47,6 +47,7 @@ enum class AdaptiveCardSchemaKey
     Body,
     BorderColor,
     BorderThickness,
+    Bottom,
     ButtonSpacing,
     Card,
     Center,
@@ -126,6 +127,7 @@ enum class AdaptiveCardSchemaKey
     TimeInput,
     Title,
     ToggleInput,
+    Top,
     Type,
     Url,
     Value,
@@ -260,11 +262,11 @@ AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 const std::string CardElementTypeToString(CardElementType elementType);
 CardElementType CardElementTypeFromString(const std::string& elementType);
 
-const std::string ActionTypeToString(ActionType elementType);
-ActionType ActionTypeFromString(const std::string& elementType);
+const std::string ActionTypeToString(ActionType actionType);
+ActionType ActionTypeFromString(const std::string& actionType);
 
-const std::string HorizontalAlignmentToString(HorizontalAlignment type);
-HorizontalAlignment HorizontalAlignmentFromString(const std::string& type);
+const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
+HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);
 
 const std::string TextColorToString(TextColor type);
 TextColor TextColorFromString(const std::string& type);
@@ -272,32 +274,35 @@ TextColor TextColorFromString(const std::string& type);
 const std::string TextWeightToString(TextWeight type);
 TextWeight TextWeightFromString(const std::string& type);
 
-const std::string TextSizeToString(TextSize type);
-TextSize TextSizeFromString(const std::string& type);
+const std::string TextSizeToString(TextSize size);
+TextSize TextSizeFromString(const std::string& size);
 
-const std::string ImageSizeToString(ImageSize type);
-ImageSize ImageSizeFromString(const std::string& type);
+const std::string ImageSizeToString(ImageSize size);
+ImageSize ImageSizeFromString(const std::string& size);
 
-const std::string SeparationStyleToString(SeparationStyle type);
-SeparationStyle SeparationStyleFromString(const std::string& type);
+const std::string SeparationStyleToString(SeparationStyle style);
+SeparationStyle SeparationStyleFromString(const std::string& style);
 
 const std::string ImageStyleToString(ImageStyle style);
 ImageStyle ImageStyleFromString(const std::string& style);
 
-const std::string ActionsOrientationToString(ActionsOrientation style);
-ActionsOrientation ActionsOrientationFromString(const std::string& style);
+const std::string ActionsOrientationToString(ActionsOrientation orientation);
+ActionsOrientation ActionsOrientationFromString(const std::string& orientation);
 
-const std::string ActionModeToString(ActionMode style);
-ActionMode ActionModeFromString(const std::string& style);
+const std::string ActionModeToString(ActionMode mode);
+ActionMode ActionModeFromString(const std::string& mode);
 
-const std::string ChoiceSetStyleToString(ChoiceSetStyle type);
-ChoiceSetStyle ChoiceSetStyleFromString(const std::string& type);
+const std::string ChoiceSetStyleToString(ChoiceSetStyle style);
+ChoiceSetStyle ChoiceSetStyleFromString(const std::string& style);
 
 const std::string TextInputStyleToString(TextInputStyle style);
 TextInputStyle TextInputStyleFromString(const std::string& style);
 
 const std::string ContainerStyleToString(ContainerStyle style);
 ContainerStyle ContainerStyleFromString(const std::string& style);
+
+const std::string ActionAlignmentToString(ActionAlignment alignment);
+ActionAlignment ActionAlignmentFromString(const std::string& alignment);
 
 template <typename T>
 const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo>
