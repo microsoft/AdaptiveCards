@@ -29,6 +29,8 @@ public:
     template <typename T>
     static std::shared_ptr<T> Deserialize(const Json::Value& json);
 
+    virtual Json::Value SerializeToJsonValue();
+
 private:
     CardElementType m_type;
     SeparationStyle m_separationStyle;

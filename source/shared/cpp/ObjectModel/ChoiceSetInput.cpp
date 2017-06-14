@@ -36,7 +36,25 @@ std::vector<std::shared_ptr<ChoiceInput>>& ChoiceSetInput::GetChoices()
 
 std::string ChoiceSetInput::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value ChoiceSetInput::SerializeToJsonValue()
+{
+    Json::Value root = BaseInputElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ChoiceSetStyleToString(GetChoiceSetStyle());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect)] = GetIsMultiSelect();
+
+    std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
+    root[propertyName] = Json::Value(Json::arrayValue);
+    for (const auto& choice : GetChoices())
+    {
+        root[propertyName].append(choice->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
 bool AdaptiveCards::ChoiceSetInput::GetIsMultiSelect() const

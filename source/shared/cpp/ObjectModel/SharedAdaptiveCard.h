@@ -15,7 +15,13 @@ class AdaptiveCard
 public:
     AdaptiveCard();
     AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl);
-    AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl, std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions);
+    AdaptiveCard(
+        std::string version,
+        std::string minVersion,
+        std::string fallbackText,
+        std::string backgroundImageUrl,
+        std::vector<std::shared_ptr<BaseCardElement>>& body,
+        std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
     std::string GetVersion() const;
     void SetVersion(const std::string value);
@@ -35,6 +41,8 @@ public:
     static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string& jsonFile) throw(AdaptiveCards::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException);
+    Json::Value SerializeToJsonValue();
+    std::string Serialize();
 
 private:
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;

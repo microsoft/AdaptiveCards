@@ -155,4 +155,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         return S_OK;
     } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::ToJsonString(HSTRING* jsonString)
+    {
+        return UTF8ToHString(m_sharedAdaptiveCard->Serialize(), jsonString);
+    }
 }}

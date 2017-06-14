@@ -15,6 +15,7 @@ public:
     static std::shared_ptr<TextInput> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
     std::string GetPlaceholder() const;
     void SetPlaceholder(const std::string value);

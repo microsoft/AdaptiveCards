@@ -16,6 +16,7 @@ public:
     FactSet(SeparationStyle separation, std::string speak, std::vector<std::shared_ptr<Fact>>& facts);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
     std::vector<std::shared_ptr<Fact>>& GetFacts();
     const std::vector<std::shared_ptr<Fact>>& GetFacts() const;

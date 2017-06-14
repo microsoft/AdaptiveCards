@@ -30,7 +30,22 @@ std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns()
 
 std::string ColumnSet::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value ColumnSet::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns);
+    root[propertyName] = Json::Value(Json::arrayValue);
+    for (const auto& column : GetColumns())
+    {
+        root[propertyName].append(column->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
 std::shared_ptr<ColumnSet> ColumnSet::Deserialize(const Json::Value& value)

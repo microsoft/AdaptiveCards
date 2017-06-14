@@ -16,6 +16,7 @@ public:
     static std::shared_ptr<ShowCardAction> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
     std::shared_ptr<AdaptiveCard> GetCard() const;
     void SetCard(const std::shared_ptr<AdaptiveCard>);

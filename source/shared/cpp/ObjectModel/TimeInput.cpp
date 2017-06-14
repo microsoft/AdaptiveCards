@@ -29,7 +29,20 @@ std::shared_ptr<TimeInput> TimeInput::DeserializeFromString(const std::string& j
 
 std::string TimeInput::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value TimeInput::SerializeToJsonValue()
+{
+    Json::Value root = BaseInputElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = GetMax();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = GetMin();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = GetPlaceholder();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+
+    return root;
 }
 
 std::string TimeInput::GetMax() const

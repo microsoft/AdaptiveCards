@@ -14,6 +14,7 @@ public:
     Container(SeparationStyle separation, std::string speak, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;

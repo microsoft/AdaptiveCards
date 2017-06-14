@@ -15,6 +15,7 @@ public:
     static std::shared_ptr<ToggleInput> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
     std::string GetTitle() const;
     void SetTitle(const std::string value);

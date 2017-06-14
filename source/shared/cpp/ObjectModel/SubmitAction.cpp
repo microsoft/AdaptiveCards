@@ -33,7 +33,18 @@ std::shared_ptr<SubmitAction> SubmitAction::DeserializeFromString(const std::str
 
 std::string SubmitAction::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
 }
+
+Json::Value SubmitAction::SerializeToJsonValue()
+{
+    Json::Value root = BaseActionElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data)] = GetDataJson();
+
+    return root;
+}
+
 
 

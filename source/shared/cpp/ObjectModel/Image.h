@@ -22,6 +22,7 @@ public:
     static std::shared_ptr<Image> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
     std::string GetUrl() const;
     void SetUrl(const std::string value);

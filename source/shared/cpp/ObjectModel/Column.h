@@ -14,6 +14,7 @@ public:
     Column(SeparationStyle separation, std::string speak, std::string size, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
     static std::shared_ptr<Column> Deserialize(const Json::Value& root);
     static std::shared_ptr<Column> DeserializeFromString(const std::string& jsonString);

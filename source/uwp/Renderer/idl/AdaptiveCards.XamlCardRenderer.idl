@@ -329,6 +329,8 @@ namespace AdaptiveCards
 
             [propget] HRESULT BackgroundImageUrl([out, retval] Windows.Foundation.Uri** value);
             [propput] HRESULT BackgroundImageUrl([in] Windows.Foundation.Uri* value);
+
+            HRESULT ToJsonString([out, retval] HSTRING* value);
         };
 
         [

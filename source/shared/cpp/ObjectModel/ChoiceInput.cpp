@@ -28,7 +28,20 @@ std::shared_ptr<ChoiceInput> ChoiceInput::DeserializeFromString(const std::strin
 
 std::string ChoiceInput::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value ChoiceInput::SerializeToJsonValue()
+{
+    Json::Value root;
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSelected)] = GetIsSelected();
+
+    return root;
 }
 
 std::string ChoiceInput::GetTitle() const

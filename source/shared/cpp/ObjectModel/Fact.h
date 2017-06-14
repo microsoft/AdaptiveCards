@@ -13,6 +13,7 @@ public:
     Fact(std::string title, std::string value, std::string speak);
 
     std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
     std::string GetTitle() const;
     void SetTitle(const std::string value);

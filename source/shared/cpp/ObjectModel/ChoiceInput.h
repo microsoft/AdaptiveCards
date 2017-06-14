@@ -12,6 +12,7 @@ public:
     ChoiceInput();
 
     std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
     std::string GetTitle() const;
     void SetTitle(const std::string value);

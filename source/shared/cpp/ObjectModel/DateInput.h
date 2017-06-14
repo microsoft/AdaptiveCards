@@ -15,6 +15,7 @@ public:
     static std::shared_ptr<DateInput> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
     std::string GetMax() const;
     void SetMax(const std::string value);
