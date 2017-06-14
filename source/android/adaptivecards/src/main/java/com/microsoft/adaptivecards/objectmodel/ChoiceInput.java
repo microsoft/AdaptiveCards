@@ -43,6 +43,10 @@ public class ChoiceInput {
     return AdaptiveCardObjectModelJNI.ChoiceInput_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ChoiceInput_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public String GetTitle() {
     return AdaptiveCardObjectModelJNI.ChoiceInput_GetTitle(swigCPtr, this);
   }

@@ -59,6 +59,10 @@ public class TextBlock extends BaseCardElement {
     return AdaptiveCardObjectModelJNI.TextBlock_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.TextBlock_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public String GetText() {
     return AdaptiveCardObjectModelJNI.TextBlock_GetText(swigCPtr, this);
   }

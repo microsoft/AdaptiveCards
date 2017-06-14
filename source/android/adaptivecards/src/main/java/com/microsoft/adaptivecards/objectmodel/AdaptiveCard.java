@@ -106,4 +106,12 @@ public class AdaptiveCard {
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.AdaptiveCard_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
+  public String Serialize() {
+    return AdaptiveCardObjectModelJNI.AdaptiveCard_Serialize(swigCPtr, this);
+  }
+
 }

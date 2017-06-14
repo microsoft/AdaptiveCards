@@ -47,6 +47,10 @@ public class Fact {
     return AdaptiveCardObjectModelJNI.Fact_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.Fact_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public String GetTitle() {
     return AdaptiveCardObjectModelJNI.Fact_GetTitle(swigCPtr, this);
   }

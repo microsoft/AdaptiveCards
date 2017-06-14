@@ -45,4 +45,20 @@ public class BaseInputElement extends BaseCardElement {
     AdaptiveCardObjectModelJNI.BaseInputElement_SetId(swigCPtr, this, value);
   }
 
+  public boolean GetIsRequired() {
+    return AdaptiveCardObjectModelJNI.BaseInputElement_GetIsRequired(swigCPtr, this);
+  }
+
+  public void SetIsRequired(boolean isRequired) {
+    AdaptiveCardObjectModelJNI.BaseInputElement_SetIsRequired(swigCPtr, this, isRequired);
+  }
+
+  public String Serialize() {
+    return AdaptiveCardObjectModelJNI.BaseInputElement_Serialize(swigCPtr, this);
+  }
+
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.BaseInputElement_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
 }
