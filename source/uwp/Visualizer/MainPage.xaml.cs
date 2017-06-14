@@ -68,9 +68,8 @@ namespace XamlCardVisualizer
 
         public MainPage()
         {
-
-
             this.InitializeComponent();
+
             // Construct a temporary object model tree until the parser is available
             AdaptiveCard card = new AdaptiveCard();
             AdaptiveContainer container1 = new AdaptiveContainer();
