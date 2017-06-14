@@ -1,8 +1,7 @@
 #pragma once
 
 #include "AdaptiveCards.XamlCardRenderer.h"
-//TODO: MSFT:11054344 - remove the relative pathing once this is fixed
-#include "shared\cpp\ObjectModel\AdaptiveCard.h"
+#include "SharedAdaptiveCard.h"
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
