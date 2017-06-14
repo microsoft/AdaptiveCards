@@ -53,6 +53,10 @@ public class ImageSet extends BaseCardElement {
     return AdaptiveCardObjectModelJNI.ImageSet_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ImageSet_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public ImageSize GetImageSize() {
     return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageSet_GetImageSize(swigCPtr, this));
   }

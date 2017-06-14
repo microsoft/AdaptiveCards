@@ -53,20 +53,16 @@ public class ChoiceSetInput extends BaseInputElement {
     return AdaptiveCardObjectModelJNI.ChoiceSetInput_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ChoiceSetInput_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public boolean GetIsMultiSelect() {
     return AdaptiveCardObjectModelJNI.ChoiceSetInput_GetIsMultiSelect(swigCPtr, this);
   }
 
   public void SetIsMultiSelect(boolean isMultiSelect) {
     AdaptiveCardObjectModelJNI.ChoiceSetInput_SetIsMultiSelect(swigCPtr, this, isMultiSelect);
-  }
-
-  public boolean GetIsRequired() {
-    return AdaptiveCardObjectModelJNI.ChoiceSetInput_GetIsRequired(swigCPtr, this);
-  }
-
-  public void SetIsRequired(boolean isRequired) {
-    AdaptiveCardObjectModelJNI.ChoiceSetInput_SetIsRequired(swigCPtr, this, isRequired);
   }
 
   public ChoiceSetStyle GetChoiceSetStyle() {

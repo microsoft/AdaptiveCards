@@ -53,6 +53,10 @@ public class Container extends BaseCardElement {
     return AdaptiveCardObjectModelJNI.Container_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.Container_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
   }
