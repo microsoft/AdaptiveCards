@@ -27,9 +27,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_IsMultiSelect(_Out_ boolean* isMultiSelect);
         IFACEMETHODIMP put_IsMultiSelect(_In_ boolean isMultiSelect);
 
-        IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
-        IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
-
         IFACEMETHODIMP get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle* choiceSetStyle);
         IFACEMETHODIMP put_ChoiceSetStyle(_In_ ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle choiceSetStyle);
 
@@ -38,6 +35,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IAdaptiveInputElement
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
+
+        IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
+        IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);

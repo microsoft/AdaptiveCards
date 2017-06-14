@@ -22,3 +22,13 @@ void BaseInputElement::SetId(const std::string value)
 {
     m_id = value;
 }
+
+bool BaseInputElement::GetIsRequired() const
+{
+    return m_isRequired;
+}
+
+void BaseInputElement::SetIsRequired(const bool value)
+{
+    m_isRequired = value;
+}
