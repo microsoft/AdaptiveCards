@@ -46,7 +46,6 @@ Json::Value ChoiceSetInput::SerializeToJsonValue()
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ChoiceSetStyleToString(GetChoiceSetStyle());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect)] = GetIsMultiSelect();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsRequired)] = GetIsRequired();
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
     root[propertyName] = Json::Value(Json::arrayValue);

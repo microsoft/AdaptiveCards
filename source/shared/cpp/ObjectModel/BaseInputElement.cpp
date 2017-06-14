@@ -38,6 +38,7 @@ Json::Value BaseInputElement::SerializeToJsonValue()
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsRequired)] = GetIsRequired();
 
     return root;
 }
