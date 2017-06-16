@@ -1,12 +1,12 @@
 //
-//  ADCIOS.m
-//  ADCIOS
+//  ACRViewController.m
+//  ACRViewController
 //
 //  Created by jwoo on 5/26/17.
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ADCIOSViewController.h"
+#import "ACRViewController.h"
 #import "ADCIOSAdaptiveHostConfig.h"
 #import "AdaptiveCard.h"
 #import "TextBlock.h"
@@ -15,14 +15,14 @@
 
 using namespace AdaptiveCards;
 
-@implementation ADCIOSViewController
-std::shared_ptr<AdaptiveCard> adc;
+@implementation ACRViewController
+std::shared_ptr<AdaptiveCard> adaptiveCards;
 ADCIOSAdaptiveHostConfig* m_hostConfig;
 
 -(id) init: (NSString*) str {
     self = [super init];
     if(self) {
-        self.jsaonString = str;
+        self.jsonString = str;
         m_hostConfig = [[ADCIOSAdaptiveHostConfig alloc] init];
     }
     
@@ -45,14 +45,14 @@ ADCIOSAdaptiveHostConfig* m_hostConfig;
 
 -(void) viewDidLoad {
     [super viewDidLoad];
-    [self buildViewFromADC: self.jsaonString];
+    [self buildViewFromADC: self.jsonString];
 }
 
 -(void) buildViewFromADC:(NSString*) str{
-    adc = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
+    adaptiveCards = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
     UIStackView* mainView = (UIStackView*) self.view;
     
-    std::vector<std::shared_ptr<BaseCardElement>> body = adc->GetBody();
+    std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCards->GetBody();
     
     // work in progress; simplified version to verify TextBlock and Image
     // to-do add support for container / column set / columns 

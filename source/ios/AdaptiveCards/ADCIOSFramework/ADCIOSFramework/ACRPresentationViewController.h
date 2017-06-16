@@ -1,5 +1,5 @@
 //
-//  ADCIOSPresentationViewController.h
+//  ACRPresentationViewController.h
 //  ADCIOS
 //
 //  Created by jwoo on 5/31/17.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface ADCIOSPresentationViewController : UIViewController
+@interface ACRPresentationViewController : UIViewController
 
 @property (readonly) NSString* jsonStr;
 

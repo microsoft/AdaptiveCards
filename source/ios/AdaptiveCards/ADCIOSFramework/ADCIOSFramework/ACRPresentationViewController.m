@@ -1,5 +1,5 @@
 //
-//  ADCIOSPresentationViewController.m
+//  ACRPresentationViewController.m
 //  ADCIOS
 //
 //  Created by jwoo on 5/31/17.
@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ADCIOSPresentationViewController.h"
-#import "ADCIOSViewController.h"
+#import "ACRPresentationViewController.h"
+#import "ACRViewController.h"
 
-@implementation ADCIOSPresentationViewController
+@implementation ACRPresentationViewController
 
 - (id) init:(NSString*) str{
     self = [super init];
@@ -28,11 +28,11 @@
     [super viewDidLoad];
     
     if(self.jsonStr){
-        ADCIOSViewController* adcVc = [[ADCIOSViewController alloc] init: self.jsonStr];
+        ACRViewController* acVc = [[ACRViewController alloc] init: self.jsonStr];
         
-        [self.view addSubview: adcVc.view];
+        [self.view addSubview: acVc.view];
     
-        [NSLayoutConstraint activateConstraints:@[[adcVc.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor], [adcVc.view.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
+        [NSLayoutConstraint activateConstraints:@[[acVc.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor], [acVc.view.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
     }
     // Do any additional setup after loading the view, typically from a nib.
 }

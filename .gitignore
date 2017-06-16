@@ -269,7 +269,7 @@ product.pbxproj
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
 
-#macOS .DS_Store files
+#macOS 
 .DS_Store
 # Xcode
 *.pbxproj

@@ -16,7 +16,7 @@ using namespace AdaptiveCards;
 
 @interface ADCIOSAdaptiveHostConfig:NSObject
 
-- (CGSize) getImageSize:(std::shared_ptr<Image>) imgBlock;
+- (CGSize) getImageSize:(std::shared_ptr<Image>) img;
 
 - (UIColor* ) getTextBlockColor:(std::shared_ptr<AdaptiveCards::TextBlock>) txtBlock;
 

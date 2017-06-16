@@ -9,11 +9,9 @@
 /* Begin PBXBuildFile section */
 		F423C0BF1EE1FBAA00905679 /* ADCIOSFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F423C0B51EE1FBA900905679 /* ADCIOSFramework.framework */; };
 		F423C0C41EE1FBAA00905679 /* ADCIOSFrameworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0C31EE1FBAA00905679 /* ADCIOSFrameworkTests.m */; };
-		F423C0C61EE1FBAA00905679 /* ADCIOSFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C0B81EE1FBAA00905679 /* ADCIOSFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F423C14A1EE1FFF100905679 /* ADCIOSPresentationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C1461EE1FFF100905679 /* ADCIOSPresentationViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F423C14B1EE1FFF100905679 /* ADCIOSPresentationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C1471EE1FFF100905679 /* ADCIOSPresentationViewController.m */; };
-		F423C14C1EE1FFF100905679 /* ADCIOSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C1481EE1FFF100905679 /* ADCIOSViewController.h */; };
-		F423C14D1EE1FFF100905679 /* ADCIOSViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F423C1491EE1FFF100905679 /* ADCIOSViewController.mm */; };
+		F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C0B81EE1FBAA00905679 /* ACFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F423C14C1EE1FFF100905679 /* ACRViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C1481EE1FFF100905679 /* ACRViewController.h */; };
+		F423C14D1EE1FFF100905679 /* ACRViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F423C1491EE1FFF100905679 /* ACRViewController.mm */; };
 		F44872F31EE2261F00FCAFAE /* AdaptiveCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F44872BB1EE2261F00FCAFAE /* AdaptiveCard.cpp */; };
 		F44872F41EE2261F00FCAFAE /* AdaptiveCard.h in Headers */ = {isa = PBXBuildFile; fileRef = F44872BC1EE2261F00FCAFAE /* AdaptiveCard.h */; };
 		F44872F51EE2261F00FCAFAE /* AdaptiveCardParseException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F44872BD1EE2261F00FCAFAE /* AdaptiveCardParseException.cpp */; };
@@ -72,8 +70,8 @@
 		F448732E1EE22AF100FCAFAE /* json-forwards.h in Headers */ = {isa = PBXBuildFile; fileRef = F448732C1EE22AF100FCAFAE /* json-forwards.h */; };
 		F448732F1EE22AF100FCAFAE /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = F448732D1EE22AF100FCAFAE /* json.h */; };
 		F44873341EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = F44873331EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h */; };
-		F448733B1EE8CF9A00FCAFAE /* flowers.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = F448733A1EE8CF9A00FCAFAE /* flowers.jpeg */; };
-		F448733C1EE8CF9A00FCAFAE /* flowers.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = F448733A1EE8CF9A00FCAFAE /* flowers.jpeg */; };
+		F4C1F0591EF36456002C5A4A /* ACRPresentationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F0571EF36456002C5A4A /* ACRPresentationViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F4C1F05A1EF36456002C5A4A /* ACRPresentationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F0581EF36456002C5A4A /* ACRPresentationViewController.m */; };
 		F4CAE6A71EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4CAE6A61EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm */; };
 /* End PBXBuildFile section */
 
@@ -89,15 +87,13 @@
 
 /* Begin PBXFileReference section */
 		F423C0B51EE1FBA900905679 /* ADCIOSFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ADCIOSFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F423C0B81EE1FBAA00905679 /* ADCIOSFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADCIOSFramework.h; sourceTree = "<group>"; };
+		F423C0B81EE1FBAA00905679 /* ACFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACFramework.h; sourceTree = "<group>"; };
 		F423C0B91EE1FBAA00905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F423C0BE1EE1FBAA00905679 /* ADCIOSFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADCIOSFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0C31EE1FBAA00905679 /* ADCIOSFrameworkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCIOSFrameworkTests.m; sourceTree = "<group>"; };
 		F423C0C51EE1FBAA00905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F423C1461EE1FFF100905679 /* ADCIOSPresentationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADCIOSPresentationViewController.h; sourceTree = "<group>"; };
-		F423C1471EE1FFF100905679 /* ADCIOSPresentationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADCIOSPresentationViewController.m; sourceTree = "<group>"; };
-		F423C1481EE1FFF100905679 /* ADCIOSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADCIOSViewController.h; sourceTree = "<group>"; };
-		F423C1491EE1FFF100905679 /* ADCIOSViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSViewController.mm; sourceTree = "<group>"; };
+		F423C1481EE1FFF100905679 /* ACRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRViewController.h; sourceTree = "<group>"; };
+		F423C1491EE1FFF100905679 /* ACRViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRViewController.mm; sourceTree = "<group>"; };
 		F44872BB1EE2261F00FCAFAE /* AdaptiveCard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveCard.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveCard.cpp; sourceTree = "<group>"; };
 		F44872BC1EE2261F00FCAFAE /* AdaptiveCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveCard.h; path = ../../../../shared/cpp/ObjectModel/AdaptiveCard.h; sourceTree = "<group>"; };
 		F44872BD1EE2261F00FCAFAE /* AdaptiveCardParseException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveCardParseException.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveCardParseException.cpp; sourceTree = "<group>"; };
@@ -156,7 +152,8 @@
 		F448732C1EE22AF100FCAFAE /* json-forwards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "json-forwards.h"; path = "../../../../shared/cpp/ObjectModel/json/json-forwards.h"; sourceTree = "<group>"; };
 		F448732D1EE22AF100FCAFAE /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = json.h; path = ../../../../shared/cpp/ObjectModel/json/json.h; sourceTree = "<group>"; };
 		F44873331EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADCIOSAdaptiveHostConfig.h; sourceTree = "<group>"; };
-		F448733A1EE8CF9A00FCAFAE /* flowers.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = flowers.jpeg; path = ../../../../../../../Downloads/flowers.jpeg; sourceTree = "<group>"; };
+		F4C1F0571EF36456002C5A4A /* ACRPresentationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRPresentationViewController.h; sourceTree = "<group>"; };
+		F4C1F0581EF36456002C5A4A /* ACRPresentationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACRPresentationViewController.m; sourceTree = "<group>"; };
 		F4CAE6A61EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSAdaptiveHostConfig.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -200,16 +197,15 @@
 		F423C0B71EE1FBA900905679 /* ADCIOSFramework */ = {
 			isa = PBXGroup;
 			children = (
-				F448733A1EE8CF9A00FCAFAE /* flowers.jpeg */,
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
-				F423C1461EE1FFF100905679 /* ADCIOSPresentationViewController.h */,
-				F423C1471EE1FFF100905679 /* ADCIOSPresentationViewController.m */,
 				F4CAE6A61EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm */,
-				F423C1481EE1FFF100905679 /* ADCIOSViewController.h */,
-				F423C1491EE1FFF100905679 /* ADCIOSViewController.mm */,
-				F423C0B81EE1FBAA00905679 /* ADCIOSFramework.h */,
-				F423C0B91EE1FBAA00905679 /* Info.plist */,
 				F44873331EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h */,
+				F4C1F0571EF36456002C5A4A /* ACRPresentationViewController.h */,
+				F4C1F0581EF36456002C5A4A /* ACRPresentationViewController.m */,
+				F423C1481EE1FFF100905679 /* ACRViewController.h */,
+				F423C1491EE1FFF100905679 /* ACRViewController.mm */,
+				F423C0B81EE1FBAA00905679 /* ACFramework.h */,
+				F423C0B91EE1FBAA00905679 /* Info.plist */,
 			);
 			path = ADCIOSFramework;
 			sourceTree = "<group>";
@@ -295,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F44873001EE2261F00FCAFAE /* ChoiceSetInput.h in Headers */,
+				F4C1F0591EF36456002C5A4A /* ACRPresentationViewController.h in Headers */,
 				F44873341EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h in Headers */,
 				F448731E1EE2261F00FCAFAE /* pch.h in Headers */,
 				F44873061EE2261F00FCAFAE /* Container.h in Headers */,
@@ -309,7 +306,6 @@
 				F44872F41EE2261F00FCAFAE /* AdaptiveCard.h in Headers */,
 				F44872F81EE2261F00FCAFAE /* BaseActionElement.h in Headers */,
 				F448731D1EE2261F00FCAFAE /* ParseUtil.h in Headers */,
-				F423C14A1EE1FFF100905679 /* ADCIOSPresentationViewController.h in Headers */,
 				F448730A1EE2261F00FCAFAE /* Enums.h in Headers */,
 				F44873221EE2261F00FCAFAE /* SubmitAction.h in Headers */,
 				F448730C1EE2261F00FCAFAE /* Fact.h in Headers */,
@@ -320,9 +316,9 @@
 				F44873151EE2261F00FCAFAE /* ImageSet.h in Headers */,
 				F44873201EE2261F00FCAFAE /* ShowCardAction.h in Headers */,
 				F44873241EE2261F00FCAFAE /* TextBlock.h in Headers */,
-				F423C14C1EE1FFF100905679 /* ADCIOSViewController.h in Headers */,
+				F423C14C1EE1FFF100905679 /* ACRViewController.h in Headers */,
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
-				F423C0C61EE1FBAA00905679 /* ADCIOSFramework.h in Headers */,
+				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
 				F44873041EE2261F00FCAFAE /* ColumnSet.h in Headers */,
 				F44873191EE2261F00FCAFAE /* NumberInput.h in Headers */,
 				F448732F1EE22AF100FCAFAE /* json.h in Headers */,
@@ -412,7 +408,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F448733B1EE8CF9A00FCAFAE /* flowers.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,7 +415,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F448733C1EE8CF9A00FCAFAE /* flowers.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +434,7 @@
 				F4CAE6A71EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm in Sources */,
 				F44873091EE2261F00FCAFAE /* Enums.cpp in Sources */,
 				F44873101EE2261F00FCAFAE /* HttpAction.cpp in Sources */,
+				F4C1F05A1EF36456002C5A4A /* ACRPresentationViewController.m in Sources */,
 				F44873171EE2261F00FCAFAE /* jsoncpp.cpp in Sources */,
 				F44873071EE2261F00FCAFAE /* DateInput.cpp in Sources */,
 				F44872F31EE2261F00FCAFAE /* AdaptiveCard.cpp in Sources */,
@@ -449,7 +444,7 @@
 				F44872FD1EE2261F00FCAFAE /* ChoiceInput.cpp in Sources */,
 				F44872F51EE2261F00FCAFAE /* AdaptiveCardParseException.cpp in Sources */,
 				F448730B1EE2261F00FCAFAE /* Fact.cpp in Sources */,
-				F423C14D1EE1FFF100905679 /* ADCIOSViewController.mm in Sources */,
+				F423C14D1EE1FFF100905679 /* ACRViewController.mm in Sources */,
 				F44873271EE2261F00FCAFAE /* TimeInput.cpp in Sources */,
 				F44873211EE2261F00FCAFAE /* SubmitAction.cpp in Sources */,
 				F44872FF1EE2261F00FCAFAE /* ChoiceSetInput.cpp in Sources */,
@@ -458,7 +453,6 @@
 				F44873121EE2261F00FCAFAE /* Image.cpp in Sources */,
 				F448731F1EE2261F00FCAFAE /* ShowCardAction.cpp in Sources */,
 				F448731A1EE2261F00FCAFAE /* OpenUrlAction.cpp in Sources */,
-				F423C14B1EE1FFF100905679 /* ADCIOSPresentationViewController.m in Sources */,
 				F44873231EE2261F00FCAFAE /* TextBlock.cpp in Sources */,
 				F44872F91EE2261F00FCAFAE /* BaseCardElement.cpp in Sources */,
 			);
@@ -489,7 +483,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -541,7 +535,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;

@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import <ADCIOSFramework/ADCIOSFramework.h>
+#import <ADCIOSFramework/ACFramework.h>
 
 @interface ViewController ()
 
@@ -131,11 +131,7 @@
     self.JSLab.lineBreakMode = NSLineBreakByTruncatingTail;
     self.JSLab.text = self.inputs[self.idx];
    
-    ADCIOSPresentationViewController* adcVc = [[ADCIOSPresentationViewController alloc] init: self.inputs[self.idx]];
-    
-    //view.translatesAutoresizingMaskIntoConstraints = false;
-   
-    
+    ACRPresentationViewController* adcVc = [[ACRPresentationViewController alloc] init: self.inputs[self.idx]];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventTouchUpInside];
@@ -146,8 +142,6 @@
     [self.StkView addArrangedSubview:self.JSLab];
     [self.StkView addArrangedSubview:adcVc.view];
     self.curView = adcVc.view;
-    
-    // Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void) changeView: (id) sender {
@@ -158,7 +152,7 @@
     [self.StkView removeArrangedSubview:self.curView];
     [self.curView removeFromSuperview];
 
-    ADCIOSPresentationViewController* adcVc = [[ADCIOSPresentationViewController alloc] init: self.inputs[self.idx]];
+    ACRPresentationViewController* adcVc = [[ACRPresentationViewController alloc] init: self.inputs[self.idx]];
     self.curView = adcVc.view;
     [self.StkView addArrangedSubview: self.curView];
     
@@ -166,7 +160,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
