@@ -14,7 +14,7 @@
 
 using namespace AdaptiveCards;
 
-@interface ADCIOSAdaptiveHostConfig:NSObject
+@interface ACRHostConfig:NSObject
 
 - (CGSize) getImageSize:(std::shared_ptr<Image>) img;
 

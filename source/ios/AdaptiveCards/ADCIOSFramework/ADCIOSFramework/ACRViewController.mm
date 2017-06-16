@@ -7,7 +7,7 @@
 //
 
 #import "ACRViewController.h"
-#import "ADCIOSAdaptiveHostConfig.h"
+#import "ACRHostConfig.h"
 #import "AdaptiveCard.h"
 #import "TextBlock.h"
 #import "Image.h"
@@ -17,13 +17,13 @@ using namespace AdaptiveCards;
 
 @implementation ACRViewController
 std::shared_ptr<AdaptiveCard> adaptiveCards;
-ADCIOSAdaptiveHostConfig* m_hostConfig;
+ACRHostConfig* m_hostConfig;
 
 -(id) init: (NSString*) str {
     self = [super init];
     if(self) {
         self.jsonString = str;
-        m_hostConfig = [[ADCIOSAdaptiveHostConfig alloc] init];
+        m_hostConfig = [[ACRHostConfig alloc] init];
     }
     
     return self;

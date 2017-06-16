@@ -69,10 +69,10 @@
 		F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */ = {isa = PBXBuildFile; fileRef = F44872F21EE2261F00FCAFAE /* ToggleInput.h */; };
 		F448732E1EE22AF100FCAFAE /* json-forwards.h in Headers */ = {isa = PBXBuildFile; fileRef = F448732C1EE22AF100FCAFAE /* json-forwards.h */; };
 		F448732F1EE22AF100FCAFAE /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = F448732D1EE22AF100FCAFAE /* json.h */; };
-		F44873341EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = F44873331EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h */; };
+		F44873341EE89CF700FCAFAE /* ACRHostConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = F44873331EE89CF700FCAFAE /* ACRHostConfig.h */; };
 		F4C1F0591EF36456002C5A4A /* ACRPresentationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F0571EF36456002C5A4A /* ACRPresentationViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4C1F05A1EF36456002C5A4A /* ACRPresentationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F0581EF36456002C5A4A /* ACRPresentationViewController.m */; };
-		F4CAE6A71EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4CAE6A61EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm */; };
+		F4CAE6A71EEB7798001669AB /* ACRHostConfig.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4CAE6A61EEB7798001669AB /* ACRHostConfig.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -151,10 +151,10 @@
 		F44872F21EE2261F00FCAFAE /* ToggleInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToggleInput.h; path = ../../../../shared/cpp/ObjectModel/ToggleInput.h; sourceTree = "<group>"; };
 		F448732C1EE22AF100FCAFAE /* json-forwards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "json-forwards.h"; path = "../../../../shared/cpp/ObjectModel/json/json-forwards.h"; sourceTree = "<group>"; };
 		F448732D1EE22AF100FCAFAE /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = json.h; path = ../../../../shared/cpp/ObjectModel/json/json.h; sourceTree = "<group>"; };
-		F44873331EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADCIOSAdaptiveHostConfig.h; sourceTree = "<group>"; };
+		F44873331EE89CF700FCAFAE /* ACRHostConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRHostConfig.h; sourceTree = "<group>"; };
 		F4C1F0571EF36456002C5A4A /* ACRPresentationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRPresentationViewController.h; sourceTree = "<group>"; };
 		F4C1F0581EF36456002C5A4A /* ACRPresentationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACRPresentationViewController.m; sourceTree = "<group>"; };
-		F4CAE6A61EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSAdaptiveHostConfig.mm; sourceTree = "<group>"; };
+		F4CAE6A61EEB7798001669AB /* ACRHostConfig.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRHostConfig.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,8 +198,8 @@
 			isa = PBXGroup;
 			children = (
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
-				F4CAE6A61EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm */,
-				F44873331EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h */,
+				F4CAE6A61EEB7798001669AB /* ACRHostConfig.mm */,
+				F44873331EE89CF700FCAFAE /* ACRHostConfig.h */,
 				F4C1F0571EF36456002C5A4A /* ACRPresentationViewController.h */,
 				F4C1F0581EF36456002C5A4A /* ACRPresentationViewController.m */,
 				F423C1481EE1FFF100905679 /* ACRViewController.h */,
@@ -292,7 +292,7 @@
 			files = (
 				F44873001EE2261F00FCAFAE /* ChoiceSetInput.h in Headers */,
 				F4C1F0591EF36456002C5A4A /* ACRPresentationViewController.h in Headers */,
-				F44873341EE89CF700FCAFAE /* ADCIOSAdaptiveHostConfig.h in Headers */,
+				F44873341EE89CF700FCAFAE /* ACRHostConfig.h in Headers */,
 				F448731E1EE2261F00FCAFAE /* pch.h in Headers */,
 				F44873061EE2261F00FCAFAE /* Container.h in Headers */,
 				F44872FA1EE2261F00FCAFAE /* BaseCardElement.h in Headers */,
@@ -431,7 +431,7 @@
 				F44872F71EE2261F00FCAFAE /* BaseActionElement.cpp in Sources */,
 				F44872FB1EE2261F00FCAFAE /* BaseInputElement.cpp in Sources */,
 				F44873251EE2261F00FCAFAE /* TextInput.cpp in Sources */,
-				F4CAE6A71EEB7798001669AB /* ADCIOSAdaptiveHostConfig.mm in Sources */,
+				F4CAE6A71EEB7798001669AB /* ACRHostConfig.mm in Sources */,
 				F44873091EE2261F00FCAFAE /* Enums.cpp in Sources */,
 				F44873101EE2261F00FCAFAE /* HttpAction.cpp in Sources */,
 				F4C1F05A1EF36456002C5A4A /* ACRPresentationViewController.m in Sources */,

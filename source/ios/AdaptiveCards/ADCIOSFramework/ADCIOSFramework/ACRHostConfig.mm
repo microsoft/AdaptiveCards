@@ -1,17 +1,16 @@
 //
-//  ADCIOSAdaptiveHostConfig.m
-//  ADCIOSFramework
+//  ACRHostConfig.mm
+//  ACRHostConfig.h
 //
 //  Created by jwoo on 6/7/17.
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-//#include "HostConfig.h"
-#import "ADCIOSAdaptiveHostConfig.h"
+#import "ACRHostConfig.h"
 
 using namespace AdaptiveCards;
 
-@implementation ADCIOSAdaptiveHostConfig
+@implementation ACRHostConfig
 
 - (id) init {
     self = [super init];
