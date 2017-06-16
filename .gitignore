@@ -270,7 +270,7 @@ product.pbxproj
 **/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
 
 #macOS 
-.DS_Store
+**/.DS_Store
 # Xcode
 *.pbxproj
 *.xcuserstate

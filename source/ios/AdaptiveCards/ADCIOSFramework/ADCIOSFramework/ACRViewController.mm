@@ -16,14 +16,14 @@
 using namespace AdaptiveCards;
 
 @implementation ACRViewController
-std::shared_ptr<AdaptiveCard> adaptiveCards;
-ACRHostConfig* m_hostConfig;
+std::shared_ptr<AdaptiveCard> adaptiveCard;
+ACRHostConfig* hostConfig;
 
 -(id) init: (NSString*) str {
     self = [super init];
     if(self) {
         self.jsonString = str;
-        m_hostConfig = [[ACRHostConfig alloc] init];
+        hostConfig = [[ACRHostConfig alloc] init];
     }
     
     return self;
@@ -49,10 +49,10 @@ ACRHostConfig* m_hostConfig;
 }
 
 -(void) buildViewFromADC:(NSString*) str{
-    adaptiveCards = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
+    adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
     UIStackView* mainView = (UIStackView*) self.view;
     
-    std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCards->GetBody();
+    std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     
     // work in progress; simplified version to verify TextBlock and Image
     // to-do add support for container / column set / columns 
@@ -68,7 +68,7 @@ ACRHostConfig* m_hostConfig;
             case CardElementType::Image:
             {
                 std::shared_ptr<Image> iblock = std::dynamic_pointer_cast<Image>(elem);
-                [mainView addArrangedSubview:[self buildImageBlock:iblock]];
+                [mainView addArrangedSubview:[self buildImage:iblock]];
                 break;
             }
             default:;
@@ -76,7 +76,7 @@ ACRHostConfig* m_hostConfig;
     }
 }
 
--(UIImageView* ) buildImageBlock:(std::shared_ptr<Image>) blck{
+-(UIImageView* ) buildImage:(std::shared_ptr<Image>) blck{
    
     NSURL *url = [NSURL URLWithString:
                   [NSString stringWithCString: blck->GetUrl().c_str()
@@ -84,7 +84,7 @@ ACRHostConfig* m_hostConfig;
     
     UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
-    CGSize cgsize = [m_hostConfig getImageSize: blck];
+    CGSize cgsize = [hostConfig getImageSize: blck];
 
     UIGraphicsBeginImageContext(cgsize);
     UIImageView* view = [[UIImageView alloc]
@@ -110,16 +110,16 @@ ACRHostConfig* m_hostConfig;
     
     NSMutableAttributedString* content =
     [[NSMutableAttributedString alloc] initWithString:textBlockStr
-                                           attributes:@{NSForegroundColorAttributeName: [m_hostConfig getTextBlockColor:blck],
-                                                        NSStrokeWidthAttributeName: [m_hostConfig getTextBlockTextWeight:blck]}];
+                                           attributes:@{NSForegroundColorAttributeName: [hostConfig getTextBlockColor:blck],
+                                                        NSStrokeWidthAttributeName: [hostConfig getTextBlockTextWeight:blck]}];
     NSMutableParagraphStyle* para = [[NSMutableParagraphStyle alloc] init];
     para.lineBreakMode = blck->GetWrap() ? NSLineBreakByWordWrapping: NSLineBreakByTruncatingTail;
-    para.alignment = [m_hostConfig getTextBlockAlignment:blck];
+    para.alignment = [hostConfig getTextBlockAlignment:blck];
     [content addAttributes:@{NSParagraphStyleAttributeName:para} range: NSMakeRange(0,1)];
     lab.attributedText = content;
     lab.numberOfLines = int(blck->GetMaxLines());
     UIFontDescriptor* dec = lab.font.fontDescriptor;
-    lab.font = [UIFont fontWithDescriptor:dec size:[m_hostConfig getTextBlockTexSize:blck]];
+    lab.font = [UIFont fontWithDescriptor:dec size:[hostConfig getTextBlockTexSize:blck]];
     
     return lab;
 }
