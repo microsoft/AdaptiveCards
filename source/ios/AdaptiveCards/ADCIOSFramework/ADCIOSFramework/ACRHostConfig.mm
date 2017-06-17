@@ -32,7 +32,7 @@ using namespace AdaptiveCards;
 }
 
 - (UIColor* ) getTextBlockColor:(std::shared_ptr<TextBlock> const &) txtBlock{
-    u_int32_t num = 0;
+    long num = 0;
     std::string str;
     switch (txtBlock->GetTextColor()) {
         case TextColor::Dark: {	

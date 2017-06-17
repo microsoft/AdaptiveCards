@@ -30,20 +30,6 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (void) loadView {
-    [self createRootCardElement];
-}
-
--(void) createRootCardElement {
-    // work in progress
-    // to-do add support for container / column set / columns 
-    UIStackView* mainView = [[UIStackView alloc] init];
-    mainView.axis = UILayoutConstraintAxisVertical;
-    mainView.distribution = UIStackViewDistributionEqualSpacing;
-    mainView.translatesAutoresizingMaskIntoConstraints = false;
-    self.view = mainView;
-}
-
 -(void) viewDidLoad {
     [super viewDidLoad];
     [self buildViewFromADC: self.jsonString];
@@ -51,7 +37,11 @@ using namespace AdaptiveCards;
 
 -(void) buildViewFromADC:(NSString*) str{
     adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
-    UIStackView* mainView = (UIStackView*) self.view;
+
+    UIStackView* mainView = [[UIStackView alloc] init];
+    mainView.axis = UILayoutConstraintAxisVertical;
+    mainView.distribution = UIStackViewDistributionEqualSpacing;
+    mainView.translatesAutoresizingMaskIntoConstraints = false;
     
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     
@@ -75,6 +65,11 @@ using namespace AdaptiveCards;
             default:;
         }
     }
+
+    [self.view addSubview: mainView];
+
+    [NSLayoutConstraint activateConstraints:@[[mainView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor], 
+                                              [mainView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
 }
 
 -(UIImageView* ) buildImage:(std::shared_ptr<Image>) blck{

@@ -13,5 +13,5 @@ FOUNDATION_EXPORT double ADCIOSFrameworkVersionNumber;
 //! Project version string for AFramework.
 FOUNDATION_EXPORT const unsigned char ADCIOSFrameworkVersionString[];
 
-#import <ADCIOSFramework/ACRPresentationViewController.h>
+#import <ADCIOSFramework/ACRViewController.h>
 

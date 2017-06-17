@@ -131,7 +131,7 @@
     self.JSLab.lineBreakMode = NSLineBreakByTruncatingTail;
     self.JSLab.text = self.inputs[self.idx];
    
-    ACRPresentationViewController* adcVc = [[ACRPresentationViewController alloc] init: self.inputs[self.idx]];
+    ACRViewController* adcVc = [[ACRViewController alloc] init: self.inputs[self.idx]];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventTouchUpInside];
@@ -152,7 +152,7 @@
     [self.StkView removeArrangedSubview:self.curView];
     [self.curView removeFromSuperview];
 
-    ACRPresentationViewController* adcVc = [[ACRPresentationViewController alloc] init: self.inputs[self.idx]];
+    ACRViewController* adcVc = [[ACRViewController alloc] init: self.inputs[self.idx]];
     self.curView = adcVc.view;
     [self.StkView addArrangedSubview: self.curView];
     
