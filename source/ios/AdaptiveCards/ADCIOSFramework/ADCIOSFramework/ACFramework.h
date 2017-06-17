@@ -2,7 +2,6 @@
 //  ACFramework.h
 //  ACFramework
 //
-//  Created by jwoo on 6/2/17.
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 

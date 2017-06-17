@@ -2,7 +2,6 @@
 //  ACRViewController.m
 //  ACRViewController
 //
-//  Created by jwoo on 5/26/17.
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 

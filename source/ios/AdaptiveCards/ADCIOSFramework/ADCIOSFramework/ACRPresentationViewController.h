@@ -1,8 +1,7 @@
 //
 //  ACRPresentationViewController.h
-//  ADCIOS
+//  ACRPresentationViewController
 //
-//  Created by jwoo on 5/31/17.
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
