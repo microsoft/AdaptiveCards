@@ -20,11 +20,20 @@ using namespace AdaptiveCards;
     ACRHostConfig* hostConfig;
 }
 
--(id) init: (NSString*) str {
-    self = [super init];
+-(instancetype) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        self.jsonString = nil;
+        hostConfig = [[ACRHostConfig alloc] init];
+    }
+    return self;
+}
+
+-(instancetype) init: (NSString*) str {
+    self = [self initWithNibName:nil bundle:nil];
     if(self) {
         self.jsonString = str;
-        hostConfig = [[ACRHostConfig alloc] init];
     }
     
     return self;
