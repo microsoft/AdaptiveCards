@@ -32,7 +32,7 @@ using namespace AdaptiveCards;
     return num;
 }
 
-- (UIColor* ) getTextBlockColor:(std::shared_ptr<TextBlock>) txtBlock{
+- (UIColor* ) getTextBlockColor:(std::shared_ptr<TextBlock> const &) txtBlock{
     u_int32_t num = 0;
     std::string str;
     switch (txtBlock->GetTextColor()) {
@@ -66,17 +66,16 @@ using namespace AdaptiveCards;
         }
     }
     
-    num = [self retrieveIntFromHostConfigString:[[NSString alloc] initWithCString:str.c_str()
-                                encoding:[NSString defaultCStringEncoding]]];
+    num = std::stoul(str.substr(1), nullptr, 16);
 
-    return [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255
-                           green:((num & 0x0000FF00) >> 8)  / 255
-                            blue:((num & 0x000000FF))       / 255
-                           alpha:((num & 0xFF000000) >> 24) / 255];
+    return [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
+                           green:((num & 0x0000FF00) >> 8)  / 255.0
+                            blue:((num & 0x000000FF))       / 255.0
+                           alpha:((num & 0xFF000000) >> 24) / 255.0];
 
 }
 
-- (CGSize) getImageSize:(std::shared_ptr<Image>) imgBlock {
+- (CGSize) getImageSize:(std::shared_ptr<Image> const &) imgBlock {
     float sz = self.m_hostConfig->imageSizes.mediumSize;
     switch (imgBlock->GetImageSize()){
         case ImageSize::Large: {
@@ -101,7 +100,7 @@ using namespace AdaptiveCards;
     return cgSize;
 }
 
-- (int) getTextBlockTexSize:(std::shared_ptr<TextBlock>)txtBlock {
+- (int) getTextBlockTextSize:(std::shared_ptr<TextBlock> const &) txtBlock {
     switch (txtBlock->GetTextSize()){
         case TextSize::Small:
             return self.m_hostConfig->fontSizes.smallFontSize;
@@ -118,7 +117,7 @@ using namespace AdaptiveCards;
     }
 }
     
--(NSTextAlignment) getTextBlockAlignment:(std::shared_ptr<TextBlock>) txtBlock {
+-(NSTextAlignment) getTextBlockAlignment:(std::shared_ptr<TextBlock> const &) txtBlock {
     switch (txtBlock->GetHorizontalAlignment()){
         case HorizontalAlignment::Center:
             return NSTextAlignmentCenter;
@@ -131,14 +130,14 @@ using namespace AdaptiveCards;
     }
 }
      
--(NSNumber* ) getTextBlockTextWeight:(std::shared_ptr<TextBlock>) txtBlock{
+-(NSNumber* ) getTextBlockTextWeight:(std::shared_ptr<TextBlock> const &) txtBlock{
     switch (txtBlock->GetTextWeight()) { 
         case TextWeight::Normal:
-            return [[NSNumber alloc] initWithInt:0];
+            return @0;
         case TextWeight::Lighter:
-            return [[NSNumber alloc] initWithInt:1];
+            return @1;
         case TextWeight::Bolder:
-            return [[NSNumber alloc] initWithInt:-2];
+            return @-2;
     }
 }
 @end

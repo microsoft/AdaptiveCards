@@ -2,7 +2,6 @@
 //  ACRViewController.h
 //  ACRViewController
 //
-//  Created by jwoo on 5/26/17.
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
@@ -12,6 +11,6 @@
 @interface ACRViewController : UIViewController
 
 @property NSString* jsonString;
--(id) init: (NSString*) str;
+-(instancetype) init: (NSString*) str;
 
 @end

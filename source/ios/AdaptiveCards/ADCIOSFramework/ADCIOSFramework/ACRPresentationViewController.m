@@ -12,7 +12,7 @@
 
 @implementation ACRPresentationViewController
 
-- (id) init:(NSString*) str{
+- (instancetype) init:(NSString*) str{
     self = [super init];
     
     if(self){
@@ -29,16 +29,15 @@
     
     if(self.jsonStr){
         ACRViewController* acVc = [[ACRViewController alloc] init: self.jsonStr];
+
+        [self addChildViewController:acVc];
         
         [self.view addSubview: acVc.view];
+
+        [acVc didMoveToParentViewController:self];
     
         [NSLayoutConstraint activateConstraints:@[[acVc.view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor], [acVc.view.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
     }
-    // Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 @end

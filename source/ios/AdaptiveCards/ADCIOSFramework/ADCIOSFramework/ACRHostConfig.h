@@ -16,15 +16,15 @@ using namespace AdaptiveCards;
 
 @interface ACRHostConfig:NSObject
 
-- (CGSize) getImageSize:(std::shared_ptr<Image>) img;
+- (CGSize) getImageSize:(std::shared_ptr<Image> const &) img;
 
-- (UIColor* ) getTextBlockColor:(std::shared_ptr<AdaptiveCards::TextBlock>) txtBlock;
+- (UIColor* ) getTextBlockColor:(std::shared_ptr<AdaptiveCards::TextBlock> const &) txtBlock;
 
-- (int) getTextBlockTexSize:(std::shared_ptr<TextBlock>)txtBlock;
+- (int) getTextBlockTextSize:(std::shared_ptr<TextBlock> const &)txtBlock;
 
-- (NSTextAlignment) getTextBlockAlignment:(std::shared_ptr<TextBlock>) txtBlock;
+- (NSTextAlignment) getTextBlockAlignment:(std::shared_ptr<TextBlock> const &) txtBlock;
 
-- (NSNumber* ) getTextBlockTextWeight:(std::shared_ptr<TextBlock>) txtBlock;
+- (NSNumber* ) getTextBlockTextWeight:(std::shared_ptr<TextBlock> const &) txtBlock;
 
 @property std::shared_ptr<HostConfig> m_hostConfig;
 

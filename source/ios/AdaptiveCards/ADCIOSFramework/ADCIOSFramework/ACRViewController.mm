@@ -16,8 +16,10 @@
 using namespace AdaptiveCards;
 
 @implementation ACRViewController
-std::shared_ptr<AdaptiveCard> adaptiveCard;
-ACRHostConfig* hostConfig;
+{
+    std::shared_ptr<AdaptiveCard> adaptiveCard;
+    ACRHostConfig* hostConfig;
+}
 
 -(id) init: (NSString*) str {
     self = [super init];
@@ -119,9 +121,8 @@ ACRHostConfig* hostConfig;
     lab.attributedText = content;
     lab.numberOfLines = int(blck->GetMaxLines());
     UIFontDescriptor* dec = lab.font.fontDescriptor;
-    lab.font = [UIFont fontWithDescriptor:dec size:[hostConfig getTextBlockTexSize:blck]];
+    lab.font = [UIFont fontWithDescriptor:dec size:[hostConfig getTextBlockTextSize:blck]];
     
     return lab;
-}
-                                          
+}                                          
 @end
