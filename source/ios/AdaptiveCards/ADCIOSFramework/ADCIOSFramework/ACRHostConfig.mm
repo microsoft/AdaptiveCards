@@ -22,15 +22,6 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (u_int32_t) retrieveIntFromHostConfigString: (NSString *) str{
-    u_int32_t num = 0;
-    NSScanner* scanner;
-    scanner = [NSScanner scannerWithString: str];
-    [scanner setScanLocation:1];
-    [scanner scanHexInt:&num];
-    return num;
-}
-
 - (UIColor* ) getTextBlockColor:(std::shared_ptr<TextBlock> const &) txtBlock{
     long num = 0;
     std::string str;
