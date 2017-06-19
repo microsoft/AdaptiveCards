@@ -1,5 +1,6 @@
 .npmignore
 .npmrc
+scss/
 src/
 tsconfig.json
 tslint.json
