@@ -10,6 +10,8 @@
 #import "AdaptiveCard.h"
 #import "TextBlock.h"
 #import "Image.h"
+#import "ACRImageRenderer.h"
+#import "ACRTextBlockRenderer.h"
 #import <AVFoundation/AVFoundation.h>
 
 using namespace AdaptiveCards;
@@ -17,7 +19,7 @@ using namespace AdaptiveCards;
 @implementation ACRViewController
 {
     std::shared_ptr<AdaptiveCard> adaptiveCard;
-    ACRHostConfig* hostConfig;
+    std::shared_ptr<HostConfig> config;
 }
 
 -(instancetype) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -25,7 +27,7 @@ using namespace AdaptiveCards;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
         self.jsonString = nil;
-        hostConfig = [[ACRHostConfig alloc] init];
+        config = std::make_shared<HostConfig>();
     }
     return self;
 }
@@ -61,14 +63,14 @@ using namespace AdaptiveCards;
         switch(elem->GetElementType()){
             case CardElementType::TextBlock:
             {
-                std::shared_ptr<TextBlock> tblock = std::dynamic_pointer_cast<TextBlock>(elem);
-                [mainView addArrangedSubview:[self buildTextBlock:tblock]];
+                ACRTextBlockRenderer* textRenderer = [ACRTextBlockRenderer getInstance];
+                [mainView addArrangedSubview:[textRenderer render:nil withCardElem:elem andHostCofig:config]];
                 break;
             }
             case CardElementType::Image:
             {
-                std::shared_ptr<Image> iblock = std::dynamic_pointer_cast<Image>(elem);
-                [mainView addArrangedSubview:[self buildImage:iblock]];
+                ACRImageRenderer* imageRenderer = [ACRImageRenderer getInstance];
+                [mainView addArrangedSubview:[imageRenderer render:nil withCardElem:elem andHostCofig:config]];
                 break;
             }
             default:;
@@ -81,51 +83,4 @@ using namespace AdaptiveCards;
                                               [mainView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
 }
 
--(UIImageView* ) buildImage:(std::shared_ptr<Image>) blck{
-   
-    NSURL *url = [NSURL URLWithString:
-                  [NSString stringWithCString: blck->GetUrl().c_str()
-                                     encoding:[NSString defaultCStringEncoding]]];
-    
-    UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-    
-    CGSize cgsize = [hostConfig getImageSize: blck];
-
-    UIGraphicsBeginImageContext(cgsize);
-    UIImageView* view = [[UIImageView alloc]
-                         initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
-    [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
-    img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    view.image = img;
-
-    if(blck->GetImageStyle() == ImageStyle::Person) {
-        CALayer* imgLayer = view.layer;
-        [imgLayer setCornerRadius:cgsize.width/2];
-        [imgLayer setMasksToBounds:YES];
-    }
-    return view;
-}
-
--(UILabel*) buildTextBlock:(std::shared_ptr<TextBlock>) blck{
-    
-    UILabel* lab = [[UILabel alloc] init];
-    NSString* textBlockStr = [NSString stringWithCString:blck->GetText().c_str()
-                                                encoding:[NSString defaultCStringEncoding]];
-    
-    NSMutableAttributedString* content =
-    [[NSMutableAttributedString alloc] initWithString:textBlockStr
-                                           attributes:@{NSForegroundColorAttributeName: [hostConfig getTextBlockColor:blck],
-                                                        NSStrokeWidthAttributeName: [hostConfig getTextBlockTextWeight:blck]}];
-    NSMutableParagraphStyle* para = [[NSMutableParagraphStyle alloc] init];
-    para.lineBreakMode = blck->GetWrap() ? NSLineBreakByWordWrapping: NSLineBreakByTruncatingTail;
-    para.alignment = [hostConfig getTextBlockAlignment:blck];
-    [content addAttributes:@{NSParagraphStyleAttributeName:para} range: NSMakeRange(0,1)];
-    lab.attributedText = content;
-    lab.numberOfLines = int(blck->GetMaxLines());
-    UIFontDescriptor* dec = lab.font.fontDescriptor;
-    lab.font = [UIFont fontWithDescriptor:dec size:[hostConfig getTextBlockTextSize:blck]];
-    
-    return lab;
-}                                          
 @end
