@@ -51,9 +51,9 @@
     return cgSize;
 }
 
-- (UIView* ) render: (UIView*) viewGroup
+- (UIView* ) render: (UIStackView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-       andHostCofig: (std::shared_ptr<HostConfig> const &) config
+      andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
 
@@ -78,6 +78,9 @@
         [imgLayer setCornerRadius:cgsize.width/2];
         [imgLayer setMasksToBounds:YES];
     }
+
+    [viewGroup addArrangedSubview: view];
+    
     return view;
 }
 

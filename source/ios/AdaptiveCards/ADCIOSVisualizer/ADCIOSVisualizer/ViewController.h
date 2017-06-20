@@ -11,7 +11,7 @@
 @interface ViewController : UIViewController
 @property (strong, nonatomic) UILabel *JSLab;
 @property (readonly) NSArray* inputs;
-@property int idx;
+@property NSUInteger idx;
 @property UIView* curView;
 @property (weak, nonatomic) IBOutlet UIStackView *StkView;
 

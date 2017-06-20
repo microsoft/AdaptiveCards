@@ -8,10 +8,7 @@
 #import "ACRViewController.h"
 #import "ACRHostConfig.h"
 #import "AdaptiveCard.h"
-#import "TextBlock.h"
-#import "Image.h"
-#import "ACRImageRenderer.h"
-#import "ACRTextBlockRenderer.h"
+#import "ACRRegistration.h"
 #import <AVFoundation/AVFoundation.h>
 
 using namespace AdaptiveCards;
@@ -46,41 +43,23 @@ using namespace AdaptiveCards;
     [self buildViewFromADC: self.jsonString];
 }
 
--(void) buildViewFromADC:(NSString*) str{
+-(void) buildViewFromADC:(NSString*) str
+{
     adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
 
-    UIStackView* mainView = [[UIStackView alloc] init];
-    mainView.axis = UILayoutConstraintAxisVertical;
-    mainView.distribution = UIStackViewDistributionEqualSpacing;
-    mainView.translatesAutoresizingMaskIntoConstraints = false;
-    
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     
-    // work in progress; simplified version to verify TextBlock and Image
-    // to-do add support for container / column set / columns 
-    for(auto elem: body)
-    {
-        switch(elem->GetElementType()){
-            case CardElementType::TextBlock:
-            {
-                ACRTextBlockRenderer* textRenderer = [ACRTextBlockRenderer getInstance];
-                [mainView addArrangedSubview:[textRenderer render:nil withCardElem:elem andHostCofig:config]];
-                break;
-            }
-            case CardElementType::Image:
-            {
-                ACRImageRenderer* imageRenderer = [ACRImageRenderer getInstance];
-                [mainView addArrangedSubview:[imageRenderer render:nil withCardElem:elem andHostCofig:config]];
-                break;
-            }
-            default:;
-        }
+    UIView* childView = nil;
+    
+    if(!body.empty())
+    { 
+        ACRRegistration* reg = [ACRRegistration getInstance];
+        childView = [reg render:self.view withCardElems:body andHostConfig:config];
+
+        [NSLayoutConstraint activateConstraints:
+         @[[childView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+           [childView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
     }
-
-    [self.view addSubview: mainView];
-
-    [NSLayoutConstraint activateConstraints:@[[mainView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor], 
-                                              [mainView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
 }
 
 @end

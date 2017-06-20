@@ -21,6 +21,8 @@
 		F42741171EF895AB00399FBB /* ACRTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F42741151EF895AB00399FBB /* ACRTextBlockRenderer.mm */; };
 		F427411C1EF8A25200399FBB /* ACRRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = F427411A1EF8A25200399FBB /* ACRRegistration.h */; };
 		F427411D1EF8A25200399FBB /* ACRRegistration.mm in Sources */ = {isa = PBXBuildFile; fileRef = F427411B1EF8A25200399FBB /* ACRRegistration.mm */; };
+		F42741201EF9DB8000399FBB /* ACRContainerRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F427411E1EF9DB8000399FBB /* ACRContainerRenderer.h */; };
+		F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F427411F1EF9DB8000399FBB /* ACRContainerRenderer.mm */; };
 		F44872F31EE2261F00FCAFAE /* AdaptiveCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F44872BB1EE2261F00FCAFAE /* AdaptiveCard.cpp */; };
 		F44872F41EE2261F00FCAFAE /* AdaptiveCard.h in Headers */ = {isa = PBXBuildFile; fileRef = F44872BC1EE2261F00FCAFAE /* AdaptiveCard.h */; };
 		F44872F51EE2261F00FCAFAE /* AdaptiveCardParseException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F44872BD1EE2261F00FCAFAE /* AdaptiveCardParseException.cpp */; };
@@ -109,6 +111,8 @@
 		F42741151EF895AB00399FBB /* ACRTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTextBlockRenderer.mm; sourceTree = "<group>"; };
 		F427411A1EF8A25200399FBB /* ACRRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRegistration.h; sourceTree = "<group>"; };
 		F427411B1EF8A25200399FBB /* ACRRegistration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRegistration.mm; sourceTree = "<group>"; };
+		F427411E1EF9DB8000399FBB /* ACRContainerRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContainerRenderer.h; sourceTree = "<group>"; };
+		F427411F1EF9DB8000399FBB /* ACRContainerRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContainerRenderer.mm; sourceTree = "<group>"; };
 		F44872BB1EE2261F00FCAFAE /* AdaptiveCard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveCard.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveCard.cpp; sourceTree = "<group>"; };
 		F44872BC1EE2261F00FCAFAE /* AdaptiveCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveCard.h; path = ../../../../shared/cpp/ObjectModel/AdaptiveCard.h; sourceTree = "<group>"; };
 		F44872BD1EE2261F00FCAFAE /* AdaptiveCardParseException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveCardParseException.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveCardParseException.cpp; sourceTree = "<group>"; };
@@ -214,6 +218,8 @@
 			isa = PBXGroup;
 			children = (
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
+				F427411E1EF9DB8000399FBB /* ACRContainerRenderer.h */,
+				F427411F1EF9DB8000399FBB /* ACRContainerRenderer.mm */,
 				F427411A1EF8A25200399FBB /* ACRRegistration.h */,
 				F427411B1EF8A25200399FBB /* ACRRegistration.mm */,
 				F42741061EF8624F00399FBB /* ACRIBaseCardElementRenderer.h */,
@@ -333,6 +339,7 @@
 				F44873131EE2261F00FCAFAE /* Image.h in Headers */,
 				F44873021EE2261F00FCAFAE /* Column.h in Headers */,
 				F44872FE1EE2261F00FCAFAE /* ChoiceInput.h in Headers */,
+				F42741201EF9DB8000399FBB /* ACRContainerRenderer.h in Headers */,
 				F44873261EE2261F00FCAFAE /* TextInput.h in Headers */,
 				F44872F61EE2261F00FCAFAE /* AdaptiveCardParseException.h in Headers */,
 				F44872F41EE2261F00FCAFAE /* AdaptiveCard.h in Headers */,
@@ -469,6 +476,7 @@
 				F44873101EE2261F00FCAFAE /* HttpAction.cpp in Sources */,
 				F44873171EE2261F00FCAFAE /* jsoncpp.cpp in Sources */,
 				F44873071EE2261F00FCAFAE /* DateInput.cpp in Sources */,
+				F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */,
 				F44872F31EE2261F00FCAFAE /* AdaptiveCard.cpp in Sources */,
 				F427411D1EF8A25200399FBB /* ACRRegistration.mm in Sources */,
 				F44873011EE2261F00FCAFAE /* Column.cpp in Sources */,

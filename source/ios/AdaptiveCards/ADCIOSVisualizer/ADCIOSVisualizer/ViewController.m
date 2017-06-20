@@ -18,7 +18,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _idx = 3;
     _inputs = @[@"{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\n\
                 \"type\": \"AdaptiveCard\",\n\
@@ -122,8 +121,34 @@
                 }\n\
                 ]\n\
                 }",
+                @"{\n\
+                    \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\n\
+                    \"type\": \"AdaptiveCard\",\n\
+                    \"version\": \"0.5\",\n\
+                    \"body\": [\n\
+                        {\n\
+                            \"type\": \"Container\",\n\
+                            \"items\": [\n\
+                                {\n\
+                                    \"type\": \"TextBlock\",\n\
+                                    \"text\": \"Meow!\"\n\
+                                },\n\
+                                {\n\
+                                    \"type\": \"Image\",\n\
+                                    \"url\": \"http://adaptivecards.io/api/cat\"\n\
+                                }\n\
+                            ],\n\
+                            \"selectAction\": {\n\
+                                \"type\": \"Action.OpenUrl\",\n\
+                                \"title\": \"cool link\",\n\
+                                \"url\": \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"\n\
+                            }\n\
+                        }\n\
+                    ]\n\
+                }",
 
                 ];
+    _idx = [_inputs count] - 1;
 
     self.JSLab = [[UILabel alloc] init];
     self.JSLab.numberOfLines = 50;
@@ -147,7 +172,7 @@
 - (void) changeView: (id) sender {
     
     self.idx = self.idx + 1;
-    self.idx = self.idx % 4;
+    self.idx = self.idx % [self.inputs count];
     self.JSLab.text = self.inputs[self.idx];
     [self.StkView removeArrangedSubview:self.curView];
     [self.curView removeFromSuperview];

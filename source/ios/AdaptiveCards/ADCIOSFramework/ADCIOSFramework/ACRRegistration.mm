@@ -10,6 +10,7 @@
 #import "ACRRegistration.h"
 #import "ACRImageRenderer.h"
 #import "ACRTextBlockRenderer.h"
+#import "ACRContainerRenderer.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
 
@@ -27,8 +28,9 @@ using namespace AdaptiveCards;
     {
         typeToRendererDict =
             [[NSDictionary alloc] initWithObjectsAndKeys:
-             [ACRImageRenderer getInstance], [ACRImageRenderer elemType],
-             [ACRTextBlockRenderer getInstance], [ACRTextBlockRenderer elemType],
+             [ACRImageRenderer getInstance], [NSNumber numberWithInt: (int)[ACRImageRenderer elemType]],
+             [ACRTextBlockRenderer getInstance], [NSNumber numberWithInt: (int)[ACRTextBlockRenderer elemType]],
+             [ACRContainerRenderer getInstance], [NSNumber numberWithInt: (int)[ACRContainerRenderer elemType]],
              nil];
     }
     return self;
@@ -48,23 +50,34 @@ using namespace AdaptiveCards;
 }
 
 - (UIView* ) render: (UIView*) view
-       withCardElem: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
-       andHostCofig: (std::shared_ptr<HostConfig> const &) config
+      withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
+      andHostConfig: (std::shared_ptr<HostConfig> const &) config
 { 
     UIStackView* childView = [[UIStackView alloc] init];
     childView.axis = UILayoutConstraintAxisVertical;
     childView.distribution = UIStackViewDistributionEqualSpacing;
     childView.translatesAutoresizingMaskIntoConstraints = false;
-    [view addSubview: childView];
+    
+    ([view class] == [UIStackView class])?
+        [(UIStackView* )view addArrangedSubview: childView]:
+        [view addSubview: childView];
 
-    //for(auto elem: elems)
-    //{
-    //    ACRBaseCardElementRenderer* renderer = [typeToRendererDict objectForKey:elem->GetElementType()];
-    //}
+    for(auto elem: elems)
+    {
+        ACRBaseCardElementRenderer* renderer =
+            [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
-    [NSLayoutConstraint activateConstraints:@[[childView.centerXAnchor constraintEqualToAnchor:view.centerXAnchor],
-                                              [childView.centerYAnchor constraintEqualToAnchor:view.centerYAnchor]]];
-    return nil;
+        NSLog(@"card element type: %@\n", [NSNumber numberWithInt:(int)elem->GetElementType()]);
+        if(renderer == nil)
+        { 
+            NSLog(@"Unsupported card element type: %d\n", (int) elem->GetElementType());
+            continue;
+        }
+
+        [renderer render:childView withCardElem:elem andHostConfig:config];
+    }
+
+    return childView;
 }
 
 @end
