@@ -2,6 +2,7 @@
 
 #include "Enums.h"
 #include "pch.h"
+#include "BaseActionElement.h"
 #include "BaseCardElement.h"
 
 namespace AdaptiveCards
@@ -25,10 +26,14 @@ public:
     static std::shared_ptr<Container> Deserialize(const Json::Value& root);
     static std::shared_ptr<Container> DeserializeFromString(const std::string& jsonString);
 
+    std::shared_ptr<BaseActionElement> GetSelectAction() const;
+    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+
 private:
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
 
     ContainerStyle m_style;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
+    std::shared_ptr<BaseActionElement> m_selectAction;
 };
 }

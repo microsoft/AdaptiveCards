@@ -52,6 +52,10 @@ public class ImageSetConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static ImageSetConfig Deserialize(SWIGTYPE_p_Json__Value json, ImageSetConfig defaultValue) {
+    return new ImageSetConfig(AdaptiveCardObjectModelJNI.ImageSetConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ImageSetConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ImageSetConfig() {
     this(AdaptiveCardObjectModelJNI.new_ImageSetConfig(), true);
   }

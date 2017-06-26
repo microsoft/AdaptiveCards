@@ -103,6 +103,15 @@ public class Image extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Image_SetHorizontalAlignment(swigCPtr, this, value.swigValue());
   }
 
+  public BaseActionElement GetSelectAction() {
+    long cPtr = AdaptiveCardObjectModelJNI.Image_GetSelectAction(swigCPtr, this);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
+  public void SetSelectAction(BaseActionElement action) {
+    AdaptiveCardObjectModelJNI.Image_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
+  }
+
   public static Image dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.Image_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new Image(cPtr, true);

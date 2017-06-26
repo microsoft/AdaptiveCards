@@ -116,3 +116,12 @@ std::shared_ptr<Image> Image::DeserializeFromString(const std::string& jsonStrin
     return Image::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
+std::shared_ptr<BaseActionElement> Image::GetSelectAction() const
+{
+    return m_selectAction;
+}
+
+void Image::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
+}

@@ -44,6 +44,10 @@ public class ToggleInputConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static ToggleInputConfig Deserialize(SWIGTYPE_p_Json__Value json, ToggleInputConfig defaultValue) {
+    return new ToggleInputConfig(AdaptiveCardObjectModelJNI.ToggleInputConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ToggleInputConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ToggleInputConfig() {
     this(AdaptiveCardObjectModelJNI.new_ToggleInputConfig(), true);
   }

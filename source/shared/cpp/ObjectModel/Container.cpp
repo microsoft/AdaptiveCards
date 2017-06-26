@@ -74,6 +74,16 @@ void Container::SetContainerStyle(const ContainerStyle value)
     m_style = value;
 }
 
+std::shared_ptr<BaseActionElement> Container::GetSelectAction() const
+{
+    return m_selectAction;
+}
+
+void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
+}
+
 std::string Container::Serialize()
 {
     Json::FastWriter writer;

@@ -44,6 +44,10 @@ public class DateInputConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static DateInputConfig Deserialize(SWIGTYPE_p_Json__Value json, DateInputConfig defaultValue) {
+    return new DateInputConfig(AdaptiveCardObjectModelJNI.DateInputConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), DateInputConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public DateInputConfig() {
     this(AdaptiveCardObjectModelJNI.new_DateInputConfig(), true);
   }

@@ -44,6 +44,10 @@ public class NumberInputConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static NumberInputConfig Deserialize(SWIGTYPE_p_Json__Value json, NumberInputConfig defaultValue) {
+    return new NumberInputConfig(AdaptiveCardObjectModelJNI.NumberInputConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), NumberInputConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public NumberInputConfig() {
     this(AdaptiveCardObjectModelJNI.new_NumberInputConfig(), true);
   }

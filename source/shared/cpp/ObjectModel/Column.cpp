@@ -113,3 +113,13 @@ std::shared_ptr<Column> Column::DeserializeFromString(const std::string& jsonStr
 {
     return Column::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
+
+std::shared_ptr<BaseActionElement> Column::GetSelectAction() const
+{
+    return m_selectAction;
+}
+
+void Column::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
+}

@@ -62,6 +62,10 @@ public class ContainerConfig {
     return (cPtr == 0) ? null : new ContainerStyleConfig(cPtr, false);
   }
 
+  public static ContainerConfig Deserialize(SWIGTYPE_p_Json__Value json, ContainerConfig defaultValue) {
+    return new ContainerConfig(AdaptiveCardObjectModelJNI.ContainerConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ContainerConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ContainerConfig() {
     this(AdaptiveCardObjectModelJNI.new_ContainerConfig(), true);
   }
