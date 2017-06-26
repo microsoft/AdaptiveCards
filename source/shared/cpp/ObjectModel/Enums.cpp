@@ -77,6 +77,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Padding, "padding" },
     { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
     { AdaptiveCardSchemaKey::Right, "right" },
+    { AdaptiveCardSchemaKey::SelectAction, "selectAction" },
     { AdaptiveCardSchemaKey::Separation, "separation" },
     { AdaptiveCardSchemaKey::ShowActionMode, "showActionMode" },
     { AdaptiveCardSchemaKey::ShowCard, "showCard" },

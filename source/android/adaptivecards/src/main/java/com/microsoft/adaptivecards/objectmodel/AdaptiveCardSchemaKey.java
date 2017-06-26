@@ -83,6 +83,7 @@ public final class AdaptiveCardSchemaKey {
   public final static AdaptiveCardSchemaKey Padding = new AdaptiveCardSchemaKey("Padding");
   public final static AdaptiveCardSchemaKey Placeholder = new AdaptiveCardSchemaKey("Placeholder");
   public final static AdaptiveCardSchemaKey Right = new AdaptiveCardSchemaKey("Right");
+  public final static AdaptiveCardSchemaKey SelectAction = new AdaptiveCardSchemaKey("SelectAction");
   public final static AdaptiveCardSchemaKey Separation = new AdaptiveCardSchemaKey("Separation");
   public final static AdaptiveCardSchemaKey ShowActionMode = new AdaptiveCardSchemaKey("ShowActionMode");
   public final static AdaptiveCardSchemaKey ShowCard = new AdaptiveCardSchemaKey("ShowCard");
@@ -150,7 +151,7 @@ public final class AdaptiveCardSchemaKey {
     swigNext = this.swigValue+1;
   }
 
-  private static AdaptiveCardSchemaKey[] swigValues = { Accent, ActionAlignment, ActionMode, ActionOrientation, Actions, ActionSetConfig, ActionsOrientation, AdaptiveCard, AltText, Attention, BackgroundColor, BackgroundImageUrl, BaseCardElement, Body, BorderColor, BorderThickness, Bottom, ButtonSpacing, Card, Center, Choices, ChoiceSet, Color, ColorConfig, Colors, Column, Columns, ColumnSet, Container, ContainerStyleConfig, Dark, Data, DateInput, Default, Emphasis, ExtraLarge, Facts, FactSet, FallbackText, FontFamily, FontSizes, Good, HorizontalAlignment, Id, Image, Images, ImageSet, ImageSize, ImageSizes, InlineTopMargin, IsMultiline, IsMultiSelect, IsRequired, IsSelected, IsSubtle, Items, Large, Left, Light, LineColor, LineThickness, Max, MaxActions, MaxLength, MaxLines, Medium, Method, Min, MinVersion, Normal, NumberInput, Padding, Placeholder, Right, Separation, ShowActionMode, ShowCard, ShowCardActionConfig, Size, Small, Spacing, SpacingDefinition, Speak, Stretch, StrongSeparation, Style, Subtle, SupportsInteractivity, Text, TextBlock, TextConfig, TextInput, TextWeight, TimeInput, Title, ToggleInput, Top, Type, Url, Value, ValueOff, ValueOn, Version, Warning, Weight, Wrap };
+  private static AdaptiveCardSchemaKey[] swigValues = { Accent, ActionAlignment, ActionMode, ActionOrientation, Actions, ActionSetConfig, ActionsOrientation, AdaptiveCard, AltText, Attention, BackgroundColor, BackgroundImageUrl, BaseCardElement, Body, BorderColor, BorderThickness, Bottom, ButtonSpacing, Card, Center, Choices, ChoiceSet, Color, ColorConfig, Colors, Column, Columns, ColumnSet, Container, ContainerStyleConfig, Dark, Data, DateInput, Default, Emphasis, ExtraLarge, Facts, FactSet, FallbackText, FontFamily, FontSizes, Good, HorizontalAlignment, Id, Image, Images, ImageSet, ImageSize, ImageSizes, InlineTopMargin, IsMultiline, IsMultiSelect, IsRequired, IsSelected, IsSubtle, Items, Large, Left, Light, LineColor, LineThickness, Max, MaxActions, MaxLength, MaxLines, Medium, Method, Min, MinVersion, Normal, NumberInput, Padding, Placeholder, Right, SelectAction, Separation, ShowActionMode, ShowCard, ShowCardActionConfig, Size, Small, Spacing, SpacingDefinition, Speak, Stretch, StrongSeparation, Style, Subtle, SupportsInteractivity, Text, TextBlock, TextConfig, TextInput, TextWeight, TimeInput, Title, ToggleInput, Top, Type, Url, Value, ValueOff, ValueOn, Version, Warning, Weight, Wrap };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

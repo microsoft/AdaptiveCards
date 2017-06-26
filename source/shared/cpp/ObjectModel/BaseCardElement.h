@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "Enums.h"
 #include "json/json.h"
+#include "BaseActionElement.h"
 #include "ParseUtil.h"
 
 namespace AdaptiveCards
@@ -11,6 +12,8 @@ class Container;
 class BaseCardElement
 {
 public:
+    static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
+
     BaseCardElement(CardElementType type, SeparationStyle separationStyle, std::string speak);
     BaseCardElement(CardElementType type);
 

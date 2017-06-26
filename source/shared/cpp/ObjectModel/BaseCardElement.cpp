@@ -1,7 +1,19 @@
 #include "BaseCardElement.h"
+#include "HttpAction.h"
+#include "ShowCardAction.h"
+#include "OpenUrlAction.h"
+#include "SubmitAction.h"
 #include "ParseUtil.h"
 
 using namespace AdaptiveCards;
+
+const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> BaseCardElement::ActionParsers =
+{
+    { ActionType::Http, HttpAction::Deserialize },
+    { ActionType::OpenUrl, OpenUrlAction::Deserialize },
+    { ActionType::ShowCard, ShowCardAction::Deserialize },
+    { ActionType::Submit, SubmitAction::Deserialize },
+};
 
 BaseCardElement::BaseCardElement(
     CardElementType type,

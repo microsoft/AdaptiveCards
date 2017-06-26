@@ -108,6 +108,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int ContainerStyleFromString(String jarg1);
   public final static native String ActionAlignmentToString(int jarg1);
   public final static native int ActionAlignmentFromString(String jarg1);
+  public final static native long BaseCardElement_ActionParsers_get();
   public final static native void delete_BaseCardElement(long jarg1);
   public final static native int BaseCardElement_GetSeparationStyle(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_SetSeparationStyle(long jarg1, BaseCardElement jarg1_, int jarg2);

@@ -35,6 +35,11 @@ public class BaseCardElement {
     }
   }
 
+  public static SWIGTYPE_p_std__unordered_mapT_AdaptiveCards__ActionType_std__functionT_std__shared_ptrT_BaseActionElement_t_fJson__Value_const_RF_t_AdaptiveCards__EnumHash_t getActionParsers() {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_ActionParsers_get();
+    return (cPtr == 0) ? null : new SWIGTYPE_p_std__unordered_mapT_AdaptiveCards__ActionType_std__functionT_std__shared_ptrT_BaseActionElement_t_fJson__Value_const_RF_t_AdaptiveCards__EnumHash_t(cPtr, false);
+  }
+
   public SeparationStyle GetSeparationStyle() {
     return SeparationStyle.swigToEnum(AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparationStyle(swigCPtr, this));
   }
