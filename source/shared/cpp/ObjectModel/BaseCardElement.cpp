@@ -78,7 +78,7 @@ std::shared_ptr<BaseActionElement> BaseCardElement::DeserializeSelectAction(cons
     return nullptr;
 }
 
-Json::Value BaseCardElement::DeserializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
+Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
 {
     if (selectAction != nullptr)
     {

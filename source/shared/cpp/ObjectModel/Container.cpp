@@ -103,7 +103,7 @@ Json::Value Container::SerializeToJsonValue()
         root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
     }
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::DeserializeSelectAction(GetSelectAction());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
 
     return root;
 }

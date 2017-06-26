@@ -34,7 +34,7 @@ public:
 
 protected:
     static std::shared_ptr<BaseActionElement> DeserializeSelectAction(const Json::Value& json, AdaptiveCardSchemaKey key);
-    static Json::Value DeserializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
+    static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
 
 private:
     static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
