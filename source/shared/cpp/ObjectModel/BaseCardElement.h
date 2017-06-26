@@ -12,8 +12,6 @@ class Container;
 class BaseCardElement
 {
 public:
-    static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
-
     BaseCardElement(CardElementType type, SeparationStyle separationStyle, std::string speak);
     BaseCardElement(CardElementType type);
 
@@ -34,7 +32,12 @@ public:
 
     virtual Json::Value SerializeToJsonValue();
 
+protected:
+    static std::shared_ptr<BaseActionElement> DeserializeSelectAction(const Json::Value& json, AdaptiveCardSchemaKey key);
+    static Json::Value DeserializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
+
 private:
+    static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
     CardElementType m_type;
     SeparationStyle m_separationStyle;
     std::string m_speak;

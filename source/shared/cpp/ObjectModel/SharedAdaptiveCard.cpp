@@ -4,10 +4,14 @@
 #include "Container.h"
 #include "DateInput.h"
 #include "FactSet.h"
+#include "HttpAction.h"
 #include "Image.h"
 #include "ImageSet.h"
 #include "NumberInput.h"
+#include "OpenUrlAction.h"
 #include "ParseUtil.h"
+#include "ShowCardAction.h"
+#include "SubmitAction.h"
 #include "TextBlock.h"
 #include "TextInput.h"
 #include "TimeInput.h"
@@ -29,6 +33,14 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
     { CardElementType::TextInput, TextInput::Deserialize },
     { CardElementType::TimeInput, TimeInput::Deserialize },
     { CardElementType::ToggleInput, ToggleInput::Deserialize },
+};
+
+const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> AdaptiveCard::ActionParsers =
+{
+    { ActionType::Http, HttpAction::Deserialize },
+    { ActionType::OpenUrl, OpenUrlAction::Deserialize },
+    { ActionType::ShowCard, ShowCardAction::Deserialize },
+    { ActionType::Submit, SubmitAction::Deserialize },
 };
 
 AdaptiveCard::AdaptiveCard()
@@ -79,7 +91,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers, true);
 
     // Parse actions if present
-    auto actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, BaseCardElement::ActionParsers);
+    auto actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, AdaptiveCard::ActionParsers);
 
     auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImageUrl, body, actions);
     return result;

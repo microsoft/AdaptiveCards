@@ -91,11 +91,7 @@ Json::Value Column::SerializeToJsonValue()
         root[propertyName].append(cardElement->SerializeToJsonValue());
     }
 
-    auto selectAction = GetSelectAction();
-    if (selectAction != nullptr)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = selectAction->SerializeToJsonValue();
-    }
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::DeserializeSelectAction(GetSelectAction());
 
     return root;
 }
@@ -112,11 +108,7 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, CardElementParsers, true);
     column->m_items = std::move(cardElements);
 
-    Json::Value selectActionValue = ParseUtil::ExtractJsonValue(value, AdaptiveCardSchemaKey::SelectAction, false);
-    if (!selectActionValue.empty())
-    {
-        column->SetSelectAction(ParseUtil::GetActionFromJsonValue<BaseActionElement>(selectActionValue, BaseCardElement::ActionParsers));
-    }
+    column->SetSelectAction(BaseCardElement::DeserializeSelectAction(value, AdaptiveCardSchemaKey::SelectAction));
 
     return column;
 }

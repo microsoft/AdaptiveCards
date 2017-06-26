@@ -45,7 +45,7 @@ public:
 
 private:
     static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
-
+    static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
     std::string m_version;
     std::string m_minVersion;
     std::string m_fallbackText;

@@ -38,12 +38,7 @@ std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
     image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::Default, ImageSizeFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
-
-    Json::Value selectActionValue = ParseUtil::ExtractJsonValue(json, AdaptiveCardSchemaKey::SelectAction, false);
-    if (!selectActionValue.empty())
-    {
-        image->SetSelectAction(ParseUtil::GetActionFromJsonValue<BaseActionElement>(selectActionValue, BaseCardElement::ActionParsers));
-    }
+    image->SetSelectAction(BaseCardElement::DeserializeSelectAction(json, AdaptiveCardSchemaKey::SelectAction));
 
     return image;
 }
@@ -65,11 +60,7 @@ Json::Value Image::SerializeToJsonValue()
         HorizontalAlignmentToString(GetHorizontalAlignment());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText)] = GetAltText();
 
-    auto selectAction = GetSelectAction();
-    if (selectAction != nullptr)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = selectAction->SerializeToJsonValue();
-    }
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::DeserializeSelectAction(GetSelectAction());
 
     return root;
 }
