@@ -26,10 +26,12 @@ TODO:
 3. TextBlock
     a. Font Family
 4. Image
+    a. Not sure why "bitmap = BitmapFactory.decodeStream(inputStream);" sometimes returns null
     b. altText
-5. Separation (ColumnSet, Column, ImageSet, FactSet)
+5. Separation (ColumnSet, Column, ImageSet, FactSet, Input.Text)
+    a. Horizontal line???
+    b. Input.Text (only contains one separation config - normal vs strong?)
 6. SelectAction (Column, Image)
-7. Input.Text
 8. Input.Number
 9. Input.Date
 10. Input.Time

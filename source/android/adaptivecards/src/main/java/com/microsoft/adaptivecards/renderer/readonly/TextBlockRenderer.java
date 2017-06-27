@@ -180,7 +180,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         int maxLines = (int)textBlock.GetMaxLines();
-        if (maxLines != 0)
+        if (maxLines > 0)
         {
             textView.setMaxLines(maxLines);
         }

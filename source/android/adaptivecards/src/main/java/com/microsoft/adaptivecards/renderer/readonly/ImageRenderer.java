@@ -29,8 +29,6 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URLConnection;
 
 /**
  * Created by bekao on 4/27/2017.
