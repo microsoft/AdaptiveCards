@@ -230,6 +230,14 @@ public class HostConfig {
     return (cPtr == 0) ? null : new ActionsConfig(cPtr, false);
   }
 
+  public static HostConfig Deserialize(SWIGTYPE_p_Json__Value json) {
+    return new HostConfig(AdaptiveCardObjectModelJNI.HostConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json)), true);
+  }
+
+  public static HostConfig DeserializeFromString(String jsonString) {
+    return new HostConfig(AdaptiveCardObjectModelJNI.HostConfig_DeserializeFromString(jsonString), true);
+  }
+
   public HostConfig() {
     this(AdaptiveCardObjectModelJNI.new_HostConfig(), true);
   }

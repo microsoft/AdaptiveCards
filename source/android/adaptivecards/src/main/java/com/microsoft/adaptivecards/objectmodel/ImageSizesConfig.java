@@ -59,6 +59,10 @@ public class ImageSizesConfig {
     return AdaptiveCardObjectModelJNI.ImageSizesConfig_largeSize_get(swigCPtr, this);
   }
 
+  public static ImageSizesConfig Deserialize(SWIGTYPE_p_Json__Value json, ImageSizesConfig defaultValue) {
+    return new ImageSizesConfig(AdaptiveCardObjectModelJNI.ImageSizesConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ImageSizesConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ImageSizesConfig() {
     this(AdaptiveCardObjectModelJNI.new_ImageSizesConfig(), true);
   }

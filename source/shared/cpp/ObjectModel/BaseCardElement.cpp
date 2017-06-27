@@ -1,7 +1,19 @@
 #include "BaseCardElement.h"
+#include "HttpAction.h"
+#include "ShowCardAction.h"
+#include "OpenUrlAction.h"
+#include "SubmitAction.h"
 #include "ParseUtil.h"
 
 using namespace AdaptiveCards;
+
+const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> BaseCardElement::ActionParsers =
+{
+    { ActionType::Http, HttpAction::Deserialize },
+    { ActionType::OpenUrl, OpenUrlAction::Deserialize },
+    { ActionType::ShowCard, ShowCardAction::Deserialize },
+    { ActionType::Submit, SubmitAction::Deserialize },
+};
 
 BaseCardElement::BaseCardElement(
     CardElementType type,
@@ -54,5 +66,24 @@ Json::Value BaseCardElement::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separation)] = SeparationStyleToString(GetSeparationStyle());
     return root;
+}
+
+std::shared_ptr<BaseActionElement> BaseCardElement::DeserializeSelectAction(const Json::Value & json, AdaptiveCardSchemaKey key)
+{
+    Json::Value selectActionValue = ParseUtil::ExtractJsonValue(json, key, false);
+    if (!selectActionValue.empty())
+    {
+        return ParseUtil::GetActionFromJsonValue<BaseActionElement>(selectActionValue, BaseCardElement::ActionParsers);
+    }
+    return nullptr;
+}
+
+Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
+{
+    if (selectAction != nullptr)
+    {
+        return selectAction->SerializeToJsonValue();
+    }
+    return Json::Value();
 }
 

@@ -51,6 +51,10 @@ public class ColorConfig {
     return AdaptiveCardObjectModelJNI.ColorConfig_subtle_get(swigCPtr, this);
   }
 
+  public static ColorConfig Deserialize(SWIGTYPE_p_Json__Value json, ColorConfig defaultValue) {
+    return new ColorConfig(AdaptiveCardObjectModelJNI.ColorConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ColorConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ColorConfig() {
     this(AdaptiveCardObjectModelJNI.new_ColorConfig(), true);
   }

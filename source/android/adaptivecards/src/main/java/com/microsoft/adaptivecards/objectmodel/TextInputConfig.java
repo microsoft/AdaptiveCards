@@ -44,6 +44,10 @@ public class TextInputConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static TextInputConfig Deserialize(SWIGTYPE_p_Json__Value json, TextInputConfig defaultValue) {
+    return new TextInputConfig(AdaptiveCardObjectModelJNI.TextInputConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), TextInputConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public TextInputConfig() {
     this(AdaptiveCardObjectModelJNI.new_TextInputConfig(), true);
   }

@@ -68,6 +68,10 @@ public class ShowCardActionConfig {
     return (cPtr == 0) ? null : new SpacingDefinition(cPtr, false);
   }
 
+  public static ShowCardActionConfig Deserialize(SWIGTYPE_p_Json__Value json, ShowCardActionConfig defaultValue) {
+    return new ShowCardActionConfig(AdaptiveCardObjectModelJNI.ShowCardActionConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ShowCardActionConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ShowCardActionConfig() {
     this(AdaptiveCardObjectModelJNI.new_ShowCardActionConfig(), true);
   }

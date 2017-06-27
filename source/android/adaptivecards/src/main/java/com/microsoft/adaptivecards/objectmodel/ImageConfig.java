@@ -44,6 +44,10 @@ public class ImageConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static ImageConfig Deserialize(SWIGTYPE_p_Json__Value json, ImageConfig defaultValue) {
+    return new ImageConfig(AdaptiveCardObjectModelJNI.ImageConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ImageConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ImageConfig() {
     this(AdaptiveCardObjectModelJNI.new_ImageConfig(), true);
   }

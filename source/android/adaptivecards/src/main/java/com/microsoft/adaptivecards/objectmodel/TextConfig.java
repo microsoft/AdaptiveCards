@@ -67,6 +67,10 @@ public class TextConfig {
     return AdaptiveCardObjectModelJNI.TextConfig_isSubtle_get(swigCPtr, this);
   }
 
+  public static TextConfig Deserialize(SWIGTYPE_p_Json__Value json, TextConfig defaultValue) {
+    return new TextConfig(AdaptiveCardObjectModelJNI.TextConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), TextConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public TextConfig() {
     this(AdaptiveCardObjectModelJNI.new_TextConfig(), true);
   }

@@ -1,7 +1,4 @@
 #include "ParseUtil.h"
-#include "Image.h"
-#include "TextBlock.h"
-#include "Container.h"
 #include "AdaptiveCardParseException.h"
 
 namespace AdaptiveCards
