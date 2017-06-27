@@ -1,4 +1,4 @@
-package com.microsoft.adaptivecards.renderer;
+package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import com.microsoft.adaptivecards.objectmodel.FactVector;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.FactSet;
 import com.microsoft.adaptivecards.objectmodel.TextConfig;
+import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -47,6 +48,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return textView;
     }
 
+    @Override
     public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         FactSet factSet = null;
@@ -56,10 +58,11 @@ public class FactSetRenderer extends BaseCardElementRenderer
         }
         else if ((factSet = FactSet.dynamic_cast(baseCardElement)) == null)
         {
-            return viewGroup;
+            throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
         }
 
         GridLayout gridLayout = new GridLayout(context);
+        gridLayout.setTag(factSet);
         gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         gridLayout.setColumnCount(2);
 

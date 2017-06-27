@@ -1,4 +1,4 @@
-package com.microsoft.adaptivecards.renderer;
+package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -19,6 +19,7 @@ import com.microsoft.adaptivecards.objectmodel.TextBlock;
 import com.microsoft.adaptivecards.objectmodel.TextColor;
 import com.microsoft.adaptivecards.objectmodel.TextSize;
 import com.microsoft.adaptivecards.objectmodel.TextWeight;
+import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.util.HashMap;
 
@@ -156,6 +157,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setTypeface(null, m_textWeightMap.get(textWeight));
     }
 
+    @Override
     public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         TextBlock textBlock = null;
@@ -165,10 +167,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
         else if ((textBlock = TextBlock.dynamic_cast(baseCardElement)) == null)
         {
-            return viewGroup;
+            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
         }
 
         TextView textView = new TextView(context);
+        textView.setTag(baseCardElement);
         textView.setText(textBlock.GetText());
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());

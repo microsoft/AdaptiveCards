@@ -17,4 +17,22 @@ To generate APK:
 2. Build->"Build APK" or "Generate Signed APK..."
 
 TODO:
-ImageStyle
+1. Speech
+2. AdaptiveCard
+    a. actions
+    b. version
+    c. minVersion
+    d. fallbackText
+3. TextBlock
+    a. Font Family
+4. Image
+    b. altText
+5. Separation (ColumnSet, Column, ImageSet, FactSet)
+6. SelectAction (Column, Image)
+7. Input.Text
+8. Input.Number
+9. Input.Date
+10. Input.Time
+11. Input.Toggle
+12. Input.ChoiceSet
+

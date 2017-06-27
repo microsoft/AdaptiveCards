@@ -1,4 +1,4 @@
-package com.microsoft.adaptivecards.renderer;
+package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -23,10 +23,14 @@ import com.microsoft.adaptivecards.objectmodel.Image;
 import com.microsoft.adaptivecards.objectmodel.ImageSize;
 import com.microsoft.adaptivecards.objectmodel.ImageSizesConfig;
 import com.microsoft.adaptivecards.objectmodel.ImageStyle;
+import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.HttpURLConnection;
+import java.net.URLConnection;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -57,24 +61,51 @@ public class ImageRenderer extends BaseCardElementRenderer
             m_imageStyle = imageStyle;
         }
 
+        public byte[] copyInputStreamToByteArray(InputStream inputStream)
+                throws IOException
+        {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+            final int bufferSize = 4096;
+            byte[] buffer = new byte[bufferSize];
+            int size;
+            while ((size = inputStream.read(buffer)) != -1)
+            {
+                byteArrayOutputStream.write(buffer, 0, size);
+            }
+
+            return byteArrayOutputStream.toByteArray();
+        }
+
         @Override
         protected Bitmap doInBackground(String... args)
         {
             String url = args[0];
             try
             {
-                InputStream inputStream = new java.net.URL(url).openStream();
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
-                if (m_imageStyle == ImageStyle.Person)
+                Bitmap bitmap = null;
+                java.net.URL netURL = new java.net.URL(url);
+                java.net.URI netURI = new java.net.URI(netURL.getProtocol(), netURL.getUserInfo(), netURL.getHost(), netURL.getPort(), netURL.getPath(), netURL.getQuery(), netURL.getRef());
+                netURL = netURI.toURL();
+                java.net.URLConnection conn = netURL.openConnection();
+                conn.connect();
+                BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
+                if (inputStream != null)
                 {
-                    Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-                    BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-                    Paint paint = new Paint();
-                    paint.setShader(shader);
-                    Canvas c = new Canvas(circleBitmap);
-                    c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
-                    bitmap = circleBitmap;
+                    byte[] bytes = copyInputStreamToByteArray(inputStream);
+                    inputStream.close();
+                    bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                    if (bitmap != null && m_imageStyle == ImageStyle.Person)
+                    {
+                        Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                        BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+                        Paint paint = new Paint();
+                        paint.setShader(shader);
+                        Canvas c = new Canvas(circleBitmap);
+                        c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
+                        bitmap = circleBitmap;
+                    }
                 }
 
                 return bitmap;
@@ -82,6 +113,11 @@ public class ImageRenderer extends BaseCardElementRenderer
             catch (IOException ioExcep)
             {
                 errorString = ioExcep.getMessage();
+                // TODO: Where to log?
+            }
+            catch (java.net.URISyntaxException uriSyntaxExcep)
+            {
+                errorString = uriSyntaxExcep.getMessage();
                 // TODO: Where to log?
             }
 
@@ -172,6 +208,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
     }
 
+    @Override
     public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         Image image = null;
@@ -181,11 +218,13 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else if ((image = Image.dynamic_cast(baseCardElement)) == null)
         {
-            return viewGroup;
+            throw new InternalError("Unable to convert BaseCardElement to Image object model.");
         }
 
         ImageView imageView = new ImageView(context);
-        new ImageLoaderAsync(context, imageView, image.GetImageStyle()).execute(image.GetUrl());
+        imageView.setTag(image);
+        ImageLoaderAsync imageLoaderAsync = new ImageLoaderAsync(context, imageView, image.GetImageStyle());
+        imageLoaderAsync.execute(image.GetUrl());
         setImageSize(imageView, image.GetImageSize(), hostConfig.getImageSizes());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         setSeparationConfig(context, viewGroup, image.GetSeparationStyle(), hostConfig.getImage().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);

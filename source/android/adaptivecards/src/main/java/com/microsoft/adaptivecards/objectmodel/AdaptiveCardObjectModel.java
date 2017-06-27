@@ -25,20 +25,20 @@ public class AdaptiveCardObjectModel {
     return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.CardElementTypeFromString(elementType));
   }
 
-  public static String ActionTypeToString(ActionType elementType) {
-    return AdaptiveCardObjectModelJNI.ActionTypeToString(elementType.swigValue());
+  public static String ActionTypeToString(ActionType actionType) {
+    return AdaptiveCardObjectModelJNI.ActionTypeToString(actionType.swigValue());
   }
 
-  public static ActionType ActionTypeFromString(String elementType) {
-    return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.ActionTypeFromString(elementType));
+  public static ActionType ActionTypeFromString(String actionType) {
+    return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.ActionTypeFromString(actionType));
   }
 
-  public static String HorizontalAlignmentToString(HorizontalAlignment type) {
-    return AdaptiveCardObjectModelJNI.HorizontalAlignmentToString(type.swigValue());
+  public static String HorizontalAlignmentToString(HorizontalAlignment alignment) {
+    return AdaptiveCardObjectModelJNI.HorizontalAlignmentToString(alignment.swigValue());
   }
 
-  public static HorizontalAlignment HorizontalAlignmentFromString(String type) {
-    return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.HorizontalAlignmentFromString(type));
+  public static HorizontalAlignment HorizontalAlignmentFromString(String alignment) {
+    return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.HorizontalAlignmentFromString(alignment));
   }
 
   public static String TextColorToString(TextColor type) {
@@ -57,28 +57,28 @@ public class AdaptiveCardObjectModel {
     return TextWeight.swigToEnum(AdaptiveCardObjectModelJNI.TextWeightFromString(type));
   }
 
-  public static String TextSizeToString(TextSize type) {
-    return AdaptiveCardObjectModelJNI.TextSizeToString(type.swigValue());
+  public static String TextSizeToString(TextSize size) {
+    return AdaptiveCardObjectModelJNI.TextSizeToString(size.swigValue());
   }
 
-  public static TextSize TextSizeFromString(String type) {
-    return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextSizeFromString(type));
+  public static TextSize TextSizeFromString(String size) {
+    return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextSizeFromString(size));
   }
 
-  public static String ImageSizeToString(ImageSize type) {
-    return AdaptiveCardObjectModelJNI.ImageSizeToString(type.swigValue());
+  public static String ImageSizeToString(ImageSize size) {
+    return AdaptiveCardObjectModelJNI.ImageSizeToString(size.swigValue());
   }
 
-  public static ImageSize ImageSizeFromString(String type) {
-    return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageSizeFromString(type));
+  public static ImageSize ImageSizeFromString(String size) {
+    return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageSizeFromString(size));
   }
 
-  public static String SeparationStyleToString(SeparationStyle type) {
-    return AdaptiveCardObjectModelJNI.SeparationStyleToString(type.swigValue());
+  public static String SeparationStyleToString(SeparationStyle style) {
+    return AdaptiveCardObjectModelJNI.SeparationStyleToString(style.swigValue());
   }
 
-  public static SeparationStyle SeparationStyleFromString(String type) {
-    return SeparationStyle.swigToEnum(AdaptiveCardObjectModelJNI.SeparationStyleFromString(type));
+  public static SeparationStyle SeparationStyleFromString(String style) {
+    return SeparationStyle.swigToEnum(AdaptiveCardObjectModelJNI.SeparationStyleFromString(style));
   }
 
   public static String ImageStyleToString(ImageStyle style) {
@@ -89,28 +89,28 @@ public class AdaptiveCardObjectModel {
     return ImageStyle.swigToEnum(AdaptiveCardObjectModelJNI.ImageStyleFromString(style));
   }
 
-  public static String ActionsOrientationToString(ActionsOrientation style) {
-    return AdaptiveCardObjectModelJNI.ActionsOrientationToString(style.swigValue());
+  public static String ActionsOrientationToString(ActionsOrientation orientation) {
+    return AdaptiveCardObjectModelJNI.ActionsOrientationToString(orientation.swigValue());
   }
 
-  public static ActionsOrientation ActionsOrientationFromString(String style) {
-    return ActionsOrientation.swigToEnum(AdaptiveCardObjectModelJNI.ActionsOrientationFromString(style));
+  public static ActionsOrientation ActionsOrientationFromString(String orientation) {
+    return ActionsOrientation.swigToEnum(AdaptiveCardObjectModelJNI.ActionsOrientationFromString(orientation));
   }
 
-  public static String ActionModeToString(ActionMode style) {
-    return AdaptiveCardObjectModelJNI.ActionModeToString(style.swigValue());
+  public static String ActionModeToString(ActionMode mode) {
+    return AdaptiveCardObjectModelJNI.ActionModeToString(mode.swigValue());
   }
 
-  public static ActionMode ActionModeFromString(String style) {
-    return ActionMode.swigToEnum(AdaptiveCardObjectModelJNI.ActionModeFromString(style));
+  public static ActionMode ActionModeFromString(String mode) {
+    return ActionMode.swigToEnum(AdaptiveCardObjectModelJNI.ActionModeFromString(mode));
   }
 
-  public static String ChoiceSetStyleToString(ChoiceSetStyle type) {
-    return AdaptiveCardObjectModelJNI.ChoiceSetStyleToString(type.swigValue());
+  public static String ChoiceSetStyleToString(ChoiceSetStyle style) {
+    return AdaptiveCardObjectModelJNI.ChoiceSetStyleToString(style.swigValue());
   }
 
-  public static ChoiceSetStyle ChoiceSetStyleFromString(String type) {
-    return ChoiceSetStyle.swigToEnum(AdaptiveCardObjectModelJNI.ChoiceSetStyleFromString(type));
+  public static ChoiceSetStyle ChoiceSetStyleFromString(String style) {
+    return ChoiceSetStyle.swigToEnum(AdaptiveCardObjectModelJNI.ChoiceSetStyleFromString(style));
   }
 
   public static String TextInputStyleToString(TextInputStyle style) {
@@ -127,6 +127,14 @@ public class AdaptiveCardObjectModel {
 
   public static ContainerStyle ContainerStyleFromString(String style) {
     return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ContainerStyleFromString(style));
+  }
+
+  public static String ActionAlignmentToString(ActionAlignment alignment) {
+    return AdaptiveCardObjectModelJNI.ActionAlignmentToString(alignment.swigValue());
+  }
+
+  public static ActionAlignment ActionAlignmentFromString(String alignment) {
+    return ActionAlignment.swigToEnum(AdaptiveCardObjectModelJNI.ActionAlignmentFromString(alignment));
   }
 
 }

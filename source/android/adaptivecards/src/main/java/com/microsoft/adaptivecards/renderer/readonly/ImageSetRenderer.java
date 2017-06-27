@@ -1,4 +1,4 @@
-package com.microsoft.adaptivecards.renderer;
+package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.view.ViewGroup;
@@ -11,6 +11,9 @@ import com.microsoft.adaptivecards.objectmodel.Image;
 import com.microsoft.adaptivecards.objectmodel.ImageSet;
 import com.microsoft.adaptivecards.objectmodel.ImageSize;
 import com.microsoft.adaptivecards.objectmodel.ImageVector;
+import com.microsoft.adaptivecards.renderer.CardRendererRegistration;
+import com.microsoft.adaptivecards.renderer.layout.HorizontalFlowLayout;
+import com.microsoft.adaptivecards.renderer.IBaseCardElementRenderer;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -32,6 +35,7 @@ public class ImageSetRenderer implements IBaseCardElementRenderer
         return s_instance;
     }
 
+    @Override
     public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         ImageSet imageSet = null;
@@ -41,16 +45,17 @@ public class ImageSetRenderer implements IBaseCardElementRenderer
         }
         else if ((imageSet = ImageSet.dynamic_cast(baseCardElement)) == null)
         {
-            return viewGroup;
+            throw new InternalError("Unable to convert BaseCardElement to ImageSet object model.");
         }
 
-        IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
+        IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image);
         if (imageRenderer == null)
         {
             throw new IllegalArgumentException("No renderer registered for: " + CardElementType.Image.toString());
         }
 
         HorizontalFlowLayout horizFlowLayout = new HorizontalFlowLayout(context);
+        horizFlowLayout.setTag(imageSet);
         ImageSize imageSize = imageSet.GetImageSize();
         ImageVector imageVector = imageSet.GetImages();
         long imageVectorSize = imageVector.size();

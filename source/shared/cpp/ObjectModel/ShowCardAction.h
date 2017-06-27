@@ -18,8 +18,8 @@ public:
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
 
-    std::shared_ptr<AdaptiveCard> GetCard() const;
-    void SetCard(const std::shared_ptr<AdaptiveCard>);
+    std::shared_ptr<AdaptiveCards::AdaptiveCard> GetCard() const;
+    void SetCard(const std::shared_ptr<AdaptiveCards::AdaptiveCard>);
 
 private:
     std::shared_ptr<AdaptiveCard> m_card;

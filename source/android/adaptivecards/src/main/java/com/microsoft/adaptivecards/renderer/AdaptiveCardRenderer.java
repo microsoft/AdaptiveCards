@@ -28,23 +28,35 @@ public class AdaptiveCardRenderer
         return s_instance;
     }
 
+    public ViewGroup render(Context context, AdaptiveCard adaptiveCard)
+    {
+        return render(context, adaptiveCard, defaultHostConfig);
+    }
+
+    // AdaptiveCard ObjectModel is binded to the UI and Action
     public ViewGroup render(Context context, AdaptiveCard adaptiveCard, HostConfig hostConfig)
     {
-        try
+        if (hostConfig == null)
         {
-            LinearLayout layout = new LinearLayout(context);
-            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            layout.setOrientation(LinearLayout.VERTICAL);
+            throw new IllegalArgumentException("hostConfig is null");
+        }
 
-            BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
-            return (baseCardElementList == null ? null : CardRendererRegistration.getInstance().render(context, layout, baseCardElementList, hostConfig));
-        }
-        catch (Exception ex)
+        LinearLayout layout = new LinearLayout(context);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
+
+        if (baseCardElementList == null)
         {
-            ex.printStackTrace();
+            throw new IllegalArgumentException("Adaptive Card does not contain a body.");
         }
-        return null;
+
+        ViewGroup viewGroup = CardRendererRegistration.getInstance().render(context, layout, adaptiveCard, baseCardElementList, hostConfig);
+        return viewGroup;
     }
 
     private static AdaptiveCardRenderer s_instance = null;
+
+    private HostConfig defaultHostConfig = new HostConfig();
 }

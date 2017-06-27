@@ -70,6 +70,10 @@ public class FactSetConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static FactSetConfig Deserialize(SWIGTYPE_p_Json__Value json, FactSetConfig defaultValue) {
+    return new FactSetConfig(AdaptiveCardObjectModelJNI.FactSetConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), FactSetConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public FactSetConfig() {
     this(AdaptiveCardObjectModelJNI.new_FactSetConfig(), true);
   }

@@ -44,6 +44,10 @@ public class TimeInputConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static TimeInputConfig Deserialize(SWIGTYPE_p_Json__Value json, TimeInputConfig defaultValue) {
+    return new TimeInputConfig(AdaptiveCardObjectModelJNI.TimeInputConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), TimeInputConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public TimeInputConfig() {
     this(AdaptiveCardObjectModelJNI.new_TimeInputConfig(), true);
   }

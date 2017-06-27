@@ -71,7 +71,7 @@ public class BaseCardElementRenderer implements IBaseCardElementRenderer
         viewGroup.addView(view);
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    @Override public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         return viewGroup;
     }

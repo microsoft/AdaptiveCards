@@ -1,4 +1,4 @@
-package com.microsoft.adaptivecards.renderer;
+package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.view.ViewGroup;
@@ -11,6 +11,9 @@ import com.microsoft.adaptivecards.objectmodel.Column;
 import com.microsoft.adaptivecards.objectmodel.ColumnSet;
 import com.microsoft.adaptivecards.objectmodel.ColumnVector;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
+import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+import com.microsoft.adaptivecards.renderer.CardRendererRegistration;
+import com.microsoft.adaptivecards.renderer.IBaseCardElementRenderer;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -32,6 +35,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
+    @Override
     public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
     {
         ColumnSet columnSet = null;
@@ -41,10 +45,10 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         }
         else if ((columnSet = ColumnSet.dynamic_cast(baseCardElement)) == null)
         {
-            return viewGroup;
+            throw new InternalError("Unable to convert BaseCardElement to ColumnSet object model.");
         }
 
-        IBaseCardElementRenderer columnRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Column.toString());
+        IBaseCardElementRenderer columnRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Column);
         if (columnRenderer == null)
         {
             throw new UnknownError(CardElementType.Column.toString() + " is not a registered renderer.");
@@ -53,6 +57,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
         GridLayout gridLayout = new GridLayout(context);
+        gridLayout.setTag(baseCardElement);
         gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         for (int i = 0; i < columnVectorSize; i++)
         {
