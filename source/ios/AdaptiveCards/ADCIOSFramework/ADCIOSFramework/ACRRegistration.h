@@ -12,10 +12,14 @@
 
 + (ACRRegistration* ) getInstance;
 
+- (ACRBaseCardElementRenderer* ) getRenderer:(NSNumber* ) cardElementType;
+
 - (UIView* ) render: (UIView*) view
       withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
       andHostConfig: (std::shared_ptr<HostConfig> const &) config;
 
-- (ACRBaseCardElementRenderer* ) getRenderer:(NSString*) cardElementType;
-
+- (UIView* ) render: (UIView*) view
+    withContentView: (UIView*) newView
+      withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
+      andHostConfig: (std::shared_ptr<HostConfig> const &) config;
 @end

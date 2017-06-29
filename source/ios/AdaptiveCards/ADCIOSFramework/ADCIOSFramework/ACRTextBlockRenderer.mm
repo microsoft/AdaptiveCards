@@ -42,10 +42,15 @@
     [content addAttributes:@{NSParagraphStyleAttributeName:para} range: NSMakeRange(0,1)];
     lab.attributedText = content;
     lab.numberOfLines = int(txtBlck->GetMaxLines());
+    if(!lab.numberOfLines and !txtBlck->GetWrap())
+    {
+        lab.numberOfLines = 1;
+    }
     UIFontDescriptor* dec = lab.font.fontDescriptor;
     lab.font = [UIFont fontWithDescriptor:dec size:[self getTextBlockTextSize:txtBlck withHostConfig:config]];
     
     [viewGroup addArrangedSubview:lab];
+    lab.translatesAutoresizingMaskIntoConstraints = false;
     return lab;
 }
 

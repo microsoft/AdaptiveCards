@@ -72,7 +72,10 @@
     img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     view.image = img;
-
+    
+    //jwoo: experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
+    view.contentMode = UIViewContentModeCenter;
+    view.clipsToBounds = YES;
     if(imgElem->GetImageStyle() == ImageStyle::Person) {
         CALayer* imgLayer = view.layer;
         [imgLayer setCornerRadius:cgsize.width/2];
@@ -80,6 +83,8 @@
     }
 
     [viewGroup addArrangedSubview: view];
+    
+    view.translatesAutoresizingMaskIntoConstraints = false;
     
     return view;
 }

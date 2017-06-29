@@ -55,7 +55,7 @@ using namespace AdaptiveCards;
     { 
         ACRRegistration* reg = [ACRRegistration getInstance];
         childView = [reg render:self.view withCardElems:body andHostConfig:config];
-
+        
         [NSLayoutConstraint activateConstraints:
          @[[childView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
            [childView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];

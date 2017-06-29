@@ -11,6 +11,8 @@
 #import "ACRImageRenderer.h"
 #import "ACRTextBlockRenderer.h"
 #import "ACRContainerRenderer.h"
+#import "ACRColumnSetRenderer.h"
+#import "ACRColumnRenderer.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
 
@@ -28,9 +30,11 @@ using namespace AdaptiveCards;
     {
         typeToRendererDict =
             [[NSDictionary alloc] initWithObjectsAndKeys:
-             [ACRImageRenderer getInstance], [NSNumber numberWithInt: (int)[ACRImageRenderer elemType]],
+             [ACRImageRenderer getInstance],     [NSNumber numberWithInt: (int)[ACRImageRenderer elemType]],
              [ACRTextBlockRenderer getInstance], [NSNumber numberWithInt: (int)[ACRTextBlockRenderer elemType]],
              [ACRContainerRenderer getInstance], [NSNumber numberWithInt: (int)[ACRContainerRenderer elemType]],
+             [ACRColumnSetRenderer getInstance], [NSNumber numberWithInt: (int)[ACRColumnSetRenderer elemType]],
+             [ACRColumnRenderer getInstance],    [NSNumber numberWithInt: (int)[ACRColumnRenderer elemType]],
              nil];
     }
     return self;
@@ -44,7 +48,7 @@ using namespace AdaptiveCards;
     return singletonInstance;
 }
 
-- (ACRBaseCardElementRenderer* ) getRenderer:(NSString*) cardElementType
+- (ACRBaseCardElementRenderer* ) getRenderer:(NSNumber* ) cardElementType
 { 
     return [typeToRendererDict objectForKey: cardElementType];
 }
@@ -55,29 +59,62 @@ using namespace AdaptiveCards;
 { 
     UIStackView* childView = [[UIStackView alloc] init];
     childView.axis = UILayoutConstraintAxisVertical;
-    childView.distribution = UIStackViewDistributionEqualSpacing;
     childView.translatesAutoresizingMaskIntoConstraints = false;
+
+    return [self render: view withContentView: childView
+                         withCardElems: elems
+                         andHostConfig: config];
+
+}
+
+- (UIView* ) render: (UIView*) view
+    withContentView: (UIStackView*) newView
+      withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
+      andHostConfig: (std::shared_ptr<HostConfig> const &) config
+{ 
     
-    ([view class] == [UIStackView class])?
-        [(UIStackView* )view addArrangedSubview: childView]:
-        [view addSubview: childView];
+    if([view class] == [UIStackView class]){
+        [(UIStackView* )view addArrangedSubview: newView];
+    }else
+    {
+        [view addSubview: newView];
+
+        NSLayoutConstraint* constraint = 
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeLeft
+                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                        toItem:newView
+                                     attribute:NSLayoutAttributeLeft
+                                    multiplier:1.0
+                                      constant:0];
+        [view addConstraint:constraint];
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeRight
+                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                        toItem:newView
+                                     attribute:NSLayoutAttributeRight
+                                    multiplier:1.0
+                                      constant:0];
+        [view addConstraint:constraint];
+        
+    }
 
     for(auto elem: elems)
     {
         ACRBaseCardElementRenderer* renderer =
             [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
-        NSLog(@"card element type: %@\n", [NSNumber numberWithInt:(int)elem->GetElementType()]);
+        //NSLog(@"card element type: %@\n", [NSNumber numberWithInt:(int)elem->GetElementType()]);
         if(renderer == nil)
         { 
             NSLog(@"Unsupported card element type: %d\n", (int) elem->GetElementType());
             continue;
         }
 
-        [renderer render:childView withCardElem:elem andHostConfig:config];
+        [renderer render:newView withCardElem:elem andHostConfig:config];
     }
 
-    return childView;
+    return newView;
 }
 
 @end
