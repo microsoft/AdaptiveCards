@@ -96,6 +96,26 @@ using namespace AdaptiveCards;
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];
+        [view addSubview: newView];
+        
+        constraint =
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                        toItem:newView
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:0];
+        [view addConstraint:constraint];
+        [NSLayoutConstraint constraintWithItem:view
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                        toItem:newView
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:0];
+        [view addConstraint:constraint];
+
         
     }
 

@@ -20,7 +20,7 @@
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     self.ACVTabVC.delegate = self;
     self.ACVTabVC.tableView.rowHeight = 25;
-    self.ACVTabVC.tableView.frame = CGRectMake(20,50, 400, 200);
+    self.ACVTabVC.tableView.frame = CGRectMake(20,50, 350, 200);
     self.ACVTabVC.tableView.sectionFooterHeight = 5;
     self.ACVTabVC.tableView.sectionHeaderHeight = 5;
     self.ACVTabVC.tableView.scrollEnabled = YES;
@@ -40,7 +40,7 @@
     if(self.curView)
         [self.curView removeFromSuperview];
     self.curView = adcVc.view;
-    self.curView.frame = CGRectMake(20, 350, 400, 200);
+    self.curView.frame = CGRectMake(20, 350, 350, 350);
     [self.view addSubview:adcVc.view];
 }
 @end
