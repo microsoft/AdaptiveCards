@@ -8,7 +8,7 @@
 #import "ACRColumnSetRenderer.h"
 #import "ACRRegistration.h"
 #import "ColumnSet.h"
-#import "AdaptiveCard.h"
+#import "SharedAdaptiveCard.h"
 
 @implementation ACRColumnSetRenderer
 

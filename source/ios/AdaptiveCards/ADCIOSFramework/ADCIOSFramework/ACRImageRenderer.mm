@@ -7,7 +7,7 @@
 
 #import "ACRImageRenderer.h"
 #import "Image.h"
-#import "AdaptiveCard.h"
+#import "SharedAdaptiveCard.h"
 
 @implementation ACRImageRenderer
 

@@ -8,7 +8,7 @@
 #import "ACRContainerRenderer.h"
 #import "ACRRegistration.h"
 #import "Container.h"
-#import "AdaptiveCard.h"
+#import "SharedAdaptiveCard.h"
 
 @implementation ACRContainerRenderer
 

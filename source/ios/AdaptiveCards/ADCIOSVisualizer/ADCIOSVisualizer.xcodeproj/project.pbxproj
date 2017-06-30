@@ -18,6 +18,7 @@
 		F423C09E1EE1FB6100905679 /* ADCIOSVisualizerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C09D1EE1FB6100905679 /* ADCIOSVisualizerUITests.m */; };
 		F423C0D31EE1FE3A00905679 /* ADCIOSFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F423C0D21EE1FE3A00905679 /* ADCIOSFramework.framework */; };
 		F423C0D41EE1FE3A00905679 /* ADCIOSFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F423C0D21EE1FE3A00905679 /* ADCIOSFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F436607B1F0707B900EBA868 /* Weather Large.json in Resources */ = {isa = PBXBuildFile; fileRef = F436607A1F0707B900EBA868 /* Weather Large.json */; };
 		F4D33E5C1F045BA800941E44 /* Action.Http.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E351F045BA800941E44 /* Action.Http.json */; };
 		F4D33E5D1F045BA800941E44 /* Action.OpenUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E361F045BA800941E44 /* Action.OpenUrl.json */; };
 		F4D33E5E1F045BA800941E44 /* Action.ShowCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E371F045BA800941E44 /* Action.ShowCard.json */; };
@@ -68,7 +69,6 @@
 		F4D33E9A1F05916F00941E44 /* Restaurant.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E8F1F05916F00941E44 /* Restaurant.json */; };
 		F4D33E9B1F05916F00941E44 /* Stock Update.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E901F05916F00941E44 /* Stock Update.json */; };
 		F4D33E9C1F05916F00941E44 /* Weather Compact.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E911F05916F00941E44 /* Weather Compact.json */; };
-		F4D33E9D1F05916F00941E44 /* Weather Large.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E921F05916F00941E44 /* Weather Large.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +121,7 @@
 		F423C09D1EE1FB6100905679 /* ADCIOSVisualizerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCIOSVisualizerUITests.m; sourceTree = "<group>"; };
 		F423C09F1EE1FB6100905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F423C0D21EE1FE3A00905679 /* ADCIOSFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ADCIOSFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F436607A1F0707B900EBA868 /* Weather Large.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Weather Large.json"; path = "../../../website/wwwroot/samples/cards/Weather Large.json"; sourceTree = "<group>"; };
 		F4D33E351F045BA800941E44 /* Action.Http.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Http.json; path = ../../../website/wwwroot/explorer/cards/Action.Http.json; sourceTree = "<group>"; };
 		F4D33E361F045BA800941E44 /* Action.OpenUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.json; path = ../../../website/wwwroot/explorer/cards/Action.OpenUrl.json; sourceTree = "<group>"; };
 		F4D33E371F045BA800941E44 /* Action.ShowCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.json; path = ../../../website/wwwroot/explorer/cards/Action.ShowCard.json; sourceTree = "<group>"; };
@@ -172,7 +173,6 @@
 		F4D33E8F1F05916F00941E44 /* Restaurant.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Restaurant.json; path = ../../../website/wwwroot/samples/cards/Restaurant.json; sourceTree = "<group>"; };
 		F4D33E901F05916F00941E44 /* Stock Update.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Stock Update.json"; path = "../../../website/wwwroot/samples/cards/Stock Update.json"; sourceTree = "<group>"; };
 		F4D33E911F05916F00941E44 /* Weather Compact.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Weather Compact.json"; path = "../../../website/wwwroot/samples/cards/Weather Compact.json"; sourceTree = "<group>"; };
-		F4D33E921F05916F00941E44 /* Weather Large.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Weather Large.json"; path = "../../../website/wwwroot/samples/cards/Weather Large.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,8 +280,8 @@
 				F4D33E8E1F05916F00941E44 /* Input Form.json */,
 				F4D33E8F1F05916F00941E44 /* Restaurant.json */,
 				F4D33E901F05916F00941E44 /* Stock Update.json */,
+				F436607A1F0707B900EBA868 /* Weather Large.json */,
 				F4D33E911F05916F00941E44 /* Weather Compact.json */,
-				F4D33E921F05916F00941E44 /* Weather Large.json */,
 				F4D33E351F045BA800941E44 /* Action.Http.json */,
 				F4D33E361F045BA800941E44 /* Action.OpenUrl.json */,
 				F4D33E371F045BA800941E44 /* Action.ShowCard.json */,
@@ -476,7 +476,7 @@
 				F4D33E991F05916F00941E44 /* Input Form.json in Resources */,
 				F4D33E5D1F045BA800941E44 /* Action.OpenUrl.json in Resources */,
 				F4D33E5E1F045BA800941E44 /* Action.ShowCard.json in Resources */,
-				F4D33E9D1F05916F00941E44 /* Weather Large.json in Resources */,
+				F436607B1F0707B900EBA868 /* Weather Large.json in Resources */,
 				F4D33E9A1F05916F00941E44 /* Restaurant.json in Resources */,
 				F4D33E641F045BA800941E44 /* ColumnSet.Columns.json in Resources */,
 				F4D33E751F045BA800941E44 /* Input.Text.json in Resources */,
