@@ -33,6 +33,7 @@
     UIStackView* columnSetView = [[UIStackView alloc] init];
     columnSetView.axis = UILayoutConstraintAxisHorizontal;
     columnSetView.translatesAutoresizingMaskIntoConstraints = false;
+    columnSetView.alignment = UIStackViewAlignmentLeading;
 
     ACRBaseCardElementRenderer* columRenderer = 
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt: (int) CardElementType::Column]] ;

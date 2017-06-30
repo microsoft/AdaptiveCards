@@ -51,6 +51,20 @@
     return cgSize;
 }
 
+-(UIViewContentMode) getImageAlignment:(std::shared_ptr<Image> const &) img
+                          withHostConfig:(std::shared_ptr<HostConfig> const &) config
+{
+    switch (img->GetHorizontalAlignment()){
+        case HorizontalAlignment::Center:
+            return UIViewContentModeCenter;
+        case HorizontalAlignment::Left:
+            return UIViewContentModeLeft;
+        case HorizontalAlignment::Right:
+            return UIViewContentModeRight;
+        default:
+            return UIViewContentModeLeft;
+    }
+}
 - (UIView* ) render: (UIStackView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
@@ -76,7 +90,7 @@
     view.image = img;
     
     //jwoo: experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
-    view.contentMode = UIViewContentModeCenter;
+    view.contentMode = [self getImageAlignment: imgElem withHostConfig:config];
     view.clipsToBounds = YES;
     if(imgElem->GetImageStyle() == ImageStyle::Person) {
         CALayer* imgLayer = view.layer;

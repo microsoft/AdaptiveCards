@@ -59,6 +59,9 @@ using namespace AdaptiveCards;
 { 
     UIStackView* childView = [[UIStackView alloc] init];
     childView.axis = UILayoutConstraintAxisVertical;
+    childView.alignment = UIStackViewAlignmentLeading;
+    //childView.alignment = UIStackViewAlignmentFill;//UIStackViewAlignmentCenter;
+    childView.distribution = UIStackViewDistributionEqualSpacing;
     childView.translatesAutoresizingMaskIntoConstraints = false;
 
     return [self render: view withContentView: childView

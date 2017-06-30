@@ -30,7 +30,7 @@
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     UILabel* lab = [[UILabel alloc] init];
     NSString* textBlockStr = [NSString stringWithCString:txtBlck->GetText().c_str()
-                                                encoding:[NSString defaultCStringEncoding]];
+                                                encoding:NSUTF8StringEncoding];
     
     NSMutableAttributedString* content =
     [[NSMutableAttributedString alloc] initWithString:textBlockStr
