@@ -51,15 +51,31 @@
     return cgSize;
 }
 
-- (UIView* ) render: (UIView*) viewGroup
+-(UIViewContentMode) getImageAlignment:(std::shared_ptr<Image> const &) img
+                          withHostConfig:(std::shared_ptr<HostConfig> const &) config
+{
+    switch (img->GetHorizontalAlignment()){
+        case HorizontalAlignment::Center:
+            return UIViewContentModeCenter;
+        case HorizontalAlignment::Left:
+            return UIViewContentModeLeft;
+        case HorizontalAlignment::Right:
+            return UIViewContentModeRight;
+        default:
+            return UIViewContentModeLeft;
+    }
+}
+- (UIView* ) render: (UIStackView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-       andHostCofig: (std::shared_ptr<HostConfig> const &) config
+      andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
 
-    NSURL *url = [NSURL URLWithString:
-                  [NSString stringWithCString: imgElem->GetUrl().c_str()
-                                     encoding:[NSString defaultCStringEncoding]]];
+    NSURL *url =
+    [NSURL URLWithString:
+          [[NSString stringWithCString: imgElem->GetUrl().c_str()
+                              encoding:[NSString defaultCStringEncoding]] stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]];
+
     
     UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
@@ -72,12 +88,20 @@
     img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     view.image = img;
-
+    
+    //jwoo: experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
+    view.contentMode = [self getImageAlignment: imgElem withHostConfig:config];
+    view.clipsToBounds = YES;
     if(imgElem->GetImageStyle() == ImageStyle::Person) {
         CALayer* imgLayer = view.layer;
         [imgLayer setCornerRadius:cgsize.width/2];
         [imgLayer setMasksToBounds:YES];
     }
+
+    [viewGroup addArrangedSubview: view];
+    
+    view.translatesAutoresizingMaskIntoConstraints = false;
+    
     return view;
 }
 

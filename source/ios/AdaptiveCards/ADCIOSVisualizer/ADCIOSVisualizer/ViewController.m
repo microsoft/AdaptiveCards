@@ -1,8 +1,7 @@
 //
 //  ViewController.m
-//  ADCIOSVisualizer
+//  ViewController
 //
-//  Created by jwoo on 6/2/17.
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
@@ -17,150 +16,31 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _idx = 3;
-    _inputs = @[@"{\
-                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\n\
-                \"type\": \"AdaptiveCard\",\n\
-                \"version\": \"0.5\",\n\
-                \"body\": [\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"Meow!\"\n\
-                }\n\
-                ]\n\
-                }",
-                @"{\n\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\n\
-                \"type\": \"AdaptiveCard\",\n\
-                \"version\": \"0.5\",\n\
-                \"body\": [\n\
-                {\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"size:default\"\n\
-                },\
-                {\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"size:small\",\n\
-                \"size\": \"small\"\n\
-                },\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"size:normal\",\n\
-                \"size\": \"normal\"\n\
-                },\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"size:medium\",\n\
-                \"size\": \"medium\"\n\
-                },\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"size:large\",\n\
-                \"size\": \"large\"\n\
-                },\n\
-                {\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"size:extraLarge\",\n\
-                \"size\": \"extraLarge\"\n\
-                }\n\
-                ]\n\
-                }",
-                @"{\n\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\n\
-                \"type\": \"AdaptiveCard\",\n\
-                \"version\": \"0.5\",\n\
-                \"body\": [\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"color:default\",\n\
-                \"color\": \"default\"\n\
-                },\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"color:accent\",\n\
-                \"color\": \"accent\"\n\
-                },\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"color:good\",\n\
-                \"color\": \"good\"\n\
-                },\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"color:warning\",\n\
-                \"color\": \"warning\"\n\
-                },\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"color:attention\",\n\
-                \"color\": \"attention\"\n\
-                },\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"color:light\",\n\
-                \"color\": \"light\"\n\
-                },\n\
-                {\n\
-                \"type\": \"TextBlock\",\n\
-                \"text\": \"color:dark\",\n\
-                \"color\": \"dark\"\n\
-                }\n\
-                ]\n\
-                }",
-                @"{\
-                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\n\
-                \"type\": \"AdaptiveCard\",\n\
-                \"version\": \"0.5\",\n\
-                \"body\": [\n\
-                {\n\
-                \"type\": \"Image\",\n\
-                \"url\": \"https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg\",\n\
-                \"size\": \"large\",\n\
-                \"style\": \"person\",\n\
-                \"horizontalAlignment\": \"left\"\
-                }\n\
-                ]\n\
-                }",
-
-                ];
-
-    self.JSLab = [[UILabel alloc] init];
-    self.JSLab.numberOfLines = 50;
-    [self.JSLab setFont:[UIFont systemFontOfSize:8]];
-    self.JSLab.lineBreakMode = NSLineBreakByTruncatingTail;
-    self.JSLab.text = self.inputs[self.idx];
-   
-    ACRViewController* adcVc = [[ACRViewController alloc] init: self.inputs[self.idx]];
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button addTarget:self action:@selector(changeView:) forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Show View" forState:UIControlStateNormal];
-    button.backgroundColor = [UIColor grayColor];
-    button.frame = CGRectMake(40.0, 200.0, 80.0, 20.0);
-    [self.StkView addArrangedSubview:button];
-    [self.StkView addArrangedSubview:self.JSLab];
-    [self.StkView addArrangedSubview:adcVc.view];
-    self.curView = adcVc.view;
-}
-
-- (void) changeView: (id) sender {
-    
-    self.idx = self.idx + 1;
-    self.idx = self.idx % 4;
-    self.JSLab.text = self.inputs[self.idx];
-    [self.StkView removeArrangedSubview:self.curView];
-    [self.curView removeFromSuperview];
-
-    ACRViewController* adcVc = [[ACRViewController alloc] init: self.inputs[self.idx]];
-    self.curView = adcVc.view;
-    [self.StkView addArrangedSubview: self.curView];
-    
+    self.curView = nil;
+    self.ACVTabVC = [[ACVTableViewController alloc] init];
+    self.ACVTabVC.delegate = self;
+    self.ACVTabVC.tableView.rowHeight = 25;
+    self.ACVTabVC.tableView.frame = CGRectMake(20,50, 350, 200);
+    self.ACVTabVC.tableView.sectionFooterHeight = 5;
+    self.ACVTabVC.tableView.sectionHeaderHeight = 5;
+    self.ACVTabVC.tableView.scrollEnabled = YES;
+    self.ACVTabVC.tableView.showsVerticalScrollIndicator = YES;
+    self.ACVTabVC.tableView.userInteractionEnabled = YES;
+    self.ACVTabVC.tableView.bounces = YES;
+    [self.view addSubview:self.ACVTabVC.tableView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-
+- (void) fromACVTable:(ACVTableViewController *) avcTabVc userSelectedJson: (NSString*) jsonStr
+{
+    ACRViewController* adcVc = [[ACRViewController alloc] init: jsonStr];
+    if(self.curView)
+        [self.curView removeFromSuperview];
+    self.curView = adcVc.view;
+    self.curView.frame = CGRectMake(20, 350, 350, 350);
+    [self.view addSubview:adcVc.view];
+}
 @end

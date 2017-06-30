@@ -17,7 +17,7 @@ using namespace AdaptiveCards;
 
 + (CardElementType) elemType;
 
-- (UIView* ) render: (UIView*) viewGroup
+- (UIView* ) render: (UIStackView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-       andHostCofig: (std::shared_ptr<HostConfig> const &) config;
+      andHostConfig: (std::shared_ptr<HostConfig> const &) config;
 @end

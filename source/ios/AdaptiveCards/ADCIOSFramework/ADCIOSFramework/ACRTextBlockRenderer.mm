@@ -23,14 +23,14 @@
     return CardElementType::TextBlock;
 }
 
-- (UIView* ) render: (UIView*) viewGroup
+- (UIView* ) render: (UIStackView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-       andHostCofig: (std::shared_ptr<HostConfig> const &) config
+      andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     UILabel* lab = [[UILabel alloc] init];
     NSString* textBlockStr = [NSString stringWithCString:txtBlck->GetText().c_str()
-                                                encoding:[NSString defaultCStringEncoding]];
+                                                encoding:NSUTF8StringEncoding];
     
     NSMutableAttributedString* content =
     [[NSMutableAttributedString alloc] initWithString:textBlockStr
@@ -42,9 +42,15 @@
     [content addAttributes:@{NSParagraphStyleAttributeName:para} range: NSMakeRange(0,1)];
     lab.attributedText = content;
     lab.numberOfLines = int(txtBlck->GetMaxLines());
+    if(!lab.numberOfLines and !txtBlck->GetWrap())
+    {
+        lab.numberOfLines = 1;
+    }
     UIFontDescriptor* dec = lab.font.fontDescriptor;
     lab.font = [UIFont fontWithDescriptor:dec size:[self getTextBlockTextSize:txtBlck withHostConfig:config]];
     
+    [viewGroup addArrangedSubview:lab];
+    lab.translatesAutoresizingMaskIntoConstraints = false;
     return lab;
 }
 
@@ -54,32 +60,39 @@
     long num = 0;
     std::string str;
     switch (txtBlock->GetTextColor()) {
-        case TextColor::Dark: {	
-            str = config->colors.dark.normal;
+        case TextColor::Dark: {
+            str = (txtBlock->GetIsSubtle())?
+                config->colors.dark.subtle: config->colors.dark.normal;
             break;
         }
         case TextColor::Light: {
-            str = config->colors.light.normal;
+            str = (txtBlock->GetIsSubtle())?
+                config->colors.light.subtle: config->colors.light.normal;
             break;
         }
         case TextColor::Accent: {
-            str = config->colors.accent.normal;
+            str = (txtBlock->GetIsSubtle())?
+                config->colors.accent.subtle: config->colors.accent.normal;
             break;
         }
         case TextColor::Good: {
-            str = config->colors.good.normal;
+            str = (txtBlock->GetIsSubtle())?
+                config->colors.good.subtle: config->colors.good.normal;
             break;
         }
         case TextColor::Warning: {
-            str = config->colors.warning.normal;
+            str = (txtBlock->GetIsSubtle())?
+                config->colors.warning.subtle: config->colors.warning.normal;
             break;
         }
         case TextColor::Attention: {
-            str = config->colors.attention.normal;
+            str = (txtBlock->GetIsSubtle())?
+                config->colors.attention.subtle: config->colors.attention.normal;
             break;
         }
         default: {
-            str = config->colors.good.normal;
+            str = (txtBlock->GetIsSubtle())?
+                config->colors.dark.subtle: config->colors.dark.normal;
             break;
         }
     }
