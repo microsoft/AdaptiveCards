@@ -14,9 +14,7 @@
 
 + (ACRColumnRenderer* ) getInstance
 {
-    static ACRColumnRenderer *singletonInstance = nil;
-    static dispatch_once_t predicate;
-    dispatch_once(&predicate, ^{singletonInstance = [[self alloc] init];});
+    static ACRColumnRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 

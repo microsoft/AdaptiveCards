@@ -13,9 +13,7 @@
 
 + (ACRImageRenderer* ) getInstance
 {
-    static ACRImageRenderer *singletonInstance = nil;
-    static dispatch_once_t predicate;
-    dispatch_once(&predicate, ^{singletonInstance = [[self alloc] init];});
+    static ACRImageRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 

@@ -14,9 +14,7 @@
 
 + (ACRContainerRenderer* ) getInstance
 {
-    static ACRContainerRenderer *singletonInstance = nil;
-    static dispatch_once_t predicate;
-    dispatch_once(&predicate, ^{singletonInstance = [[self alloc] init];});
+    static ACRContainerRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 

@@ -1,6 +1,6 @@
 //
 //  ACRBaseCardElementRenderer
-//  ACRBaseCardElementRenderer.h
+//  ACRBaseCardElementRenderer.mm
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
@@ -13,8 +13,10 @@
 {
     return CardElementType::Unsupported;
 }
+
 /* not implemented ATM */
-- (void) setSeparationConfig: (UIView* ) viewGroup{
+- (void) setSeparationConfig: (UIView* ) viewGroup
+{
             //SeparationStyle separationStyle,
             //SeparationConfig defaultSeparationConfig,
             //SeparationConfig strongSeparationConfig,
@@ -24,8 +26,8 @@
 - (UIView* ) render: (UIStackView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
       andHostConfig: (std::shared_ptr<HostConfig> const&) config
-       { 
-           return viewGroup;
-       }
+{ 
+   return viewGroup;
+}
 
 @end

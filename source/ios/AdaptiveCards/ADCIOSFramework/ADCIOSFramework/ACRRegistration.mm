@@ -76,7 +76,7 @@ using namespace AdaptiveCards;
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 { 
     
-    if([view class] == [UIStackView class]){
+    if([view isKindOfClass:[UIStackView class]]){
         [(UIStackView* )view addArrangedSubview: newView];
     }else
     {
