@@ -59,38 +59,38 @@
     std::string str;
     switch (txtBlock->GetTextColor()) {
         case TextColor::Dark: {
-            str = (txtBlock->GetIsSubtle())?
-                config->colors.dark.subtle: config->colors.dark.normal;
+            str = (txtBlock->GetIsSubtle()) ?
+                config->colors.dark.subtle : config->colors.dark.normal;
             break;
         }
         case TextColor::Light: {
-            str = (txtBlock->GetIsSubtle())?
-                config->colors.light.subtle: config->colors.light.normal;
+            str = (txtBlock->GetIsSubtle()) ?
+                config->colors.light.subtle : config->colors.light.normal;
             break;
         }
         case TextColor::Accent: {
-            str = (txtBlock->GetIsSubtle())?
-                config->colors.accent.subtle: config->colors.accent.normal;
+            str = (txtBlock->GetIsSubtle()) ?
+                config->colors.accent.subtle : config->colors.accent.normal;
             break;
         }
         case TextColor::Good: {
-            str = (txtBlock->GetIsSubtle())?
-                config->colors.good.subtle: config->colors.good.normal;
+            str = (txtBlock->GetIsSubtle()) ?
+                config->colors.good.subtle : config->colors.good.normal;
             break;
         }
         case TextColor::Warning: {
-            str = (txtBlock->GetIsSubtle())?
-                config->colors.warning.subtle: config->colors.warning.normal;
+            str = (txtBlock->GetIsSubtle()) ?
+                config->colors.warning.subtle : config->colors.warning.normal;
             break;
         }
         case TextColor::Attention: {
-            str = (txtBlock->GetIsSubtle())?
-                config->colors.attention.subtle: config->colors.attention.normal;
+            str = (txtBlock->GetIsSubtle()) ?
+                config->colors.attention.subtle : config->colors.attention.normal;
             break;
         }
         default: {
-            str = (txtBlock->GetIsSubtle())?
-                config->colors.dark.subtle: config->colors.dark.normal;
+            str = (txtBlock->GetIsSubtle()) ?
+                config->colors.dark.subtle : config->colors.dark.normal;
             break;
         }
     }

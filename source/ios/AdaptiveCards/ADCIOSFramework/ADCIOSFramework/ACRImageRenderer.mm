@@ -69,7 +69,7 @@
 {
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
 
-    NSURL *url =
+    NSURL* url =
     [NSURL URLWithString:
           [[NSString stringWithCString: imgElem->GetUrl().c_str()
                               encoding:[NSString defaultCStringEncoding]] stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]];
