@@ -40,7 +40,7 @@
     if(self.curView)
         [self.curView removeFromSuperview];
     self.curView = adcVc.view;
-    self.curView.frame = CGRectMake(20, 350, 350, 350);
+    self.curView.frame = CGRectMake(20, 250, 350, 450);
     [self.view addSubview:adcVc.view];
 }
 @end

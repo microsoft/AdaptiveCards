@@ -34,7 +34,7 @@
     column.alignment = UIStackViewAlignmentFill;//UIStackViewAlignmentCenter;
     column.distribution = UIStackViewDistributionEqualSpacing;
     column.translatesAutoresizingMaskIntoConstraints = false;
-
+    
     [[ACRRegistration getInstance] render: viewGroup
                           withContentView: column 
                             withCardElems: columnElem->GetItems()
