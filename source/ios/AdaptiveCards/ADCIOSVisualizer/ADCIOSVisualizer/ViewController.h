@@ -1,19 +1,17 @@
 //
 //  ViewController.h
-//  ADCIOSVisualizer
+//  ACVVisualizer
 //
 //  Created by jwoo on 6/2/17.
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "ACVTableViewController.h"
 
-@interface ViewController : UIViewController
-@property (strong, nonatomic) UILabel *JSLab;
-@property (readonly) NSArray* inputs;
-@property int idx;
+@interface ViewController : UIViewController <ACVTableViewControllerDelegate>
+@property (strong, nonatomic) ACVTableViewController *ACVTabVC;
 @property UIView* curView;
-@property (weak, nonatomic) IBOutlet UIStackView *StkView;
 
 
 @end

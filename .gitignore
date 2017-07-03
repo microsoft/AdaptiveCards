@@ -274,3 +274,4 @@ product.pbxproj
 # Xcode
 *.pbxproj
 *.xcuserstate
+xcuserdata/
