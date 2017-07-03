@@ -194,7 +194,7 @@ void InputItem::SerializeChoiceSetInput(
         else
         {
             // Look for the single selected choice
-            INT32 selectedIndex;
+            INT32 selectedIndex = -1;
             for (UINT i = 0; i < size; i++)
             {
                 ComPtr<IUIElement> currentElement;

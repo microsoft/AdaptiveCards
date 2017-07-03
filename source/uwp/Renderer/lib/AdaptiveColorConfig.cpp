@@ -27,7 +27,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Normal(Color value)
+    HRESULT AdaptiveColorConfig::put_Normal(Color /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -39,7 +39,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Subtle(Color value)
+    HRESULT AdaptiveColorConfig::put_Subtle(Color /*value*/)
     {
         return E_NOTIMPL;
     }
