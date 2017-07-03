@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Bot.Connector;
 using Docs.Controllers;
-using Microsoft.AspNetCore.Rewrite;
 
 namespace Docs
 {
@@ -45,10 +44,6 @@ namespace Docs
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseRewriter(new RewriteOptions()
-                //.AddRedirectToHttps()
-                .AddRedirect(@"^/documentation", "https://docs.microsoft.com/adaptive-cards", (int) HttpStatusCode.MovedPermanently));
-
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
