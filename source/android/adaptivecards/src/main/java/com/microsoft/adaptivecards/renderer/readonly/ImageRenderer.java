@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.renderer.http.HttpRequestHelper;
+import com.microsoft.adaptivecards.renderer.http.HttpRequestResult;
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.HorizontalAlignment;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
@@ -25,10 +29,8 @@ import com.microsoft.adaptivecards.objectmodel.ImageSizesConfig;
 import com.microsoft.adaptivecards.objectmodel.ImageStyle;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Vector;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -50,7 +52,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    private class ImageLoaderAsync extends AsyncTask<String, Void, Bitmap>
+    private class ImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
     {
         ImageLoaderAsync(Context context, ImageView imageView, ImageStyle imageStyle)
         {
@@ -59,79 +61,53 @@ public class ImageRenderer extends BaseCardElementRenderer
             m_imageStyle = imageStyle;
         }
 
-        public byte[] copyInputStreamToByteArray(InputStream inputStream)
-                throws IOException
-        {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-            final int bufferSize = 4096;
-            byte[] buffer = new byte[bufferSize];
-            int size;
-            while ((size = inputStream.read(buffer)) != -1)
-            {
-                byteArrayOutputStream.write(buffer, 0, size);
-            }
-
-            return byteArrayOutputStream.toByteArray();
-        }
-
         @Override
-        protected Bitmap doInBackground(String... args)
+        protected HttpRequestResult<Bitmap> doInBackground(String... args)
         {
-            String url = args[0];
             try
             {
                 Bitmap bitmap = null;
-                java.net.URL netURL = new java.net.URL(url);
-                java.net.URI netURI = new java.net.URI(netURL.getProtocol(), netURL.getUserInfo(), netURL.getHost(), netURL.getPort(), netURL.getPath(), netURL.getQuery(), netURL.getRef());
-                netURL = netURI.toURL();
-                java.net.URLConnection conn = netURL.openConnection();
-                conn.connect();
-                BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
-                if (inputStream != null)
+                byte[] bytes = HttpRequestHelper.get(args[0]);
+                if (bytes == null)
                 {
-                    byte[] bytes = copyInputStreamToByteArray(inputStream);
-                    inputStream.close();
-                    bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                    if (bitmap != null && m_imageStyle == ImageStyle.Person)
-                    {
-                        Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-                        BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-                        Paint paint = new Paint();
-                        paint.setShader(shader);
-                        Canvas c = new Canvas(circleBitmap);
-                        c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
-                        bitmap = circleBitmap;
-                    }
+                    throw new IOException("Failed to retrieve content from " + args[0]);
                 }
 
-                return bitmap;
-            }
-            catch (IOException ioExcep)
-            {
-                errorString = ioExcep.getMessage();
-                // TODO: Where to log?
-            }
-            catch (java.net.URISyntaxException uriSyntaxExcep)
-            {
-                errorString = uriSyntaxExcep.getMessage();
-                // TODO: Where to log?
-            }
+                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                if (bitmap != null && m_imageStyle == ImageStyle.Person)
+                {
+                    Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                    BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+                    Paint paint = new Paint();
+                    paint.setShader(shader);
+                    Canvas c = new Canvas(circleBitmap);
+                    c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
+                    bitmap = circleBitmap;
+                }
 
-            return null;
+                if (bitmap == null)
+                {
+                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
+                }
+
+                return new HttpRequestResult<Bitmap>(bitmap);
+            }
+            catch (Exception excep)
+            {
+                return new HttpRequestResult<Bitmap>(excep);
+            }
         }
 
         @Override
-        protected void onPostExecute(Bitmap result)
+        protected void onPostExecute(HttpRequestResult<Bitmap> result)
         {
-            if (result != null)
+            if (result.isSuccessful())
             {
-                m_imageView.setImageBitmap(result);
+                m_imageView.setImageBitmap(result.getResult());
             }
             else
             {
-                Toast.makeText(m_context, "Unable to load image: " + errorString, Toast.LENGTH_SHORT);
+                Toast.makeText(m_context, "Unable to load image: " + result.getException().getMessage(), Toast.LENGTH_SHORT);
             }
         }
 
@@ -207,7 +183,13 @@ public class ImageRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         Image image = null;
         if (baseCardElement instanceof Image)
@@ -227,7 +209,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         setSeparationConfig(context, viewGroup, image.GetSeparationStyle(), hostConfig.getImage().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
         viewGroup.addView(setHorizontalAlignment(context, imageView, image.GetHorizontalAlignment()));
-        return viewGroup;
+        return imageView;
     }
 
     private static ImageRenderer s_instance = null;

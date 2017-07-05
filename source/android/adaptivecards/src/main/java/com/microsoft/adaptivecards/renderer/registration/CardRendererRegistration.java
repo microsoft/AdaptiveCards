@@ -1,14 +1,18 @@
-package com.microsoft.adaptivecards.renderer;
+package com.microsoft.adaptivecards.renderer.registration;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
+import com.microsoft.adaptivecards.renderer.IBaseCardElementRenderer;
 import com.microsoft.adaptivecards.renderer.input.ChoiceSetInputRenderer;
 import com.microsoft.adaptivecards.renderer.input.DateInputRenderer;
 import com.microsoft.adaptivecards.renderer.input.NumberInputRenderer;
@@ -24,6 +28,7 @@ import com.microsoft.adaptivecards.renderer.readonly.ImageSetRenderer;
 import com.microsoft.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * Created by bekao on 4/28/2017.
@@ -80,7 +85,14 @@ public class CardRendererRegistration
         return m_typeToRendererMap.get(cardElementType.swigValue());
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, Object tag, BaseCardElementVector baseCardElementList, HostConfig hostConfig)
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            Object tag,
+            BaseCardElementVector baseCardElementList,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         long size;
         if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
@@ -108,10 +120,10 @@ public class CardRendererRegistration
                 continue;
             }
 
-            renderer.render(context, layout, cardElement, hostConfig);
+            renderer.render(context, fragmentManager, layout, cardElement, inputActionHandlerList, hostConfig);
         }
 
-        return viewGroup == null ? layout : viewGroup;
+        return layout;
     }
 
     private static CardRendererRegistration s_instance = null;

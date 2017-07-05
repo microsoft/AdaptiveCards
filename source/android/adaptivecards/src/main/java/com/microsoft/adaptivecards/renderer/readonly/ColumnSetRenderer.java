@@ -1,10 +1,13 @@
 package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.Column;
@@ -12,8 +15,10 @@ import com.microsoft.adaptivecards.objectmodel.ColumnSet;
 import com.microsoft.adaptivecards.objectmodel.ColumnVector;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
-import com.microsoft.adaptivecards.renderer.CardRendererRegistration;
+import com.microsoft.adaptivecards.renderer.registration.CardRendererRegistration;
 import com.microsoft.adaptivecards.renderer.IBaseCardElementRenderer;
+
+import java.util.Vector;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -36,7 +41,13 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         ColumnSet columnSet = null;
         if (baseCardElement instanceof ColumnSet)
@@ -57,17 +68,17 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
         GridLayout gridLayout = new GridLayout(context);
-        gridLayout.setTag(baseCardElement);
+        gridLayout.setTag(columnSet);
         gridLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
             //setSeparationConfig(context, gridLayout, columnSet.GetSeparationStyle(), hostConfig.getContainer().getSeparation(), hostConfig.getStrongSeparation(), false /* horizontal line */);
-            ((ColumnRenderer)columnRenderer).render(context, gridLayout, column, i, hostConfig);
+            ((ColumnRenderer)columnRenderer).render(context, fragmentManager, gridLayout, column, i, inputActionHandlerList, hostConfig);
         }
 
         viewGroup.addView(gridLayout);
-        return viewGroup;
+        return gridLayout;
     }
 
     private static ColumnSetRenderer s_instance = null;

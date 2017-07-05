@@ -1,19 +1,25 @@
 package com.microsoft.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.app.FragmentManager;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.util.TypedValue;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
+import com.microsoft.adaptivecards.renderer.inputhandler.TextInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.TextInput;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.TextInputStyle;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+
+import java.util.Vector;
 
 /**
  * Created by bekao on 6/25/2017.
@@ -21,7 +27,7 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 public class TextInputRenderer extends BaseCardElementRenderer
 {
-    private TextInputRenderer()
+    protected TextInputRenderer()
     {
     }
 
@@ -35,7 +41,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    private void setTextInputStyle(EditText editText, TextInputStyle textInputStyle)
+    protected void setTextInputStyle(EditText editText, TextInputStyle textInputStyle)
     {
         if (textInputStyle.swigValue() == TextInputStyle.Text.swigValue())
         {
@@ -59,8 +65,57 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
     }
 
+    protected EditText renderInternal(
+            Context context,
+            ViewGroup viewGroup,
+            BaseInputElement baseInputElement,
+            String value,
+            String placeHolder,
+            TextInputHandler textInputHandler,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
+    {
+        EditText editText = new EditText(context);
+        textInputHandler.setEditText(editText);
+        editText.setTag(textInputHandler);
+        editText.setTextColor(Color.BLACK);
+        inputActionHandlerList.add(textInputHandler);
+
+        if (!TextUtils.isEmpty(value))
+        {
+            editText.setText(value);
+        }
+
+        if (!TextUtils.isEmpty(placeHolder))
+        {
+            editText.setHint(placeHolder);
+        }
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                if (!hasFocus)
+                {
+                    IInputHandler inputHandler = (IInputHandler) v.getTag();
+                    inputHandler.validate();
+                }
+            }
+        });
+
+        viewGroup.addView(editText);
+        return editText;
+    }
+
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         TextInput textInput = null;
         if (baseCardElement instanceof TextInput)
@@ -72,10 +127,16 @@ public class TextInputRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to TextInput object model.");
         }
 
-        EditText editText = new EditText(context);
-        editText.setTag(baseCardElement);
-        editText.setText(textInput.GetValue());
-        editText.setHint(textInput.GetPlaceholder());
+        TextInputHandler textInputHandler = new TextInputHandler(textInput);
+        EditText editText = renderInternal(
+                context,
+                viewGroup,
+                textInput,
+                textInput.GetValue(),
+                textInput.GetPlaceholder(),
+                textInputHandler,
+                inputActionHandlerList,
+                hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
         setTextInputStyle(editText, textInput.GetTextInputStyle());
         setSeparationConfig(context, viewGroup, textInput.GetSeparationStyle(), hostConfig.getTextInput().getSeparation(), hostConfig.getTextInput().getSeparation(), true /* horizontal line */);
@@ -85,27 +146,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
         }
 
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener()
-        {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus)
-            {
-                EditText editText = (EditText) v;
-                if(!hasFocus)
-                {
-                    Toast.makeText(v.getContext(), "got the focus", Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    TypedValue typedValue = new TypedValue();
-                    v.getContext().getTheme().resolveAttribute(android.R.attr.editTextColor, typedValue, true);
-                    editText.setTextColor(typedValue.data);
-                }
-            }
-        });
-
-        viewGroup.addView(editText);
-        return viewGroup;
+        return editText;
     }
     
     private static TextInputRenderer s_instance = null;

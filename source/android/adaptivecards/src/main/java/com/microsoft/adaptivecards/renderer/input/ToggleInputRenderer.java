@@ -1,12 +1,16 @@
 package com.microsoft.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.ToggleInput;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+
+import java.util.Vector;
 
 /**
  * Created by bekao on 6/25/2017.
@@ -29,7 +33,13 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    public ViewGroup render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         ToggleInput toggleInput = null;
         if (baseCardElement instanceof ToggleInput)

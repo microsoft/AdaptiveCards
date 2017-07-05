@@ -6,10 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
-import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.SeparationConfig;
 import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
 
@@ -17,7 +14,7 @@ import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
  * Created by bekao on 5/11/2017.
  */
 
-public class BaseCardElementRenderer implements IBaseCardElementRenderer
+public abstract class BaseCardElementRenderer implements IBaseCardElementRenderer
 {
     protected static void setSeparationConfig(
             Context context,
@@ -69,10 +66,5 @@ public class BaseCardElementRenderer implements IBaseCardElementRenderer
                 horizontalLine ? (int)separationConfig.getSpacing() : 0 /* bottom */);
         view.setLayoutParams(params);
         viewGroup.addView(view);
-    }
-
-    @Override public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
-    {
-        return viewGroup;
     }
 }

@@ -19,22 +19,22 @@ To generate APK:
 TODO:
 1. Speech
 2. AdaptiveCard
-    a. actions
-    b. version
-    c. minVersion
-    d. fallbackText
+    a. version
+    b. minVersion
+    c. fallbackText
 3. TextBlock
     a. Font Family
 4. Image
-    a. Not sure why "bitmap = BitmapFactory.decodeStream(inputStream);" sometimes returns null
-    b. altText
+    a. altText
 5. Separation (ColumnSet, Column, ImageSet, FactSet, Input.Text)
     a. Horizontal line???
-    b. Input.Text (only contains one separation config - normal vs strong?)
+    b. Input.Text/Number,Date,Time,Toggle/ChoiceSet (only contains one separation config - normal vs strong?)
 6. SelectAction (Column, Image)
-8. Input.Number
-9. Input.Date
-10. Input.Time
-11. Input.Toggle
-12. Input.ChoiceSet
+7. HostConfig (Actions, Input.Text, Input.Number, Input.Date, Input.Time)
+8. Input.Toggle
+9. Input.ChoiceSet
 
+Questions:
+Action - HTTP:
+	- Should there be a callback to indicate success or failure and response data?
+	- HTTP Header is missing in shared model

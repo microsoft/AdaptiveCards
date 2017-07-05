@@ -1,12 +1,17 @@
 package com.microsoft.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
 import android.view.ViewGroup;
 
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.ChoiceSetInput;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+
+import java.util.Vector;
 
 /**
  * Created by bekao on 6/25/2017.
@@ -29,7 +34,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         ChoiceSetInput choiceSetInput = null;
         if (baseCardElement instanceof ChoiceSetInput)

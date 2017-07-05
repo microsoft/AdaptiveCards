@@ -1,5 +1,8 @@
 package com.microsoft.adaptivecards.adaptivecardssample;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,8 +17,13 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.renderer.actionhandler.IShowCardActionHandler;
+import com.microsoft.adaptivecards.renderer.actionhandler.ISubmitActionHandler;
 import com.microsoft.adaptivecards.objectmodel.*;
 import com.microsoft.adaptivecards.renderer.AdaptiveCardRenderer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,10 +33,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
+public class MainActivityAdaptiveCardsSample extends FragmentActivity
+    implements IShowCardActionHandler, ISubmitActionHandler
+{
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -39,8 +50,8 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         //populateSpinnerJSONFileList();
         setupTabs();
@@ -96,7 +107,7 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
             AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), adaptiveCard, new HostConfig()));
+            layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), getSupportFragmentManager(), adaptiveCard, this, this, new HostConfig()));
         }
         catch (java.io.IOException ex)
         {
@@ -179,6 +190,63 @@ public class MainActivityAdaptiveCardsSample extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_activity_adaptive_cards_sample, menu);
         return true;
+    }
+
+    @Override
+    public void onShowCard(ShowCardAction showCardAction, AdaptiveCard adaptiveCard)
+    {
+        ShowCardFragment showCardFragment = new ShowCardFragment();
+        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, this, new HostConfig());
+        Bundle args = new Bundle();
+        args.putString("title", showCardAction.GetTitle());
+        showCardFragment.setArguments(args);
+
+        FragmentManager fm = getSupportFragmentManager();
+        showCardFragment.show(fm, showCardAction.GetTitle());
+    }
+
+    public void showToast(String text, int duration)
+    {
+        class RunnableExtended implements Runnable
+        {
+            public RunnableExtended(Context context, String text, int duration)
+            {
+                m_context = context;
+                m_text = text;
+                m_duration = duration;
+            }
+
+            @Override
+            public void run()
+            {
+                Toast.makeText(m_context, m_text, m_duration).show();
+            }
+
+            private Context m_context;
+            private String m_text;
+            private int m_duration;
+        }
+
+        this.runOnUiThread(new RunnableExtended(this, text, duration));
+    }
+
+    @Override
+    public void onSubmit(SubmitAction submitAction, Map<String, String> keyValueMap)
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject();
+            for (Map.Entry<String, String> entry : keyValueMap.entrySet())
+            {
+                jsonObject.put(entry.getKey(), entry.getValue());
+            }
+
+            showToast("Submit: " + jsonObject.toString(), Toast.LENGTH_LONG);
+        }
+        catch (JSONException jsonExcep)
+        {
+            showToast("Submit: Failed to extract input content", Toast.LENGTH_LONG);
+        }
     }
 
     /*@Override

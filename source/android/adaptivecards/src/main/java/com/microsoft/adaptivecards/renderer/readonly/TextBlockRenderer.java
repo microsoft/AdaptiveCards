@@ -3,11 +3,14 @@ package com.microsoft.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.ColorsConfig;
 import com.microsoft.adaptivecards.objectmodel.FontSizesConfig;
@@ -22,6 +25,7 @@ import com.microsoft.adaptivecards.objectmodel.TextWeight;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * Created by bekao on 2/11/2017.
@@ -158,7 +162,13 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         TextBlock textBlock = null;
         if (baseCardElement instanceof TextBlock)
@@ -186,7 +196,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
 
         viewGroup.addView(textView);
-        return viewGroup;
+        return textView;
     }
 
     private static TextBlockRenderer s_instance = null;

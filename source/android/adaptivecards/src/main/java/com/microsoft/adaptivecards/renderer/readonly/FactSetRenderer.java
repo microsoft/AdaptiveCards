@@ -1,11 +1,14 @@
 package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.Fact;
 import com.microsoft.adaptivecards.objectmodel.FactVector;
@@ -13,6 +16,8 @@ import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.FactSet;
 import com.microsoft.adaptivecards.objectmodel.TextConfig;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+
+import java.util.Vector;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -49,7 +54,13 @@ public class FactSetRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         FactSet factSet = null;
         if (baseCardElement instanceof FactSet)
@@ -78,7 +89,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         }
 
         viewGroup.addView(gridLayout);
-        return viewGroup;
+        return gridLayout;
     }
 
     private static FactSetRenderer s_instance = null;

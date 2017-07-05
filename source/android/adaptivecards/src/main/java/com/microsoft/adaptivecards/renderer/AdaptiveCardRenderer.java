@@ -1,12 +1,22 @@
 package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.renderer.actionhandler.IShowCardActionHandler;
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
+import com.microsoft.adaptivecards.renderer.actionhandler.ISubmitActionHandler;
 import com.microsoft.adaptivecards.objectmodel.AdaptiveCard;
+import com.microsoft.adaptivecards.objectmodel.BaseActionElementVector;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElementVector;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
+import com.microsoft.adaptivecards.renderer.registration.ActionRendererRegistration;
+import com.microsoft.adaptivecards.renderer.registration.CardRendererRegistration;
+
+import java.util.Vector;
 
 /**
  * Created by bekao on 2/11/2017.
@@ -28,13 +38,19 @@ public class AdaptiveCardRenderer
         return s_instance;
     }
 
-    public ViewGroup render(Context context, AdaptiveCard adaptiveCard)
+    public View render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, IShowCardActionHandler showCardActionHandler, ISubmitActionHandler submitActionHandler)
     {
-        return render(context, adaptiveCard, defaultHostConfig);
+        return render(context, fragmentManager, adaptiveCard, showCardActionHandler, submitActionHandler, defaultHostConfig);
     }
 
     // AdaptiveCard ObjectModel is binded to the UI and Action
-    public ViewGroup render(Context context, AdaptiveCard adaptiveCard, HostConfig hostConfig)
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            AdaptiveCard adaptiveCard,
+            IShowCardActionHandler showCardActionHandler,
+            ISubmitActionHandler submitActionHandler,
+            HostConfig hostConfig)
     {
         if (hostConfig == null)
         {
@@ -42,18 +58,25 @@ public class AdaptiveCardRenderer
         }
 
         LinearLayout layout = new LinearLayout(context);
+        layout.setTag(adaptiveCard);
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         layout.setOrientation(LinearLayout.VERTICAL);
+        Vector<IInputHandler> inputHandlerList = new Vector<IInputHandler>();
 
         BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
-
-        if (baseCardElementList == null)
+        if (baseCardElementList == null || baseCardElementList.size() <= 0)
         {
             throw new IllegalArgumentException("Adaptive Card does not contain a body.");
         }
+        View view = CardRendererRegistration.getInstance().render(context, fragmentManager, layout, adaptiveCard, baseCardElementList, inputHandlerList, hostConfig);
 
-        ViewGroup viewGroup = CardRendererRegistration.getInstance().render(context, layout, adaptiveCard, baseCardElementList, hostConfig);
-        return viewGroup;
+        // Actions are optional
+        BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
+        if (baseActionElementList != null && baseActionElementList.size() > 0)
+        {
+            ActionRendererRegistration.getInstance().render(context, layout, adaptiveCard, baseActionElementList, inputHandlerList, showCardActionHandler, submitActionHandler, hostConfig);
+        }
+        return layout;
     }
 
     private static AdaptiveCardRenderer s_instance = null;

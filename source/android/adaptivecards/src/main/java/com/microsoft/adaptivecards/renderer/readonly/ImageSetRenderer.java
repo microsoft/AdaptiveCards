@@ -1,9 +1,12 @@
 package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
@@ -11,9 +14,11 @@ import com.microsoft.adaptivecards.objectmodel.Image;
 import com.microsoft.adaptivecards.objectmodel.ImageSet;
 import com.microsoft.adaptivecards.objectmodel.ImageSize;
 import com.microsoft.adaptivecards.objectmodel.ImageVector;
-import com.microsoft.adaptivecards.renderer.CardRendererRegistration;
+import com.microsoft.adaptivecards.renderer.registration.CardRendererRegistration;
 import com.microsoft.adaptivecards.renderer.layout.HorizontalFlowLayout;
 import com.microsoft.adaptivecards.renderer.IBaseCardElementRenderer;
+
+import java.util.Vector;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -36,7 +41,13 @@ public class ImageSetRenderer implements IBaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         ImageSet imageSet = null;
         if (baseCardElement instanceof ImageSet)
@@ -65,12 +76,12 @@ public class ImageSetRenderer implements IBaseCardElementRenderer
 
             // TODO: temporary - this will be handled in the object model
             image.SetImageSize(imageSize);
-            imageRenderer.render(context, horizFlowLayout, image, hostConfig);
+            imageRenderer.render(context, fragmentManager, horizFlowLayout, image, inputActionHandlerList, hostConfig);
         }
 
         viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        return viewGroup;
+        return horizFlowLayout;
     }
 
     private static ImageSetRenderer s_instance = null;
