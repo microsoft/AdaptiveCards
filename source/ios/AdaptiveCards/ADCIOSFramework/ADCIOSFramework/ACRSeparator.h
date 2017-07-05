@@ -9,16 +9,10 @@
 #import "HostConfig.h"
 #import "SharedAdaptiveCard.h"
 
-@interface ACRSeparator:UIView
-
-@property CGFloat dimension_width;
-@property CGFloat dimension_height;
-@property CGFloat lineWidth;
-@property UILayoutConstraintAxis axis;
-@property long    rgb;
+@interface ACRSeparator: UIView
 
 + (void) renderSeparation:(std::shared_ptr<AdaptiveCards::BaseCardElement> const &) elem
-             ForSuperView:(UIView* ) view
+             forSuperview:(UIView*) view
            withHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &) config;
 
 @end

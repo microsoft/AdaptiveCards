@@ -1,5 +1,5 @@
 //
-//  ACRSeparator.m
+//  ACRSeparator.mm
 //  ADCIOSFramework
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
@@ -13,65 +13,68 @@
 using namespace AdaptiveCards;
 
 @implementation ACRSeparator
+{
+    CGFloat width;
+    CGFloat height;
+    CGFloat lineWidth;
+    UILayoutConstraintAxis axis;
+    long rgb;
+}
 
 + (void) renderSeparation:(std::shared_ptr<BaseCardElement> const &) elem
-             ForSuperView:(UIView* ) view
+             forSuperview:(UIView*) view
            withHostConfig:(std::shared_ptr<HostConfig> const &) config
 {          
     ACRSeparator* separator = nil;
-    if(SeparationStyle::None != elem->GetSeparationStyle() and
+    if(SeparationStyle::None != elem->GetSeparationStyle() &&
        [view isKindOfClass: [UIStackView class] ])
     {
-        UIStackView* superView = (UIStackView* ) view;
+        UIStackView* superview = (UIStackView*) view;
         separator = [[ACRSeparator alloc] init];
         SeparationConfig* separatorHstCnfig = 
             [separator getSeparationConfig: elem
                        withHostConfig: config];
         if(separator && separatorHstCnfig)
         {
-            separator.dimension_width  = separatorHstCnfig->spacing;
-            separator.dimension_height = separatorHstCnfig->spacing;
-            try
+            separator->width  = separatorHstCnfig->spacing;
+            separator->height = separatorHstCnfig->spacing;
+            separator->rgb = std::stoul(separatorHstCnfig->lineColor.substr(1), nullptr, 16);
+            separator->lineWidth = separatorHstCnfig->lineThickness;
+            separator.backgroundColor = UIColor.clearColor;
+            [superview addArrangedSubview:separator];
+            
+            NSLayoutConstraint* constraint = nil;
+            separator->axis = superview.axis;
+            if(UILayoutConstraintAxisVertical == superview.axis)
             {
-                separator.rgb = std::stoul(separatorHstCnfig->lineColor.substr(1), nullptr, 16);
-                separator.lineWidth = separatorHstCnfig->lineThickness;
-                separator.backgroundColor = UIColor.clearColor;
-                [superView addArrangedSubview:separator];
-                
-                NSLayoutConstraint* constraint = nil;
-                separator.axis = superView.axis;
-                if(UILayoutConstraintAxisVertical == superView.axis)
-                {
-                    constraint = [NSLayoutConstraint constraintWithItem: separator
-                                                              attribute: NSLayoutAttributeWidth
-                                                              relatedBy: NSLayoutRelationEqual
-                                                                 toItem: superView
-                                                              attribute: NSLayoutAttributeWidth
-                                                             multiplier: 1
-                                                               constant: 0];
-                    [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-                    [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-                    [separator setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-                    [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-                }
-                else
-                {
-                    constraint = [NSLayoutConstraint constraintWithItem: separator
-                                                              attribute: NSLayoutAttributeHeight
-                                                              relatedBy: NSLayoutRelationEqual
-                                                                 toItem: superView
-                                                              attribute: NSLayoutAttributeHeight
-                                                             multiplier: 1
-                                                               constant: 0];
-                    [separator setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-                    [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-                    [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-                    [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-                }
-                
-                if(constraint) [superView addConstraint:constraint];
+                constraint = [NSLayoutConstraint constraintWithItem: separator
+                                                          attribute: NSLayoutAttributeWidth
+                                                          relatedBy: NSLayoutRelationEqual
+                                                             toItem: superview
+                                                          attribute: NSLayoutAttributeWidth
+                                                         multiplier: 1
+                                                           constant: 0];
+                [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+                [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+                [separator setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+                [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
             }
-            catch(...) {;};
+            else
+            {
+                constraint = [NSLayoutConstraint constraintWithItem: separator
+                                                          attribute: NSLayoutAttributeHeight
+                                                          relatedBy: NSLayoutRelationEqual
+                                                             toItem: superview
+                                                          attribute: NSLayoutAttributeHeight
+                                                         multiplier: 1
+                                                           constant: 0];
+                [separator setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+                [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+                [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+                [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            }
+            
+            if(constraint) [superview addConstraint:constraint];
         }
     }
 }
@@ -133,14 +136,14 @@ using namespace AdaptiveCards;
 - (void) drawRect: (CGRect) rect
 {
     CGPoint orig, dest;
-    if(UILayoutConstraintAxisVertical == self.axis)
+    if(UILayoutConstraintAxisVertical == self->axis)
     { 
         orig = CGPointMake(rect.origin.x, rect.origin.y + rect.size.height / 2.0);
         dest = CGPointMake(rect.origin.x + rect.size.width, 
                                           rect.origin.y + rect.size.height / 2.0);
     }
     else
-    {
+    t{
         orig = CGPointMake(rect.origin.x + rect.size.width / 2.0, rect.origin.y);
         dest = CGPointMake(rect.origin.x + rect.size.width / 2.0, 
                                              rect.origin.y + rect.size.height);
@@ -151,20 +154,20 @@ using namespace AdaptiveCards;
     {
         [path moveToPoint:    orig];
         [path addLineToPoint: dest];
-        path.lineWidth =      self.lineWidth;
+        path.lineWidth =      self->lineWidth;
  
-        [[UIColor colorWithRed: ((self.rgb & 0x00FF0000) >> 16) / 255.0
-                         green: ((self.rgb & 0x0000FF00) >> 8)  / 255.0
-                          blue: ((self.rgb & 0x000000FF))       / 255.0
-                         alpha: ((self.rgb & 0xFF000000) >> 24) / 255.0] setStroke];
+        [[UIColor colorWithRed: ((self->rgb & 0x00FF0000) >> 16) / 255.0
+                         green: ((self->rgb & 0x0000FF00) >> 8)  / 255.0
+                          blue: ((self->rgb & 0x000000FF))       / 255.0
+                         alpha: ((self->rgb & 0xFF000000) >> 24) / 255.0] setStroke];
  
-     [path stroke];
- }
+         [path stroke];
+     }
 }
 
 - (CGSize) intrinsicContentSize
 {
-    return CGSizeMake(_dimension_width, _dimension_height);
+    return CGSizeMake(width, height);
 }
 
 @end

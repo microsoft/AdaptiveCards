@@ -44,7 +44,7 @@
     NSMutableArray* constraints = [[NSMutableArray alloc] init];
     for(std::shared_ptr<Column> column: columns)
     {
-        [ACRSeparator renderSeparation:column ForSuperView: columnSetView withHostConfig:config];
+        [ACRSeparator renderSeparation:column forSuperview: columnSetView withHostConfig:config];
 
         curView = (UIStackView* )[columRenderer render: columnSetView withCardElem: column andHostConfig: config];
         try
