@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.microsoft.adaptivecards.renderer.http.HttpRequestHelper;
 import com.microsoft.adaptivecards.renderer.http.HttpRequestResult;
@@ -130,7 +131,7 @@ public class HttpActionRenderer extends BaseActionElementRenderer
                 }
                 else if (method.equals(HttpRequestHelper.HTTP_METHOD_PUT))
                 {
-                    return new HttpRequestResult<byte[]>(HttpRequestHelper.post(urlDataBinded, requestProperty, bodyDataBinded));
+                    return new HttpRequestResult<byte[]>(HttpRequestHelper.put(urlDataBinded, requestProperty, bodyDataBinded));
                 }
                 else
                 {

@@ -65,7 +65,7 @@ public class NumberInputRenderer extends TextInputRenderer
                 inputActionHandlerList,
                 hostConfig);
         editText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-        setSeparationConfig(context, viewGroup, numberInput.GetSeparationStyle(), hostConfig.getNumberInput().getSeparation(), hostConfig.getNumberInput().getSeparation(), true /* horizontal line */);
+        setSeparationConfig(context, viewGroup, numberInput.GetSeparationStyle(), hostConfig.getNumberInput().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
 
         return editText;
     }
