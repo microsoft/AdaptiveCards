@@ -105,6 +105,7 @@ enum class AdaptiveCardSchemaKey
     Padding,
     Placeholder,
     Right,
+    SelectAction,
     Separation,
     ShowActionMode,
     ShowCard,

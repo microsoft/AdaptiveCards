@@ -163,6 +163,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void Container_SetContainerStyle(long jarg1, Container jarg1_, int jarg2);
   public final static native long Container_Deserialize(long jarg1);
   public final static native long Container_DeserializeFromString(String jarg1);
+  public final static native long Container_GetSelectAction(long jarg1, Container jarg1_);
+  public final static native void Container_SetSelectAction(long jarg1, Container jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long Container_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Container(long jarg1);
   public final static native long new_TextBlock__SWIG_0();
@@ -205,6 +207,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void Image_SetAltText(long jarg1, Image jarg1_, String jarg2);
   public final static native int Image_GetHorizontalAlignment(long jarg1, Image jarg1_);
   public final static native void Image_SetHorizontalAlignment(long jarg1, Image jarg1_, int jarg2);
+  public final static native long Image_GetSelectAction(long jarg1, Image jarg1_);
+  public final static native void Image_SetSelectAction(long jarg1, Image jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long Image_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Image(long jarg1);
   public final static native long new_ImageSet__SWIG_0();
@@ -229,6 +233,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String Column_GetSize(long jarg1, Column jarg1_);
   public final static native void Column_SetSize(long jarg1, Column jarg1_, String jarg2);
   public final static native long Column_GetItems__SWIG_0(long jarg1, Column jarg1_);
+  public final static native long Column_GetSelectAction(long jarg1, Column jarg1_);
+  public final static native void Column_SetSelectAction(long jarg1, Column jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long Column_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Column(long jarg1);
   public final static native long new_ColumnSet__SWIG_0();
