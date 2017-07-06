@@ -1,6 +1,7 @@
 package com.microsoft.adaptivecards.renderer.inputhandler;
 
 import android.support.v4.app.FragmentManager;
+import android.widget.EditText;
 
 import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
 import com.microsoft.adaptivecards.objectmodel.DateInput;
@@ -34,19 +35,18 @@ public class DateInputHandler extends TextInputHandler
         super.internalValidate();
         DateInput dateInput = (DateInput) m_baseInputElement;
 
-        String valueStr = m_editText.getText().toString();
-        Date value = s_simpleDateFormat.parse(m_editText.getText().toString());
-        String minDateStr = dateInput.GetMin();
+        EditText editText = getEditText();
+        Date value = s_simpleDateFormat.parse(editText.getText().toString());
         Date minDate = s_simpleDateFormat.parse(dateInput.GetMin());
         if (value.compareTo(minDate) < 0)
         {
-            throw new IllegalArgumentException("Input, " + dateInput.GetId() + ", contains value, " + m_editText.getText().toString() + ", that is less than the minimum value, " + dateInput.GetMin() + ", allowed.");
+            throw new IllegalArgumentException("Input, " + dateInput.GetId() + ", contains value, " + editText.getText().toString() + ", that is less than the minimum value, " + dateInput.GetMin() + ", allowed.");
         }
 
         Date maxDate = s_simpleDateFormat.parse(dateInput.GetMax());
         if (value.compareTo(maxDate) > 0)
         {
-            throw new IllegalArgumentException("Input, " + dateInput.GetId() + ", contains value, " + m_editText.getText().toString() + ", that is greater than the maximum value, " + dateInput.GetMax() + ", allowed.");
+            throw new IllegalArgumentException("Input, " + dateInput.GetId() + ", contains value, " + editText.getText().toString() + ", that is greater than the maximum value, " + dateInput.GetMax() + ", allowed.");
         }
     }
 

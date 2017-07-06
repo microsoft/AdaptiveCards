@@ -76,7 +76,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             HostConfig hostConfig)
     {
         EditText editText = new EditText(context);
-        textInputHandler.setEditText(editText);
+        textInputHandler.setView(editText);
         editText.setTag(textInputHandler);
         editText.setTextColor(Color.BLACK);
         inputActionHandlerList.add(textInputHandler);

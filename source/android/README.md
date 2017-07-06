@@ -38,3 +38,6 @@ Questions:
 Action - HTTP:
 	- Should there be a callback to indicate success or failure and response data?
 	- HTTP Header is missing in shared model
+
+Input.Toggle - what is the difference in behavior between expanded vs compact? (ChoiceInputStyle)
+Input.ChoiceSet - style is listed twice

@@ -1,6 +1,7 @@
 package com.microsoft.adaptivecards.renderer.inputhandler;
 
 import android.support.v4.app.FragmentManager;
+import android.widget.EditText;
 
 import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
 import com.microsoft.adaptivecards.objectmodel.TimeInput;
@@ -34,17 +35,18 @@ public class TimeInputHandler extends TextInputHandler
         super.internalValidate();
         TimeInput timeInput = (TimeInput) m_baseInputElement;
 
-        Date value = s_simpleDateFormat.parse(m_editText.getText().toString());
+        EditText editText = (EditText) getEditText();
+        Date value = s_simpleDateFormat.parse(editText.getText().toString());
         Date minTime = s_simpleDateFormat.parse(timeInput.GetMin());
         if (value.compareTo(minTime) < 0)
         {
-            throw new IllegalArgumentException("Input, " + timeInput.GetId() + ", contains value, " + m_editText.getText().toString() + ", that is less than the minimum value, " + timeInput.GetMin() + ", allowed.");
+            throw new IllegalArgumentException("Input, " + timeInput.GetId() + ", contains value, " + editText.getText().toString() + ", that is less than the minimum value, " + timeInput.GetMin() + ", allowed.");
         }
 
         Date maxTime = s_simpleDateFormat.parse(timeInput.GetMax());
         if (value.compareTo(maxTime) > 0)
         {
-            throw new IllegalArgumentException("Input, " + timeInput.GetId() + ", contains value, " + m_editText.getText().toString() + ", that is greater than the maximum value, " + timeInput.GetMax() + ", allowed.");
+            throw new IllegalArgumentException("Input, " + timeInput.GetId() + ", contains value, " + editText.getText().toString() + ", that is greater than the maximum value, " + timeInput.GetMax() + ", allowed.");
         }
     }
 

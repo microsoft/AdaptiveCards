@@ -1,14 +1,19 @@
 package com.microsoft.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.ToggleInput;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
+import com.microsoft.adaptivecards.renderer.inputhandler.ToggleInputHandler;
 
 import java.util.Vector;
 
@@ -33,7 +38,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public ViewGroup render(
+    public View render(
             Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
@@ -51,7 +56,30 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to ToggleInput object model.");
         }
 
-        return viewGroup;
+        ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
+        CheckBox checkBox = new CheckBox(context);
+        toggleInputHandler.setView(checkBox);
+        checkBox.setTag(toggleInputHandler);
+        checkBox.setTextColor(Color.BLACK);
+        inputActionHandlerList.add(toggleInputHandler);
+
+        if (TextUtils.isEmpty(toggleInput.GetValueOn()))
+        {
+            throw new IllegalArgumentException("Toggle Input, " + toggleInput.GetId() + ", cannot contain empty/null 'On' value");
+        }
+
+        if (TextUtils.isEmpty(toggleInput.GetValueOff()))
+        {
+            throw new IllegalArgumentException("Toggle Input, " + toggleInput.GetId() + ", cannot contain empty/null 'Off' value");
+        }
+
+        if (!TextUtils.isEmpty(toggleInput.GetValue()) && toggleInput.GetValue().equals(toggleInput.GetValueOn()))
+        {
+            checkBox.setChecked(true);
+        }
+
+        viewGroup.addView(checkBox);
+        return checkBox;
     }
 
     private static ToggleInputRenderer s_instance = null;
