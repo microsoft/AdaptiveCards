@@ -60,7 +60,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         CheckBox checkBox = new CheckBox(context);
         toggleInputHandler.setView(checkBox);
         checkBox.setTag(toggleInputHandler);
-        checkBox.setTextColor(Color.BLACK);
+        checkBox.setText(toggleInput.GetTitle());
         inputActionHandlerList.add(toggleInputHandler);
 
         if (TextUtils.isEmpty(toggleInput.GetValueOn()))

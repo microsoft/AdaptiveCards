@@ -1,28 +1,29 @@
 package com.microsoft.adaptivecards.renderer.inputhandler;
 
-import android.graphics.Color;
-import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.microsoft.adaptivecards.objectmodel.BaseInputElement;
-import com.microsoft.adaptivecards.objectmodel.ToggleInput;
+import com.microsoft.adaptivecards.objectmodel.ChoiceSetInput;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by bekao on 7/5/2017.
  */
 
-public class ToggleInputHandler extends BaseInputHandler
+public class RadioGroupInputHandler extends BaseInputHandler
 {
-    public ToggleInputHandler(BaseInputElement baseInputElement)
+    public RadioGroupInputHandler(BaseInputElement baseInputElement)
     {
         super(baseInputElement);
     }
 
-    protected CheckBox getCheckBox()
+    protected RadioGroup getRadioGroup()
     {
-        return (CheckBox) m_view;
+        return (RadioGroup) m_view;
     }
 
     @Override
@@ -47,9 +48,10 @@ public class ToggleInputHandler extends BaseInputHandler
     public Exception getData(Map<String, String> data)
     {
         // no need to validate
-        ToggleInput toggleInput = (ToggleInput) m_baseInputElement;
-        CheckBox checkBox = getCheckBox();
-        data.put(m_baseInputElement.GetId(), checkBox.isChecked() ? toggleInput.GetValueOn() : toggleInput.GetValueOff());
+        ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
+        int index = getRadioGroup().getCheckedRadioButtonId();
+        data.put(m_baseInputElement.GetId(), choiceSetInput.GetChoices().get(index).GetValue());
         return null;
     }
+
 }

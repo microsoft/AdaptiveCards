@@ -41,19 +41,15 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     implements IShowCardActionHandler, ISubmitActionHandler
 {
 
-    // Used to load the 'native-lib' library on application startup.
+    // Used to load the 'adaptivecards-native-lib' library on application startup.
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("adaptivecards-native-lib");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
-        //populateSpinnerJSONFileList();
         setupTabs();
 
         // Add text change handler
@@ -248,27 +244,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             showToast("Submit: Failed to extract input content", Toast.LENGTH_LONG);
         }
     }
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
 
     private List<File> m_jsonFileList = new ArrayList<File>();
 }
