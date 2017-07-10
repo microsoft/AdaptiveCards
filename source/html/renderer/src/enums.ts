@@ -2,6 +2,8 @@ export type Size = "auto" | "stretch" | "small" | "medium" | "large";
 
 export type TextSize = "small" | "normal" | "medium" | "large" | "extraLarge";
 
+export type Spacing = "none" | "small" | "default" | "medium" | "large" | "extraLarge";
+
 export type TextWeight = "lighter" | "normal" | "bolder";
 
 export type TextColor = "dark" | "light" | "accent" | "good" | "warning" | "attention";

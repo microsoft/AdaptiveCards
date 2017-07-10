@@ -89,12 +89,18 @@ export abstract class HostContainer {
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
-            supportsInteractivity: true,
-            strongSeparation: {
-                spacing: 40,
-                lineThickness: 1,
-                lineColor: "#EEEEEE"
+            spacing: {
+                small: 3,
+                default: 8,
+                medium: 20,
+                large: 30,
+                extraLarge: 40
             },
+            separator: {
+                lineThickness: 1,
+                lineColor: "#EEEEEE"        
+            },
+            supportsInteractivity: true,
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
@@ -141,9 +147,7 @@ export abstract class HostContainer {
             },
             actions: {
                 maxActions: 5,
-                separation: {
-                    spacing: 20
-                },
+                spacing: "default",
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
@@ -169,9 +173,6 @@ export abstract class HostContainer {
                 }
             },
             container: {
-                separation: {
-                    spacing: 20
-                },
                 normal: {
                 },
                 emphasis: {
@@ -192,41 +193,16 @@ export abstract class HostContainer {
                 }
             },
             textBlock: {
-                color: "dark",
-                separations: {
-                    small: {
-                        spacing: 20,
-                    },
-                    normal: {
-                        spacing: 20
-                    },
-                    medium: {
-                        spacing: 20
-                    },
-                    large: {
-                        spacing: 20
-                    },
-                    extraLarge: {
-                        spacing: 20
-                    }
-                }
+                color: "dark"
             },
             image: {
-                size: "medium",
-                separation: {
-                    spacing: 20
-                }
+                size: "medium"
             },
             imageSet: {
                 imageSize: "medium",
-                separation: {
-                    spacing: 20
-                }
+                maxImageHeight: 100
             },
             factSet: {
-                separation: {
-                    spacing: 20
-                },
                 title: {
                     color: "dark",
                     size: "normal",
@@ -243,21 +219,6 @@ export abstract class HostContainer {
                     wrap: true
                 },
                 spacing: 10
-            },
-            input: {
-                separation: {
-                    spacing: 20
-                }
-            },
-            columnSet: {
-                separation: {
-                    spacing: 20
-                }
-            },
-            column: {
-                separation: {
-                    spacing: 20
-                }
             }
         };
     }

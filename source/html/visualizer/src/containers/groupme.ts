@@ -22,12 +22,18 @@ export class GroupMeContainer extends HostContainer {
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
-            supportsInteractivity: false,
-            strongSeparation: {
-                spacing: 20,
-                lineThickness: 1,
-                lineColor: "#EEEEEE"
+            spacing: {
+                small: 3,
+                default: 8,
+                medium: 20,
+                large: 30,
+                extraLarge: 40
             },
+            separator: {
+                lineThickness: 1,
+                lineColor: "#EEEEEE"        
+            },
+            supportsInteractivity: false,
             fontFamily: "'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif",
             fontSizes: {
                 small: 13,
@@ -75,9 +81,7 @@ export class GroupMeContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                separation: {
-                    spacing: 10
-                },
+                spacing: "default",
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
@@ -103,9 +107,6 @@ export class GroupMeContainer extends HostContainer {
                 }
             },
             container: {
-                separation: {
-                    spacing: 10
-                },
                 normal: {
                 },
                 emphasis: {
@@ -126,41 +127,16 @@ export class GroupMeContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: "dark",
-                separations: {
-                    small: {
-                        spacing: 10,
-                    },
-                    normal: {
-                        spacing: 10
-                    },
-                    medium: {
-                        spacing: 10
-                    },
-                    large: {
-                        spacing: 10
-                    },
-                    extraLarge: {
-                        spacing: 10
-                    }
-                }
+                color: "dark"
             },
             image: {
-                size: "medium",
-                separation: {
-                    spacing: 10
-                }
+                size: "medium"
             },
             imageSet: {
                 imageSize: "medium",
-                separation: {
-                    spacing: 10
-                }
+                maxImageHeight: 100
             },
             factSet: {
-                separation: {
-                    spacing: 10
-                },
                 title: {
                     color: "dark",
                     size: "normal",
@@ -177,21 +153,6 @@ export class GroupMeContainer extends HostContainer {
                     wrap: true
                 },
                 spacing: 10
-            },
-            input: {
-                separation: {
-                    spacing: 10
-                }
-            },
-            columnSet: {
-                separation: {
-                    spacing: 10
-                }
-            },
-            column: {
-                separation: {
-                    spacing: 10
-                }
             }
         };
     }

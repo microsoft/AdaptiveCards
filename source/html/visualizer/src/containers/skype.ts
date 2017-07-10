@@ -38,12 +38,18 @@ export class SkypeContainer extends HostContainer {
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
-            supportsInteractivity: true,
-            strongSeparation: {
-                spacing: 20,
-                lineThickness: 1,
-                lineColor: "#EEEEEE"
+            spacing: {
+                small: 3,
+                default: 8,
+                medium: 20,
+                large: 30,
+                extraLarge: 40
             },
+            separator: {
+                lineThickness: 1,
+                lineColor: "#EEEEEE"        
+            },
+            supportsInteractivity: true,
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
@@ -90,9 +96,7 @@ export class SkypeContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                separation: {
-                    spacing: 20
-                },
+                spacing: "default",
                 buttonSpacing: 10,
                 showCard: {
                     actionMode: "popup",
@@ -118,9 +122,6 @@ export class SkypeContainer extends HostContainer {
                 }
             },
             container: {
-                separation: {
-                    spacing: 5
-                },
                 normal: {
                 },
                 emphasis: {
@@ -141,41 +142,16 @@ export class SkypeContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: "dark",
-                separations: {
-                    small: {
-                        spacing: 5,
-                    },
-                    normal: {
-                        spacing: 5
-                    },
-                    medium: {
-                        spacing: 5
-                    },
-                    large: {
-                        spacing: 5
-                    },
-                    extraLarge: {
-                        spacing: 5
-                    }
-                }
+                color: "dark"
             },
             image: {
-                size: "medium",
-                separation: {
-                    spacing: 5
-                }
+                size: "medium"
             },
             imageSet: {
                 imageSize: "medium",
-                separation: {
-                    spacing: 5
-                }
+                maxImageHeight: 100
             },
             factSet: {
-                separation: {
-                    spacing: 5
-                },
                 title: {
                     color: "dark",
                     size: "normal",
@@ -192,21 +168,6 @@ export class SkypeContainer extends HostContainer {
                     wrap: true,
                 },
                 spacing: 5
-            },
-            input: {
-                separation: {
-                    spacing: 5
-                }
-            },
-            columnSet: {
-                separation: {
-                    spacing: 5
-                }
-            },
-            column: {
-                separation: {
-                    spacing: 5
-                }
             }
         };
     }
