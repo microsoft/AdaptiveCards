@@ -32,12 +32,18 @@ export class LiveTileContainer extends HostContainer {
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
-            supportsInteractivity: false,
-            strongSeparation: {
-                spacing: 5,
-                lineThickness: 1,
-                lineColor: "#EEEEEE"
+            spacing: {
+                small: 3,
+                default: 8,
+                medium: 20,
+                large: 30,
+                extraLarge: 40
             },
+            separator: {
+                lineThickness: 1,
+                lineColor: "#EEEEEE"        
+            },
+            supportsInteractivity: false,
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
@@ -84,9 +90,7 @@ export class LiveTileContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                separation: {
-                    spacing: 0
-                },
+                spacing: "default",
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
@@ -112,9 +116,6 @@ export class LiveTileContainer extends HostContainer {
                 }
             },
             container: {
-                separation: {
-                    spacing: 0
-                },
                 normal: {
                 },
                 emphasis: {
@@ -135,41 +136,16 @@ export class LiveTileContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: "light",
-                separations: {
-                    small: {
-                        spacing: 0,
-                    },
-                    normal: {
-                        spacing: 0
-                    },
-                    medium: {
-                        spacing: 0
-                    },
-                    large: {
-                        spacing: 0
-                    },
-                    extraLarge: {
-                        spacing: 0
-                    }
-                }
+                color: "light"
             },
             image: {
-                size: "medium",
-                separation: {
-                    spacing: 0
-                }
+                size: "medium"
             },
             imageSet: {
                 imageSize: "medium",
-                separation: {
-                    spacing: 0
-                }
+                maxImageHeight: 100
             },
             factSet: {
-                separation: {
-                    spacing: 0
-                },
                 title: {
                     color: "light",
                     size: "normal",
@@ -186,21 +162,6 @@ export class LiveTileContainer extends HostContainer {
                     wrap: true,
                 },
                 spacing: 10
-            },
-            input: {
-                separation: {
-                    spacing: 0
-                }
-            },
-            columnSet: {
-                separation: {
-                    spacing: 0
-                }
-            },
-            column: {
-                separation: {
-                    spacing: 0
-                }
             }
         };
     }

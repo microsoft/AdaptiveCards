@@ -22,12 +22,18 @@ export class SMSContainer extends HostContainer {
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
-            supportsInteractivity: false,
-            strongSeparation: {
-                spacing: 20,
-                lineThickness: 1,
-                lineColor: "#FF707070"
+            spacing: {
+                small: 3,
+                default: 8,
+                medium: 20,
+                large: 30,
+                extraLarge: 40
             },
+            separator: {
+                lineThickness: 1,
+                lineColor: "#EEEEEE"        
+            },
+            supportsInteractivity: false,
             fontFamily: "Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;",
             fontSizes: {
                 small: 12,
@@ -78,9 +84,7 @@ export class SMSContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                separation: {
-                    spacing: 8
-                },
+                spacing: "default",
                 buttonSpacing: 10,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
@@ -106,9 +110,6 @@ export class SMSContainer extends HostContainer {
                 }
             },
             container: {
-                separation: {
-                    spacing: 8
-                },
                 normal: {
                 },
                 emphasis: {
@@ -129,41 +130,16 @@ export class SMSContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: "dark",
-                separations: {
-                    small: {
-                        spacing: 8,
-                    },
-                    normal: {
-                        spacing: 8
-                    },
-                    medium: {
-                        spacing: 8
-                    },
-                    large: {
-                        spacing: 8
-                    },
-                    extraLarge: {
-                        spacing: 8
-                    }
-                }
+                color: "dark"
             },
             image: {
-                size: "medium",
-                separation: {
-                    spacing: 8
-                }
+                size: "medium"
             },
             imageSet: {
                 imageSize: "medium",
-                separation: {
-                    spacing: 8
-                }
+                maxImageHeight: 100
             },
             factSet: {
-                separation: {
-                    spacing: 8
-                },
                 title: {
                     color: "dark",
                     size: "normal",
@@ -180,21 +156,6 @@ export class SMSContainer extends HostContainer {
                     wrap: true
                 },
                 spacing: 10
-            },
-            input: {
-                separation: {
-                    spacing: 8
-                }
-            },
-            columnSet: {
-                separation: {
-                    spacing: 8
-                }
-            },
-            column: {
-                separation: {
-                    spacing: 8
-                }
             }
         };
     }

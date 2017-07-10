@@ -37,12 +37,43 @@ function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<str
     return true;
 }
 
+export function computeSpacing(spacing: Enums.Spacing): number {
+    switch (spacing) {
+        case "small":
+            return hostConfig.spacing.small;
+        case "default":
+            return hostConfig.spacing.default;
+        case "medium":
+            return hostConfig.spacing.medium;
+        case "large":
+            return hostConfig.spacing.large;
+        case "extraLarge":
+            return hostConfig.spacing.extraLarge;
+        default:
+            return 0;
+    }
+}
+
 export interface IValidationError {
     error: Enums.ValidationError,
     message: string;
 }
 
 export abstract class CardElement {
+    static createElementInstance(typeName: string): CardElement {
+        var element = AdaptiveCard.elementTypeRegistry.createInstance(typeName);
+
+        if (!element) {
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.UnknownElementType,
+                    message: "Unknown element type: " + typeName
+                });
+        }
+
+        return element;
+    }
+
     private _parent: CardElement = null;
 
     private internalGetNonZeroPadding(element: CardElement, padding: HostConfig.ISpacingDefinition) {
@@ -95,10 +126,10 @@ export abstract class CardElement {
 
     speak: string;
     horizontalAlignment: Enums.HorizontalAlignment = "left";
-    separation: Enums.Separation = "default";
+    spacing: Enums.Spacing = "default";
+    separator: boolean = false;
 
     abstract getJsonTypeName(): string;
-    abstract getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition;
     abstract renderSpeech(): string;
 
     getNonZeroPadding(): HostConfig.ISpacingDefinition {
@@ -120,7 +151,8 @@ export abstract class CardElement {
     parse(json: any) {
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
-        this.separation = Utils.getValueOrDefault<Enums.Separation>(json["separation"], "default");
+        this.spacing = Utils.getValueOrDefault<Enums.Spacing>(json["spacing"], "default");
+        this.separator = json["separator"];
     }
 
     validate(): Array<IValidationError> {
@@ -130,7 +162,7 @@ export abstract class CardElement {
     render(): HTMLElement {
         let renderedElement = this.internalRender();
 
-        if (renderedElement != null) {
+        if (renderedElement) {
             renderedElement.style.boxSizing = "border-box";
         }
 
@@ -330,21 +362,6 @@ export class TextBlock extends CardElement {
         return "TextBlock";
     }
 
-    getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        switch (this.size) {
-            case "small":
-                return hostConfig.textBlock.separations.small;
-            case "medium":
-                return hostConfig.textBlock.separations.medium;
-            case "large":
-                return hostConfig.textBlock.separations.large;
-            case "extraLarge":
-                return hostConfig.textBlock.separations.extraLarge;
-            default:
-                return hostConfig.textBlock.separations.normal;
-        }
-    }
-
     renderSpeech(): string {
         if (this.speak != null)
             return this.speak + '\n';
@@ -410,7 +427,7 @@ export class FactSet extends CardElement {
                 textBlock.isSubtle = hostConfig.factSet.title.isSubtle;
                 textBlock.weight = hostConfig.factSet.title.weight;
                 textBlock.wrap = hostConfig.factSet.title.wrap;
-                textBlock.separation = "none";
+                textBlock.spacing = "none";
 
                 Utils.appendChild(tdElement, textBlock.render());
                 Utils.appendChild(trElement, tdElement);
@@ -426,7 +443,7 @@ export class FactSet extends CardElement {
                 textBlock.isSubtle = hostConfig.factSet.value.isSubtle;
                 textBlock.weight = hostConfig.factSet.value.weight;
                 textBlock.wrap = hostConfig.factSet.value.wrap;
-                textBlock.separation = "none";
+                textBlock.spacing = "none";
 
                 Utils.appendChild(tdElement, textBlock.render());
                 Utils.appendChild(trElement, tdElement);
@@ -441,10 +458,6 @@ export class FactSet extends CardElement {
 
     getJsonTypeName(): string {
         return "FactSet";
-    }
-
-    getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return hostConfig.factSet.separation;
     }
 
     parse(json: any) {
@@ -571,10 +584,6 @@ export class Image extends CardElement {
         return "Image";
     }
 
-    getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return hostConfig.image.separation;
-    }
-
     parse(json: any) {
         super.parse(json);
 
@@ -616,7 +625,7 @@ export class ImageSet extends CardElement {
                 renderedImage.style.display = "inline-flex";
                 renderedImage.style.margin = "0px";
                 renderedImage.style.marginRight = "10px";
-                renderedImage.style.height = "100px";
+                renderedImage.style.maxHeight = hostConfig.imageSet.maxImageHeight + "px";
 
                 Utils.appendChild(element, renderedImage);
             }
@@ -629,10 +638,6 @@ export class ImageSet extends CardElement {
 
     getJsonTypeName(): string {
         return "ImageSet";
-    }
-
-    getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return hostConfig.imageSet.separation;
     }
 
     parse(json: any) {
@@ -689,10 +694,6 @@ export abstract class Input extends CardElement implements Utils.IInput {
     defaultValue: string;
 
     abstract get value(): string;
-
-    getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return hostConfig.input.separation;
-    }
 
     validate(): Array<IValidationError> {
         if (!this.id) {
@@ -1543,7 +1544,7 @@ class ActionCollection {
 
             this._actionCardContainer.style.paddingLeft = padding.left + "px";
             this._actionCardContainer.style.paddingRight = padding.right + "px";
-
+            
             this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
             this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
 
@@ -1792,10 +1793,6 @@ export class ActionSet extends CardElement {
         return "ActionSet";
     }
 
-    getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return hostConfig.actions.separation;
-    }
-
     validate(): Array<IValidationError> {
         return this._actionCollection.validate();
     }
@@ -1891,11 +1888,17 @@ export abstract class ContainerBase extends CardElement {
             for (var i = 0; i < this._items.length; i++) {
                 var renderedElement = isElementAllowed(this._items[i], this.getForbiddenElementTypes()) ? this._items[i].render() : null;
 
-                if (renderedElement != null) {
-                    if (renderedElementCount > 0 && this._items[i].separation != "none") {
-                        var separationDefinition = this._items[i].separation == "default" ? this._items[i].getDefaultSeparationDefinition() : hostConfig.strongSeparation;
-
-                        Utils.appendChild(this._element, Utils.renderSeparation(separationDefinition, "vertical"));
+                if (renderedElement) {
+                    if (renderedElementCount > 0) {
+                        Utils.appendChild(
+                            this._element,
+                            Utils.renderSeparation(
+                                {
+                                    spacing: computeSpacing(this._items[i].spacing),
+                                    lineThickness: this._items[i].separator ? hostConfig.separator.lineThickness : null,
+                                    lineColor: this._items[i].separator ? hostConfig.separator.lineColor : null
+                                },
+                                "vertical"));
                     }
 
                     Utils.appendChild(this._element, renderedElement);
@@ -1923,10 +1926,6 @@ export abstract class ContainerBase extends CardElement {
 
     isLastItem(item: CardElement): boolean {
         return this._items.indexOf(item) == (this._items.length - 1);
-    }
-
-    getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return hostConfig.container.separation;
     }
 
     validate(): Array<IValidationError> {
@@ -1966,20 +1965,11 @@ export abstract class ContainerBase extends CardElement {
             for (var i = 0; i < items.length; i++) {
                 var elementType = items[i]["type"];
 
-                var element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
+                var element = CardElement.createElementInstance(elementType);
 
-                if (!element) {
-                    raiseParseError(
-                        {
-                            error: Enums.ValidationError.UnknownElementType,
-                            message: "Unknown element type: " + elementType
-                        });
-                }
-                else {
-                    this.addItem(element);
+                this.addItem(element);
 
-                    element.parse(items[i]);
-                }
+                element.parse(items[i]);
             }
         }
 
@@ -2095,10 +2085,6 @@ export class Container extends ContainerBase {
 export class Column extends Container {
     private _computedWeight: number = 0;
 
-    protected get padding(): HostConfig.ISpacingDefinition {
-        return { left: 0, top: 0, right: 0, bottom: 0 };
-    }
-
     protected internalRender(): HTMLElement {
         var element = super.internalRender();
 
@@ -2123,10 +2109,6 @@ export class Column extends Container {
 
     getJsonTypeName(): string {
         return "Column";
-    }
-
-    getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return hostConfig.column.separation;
     }
 
     parse(json: any) {
@@ -2214,14 +2196,19 @@ export class ColumnSet extends CardElement {
 
                 var renderedColumn = this._columns[i].render();
 
-                if (renderedColumn != null) {
+                if (renderedColumn) {
                     Utils.appendChild(element, renderedColumn);
 
-                    if (this._columns.length > 1 && i < this._columns.length - 1 && this._columns[i + 1].separation != "none") {
-                        var separationDefinition = this._columns[i + 1].separation == "default" ? this._columns[i + 1].getDefaultSeparationDefinition() : hostConfig.strongSeparation;
+                    if (this._columns.length > 1 && i < this._columns.length - 1) {
+                        var separator = Utils.renderSeparation(
+                            {
+                                spacing: computeSpacing(this._columns[i + 1].spacing),
+                                lineThickness: this._columns[i + 1].separator ? hostConfig.separator.lineThickness : null,
+                                lineColor: this._columns[i + 1].separator ? hostConfig.separator.lineColor : null
+                            },
+                            "horizontal");
 
-                        if (separationDefinition) {
-                            var separator = Utils.renderSeparation(separationDefinition, "horizontal");
+                        if (separator) {
                             separator.style.flex = "0 0 auto";
 
                             Utils.appendChild(element, separator);
@@ -2241,10 +2228,6 @@ export class ColumnSet extends CardElement {
 
     getJsonTypeName(): string {
         return "ColumnSet";
-    }
-
-    getDefaultSeparationDefinition(): HostConfig.ISeparationDefinition {
-        return hostConfig.columnSet.separation;
     }
 
     parse(json: any) {
@@ -2399,7 +2382,13 @@ export abstract class ContainerWithActions extends ContainerBase {
         var renderedActions = this._actionCollection.render();
 
         if (renderedActions) {
-            Utils.appendChild(this._element, Utils.renderSeparation(hostConfig.actions.separation, "vertical"));
+            Utils.appendChild(this._element, Utils.renderSeparation(
+                {
+                    spacing: computeSpacing(hostConfig.actions.spacing),
+                    lineThickness: null,
+                    lineColor: null                    
+                },
+                "vertical"));
             Utils.appendChild(this._element, renderedActions);
         }
 
@@ -2591,10 +2580,16 @@ class InlineAdaptiveCard extends AdaptiveCard {
 
 var defaultHostConfig: HostConfig.IHostConfig = {
     supportsInteractivity: true,
-    strongSeparation: {
-        spacing: 40,
+    spacing: {
+        small: 3,
+        default: 8,
+        medium: 20,
+        large: 30,
+        extraLarge: 40
+    },
+    separator: {
         lineThickness: 1,
-        lineColor: "#EEEEEE"
+        lineColor: "#EEEEEE"        
     },
     fontFamily: "Segoe UI",
     fontSizes: {
@@ -2642,9 +2637,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
     },
     actions: {
         maxActions: 5,
-        separation: {
-            spacing: 20
-        },
+        spacing: "default",
         buttonSpacing: 20,
         showCard: {
             actionMode: "inlineEdgeToEdge",
@@ -2670,9 +2663,6 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         }
     },
     container: {
-        separation: {
-            spacing: 20
-        },
         normal: {
         },
         emphasis: {
@@ -2693,41 +2683,16 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         }
     },
     textBlock: {
-        color: "dark",
-        separations: {
-            small: {
-                spacing: 20,
-            },
-            normal: {
-                spacing: 20
-            },
-            medium: {
-                spacing: 20
-            },
-            large: {
-                spacing: 20
-            },
-            extraLarge: {
-                spacing: 20
-            }
-        }
+        color: "dark"
     },
     image: {
-        size: "medium",
-        separation: {
-            spacing: 20
-        }
+        size: "medium"
     },
     imageSet: {
         imageSize: "medium",
-        separation: {
-            spacing: 20
-        }
+        maxImageHeight: 100
     },
     factSet: {
-        separation: {
-            spacing: 20
-        },
         title: {
             color: "dark",
             size: "normal",
@@ -2744,21 +2709,6 @@ var defaultHostConfig: HostConfig.IHostConfig = {
             wrap: true
         },
         spacing: 10
-    },
-    input: {
-        separation: {
-            spacing: 20
-        }
-    },
-    columnSet: {
-        separation: {
-            spacing: 20
-        }
-    },
-    column: {
-        separation: {
-            spacing: 20
-        }
     }
 }
 
