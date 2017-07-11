@@ -6,6 +6,7 @@
 //
 
 #import "ACRTextBlockRenderer.h"
+#import "ACRContentHoldingUIView.h"
 #import "TextBlock.h"
 
 @implementation ACRTextBlockRenderer
@@ -47,9 +48,21 @@
     UIFontDescriptor* dec = lab.font.fontDescriptor;
     lab.font = [UIFont fontWithDescriptor:dec size:[self getTextBlockTextSize:txtBlck withHostConfig:config]];
     
-    [viewGroup addArrangedSubview:lab];
+    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
+    [wrappingview addSubview: lab];
+    
+    [wrappingview addConstraints:[wrappingview setAlignment: txtBlck->GetHorizontalAlignment()
+                                              withSuperview: wrappingview
+                                                     toView: lab]];
+    
+    if(viewGroup)[viewGroup addArrangedSubview: wrappingview];
+
+    
+    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
+    
     lab.translatesAutoresizingMaskIntoConstraints = false;
-    return lab;
+    
+    return wrappingview;
 }
 
 - (UIColor* ) getTextBlockColor:(std::shared_ptr<TextBlock> const &) txtBlock

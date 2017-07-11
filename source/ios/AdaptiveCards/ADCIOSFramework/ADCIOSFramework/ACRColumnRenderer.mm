@@ -31,8 +31,9 @@
 
     UIStackView* column = [[UIStackView alloc] init];
     column.axis = UILayoutConstraintAxisVertical;
-    column.alignment = UIStackViewAlignmentFill;//UIStackViewAlignmentCenter;
-    column.distribution = UIStackViewDistributionEqualSpacing;
+    //column.alignment = UIStackViewAlignmentFill;//UIStackViewAlignmentCenter;
+   // column.contentMode = UIViewContentModeScaleToFill;
+    //column.distribution = UIStackViewDistributionEqualCentering;
     column.translatesAutoresizingMaskIntoConstraints = false;
     
     [[ACRRegistration getInstance] render: viewGroup

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ACRRegistration.h"
 #import "ACRImageRenderer.h"
+#import "ACRImageSetRenderer.h"
 #import "ACRTextBlockRenderer.h"
 #import "ACRContainerRenderer.h"
 #import "ACRColumnSetRenderer.h"
@@ -32,6 +33,7 @@ using namespace AdaptiveCards;
         typeToRendererDict =
             [[NSDictionary alloc] initWithObjectsAndKeys:
              [ACRImageRenderer getInstance],     [NSNumber numberWithInt: (int)[ACRImageRenderer elemType]],
+             [ACRImageSetRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRImageSetRenderer elemType]],
              [ACRTextBlockRenderer getInstance], [NSNumber numberWithInt: (int)[ACRTextBlockRenderer elemType]],
              [ACRContainerRenderer getInstance], [NSNumber numberWithInt: (int)[ACRContainerRenderer elemType]],
              [ACRColumnSetRenderer getInstance], [NSNumber numberWithInt: (int)[ACRColumnSetRenderer elemType]],
@@ -58,11 +60,11 @@ using namespace AdaptiveCards;
       withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 { 
-    UIStackView* childView = [[UIStackView alloc] init];
+    UIStackView* childView = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
     childView.axis = UILayoutConstraintAxisVertical;
-    childView.alignment = UIStackViewAlignmentLeading;
+    //childView.alignment = UIStackViewAlignmentFill
     //childView.alignment = UIStackViewAlignmentFill;//UIStackViewAlignmentCenter;
-    childView.distribution = UIStackViewDistributionEqualSpacing;
+    //childView.distribution = UIStackViewDistributionFillProportionally;
     childView.translatesAutoresizingMaskIntoConstraints = false;
 
     return [self render: view withContentView: childView
@@ -85,18 +87,18 @@ using namespace AdaptiveCards;
 
         NSLayoutConstraint* constraint = 
         [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeLeft
-                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                     attribute:NSLayoutAttributeLeading
+                                     relatedBy:NSLayoutRelationEqual
                                         toItem:newView
-                                     attribute:NSLayoutAttributeLeft
+                                     attribute:NSLayoutAttributeLeading
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];
         [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeRight
-                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                     attribute:NSLayoutAttributeTrailing
+                                     relatedBy:NSLayoutRelationEqual
                                         toItem:newView
-                                     attribute:NSLayoutAttributeRight
+                                     attribute:NSLayoutAttributeTrailing
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];

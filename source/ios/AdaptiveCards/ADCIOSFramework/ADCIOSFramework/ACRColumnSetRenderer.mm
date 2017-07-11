@@ -32,7 +32,9 @@
     UIStackView* columnSetView = [[UIStackView alloc] init];
     columnSetView.axis = UILayoutConstraintAxisHorizontal;
     columnSetView.translatesAutoresizingMaskIntoConstraints = false;
-    columnSetView.alignment = UIStackViewAlignmentLeading;
+    //columnSetView.alignment = UIStackViewAlignmentCenter;
+    //columnSetView.contentMode = UIViewContentModeScaleAspectFit;
+    columnSetView.distribution = UIStackViewDistributionFillProportionally;
 
     ACRBaseCardElementRenderer* columRenderer = 
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt: (int) CardElementType::Column]] ;

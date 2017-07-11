@@ -17,10 +17,12 @@
     [super viewDidLoad];
 
     pathsToFiles = [[NSBundle mainBundle] pathsForResourcesOfType:@"json" inDirectory:nil];
+#if 0
     [_delegate fromACVTable:self userSelectedJson:
      [NSString stringWithContentsOfFile:pathsToFiles[[pathsToFiles count] - 2]
                                encoding:NSUTF8StringEncoding
                                   error:nil]];
+#endif
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
