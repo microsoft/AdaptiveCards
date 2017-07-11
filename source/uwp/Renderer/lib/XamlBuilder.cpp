@@ -1009,7 +1009,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             break;
         }
         Color fontColor;
-        THROW_IF_FAILED(isSubtle ? colorConfig->get_Normal(&fontColor) : colorConfig->get_Subtle(&fontColor));
+        THROW_IF_FAILED(isSubtle ? colorConfig->get_Subtle(&fontColor) : colorConfig->get_Normal(&fontColor));
 
         ComPtr<IBrush> fontColorBrush = GetSolidColorBrush(fontColor);
         THROW_IF_FAILED(localTextBlock->put_Foreground(fontColorBrush.Get()));
