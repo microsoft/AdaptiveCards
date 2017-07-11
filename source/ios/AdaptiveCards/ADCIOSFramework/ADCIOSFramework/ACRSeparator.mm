@@ -143,7 +143,7 @@ using namespace AdaptiveCards;
                                           rect.origin.y + rect.size.height / 2.0);
     }
     else
-    t{
+    {
         orig = CGPointMake(rect.origin.x + rect.size.width / 2.0, rect.origin.y);
         dest = CGPointMake(rect.origin.x + rect.size.width / 2.0, 
                                              rect.origin.y + rect.size.height);
