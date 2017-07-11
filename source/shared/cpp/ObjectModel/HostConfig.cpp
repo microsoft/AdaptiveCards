@@ -144,8 +144,11 @@ ImageSizesConfig ImageSizesConfig::Deserialize(const Json::Value& json, const Im
 AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value& json, const AdaptiveCardConfig& defaultValue)
 {
     AdaptiveCardConfig result;
-    result.padding = SpacingDefinition::Deserialize(json, defaultValue.padding);
-    std::string  backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
+
+    result.padding = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
+        json, AdaptiveCardSchemaKey::Padding, defaultValue.padding, SpacingDefinition::Deserialize);
+
+    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
     result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
 
     return result;
