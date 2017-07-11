@@ -9,6 +9,7 @@
 #import "ACRRegistration.h"
 #import "ColumnSet.h"
 #import "SharedAdaptiveCard.h"
+#import "ACRSeparator.h"
 
 @implementation ACRColumnSetRenderer
 
@@ -43,6 +44,8 @@
     NSMutableArray* constraints = [[NSMutableArray alloc] init];
     for(std::shared_ptr<Column> column: columns)
     {
+        [ACRSeparator renderSeparation:column forSuperview: columnSetView withHostConfig:config];
+
         curView = (UIStackView* )[columRenderer render: columnSetView withCardElem: column andHostConfig: config];
         try
         {

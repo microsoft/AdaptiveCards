@@ -85,6 +85,8 @@
 		F448732E1EE22AF100FCAFAE /* json-forwards.h in Headers */ = {isa = PBXBuildFile; fileRef = F448732C1EE22AF100FCAFAE /* json-forwards.h */; };
 		F448732F1EE22AF100FCAFAE /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = F448732D1EE22AF100FCAFAE /* json.h */; };
 		F45A071F1EF4BD67007C6503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A071E1EF4BD67007C6503 /* UIKit.framework */; };
+		F4D33EA51F06F41B00941E44 /* ACRSeparator.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */; };
+		F4D33EA71F06F44C00941E44 /* ACRSeparator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D33EA61F06F44C00941E44 /* ACRSeparator.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +183,8 @@
 		F45A071A1EF4BC44007C6503 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F45A071C1EF4BCC3007C6503 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F45A071E1EF4BD67007C6503 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRSeparator.mm; sourceTree = "<group>"; };
+		F4D33EA61F06F44C00941E44 /* ACRSeparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRSeparator.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +232,8 @@
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
 				F42741231EFB274C00399FBB /* ACRColumnRenderer.mm */,
 				F42741221EFB274C00399FBB /* ACRColumnRenderer.h */,
+				F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */,
+				F4D33EA61F06F44C00941E44 /* ACRSeparator.h */,
 				F42741261EFB374A00399FBB /* ACRColumnSetRenderer.h */,
 				F42741271EFB374A00399FBB /* ACRColumnSetRenderer.mm */,
 				F427411E1EF9DB8000399FBB /* ACRContainerRenderer.h */,
@@ -339,6 +345,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4D33EA71F06F44C00941E44 /* ACRSeparator.h in Headers */,
 				F44873001EE2261F00FCAFAE /* ChoiceSetInput.h in Headers */,
 				F43660791F0706D800EBA868 /* SharedAdaptiveCard.h in Headers */,
 				F423C14C1EE1FFF100905679 /* ACRViewController.h in Headers */,
@@ -492,6 +499,8 @@
 				F44873171EE2261F00FCAFAE /* jsoncpp.cpp in Sources */,
 				F44873071EE2261F00FCAFAE /* DateInput.cpp in Sources */,
 				F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */,
+				F4D33EA51F06F41B00941E44 /* ACRSeparator.mm in Sources */,
+				F44872F31EE2261F00FCAFAE /* AdaptiveCard.cpp in Sources */,
 				F427411D1EF8A25200399FBB /* ACRRegistration.mm in Sources */,
 				F44873011EE2261F00FCAFAE /* Column.cpp in Sources */,
 				F448730D1EE2261F00FCAFAE /* FactSet.cpp in Sources */,
