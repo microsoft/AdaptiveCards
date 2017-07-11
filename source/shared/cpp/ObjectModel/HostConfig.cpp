@@ -148,7 +148,7 @@ AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value& json, cons
     result.padding = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
         json, AdaptiveCardSchemaKey::Padding, defaultValue.padding, SpacingDefinition::Deserialize);
 
-    std::string  backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
+    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
     result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
 
     return result;
