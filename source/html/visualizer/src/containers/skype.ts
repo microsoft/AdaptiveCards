@@ -1,6 +1,5 @@
 import { HostContainer } from "./host-container";
 import * as Adaptive from "microsoft-adaptivecards";
-import * as Utils from "../utils";
 
 export class SkypeContainer extends HostContainer {
     private _width: number;

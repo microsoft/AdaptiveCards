@@ -1,6 +1,5 @@
 import { HostContainer } from "./host-container";
 import * as Adaptive from "microsoft-adaptivecards";
-import * as Utils from "../utils";
 
 export class WebChatContainer extends HostContainer {
     protected renderContainer(renderedCard: HTMLElement): HTMLElement {

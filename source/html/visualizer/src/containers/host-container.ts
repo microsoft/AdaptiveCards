@@ -1,5 +1,4 @@
 import * as Adaptive from "microsoft-adaptivecards";
-import * as Utils from "../utils";
 import * as vkbeautify from "vkbeautify";
 
 declare var SpeechSynthesisUtterance: any;
@@ -265,19 +264,19 @@ export abstract class HostContainer {
             HostContainer.playNextTTS(output, 0);
         });
 
-        Utils.appendChild(element, button);
+        element.appendChild(button);
 
         if (showXml) {
             let pre = document.createElement("pre");
-            Utils.appendChild(pre, document.createTextNode(speechString));
-            Utils.appendChild(element, pre);
+            pre.appendChild(document.createTextNode(speechString));
+            element.appendChild(pre);
         }
 
         var audio = document.createElement("audio");
         audio.id = 'player';
         audio.autoplay = true;
 
-        Utils.appendChild(element, audio);
+        element.appendChild(audio);
 
         return element;
     }
