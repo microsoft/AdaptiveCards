@@ -545,6 +545,7 @@ export class Image extends CardElement {
             switch (this.size) {
                 case "stretch":
                     imageElement.style.width = "100%";
+                    imageElement.style.maxHeight = "500px";
                     break;
                 case "auto":
                     imageElement.style.maxWidth = "100%";
@@ -577,7 +578,7 @@ export class Image extends CardElement {
 
     style: Enums.ImageStyle = "normal";
     url: string;
-    size: Enums.Size = "medium";
+    size: Enums.Size = "auto";
     selectAction: ExternalAction;
 
     getJsonTypeName(): string {
@@ -588,8 +589,8 @@ export class Image extends CardElement {
         super.parse(json);
 
         this.url = json["url"];
-        this.style = Utils.getValueOrDefault<Enums.ImageStyle>(json["style"], "normal");
-        this.size = Utils.getValueOrDefault<Enums.Size>(json["size"], "medium");
+        this.style = Utils.getValueOrDefault<Enums.ImageStyle>(json["style"], this.style);
+        this.size = Utils.getValueOrDefault<Enums.Size>(json["size"], this.size);
 
         var selectActionJson = json["selectAction"];
 

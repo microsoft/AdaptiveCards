@@ -1,6 +1,5 @@
 import { HostContainer} from "./host-container"; 
 import * as Adaptive from "microsoft-adaptivecards"; 
-import * as Utils from "../utils"; 
  
 export class BingContainer extends HostContainer { 
     static backgroundColor: string = "#fff"; 

@@ -1,6 +1,5 @@
 import { HostContainer } from "./host-container";
 import * as Adaptive from "microsoft-adaptivecards";
-import * as Utils from "../utils";
 
 export class GroupMeContainer extends HostContainer {
     private _width: number;
