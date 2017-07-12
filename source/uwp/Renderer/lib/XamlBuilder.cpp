@@ -637,38 +637,59 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         auto separator = CreateSeparator(separationConfig.Get());
         XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
 
-        // Create a stack panel for the action buttons
-        ComPtr<IStackPanel> actionStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment actionAlignment;
+        THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
         ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation actionsOrientation;
         THROW_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
-        auto uiOrientation = (actionsOrientation == ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation::Horizontal) ?
-            Orientation::Orientation_Horizontal :
-            Orientation::Orientation_Vertical;
+        // Declare the panel that will host the buttons
+        ComPtr<IPanel> actionsPanel;
+        ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
 
-        THROW_IF_FAILED(actionStackPanel->put_Orientation(uiOrientation));
-
-        ComPtr<IFrameworkElement> actionsFrameworkElement;
-        THROW_IF_FAILED(actionStackPanel.As(&actionsFrameworkElement));
-
-        ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment actionAlignment;
-        THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
-
-        switch (actionAlignment)
+        if (actionAlignment == ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch &&
+            actionsOrientation == ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation::Horizontal)
         {
-            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
-                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center);
-                break;
-            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
-                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left);
-                break;
-            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
-                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right);
-                break;
-            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
-                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch);
-                break;
+            // If stretch alignment and orientation is horizontal, we use a grid with equal column widths to achieve stretch behavior.
+            // For vertical orientation, we'll still just use a stack panel since the concept of stretching buttons height isn't really
+            // valid, especially when the height of cards are typically dynamic.
+            ComPtr<IGrid> actionsGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+            THROW_IF_FAILED(actionsGrid->get_ColumnDefinitions(&columnDefinitions));
+            THROW_IF_FAILED(actionsGrid.As(&actionsPanel));
+        }
+
+        else
+        {
+            // Create a stack panel for the action buttons
+            ComPtr<IStackPanel> actionStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+
+            auto uiOrientation = (actionsOrientation == ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation::Horizontal) ?
+                Orientation::Orientation_Horizontal :
+                Orientation::Orientation_Vertical;
+
+            THROW_IF_FAILED(actionStackPanel->put_Orientation(uiOrientation));
+
+            ComPtr<IFrameworkElement> actionsFrameworkElement;
+            THROW_IF_FAILED(actionStackPanel.As(&actionsFrameworkElement));
+
+            switch (actionAlignment)
+            {
+                case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
+                    actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center);
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
+                    actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left);
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
+                    actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right);
+                    break;
+                case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
+                    actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch);
+                    break;
+            }
+
+            // Add the action buttons to the stack panel
+            THROW_IF_FAILED(actionStackPanel.As(&actionsPanel));
         }
 
         UINT32 buttonSpacing;
@@ -678,10 +699,23 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         if (actionsOrientation == ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation::Horizontal)
         {
             buttonMargin.Left = buttonMargin.Right = buttonSpacing / 2;
+
+            // Negate the spacing on the sides so the left and right buttons are flush on the side.
+            // We do NOT remove the margin from the individual button itself, since that would cause
+            // the equal columns stretch behavior to not have equal columns (since the first and last
+            // button would be narrower without the same margins as its peers).
+            ComPtr<IFrameworkElement> actionsPanelAsFrameworkElement;
+            THROW_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
+            THROW_IF_FAILED(actionsPanelAsFrameworkElement->put_Margin({ buttonMargin.Left * -1, 0, buttonMargin.Right * -1, 0 }));
         }
         else
         {
             buttonMargin.Top = buttonMargin.Bottom = buttonSpacing / 2;
+
+            // Negate the spacing on the top and bottom so the first and last buttons don't have extra padding
+            ComPtr<IFrameworkElement> actionsPanelAsFrameworkElement;
+            THROW_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
+            THROW_IF_FAILED(actionsPanelAsFrameworkElement->put_Margin({ 0, buttonMargin.Top * -1, 0, buttonMargin.Bottom * -1 }));
         }
 
         UINT32 maxActions;
@@ -693,15 +727,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ABI::AdaptiveCards::XamlCardRenderer::ActionMode showCardActionMode;
         THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
-        // Add the action buttons to the stack panel
-        ComPtr<IPanel> actionsPanel;
-        THROW_IF_FAILED(actionStackPanel.As(&actionsPanel));
-
         UINT currentAction = 0;
 
         ComPtr<XamlCardRenderer> strongRenderer(renderer);
         std::shared_ptr<std::vector<ComPtr<IUIElement>>> allShowCards = std::make_shared<std::vector<ComPtr<IUIElement>>>();
         ComPtr<IStackPanel> showCardsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<IGridStatics> gridStatics;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
         XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child)
         {
             if (currentAction < maxActions)
@@ -714,6 +746,30 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 THROW_IF_FAILED(button.As(&buttonFrameworkElement));
 
                 THROW_IF_FAILED(buttonFrameworkElement->put_Margin(buttonMargin));
+
+                if (actionsOrientation == ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation::Horizontal)
+                {
+                    // For horizontal alignment, we always use stretch
+                    THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Stretch));
+                }
+                else
+                {
+                    switch (actionAlignment)
+                    {
+                        case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
+                            THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center));
+                            break;
+                        case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
+                            THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left));
+                            break;
+                        case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
+                            THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right));
+                            break;
+                        case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
+                            THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+                            break;
+                    }
+                }
 
                 HString title;
                 THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
@@ -786,6 +842,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 }).Get(), &clickToken));
 
                 XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
+
+                if (columnDefinitions != nullptr)
+                {
+                    // If using the equal width columns, we'll add a column and assign the column
+                    ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+                    THROW_IF_FAILED(columnDefinition->put_Width({ 1.0, GridUnitType::GridUnitType_Star }));
+                    THROW_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
+
+                    gridStatics->SetColumn(buttonFrameworkElement.Get(), currentAction);
+                }
             }
             currentAction++;
         });
