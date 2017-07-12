@@ -42,12 +42,19 @@
                             andHostConfig: config];
 
     [column setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    column.contentMode = UIViewContentModeScaleAspectFill;
+    //column.contentMode = UIViewContentModeScaleAspectFill;
     [column setClipsToBounds:TRUE];
     if(columnElem->GetSize() == "stretch")
     {
         [column setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     }
+    
+#if 0
+    if(columnElem->GetSize() == "auto")
+    {
+        [column setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    }
+#endif
     
     return column;
 }

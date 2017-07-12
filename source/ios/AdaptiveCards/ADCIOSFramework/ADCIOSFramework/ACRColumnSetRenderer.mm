@@ -9,6 +9,7 @@
 #import "ACRRegistration.h"
 #import "ColumnSet.h"
 #import "SharedAdaptiveCard.h"
+#import "ACRContentHoldingUIView.h"
 #import "ACRSeparator.h"
 
 @implementation ACRColumnSetRenderer
@@ -34,8 +35,8 @@
     columnSetView.translatesAutoresizingMaskIntoConstraints = false;
     //columnSetView.alignment = UIStackViewAlignmentCenter;
     //columnSetView.contentMode = UIViewContentModeScaleAspectFit;
-    columnSetView.distribution = UIStackViewDistributionFillProportionally;
-
+    columnSetView.distribution = UIStackViewDistributionFill;//Proportionally;
+   
     ACRBaseCardElementRenderer* columRenderer = 
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt: (int) CardElementType::Column]] ;
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
@@ -45,9 +46,9 @@
     float multiplier = 1.0;
     NSMutableArray* constraints = [[NSMutableArray alloc] init];
     for(std::shared_ptr<Column> column: columns)
-    {
+    {        
         [ACRSeparator renderSeparation:column forSuperview: columnSetView withHostConfig:config];
-
+        
         curView = (UIStackView* )[columRenderer render: columnSetView withCardElem: column andHostConfig: config];
         try
         {
@@ -81,12 +82,27 @@
                                          multiplier:1.0
                                            constant:0]];
         }
+       
         prevView = curView;
         prevRelColumnWidth = relativeColumnWidth;
     }
+    CGSize intrinsicSz = [columnSetView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    NSLog(@"Frame Size width = %f, height = %f", intrinsicSz.width, intrinsicSz.height);
 
-    [viewGroup addArrangedSubview:columnSetView];
+    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
+    
+    [wrappingview addSubview: columnSetView];
+    
+    [wrappingview addConstraints:[wrappingview setAlignment: HorizontalAlignment::Center
+                                              withSuperview: wrappingview
+                                                     toView: columnSetView]];
+    wrappingview.contentMode = UIViewContentModeScaleAspectFit;
+    
+    wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [viewGroup addArrangedSubview:wrappingview];
 
+#if 0
     [constraints addObject:
      [NSLayoutConstraint constraintWithItem:curView
                                   attribute:NSLayoutAttributeTrailing
@@ -114,8 +130,8 @@
                                    constant:0]];
 
     [viewGroup addConstraints:constraints];
-
-    return columnSetView;
+#endif
+       return columnSetView;
 }
 
 @end

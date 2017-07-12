@@ -128,7 +128,7 @@ using namespace AdaptiveCards;
     for(auto elem: elems)
     {
         [ACRSeparator renderSeparation:elem forSuperview: newView withHostConfig:config];
-
+        
         ACRBaseCardElementRenderer* renderer =
             [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 

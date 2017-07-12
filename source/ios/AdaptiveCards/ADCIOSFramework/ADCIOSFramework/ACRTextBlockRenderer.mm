@@ -48,7 +48,9 @@
     UIFontDescriptor* dec = lab.font.fontDescriptor;
     lab.font = [UIFont fontWithDescriptor:dec size:[self getTextBlockTextSize:txtBlck withHostConfig:config]];
     
-    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
+    CGSize intrinsicSz = [lab intrinsicContentSize];
+    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
+    
     [wrappingview addSubview: lab];
     
     [wrappingview addConstraints:[wrappingview setAlignment: txtBlck->GetHorizontalAlignment()
