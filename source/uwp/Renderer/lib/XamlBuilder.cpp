@@ -674,18 +674,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
             switch (actionAlignment)
             {
-                case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
-                    actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center);
-                    break;
-                case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
-                    actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left);
-                    break;
-                case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
-                    actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right);
-                    break;
-                case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
-                    actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch);
-                    break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right);
+                break;
+            case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
+                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch);
+                break;
             }
 
             // Add the action buttons to the stack panel
@@ -756,18 +756,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 {
                     switch (actionAlignment)
                     {
-                        case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
-                            THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center));
-                            break;
-                        case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
-                            THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left));
-                            break;
-                        case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
-                            THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right));
-                            break;
-                        case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
-                            THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
-                            break;
+                    case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
+                        THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center));
+                        break;
+                    case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
+                        THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left));
+                        break;
+                    case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
+                        THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right));
+                        break;
+                    case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
+                        THROW_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+                        break;
                     }
                 }
 
