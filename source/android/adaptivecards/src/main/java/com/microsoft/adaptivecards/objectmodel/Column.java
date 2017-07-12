@@ -53,6 +53,10 @@ public class Column extends BaseCardElement {
     return AdaptiveCardObjectModelJNI.Column_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.Column_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public static Column Deserialize(SWIGTYPE_p_Json__Value root) {
     long cPtr = AdaptiveCardObjectModelJNI.Column_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
     return (cPtr == 0) ? null : new Column(cPtr, true);
@@ -73,6 +77,15 @@ public class Column extends BaseCardElement {
 
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Column_GetItems__SWIG_0(swigCPtr, this), false);
+  }
+
+  public BaseActionElement GetSelectAction() {
+    long cPtr = AdaptiveCardObjectModelJNI.Column_GetSelectAction(swigCPtr, this);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
+  public void SetSelectAction(BaseActionElement action) {
+    AdaptiveCardObjectModelJNI.Column_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
   public static Column dynamic_cast(BaseCardElement baseCardElement) {

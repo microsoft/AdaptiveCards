@@ -50,7 +50,24 @@ std::vector<std::shared_ptr<Image>>& ImageSet::GetImages()
 
 std::string ImageSet::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value ImageSet::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)] = ImageSizeToString(GetImageSize());
+
+    std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images);
+    root[itemsPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& image : GetImages())
+    {
+        root[itemsPropertyName].append(image->SerializeToJsonValue());
+    }
+
+    return root;
 }
 
 std::shared_ptr<ImageSet> ImageSet::Deserialize(const Json::Value& value)

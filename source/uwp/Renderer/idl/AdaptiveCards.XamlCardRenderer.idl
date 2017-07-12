@@ -329,6 +329,8 @@ namespace AdaptiveCards
 
             [propget] HRESULT BackgroundImageUrl([out, retval] Windows.Foundation.Uri** value);
             [propput] HRESULT BackgroundImageUrl([in] Windows.Foundation.Uri* value);
+
+            HRESULT ToJsonString([out, retval] HSTRING* value);
         };
 
         [
@@ -414,6 +416,9 @@ namespace AdaptiveCards
         {
             [propget] HRESULT Id([out, retval] HSTRING* value);
             [propput] HRESULT Id([in] HSTRING value);
+
+            [propget] HRESULT IsRequired([out, retval] boolean* value);
+            [propput] HRESULT IsRequired([in] boolean value);
         };
 
         [
@@ -454,9 +459,6 @@ namespace AdaptiveCards
         {
             [propget] HRESULT IsMultiSelect([out, retval] boolean* value);
             [propput] HRESULT IsMultiSelect([in] boolean value);
-
-            [propget] HRESULT IsRequired([out, retval] boolean* value);
-            [propput] HRESULT IsRequired([in] boolean value);
 
             [propget] HRESULT ChoiceSetStyle([out, retval] ChoiceSetStyle* value);
             [propput] HRESULT ChoiceSetStyle([in] ChoiceSetStyle value);
@@ -1488,8 +1490,19 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(b90caf09-4257-4b00-a9d0-8c3cc4f8b76e),
             version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
+            exclusiveto(AdaptiveHostConfig),
+        ]
+        interface IAdaptiveHostConfigStatics : IInspectable
+        {
+            HRESULT CreateHostConfigFromJson([in] HSTRING hostConfigJson, [out, retval] AdaptiveHostConfig** config);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+            static(IAdaptiveHostConfigStatics, NTDDI_WIN10_RS1)
         ]
         runtimeclass AdaptiveHostConfig
         {

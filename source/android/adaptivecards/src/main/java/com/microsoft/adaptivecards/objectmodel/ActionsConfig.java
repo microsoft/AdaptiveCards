@@ -85,6 +85,10 @@ public class ActionsConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static ActionsConfig Deserialize(SWIGTYPE_p_Json__Value json, ActionsConfig defaultValue) {
+    return new ActionsConfig(AdaptiveCardObjectModelJNI.ActionsConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ActionsConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ActionsConfig() {
     this(AdaptiveCardObjectModelJNI.new_ActionsConfig(), true);
   }

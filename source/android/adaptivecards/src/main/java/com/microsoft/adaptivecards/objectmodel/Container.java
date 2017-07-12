@@ -53,6 +53,10 @@ public class Container extends BaseCardElement {
     return AdaptiveCardObjectModelJNI.Container_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.Container_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
   }
@@ -73,6 +77,15 @@ public class Container extends BaseCardElement {
   public static Container DeserializeFromString(String jsonString) {
     long cPtr = AdaptiveCardObjectModelJNI.Container_DeserializeFromString(jsonString);
     return (cPtr == 0) ? null : new Container(cPtr, true);
+  }
+
+  public BaseActionElement GetSelectAction() {
+    long cPtr = AdaptiveCardObjectModelJNI.Container_GetSelectAction(swigCPtr, this);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
+  public void SetSelectAction(BaseActionElement action) {
+    AdaptiveCardObjectModelJNI.Container_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
   public static Container dynamic_cast(BaseCardElement baseCardElement) {

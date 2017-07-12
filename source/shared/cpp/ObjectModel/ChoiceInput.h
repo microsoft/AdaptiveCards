@@ -2,7 +2,7 @@
 
 #include "pch.h"
 #include "Enums.h"
-#include "json\json.h"
+#include "json/json.h"
 
 namespace AdaptiveCards
 {
@@ -12,6 +12,7 @@ public:
     ChoiceInput();
 
     std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
     std::string GetTitle() const;
     void SetTitle(const std::string value);

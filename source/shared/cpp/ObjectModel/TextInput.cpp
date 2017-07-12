@@ -32,7 +32,21 @@ std::shared_ptr<TextInput> TextInput::DeserializeFromString(const std::string& j
 
 std::string TextInput::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value TextInput::SerializeToJsonValue()
+{
+    Json::Value root = BaseInputElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline)] = GetIsMultiline();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength)] = GetMaxLength();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = GetPlaceholder();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextInputStyleToString(GetTextInputStyle());
+
+    return root;
 }
 
 std::string TextInput::GetPlaceholder() const

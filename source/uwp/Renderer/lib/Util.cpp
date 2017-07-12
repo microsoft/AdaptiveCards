@@ -231,10 +231,10 @@ HRESULT GetColorFromString(std::string colorString, Color *color) noexcept try
     std::string greenString = colorString.substr(7, 2);
     INT32 green = strtol(greenString.c_str(), nullptr, 16);
 
-    color->A = alpha;
-    color->R = red;
-    color->B = blue;
-    color->G = green;
+    color->A = static_cast<BYTE>(alpha);
+    color->R = static_cast<BYTE>(red);
+    color->B = static_cast<BYTE>(blue);
+    color->G = static_cast<BYTE>(green);
 
     return S_OK;
 } CATCH_RETURN;

@@ -49,6 +49,10 @@ public class ColumnSet extends BaseCardElement {
     return AdaptiveCardObjectModelJNI.ColumnSet_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.ColumnSet_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public ColumnVector GetColumns() {
     return new ColumnVector(AdaptiveCardObjectModelJNI.ColumnSet_GetColumns__SWIG_0(swigCPtr, this), false);
   }

@@ -46,3 +46,12 @@ const ActionType AdaptiveCards::BaseActionElement::GetElementType() const
     return m_type;
 }
 
+Json::Value BaseActionElement::SerializeToJsonValue()
+{
+    Json::Value root;
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = ActionTypeToString(GetElementType());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
+    return root;
+}
+

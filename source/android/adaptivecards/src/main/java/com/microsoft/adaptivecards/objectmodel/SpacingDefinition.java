@@ -67,6 +67,10 @@ public class SpacingDefinition {
     return AdaptiveCardObjectModelJNI.SpacingDefinition_bottom_get(swigCPtr, this);
   }
 
+  public static SpacingDefinition Deserialize(SWIGTYPE_p_Json__Value json, SpacingDefinition defaultValue) {
+    return new SpacingDefinition(AdaptiveCardObjectModelJNI.SpacingDefinition_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), SpacingDefinition.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public SpacingDefinition() {
     this(AdaptiveCardObjectModelJNI.new_SpacingDefinition(), true);
   }

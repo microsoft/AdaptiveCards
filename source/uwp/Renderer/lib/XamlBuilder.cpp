@@ -740,7 +740,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 THROW_IF_FAILED(button.As(&buttonBase));
 
                 EventRegistrationToken clickToken;
-                THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, strongRenderer, inputElements](IInspectable* sender, IRoutedEventArgs* args) -> HRESULT
+                THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, strongRenderer, inputElements](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
                     if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard &&
                         showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
@@ -1009,7 +1009,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             break;
         }
         Color fontColor;
-        THROW_IF_FAILED(isSubtle ? colorConfig->get_Normal(&fontColor) : colorConfig->get_Subtle(&fontColor));
+        THROW_IF_FAILED(isSubtle ? colorConfig->get_Subtle(&fontColor) : colorConfig->get_Normal(&fontColor));
 
         ComPtr<IBrush> fontColorBrush = GetSolidColorBrush(fontColor);
         THROW_IF_FAILED(localTextBlock->put_Foreground(fontColorBrush.Get()));
@@ -1035,6 +1035,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         case ABI::AdaptiveCards::XamlCardRenderer::TextSize::ExtraLarge:
             THROW_IF_FAILED(fontSizesConfig->get_ExtraLarge(&fontSize));
             break;
+        default:
+            THROW_IF_FAILED(fontSizesConfig->get_Normal(&fontSize));
+            break;
         }
         THROW_IF_FAILED(localTextBlock->put_FontSize((double)fontSize));
 
@@ -1049,6 +1052,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             break;
         case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Bolder:
             THROW_IF_FAILED(m_fontWeightsStatics->get_Bold(&xamlFontWeight));
+            break;
+        default:
+            THROW_IF_FAILED(m_fontWeightsStatics->get_Normal(&xamlFontWeight));
             break;
         }
         THROW_IF_FAILED(localTextBlock->put_FontWeight(xamlFontWeight));

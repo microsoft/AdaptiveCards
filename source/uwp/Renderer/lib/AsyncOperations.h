@@ -33,6 +33,7 @@ public:
         THROW_IF_FAILED(coreWindow->get_Dispatcher(&m_dispatcher));
 
         m_builder = Microsoft::WRL::Make<AdaptiveCards::XamlCardRenderer::XamlBuilder>();
+        m_builder->SetHostConfig(m_renderer->GetHostConfig());
     }
 
     // IAsyncOperation

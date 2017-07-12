@@ -44,6 +44,10 @@ public class ColumnConfig {
     return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
   }
 
+  public static ColumnConfig Deserialize(SWIGTYPE_p_Json__Value json, ColumnConfig defaultValue) {
+    return new ColumnConfig(AdaptiveCardObjectModelJNI.ColumnConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ColumnConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ColumnConfig() {
     this(AdaptiveCardObjectModelJNI.new_ColumnConfig(), true);
   }

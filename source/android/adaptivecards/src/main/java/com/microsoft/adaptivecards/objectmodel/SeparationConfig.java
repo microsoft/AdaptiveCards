@@ -59,6 +59,10 @@ public class SeparationConfig {
     return AdaptiveCardObjectModelJNI.SeparationConfig_lineColor_get(swigCPtr, this);
   }
 
+  public static SeparationConfig Deserialize(SWIGTYPE_p_Json__Value json, SeparationConfig defaultValue) {
+    return new SeparationConfig(AdaptiveCardObjectModelJNI.SeparationConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), SeparationConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public SeparationConfig() {
     this(AdaptiveCardObjectModelJNI.new_SeparationConfig(), true);
   }

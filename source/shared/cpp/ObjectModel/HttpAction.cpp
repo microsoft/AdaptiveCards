@@ -27,8 +27,21 @@ std::shared_ptr<HttpAction> HttpAction::DeserializeFromString(const std::string&
 
 std::string HttpAction::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
 }
+
+Json::Value HttpAction::SerializeToJsonValue()
+{
+    Json::Value root = BaseActionElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url)] = GetUrl();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body)] = GetBody();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Method)] = GetMethod();
+
+    return root;
+}
+
 
 std::string HttpAction::GetUrl() const
 {

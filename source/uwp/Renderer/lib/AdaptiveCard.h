@@ -1,8 +1,7 @@
 #pragma once
 
 #include "AdaptiveCards.XamlCardRenderer.h"
-//TODO: MSFT:11054344 - remove the relative pathing once this is fixed
-#include "shared\cpp\ObjectModel\AdaptiveCard.h"
+#include "SharedAdaptiveCard.h"
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -35,6 +34,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Actions(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>** actions);
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
+
+        IFACEMETHODIMP ToJsonString(_Out_ HSTRING* elementType);
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_body;

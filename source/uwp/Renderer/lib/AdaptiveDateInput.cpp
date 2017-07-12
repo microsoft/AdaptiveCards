@@ -137,4 +137,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveDateInput::get_IsRequired(boolean* isRequired)
+    {
+        *isRequired = m_sharedDateInput->GetIsRequired();
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveDateInput::put_IsRequired(boolean isRequired)
+    {
+        m_sharedDateInput->SetIsRequired(isRequired);
+        return S_OK;
+    }
+
 }}

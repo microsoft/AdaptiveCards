@@ -134,4 +134,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveNumberInput::get_IsRequired(boolean* isRequired)
+    {
+        *isRequired = m_sharedNumberInput->GetIsRequired();
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveNumberInput::put_IsRequired(boolean isRequired)
+    {
+        m_sharedNumberInput->SetIsRequired(isRequired);
+        return S_OK;
+    }
+
 }}

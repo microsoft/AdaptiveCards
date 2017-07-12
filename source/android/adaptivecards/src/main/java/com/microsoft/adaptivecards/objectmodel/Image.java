@@ -59,6 +59,10 @@ public class Image extends BaseCardElement {
     return AdaptiveCardObjectModelJNI.Image_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.Image_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public String GetUrl() {
     return AdaptiveCardObjectModelJNI.Image_GetUrl(swigCPtr, this);
   }
@@ -97,6 +101,15 @@ public class Image extends BaseCardElement {
 
   public void SetHorizontalAlignment(HorizontalAlignment value) {
     AdaptiveCardObjectModelJNI.Image_SetHorizontalAlignment(swigCPtr, this, value.swigValue());
+  }
+
+  public BaseActionElement GetSelectAction() {
+    long cPtr = AdaptiveCardObjectModelJNI.Image_GetSelectAction(swigCPtr, this);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
+  public void SetSelectAction(BaseActionElement action) {
+    AdaptiveCardObjectModelJNI.Image_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
   public static Image dynamic_cast(BaseCardElement baseCardElement) {

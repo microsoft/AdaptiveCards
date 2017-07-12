@@ -15,6 +15,7 @@ public:
     static std::shared_ptr<TimeInput> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    Json::Value SerializeToJsonValue();
 
     std::string GetMax() const;
     void SetMax(const std::string value);

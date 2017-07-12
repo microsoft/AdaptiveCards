@@ -15,6 +15,7 @@ public:
     static std::shared_ptr<OpenUrlAction> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
     std::string GetUrl() const;
     void SetUrl(const std::string value);

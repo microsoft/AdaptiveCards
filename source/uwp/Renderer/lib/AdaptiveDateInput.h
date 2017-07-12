@@ -36,6 +36,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
+        IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
+        IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
+
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 

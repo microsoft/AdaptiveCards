@@ -27,7 +27,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig* titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig* /*titleTextConfig*/)
     {
         return E_NOTIMPL;
     }
@@ -39,7 +39,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig* valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig* /*valueTextConfig*/)
     {
         return E_NOTIMPL;
     }

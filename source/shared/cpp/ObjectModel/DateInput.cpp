@@ -29,7 +29,20 @@ std::shared_ptr<DateInput> DateInput::DeserializeFromString(const std::string& j
 
 std::string DateInput::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value DateInput::SerializeToJsonValue()
+{
+    Json::Value root = BaseInputElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = GetMax();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = GetMin();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = GetPlaceholder();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+
+    return root;
 }
 
 std::string DateInput::GetMax() const

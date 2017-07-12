@@ -53,6 +53,10 @@ public class FactSet extends BaseCardElement {
     return AdaptiveCardObjectModelJNI.FactSet_Serialize(swigCPtr, this);
   }
 
+  public SWIGTYPE_p_Json__Value SerializeToJsonValue() {
+    return new SWIGTYPE_p_Json__Value(AdaptiveCardObjectModelJNI.FactSet_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
   public FactVector GetFacts() {
     return new FactVector(AdaptiveCardObjectModelJNI.FactSet_GetFacts__SWIG_0(swigCPtr, this), false);
   }

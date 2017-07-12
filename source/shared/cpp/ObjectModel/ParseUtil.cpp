@@ -1,7 +1,4 @@
 #include "ParseUtil.h"
-#include "Image.h"
-#include "TextBlock.h"
-#include "Container.h"
 #include "AdaptiveCardParseException.h"
 
 namespace AdaptiveCards
@@ -287,6 +284,17 @@ Json::Value ParseUtil::GetJsonValueFromString(const std::string jsonString)
         throw AdaptiveCardParseException("Expected JSON Object\n");
     }
     return jsonValue;
+}
+
+Json::Value ParseUtil::ExtractJsonValue(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
+{
+    std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+    auto propertyValue = json.get(propertyName, Json::Value());
+    if (isRequired && propertyValue.empty())
+    {
+        throw AdaptiveCardParseException("Could not extract specified key: " + propertyName + ".");
+    }
+    return propertyValue;
 }
 
 ParseUtil::ParseUtil()

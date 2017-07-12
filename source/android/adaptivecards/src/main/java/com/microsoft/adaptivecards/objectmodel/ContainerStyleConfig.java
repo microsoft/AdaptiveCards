@@ -69,6 +69,10 @@ public class ContainerStyleConfig {
     return (cPtr == 0) ? null : new SpacingDefinition(cPtr, false);
   }
 
+  public static ContainerStyleConfig Deserialize(SWIGTYPE_p_Json__Value json, ContainerStyleConfig defaultValue) {
+    return new ContainerStyleConfig(AdaptiveCardObjectModelJNI.ContainerStyleConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ContainerStyleConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ContainerStyleConfig() {
     this(AdaptiveCardObjectModelJNI.new_ContainerStyleConfig(), true);
   }

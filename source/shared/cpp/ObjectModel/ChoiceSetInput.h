@@ -16,12 +16,10 @@ public:
     ChoiceSetInput(SeparationStyle separation, std::string speak, std::vector<std::shared_ptr<ChoiceInput>>& choices);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
     bool GetIsMultiSelect() const;
     void SetIsMultiSelect(const bool isMultiSelect);
-
-    bool GetIsRequired() const;
-    void SetIsRequired(const bool isRequired);
 
     ChoiceSetStyle GetChoiceSetStyle() const;
     void SetChoiceSetStyle(const ChoiceSetStyle choiceSetStyle);
@@ -34,7 +32,6 @@ public:
 
 private:
     bool m_isMultiSelect;
-    bool m_isRequired;
     ChoiceSetStyle m_choiceSetStyle;
 
     std::vector<std::shared_ptr<ChoiceInput>> m_choices; 

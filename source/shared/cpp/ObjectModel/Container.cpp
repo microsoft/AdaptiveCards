@@ -74,9 +74,38 @@ void Container::SetContainerStyle(const ContainerStyle value)
     m_style = value;
 }
 
+std::shared_ptr<BaseActionElement> Container::GetSelectAction() const
+{
+    return m_selectAction;
+}
+
+void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
+}
+
 std::string Container::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value Container::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetContainerStyle());
+
+    std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    root[itemsPropertyName] = Json::Value(Json::arrayValue);
+    for (const auto& cardElement : GetItems())
+    {
+        root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
+    }
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+
+    return root;
 }
 
 std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
@@ -91,6 +120,9 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, Container::CardElementParsers, true);
     container->m_items = std::move(cardElements);
+
+    container->SetSelectAction(BaseCardElement::DeserializeSelectAction(value, AdaptiveCardSchemaKey::SelectAction));
+
     return container;
 }
 

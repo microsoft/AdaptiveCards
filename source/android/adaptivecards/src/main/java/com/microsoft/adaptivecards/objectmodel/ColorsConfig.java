@@ -98,6 +98,10 @@ public class ColorsConfig {
     return (cPtr == 0) ? null : new ColorConfig(cPtr, false);
   }
 
+  public static ColorsConfig Deserialize(SWIGTYPE_p_Json__Value json, ColorsConfig defaultValue) {
+    return new ColorsConfig(AdaptiveCardObjectModelJNI.ColorsConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ColorsConfig.getCPtr(defaultValue), defaultValue), true);
+  }
+
   public ColorsConfig() {
     this(AdaptiveCardObjectModelJNI.new_ColorsConfig(), true);
   }

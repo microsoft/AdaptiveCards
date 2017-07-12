@@ -137,4 +137,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveTimeInput::get_IsRequired(boolean* isRequired)
+    {
+        *isRequired = m_sharedTimeInput->GetIsRequired();
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTimeInput::put_IsRequired(boolean isRequired)
+    {
+        m_sharedTimeInput->SetIsRequired(isRequired);
+        return S_OK;
+    }
+
 }}

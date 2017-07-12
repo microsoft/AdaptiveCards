@@ -74,7 +74,26 @@ std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
 
 std::string Column::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value Column::SerializeToJsonValue()
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = GetSize();
+
+    std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    root[propertyName] = Json::Value(Json::arrayValue);
+    for (const auto& cardElement : GetItems())
+    {
+        root[propertyName].append(cardElement->SerializeToJsonValue());
+    }
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+
+    return root;
 }
 
 std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
@@ -89,10 +108,22 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, CardElementParsers, true);
     column->m_items = std::move(cardElements);
 
+    column->SetSelectAction(BaseCardElement::DeserializeSelectAction(value, AdaptiveCardSchemaKey::SelectAction));
+
     return column;
 }
 
 std::shared_ptr<Column> Column::DeserializeFromString(const std::string& jsonString)
 {
     return Column::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+std::shared_ptr<BaseActionElement> Column::GetSelectAction() const
+{
+    return m_selectAction;
+}
+
+void Column::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
 }

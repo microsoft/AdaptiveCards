@@ -29,7 +29,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/BaseActionElement.cpp
              ../../shared/cpp/ObjectModel/BaseInputElement.cpp
              ../../shared/cpp/ObjectModel/Container.cpp
-             ../../shared/cpp/ObjectModel/AdaptiveCard.cpp
+             ../../shared/cpp/ObjectModel/SharedAdaptiveCard.cpp
              ../../shared/cpp/ObjectModel/TextBlock.cpp
              ../../shared/cpp/ObjectModel/Column.cpp
              ../../shared/cpp/ObjectModel/ColumnSet.cpp
@@ -48,6 +48,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/OpenUrlAction.cpp
              ../../shared/cpp/ObjectModel/ShowCardAction.cpp
              ../../shared/cpp/ObjectModel/SubmitAction.cpp
+             ../../shared/cpp/ObjectModel/HostConfig.cpp
              src/main/cpp/objectmodel_wrap.cpp
              src/main/cpp/native-lib.cpp
              )

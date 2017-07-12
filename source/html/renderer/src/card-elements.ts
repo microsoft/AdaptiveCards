@@ -1659,7 +1659,6 @@ class ActionCollection {
 
         if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
             this.showActionCardPane(<ShowCardAction>this.items[0]);
-
             this._renderedActionCount = 1;
         }
         else {

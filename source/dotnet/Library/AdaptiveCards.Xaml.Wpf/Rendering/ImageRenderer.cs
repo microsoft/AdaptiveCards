@@ -73,7 +73,7 @@ namespace AdaptiveCards.Rendering
             ImageVisitor visitor = new ImageVisitor();
             
             // prefetch images
-            await visitor.GetAllImages(card);
+            await visitor.GetAllImages(card).ConfigureAwait(false);
 
             return await Task.Factory.StartNewSTA(() =>
             {
@@ -127,7 +127,7 @@ namespace AdaptiveCards.Rendering
         {
         }
 
-        public Dictionary<string, MemoryStream> Images = new Dictionary<string, MemoryStream>();
+        public Dictionary<string, byte[]> Images = new Dictionary<string, byte[]>();
 
         /// <summary>
         /// Get all images 
@@ -143,22 +143,20 @@ namespace AdaptiveCards.Rendering
 
         public MemoryStream GetCachedImageStream(String url)
         {
-            if (this.Images.TryGetValue(url, out var imageStream))
+            if (this.Images.TryGetValue(url, out var bytes))
             {
-                imageStream.Position = 0;
-                return imageStream;
+                return new MemoryStream(bytes, writable: false);
             }
             return null;
         }
 
         protected async Task GetImage(string url)
         {
-            MemoryStream stream = new MemoryStream();
             using (WebClient client = new WebClient())
             {
                 var data = await client.DownloadDataTaskAsync(url).ConfigureAwait(false);
                 lock (Images)
-                    Images[url] = new MemoryStream(data);
+                    Images[url] = data;
             }
         }
 

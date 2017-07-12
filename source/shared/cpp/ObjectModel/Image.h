@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+#include "BaseActionElement.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
 
@@ -22,6 +23,7 @@ public:
     static std::shared_ptr<Image> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
+    virtual Json::Value SerializeToJsonValue();
 
     std::string GetUrl() const;
     void SetUrl(const std::string value);
@@ -38,11 +40,15 @@ public:
     HorizontalAlignment GetHorizontalAlignment() const;
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
+    std::shared_ptr<BaseActionElement> GetSelectAction() const;
+    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+
 private:
     std::string m_url;
     ImageStyle m_imageStyle;
     ImageSize m_imageSize;
     std::string m_altText;
     HorizontalAlignment m_hAlignment;
+    std::shared_ptr<BaseActionElement> m_selectAction;
 };
 }

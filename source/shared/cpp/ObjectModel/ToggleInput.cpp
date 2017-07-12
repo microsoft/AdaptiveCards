@@ -41,7 +41,20 @@ std::shared_ptr<ToggleInput> ToggleInput::DeserializeFromString(const std::strin
 
 std::string ToggleInput::Serialize()
 {
-    return "";
+    Json::FastWriter writer;
+    return writer.write(SerializeToJsonValue());
+}
+
+Json::Value ToggleInput::SerializeToJsonValue()
+{
+    Json::Value root = BaseInputElement::SerializeToJsonValue();
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOff)] = GetValueOff();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ValueOn)] = GetValueOn();
+
+    return root;
 }
 
 std::string ToggleInput::GetTitle() const
