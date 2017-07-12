@@ -41,7 +41,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_BackgroundColor(Color value)
+    HRESULT AdaptiveShowCardActionConfig::put_BackgroundColor(Color /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -53,7 +53,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_Padding(IAdaptiveSpacingDefinition* value)
+    HRESULT AdaptiveShowCardActionConfig::put_Padding(IAdaptiveSpacingDefinition* /*value*/)
     {
         return E_NOTIMPL;
     }

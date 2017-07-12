@@ -26,7 +26,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorsConfig::put_Default(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* value)
+    HRESULT AdaptiveColorsConfig::put_Default(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -38,7 +38,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorsConfig::put_Accent(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* value)
+    HRESULT AdaptiveColorsConfig::put_Accent(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -50,7 +50,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorsConfig::put_Dark(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* value)
+    HRESULT AdaptiveColorsConfig::put_Dark(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -62,7 +62,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorsConfig::put_Light(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* value)
+    HRESULT AdaptiveColorsConfig::put_Light(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -74,7 +74,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorsConfig::put_Good(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* value)
+    HRESULT AdaptiveColorsConfig::put_Good(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -85,7 +85,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorsConfig::put_Warning(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* value)
+    HRESULT AdaptiveColorsConfig::put_Warning(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -97,7 +97,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColorsConfig::put_Attention(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* value)
+    HRESULT AdaptiveColorsConfig::put_Attention(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig* /*value*/)
     {
         return E_NOTIMPL;
     }

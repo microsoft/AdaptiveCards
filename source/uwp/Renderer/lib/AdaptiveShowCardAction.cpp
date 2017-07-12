@@ -26,7 +26,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return MakeAndInitialize<AdaptiveCard>(card, m_sharedShowCardAction->GetCard());
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* /*card*/)
     {
         return E_NOTIMPL;
     }
