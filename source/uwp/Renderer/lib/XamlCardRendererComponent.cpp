@@ -32,6 +32,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT XamlCardRenderer::RuntimeClassInitialize()
     {
         m_events.reset(new ActionEventSource);
+        m_renderingActionEvents.reset(new RenderingActionEventSource);
         return S_OK;
     }
 
@@ -56,22 +57,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT XamlCardRenderer::add_RenderingAction(
-            ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::RenderingActionEventArgs*>* handler,
-            EventRegistrationToken* token)
-    {
-        return S_OK;
-        //return m_events->Add(handler, token);
-    }
-
-    _Use_decl_annotations_
-        HRESULT XamlCardRenderer::remove_RenderingAction(EventRegistrationToken token)
-    {
-        return S_OK;
-        //return m_events->Remove(token);
-    }
-
-    _Use_decl_annotations_
     HRESULT XamlCardRenderer::add_Action(
         ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>* handler,
         EventRegistrationToken* token)
@@ -83,6 +68,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT XamlCardRenderer::remove_Action(EventRegistrationToken token)
     {
         return m_events->Remove(token);
+    }
+
+    _Use_decl_annotations_
+        HRESULT XamlCardRenderer::add_RenderingAction(
+            ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::RenderingActionEventArgs*>* handler,
+            EventRegistrationToken* token)
+    {
+        return m_renderingActionEvents->Add(handler, token);
+    }
+
+    _Use_decl_annotations_
+        HRESULT XamlCardRenderer::remove_RenderingAction(EventRegistrationToken token)
+    {
+        return m_renderingActionEvents->Remove(token);
     }
 
     _Use_decl_annotations_

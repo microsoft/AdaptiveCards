@@ -11,6 +11,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             Microsoft::WRL::Implements<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardRenderer>,
             Microsoft::WRL::FtmBase>
     {
+    friend class XamlBuilder;
+
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_XamlCardRenderer, BaseTrust)
 
     public:
@@ -54,6 +56,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig> m_hostConfig;
 
         std::shared_ptr<ActionEventSource> m_events;
+        std::shared_ptr<RenderingActionEventSource> m_renderingActionEvents;
 
         HRESULT CreateAdaptiveCardFromJson(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** adaptiveCard);
     };

@@ -17,7 +17,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement** action);
 
         IFACEMETHODIMP get_CustomFrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** customFrameworkElement);
-        //IFACEMETHODIMP put_CustomFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* customFrameworkElement);
+        IFACEMETHODIMP put_CustomFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* customFrameworkElement);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement> m_action;

@@ -741,10 +741,92 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             {
                 // Render a button for each action
                 ComPtr<IAdaptiveActionElement> action(child);
-                ComPtr<IButton> button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+
+                // Support custom callback for rendering buttons
+                ComPtr<IRenderingActionEventArgs> renderingActionEventArgs;
+                THROW_IF_FAILED(MakeAndInitialize<RenderingActionEventArgs>(&renderingActionEventArgs, action.Get()));
+                THROW_IF_FAILED(strongRenderer->m_renderingActionEvents->InvokeAll(renderer, renderingActionEventArgs.Get()));
 
                 ComPtr<IFrameworkElement> buttonFrameworkElement;
-                THROW_IF_FAILED(button.As(&buttonFrameworkElement));
+                THROW_IF_FAILED(renderingActionEventArgs->get_CustomFrameworkElement(&buttonFrameworkElement));
+                if (buttonFrameworkElement == nullptr)
+                {
+                    // If there was NOT a custom button, we need to create one
+                    ComPtr<IButton> button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+                    THROW_IF_FAILED(button.As(&buttonFrameworkElement));
+
+                    HString title;
+                    THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+                    XamlHelpers::SetContent(button.Get(), title.Get());
+
+                    // TODO: Both of the following blocks of logic will likely need to be genericized outside of this, so that custom buttons can
+                    // invoke actions easily and use ShowCard
+                    ABI::AdaptiveCards::XamlCardRenderer::ActionType actionType;
+                    THROW_IF_FAILED(action->get_ActionType(&actionType));
+
+                    // If this is a show card action and we're rendering the actions inline, render the card that will be shown
+                    ComPtr<IUIElement> uiShowCard;
+                    if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard &&
+                        showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
+                    {
+                        BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), uiShowCard.GetAddressOf());
+                        allShowCards->push_back(uiShowCard);
+
+                        ComPtr<IPanel> showCardsPanel;
+                        THROW_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));
+                        XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel.Get());
+                    }
+
+                    // Add click handler
+                    ComPtr<IButtonBase> buttonBase;
+                    THROW_IF_FAILED(button.As(&buttonBase));
+
+                    EventRegistrationToken clickToken;
+                    THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, strongRenderer, inputElements](IInspectable* sender, IRoutedEventArgs* args) -> HRESULT
+                    {
+                        if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard &&
+                            showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
+                        {
+                            // Check if this show card is currently visible
+                            Visibility currentVisibility;
+                            THROW_IF_FAILED(uiShowCard->get_Visibility(&currentVisibility));
+
+                            // Collapse all cards to make sure that no other show cards are visible
+                            for (std::vector<ComPtr<IUIElement>>::iterator it = allShowCards->begin(); it != allShowCards->end(); ++it)
+                            {
+                                THROW_IF_FAILED((*it)->put_Visibility(Visibility_Collapsed));
+                            }
+
+                            // If the card had been collapsed before, show it now
+                            if (currentVisibility == Visibility_Collapsed)
+                            {
+                                THROW_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
+                            }
+                        }
+                        else
+                        {
+                            // Serialize the inputElements into Json.
+                            Json::Value jsonValue;
+                            for (auto& inputElement : *inputElements)
+                            {
+                                inputElement.Serialize(jsonValue);
+                            }
+
+                            Json::StyledWriter writer;
+                            std::string inputString = writer.write(jsonValue);
+
+                            HString inputHString;
+                            THROW_IF_FAILED(UTF8ToHString(inputString, inputHString.GetAddressOf()));
+
+                            // TODO: Data binding for inputs 
+                            ComPtr<IAdaptiveActionEventArgs> eventArgs;
+                            THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputHString.Get()));
+                            THROW_IF_FAILED(strongRenderer->SendActionEvent(eventArgs.Get()));
+                        }
+
+                        return S_OK;
+                    }).Get(), &clickToken));
+                }
 
                 THROW_IF_FAILED(buttonFrameworkElement->put_Margin(buttonMargin));
 
@@ -772,77 +854,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                     }
                 }
 
-                HString title;
-                THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
-                XamlHelpers::SetContent(button.Get(), title.Get());
-
-                ABI::AdaptiveCards::XamlCardRenderer::ActionType actionType;
-                THROW_IF_FAILED(action->get_ActionType(&actionType));
-
-                // If this is a show card action and we're rendering the actions inline, render the card that will be shown
-                ComPtr<IUIElement> uiShowCard;
-                if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard && 
-                    showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
-                {
-                    BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), uiShowCard.GetAddressOf());
-                    allShowCards->push_back(uiShowCard);
-
-                    ComPtr<IPanel> showCardsPanel;
-                    THROW_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));
-                    XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel.Get());
-                }
-                
-                // Add click handler
-                ComPtr<IButtonBase> buttonBase;
-                THROW_IF_FAILED(button.As(&buttonBase));
-
-                EventRegistrationToken clickToken;
-                THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, strongRenderer, inputElements](IInspectable* sender, IRoutedEventArgs* args) -> HRESULT
-                {
-                    if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard &&
-                        showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
-                    {
-                        // Check if this show card is currently visible
-                        Visibility currentVisibility;
-                        THROW_IF_FAILED(uiShowCard->get_Visibility(&currentVisibility));
-
-                        // Collapse all cards to make sure that no other show cards are visible
-                        for (std::vector<ComPtr<IUIElement>>::iterator it = allShowCards->begin(); it != allShowCards->end(); ++it)
-                        {
-                            THROW_IF_FAILED((*it)->put_Visibility(Visibility_Collapsed));
-                        }
-
-                        // If the card had been collapsed before, show it now
-                        if (currentVisibility == Visibility_Collapsed)
-                        {
-                            THROW_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
-                        }
-                    }
-                    else
-                    {
-                        // Serialize the inputElements into Json.
-                        Json::Value jsonValue;
-                        for (auto& inputElement : *inputElements)
-                        {
-                            inputElement.Serialize(jsonValue);
-                        }
-
-                        Json::StyledWriter writer;
-                        std::string inputString = writer.write(jsonValue);
-
-                        HString inputHString;
-                        THROW_IF_FAILED(UTF8ToHString(inputString, inputHString.GetAddressOf()));
-
-                        // TODO: Data binding for inputs 
-                        ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputHString.Get()));
-                        THROW_IF_FAILED(strongRenderer->SendActionEvent(eventArgs.Get()));
-                    }
-
-                    return S_OK;
-                }).Get(), &clickToken));
-
-                XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
+                XamlHelpers::AppendXamlElementToPanel(buttonFrameworkElement.Get(), actionsPanel.Get());
 
                 if (columnDefinitions != nullptr)
                 {

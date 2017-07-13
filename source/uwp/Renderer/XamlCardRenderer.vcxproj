@@ -114,7 +114,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="RenderingActionEventArgs.h" />
+    <ClInclude Include="lib\RenderingActionEventArgs.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
     <ClInclude Include="lib\AdaptiveFontSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
@@ -173,7 +173,7 @@
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
-    <ClCompile Include="RenderingActionEventArgs.cpp" />
+    <ClCompile Include="lib\RenderingActionEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
