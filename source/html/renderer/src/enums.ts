@@ -10,6 +10,8 @@ export type TextColor = "dark" | "light" | "accent" | "good" | "warning" | "atte
 
 export type HorizontalAlignment = "left" | "center" | "right";
 
+export type VerticalAlignment = "top" | "center" | "bottom";
+
 export type ActionAlignment = "left" | "center" | "right" | "stretch";
 
 export type ActionStyle = "button" | "link";
@@ -23,6 +25,8 @@ export type Separation = "none" | "default" | "strong";
 export type ShowCardActionMode = "inline" | "inlineEdgeToEdge" | "popup";
 
 export type Orientation = "horizontal" | "vertical";
+
+export type BackgroundImageMode = "stretch" | "repeatHorizontally" | "repeatVertically" | "repeat";
 
 export enum ValidationError {
     ActionTypeNotAllowed,

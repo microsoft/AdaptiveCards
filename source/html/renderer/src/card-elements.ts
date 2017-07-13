@@ -1831,6 +1831,61 @@ export class ActionSet extends CardElement {
     }
 }
 
+export class BackgroundImage {
+    url: string;
+    mode: Enums.BackgroundImageMode = "stretch";
+    horizontalAlignment: Enums.HorizontalAlignment = "left";
+    verticalAlignment: Enums.VerticalAlignment = "top";
+
+    parse(json: any) {
+        this.url = json["url"];
+        this.mode = Utils.getValueOrDefault<Enums.BackgroundImageMode>(json["mode"], this.mode);
+        this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], this.horizontalAlignment);
+        this.verticalAlignment = Utils.getValueOrDefault<Enums.VerticalAlignment>(json["verticalAlignment"], this.verticalAlignment);
+    }
+
+    apply(element: HTMLElement) {
+        if (this.url) {
+            element.style.backgroundImage = "url('" + this.url + "')";
+
+            switch (this.mode) {
+                case "repeat":
+                    element.style.backgroundRepeat = "repeat";
+                    break;
+                case "repeatHorizontally":
+                    element.style.backgroundRepeat = "repeat-x";
+                    break;
+                case "repeatVertically":
+                    element.style.backgroundRepeat = "repeat-y";
+                    break;
+                case "stretch":
+                default:
+                    element.style.backgroundRepeat = "no-repeat";
+                    element.style.backgroundSize = "cover";
+                    break;
+            }
+
+            switch (this.horizontalAlignment) {
+                case "center":
+                    element.style.backgroundPositionX = "center";
+                    break;
+                case "right":
+                    element.style.backgroundPositionX = "right";
+                    break;
+            }
+
+            switch (this.verticalAlignment) {
+                case "center":
+                    element.style.backgroundPositionY = "center";
+                    break;
+                case "bottom":
+                    element.style.backgroundPositionY = "bottom";
+                    break;
+            }
+        }
+    }
+}
+
 export abstract class ContainerBase extends CardElement {
     private _items: Array<CardElement> = [];
 
@@ -1855,15 +1910,13 @@ export abstract class ContainerBase extends CardElement {
         this._element.className = "ac-container";
 
         if (this.backgroundImage) {
-            this._element.style.backgroundImage = "url('" + this.backgroundImage + "')";
-            this._element.style.backgroundRepeat = "no-repeat";
-            this._element.style.backgroundSize = "cover";
+            this.backgroundImage.apply(this._element);
         }
 
-            var backgroundColor = this.getBackgroundColor();
+        var backgroundColor = this.getBackgroundColor();
 
-            if (backgroundColor) {
-                this._element.style.backgroundColor = Utils.stringToCssColor(backgroundColor);
+        if (backgroundColor) {
+            this._element.style.backgroundColor = Utils.stringToCssColor(backgroundColor);
         }
 
         if (this.selectAction) {
@@ -1922,7 +1975,7 @@ export abstract class ContainerBase extends CardElement {
     }
 
     selectAction: ExternalAction;
-    backgroundImage: string;
+    backgroundImage: BackgroundImage;
 
     isLastItem(item: CardElement): boolean {
         return this._items.indexOf(item) == (this._items.length - 1);
@@ -1957,7 +2010,10 @@ export abstract class ContainerBase extends CardElement {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
 
-        this.backgroundImage = json["backgroundImage"];
+        if (json["backgroundImage"]) {
+            this.backgroundImage = new BackgroundImage();
+            this.backgroundImage.parse(json["backgroundImage"]);
+        }
 
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName] as Array<any>;
