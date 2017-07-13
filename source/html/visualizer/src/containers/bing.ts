@@ -34,6 +34,11 @@ export class BingContainer extends HostContainer {
                 large: 30,
                 extraLarge: 40
             },
+            padding: {
+                small: 5,
+                default: 10,
+                large: 20
+            },
             separator: {
                 lineThickness: 1,
                 lineColor: "#EEEEEE"        
@@ -92,10 +97,10 @@ export class BingContainer extends HostContainer {
                     inlineTopMargin: 16, 
                     backgroundColor: "#EFEFEF", 
                     padding: { 
-                        top: 16, 
-                        right: 16, 
-                        bottom: 16, 
-                        left: 16 
+                        top: "default", 
+                        right: "default", 
+                        bottom: "default", 
+                        left: "default" 
                     } 
                 }, 
                 actionsOrientation: "vertical", 
@@ -104,32 +109,14 @@ export class BingContainer extends HostContainer {
             adaptiveCard: { 
                 backgroundColor: "#FFFFFF", 
                 padding: { 
-                    left: 20, 
-                    top: 20, 
-                    right: 20, 
-                    bottom: 20 
-                } 
-            }, 
-            container: { 
-                normal: { 
-                }, 
-                emphasis: { 
-                    backgroundColor: "#EEEEEE", 
-                    borderColor: "#AAAAAA", 
-                    borderThickness: { 
-                        top: 1, 
-                        right: 1, 
-                        bottom: 1, 
-                        left: 1 
-                    }, 
-                    padding: { 
-                        top: 10, 
-                        right: 10, 
-                        bottom: 10, 
-                        left: 10 
-                    } 
-                } 
-            }, 
+                    left: "default", 
+                    top: "default", 
+                    right: "default", 
+                    bottom: "default" 
+                },
+                allowCustomPadding: false,
+                allowCustomBackgroundColor: false
+            },
             textBlock: { 
                 color: "dark"
             }, 

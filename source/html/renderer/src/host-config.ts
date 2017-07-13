@@ -17,6 +17,24 @@ function parseSpacingDefinition(obj: any): ISpacingDefinition {
     } : null;
 }
 
+export interface IPaddingDefinition {
+    top: Enums.Padding,
+    right: Enums.Padding,
+    bottom: Enums.Padding,
+    left: Enums.Padding
+}
+
+export const NoPadding: IPaddingDefinition = { top: "none", right: "none", bottom: "none", left: "none" };
+
+function parsePaddingDefinition(obj: any): IPaddingDefinition {
+    return obj ? {
+        top: Utils.getValueOrDefault<Enums.Padding>(obj["top"], "none"),
+        right: Utils.getValueOrDefault<Enums.Padding>(obj["right"], "none"),
+        bottom: Utils.getValueOrDefault<Enums.Padding>(obj["bottom"], "none"),
+        left: Utils.getValueOrDefault<Enums.Padding>(obj["left"], "none")
+    } : null;
+}
+
 export interface IColorDefinition {
     normal: string,
     subtle: string
@@ -37,13 +55,17 @@ export interface ISeparationDefinition {
 
 export interface IAdaptiveCardConfig {
     backgroundColor: string,
-    padding: ISpacingDefinition
+    padding: IPaddingDefinition,
+    allowCustomPadding: boolean,
+    allowCustomBackgroundColor: boolean
 }
 
 function parseAdaptiveCardConfiguration(obj: any): IAdaptiveCardConfig {
     return obj ? {
         backgroundColor: obj["backgroundColor"],
-        padding: parseSpacingDefinition(obj["padding"])
+        padding: parsePaddingDefinition(obj["padding"]),
+        allowCustomPadding: obj["allowCustomPadding"],
+        allowCustomBackgroundColor: obj["allowCustomBackgroundColor"]
     } : null;
 }
 
@@ -54,34 +76,6 @@ export interface ITextBlockConfig {
 function parseTextBlockConfiguration(obj: any): ITextBlockConfig {
     return obj ? {
         color: obj["color"]
-    } : null;
-}
-
-export interface IContainerStyleDefinition {
-    backgroundColor?: string,
-    padding?: ISpacingDefinition,
-    borderColor?: string,
-    borderThickness?: ISpacingDefinition
-}
-
-function parseContainerStyleDefinition(obj: any): IContainerStyleDefinition {
-    return obj ? {
-        backgroundColor: obj["backgroundColor"],
-        padding: parseSpacingDefinition(obj["padding"]),
-        borderColor: obj["borderColor"],
-        borderThickness: parseSpacingDefinition(obj["borderThickness"])
-    } : null;
-}
-
-export interface IContainerConfig {
-    normal: IContainerStyleDefinition,
-    emphasis: IContainerStyleDefinition
-}
-
-function parseContainerConfiguration(obj: any): IContainerConfig {
-    return obj ? {
-        normal: parseContainerStyleDefinition(obj["normal"]),
-        emphasis: parseContainerStyleDefinition(obj["emphasis"])
     } : null;
 }
 
@@ -157,7 +151,7 @@ export interface IShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode,
     inlineTopMargin: number,
     backgroundColor: string,
-    padding: ISpacingDefinition
+    padding: IPaddingDefinition
 }
 
 function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
@@ -165,7 +159,7 @@ function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
         actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inlineEdgeToEdge"),
         inlineTopMargin: obj["inlineTopMargin"],
         backgroundColor: obj["backgroundColor"],
-        padding: parseSpacingDefinition(obj["padding"])
+        padding: parsePaddingDefinition(obj["padding"])
     } : null;
 }
 
@@ -226,13 +220,17 @@ export interface IHostConfig {
         large: number,
         extraLarge: number
     },
+    padding: {
+        small: number,
+        default: number,
+        large: number
+    },
     separator: {
         lineThickness: number,
         lineColor: string        
     }
     actions: IActionsConfig,
     adaptiveCard: IAdaptiveCardConfig,
-    container: IContainerConfig,
     textBlock: ITextBlockConfig,
     image: IImageConfig,
     imageSet: IImageSetConfig,
@@ -277,13 +275,17 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
             large: obj["spacing"]["large"],
             extraLarge: obj["spacing"]["extraLarge"]
         },
+        padding: {
+            small: obj["padding"]["small"],
+            default: obj["padding"]["default"],
+            large: obj["padding"]["large"]
+        },
         separator: {
             lineThickness: obj["separator"]["lineThickness"],
             lineColor: obj["separator"]["lineColor"]
         },
         actions: parseActionsConfiguration(obj["actions"]),
         adaptiveCard: parseAdaptiveCardConfiguration(obj["adaptiveCard"]),
-        container: parseContainerConfiguration(obj["container"]),
         textBlock: parseTextBlockConfiguration(obj["textBlock"]),
         image: parseImageConfiguration(obj["image"]),
         imageSet: parseImageSetConfiguration(obj["imageSet"]),

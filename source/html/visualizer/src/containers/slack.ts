@@ -29,6 +29,11 @@ export class SlackContainer extends HostContainer {
                 large: 30,
                 extraLarge: 40
             },
+            padding: {
+                small: 5,
+                default: 10,
+                large: 20
+            },
             separator: {
                 lineThickness: 1,
                 lineColor: "#EEEEEE"        
@@ -48,10 +53,6 @@ export class SlackContainer extends HostContainer {
                 bolder: 600
             },
             colors: {
-//                default: {
-//                    normal: "#FF000000",
-//                    subtle: "#b2000000"
-//                },
                 accent: {
                     normal: "#FF0000FF",
                     subtle: "#b20000FF"
@@ -91,10 +92,10 @@ export class SlackContainer extends HostContainer {
                     inlineTopMargin: 16,
                     backgroundColor: "#08000000",
                     padding: {
-                        top: 16,
-                        right: 16,
-                        bottom: 16,
-                        left: 16
+                        top: "default",
+                        right: "default",
+                        bottom: "default",
+                        left: "default"
                     }
                 },
                 actionsOrientation: "horizontal",
@@ -103,31 +104,13 @@ export class SlackContainer extends HostContainer {
             adaptiveCard: {
                 backgroundColor: "#00FFFFFF",
                 padding: {
-                    left: 8,
-                    top: 8,
-                    right: 8,
-                    bottom: 8
-                }
-            },
-            container: {
-                normal: {
+                    left: "default",
+                    top: "default",
+                    right: "default",
+                    bottom: "default"
                 },
-                emphasis: {
-                    backgroundColor: "#EEEEEE",
-                    borderColor: "#AAAAAA",
-                    borderThickness: {
-                        top: 1,
-                        right: 1,
-                        bottom: 1,
-                        left: 1
-                    },
-                    padding: {
-                        top: 10,
-                        right: 10,
-                        bottom: 10,
-                        left: 10
-                    }
-                }
+                allowCustomPadding: false,
+                allowCustomBackgroundColor: false
             },
             textBlock: {
                 color: "dark"

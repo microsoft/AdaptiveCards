@@ -37,7 +37,7 @@ function isElementAllowed(element: CardElement, forbiddenElementTypes: Array<str
     return true;
 }
 
-export function computeSpacing(spacing: Enums.Spacing): number {
+function getEffectiveSpacing(spacing: Enums.Spacing): number {
     switch (spacing) {
         case "small":
             return hostConfig.spacing.small;
@@ -51,6 +51,28 @@ export function computeSpacing(spacing: Enums.Spacing): number {
             return hostConfig.spacing.extraLarge;
         default:
             return 0;
+    }
+}
+
+function getEffectivePadding(padding: Enums.Padding): number {
+    switch (padding) {
+        case "small":
+            return hostConfig.padding.small;
+        case "default":
+            return hostConfig.padding.default;
+        case "large":
+            return hostConfig.padding.large;
+        default:
+            return 0;
+    }
+}
+
+function paddingToSpacingDefinition(padding: HostConfig.IPaddingDefinition): HostConfig.ISpacingDefinition {
+    return {
+        top: getEffectivePadding(padding.top),
+        right: getEffectivePadding(padding.right),
+        bottom: getEffectivePadding(padding.bottom),
+        left: getEffectivePadding(padding.left)
     }
 }
 
@@ -74,23 +96,26 @@ export abstract class CardElement {
         return element;
     }
 
+    private _internalPadding: HostConfig.IPaddingDefinition = null;
     private _parent: CardElement = null;
 
     private internalGetNonZeroPadding(element: CardElement, padding: HostConfig.ISpacingDefinition) {
+        var effectivePadding = paddingToSpacingDefinition(element.internalPadding);
+
         if (padding.top == 0) {
-            padding.top = element.padding.top;
+            padding.top = effectivePadding.top;
         }
 
         if (padding.right == 0) {
-            padding.right = element.padding.right;
+            padding.right = effectivePadding.right;
         }
 
         if (padding.bottom == 0) {
-            padding.bottom = element.padding.bottom;
+            padding.bottom = effectivePadding.bottom;
         }
 
         if (padding.left == 0) {
-            padding.left = element.padding.left;
+            padding.left = effectivePadding.left;
         }
 
         if (element.parent) {
@@ -118,11 +143,23 @@ export abstract class CardElement {
         return true;
     }
 
-    protected get padding(): HostConfig.ISpacingDefinition {
-        return { top: 0, right: 0, bottom: 0, left: 0 };
+    protected abstract internalRender(): HTMLElement;
+
+    protected get allowCustomPadding(): boolean {
+        return true;
     }
 
-    protected abstract internalRender(): HTMLElement;
+    protected get defaultPadding(): HostConfig.IPaddingDefinition {
+        return HostConfig.NoPadding;
+    }
+
+    protected get internalPadding(): HostConfig.IPaddingDefinition {
+        return (this._internalPadding && this.allowCustomPadding) ? this._internalPadding : this.defaultPadding;
+    }
+
+    protected set internalPadding(value: HostConfig.IPaddingDefinition) {
+        this._internalPadding = value;
+    }
 
     speak: string;
     horizontalAlignment: Enums.HorizontalAlignment = "left";
@@ -1543,14 +1580,11 @@ class ActionCollection {
         if (hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
             var padding = this._owner.getNonZeroPadding();
 
-            this._actionCardContainer.style.paddingLeft = padding.left + "px";
-            this._actionCardContainer.style.paddingRight = padding.right + "px";
+            renderedCard.style.paddingLeft = padding.left + "px";
+            renderedCard.style.paddingRight = padding.right + "px";
             
-            this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
-            this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
-
-            renderedCard.style.paddingLeft = "0px";
-            renderedCard.style.paddingRight = "0px";
+            renderedCard.style.marginLeft = "-" + padding.left + "px";
+            renderedCard.style.marginRight = "-" + padding.right + "px";
         }
 
         Utils.appendChild(this._actionCardContainer, renderedCard);
@@ -1649,7 +1683,6 @@ class ActionCollection {
         var element = document.createElement("div");
 
         this._actionCardContainer = document.createElement("div");
-        this._actionCardContainer.style.backgroundColor = Utils.stringToCssColor(hostConfig.actions.showCard.backgroundColor);
 
         this._renderedActionCount = 0;
 
@@ -1831,12 +1864,13 @@ export class ActionSet extends CardElement {
     }
 }
 
-export abstract class ContainerBase extends CardElement {
+export class Container extends CardElement {
     private _items: Array<CardElement> = [];
+    private _backgroundColor: string = null;
 
     protected showBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastItem(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
-            this._element.style.paddingBottom = this.padding.bottom + "px";
+            this._element.style.paddingBottom = paddingToSpacingDefinition(this.internalPadding).bottom + "px";
 
             super.showBottomSpacer(this);
         }
@@ -1860,20 +1894,20 @@ export abstract class ContainerBase extends CardElement {
             this._element.style.backgroundSize = "cover";
         }
 
-            var backgroundColor = this.getBackgroundColor();
-
-            if (backgroundColor) {
-                this._element.style.backgroundColor = Utils.stringToCssColor(backgroundColor);
+        if (this.backgroundColor) {
+            this._element.style.backgroundColor = Utils.stringToCssColor(this.backgroundColor);
         }
 
         if (this.selectAction) {
             this._element.classList.add("ac-selectable");
         }
 
-        this._element.style.paddingTop = this.padding.top + "px";
-        this._element.style.paddingRight = this.padding.right + "px";
-        this._element.style.paddingBottom = this.padding.bottom + "px";
-        this._element.style.paddingLeft = this.padding.left + "px";
+        var effectivePadding = paddingToSpacingDefinition(this.internalPadding);
+
+        this._element.style.paddingTop = effectivePadding.top + "px";
+        this._element.style.paddingRight = effectivePadding.right + "px";
+        this._element.style.paddingBottom = effectivePadding.bottom + "px";
+        this._element.style.paddingLeft = effectivePadding.left + "px";
 
         this._element.onclick = (e) => {
             if (this.selectAction != null) {
@@ -1894,7 +1928,7 @@ export abstract class ContainerBase extends CardElement {
                             this._element,
                             Utils.renderSeparation(
                                 {
-                                    spacing: computeSpacing(this._items[i].spacing),
+                                    spacing: getEffectiveSpacing(this._items[i].spacing),
                                     lineThickness: this._items[i].separator ? hostConfig.separator.lineThickness : null,
                                     lineColor: this._items[i].separator ? hostConfig.separator.lineColor : null
                                 },
@@ -1911,18 +1945,38 @@ export abstract class ContainerBase extends CardElement {
         return this._element;
     }
 
-    protected getBackgroundColor(): string {
+    protected get defaultBackgroundColor(): string {
         return null;
+    }
+
+    protected get allowCustomBackgroundColor(): boolean {
+        return true;
     }
 
     protected _element: HTMLDivElement;
 
-    protected get padding(): HostConfig.ISpacingDefinition {
-        return { left: 0, top: 0, right: 0, bottom: 0 };
-    }
-
     selectAction: ExternalAction;
     backgroundImage: string;
+
+    get backgroundColor(): string {
+        return (this.allowCustomBackgroundColor && this._backgroundColor) ? this._backgroundColor : this.defaultBackgroundColor;
+    }
+
+    set backgroundColor(value: string) {
+        this._backgroundColor = value;
+    }
+
+    get padding(): HostConfig.IPaddingDefinition {
+        return this.internalPadding;
+    }
+
+    set padding(value: HostConfig.IPaddingDefinition) {
+        this.internalPadding = value;
+    }
+
+    getJsonTypeName(): string {
+        return "Container";
+    }
 
     isLastItem(item: CardElement): boolean {
         return this._items.indexOf(item) == (this._items.length - 1);
@@ -1958,6 +2012,30 @@ export abstract class ContainerBase extends CardElement {
         super.parse(json);
 
         this.backgroundImage = json["backgroundImage"];
+        this._backgroundColor = json["backgroundColor"];
+
+        var jsonPadding = json["padding"];
+
+        if (jsonPadding) {
+            if (typeof jsonPadding === "string") {
+                var spacing = Utils.getValueOrDefault<Enums.Padding>(jsonPadding, "none");
+
+                this.padding = {
+                    top: spacing,
+                    right: spacing,
+                    bottom: spacing,
+                    left: spacing
+                };
+            }
+            else {
+                this.padding = {
+                    top: Utils.getValueOrDefault<Enums.Padding>(jsonPadding["top"], "none"),
+                    right: Utils.getValueOrDefault<Enums.Padding>(jsonPadding["right"], "none"),
+                    bottom: Utils.getValueOrDefault<Enums.Padding>(jsonPadding["bottom"], "none"),
+                    left: Utils.getValueOrDefault<Enums.Padding>(jsonPadding["left"], "none")
+                };
+            }
+        }
 
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName] as Array<any>;
@@ -2034,51 +2112,6 @@ export abstract class ContainerBase extends CardElement {
         }
 
         return speak;
-    }
-}
-
-export class Container extends ContainerBase {
-    protected getBackgroundColor(): string {
-        return this.style == "normal" ? hostConfig.container.normal.backgroundColor : hostConfig.container.emphasis.backgroundColor;
-    }
-
-    protected internalRender(): HTMLElement {
-        var renderedContainer = super.internalRender();
-
-        if (renderedContainer) {
-            var styleDefinition = this.style == "normal" ? hostConfig.container.normal : hostConfig.container.emphasis;
-
-            if (styleDefinition.borderThickness) {
-                renderedContainer.style.borderTop = styleDefinition.borderThickness.top + "px solid";
-                renderedContainer.style.borderRight = styleDefinition.borderThickness.right + "px solid";
-                renderedContainer.style.borderBottom = styleDefinition.borderThickness.bottom + "px solid";
-                renderedContainer.style.borderLeft = styleDefinition.borderThickness.left + "px solid";
-            }
-
-            if (styleDefinition.borderColor) {
-                renderedContainer.style.borderColor = Utils.stringToCssColor(styleDefinition.borderColor);
-            }
-        }
-
-        return renderedContainer;
-    }
-
-    protected get padding(): HostConfig.ISpacingDefinition {
-        var styleDefinition = this.style == "normal" ? hostConfig.container.normal : hostConfig.container.emphasis;
-
-        return styleDefinition.padding ? styleDefinition.padding : { top: 0, right: 0, bottom: 0, left: 0 };
-    }
-
-    style: Enums.ContainerStyle = "normal";
-
-    getJsonTypeName(): string {
-        return "Container";
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.style = Utils.getValueOrDefault<Enums.ContainerStyle>(json["style"], "normal");
     }
 }
 
@@ -2202,7 +2235,7 @@ export class ColumnSet extends CardElement {
                     if (this._columns.length > 1 && i < this._columns.length - 1) {
                         var separator = Utils.renderSeparation(
                             {
-                                spacing: computeSpacing(this._columns[i + 1].spacing),
+                                spacing: getEffectiveSpacing(this._columns[i + 1].spacing),
                                 lineThickness: this._columns[i + 1].separator ? hostConfig.separator.lineThickness : null,
                                 lineColor: this._columns[i + 1].separator ? hostConfig.separator.lineColor : null
                             },
@@ -2371,7 +2404,7 @@ export class TypeRegistry<T> {
     }
 }
 
-export abstract class ContainerWithActions extends ContainerBase {
+export abstract class ContainerWithActions extends Container {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
@@ -2384,7 +2417,7 @@ export abstract class ContainerWithActions extends ContainerBase {
         if (renderedActions) {
             Utils.appendChild(this._element, Utils.renderSeparation(
                 {
-                    spacing: computeSpacing(hostConfig.actions.spacing),
+                    spacing: getEffectiveSpacing(hostConfig.actions.spacing),
                     lineThickness: null,
                     lineColor: null                    
                 },
@@ -2492,12 +2525,20 @@ export class AdaptiveCard extends ContainerWithActions {
 
     private _cardTypeName: string;
 
-    protected getBackgroundColor(): string {
+    protected get defaultPadding(): HostConfig.IPaddingDefinition {
+        return hostConfig.adaptiveCard.padding;
+    }
+
+    protected get defaultBackgroundColor(): string {
         return hostConfig.adaptiveCard.backgroundColor;
     }
 
-    protected get padding(): HostConfig.ISpacingDefinition {
-        return hostConfig.adaptiveCard.padding;
+    protected get allowCustomPadding(): boolean {
+        return hostConfig.adaptiveCard.allowCustomPadding;
+    }
+
+    protected get allowCustomBackgroundColor() {
+        return hostConfig.adaptiveCard.allowCustomBackgroundColor;
     }
 
     minVersion: IVersion = { major: 1, minor: 0 };
@@ -2565,12 +2606,12 @@ export class AdaptiveCard extends ContainerWithActions {
 AdaptiveCard.initialize();
 
 class InlineAdaptiveCard extends AdaptiveCard {
-    protected get padding(): HostConfig.ISpacingDefinition {
+    protected get defaultPadding(): HostConfig.IPaddingDefinition {
         return hostConfig.actions.showCard.padding;
     }
 
-    protected getBackgroundColor(): string {
-        return null;
+    protected get defaultBackgroundColor(): string {
+        return hostConfig.actions.showCard.backgroundColor;
     }
 
     getForbiddenActionTypes(): Array<any> {
@@ -2586,6 +2627,11 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         medium: 20,
         large: 30,
         extraLarge: 40
+    },
+    padding: {
+        small: 10,
+        default: 20,
+        large: 30
     },
     separator: {
         lineThickness: 1,
@@ -2644,10 +2690,10 @@ var defaultHostConfig: HostConfig.IHostConfig = {
             inlineTopMargin: 16,
             backgroundColor: "#22000000",
             padding: {
-                top: 16,
-                right: 16,
-                bottom: 16,
-                left: 16
+                top: "default",
+                right: "default",
+                bottom: "default",
+                left: "default"
             }
         },
         actionsOrientation: "horizontal",
@@ -2656,31 +2702,13 @@ var defaultHostConfig: HostConfig.IHostConfig = {
     adaptiveCard: {
         backgroundColor: "#00000000",
         padding: {
-            left: 20,
-            top: 20,
-            right: 20,
-            bottom: 20
-        }
-    },
-    container: {
-        normal: {
+            left: "default",
+            top: "default",
+            right: "default",
+            bottom: "default"
         },
-        emphasis: {
-            backgroundColor: "#EEEEEE",
-            borderColor: "#AAAAAA",
-            borderThickness: {
-                top: 1,
-                right: 1,
-                bottom: 1,
-                left: 1
-            },
-            padding: {
-                top: 10,
-                right: 10,
-                bottom: 10,
-                left: 10
-            }
-        }
+        allowCustomPadding: false,
+        allowCustomBackgroundColor: false
     },
     textBlock: {
         color: "dark"

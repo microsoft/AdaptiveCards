@@ -44,6 +44,11 @@ export class SkypeContainer extends HostContainer {
                 large: 30,
                 extraLarge: 40
             },
+            padding: {
+                small: 5,
+                default: 10,
+                large: 20
+            },
             separator: {
                 lineThickness: 1,
                 lineColor: "#EEEEEE"        
@@ -102,10 +107,10 @@ export class SkypeContainer extends HostContainer {
                     inlineTopMargin: 16,
                     backgroundColor: "#AEEAEAEA",
                     padding: {
-                        top: 16,
-                        right: 16,
-                        bottom: 16,
-                        left: 16
+                        top: "default",
+                        right: "default",
+                        bottom: "default",
+                        left: "default"
                     }
                 },
                 actionsOrientation: "vertical",
@@ -114,31 +119,13 @@ export class SkypeContainer extends HostContainer {
             adaptiveCard: {
                 backgroundColor: "#AEEAEAEA",
                 padding: {
-                    left: 10,
-                    top: 10,
-                    right: 10,
-                    bottom: 10
-                }
-            },
-            container: {
-                normal: {
+                    left: "default",
+                    top: "default",
+                    right: "default",
+                    bottom: "default"
                 },
-                emphasis: {
-                    backgroundColor: "#EEEEEE",
-                    borderColor: "#AAAAAA",
-                    borderThickness: {
-                        top: 1,
-                        right: 1,
-                        bottom: 1,
-                        left: 1
-                    },
-                    padding: {
-                        top: 10,
-                        right: 10,
-                        bottom: 10,
-                        left: 10
-                    }
-                }
+                allowCustomPadding: false,
+                allowCustomBackgroundColor: false
             },
             textBlock: {
                 color: "dark"

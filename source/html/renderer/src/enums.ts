@@ -4,6 +4,8 @@ export type TextSize = "small" | "normal" | "medium" | "large" | "extraLarge";
 
 export type Spacing = "none" | "small" | "default" | "medium" | "large" | "extraLarge";
 
+export type Padding = "none" | "small" | "default" | "large";
+
 export type TextWeight = "lighter" | "normal" | "bolder";
 
 export type TextColor = "dark" | "light" | "accent" | "good" | "warning" | "attention";
@@ -14,11 +16,7 @@ export type ActionAlignment = "left" | "center" | "right" | "stretch";
 
 export type ActionStyle = "button" | "link";
 
-export type ContainerStyle = "normal" | "emphasis";
-
 export type ImageStyle = "normal" | "person";
-
-export type Separation = "none" | "default" | "strong";
 
 export type ShowCardActionMode = "inline" | "inlineEdgeToEdge" | "popup";
 
