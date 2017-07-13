@@ -6,6 +6,7 @@
 #include "AdaptiveImage.h"
 #include "AdaptiveActionEventArgs.h"
 #include "DefaultResourceDictionary.h"
+#include "RenderingActionEventArgs.h"
 #include <windows.foundation.collections.h>
 #include <windows.storage.h>
 #include <windows.ui.xaml.markup.h>

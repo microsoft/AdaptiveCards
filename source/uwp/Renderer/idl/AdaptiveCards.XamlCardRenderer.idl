@@ -53,6 +53,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveChoiceSetInputConfig;
         runtimeclass AdaptiveHostConfig;
         runtimeclass AdaptiveActionEventArgs;
+        runtimeclass RenderingActionEventArgs;
 
         interface IAdaptiveCardElement;
         interface IAdaptiveActionElement;
@@ -99,6 +100,7 @@ namespace AdaptiveCards
         interface IAdaptiveChoiceSetInputConfig;
         interface IAdaptiveHostConfig;
         interface IAdaptiveActionEventArgs;
+        interface IRenderingActionEventArgs;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -775,6 +777,9 @@ namespace AdaptiveCards
 
             [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<XamlCardRenderer*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
             [eventremove] HRESULT Action([in] EventRegistrationToken token);
+
+            [eventadd] HRESULT RenderingAction([in] Windows.Foundation.TypedEventHandler<XamlCardRenderer*, RenderingActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
+            [eventremove] HRESULT RenderingAction([in] EventRegistrationToken token);
         };
 
         [
@@ -803,6 +808,27 @@ namespace AdaptiveCards
         runtimeclass AdaptiveActionEventArgs
         {
             [default] interface IAdaptiveActionEventArgs;
+        };
+
+        [
+            uuid(57b731ca-67db-11e7-907b-a6006ad3dba0),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(RenderingActionEventArgs)
+        ]
+        interface IRenderingActionEventArgs : IInspectable
+        {
+            [propget] HRESULT Action([out, retval] IAdaptiveActionElement** action);
+
+            [propget] HRESULT CustomFrameworkElement([out, retval] Windows.UI.Xaml.FrameworkElement** value);
+            [propput] HRESULT CustomFrameworkElement([in] Windows.UI.Xaml.FrameworkElement* value);
+        }
+
+        [
+            version(NTDDI_WIN10_RS1),
+        ]
+        runtimeclass RenderingActionEventArgs
+        {
+            [default] interface IRenderingActionEventArgs;
         };
 
         [

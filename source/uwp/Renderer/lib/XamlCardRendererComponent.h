@@ -29,6 +29,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP remove_Action(
             _In_ EventRegistrationToken token);
 
+        IFACEMETHODIMP add_RenderingAction(
+            _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::RenderingActionEventArgs*>* handler,
+            _Out_ EventRegistrationToken* token);
+
+        IFACEMETHODIMP remove_RenderingAction(
+            _In_ EventRegistrationToken token);
+
         IFACEMETHODIMP RenderCardAsXaml(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
         IFACEMETHODIMP RenderCardAsXamlAsync(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
