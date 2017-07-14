@@ -1624,6 +1624,8 @@ namespace AdaptiveCards
         {
             [propget] HRESULT DataJson([out, retval] HSTRING* value);
             [propput] HRESULT DataJson([in] HSTRING value);
+
+            HRESULT GetCustomPropertyValueAsString([in] HSTRING propertyName, [out, retval] HSTRING* propertyValue);
         };
 
         [

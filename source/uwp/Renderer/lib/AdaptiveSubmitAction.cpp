@@ -71,4 +71,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedSubmitAction->SetDataJson(out);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::GetCustomPropertyValueAsString(HSTRING propertyName, HSTRING* propertyValue)
+    {
+        std::string stdPropertyName;
+        RETURN_IF_FAILED(HStringToUTF8(propertyName, stdPropertyName));
+        return UTF8ToHString(m_sharedSubmitAction->GetCustomPropertyValueAsString(stdPropertyName), propertyValue);
+    }
 }}

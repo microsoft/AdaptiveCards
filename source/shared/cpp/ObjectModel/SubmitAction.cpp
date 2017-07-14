@@ -17,9 +17,21 @@ void SubmitAction::SetDataJson(const std::string value)
     m_dataJson = value;
 }
 
+std::string SubmitAction::GetCustomPropertyValueAsString(const std::string propertyName)
+{
+    auto propertyValue = m_json.get(propertyName, Json::Value());
+    if (propertyValue.empty())
+    {
+        return "";
+    }
+
+    return propertyValue.asString();
+}
+
 std::shared_ptr<SubmitAction> SubmitAction::Deserialize(const Json::Value& json)
 {
     std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(json);
+    submitAction->m_json = json;
 
     submitAction->SetDataJson(ParseUtil::GetJsonString(json, AdaptiveCardSchemaKey::Data));
 
