@@ -93,6 +93,10 @@
 		F45A071F1EF4BD67007C6503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A071E1EF4BD67007C6503 /* UIKit.framework */; };
 		F4D33EA51F06F41B00941E44 /* ACRSeparator.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */; };
 		F4D33EA71F06F44C00941E44 /* ACRSeparator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D33EA61F06F44C00941E44 /* ACRSeparator.h */; };
+		F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */; };
+		F4FE45671F196E7B0071D9E5 /* ACRColumnView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FE45651F196E7B0071D9E5 /* ACRColumnView.mm */; };
+		F4FE456A1F196F3D0071D9E5 /* ACRContentStackView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE45681F196F3D0071D9E5 /* ACRContentStackView.h */; };
+		F4FE456B1F196F3D0071D9E5 /* ACRContentStackView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FE45691F196F3D0071D9E5 /* ACRContentStackView.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,6 +201,10 @@
 		F45A071E1EF4BD67007C6503 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRSeparator.mm; sourceTree = "<group>"; };
 		F4D33EA61F06F44C00941E44 /* ACRSeparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRSeparator.h; sourceTree = "<group>"; };
+		F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRColumnView.h; sourceTree = "<group>"; };
+		F4FE45651F196E7B0071D9E5 /* ACRColumnView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRColumnView.mm; sourceTree = "<group>"; };
+		F4FE45681F196F3D0071D9E5 /* ACRContentStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentStackView.h; sourceTree = "<group>"; };
+		F4FE45691F196F3D0071D9E5 /* ACRContentStackView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentStackView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +252,10 @@
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
 				F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */,
 				F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */,
+				F4FE45681F196F3D0071D9E5 /* ACRContentStackView.h */,
+				F4FE45691F196F3D0071D9E5 /* ACRContentStackView.mm */,
+				F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */,
+				F4FE45651F196E7B0071D9E5 /* ACRColumnView.mm */,
 				F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */,
 				F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */,
 				F42741231EFB274C00399FBB /* ACRColumnRenderer.mm */,
@@ -369,10 +381,12 @@
 				F401A87B1F0DCBC8006D7AF2 /* ACRImageSetRenderer.h in Headers */,
 				F423C14C1EE1FFF100905679 /* ACRViewController.h in Headers */,
 				F448731E1EE2261F00FCAFAE /* pch.h in Headers */,
+				F4FE456A1F196F3D0071D9E5 /* ACRContentStackView.h in Headers */,
 				F401A87F1F1045CA006D7AF2 /* ACRContentHoldingUIView.h in Headers */,
 				F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */,
 				F44873061EE2261F00FCAFAE /* Container.h in Headers */,
 				F42741161EF895AB00399FBB /* ACRTextBlockRenderer.h in Headers */,
+				F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */,
 				F44872FA1EE2261F00FCAFAE /* BaseCardElement.h in Headers */,
 				F42741071EF8624F00399FBB /* ACRIBaseCardElementRenderer.h in Headers */,
 				F44873281EE2261F00FCAFAE /* TimeInput.h in Headers */,
@@ -523,6 +537,7 @@
 				F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */,
 				F4D33EA51F06F41B00941E44 /* ACRSeparator.mm in Sources */,
 				F427411D1EF8A25200399FBB /* ACRRegistration.mm in Sources */,
+				F4FE45671F196E7B0071D9E5 /* ACRColumnView.mm in Sources */,
 				F44873011EE2261F00FCAFAE /* Column.cpp in Sources */,
 				F448730D1EE2261F00FCAFAE /* FactSet.cpp in Sources */,
 				F44873031EE2261F00FCAFAE /* ColumnSet.cpp in Sources */,
@@ -531,6 +546,7 @@
 				F42741131EF873A600399FBB /* ACRImageRenderer.mm in Sources */,
 				F448730B1EE2261F00FCAFAE /* Fact.cpp in Sources */,
 				F423C14D1EE1FFF100905679 /* ACRViewController.mm in Sources */,
+				F4FE456B1F196F3D0071D9E5 /* ACRContentStackView.mm in Sources */,
 				F44873271EE2261F00FCAFAE /* TimeInput.cpp in Sources */,
 				F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */,
 				F44873211EE2261F00FCAFAE /* SubmitAction.cpp in Sources */,
