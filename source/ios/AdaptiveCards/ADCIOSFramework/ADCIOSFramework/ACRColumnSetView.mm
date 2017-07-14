@@ -1,27 +1,27 @@
 //
-//  ACRColumnView
-//  ACRColumnView.mm
+//  ACRColumnSetView
+//  ACRColumnSetView.mm
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#include "ACRColumnView.h"
+#include "ACRColumnSetView.h"
 
-@implementation ACRColumnView
+@implementation ACRColumnSetView
 
 -(void)config
 {
     [super config];
-    super.stackView.axis = UILayoutConstraintAxisVertical;
+    super.stackView.axis = UILayoutConstraintAxisHorizontal;
+    super.stackView.distribution = UIStackViewDistributionFillProportionally;
 }
 
 - (void)addArrangedSubview:(UIView *) view
 {
     CGSize contentSz = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     [super addArrangedSubview: view];
-    super.frame.size = [super.stackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     CGSize sz = super.frame.size;
-    sz.width = MAX(super.frame.size.width, contentSz.width);
+    sz.width += contentSz.width;
     super.frame.size = sz;
 }
 
