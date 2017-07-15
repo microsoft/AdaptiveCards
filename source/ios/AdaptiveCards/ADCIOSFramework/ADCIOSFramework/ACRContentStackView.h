@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#include <UIKit/UIKit.h>
+#import <UIKit/UIKit.h>
 
 @interface ACRContentStackView: UIView
 

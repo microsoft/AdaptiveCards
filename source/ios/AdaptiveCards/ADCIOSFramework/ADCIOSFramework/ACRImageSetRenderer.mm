@@ -26,7 +26,7 @@ using namespace AdaptiveCards;
     return CardElementType::ImageSet;
 }
 
-- (UIView* ) render: (UIStackView*) viewGroup
+- (UIView* ) render: (UIView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
@@ -35,7 +35,8 @@ using namespace AdaptiveCards;
                                                                  WithHostConfig:config
                                                                   WithSuperview:viewGroup];
     [view registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"cellId"];
-    [viewGroup addArrangedSubview:view];
+    
+    [(UIStackView *)viewGroup addArrangedSubview:view];
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:view
                                   attribute:NSLayoutAttributeLeading

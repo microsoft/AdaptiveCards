@@ -74,18 +74,40 @@ using namespace AdaptiveCards;
 }
 
 - (UIView* ) render: (UIView*) view
-    withContentView: (UIStackView*) newView
+    withContentView: (UIView*) newView
       withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
-{ 
+{   
+   
+    for(auto elem: elems)
+    {
+        [ACRSeparator renderSeparation:elem forSuperview: newView withHostConfig:config];
+        
+        ACRBaseCardElementRenderer* renderer =
+            [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
+
+        //NSLog(@"card element type: %@\n", [NSNumber numberWithInt:(int)elem->GetElementType()]);
+        if(renderer == nil)
+        { 
+            NSLog(@"Unsupported card element type: %d\n", (int) elem->GetElementType());
+            continue;
+        }
+
+        [renderer render:newView withCardElem:elem andHostConfig:config];
+    }
     
-    if([view isKindOfClass:[UIStackView class]]){
+    if([view isKindOfClass:[UIStackView class]])
+    {
         [(UIStackView* )view addArrangedSubview: newView];
-    }else
+    }else if([view isKindOfClass:[ACRContentStackView class]])
+    {
+        [(ACRContentStackView*)view addArrangedSubview:newView];
+    }
+    else
     {
         [view addSubview: newView];
-
-        NSLayoutConstraint* constraint = 
+        
+        NSLayoutConstraint* constraint =
         [NSLayoutConstraint constraintWithItem:view
                                      attribute:NSLayoutAttributeLeading
                                      relatedBy:NSLayoutRelationEqual
@@ -121,26 +143,10 @@ using namespace AdaptiveCards;
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];
-
+        
         
     }
 
-    for(auto elem: elems)
-    {
-        [ACRSeparator renderSeparation:elem forSuperview: newView withHostConfig:config];
-        
-        ACRBaseCardElementRenderer* renderer =
-            [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
-
-        //NSLog(@"card element type: %@\n", [NSNumber numberWithInt:(int)elem->GetElementType()]);
-        if(renderer == nil)
-        { 
-            NSLog(@"Unsupported card element type: %d\n", (int) elem->GetElementType());
-            continue;
-        }
-
-        [renderer render:newView withCardElem:elem andHostConfig:config];
-    }
 
     return newView;
 }

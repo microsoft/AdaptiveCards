@@ -117,7 +117,7 @@
     }
     return constraints;
 }
-- (UIView* ) render: (UIStackView*) viewGroup
+- (UIView* ) render: (UIView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
@@ -154,7 +154,7 @@
     [wrappingview addSubview: view];
     
 
-    if(viewGroup)[viewGroup addArrangedSubview: wrappingview];
+    if(viewGroup)[(UIStackView* )viewGroup addArrangedSubview: wrappingview];
 
     [wrappingview addConstraints:[self setImageAlignment: imgElem->GetHorizontalAlignment()
                                           withSuperview: wrappingview

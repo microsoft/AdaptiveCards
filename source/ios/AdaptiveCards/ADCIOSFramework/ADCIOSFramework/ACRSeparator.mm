@@ -26,10 +26,17 @@ using namespace AdaptiveCards;
            withHostConfig:(std::shared_ptr<HostConfig> const &) config
 {          
     ACRSeparator* separator = nil;
-    if(SeparationStyle::None != elem->GetSeparationStyle() &&
-       [view isKindOfClass: [UIStackView class] ])
-    {
-        UIStackView* superview = (UIStackView*) view;
+    if(SeparationStyle::None != elem->GetSeparationStyle())
+    { 
+        UIStackView* superview = nil;
+        if([view isKindOfClass: [UIStackView class]])
+        {
+            superview = (UIStackView*) view;
+        } else
+        { 
+            superview = ((ACRContentStackView*) view).stackView;
+        }
+
         separator = [[ACRSeparator alloc] init];
         SeparationConfig* separatorHstCnfig = 
             [separator getSeparationConfig: elem

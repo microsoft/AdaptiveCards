@@ -6,6 +6,7 @@
 //
 
 #import "ACRColumnRenderer.h"
+#import "ACRColumnView.h"
 #import "ACRRegistration.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
@@ -23,18 +24,13 @@
     return CardElementType::Column;
 }
 
-- (UIView* ) render: (UIStackView*) viewGroup
+- (UIView* ) render: (UIView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 { 
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
-    UIStackView* column = [[UIStackView alloc] init];
-    column.axis = UILayoutConstraintAxisVertical;
-    //column.alignment = UIStackViewAlignmentFill;//UIStackViewAlignmentCenter;
-   // column.contentMode = UIViewContentModeScaleToFill;
-    //column.distribution = UIStackViewDistributionEqualCentering;
-    column.translatesAutoresizingMaskIntoConstraints = false;
+    ACRColumnView* column = [[ACRColumnView alloc] init];
     
     [[ACRRegistration getInstance] render: viewGroup
                           withContentView: column 
@@ -49,12 +45,7 @@
         [column setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     }
     
-#if 0
-    if(columnElem->GetSize() == "auto")
-    {
-        [column setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    }
-#endif
+    [column adjustHunggingForLastElement];
     
     return column;
 }

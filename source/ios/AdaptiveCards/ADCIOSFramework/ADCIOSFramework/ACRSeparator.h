@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "HostConfig.h"
 #import "SharedAdaptiveCard.h"
+#import "ACRContentStackView.h"
 
 @interface ACRSeparator: UIView
 

@@ -36,7 +36,6 @@
 - (void) config
 { 
     _stackView = [[UIStackView alloc] init];
-    self.stackView.distribution = UIStackViewDistributionFillProportionally;
     [self addSubview: self.stackView];
     [self addConstraint:
      [NSLayoutConstraint constraintWithItem:self
@@ -54,10 +53,30 @@
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1
                                    constant:0]];
+    [self addConstraint:
+     [NSLayoutConstraint constraintWithItem:self
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.stackView
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1
+                                   constant:0]];
+    [self addConstraint:
+     [NSLayoutConstraint constraintWithItem:self
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.stackView
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1
+                                   constant:0]];
+    
+    self.stackView.translatesAutoresizingMaskIntoConstraints = false;
+    self.translatesAutoresizingMaskIntoConstraints = false;
 }
 
 - (CGSize) intrinsicContentSize
 {
+    NSLog(@"%@, w = %f, h = %f", self, self.frame.size.width, self.frame.size.height);
     return self.frame.size;
 }
 
