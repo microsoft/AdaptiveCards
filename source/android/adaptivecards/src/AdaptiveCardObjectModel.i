@@ -34,6 +34,15 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
 #include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
 #include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
+#include "../../../shared/cpp/ObjectModel/DateInput.h"
+#include "../../../shared/cpp/ObjectModel/NumberInput.h"
+#include "../../../shared/cpp/ObjectModel/TextInput.h"
+#include "../../../shared/cpp/ObjectModel/TimeInput.h"
+#include "../../../shared/cpp/ObjectModel/ToggleInput.h"
+#include "../../../shared/cpp/ObjectModel/HttpAction.h"
+#include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
+#include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
+#include "../../../shared/cpp/ObjectModel/SubmitAction.h"
 #include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
@@ -50,7 +59,17 @@ namespace std {
 %shared_ptr(AdaptiveCards::ColumnSet)
 %shared_ptr(AdaptiveCards::Fact)
 %shared_ptr(AdaptiveCards::FactSet)
+%shared_ptr(AdaptiveCards::ChoiceInput)
 %shared_ptr(AdaptiveCards::ChoiceSetInput)
+%shared_ptr(AdaptiveCards::DateInput)
+%shared_ptr(AdaptiveCards::NumberInput)
+%shared_ptr(AdaptiveCards::TextInput)
+%shared_ptr(AdaptiveCards::TimeInput)
+%shared_ptr(AdaptiveCards::ToggleInput)
+%shared_ptr(AdaptiveCards::HttpAction)
+%shared_ptr(AdaptiveCards::OpenUrlAction)
+%shared_ptr(AdaptiveCards::ShowCardAction)
+%shared_ptr(AdaptiveCards::SubmitAction)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
 
 // Allow C++ exceptions to be handled in Java
@@ -75,6 +94,8 @@ namespace std {
 %template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >; 
 %template(FactVector) std::vector<std::shared_ptr<AdaptiveCards::Fact> >; 
 %template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >; 
+%template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >; 
+%template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >; 
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -183,6 +204,21 @@ namespace std {
     }
 };
 
+%exception AdaptiveCards::ChoiceInput::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ChoiceInput {
+    static AdaptiveCards::ChoiceInput *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::ChoiceInput *>(baseCardElement);
+    }
+};
+
 %exception AdaptiveCards::ChoiceSetInput::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
     $action
     if (!result) {
@@ -195,6 +231,141 @@ namespace std {
 %extend AdaptiveCards::ChoiceSetInput {
     static AdaptiveCards::ChoiceSetInput *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
         return dynamic_cast<AdaptiveCards::ChoiceSetInput *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::DateInput::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::DateInput {
+    static AdaptiveCards::DateInput *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::DateInput *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::NumberInput::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::NumberInput {
+    static AdaptiveCards::NumberInput *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::NumberInput *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::TextInput::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::TextInput {
+    static AdaptiveCards::TextInput *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::TextInput *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::TimeInput::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::TimeInput {
+    static AdaptiveCards::TimeInput *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::TimeInput *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::ToggleInput::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ToggleInput {
+    static AdaptiveCards::ToggleInput *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::ToggleInput *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::HttpAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::HttpAction {
+    static AdaptiveCards::HttpAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+        return dynamic_cast<AdaptiveCards::HttpAction *>(baseActionElement);
+    }
+};
+
+%exception AdaptiveCards::OpenUrlAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::OpenUrlAction {
+    static AdaptiveCards::OpenUrlAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+        return dynamic_cast<AdaptiveCards::OpenUrlAction *>(baseActionElement);
+    }
+};
+
+%exception AdaptiveCards::ShowCardAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ShowCardAction {
+    static AdaptiveCards::ShowCardAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+        return dynamic_cast<AdaptiveCards::ShowCardAction *>(baseActionElement);
+    }
+};
+
+%exception AdaptiveCards::SubmitAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::SubmitAction {
+    static AdaptiveCards::SubmitAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+        return dynamic_cast<AdaptiveCards::SubmitAction *>(baseActionElement);
     }
 };
 
@@ -213,6 +384,15 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
 %include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
 %include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
+%include "../../../shared/cpp/ObjectModel/DateInput.h"
+%include "../../../shared/cpp/ObjectModel/NumberInput.h"
+%include "../../../shared/cpp/ObjectModel/TextInput.h"
+%include "../../../shared/cpp/ObjectModel/TimeInput.h"
+%include "../../../shared/cpp/ObjectModel/ToggleInput.h"
+%include "../../../shared/cpp/ObjectModel/HttpAction.h"
+%include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
+%include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
+%include "../../../shared/cpp/ObjectModel/SubmitAction.h"
 %include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 %include "../../../shared/cpp/ObjectModel/HostConfig.h"

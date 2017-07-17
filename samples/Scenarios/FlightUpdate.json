@@ -13,7 +13,7 @@
 						{
 							"type": "Image",
 							"size": "small",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/Airplane.png"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Airplane.png"
 						}
 					]
 				},
@@ -184,7 +184,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
+							"url": "https://messagecardplayground.azurewebsites.net/assets/airplane.png",
 							"size": "small"
 						}
 					]

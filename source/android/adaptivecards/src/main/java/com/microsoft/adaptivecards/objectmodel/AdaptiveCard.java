@@ -43,8 +43,8 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, minVersion, fallbackText, backgroundImageUrl), true);
   }
 
-  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImageUrl, BaseCardElementVector body, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__BaseActionElement_t_t actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, minVersion, fallbackText, backgroundImageUrl, BaseCardElementVector.getCPtr(body), body, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__BaseActionElement_t_t.getCPtr(actions)), true);
+  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImageUrl, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, minVersion, fallbackText, backgroundImageUrl, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public String GetVersion() {
@@ -83,8 +83,8 @@ public class AdaptiveCard {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetBody__SWIG_0(swigCPtr, this), false);
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__BaseActionElement_t_t GetActions() {
-    return new SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__BaseActionElement_t_t(AdaptiveCardObjectModelJNI.AdaptiveCard_GetActions(swigCPtr, this), false);
+  public BaseActionElementVector GetActions() {
+    return new BaseActionElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetActions(swigCPtr, this), false);
   }
 
   public CardElementType GetElementType() {
