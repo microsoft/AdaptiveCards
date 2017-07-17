@@ -12,6 +12,7 @@
 #import "ACRImageRenderer.h"
 #import "ACRImageSetRenderer.h"
 #import "ACRTextBlockRenderer.h"
+#import "ACRFactSetRenderer.h"
 #import "ACRContainerRenderer.h"
 #import "ACRColumnSetRenderer.h"
 #import "ACRColumnRenderer.h"
@@ -36,6 +37,7 @@ using namespace AdaptiveCards;
              [ACRImageRenderer getInstance],     [NSNumber numberWithInt: (int)[ACRImageRenderer elemType]],
              [ACRImageSetRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRImageSetRenderer elemType]],
              [ACRTextBlockRenderer getInstance], [NSNumber numberWithInt: (int)[ACRTextBlockRenderer elemType]],
+             [ACRFactSetRenderer getInstance],   [NSNumber numberWithInt: (int)[ACRFactSetRenderer elemType]],
              [ACRContainerRenderer getInstance], [NSNumber numberWithInt: (int)[ACRContainerRenderer elemType]],
              [ACRColumnSetRenderer getInstance], [NSNumber numberWithInt: (int)[ACRColumnSetRenderer elemType]],
              [ACRColumnRenderer getInstance],    [NSNumber numberWithInt: (int)[ACRColumnRenderer elemType]],
