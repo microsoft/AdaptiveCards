@@ -13,7 +13,7 @@
 {
     [super config];
     super.stackView.axis = UILayoutConstraintAxisHorizontal;
-    super.stackView.distribution = UIStackViewDistributionFillProportionally;    
+    super.stackView.distribution = UIStackViewDistributionFill;//Proportionally;
 }
 
 - (void)addArrangedSubview:(UIView *) view

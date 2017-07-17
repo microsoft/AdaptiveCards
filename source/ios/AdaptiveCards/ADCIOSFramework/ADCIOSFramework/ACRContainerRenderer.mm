@@ -6,6 +6,7 @@
 //
 
 #import "ACRContainerRenderer.h"
+#import "ACRColumnView.h"
 #import "ACRRegistration.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
@@ -28,7 +29,11 @@
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
+    
+    ACRColumnView* container = [[ACRColumnView alloc] init];
+    
     return [[ACRRegistration getInstance] render: viewGroup
+                                 withContentView: container
                                    withCardElems: containerElem->GetItems()
                                    andHostConfig: config];
 }

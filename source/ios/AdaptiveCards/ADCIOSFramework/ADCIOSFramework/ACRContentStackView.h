@@ -15,4 +15,6 @@
 
 - (void) config;
 
+- (void)adjustHunggingForLastElement;
+
 @end

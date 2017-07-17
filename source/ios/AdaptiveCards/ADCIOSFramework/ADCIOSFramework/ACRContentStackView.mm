@@ -85,4 +85,11 @@
     [self.stackView addArrangedSubview: view];
 }
 
+- (void)adjustHunggingForLastElement
+{
+    NSLog(@"sub view counts = %lu", (unsigned long)[self.stackView.arrangedSubviews count]);
+    if([self.stackView.arrangedSubviews count])
+        [[self.stackView.arrangedSubviews objectAtIndex: [self.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+}
+
 @end

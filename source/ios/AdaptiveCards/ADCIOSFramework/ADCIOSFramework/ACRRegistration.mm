@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ACRRegistration.h"
+#import "ACRColumnView.h"
 #import "ACRImageRenderer.h"
 #import "ACRImageSetRenderer.h"
 #import "ACRTextBlockRenderer.h"
@@ -59,15 +60,19 @@ using namespace AdaptiveCards;
 - (UIView* ) render: (UIView*) view
       withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
-{ 
+{
+#if 0
     UIStackView* childView = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
     childView.axis = UILayoutConstraintAxisVertical;
     //childView.alignment = UIStackViewAlignmentFill
     //childView.alignment = UIStackViewAlignmentFill;//UIStackViewAlignmentCenter;
     //childView.distribution = UIStackViewDistributionFillProportionally;
     childView.translatesAutoresizingMaskIntoConstraints = false;
+#endif
+    
+    ACRColumnView* horizontalView = [[ACRColumnView alloc] init];
 
-    return [self render: view withContentView: childView
+    return [self render: view withContentView: horizontalView
                          withCardElems: elems
                          andHostConfig: config];
 
@@ -110,7 +115,7 @@ using namespace AdaptiveCards;
         NSLayoutConstraint* constraint =
         [NSLayoutConstraint constraintWithItem:view
                                      attribute:NSLayoutAttributeLeading
-                                     relatedBy:NSLayoutRelationEqual
+                                     relatedBy:NSLayoutRelationLessThanOrEqual
                                         toItem:newView
                                      attribute:NSLayoutAttributeLeading
                                     multiplier:1.0
@@ -118,7 +123,7 @@ using namespace AdaptiveCards;
         [view addConstraint:constraint];
         [NSLayoutConstraint constraintWithItem:view
                                      attribute:NSLayoutAttributeTrailing
-                                     relatedBy:NSLayoutRelationEqual
+                                     relatedBy:NSLayoutRelationLessThanOrEqual
                                         toItem:newView
                                      attribute:NSLayoutAttributeTrailing
                                     multiplier:1.0

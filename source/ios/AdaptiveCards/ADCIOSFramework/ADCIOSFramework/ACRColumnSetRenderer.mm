@@ -86,6 +86,7 @@
     NSLog(@"Frame Size width = %f, height = %f", intrinsicSz.width, intrinsicSz.height);
 
     //wrappingview.contentMode = UIViewContentModeScaleAspectFit;
+    //[columnSetView adjustHunggingForLastElement];
     
     [viewGroup addArrangedSubview:columnSetView];
 

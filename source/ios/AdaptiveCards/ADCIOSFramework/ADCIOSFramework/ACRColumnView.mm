@@ -15,11 +15,7 @@
     super.stackView.axis = UILayoutConstraintAxisVertical;
     super.stackView.distribution = UIStackViewDistributionFill;
 }
-- (void)adjustHunggingForLastElement
-{ 
-if([self.stackView.arrangedSubviews count])
-    [[self.stackView.arrangedSubviews objectAtIndex: [self.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-}
+
 - (void)addArrangedSubview:(UIView *) view
 {
     CGSize contentSz = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
@@ -30,6 +26,18 @@ if([self.stackView.arrangedSubviews count])
     frame.size.height += contentSz.height;
     super.frame = frame;
     NSLog(@"column frame size w = %f, h = %f", super.frame.size.width, super.frame.size.height);
+    if([self.stackView.arrangedSubviews count] - 1)
+    {
+        [self addConstraint: 
+                [NSLayoutConstraint constraintWithItem:
+                 [self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count] - 2]
+                                             attribute:NSLayoutAttributeBottom
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeTop
+                                            multiplier:1
+                                              constant:0]];
+    }
 }
 
 @end

@@ -42,7 +42,7 @@
     if(self.curView)
         [self.curView removeFromSuperview];
     self.curView = adcVc.view;
-    //self.curView.frame = CGRectMake(20, 250, 350, 550);
+    self.curView.frame = CGRectMake(20, 250, 350, 550);
     [self addChildViewController:adcVc];
     [self.view addSubview:adcVc.view];
     [adcVc didMoveToParentViewController:self];

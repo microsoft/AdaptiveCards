@@ -8,6 +8,4 @@
 
 @interface ACRColumnView:ACRContentStackView
 
--(void)adjustHunggingForLastElement;
-
 @end
