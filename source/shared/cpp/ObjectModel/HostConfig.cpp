@@ -105,16 +105,16 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
 {
     TextConfig result;
     result.weight = ParseUtil::GetEnumValue<TextWeight>(
-        json, AdaptiveCardSchemaKey::Weight, result.weight, TextWeightFromString);
+        json, AdaptiveCardSchemaKey::Weight, defaultValue.weight, TextWeightFromString);
 
     result.size = ParseUtil::GetEnumValue<TextSize>(
-        json, AdaptiveCardSchemaKey::Size, result.size, TextSizeFromString);
+        json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
     result.color = ParseUtil::GetEnumValue<TextColor>(
-        json, AdaptiveCardSchemaKey::Color, result.color, TextColorFromString);
+        json, AdaptiveCardSchemaKey::Color, defaultValue.color, TextColorFromString);
 
     result.isSubtle = ParseUtil::GetBool(
-        json, AdaptiveCardSchemaKey::IsSubtle, result.isSubtle);
+        json, AdaptiveCardSchemaKey::IsSubtle, defaultValue.isSubtle);
 
     return result;
 }
@@ -144,8 +144,11 @@ ImageSizesConfig ImageSizesConfig::Deserialize(const Json::Value& json, const Im
 AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value& json, const AdaptiveCardConfig& defaultValue)
 {
     AdaptiveCardConfig result;
-    result.padding = SpacingDefinition::Deserialize(json, defaultValue.padding);
-    std::string  backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
+
+    result.padding = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
+        json, AdaptiveCardSchemaKey::Padding, defaultValue.padding, SpacingDefinition::Deserialize);
+
+    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
     result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
 
     return result;

@@ -28,7 +28,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::put_ShowCard(IAdaptiveShowCardActionConfig* showCardActionConfig)
+    HRESULT AdaptiveActionsConfig::put_ShowCard(IAdaptiveShowCardActionConfig* /*showCardActionConfig*/)
     {
         return E_NOTIMPL;
     }

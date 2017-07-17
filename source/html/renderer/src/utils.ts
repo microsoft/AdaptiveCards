@@ -23,30 +23,35 @@ export function appendChild(node: Node, child: Node) {
 }
 
 export function renderSeparation(separationDefinition: HostConfig.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
-    var separator = document.createElement("div");
+    if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
+        var separator = document.createElement("div");
 
-    if (orientation == "vertical") {
-        if (separationDefinition.lineThickness) {
-            separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
-            separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
-            separator.style.borderTop = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+        if (orientation == "vertical") {
+            if (separationDefinition.lineThickness) {
+                separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
+                separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
+                separator.style.borderTop = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+            }
+            else {
+                separator.style.height = separationDefinition.spacing + "px";
+            }
         }
         else {
-            separator.style.height = separationDefinition.spacing + "px";
+            if (separationDefinition.lineThickness) {
+                separator.style.marginLeft = (separationDefinition.spacing / 2) + "px";
+                separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
+                separator.style.borderLeft = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+            }
+            else {
+                separator.style.width = separationDefinition.spacing + "px";
+            }
         }
+
+        return separator;
     }
     else {
-        if (separationDefinition.lineThickness) {
-            separator.style.marginLeft = (separationDefinition.spacing / 2) + "px";
-            separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
-            separator.style.borderLeft = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
-        }
-        else {
-            separator.style.width = separationDefinition.spacing + "px";
-        }
+        return null;
     }
-
-    return separator;
 }
 
 export function stringToCssColor(color: string): string {

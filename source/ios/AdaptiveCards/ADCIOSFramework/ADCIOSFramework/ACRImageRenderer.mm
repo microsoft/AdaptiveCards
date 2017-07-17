@@ -22,11 +22,11 @@
     return CardElementType::Image;
 }
 
-- (CGSize) getImageSize:(std::shared_ptr<Image> const &) imgBlock 
+- (CGSize) getImageSize:(std::shared_ptr<Image> const &) imgElem 
          withHostConfig:(std::shared_ptr<HostConfig> const &) hostConfig
 {
     float sz = hostConfig->imageSizes.mediumSize;
-    switch (imgBlock->GetImageSize()){
+    switch (imgElem->GetImageSize()){
         case ImageSize::Large: {
             sz = hostConfig->imageSizes.largeSize;
             break;
@@ -95,7 +95,7 @@
         [imgLayer setCornerRadius:cgsize.width/2];
         [imgLayer setMasksToBounds:YES];
     }
-
+    
     [viewGroup addArrangedSubview: view];
     
     view.translatesAutoresizingMaskIntoConstraints = false;

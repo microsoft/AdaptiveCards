@@ -1,6 +1,5 @@
 import { HostContainer} from "./host-container";
 import * as Adaptive from "microsoft-adaptivecards";
-import * as Utils from "../utils";
 
 export class ToastContainer extends HostContainer {
     private _width: number;
@@ -24,12 +23,18 @@ export class ToastContainer extends HostContainer {
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
-            supportsInteractivity: true,
-            strongSeparation: {
-                spacing: 20,
-                lineThickness: 1,
-                lineColor: "#22FFFFFF"
+            spacing: {
+                small: 3,
+                default: 8,
+                medium: 20,
+                large: 30,
+                extraLarge: 40
             },
+            separator: {
+                lineThickness: 1,
+                lineColor: "#EEEEEE"        
+            },
+            supportsInteractivity: true,
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
@@ -76,9 +81,7 @@ export class ToastContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                separation: {
-                    spacing: 10
-                },
+                spacing: "default",
                 buttonSpacing: 10,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
@@ -104,9 +107,6 @@ export class ToastContainer extends HostContainer {
                 }
             },
             container: {
-                separation: {
-                    spacing: 10
-                },
                 normal: {
                 },
                 emphasis: {
@@ -126,41 +126,16 @@ export class ToastContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: "light",
-                separations: {
-                    small: {
-                        spacing: 10,
-                    },
-                    normal: {
-                        spacing: 10
-                    },
-                    medium: {
-                        spacing: 10
-                    },
-                    large: {
-                        spacing: 10
-                    },
-                    extraLarge: {
-                        spacing: 10
-                    }
-                }
+                color: "light"
             },
             image: {
-                size: "medium",
-                separation: {
-                    spacing: 10
-                }
+                size: "medium"
             },
             imageSet: {
                 imageSize: "medium",
-                separation: {
-                    spacing: 10
-                }
+                maxImageHeight: 100
             },
             factSet: {
-                separation: {
-                    spacing: 10
-                },
                 title: {
                     color: "light",
                     size: "normal",
@@ -177,21 +152,6 @@ export class ToastContainer extends HostContainer {
                     wrap: true,
                 },
                 spacing: 10
-            },
-            input: {
-                separation: {
-                    spacing: 10
-                }
-            },
-            columnSet: {
-                separation: {
-                    spacing: 10
-                }
-            },
-            column: {
-                separation: {
-                    spacing: 10
-                }
             }
         };
     }

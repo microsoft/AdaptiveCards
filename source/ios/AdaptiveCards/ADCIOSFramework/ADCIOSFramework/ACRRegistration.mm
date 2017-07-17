@@ -13,6 +13,7 @@
 #import "ACRContainerRenderer.h"
 #import "ACRColumnSetRenderer.h"
 #import "ACRColumnRenderer.h"
+#import "ACRSeparator.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
 
@@ -124,6 +125,8 @@ using namespace AdaptiveCards;
 
     for(auto elem: elems)
     {
+        [ACRSeparator renderSeparation:elem forSuperview: newView withHostConfig:config];
+
         ACRBaseCardElementRenderer* renderer =
             [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
