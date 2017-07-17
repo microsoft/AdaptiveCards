@@ -541,6 +541,7 @@ export class Image extends CardElement {
 
             var imageElement = document.createElement("img");
             imageElement.style.maxHeight = "100%";
+            imageElement.style.minWidth = "0";
 
             switch (this.size) {
                 case "stretch":
@@ -1853,6 +1854,15 @@ export abstract class ContainerBase extends CardElement {
     protected internalRender(): HTMLElement {
         this._element = document.createElement("div");
         this._element.className = "ac-container";
+        this._element.style.display = "flex";
+        this._element.style.flexDirection = "column";
+
+        if (this.height === "auto") {
+            this._element.style.flex = "0 1 auto";
+        }
+        else {
+            this._element.style.flex = "1 1 100%";
+        }
 
         if (this.backgroundImage) {
             this._element.style.backgroundImage = "url('" + this.backgroundImage + "')";
@@ -1890,15 +1900,19 @@ export abstract class ContainerBase extends CardElement {
 
                 if (renderedElement) {
                     if (renderedElementCount > 0) {
-                        Utils.appendChild(
-                            this._element,
-                            Utils.renderSeparation(
-                                {
-                                    spacing: computeSpacing(this._items[i].spacing),
-                                    lineThickness: this._items[i].separator ? hostConfig.separator.lineThickness : null,
-                                    lineColor: this._items[i].separator ? hostConfig.separator.lineColor : null
-                                },
-                                "vertical"));
+                        var separator = Utils.renderSeparation(
+                            {
+                                spacing: computeSpacing(this._items[i].spacing),
+                                lineThickness: this._items[i].separator ? hostConfig.separator.lineThickness : null,
+                                lineColor: this._items[i].separator ? hostConfig.separator.lineColor : null
+                            },
+                            "vertical");
+
+                        if (separator) {
+                            separator.style.flex = "0 0 auto";
+                        }
+
+                        Utils.appendChild(this._element, separator);
                     }
 
                     Utils.appendChild(this._element, renderedElement);
@@ -1923,6 +1937,7 @@ export abstract class ContainerBase extends CardElement {
 
     selectAction: ExternalAction;
     backgroundImage: string;
+    height: "auto" | "stretch" = "auto";
 
     isLastItem(item: CardElement): boolean {
         return this._items.indexOf(item) == (this._items.length - 1);
@@ -1978,6 +1993,12 @@ export abstract class ContainerBase extends CardElement {
         if (selectActionJson != undefined) {
             this.selectAction = <ExternalAction>Action.createAction(selectActionJson);
             invokeSetParent(this.selectAction, this);
+        }
+
+        var jsonHeight = json["height"];
+
+        if (jsonHeight === "auto" || jsonHeight === "stretch") {
+            this.height = jsonHeight;
         }
     }
 
@@ -2091,10 +2112,10 @@ export class Column extends Container {
         if (element) {
             element.style.minWidth = "0";
 
-            if (typeof this.size === "number") {
-                element.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.size) + "%";
+            if (typeof this.width === "number") {
+                element.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
             }
-            else if (this.size === "auto") {
+            else if (this.width === "auto") {
                 element.style.flex = "0 1 auto";
             }
             else {
@@ -2105,7 +2126,7 @@ export class Column extends Container {
         return element;
     }
 
-    size: number | "auto" | "stretch" = "auto";
+    width: number | "auto" | "stretch" = "auto";
 
     getJsonTypeName(): string {
         return "Column";
@@ -2114,39 +2135,39 @@ export class Column extends Container {
     parse(json: any) {
         super.parse(json);
 
-        var parsedSize = json["size"];
-        var invalidSize = false;
+        var jsonWidth = json["width"];
+        var invalidWidth = false;
 
-        if (typeof parsedSize === "number") {
-            if (parsedSize <= 0) {
-                invalidSize = true;
+        if (typeof jsonWidth === "number") {
+            if (jsonWidth <= 0) {
+                invalidWidth = true;
             }
         }
-        else if (typeof parsedSize === "string") {
-            if (parsedSize != "auto" && parsedSize != "stretch") {
-                var sizeAsNumber = parseInt(parsedSize);
+        else if (typeof jsonWidth === "string") {
+            if (jsonWidth != "auto" && jsonWidth != "stretch") {
+                var sizeAsNumber = parseInt(jsonWidth);
 
                 if (!isNaN(sizeAsNumber)) {
-                    parsedSize = sizeAsNumber;
+                    jsonWidth = sizeAsNumber;
                 }
                 else {
-                    invalidSize = true;
+                    invalidWidth = true;
                 }
             }
         }
-        else if (parsedSize) {
-            invalidSize = true;
+        else if (jsonWidth) {
+            invalidWidth = true;
         }
 
-        if (invalidSize) {
+        if (invalidWidth) {
             raiseParseError(
                 {
                     error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid column size: " + parsedSize
+                    message: "Invalid column width: " + jsonWidth
                 });
         }
         else {
-            this.size = parsedSize;
+            this.width = jsonWidth;
         }
     }
 
@@ -2179,16 +2200,16 @@ export class ColumnSet extends CardElement {
             var totalWeight: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
-                if (typeof this._columns[i].size === "number") {
-                    totalWeight += <number>this._columns[i].size;
+                if (typeof this._columns[i].width === "number") {
+                    totalWeight += <number>this._columns[i].width;
                 }
             }
 
             var renderedColumnCount: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
-                if (typeof this._columns[i].size === "number" && totalWeight > 0) {
-                    var computedWeight = 100 / totalWeight * <number>this._columns[i].size;
+                if (typeof this._columns[i].width === "number" && totalWeight > 0) {
+                    var computedWeight = 100 / totalWeight * <number>this._columns[i].width;
 
                     // Best way to emulate "internal" access I know of
                     this._columns[i]["_computedWeight"] = computedWeight;
