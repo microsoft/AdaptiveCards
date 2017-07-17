@@ -171,7 +171,7 @@ public class HttpActionRenderer extends BaseActionElementRenderer
         }
         else if ((httpAction = HttpAction.dynamic_cast(baseActionElement)) == null)
         {
-            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+            throw new InternalError("Unable to convert BaseActionElement to HttpAction object model.");
         }
 
         Button button = renderButton(context, viewGroup, httpAction, hostConfig);

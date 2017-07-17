@@ -85,7 +85,7 @@ public class SubmitActionRenderer extends BaseActionElementRenderer
         }
         else if ((submitAction = SubmitAction.dynamic_cast(baseActionElement)) == null)
         {
-            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+            throw new InternalError("Unable to convert BaseActionElement to SubmitAction object model.");
         }
 
         if (submitActionHandler == null)

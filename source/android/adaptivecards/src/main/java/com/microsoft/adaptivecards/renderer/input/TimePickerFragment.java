@@ -51,7 +51,6 @@ public class TimePickerFragment extends DialogFragment
     public void onTimeSet(TimePicker view, int hourOfDay, int min)
     {
         Calendar calendar = new GregorianCalendar(0, 0, 0, hourOfDay, min);
-        Date time = new Date(0, 0, 0, hourOfDay, min, 0);
         String value = TimeInputHandler.s_simpleDateFormat.format(calendar.getTime());
         m_editText.setText(value);
     }

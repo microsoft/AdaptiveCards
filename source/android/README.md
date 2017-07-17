@@ -31,8 +31,6 @@ TODO:
     b. Input.Text/Number,Date,Time,Toggle/ChoiceSet (only contains one separation config - normal vs strong?)
 6. SelectAction (Column, Image)
 7. HostConfig (Actions, Input.Text, Input.Number, Input.Date, Input.Time)
-8. Input.Toggle
-9. Input.ChoiceSet
 
 Questions:
 Action - HTTP:

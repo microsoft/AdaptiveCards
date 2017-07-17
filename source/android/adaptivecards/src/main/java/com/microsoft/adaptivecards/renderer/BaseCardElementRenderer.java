@@ -1,6 +1,7 @@
 package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,14 +45,14 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         }
 
         View view = new ImageView(context);
-        long lineThickness = separationConfig.getLineThickness();
+        int lineThickness = (int) Math.min(separationConfig.getLineThickness(), Integer.MAX_VALUE);
         LinearLayout.LayoutParams params;
         if (lineThickness > 0)
         {
             view.setBackgroundColor(Color.parseColor(separationConfig.getLineColor()));
             params = new LinearLayout.LayoutParams(
-                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : (int) separationConfig.getLineThickness(),
-                    horizontalLine ? (int) separationConfig.getLineThickness() : LinearLayout.LayoutParams.MATCH_PARENT);
+                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : lineThickness,
+                    horizontalLine ? lineThickness : LinearLayout.LayoutParams.MATCH_PARENT);
         }
         else
         {
