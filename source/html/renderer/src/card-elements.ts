@@ -98,6 +98,15 @@ export abstract class CardElement {
         }
     }
 
+    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
+        if (this.height === "auto") {
+            renderedElement.style.flex = "0 1 auto";
+        }
+        else {
+            renderedElement.style.flex = "1 1 100%";
+        }        
+    }
+
     protected showBottomSpacer(requestingElement: CardElement) {
         if (this.parent) {
             this.parent.showBottomSpacer(this);
@@ -128,6 +137,7 @@ export abstract class CardElement {
     horizontalAlignment: Enums.HorizontalAlignment = "left";
     spacing: Enums.Spacing = "default";
     separator: boolean = false;
+    height: "auto" | "stretch" = "auto";
 
     abstract getJsonTypeName(): string;
     abstract renderSpeech(): string;
@@ -153,6 +163,12 @@ export abstract class CardElement {
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
         this.spacing = Utils.getValueOrDefault<Enums.Spacing>(json["spacing"], "default");
         this.separator = json["separator"];
+
+        var jsonHeight = json["height"];
+
+        if (jsonHeight === "auto" || jsonHeight === "stretch") {
+            this.height = jsonHeight;
+        }
     }
 
     validate(): Array<IValidationError> {
@@ -164,6 +180,8 @@ export abstract class CardElement {
 
         if (renderedElement) {
             renderedElement.style.boxSizing = "border-box";
+
+            this.adjustRenderedElementSize(renderedElement);
         }
 
         return renderedElement;
@@ -1857,13 +1875,6 @@ export abstract class ContainerBase extends CardElement {
         this._element.style.display = "flex";
         this._element.style.flexDirection = "column";
 
-        if (this.height === "auto") {
-            this._element.style.flex = "0 1 auto";
-        }
-        else {
-            this._element.style.flex = "1 1 100%";
-        }
-
         if (this.backgroundImage) {
             this._element.style.backgroundImage = "url('" + this.backgroundImage + "')";
             this._element.style.backgroundRepeat = "no-repeat";
@@ -1937,7 +1948,6 @@ export abstract class ContainerBase extends CardElement {
 
     selectAction: ExternalAction;
     backgroundImage: string;
-    height: "auto" | "stretch" = "auto";
 
     isLastItem(item: CardElement): boolean {
         return this._items.indexOf(item) == (this._items.length - 1);
@@ -1993,12 +2003,6 @@ export abstract class ContainerBase extends CardElement {
         if (selectActionJson != undefined) {
             this.selectAction = <ExternalAction>Action.createAction(selectActionJson);
             invokeSetParent(this.selectAction, this);
-        }
-
-        var jsonHeight = json["height"];
-
-        if (jsonHeight === "auto" || jsonHeight === "stretch") {
-            this.height = jsonHeight;
         }
     }
 
@@ -2106,24 +2110,18 @@ export class Container extends ContainerBase {
 export class Column extends Container {
     private _computedWeight: number = 0;
 
-    protected internalRender(): HTMLElement {
-        var element = super.internalRender();
+    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
+        renderedElement.style.minWidth = "0";
 
-        if (element) {
-            element.style.minWidth = "0";
-
-            if (typeof this.width === "number") {
-                element.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
-            }
-            else if (this.width === "auto") {
-                element.style.flex = "0 1 auto";
-            }
-            else {
-                element.style.flex = "1 1 auto";
-            }
+        if (typeof this.width === "number") {
+            renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
         }
-
-        return element;
+        else if (this.width === "auto") {
+            renderedElement.style.flex = "0 1 auto";
+        }
+        else {
+            renderedElement.style.flex = "1 1 auto";
+        }
     }
 
     width: number | "auto" | "stretch" = "auto";
