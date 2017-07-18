@@ -5,10 +5,11 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "ACRSeparator.h"
+#import "ACRContentStackView.h"
 #import "HostConfig.h"
 #import "TextBlock.h"
-#import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
 
@@ -26,10 +27,19 @@ using namespace AdaptiveCards;
            withHostConfig:(std::shared_ptr<HostConfig> const &) config
 {          
     ACRSeparator* separator = nil;
-    if(SeparationStyle::None != elem->GetSeparationStyle() &&
-       [view isKindOfClass: [UIStackView class] ])
-    {
-        UIStackView* superview = (UIStackView*) view;
+    if(SeparationStyle::None != elem->GetSeparationStyle())
+    { 
+        UIStackView* superview = nil;
+        
+        //clean-up in progress -- need to clean this up
+        if([view isKindOfClass: [UIStackView class]])
+        {
+            superview = (UIStackView*) view;
+        } else
+        { 
+            superview = ((ACRContentStackView*) view).stackView;
+        }
+
         separator = [[ACRSeparator alloc] init];
         SeparationConfig* separatorHstCnfig = 
             [separator getSeparationConfig: elem
@@ -47,6 +57,7 @@ using namespace AdaptiveCards;
             separator->axis = superview.axis;
             if(UILayoutConstraintAxisVertical == superview.axis)
             {
+                separator->width  = MAX(separatorHstCnfig->spacing, superview.frame.size.width);
                 constraint = [NSLayoutConstraint constraintWithItem: separator
                                                           attribute: NSLayoutAttributeWidth
                                                           relatedBy: NSLayoutRelationEqual
@@ -56,11 +67,12 @@ using namespace AdaptiveCards;
                                                            constant: 0];
                 [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
                 [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-                [separator setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+                [separator setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
                 [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
             }
             else
             {
+                separator->height  = MAX(separatorHstCnfig->spacing, superview.frame.size.width);
                 constraint = [NSLayoutConstraint constraintWithItem: separator
                                                           attribute: NSLayoutAttributeHeight
                                                           relatedBy: NSLayoutRelationEqual
@@ -68,7 +80,7 @@ using namespace AdaptiveCards;
                                                           attribute: NSLayoutAttributeHeight
                                                          multiplier: 1
                                                            constant: 0];
-                [separator setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+                [separator setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
                 [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
                 [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
                 [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];

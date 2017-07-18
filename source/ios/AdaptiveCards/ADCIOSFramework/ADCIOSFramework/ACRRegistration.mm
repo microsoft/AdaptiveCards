@@ -8,8 +8,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ACRRegistration.h"
+#import "ACRColumnView.h"
 #import "ACRImageRenderer.h"
+#import "ACRImageSetRenderer.h"
 #import "ACRTextBlockRenderer.h"
+#import "ACRFactSetRenderer.h"
 #import "ACRContainerRenderer.h"
 #import "ACRColumnSetRenderer.h"
 #import "ACRColumnRenderer.h"
@@ -32,7 +35,9 @@ using namespace AdaptiveCards;
         typeToRendererDict =
             [[NSDictionary alloc] initWithObjectsAndKeys:
              [ACRImageRenderer getInstance],     [NSNumber numberWithInt: (int)[ACRImageRenderer elemType]],
+             [ACRImageSetRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRImageSetRenderer elemType]],
              [ACRTextBlockRenderer getInstance], [NSNumber numberWithInt: (int)[ACRTextBlockRenderer elemType]],
+             [ACRFactSetRenderer getInstance],   [NSNumber numberWithInt: (int)[ACRFactSetRenderer elemType]],
              [ACRContainerRenderer getInstance], [NSNumber numberWithInt: (int)[ACRContainerRenderer elemType]],
              [ACRColumnSetRenderer getInstance], [NSNumber numberWithInt: (int)[ACRColumnSetRenderer elemType]],
              [ACRColumnRenderer getInstance],    [NSNumber numberWithInt: (int)[ACRColumnRenderer elemType]],
@@ -57,46 +62,60 @@ using namespace AdaptiveCards;
 - (UIView* ) render: (UIView*) view
       withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
-{ 
-    UIStackView* childView = [[UIStackView alloc] init];
-    childView.axis = UILayoutConstraintAxisVertical;
-    childView.alignment = UIStackViewAlignmentLeading;
-    //childView.alignment = UIStackViewAlignmentFill;//UIStackViewAlignmentCenter;
-    childView.distribution = UIStackViewDistributionEqualSpacing;
-    childView.translatesAutoresizingMaskIntoConstraints = false;
+{
+    ACRColumnView* horizontalView = [[ACRColumnView alloc] initContentViewWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
 
-    return [self render: view withContentView: childView
+    return [self render: view withContentView: horizontalView
                          withCardElems: elems
                          andHostConfig: config];
 
 }
 
 - (UIView* ) render: (UIView*) view
-    withContentView: (UIStackView*) newView
+    withContentView: (UIView*) newView
       withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
-{ 
-    
-    if([view isKindOfClass:[UIStackView class]]){
-        [(UIStackView* )view addArrangedSubview: newView];
-    }else
+{   
+   
+    for(auto elem: elems)
+    {
+        [ACRSeparator renderSeparation:elem forSuperview: newView withHostConfig:config];
+        
+        ACRBaseCardElementRenderer* renderer =
+            [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
+
+        //NSLog(@"card element type: %@\n", [NSNumber numberWithInt:(int)elem->GetElementType()]);
+        if(renderer == nil)
+        { 
+            NSLog(@"Unsupported card element type: %d\n", (int) elem->GetElementType());
+            continue;
+        }
+
+        [renderer render:newView withCardElem:elem andHostConfig:config];
+    }
+   
+    if([view isKindOfClass:[ACRContentStackView class]])
+    {
+        [(ACRContentStackView*)view addArrangedSubview:newView];
+    }
+    else
     {
         [view addSubview: newView];
-
-        NSLayoutConstraint* constraint = 
+        
+        NSLayoutConstraint* constraint =
         [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeLeft
-                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                     attribute:NSLayoutAttributeLeading
+                                     relatedBy:NSLayoutRelationEqual
                                         toItem:newView
-                                     attribute:NSLayoutAttributeLeft
+                                     attribute:NSLayoutAttributeLeading
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];
         [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeRight
-                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                     attribute:NSLayoutAttributeTrailing
+                                     relatedBy:NSLayoutRelationEqual
                                         toItem:newView
-                                     attribute:NSLayoutAttributeRight
+                                     attribute:NSLayoutAttributeTrailing
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];
@@ -119,28 +138,7 @@ using namespace AdaptiveCards;
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];
-
-        
     }
-
-    for(auto elem: elems)
-    {
-        [ACRSeparator renderSeparation:elem forSuperview: newView withHostConfig:config];
-
-        ACRBaseCardElementRenderer* renderer =
-            [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
-
-        //NSLog(@"card element type: %@\n", [NSNumber numberWithInt:(int)elem->GetElementType()]);
-        if(renderer == nil)
-        { 
-            NSLog(@"Unsupported card element type: %d\n", (int) elem->GetElementType());
-            continue;
-        }
-
-        [renderer render:newView withCardElem:elem andHostConfig:config];
-    }
-
     return newView;
 }
-
 @end
