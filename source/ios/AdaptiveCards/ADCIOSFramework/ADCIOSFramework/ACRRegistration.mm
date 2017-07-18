@@ -72,7 +72,7 @@ using namespace AdaptiveCards;
     childView.translatesAutoresizingMaskIntoConstraints = false;
 #endif
     
-    ACRColumnView* horizontalView = [[ACRColumnView alloc] init];
+    ACRColumnView* horizontalView = [[ACRColumnView alloc] initContentViewWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
 
     return [self render: view withContentView: horizontalView
                          withCardElems: elems
@@ -102,11 +102,8 @@ using namespace AdaptiveCards;
 
         [renderer render:newView withCardElem:elem andHostConfig:config];
     }
-    
-    if([view isKindOfClass:[UIStackView class]])
-    {
-        [(UIStackView* )view addArrangedSubview: newView];
-    }else if([view isKindOfClass:[ACRContentStackView class]])
+   
+    if([view isKindOfClass:[ACRContentStackView class]])
     {
         [(ACRContentStackView*)view addArrangedSubview:newView];
     }
@@ -117,7 +114,7 @@ using namespace AdaptiveCards;
         NSLayoutConstraint* constraint =
         [NSLayoutConstraint constraintWithItem:view
                                      attribute:NSLayoutAttributeLeading
-                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                     relatedBy:NSLayoutRelationEqual
                                         toItem:newView
                                      attribute:NSLayoutAttributeLeading
                                     multiplier:1.0
@@ -125,7 +122,7 @@ using namespace AdaptiveCards;
         [view addConstraint:constraint];
         [NSLayoutConstraint constraintWithItem:view
                                      attribute:NSLayoutAttributeTrailing
-                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                     relatedBy:NSLayoutRelationEqual
                                         toItem:newView
                                      attribute:NSLayoutAttributeTrailing
                                     multiplier:1.0

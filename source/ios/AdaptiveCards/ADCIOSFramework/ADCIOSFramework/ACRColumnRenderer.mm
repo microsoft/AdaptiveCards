@@ -38,7 +38,6 @@
                             andHostConfig: config];
 
     [column setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    //column.contentMode = UIViewContentModeScaleAspectFill;
     [column setClipsToBounds:TRUE];
     if(columnElem->GetSize() == "stretch")
     {

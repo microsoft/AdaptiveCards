@@ -9,6 +9,7 @@
 
 @implementation ACRColumnView
 
+
 -(void)config
 {
     [super config];
@@ -25,7 +26,6 @@
     frame.size.width = MAX(super.frame.size.width, contentSz.width);
     frame.size.height += contentSz.height;
     super.frame = frame;
-    NSLog(@"column frame size w = %f, h = %f", super.frame.size.width, super.frame.size.height);
     if([self.stackView.arrangedSubviews count] - 1)
     {
         [self addConstraint: 

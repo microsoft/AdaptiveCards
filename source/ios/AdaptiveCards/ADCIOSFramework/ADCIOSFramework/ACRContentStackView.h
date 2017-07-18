@@ -11,6 +11,8 @@
 
 @property UIStackView* stackView;
 
+- (instancetype) initContentViewWithFrame:(CGRect) frame;
+
 - (void)addArrangedSubview:(UIView *) view;
 
 - (void) config;

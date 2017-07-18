@@ -14,19 +14,33 @@
     self = [super init];
 
     if(self) 
-    { 
+    {
+        _stackView = [[UIStackView alloc] init];
         [self config];
     } 
 
     return self;
 }
 
+
+-(instancetype)initContentViewWithFrame:(CGRect) frame
+{
+    self = [super init];
+    if(self)
+    {
+        _stackView = [[UIStackView alloc] initWithFrame:frame];
+        [self config];
+    }
+    
+    return self;
+}
 - (instancetype) initWithCoder:(NSCoder *) aDecoder 
 {
     self = [super initWithCoder:aDecoder];
 
     if (self) 
     {
+        _stackView = [[UIStackView alloc] init];
         [self config];
     }
 
@@ -35,7 +49,8 @@
 
 - (void) config
 { 
-    _stackView = [[UIStackView alloc] init];
+    if(!self.stackView) return;
+    
     [self addSubview: self.stackView];
     [self addConstraint:
      [NSLayoutConstraint constraintWithItem:self
@@ -76,7 +91,6 @@
 
 - (CGSize) intrinsicContentSize
 {
-    NSLog(@"%@, w = %f, h = %f", self, self.frame.size.width, self.frame.size.height);
     return self.frame.size;
 }
 
@@ -85,9 +99,9 @@
     [self.stackView addArrangedSubview: view];
 }
 
+// when needs to be streched; let last elements to strech
 - (void)adjustHunggingForLastElement
 {
-    NSLog(@"sub view counts = %lu", (unsigned long)[self.stackView.arrangedSubviews count]);
     if([self.stackView.arrangedSubviews count])
         [[self.stackView.arrangedSubviews objectAtIndex: [self.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
     if([self.stackView.arrangedSubviews count])

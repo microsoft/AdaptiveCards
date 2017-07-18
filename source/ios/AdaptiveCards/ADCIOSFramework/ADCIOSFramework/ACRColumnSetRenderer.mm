@@ -82,11 +82,9 @@
         prevView = curView;
         prevRelColumnWidth = relativeColumnWidth;
     }
-    CGSize intrinsicSz = [columnSetView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    NSLog(@"Frame Size width = %f, height = %f", intrinsicSz.width, intrinsicSz.height);
 
     if([constraints count]) [columnSetView addConstraints:constraints];
-    //wrappingview.contentMode = UIViewContentModeScaleAspectFit;
+
     [columnSetView adjustHunggingForLastElement];
     
     [viewGroup addArrangedSubview:columnSetView];
