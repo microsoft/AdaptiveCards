@@ -63,15 +63,6 @@ using namespace AdaptiveCards;
       withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
-#if 0
-    UIStackView* childView = [[UIStackView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
-    childView.axis = UILayoutConstraintAxisVertical;
-    //childView.alignment = UIStackViewAlignmentFill
-    //childView.alignment = UIStackViewAlignmentFill;//UIStackViewAlignmentCenter;
-    //childView.distribution = UIStackViewDistributionFillProportionally;
-    childView.translatesAutoresizingMaskIntoConstraints = false;
-#endif
-    
     ACRColumnView* horizontalView = [[ACRColumnView alloc] initContentViewWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
 
     return [self render: view withContentView: horizontalView
