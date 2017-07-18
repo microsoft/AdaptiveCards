@@ -8,6 +8,7 @@
 #import "ACRImageRenderer.h"
 #import "Image.h"
 #import "SharedAdaptiveCard.h"
+#import "ACRContentHoldingUIView.h"
 
 @implementation ACRImageRenderer
 
@@ -25,7 +26,7 @@
 - (CGSize) getImageSize:(std::shared_ptr<Image> const &) imgElem 
          withHostConfig:(std::shared_ptr<HostConfig> const &) hostConfig
 {
-    float sz = hostConfig->imageSizes.mediumSize;
+    float sz = hostConfig->imageSizes.smallSize;
     switch (imgElem->GetImageSize()){
         case ImageSize::Large: {
             sz = hostConfig->imageSizes.largeSize;
@@ -49,21 +50,74 @@
     return cgSize;
 }
 
--(UIViewContentMode) getImageAlignment:(std::shared_ptr<Image> const &) img
-                          withHostConfig:(std::shared_ptr<HostConfig> const &) config
+-(NSMutableArray*) setImageAlignment: (HorizontalAlignment) alignment
+                       withSuperview: (UIView*) superview
+                              toView: (UIView*) view
 {
-    switch (img->GetHorizontalAlignment()){
+    NSMutableArray* constraints = [[NSMutableArray alloc] init]; 
+    [constraints addObject: 
+        [NSLayoutConstraint constraintWithItem:superview
+                                     attribute:NSLayoutAttributeCenterY
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:view
+                                     attribute:NSLayoutAttributeCenterY
+                                    multiplier:1
+                                      constant:0]];
+
+    switch (alignment)
+    {
         case HorizontalAlignment::Center:
-            return UIViewContentModeCenter;
+        {
+            [constraints addObject: 
+                [NSLayoutConstraint constraintWithItem:superview
+                                             attribute:NSLayoutAttributeCenterX
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeCenterX
+                                            multiplier:1
+                                              constant:0]];
+                return constraints;
+        }
         case HorizontalAlignment::Left:
-            return UIViewContentModeLeft;
+        {
+            [constraints addObject: 
+                [NSLayoutConstraint constraintWithItem:superview
+                                             attribute:NSLayoutAttributeLeading
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeLeading
+                                            multiplier:1
+                                              constant:0]];
+            return constraints;
+        }
         case HorizontalAlignment::Right:
-            return UIViewContentModeRight;
+        {
+            [constraints addObject: 
+                [NSLayoutConstraint constraintWithItem:superview
+                                             attribute:NSLayoutAttributeTrailing
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeTrailing
+                                            multiplier:1
+                                              constant:0]];
+            return constraints;
+        }
         default:
-            return UIViewContentModeLeft;
+        {
+            [constraints addObject: 
+                [NSLayoutConstraint constraintWithItem:superview
+                                             attribute:NSLayoutAttributeLeading
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeLeading
+                                            multiplier:1
+                                              constant:0]];
+            return constraints;
+        }
     }
+    return constraints;
 }
-- (UIView* ) render: (UIStackView*) viewGroup
+- (UIView* ) render: (UIView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
@@ -88,7 +142,7 @@
     view.image = img;
     
     //jwoo: experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
-    view.contentMode = [self getImageAlignment: imgElem withHostConfig:config];
+    view.contentMode = UIViewContentModeScaleAspectFit;
     view.clipsToBounds = YES;
     if(imgElem->GetImageStyle() == ImageStyle::Person) {
         CALayer* imgLayer = view.layer;
@@ -96,11 +150,19 @@
         [imgLayer setMasksToBounds:YES];
     }
     
-    [viewGroup addArrangedSubview: view];
+    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
+    [wrappingview addSubview: view];
     
+
+    if(viewGroup)[(UIStackView* )viewGroup addArrangedSubview: wrappingview];
+
+    [wrappingview addConstraints:[self setImageAlignment: imgElem->GetHorizontalAlignment()
+                                          withSuperview: wrappingview
+                                                 toView: view]];
+
     view.translatesAutoresizingMaskIntoConstraints = false;
-    
-    return view;
+    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
+    return wrappingview;
 }
 
 @end

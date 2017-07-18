@@ -11,6 +11,6 @@
 @interface ACRViewController : UIViewController
 
 @property NSString* jsonString;
--(instancetype) init: (NSString*) str;
+-(instancetype) init: (NSString*) str withFrame:(CGRect) frame;
 
 @end

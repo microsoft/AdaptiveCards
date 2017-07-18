@@ -17,6 +17,7 @@ using namespace AdaptiveCards;
 {
     std::shared_ptr<AdaptiveCard> adaptiveCard;
     std::shared_ptr<HostConfig> config;
+    CGRect guideFrame;
 }
 
 -(instancetype) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -29,10 +30,11 @@ using namespace AdaptiveCards;
     return self;
 }
 
--(instancetype) init: (NSString*) str {
+-(instancetype) init: (NSString*) str withFrame: (CGRect) frame {
     self = [self initWithNibName:nil bundle:nil];
     if(self) {
         self.jsonString = str;
+        guideFrame = frame;
     }
     
     return self;
@@ -52,13 +54,14 @@ using namespace AdaptiveCards;
     UIView* childView = nil;
     
     if(!body.empty())
-    { 
+    {
+        UIView* view = self.view;
+        view.frame = guideFrame;
         ACRRegistration* reg = [ACRRegistration getInstance];
-        childView = [reg render:self.view withCardElems:body andHostConfig:config];
-        
+        childView = [reg render:view withCardElems:body andHostConfig:config];
+
         [NSLayoutConstraint activateConstraints:
-         @[[childView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-           [childView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]]];
+         @[[childView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor]]];
     }
 }
 
