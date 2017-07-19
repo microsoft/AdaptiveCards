@@ -75,6 +75,25 @@ export abstract class CardElement {
     }
 
     private _parent: CardElement = null;
+    private _isVisibile: boolean = true;
+    private _renderedElement: HTMLElement = null;
+    private _separatorElement: HTMLElement = null;
+
+    private setSeparatorElement(separatorElement: HTMLElement) {
+        this._separatorElement = separatorElement;
+
+        this.updateRenderedElementVisibility();
+    }
+
+    private updateRenderedElementVisibility() {
+        if (this._renderedElement) {
+            this._renderedElement.style.visibility = this._isVisibile ? null : "collapse";
+        }
+
+        if (this._separatorElement) {
+            this._separatorElement.style.visibility = this._isVisibile ? null : "collapse";
+        }
+    }
 
     protected internalGetNonZeroPadding(padding: HostConfig.ISpacingDefinition) {
         if (padding.top == 0) {
@@ -133,6 +152,7 @@ export abstract class CardElement {
 
     protected abstract internalRender(): HTMLElement;
 
+    id: string;
     speak: string;
     horizontalAlignment: Enums.HorizontalAlignment = "left";
     spacing: Enums.Spacing = "default";
@@ -159,10 +179,15 @@ export abstract class CardElement {
     }
 
     parse(json: any) {
+        this.id = json["id"];
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
         this.spacing = Utils.getValueOrDefault<Enums.Spacing>(json["spacing"], "default");
         this.separator = json["separator"];
+
+        if (typeof json["isVisible"] === "boolean") {
+            this.isVisible = json["isVisible"];
+        }
 
         var jsonHeight = json["height"];
 
@@ -176,15 +201,18 @@ export abstract class CardElement {
     }
 
     render(): HTMLElement {
-        let renderedElement = this.internalRender();
+        this._renderedElement = this.internalRender();
 
-        if (renderedElement) {
-            renderedElement.style.boxSizing = "border-box";
+        if (this._renderedElement) {
+            this._renderedElement.style.boxSizing = "border-box";
+            this._renderedElement.style.overflowY = "hidden";
 
-            this.adjustRenderedElementSize(renderedElement);
+            this.adjustRenderedElementSize(this._renderedElement);
         }
 
-        return renderedElement;
+        this.updateRenderedElementVisibility();
+
+        return this._renderedElement;
     }
 
     isLastItem(item: CardElement): boolean {
@@ -205,6 +233,10 @@ export abstract class CardElement {
         return [];
     }
 
+    getElementById(id: string): CardElement {
+        return this.id === id ? this : null;
+    }
+
     get isInteractive(): boolean {
         return false;
     }
@@ -215,6 +247,18 @@ export abstract class CardElement {
 
     get parent(): CardElement {
         return this._parent;
+    }
+
+    get isVisible(): boolean {
+        return this._isVisibile;
+    }
+
+    set isVisible(value: boolean) {
+        if (this._isVisibile != value) {
+            this._isVisibile = value;
+
+            this.updateRenderedElementVisibility();
+        }
     }
 }
 
@@ -1306,6 +1350,7 @@ export abstract class Action {
     };
 
     parse(json: any) {
+        this.id = json["id"];
         this.title = json["title"];
     }
 
@@ -1313,10 +1358,35 @@ export abstract class Action {
         return [];
     }
 
+    id: string;
     title: string;
 
     get parent(): CardElement {
         return this._parent;
+    }
+}
+
+export class ToggleVisibilityAction extends Action {
+    targetElementId: string;
+
+    getJsonTypeName(): string {
+        return "Action.ToggleVisibility";
+    }
+
+    execute() {
+        if (!Utils.isNullOrEmpty(this.targetElementId)) {
+            var targetElement = this.parent.getRootElement().getElementById(this.targetElementId);
+
+            if (targetElement) {
+                targetElement.isVisible = !targetElement.isVisible;
+            }
+        }
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.targetElementId = json["targetElementId"];
     }
 }
 
@@ -1982,6 +2052,9 @@ export abstract class ContainerBase extends CardElement {
                         }
 
                         Utils.appendChild(this._element, separator);
+
+                        // Best way to emulate "internal" access
+                        this._items[i]["setSeparatorElement"](separator);
                     }
 
                     Utils.appendChild(this._element, renderedElement);
@@ -2094,6 +2167,22 @@ export abstract class ContainerBase extends CardElement {
             var item: CardElement = this._items[i];
 
             result = result.concat(item.getAllInputs());
+        }
+
+        return result;
+    }
+
+    getElementById(id: string): CardElement {
+        var result: CardElement = super.getElementById(id);
+
+        if (!result) {
+            for (var i = 0; i < this._items.length; i++) {
+                result = this._items[i].getElementById(id);
+
+                if (result) {
+                    break;
+                }
+            }
         }
 
         return result;
@@ -2561,6 +2650,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
         AdaptiveCard.actionTypeRegistry.clear();
 
+        AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
         AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
         AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
         AdaptiveCard.actionTypeRegistry.registerType("Action.Submit", () => { return new SubmitAction(); });
