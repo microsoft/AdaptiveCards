@@ -1,15 +1,13 @@
 package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
-import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.objectmodel.SeparationConfig;
 import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
 
@@ -17,7 +15,7 @@ import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
  * Created by bekao on 5/11/2017.
  */
 
-public class BaseCardElementRenderer implements IBaseCardElementRenderer
+public abstract class BaseCardElementRenderer implements IBaseCardElementRenderer
 {
     protected static void setSeparationConfig(
             Context context,
@@ -47,14 +45,14 @@ public class BaseCardElementRenderer implements IBaseCardElementRenderer
         }
 
         View view = new ImageView(context);
-        long lineThickness = separationConfig.getLineThickness();
+        int lineThickness = (int) Math.min(separationConfig.getLineThickness(), Integer.MAX_VALUE);
         LinearLayout.LayoutParams params;
         if (lineThickness > 0)
         {
             view.setBackgroundColor(Color.parseColor(separationConfig.getLineColor()));
             params = new LinearLayout.LayoutParams(
-                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : (int) separationConfig.getLineThickness(),
-                    horizontalLine ? (int) separationConfig.getLineThickness() : LinearLayout.LayoutParams.MATCH_PARENT);
+                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : lineThickness,
+                    horizontalLine ? lineThickness : LinearLayout.LayoutParams.MATCH_PARENT);
         }
         else
         {
@@ -69,10 +67,5 @@ public class BaseCardElementRenderer implements IBaseCardElementRenderer
                 horizontalLine ? (int)separationConfig.getSpacing() : 0 /* bottom */);
         view.setLayoutParams(params);
         viewGroup.addView(view);
-    }
-
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
-    {
-        return viewGroup;
     }
 }

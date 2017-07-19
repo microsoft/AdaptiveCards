@@ -123,6 +123,15 @@ export abstract class CardElement {
         }
     }
 
+    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
+        if (this.height === "auto") {
+            renderedElement.style.flex = "0 1 auto";
+        }
+        else {
+            renderedElement.style.flex = "1 1 100%";
+        }        
+    }
+
     protected showBottomSpacer(requestingElement: CardElement) {
         if (this.parent) {
             this.parent.showBottomSpacer(this);
@@ -165,6 +174,7 @@ export abstract class CardElement {
     horizontalAlignment: Enums.HorizontalAlignment = "left";
     spacing: Enums.Spacing = "default";
     separator: boolean = false;
+    height: "auto" | "stretch" = "auto";
 
     abstract getJsonTypeName(): string;
     abstract renderSpeech(): string;
@@ -190,6 +200,12 @@ export abstract class CardElement {
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
         this.spacing = Utils.getValueOrDefault<Enums.Spacing>(json["spacing"], "default");
         this.separator = json["separator"];
+
+        var jsonHeight = json["height"];
+
+        if (jsonHeight === "auto" || jsonHeight === "stretch") {
+            this.height = jsonHeight;
+        }
     }
 
     validate(): Array<IValidationError> {
@@ -201,6 +217,8 @@ export abstract class CardElement {
 
         if (renderedElement) {
             renderedElement.style.boxSizing = "border-box";
+
+            this.adjustRenderedElementSize(renderedElement);
         }
 
         return renderedElement;
@@ -578,6 +596,7 @@ export class Image extends CardElement {
 
             var imageElement = document.createElement("img");
             imageElement.style.maxHeight = "100%";
+            imageElement.style.minWidth = "0";
 
             switch (this.size) {
                 case "stretch":
@@ -1864,6 +1883,61 @@ export class ActionSet extends CardElement {
     }
 }
 
+export class BackgroundImage {
+    url: string;
+    mode: Enums.BackgroundImageMode = "stretch";
+    horizontalAlignment: Enums.HorizontalAlignment = "left";
+    verticalAlignment: Enums.VerticalAlignment = "top";
+
+    parse(json: any) {
+        this.url = json["url"];
+        this.mode = Utils.getValueOrDefault<Enums.BackgroundImageMode>(json["mode"], this.mode);
+        this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], this.horizontalAlignment);
+        this.verticalAlignment = Utils.getValueOrDefault<Enums.VerticalAlignment>(json["verticalAlignment"], this.verticalAlignment);
+    }
+
+    apply(element: HTMLElement) {
+        if (this.url) {
+            element.style.backgroundImage = "url('" + this.url + "')";
+
+            switch (this.mode) {
+                case "repeat":
+                    element.style.backgroundRepeat = "repeat";
+                    break;
+                case "repeatHorizontally":
+                    element.style.backgroundRepeat = "repeat-x";
+                    break;
+                case "repeatVertically":
+                    element.style.backgroundRepeat = "repeat-y";
+                    break;
+                case "stretch":
+                default:
+                    element.style.backgroundRepeat = "no-repeat";
+                    element.style.backgroundSize = "cover";
+                    break;
+            }
+
+            switch (this.horizontalAlignment) {
+                case "center":
+                    element.style.backgroundPositionX = "center";
+                    break;
+                case "right":
+                    element.style.backgroundPositionX = "right";
+                    break;
+            }
+
+            switch (this.verticalAlignment) {
+                case "center":
+                    element.style.backgroundPositionY = "center";
+                    break;
+                case "bottom":
+                    element.style.backgroundPositionY = "bottom";
+                    break;
+            }
+        }
+    }
+}
+
 export class Container extends CardElement {
     private _items: Array<CardElement> = [];
     private _backgroundColor: string = null;
@@ -1887,11 +1961,11 @@ export class Container extends CardElement {
     protected internalRender(): HTMLElement {
         this._element = document.createElement("div");
         this._element.className = "ac-container";
+        this._element.style.display = "flex";
+        this._element.style.flexDirection = "column";
 
         if (this.backgroundImage) {
-            this._element.style.backgroundImage = "url('" + this.backgroundImage + "')";
-            this._element.style.backgroundRepeat = "no-repeat";
-            this._element.style.backgroundSize = "cover";
+            this.backgroundImage.apply(this._element);
         }
 
         if (this.backgroundColor) {
@@ -1924,15 +1998,19 @@ export class Container extends CardElement {
 
                 if (renderedElement) {
                     if (renderedElementCount > 0) {
-                        Utils.appendChild(
-                            this._element,
-                            Utils.renderSeparation(
-                                {
-                                    spacing: getEffectiveSpacing(this._items[i].spacing),
-                                    lineThickness: this._items[i].separator ? hostConfig.separator.lineThickness : null,
-                                    lineColor: this._items[i].separator ? hostConfig.separator.lineColor : null
-                                },
-                                "vertical"));
+                        var separator = Utils.renderSeparation(
+                            {
+                                spacing: getEffectiveSpacing(this._items[i].spacing),
+                                lineThickness: this._items[i].separator ? hostConfig.separator.lineThickness : null,
+                                lineColor: this._items[i].separator ? hostConfig.separator.lineColor : null
+                            },
+                            "vertical");
+
+                        if (separator) {
+                            separator.style.flex = "0 0 auto";
+                        }
+
+                        Utils.appendChild(this._element, separator);
                     }
 
                     Utils.appendChild(this._element, renderedElement);
@@ -1956,7 +2034,7 @@ export class Container extends CardElement {
     protected _element: HTMLDivElement;
 
     selectAction: ExternalAction;
-    backgroundImage: string;
+    backgroundImage: BackgroundImage;
 
     get backgroundColor(): string {
         return (this.allowCustomBackgroundColor && this._backgroundColor) ? this._backgroundColor : this.defaultBackgroundColor;
@@ -2011,7 +2089,11 @@ export class Container extends CardElement {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
 
-        this.backgroundImage = json["backgroundImage"];
+        if (json["backgroundImage"]) {
+            this.backgroundImage = new BackgroundImage();
+            this.backgroundImage.parse(json["backgroundImage"]);
+        }
+
         this._backgroundColor = json["backgroundColor"];
 
         var jsonPadding = json["padding"];
@@ -2118,27 +2200,21 @@ export class Container extends CardElement {
 export class Column extends Container {
     private _computedWeight: number = 0;
 
-    protected internalRender(): HTMLElement {
-        var element = super.internalRender();
+    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
+        renderedElement.style.minWidth = "0";
 
-        if (element) {
-            element.style.minWidth = "0";
-
-            if (typeof this.size === "number") {
-                element.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.size) + "%";
-            }
-            else if (this.size === "auto") {
-                element.style.flex = "0 1 auto";
-            }
-            else {
-                element.style.flex = "1 1 auto";
-            }
+        if (typeof this.width === "number") {
+            renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
         }
-
-        return element;
+        else if (this.width === "auto") {
+            renderedElement.style.flex = "0 1 auto";
+        }
+        else {
+            renderedElement.style.flex = "1 1 auto";
+        }
     }
 
-    size: number | "auto" | "stretch" = "auto";
+    width: number | "auto" | "stretch" = "auto";
 
     getJsonTypeName(): string {
         return "Column";
@@ -2147,39 +2223,39 @@ export class Column extends Container {
     parse(json: any) {
         super.parse(json);
 
-        var parsedSize = json["size"];
-        var invalidSize = false;
+        var jsonWidth = json["width"];
+        var invalidWidth = false;
 
-        if (typeof parsedSize === "number") {
-            if (parsedSize <= 0) {
-                invalidSize = true;
+        if (typeof jsonWidth === "number") {
+            if (jsonWidth <= 0) {
+                invalidWidth = true;
             }
         }
-        else if (typeof parsedSize === "string") {
-            if (parsedSize != "auto" && parsedSize != "stretch") {
-                var sizeAsNumber = parseInt(parsedSize);
+        else if (typeof jsonWidth === "string") {
+            if (jsonWidth != "auto" && jsonWidth != "stretch") {
+                var sizeAsNumber = parseInt(jsonWidth);
 
                 if (!isNaN(sizeAsNumber)) {
-                    parsedSize = sizeAsNumber;
+                    jsonWidth = sizeAsNumber;
                 }
                 else {
-                    invalidSize = true;
+                    invalidWidth = true;
                 }
             }
         }
-        else if (parsedSize) {
-            invalidSize = true;
+        else if (jsonWidth) {
+            invalidWidth = true;
         }
 
-        if (invalidSize) {
+        if (invalidWidth) {
             raiseParseError(
                 {
                     error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid column size: " + parsedSize
+                    message: "Invalid column width: " + jsonWidth
                 });
         }
         else {
-            this.size = parsedSize;
+            this.width = jsonWidth;
         }
     }
 
@@ -2212,16 +2288,16 @@ export class ColumnSet extends CardElement {
             var totalWeight: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
-                if (typeof this._columns[i].size === "number") {
-                    totalWeight += <number>this._columns[i].size;
+                if (typeof this._columns[i].width === "number") {
+                    totalWeight += <number>this._columns[i].width;
                 }
             }
 
             var renderedColumnCount: number = 0;
 
             for (let i = 0; i < this._columns.length; i++) {
-                if (typeof this._columns[i].size === "number" && totalWeight > 0) {
-                    var computedWeight = 100 / totalWeight * <number>this._columns[i].size;
+                if (typeof this._columns[i].width === "number" && totalWeight > 0) {
+                    var computedWeight = 100 / totalWeight * <number>this._columns[i].width;
 
                     // Best way to emulate "internal" access I know of
                     this._columns[i]["_computedWeight"] = computedWeight;
@@ -2390,7 +2466,7 @@ export class TypeRegistry<T> {
     unregisterType(typeName: string) {
         for (var i = 0; i < this._items.length; i++) {
             if (this._items[i].typeName === typeName) {
-                this._items = this._items.splice(i, 1);
+                this._items.splice(i, 1);
 
                 return;
             }
