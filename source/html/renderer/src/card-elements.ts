@@ -99,27 +99,27 @@ export abstract class CardElement {
     private _internalPadding: HostConfig.IPaddingDefinition = null;
     private _parent: CardElement = null;
 
-    private internalGetNonZeroPadding(element: CardElement, padding: HostConfig.ISpacingDefinition) {
-        var effectivePadding = paddingToSpacingDefinition(element.internalPadding);
+    protected internalGetNonZeroPadding(padding: HostConfig.ISpacingDefinition) {
+        var actualPadding = paddingToSpacingDefinition(this.internalPadding);
 
         if (padding.top == 0) {
-            padding.top = effectivePadding.top;
+            padding.top = actualPadding.top;
         }
 
         if (padding.right == 0) {
-            padding.right = effectivePadding.right;
+            padding.right = actualPadding.right;
         }
 
         if (padding.bottom == 0) {
-            padding.bottom = effectivePadding.bottom;
+            padding.bottom = actualPadding.bottom;
         }
 
         if (padding.left == 0) {
-            padding.left = effectivePadding.left;
+            padding.left = actualPadding.left;
         }
 
-        if (element.parent) {
-            this.internalGetNonZeroPadding(element.parent, padding);
+        if (this.parent) {
+            this.parent.internalGetNonZeroPadding(padding);
         }
     }
 
@@ -182,7 +182,7 @@ export abstract class CardElement {
     getNonZeroPadding(): HostConfig.ISpacingDefinition {
         var padding: HostConfig.ISpacingDefinition = { top: 0, right: 0, bottom: 0, left: 0 };
 
-        this.internalGetNonZeroPadding(this, padding);
+        this.internalGetNonZeroPadding(padding);
 
         return padding;
     }
@@ -1604,6 +1604,14 @@ class ActionCollection {
             
             renderedCard.style.marginLeft = "-" + padding.left + "px";
             renderedCard.style.marginRight = "-" + padding.right + "px";
+
+            if (padding.left > 0) {
+                renderedCard.style.paddingLeft = "0px";
+            }
+
+            if (padding.right > 0) {
+                renderedCard.style.paddingRight = "0px";
+            }
         }
 
         Utils.appendChild(this._actionCardContainer, renderedCard);
@@ -2212,6 +2220,11 @@ export class Column extends Container {
         else {
             renderedElement.style.flex = "1 1 auto";
         }
+    }
+
+    protected internalGetNonZeroPadding(padding: HostConfig.ISpacingDefinition) {
+        // Action.ShowCard should not bleed outside a Column's boundaries
+        // So we stop retrieving paddings here.
     }
 
     width: number | "auto" | "stretch" = "auto";

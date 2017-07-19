@@ -237,6 +237,7 @@ ActionsOrientationNameToEnum = GenerateStringToEnumMap<ActionsOrientation>(Actio
 
 static std::unordered_map<ActionMode, std::string, EnumHash> ActionModeEnumToName =
 {
+    { ActionMode::InlineEdgeToEdge, "InlineEdgeToEdge" },
     { ActionMode::Inline, "Inline" },
     { ActionMode::Popup, "Popup" }
 };

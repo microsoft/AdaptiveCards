@@ -27,7 +27,7 @@
                     "columns": [
                         {
                             "type": "Column",
-                            "size": 1,
+                            "size": "strech",
                             "items": [
                                 {
                                     "type": "TextBlock",

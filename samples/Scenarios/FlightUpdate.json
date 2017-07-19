@@ -115,7 +115,7 @@
 				},
 				{
 					"type": "Column",
-					"size": "auto",
+					"size": 1,
 					"items": [
 						{
 							"type": "TextBlock",
