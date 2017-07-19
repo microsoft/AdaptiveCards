@@ -2441,6 +2441,22 @@ export class ColumnSet extends CardElement {
         return result;
     }
 
+    getElementById(id: string): CardElement {
+        var result: CardElement = super.getElementById(id);
+
+        if (!result) {
+            for (var i = 0; i < this._columns.length; i++) {
+                result = this._columns[i].getElementById(id);
+
+                if (result) {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak;
