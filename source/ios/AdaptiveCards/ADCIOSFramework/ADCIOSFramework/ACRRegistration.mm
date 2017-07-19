@@ -84,7 +84,6 @@ using namespace AdaptiveCards;
         ACRBaseCardElementRenderer* renderer =
             [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
-        //NSLog(@"card element type: %@\n", [NSNumber numberWithInt:(int)elem->GetElementType()]);
         if(renderer == nil)
         { 
             NSLog(@"Unsupported card element type: %d\n", (int) elem->GetElementType());

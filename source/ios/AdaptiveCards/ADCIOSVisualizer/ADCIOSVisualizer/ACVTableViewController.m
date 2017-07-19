@@ -17,10 +17,15 @@
     [super viewDidLoad];
 
     pathsToFiles = [[NSBundle mainBundle] pathsForResourcesOfType:@"json" inDirectory:nil];
-    [_delegate fromACVTable:self userSelectedJson:
-     [NSString stringWithContentsOfFile:pathsToFiles[[pathsToFiles count] - 2]
-                               encoding:NSUTF8StringEncoding
-                                  error:nil]];
+    NSInteger cnt = [pathsToFiles count];
+    enum DesiredIdx { eDefaultViewIdx = 2 };
+    if(cnt >= eDefaultViewIdx)
+    {
+        [_delegate fromACVTable:self userSelectedJson:
+         [NSString stringWithContentsOfFile:pathsToFiles[[pathsToFiles count] - eDefaultViewIdx]
+                                   encoding:NSUTF8StringEncoding
+                                      error:nil]];
+    }
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

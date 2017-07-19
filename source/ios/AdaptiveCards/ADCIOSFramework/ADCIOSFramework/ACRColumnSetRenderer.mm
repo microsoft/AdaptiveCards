@@ -85,7 +85,7 @@
 
     if([constraints count]) [columnSetView addConstraints:constraints];
 
-    [columnSetView adjustHunggingForLastElement];
+    [columnSetView adjustHuggingForLastElement];
     
     [viewGroup addArrangedSubview:columnSetView];
 

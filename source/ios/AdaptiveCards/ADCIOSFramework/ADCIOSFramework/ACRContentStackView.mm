@@ -11,15 +11,7 @@
 
 -(instancetype)init 
 {
-    self = [super init];
-
-    if(self) 
-    {
-        _stackView = [[UIStackView alloc] init];
-        [self config];
-    } 
-
-    return self;
+    return [self initContentViewWithFrame:CGRectMake(0,0,0,0)];
 }
 
 -(instancetype)initContentViewWithFrame:(CGRect) frame
@@ -100,7 +92,7 @@
 }
 
 // let the last element to strech
--(void)adjustHunggingForLastElement
+-(void)adjustHuggingForLastElement
 {
     if([self.stackView.arrangedSubviews count])
         [[self.stackView.arrangedSubviews objectAtIndex: [self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];

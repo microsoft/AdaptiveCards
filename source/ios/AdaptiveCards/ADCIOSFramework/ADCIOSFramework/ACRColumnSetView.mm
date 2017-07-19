@@ -13,7 +13,7 @@
 {
     [super config];
     super.stackView.axis = UILayoutConstraintAxisHorizontal;
-    super.stackView.distribution = UIStackViewDistributionFill;//Proportionally;
+    super.stackView.distribution = UIStackViewDistributionFill;
     super.stackView.alignment    = UIStackViewAlignmentLeading;
 }
 
@@ -27,7 +27,7 @@
     super.frame = frame;
 }
 
--(void)adjustHunggingForLastElement
+-(void)adjustHuggingForLastElement
 {
     if([super.stackView.arrangedSubviews count])
         [[super.stackView.arrangedSubviews objectAtIndex: [super.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];

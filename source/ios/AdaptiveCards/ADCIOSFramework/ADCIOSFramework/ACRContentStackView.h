@@ -17,6 +17,6 @@
 
 -(void)config;
 
--(void)adjustHunggingForLastElement;
+-(void)adjustHuggingForLastElement;
 
 @end

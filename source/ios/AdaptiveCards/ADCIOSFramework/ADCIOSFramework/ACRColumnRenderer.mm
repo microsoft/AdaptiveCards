@@ -44,7 +44,7 @@
         [column setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     }
     
-    [column adjustHunggingForLastElement];
+    [column adjustHuggingForLastElement];
     
     return column;
 }

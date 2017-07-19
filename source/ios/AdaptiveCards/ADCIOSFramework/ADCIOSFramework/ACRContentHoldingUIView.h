@@ -10,7 +10,7 @@
 
 @interface ACRContentHoldingUIView: UIView
 
--(NSMutableArray*)setAlignment: (AdaptiveCards::HorizontalAlignment) alignment
+-(NSArray*)setAlignment: (AdaptiveCards::HorizontalAlignment) alignment
                  withSuperview: (UIView*) superview
                         toView: (UIView*) view;
 @end
