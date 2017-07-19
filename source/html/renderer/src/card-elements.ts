@@ -2374,7 +2374,7 @@ export class TypeRegistry<T> {
     unregisterType(typeName: string) {
         for (var i = 0; i < this._items.length; i++) {
             if (this._items[i].typeName === typeName) {
-                this._items = this._items.splice(i, 1);
+                this._items.splice(i, 1);
 
                 return;
             }
