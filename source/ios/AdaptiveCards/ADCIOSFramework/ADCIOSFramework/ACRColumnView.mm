@@ -25,11 +25,12 @@
     frame.size.width = MAX(super.frame.size.width, contentSz.width);
     frame.size.height += contentSz.height;
     super.frame = frame;
-    if([self.stackView.arrangedSubviews count] - 1)
+    enum Bounds { eMinNumRequired = 2};
+    if([self.stackView.arrangedSubviews count] >= eMinNumRequired)
     {
         [self addConstraint: 
                 [NSLayoutConstraint constraintWithItem:
-                 [self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count] - 2]
+                 [self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count] - eMinNumRequired]
                                              attribute:NSLayoutAttributeBottom
                                              relatedBy:NSLayoutRelationEqual
                                                 toItem:view
