@@ -76,25 +76,25 @@ export abstract class CardElement {
 
     private _parent: CardElement = null;
 
-    private internalGetNonZeroPadding(element: CardElement, padding: HostConfig.ISpacingDefinition) {
+    protected internalGetNonZeroPadding(padding: HostConfig.ISpacingDefinition) {
         if (padding.top == 0) {
-            padding.top = element.padding.top;
+            padding.top = this.padding.top;
         }
 
         if (padding.right == 0) {
-            padding.right = element.padding.right;
+            padding.right = this.padding.right;
         }
 
         if (padding.bottom == 0) {
-            padding.bottom = element.padding.bottom;
+            padding.bottom = this.padding.bottom;
         }
 
         if (padding.left == 0) {
-            padding.left = element.padding.left;
+            padding.left = this.padding.left;
         }
 
-        if (element.parent) {
-            this.internalGetNonZeroPadding(element.parent, padding);
+        if (this.parent) {
+            this.parent.internalGetNonZeroPadding(padding);
         }
     }
 
@@ -145,7 +145,7 @@ export abstract class CardElement {
     getNonZeroPadding(): HostConfig.ISpacingDefinition {
         var padding: HostConfig.ISpacingDefinition = { top: 0, right: 0, bottom: 0, left: 0 };
 
-        this.internalGetNonZeroPadding(this, padding);
+        this.internalGetNonZeroPadding(padding);
 
         return padding;
     }
@@ -1568,8 +1568,13 @@ class ActionCollection {
             this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
             this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
 
-            renderedCard.style.paddingLeft = "0px";
-            renderedCard.style.paddingRight = "0px";
+            if (padding.left > 0) {
+                renderedCard.style.paddingLeft = "0px";
+            }
+
+            if (padding.right > 0) {
+                renderedCard.style.paddingRight = "0px";
+            }
         }
 
         Utils.appendChild(this._actionCardContainer, renderedCard);
@@ -2178,6 +2183,11 @@ export class Column extends Container {
         else {
             renderedElement.style.flex = "1 1 auto";
         }
+    }
+
+    protected internalGetNonZeroPadding(padding: HostConfig.ISpacingDefinition) {
+        // Action.ShowCard should not bleed outside a Column's boundaries
+        // So we stop retrieving paddings here.
     }
 
     width: number | "auto" | "stretch" = "auto";
