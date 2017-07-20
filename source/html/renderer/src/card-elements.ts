@@ -258,6 +258,10 @@ export abstract class CardElement {
             this._isVisibile = value;
 
             this.updateRenderedElementVisibility();
+
+            if (this._renderedElement) {
+                raiseElementVisibilityChangedEvent(this);
+            }
         }
     }
 }
@@ -642,7 +646,7 @@ export class Image extends CardElement {
     style: Enums.ImageStyle = "normal";
     url: string;
     size: Enums.Size = "auto";
-    selectAction: ExternalAction;
+    selectAction: Action;
 
     getJsonTypeName(): string {
         return "Image";
@@ -658,7 +662,7 @@ export class Image extends CardElement {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            this.selectAction = <ExternalAction>Action.createAction(selectActionJson);
+            this.selectAction = Action.createAction(selectActionJson);
             invokeSetParent(this.selectAction, this);
         }
     }
@@ -1339,7 +1343,10 @@ export abstract class Action {
     }
 
     abstract getJsonTypeName(): string;
-    abstract execute();
+
+    execute() {
+        raiseExecuteActionEvent(this);
+    }
 
     validate(): Array<IValidationError> {
         return [];
@@ -1390,13 +1397,7 @@ export class ToggleVisibilityAction extends Action {
     }
 }
 
-export abstract class ExternalAction extends Action {
-    execute() {
-        raiseExecuteActionEvent(this);
-    }
-}
-
-export class SubmitAction extends ExternalAction {
+export class SubmitAction extends Action {
     private _isPrepared: boolean = false;
     private _originalData: Object;
     private _processedData: Object;
@@ -1440,7 +1441,7 @@ export class SubmitAction extends ExternalAction {
     }
 }
 
-export class OpenUrlAction extends ExternalAction {
+export class OpenUrlAction extends Action {
     url: string;
 
     getJsonTypeName(): string {
@@ -1481,7 +1482,7 @@ export class HttpHeader {
     }
 }
 
-export class HttpAction extends ExternalAction {
+export class HttpAction extends Action {
     private _url = new Utils.StringWithSubstitutions();
     private _body = new Utils.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
@@ -1572,10 +1573,6 @@ export class ShowCardAction extends Action {
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     title: string;
-
-    execute() {
-        raiseShowPopupCardEvent(this);
-    }
 
     getJsonTypeName(): string {
         return "Action.ShowCard";
@@ -2077,7 +2074,7 @@ export abstract class ContainerBase extends CardElement {
         return { left: 0, top: 0, right: 0, bottom: 0 };
     }
 
-    selectAction: ExternalAction;
+    selectAction: Action;
     backgroundImage: BackgroundImage;
 
     isLastItem(item: CardElement): boolean {
@@ -2135,7 +2132,7 @@ export abstract class ContainerBase extends CardElement {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            this.selectAction = <ExternalAction>Action.createAction(selectActionJson);
+            this.selectAction = Action.createAction(selectActionJson);
             invokeSetParent(this.selectAction, this);
         }
     }
@@ -2335,8 +2332,13 @@ export class ColumnSet extends CardElement {
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
+            element.className = "ac-columnSet";
             element.style.display = "flex";
             element.style.overflow = "hidden";
+
+            if (this.selectAction) {
+                element.classList.add("ac-selectable");
+            }
 
             switch (this.horizontalAlignment) {
                 case "center":
@@ -2400,12 +2402,21 @@ export class ColumnSet extends CardElement {
         }
     }
 
+    selectAction: Action;
+
     getJsonTypeName(): string {
         return "ColumnSet";
     }
 
     parse(json: any) {
         super.parse(json);
+
+        var selectActionJson = json["selectAction"];
+
+        if (selectActionJson != undefined) {
+            this.selectAction = Action.createAction(selectActionJson);
+            invokeSetParent(this.selectAction, this);
+        }
 
         if (json["columns"] != null) {
             let jsonColumns = json["columns"] as Array<any>;
@@ -2480,7 +2491,7 @@ export interface IVersion {
     minor: number;
 }
 
-function raiseExecuteActionEvent(action: ExternalAction) {
+function raiseExecuteActionEvent(action: Action) {
     if (AdaptiveCard.onExecuteAction != null) {
         action.prepare(action.parent.getRootElement().getAllInputs());
 
@@ -2494,9 +2505,9 @@ function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolea
     }
 }
 
-function raiseShowPopupCardEvent(action: ShowCardAction) {
-    if (AdaptiveCard.onShowPopupCard != null) {
-        AdaptiveCard.onShowPopupCard(action);
+function raiseElementVisibilityChangedEvent(element: CardElement) {
+    if (AdaptiveCard.onElementVisibilityChanged != null) {
+        AdaptiveCard.onElementVisibilityChanged(element);
     }
 }
 
@@ -2642,8 +2653,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static elementTypeRegistry = new TypeRegistry<CardElement>();
     static actionTypeRegistry = new TypeRegistry<Action>();
 
-    static onExecuteAction: (action: ExternalAction) => void = null;
-    static onShowPopupCard: (action: ShowCardAction) => void = null;
+    static onExecuteAction: (action: Action) => void = null;
+    static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
