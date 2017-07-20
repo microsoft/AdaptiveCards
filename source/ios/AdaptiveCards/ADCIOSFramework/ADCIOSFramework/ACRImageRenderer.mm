@@ -12,18 +12,18 @@
 
 @implementation ACRImageRenderer
 
-+ (ACRImageRenderer* ) getInstance
++(ACRImageRenderer*)getInstance
 {
     static ACRImageRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (CardElementType) elemType
++(CardElementType)elemType
 {
     return CardElementType::Image;
 }
 
-- (CGSize) getImageSize:(std::shared_ptr<Image> const &) imgElem 
+-(CGSize)getImageSize:(std::shared_ptr<Image> const &) imgElem 
          withHostConfig:(std::shared_ptr<HostConfig> const &) hostConfig
 {
     float sz = hostConfig->imageSizes.smallSize;
@@ -50,9 +50,9 @@
     return cgSize;
 }
 // code clean-up in progress 
--(NSMutableArray*)setImageAlignment:(HorizontalAlignment) alignment
-                      withSuperview:(UIView*) superview
-                             toView:(UIView*) view
+-(NSArray*)setImageAlignment:(HorizontalAlignment) alignment
+               withSuperview:(UIView*) superview
+                      toView:(UIView*) view
 {
     NSMutableArray* constraints = [[NSMutableArray alloc] init]; 
     [constraints addObject: 
@@ -117,7 +117,7 @@
     }
     return constraints;
 }
-- (UIView* ) render: (UIView*) viewGroup
+-(UIView*)render: (UIView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {

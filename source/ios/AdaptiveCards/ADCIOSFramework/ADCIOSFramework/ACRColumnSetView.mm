@@ -17,7 +17,7 @@
     super.stackView.alignment    = UIStackViewAlignmentLeading;
 }
 
--(void)addArrangedSubview:(UIView *) view
+-(void)addArrangedSubview:(UIView*) view
 {
     CGSize contentSz = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     [super addArrangedSubview: view];
