@@ -122,16 +122,31 @@
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-
+    NSString* tst = [NSString stringWithCString: imgElem->GetUrl().c_str()encoding:[NSString defaultCStringEncoding]];
+    NSLog(@"%@", tst);
+    // needs to break NSString by % and do converstion and concat them  back
+    
     NSURL* url =
     [NSURL URLWithString:
-          [[NSString stringWithCString:imgElem->GetUrl().c_str()
-                              encoding:[NSString defaultCStringEncoding]] stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]];
-
+          [[NSString stringWithCString: imgElem->GetUrl().c_str()
+                              encoding:[NSString defaultCStringEncoding]] stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLFragmentAllowedCharacterSet]];
+    NSError* err;
+     NSLog(@"%@", url);
+    UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url options:NSDataReadingUncached error:&err]];
     
-    UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    NSLog(@"err = %@", err);
     
-    CGSize cgsize = [self getImageSize:imgElem withHostConfig:config];
+    CGSize cgsize;
+    
+    if(imgElem->GetImageSize() != ImageSize::Auto)
+    {
+        cgsize = [((ACRContentStackView*)viewGroup).stackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        NSLog(@"w = %f, h = %f", cgsize.width, cgsize.height);
+    }
+    else
+    {
+        cgsize = [self getImageSize: imgElem withHostConfig: config];
+    }
 
     UIGraphicsBeginImageContext(cgsize);
     UIImageView* view = [[UIImageView alloc]
@@ -143,7 +158,7 @@
     
     //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
     view.contentMode = UIViewContentModeScaleAspectFit;
-    view.clipsToBounds = YES;
+    view.clipsToBounds = NO;
     if(imgElem->GetImageStyle() == ImageStyle::Person) {
         CALayer* imgLayer = view.layer;
         [imgLayer setCornerRadius:cgsize.width/2];

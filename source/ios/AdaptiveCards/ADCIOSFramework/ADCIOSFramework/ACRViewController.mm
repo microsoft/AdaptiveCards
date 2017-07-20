@@ -62,7 +62,7 @@ using namespace AdaptiveCards;
         childView = [reg render:view withCardElems:body andHostConfig:config];
 
         [NSLayoutConstraint activateConstraints:
-         @[[childView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor]]];
+         @[[childView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor], [childView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
     }
 }
 

@@ -49,6 +49,7 @@
     lab.font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]];
     
     CGSize intrinsicSz = [lab intrinsicContentSize];
+
     ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
     
     [wrappingview addSubview:lab];

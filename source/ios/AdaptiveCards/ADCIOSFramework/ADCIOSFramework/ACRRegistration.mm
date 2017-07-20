@@ -112,6 +112,8 @@ using namespace AdaptiveCards;
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];
+        
+        constraint =
         [NSLayoutConstraint constraintWithItem:view
                                      attribute:NSLayoutAttributeTrailing
                                      relatedBy:NSLayoutRelationEqual
@@ -120,7 +122,6 @@ using namespace AdaptiveCards;
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];
-        [view addSubview:newView];
         
         constraint =
         [NSLayoutConstraint constraintWithItem:view
@@ -131,11 +132,13 @@ using namespace AdaptiveCards;
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];
+        
+        constraint = 
         [NSLayoutConstraint constraintWithItem:view
                                      attribute:NSLayoutAttributeBottom
                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
                                         toItem:newView
-                                     attribute:NSLayoutAttributeTop
+                                     attribute:NSLayoutAttributeBottom
                                     multiplier:1.0
                                       constant:0];
         [view addConstraint:constraint];

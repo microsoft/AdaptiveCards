@@ -29,6 +29,32 @@ using namespace AdaptiveCards;
                                   attribute:NSLayoutAttributeCenterY
                                  multiplier:1
                                    constant:0]];
+    [constraints addObject:
+     [NSLayoutConstraint constraintWithItem:view
+                                  attribute:NSLayoutAttributeTrailing
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                     toItem:superview
+                                  attribute:NSLayoutAttributeTrailing
+                                 multiplier:1
+                                   constant:0]];
+    [constraints addObject:
+     [NSLayoutConstraint constraintWithItem:view
+                                  attribute:NSLayoutAttributeTop
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                     toItem:superview
+                                  attribute:NSLayoutAttributeTop
+                                 multiplier:1
+                                   constant:0]];
+    [constraints addObject:
+     [NSLayoutConstraint constraintWithItem:view
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                     toItem:superview
+                                  attribute:NSLayoutAttributeBottom
+                                 multiplier:1
+                                   constant:0]];
+
+
     switch (alignment)
     {
         case HorizontalAlignment::Center:
