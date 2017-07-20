@@ -122,31 +122,24 @@
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-    NSString* tst = [NSString stringWithCString: imgElem->GetUrl().c_str()encoding:[NSString defaultCStringEncoding]];
-    NSLog(@"%@", tst);
-    // needs to break NSString by % and do converstion and concat them  back
-    
-    NSURL* url =
-    [NSURL URLWithString:
-          [[NSString stringWithCString: imgElem->GetUrl().c_str()
-                              encoding:[NSString defaultCStringEncoding]] stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLFragmentAllowedCharacterSet]];
-    NSError* err;
-     NSLog(@"%@", url);
-    UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url options:NSDataReadingUncached error:&err]];
-    
-    NSLog(@"err = %@", err);
-    
-    CGSize cgsize;
-    
-    //if(imgElem->GetImageSize() != ImageSize::Auto)
-    //{
-    //    cgsize = [((ACRContentStackView*)viewGroup).stackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    //    NSLog(@"w = %f, h = %f", cgsize.width, cgsize.height);
-    //}
-    //else
+    NSString* urlStr = [NSString stringWithCString: imgElem->GetUrl().c_str()
+                                          encoding:[NSString defaultCStringEncoding]];
+    NSURL* url = nil;
+    NSRange range = [urlStr rangeOfString:@"%"];
+    //check if % is already embedded in urlStr
+    if(range.length > 0)
     {
-        cgsize = [self getImageSize: imgElem withHostConfig: config];
+        url = [NSURL URLWithString:urlStr];
     }
+    else
+    {
+        url = [NSURL URLWithString: 
+                [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLFragmentAllowedCharacterSet]];
+    }
+
+    UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    
+    CGSize cgsize = [self getImageSize: imgElem withHostConfig: config];
 
     UIGraphicsBeginImageContext(cgsize);
     UIImageView* view = [[UIImageView alloc]
