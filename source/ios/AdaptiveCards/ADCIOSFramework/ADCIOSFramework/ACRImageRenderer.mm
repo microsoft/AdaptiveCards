@@ -138,12 +138,12 @@
     
     CGSize cgsize;
     
-    if(imgElem->GetImageSize() != ImageSize::Auto)
-    {
-        cgsize = [((ACRContentStackView*)viewGroup).stackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        NSLog(@"w = %f, h = %f", cgsize.width, cgsize.height);
-    }
-    else
+    //if(imgElem->GetImageSize() != ImageSize::Auto)
+    //{
+    //    cgsize = [((ACRContentStackView*)viewGroup).stackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    //    NSLog(@"w = %f, h = %f", cgsize.width, cgsize.height);
+    //}
+    //else
     {
         cgsize = [self getImageSize: imgElem withHostConfig: config];
     }

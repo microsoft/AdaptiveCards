@@ -18,7 +18,6 @@
 
     pathsToFiles = [[NSBundle mainBundle] pathsForResourcesOfType:@"json" inDirectory:nil];
     NSInteger cnt = [pathsToFiles count];
-#if 0
     enum DesiredIdx { eDefaultViewIdx = 2 };
     if(cnt >= eDefaultViewIdx)
     {
@@ -27,7 +26,6 @@
                                    encoding:NSUTF8StringEncoding
                                       error:nil]];
     }
-#endif
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
