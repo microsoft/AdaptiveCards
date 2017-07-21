@@ -1941,13 +1941,13 @@ AdaptiveNamespaceStart
             }
             else if (isStretchResult == 0 || !adaptiveColumnWidth.IsValid() || (widthAsDouble <= 0))
             {
-                // If stretch specified, or column size invalid or set to non-positive, use stretch with default of 1
+                // If stretch specified, or column width invalid or set to non-positive, use stretch with default of 1
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
                 columnWidth.Value = 1;
             }
             else
             {
-                // If user specified specific valid size, use that star size
+                // If user specified specific valid width, use that star width
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
                 columnWidth.Value = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
             }
