@@ -36,17 +36,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Size(HSTRING* size)
+    HRESULT AdaptiveColumn::get_Width(HSTRING* width)
     {
-        return UTF8ToHString(m_sharedColumn->GetSize(), size);
+        return UTF8ToHString(m_sharedColumn->GetWidth(), width);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Size(HSTRING size)
+    HRESULT AdaptiveColumn::put_Width(HSTRING width)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(size, out));
-        m_sharedColumn->SetSize(out);
+        RETURN_IF_FAILED(HStringToUTF8(width, out));
+        m_sharedColumn->SetWidth(out);
         return S_OK;
     }
 

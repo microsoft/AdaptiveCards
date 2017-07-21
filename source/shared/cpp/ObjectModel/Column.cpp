@@ -31,35 +31,35 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
     { CardElementType::ToggleInput, ToggleInput::Deserialize },
 };
 
-Column::Column() : BaseCardElement(CardElementType::Column), m_size("Auto")
+Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto")
 {
 }
 
 Column::Column(
     SeparationStyle separation,
     std::string speak,
-    std::string size,
+    std::string width,
     std::vector<std::shared_ptr<BaseCardElement>>& items) :
-    BaseCardElement(CardElementType::Column, separation, speak), m_size(size), m_items(items)
+    BaseCardElement(CardElementType::Column, separation, speak), m_width(width), m_items(items)
 {
 }
 
 Column::Column(
     SeparationStyle separation,
     std::string speak,
-    std::string size) :
-    BaseCardElement(CardElementType::Column, separation, speak), m_size(size)
+    std::string width) :
+    BaseCardElement(CardElementType::Column, separation, speak), m_width(width)
 {
 }
 
-std::string Column::GetSize() const
+std::string Column::GetWidth() const
 {
-    return m_size;
+    return m_width;
 }
 
-void Column::SetSize(const std::string value)
+void Column::SetWidth(const std::string value)
 {
-    m_size = value;
+    m_width = value;
 }
 
 const std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems() const
@@ -82,7 +82,7 @@ Json::Value Column::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = GetSize();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = GetWidth();
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[propertyName] = Json::Value(Json::arrayValue);
@@ -102,7 +102,7 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
 
     auto column = BaseCardElement::Deserialize<Column>(value);
 
-    column->SetSize(ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size));
+    column->SetWidth(ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width));
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, CardElementParsers, true);
