@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveTextBlock.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
@@ -144,6 +145,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         *elementType = ElementType::TextBlock;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::get_Height(IAdaptiveHeight** height)
+    {
+        return MakeAndInitialize<AdaptiveHeight>(height, m_sharedTextBlock->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

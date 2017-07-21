@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveToggleInput.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
@@ -106,6 +107,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         *elementType = ElementType::ToggleInput;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveToggleInput::get_Height(IAdaptiveHeight** height)
+    {
+        return MakeAndInitialize<AdaptiveHeight>(height, m_sharedToggleInput->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveToggleInput::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

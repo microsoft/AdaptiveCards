@@ -73,6 +73,7 @@ enum class AdaptiveCardSchemaKey
     FontFamily,
     FontSizes,
     Good,
+    Height,
     HorizontalAlignment,
     Id,
     Image,
@@ -257,6 +258,11 @@ enum class ContainerStyle {
     Emphasis
 };
 
+enum class HeightType {
+    Auto = 0,
+    Stretch
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 
@@ -265,6 +271,9 @@ CardElementType CardElementTypeFromString(const std::string& elementType);
 
 const std::string ActionTypeToString(ActionType actionType);
 ActionType ActionTypeFromString(const std::string& actionType);
+
+const std::string HeightTypeToString(HeightType heightType);
+HeightType HeightTypeFromString(const std::string& heightType);
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
 HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);

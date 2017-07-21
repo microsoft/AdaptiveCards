@@ -2,6 +2,7 @@
 
 #include "pch.h"
 #include "Enums.h"
+#include "Height.h"
 #include "json/json.h"
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
@@ -16,6 +17,9 @@ public:
     BaseCardElement(CardElementType type);
 
     virtual ~BaseCardElement();
+
+    Height GetHeight() const;
+    void SetHeight(const Height value);
 
     SeparationStyle GetSeparationStyle() const;
     void SetSeparationStyle(const SeparationStyle value);
@@ -39,6 +43,7 @@ protected:
 private:
     static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
     CardElementType m_type;
+    Height m_height;
     SeparationStyle m_separationStyle;
     std::string m_speak;
 };
@@ -51,6 +56,8 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
 
     ParseUtil::ThrowIfNotJsonObject(json);
 
+    baseCardElement->SetHeight(
+            ParseUtil::ExtractJsonValueAndMergeWithDefault<Height>(json, AdaptiveCardSchemaKey::Height, Height(), Height::Deserialize));
     baseCardElement->SetSpeak(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak));
     baseCardElement->SetSeparationStyle(
             ParseUtil::GetEnumValue<SeparationStyle>(json, AdaptiveCardSchemaKey::Separation, SeparationStyle::Default, SeparationStyleFromString));

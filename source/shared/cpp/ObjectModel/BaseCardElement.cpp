@@ -34,6 +34,16 @@ AdaptiveCards::BaseCardElement::~BaseCardElement()
 {
 }
 
+Height BaseCardElement::GetHeight() const
+{
+    return m_height;
+}
+
+void BaseCardElement::SetHeight(const Height value)
+{
+    m_height = value;
+}
+
 SeparationStyle BaseCardElement::GetSeparationStyle() const
 {
     return m_separationStyle;
@@ -63,6 +73,7 @@ Json::Value BaseCardElement::SerializeToJsonValue()
  {
     Json::Value root;
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(GetElementType());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = Height::SerializeToString(GetHeight());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separation)] = SeparationStyleToString(GetSeparationStyle());
     return root;

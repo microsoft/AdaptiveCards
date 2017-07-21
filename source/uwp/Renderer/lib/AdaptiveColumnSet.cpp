@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveColumnSet.h"
 
 #include "Util.h"
@@ -45,6 +46,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         *elementType = ElementType::ColumnSet;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::get_Height(IAdaptiveHeight** height)
+    {
+        return MakeAndInitialize<AdaptiveHeight>(height, m_sharedColumnSet->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

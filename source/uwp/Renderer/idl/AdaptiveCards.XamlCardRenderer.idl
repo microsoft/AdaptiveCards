@@ -26,6 +26,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTextInput;
         runtimeclass AdaptiveTimeInput;
         runtimeclass AdaptiveToggleInput;
+        runtimeclass AdaptiveHeight;
 
         runtimeclass AdaptiveSpacingDefinition;
         runtimeclass AdaptiveFontSizesConfig;
@@ -72,6 +73,7 @@ namespace AdaptiveCards
         interface IAdaptiveNumberInput;
         interface IAdaptiveTimeInput;
         interface IAdaptiveToggleInput;
+        interface IAdaptiveHeight;
 
         interface IAdaptiveSpacingDefinition;
         interface IAdaptiveFontSizesConfig;
@@ -99,6 +101,13 @@ namespace AdaptiveCards
         interface IAdaptiveChoiceSetInputConfig;
         interface IAdaptiveHostConfig;
         interface IAdaptiveActionEventArgs;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum HeightType
+        {
+            Auto = 0,
+            Stretch
+        } HeightType;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -250,11 +259,14 @@ namespace AdaptiveCards
 
         [
             uuid(74D69C2F-7F1C-47FD-A319-F4B4E7F72EE9),
-            version(NTDDI_WIN10_RS1),
+            version(NTDDI_WIN10_RS1)
         ]
         interface IAdaptiveCardElement : IInspectable
         {
             [propget] HRESULT ElementType([out, retval] ElementType* value);
+
+            [propget] HRESULT Height([out, retval] AdaptiveHeight** value);
+            [propput] HRESULT Height([in] AdaptiveHeight* value);
 
             [propget] HRESULT Speak([out, retval] HSTRING* value);
             [propput] HRESULT Speak([in] HSTRING value);
@@ -633,6 +645,26 @@ namespace AdaptiveCards
             [default] interface IAdaptiveToggleInput;
             interface IAdaptiveInputElement;
             interface IAdaptiveCardElement;
+        };
+
+        [
+            uuid(d37a48d6-6cd8-11e7-907b-a6006ad3dba0),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveHeight)
+        ]
+        interface IAdaptiveHeight : IInspectable
+        {
+            [propget] HRESULT HeightType([out, retval] HeightType* value);
+            [propput] HRESULT HeightType([in] HeightType value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveHeight
+        {
+            [default] interface IAdaptiveHeight;
         };
 
         [

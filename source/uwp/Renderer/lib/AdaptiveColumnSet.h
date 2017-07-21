@@ -26,6 +26,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHeight** height);
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHeight* height);
+
         IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
         IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
 
