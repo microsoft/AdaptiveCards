@@ -14,6 +14,9 @@
 #import "ACRTextBlockRenderer.h"
 #import "ACRInputRenderer.h"
 #import "ACRInputToggleRenderer.h"
+#import "ACRInputDateRenderer.h"
+#import "ACRInputTimeRenderer.h"
+#import "ACRInputNumberRenderer.h"
 #import "ACRFactSetRenderer.h"
 #import "ACRContainerRenderer.h"
 #import "ACRColumnSetRenderer.h"
@@ -41,6 +44,9 @@ using namespace AdaptiveCards;
              [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRTextBlockRenderer elemType]],
              [ACRInputRenderer getInstance],      [NSNumber numberWithInt: (int)[ACRInputRenderer elemType]],
              [ACRInputToggleRenderer getInstance],[NSNumber numberWithInt: (int)[ACRInputToggleRenderer elemType]],
+             [ACRInputDateRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRInputDateRenderer elemType]],
+             [ACRInputTimeRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRInputTimeRenderer elemType]],
+             [ACRInputNumberRenderer getInstance],[NSNumber numberWithInt: (int)[ACRInputNumberRenderer elemType]],
              [ACRFactSetRenderer getInstance],    [NSNumber numberWithInt: (int)[ACRFactSetRenderer elemType]],
              [ACRContainerRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRContainerRenderer elemType]],
              [ACRColumnSetRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRColumnSetRenderer elemType]],
