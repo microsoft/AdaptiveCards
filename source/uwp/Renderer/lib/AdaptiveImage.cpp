@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveImage.h"
 
 #include "Util.h"
@@ -140,6 +141,20 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_Height(IAdaptiveHeight** height)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedImage;
+        RETURN_IF_FAILED(GetSharedModel(sharedImage));
+        return MakeAndInitialize<AdaptiveHeight>(height, sharedImage->GetHeight());
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveImage::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
+    }
+    
     _Use_decl_annotations_
     HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveColumnSet.h"
 
 #include "Util.h"
@@ -52,6 +53,20 @@ AdaptiveNamespaceStart
     IFACEMETHODIMP AdaptiveColumnSet::get_SelectAction(IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::get_Height(IAdaptiveHeight** height)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedColumnSet;
+        RETURN_IF_FAILED(GetSharedModel(sharedColumnSet));
+        return MakeAndInitialize<AdaptiveHeight>(height, sharedColumnSet->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

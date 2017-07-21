@@ -69,6 +69,9 @@ AdaptiveNamespaceStart
 
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) override;
 
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::IAdaptiveHeight** height);
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::IAdaptiveHeight* height);
+
         // ITypePeek method
         void *PeekAt(REFIID riid) override
         {

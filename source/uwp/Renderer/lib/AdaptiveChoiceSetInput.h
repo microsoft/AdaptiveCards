@@ -47,6 +47,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing) { return AdaptiveCardElementBase::get_Spacing(spacing); }
         IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing) { return AdaptiveCardElementBase::put_Spacing(spacing); }
 
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::IAdaptiveHeight** height);
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::IAdaptiveHeight* height);
+
         IFACEMETHODIMP get_Separator(_Out_ boolean* separator) { return AdaptiveCardElementBase::get_Separator(separator); }
         IFACEMETHODIMP put_Separator(_In_ boolean separator) { return AdaptiveCardElementBase::put_Separator(separator); }
 

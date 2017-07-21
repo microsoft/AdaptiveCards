@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveTextInput.h"
 
 #include "Util.h"
@@ -106,6 +107,20 @@ AdaptiveNamespaceStart
     {
         *elementType = ElementType::TextInput;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextInput::get_Height(IAdaptiveHeight** height)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedTextInput;
+        RETURN_IF_FAILED(GetSharedModel(sharedTextInput));
+        return MakeAndInitialize<AdaptiveHeight>(height, sharedTextInput->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextInput::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
     }
 
     HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try

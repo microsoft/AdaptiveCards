@@ -124,5 +124,34 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(content->put_Text(contentString));
             THROW_IF_FAILED(contentControl->put_Content(content.Get()));
         }
+
+        template<typename T>
+        static void AddRow(
+            T* item,
+            ABI::Windows::UI::Xaml::Controls::IGrid* grid,
+            ABI::Windows::UI::Xaml::GridLength rowHeight)
+        {
+            ComPtr<ABI::Windows::UI::Xaml::Controls::IGrid> localGrid(grid);
+
+            ComPtr<IVector<RowDefinition*>> rowDefinitions;
+            THROW_IF_FAILED(localGrid->get_RowDefinitions(&rowDefinitions));
+
+            unsigned int rowIndex;
+            THROW_IF_FAILED(rowDefinitions->get_Size(&rowIndex));
+            ComPtr<IGridStatics> gridStatics;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
+            Microsoft::WRL::ComPtr<T> localItem(item);
+            ComPtr<IFrameworkElement> localItemAsFrameworkElement;
+            THROW_IF_FAILED(localItem.As(&localItemAsFrameworkElement));
+            gridStatics->SetRow(localItemAsFrameworkElement.Get(), rowIndex);
+
+            ComPtr<IRowDefinition> rowDefinition = XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
+            THROW_IF_FAILED(rowDefinition->put_Height(rowHeight));
+            THROW_IF_FAILED(rowDefinitions->Append(rowDefinition.Get()));
+
+            ComPtr<ABI::Windows::UI::Xaml::Controls::IPanel> localPanel;
+            THROW_IF_FAILED(localGrid.As(&localPanel));
+            XamlHelpers::AppendXamlElementToPanel(item, localPanel.Get());
+        }
     };
 AdaptiveNamespaceEnd

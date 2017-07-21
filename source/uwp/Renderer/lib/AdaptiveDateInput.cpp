@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveDateInput.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
@@ -89,10 +90,23 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
-    { 
-        std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
+    _Use_decl_annotations_
+        HRESULT AdaptiveDateInput::get_Height(IAdaptiveHeight** height)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedDateInput;
+        RETURN_IF_FAILED(GetSharedModel(sharedDateInput));
+        return MakeAndInitialize<AdaptiveHeight>(height, sharedDateInput->GetHeight());
+    }
 
+    _Use_decl_annotations_
+        HRESULT AdaptiveDateInput::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
+    }
+
+    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(dateInput)));
 
         std::string max;

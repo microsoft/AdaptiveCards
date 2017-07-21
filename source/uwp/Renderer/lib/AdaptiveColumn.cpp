@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveColumn.h"
 
 #include "Util.h"
@@ -80,6 +81,19 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveColumn::get_Items(IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
+    }
+
+    HRESULT AdaptiveColumn::get_Height(IAdaptiveHeight** height)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedColumn;
+        RETURN_IF_FAILED(GetSharedModel(sharedColumn));
+        return MakeAndInitialize<AdaptiveHeight>(height, sharedColumn->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

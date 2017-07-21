@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveNumberInput.h"
 
 #include "Util.h"
@@ -96,6 +97,21 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveNumberInput::get_Height(IAdaptiveHeight** height)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedNumberInput;
+        RETURN_IF_FAILED(GetSharedModel(sharedNumberInput));
+        return MakeAndInitialize<AdaptiveHeight>(height, sharedNumberInput->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveNumberInput::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput = std::make_shared<AdaptiveSharedNamespace::NumberInput>();

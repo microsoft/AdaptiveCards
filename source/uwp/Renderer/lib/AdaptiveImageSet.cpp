@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveImageSet.h"
 
 #include "Util.h"
@@ -67,6 +68,21 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSet::get_Height(IAdaptiveHeight** height)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedImageSet;
+        RETURN_IF_FAILED(GetSharedModel(sharedImageSet));
+        return MakeAndInitialize<AdaptiveHeight>(height, sharedImageSet->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSet::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
+    }
+   
+    _Use_decl_annotations_
     HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();

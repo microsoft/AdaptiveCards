@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveTextBlock.h"
 #include "Util.h"
 #include "DateTimeParser.h"
@@ -163,6 +164,20 @@ AdaptiveNamespaceStart
     {
         return m_language.Set(language);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::get_Height(IAdaptiveHeight** height)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedTextBlock;
+        RETURN_IF_FAILED(GetSharedModel(sharedTextBlock));
+        return MakeAndInitialize<AdaptiveHeight>(height, sharedTextBlock->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
+    }  
 
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::get_ElementType(ElementType* elementType)
