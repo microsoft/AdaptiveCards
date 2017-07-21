@@ -20,8 +20,6 @@ export type ContainerStyle = "normal" | "emphasis";
 
 export type ImageStyle = "normal" | "person";
 
-export type Separation = "none" | "default" | "strong";
-
 export type ShowCardActionMode = "inline" | "inlineEdgeToEdge" | "popup";
 
 export type Orientation = "horizontal" | "vertical";
