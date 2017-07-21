@@ -1198,7 +1198,7 @@ enum ActionButtonState {
 class ActionButton {
     private _action: Action;
     private _style: Enums.ActionStyle = "button";
-    private _element: HTMLElement = null;
+    private _element: HTMLButtonElement = null;
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
 
@@ -1230,6 +1230,7 @@ class ActionButton {
         this._style = style;
 
         this._element = document.createElement("button");
+        this._element.type = "button";
         this._element.style.overflow = "hidden";
         this._element.style.whiteSpace = "nowrap";
         this._element.style.textOverflow = "ellipsis";
