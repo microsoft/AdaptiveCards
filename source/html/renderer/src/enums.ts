@@ -26,6 +26,8 @@ export type Orientation = "horizontal" | "vertical";
 
 export type BackgroundImageMode = "stretch" | "repeatHorizontally" | "repeatVertically" | "repeat";
 
+export type ColorPalette = "default" | "emphasis";
+
 export enum ValidationError {
     ActionTypeNotAllowed,
     CollectionCantBeEmpty,

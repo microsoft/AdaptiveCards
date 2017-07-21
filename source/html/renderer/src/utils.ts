@@ -4,6 +4,17 @@ import * as HostConfig from "./host-config";
 import markdownIt = require("markdown-it");
 let markdownProcessor = new markdownIt();
 
+export interface ISeparationDefinition {
+    spacing: number,
+    lineThickness?: number,
+    lineColor?: string
+}
+
+export interface IInput {
+    id: string;
+    value: string;
+}
+
 export function processMarkdown(text: string): any {
     return markdownProcessor.render(text);
 }
@@ -22,7 +33,7 @@ export function appendChild(node: Node, child: Node) {
     }
 }
 
-export function renderSeparation(separationDefinition: HostConfig.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
+export function renderSeparation(separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
     if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
         var separator = document.createElement("div");
 
@@ -70,11 +81,6 @@ export function stringToCssColor(color: string): string {
     else {
         return color;
     }
-}
-
-export interface IInput {
-    id: string;
-    value: string;
 }
 
 export class StringWithSubstitutions {

@@ -61,30 +61,63 @@ export class LiveTileContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colors: {
-                dark: {
-                    normal: "#333333",
-                    subtle: "#EE333333"
+            colorPalettes: {
+                default: {
+                    fontColors: {
+                        dark: {
+                            normal: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        light: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#00c2ff",
+                            subtle: "#8800c2ff" 
+                        },
+                        attention: {
+                            normal: "#ffa700",
+                            subtle: "#DDffa700"
+                        },
+                        good: {
+                            normal: "#00FF00",
+                            subtle: "#DD00FF00"
+                        },
+                        warning: {
+                            normal: "#FFD800",
+                            subtle: "#DDFFD800"
+                        }
+                    }
                 },
-                light: {
-                    normal: "#FFFFFF",
-                    subtle: "#88FFFFFF"
-                },
-                accent: {
-                    normal: "#00c2ff",
-                    subtle: "#8800c2ff" 
-                },
-                attention: {
-                    normal: "#ffa700",
-                    subtle: "#DDffa700"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
+                emphasis: {
+                    backgroundColor: "33000000",
+                    fontColors: {
+                        dark: {
+                            normal: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        light: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#00c2ff",
+                            subtle: "#8800c2ff" 
+                        },
+                        attention: {
+                            normal: "#ffa700",
+                            subtle: "#DDffa700"
+                        },
+                        good: {
+                            normal: "#00FF00",
+                            subtle: "#DD00FF00"
+                        },
+                        warning: {
+                            normal: "#FFD800",
+                            subtle: "#DDFFD800"
+                        }
+                    }
                 }
             },
             imageSizes: {

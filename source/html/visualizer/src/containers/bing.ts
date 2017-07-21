@@ -24,7 +24,7 @@ export class BingContainer extends HostContainer {
  
         return element; 
     } 
- 
+
     public getHostConfig(): Adaptive.IHostConfig { 
         return { 
             spacing: {
@@ -56,33 +56,66 @@ export class BingContainer extends HostContainer {
                 lighter: 200, 
                 normal: 400, 
                 bolder: 600 
-            }, 
-            colors: { 
-                dark: {
-                    normal: "#333333",
-                    subtle: "#EE333333"
+            },
+            colorPalettes: {
+                default: {
+                    fontColors: {
+                        dark: {
+                            normal: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        light: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#2E89FC",
+                            subtle: "#882E89FC" 
+                        },
+                        attention: {
+                            normal: "#FF0000",
+                            subtle: "#DDFF0000"
+                        },
+                        good: {
+                            normal: "#54a254",
+                            subtle: "#DD54a254"
+                        },
+                        warning: {
+                            normal: "#c3ab23",
+                            subtle: "#DDc3ab23"
+                        }
+                    }
                 },
-                light: {
-                    normal: "#FFFFFF",
-                    subtle: "#88FFFFFF"
-                },
-                accent: {
-                    normal: "#2E89FC",
-                    subtle: "#882E89FC" 
-                },
-                attention: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
-                },
-                good: {
-                    normal: "#54a254",
-                    subtle: "#DD54a254"
-                },
-                warning: {
-                    normal: "#c3ab23",
-                    subtle: "#DDc3ab23"
+                emphasis: {
+                    backgroundColor: "#33000000",
+                    fontColors: {
+                        dark: {
+                            normal: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        light: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#2E89FC",
+                            subtle: "#882E89FC" 
+                        },
+                        attention: {
+                            normal: "#FF0000",
+                            subtle: "#DDFF0000"
+                        },
+                        good: {
+                            normal: "#54a254",
+                            subtle: "#DD54a254"
+                        },
+                        warning: {
+                            normal: "#c3ab23",
+                            subtle: "#DDc3ab23"
+                        }
+                    }
                 }
-            }, 
+            },
             imageSizes: { 
                 small: 60, 
                 medium: 120, 

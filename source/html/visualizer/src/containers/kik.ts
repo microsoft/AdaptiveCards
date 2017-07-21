@@ -51,30 +51,63 @@ export class KikContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colors:{
-                accent: {
-                    normal: "#FF0000FF",
-                    subtle: "#b20000FF"
+            colorPalettes: {
+                default: {
+                    fontColors: {
+                        accent: {
+                            normal: "#FF0000FF",
+                            subtle: "#b20000FF"
+                        },
+                        dark: {
+                            normal: "#FF101010",
+                            subtle: "#b2101010"
+                        },
+                        light: {
+                            normal: "#FFFFFFFF",
+                            subtle: "#b2FFFFFF"
+                        },
+                        good: {
+                            normal: "#FF008000",
+                            subtle: "#b2008000"
+                        },
+                        warning: {
+                            normal: "#FFFFD700",
+                            subtle: "#b2FFD700"
+                        },
+                        attention: {
+                            normal: "#FF8B0000",
+                            subtle: "#b28B0000"
+                        }
+                    }
                 },
-                dark: {
-                    normal: "#FF101010",
-                    subtle: "#b2101010"
-                },
-                light: {
-                    normal: "#FFFFFFFF",
-                    subtle: "#b2FFFFFF"
-                },
-                good: {
-                    normal: "#FF008000",
-                    subtle: "#b2008000"
-                },
-                warning: {
-                    normal: "#FFFFD700",
-                    subtle: "#b2FFD700"
-                },
-                attention: {
-                    normal: "#FF8B0000",
-                    subtle: "#b28B0000"
+                emphasis: {
+                    backgroundColor: "#33000000",
+                    fontColors: {
+                        accent: {
+                            normal: "#FF0000FF",
+                            subtle: "#b20000FF"
+                        },
+                        dark: {
+                            normal: "#FF101010",
+                            subtle: "#b2101010"
+                        },
+                        light: {
+                            normal: "#FFFFFFFF",
+                            subtle: "#b2FFFFFF"
+                        },
+                        good: {
+                            normal: "#FF008000",
+                            subtle: "#b2008000"
+                        },
+                        warning: {
+                            normal: "#FFFFD700",
+                            subtle: "#b2FFD700"
+                        },
+                        attention: {
+                            normal: "#FF8B0000",
+                            subtle: "#b28B0000"
+                        }
+                    }
                 }
             },
             imageSizes: {

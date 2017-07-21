@@ -35,22 +35,42 @@ function parsePaddingDefinition(obj: any): IPaddingDefinition {
     } : null;
 }
 
-export interface IColorDefinition {
+export interface ITextColorDefinition {
     normal: string,
     subtle: string
 }
 
-function parseColorDefinition(obj: any): IColorDefinition {
+function parseTextColorDefinition(obj: any): ITextColorDefinition {
     return obj ? {
         normal: obj["normal"],
         subtle: obj["subtle"]
     } : null;
 }
 
-export interface ISeparationDefinition {
-    spacing: number,
-    lineThickness?: number,
-    lineColor?: string
+export interface IColorPaletteDefinition {
+    backgroundColor?: string,
+    fontColors: {
+        dark: ITextColorDefinition,
+        light: ITextColorDefinition,
+        accent: ITextColorDefinition,
+        good: ITextColorDefinition,
+        warning: ITextColorDefinition,
+        attention: ITextColorDefinition
+    },
+}
+
+function parseColorPaletteDefinition(obj: any): IColorPaletteDefinition {
+    return obj ? {
+        backgroundColor: obj["backgroundColor"],
+        fontColors: {
+            dark: parseTextColorDefinition(obj["fontColors"]["dark"]),
+            light: parseTextColorDefinition(obj["fontColors"]["light"]),
+            accent: parseTextColorDefinition(obj["fontColors"]["accent"]),
+            good: parseTextColorDefinition(obj["fontColors"]["good"]),
+            warning: parseTextColorDefinition(obj["fontColors"]["warning"]),
+            attention: parseTextColorDefinition(obj["fontColors"]["attention"])
+        }
+    } : null;
 }
 
 export interface IAdaptiveCardConfig {
@@ -205,13 +225,9 @@ export interface IHostConfig {
         medium: number,
         large: number
     }
-    colors: {
-        dark: IColorDefinition,
-        light: IColorDefinition,
-        accent: IColorDefinition,
-        good: IColorDefinition,
-        warning: IColorDefinition,
-        attention: IColorDefinition
+    colorPalettes: {
+        default: IColorPaletteDefinition,
+        emphasis: IColorPaletteDefinition
     },
     spacing: {
         small: number,
@@ -260,14 +276,10 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
             medium: obj["imageSizes"]["medium"],
             large: obj["imageSizes"]["large"],
         },
-        colors: {
-            dark: parseColorDefinition(obj["colors"]["dark"]),
-            light: parseColorDefinition(obj["colors"]["light"]),
-            accent: parseColorDefinition(obj["colors"]["accent"]),
-            good: parseColorDefinition(obj["colors"]["good"]),
-            warning: parseColorDefinition(obj["colors"]["warning"]),
-            attention: parseColorDefinition(obj["colors"]["attention"])
-        },        
+        colorPalettes: {
+            default: parseColorPaletteDefinition(obj["colorPalettes"]["default"]),
+            emphasis: parseColorPaletteDefinition(obj["colorPalettes"]["emphasis"])
+        },
         spacing: {
             small: obj["spacing"]["small"],
             default: obj["spacing"]["default"],

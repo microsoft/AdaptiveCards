@@ -68,30 +68,63 @@ export class HeadlessContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colors: {
-                dark: {
-                    normal: "#333333",
-                    subtle: "#EE333333"
+            colorPalettes: {
+                default: {
+                    fontColors: {
+                        dark: {
+                            normal: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        light: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#2E89FC",
+                            subtle: "#882E89FC" 
+                        },
+                        attention: {
+                            normal: "#FFD800",
+                            subtle: "#DDFFD800"
+                        },
+                        good: {
+                            normal: "#00FF00",
+                            subtle: "#DD00FF00"
+                        },
+                        warning: {
+                            normal: "#FF0000",
+                            subtle: "#DDFF0000"
+                        }
+                    }
                 },
-                light: {
-                    normal: "#FFFFFF",
-                    subtle: "#88FFFFFF"
-                },
-                accent: {
-                    normal: "#2E89FC",
-                    subtle: "#882E89FC" 
-                },
-                attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
+                emphasis: {
+                    backgroundColor: "#33000000",
+                    fontColors: {
+                        dark: {
+                            normal: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        light: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#2E89FC",
+                            subtle: "#882E89FC" 
+                        },
+                        attention: {
+                            normal: "#FFD800",
+                            subtle: "#DDFFD800"
+                        },
+                        good: {
+                            normal: "#00FF00",
+                            subtle: "#DD00FF00"
+                        },
+                        warning: {
+                            normal: "#FF0000",
+                            subtle: "#DDFF0000"
+                        }
+                    }
                 }
             },
             imageSizes: {
