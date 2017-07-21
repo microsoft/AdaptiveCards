@@ -48,6 +48,7 @@ export class TeamsContainer extends HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#00000000",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -76,7 +77,7 @@ export class TeamsContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#08000000",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -117,7 +118,6 @@ export class TeamsContainer extends HostContainer {
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
                     padding: {
                         top: "default",
                         right: "default",
@@ -129,7 +129,6 @@ export class TeamsContainer extends HostContainer {
                 actionAlignment: "stretch"
             },
             adaptiveCard: {
-                backgroundColor: "#00000000",
                 padding: {
                     left: "default",
                     top: "default",
@@ -137,7 +136,7 @@ export class TeamsContainer extends HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "dark"

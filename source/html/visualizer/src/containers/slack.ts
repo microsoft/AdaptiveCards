@@ -54,6 +54,7 @@ export class SlackContainer extends HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#00FFFFFF",
                     fontColors: {
                         accent: {
                             normal: "#FF0000FF",
@@ -82,7 +83,7 @@ export class SlackContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#08000000",
                     fontColors: {
                         accent: {
                             normal: "#FF0000FF",
@@ -123,7 +124,6 @@ export class SlackContainer extends HostContainer {
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
                     padding: {
                         top: "default",
                         right: "default",
@@ -135,7 +135,6 @@ export class SlackContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#00FFFFFF",
                 padding: {
                     left: "default",
                     top: "default",
@@ -143,7 +142,7 @@ export class SlackContainer extends HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "dark"

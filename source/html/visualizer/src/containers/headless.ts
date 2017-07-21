@@ -70,6 +70,7 @@ export class HeadlessContainer extends HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#FFFFFF",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -98,7 +99,7 @@ export class HeadlessContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#08000000",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -139,7 +140,6 @@ export class HeadlessContainer extends HostContainer {
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
                     padding: {
                         top: "default",
                         right: "default",
@@ -151,7 +151,6 @@ export class HeadlessContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#FFFFFF",
                 padding: {
                     left: "default",
                     top: "default",
@@ -159,7 +158,7 @@ export class HeadlessContainer extends HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "dark"

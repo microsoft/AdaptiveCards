@@ -120,6 +120,7 @@ export abstract class HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#00000000",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -148,7 +149,7 @@ export abstract class HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "33000000",
+                    backgroundColor: "08000000",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -189,7 +190,6 @@ export abstract class HostContainer {
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
                     padding: {
                         top: "default",
                         right: "default",
@@ -201,7 +201,6 @@ export abstract class HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#00000000",
                 padding: {
                     left: "default",
                     top: "default",
@@ -209,7 +208,7 @@ export abstract class HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "dark"

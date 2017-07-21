@@ -133,7 +133,6 @@ export class TimelineContainer extends HostContainer {
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
                     padding: {
                         top: "default",
                         right: "default",
@@ -145,7 +144,6 @@ export class TimelineContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#535454",
                 padding: {
                     left: "default",
                     top: "default",
@@ -153,7 +151,7 @@ export class TimelineContainer extends HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "light"

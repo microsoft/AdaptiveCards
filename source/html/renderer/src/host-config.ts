@@ -74,18 +74,16 @@ function parseColorPaletteDefinition(obj: any): IColorPaletteDefinition {
 }
 
 export interface IAdaptiveCardConfig {
-    backgroundColor: string,
     padding: IPaddingDefinition,
     allowCustomPadding: boolean,
-    allowCustomBackgroundColor: boolean
+    allowCustomColorPalette: boolean
 }
 
 function parseAdaptiveCardConfiguration(obj: any): IAdaptiveCardConfig {
     return obj ? {
-        backgroundColor: obj["backgroundColor"],
         padding: parsePaddingDefinition(obj["padding"]),
         allowCustomPadding: obj["allowCustomPadding"],
-        allowCustomBackgroundColor: obj["allowCustomBackgroundColor"]
+        allowCustomColorPalette: obj["allowCustomColorPalette"]
     } : null;
 }
 
@@ -170,7 +168,7 @@ function parseFactSetConfiguration(obj: any): IFactSetConfig {
 export interface IShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode,
     inlineTopMargin: number,
-    backgroundColor: string,
+    colorPalette?: Enums.ColorPalette,
     padding: IPaddingDefinition
 }
 
@@ -178,7 +176,7 @@ function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
     return obj ? {
         actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inlineEdgeToEdge"),
         inlineTopMargin: obj["inlineTopMargin"],
-        backgroundColor: obj["backgroundColor"],
+        colorPalette: Utils.getValueOrDefault<Enums.ColorPalette>(obj["colorPalette"], "emphasis"),
         padding: parsePaddingDefinition(obj["padding"])
     } : null;
 }

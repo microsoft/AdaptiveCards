@@ -53,6 +53,7 @@ export class GroupMeContainer extends HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#F7F7F7",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -81,7 +82,7 @@ export class GroupMeContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#08000000",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -122,7 +123,6 @@ export class GroupMeContainer extends HostContainer {
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
                     padding: {
                         top: "default",
                         right: "default",
@@ -134,7 +134,6 @@ export class GroupMeContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#F7F7F7",
                 padding: {
                     left: "default",
                     top: "default",
@@ -142,7 +141,7 @@ export class GroupMeContainer extends HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "dark"

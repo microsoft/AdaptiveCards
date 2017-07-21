@@ -55,6 +55,7 @@ export class ToastContainer extends HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#1F1F1F",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -83,7 +84,7 @@ export class ToastContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#19FFFFFF",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -124,7 +125,6 @@ export class ToastContainer extends HostContainer {
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#22FFFFFF",
                     padding: {
                         top: "default",
                         right: "default",
@@ -136,7 +136,6 @@ export class ToastContainer extends HostContainer {
                 actionAlignment: "stretch"
             },
             adaptiveCard: {
-                backgroundColor: "#1F1F1F",
                 padding: {
                     left: "default",
                     top: "default",
@@ -144,7 +143,7 @@ export class ToastContainer extends HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "light"

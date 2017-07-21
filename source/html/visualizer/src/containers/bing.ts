@@ -59,6 +59,7 @@ export class BingContainer extends HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#FFFFFF",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -87,7 +88,7 @@ export class BingContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#08000000",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -128,7 +129,6 @@ export class BingContainer extends HostContainer {
                 showCard: { 
                     actionMode: "inlineEdgeToEdge", 
                     inlineTopMargin: 16, 
-                    backgroundColor: "#EFEFEF", 
                     padding: { 
                         top: "default", 
                         right: "default", 
@@ -140,7 +140,6 @@ export class BingContainer extends HostContainer {
                 actionAlignment: "stretch" 
             }, 
             adaptiveCard: { 
-                backgroundColor: "#FFFFFF", 
                 padding: { 
                     left: "default", 
                     top: "default", 
@@ -148,7 +147,7 @@ export class BingContainer extends HostContainer {
                     bottom: "default" 
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: { 
                 color: "dark"

@@ -69,6 +69,7 @@ export class SkypeContainer extends HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#EAEAEA",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -97,7 +98,7 @@ export class SkypeContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#08000000",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -138,7 +139,6 @@ export class SkypeContainer extends HostContainer {
                 showCard: {
                     actionMode: "popup",
                     inlineTopMargin: 16,
-                    backgroundColor: "#AEEAEAEA",
                     padding: {
                         top: "default",
                         right: "default",
@@ -150,7 +150,6 @@ export class SkypeContainer extends HostContainer {
                 actionAlignment: "stretch"
             },
             adaptiveCard: {
-                backgroundColor: "#AEEAEAEA",
                 padding: {
                     left: "default",
                     top: "default",
@@ -158,7 +157,7 @@ export class SkypeContainer extends HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "dark"

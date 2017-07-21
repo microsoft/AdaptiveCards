@@ -63,6 +63,7 @@ export class LiveTileContainer extends HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#0078D7",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -91,7 +92,7 @@ export class LiveTileContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "33000000",
+                    backgroundColor: "08000000",
                     fontColors: {
                         dark: {
                             normal: "#333333",
@@ -132,7 +133,6 @@ export class LiveTileContainer extends HostContainer {
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
                     padding: {
                         top: "default",
                         right: "default",
@@ -144,7 +144,6 @@ export class LiveTileContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#0078D7",
                 padding: {
                     left: "default",
                     top: "default",
@@ -152,7 +151,7 @@ export class LiveTileContainer extends HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "light"

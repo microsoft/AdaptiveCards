@@ -53,6 +53,7 @@ export class SMSContainer extends HostContainer {
             },
             colorPalettes: {
                 default: {
+                    backgroundColor: "#FFFFFF",
                     fontColors: {
                         accent: {
                             normal: "#FF0000FF",
@@ -81,7 +82,7 @@ export class SMSContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#08000000",
                     fontColors: {
                         accent: {
                             normal: "#FF0000FF",
@@ -122,7 +123,6 @@ export class SMSContainer extends HostContainer {
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
                     inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
                     padding: {
                         top: "default",
                         right: "default",
@@ -134,7 +134,6 @@ export class SMSContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#FFFFFF",
                 padding: {
                     left: "default",
                     top: "default",
@@ -142,7 +141,7 @@ export class SMSContainer extends HostContainer {
                     bottom: "default"
                 },
                 allowCustomPadding: false,
-                allowCustomBackgroundColor: false
+                allowCustomColorPalette: false
             },
             textBlock: {
                 color: "dark"

@@ -1966,7 +1966,7 @@ export class BackgroundImage {
 
 export class Container extends CardElement {
     private _items: Array<CardElement> = [];
-    private _colorPalette: Enums.ColorPalette = "default";
+    private _colorPalette?: Enums.ColorPalette = null;
 
     protected showBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastItem(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
@@ -1995,10 +1995,9 @@ export class Container extends CardElement {
         }
 
         var colorPaletteDefinition = getColorPaletteDefinition(this.colorPalette);
-        var actualBackgroundColor = !Utils.isNullOrEmpty(colorPaletteDefinition.backgroundColor) ? colorPaletteDefinition.backgroundColor : this.defaultBackgroundColor;
 
-        if (actualBackgroundColor) {
-            this._element.style.backgroundColor = Utils.stringToCssColor(actualBackgroundColor);
+        if (!Utils.isNullOrEmpty(colorPaletteDefinition.backgroundColor)) {
+            this._element.style.backgroundColor = Utils.stringToCssColor(colorPaletteDefinition.backgroundColor);
         }
 
         if (this.selectAction) {
@@ -2052,11 +2051,11 @@ export class Container extends CardElement {
         return this._element;
     }
 
-    protected get defaultBackgroundColor(): string {
-        return null;
+    protected get defaultColorPalette(): Enums.ColorPalette {
+        return "default";
     }
 
-    protected get allowCustomBackgroundColor(): boolean {
+    protected get allowCustomColorPalette(): boolean {
         return true;
     }
 
@@ -2064,7 +2063,15 @@ export class Container extends CardElement {
 
     selectAction: ExternalAction;
     backgroundImage: BackgroundImage;
-    colorPalette: Enums.ColorPalette;
+
+    get colorPalette(): Enums.ColorPalette {
+        if (this.allowCustomColorPalette) {
+            return this._colorPalette ? this._colorPalette : this.defaultColorPalette;
+        }
+        else {
+            return this.defaultColorPalette;
+        }
+    }
 
     get padding(): HostConfig.IPaddingDefinition {
         return this.internalPadding;
@@ -2116,7 +2123,7 @@ export class Container extends CardElement {
             this.backgroundImage.parse(json["backgroundImage"]);
         }
 
-        this.colorPalette = Utils.getValueOrDefault<Enums.ColorPalette>(json["colorPalette"], this.colorPalette);
+        this._colorPalette = Utils.getValueOrDefault<Enums.ColorPalette>(json["colorPalette"], null);
 
         var jsonPadding = json["padding"];
 
@@ -2632,16 +2639,12 @@ export class AdaptiveCard extends ContainerWithActions {
         return hostConfig.adaptiveCard.padding;
     }
 
-    protected get defaultBackgroundColor(): string {
-        return hostConfig.adaptiveCard.backgroundColor;
-    }
-
     protected get allowCustomPadding(): boolean {
         return hostConfig.adaptiveCard.allowCustomPadding;
     }
 
-    protected get allowCustomBackgroundColor() {
-        return hostConfig.adaptiveCard.allowCustomBackgroundColor;
+    protected get allowCustomColorPalette() {
+        return hostConfig.adaptiveCard.allowCustomColorPalette;
     }
 
     minVersion: IVersion = { major: 1, minor: 0 };
@@ -2713,8 +2716,8 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return hostConfig.actions.showCard.padding;
     }
 
-    protected get defaultBackgroundColor(): string {
-        return hostConfig.actions.showCard.backgroundColor;
+    protected get defaultColorPalette(): Enums.ColorPalette {
+        return "emphasis";
     }
 
     getForbiddenActionTypes(): Array<any> {
@@ -2788,7 +2791,6 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         showCard: {
             actionMode: "inlineEdgeToEdge",
             inlineTopMargin: 16,
-            backgroundColor: "#22000000",
             padding: {
                 top: "default",
                 right: "default",
@@ -2800,7 +2802,6 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         actionAlignment: "left"
     },
     adaptiveCard: {
-        backgroundColor: "#00000000",
         padding: {
             left: "default",
             top: "default",
@@ -2808,7 +2809,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
             bottom: "default"
         },
         allowCustomPadding: false,
-        allowCustomBackgroundColor: false
+        allowCustomColorPalette: false
     },
     textBlock: {
         color: "dark"
