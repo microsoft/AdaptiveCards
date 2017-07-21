@@ -12,37 +12,37 @@
 
 @implementation ACRImageRenderer
 
-+(ACRImageRenderer*)getInstance
++ (ACRImageRenderer* )getInstance
 {
     static ACRImageRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+(CardElementType)elemType
++ (CardElementType)elemType
 {
     return CardElementType::Image;
 }
 
--(CGSize)getImageSize:(std::shared_ptr<Image> const &) imgElem 
-         withHostConfig:(std::shared_ptr<HostConfig> const &) hostConfig
+- (CGSize)getImageSize:(std::shared_ptr<Image> const &)imgElem 
+        withHostConfig:(std::shared_ptr<HostConfig> const &)hostConfig
 {
     float sz = hostConfig->imageSizes.smallSize;
     switch (imgElem->GetImageSize()){
-        case ImageSize::Large: {
+        case ImageSize::Large:{
             sz = hostConfig->imageSizes.largeSize;
             break;
         }
-        case ImageSize::Medium: {
+        case ImageSize::Medium:{
             sz = hostConfig->imageSizes.mediumSize;
             break;
         }
 
-        case ImageSize::Small: {
+        case ImageSize::Small:{
             sz = hostConfig->imageSizes.smallSize;
             break;
         }
 
-        default: {
+        default:{
             NSLog(@"unimplemented");
         }
     }
@@ -50,12 +50,12 @@
     return cgSize;
 }
 // code clean-up in progress 
--(NSArray*)setImageAlignment:(HorizontalAlignment) alignment
-               withSuperview:(UIView*) superview
-                      toView:(UIView*) view
+- (NSArray* )setImageAlignment:(HorizontalAlignment)alignment
+                 withSuperview:(UIView* )superview
+                        toView:(UIView* )view
 {
     NSMutableArray* constraints = [[NSMutableArray alloc] init]; 
-    [constraints addObject: 
+    [constraints addObject:
         [NSLayoutConstraint constraintWithItem:superview
                                      attribute:NSLayoutAttributeCenterY
                                      relatedBy:NSLayoutRelationEqual
@@ -68,7 +68,7 @@
     {
         case HorizontalAlignment::Center:
         {
-            [constraints addObject: 
+            [constraints addObject:
                 [NSLayoutConstraint constraintWithItem:superview
                                              attribute:NSLayoutAttributeCenterX
                                              relatedBy:NSLayoutRelationEqual
@@ -80,7 +80,7 @@
         }
         case HorizontalAlignment::Left:
         {
-            [constraints addObject: 
+            [constraints addObject:
                 [NSLayoutConstraint constraintWithItem:superview
                                              attribute:NSLayoutAttributeLeading
                                              relatedBy:NSLayoutRelationEqual
@@ -92,7 +92,7 @@
         }
         case HorizontalAlignment::Right:
         {
-            [constraints addObject: 
+            [constraints addObject:
                 [NSLayoutConstraint constraintWithItem:superview
                                              attribute:NSLayoutAttributeTrailing
                                              relatedBy:NSLayoutRelationEqual
@@ -104,7 +104,7 @@
         }
         default:
         {
-            [constraints addObject: 
+            [constraints addObject:
                 [NSLayoutConstraint constraintWithItem:superview
                                              attribute:NSLayoutAttributeLeading
                                              relatedBy:NSLayoutRelationEqual
@@ -117,21 +117,21 @@
     }
     return constraints;
 }
--(UIView*)render: (UIView*) viewGroup
-       withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config
+- (UIView* )render:(UIView* )viewGroup
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
 
     NSURL* url =
     [NSURL URLWithString:
-          [[NSString stringWithCString: imgElem->GetUrl().c_str()
+          [[NSString stringWithCString:imgElem->GetUrl().c_str()
                               encoding:[NSString defaultCStringEncoding]] stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]];
 
     
     UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
-    CGSize cgsize = [self getImageSize: imgElem withHostConfig: config];
+    CGSize cgsize = [self getImageSize:imgElem withHostConfig:config];
 
     UIGraphicsBeginImageContext(cgsize);
     UIImageView* view = [[UIImageView alloc]
@@ -141,7 +141,7 @@
     UIGraphicsEndImageContext();
     view.image = img;
     
-    //jwoo: experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
+    //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
     view.contentMode = UIViewContentModeScaleAspectFit;
     view.clipsToBounds = YES;
     if(imgElem->GetImageStyle() == ImageStyle::Person) {
@@ -151,14 +151,14 @@
     }
     
     ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
-    [wrappingview addSubview: view];
+    [wrappingview addSubview:view];
     
 
-    if(viewGroup)[(UIStackView* )viewGroup addArrangedSubview: wrappingview];
+    if(viewGroup)[(UIStackView* )viewGroup addArrangedSubview:wrappingview];
 
-    [wrappingview addConstraints:[self setImageAlignment: imgElem->GetHorizontalAlignment()
-                                          withSuperview: wrappingview
-                                                 toView: view]];
+    [wrappingview addConstraints:[self setImageAlignment:imgElem->GetHorizontalAlignment()
+                                           withSuperview:wrappingview
+                                                  toView:view]];
 
     view.translatesAutoresizingMaskIntoConstraints = false;
     wrappingview.translatesAutoresizingMaskIntoConstraints = false;

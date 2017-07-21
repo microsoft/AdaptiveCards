@@ -22,9 +22,9 @@ using namespace AdaptiveCards;
     long rgb;
 }
 
-+ (void) renderSeparation:(std::shared_ptr<BaseCardElement> const &) elem
-             forSuperview:(UIView*) view
-           withHostConfig:(std::shared_ptr<HostConfig> const &) config
++ (void)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
+            forSuperview:(UIView* )view
+          withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {          
     ACRSeparator* separator = nil;
     if(SeparationStyle::None != elem->GetSeparationStyle())
@@ -32,18 +32,17 @@ using namespace AdaptiveCards;
         UIStackView* superview = nil;
         
         //clean-up in progress -- need to clean this up
-        if([view isKindOfClass: [UIStackView class]])
+        if([view isKindOfClass:[UIStackView class]])
         {
-            superview = (UIStackView*) view;
+            superview = (UIStackView* ) view;
         } else
         { 
-            superview = ((ACRContentStackView*) view).stackView;
+            superview = ((ACRContentStackView* ) view).stackView;
         }
 
         separator = [[ACRSeparator alloc] init];
         SeparationConfig* separatorHstCnfig = 
-            [separator getSeparationConfig: elem
-                       withHostConfig: config];
+            [separator getSeparationConfig:elem withHostConfig:config];
         if(separator && separatorHstCnfig)
         {
             separator->width  = separatorHstCnfig->spacing;
@@ -58,13 +57,13 @@ using namespace AdaptiveCards;
             if(UILayoutConstraintAxisVertical == superview.axis)
             {
                 separator->width  = MAX(separatorHstCnfig->spacing, superview.frame.size.width);
-                constraint = [NSLayoutConstraint constraintWithItem: separator
-                                                          attribute: NSLayoutAttributeWidth
-                                                          relatedBy: NSLayoutRelationEqual
-                                                             toItem: superview
-                                                          attribute: NSLayoutAttributeWidth
-                                                         multiplier: 1
-                                                           constant: 0];
+                constraint = [NSLayoutConstraint constraintWithItem:separator
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:superview
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:1
+                                                           constant:0];
                 [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
                 [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
                 [separator setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
@@ -73,13 +72,13 @@ using namespace AdaptiveCards;
             else
             {
                 separator->height  = MAX(separatorHstCnfig->spacing, superview.frame.size.width);
-                constraint = [NSLayoutConstraint constraintWithItem: separator
-                                                          attribute: NSLayoutAttributeHeight
-                                                          relatedBy: NSLayoutRelationEqual
-                                                             toItem: superview
-                                                          attribute: NSLayoutAttributeHeight
-                                                         multiplier: 1
-                                                           constant: 0];
+                constraint = [NSLayoutConstraint constraintWithItem:separator
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:superview
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:1
+                                                           constant:0];
                 [separator setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
                 [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
                 [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
@@ -91,8 +90,8 @@ using namespace AdaptiveCards;
     }
 }
 
-- (SeparationConfig* ) getSeparationConfig:(std::shared_ptr<BaseCardElement> const &) elem
-                            withHostConfig:(std::shared_ptr<HostConfig> const &) config
+- (SeparationConfig* )getSeparationConfig:(std::shared_ptr<BaseCardElement> const &)elem
+                           withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (elem->GetSeparationStyle())
     {
@@ -107,7 +106,7 @@ using namespace AdaptiveCards;
                     return &config->column.separation;
                 case CardElementType::ColumnSet:
                     return &config->columnSet.separation;
-                case CardElementType::FactSet: 
+                case CardElementType::FactSet:
                     return &config->factSet.separation;
                 case CardElementType::Image:
                     return &config->image.separation;
@@ -145,7 +144,7 @@ using namespace AdaptiveCards;
     return nullptr;
 }
 
-- (void) drawRect: (CGRect) rect
+- (void)drawRect:(CGRect)rect
 {
     CGPoint orig, dest;
     if(UILayoutConstraintAxisVertical == self->axis)
@@ -164,20 +163,20 @@ using namespace AdaptiveCards;
     UIBezierPath *path = [UIBezierPath bezierPath];
     if(path)
     {
-        [path moveToPoint:    orig];
-        [path addLineToPoint: dest];
+        [path moveToPoint:   orig];
+        [path addLineToPoint:dest];
         path.lineWidth =      self->lineWidth;
  
-        [[UIColor colorWithRed: ((self->rgb & 0x00FF0000) >> 16) / 255.0
-                         green: ((self->rgb & 0x0000FF00) >> 8)  / 255.0
-                          blue: ((self->rgb & 0x000000FF))       / 255.0
-                         alpha: ((self->rgb & 0xFF000000) >> 24) / 255.0] setStroke];
+        [[UIColor colorWithRed:((self->rgb & 0x00FF0000)>> 16)/ 255.0
+                         green:((self->rgb & 0x0000FF00)>> 8)/ 255.0
+                          blue:((self->rgb & 0x000000FF))/ 255.0
+                         alpha:((self->rgb & 0xFF000000)>> 24)/ 255.0] setStroke];
  
          [path stroke];
      }
 }
 
-- (CGSize) intrinsicContentSize
+- (CGSize)intrinsicContentSize
 {
     return CGSizeMake(width, height);
 }

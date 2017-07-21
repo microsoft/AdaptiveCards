@@ -12,37 +12,37 @@
 
 @implementation ACRFactSetRenderer
 
-+(ACRFactSetRenderer*)getInstance
++ (ACRFactSetRenderer* )getInstance
 {
     static ACRFactSetRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+(CardElementType)elemType
++ (CardElementType)elemType
 {
     return CardElementType::FactSet;
 }
 
--(UILabel*)buildLabel:(NSString*) text
-         withHostConfig:(std::shared_ptr<HostConfig> const &) config
-         withTextConfig:(TextConfig const &) txtConfig
+- (UILabel* )buildLabel:(NSString* )text
+         withHostConfig:(std::shared_ptr<HostConfig> const &)config
+         withTextConfig:(TextConfig const &)txtConfig
 {
     UILabel* lab = [[UILabel alloc] init];
     NSMutableAttributedString* content =
     [[NSMutableAttributedString alloc] initWithString:text
                                            attributes:@{NSForegroundColorAttributeName:
                                                             [ACRTextBlockRenderer getTextBlockColor:txtConfig.color withHostConfig:config andSubtleOption:txtConfig.isSubtle],
-                                                        NSStrokeWidthAttributeName: [ACRTextBlockRenderer getTextBlockTextWeight:txtConfig.weight withHostConfig:config]}];
+                                                        NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtConfig.weight withHostConfig:config]}];
     NSMutableParagraphStyle* para = [[NSMutableParagraphStyle alloc] init];
-    [content addAttributes:@{NSParagraphStyleAttributeName:para} range: NSMakeRange(0,1)];
+    [content addAttributes:@{NSParagraphStyleAttributeName:para} range:NSMakeRange(0,1)];
     lab.attributedText = content;
     UIFontDescriptor* dec = lab.font.fontDescriptor;
     lab.font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtConfig.size withHostConfig:config]];
     return lab;
 }
--(UIView*)render: (UIStackView*) viewGroup
-       withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config
+- (UIView* )render:(UIStackView* )viewGroup
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<FactSet> fctSet = std::dynamic_pointer_cast<FactSet>(elem);
     
@@ -52,7 +52,7 @@
     UIStackView* valueStack = [[UIStackView alloc] init];
     valueStack.axis = UILayoutConstraintAxisVertical;
     
-    for(auto fact : fctSet->GetFacts())
+    for(auto fact :fctSet->GetFacts())
     {
         NSString* title = [NSString stringWithCString:fact->GetTitle().c_str()
                                                     encoding:NSUTF8StringEncoding];

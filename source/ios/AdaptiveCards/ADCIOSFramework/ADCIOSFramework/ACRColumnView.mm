@@ -9,17 +9,17 @@
 
 @implementation ACRColumnView
 
--(void)config
+- (void)config
 {
     [super config];
     super.stackView.axis = UILayoutConstraintAxisVertical;
     super.stackView.distribution = UIStackViewDistributionFill;
 }
 
-- (void)addArrangedSubview:(UIView *) view
+- (void)addArrangedSubview:(UIView *)view
 {
     CGSize contentSz = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    [super addArrangedSubview: view];
+    [super addArrangedSubview:view];
     super.frame.size = [super.stackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     CGRect frame = super.frame;
     frame.size.width = MAX(super.frame.size.width, contentSz.width);
@@ -28,7 +28,7 @@
     enum Bounds { eMinNumRequired = 2};
     if([self.stackView.arrangedSubviews count] >= eMinNumRequired)
     {
-        [self addConstraint: 
+        [self addConstraint:
                 [NSLayoutConstraint constraintWithItem:
                  [self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count] - eMinNumRequired]
                                              attribute:NSLayoutAttributeBottom

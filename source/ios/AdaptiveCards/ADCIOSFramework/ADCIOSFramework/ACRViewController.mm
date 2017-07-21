@@ -20,7 +20,7 @@ using namespace AdaptiveCards;
     CGRect guideFrame;
 }
 
--(instancetype) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
@@ -31,7 +31,7 @@ using namespace AdaptiveCards;
     return self;
 }
 
--(instancetype) init: (NSString*) str withFrame: (CGRect) frame {
+- (instancetype)init:(NSString* )str withFrame:(CGRect)frame {
     self = [self initWithNibName:nil bundle:nil];
     if(self) {
         self.jsonString = str;
@@ -41,12 +41,12 @@ using namespace AdaptiveCards;
     return self;
 }
 
--(void) viewDidLoad {
+- (void)viewDidLoad {
     [super viewDidLoad];
-    [self buildViewFromADC: self.jsonString];
+    [self buildViewFromADC:self.jsonString];
 }
 
--(void) buildViewFromADC:(NSString*) str
+- (void)buildViewFromADC:(NSString* )str
 {
     adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
 

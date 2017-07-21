@@ -9,12 +9,12 @@
 
 @implementation ACRContentStackView
 
--(instancetype)init 
+- (instancetype)init 
 {
     return [self initContentViewWithFrame:CGRectMake(0,0,0,0)];
 }
 
--(instancetype)initContentViewWithFrame:(CGRect) frame
+- (instancetype)initContentViewWithFrame:(CGRect)frame
 {
     self = [super init];
     if(self)
@@ -26,7 +26,7 @@
     return self;
 }
 
--(instancetype)initWithCoder:(NSCoder *) aDecoder 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder 
 {
     self = [super initWithCoder:aDecoder];
 
@@ -39,11 +39,11 @@
     return self;
 }
 
--(void)config
+- (void)config
 { 
     if(!self.stackView) return;
     
-    [self addSubview: self.stackView];
+    [self addSubview:self.stackView];
     [self addConstraint:
      [NSLayoutConstraint constraintWithItem:self
                                   attribute:NSLayoutAttributeLeading
@@ -81,23 +81,23 @@
     self.translatesAutoresizingMaskIntoConstraints = false;
 }
 
--(CGSize)intrinsicContentSize
+- (CGSize)intrinsicContentSize
 {
     return self.frame.size;
 }
 
--(void)addArrangedSubview:(UIView *) view
+- (void)addArrangedSubview:(UIView *)view
 {
-    [self.stackView addArrangedSubview: view];
+    [self.stackView addArrangedSubview:view];
 }
 
 // let the last element to strech
--(void)adjustHuggingForLastElement
+- (void)adjustHuggingForLastElement
 {
     if([self.stackView.arrangedSubviews count])
-        [[self.stackView.arrangedSubviews objectAtIndex: [self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
     if([self.stackView.arrangedSubviews count])
-        [[self.stackView.arrangedSubviews objectAtIndex: [self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 @end

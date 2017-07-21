@@ -17,9 +17,9 @@ using namespace AdaptiveCards;
     std::shared_ptr<HostConfig> config;
 }
 
--(instancetype)init:(std::shared_ptr<ImageSet> const&) imageSet
-       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-        WithSuperview:(UIView* ) view
+- (instancetype)init:(std::shared_ptr<ImageSet> const&)imageSet
+      WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
+       WithSuperview:(UIView* )view
 {
     self = [super initWithFrame:view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     if(self)
@@ -31,8 +31,8 @@ using namespace AdaptiveCards;
         config = hostConfig;
         CGSize sz = [self getImageSize];
    
-        ((UICollectionViewFlowLayout*)self.collectionViewLayout).itemSize = sz;
-        ((UICollectionViewFlowLayout*)self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
+        ((UICollectionViewFlowLayout* )self.collectionViewLayout).itemSize = sz;
+        ((UICollectionViewFlowLayout* )self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
    
         self.translatesAutoresizingMaskIntoConstraints = NO;
         CGSize target = [view systemLayoutSizeFittingSize:sz];        
@@ -40,29 +40,29 @@ using namespace AdaptiveCards;
     }
     return self;
 }
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     if(!self->imgSet.get())
         return 0;
     return self->imgSet->GetImages().size();
 }
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
 }
 
--(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell* )collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString* identifier = @"cellId";
     
-    for(auto img : imgSet->GetImages())
+    for(auto img :imgSet->GetImages())
     {
         img->SetImageSize(imgSet->GetImageSize());
     }
     
-    UIView* content = [[ACRImageRenderer getInstance] render: nil
-                                                withCardElem: imgSet->GetImages()[indexPath.row]
-                                               andHostConfig: config];
+    UIView* content = [[ACRImageRenderer getInstance] render:nil
+                                                withCardElem:imgSet->GetImages()[indexPath.row]
+                                               andHostConfig:config];
     
     UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell)
@@ -70,41 +70,41 @@ using namespace AdaptiveCards;
         cell = [[UICollectionViewCell alloc] initWithFrame:content.frame];
     }
     cell.contentView.frame = content.frame;
-    [cell.contentView addSubview: content];
+    [cell.contentView addSubview:content];
     return cell;
 }
--(CGFloat)collectionView:(UICollectionView *)collectionView
-                   layout:(UICollectionViewLayout *)collectionViewLayout
-minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout 
+                   minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     return 0;
 }
--(CGSize)getImageSize
+- (CGSize)getImageSize
 {
     float sz = config->imageSizes.smallSize;
     switch (imgSet->GetImageSize()){
-        case ImageSize::Large: {
+        case ImageSize::Large:{
             sz = config->imageSizes.largeSize;
             break;
         }
-        case ImageSize::Medium: {
+        case ImageSize::Medium:{
             sz = config->imageSizes.mediumSize;
             break;
         }
             
-        case ImageSize::Small: {
+        case ImageSize::Small:{
             sz = config->imageSizes.smallSize;
             break;
         }
             
-        default: {
+        default:{
             NSLog(@"unimplemented");
         }
     }
     CGSize cgSize = CGSizeMake(sz, sz);
     return cgSize;
 }
--(CGSize)intrinsicContentSize
+- (CGSize)intrinsicContentSize
 {
     return [self.collectionViewLayout collectionViewContentSize];
 }

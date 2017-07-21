@@ -16,9 +16,9 @@ using namespace AdaptiveCards;
 
 @protocol ACRIBaseCardElementRenderer
 
-+(CardElementType)elemType;
++ (CardElementType)elemType;
 
--(UIView*)render: (UIView*) viewGroup
-    withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-   andHostConfig: (std::shared_ptr<HostConfig> const &) config;
+- (UIView* )render:(UIView* )viewGroup
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config;
 @end

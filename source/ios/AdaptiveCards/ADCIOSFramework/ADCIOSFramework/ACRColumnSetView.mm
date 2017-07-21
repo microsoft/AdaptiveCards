@@ -9,7 +9,7 @@
 
 @implementation ACRColumnSetView
 
--(void)config
+- (void)config
 {
     [super config];
     super.stackView.axis = UILayoutConstraintAxisHorizontal;
@@ -17,20 +17,20 @@
     super.stackView.alignment    = UIStackViewAlignmentLeading;
 }
 
--(void)addArrangedSubview:(UIView*) view
+- (void)addArrangedSubview:(UIView* )view
 {
     CGSize contentSz = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    [super addArrangedSubview: view];
+    [super addArrangedSubview:view];
     CGRect frame = super.frame;
     frame.size.height = MAX(super.frame.size.height, contentSz.height);
     frame.size.width += contentSz.width;
     super.frame = frame;
 }
 
--(void)adjustHuggingForLastElement
+- (void)adjustHuggingForLastElement
 {
     if([super.stackView.arrangedSubviews count])
-        [[super.stackView.arrangedSubviews objectAtIndex: [super.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [[super.stackView.arrangedSubviews objectAtIndex:[super.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 @end

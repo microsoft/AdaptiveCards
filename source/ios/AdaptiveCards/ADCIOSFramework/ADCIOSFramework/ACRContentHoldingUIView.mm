@@ -16,9 +16,9 @@ using namespace AdaptiveCards;
     return self.frame.size;
 }
 
--(NSMutableArray*)setAlignment: (HorizontalAlignment) alignment
-                 withSuperview: (UIView*) superview
-                        toView: (UIView*) view
+- (NSMutableArray* )setAlignment:(HorizontalAlignment)alignment
+                   withSuperview:(UIView* )superview
+                          toView:(UIView* )view
 {
     NSMutableArray* constraints = [[NSMutableArray alloc] init];
     [constraints addObject:

@@ -7,16 +7,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ACRContentStackView: UIView
+@interface ACRContentStackView:UIView
 
 @property UIStackView* stackView;
 
--(instancetype)initContentViewWithFrame:(CGRect) frame;
+- (instancetype)initContentViewWithFrame:(CGRect)frame;
 
--(void)addArrangedSubview:(UIView *) view;
+- (void)addArrangedSubview:(UIView *)view;
 
--(void)config;
+- (void)config;
 
--(void)adjustHuggingForLastElement;
+- (void)adjustHuggingForLastElement;
 
 @end

@@ -34,9 +34,9 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) fromACVTable:(ACVTableViewController *) avcTabVc userSelectedJson: (NSString*) jsonStr
+- (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString* )jsonStr
 {
-    ACRViewController* adcVc = [[ACRViewController alloc] init: jsonStr
+    ACRViewController* adcVc = [[ACRViewController alloc] init:jsonStr
                                                      withFrame:CGRectMake(20, 300, 350, 550)];
     if(self.curView)
         [self.curView removeFromSuperview];
