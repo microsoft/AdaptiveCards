@@ -11,12 +11,12 @@
 
 - (instancetype)init 
 {
-    return [self initContentViewWithFrame:CGRectMake(0,0,0,0)];
+    return [self initWithFrame:CGRectMake(0,0,0,0)];
 }
 
-- (instancetype)initContentViewWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:CGRectMake(0,0,frame.size.width,0)];
     if(self)
     {
         _stackView = [[UIStackView alloc] initWithFrame:frame];

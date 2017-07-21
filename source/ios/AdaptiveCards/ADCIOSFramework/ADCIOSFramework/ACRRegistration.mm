@@ -63,7 +63,7 @@ using namespace AdaptiveCards;
       withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
       andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    ACRColumnView* horizontalView = [[ACRColumnView alloc] initContentViewWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
+    ACRColumnView* horizontalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
 
     return [self render:view withContentView:horizontalView
                          withCardElems:elems
@@ -131,7 +131,7 @@ using namespace AdaptiveCards;
         [view addConstraint:constraint];
         [NSLayoutConstraint constraintWithItem:view
                                      attribute:NSLayoutAttributeBottom
-                                     relatedBy:NSLayoutRelationLessThanOrEqual
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
                                         toItem:newView
                                      attribute:NSLayoutAttributeTop
                                     multiplier:1.0
