@@ -12,23 +12,28 @@
     NSArray<NSString*> *pathsToFiles;
 }
 
--(void) viewDidLoad
+- (void)viewDidLoad
 {
     [super viewDidLoad];
 
     pathsToFiles = [[NSBundle mainBundle] pathsForResourcesOfType:@"json" inDirectory:nil];
-    [_delegate fromACVTable:self userSelectedJson:
-     [NSString stringWithContentsOfFile:pathsToFiles[[pathsToFiles count] - 2]
-                               encoding:NSUTF8StringEncoding
-                                  error:nil]];
+    NSInteger cnt = [pathsToFiles count];
+    enum DesiredIdx { eDefaultViewIdx = 2 };
+    if(cnt >= eDefaultViewIdx)
+    {
+        [_delegate fromACVTable:self userSelectedJson:
+         [NSString stringWithContentsOfFile:pathsToFiles[[pathsToFiles count] - eDefaultViewIdx]
+                                   encoding:NSUTF8StringEncoding
+                                      error:nil]];
+    }
 }
 
--(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [pathsToFiles count];
 }
 
--(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell* )tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString* reuseKey = @"ACVTabVC";
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:reuseKey];
@@ -42,7 +47,7 @@
     return cell;
 }
 
--(void) tableView:(UITableView* ) tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+- (void)tableView:(UITableView* )tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     [_delegate fromACVTable:self userSelectedJson:
      [NSString stringWithContentsOfFile:pathsToFiles[indexPath.row]
