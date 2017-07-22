@@ -7,7 +7,9 @@
 
 #import "ACRInputToggleRenderer.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRSeparator.h"
 #import "ToggleInput.h"
+#import "ACRColumnSetView.h"
 
 @implementation ACRInputToggleRenderer
 
@@ -31,14 +33,21 @@
     NSString* desc = [NSString stringWithCString:toggleBlck->GetTitle().c_str()
                                                 encoding:NSUTF8StringEncoding];
     UILabel* title = [[UILabel alloc] init];
+    [title setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     title.text = desc;
     
-    UIStackView* contentView = [[UIStackView alloc] init];
-  
-    contentView.axis = UILayoutConstraintAxisHorizontal;
-    contentView.distribution = UIStackViewDistributionFill;
+    ACRColumnSetView* contentView = [[ACRColumnSetView alloc] init];
+
     [contentView addArrangedSubview:title];
+
+    ACRSeparator* separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,10,toggle.frame.size.height)
+                                             withSuperview:contentView toAxis:UILayoutConstraintAxisHorizontal];
     [contentView addArrangedSubview:toggle];
+
+    separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,10,toggle.frame.size.height)
+                                      withSuperview:contentView toAxis:UILayoutConstraintAxisHorizontal];
+    
+    [contentView adjustHuggingForLastElement];
     
     if(viewGroup)[(UIStackView*)viewGroup addArrangedSubview: contentView];
     
