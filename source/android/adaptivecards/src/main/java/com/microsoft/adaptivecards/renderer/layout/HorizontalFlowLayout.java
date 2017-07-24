@@ -1,4 +1,4 @@
-package com.microsoft.adaptivecards.renderer;
+package com.microsoft.adaptivecards.renderer.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;

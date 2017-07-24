@@ -6,31 +6,36 @@
 //
 
 #import "ACRContainerRenderer.h"
+#import "ACRColumnView.h"
 #import "ACRRegistration.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
 
 @implementation ACRContainerRenderer
 
-+ (ACRContainerRenderer* ) getInstance
++ (ACRContainerRenderer* )getInstance
 {
     static ACRContainerRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (CardElementType) elemType
++ (CardElementType)elemType
 {
     return CardElementType::Container;
 }
 
-- (UIView* ) render: (UIStackView*) viewGroup
-       withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config
+- (UIView* )render:(UIView* )viewGroup
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
-    return [[ACRRegistration getInstance] render: viewGroup
-                                   withCardElems: containerElem->GetItems()
-                                   andHostConfig: config];
+    /// will update name to make intention clear
+    ACRColumnView* container = [[ACRColumnView alloc] init];
+    
+    return [[ACRRegistration getInstance] render:viewGroup
+                                 withContentView:container
+                                   withCardElems:containerElem->GetItems()
+                                   andHostConfig:config];
 }
 
 @end

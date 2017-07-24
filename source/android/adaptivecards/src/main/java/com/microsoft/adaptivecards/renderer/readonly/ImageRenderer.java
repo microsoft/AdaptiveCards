@@ -1,4 +1,4 @@
-package com.microsoft.adaptivecards.renderer;
+package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.microsoft.adaptivecards.renderer.http.HttpRequestHelper;
+import com.microsoft.adaptivecards.renderer.http.HttpRequestResult;
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.HorizontalAlignment;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
@@ -23,10 +27,10 @@ import com.microsoft.adaptivecards.objectmodel.Image;
 import com.microsoft.adaptivecards.objectmodel.ImageSize;
 import com.microsoft.adaptivecards.objectmodel.ImageSizesConfig;
 import com.microsoft.adaptivecards.objectmodel.ImageStyle;
+import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import java.util.Vector;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -48,7 +52,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    private class ImageLoaderAsync extends AsyncTask<String, Void, Bitmap>
+    private class ImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
     {
         ImageLoaderAsync(Context context, ImageView imageView, ImageStyle imageStyle)
         {
@@ -58,15 +62,19 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         @Override
-        protected Bitmap doInBackground(String... args)
+        protected HttpRequestResult<Bitmap> doInBackground(String... args)
         {
-            String url = args[0];
             try
             {
-                InputStream inputStream = new java.net.URL(url).openStream();
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                Bitmap bitmap = null;
+                byte[] bytes = HttpRequestHelper.get(args[0]);
+                if (bytes == null)
+                {
+                    throw new IOException("Failed to retrieve content from " + args[0]);
+                }
 
-                if (m_imageStyle == ImageStyle.Person)
+                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                if (bitmap != null && m_imageStyle == ImageStyle.Person)
                 {
                     Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
                     BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
@@ -77,27 +85,29 @@ public class ImageRenderer extends BaseCardElementRenderer
                     bitmap = circleBitmap;
                 }
 
-                return bitmap;
-            }
-            catch (IOException ioExcep)
-            {
-                errorString = ioExcep.getMessage();
-                // TODO: Where to log?
-            }
+                if (bitmap == null)
+                {
+                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
+                }
 
-            return null;
+                return new HttpRequestResult<Bitmap>(bitmap);
+            }
+            catch (Exception excep)
+            {
+                return new HttpRequestResult<Bitmap>(excep);
+            }
         }
 
         @Override
-        protected void onPostExecute(Bitmap result)
+        protected void onPostExecute(HttpRequestResult<Bitmap> result)
         {
-            if (result != null)
+            if (result.isSuccessful())
             {
-                m_imageView.setImageBitmap(result);
+                m_imageView.setImageBitmap(result.getResult());
             }
             else
             {
-                Toast.makeText(m_context, "Unable to load image: " + errorString, Toast.LENGTH_SHORT);
+                Toast.makeText(m_context, "Unable to load image: " + result.getException().getMessage(), Toast.LENGTH_SHORT);
             }
         }
 
@@ -172,7 +182,14 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    @Override
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         Image image = null;
         if (baseCardElement instanceof Image)
@@ -181,16 +198,18 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else if ((image = Image.dynamic_cast(baseCardElement)) == null)
         {
-            return viewGroup;
+            throw new InternalError("Unable to convert BaseCardElement to Image object model.");
         }
 
         ImageView imageView = new ImageView(context);
-        new ImageLoaderAsync(context, imageView, image.GetImageStyle()).execute(image.GetUrl());
+        imageView.setTag(image);
+        ImageLoaderAsync imageLoaderAsync = new ImageLoaderAsync(context, imageView, image.GetImageStyle());
+        imageLoaderAsync.execute(image.GetUrl());
         setImageSize(imageView, image.GetImageSize(), hostConfig.getImageSizes());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         setSeparationConfig(context, viewGroup, image.GetSeparationStyle(), hostConfig.getImage().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
         viewGroup.addView(setHorizontalAlignment(context, imageView, image.GetHorizontalAlignment()));
-        return viewGroup;
+        return imageView;
     }
 
     private static ImageRenderer s_instance = null;

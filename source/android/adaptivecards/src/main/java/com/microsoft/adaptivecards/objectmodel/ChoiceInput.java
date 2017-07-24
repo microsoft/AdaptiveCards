@@ -10,7 +10,7 @@ package com.microsoft.adaptivecards.objectmodel;
 
 public class ChoiceInput {
   private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  private transient boolean swigCMemOwn;
 
   protected ChoiceInput(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -79,12 +79,19 @@ public class ChoiceInput {
     AdaptiveCardObjectModelJNI.ChoiceInput_SetSpeak(swigCPtr, this, value);
   }
 
-  public static SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__ChoiceInput_t Deserialize(SWIGTYPE_p_Json__Value root) {
-    return new SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__ChoiceInput_t(AdaptiveCardObjectModelJNI.ChoiceInput_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root)), true);
+  public static ChoiceInput Deserialize(SWIGTYPE_p_Json__Value root) {
+    long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
+    return (cPtr == 0) ? null : new ChoiceInput(cPtr, true);
   }
 
-  public static SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__ChoiceInput_t DeserializeFromString(String jsonString) {
-    return new SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__ChoiceInput_t(AdaptiveCardObjectModelJNI.ChoiceInput_DeserializeFromString(jsonString), true);
+  public static ChoiceInput DeserializeFromString(String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_DeserializeFromString(jsonString);
+    return (cPtr == 0) ? null : new ChoiceInput(cPtr, true);
+  }
+
+  public static ChoiceInput dynamic_cast(BaseCardElement baseCardElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
+    return (cPtr == 0) ? null : new ChoiceInput(cPtr, true);
   }
 
 }

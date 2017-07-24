@@ -34,13 +34,16 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) fromACVTable:(ACVTableViewController *) avcTabVc userSelectedJson: (NSString*) jsonStr
+- (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString* )jsonStr
 {
-    ACRViewController* adcVc = [[ACRViewController alloc] init: jsonStr];
+    ACRViewController* adcVc = [[ACRViewController alloc] init:jsonStr
+                                                     withFrame:CGRectMake(20, 300, 350, 550)];
     if(self.curView)
         [self.curView removeFromSuperview];
     self.curView = adcVc.view;
-    self.curView.frame = CGRectMake(20, 250, 350, 450);
+    self.curView.frame = CGRectMake(50, 300, 350, 550);
+    [self addChildViewController:adcVc];
     [self.view addSubview:adcVc.view];
+    [adcVc didMoveToParentViewController:self];
 }
 @end

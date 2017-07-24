@@ -34,6 +34,9 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result.adaptiveCard = ParseUtil::ExtractJsonValueAndMergeWithDefault<AdaptiveCardConfig>(
         json, AdaptiveCardSchemaKey::AdaptiveCard, result.adaptiveCard, AdaptiveCardConfig::Deserialize);
 
+    result.actions = ParseUtil::ExtractJsonValueAndMergeWithDefault<ActionsConfig>(
+        json, AdaptiveCardSchemaKey::Actions, result.actions, ActionsConfig::Deserialize);
+
     return result;
 }
 

@@ -45,8 +45,8 @@ public class ChoiceSetInput extends BaseInputElement {
     this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_1(separation.swigValue(), speak), true);
   }
 
-  public ChoiceSetInput(SeparationStyle separation, String speak, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__ChoiceInput_t_t choices) {
-    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_2(separation.swigValue(), speak, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__ChoiceInput_t_t.getCPtr(choices)), true);
+  public ChoiceSetInput(SeparationStyle separation, String speak, ChoiceInputVector choices) {
+    this(AdaptiveCardObjectModelJNI.new_ChoiceSetInput__SWIG_2(separation.swigValue(), speak, ChoiceInputVector.getCPtr(choices), choices), true);
   }
 
   public String Serialize() {
@@ -73,8 +73,8 @@ public class ChoiceSetInput extends BaseInputElement {
     AdaptiveCardObjectModelJNI.ChoiceSetInput_SetChoiceSetStyle(swigCPtr, this, choiceSetStyle.swigValue());
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__ChoiceInput_t_t GetChoices() {
-    return new SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__ChoiceInput_t_t(AdaptiveCardObjectModelJNI.ChoiceSetInput_GetChoices__SWIG_0(swigCPtr, this), false);
+  public ChoiceInputVector GetChoices() {
+    return new ChoiceInputVector(AdaptiveCardObjectModelJNI.ChoiceSetInput_GetChoices__SWIG_0(swigCPtr, this), false);
   }
 
   public static ChoiceSetInput Deserialize(SWIGTYPE_p_Json__Value root) {

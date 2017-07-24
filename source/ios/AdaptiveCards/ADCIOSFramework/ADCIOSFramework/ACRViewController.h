@@ -8,9 +8,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface ACRViewController : UIViewController
+@interface ACRViewController :UIViewController
 
 @property NSString* jsonString;
--(instancetype) init: (NSString*) str;
+- (instancetype)init:(NSString* )str withFrame:(CGRect)frame;
 
 @end

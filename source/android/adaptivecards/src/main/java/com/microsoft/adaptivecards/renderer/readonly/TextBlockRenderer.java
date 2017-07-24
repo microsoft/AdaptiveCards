@@ -1,13 +1,16 @@
-package com.microsoft.adaptivecards.renderer;
+package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
 import com.microsoft.adaptivecards.objectmodel.ColorsConfig;
 import com.microsoft.adaptivecards.objectmodel.FontSizesConfig;
@@ -19,8 +22,10 @@ import com.microsoft.adaptivecards.objectmodel.TextBlock;
 import com.microsoft.adaptivecards.objectmodel.TextColor;
 import com.microsoft.adaptivecards.objectmodel.TextSize;
 import com.microsoft.adaptivecards.objectmodel.TextWeight;
+import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * Created by bekao on 2/11/2017.
@@ -156,7 +161,14 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setTypeface(null, m_textWeightMap.get(textWeight));
     }
 
-    public ViewGroup render(Context context, ViewGroup viewGroup, BaseCardElement baseCardElement, HostConfig hostConfig)
+    @Override
+    public View render(
+            Context context,
+            FragmentManager fragmentManager,
+            ViewGroup viewGroup,
+            BaseCardElement baseCardElement,
+            Vector<IInputHandler> inputActionHandlerList,
+            HostConfig hostConfig)
     {
         TextBlock textBlock = null;
         if (baseCardElement instanceof TextBlock)
@@ -165,10 +177,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
         else if ((textBlock = TextBlock.dynamic_cast(baseCardElement)) == null)
         {
-            return viewGroup;
+            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
         }
 
         TextView textView = new TextView(context);
+        textView.setTag(baseCardElement);
         textView.setText(textBlock.GetText());
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());
@@ -177,13 +190,13 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         int maxLines = (int)textBlock.GetMaxLines();
-        if (maxLines != 0)
+        if (maxLines > 0)
         {
             textView.setMaxLines(maxLines);
         }
 
         viewGroup.addView(textView);
-        return viewGroup;
+        return textView;
     }
 
     private static TextBlockRenderer s_instance = null;

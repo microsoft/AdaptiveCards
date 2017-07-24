@@ -174,7 +174,6 @@ function setupEditor() {
             displayIndentGuides: false,
             showFoldWidgets: true,
             highlightSelectedWord: false,
-            fontFamily: "Consolas",
             fontSize: "14px"
         });
     editor.getSession().setMode("ace/mode/json");
