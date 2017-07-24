@@ -161,8 +161,32 @@ export abstract class CardElement {
     parse(json: any) {
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
+
         this.spacing = Utils.getValueOrDefault<Enums.Spacing>(json["spacing"], "default");
         this.separator = json["separator"];
+
+        var jsonSeparation = json["separation"];
+
+        if (jsonSeparation !== undefined) {
+            if (jsonSeparation === "none") {
+                this.spacing = "none";
+                this.separator = false;
+            }
+            else if (jsonSeparation === "strong") {
+                this.spacing = "large";
+                this.separator = true;
+            }
+            else if (jsonSeparation === "default") {
+                this.spacing = "default";
+                this.separator = false;
+            }
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The \"separation\" property is deprecated and will be removed. Use the \"spacing\" and \"separator\" properties instead."
+                });
+        }
 
         var jsonHeight = json["height"];
 
@@ -2201,6 +2225,19 @@ export class Column extends Container {
         super.parse(json);
 
         var jsonWidth = json["width"];
+
+        if (jsonWidth === undefined) {
+            jsonWidth = json["size"];
+
+            if (jsonWidth !== undefined) {
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.Deprecated,
+                        message: "The \"Column.size\" property is deprecated and will be removed. Use the \"Column.width\" property instead."
+                    });
+            }
+        }
+
         var invalidWidth = false;
 
         if (typeof jsonWidth === "number") {
