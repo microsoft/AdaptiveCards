@@ -2065,9 +2065,19 @@ export abstract class ContainerBase extends CardElement {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
 
-        if (json["backgroundImage"]) {
+        var jsonBackgroundImage = json["backgroundImage"];
+
+        if (jsonBackgroundImage) {
             this.backgroundImage = new BackgroundImage();
-            this.backgroundImage.parse(json["backgroundImage"]);
+
+            if (typeof jsonBackgroundImage === "string") {
+                this.backgroundImage.url = jsonBackgroundImage;
+                this.backgroundImage.mode = "stretch";
+            }
+            else if (typeof jsonBackgroundImage === "object") {
+                this.backgroundImage = new BackgroundImage();
+                this.backgroundImage.parse(json["backgroundImage"]);
+            }
         }
 
         if (json[itemsCollectionPropertyName] != null) {
