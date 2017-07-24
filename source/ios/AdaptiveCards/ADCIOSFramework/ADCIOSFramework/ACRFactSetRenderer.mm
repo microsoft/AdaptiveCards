@@ -8,6 +8,8 @@
 #import "ACRTextBlockRenderer.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRFactSetRenderer.h"
+#import "ACRSeparator.h"
+#import "ACRColumnSetView.h"
 #import "FactSet.h"
 
 @implementation ACRFactSetRenderer
@@ -67,14 +69,24 @@
                               withTextConfig:config->factSet.value];
         
         [titleStack addArrangedSubview:titleLab];
-        // spacing will be added -- need clarification
         [valueStack addArrangedSubview:valueLab];
     }
     
-    UIStackView* factSetView = [[UIStackView alloc] init];
+    ACRColumnSetView* factSetView= [[ACRColumnSetView alloc] init];
     
     [factSetView addArrangedSubview:titleStack];
+    [titleStack setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+
+    ACRSeparator* separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,20,20)
+                                                    withSuperview:factSetView
+                                                           toAxis:UILayoutConstraintAxisHorizontal];
     [factSetView addArrangedSubview:valueStack];
+
+    separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,20,20) 
+                                    withSuperview:factSetView
+                                              toAxis:UILayoutConstraintAxisHorizontal];
+
+    [factSetView adjustHuggingForLastElement];
     if(viewGroup) [ viewGroup addArrangedSubview:factSetView];
     return factSetView;
 }

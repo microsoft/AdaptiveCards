@@ -1,39 +1,34 @@
 //
-//  ACRInputToggleRenderer
-//  ACRInputToggleRenderer.mm
+//  ACRInputChoiceSetRenderer
+//  ACRInputChoiceSetRenderer.mm
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACRInputToggleRenderer.h"
+#import "ACRInputChoiceSetRenderer.h"
 #import "ACRInputControlTableView.h"
+#import "ChoiceSetInput.h"
 
+@implementation ACRInputChoiceSetRenderer
 
-#import "ACRContentHoldingUIView.h"
-#import "ACRSeparator.h"
-#import "ToggleInput.h"
-#import "ACRColumnSetView.h"
-
-@implementation ACRInputToggleRenderer
-
-+ (ACRInputToggleRenderer* ) getInstance
++ (ACRInputChoiceSetRenderer* ) getInstance
 {
-    static ACRInputToggleRenderer *singletonInstance = [[self alloc] init];
+    static ACRInputChoiceSetRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
 + (CardElementType) elemType
 {
-    return CardElementType::ToggleInput;
+    return CardElementType::ChoiceSetInput;
 }
 
 - (UIView* ) render: (UIView*) viewGroup
        withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
-    std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
+    std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
     
-    ACRInputControlTableView* inputView = [[ACRInputControlTableView alloc] initWithInputToggle:toggleBlck WithHostConfig:config WithSuperview:viewGroup];
+    ACRInputControlTableView* inputView = [[ACRInputControlTableView alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config WithSuperview:viewGroup];
     
     if(viewGroup)[(UIStackView*)viewGroup addArrangedSubview:inputView];
 
