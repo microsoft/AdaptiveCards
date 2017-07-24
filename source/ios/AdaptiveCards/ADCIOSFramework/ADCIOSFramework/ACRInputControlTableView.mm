@@ -23,7 +23,7 @@ using namespace AdaptiveCards;
 - (instancetype)initWithFrame:(CGRect)frame
                         style:(UITableViewStyle)style
 {
-    self = [super initWithFrame:frame style:style];
+    self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) style:style];
     if(self)
     {
         self.dataSource = self;

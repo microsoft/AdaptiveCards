@@ -107,6 +107,8 @@
 		F4C1F5DA1F218ABC0018CB78 /* ACRInputTimeRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5D81F218ABC0018CB78 /* ACRInputTimeRenderer.mm */; };
 		F4C1F5DD1F218F920018CB78 /* ACRInputNumberRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F5DB1F218F920018CB78 /* ACRInputNumberRenderer.h */; };
 		F4C1F5DE1F218F920018CB78 /* ACRInputNumberRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5DC1F218F920018CB78 /* ACRInputNumberRenderer.mm */; };
+		F4C1F5E11F266D480018CB78 /* ACRInputControlPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F5DF1F266D480018CB78 /* ACRInputControlPickerView.h */; };
+		F4C1F5E21F266D480018CB78 /* ACRInputControlPickerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5E01F266D480018CB78 /* ACRInputControlPickerView.mm */; };
 		F4D33EA51F06F41B00941E44 /* ACRSeparator.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */; };
 		F4D33EA71F06F44C00941E44 /* ACRSeparator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D33EA61F06F44C00941E44 /* ACRSeparator.h */; };
 		F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */; };
@@ -233,6 +235,8 @@
 		F4C1F5D81F218ABC0018CB78 /* ACRInputTimeRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputTimeRenderer.mm; sourceTree = "<group>"; };
 		F4C1F5DB1F218F920018CB78 /* ACRInputNumberRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputNumberRenderer.h; sourceTree = "<group>"; };
 		F4C1F5DC1F218F920018CB78 /* ACRInputNumberRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputNumberRenderer.mm; sourceTree = "<group>"; };
+		F4C1F5DF1F266D480018CB78 /* ACRInputControlPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputControlPickerView.h; sourceTree = "<group>"; };
+		F4C1F5E01F266D480018CB78 /* ACRInputControlPickerView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputControlPickerView.mm; sourceTree = "<group>"; };
 		F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRSeparator.mm; sourceTree = "<group>"; };
 		F4D33EA61F06F44C00941E44 /* ACRSeparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRSeparator.h; sourceTree = "<group>"; };
 		F4FE45641F196E7B0071D9E5 /* ACRColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRColumnView.h; sourceTree = "<group>"; };
@@ -286,6 +290,8 @@
 			isa = PBXGroup;
 			children = (
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
+				F4C1F5DF1F266D480018CB78 /* ACRInputControlPickerView.h */,
+				F4C1F5E01F266D480018CB78 /* ACRInputControlPickerView.mm */,
 				6B6840F21F25A5F7008A933F /* ACRInputControlTableView.h */,
 				6B6840F31F25A5F7008A933F /* ACRInputControlTableView.mm */,
 				F43A94161F20502D0001920B /* ACRInputToggleRenderer.h */,
@@ -446,6 +452,7 @@
 				F42741071EF8624F00399FBB /* ACRIBaseCardElementRenderer.h in Headers */,
 				F44873281EE2261F00FCAFAE /* TimeInput.h in Headers */,
 				F448730E1EE2261F00FCAFAE /* FactSet.h in Headers */,
+				F4C1F5E11F266D480018CB78 /* ACRInputControlPickerView.h in Headers */,
 				F44873131EE2261F00FCAFAE /* Image.h in Headers */,
 				F42741241EFB274C00399FBB /* ACRColumnRenderer.h in Headers */,
 				F42741281EFB374A00399FBB /* ACRColumnSetRenderer.h in Headers */,
@@ -635,6 +642,7 @@
 				F43660781F0706D800EBA868 /* SharedAdaptiveCard.cpp in Sources */,
 				F42741251EFB274C00399FBB /* ACRColumnRenderer.mm in Sources */,
 				F4C1F5DA1F218ABC0018CB78 /* ACRInputTimeRenderer.mm in Sources */,
+				F4C1F5E21F266D480018CB78 /* ACRInputControlPickerView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

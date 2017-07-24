@@ -15,7 +15,7 @@
 @implementation ViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+    [super viewDidLoad];	
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     self.ACVTabVC.delegate = self;
@@ -37,11 +37,11 @@
 - (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString* )jsonStr
 {
     ACRViewController* adcVc = [[ACRViewController alloc] init:jsonStr
-                                                     withFrame:CGRectMake(20, 300, 350, 850)];
+                                                     withFrame:CGRectMake(20, 300, 300, 850)];
     if(self.curView)
         [self.curView removeFromSuperview];
     self.curView = adcVc.view;
-    self.curView.frame = CGRectMake(20, 250, 350, 850);
+    self.curView.frame = CGRectMake(20, 300, 300, 850);
     [self addChildViewController:adcVc];
     [self.view addSubview:adcVc.view];
     [adcVc didMoveToParentViewController:self];

@@ -7,6 +7,7 @@
 
 #import "ACRInputChoiceSetRenderer.h"
 #import "ACRInputControlTableView.h"
+#import "ACRInputControlPickerView.h"
 #import "ChoiceSetInput.h"
 
 @implementation ACRInputChoiceSetRenderer
@@ -27,13 +28,22 @@
       andHostConfig: (std::shared_ptr<HostConfig> const &) config
 {
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
+    UIView* inputView = nil;
     
-    ACRInputControlTableView* inputView = [[ACRInputControlTableView alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config WithSuperview:viewGroup];
+    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact &&
+       !choiceSet->GetIsMultiSelect())
+    {
+        inputView = [[ACRInputControlPickerView alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config WithSuperview:viewGroup];
+    }
+    else
+    {
+        
+        inputView = [[ACRInputControlTableView alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config WithSuperview:viewGroup];
+        [(UITableView *)inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
+    }
     
     if(viewGroup)[(UIStackView*)viewGroup addArrangedSubview:inputView];
-
-    [inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
-
+   
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:inputView
                                   attribute:NSLayoutAttributeLeading
