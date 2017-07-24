@@ -207,8 +207,32 @@ export abstract class CardElement {
     parse(json: any) {
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
+
         this.spacing = Utils.getValueOrDefault<Enums.Spacing>(json["spacing"], "default");
         this.separator = json["separator"];
+
+        var jsonSeparation = json["separation"];
+
+        if (jsonSeparation !== undefined) {
+            if (jsonSeparation === "none") {
+                this.spacing = "none";
+                this.separator = false;
+            }
+            else if (jsonSeparation === "strong") {
+                this.spacing = "large";
+                this.separator = true;
+            }
+            else if (jsonSeparation === "default") {
+                this.spacing = "default";
+                this.separator = false;
+            }
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The \"separation\" property is deprecated and will be removed. Use the \"spacing\" and \"separator\" properties instead."
+                });
+        }
 
         var jsonHeight = json["height"];
 
@@ -1261,7 +1285,7 @@ enum ActionButtonState {
 class ActionButton {
     private _action: Action;
     private _style: Enums.ActionStyle = "button";
-    private _element: HTMLElement = null;
+    private _element: HTMLButtonElement = null;
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
 
@@ -1293,6 +1317,7 @@ class ActionButton {
         this._style = style;
 
         this._element = document.createElement("button");
+        this._element.type = "button";
         this._element.style.overflow = "hidden";
         this._element.style.whiteSpace = "nowrap";
         this._element.style.textOverflow = "ellipsis";
@@ -2118,9 +2143,19 @@ export class Container extends CardElement {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
 
-        if (json["backgroundImage"]) {
+        var jsonBackgroundImage = json["backgroundImage"];
+
+        if (jsonBackgroundImage) {
             this.backgroundImage = new BackgroundImage();
-            this.backgroundImage.parse(json["backgroundImage"]);
+
+            if (typeof jsonBackgroundImage === "string") {
+                this.backgroundImage.url = jsonBackgroundImage;
+                this.backgroundImage.mode = "stretch";
+            }
+            else if (typeof jsonBackgroundImage === "object") {
+                this.backgroundImage = new BackgroundImage();
+                this.backgroundImage.parse(json["backgroundImage"]);
+            }
         }
 
         this._colorPalette = Utils.getValueOrDefault<Enums.ColorPalette>(json["colorPalette"], null);
@@ -2258,6 +2293,19 @@ export class Column extends Container {
         super.parse(json);
 
         var jsonWidth = json["width"];
+
+        if (jsonWidth === undefined) {
+            jsonWidth = json["size"];
+
+            if (jsonWidth !== undefined) {
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.Deprecated,
+                        message: "The \"Column.size\" property is deprecated and will be removed. Use the \"Column.width\" property instead."
+                    });
+            }
+        }
+
         var invalidWidth = false;
 
         if (typeof jsonWidth === "number") {

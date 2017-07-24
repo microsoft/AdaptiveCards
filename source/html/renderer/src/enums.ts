@@ -31,6 +31,7 @@ export type ColorPalette = "default" | "emphasis";
 export enum ValidationError {
     ActionTypeNotAllowed,
     CollectionCantBeEmpty,
+    Deprecated,
     ElementTypeNotAllowed,
     InteractivityNotAllowed,
     InvalidPropertyValue,
