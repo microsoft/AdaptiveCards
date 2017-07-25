@@ -34,6 +34,8 @@
        !choiceSet->GetIsMultiSelect())
     {
         inputView = [[ACRInputControlPickerView alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config WithSuperview:viewGroup];
+
+        [(ACRInputControlPickerView *)inputView setDefaultView];
     }
     else
     {

@@ -13,4 +13,5 @@
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
                         WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig>     const&)hostConfig
                          WithSuperview:(UIView* )view;
+- (void)setDefaultView;
 @end

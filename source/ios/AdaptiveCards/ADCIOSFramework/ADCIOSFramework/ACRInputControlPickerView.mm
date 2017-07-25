@@ -15,6 +15,7 @@ using namespace AdaptiveCards;
 {
     std::shared_ptr<ChoiceSetInput> choiceSetDataSource;
     std::shared_ptr<HostConfig> config;
+    NSInteger defaultIdx;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -25,7 +26,9 @@ using namespace AdaptiveCards;
         self.dataSource = self;
         self.delegate = self;
         self.backgroundColor = UIColor.clearColor;
+        self.showsSelectionIndicator = YES;
         self.translatesAutoresizingMaskIntoConstraints = NO;
+        defaultIdx = 0;
     }
     return self;
 }
@@ -38,6 +41,13 @@ using namespace AdaptiveCards;
     if(self)
     {
         choiceSetDataSource = choiceSet;
+        // get default choice
+        for(defaultIdx = 0; defaultIdx < choiceSetDataSource->GetChoices().size(); defaultIdx++)
+            if(choiceSetDataSource->GetChoices()[defaultIdx]->GetIsSelected())
+                break;
+        
+        defaultIdx %= choiceSetDataSource->GetChoices().size();
+
         config = hostConfig;
     }
     return self;
@@ -58,10 +68,18 @@ using namespace AdaptiveCards;
                       forComponent:(NSInteger)component 
                                  reusingView:(UIView *)view
 {
+    std:std::shared_ptr<ChoiceInput> choiceInput = choiceSetDataSource->GetChoices()[row];
     UILabel* choice = [[UILabel alloc] init];
-    NSString* choiceText = [NSString stringWithCString:choiceSetDataSource->GetChoices()[row]->GetTitle().c_str()
+    NSString* choiceText = [NSString stringWithCString:choiceInput->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     choice.text = choiceText;
+    if(choiceInput->GetIsSelected())
+        defaultIdx = row;
     return choice;
+}
+
+- (void)setDefaultView
+{
+    [self selectRow:defaultIdx inComponent:0 animated:NO];
 }
 @end
