@@ -73,8 +73,7 @@ using namespace AdaptiveCards;
     NSString* choiceText = [NSString stringWithCString:choiceInput->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     choice.text = choiceText;
-    if(choiceInput->GetIsSelected())
-        defaultIdx = row;
+
     return choice;
 }
 
