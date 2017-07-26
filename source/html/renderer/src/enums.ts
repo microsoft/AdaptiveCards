@@ -29,6 +29,7 @@ export type BackgroundImageMode = "stretch" | "repeatHorizontally" | "repeatVert
 export enum ValidationError {
     ActionTypeNotAllowed,
     CollectionCantBeEmpty,
+    Deprecated,
     ElementTypeNotAllowed,
     InteractivityNotAllowed,
     InvalidPropertyValue,

@@ -6,24 +6,25 @@
 //
 
 #import "ACRTextBlockRenderer.h"
+#import "ACRContentHoldingUIView.h"
 #import "TextBlock.h"
 
 @implementation ACRTextBlockRenderer
 
-+ (ACRTextBlockRenderer* ) getInstance
++ (ACRTextBlockRenderer* )getInstance
 {
     static ACRTextBlockRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (CardElementType) elemType
++ (CardElementType)elemType
 {
     return CardElementType::TextBlock;
 }
 
-- (UIView* ) render: (UIStackView*) viewGroup
-       withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config
+- (UIView* )render:(UIView* )viewGroup
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
     UILabel* lab = [[UILabel alloc] init];
@@ -32,12 +33,12 @@
     
     NSMutableAttributedString* content =
     [[NSMutableAttributedString alloc] initWithString:textBlockStr
-                                           attributes:@{NSForegroundColorAttributeName: [self getTextBlockColor:txtBlck withHostConfig:config ],
-                                                        NSStrokeWidthAttributeName: [self getTextBlockTextWeight:txtBlck withHostConfig:config]}];
+                                           attributes:@{NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() withHostConfig:config andSubtleOption:txtBlck->GetIsSubtle()],
+                                                            NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]}];
     NSMutableParagraphStyle* para = [[NSMutableParagraphStyle alloc] init];
-    para.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping: NSLineBreakByTruncatingTail;
+    para.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
     para.alignment = [self getTextBlockAlignment:txtBlck withHostConfig:config];
-    [content addAttributes:@{NSParagraphStyleAttributeName:para} range: NSMakeRange(0,1)];
+    [content addAttributes:@{NSParagraphStyleAttributeName:para} range:NSMakeRange(0,1)];
     lab.attributedText = content;
     lab.numberOfLines = int(txtBlck->GetMaxLines());
     if(!lab.numberOfLines and !txtBlck->GetWrap())
@@ -45,69 +46,83 @@
         lab.numberOfLines = 1;
     }
     UIFontDescriptor* dec = lab.font.fontDescriptor;
-    lab.font = [UIFont fontWithDescriptor:dec size:[self getTextBlockTextSize:txtBlck withHostConfig:config]];
+    lab.font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]];
     
-    [viewGroup addArrangedSubview:lab];
+    CGSize intrinsicSz = [lab intrinsicContentSize];
+    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
+    
+    [wrappingview addSubview:lab];
+    
+    [wrappingview addConstraints:[wrappingview setAlignment:txtBlck->GetHorizontalAlignment()
+                                              withSuperview:wrappingview
+                                                     toView:lab]];
+    
+    if(viewGroup)[(UIStackView* )viewGroup addArrangedSubview:wrappingview];
+    
+    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
+    
     lab.translatesAutoresizingMaskIntoConstraints = false;
-    return lab;
+    
+    return wrappingview;
 }
 
-- (UIColor* ) getTextBlockColor:(std::shared_ptr<TextBlock> const &) txtBlock
-                 withHostConfig:(std::shared_ptr<HostConfig> const &) config
++ (UIColor* )getTextBlockColor:(TextColor)txtClr
+                withHostConfig:(std::shared_ptr<HostConfig> const &)config
+               andSubtleOption:(bool)isSubtle
 {
     long num = 0;
     std::string str;
-    switch (txtBlock->GetTextColor()) {
-        case TextColor::Dark: {
-            str = (txtBlock->GetIsSubtle()) ?
-                config->colors.dark.subtle : config->colors.dark.normal;
+    switch (txtClr) {
+        case TextColor::Dark:{
+            str = (isSubtle) ?
+                config->colors.dark.subtle :config->colors.dark.normal;
             break;
         }
-        case TextColor::Light: {
-            str = (txtBlock->GetIsSubtle()) ?
-                config->colors.light.subtle : config->colors.light.normal;
+        case TextColor::Light:{
+            str = (isSubtle) ?
+                config->colors.light.subtle :config->colors.light.normal;
             break;
         }
-        case TextColor::Accent: {
-            str = (txtBlock->GetIsSubtle()) ?
-                config->colors.accent.subtle : config->colors.accent.normal;
+        case TextColor::Accent:{
+            str = (isSubtle) ?
+                config->colors.accent.subtle :config->colors.accent.normal;
             break;
         }
-        case TextColor::Good: {
-            str = (txtBlock->GetIsSubtle()) ?
-                config->colors.good.subtle : config->colors.good.normal;
+        case TextColor::Good:{
+            str = (isSubtle) ?
+                config->colors.good.subtle :config->colors.good.normal;
             break;
         }
-        case TextColor::Warning: {
-            str = (txtBlock->GetIsSubtle()) ?
-                config->colors.warning.subtle : config->colors.warning.normal;
+        case TextColor::Warning:{
+            str = (isSubtle) ?
+                config->colors.warning.subtle :config->colors.warning.normal;
             break;
         }
-        case TextColor::Attention: {
-            str = (txtBlock->GetIsSubtle()) ?
-                config->colors.attention.subtle : config->colors.attention.normal;
+        case TextColor::Attention:{
+            str = (isSubtle) ?
+                config->colors.attention.subtle :config->colors.attention.normal;
             break;
         }
-        default: {
-            str = (txtBlock->GetIsSubtle()) ?
-                config->colors.dark.subtle : config->colors.dark.normal;
+        default:{
+            str = (isSubtle) ?
+                config->colors.dark.subtle :config->colors.dark.normal;
             break;
         }
     }
     
     num = std::stoul(str.substr(1), nullptr, 16);
 
-    return [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
-                           green:((num & 0x0000FF00) >> 8)  / 255.0
-                            blue:((num & 0x000000FF))       / 255.0
-                           alpha:((num & 0xFF000000) >> 24) / 255.0];
+    return [UIColor colorWithRed:((num & 0x00FF0000)>> 16)/ 255.0
+                           green:((num & 0x0000FF00)>> 8)/ 255.0
+                            blue:((num & 0x000000FF))/ 255.0
+                           alpha:((num & 0xFF000000)>> 24)/ 255.0];
 
 }
 
-- (int) getTextBlockTextSize:(std::shared_ptr<TextBlock> const &) txtBlock 
-              withHostConfig:(std::shared_ptr<HostConfig> const &) config
++ (int)getTextBlockTextSize:(TextSize)txtSz
+              withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    switch (txtBlock->GetTextSize()){
+    switch (txtSz){
         case TextSize::Small:
             return config->fontSizes.smallFontSize;
         case TextSize::Normal:
@@ -123,8 +138,8 @@
     }
 }
 
--(NSTextAlignment) getTextBlockAlignment:(std::shared_ptr<TextBlock> const &) txtBlock 
-                          withHostConfig:(std::shared_ptr<HostConfig> const &) config
+- (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock 
+                          withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (txtBlock->GetHorizontalAlignment()){
         case HorizontalAlignment::Center:
@@ -138,10 +153,10 @@
     }
 }
      
--(NSNumber* ) getTextBlockTextWeight:(std::shared_ptr<TextBlock> const &) txtBlock
-                      withHostConfig:(std::shared_ptr<HostConfig> const &) config
++ (NSNumber* )getTextBlockTextWeight:(TextWeight)weight
+                      withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    switch (txtBlock->GetTextWeight()) { 
+    switch (weight) { 
         case TextWeight::Normal:
             return @0;
         case TextWeight::Lighter:
