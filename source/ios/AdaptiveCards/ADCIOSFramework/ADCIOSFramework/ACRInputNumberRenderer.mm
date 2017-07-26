@@ -11,20 +11,20 @@
 
 @implementation ACRInputNumberRenderer
 
-+ (ACRInputNumberRenderer* ) getInstance
++ (ACRInputNumberRenderer* )getInstance
 {
     static ACRInputNumberRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (CardElementType) elemType
++ (CardElementType)elemType
 {
     return CardElementType::NumberInput;
 }
 
-- (UIView* ) render: (UIView*) viewGroup
-       withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config
+- (UIView* )render:(UIView*)viewGroup
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<NumberInput> numInputBlck = std::dynamic_pointer_cast<NumberInput>(elem);
     UITextField * numInput = [[UITextField alloc] init];

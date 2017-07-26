@@ -11,20 +11,20 @@
 
 @implementation ACRInputRenderer
 
-+ (ACRInputRenderer* ) getInstance
++ (ACRInputRenderer* )getInstance
 {
     static ACRInputRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (CardElementType) elemType
++ (CardElementType)elemType
 {
     return CardElementType::TextInput;
 }
 
-- (UIView* ) render: (UIView*) viewGroup
-       withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config
+- (UIView* )render:(UIView*)viewGroup
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
     UITextField * txtInput = [[UITextField alloc] init];
@@ -65,14 +65,10 @@
     
     CGSize intrinsicSz = [txtInput intrinsicContentSize];
     ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
-    
     [wrappingview addSubview: txtInput];
-    
-    #if 1
     [wrappingview addConstraints:[wrappingview setAlignment: HorizontalAlignment::Left
                                               withSuperview: wrappingview
                                                      toView: txtInput]];
-    #endif
     
     if(viewGroup)[(UIStackView*)viewGroup addArrangedSubview: wrappingview];
     

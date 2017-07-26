@@ -12,20 +12,20 @@
 
 @implementation ACRInputChoiceSetRenderer
 
-+ (ACRInputChoiceSetRenderer* ) getInstance
++ (ACRInputChoiceSetRenderer* )getInstance
 {
     static ACRInputChoiceSetRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (CardElementType) elemType
++ (CardElementType)elemType
 {
     return CardElementType::ChoiceSetInput;
 }
 
-- (UIView* ) render: (UIView*) viewGroup
-       withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config
+- (UIView* )render:(UIView*)viewGroup
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
     UIView* inputView = nil;

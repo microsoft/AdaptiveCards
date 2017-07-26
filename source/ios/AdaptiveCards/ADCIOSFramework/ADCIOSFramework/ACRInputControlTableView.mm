@@ -123,7 +123,6 @@ using namespace AdaptiveCards;
         [tableView cellForRowAtIndexPath:indexPath].accessoryType =
         UITableViewCellAccessoryCheckmark;
     }
-    //[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath

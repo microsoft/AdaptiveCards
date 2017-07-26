@@ -9,6 +9,6 @@
 
 @interface ACRInputRenderer: ACRBaseCardElementRenderer
 
-+(ACRInputRenderer*) getInstance;
++ (ACRInputRenderer*)getInstance;
 
 @end

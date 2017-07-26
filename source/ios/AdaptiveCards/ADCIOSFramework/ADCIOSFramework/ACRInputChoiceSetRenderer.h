@@ -9,6 +9,6 @@
 
 @interface ACRInputChoiceSetRenderer: ACRBaseCardElementRenderer
 
-+(ACRInputChoiceSetRenderer*) getInstance;
++ (ACRInputChoiceSetRenderer*)getInstance;
 
 @end

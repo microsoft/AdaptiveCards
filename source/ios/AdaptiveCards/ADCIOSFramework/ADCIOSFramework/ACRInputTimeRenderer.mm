@@ -11,20 +11,20 @@
 
 @implementation ACRInputTimeRenderer
 
-+ (ACRInputTimeRenderer* ) getInstance
++ (ACRInputTimeRenderer* )getInstance
 {
     static ACRInputTimeRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (CardElementType) elemType
++ (CardElementType)elemType
 {
     return CardElementType::TimeInput;
 }
 
-- (UIView* ) render: (UIView*) viewGroup
-       withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config
+- (UIView* )render:(UIView*)viewGroup
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<TimeInput> timeInput = std::dynamic_pointer_cast<TimeInput>(elem);
     UIDatePicker * timePicker = [[UIDatePicker alloc] init];
@@ -38,7 +38,6 @@
     formatter.dateStyle = NSDateFormatterNoStyle;
     NSDate* date = [formatter dateFromString:placeHolderStr];
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-    // need to check error here
     timePicker.date = date;
     
     if(viewGroup)[(UIStackView*)viewGroup addArrangedSubview: timePicker];

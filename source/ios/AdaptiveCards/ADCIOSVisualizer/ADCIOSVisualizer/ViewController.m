@@ -18,7 +18,6 @@
 {
     self.ACVTabVC.tableView.hidden = true;
     self.editView.hidden = false;
-    //self.editView.text = self.editableStr;
     NSMutableAttributedString* content =
     [[NSMutableAttributedString alloc] initWithString:self.editableStr];
     

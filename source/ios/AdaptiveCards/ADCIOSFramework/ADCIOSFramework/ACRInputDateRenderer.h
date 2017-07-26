@@ -10,6 +10,6 @@
 
 @interface ACRInputDateRenderer: ACRBaseCardElementRenderer
 
-+(ACRInputDateRenderer*) getInstance;
++ (ACRInputDateRenderer*)getInstance;
 
 @end
