@@ -14,8 +14,8 @@
 @interface ACRInputControlTableView:UITableView<UITableViewDataSource, UITableViewDelegate>
 - (instancetype)initWithInputToggle:(std::shared_ptr<AdaptiveCards::ToggleInput> const&)toggleInput
                      WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
-                      WithSuperview:(UIView* )view;
+                      WithSuperview:(UIView *)view;
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
                         WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
-                         WithSuperview:(UIView* )view;
+                         WithSuperview:(UIView *)view;
 @end

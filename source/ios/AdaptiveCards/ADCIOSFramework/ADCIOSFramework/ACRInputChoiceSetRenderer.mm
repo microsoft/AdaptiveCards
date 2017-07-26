@@ -12,7 +12,7 @@
 
 @implementation ACRInputChoiceSetRenderer
 
-+ (ACRInputChoiceSetRenderer* )getInstance
++ (ACRInputChoiceSetRenderer *)getInstance
 {
     static ACRInputChoiceSetRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -23,17 +23,19 @@
     return CardElementType::ChoiceSetInput;
 }
 
-- (UIView* )render:(UIView*)viewGroup
+- (UIView *)render:(UIView *)viewGroup
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
-    UIView* inputView = nil;
+    UIView *inputView = nil;
     
     if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact &&
        !choiceSet->GetIsMultiSelect())
     {
-        inputView = [[ACRInputControlPickerView alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config WithSuperview:viewGroup];
+        inputView = [[ACRInputControlPickerView alloc] initWithInputChoiceSet:choiceSet
+                                                                   hostConfig:config
+                                                                    superview:viewGroup];
 
         [(ACRInputControlPickerView *)inputView setDefaultView];
     }
@@ -44,7 +46,7 @@
         [(UITableView *)inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
     }
     
-    if(viewGroup)[(UIStackView*)viewGroup addArrangedSubview:inputView];
+    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:inputView];
    
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:inputView

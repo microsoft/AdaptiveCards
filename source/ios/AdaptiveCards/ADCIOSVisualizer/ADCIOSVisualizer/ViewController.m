@@ -18,15 +18,15 @@
 {
     self.ACVTabVC.tableView.hidden = true;
     self.editView.hidden = false;
-    NSMutableAttributedString* content =
+    NSMutableAttributedString *content =
     [[NSMutableAttributedString alloc] initWithString:self.editableStr];
     
-    NSMutableParagraphStyle* para = [[NSMutableParagraphStyle alloc] init];
+    NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     para.lineBreakMode = NSLineBreakByCharWrapping;
     para.alignment = NSTextAlignmentLeft;
     [content addAttributes:@{NSParagraphStyleAttributeName:para} range:NSMakeRange(0,1)];
     self.editView.attributedText = content;
-    UIFontDescriptor* dec = self.editView.font.fontDescriptor;
+    UIFontDescriptor *dec = self.editView.font.fontDescriptor;
     self.editView.font = [UIFont fontWithDescriptor:dec size:8];
     self.editView.layer.borderWidth = 1.25;
 }
@@ -92,7 +92,7 @@
 - (void)update:(NSString *) jsonStr
 {
     self.editableStr = jsonStr;
-    ACRViewController* adcVc = [[ACRViewController alloc] init:jsonStr
+    ACRViewController *adcVc = [[ACRViewController alloc] init:jsonStr
                                                      withFrame:CGRectMake(20, 250, 300, 850)];
     if(self.curView)
         [self.curView removeFromSuperview];
@@ -103,7 +103,7 @@
     [adcVc didMoveToParentViewController:self];
 }
 
-- (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString* )jsonStr
+- (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr
 {
     [self update:jsonStr];
 }

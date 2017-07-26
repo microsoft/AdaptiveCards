@@ -30,7 +30,7 @@ using namespace AdaptiveCards;
 
 @implementation ACRRegistration
 {
-    NSDictionary* typeToRendererDict;
+    NSDictionary *typeToRendererDict;
 }
 
 - (instancetype) init
@@ -58,7 +58,7 @@ using namespace AdaptiveCards;
     return self;
 }
 
-+ (ACRRegistration* ) getInstance
++ (ACRRegistration *) getInstance
 {
     static ACRRegistration *singletonInstance = nil;
     static dispatch_once_t predicate;
@@ -66,16 +66,16 @@ using namespace AdaptiveCards;
     return singletonInstance;
 }
 
-- (ACRBaseCardElementRenderer* ) getRenderer:(NSNumber* )cardElementType
+- (ACRBaseCardElementRenderer *) getRenderer:(NSNumber *)cardElementType
 { 
     return [typeToRendererDict objectForKey:cardElementType];
 }
 
-- (UIView* ) render:(UIView* )view
+- (UIView *) render:(UIView *)view
       withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
       andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    ACRColumnView* horizontalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
+    ACRColumnView *horizontalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
 
     return [self render:view withContentView:horizontalView
                          withCardElems:elems
@@ -83,8 +83,8 @@ using namespace AdaptiveCards;
 
 }
 
-- (UIView* ) render:(UIView* )view
-    withContentView:(UIView* )newView
+- (UIView *) render:(UIView *)view
+    withContentView:(UIView *)newView
       withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
       andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {   
@@ -93,7 +93,7 @@ using namespace AdaptiveCards;
     {
         [ACRSeparator renderSeparation:elem forSuperview:newView withHostConfig:config];
         
-        ACRBaseCardElementRenderer* renderer =
+        ACRBaseCardElementRenderer *renderer =
             [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
         if(renderer == nil)
@@ -107,13 +107,13 @@ using namespace AdaptiveCards;
    
     if([view isKindOfClass:[ACRContentStackView class]])
     {
-        [(ACRContentStackView* )view addArrangedSubview:newView];
+        [(ACRContentStackView *)view addArrangedSubview:newView];
     }
     else
     {
         [view addSubview:newView];
         
-        NSLayoutConstraint* constraint =
+        NSLayoutConstraint *constraint =
         [NSLayoutConstraint constraintWithItem:view
                                      attribute:NSLayoutAttributeLeading
                                      relatedBy:NSLayoutRelationEqual

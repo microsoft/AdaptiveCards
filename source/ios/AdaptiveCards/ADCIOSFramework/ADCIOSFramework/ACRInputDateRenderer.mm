@@ -11,7 +11,7 @@
 
 @implementation ACRInputDateRenderer
 
-+ (ACRInputDateRenderer* )getInstance
++ (ACRInputDateRenderer *)getInstance
 {
     static ACRInputDateRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -22,24 +22,28 @@
     return CardElementType::DateInput;
 }
 
-- (UIView* )render:(UIView*) viewGroup
+- (UIView *)render:(UIView *) viewGroup
       withCardElem:(std::shared_ptr<BaseCardElement> const &) elem
      andHostConfig:(std::shared_ptr<HostConfig> const &) config
 {
     std::shared_ptr<DateInput> dateInput = std::dynamic_pointer_cast<DateInput>(elem);
-    UIDatePicker * datePicker = [[UIDatePicker alloc] init];
+    UIDatePicker *datePicker = [[UIDatePicker alloc] init];
     datePicker.datePickerMode = UIDatePickerModeDate;
-    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.timeStyle = NSDateFormatterNoStyle;
     formatter.dateStyle = NSDateFormatterShortStyle;
-    NSString* placeHolderStr = [NSString stringWithCString:dateInput->GetValue().c_str()
+    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+
+    NSString *placeHolderStr = [NSString stringWithCString:dateInput->GetValue().c_str()
                                                   encoding:NSUTF8StringEncoding];
     
-    NSDate* date = [formatter dateFromString:placeHolderStr];
-    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    NSDate *date = [formatter dateFromString:placeHolderStr];
     datePicker.date = date;
     
-    if(viewGroup)[(UIStackView*)viewGroup addArrangedSubview: datePicker];
+    if(viewGroup)
+    {
+        [(UIStackView *)viewGroup addArrangedSubview: datePicker];
+    }
     
     return datePicker;
 }

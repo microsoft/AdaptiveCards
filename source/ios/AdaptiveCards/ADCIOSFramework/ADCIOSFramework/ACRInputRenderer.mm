@@ -11,7 +11,7 @@
 
 @implementation ACRInputRenderer
 
-+ (ACRInputRenderer* )getInstance
++ (ACRInputRenderer *)getInstance
 {
     static ACRInputRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -22,13 +22,13 @@
     return CardElementType::TextInput;
 }
 
-- (UIView* )render:(UIView*)viewGroup
+- (UIView *)render:(UIView *)viewGroup
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
-    UITextField * txtInput = [[UITextField alloc] init];
-    NSString* placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
+    UITextField *txtInput = [[UITextField alloc] init];
+    NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
                                                 encoding:NSUTF8StringEncoding];
     txtInput.placeholder = placeHolderStr;
     txtInput.allowsEditingTextAttributes = YES;
@@ -54,7 +54,7 @@
         case TextInputStyle::Url:
         {
             txtInput.keyboardType = UIKeyboardTypeURL;
-            break;            
+            break;
         }
         default:
         {
@@ -64,13 +64,14 @@
     }
     
     CGSize intrinsicSz = [txtInput intrinsicContentSize];
-    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
+    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
     [wrappingview addSubview: txtInput];
-    [wrappingview addConstraints:[wrappingview setAlignment: HorizontalAlignment::Left
-                                              withSuperview: wrappingview
-                                                     toView: txtInput]];
+    [wrappingview setAlignmentForSubview: HorizontalAlignment::Left];
     
-    if(viewGroup)[(UIStackView*)viewGroup addArrangedSubview: wrappingview];
+    if(viewGroup)
+    {
+        [(UIStackView *)viewGroup addArrangedSubview: wrappingview];
+    }
     
     wrappingview.translatesAutoresizingMaskIntoConstraints = false;
     

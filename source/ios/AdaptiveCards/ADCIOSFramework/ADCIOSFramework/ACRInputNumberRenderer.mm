@@ -11,7 +11,7 @@
 
 @implementation ACRInputNumberRenderer
 
-+ (ACRInputNumberRenderer* )getInstance
++ (ACRInputNumberRenderer *)getInstance
 {
     static ACRInputNumberRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -22,32 +22,33 @@
     return CardElementType::NumberInput;
 }
 
-- (UIView* )render:(UIView*)viewGroup
+- (UIView *)render:(UIView *)viewGroup
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<NumberInput> numInputBlck = std::dynamic_pointer_cast<NumberInput>(elem);
-    UITextField * numInput = [[UITextField alloc] init];
-    NSString* placeHolderStr = [NSString stringWithFormat: @"%d", numInputBlck->GetValue()];
+    UITextField *numInput = [[UITextField alloc] init];
+    NSString *placeHolderStr = [NSString stringWithFormat: @"%d", numInputBlck->GetValue()];
     numInput.placeholder = placeHolderStr;
     numInput.allowsEditingTextAttributes = YES;
     numInput.borderStyle = UITextBorderStyleLine;
     numInput.keyboardType = UIKeyboardTypeNumberPad;    
     
     CGSize intrinsicSz = [numInput intrinsicContentSize];
-    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
+    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
     
     [wrappingview addSubview: numInput];
     
-    [wrappingview addConstraints:[wrappingview setAlignment: HorizontalAlignment::Left
-                                              withSuperview: wrappingview
-                                                     toView: numInput]];
+    [wrappingview setAlignmentForSubview: HorizontalAlignment::Left];
+                                  
+    if(viewGroup)
+    {
+        [(UIStackView *)viewGroup addArrangedSubview: wrappingview];
+    }
     
-    if(viewGroup)[(UIStackView*)viewGroup addArrangedSubview: wrappingview];
+    wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     
-    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
-    
-    numInput.translatesAutoresizingMaskIntoConstraints = false;
+    numInput.translatesAutoresizingMaskIntoConstraints = NO;
     
     return wrappingview;
 }

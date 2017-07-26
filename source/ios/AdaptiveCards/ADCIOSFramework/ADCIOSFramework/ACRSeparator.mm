@@ -46,7 +46,7 @@ using namespace AdaptiveCards;
     if(self && superview)
     {
         axis = superview.stackView.axis;
-        NSLayoutConstraint* constraints = 
+        NSLayoutConstraint *constraints = 
             [self configAutoLayout:superview havingAxis:axis toAxis:huggingAxis];
         [superview addArrangedSubview: self];
 
@@ -57,11 +57,11 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (NSLayoutConstraint* )configAutoLayout:(UIView* )superview
+- (NSLayoutConstraint *)configAutoLayout:(UIView *)superview
                               havingAxis:(UILayoutConstraintAxis)superviewAxis
                                   toAxis:(UILayoutConstraintAxis)huggingAxis
 {
-    NSLayoutConstraint* constraint = nil;
+    NSLayoutConstraint *constraint = nil;
     if(UILayoutConstraintAxisVertical == superviewAxis)
     {
         width  = MAX(width, superview.frame.size.width);
@@ -103,25 +103,25 @@ using namespace AdaptiveCards;
 }
 
 + (void)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
-            forSuperview:(UIView* )view
+            forSuperview:(UIView *)view
           withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {          
-    ACRSeparator* separator = nil;
+    ACRSeparator *separator = nil;
     if(SeparationStyle::None != elem->GetSeparationStyle())
     { 
-        UIStackView* superview = nil;
+        UIStackView *superview = nil;
         
         //clean-up in progress -- need to clean this up
         if([view isKindOfClass:[UIStackView class]])
         {
-            superview = (UIStackView* ) view;
+            superview = (UIStackView *) view;
         } else
         { 
-            superview = ((ACRContentStackView* ) view).stackView;
+            superview = ((ACRContentStackView *) view).stackView;
         }
 
         separator = [[ACRSeparator alloc] init];
-        SeparationConfig* separatorHstCnfig = 
+        SeparationConfig *separatorHstCnfig = 
             [separator getSeparationConfig:elem withHostConfig:config];
         if(separator && separatorHstCnfig)
         {
@@ -134,7 +134,7 @@ using namespace AdaptiveCards;
             
             separator->axis = superview.axis;
 
-            NSLayoutConstraint* constraint = [separator configAutoLayout:superview
+            NSLayoutConstraint *constraint = [separator configAutoLayout:superview
                                                               havingAxis:superview.axis
                                                                   toAxis:superview.axis];
             
@@ -143,7 +143,7 @@ using namespace AdaptiveCards;
     }
 }
 
-- (SeparationConfig* )getSeparationConfig:(std::shared_ptr<BaseCardElement> const &)elem
+- (SeparationConfig *)getSeparationConfig:(std::shared_ptr<BaseCardElement> const &)elem
                            withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (elem->GetSeparationStyle())

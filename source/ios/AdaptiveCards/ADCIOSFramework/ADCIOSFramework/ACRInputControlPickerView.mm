@@ -34,8 +34,8 @@ using namespace AdaptiveCards;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<ChoiceSetInput> const&)choiceSet
-                        WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-                         WithSuperview:(UIView* )view
+                            hostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
+                             superview:(UIView *)view
 {
     self = [self initWithFrame:view.frame];
     if(self)
@@ -53,24 +53,25 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView* )pickerView
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return 1; 
 }
 
-- (NSInteger)pickerView:(UIPickerView* )pickerView numberOfRowsInComponent:(NSInteger)component
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     return choiceSetDataSource->GetChoices().size();
 }
 
 - (UIView *)pickerView:(UIPickerView *)pickerView 
             viewForRow:(NSInteger)row 
-                      forComponent:(NSInteger)component 
-                                 reusingView:(UIView *)view
+          forComponent:(NSInteger)component 
+           reusingView:(UIView *)view
 {
-    std:std::shared_ptr<ChoiceInput> choiceInput = choiceSetDataSource->GetChoices()[row];
-    UILabel* choice = [[UILabel alloc] init];
-    NSString* choiceText = [NSString stringWithCString:choiceInput->GetTitle().c_str()
+    std::shared_ptr<ChoiceInput> choiceInput = choiceSetDataSource->GetChoices()[row];
+
+    UILabel *choice = (view)?(UILabel *)view : [[UILabel alloc] init];
+    NSString *choiceText = [NSString stringWithCString:choiceInput->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     choice.text = choiceText;
 

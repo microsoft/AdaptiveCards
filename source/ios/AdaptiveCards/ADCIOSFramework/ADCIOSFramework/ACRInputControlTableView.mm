@@ -37,13 +37,13 @@ using namespace AdaptiveCards;
 
 - (instancetype)initWithInputToggle:(std::shared_ptr<ToggleInput> const&)toggleInput
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-       WithSuperview:(UIView* )view
+       WithSuperview:(UIView *)view
 {
     self = [self initWithFrame:view.frame style:UITableViewStylePlain];
     if(self)
     {
         toggleInputDataSource = toggleInput;
-        choiceSetDataSource   = nil;
+        choiceSetDataSource   = nullptr;
         config = hostConfig;
     }
     return self;
@@ -51,13 +51,13 @@ using namespace AdaptiveCards;
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<ChoiceSetInput> const&)choiceSet
                         WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-                         WithSuperview:(UIView* )view
+                         WithSuperview:(UIView *)view
 {
     self = [self initWithFrame:view.frame style:UITableViewStyleGrouped];
     if(self)
     {
         choiceSetDataSource   = choiceSet;
-        toggleInputDataSource = nil;
+        toggleInputDataSource = nullptr;
         config = hostConfig;
         isMultichoiceAllowed = choiceSetDataSource->GetIsMultiSelect();
     }
@@ -81,18 +81,18 @@ using namespace AdaptiveCards;
     return nil;
 }
 
-- (UITableViewCell* )tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString* identifier = @"tabCellId";
+    static NSString *identifier = @"tabCellId";
     
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:identifier];
     }
 
-    NSString* title = nil;
+    NSString *title = nil;
 
     if(toggleInputDataSource)
     {

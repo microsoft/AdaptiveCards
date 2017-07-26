@@ -7,8 +7,8 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRInputTimeRenderer: ACRBaseCardElementRenderer
+@interface ACRInputTimeRenderer:ACRBaseCardElementRenderer
 
-+ (ACRInputTimeRenderer* )getInstance;
++ (ACRInputTimeRenderer *)getInstance;
 
 @end

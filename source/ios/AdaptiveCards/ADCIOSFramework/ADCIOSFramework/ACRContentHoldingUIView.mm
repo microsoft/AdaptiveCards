@@ -16,40 +16,38 @@ using namespace AdaptiveCards;
     return self.frame.size;
 }
 
-- (NSMutableArray* )setAlignment:(HorizontalAlignment)alignment
-                   withSuperview:(UIView* )superview
-                          toView:(UIView* )view
+- (void)setAlignmentForSubview:(HorizontalAlignment)alignment
 {
-    NSMutableArray* constraints = [[NSMutableArray alloc] init];
+    NSMutableArray *constraints = [[NSMutableArray alloc] init];
     [constraints addObject:
-     [NSLayoutConstraint constraintWithItem:superview
+     [NSLayoutConstraint constraintWithItem:self
                                   attribute:NSLayoutAttributeCenterY
                                   relatedBy:NSLayoutRelationEqual
-                                     toItem:view
+                                     toItem:[self.subviews objectAtIndex:0]
                                   attribute:NSLayoutAttributeCenterY
                                  multiplier:1
                                    constant:0]];
     [constraints addObject:
-     [NSLayoutConstraint constraintWithItem:view
+     [NSLayoutConstraint constraintWithItem:[self.subviews objectAtIndex:0]
                                   attribute:NSLayoutAttributeTrailing
                                   relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:superview
+                                     toItem:self
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1
                                    constant:0]];
     [constraints addObject:
-     [NSLayoutConstraint constraintWithItem:view
+     [NSLayoutConstraint constraintWithItem:[self.subviews objectAtIndex:0]
                                   attribute:NSLayoutAttributeTop
                                   relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:superview
+                                     toItem:self
                                   attribute:NSLayoutAttributeTop
                                  multiplier:1
                                    constant:0]];
     [constraints addObject:
-     [NSLayoutConstraint constraintWithItem:view
+     [NSLayoutConstraint constraintWithItem:[self.subviews objectAtIndex:0]
                                   attribute:NSLayoutAttributeBottom
                                   relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:superview
+                                     toItem:self
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1
                                    constant:0]];
@@ -60,52 +58,52 @@ using namespace AdaptiveCards;
         case HorizontalAlignment::Center:
         {
             [constraints addObject:
-             [NSLayoutConstraint constraintWithItem:superview
+             [NSLayoutConstraint constraintWithItem:self
                                           attribute:NSLayoutAttributeCenterX
                                           relatedBy:NSLayoutRelationEqual
-                                             toItem:view
+                                             toItem:[self.subviews objectAtIndex:0]
                                           attribute:NSLayoutAttributeCenterX
                                          multiplier:1
                                            constant:0]];
-            return constraints;
+            break; 
         }
         case HorizontalAlignment::Left:
         {
             [constraints addObject:
-             [NSLayoutConstraint constraintWithItem:superview
+             [NSLayoutConstraint constraintWithItem:self
                                           attribute:NSLayoutAttributeLeading
                                           relatedBy:NSLayoutRelationEqual
-                                             toItem:view
+                                             toItem:[self.subviews objectAtIndex:0]
                                           attribute:NSLayoutAttributeLeading
                                          multiplier:1
                                            constant:0]];
-            return constraints;
+            break; 
         }
         case HorizontalAlignment::Right:
         {
             [constraints addObject:
-             [NSLayoutConstraint constraintWithItem:superview
+             [NSLayoutConstraint constraintWithItem:self
                                           attribute:NSLayoutAttributeTrailing
                                           relatedBy:NSLayoutRelationEqual
-                                             toItem:view
+                                             toItem:[self.subviews objectAtIndex:0]
                                           attribute:NSLayoutAttributeTrailing
                                          multiplier:1
                                            constant:0]];
-            return constraints;
+            break; 
         }
         default:
         {
             [constraints addObject:
-             [NSLayoutConstraint constraintWithItem:superview
+             [NSLayoutConstraint constraintWithItem:self
                                           attribute:NSLayoutAttributeLeading
                                           relatedBy:NSLayoutRelationEqual
-                                             toItem:view
+                                             toItem:[self.subviews objectAtIndex:0]
                                           attribute:NSLayoutAttributeLeading
                                          multiplier:1
                                            constant:0]];
-            return constraints;
+            break; 
         }
     }
-    return constraints;
+    [self addConstraints:constraints];
 }
 @end
