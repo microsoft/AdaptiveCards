@@ -1,6 +1,6 @@
 //
-//  ACRInputControlPickerViewController
-//  ACRInputControlPickerViewController.h
+//  ACRInputControlPickerView
+//  ACRInputControlPickerView.h
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
