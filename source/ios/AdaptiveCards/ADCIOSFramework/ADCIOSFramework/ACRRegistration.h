@@ -8,18 +8,23 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRRegistration : NSObject 
+@interface ACRRegistration:NSObject 
 
-+ (ACRRegistration* ) getInstance;
++ (ACRRegistration *)getInstance;
 
-- (ACRBaseCardElementRenderer* ) getRenderer:(NSNumber* ) cardElementType;
+- (ACRBaseCardElementRenderer *)getRenderer:(NSNumber *) cardElementType;
 
-- (UIView* ) render: (UIView*) view
-      withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config;
+- (UIView *)render:(UIView *)view
+     withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config;
 
-- (UIView* ) render: (UIView*) view
-    withContentView: (UIView*) newView
-      withCardElems: (std::vector<std::shared_ptr<BaseCardElement>> const &) elems
-      andHostConfig: (std::shared_ptr<HostConfig> const &) config;
+- (UIView *)render:(UIView *)view
+   withContentView:(UIView *)newView
+     withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config;
+
+- (UIView *)renderButton:(UIViewController *)vc 
+               superview:(UIView *)superview
+             actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
+              hostConfig:(std::shared_ptr<HostConfig> const &)config;
 @end

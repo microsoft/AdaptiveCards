@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ACRRegistration.h"
 #import "ACRColumnView.h"
+#import "ACRColumnSetView.h"
 #import "ACRImageRenderer.h"
 #import "ACRImageSetRenderer.h"
 #import "ACRTextBlockRenderer.h"
@@ -22,6 +23,7 @@
 #import "ACRContainerRenderer.h"
 #import "ACRColumnSetRenderer.h"
 #import "ACRColumnRenderer.h"
+#import "ACRActionOpenURLRenderer.h"
 #import "ACRSeparator.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
@@ -31,6 +33,7 @@ using namespace AdaptiveCards;
 @implementation ACRRegistration
 {
     NSDictionary *typeToRendererDict;
+    NSDictionary *actionRendererDict;
 }
 
 - (instancetype) init
@@ -40,20 +43,24 @@ using namespace AdaptiveCards;
     {
         typeToRendererDict =
             [[NSDictionary alloc] initWithObjectsAndKeys:
-             [ACRImageRenderer getInstance],      [NSNumber numberWithInt: (int)[ACRImageRenderer elemType]],
-             [ACRImageSetRenderer getInstance],   [NSNumber numberWithInt: (int)[ACRImageSetRenderer elemType]],
-             [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRTextBlockRenderer elemType]],
-             [ACRInputRenderer getInstance],      [NSNumber numberWithInt: (int)[ACRInputRenderer elemType]],
-             [ACRInputToggleRenderer getInstance],[NSNumber numberWithInt: (int)[ACRInputToggleRenderer elemType]],
-             [ACRInputChoiceSetRenderer getInstance],[NSNumber numberWithInt: (int)[ACRInputChoiceSetRenderer elemType]],
-             [ACRInputDateRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRInputDateRenderer elemType]],
-             [ACRInputTimeRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRInputTimeRenderer elemType]],
-             [ACRInputNumberRenderer getInstance],[NSNumber numberWithInt: (int)[ACRInputNumberRenderer elemType]],
-             [ACRFactSetRenderer getInstance],    [NSNumber numberWithInt: (int)[ACRFactSetRenderer elemType]],
-             [ACRContainerRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRContainerRenderer elemType]],
-             [ACRColumnSetRenderer getInstance],  [NSNumber numberWithInt: (int)[ACRColumnSetRenderer elemType]],
-             [ACRColumnRenderer getInstance],     [NSNumber numberWithInt: (int)[ACRColumnRenderer elemType]],
+             [ACRImageRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRImageRenderer elemType]],
+             [ACRImageSetRenderer getInstance],   [NSNumber numberWithInt:(int)[ACRImageSetRenderer elemType]],
+             [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRTextBlockRenderer elemType]],
+             [ACRInputRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRInputRenderer elemType]],
+             [ACRInputToggleRenderer getInstance],[NSNumber numberWithInt:(int)[ACRInputToggleRenderer elemType]],
+             [ACRInputChoiceSetRenderer getInstance],[NSNumber numberWithInt:(int)[ACRInputChoiceSetRenderer elemType]],
+             [ACRInputDateRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRInputDateRenderer elemType]],
+             [ACRInputTimeRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRInputTimeRenderer elemType]],
+             [ACRInputNumberRenderer getInstance],[NSNumber numberWithInt:(int)[ACRInputNumberRenderer elemType]],
+             [ACRFactSetRenderer getInstance],    [NSNumber numberWithInt:(int)[ACRFactSetRenderer elemType]],
+             [ACRContainerRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRContainerRenderer elemType]],
+             [ACRColumnSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRColumnSetRenderer elemType]],
+             [ACRColumnRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRColumnRenderer elemType]],
              nil];
+        actionRendererDict = 
+            [[NSDictionary alloc] initWithObjectsAndKeys:
+             [ACRActionOpenURLRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl], 
+            nil];
     }
     return self;
 }
@@ -75,13 +82,45 @@ using namespace AdaptiveCards;
       withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
       andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    ACRColumnView *horizontalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
+    ACRColumnView *verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
 
-    return [self render:view withContentView:horizontalView
+    return [self render:view withContentView:verticalView
                          withCardElems:elems
                          andHostConfig:config];
 
 }
+
+- (UIView *)renderButton:(UIViewController *)vc 
+               superview:(UIView *)superview
+             actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
+              hostConfig:(std::shared_ptr<HostConfig> const &)config
+ {
+     UIView *childview = nil;
+    if(ActionsOrientation::Horizontal == config->actions.actionsOrientation)
+    {
+        childview = (UIView *)[[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
+    }
+    else
+    {
+        childview = (UIView *)[[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
+    }
+
+    for(auto elem:elems)
+    {
+        ACRBaseActionElementRenderer *renderer =
+            [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
+
+        if(renderer == nil)
+        { 
+            NSLog(@"Unsupported card action type:%d\n", (int) elem->GetElementType());
+            continue;
+        }
+
+        [renderer renderButton:vc superview:childview baseActionElement:elem andHostConfig:config];
+    }
+
+    return childview;
+ }
 
 - (UIView *) render:(UIView *)view
     withContentView:(UIView *)newView
