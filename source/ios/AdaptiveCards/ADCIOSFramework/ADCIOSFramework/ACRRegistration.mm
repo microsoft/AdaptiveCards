@@ -78,45 +78,45 @@ using namespace AdaptiveCards;
     return [typeToRendererDict objectForKey:cardElementType];
 }
 
-- (UIView *) render:(UIView *)view
+- (UIView<ACRIContentHoldingView> *) render:(UIView *)view
       withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
       andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     ACRColumnView *verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
 
-    return [self render:view withContentView:verticalView
+    [self render:view withContentView:verticalView
                          withCardElems:elems
                          andHostConfig:config];
-
+    return verticalView;
 }
 
-- (UIView *)renderButton:(UIViewController *)vc 
-               superview:(UIView *)superview
+- (UIView<ACRIContentHoldingView> *)renderButton:(UIViewController *)vc
+               superview:(UIView<ACRIContentHoldingView> *)superview
              actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
               hostConfig:(std::shared_ptr<HostConfig> const &)config
  {
-     UIView *childview = nil;
+     UIView<ACRIContentHoldingView> *childview = nil;
     if(ActionsOrientation::Horizontal == config->actions.actionsOrientation)
     {
-        childview = (UIView *)[[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
+        childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
     }
     else
     {
-        childview = (UIView *)[[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
+        childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
     }
 
     for(auto elem:elems)
     {
-        ACRBaseActionElementRenderer *renderer =
-            [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
+        ACRBaseActionElementRenderer *actionRenderer =
+            [actionRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
-        if(renderer == nil)
+        if(actionRenderer == nil)
         { 
             NSLog(@"Unsupported card action type:%d\n", (int) elem->GetElementType());
             continue;
         }
 
-        [renderer renderButton:vc superview:childview baseActionElement:elem andHostConfig:config];
+        [actionRenderer renderButton:vc superview:childview baseActionElement:elem andHostConfig:config];
     }
 
     return childview;

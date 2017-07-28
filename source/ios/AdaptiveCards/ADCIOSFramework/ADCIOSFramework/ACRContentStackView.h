@@ -6,8 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ACRIContentHoldingView.h"
 
-@interface ACRContentStackView:UIView
+@interface ACRContentStackView:UIView<ACRIContentHoldingView>
 
 @property UIStackView* stackView;
 

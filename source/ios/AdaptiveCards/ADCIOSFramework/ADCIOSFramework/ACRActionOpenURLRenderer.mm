@@ -1,4 +1,4 @@
-//
+	//
 //  ACRActionOpenURLRenderer
 //  ACRActionOpenURLRenderer.mm
 //
@@ -7,6 +7,8 @@
 
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRActionOpenURLRenderer.h"
+#import "ACRButton.h"
+#import "ACRButtonTarget.h"
 #import "OpenUrlAction.h"
 
 @implementation ACRActionOpenURLRenderer
@@ -18,22 +20,24 @@
 }
 
 - (UIButton* )renderButton:(UIViewController *)vc 
-                 superview:(UIView *)superview
+                 superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(std::shared_ptr<BaseActionElement> const &)elem
              andHostConfig:(std::shared_ptr<HostConfig> const &)config;
 {
     std::shared_ptr<OpenUrlAction> action = std::dynamic_pointer_cast<OpenUrlAction>(elem);
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    NSString *title  = [NSString stringWithCString:action->GetTitle().c_str() 
+    NSString *title  = [NSString stringWithCString:action->GetTitle().c_str()
                                           encoding:NSUTF8StringEncoding];
-    [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    [button setBackgroundColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0]];
-    CGSize contentSize = [button.titleLabel intrinsicContentSize];
-    button.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
+    UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
+    NSString *urlStr = [NSString stringWithCString:action->GetUrl().c_str()
+                                          encoding:[NSString defaultCStringEncoding]];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    
+    ACRButtonTarget* target = [[ACRButtonTarget alloc] initWithURL:url viewController:vc];
+    
+    [button addTarget:target action:@selector(openURL) forControlEvents:UIControlEventTouchUpInside];
 
-    [superview addSubview:button];
+    [superview addArrangedSubview:button];
     
     return button;
 }
