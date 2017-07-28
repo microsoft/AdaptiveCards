@@ -7,8 +7,10 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "ACRButtonTarget.h"
 
 @protocol ACRIContentHoldingView
 
 - (void)addArrangedSubview:(UIView *)view;
+- (void)addTarget:(ACRButtonTarget *)target;
 @end

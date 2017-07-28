@@ -8,6 +8,9 @@
 #include "ACRContentStackView.h"
 
 @implementation ACRContentStackView
+{
+    NSMutableArray* targets;
+}
 
 - (instancetype)init 
 {
@@ -79,6 +82,8 @@
     
     self.stackView.translatesAutoresizingMaskIntoConstraints = false;
     self.translatesAutoresizingMaskIntoConstraints = false;
+
+    targets = [[NSMutableArray alloc] init];
 }
 
 - (CGSize)intrinsicContentSize
@@ -89,6 +94,11 @@
 - (void)addArrangedSubview:(UIView *)view
 {
     [self.stackView addArrangedSubview:view];
+}
+
+- (void)addTarget:(ACRButtonTarget *)target
+{
+    [targets addObject:target];
 }
 
 // let the last element to strech

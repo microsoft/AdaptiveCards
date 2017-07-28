@@ -19,7 +19,6 @@ using namespace AdaptiveCards;
     std::shared_ptr<AdaptiveCard> adaptiveCard;
     std::shared_ptr<HostConfig> config;
     CGRect guideFrame;
-    NSMutableArray* targets;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -29,7 +28,6 @@ using namespace AdaptiveCards;
         self.jsonString = nil;
         guideFrame = CGRectMake(0, 0, 0, 0);
         config = std::make_shared<HostConfig>();
-        targets = nil;
     }
     return self;
 }
@@ -39,7 +37,6 @@ using namespace AdaptiveCards;
     if(self) {
         self.jsonString = str;
         guideFrame = frame;
-        targets = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -73,11 +70,6 @@ using namespace AdaptiveCards;
         [NSLayoutConstraint activateConstraints:
          @[[childView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor], [childView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
     }
-}
-
-- (void)addTargets:(ACRButtonTarget *)target
-{
-    [targets addObject:target];
 }
 
 @end
