@@ -20,5 +20,5 @@
 
 - (void)adjustHuggingForLastElement;
 
-- (void)addTarget:(ACRButtonTarget *)target;
+- (void)addTarget:(NSObject *)target;
 @end

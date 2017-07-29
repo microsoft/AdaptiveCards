@@ -96,7 +96,7 @@
     [self.stackView addArrangedSubview:view];
 }
 
-- (void)addTarget:(ACRButtonTarget *)target
+- (void)addTarget:(NSObject *)target
 {
     [targets addObject:target];
 }

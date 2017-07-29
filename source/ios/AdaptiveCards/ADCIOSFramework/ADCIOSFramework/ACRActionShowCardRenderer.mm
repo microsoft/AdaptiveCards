@@ -1,21 +1,21 @@
 //
-//  ACRActionOpenURLRenderer
-//  ACRActionOpenURLRenderer.mm
+//  ACRActionShowCardRenderer
+//  ACRActionShowCardRenderer.mm
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
 #import "ACRBaseActionElementRenderer.h"
-#import "ACRActionOpenURLRenderer.h"
+#import "ACRActionShowCardRenderer.h"
 #import "ACRButton.h"
 #import "ACRButtonTarget.h"
-#import "OpenUrlAction.h"
+#import "ShowCardAction.h"
 
-@implementation ACRActionOpenURLRenderer
+@implementation ACRActionShowCardRenderer
 
-+ (ACRActionOpenURLRenderer *)getInstance
++ (ACRActionShowCardRenderer *)getInstance
 {
-    static ACRActionOpenURLRenderer *singletonInstance = [[self alloc] init];
+    static ACRActionShowCardRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
@@ -24,17 +24,17 @@
          baseActionElement:(std::shared_ptr<BaseActionElement> const &)elem
              andHostConfig:(std::shared_ptr<HostConfig> const &)config;
 {
-    std::shared_ptr<OpenUrlAction> action = std::dynamic_pointer_cast<OpenUrlAction>(elem);
+    std::shared_ptr<ShowCardAction> action = std::dynamic_pointer_cast<ShowCardAction>(elem);
     
     NSString *title  = [NSString stringWithCString:action->GetTitle().c_str()
                                           encoding:NSUTF8StringEncoding];
     UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
-    NSString *urlStr = [NSString stringWithCString:action->GetUrl().c_str()
-                                          encoding:[NSString defaultCStringEncoding]];
-    NSURL *url = [NSURL URLWithString:urlStr];
     
-    ACRButtonTarget* target = [[ACRButtonTarget alloc] initWithURL:url viewController:vc];
-    [button addTarget:target action:@selector(openURL) forControlEvents:UIControlEventTouchUpInside];
+    ACRButtonTarget* target = [[ACRButtonTarget alloc] initWithAdaptiveCard:action->GetCard()
+                                                                     config:config
+                                                                  superview:superview];
+    [button addTarget:target action:@selector(showCard) forControlEvents:UIControlEventTouchUpInside];
+    
     [superview addTarget:target];
 
     [superview addArrangedSubview:button];

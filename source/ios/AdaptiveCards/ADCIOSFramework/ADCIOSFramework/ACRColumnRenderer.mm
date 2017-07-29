@@ -13,7 +13,7 @@
 
 @implementation ACRColumnRenderer
 
-+ (ACRColumnRenderer* )getInstance
++ (ACRColumnRenderer *)getInstance
 {
     static ACRColumnRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -24,16 +24,15 @@
     return CardElementType::Column;
 }
 
-- (UIView* )render:(UIView* )viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 { 
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
     ACRColumnView* column = [[ACRColumnView alloc] init];
-    
-    [[ACRRegistration getInstance] render:viewGroup
-                          withContentView:column 
+    [viewGroup addArrangedSubview:column];
+    [[ACRRegistration getInstance] render:column
                             withCardElems:columnElem->GetItems()
                             andHostConfig:config];
 

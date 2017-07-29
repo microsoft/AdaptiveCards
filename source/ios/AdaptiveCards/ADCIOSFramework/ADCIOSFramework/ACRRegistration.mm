@@ -24,6 +24,7 @@
 #import "ACRColumnSetRenderer.h"
 #import "ACRColumnRenderer.h"
 #import "ACRActionOpenURLRenderer.h"
+#import "ACRActionShowCardRenderer.h"
 #import "ACRSeparator.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
@@ -59,7 +60,8 @@ using namespace AdaptiveCards;
              nil];
         actionRendererDict = 
             [[NSDictionary alloc] initWithObjectsAndKeys:
-             [ACRActionOpenURLRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl], 
+             [ACRActionOpenURLRenderer  getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl], 
+             [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
             nil];
     }
     return self;
@@ -76,18 +78,6 @@ using namespace AdaptiveCards;
 - (ACRBaseCardElementRenderer *) getRenderer:(NSNumber *)cardElementType
 { 
     return [typeToRendererDict objectForKey:cardElementType];
-}
-
-- (UIView<ACRIContentHoldingView> *) render:(UIView *)view
-      withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
-      andHostConfig:(std::shared_ptr<HostConfig> const &)config
-{
-    ACRColumnView *verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
-
-    [self render:view withContentView:verticalView
-                         withCardElems:elems
-                         andHostConfig:config];
-    return verticalView;
 }
 
 - (UIView<ACRIContentHoldingView> *)renderButton:(UIViewController *)vc
@@ -116,21 +106,24 @@ using namespace AdaptiveCards;
             continue;
         }
 
-        [actionRenderer renderButton:vc superview:childview baseActionElement:elem andHostConfig:config];
+        UIButton* button = [actionRenderer renderButton:vc
+                                              superview:superview
+                                      baseActionElement:elem
+                                          andHostConfig:config];
+        [childview addArrangedSubview:button];
     }
 
     return childview;
  }
 
 - (UIView *) render:(UIView *)view
-    withContentView:(UIView *)newView
       withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
       andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {   
    
     for(auto elem:elems)
     {
-        [ACRSeparator renderSeparation:elem forSuperview:newView withHostConfig:config];
+        [ACRSeparator renderSeparation:elem forSuperview:view withHostConfig:config];
         
         ACRBaseCardElementRenderer *renderer =
             [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
@@ -141,57 +134,9 @@ using namespace AdaptiveCards;
             continue;
         }
 
-        [renderer render:newView withCardElem:elem andHostConfig:config];
+        [renderer render:view withCardElem:elem andHostConfig:config];
     }
    
-    if([view isKindOfClass:[ACRContentStackView class]])
-    {
-        [(ACRContentStackView *)view addArrangedSubview:newView];
-    }
-    else
-    {
-        [view addSubview:newView];
-        
-        NSLayoutConstraint *constraint =
-        [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeLeading
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:newView
-                                     attribute:NSLayoutAttributeLeading
-                                    multiplier:1.0
-                                      constant:0];
-        [view addConstraint:constraint];
-        
-        constraint =
-        [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeTrailing
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:newView
-                                     attribute:NSLayoutAttributeTrailing
-                                    multiplier:1.0
-                                      constant:0];
-        [view addConstraint:constraint];
-        
-        constraint =
-        [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeTop
-                                     relatedBy:NSLayoutRelationLessThanOrEqual
-                                        toItem:newView
-                                     attribute:NSLayoutAttributeTop
-                                    multiplier:1.0
-                                      constant:0];
-        [view addConstraint:constraint];
-        
-        constraint = 
-        [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeBottom
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:newView
-                                     attribute:NSLayoutAttributeBottom
-                                    multiplier:1.0
-                                      constant:0];
-        [view addConstraint:constraint];
-    }
-    return newView;
+    return view;
 }
 @end

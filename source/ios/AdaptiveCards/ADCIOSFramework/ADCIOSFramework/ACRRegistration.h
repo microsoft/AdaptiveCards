@@ -19,11 +19,6 @@
                              withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
                              andHostConfig:(std::shared_ptr<HostConfig> const &)config;
 
-- (UIView *)render:(UIView *)view
-   withContentView:(UIView *)newView
-     withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config;
-
 - (UIView<ACRIContentHoldingView> *)renderButton:(UIViewController *)vc
                                        superview:(UIView<ACRIContentHoldingView> *)superview
                                      actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
