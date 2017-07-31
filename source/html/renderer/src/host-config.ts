@@ -35,14 +35,6 @@ export interface ISeparationDefinition {
     lineColor?: string
 }
 
-function parseSeparationDefinition(obj: any): ISeparationDefinition {
-    return obj ? {
-        spacing: obj["spacing"],
-        lineThickness: obj["lineThickness"],
-        lineColor: obj["lineColor"]
-    } : null;
-}
-
 export interface IAdaptiveCardConfig {
     backgroundColor: string,
     padding: ISpacingDefinition
@@ -56,26 +48,12 @@ function parseAdaptiveCardConfiguration(obj: any): IAdaptiveCardConfig {
 }
 
 export interface ITextBlockConfig {
-    color: Enums.TextColor,
-    separations: {
-        small: ISeparationDefinition,
-        normal: ISeparationDefinition,
-        medium: ISeparationDefinition,
-        large: ISeparationDefinition,
-        extraLarge: ISeparationDefinition,
-    }    
+    color: Enums.TextColor
 }
 
 function parseTextBlockConfiguration(obj: any): ITextBlockConfig {
     return obj ? {
-        color: obj["color"],
-        separations: {
-            small: parseSeparationDefinition(obj["separations"]["small"]),
-            normal: parseSeparationDefinition(obj["separations"]["normal"]),
-            medium: parseSeparationDefinition(obj["separations"]["medium"]),
-            large: parseSeparationDefinition(obj["separations"]["large"]),
-            extraLarge: parseSeparationDefinition(obj["separations"]["extraLarge"])
-        }
+        color: obj["color"]
     } : null;
 }
 
@@ -96,40 +74,36 @@ function parseContainerStyleDefinition(obj: any): IContainerStyleDefinition {
 }
 
 export interface IContainerConfig {
-    separation: ISeparationDefinition,
     normal: IContainerStyleDefinition,
     emphasis: IContainerStyleDefinition
 }
 
 function parseContainerConfiguration(obj: any): IContainerConfig {
     return obj ? {
-        separation: parseSeparationDefinition(obj["separation"]),
         normal: parseContainerStyleDefinition(obj["normal"]),
         emphasis: parseContainerStyleDefinition(obj["emphasis"])
     } : null;
 }
 
 export interface IImageConfig {
-    separation: ISeparationDefinition
     size: Enums.Size
 }
 
 function parseImageConfiguration(obj: any): IImageConfig {
     return obj ? {
-        separation: parseSeparationDefinition(obj["separation"]),
         size: obj["size"]
     } : null;
 }
 
 export interface IImageSetConfig {
-    separation: ISeparationDefinition
     imageSize: Enums.Size
+    maxImageHeight: number
 }
 
 function parseImageSetConfiguration(obj: any): IImageSetConfig {
     return obj ? {
-        separation: parseSeparationDefinition(obj["separation"]),
-        imageSize: obj["imageSize"]
+        imageSize: obj["imageSize"],
+        maxImageHeight: Utils.getValueOrDefault<number>("maxImageHeight", 100)
     } : null;
 }
 
@@ -166,7 +140,6 @@ function parseFactTitleDefinition(obj: any): IFactTitleDefinition {
 }
 
 export interface IFactSetConfig {
-    separation: ISeparationDefinition,
     title: IFactTitleDefinition,
     value: IFactTextDefinition,
     spacing: number
@@ -174,30 +147,9 @@ export interface IFactSetConfig {
 
 function parseFactSetConfiguration(obj: any): IFactSetConfig {
     return obj ? {
-        separation: parseSeparationDefinition(obj["separation"]),
         title: parseFactTitleDefinition(obj["title"]),
         value: parseFactTextDefinition(obj["value"]),
         spacing: obj["spacing"]
-    } : null;
-}
-
-export interface IColumnSetConfig {
-    separation: ISeparationDefinition
-}
-
-function parseColumnSetConfiguration(obj: any): IColumnSetConfig {
-    return obj ? {
-        separation: parseSeparationDefinition(obj["separation"])
-    } : null;
-}
-
-export interface IColumnConfig {
-    separation: ISeparationDefinition
-}
-
-function parseColumnConfiguration(obj: any): IColumnConfig {
-    return obj ? {
-        separation: parseSeparationDefinition(obj["separation"])
     } : null;
 }
 
@@ -219,7 +171,7 @@ function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
 
 export interface IActionsConfig {
     maxActions: number,
-    separation: ISeparationDefinition,
+    spacing: Enums.Spacing,
     buttonSpacing: number,
     showCard: IShowCardActionConfig,
     preExpandSingleShowCardAction?: boolean,    
@@ -230,22 +182,12 @@ export interface IActionsConfig {
 function parseActionsConfiguration(obj: any): IActionsConfig {
     return obj ? {
         maxActions: obj["maxActions"],
-        separation: parseSeparationDefinition(obj["separation"]),
+        spacing: Utils.getValueOrDefault<Enums.Spacing>(obj["spacing"], "default"),
         buttonSpacing: obj["buttonSpacing"],
         showCard: parseShowCardActionConfiguration(obj["showCard"]),
         preExpandSingleShowCardAction: Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false),
         actionsOrientation: Utils.getValueOrDefault<Enums.Orientation>(obj["actionsOrientation"], "horizontal"),
         actionAlignment: Utils.getValueOrDefault<Enums.ActionAlignment>(obj["actionAlignment"], "left"),
-    } : null;
-}
-
-export interface IInputConfig {
-    separation: ISeparationDefinition
-}
-
-function parseInputConfiguration(obj: any): IInputConfig {
-    return obj ? {
-        separation: parseSeparationDefinition(obj["separation"])
     } : null;
 }
 
@@ -277,17 +219,24 @@ export interface IHostConfig {
         warning: IColorDefinition,
         attention: IColorDefinition
     },
-    strongSeparation: ISeparationDefinition,
+    spacing: {
+        small: number,
+        default: number,
+        medium: number,
+        large: number,
+        extraLarge: number
+    },
+    separator: {
+        lineThickness: number,
+        lineColor: string        
+    }
     actions: IActionsConfig,
     adaptiveCard: IAdaptiveCardConfig,
     container: IContainerConfig,
     textBlock: ITextBlockConfig,
     image: IImageConfig,
     imageSet: IImageSetConfig,
-    factSet: IFactSetConfig,
-    column: IColumnConfig,
-    columnSet: IColumnSetConfig,
-    input: IInputConfig
+    factSet: IFactSetConfig
 }
 
 export function parseHostConfig(serializedConfiguration: string): IHostConfig {
@@ -321,16 +270,23 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
             warning: parseColorDefinition(obj["colors"]["warning"]),
             attention: parseColorDefinition(obj["colors"]["attention"])
         },        
-        strongSeparation: parseSeparationDefinition(obj["strongSeparation"]),
+        spacing: {
+            small: obj["spacing"]["small"],
+            default: obj["spacing"]["default"],
+            medium: obj["spacing"]["medium"],
+            large: obj["spacing"]["large"],
+            extraLarge: obj["spacing"]["extraLarge"]
+        },
+        separator: {
+            lineThickness: obj["separator"]["lineThickness"],
+            lineColor: obj["separator"]["lineColor"]
+        },
         actions: parseActionsConfiguration(obj["actions"]),
         adaptiveCard: parseAdaptiveCardConfiguration(obj["adaptiveCard"]),
         container: parseContainerConfiguration(obj["container"]),
         textBlock: parseTextBlockConfiguration(obj["textBlock"]),
         image: parseImageConfiguration(obj["image"]),
         imageSet: parseImageSetConfiguration(obj["imageSet"]),
-        factSet: parseFactSetConfiguration(obj["factSet"]),
-        column: parseColumnConfiguration(obj["column"]),
-        columnSet: parseColumnSetConfiguration(obj["columnSet"]),
-        input: parseInputConfiguration(obj["input"])
+        factSet: parseFactSetConfiguration(obj["factSet"])
     } : null;
 }

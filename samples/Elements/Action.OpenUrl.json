@@ -12,7 +12,7 @@
         {
             "type": "Action.OpenUrl",
             "title": "Action.OpenUrl",
-            "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            "url": "http://adaptivecards.io/api/cat"
         }
     ]
 }

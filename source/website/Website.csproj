@@ -43,6 +43,9 @@
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 

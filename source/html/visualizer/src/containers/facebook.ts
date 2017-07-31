@@ -1,6 +1,5 @@
 import { HostContainer } from "./host-container";
 import * as Adaptive from "microsoft-adaptivecards";
-import * as Utils from "../utils";
 
 export class FacebookContainer extends HostContainer {
     private _width: number;
@@ -22,12 +21,18 @@ export class FacebookContainer extends HostContainer {
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
-            supportsInteractivity: false,
-            strongSeparation: {
-                spacing: 20,
-                lineThickness: 1,
-                lineColor: "#FF707070"
+            spacing: {
+                small: 3,
+                default: 8,
+                medium: 20,
+                large: 30,
+                extraLarge: 40
             },
+            separator: {
+                lineThickness: 1,
+                lineColor: "#EEEEEE"        
+            },
+            supportsInteractivity: false,
             fontFamily: "Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;",
             fontSizes: {
                 small: 12,
@@ -78,9 +83,7 @@ export class FacebookContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                separation: {
-                    spacing: 20
-                },
+                spacing: "default",
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
@@ -106,9 +109,6 @@ export class FacebookContainer extends HostContainer {
                 }
             },
             container: {
-                separation: {
-                    spacing: 10
-                },
                 normal: {
                 },
                 emphasis: {
@@ -129,41 +129,16 @@ export class FacebookContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: "dark",
-                separations: {
-                    small: {
-                        spacing: 10,
-                    },
-                    normal: {
-                        spacing: 10
-                    },
-                    medium: {
-                        spacing: 10
-                    },
-                    large: {
-                        spacing: 10
-                    },
-                    extraLarge: {
-                        spacing: 10
-                    }
-                }
+                color: "dark"
             },
             image: {
-                size: "medium",
-                separation: {
-                    spacing: 10
-                }
+                size: "medium"
             },
             imageSet: {
                 imageSize: "medium",
-                separation: {
-                    spacing: 10
-                }
+                maxImageHeight: 100
             },
             factSet: {
-                separation: {
-                    spacing: 10
-                },
                 title: {
                     color: "dark",
                     size: "normal",
@@ -180,23 +155,7 @@ export class FacebookContainer extends HostContainer {
                     wrap: true,
                 },
                 spacing: 20
-            },
-            input: {
-                separation: {
-                    spacing: 10
-                }
-            },
-            columnSet: {
-                separation: {
-                    spacing: 10
-                }
-            },
-            column: {
-                separation: {
-                    spacing: 10
-                }
             }
         };
-
     }
 }

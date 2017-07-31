@@ -1,6 +1,5 @@
 import { HostContainer} from "./host-container";
 import * as Adaptive from "microsoft-adaptivecards";
-import * as Utils from "../utils";
 
 export class TeamsContainer extends HostContainer {
     protected renderContainer(renderedCard: HTMLElement): HTMLElement {
@@ -17,12 +16,18 @@ export class TeamsContainer extends HostContainer {
 
     public getHostConfig(): Adaptive.IHostConfig {
         return {
-            supportsInteractivity: true,
-            strongSeparation: {
-                spacing: 40,
-                lineThickness: 1,
-                lineColor: "#EEEEEE"
+            spacing: {
+                small: 3,
+                default: 8,
+                medium: 20,
+                large: 30,
+                extraLarge: 40
             },
+            separator: {
+                lineThickness: 1,
+                lineColor: "#EEEEEE"        
+            },
+            supportsInteractivity: true,
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
@@ -69,9 +74,7 @@ export class TeamsContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                separation: {
-                    spacing: 20
-                },
+                spacing: "default",
                 buttonSpacing: 10,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
@@ -97,9 +100,6 @@ export class TeamsContainer extends HostContainer {
                 }
             },
             container: {
-                separation: {
-                    spacing: 20
-                },
                 normal: {
                 },
                 emphasis: {
@@ -120,41 +120,16 @@ export class TeamsContainer extends HostContainer {
                 }
             },
             textBlock: {
-                color: "dark",
-                separations: {
-                    small: {
-                        spacing: 20,
-                    },
-                    normal: {
-                        spacing: 20
-                    },
-                    medium: {
-                        spacing: 20
-                    },
-                    large: {
-                        spacing: 20
-                    },
-                    extraLarge: {
-                        spacing: 20
-                    }
-                }
+                color: "dark"
             },
             image: {
-                size: "medium",
-                separation: {
-                    spacing: 20
-                }
+                size: "medium"
             },
             imageSet: {
                 imageSize: "medium",
-                separation: {
-                    spacing: 20
-                }
+                maxImageHeight: 100
             },
             factSet: {
-                separation: {
-                    spacing: 20
-                },
                 title: {
                     color: "dark",
                     size: "normal",
@@ -171,21 +146,6 @@ export class TeamsContainer extends HostContainer {
                     wrap: true,
                 },
                 spacing: 10
-            },
-            input: {
-                separation: {
-                    spacing: 20
-                }
-            },
-            columnSet: {
-                separation: {
-                    spacing: 20
-                }
-            },
-            column: {
-                separation: {
-                    spacing: 20
-                }
             }
         };
     }

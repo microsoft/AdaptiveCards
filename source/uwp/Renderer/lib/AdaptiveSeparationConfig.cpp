@@ -54,7 +54,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSeparationConfig::put_LineColor(ABI::Windows::UI::Color value)
+    HRESULT AdaptiveSeparationConfig::put_LineColor(ABI::Windows::UI::Color /*value*/)
     {
         return E_NOTIMPL;
     }

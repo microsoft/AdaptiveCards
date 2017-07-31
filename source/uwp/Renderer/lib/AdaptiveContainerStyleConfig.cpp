@@ -21,7 +21,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::put_BackgroundColor(Color value)
+    HRESULT AdaptiveContainerStyleConfig::put_BackgroundColor(Color /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -33,7 +33,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::put_BorderColor(Color value)
+    HRESULT AdaptiveContainerStyleConfig::put_BorderColor(Color /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -51,7 +51,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::put_BorderThickness(IAdaptiveSpacingDefinition* value)
+    HRESULT AdaptiveContainerStyleConfig::put_BorderThickness(IAdaptiveSpacingDefinition* /*value*/)
     {
         return E_NOTIMPL;
     }
@@ -63,7 +63,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::put_Padding(IAdaptiveSpacingDefinition* value)
+    HRESULT AdaptiveContainerStyleConfig::put_Padding(IAdaptiveSpacingDefinition* /*value*/)
     {
         return E_NOTIMPL;
     }
