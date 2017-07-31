@@ -22,26 +22,106 @@ using namespace AdaptiveCards;
     long rgb;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame
+{ 
+    self = [super initWithFrame:CGRectMake(0,0,0,0)];
+    if(self)
+    { 
+        width  = frame.size.width;    
+        height = frame.size.height;    
+        axis   = UILayoutConstraintAxisHorizontal;
+        rgb    = 0;
+        self.backgroundColor = UIColor.clearColor;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame 
+                withSuperview:(ACRContentStackView *)superview
+                       toAxis:(UILayoutConstraintAxis)huggingAxis
+
+{
+    self = [self initWithFrame:frame];
+    if(self && superview)
+    {
+        axis = superview.stackView.axis;
+        NSLayoutConstraint *constraints = 
+            [self configAutoLayout:superview havingAxis:axis toAxis:huggingAxis];
+        [superview addArrangedSubview: self];
+
+        if(constraints) [superview addConstraint:constraints];
+    }
+    else return nil;
+
+    return self;
+}
+
+- (NSLayoutConstraint *)configAutoLayout:(UIView *)superview
+                              havingAxis:(UILayoutConstraintAxis)superviewAxis
+                                  toAxis:(UILayoutConstraintAxis)huggingAxis
+{
+    NSLayoutConstraint *constraint = nil;
+    if(UILayoutConstraintAxisVertical == superviewAxis)
+    {
+        width  = MAX(width, superview.frame.size.width);
+        constraint = [NSLayoutConstraint constraintWithItem:self
+                                                  attribute:NSLayoutAttributeWidth
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:superview
+                                                  attribute:NSLayoutAttributeWidth
+                                                 multiplier:1
+                                                   constant:0];
+        
+    }
+    else
+    {
+        height  = MAX(height, superview.frame.size.height);
+        constraint = [NSLayoutConstraint constraintWithItem:self
+                                                  attribute:NSLayoutAttributeHeight
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:superview
+                                                  attribute:NSLayoutAttributeHeight
+                                                 multiplier:1
+                                                   constant:0];
+    }
+    if(UILayoutConstraintAxisVertical == huggingAxis)
+    {
+        [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [self setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [self setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+    }
+    else
+    {
+        [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [self setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        [self setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+    }
+    return constraint;
+}
+
 + (void)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
-            forSuperview:(UIView* )view
+            forSuperview:(UIView *)view
           withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {          
-    ACRSeparator* separator = nil;
+    ACRSeparator *separator = nil;
     if(SeparationStyle::None != elem->GetSeparationStyle())
     { 
-        UIStackView* superview = nil;
+        UIStackView *superview = nil;
         
         //clean-up in progress -- need to clean this up
         if([view isKindOfClass:[UIStackView class]])
         {
-            superview = (UIStackView* ) view;
+            superview = (UIStackView *) view;
         } else
         { 
-            superview = ((ACRContentStackView* ) view).stackView;
+            superview = ((ACRContentStackView *) view).stackView;
         }
 
         separator = [[ACRSeparator alloc] init];
-        SeparationConfig* separatorHstCnfig = 
+        SeparationConfig *separatorHstCnfig = 
             [separator getSeparationConfig:elem withHostConfig:config];
         if(separator && separatorHstCnfig)
         {
@@ -52,45 +132,18 @@ using namespace AdaptiveCards;
             separator.backgroundColor = UIColor.clearColor;
             [superview addArrangedSubview:separator];
             
-            NSLayoutConstraint* constraint = nil;
             separator->axis = superview.axis;
-            if(UILayoutConstraintAxisVertical == superview.axis)
-            {
-                separator->width  = MAX(separatorHstCnfig->spacing, superview.frame.size.width);
-                constraint = [NSLayoutConstraint constraintWithItem:separator
-                                                          attribute:NSLayoutAttributeWidth
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:superview
-                                                          attribute:NSLayoutAttributeWidth
-                                                         multiplier:1
-                                                           constant:0];
-                [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-                [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-                [separator setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-                [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-            }
-            else
-            {
-                separator->height  = MAX(separatorHstCnfig->spacing, superview.frame.size.width);
-                constraint = [NSLayoutConstraint constraintWithItem:separator
-                                                          attribute:NSLayoutAttributeHeight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:superview
-                                                          attribute:NSLayoutAttributeHeight
-                                                         multiplier:1
-                                                           constant:0];
-                [separator setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-                [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-                [separator setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-                [separator setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-            }
+
+            NSLayoutConstraint *constraint = [separator configAutoLayout:superview
+                                                              havingAxis:superview.axis
+                                                                  toAxis:superview.axis];
             
             if(constraint) [superview addConstraint:constraint];
         }
     }
 }
 
-- (SeparationConfig* )getSeparationConfig:(std::shared_ptr<BaseCardElement> const &)elem
+- (SeparationConfig *)getSeparationConfig:(std::shared_ptr<BaseCardElement> const &)elem
                            withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (elem->GetSeparationStyle())

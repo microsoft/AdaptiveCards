@@ -38,6 +38,16 @@
                                             multiplier:1
                                               constant:0]];
     }
+    
+    [self addConstraint:
+     [NSLayoutConstraint constraintWithItem:
+      self.stackView attribute:NSLayoutAttributeWidth
+                      relatedBy:NSLayoutRelationGreaterThanOrEqual
+                         toItem:view
+                      attribute:NSLayoutAttributeWidth
+                     multiplier:1
+                       constant:0]];
+
 }
 
 @end

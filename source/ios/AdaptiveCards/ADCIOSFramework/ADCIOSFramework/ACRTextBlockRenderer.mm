@@ -11,7 +11,7 @@
 
 @implementation ACRTextBlockRenderer
 
-+ (ACRTextBlockRenderer* )getInstance
++ (ACRTextBlockRenderer *)getInstance
 {
     static ACRTextBlockRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -22,20 +22,20 @@
     return CardElementType::TextBlock;
 }
 
-- (UIView* )render:(UIView* )viewGroup
+- (UIView *)render:(UIView *)viewGroup
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
-    UILabel* lab = [[UILabel alloc] init];
-    NSString* textBlockStr = [NSString stringWithCString:txtBlck->GetText().c_str()
+    UILabel *lab = [[UILabel alloc] init];
+    NSString *textBlockStr = [NSString stringWithCString:txtBlck->GetText().c_str()
                                                 encoding:NSUTF8StringEncoding];
     
-    NSMutableAttributedString* content =
+    NSMutableAttributedString *content =
     [[NSMutableAttributedString alloc] initWithString:textBlockStr
                                            attributes:@{NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() withHostConfig:config andSubtleOption:txtBlck->GetIsSubtle()],
                                                             NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]}];
-    NSMutableParagraphStyle* para = [[NSMutableParagraphStyle alloc] init];
+    NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     para.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
     para.alignment = [self getTextBlockAlignment:txtBlck withHostConfig:config];
     [content addAttributes:@{NSParagraphStyleAttributeName:para} range:NSMakeRange(0,1)];
@@ -45,19 +45,18 @@
     {
         lab.numberOfLines = 1;
     }
-    UIFontDescriptor* dec = lab.font.fontDescriptor;
+    UIFontDescriptor *dec = lab.font.fontDescriptor;
     lab.font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]];
     
     CGSize intrinsicSz = [lab intrinsicContentSize];
-    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
+
+    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
     
     [wrappingview addSubview:lab];
     
-    [wrappingview addConstraints:[wrappingview setAlignment:txtBlck->GetHorizontalAlignment()
-                                              withSuperview:wrappingview
-                                                     toView:lab]];
+    [wrappingview setAlignmentForSubview:txtBlck->GetHorizontalAlignment()];
     
-    if(viewGroup)[(UIStackView* )viewGroup addArrangedSubview:wrappingview];
+    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:wrappingview];
     
     wrappingview.translatesAutoresizingMaskIntoConstraints = false;
     
@@ -66,7 +65,7 @@
     return wrappingview;
 }
 
-+ (UIColor* )getTextBlockColor:(TextColor)txtClr
++ (UIColor *)getTextBlockColor:(TextColor)txtClr
                 withHostConfig:(std::shared_ptr<HostConfig> const &)config
                andSubtleOption:(bool)isSubtle
 {
@@ -153,7 +152,7 @@
     }
 }
      
-+ (NSNumber* )getTextBlockTextWeight:(TextWeight)weight
++ (NSNumber *)getTextBlockTextWeight:(TextWeight)weight
                       withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (weight) { 
