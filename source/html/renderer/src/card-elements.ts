@@ -1176,7 +1176,7 @@ enum ActionButtonState {
 
 class ActionButton {
     private _action: Action;
-    private _style: Enums.ActionStyle = "button";
+    private _style: Enums.ActionStyle = "link";
     private _element: HTMLButtonElement = null;
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
@@ -1595,7 +1595,7 @@ class ActionCollection {
     }
 
     items: Array<Action> = [];
-    actionStyle: Enums.ActionStyle = "button";
+    actionStyle: Enums.ActionStyle = "link";
     onHideActionCardPane: () => void = null;
     onShowActionCardPane: (action: ShowCardAction) => void = null;
 
@@ -1779,7 +1779,7 @@ export class ActionSet extends CardElement {
         return this._actionCollection.render();
     }
 
-    actionStyle: Enums.ActionStyle = "button";
+    actionStyle: Enums.ActionStyle = "link";
 
     constructor() {
         super();
@@ -1804,7 +1804,7 @@ export class ActionSet extends CardElement {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
 
-        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], "button");
+        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], this.actionStyle);
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
@@ -2407,7 +2407,7 @@ export abstract class ContainerWithActions extends ContainerBase {
         return this._element.children.length > 0 ? this._element : null;
     }
 
-    actionStyle: Enums.ActionStyle = "button";
+    actionStyle: Enums.ActionStyle = "link";
 
     constructor() {
         super();
@@ -2420,7 +2420,7 @@ export abstract class ContainerWithActions extends ContainerBase {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json, itemsCollectionPropertyName);
 
-        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], "button");
+        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], this.actionStyle);
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
