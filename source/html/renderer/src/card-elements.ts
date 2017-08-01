@@ -261,6 +261,10 @@ export abstract class CardElement {
         return this.id === id ? this : null;
     }
 
+    getActionById(id: string): Action {
+        return null;
+    }
+
     get isInteractive(): boolean {
         return false;
     }
@@ -674,6 +678,16 @@ export class Image extends CardElement {
 
     getJsonTypeName(): string {
         return "Image";
+    }
+
+    getActionById(id: string) {
+        var result = super.getActionById(id);
+
+        if (!result && this.selectAction) {
+            result = this.selectAction.getActionById(id);
+        }
+
+        return result;
     }
 
     parse(json: any) {
@@ -1390,6 +1404,12 @@ export abstract class Action {
         return [];
     }
 
+    getActionById(id: string): Action {
+        if (this.id == id) {
+            return this;
+        }
+    }
+
     id: string;
     title: string;
 
@@ -1616,6 +1636,16 @@ export class ShowCardAction extends Action {
     getAllInputs(): Array<Input> {
         return this.card.getAllInputs();
     }
+
+    getActionById(id: string): Action {
+        var result = super.getActionById(id);
+
+        if (!result) {
+            result = this.card.getActionById(id);
+        }
+
+        return result;
+    }
 }
 
 class ActionCollection {
@@ -1718,6 +1748,20 @@ class ActionCollection {
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    getActionById(id: string): Action {
+        var result: Action = null;
+
+        for (var i = 0; i < this.items.length; i++) {
+            result = this.items[i].getActionById(id);
+
+            if (result) {
+                break;
+            }
+        }
+
+        return result;
     }
 
     validate(): Array<IValidationError> {
@@ -2220,6 +2264,28 @@ export abstract class ContainerBase extends CardElement {
         return result;
     }
 
+    getActionById(id: string): Action {
+        var result: Action = super.getActionById(id);
+
+        if (!result) {
+            if (this.selectAction) {
+                result = this.selectAction.getActionById(id);
+            }
+
+            if (!result) {
+                for (var i = 0; i < this._items.length; i++) {
+                    result = this._items[i].getActionById(id);
+
+                    if (result) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak;
@@ -2516,6 +2582,20 @@ export class ColumnSet extends CardElement {
         return result;
     }
 
+    getActionById(id: string): Action {
+        var result: Action = null;
+
+        for (var i = 0; i < this._columns.length; i++) {
+            result = this._columns[i].getActionById(id);
+
+            if (result) {
+                break;
+            }
+        }
+
+        return result;
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak;
@@ -2652,6 +2732,12 @@ export abstract class ContainerWithActions extends ContainerBase {
         this._actionCollection = new ActionCollection(this);
         this._actionCollection.onHideActionCardPane = () => { this.showBottomSpacer(null) };
         this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer(null) };
+    }
+
+    getActionById(id: string): Action {
+        var result: Action = this._actionCollection.getActionById(id);
+
+        return result ? result : super.getActionById(id);
     }
 
     parse(json: any, itemsCollectionPropertyName: string = "items") {
