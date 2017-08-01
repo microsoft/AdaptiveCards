@@ -1444,10 +1444,10 @@ export class HttpAction extends ExternalAction {
     private _url = new Utils.StringWithSubstitutions();
     private _body = new Utils.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
-    private _actionCollection:ActionCollection;
+    private _actionCollection:ActionCollection; // hold the reference to its action collection
 
+    // status card
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
-
 
     method: string;
 
@@ -1575,7 +1575,7 @@ export class ShowCardAction extends Action {
     }
 }
 
-export class ActionCollection {
+class ActionCollection {
     private _owner: CardElement;
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
