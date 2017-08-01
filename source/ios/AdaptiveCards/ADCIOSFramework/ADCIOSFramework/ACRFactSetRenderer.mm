@@ -78,12 +78,12 @@
     [factSetView addArrangedSubview:titleStack];
     [titleStack setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
-    ACRSeparator *separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,20,20)
+    ACRSeparator *separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,config->factSet.spacing, config->factSet.spacing)
                                                     withSuperview:factSetView
                                                            toAxis:UILayoutConstraintAxisHorizontal];
     [factSetView addArrangedSubview:valueStack];
 
-    separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,20,20) 
+    separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,config->factSet.spacing, config->factSet.spacing)
                                     withSuperview:factSetView
                                               toAxis:UILayoutConstraintAxisHorizontal];
 
