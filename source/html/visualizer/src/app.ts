@@ -451,6 +451,12 @@ window.onload = () => {
     Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
     Adaptive.AdaptiveCard.onElementVisibilityChanged = elementVisibilityChanged;
     */
+
+    Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
+        if (typeof json["isVisible"] === "boolean") {
+            element.isVisible = json["isVisible"];
+        }        
+    }
     
     Adaptive.AdaptiveCard.onParseError = (error: Adaptive.IValidationError) => {
         lastValidationErrors.push(error);

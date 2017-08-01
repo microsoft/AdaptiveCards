@@ -179,16 +179,14 @@ export abstract class CardElement {
     }
 
     parse(json: any) {
+        raiseParseElementEvent(this, json);
+
         this.id = json["id"];
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
 
         this.spacing = Utils.getValueOrDefault<Enums.Spacing>(json["spacing"], "default");
         this.separator = json["separator"];
-
-        if (typeof json["isVisible"] === "boolean") {
-            this.isVisible = json["isVisible"];
-        }
 
         var jsonSeparation = json["separation"];
 
@@ -2639,6 +2637,12 @@ function raiseElementVisibilityChangedEvent(element: CardElement) {
     }
 }
 
+function raiseParseElementEvent(element: CardElement, json: any) {
+    if (AdaptiveCard.onParseElement != null) {
+        AdaptiveCard.onParseElement(element, json);
+    }
+}
+
 function raiseParseError(error: IValidationError) {
     if (AdaptiveCard.onParseError != null) {
         AdaptiveCard.onParseError(error);
@@ -2790,6 +2794,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static onExecuteAction: (action: Action) => void = null;
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
+    static onParseElement: (element: CardElement, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
     static initialize() {
