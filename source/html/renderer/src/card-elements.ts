@@ -9,6 +9,10 @@ function invokeSetParent(obj: any, parent: CardElement) {
     obj["setParent"](parent);
 }
 
+function invokeSetCollection(action:Action, collection:ActionCollection){
+    action["setCollection"](collection);
+}
+
 function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): boolean {
     if (forbiddenActionTypes) {
         for (var i = 0; i < forbiddenActionTypes.length; i++) {
@@ -1440,11 +1444,31 @@ export class HttpAction extends ExternalAction {
     private _url = new Utils.StringWithSubstitutions();
     private _body = new Utils.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
+    private _actionCollection:ActionCollection;
+
+    readonly card: AdaptiveCard = new InlineAdaptiveCard();
+
 
     method: string;
 
     getJsonTypeName(): string {
         return "Action.Http";
+    }
+
+    setCollection(actionCollection:ActionCollection){
+        this._actionCollection = actionCollection;
+    }
+
+    // Expand the action card pane with a inline status card
+    // Null status will clear the status bar
+    setStatus(status:any){
+        this.card.clear();
+        if(status){
+            this.card.parse(status);
+            this._actionCollection.showActionCardPane(this);
+        }else{
+            this._actionCollection.hideActionCardPane();
+        }
     }
 
     validate(): Array<IValidationError> {
@@ -1551,14 +1575,14 @@ export class ShowCardAction extends Action {
     }
 }
 
-class ActionCollection {
+export class ActionCollection {
     private _owner: CardElement;
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
-    private _expandedAction: ShowCardAction = null;
+    private _expandedAction: ShowCardAction | HttpAction = null;
     private _renderedActionCount: number = 0;
 
-    private hideActionCardPane() {
+    hideActionCardPane() {
         this._actionCardContainer.innerHTML = '';
         this._actionCardContainer.style.padding = "0px";
         this._actionCardContainer.style.marginTop = "0px";
@@ -1574,7 +1598,9 @@ class ActionCollection {
         this._expandedAction = null;
     }
 
-    private showActionCardPane(action: ShowCardAction) {
+    showActionCardPane(action: ShowCardAction | HttpAction) {
+        if(action.card == null) return;
+
         if (this.onShowActionCardPane) {
             this.onShowActionCardPane(action);
         }
@@ -1614,7 +1640,7 @@ class ActionCollection {
             for (var i = 0; i < this._actionButtons.length; i++) {
                 this._actionButtons[i].state = ActionButtonState.Normal;
             }
-
+            
             this.hideActionCardPane();
 
             actionButton.action.execute();
@@ -1647,7 +1673,7 @@ class ActionCollection {
     items: Array<Action> = [];
     actionStyle: Enums.ActionStyle = "link";
     onHideActionCardPane: () => void = null;
-    onShowActionCardPane: (action: ShowCardAction) => void = null;
+    onShowActionCardPane: (action: ShowCardAction | HttpAction) => void = null;
 
     constructor(owner: CardElement) {
         this._owner = owner;
@@ -1796,6 +1822,7 @@ class ActionCollection {
             this.items.push(action);
 
             invokeSetParent(action, this._owner);
+            invokeSetCollection(action, this);
         }
         else {
             throw new Error("The action already belongs to another element.")
@@ -2431,7 +2458,7 @@ function raiseExecuteActionEvent(action: ExternalAction) {
     }
 }
 
-function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolean) {
+function raiseInlineCardExpandedEvent(action: ShowCardAction | HttpAction, isExpanded: boolean) {
     if (AdaptiveCard.onInlineCardExpanded != null) {
         AdaptiveCard.onInlineCardExpanded(action, isExpanded);
     }
@@ -2587,7 +2614,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     static onExecuteAction: (action: ExternalAction) => void = null;
     static onShowPopupCard: (action: ShowCardAction) => void = null;
-    static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
+    static onInlineCardExpanded: (action: ShowCardAction | HttpAction, isExpanded: boolean) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
     static initialize() {
