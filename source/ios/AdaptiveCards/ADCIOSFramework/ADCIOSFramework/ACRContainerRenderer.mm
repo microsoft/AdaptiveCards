@@ -7,7 +7,7 @@
 
 #import "ACRContainerRenderer.h"
 #import "ACRColumnView.h"
-#import "ACRRegistration.h"
+#import "ACRRenderer.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
 
@@ -32,7 +32,7 @@
     /// will update name to make intention clear
     ACRColumnView *container = [[ACRColumnView alloc] init];
     
-    [[ACRRegistration getInstance] render:container
+    [ACRRenderer render:container
                                    withCardElems:containerElem->GetItems()
                                    andHostConfig:config];
     [viewGroup addArrangedSubview:container];

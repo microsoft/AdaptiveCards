@@ -11,5 +11,8 @@
 @protocol ACRIContentHoldingView
 
 - (void)addArrangedSubview:(UIView *)view;
+- (UILayoutConstraintAxis)getAxis;
 - (void)addTarget:(NSObject *)target;
+- (void)adjustHuggingForLastElement;
+
 @end

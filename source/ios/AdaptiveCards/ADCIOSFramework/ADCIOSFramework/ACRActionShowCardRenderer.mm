@@ -33,7 +33,7 @@
     ACRButtonTarget* target = [[ACRButtonTarget alloc] initWithAdaptiveCard:action->GetCard()
                                                                      config:config
                                                                   superview:superview];
-    [button addTarget:target action:@selector(showCard) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:target action:@selector(showCard:) forControlEvents:UIControlEventTouchUpInside];
     
     [superview addTarget:target];
 

@@ -167,8 +167,8 @@
                                            withSuperview:wrappingview
                                                   toView:view]];
 
-    view.translatesAutoresizingMaskIntoConstraints = false;
-    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     return wrappingview;
 }
 

@@ -19,5 +19,5 @@
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard 
                               config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
                            superview:(UIView<ACRIContentHoldingView> *)superview;
-- (IBAction)showCard;
+- (IBAction)showCard:(UIButton *)sender;
 @end

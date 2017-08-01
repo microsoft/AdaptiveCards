@@ -110,4 +110,9 @@
         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 }
 
+- (UILayoutConstraintAxis) getAxis
+{
+    return self.stackView.axis;
+}
+
 @end

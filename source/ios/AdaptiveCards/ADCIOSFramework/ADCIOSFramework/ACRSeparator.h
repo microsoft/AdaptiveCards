@@ -9,6 +9,7 @@
 #import "HostConfig.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRContentStackView.h"
+#import "ACRIContentHoldingView.h"
 
 @interface ACRSeparator:UIView
 
@@ -17,7 +18,7 @@
            withHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &) config;
 
 - (instancetype)initWithFrame:(CGRect)frame 
-                withSuperview:(ACRContentStackView *)superview
+                withSuperview:(UIView<ACRIContentHoldingView> *)superview
                        toAxis:(UILayoutConstraintAxis)huggingAxis;
 
 - (NSLayoutConstraint *)configAutoLayout:(UIView *)superview

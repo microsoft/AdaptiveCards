@@ -7,7 +7,7 @@
 
 #import "ACRColumnRenderer.h"
 #import "ACRColumnView.h"
-#import "ACRRegistration.h"
+#import "ACRRenderer.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
 
@@ -32,9 +32,9 @@
 
     ACRColumnView* column = [[ACRColumnView alloc] init];
     [viewGroup addArrangedSubview:column];
-    [[ACRRegistration getInstance] render:column
-                            withCardElems:columnElem->GetItems()
-                            andHostConfig:config];
+    [ACRRenderer render:column
+          withCardElems:columnElem->GetItems()
+          andHostConfig:config];
 
     [column setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [column setClipsToBounds:TRUE];

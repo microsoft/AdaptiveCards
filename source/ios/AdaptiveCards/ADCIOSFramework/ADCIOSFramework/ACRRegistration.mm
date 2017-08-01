@@ -25,7 +25,6 @@
 #import "ACRColumnRenderer.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionShowCardRenderer.h"
-#import "ACRSeparator.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
 
@@ -76,67 +75,14 @@ using namespace AdaptiveCards;
 }
 
 - (ACRBaseCardElementRenderer *) getRenderer:(NSNumber *)cardElementType
-{ 
+{
     return [typeToRendererDict objectForKey:cardElementType];
 }
 
-- (UIView<ACRIContentHoldingView> *)renderButton:(UIViewController *)vc
-               superview:(UIView<ACRIContentHoldingView> *)superview
-             actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
-              hostConfig:(std::shared_ptr<HostConfig> const &)config
- {
-     UIView<ACRIContentHoldingView> *childview = nil;
-    if(ActionsOrientation::Horizontal == config->actions.actionsOrientation)
-    {
-        childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
-    }
-    else
-    {
-        childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
-    }
-
-    for(auto elem:elems)
-    {
-        ACRBaseActionElementRenderer *actionRenderer =
-            [actionRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
-
-        if(actionRenderer == nil)
-        { 
-            NSLog(@"Unsupported card action type:%d\n", (int) elem->GetElementType());
-            continue;
-        }
-
-        UIButton* button = [actionRenderer renderButton:vc
-                                              superview:superview
-                                      baseActionElement:elem
-                                          andHostConfig:config];
-        [childview addArrangedSubview:button];
-    }
-
-    return childview;
- }
-
-- (UIView *) render:(UIView *)view
-      withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
-      andHostConfig:(std::shared_ptr<HostConfig> const &)config
-{   
-   
-    for(auto elem:elems)
-    {
-        [ACRSeparator renderSeparation:elem forSuperview:view withHostConfig:config];
-        
-        ACRBaseCardElementRenderer *renderer =
-            [typeToRendererDict objectForKey:[NSNumber numberWithInt:(int)elem->GetElementType()]];
-
-        if(renderer == nil)
-        { 
-            NSLog(@"Unsupported card element type:%d\n", (int) elem->GetElementType());
-            continue;
-        }
-
-        [renderer render:view withCardElem:elem andHostConfig:config];
-    }
-   
-    return view;
+- (ACRBaseActionElementRenderer *) getActionRenderer:(NSNumber *)cardElementType
+{
+    return [actionRendererDict objectForKey:cardElementType];
 }
+
+
 @end
