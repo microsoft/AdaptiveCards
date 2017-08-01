@@ -13,7 +13,7 @@
 
 @implementation ACRContainerRenderer
 
-+ (ACRContainerRenderer* )getInstance
++ (ACRContainerRenderer *)getInstance
 {
     static ACRContainerRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -25,16 +25,17 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
+            inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
     /// will update name to make intention clear
     ACRColumnView *container = [[ACRColumnView alloc] init];
-    
     [ACRRenderer render:container
-                                   withCardElems:containerElem->GetItems()
-                                   andHostConfig:config];
+                 inputs:inputs
+          withCardElems:containerElem->GetItems()
+          andHostConfig:config];
     [viewGroup addArrangedSubview:container];
     return viewGroup;
 }

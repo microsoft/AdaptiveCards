@@ -20,7 +20,7 @@ using namespace AdaptiveCards;
 @implementation ACRRenderer
 
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCard> const &)adaptiveCard
-                             inputs:(NSArray *)inputs
+                             inputs:(NSMutableArray *)inputs
                      viewController:(UIViewController *)vc
                          guideFrame:(CGRect)guideFrame
                          hostconfig:(std::shared_ptr<HostConfig> const &)config
@@ -33,28 +33,31 @@ using namespace AdaptiveCards;
     {
          verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
         
-        [ACRRenderer render:verticalView withCardElems:body andHostConfig:config];
+        [ACRRenderer render:verticalView inputs:inputs withCardElems:body andHostConfig:config];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
-        UIView<ACRIContentHoldingView> *actionChildView = [ACRRenderer renderButton:vc superview:verticalView actionElems:actions hostConfig:config];
+        UIView<ACRIContentHoldingView> *actionChildView = [ACRRenderer renderButton:vc inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
         [verticalView addArrangedSubview:actionChildView];
     }
     return verticalView;
 }
 
 + (UIView *)renderWithJson:(NSString *)str
+                    inputs:(NSArray *)inputs
             viewController:(UIViewController *)vc
                 guideFrame:(CGRect)guideFrame
                 hostconfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<AdaptiveCard> adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
     return [ACRRenderer renderWithAdaptiveCards:adaptiveCard
+                                         inputs:(NSMutableArray *)inputs
                                  viewController:vc
                                      guideFrame:guideFrame
                                      hostconfig:config];
 }
 
 + (UIView<ACRIContentHoldingView> *)renderButton:(UIViewController *)vc
+                                          inputs:(NSMutableArray *)inputs
                                        superview:(UIView<ACRIContentHoldingView> *)superview
                                      actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
                                       hostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -84,6 +87,7 @@ using namespace AdaptiveCards;
         }
         
         UIButton* button = [actionRenderer renderButton:vc
+                                                 inputs:inputs
                                               superview:superview
                                       baseActionElement:elem
                                           andHostConfig:config];
@@ -98,9 +102,10 @@ using namespace AdaptiveCards;
     return childview;
 }
 
-+ (UIView *) render:(UIView *)view
-      withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
-      andHostConfig:(std::shared_ptr<HostConfig> const &)config
++ (UIView *)render:(UIView *)view
+            inputs:(NSMutableArray *)inputs
+     withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
+     andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
     
@@ -117,7 +122,7 @@ using namespace AdaptiveCards;
             continue;
         }
         
-        [renderer render:view withCardElem:elem andHostConfig:config];
+        [renderer render:view inputs:inputs withCardElem:elem andHostConfig:config];
     }
     
     return view;

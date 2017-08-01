@@ -68,7 +68,9 @@
         }
         else
         {
+            NSMutableArray* inputs = [[NSMutableArray alloc] init];
             UIView* adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
+                                                            inputs:inputs
                                                     viewController:_vc
                                                         guideFrame:_superview.frame
             

@@ -50,7 +50,7 @@ using namespace AdaptiveCards;
 {
     UIView *view = self.view;
     view.frame = guideFrame;
-    NSMutableArray inputs = [[NSMutableArray alloc] init];
+    NSMutableArray *inputs = [[NSMutableArray alloc] init];
     UIView *newView = [ACRRenderer renderWithJson:str
                                            inputs:inputs
                                    viewController:self

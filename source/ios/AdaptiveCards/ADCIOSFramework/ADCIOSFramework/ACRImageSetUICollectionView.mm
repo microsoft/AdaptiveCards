@@ -51,9 +51,9 @@ using namespace AdaptiveCards;
     return 1;
 }
 
-- (UICollectionViewCell* )collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString* identifier = @"cellId";
+    static NSString *identifier = @"cellId";
     
     for(auto img :imgSet->GetImages())
     {
@@ -61,10 +61,11 @@ using namespace AdaptiveCards;
     }
     
     UIView* content = [[ACRImageRenderer getInstance] render:nil
+                                                      inputs:nil
                                                 withCardElem:imgSet->GetImages()[indexPath.row]
                                                andHostConfig:config];
     
-    UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell)
     {
         cell = [[UICollectionViewCell alloc] initWithFrame:content.frame];

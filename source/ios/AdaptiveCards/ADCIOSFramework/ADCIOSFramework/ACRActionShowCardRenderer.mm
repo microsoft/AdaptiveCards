@@ -19,7 +19,8 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(UIViewController *)vc 
+- (UIButton* )renderButton:(UIViewController *)vc
+                    inputs:(NSArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(std::shared_ptr<BaseActionElement> const &)elem
              andHostConfig:(std::shared_ptr<HostConfig> const &)config;

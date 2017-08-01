@@ -15,7 +15,8 @@ using namespace AdaptiveCards;
 
 @protocol ACRIBaseActionElementRenderer
 
-- (UIButton* )renderButton:(UIViewController *)vc 
+- (UIButton* )renderButton:(UIViewController *)vc
+                    inputs:(NSMutableArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(std::shared_ptr<BaseActionElement> const &)elem
              andHostConfig:(std::shared_ptr<HostConfig> const &)config;
