@@ -11,7 +11,10 @@
 
 - (bool)validate
 {
-    return true;
+    if(self.isRequired && !self.hasText)
+        return false;
+    else
+        return true;
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary

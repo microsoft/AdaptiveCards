@@ -37,6 +37,7 @@
     txtInput.placeholder = placeHolderStr;
     txtInput.allowsEditingTextAttributes = YES;
     txtInput.borderStyle = UITextBorderStyleLine;
+    txtInput.isRequired  = inputBlck->GetIsRequired();
     
     switch(inputBlck->GetTextInputStyle())
     {

@@ -10,4 +10,5 @@
 
 @interface ACRTextField:UITextField<ACRIBaseInputHandler>
 @property NSString* id;
+@property bool isRequired;
 @end
