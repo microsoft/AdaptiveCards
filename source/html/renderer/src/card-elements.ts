@@ -108,23 +108,21 @@ export abstract class CardElement {
     private _internalPadding: HostConfig.IPaddingDefinition = null;
     private _parent: CardElement = null;
 
-    protected internalGetNonZeroPadding(padding: HostConfig.ISpacingDefinition) {
-        var actualPadding = paddingToSpacingDefinition(this.internalPadding);
-
-        if (padding.top == 0) {
-            padding.top = actualPadding.top;
+    protected internalGetNonZeroPadding(padding: HostConfig.IPaddingDefinition) {
+        if (padding.top == "none") {
+            padding.top = this.internalPadding.top;
         }
 
-        if (padding.right == 0) {
-            padding.right = actualPadding.right;
+        if (padding.right == "none") {
+            padding.right = this.internalPadding.right;
         }
 
-        if (padding.bottom == 0) {
-            padding.bottom = actualPadding.bottom;
+        if (padding.bottom == "none") {
+            padding.bottom = this.internalPadding.bottom;
         }
 
-        if (padding.left == 0) {
-            padding.left = actualPadding.left;
+        if (padding.left == "none") {
+            padding.left = this.internalPadding.left;
         }
 
         if (this.parent) {
@@ -188,8 +186,8 @@ export abstract class CardElement {
     abstract getJsonTypeName(): string;
     abstract renderSpeech(): string;
 
-    getNonZeroPadding(): HostConfig.ISpacingDefinition {
-        var padding: HostConfig.ISpacingDefinition = { top: 0, right: 0, bottom: 0, left: 0 };
+    getNonZeroPadding(): HostConfig.IPaddingDefinition {
+        var padding = HostConfig.NoPadding;
 
         this.internalGetNonZeroPadding(padding);
 
@@ -257,8 +255,40 @@ export abstract class CardElement {
         return renderedElement;
     }
 
-    isLastItem(item: CardElement): boolean {
-        return this.parent ? this.parent.isLastItem(item) : true;
+    isAtTheVeryTop(): boolean {
+        return this.parent ? this.parent.isFirstElement(this) && this.parent.isAtTheVeryTop() : true;
+    }
+
+    isFirstElement(element: CardElement): boolean {
+        return true;
+    }
+
+    isAtTheVeryBottom(): boolean {
+        return this.parent ? this.parent.isLastElement(this) && this.parent.isAtTheVeryBottom() : true;
+    }
+
+    isLastElement(element: CardElement): boolean {
+        return true;
+    }
+
+    isAtTheVeryLeft(): boolean {
+        return this.parent ? this.parent.isLeftMostElement(this) && this.parent.isAtTheVeryLeft() : true;
+    }
+
+    isLeftMostElement(element: CardElement): boolean {
+        return true;
+    }
+
+    isAtTheVeryRight(): boolean {
+        return this.parent ? this.parent.isRightMostElement(this) && this.parent.isAtTheVeryRight() : true;
+    }
+
+    isRightMostElement(element: CardElement): boolean {
+        return true;
+    }
+
+    canContentBleed(): boolean {
+        return this.parent ? this.parent.canContentBleed() : true;
     }
 
     getRootElement(): CardElement {
@@ -1648,7 +1678,7 @@ class ActionCollection {
         this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
 
         if (hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
-            var padding = this._owner.getNonZeroPadding();
+            var padding = paddingToSpacingDefinition(this._owner.getNonZeroPadding());
 
             renderedCard.style.paddingLeft = padding.left + "px";
             renderedCard.style.paddingRight = padding.right + "px";
@@ -1994,7 +2024,7 @@ export class Container extends CardElement {
     private _colorPalette?: Enums.ColorPalette = null;
 
     protected showBottomSpacer(requestingElement: CardElement) {
-        if ((!requestingElement || this.isLastItem(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
+        if ((!requestingElement || this.isLastElement(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
             this._element.style.paddingBottom = paddingToSpacingDefinition(this.internalPadding).bottom + "px";
 
             super.showBottomSpacer(this);
@@ -2002,10 +2032,85 @@ export class Container extends CardElement {
     }
 
     protected hideBottomSpacer(requestingElement: CardElement) {
-        if ((!requestingElement || this.isLastItem(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
+        if ((!requestingElement || this.isLastElement(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
             this._element.style.paddingBottom = "0px";
 
             super.hideBottomSpacer(this);
+        }
+    }
+
+    protected applyPadding(element: HTMLElement) {
+        var bleed = this.parent ? this.parent.canContentBleed() : false;
+
+        if (bleed && this.hasBackground) {
+            var effectivePadding = this.getNonZeroPadding();
+            var effectiveMargin: HostConfig.IPaddingDefinition = {
+                top: effectivePadding.top,
+                right: effectivePadding.right,
+                bottom: effectivePadding.bottom,
+                left: effectivePadding.left,
+            };
+
+            if (!this.isAtTheVeryTop()) {
+                effectivePadding.top = "none";
+                effectiveMargin.top = "none";
+            }
+
+            if (!this.isAtTheVeryBottom()) {
+                effectivePadding.bottom = "none";
+                effectiveMargin.bottom = "none";
+            }
+
+            if (!this.isAtTheVeryLeft()) {
+                effectivePadding.left = "none";
+                effectiveMargin.left = "none";
+            }
+
+            if (!this.isAtTheVeryRight()) {
+                effectivePadding.right = "none";
+                effectiveMargin.right = "none";
+            }
+
+            if (effectivePadding.left != "none" || effectivePadding.right != "none") {
+                if (effectivePadding.left == "none") {
+                    effectivePadding.left = effectivePadding.right;
+                }
+
+                if (effectivePadding.right == "none") {
+                    effectivePadding.right = effectivePadding.left;
+                }
+            }
+
+            if (effectivePadding.top != "none" || effectivePadding.bottom != "none") {
+                if (effectivePadding.top == "none") {
+                    effectivePadding.top = effectivePadding.bottom;
+                }
+
+                if (effectivePadding.bottom == "none") {
+                    effectivePadding.bottom = effectivePadding.top;
+                }
+            }
+
+            var physicalMargin = paddingToSpacingDefinition(effectiveMargin);
+            var physicalPadding = paddingToSpacingDefinition(effectivePadding);
+
+            element.style.marginTop = "-" + physicalMargin.top + "px";
+            element.style.marginRight = "-" + physicalMargin.right + "px";
+            element.style.marginBottom = "-" + physicalMargin.bottom + "px";
+            element.style.marginLeft = "-" + physicalMargin.left + "px";
+
+            element.style.paddingTop = physicalPadding.top + "px";
+            element.style.paddingRight = physicalPadding.right + "px";
+            element.style.paddingBottom = physicalPadding.bottom + "px";
+            element.style.paddingLeft = physicalPadding.left + "px";    
+        }
+        else if (this.hasBackground) {
+            var physicalPadding = paddingToSpacingDefinition({ top: "default", right: "default", bottom: "default", left: "default" });
+
+            element.style.paddingTop = physicalPadding.top + "px";
+            element.style.paddingRight = physicalPadding.right + "px";
+            element.style.paddingBottom = physicalPadding.bottom + "px";
+            element.style.paddingLeft = physicalPadding.left + "px";    
         }
     }
 
@@ -2025,16 +2130,20 @@ export class Container extends CardElement {
             this._element.style.backgroundColor = Utils.stringToCssColor(colorPaletteDefinition.backgroundColor);
         }
 
+        this.applyPadding(this._element);
+
         if (this.selectAction) {
             this._element.classList.add("ac-selectable");
         }
 
+        /*
         var effectivePadding = paddingToSpacingDefinition(this.internalPadding);
 
         this._element.style.paddingTop = effectivePadding.top + "px";
         this._element.style.paddingRight = effectivePadding.right + "px";
         this._element.style.paddingBottom = effectivePadding.bottom + "px";
         this._element.style.paddingLeft = effectivePadding.left + "px";
+        */
 
         this._element.onclick = (e) => {
             if (this.selectAction != null) {
@@ -2076,6 +2185,10 @@ export class Container extends CardElement {
         return this._element;
     }
 
+    protected get hasBackground(): boolean {
+        return this.backgroundImage != undefined || this.colorPalette != "default";
+    }
+
     protected get defaultColorPalette(): Enums.ColorPalette {
         return "default";
     }
@@ -2110,8 +2223,16 @@ export class Container extends CardElement {
         return "Container";
     }
 
-    isLastItem(item: CardElement): boolean {
-        return this._items.indexOf(item) == (this._items.length - 1);
+    isFirstElement(element: CardElement): boolean {
+        var elementIndex = this._items.indexOf(element);
+
+        return elementIndex >= 0 ? elementIndex ==0 : false;
+    }
+
+    isLastElement(element: CardElement): boolean {
+        var itemIndex = this._items.indexOf(element);
+
+        return itemIndex >= 0 ? itemIndex == (this._items.length - 1) : false;
     }
 
     validate(): Array<IValidationError> {
@@ -2225,6 +2346,10 @@ export class Container extends CardElement {
         this._items = [];
     }
 
+    canContentBleed(): boolean {
+        return this.hasBackground ? false : super.canContentBleed();
+    }
+
     getAllInputs(): Array<Input> {
         var result: Array<Input> = [];
 
@@ -2276,11 +2401,6 @@ export class Column extends Container {
         else {
             renderedElement.style.flex = "1 1 auto";
         }
-    }
-
-    protected internalGetNonZeroPadding(padding: HostConfig.ISpacingDefinition) {
-        // Action.ShowCard should not bleed outside a Column's boundaries
-        // So we stop retrieving paddings here.
     }
 
     width: number | "auto" | "stretch" = "auto";
@@ -2353,7 +2473,6 @@ export class ColumnSet extends CardElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
             element.style.display = "flex";
-            element.style.overflow = "hidden";
 
             switch (this.horizontalAlignment) {
                 case "center":
@@ -2446,6 +2565,14 @@ export class ColumnSet extends CardElement {
         else {
             throw new Error("This column already belongs to another ColumnSet.");
         }
+    }
+
+    isLeftMostElement(element: CardElement): boolean {
+        return this._columns.indexOf(<Column>element) == 0;
+    }
+
+    isRightMostElement(element: CardElement): boolean {
+        return this._columns.indexOf(<Column>element) == this._columns.length - 1;
     }
 
     getAllInputs(): Array<Input> {
@@ -2614,8 +2741,8 @@ export abstract class ContainerWithActions extends Container {
         }
     }
 
-    isLastItem(item: CardElement): boolean {
-        return super.isLastItem(item) && this._actionCollection.items.length == 0;
+    isLastElement(element: CardElement): boolean {
+        return super.isLastElement(element) && this._actionCollection.items.length == 0;
     }
 
     addAction(action: Action) {
@@ -2682,6 +2809,15 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     private _cardTypeName: string;
+
+    protected applyPadding(element: HTMLElement) {
+        var effectivePadding = paddingToSpacingDefinition(this.internalPadding);
+
+        element.style.paddingTop = effectivePadding.top + "px";
+        element.style.paddingRight = effectivePadding.right + "px";
+        element.style.paddingBottom = effectivePadding.bottom + "px";
+        element.style.paddingLeft = effectivePadding.left + "px";
+    }
 
     protected get defaultPadding(): HostConfig.IPaddingDefinition {
         return hostConfig.adaptiveCard.padding;
