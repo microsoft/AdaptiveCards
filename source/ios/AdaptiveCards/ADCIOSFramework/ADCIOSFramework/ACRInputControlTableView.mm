@@ -14,9 +14,9 @@ using namespace AdaptiveCards;
 
 @implementation ACRInputControlTableView
 {
-    std::weak_ptr<ToggleInput> toggleInputDataSource;
-    std::weak_ptr<ChoiceSetInput> choiceSetDataSource;
-    std::weak_ptr<HostConfig> config;
+    std::shared_ptr<ToggleInput> toggleInputDataSource;
+    std::shared_ptr<ChoiceSetInput> choiceSetDataSource;
+    std::shared_ptr<HostConfig> config;
     bool isMultichoiceAllowed;
     bool isToggleInput;
 }
@@ -60,7 +60,7 @@ using namespace AdaptiveCards;
         choiceSetDataSource   = choiceSet;
         isToggleInput = false;
         config = hostConfig;
-        isMultichoiceAllowed = choiceSetDataSource.lock()->GetIsMultiSelect();
+        isMultichoiceAllowed = choiceSetDataSource->GetIsMultiSelect();
     }
     return self;
 }
@@ -70,7 +70,7 @@ using namespace AdaptiveCards;
     if(isToggleInput)
         return 1;
     else
-        return choiceSetDataSource.lock()->GetChoices().size();
+        return choiceSetDataSource->GetChoices().size();
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -97,12 +97,12 @@ using namespace AdaptiveCards;
 
     if(isToggleInput)
     {
-        title = [NSString stringWithCString:toggleInputDataSource.lock()->GetTitle().c_str()
+        title = [NSString stringWithCString:toggleInputDataSource->GetTitle().c_str()
                            encoding:NSUTF8StringEncoding];
     }
     else
     {
-        title = [NSString stringWithCString:choiceSetDataSource.lock()->GetChoices()[indexPath.row]->GetTitle().c_str()
+        title = [NSString stringWithCString:choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                    encoding:NSUTF8StringEncoding];
     }
     
