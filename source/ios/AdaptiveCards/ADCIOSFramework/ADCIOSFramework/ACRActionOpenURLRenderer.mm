@@ -34,7 +34,7 @@
                                           encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:urlStr];
     
-    ACRButtonTarget* target = [[ACRButtonTarget alloc] initWithURL:url viewController:vc];
+    ACRButtonTarget *target = [[ACRButtonTarget alloc] initWithURL:url viewController:vc];
     [button addTarget:target action:@selector(openURL) forControlEvents:UIControlEventTouchUpInside];
     [superview addTarget:target];
 

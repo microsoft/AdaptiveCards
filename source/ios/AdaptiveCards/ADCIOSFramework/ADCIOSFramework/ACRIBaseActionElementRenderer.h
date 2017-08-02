@@ -1,6 +1,6 @@
 //
-//  BaseActionElementRenderer
-//  BaseActionElementRenderer.h
+//  ACRIBaseActionElementRenderer
+//  ACRIBaseActionElementRenderer.h
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //

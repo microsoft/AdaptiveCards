@@ -25,6 +25,7 @@
 #import "ACRColumnRenderer.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionShowCardRenderer.h"
+#import "ACRActionSubmitRenderer.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
 
@@ -61,6 +62,7 @@ using namespace AdaptiveCards;
             [[NSDictionary alloc] initWithObjectsAndKeys:
              [ACRActionOpenURLRenderer  getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl], 
              [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
+             [ACRActionSubmitRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
             nil];
     }
     return self;

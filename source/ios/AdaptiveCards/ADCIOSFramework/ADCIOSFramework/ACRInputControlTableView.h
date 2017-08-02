@@ -10,8 +10,9 @@
 #import "ChoiceSetInput.h"
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
+#import "ACRIBaseInputHandler.h"
 
-@interface ACRInputControlTableView:UITableView<UITableViewDataSource, UITableViewDelegate>
+@interface ACRInputControlTableView:UITableView<UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler>
 - (instancetype)initWithInputToggle:(std::shared_ptr<AdaptiveCards::ToggleInput> const&)toggleInput
                      WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
                       WithSuperview:(UIView *)view;

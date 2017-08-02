@@ -20,4 +20,8 @@
                               config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
                            superview:(UIView<ACRIContentHoldingView> *)superview;
 - (IBAction)showCard:(UIButton *)sender;
+
+- (instancetype)initWithDataString:(NSString *)data inputs:(NSArray *)inputs;
+
+- (IBAction)submit:(UIButton *)sender;
 @end

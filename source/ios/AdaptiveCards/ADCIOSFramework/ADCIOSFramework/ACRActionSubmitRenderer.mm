@@ -1,21 +1,21 @@
 //
-//  ACRActionShowCardRenderer
-//  ACRActionShowCardRenderer.mm
+//  ACRActionSubmitRenderer
+//  ACRActionSubmitRenderer.mm
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
 #import "ACRBaseActionElementRenderer.h"
-#import "ACRActionShowCardRenderer.h"
+#import "ACRActionSubmitRenderer.h"
 #import "ACRButton.h"
 #import "ACRButtonTarget.h"
-#import "ShowCardAction.h"
+#import "SubmitAction.h"
 
-@implementation ACRActionShowCardRenderer
+@implementation ACRActionSubmitRenderer
 
-+ (ACRActionShowCardRenderer *)getInstance
++ (ACRActionSubmitRenderer *)getInstance
 {
-    static ACRActionShowCardRenderer *singletonInstance = [[self alloc] init];
+    static ACRActionSubmitRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
@@ -25,16 +25,17 @@
          baseActionElement:(std::shared_ptr<BaseActionElement> const &)elem
              andHostConfig:(std::shared_ptr<HostConfig> const &)config;
 {
-    std::shared_ptr<ShowCardAction> action = std::dynamic_pointer_cast<ShowCardAction>(elem);
+    std::shared_ptr<SubmitAction> action = std::dynamic_pointer_cast<SubmitAction>(elem);
     
     NSString *title  = [NSString stringWithCString:action->GetTitle().c_str()
                                           encoding:NSUTF8StringEncoding];
     UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
-    
-    ACRButtonTarget *target = [[ACRButtonTarget alloc] initWithAdaptiveCard:action->GetCard()
-                                                                     config:config
-                                                                  superview:superview];
-    [button addTarget:target action:@selector(showCard:) forControlEvents:UIControlEventTouchUpInside];
+
+    NSString *data = [NSString stringWithCString:action->GetDataJson().c_str()
+                                          encoding:NSUTF8StringEncoding];
+    ACRButtonTarget *target = [[ACRButtonTarget alloc] initWithDataString:data inputs:inputs];
+                               
+    [button addTarget:target action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
     
     [superview addTarget:target];
 

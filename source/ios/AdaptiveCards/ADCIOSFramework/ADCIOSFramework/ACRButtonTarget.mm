@@ -10,6 +10,7 @@
 #import "ACRButtonTarget.h"
 #import "ACRRenderer.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRIBaseInputHandler.h"
 
 @implementation ACRButtonTarget
 {
@@ -18,7 +19,9 @@
     std::shared_ptr<AdaptiveCards::AdaptiveCard> _adaptiveCard;
     std::shared_ptr<AdaptiveCards::HostConfig> _config; 
     __weak UIView<ACRIContentHoldingView> *_superview;
-    UIView* _adcView;
+    UIView *_adcView;
+    NSArray *_inputs;
+    NSString *_data;
 }
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard 
@@ -34,6 +37,27 @@
         _adcView = nil;
     }
     return self;
+}
+
+- (instancetype)initWithDataString:(NSString *)data inputs:(NSArray *)inputs
+{
+    self = [super init];
+    if(self)
+    {
+        _data = data;
+        _inputs = inputs;
+    }
+    return self;
+}
+
+- (IBAction)submit:(UIButton *)sender
+{
+    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+    for(id<ACRIBaseInputHandler> input in _inputs)
+    {
+        [input validate];
+        [input getInput:dictionary];
+    }
 }
 
 - (instancetype)initWithURL:(NSURL *)url viewController:(UIViewController *)vc

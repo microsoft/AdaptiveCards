@@ -14,10 +14,11 @@ using namespace AdaptiveCards;
 
 @implementation ACRInputControlTableView
 {
-    std::shared_ptr<ToggleInput> toggleInputDataSource;
-    std::shared_ptr<ChoiceSetInput>   choiceSetDataSource;
-    std::shared_ptr<HostConfig>  config;
+    std::weak_ptr<ToggleInput> toggleInputDataSource;
+    std::weak_ptr<ChoiceSetInput> choiceSetDataSource;
+    std::weak_ptr<HostConfig> config;
     bool isMultichoiceAllowed;
+    bool isToggleInput;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -43,7 +44,7 @@ using namespace AdaptiveCards;
     if(self)
     {
         toggleInputDataSource = toggleInput;
-        choiceSetDataSource   = nullptr;
+        isToggleInput = true;
         config = hostConfig;
     }
     return self;
@@ -57,19 +58,19 @@ using namespace AdaptiveCards;
     if(self)
     {
         choiceSetDataSource   = choiceSet;
-        toggleInputDataSource = nullptr;
+        isToggleInput = false;
         config = hostConfig;
-        isMultichoiceAllowed = choiceSetDataSource->GetIsMultiSelect();
+        isMultichoiceAllowed = choiceSetDataSource.lock()->GetIsMultiSelect();
     }
     return self;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(toggleInputDataSource)
+    if(isToggleInput)
         return 1;
     else
-        return choiceSetDataSource->GetChoices().size();
+        return choiceSetDataSource.lock()->GetChoices().size();
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -94,14 +95,14 @@ using namespace AdaptiveCards;
 
     NSString *title = nil;
 
-    if(toggleInputDataSource)
+    if(isToggleInput)
     {
-        title = [NSString stringWithCString:toggleInputDataSource->GetTitle().c_str()
+        title = [NSString stringWithCString:toggleInputDataSource.lock()->GetTitle().c_str()
                            encoding:NSUTF8StringEncoding];
     }
     else
     {
-        title = [NSString stringWithCString:choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
+        title = [NSString stringWithCString:choiceSetDataSource.lock()->GetChoices()[indexPath.row]->GetTitle().c_str()
                                    encoding:NSUTF8StringEncoding];
     }
     
@@ -138,5 +139,15 @@ using namespace AdaptiveCards;
 {
     [self layoutIfNeeded];
     return self.contentSize;
+}
+
+- (bool)validate
+{
+    return true;
+}
+
+- (void)getInput:(NSDictionary *)dictionary
+{
+    
 }
 @end
