@@ -6,10 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ACRErrors.h"
 
 @protocol ACRIBaseInputHandler
 
-- (bool)validate;
+- (BOOL)validate:(NSError **)error;
 
 - (void)getInput:(NSMutableDictionary *)dictionary;
 

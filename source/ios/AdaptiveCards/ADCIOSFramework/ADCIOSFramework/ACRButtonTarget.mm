@@ -53,10 +53,18 @@
 - (IBAction)submit:(UIButton *)sender
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+    NSError *err = nil;
     for(id<ACRIBaseInputHandler> input in _inputs)
     {
-        [input validate];
-        [input getInput:dictionary];
+        if([input validate:&err] == NO)
+        {
+            NSLog(@"input validation failed %@", err);
+        }
+        else
+        {
+            [input getInput:dictionary];
+        }
+        
     }
 }
 

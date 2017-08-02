@@ -141,7 +141,7 @@ using namespace AdaptiveCards;
     return self.contentSize;
 }
 
-- (bool)validate
+- (bool)validate:(NSError **)error
 {
     return true;
 }

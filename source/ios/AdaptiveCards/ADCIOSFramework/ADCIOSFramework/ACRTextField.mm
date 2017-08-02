@@ -9,12 +9,18 @@
 
 @implementation ACRTextField
 
-- (bool)validate
+- (BOOL)validate:(NSError **)error
 {
     if(self.isRequired && !self.hasText)
-        return false;
+    {
+        if(error)
+        {
+            *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
+        }
+        return NO;
+    }
     else
-        return true;
+        return YES;
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary

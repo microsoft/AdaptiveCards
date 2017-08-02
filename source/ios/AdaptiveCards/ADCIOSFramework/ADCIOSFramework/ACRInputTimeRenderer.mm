@@ -39,7 +39,7 @@
     formatter.dateStyle = NSDateFormatterNoStyle;
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     NSDate *date = [formatter dateFromString:placeHolderStr];
-    timePicker.date = date;
+    timePicker.date = date;  
     
     if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview: timePicker];
     
