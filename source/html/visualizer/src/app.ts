@@ -186,7 +186,7 @@ function setupEditor() {
             else {
                 currentConfigPayload = editor.getValue();
             }
-            
+
             tryRenderCard();
         });
 
@@ -198,13 +198,13 @@ function setupEditor() {
         if (cardUrl) {
             currentCardPayload = "";
             var xhttp = new XMLHttpRequest();
-            xhttp.onload = function() {
-               currentCardPayload = xhttp.responseText;
-               setEditorText(currentCardPayload);
+            xhttp.onload = function () {
+                currentCardPayload = xhttp.responseText;
+                setEditorText(currentCardPayload);
             };
-        
+
             xhttp.open("GET", cardUrl, true);
-            xhttp.send(); 
+            xhttp.send();
         }
         else if (cachedPayload) {
             currentCardPayload = cachedPayload;
@@ -249,12 +249,12 @@ function setupContainerPicker() {
         new HostContainerOption(
             "WebChat (Bot Framework)",
             new WebChatContainer("css/webchat.css")));
- 
-    hostContainerOptions.push( 
-        new HostContainerOption( 
-            "Bing (Bot Framework)", 
-            new BingContainer(368, "css/skype.css"))); 
- 
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Bing (Bot Framework)",
+            new BingContainer(368, "css/skype.css")));
+
     hostContainerOptions.push(
         new HostContainerOption(
             "Kik (Bot Framework)",
@@ -263,7 +263,7 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Slack (Bot Framework)",
-            new SlackContainer(500,"css/slack.css")));
+            new SlackContainer(500, "css/slack.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -323,6 +323,7 @@ function setupFilePicker() {
 }
 
 function actionExecuted(action: Adaptive.Action) {
+
     var message: string = "Action executed\n";
     message += "    Title: " + action.title + "\n";
 
@@ -346,12 +347,37 @@ function actionExecuted(action: Adaptive.Action) {
         }
 
         message += "    Body: " + httpAction.body + "\n";
+
+        httpAction.setStatus({
+            "type": "AdaptiveCard",
+            "body": [{
+                "type": "TextBlock",
+                "text": "Working on it...",
+                "weight": "normal",
+                "size": "small"
+            }]
+        });
     }
     else {
         message += "    Type: <unknown>";
     }
-
+    window.setTimeout(actionCallback, 2000, action);
     alert(message);
+}
+
+function actionCallback(action: Adaptive.Action) {
+    if (action instanceof Adaptive.HttpAction) {
+        let httpAction = <Adaptive.HttpAction>action;
+        httpAction.setStatus({
+            "type": "AdaptiveCard",
+            "body": [{
+                "type": "TextBlock",
+                "text": "Success!",
+                "weight": "normal",
+                "size": "small"
+            }]
+        });
+    }
 }
 
 function showPopupCard(action: Adaptive.ShowCardAction) {
@@ -434,13 +460,13 @@ window.onload = () => {
     document.getElementById("editConfig").onclick = (e) => {
         switchToConfigEditor();
     };
-    
+
     Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
     Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
 
     // Uncomment to test the onInlineCardExpanded event:
     // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
-    
+
     Adaptive.AdaptiveCard.onParseError = (error: Adaptive.IValidationError) => {
         lastValidationErrors.push(error);
     }
