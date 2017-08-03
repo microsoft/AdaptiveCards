@@ -186,7 +186,7 @@ function setupEditor() {
             else {
                 currentConfigPayload = editor.getValue();
             }
-            
+
             tryRenderCard();
         });
 
@@ -198,13 +198,13 @@ function setupEditor() {
         if (cardUrl) {
             currentCardPayload = "";
             var xhttp = new XMLHttpRequest();
-            xhttp.onload = function() {
-               currentCardPayload = xhttp.responseText;
-               setEditorText(currentCardPayload);
+            xhttp.onload = function () {
+                currentCardPayload = xhttp.responseText;
+                setEditorText(currentCardPayload);
             };
-        
+
             xhttp.open("GET", cardUrl, true);
-            xhttp.send(); 
+            xhttp.send();
         }
         else if (cachedPayload) {
             currentCardPayload = cachedPayload;
@@ -249,12 +249,12 @@ function setupContainerPicker() {
         new HostContainerOption(
             "WebChat (Bot Framework)",
             new WebChatContainer("css/webchat.css")));
- 
-    hostContainerOptions.push( 
-        new HostContainerOption( 
-            "Bing (Bot Framework)", 
-            new BingContainer(368, "css/skype.css"))); 
- 
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Bing (Bot Framework)",
+            new BingContainer(368, "css/skype.css")));
+
     hostContainerOptions.push(
         new HostContainerOption(
             "Kik (Bot Framework)",
@@ -263,7 +263,7 @@ function setupContainerPicker() {
     hostContainerOptions.push(
         new HostContainerOption(
             "Slack (Bot Framework)",
-            new SlackContainer(500,"css/slack.css")));
+            new SlackContainer(500, "css/slack.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
@@ -354,7 +354,40 @@ function actionExecuted(action: Adaptive.Action) {
         message += "    Type: <unknown>";
     }
 
+    // Uncomment to test the action's setStatus method:
+    /*
+    action.setStatus(
+        {
+            "type": "AdaptiveCard",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "text": "Working on it...",
+                    "weight": "normal",
+                    "size": "small"
+                }
+            ]
+        });
+
+    window.setTimeout(actionCompletedCallback, 2000, action);
+    */
+
     alert(message);
+}
+
+function actionCompletedCallback(action: Adaptive.Action) {
+    action.setStatus(
+        {
+            "type": "AdaptiveCard",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "text": "Success!",
+                    "weight": "normal",
+                    "size": "small"
+                }
+            ]
+        });
 }
 
 function showPopupCard(action: Adaptive.ShowCardAction) {
@@ -441,7 +474,7 @@ window.onload = () => {
     document.getElementById("editConfig").onclick = (e) => {
         switchToConfigEditor();
     };
-    
+
     Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
     // Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
 
@@ -458,6 +491,9 @@ window.onload = () => {
         }        
     }
     
+    // Uncomment to test the onInlineCardExpanded event:
+    // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
+
     Adaptive.AdaptiveCard.onParseError = (error: Adaptive.IValidationError) => {
         lastValidationErrors.push(error);
     }
