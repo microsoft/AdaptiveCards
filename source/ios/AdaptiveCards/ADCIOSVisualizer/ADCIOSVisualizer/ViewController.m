@@ -93,11 +93,11 @@
 {
     self.editableStr = jsonStr;
     ACRViewController *adcVc = [[ACRViewController alloc] init:jsonStr
-                                                     withFrame:CGRectMake(20, 250, 300, 850)];
+                                                     withFrame:CGRectMake(20, 250, 300, 1250)];
     if(self.curView)
         [self.curView removeFromSuperview];
     self.curView = adcVc.view;
-    self.curView.frame = CGRectMake(20, 250, 300, 850);
+    self.curView.frame = CGRectMake(20, 250, 300, 1250);
     [self addChildViewController:adcVc];
     [self.view addSubview:adcVc.view];
     [adcVc didMoveToParentViewController:self];

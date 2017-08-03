@@ -17,8 +17,13 @@ using namespace AdaptiveCards;
     std::shared_ptr<ToggleInput> toggleInputDataSource;
     std::shared_ptr<ChoiceSetInput> choiceSetDataSource;
     std::shared_ptr<HostConfig> config;
-    bool isMultichoiceAllowed;
-    bool isToggleInput;
+    NSString *id;
+    NSString *valueOn;
+    NSString *valueOff;
+    BOOL isMultichoiceAllowed;
+    BOOL isToggleInput;
+    BOOL isSelected;
+    NSMutableDictionary *results;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -31,7 +36,9 @@ using namespace AdaptiveCards;
         self.delegate = self;
         self.backgroundColor = UIColor.clearColor;
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        isMultichoiceAllowed = false;
+        isMultichoiceAllowed = YES;
+        isSelected = NO;
+        results = nil;
     }
     return self;
 }
@@ -44,8 +51,18 @@ using namespace AdaptiveCards;
     if(self)
     {
         toggleInputDataSource = toggleInput;
-        isToggleInput = true;
+        isToggleInput = YES;
         config = hostConfig;
+        id = [[NSString alloc]initWithCString:toggleInputDataSource->GetId().c_str()
+                                     encoding:NSUTF8StringEncoding];
+        if(toggleInputDataSource->GetValue() == toggleInputDataSource->GetValueOn())
+        {
+            isSelected = YES;
+        }
+        valueOn  = [[NSString alloc]initWithCString:toggleInputDataSource->GetValueOn().c_str()
+                                           encoding:NSUTF8StringEncoding];
+        valueOff = [[NSString alloc]initWithCString:toggleInputDataSource->GetValueOff().c_str()
+                                           encoding:NSUTF8StringEncoding];
     }
     return self;
 }
@@ -57,10 +74,13 @@ using namespace AdaptiveCards;
     self = [self initWithFrame:view.frame style:UITableViewStyleGrouped];
     if(self)
     {
-        choiceSetDataSource   = choiceSet;
-        isToggleInput = false;
+        choiceSetDataSource = choiceSet;
+        isToggleInput = NO;
         config = hostConfig;
+        id = [[NSString alloc]initWithCString:choiceSetDataSource->GetId().c_str()
+                                     encoding:NSUTF8StringEncoding];
         isMultichoiceAllowed = choiceSetDataSource->GetIsMultiSelect();
+        results = [[NSMutableDictionary alloc]init];
     }
     return self;
 }
@@ -99,6 +119,10 @@ using namespace AdaptiveCards;
     {
         title = [NSString stringWithCString:toggleInputDataSource->GetTitle().c_str()
                            encoding:NSUTF8StringEncoding];
+        if(isSelected)
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
     }
     else
     {
@@ -118,20 +142,25 @@ using namespace AdaptiveCards;
     {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType =
         UITableViewCellAccessoryNone;
+        isSelected = NO;
+        results[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
     }
     else
     {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType =
         UITableViewCellAccessoryCheckmark;
+        isSelected = YES;
+        results[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
     }
 }
 
 - (void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if(isMultichoiceAllowed == false)
+    if(isMultichoiceAllowed == NO)
     {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType =
         UITableViewCellAccessoryNone;
+        results[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
     }
 }
 
@@ -143,11 +172,31 @@ using namespace AdaptiveCards;
 
 - (bool)validate:(NSError **)error
 {
-    return true;
+    // no need to validate
+    return YES;
 }
 
-- (void)getInput:(NSDictionary *)dictionary
+- (void)getInput:(NSMutableDictionary *)dictionary
 {
+    if(isToggleInput)
+    {
+        dictionary[id] = isSelected? valueOn : valueOff;
+    }
+    else
+    {
+        NSMutableArray* values = [[NSMutableArray alloc] init];
+        for(NSInteger i = 0; i < [results count]; i++)
+        {
+            if([results[[NSNumber numberWithInteger:i]] boolValue] == YES)
+            {
+                [values addObject:
+                 [NSString stringWithCString:choiceSetDataSource->GetChoices()[i]->GetValue().c_str()
+                                    encoding:NSUTF8StringEncoding]];
+                 
+            }
+        }
+        dictionary[id] = [values componentsJoinedByString:@";"];
+    }
     
 }
 @end

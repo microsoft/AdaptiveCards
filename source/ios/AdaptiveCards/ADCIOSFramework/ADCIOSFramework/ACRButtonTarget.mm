@@ -63,8 +63,7 @@
         else
         {
             [input getInput:dictionary];
-        }
-        
+        }        
     }
 }
 

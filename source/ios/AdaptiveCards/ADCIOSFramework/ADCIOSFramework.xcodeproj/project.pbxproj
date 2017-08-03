@@ -453,9 +453,9 @@
 				6B6840F61F25EC2D008A933F /* ACRInputChoiceSetRenderer.h */,
 				6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */,
 				6B6840F21F25A5F7008A933F /* ACRInputControlTableView.h */,
+				6B6840F31F25A5F7008A933F /* ACRInputControlTableView.mm */,
 				F4C1F5DF1F266D480018CB78 /* ACRInputControlPickerView.h */,
 				F4C1F5E01F266D480018CB78 /* ACRInputControlPickerView.mm */,
-				6B6840F31F25A5F7008A933F /* ACRInputControlTableView.mm */,
 			);
 			name = Inputs;
 			sourceTree = "<group>";
