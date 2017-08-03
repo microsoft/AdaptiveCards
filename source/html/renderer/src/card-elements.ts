@@ -1866,10 +1866,7 @@ class ActionCollection {
             this.items.push(action);
 
             invokeSetParent(action, this._owner);
-
-            if (action instanceof HttpAction) {
-                invokeSetCollection(action, this);
-            }
+            invokeSetCollection(action, this);
         }
         else {
             throw new Error("The action already belongs to another element.")

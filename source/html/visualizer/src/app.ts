@@ -323,7 +323,6 @@ function setupFilePicker() {
 }
 
 function actionExecuted(action: Adaptive.Action) {
-
     var message: string = "Action executed\n";
     message += "    Title: " + action.title + "\n";
 
@@ -347,37 +346,45 @@ function actionExecuted(action: Adaptive.Action) {
         }
 
         message += "    Body: " + httpAction.body + "\n";
-
-        httpAction.setStatus({
-            "type": "AdaptiveCard",
-            "body": [{
-                "type": "TextBlock",
-                "text": "Working on it...",
-                "weight": "normal",
-                "size": "small"
-            }]
-        });
     }
     else {
         message += "    Type: <unknown>";
     }
-    window.setTimeout(actionCallback, 2000, action);
+
+    // Uncomment to test the action's setStatus method:
+    /*
+    action.setStatus(
+        {
+            "type": "AdaptiveCard",
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "text": "Working on it...",
+                    "weight": "normal",
+                    "size": "small"
+                }
+            ]
+        });
+
+    window.setTimeout(actionCompletedCallback, 2000, action);
+    */
+
     alert(message);
 }
 
-function actionCallback(action: Adaptive.Action) {
-    if (action instanceof Adaptive.HttpAction) {
-        let httpAction = <Adaptive.HttpAction>action;
-        httpAction.setStatus({
+function actionCompletedCallback(action: Adaptive.Action) {
+    action.setStatus(
+        {
             "type": "AdaptiveCard",
-            "body": [{
-                "type": "TextBlock",
-                "text": "Success!",
-                "weight": "normal",
-                "size": "small"
-            }]
+            "body": [
+                {
+                    "type": "TextBlock",
+                    "text": "Success!",
+                    "weight": "normal",
+                    "size": "small"
+                }
+            ]
         });
-    }
 }
 
 function showPopupCard(action: Adaptive.ShowCardAction) {
