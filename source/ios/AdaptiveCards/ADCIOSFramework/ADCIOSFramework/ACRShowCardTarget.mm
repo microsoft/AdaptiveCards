@@ -1,32 +1,31 @@
 //
-//  ACRButtonTarget
-//  ACRButtonTarget.mm
+//  ACRShowCardTarget
+//  ACRShowCardTarget.mm
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <SafariServices/SafariServices.h>
-#import "ACRButtonTarget.h"
+#import "ACRShowCardTarget.h"
 #import "ACRRenderer.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
+#import "ACRViewController.h"
 
-@implementation ACRButtonTarget
+@implementation ACRShowCardTarget
 {
-    __weak UIViewController *_vc;
-    NSURL *_url;
     std::shared_ptr<AdaptiveCards::AdaptiveCard> _adaptiveCard;
     std::shared_ptr<AdaptiveCards::HostConfig> _config; 
     __weak UIView<ACRIContentHoldingView> *_superview;
-    UIView *_adcView;
-    NSArray *_inputs;
-    NSString *_data;
+    __weak UIViewController *_vc;
+    __weak UIView *_adcView;
 }
 
 - (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard 
                               config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
+                                  vc:(UIViewController *)vc
 {
     self = [super init];
     if(self)
@@ -34,54 +33,10 @@
         _adaptiveCard = adaptiveCard;
         _config = config;
         _superview = superview;
+        _vc = vc;
         _adcView = nil;
     }
     return self;
-}
-
-- (instancetype)initWithDataString:(NSString *)data inputs:(NSArray *)inputs
-{
-    self = [super init];
-    if(self)
-    {
-        _data = data;
-        _inputs = inputs;
-    }
-    return self;
-}
-
-- (IBAction)submit:(UIButton *)sender
-{
-    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
-    NSError *err = nil;
-    for(id<ACRIBaseInputHandler> input in _inputs)
-    {
-        if([input validate:&err] == NO)
-        {
-            NSLog(@"input validation failed %@", err);
-        }
-        else
-        {
-            [input getInput:dictionary];
-        }        
-    }
-}
-
-- (instancetype)initWithURL:(NSURL *)url viewController:(UIViewController *)vc
-{
-    self = [super init];
-    if(self)
-    {
-        _vc = vc;
-        _url = url;
-    }
-    return self;
-}
-
-- (IBAction)openURL
-{ 
-    SFSafariViewController* svc = [[SFSafariViewController alloc] initWithURL:_url];
-    [_vc presentViewController:svc animated:YES completion:nil];
 }
 
 - (IBAction)showCard:(UIButton *)sender
@@ -99,14 +54,14 @@
         }
         else
         {
-            NSMutableArray* inputs = [[NSMutableArray alloc] init];
-            UIView* adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
+            NSMutableArray *inputs = [[NSMutableArray alloc] init];
+            UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                             inputs:inputs
                                                     viewController:_vc
                                                         guideFrame:_superview.frame
             
                                                         hostconfig:_config];
-            ACRContentHoldingUIView* wrappingView = [[ACRContentHoldingUIView alloc]
+            ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc]
                                                      initWithFrame:CGRectMake(0,0,
                                                                               adcView.frame.size.width +
                                                                               _config->actions.showCard.padding.left +
@@ -121,12 +76,12 @@
             NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-%u-|",
                                    _config->actions.showCard.padding.top,
                                    _config->actions.showCard.padding.bottom];
-            NSDictionary* dictionary = NSDictionaryOfVariableBindings(wrappingView, adcView);
-            NSArray* horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
+            NSDictionary *dictionary = NSDictionaryOfVariableBindings(wrappingView, adcView);
+            NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
                                                                          options:0
                                                                          metrics:nil
                                                                            views:dictionary];
-            NSArray* vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
+            NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
                                                                          options:0
                                                                          metrics:nil
                                                                            views:dictionary];

@@ -8,7 +8,7 @@
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRActionShowCardRenderer.h"
 #import "ACRButton.h"
-#import "ACRButtonTarget.h"
+#import "ACRShowCardTarget.h"
 #import "ShowCardAction.h"
 
 @implementation ACRActionShowCardRenderer
@@ -31,10 +31,13 @@
                                           encoding:NSUTF8StringEncoding];
     UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
     
-    ACRButtonTarget *target = [[ACRButtonTarget alloc] initWithAdaptiveCard:action->GetCard()
-                                                                     config:config
-                                                                  superview:superview];
-    [button addTarget:target action:@selector(showCard:) forControlEvents:UIControlEventTouchUpInside];
+    ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:action->GetCard()
+                                                                         config:config
+                                                                      superview:superview
+                                                                             vc:vc];
+    [button addTarget:target
+               action:@selector(showCard:)
+     forControlEvents:UIControlEventTouchUpInside];
     
     [superview addTarget:target];
 

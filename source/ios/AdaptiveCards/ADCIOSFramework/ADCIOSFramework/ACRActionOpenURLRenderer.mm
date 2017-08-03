@@ -8,7 +8,7 @@
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRButton.h"
-#import "ACRButtonTarget.h"
+#import "ACROpenURLTarget.h"
 #import "OpenUrlAction.h"
 
 @implementation ACRActionOpenURLRenderer
@@ -34,7 +34,7 @@
                                           encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:urlStr];
     
-    ACRButtonTarget *target = [[ACRButtonTarget alloc] initWithURL:url viewController:vc];
+    ACROpenURLTarget *target = [[ACROpenURLTarget alloc] initWithURL:url viewController:vc];
     [button addTarget:target action:@selector(openURL) forControlEvents:UIControlEventTouchUpInside];
     [superview addTarget:target];
 
