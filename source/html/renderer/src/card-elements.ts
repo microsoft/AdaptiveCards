@@ -2901,7 +2901,7 @@ class InlineAdaptiveCard extends AdaptiveCard {
     }
 
     protected get defaultColorPalette(): Enums.ColorPalette {
-        return "emphasis";
+        return hostConfig.actions.showCard.colorPalette ? hostConfig.actions.showCard.colorPalette : "emphasis";
     }
 
     getForbiddenActionTypes(): Array<any> {
