@@ -1721,14 +1721,6 @@ class ActionCollection {
                 this._actionCard.style.marginLeft = "-" + padding.left + "px";
                 this._actionCard.style.marginRight = "-" + padding.right + "px";
 
-                if (padding.left > 0) {
-                    this._actionCard.style.paddingLeft = "0px";
-                }
-
-                if (padding.right > 0) {
-                    this._actionCard.style.paddingRight = "0px";
-                }
-
                 Utils.appendChild(this._actionCardContainer, this._actionCard);
             }
 
@@ -1738,14 +1730,6 @@ class ActionCollection {
 
                 this._statusCard.style.marginLeft = "-" + padding.left + "px";
                 this._statusCard.style.marginRight = "-" + padding.right + "px";
-
-                if (padding.left > 0) {
-                    this._statusCard.style.paddingLeft = "0px";
-                }
-
-                if (padding.right > 0) {
-                    this._statusCard.style.paddingRight = "0px";
-                }
 
                 Utils.appendChild(this._actionCardContainer, this._statusCard);
             }
