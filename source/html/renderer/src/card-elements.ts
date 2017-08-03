@@ -1341,9 +1341,10 @@ export abstract class Action {
         if (status) {
             let statusCard = new InlineAdaptiveCard();
             statusCard.parse(status);
-            this._actionCollection.showStatus(statusCard);
-        } else {
-            this._actionCollection.hideStatus();
+            this._actionCollection.showStatusCard(statusCard);
+        }
+        else {
+            this._actionCollection.hideStatusCard();
         }
     }
 
@@ -1585,14 +1586,14 @@ class ActionCollection {
     private _statusBar: HTMLElement = null;
     private _actionCard: HTMLElement = null;
 
-    showStatus(status: AdaptiveCard) {
+    showStatusCard(status: AdaptiveCard) {
         let renderedCard = status.render();
         this._statusBar = renderedCard;
 
         this.refreshContainer();
     }
 
-    hideStatus() {
+    hideStatusCard() {
         this._statusBar = null;
 
         this.refreshContainer();
@@ -1613,9 +1614,11 @@ class ActionCollection {
         if (this.onShowActionCardPane) {
             this.onShowActionCardPane(null);
         }
+
         this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
 
         let padding = this._owner.getRootElement().getNonZeroPadding();
+
         if (hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
             this._actionCardContainer.style.paddingLeft = padding.left + "px";
             this._actionCardContainer.style.paddingRight = padding.right + "px";
@@ -1684,7 +1687,8 @@ class ActionCollection {
             actionButton.action.execute();
         }
         else {
-            this.hideStatus();
+            this.hideStatusCard();
+
             if (hostConfig.actions.showCard.actionMode == "popup") {
                 actionButton.action.execute();
             }
