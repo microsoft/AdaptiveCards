@@ -9,7 +9,7 @@ function invokeSetParent(obj: any, parent: CardElement) {
     obj["setParent"](parent);
 }
 
-function invokeSetCollection(action:Action, collection:ActionCollection){
+function invokeSetCollection(action: Action, collection: ActionCollection) {
     action["setCollection"](collection);
 }
 
@@ -108,7 +108,7 @@ export abstract class CardElement {
         }
         else {
             renderedElement.style.flex = "1 1 100%";
-        }        
+        }
     }
 
     protected showBottomSpacer(requestingElement: CardElement) {
@@ -1317,7 +1317,11 @@ export abstract class Action {
         return result;
     }
 
+    // status card
+    readonly status: AdaptiveCard = new InlineAdaptiveCard();
+
     private _parent: CardElement = null;
+    private _actionCollection: ActionCollection = null; // hold the reference to its action collection
 
     protected setParent(value: CardElement) {
         this._parent = value;
@@ -1325,6 +1329,26 @@ export abstract class Action {
 
     abstract getJsonTypeName(): string;
     abstract execute();
+
+    private setCollection(actionCollection: ActionCollection) {
+        this._actionCollection = actionCollection;
+    }
+
+    // Expand the action card pane with a inline status card
+    // Null status will clear the status bar
+    setStatus(status: any) {
+        if (this._actionCollection == null) {
+            return;
+        }
+
+        this.status.clear();
+        if (status) {
+            this.status.parse(status);
+            this._actionCollection.showStatus(this);
+        } else {
+            this._actionCollection.hideStatus();
+        }
+    }
 
     validate(): Array<IValidationError> {
         return [];
@@ -1444,31 +1468,11 @@ export class HttpAction extends ExternalAction {
     private _url = new Utils.StringWithSubstitutions();
     private _body = new Utils.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
-    private _actionCollection:ActionCollection; // hold the reference to its action collection
-
-    // status card
-    readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     method: string;
 
     getJsonTypeName(): string {
         return "Action.Http";
-    }
-
-    setCollection(actionCollection:ActionCollection){
-        this._actionCollection = actionCollection;
-    }
-
-    // Expand the action card pane with a inline status card
-    // Null status will clear the status bar
-    setStatus(status:any){
-        this.card.clear();
-        if(status){
-            this.card.parse(status);
-            this._actionCollection.showActionCardPane(this);
-        }else{
-            this._actionCollection.hideActionCardPane();
-        }
     }
 
     validate(): Array<IValidationError> {
@@ -1579,60 +1583,97 @@ class ActionCollection {
     private _owner: CardElement;
     private _actionButtons: Array<ActionButton> = [];
     private _actionCardContainer: HTMLDivElement;
-    private _expandedAction: ShowCardAction | HttpAction = null;
+    private _expandedAction: ShowCardAction = null;
     private _renderedActionCount: number = 0;
+    private _statusBar: HTMLElement = null;
+    private _actionCard: HTMLElement = null;
 
-    hideActionCardPane() {
+    showStatus(action: Action) {
+        let renderedCard = action.status.render();
+        this._statusBar = renderedCard;
+
+        this.refreshContainer();
+    }
+
+    hideStatus() {
+        this._statusBar = null;
+
+        this.refreshContainer();
+    }
+
+    private refreshContainer() {
         this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.padding = "0px";
-        this._actionCardContainer.style.marginTop = "0px";
+        if (this._actionCard === null && this._statusBar === null) {
+            this._actionCardContainer.style.padding = "0px";
+            this._actionCardContainer.style.marginTop = "0px";
 
-        if (this.onHideActionCardPane) {
-            this.onHideActionCardPane();
+            if (this.onHideActionCardPane) {
+                this.onHideActionCardPane();
+            }
+            return;
         }
 
+        if (this.onShowActionCardPane) {
+            this.onShowActionCardPane(null);
+        }
+        this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
+
+        let padding = this._owner.getRootElement().getNonZeroPadding();
+        if (hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
+            this._actionCardContainer.style.paddingLeft = padding.left + "px";
+            this._actionCardContainer.style.paddingRight = padding.right + "px";
+
+            this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
+            this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
+        }
+
+        if (this._actionCard !== null) {
+            if (padding.left > 0) {
+                this._actionCard.style.paddingLeft = "0px";
+            }
+
+            if (padding.right > 0) {
+                this._actionCard.style.paddingRight = "0px";
+            }
+
+            Utils.appendChild(this._actionCardContainer, this._actionCard);
+        }
+
+        if (this._statusBar !== null) {
+            if (padding.left > 0) {
+                this._statusBar.style.paddingLeft = "0px";
+            }
+
+            if (padding.right > 0) {
+                this._statusBar.style.paddingRight = "0px";
+            }
+
+            Utils.appendChild(this._actionCardContainer, this._statusBar);
+        }
+    }
+
+    private hideActionCard() {
         if (this._expandedAction) {
             raiseInlineCardExpandedEvent(this._expandedAction, false);
         }
 
         this._expandedAction = null;
+        this._actionCard = null;
+
+        this.refreshContainer();
     }
 
-    showActionCardPane(action: ShowCardAction | HttpAction) {
-        if(action.card == null) return;
-
-        if (this.onShowActionCardPane) {
-            this.onShowActionCardPane(action);
-        }
+    private showActionCard(action: ShowCardAction) {
+        if (action.card == null) return;
 
         var renderedCard = action.card.render();
 
-        this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
-
-        if (hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
-            var padding = this._owner.getNonZeroPadding();
-
-            this._actionCardContainer.style.paddingLeft = padding.left + "px";
-            this._actionCardContainer.style.paddingRight = padding.right + "px";
-            
-            this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
-            this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
-
-            if (padding.left > 0) {
-                renderedCard.style.paddingLeft = "0px";
-            }
-
-            if (padding.right > 0) {
-                renderedCard.style.paddingRight = "0px";
-            }
-        }
-
-        Utils.appendChild(this._actionCardContainer, renderedCard);
-
         raiseInlineCardExpandedEvent(action, true);
 
+        this._actionCard = renderedCard;
         this._expandedAction = action;
+
+        this.refreshContainer();
     }
 
     private actionClicked(actionButton: ActionButton) {
@@ -1640,12 +1681,13 @@ class ActionCollection {
             for (var i = 0; i < this._actionButtons.length; i++) {
                 this._actionButtons[i].state = ActionButtonState.Normal;
             }
-            
-            this.hideActionCardPane();
+
+            this.hideActionCard();
 
             actionButton.action.execute();
         }
         else {
+            this.hideStatus();
             if (hostConfig.actions.showCard.actionMode == "popup") {
                 actionButton.action.execute();
             }
@@ -1654,7 +1696,7 @@ class ActionCollection {
                     this._actionButtons[i].state = ActionButtonState.Normal;
                 }
 
-                this.hideActionCardPane();
+                this.hideActionCard();
             }
             else {
                 for (var i = 0; i < this._actionButtons.length; i++) {
@@ -1665,7 +1707,7 @@ class ActionCollection {
 
                 actionButton.state = ActionButtonState.Expanded;
 
-                this.showActionCardPane(actionButton.action);
+                this.showActionCard(actionButton.action);
             }
         }
     }
@@ -1673,7 +1715,7 @@ class ActionCollection {
     items: Array<Action> = [];
     actionStyle: Enums.ActionStyle = "link";
     onHideActionCardPane: () => void = null;
-    onShowActionCardPane: (action: ShowCardAction | HttpAction) => void = null;
+    onShowActionCardPane: (action: ShowCardAction) => void = null;
 
     constructor(owner: CardElement) {
         this._owner = owner;
@@ -1733,7 +1775,7 @@ class ActionCollection {
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
         if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
-            this.showActionCardPane(<ShowCardAction>this.items[0]);
+            this.showActionCard(<ShowCardAction>this.items[0]);
             this._renderedActionCount = 1;
         }
         else {
@@ -1822,7 +1864,10 @@ class ActionCollection {
             this.items.push(action);
 
             invokeSetParent(action, this._owner);
-            invokeSetCollection(action, this);
+
+            if (action instanceof HttpAction) {
+                invokeSetCollection(action, this);
+            }
         }
         else {
             throw new Error("The action already belongs to another element.")
@@ -1851,7 +1896,7 @@ export class ActionSet extends CardElement {
 
     protected internalRender(): HTMLElement {
         this._actionCollection.actionStyle = this.actionStyle;
-        
+
         return this._actionCollection.render();
     }
 
@@ -2458,7 +2503,7 @@ function raiseExecuteActionEvent(action: ExternalAction) {
     }
 }
 
-function raiseInlineCardExpandedEvent(action: ShowCardAction | HttpAction, isExpanded: boolean) {
+function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolean) {
     if (AdaptiveCard.onInlineCardExpanded != null) {
         AdaptiveCard.onInlineCardExpanded(action, isExpanded);
     }
@@ -2546,7 +2591,7 @@ export abstract class ContainerWithActions extends ContainerBase {
                 {
                     spacing: computeSpacing(hostConfig.actions.spacing),
                     lineThickness: null,
-                    lineColor: null                    
+                    lineColor: null
                 },
                 "vertical"));
             Utils.appendChild(this._element, renderedActions);
@@ -2614,7 +2659,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     static onExecuteAction: (action: ExternalAction) => void = null;
     static onShowPopupCard: (action: ShowCardAction) => void = null;
-    static onInlineCardExpanded: (action: ShowCardAction | HttpAction, isExpanded: boolean) => void = null;
+    static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
     static initialize() {
@@ -2749,7 +2794,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
     },
     separator: {
         lineThickness: 1,
-        lineColor: "#EEEEEE"        
+        lineColor: "#EEEEEE"
     },
     fontFamily: "Segoe UI",
     fontSizes: {
