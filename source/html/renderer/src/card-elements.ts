@@ -1317,9 +1317,6 @@ export abstract class Action {
         return result;
     }
 
-    // status card
-    readonly status: AdaptiveCard = new InlineAdaptiveCard();
-
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
 
@@ -1341,10 +1338,10 @@ export abstract class Action {
             return;
         }
 
-        this.status.clear();
         if (status) {
-            this.status.parse(status);
-            this._actionCollection.showStatus(this);
+            let statusCard = new InlineAdaptiveCard();
+            statusCard.parse(status);
+            this._actionCollection.showStatus(statusCard);
         } else {
             this._actionCollection.hideStatus();
         }
@@ -1588,8 +1585,8 @@ class ActionCollection {
     private _statusBar: HTMLElement = null;
     private _actionCard: HTMLElement = null;
 
-    showStatus(action: Action) {
-        let renderedCard = action.status.render();
+    showStatus(status: AdaptiveCard) {
+        let renderedCard = status.render();
         this._statusBar = renderedCard;
 
         this.refreshContainer();
