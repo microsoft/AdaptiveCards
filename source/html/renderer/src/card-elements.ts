@@ -2163,6 +2163,24 @@ export class Container extends CardElement {
                 }
             }
 
+            if (effectivePadding.top != "none" || effectivePadding.right != "none" || effectivePadding.bottom != "none" || effectivePadding.left != "none") {
+                if (effectivePadding.top == "none") {
+                    effectivePadding.top = "default";
+                }
+
+                if (effectivePadding.right == "none") {
+                    effectivePadding.right = "default";
+                }
+
+                if (effectivePadding.bottom == "none") {
+                    effectivePadding.bottom = "default";
+                }
+
+                if (effectivePadding.left == "none") {
+                    effectivePadding.left = "default";
+                }
+            }
+
             var physicalMargin = paddingToSpacingDefinition(effectiveMargin);
             var physicalPadding = paddingToSpacingDefinition(effectivePadding);
 
