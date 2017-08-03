@@ -1583,31 +1583,32 @@ class ActionCollection {
     private _actionCardContainer: HTMLDivElement;
     private _expandedAction: ShowCardAction = null;
     private _renderedActionCount: number = 0;
-    private _statusBar: HTMLElement = null;
+    private _statusCard: HTMLElement = null;
     private _actionCard: HTMLElement = null;
 
     showStatusCard(status: AdaptiveCard) {
-        let renderedCard = status.render();
-        this._statusBar = renderedCard;
+        this._statusCard = status.render();
 
         this.refreshContainer();
     }
 
     hideStatusCard() {
-        this._statusBar = null;
+        this._statusCard = null;
 
         this.refreshContainer();
     }
 
     private refreshContainer() {
-        this._actionCardContainer.innerHTML = '';
-        if (this._actionCard === null && this._statusBar === null) {
+        this._actionCardContainer.innerHTML = "";
+
+        if (this._actionCard === null && this._statusCard === null) {
             this._actionCardContainer.style.padding = "0px";
             this._actionCardContainer.style.marginTop = "0px";
 
             if (this.onHideActionCardPane) {
                 this.onHideActionCardPane();
             }
+
             return;
         }
 
@@ -1639,16 +1640,16 @@ class ActionCollection {
             Utils.appendChild(this._actionCardContainer, this._actionCard);
         }
 
-        if (this._statusBar !== null) {
+        if (this._statusCard !== null) {
             if (padding.left > 0) {
-                this._statusBar.style.paddingLeft = "0px";
+                this._statusCard.style.paddingLeft = "0px";
             }
 
             if (padding.right > 0) {
-                this._statusBar.style.paddingRight = "0px";
+                this._statusCard.style.paddingRight = "0px";
             }
 
-            Utils.appendChild(this._actionCardContainer, this._statusBar);
+            Utils.appendChild(this._actionCardContainer, this._statusCard);
         }
     }
 
