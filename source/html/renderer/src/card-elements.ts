@@ -9,6 +9,10 @@ function invokeSetParent(obj: any, parent: CardElement) {
     obj["setParent"](parent);
 }
 
+function invokeSetCollection(action: Action, collection: ActionCollection) {
+    action["setCollection"](collection);
+}
+
 function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): boolean {
     if (forbiddenActionTypes) {
         for (var i = 0; i < forbiddenActionTypes.length; i++) {
@@ -104,7 +108,7 @@ export abstract class CardElement {
         }
         else {
             renderedElement.style.flex = "1 1 100%";
-        }        
+        }
     }
 
     protected showBottomSpacer(requestingElement: CardElement) {
@@ -161,8 +165,32 @@ export abstract class CardElement {
     parse(json: any) {
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
+
         this.spacing = Utils.getValueOrDefault<Enums.Spacing>(json["spacing"], "default");
         this.separator = json["separator"];
+
+        var jsonSeparation = json["separation"];
+
+        if (jsonSeparation !== undefined) {
+            if (jsonSeparation === "none") {
+                this.spacing = "none";
+                this.separator = false;
+            }
+            else if (jsonSeparation === "strong") {
+                this.spacing = "large";
+                this.separator = true;
+            }
+            else if (jsonSeparation === "default") {
+                this.spacing = "default";
+                this.separator = false;
+            }
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The \"separation\" property is deprecated and will be removed. Use the \"spacing\" and \"separator\" properties instead."
+                });
+        }
 
         var jsonHeight = json["height"];
 
@@ -1197,7 +1225,7 @@ enum ActionButtonState {
 
 class ActionButton {
     private _action: Action;
-    private _style: Enums.ActionStyle = "button";
+    private _style: Enums.ActionStyle = "link";
     private _element: HTMLButtonElement = null;
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
@@ -1290,6 +1318,7 @@ export abstract class Action {
     }
 
     private _parent: CardElement = null;
+    private _actionCollection: ActionCollection = null; // hold the reference to its action collection
 
     protected setParent(value: CardElement) {
         this._parent = value;
@@ -1297,6 +1326,27 @@ export abstract class Action {
 
     abstract getJsonTypeName(): string;
     abstract execute();
+
+    private setCollection(actionCollection: ActionCollection) {
+        this._actionCollection = actionCollection;
+    }
+
+    // Expand the action card pane with a inline status card
+    // Null status will clear the status bar
+    setStatus(status: any) {
+        if (this._actionCollection == null) {
+            return;
+        }
+
+        if (status) {
+            let statusCard = new InlineAdaptiveCard();
+            statusCard.parse(status);
+            this._actionCollection.showStatusCard(statusCard);
+        }
+        else {
+            this._actionCollection.hideStatusCard();
+        }
+    }
 
     validate(): Array<IValidationError> {
         return [];
@@ -1533,56 +1583,98 @@ class ActionCollection {
     private _actionCardContainer: HTMLDivElement;
     private _expandedAction: ShowCardAction = null;
     private _renderedActionCount: number = 0;
+    private _statusCard: HTMLElement = null;
+    private _actionCard: HTMLElement = null;
 
-    private hideActionCardPane() {
-        this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.padding = "0px";
-        this._actionCardContainer.style.marginTop = "0px";
+    showStatusCard(status: AdaptiveCard) {
+        this._statusCard = status.render();
 
-        if (this.onHideActionCardPane) {
-            this.onHideActionCardPane();
+        this.refreshContainer();
+    }
+
+    hideStatusCard() {
+        this._statusCard = null;
+
+        this.refreshContainer();
+    }
+
+    private refreshContainer() {
+        this._actionCardContainer.innerHTML = "";
+
+        if (this._actionCard === null && this._statusCard === null) {
+            this._actionCardContainer.style.padding = "0px";
+            this._actionCardContainer.style.marginTop = "0px";
+
+            if (this.onHideActionCardPane) {
+                this.onHideActionCardPane();
+            }
+
+            return;
         }
 
+        if (this.onShowActionCardPane) {
+            this.onShowActionCardPane(null);
+        }
+
+        this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
+
+        let padding = this._owner.getRootElement().getNonZeroPadding();
+
+        if (hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
+            this._actionCardContainer.style.paddingLeft = padding.left + "px";
+            this._actionCardContainer.style.paddingRight = padding.right + "px";
+
+            this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
+            this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
+        }
+
+        if (this._actionCard !== null) {
+            if (padding.left > 0) {
+                this._actionCard.style.paddingLeft = "0px";
+            }
+
+            if (padding.right > 0) {
+                this._actionCard.style.paddingRight = "0px";
+            }
+
+            Utils.appendChild(this._actionCardContainer, this._actionCard);
+        }
+
+        if (this._statusCard !== null) {
+            if (padding.left > 0) {
+                this._statusCard.style.paddingLeft = "0px";
+            }
+
+            if (padding.right > 0) {
+                this._statusCard.style.paddingRight = "0px";
+            }
+
+            Utils.appendChild(this._actionCardContainer, this._statusCard);
+        }
+    }
+
+    private hideActionCard() {
         if (this._expandedAction) {
             raiseInlineCardExpandedEvent(this._expandedAction, false);
         }
 
         this._expandedAction = null;
+        this._actionCard = null;
+
+        this.refreshContainer();
     }
 
-    private showActionCardPane(action: ShowCardAction) {
-        if (this.onShowActionCardPane) {
-            this.onShowActionCardPane(action);
-        }
+    private showActionCard(action: ShowCardAction) {
+        if (action.card == null) return;
 
         var renderedCard = action.card.render();
 
-        this._actionCardContainer.innerHTML = '';
-        this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
-
-        if (hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
-            var padding = this._owner.getNonZeroPadding();
-
-            this._actionCardContainer.style.paddingLeft = padding.left + "px";
-            this._actionCardContainer.style.paddingRight = padding.right + "px";
-            
-            this._actionCardContainer.style.marginLeft = "-" + padding.left + "px";
-            this._actionCardContainer.style.marginRight = "-" + padding.right + "px";
-
-            if (padding.left > 0) {
-                renderedCard.style.paddingLeft = "0px";
-            }
-
-            if (padding.right > 0) {
-                renderedCard.style.paddingRight = "0px";
-            }
-        }
-
-        Utils.appendChild(this._actionCardContainer, renderedCard);
-
         raiseInlineCardExpandedEvent(action, true);
 
+        this._actionCard = renderedCard;
         this._expandedAction = action;
+
+        this.refreshContainer();
     }
 
     private actionClicked(actionButton: ActionButton) {
@@ -1591,11 +1683,13 @@ class ActionCollection {
                 this._actionButtons[i].state = ActionButtonState.Normal;
             }
 
-            this.hideActionCardPane();
+            this.hideActionCard();
 
             actionButton.action.execute();
         }
         else {
+            this.hideStatusCard();
+
             if (hostConfig.actions.showCard.actionMode == "popup") {
                 actionButton.action.execute();
             }
@@ -1604,7 +1698,7 @@ class ActionCollection {
                     this._actionButtons[i].state = ActionButtonState.Normal;
                 }
 
-                this.hideActionCardPane();
+                this.hideActionCard();
             }
             else {
                 for (var i = 0; i < this._actionButtons.length; i++) {
@@ -1615,13 +1709,13 @@ class ActionCollection {
 
                 actionButton.state = ActionButtonState.Expanded;
 
-                this.showActionCardPane(actionButton.action);
+                this.showActionCard(actionButton.action);
             }
         }
     }
 
     items: Array<Action> = [];
-    actionStyle: Enums.ActionStyle = "button";
+    actionStyle: Enums.ActionStyle = "link";
     onHideActionCardPane: () => void = null;
     onShowActionCardPane: (action: ShowCardAction) => void = null;
 
@@ -1683,7 +1777,7 @@ class ActionCollection {
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
         if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
-            this.showActionCardPane(<ShowCardAction>this.items[0]);
+            this.showActionCard(<ShowCardAction>this.items[0]);
             this._renderedActionCount = 1;
         }
         else {
@@ -1772,6 +1866,7 @@ class ActionCollection {
             this.items.push(action);
 
             invokeSetParent(action, this._owner);
+            invokeSetCollection(action, this);
         }
         else {
             throw new Error("The action already belongs to another element.")
@@ -1800,11 +1895,11 @@ export class ActionSet extends CardElement {
 
     protected internalRender(): HTMLElement {
         this._actionCollection.actionStyle = this.actionStyle;
-        
+
         return this._actionCollection.render();
     }
 
-    actionStyle: Enums.ActionStyle = "button";
+    actionStyle: Enums.ActionStyle = "link";
 
     constructor() {
         super();
@@ -1825,7 +1920,7 @@ export class ActionSet extends CardElement {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
 
-        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], "button");
+        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], this.actionStyle);
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
@@ -2041,9 +2136,19 @@ export abstract class ContainerBase extends CardElement {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
 
-        if (json["backgroundImage"]) {
+        var jsonBackgroundImage = json["backgroundImage"];
+
+        if (jsonBackgroundImage) {
             this.backgroundImage = new BackgroundImage();
-            this.backgroundImage.parse(json["backgroundImage"]);
+
+            if (typeof jsonBackgroundImage === "string") {
+                this.backgroundImage.url = jsonBackgroundImage;
+                this.backgroundImage.mode = "stretch";
+            }
+            else if (typeof jsonBackgroundImage === "object") {
+                this.backgroundImage = new BackgroundImage();
+                this.backgroundImage.parse(json["backgroundImage"]);
+            }
         }
 
         if (json[itemsCollectionPropertyName] != null) {
@@ -2201,6 +2306,19 @@ export class Column extends Container {
         super.parse(json);
 
         var jsonWidth = json["width"];
+
+        if (jsonWidth === undefined) {
+            jsonWidth = json["size"];
+
+            if (jsonWidth !== undefined) {
+                raiseParseError(
+                    {
+                        error: Enums.ValidationError.Deprecated,
+                        message: "The \"Column.size\" property is deprecated and will be removed. Use the \"Column.width\" property instead."
+                    });
+            }
+        }
+
         var invalidWidth = false;
 
         if (typeof jsonWidth === "number") {
@@ -2472,7 +2590,7 @@ export abstract class ContainerWithActions extends ContainerBase {
                 {
                     spacing: computeSpacing(hostConfig.actions.spacing),
                     lineThickness: null,
-                    lineColor: null                    
+                    lineColor: null
                 },
                 "vertical"));
             Utils.appendChild(this._element, renderedActions);
@@ -2481,7 +2599,7 @@ export abstract class ContainerWithActions extends ContainerBase {
         return this._element.children.length > 0 ? this._element : null;
     }
 
-    actionStyle: Enums.ActionStyle = "button";
+    actionStyle: Enums.ActionStyle = "link";
 
     constructor() {
         super();
@@ -2494,7 +2612,7 @@ export abstract class ContainerWithActions extends ContainerBase {
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json, itemsCollectionPropertyName);
 
-        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], "button");
+        this.actionStyle = Utils.getValueOrDefault<Enums.ActionStyle>(json["actionStyle"], this.actionStyle);
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
@@ -2675,7 +2793,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
     },
     separator: {
         lineThickness: 1,
-        lineColor: "#EEEEEE"        
+        lineColor: "#EEEEEE"
     },
     fontFamily: "Segoe UI",
     fontSizes: {
