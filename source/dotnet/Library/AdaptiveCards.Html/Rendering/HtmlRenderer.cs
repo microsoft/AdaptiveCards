@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Xml;
 using HtmlTags;
@@ -620,16 +621,24 @@ namespace AdaptiveCards.Rendering
         protected static HtmlTag TextInputRender(TypedElement element, RenderContext context)
         {
             TextInput input = (TextInput)element;
-            var container = new Container { Separation = input.Separation };
-            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-            if (input.Value != null)
-                container.Items.Add(new TextBlock
-                {
-                    Text = input.Value,
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
-            return context.Render(container);
+
+            var uiTextInput = new HtmlTag("textarea")
+                .AddClass("ac-textinput")
+                .AddClass("ac-input")
+                .Style("width", "100%")
+                .Style("box-sizing", "border-box");
+
+            if (!string.IsNullOrEmpty(input.Placeholder))
+            {
+                uiTextInput.Attr("placeholder", WebUtility.HtmlEncode(input.Placeholder));
+            }
+
+            if (!string.IsNullOrEmpty(input.Value))
+            {
+                uiTextInput.Text = input.Value;
+            }
+
+            return uiTextInput;
         }
 
         protected static HtmlTag TimeInputRender(TypedElement element, RenderContext context)
