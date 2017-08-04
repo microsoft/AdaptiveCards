@@ -12,7 +12,7 @@
 
 @implementation ACRImageRenderer
 
-+ (ACRImageRenderer* )getInstance
++ (ACRImageRenderer *)getInstance
 {
     static ACRImageRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -50,11 +50,11 @@
     return cgSize;
 }
 // code clean-up in progress 
-- (NSArray* )setImageAlignment:(HorizontalAlignment)alignment
-                 withSuperview:(UIView* )superview
-                        toView:(UIView* )view
+- (NSArray *)setImageAlignment:(HorizontalAlignment)alignment
+                 withSuperview:(UIView *)superview
+                        toView:(UIView *)view
 {
-    NSMutableArray* constraints = [[NSMutableArray alloc] init]; 
+    NSMutableArray *constraints = [[NSMutableArray alloc] init]; 
     [constraints addObject:
         [NSLayoutConstraint constraintWithItem:superview
                                      attribute:NSLayoutAttributeCenterY
@@ -117,24 +117,21 @@
     }
     return constraints;
 }
-- (UIView* )render:(UIView* )viewGroup
+- (UIView *)render:(UIView *)viewGroup
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
+    NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
+                                          encoding:[NSString defaultCStringEncoding]];
+    NSURL *url = [NSURL URLWithString:urlStr];
 
-    NSURL* url =
-    [NSURL URLWithString:
-          [[NSString stringWithCString:imgElem->GetUrl().c_str()
-                              encoding:[NSString defaultCStringEncoding]] stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]];
-
-    
-    UIImage* img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
     CGSize cgsize = [self getImageSize:imgElem withHostConfig:config];
 
     UIGraphicsBeginImageContext(cgsize);
-    UIImageView* view = [[UIImageView alloc]
+    UIImageView *view = [[UIImageView alloc]
                          initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
     [img drawInRect:(CGRectMake(0, 0, cgsize.width, cgsize.height))];
     img = UIGraphicsGetImageFromCurrentImageContext();
@@ -143,18 +140,18 @@
     
     //jwoo:experimenting with diff attributes --> UIViewContentModeCenter;//UIViewContentModeScaleAspectFit;
     view.contentMode = UIViewContentModeScaleAspectFit;
-    view.clipsToBounds = YES;
+    view.clipsToBounds = NO;
     if(imgElem->GetImageStyle() == ImageStyle::Person) {
-        CALayer* imgLayer = view.layer;
+        CALayer *imgLayer = view.layer;
         [imgLayer setCornerRadius:cgsize.width/2];
         [imgLayer setMasksToBounds:YES];
     }
     
-    ACRContentHoldingUIView* wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
+    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
     [wrappingview addSubview:view];
     
 
-    if(viewGroup)[(UIStackView* )viewGroup addArrangedSubview:wrappingview];
+    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:wrappingview];
 
     [wrappingview addConstraints:[self setImageAlignment:imgElem->GetHorizontalAlignment()
                                            withSuperview:wrappingview
