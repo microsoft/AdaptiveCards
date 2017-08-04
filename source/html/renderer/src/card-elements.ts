@@ -231,7 +231,7 @@ export abstract class CardElement {
 
         if (this._renderedElement) {
             this._renderedElement.style.boxSizing = "border-box";
-            this._renderedElement.style.overflowY = "hidden";
+            // this._renderedElement.style.overflowY = "hidden";
 
             this.adjustRenderedElementSize(this._renderedElement);
         }
@@ -2174,7 +2174,7 @@ export abstract class ContainerBase extends CardElement {
 
                 if (renderedElement) {
                     if (renderedElementCount > 0) {
-                        var separator = Utils.renderSeparation(
+                        var separatorElement = Utils.renderSeparation(
                             {
                                 spacing: computeSpacing(this._items[i].spacing),
                                 lineThickness: this._items[i].separator ? hostConfig.separator.lineThickness : null,
@@ -2182,14 +2182,15 @@ export abstract class ContainerBase extends CardElement {
                             },
                             "vertical");
 
-                        if (separator) {
-                            separator.style.flex = "0 0 auto";
+                        if (separatorElement) {
+                            separatorElement.style.flex = "0 0 auto";
+
+                            Utils.appendChild(this._element, separatorElement);
+
+                            // Best way to emulate "internal" access
+                            this._items[i]["setSeparatorElement"](separatorElement);
                         }
 
-                        Utils.appendChild(this._element, separator);
-
-                        // Best way to emulate "internal" access
-                        this._items[i]["setSeparatorElement"](separator);
                     }
 
                     Utils.appendChild(this._element, renderedElement);
@@ -2559,7 +2560,7 @@ export class ColumnSet extends CardElement {
                     Utils.appendChild(element, renderedColumn);
 
                     if (this._columns.length > 1 && i < this._columns.length - 1) {
-                        var separator = Utils.renderSeparation(
+                        var separatorElement = Utils.renderSeparation(
                             {
                                 spacing: computeSpacing(this._columns[i + 1].spacing),
                                 lineThickness: this._columns[i + 1].separator ? hostConfig.separator.lineThickness : null,
@@ -2567,10 +2568,13 @@ export class ColumnSet extends CardElement {
                             },
                             "horizontal");
 
-                        if (separator) {
-                            separator.style.flex = "0 0 auto";
+                        if (separatorElement) {
+                            separatorElement.style.flex = "0 0 auto";
 
-                            Utils.appendChild(element, separator);
+                            Utils.appendChild(element, separatorElement);
+                            
+                            // Best way to emulate "internal" access
+                            this._columns[i]["setSeparatorElement"](separatorElement);
                         }
                     }
 

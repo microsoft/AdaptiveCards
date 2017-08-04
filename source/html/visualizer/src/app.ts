@@ -355,7 +355,6 @@ function actionExecuted(action: Adaptive.Action) {
     }
 
     // Uncomment to test the action's setStatus method:
-    /*
     action.setStatus(
         {
             "type": "AdaptiveCard",
@@ -370,7 +369,6 @@ function actionExecuted(action: Adaptive.Action) {
         });
 
     window.setTimeout(actionCompletedCallback, 2000, action);
-    */
 
     alert(message);
 }
