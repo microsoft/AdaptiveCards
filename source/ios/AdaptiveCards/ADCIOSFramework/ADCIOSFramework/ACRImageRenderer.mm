@@ -125,17 +125,7 @@
     std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
     NSString *urlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
                                           encoding:[NSString defaultCStringEncoding]];
-    NSURL *url = nil;
-    NSRange range = [urlStr rangeOfString:@"%"];
-    //check if % is already embedded in urlStr
-    if(range.length > 0)
-    {
-        url = [NSURL URLWithString:urlStr];
-    }
-    else
-    {
-        url = [NSURL URLWithString:[urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLFragmentAllowedCharacterSet]];
-    }
+    NSURL *url = [NSURL URLWithString:urlStr];
 
     UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     

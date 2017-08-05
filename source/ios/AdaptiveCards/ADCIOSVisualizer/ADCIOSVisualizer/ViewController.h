@@ -11,6 +11,7 @@
 #import <ADCIOSFramework/ACFramework.h>
 
 @interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate>
+
 @property (strong, nonatomic) ACVTableViewController *ACVTabVC;
 @property (strong, nonatomic) UITextView *editView;
 @property (strong, nonatomic) UIButton *tryButton;

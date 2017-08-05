@@ -32,6 +32,7 @@ using namespace AdaptiveCards;
 {
     return 1;
 }
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return nil;

@@ -88,5 +88,4 @@ using namespace AdaptiveCards;
     return [actionRendererDict objectForKey:cardElementType];
 }
 
-
 @end
