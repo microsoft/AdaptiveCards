@@ -9,13 +9,13 @@
 
 @implementation ACRBaseCardElementRenderer
 
-+ (CardElementType) elemType
++ (CardElementType)elemType
 {
     return CardElementType::Unsupported;
 }
 
 /* not implemented ATM */
-- (void) setSeparationConfig: (UIView* ) viewGroup
+- (void)setSeparationConfig:(UIView *)viewGroup
 {
             //SeparationStyle separationStyle,
             //SeparationConfig defaultSeparationConfig,
@@ -23,9 +23,10 @@
             //(Boolean) horizontalLine)
 }
 
-- (UIView* ) render: (UIStackView*) viewGroup
-       withCardElem: (std::shared_ptr<BaseCardElement> const &) elem
-      andHostConfig: (std::shared_ptr<HostConfig> const&) config
+- (UIView *)render:(UIStackView *)viewGroup
+            inputs:(NSMutableArray *)inputs
+      withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
+     andHostConfig:(std::shared_ptr<HostConfig> const&)config
 { 
    return viewGroup;
 }

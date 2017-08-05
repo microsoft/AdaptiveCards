@@ -7,6 +7,7 @@
 
 #import "ACRInputRenderer.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRTextField.h"
 #import "TextInput.h"
 
 @implementation ACRInputRenderer
@@ -23,16 +24,20 @@
 }
 
 - (UIView *)render:(UIView *)viewGroup
+            inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
-    UITextField *txtInput = [[UITextField alloc] init];
+    ACRTextField *txtInput = [[ACRTextField alloc] init];
     NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
                                                 encoding:NSUTF8StringEncoding];
+    txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
+                                     encoding:NSUTF8StringEncoding];
     txtInput.placeholder = placeHolderStr;
     txtInput.allowsEditingTextAttributes = YES;
     txtInput.borderStyle = UITextBorderStyleLine;
+    txtInput.isRequired  = inputBlck->GetIsRequired();
     
     switch(inputBlck->GetTextInputStyle())
     {
@@ -76,6 +81,8 @@
     wrappingview.translatesAutoresizingMaskIntoConstraints = false;
     
     txtInput.translatesAutoresizingMaskIntoConstraints = false;
+    
+    [inputs addObject:txtInput];
     
     return wrappingview;
 }

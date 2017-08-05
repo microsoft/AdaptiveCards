@@ -8,7 +8,7 @@
 #import "ACRViewController.h"
 #import "ACRHostConfig.h"
 #import "SharedAdaptiveCard.h"
-#import "ACRRegistration.h"
+#import "ACRRenderer.h"
 #import <AVFoundation/AVFoundation.h>
 
 using namespace AdaptiveCards;
@@ -48,22 +48,59 @@ using namespace AdaptiveCards;
 
 - (void)buildViewFromADC:(NSString *)str
 {
-    adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([str UTF8String]));
-
-    std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
+    UIView *view = self.view;
+    view.frame = guideFrame;
+    NSMutableArray *inputs = [[NSMutableArray alloc] init];
+    UIView *newView = [ACRRenderer renderWithJson:str
+                                           inputs:inputs
+                                   viewController:self
+                                       guideFrame:guideFrame
+                                       hostconfig:config];
+    [view addSubview:newView];
     
-    UIView *childView = nil;
+    NSLayoutConstraint *constraint =
+    [NSLayoutConstraint constraintWithItem:view
+                                 attribute:NSLayoutAttributeLeading
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:newView
+                                 attribute:NSLayoutAttributeLeading
+                                multiplier:1.0
+                                  constant:0];
+    [view addConstraint:constraint];
     
-    if(!body.empty())
-    {
-        UIView *view = self.view;
-        view.frame = guideFrame;
-        ACRRegistration *reg = [ACRRegistration getInstance];
-        childView = [reg render:view withCardElems:body andHostConfig:config];
+    constraint =
+    [NSLayoutConstraint constraintWithItem:view
+                                 attribute:NSLayoutAttributeTrailing
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:newView
+                                 attribute:NSLayoutAttributeTrailing
+                                multiplier:1.0
+                                  constant:0];
+    [view addConstraint:constraint];
+    
+    constraint =
+    [NSLayoutConstraint constraintWithItem:view
+                                 attribute:NSLayoutAttributeTop
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:newView
+                                 attribute:NSLayoutAttributeTop
+                                multiplier:1.0
+                                  constant:0];
+    [view addConstraint:constraint];
+    
+    constraint =
+    [NSLayoutConstraint constraintWithItem:view
+                                 attribute:NSLayoutAttributeBottom
+                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                    toItem:newView
+                                 attribute:NSLayoutAttributeBottom
+                                multiplier:1.0
+                                  constant:0];
+    [view addConstraint:constraint];
 
-        [NSLayoutConstraint activateConstraints:
-         @[[childView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor], [childView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
-    }
+    [NSLayoutConstraint activateConstraints:
+     @[[newView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
+       [newView.topAnchor constraintEqualToAnchor:view.topAnchor]]];
 }
 
 @end
