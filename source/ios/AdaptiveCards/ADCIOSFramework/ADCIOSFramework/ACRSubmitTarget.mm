@@ -47,7 +47,7 @@
             [input getInput:dictionary];	
         }        
     }
-    [((ACRViewController *)_vc).acrSubmitActionDelegate fetchUserResponses:dictionary];
+    [((ACRViewController *)_vc).acrActionDelegate fetchUserResponses:dictionary];
 }
 
 @end

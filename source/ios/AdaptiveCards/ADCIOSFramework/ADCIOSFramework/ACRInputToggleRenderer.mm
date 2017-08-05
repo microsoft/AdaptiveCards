@@ -6,9 +6,7 @@
 //
 
 #import "ACRInputToggleRenderer.h"
-#import "ACRInputControlTableView.h"
-
-
+#import "ACRToggleInputView.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRSeparator.h"
 #import "ToggleInput.h"
@@ -34,7 +32,7 @@
 {
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
     
-    ACRInputControlTableView *inputView = [[ACRInputControlTableView alloc] initWithInputToggle:toggleBlck WithHostConfig:config WithSuperview:viewGroup];
+    ACRToggleInputView *inputView = [[ACRToggleInputView alloc] initWithInputToggle:toggleBlck WithHostConfig:config WithSuperview:viewGroup];
     
     if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:inputView];
 

@@ -26,6 +26,7 @@
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionShowCardRenderer.h"
 #import "ACRActionSubmitRenderer.h"
+#import "ACRActionHttpRenderer.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
 
@@ -47,7 +48,7 @@ using namespace AdaptiveCards;
              [ACRImageRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRImageRenderer elemType]],
              [ACRImageSetRenderer getInstance],   [NSNumber numberWithInt:(int)[ACRImageSetRenderer elemType]],
              [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRTextBlockRenderer elemType]],
-             [ACRInputRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRInputRenderer elemType]],
+             [ACRInputRenderer     getInstance],  [NSNumber numberWithInt:(int)[ACRInputRenderer elemType]],
              [ACRInputToggleRenderer getInstance],[NSNumber numberWithInt:(int)[ACRInputToggleRenderer elemType]],
              [ACRInputChoiceSetRenderer getInstance],[NSNumber numberWithInt:(int)[ACRInputChoiceSetRenderer elemType]],
              [ACRInputDateRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRInputDateRenderer elemType]],
@@ -63,7 +64,8 @@ using namespace AdaptiveCards;
              [ACRActionOpenURLRenderer  getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl], 
              [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
              [ACRActionSubmitRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
-            nil];
+             [ACRActionHttpRenderer     getInstance], [NSNumber numberWithInt:(int)ActionType::Http],
+             nil];
     }
     return self;
 }

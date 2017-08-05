@@ -7,7 +7,9 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol ACRSubmitActionDelegate
+@protocol ACRActionDelegate
 
 - (void)fetchUserResponses:(NSDictionary *)userResponses;
+
+- (void)fetchHttpRequest:(NSURLRequest *)urlRequest;
 @end

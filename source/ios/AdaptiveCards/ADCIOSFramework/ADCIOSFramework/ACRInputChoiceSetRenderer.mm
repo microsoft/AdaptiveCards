@@ -6,7 +6,7 @@
 //
 
 #import "ACRInputChoiceSetRenderer.h"
-#import "ACRInputControlTableView.h"
+#import "ACRChoiceSetView.h"
 #import "ACRInputControlPickerView.h"
 #import "ChoiceSetInput.h"
 
@@ -43,7 +43,7 @@
     else
     {
         
-        inputView = [[ACRInputControlTableView alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config WithSuperview:viewGroup];
+        inputView = [[ACRChoiceSetView alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config WithSuperview:viewGroup];
         [(UITableView *)inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
     }
     

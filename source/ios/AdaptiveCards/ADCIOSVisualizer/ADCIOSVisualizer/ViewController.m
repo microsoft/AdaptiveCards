@@ -93,7 +93,7 @@
     self.editableStr = jsonStr;
     ACRViewController *adcVc = [[ACRViewController alloc] init:jsonStr
                                                      withFrame:CGRectMake(20, 250, 300, 1250)];
-    adcVc.acrSubmitActionDelegate = self;
+    adcVc.acrActionDelegate = self;
     if(self.curView)
         [self.curView removeFromSuperview];
     self.curView = adcVc.view;
@@ -111,5 +111,10 @@
 - (void)fetchUserResponses:(NSDictionary *)dictionary
 {
     NSLog(@"user response fetched: %@", dictionary);
+}
+
+- (void)fetchHttpRequest:(NSURLRequest *)request
+{
+    NSLog(@"Http Request fetched: %@", request);    
 }
 @end

@@ -7,12 +7,13 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ACRSubmitActionDelegate.h"
+#import "ACRActionDelegate.h"
 
 @interface ACRViewController :UIViewController
 
 @property NSString* jsonString;
-@property id<ACRSubmitActionDelegate> acrSubmitActionDelegate;
+@property id<ACRActionDelegate> acrActionDelegate;
+
 - (instancetype)init:(NSString* )str withFrame:(CGRect)frame;
 
 @end
