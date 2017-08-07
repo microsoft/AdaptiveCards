@@ -16,6 +16,7 @@ using namespace AdaptiveCards;
     std::shared_ptr<ChoiceSetInput> choiceSetDataSource;
     std::shared_ptr<HostConfig> config;
     NSInteger defaultIdx;
+    NSString *id;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -29,6 +30,7 @@ using namespace AdaptiveCards;
         self.showsSelectionIndicator = YES;
         self.translatesAutoresizingMaskIntoConstraints = NO;
         defaultIdx = 0;
+        id = nil;
     }
     return self;
 }
@@ -50,6 +52,7 @@ using namespace AdaptiveCards;
 
         config = hostConfig;
     }
+    id = [NSString stringWithCString:choiceSetDataSource->GetId().c_str() encoding:NSUTF8StringEncoding];
     return self;
 }
 
@@ -82,4 +85,21 @@ using namespace AdaptiveCards;
 {
     [self selectRow:defaultIdx inComponent:0 animated:NO];
 }
+
+- (bool)validate:(NSError **)error
+{
+    // no need to validate
+    return YES;
+}
+
+- (void)getInput:(NSMutableDictionary *)dictionary
+{
+    NSInteger idx;
+    idx = [self selectedRowInComponent:0];
+    dictionary[id] =
+    [NSString stringWithCString:choiceSetDataSource->GetChoices()[(int) idx]->GetValue().c_str()
+                       encoding:NSUTF8StringEncoding];
+    
+}
+
 @end
