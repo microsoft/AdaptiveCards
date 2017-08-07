@@ -74,8 +74,10 @@
         replacementString = [string substringFromIndex:prefix.location];
         [replacedString appendString:replacementString];
     }
+    
     return replacedString;
 }
+
 - (IBAction)create:(UIButton *)sender
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];

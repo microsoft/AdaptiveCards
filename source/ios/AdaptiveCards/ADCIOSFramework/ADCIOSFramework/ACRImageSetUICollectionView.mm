@@ -36,7 +36,7 @@ using namespace AdaptiveCards;
    
         self.translatesAutoresizingMaskIntoConstraints = NO;
         CGSize target = [view systemLayoutSizeFittingSize:sz];        
-        self.frame = CGRectMake(0,0, (target.width / sz.width) * sz.width, sz.height);
+        self.frame = CGRectMake(0, 0, (target.width / sz.width) * sz.width, sz.height);
     }
     return self;
 }
@@ -75,8 +75,7 @@ using namespace AdaptiveCards;
     return cell;
 }
 - (CGFloat)collectionView:(UICollectionView *)collectionView
-                   layout:(UICollectionViewLayout *)collectionViewLayout 
-                   minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+                   layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     return 0;
 }
