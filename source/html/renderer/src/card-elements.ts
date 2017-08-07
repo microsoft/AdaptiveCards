@@ -170,7 +170,7 @@ export abstract class CardElement {
     }
 
     protected get defaultPadding(): HostConfig.IPaddingDefinition {
-        return HostConfig.NoPadding;
+        return { top: "none", right: "none", bottom: "none", left: "none" };
     }
 
     protected get internalPadding(): HostConfig.IPaddingDefinition {
@@ -191,7 +191,12 @@ export abstract class CardElement {
     abstract renderSpeech(): string;
 
     getNonZeroPadding(): HostConfig.IPaddingDefinition {
-        var padding = HostConfig.NoPadding;
+        var padding: HostConfig.IPaddingDefinition = {
+            top: "none",
+            right: "none",
+            bottom: "none",
+            left: "none"
+        };
 
         this.internalGetNonZeroPadding(padding);
 
@@ -2175,6 +2180,13 @@ export class Container extends CardElement {
                 if (effectivePadding.left == "none") {
                     effectivePadding.left = "default";
                 }
+            }
+
+            if (effectivePadding.top == "none" && effectivePadding.right == "none" && effectivePadding.bottom == "none" && effectivePadding.left == "none") {
+                effectivePadding.top = "default";
+                effectivePadding.right = "default";
+                effectivePadding.bottom = "default";
+                effectivePadding.left = "default";
             }
 
             var physicalMargin = paddingToSpacingDefinition(effectiveMargin);

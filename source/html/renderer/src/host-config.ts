@@ -24,8 +24,6 @@ export interface IPaddingDefinition {
     left: Enums.Padding
 }
 
-export const NoPadding: IPaddingDefinition = { top: "none", right: "none", bottom: "none", left: "none" };
-
 function parsePaddingDefinition(obj: any): IPaddingDefinition {
     return obj ? {
         top: Utils.getValueOrDefault<Enums.Padding>(obj["top"], "none"),
