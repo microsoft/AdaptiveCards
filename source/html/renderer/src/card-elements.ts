@@ -1442,30 +1442,6 @@ export abstract class Action {
     }
 }
 
-export class ToggleVisibilityAction extends Action {
-    targetElementId: string;
-
-    getJsonTypeName(): string {
-        return "Action.ToggleVisibility";
-    }
-
-    execute() {
-        if (!Utils.isNullOrEmpty(this.targetElementId)) {
-            var targetElement = this.parent.getRootElement().getElementById(this.targetElementId);
-
-            if (targetElement) {
-                targetElement.isVisible = !targetElement.isVisible;
-            }
-        }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.targetElementId = json["targetElementId"];
-    }
-}
-
 export class SubmitAction extends Action {
     private _isPrepared: boolean = false;
     private _originalData: Object;
@@ -2890,7 +2866,6 @@ export class AdaptiveCard extends ContainerWithActions {
 
         AdaptiveCard.actionTypeRegistry.clear();
 
-        AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
         AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new HttpAction(); });
         AdaptiveCard.actionTypeRegistry.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
         AdaptiveCard.actionTypeRegistry.registerType("Action.Submit", () => { return new SubmitAction(); });
