@@ -58,6 +58,8 @@ export function renderSeparation(separationDefinition: ISeparationDefinition, or
             }
         }
 
+        separator.style.overflow = "hidden";
+
         return separator;
     }
     else {

@@ -347,12 +347,14 @@ function actionExecuted(action: Adaptive.Action) {
 
         message += "    Body: " + httpAction.body + "\n";
     }
+    else if (action instanceof Adaptive.ShowCardAction) {
+        showPopupCard(<Adaptive.ShowCardAction>action);
+    }
     else {
         message += "    Type: <unknown>";
     }
 
     // Uncomment to test the action's setStatus method:
-    /*
     action.setStatus(
         {
             "type": "AdaptiveCard",
@@ -367,7 +369,6 @@ function actionExecuted(action: Adaptive.Action) {
         });
 
     window.setTimeout(actionCompletedCallback, 2000, action);
-    */
 
     alert(message);
 }
@@ -457,6 +458,10 @@ function inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean
     alert("Card \"" + action.title + "\" " + (isExpanded ? "expanded" : "collapsed"));
 }
 
+function elementVisibilityChanged(element: Adaptive.CardElement) {
+    alert("An element is now " + (element.isVisible ? "visible" : "invisible"));
+}
+
 window.onload = () => {
     currentConfigPayload = Constants.defaultConfigPayload;
 
@@ -469,8 +474,21 @@ window.onload = () => {
     };
 
     Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
-    Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
+    // Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
 
+    /*
+    Test additional events:
+
+    Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
+    Adaptive.AdaptiveCard.onElementVisibilityChanged = elementVisibilityChanged;
+    */
+
+    Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
+        if (typeof json["isVisible"] === "boolean") {
+            element.isVisible = json["isVisible"];
+        }        
+    }
+    
     // Uncomment to test the onInlineCardExpanded event:
     // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
 
@@ -488,7 +506,7 @@ window.onload = () => {
 
     switchToCardEditor();
 
-    // handle Back and Forward after the Container app drop down is changed
+    // Handle Back and Forward after the Container app drop down is changed
     window.addEventListener(
         "popstate",
         function (e) {

@@ -111,6 +111,25 @@ export abstract class CardElement {
 
     private _internalPadding: HostConfig.IPaddingDefinition = null;
     private _parent: CardElement = null;
+    private _isVisibile: boolean = true;
+    private _renderedElement: HTMLElement = null;
+    private _separatorElement: HTMLElement = null;
+
+    private setSeparatorElement(separatorElement: HTMLElement) {
+        this._separatorElement = separatorElement;
+
+        this.updateRenderedElementVisibility();
+    }
+
+    private updateRenderedElementVisibility() {
+        if (this._renderedElement) {
+            this._renderedElement.style.visibility = this._isVisibile ? null : "collapse";
+        }
+
+        if (this._separatorElement) {
+            this._separatorElement.style.visibility = this._isVisibile ? null : "collapse";
+        }
+    }
 
     protected internalGetNonZeroPadding(padding: HostConfig.IPaddingDefinition) {
         if (padding.top == "none") {
@@ -181,6 +200,7 @@ export abstract class CardElement {
         this._internalPadding = value;
     }
 
+    id: string;
     speak: string;
     horizontalAlignment: Enums.HorizontalAlignment = "left";
     spacing: Enums.Spacing = "default";
@@ -212,6 +232,9 @@ export abstract class CardElement {
     }
 
     parse(json: any) {
+        raiseParseElementEvent(this, json);
+
+        this.id = json["id"];
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getValueOrDefault<Enums.HorizontalAlignment>(json["horizontalAlignment"], "left");
 
@@ -253,15 +276,18 @@ export abstract class CardElement {
     }
 
     render(): HTMLElement {
-        let renderedElement = this.internalRender();
+        this._renderedElement = this.internalRender();
 
-        if (renderedElement) {
-            renderedElement.style.boxSizing = "border-box";
+        if (this._renderedElement) {
+            this._renderedElement.style.boxSizing = "border-box";
+            // this._renderedElement.style.overflowY = "hidden";
 
-            this.adjustRenderedElementSize(renderedElement);
+            this.adjustRenderedElementSize(this._renderedElement);
         }
 
-        return renderedElement;
+        this.updateRenderedElementVisibility();
+
+        return this._renderedElement;
     }
 
     isAtTheVeryTop(): boolean {
@@ -328,6 +354,14 @@ export abstract class CardElement {
         return [];
     }
 
+    getElementById(id: string): CardElement {
+        return this.id === id ? this : null;
+    }
+
+    getActionById(id: string): Action {
+        return null;
+    }
+
     get isInteractive(): boolean {
         return false;
     }
@@ -338,6 +372,22 @@ export abstract class CardElement {
 
     get parent(): CardElement {
         return this._parent;
+    }
+
+    get isVisible(): boolean {
+        return this._isVisibile;
+    }
+
+    set isVisible(value: boolean) {
+        if (this._isVisibile != value) {
+            this._isVisibile = value;
+
+            this.updateRenderedElementVisibility();
+
+            if (this._renderedElement) {
+                raiseElementVisibilityChangedEvent(this);
+            }
+        }
     }
 }
 
@@ -724,10 +774,20 @@ export class Image extends CardElement {
     style: Enums.ImageStyle = "normal";
     url: string;
     size: Enums.Size = "auto";
-    selectAction: ExternalAction;
+    selectAction: Action;
 
     getJsonTypeName(): string {
         return "Image";
+    }
+
+    getActionById(id: string) {
+        var result = super.getActionById(id);
+
+        if (!result && this.selectAction) {
+            result = this.selectAction.getActionById(id);
+        }
+
+        return result;
     }
 
     parse(json: any) {
@@ -740,7 +800,7 @@ export class Image extends CardElement {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            this.selectAction = <ExternalAction>Action.createAction(selectActionJson);
+            this.selectAction = Action.createAction(selectActionJson);
             invokeSetParent(this.selectAction, this);
         }
     }
@@ -1423,7 +1483,10 @@ export abstract class Action {
     }
 
     abstract getJsonTypeName(): string;
-    abstract execute();
+
+    execute() {
+        raiseExecuteActionEvent(this);
+    }
 
     private setCollection(actionCollection: ActionCollection) {
         this._actionCollection = actionCollection;
@@ -1455,6 +1518,7 @@ export abstract class Action {
     };
 
     parse(json: any) {
+        this.id = json["id"];
         this.title = json["title"];
     }
 
@@ -1462,6 +1526,13 @@ export abstract class Action {
         return [];
     }
 
+    getActionById(id: string): Action {
+        if (this.id == id) {
+            return this;
+        }
+    }
+
+    id: string;
     title: string;
 
     get parent(): CardElement {
@@ -1469,13 +1540,7 @@ export abstract class Action {
     }
 }
 
-export abstract class ExternalAction extends Action {
-    execute() {
-        raiseExecuteActionEvent(this);
-    }
-}
-
-export class SubmitAction extends ExternalAction {
+export class SubmitAction extends Action {
     private _isPrepared: boolean = false;
     private _originalData: Object;
     private _processedData: Object;
@@ -1519,7 +1584,7 @@ export class SubmitAction extends ExternalAction {
     }
 }
 
-export class OpenUrlAction extends ExternalAction {
+export class OpenUrlAction extends Action {
     url: string;
 
     getJsonTypeName(): string {
@@ -1560,7 +1625,7 @@ export class HttpHeader {
     }
 }
 
-export class HttpAction extends ExternalAction {
+export class HttpAction extends Action {
     private _url = new Utils.StringWithSubstitutions();
     private _body = new Utils.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
@@ -1652,10 +1717,6 @@ export class ShowCardAction extends Action {
 
     title: string;
 
-    execute() {
-        raiseShowPopupCardEvent(this);
-    }
-
     getJsonTypeName(): string {
         return "Action.ShowCard";
     }
@@ -1672,6 +1733,16 @@ export class ShowCardAction extends Action {
 
     getAllInputs(): Array<Input> {
         return this.card.getAllInputs();
+    }
+
+    getActionById(id: string): Action {
+        var result = super.getActionById(id);
+
+        if (!result) {
+            result = this.card.getActionById(id);
+        }
+
+        return result;
     }
 }
 
@@ -1808,6 +1879,20 @@ class ActionCollection {
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    getActionById(id: string): Action {
+        var result: Action = null;
+
+        for (var i = 0; i < this.items.length; i++) {
+            result = this.items[i].getActionById(id);
+
+            if (result) {
+                break;
+            }
+        }
+
+        return result;
     }
 
     validate(): Array<IValidationError> {
@@ -2258,7 +2343,7 @@ export class Container extends CardElement {
 
                 if (renderedElement) {
                     if (renderedElementCount > 0) {
-                        var separator = Utils.renderSeparation(
+                        var separatorElement = Utils.renderSeparation(
                             {
                                 spacing: getEffectiveSpacing(this._items[i].spacing),
                                 lineThickness: this._items[i].separator ? hostConfig.separator.lineThickness : null,
@@ -2266,11 +2351,15 @@ export class Container extends CardElement {
                             },
                             "vertical");
 
-                        if (separator) {
-                            separator.style.flex = "0 0 auto";
+                        if (separatorElement) {
+                            separatorElement.style.flex = "0 0 auto";
+
+                            Utils.appendChild(this._element, separatorElement);
+
+                            // Best way to emulate "internal" access
+                            this._items[i]["setSeparatorElement"](separatorElement);
                         }
 
-                        Utils.appendChild(this._element, separator);
                     }
 
                     Utils.appendChild(this._element, renderedElement);
@@ -2297,7 +2386,7 @@ export class Container extends CardElement {
 
     protected _element: HTMLDivElement;
 
-    selectAction: ExternalAction;
+    selectAction: Action;
     backgroundImage: BackgroundImage;
 
     get colorPalette(): Enums.ColorPalette {
@@ -2419,7 +2508,7 @@ export class Container extends CardElement {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            this.selectAction = <ExternalAction>Action.createAction(selectActionJson);
+            this.selectAction = Action.createAction(selectActionJson);
             invokeSetParent(this.selectAction, this);
         }
     }
@@ -2455,6 +2544,44 @@ export class Container extends CardElement {
             var item: CardElement = this._items[i];
 
             result = result.concat(item.getAllInputs());
+        }
+
+        return result;
+    }
+
+    getElementById(id: string): CardElement {
+        var result: CardElement = super.getElementById(id);
+
+        if (!result) {
+            for (var i = 0; i < this._items.length; i++) {
+                result = this._items[i].getElementById(id);
+
+                if (result) {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    getActionById(id: string): Action {
+        var result: Action = super.getActionById(id);
+
+        if (!result) {
+            if (this.selectAction) {
+                result = this.selectAction.getActionById(id);
+            }
+
+            if (!result) {
+                for (var i = 0; i < this._items.length; i++) {
+                    result = this._items[i].getActionById(id);
+
+                    if (result) {
+                        break;
+                    }
+                }
+            }
         }
 
         return result;
@@ -2570,7 +2697,12 @@ export class ColumnSet extends CardElement {
     protected internalRender(): HTMLElement {
         if (this._columns.length > 0) {
             var element = document.createElement("div");
+            element.className = "ac-columnSet";
             element.style.display = "flex";
+
+            if (this.selectAction) {
+                element.classList.add("ac-selectable");
+            }
 
             switch (this.horizontalAlignment) {
                 case "center":
@@ -2608,7 +2740,7 @@ export class ColumnSet extends CardElement {
                     Utils.appendChild(element, renderedColumn);
 
                     if (this._columns.length > 1 && i < this._columns.length - 1) {
-                        var separator = Utils.renderSeparation(
+                        var separatorElement = Utils.renderSeparation(
                             {
                                 spacing: getEffectiveSpacing(this._columns[i + 1].spacing),
                                 lineThickness: this._columns[i + 1].separator ? hostConfig.separator.lineThickness : null,
@@ -2616,10 +2748,13 @@ export class ColumnSet extends CardElement {
                             },
                             "horizontal");
 
-                        if (separator) {
-                            separator.style.flex = "0 0 auto";
+                        if (separatorElement) {
+                            separatorElement.style.flex = "0 0 auto";
 
-                            Utils.appendChild(element, separator);
+                            Utils.appendChild(element, separatorElement);
+                            
+                            // Best way to emulate "internal" access
+                            this._columns[i]["setSeparatorElement"](separatorElement);
                         }
                     }
 
@@ -2634,12 +2769,21 @@ export class ColumnSet extends CardElement {
         }
     }
 
+    selectAction: Action;
+
     getJsonTypeName(): string {
         return "ColumnSet";
     }
 
     parse(json: any) {
         super.parse(json);
+
+        var selectActionJson = json["selectAction"];
+
+        if (selectActionJson != undefined) {
+            this.selectAction = Action.createAction(selectActionJson);
+            invokeSetParent(this.selectAction, this);
+        }
 
         if (json["columns"] != null) {
             let jsonColumns = json["columns"] as Array<any>;
@@ -2683,6 +2827,36 @@ export class ColumnSet extends CardElement {
         return result;
     }
 
+    getElementById(id: string): CardElement {
+        var result: CardElement = super.getElementById(id);
+
+        if (!result) {
+            for (var i = 0; i < this._columns.length; i++) {
+                result = this._columns[i].getElementById(id);
+
+                if (result) {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    getActionById(id: string): Action {
+        var result: Action = null;
+
+        for (var i = 0; i < this._columns.length; i++) {
+            result = this._columns[i].getActionById(id);
+
+            if (result) {
+                break;
+            }
+        }
+
+        return result;
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak;
@@ -2706,7 +2880,7 @@ export interface IVersion {
     minor: number;
 }
 
-function raiseExecuteActionEvent(action: ExternalAction) {
+function raiseExecuteActionEvent(action: Action) {
     if (AdaptiveCard.onExecuteAction != null) {
         action.prepare(action.parent.getRootElement().getAllInputs());
 
@@ -2720,9 +2894,15 @@ function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolea
     }
 }
 
-function raiseShowPopupCardEvent(action: ShowCardAction) {
-    if (AdaptiveCard.onShowPopupCard != null) {
-        AdaptiveCard.onShowPopupCard(action);
+function raiseElementVisibilityChangedEvent(element: CardElement) {
+    if (AdaptiveCard.onElementVisibilityChanged != null) {
+        AdaptiveCard.onElementVisibilityChanged(element);
+    }
+}
+
+function raiseParseElementEvent(element: CardElement, json: any) {
+    if (AdaptiveCard.onParseElement != null) {
+        AdaptiveCard.onParseElement(element, json);
     }
 }
 
@@ -2821,6 +3001,12 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection.onShowActionCardPane = (action: ShowCardAction) => { this.hideBottomSpacer(null) };
     }
 
+    getActionById(id: string): Action {
+        var result: Action = this._actionCollection.getActionById(id);
+
+        return result ? result : super.getActionById(id);
+    }
+
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json, itemsCollectionPropertyName);
 
@@ -2868,9 +3054,10 @@ export class AdaptiveCard extends ContainerWithActions {
     static elementTypeRegistry = new TypeRegistry<CardElement>();
     static actionTypeRegistry = new TypeRegistry<Action>();
 
-    static onExecuteAction: (action: ExternalAction) => void = null;
-    static onShowPopupCard: (action: ShowCardAction) => void = null;
+    static onExecuteAction: (action: Action) => void = null;
+    static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
+    static onParseElement: (element: CardElement, json: any) => void = null;
     static onParseError: (error: IValidationError) => void = null;
 
     static initialize() {
