@@ -47,6 +47,8 @@ export function renderSeparation(separationDefinition: HostConfig.ISeparationDef
             }
         }
 
+        separator.style.overflow = "hidden";
+
         return separator;
     }
     else {
