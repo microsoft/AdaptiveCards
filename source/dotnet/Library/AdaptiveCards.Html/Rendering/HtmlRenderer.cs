@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Xml;
 using HtmlTags;
@@ -630,7 +629,7 @@ namespace AdaptiveCards.Rendering
 
             if (!string.IsNullOrEmpty(input.Placeholder))
             {
-                uiTextInput.Attr("placeholder", WebUtility.HtmlEncode(input.Placeholder));
+                uiTextInput.Attr("placeholder",input.Placeholder);
             }
 
             if (!string.IsNullOrEmpty(input.Value))
