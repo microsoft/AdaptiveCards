@@ -1764,12 +1764,11 @@ class ActionCollection {
 
         var renderedCard = action.card.render();
 
-        raiseInlineCardExpandedEvent(action, true);
-
         this._actionCard = renderedCard;
         this._expandedAction = action;
 
         this.refreshContainer();
+        raiseInlineCardExpandedEvent(action, true);
     }
 
     private actionClicked(actionButton: ActionButton) {
