@@ -280,7 +280,6 @@ export abstract class CardElement {
 
         if (this._renderedElement) {
             this._renderedElement.style.boxSizing = "border-box";
-            // this._renderedElement.style.overflowY = "hidden";
 
             this.adjustRenderedElementSize(this._renderedElement);
         }
@@ -288,6 +287,10 @@ export abstract class CardElement {
         this.updateRenderedElementVisibility();
 
         return this._renderedElement;
+    }
+
+    updateLayout() {
+        // Does nothing in base implementation
     }
 
     isAtTheVeryTop(): boolean {
@@ -2411,15 +2414,23 @@ export class Container extends CardElement {
     }
 
     isFirstElement(element: CardElement): boolean {
-        var elementIndex = this._items.indexOf(element);
+        for (var i = 0; i < this._items.length; i++) {
+            if (this._items[i].isVisible) {
+                return this._items[i] == element;
+            }
+        }
 
-        return elementIndex >= 0 ? elementIndex ==0 : false;
+        return false;
     }
 
     isLastElement(element: CardElement): boolean {
-        var itemIndex = this._items.indexOf(element);
+        for (var i = this._items.length - 1; i >= 0; i --) {
+            if (this._items[i].isVisible) {
+                return this._items[i] == element;
+            }
+        }
 
-        return itemIndex >= 0 ? itemIndex == (this._items.length - 1) : false;
+        return false;
     }
 
     validate(): Array<IValidationError> {
@@ -2608,6 +2619,14 @@ export class Container extends CardElement {
         }
 
         return speak;
+    }
+
+    updateLayout() {
+        this.applyPadding(this._element);
+
+        for (var i = 0; i < this._items.length; i++) {
+            this._items[i].updateLayout();
+        }
     }
 }
 
@@ -2798,6 +2817,12 @@ export class ColumnSet extends CardElement {
         }
     }
 
+    updateLayout() {
+        for (var i = 0; i < this._columns.length; i++) {
+            this._columns[i].updateLayout();
+        }
+    }
+
     addColumn(column: Column) {
         if (!column.parent) {
             this._columns.push(column);
@@ -2895,6 +2920,8 @@ function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolea
 }
 
 function raiseElementVisibilityChangedEvent(element: CardElement) {
+    element.getRootElement().updateLayout();
+
     if (AdaptiveCard.onElementVisibilityChanged != null) {
         AdaptiveCard.onElementVisibilityChanged(element);
     }

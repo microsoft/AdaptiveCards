@@ -462,7 +462,33 @@ function elementVisibilityChanged(element: Adaptive.CardElement) {
     alert("An element is now " + (element.isVisible ? "visible" : "invisible"));
 }
 
+export class ToggleVisibilityAction extends Adaptive.Action {
+    targetElementId: string;
+
+    getJsonTypeName(): string {
+        return "Action.ToggleVisibility";
+    }
+
+    execute() {
+        if (this.targetElementId) {
+            var targetElement = this.parent.getRootElement().getElementById(this.targetElementId);
+
+            if (targetElement) {
+                targetElement.isVisible = !targetElement.isVisible;
+            }
+        }
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.targetElementId = json["targetElementId"];
+    }
+}
+
 window.onload = () => {
+    Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+
     currentConfigPayload = Constants.defaultConfigPayload;
 
     document.getElementById("editCard").onclick = (e) => {
