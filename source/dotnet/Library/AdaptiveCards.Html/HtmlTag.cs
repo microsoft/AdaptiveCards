@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace HtmlTags
 {
-    public interface IHtmlTag
-    {
-        string ToString();
-    }
-
-    public class HtmlTag : IHtmlTag
+    public class HtmlTag
     {
         public HtmlTag(string element)
         {
@@ -26,9 +21,9 @@ namespace HtmlTags
 
         public Dictionary<string, string> Styles { get; set; } = new Dictionary<string, string>();
 
-        public List<IHtmlTag> Children { get; set; } = new List<IHtmlTag>();
+        public List<HtmlTag> Children { get; set; } = new List<HtmlTag>();
 
-        public string Text { get; set; } = String.Empty;
+        public string Text { get; set; }
 
         public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
@@ -62,38 +57,51 @@ namespace HtmlTags
             return this;
         }
 
-        public virtual string ToString()
+        public override string ToString()
         {
+            if (string.IsNullOrEmpty(this.Element))
+            {
+                // When element doesn't exist, it indicates a text node.
+                return WebUtility.HtmlEncode(this.Text);
+            }
+
             StringBuilder sb = new StringBuilder();
-            sb.Append($"<{this.Element} ");
+            sb.Append($"<{this.Element}");
             if (this.Classes.Any())
             {
-                sb.Append($"class='{String.Join(" ", this.Classes)}' ");
+                sb.Append($" class='{WebUtility.HtmlEncode(String.Join(" ", this.Classes))}'");
             }
 
             foreach (var attr in this.Attributes)
             {
-                sb.Append($"{attr.Key}='{WebUtility.HtmlEncode(attr.Value)} '");
+                sb.Append($" {attr.Key}='{WebUtility.HtmlEncode(attr.Value)}'");
             }
 
             if (this.Styles.Any())
             {
-                sb.Append($"style='{String.Join(";", this.Styles.Select(kv => $"{kv.Key}: {kv.Value}"))};' ");
+                sb.Append($" style='{String.Join(";", this.Styles.Select(kv => $"{WebUtility.HtmlEncode(kv.Key)}: {WebUtility.HtmlEncode(kv.Value)}"))};'");
             }
-
-            sb.AppendLine(">");
 
             if (this.Children.Any() || !String.IsNullOrEmpty(this.Text))
             {
+                sb.Append(">");
+
                 if (!String.IsNullOrEmpty(this.Text))
-                    sb.AppendLine(WebUtility.HtmlEncode(this.Text));
+                    sb.Append(WebUtility.HtmlEncode(this.Text));
 
                 foreach (var child in this.Children)
                 {
-                    sb.AppendLine(child.ToString());
+                    sb.Append(child.ToString());
                 }
+
+                sb.Append($"</{this.Element}>");
             }
-            sb.AppendLine($"</{this.Element}>");
+            else
+            {
+                // No children, so just self-close the element.
+                sb.Append("/>");
+            }
+
             return sb.ToString();
         }
     }
@@ -105,7 +113,7 @@ namespace HtmlTags
         }
     }
 
-    public class LinkTag : HtmlTag, IHtmlTag
+    public class LinkTag : HtmlTag
     {
         public LinkTag(string title, string url, params string[] classes) : base("a")
         {
@@ -121,21 +129,7 @@ namespace HtmlTags
         }
     }
 
-    public class LiteralTag : IHtmlTag
-    {
-        public LiteralTag(string html)
-        {
-            this.Html = html;
-        }
-        public string Html { get; set; }
-
-        public virtual string ToString()
-        {
-            return this.Html;
-        }
-    }
-
-    public class TableTag : HtmlTag, IHtmlTag
+    public class TableTag : HtmlTag
     {
         public TableTag() : base("table")
         {

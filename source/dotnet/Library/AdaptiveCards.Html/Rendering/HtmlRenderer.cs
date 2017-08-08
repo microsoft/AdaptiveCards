@@ -6,7 +6,9 @@ using System.Reflection;
 using System.Xml;
 using HtmlTags;
 using Microsoft.MarkedNet;
+using AdaptiveCards.Html;
 using AdaptiveCards.Rendering.Config;
+using System.Xml.Linq;
 
 namespace AdaptiveCards.Rendering
 {
@@ -440,12 +442,12 @@ namespace AdaptiveCards.Rendering
                     .Style("max-height", $"{lineHeight * textBlock.MaxLines}px")
                     .Style("overflow", "hidden");
 
-            var wrapStyle = "";
+            var setWrapStyleOnParagraph = false;
             if (textBlock.Wrap == false)
             {
                 uiTextBlock = uiTextBlock
                     .Style("white-space", "nowrap");
-                wrapStyle = "text-overflow: ellipsis; overflow: hidden";
+                setWrapStyleOnParagraph = true;
             }
             else
             {
@@ -453,13 +455,32 @@ namespace AdaptiveCards.Rendering
                     .Style("word-wrap", "break-word");
             }
 
-            var marked = new Marked();
-            marked.Options.Mangle = false;
-            marked.Options.Sanitize = true;
+            var textTags = MarkdownToHtmlTagConverter.Convert(RendererUtilities.ApplyTextFunctions(textBlock.Text));
+            uiTextBlock.Children.AddRange(textTags);
 
-            var html = marked.Parse(RendererUtilities.ApplyTextFunctions(textBlock.Text))
-                .Replace("<p>", $"<p style='margin-top: 0px;margin-bottom: 0px;width: 100%{wrapStyle}'>");
-            uiTextBlock.Children.Add(new LiteralTag(html));
+            Action<HtmlTag> setParagraphStyles = null;
+            setParagraphStyles = (HtmlTag htmlTag) =>
+            {
+                if (htmlTag.Element?.ToLowerInvariant() == "p")
+                {
+                    htmlTag.Style("margin-top", "0px");
+                    htmlTag.Style("margin-bottom", "0px");
+                    htmlTag.Style("width", "100%");
+
+                    if (setWrapStyleOnParagraph)
+                    {
+                        htmlTag.Style("text-overflow", "ellipsis");
+                        htmlTag.Style("overflow", "hidden");
+                    }
+                }
+
+                foreach (var child in htmlTag.Children)
+                {
+                    setParagraphStyles(child);
+                }
+            };
+
+            setParagraphStyles(uiTextBlock);
 
             return uiTextBlock;
         }
