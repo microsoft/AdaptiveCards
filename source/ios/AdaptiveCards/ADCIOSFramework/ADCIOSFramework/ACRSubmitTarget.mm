@@ -44,10 +44,10 @@
         }
         else
         {
-            [input getInput:dictionary];	
-        }        
+            [input getInput:dictionary];
+        }
     }
-    [((ACRViewController *)_vc).acrActionDelegate fetchUserResponses:dictionary];
+    [((ACRViewController *)_vc).acrActionDelegate didFetchUserResponses:dictionary];
 }
 
 @end

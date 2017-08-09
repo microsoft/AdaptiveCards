@@ -30,7 +30,7 @@
 {
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
     UIView *inputView = nil;
-    
+
     if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact &&
        !choiceSet->GetIsMultiSelect())
     {
@@ -42,13 +42,13 @@
     }
     else
     {
-        
-        inputView = [[ACRChoiceSetView alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config WithSuperview:viewGroup];
+
+        inputView = [[ACRChoiceSetView alloc] initWithInputChoiceSet:choiceSet hostConfig:config superview:viewGroup];
         [(UITableView *)inputView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"tabCellId"];
     }
-    
+
     if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:inputView];
-   
+
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:inputView
                                   attribute:NSLayoutAttributeLeading
@@ -65,9 +65,9 @@
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1.0
                                    constant:0]];
-    
+
     [inputs addObject:inputView];
-    
+
     return inputView;
 }
 

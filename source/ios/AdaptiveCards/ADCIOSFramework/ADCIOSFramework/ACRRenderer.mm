@@ -26,13 +26,13 @@ using namespace AdaptiveCards;
                          hostconfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
-    
+
     ACRColumnView *verticalView = nil;
-    
+
     if(!body.empty())
     {
          verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
-        
+
         [ACRRenderer render:verticalView inputs:inputs withCardElems:body andHostConfig:config];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
@@ -74,31 +74,31 @@ using namespace AdaptiveCards;
     {
         childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
     }
-    
-    for(auto elem:elems)
+
+    for(const auto &elem:elems)
     {
         ACRBaseActionElementRenderer *actionRenderer =
         [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
-        
+
         if(actionRenderer == nil)
         {
             NSLog(@"Unsupported card action type:%d\n", (int) elem->GetElementType());
             continue;
         }
-        
+
         UIButton* button = [actionRenderer renderButton:vc
                                                  inputs:inputs
                                               superview:superview
                                       baseActionElement:elem
                                           andHostConfig:config];
         [childview addArrangedSubview:button];
-        ACRSeparator *buttonSeparation = [[ACRSeparator alloc] initWithFrame:CGRectMake(0,0,config->actions.buttonSpacing, config->actions.buttonSpacing) 
+        ACRSeparator *buttonSeparation = [[ACRSeparator alloc] initWithFrame:CGRectMake(0,0,config->actions.buttonSpacing, config->actions.buttonSpacing)
                                                                withSuperview:childview toAxis:axis];
         [childview addArrangedSubview:buttonSeparation];
     }
-    
+
     [childview adjustHuggingForLastElement];
-    
+
     return childview;
 }
 
@@ -108,23 +108,23 @@ using namespace AdaptiveCards;
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
-    
-    for(auto elem:elems)
+
+    for(const auto &elem:elems)
     {
         [ACRSeparator renderSeparation:elem forSuperview:view withHostConfig:config];
-        
+
         ACRBaseCardElementRenderer *renderer =
             [reg getRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
-        
+
         if(renderer == nil)
         {
             NSLog(@"Unsupported card element type:%d\n", (int) elem->GetElementType());
             continue;
         }
-        
+
         [renderer render:view inputs:inputs withCardElem:elem andHostConfig:config];
     }
-    
+
     return view;
 }
 @end

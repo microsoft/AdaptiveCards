@@ -11,6 +11,6 @@
 
 @interface ACRChoiceSetView:ACRInputControlTableView
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
-                        WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
-                         WithSuperview:(UIView *)view;
+                            hostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
+                             superview:(UIView *)view;
 @end

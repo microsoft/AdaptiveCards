@@ -1,6 +1,6 @@
 //
-//  ACRSubmitActionDelegate
-//  ACRSubmitActionDelegate.h
+//  ACRActionDelegate 
+//  ACRActionDelegate.h
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
@@ -9,7 +9,7 @@
 
 @protocol ACRActionDelegate
 
-- (void)fetchUserResponses:(NSDictionary *)userResponses;
+- (void)didFetchUserResponses:(NSDictionary *)userResponses;
 
-- (void)fetchHttpRequest:(NSURLRequest *)urlRequest;
+- (void)didFetchHttpRequest:(NSURLRequest *)urlRequest;
 @end

@@ -12,7 +12,7 @@
 @interface ACRViewController :UIViewController
 
 @property NSString* jsonString;
-@property id<ACRActionDelegate> acrActionDelegate;
+@property (weak) id<ACRActionDelegate> acrActionDelegate;
 
 - (instancetype)init:(NSString* )str withFrame:(CGRect)frame;
 

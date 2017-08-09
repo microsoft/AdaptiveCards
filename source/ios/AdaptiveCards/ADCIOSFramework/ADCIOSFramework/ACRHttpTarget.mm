@@ -42,16 +42,16 @@
     NSError *err = nil;
     NSString *pattern = [[@"\\{\\{(" stringByAppendingString:[[data allKeys] componentsJoinedByString:@"|"]] stringByAppendingString:@")\\.Value\\}\\}"];
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&err];
-    __block NSMutableString *replacedString = [[NSMutableString alloc] init];
+    NSMutableString *replacedString = [[NSMutableString alloc] init];
     __block NSRange prefix = NSMakeRange(0, [string length]);
     __block NSString *replacementString;
     __block BOOL matchFound = NO;
-    
+
     [regex enumerateMatchesInString:string options:0 range:prefix usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop)
     {
         NSRange group0 = [result range];
         NSRange group1 = [result rangeAtIndex:1];
-        
+
         prefix.length = group0.location - prefix.location;
         replacementString = [string substringWithRange:prefix];
         [replacedString appendString:replacementString];
@@ -63,18 +63,18 @@
         prefix.location = group0.location + group0.length;
         matchFound = YES;
     }];
-    
+
     if(matchFound == NO)
     {
         return string;
     }
-    
+
     if(prefix.location < [string length])
     {
         replacementString = [string substringFromIndex:prefix.location];
         [replacedString appendString:replacementString];
     }
-    
+
     return replacedString;
 }
 
@@ -82,7 +82,7 @@
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     NSError *err;
-    
+
     for(id<ACRIBaseInputHandler> input in _inputs)
     {
         if([input validate:&err] == NO)
@@ -91,16 +91,16 @@
         }
         else
         {
-            [input getInput:dictionary];	
-        }        
+            [input getInput:dictionary];
+        }
     }
-    
+
     NSString *replacedURL  = [self replaceMatchInString:url data:dictionary];
     NSString *replacedBody = [self replaceMatchInString:body data:dictionary];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:replacedURL]];
     request.HTTPMethod = method;
     request.HTTPBody   = [replacedBody dataUsingEncoding:NSUTF8StringEncoding];
-    [((ACRViewController *)_vc).acrActionDelegate fetchHttpRequest:request];
+    [((ACRViewController *)_vc).acrActionDelegate didFetchHttpRequest:request];
 }
 
 @end

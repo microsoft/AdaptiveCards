@@ -108,12 +108,12 @@
     [self update:jsonStr];
 }	
 
-- (void)fetchUserResponses:(NSDictionary *)dictionary
+- (void)didFetchUserResponses:(NSDictionary *)dictionary
 {
     NSLog(@"user response fetched: %@", dictionary);
 }
 
-- (void)fetchHttpRequest:(NSURLRequest *)request
+- (void)didFetchHttpRequest:(NSURLRequest *)request
 {
     NSLog(@"Http Request fetched: %@", request);    
 }

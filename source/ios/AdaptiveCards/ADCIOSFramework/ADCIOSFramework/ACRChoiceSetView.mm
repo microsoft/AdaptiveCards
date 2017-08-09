@@ -19,8 +19,8 @@ using namespace AdaptiveCards;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<ChoiceSetInput> const&)choiceSet
-                        WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-                         WithSuperview:(UIView *)view
+                            hostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
+                             superview:(UIView *)view
 {
     self = [super initWithFrame:view.frame style:UITableViewStyleGrouped];
     if(self)
@@ -43,7 +43,7 @@ using namespace AdaptiveCards;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"tabCellId";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell)
     {
@@ -55,9 +55,9 @@ using namespace AdaptiveCards;
 
     title = [NSString stringWithCString:choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
-    
+
     cell.textLabel.text = title;
-    
+
     return cell;
 }
 
@@ -81,7 +81,7 @@ using namespace AdaptiveCards;
             [values addObject:
              [NSString stringWithCString:choiceSetDataSource->GetChoices()[i]->GetValue().c_str()
                                 encoding:NSUTF8StringEncoding]];
-             
+
         }
     }
     dictionary[self.id] = [values componentsJoinedByString:@";"];
