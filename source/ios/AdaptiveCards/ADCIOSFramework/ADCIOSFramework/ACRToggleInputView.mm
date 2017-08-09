@@ -69,7 +69,7 @@ using namespace AdaptiveCards;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"tabCellId";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell)
     {
@@ -85,9 +85,9 @@ using namespace AdaptiveCards;
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
-    
+
     cell.textLabel.text = title;
-    
+
     return cell;
 }
 
@@ -97,14 +97,14 @@ using namespace AdaptiveCards;
     return self.contentSize;
 }
 
-- (bool)validate:(NSError **)error
+- (BOOL)validate:(NSError **)error
 {
     // no need to validate
     return YES;
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
-{ 
+{
     dictionary[self.id] = self.isSelected? self.valueOn : self.valueOff;
 }
 

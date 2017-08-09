@@ -73,7 +73,7 @@ using namespace AdaptiveCards;
     return self.contentSize;
 }
 
-- (bool)validate:(NSError **)error
+- (BOOL)validate:(NSError **)error
 {
     // no need to validate
     return YES;

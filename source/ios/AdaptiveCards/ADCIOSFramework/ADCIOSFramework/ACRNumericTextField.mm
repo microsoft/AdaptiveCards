@@ -9,7 +9,7 @@
 
 @implementation ACRNumericTextField
 
-- (bool)validate:(NSError **)error
+- (BOOL)validate:(NSError **)error
 {
     BOOL isValidated = YES;
     isValidated = [super validate:error];
