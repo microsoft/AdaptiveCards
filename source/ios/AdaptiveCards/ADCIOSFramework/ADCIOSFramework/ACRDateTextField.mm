@@ -31,7 +31,7 @@ using namespace AdaptiveCards;
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateStyle = dateStyle;
-        formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+        formatter.locale = [NSLocale currentLocale];        
         
         UIDatePicker *picker = [[UIDatePicker alloc] init];
         

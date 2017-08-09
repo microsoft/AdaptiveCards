@@ -16,7 +16,7 @@
 @interface ACRRenderer:NSObject
 
 + (UIView *)renderWithJson:(NSString *)str
-                    inputs:(NSMutableArray *)inputs
+                    inputs:(NSArray *)inputs
             viewController:(UIViewController *)vc
                 guideFrame:(CGRect)guideFrame
                 hostconfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
