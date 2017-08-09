@@ -621,20 +621,39 @@ namespace AdaptiveCards.Rendering
         {
             TextInput input = (TextInput)element;
 
-            var uiTextInput = new HtmlTag("textarea")
+            HtmlTag uiTextInput;
+            if (input.IsMultiline)
+            {
+                uiTextInput = new HtmlTag("textarea");
+
+                if (!string.IsNullOrEmpty(input.Value))
+                {
+                    uiTextInput.Text = input.Value;
+                }
+            }
+            else
+            {
+                uiTextInput = new HtmlTag("input").Attr("type", "text");
+
+                if (!string.IsNullOrEmpty(input.Value))
+                {
+                    uiTextInput.Attr("value", input.Value);
+                }
+            }
+
+            uiTextInput
                 .AddClass("ac-textinput")
                 .AddClass("ac-input")
-                .Style("width", "100%")
-                .Style("box-sizing", "border-box");
+                .Style("width", "100%");
 
             if (!string.IsNullOrEmpty(input.Placeholder))
             {
-                uiTextInput.Attr("placeholder",input.Placeholder);
+                uiTextInput.Attr("placeholder", input.Placeholder);
             }
 
-            if (!string.IsNullOrEmpty(input.Value))
+            if (input.MaxLength > 0)
             {
-                uiTextInput.Text = input.Value;
+                uiTextInput.Attr("maxLength", input.MaxLength.ToString());
             }
 
             return uiTextInput;
