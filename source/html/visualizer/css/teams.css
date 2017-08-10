@@ -3,7 +3,8 @@
 }
 
 .ac-container.ac-selectable {
-  padding: 5px;
+  padding: 0px;
+  cursor: pointer;
 }
 
 .ac-container.ac-selectable:hover {

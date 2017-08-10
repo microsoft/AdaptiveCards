@@ -740,24 +740,35 @@ export class Image extends CardElement {
             imageElement.style.maxHeight = "100%";
             imageElement.style.minWidth = "0";
 
-            switch (this.size) {
-                case "stretch":
-                    imageElement.style.width = "100%";
-                    imageElement.style.maxHeight = "500px";
-                    break;
-                case "auto":
-                    imageElement.style.maxWidth = "100%";
-                    imageElement.style.maxHeight = "500px";
-                    break;
-                case "small":
-                    imageElement.style.maxWidth = hostConfig.imageSizes.small + "px";
-                    break;
-                case "large":
-                    imageElement.style.maxWidth = hostConfig.imageSizes.large + "px";
-                    break;
-                case "medium":
-                    imageElement.style.maxWidth = hostConfig.imageSizes.medium + "px";
-                    break;
+            if (this.pixelWidth || this.pixelHeight) {
+                if (this.pixelWidth) {
+                    imageElement.style.width = this.pixelWidth + "px";
+                }
+
+                if (this.pixelHeight) {
+                    imageElement.style.height = this.pixelHeight + "px";
+                }
+            }
+            else {
+                switch (this.size) {
+                    case "stretch":
+                        imageElement.style.width = "100%";
+                        imageElement.style.maxHeight = "500px";
+                        break;
+                    case "auto":
+                        imageElement.style.maxWidth = "100%";
+                        imageElement.style.maxHeight = "500px";
+                        break;
+                    case "small":
+                        imageElement.style.maxWidth = hostConfig.imageSizes.small + "px";
+                        break;
+                    case "large":
+                        imageElement.style.maxWidth = hostConfig.imageSizes.large + "px";
+                        break;
+                    case "medium":
+                        imageElement.style.maxWidth = hostConfig.imageSizes.medium + "px";
+                        break;
+                }
             }
 
             if (this.style == "person") {
@@ -778,6 +789,8 @@ export class Image extends CardElement {
     url: string;
     size: Enums.Size = "auto";
     selectAction: Action;
+    pixelWidth?: number = null;
+    pixelHeight?: number = null;
 
     getJsonTypeName(): string {
         return "Image";
@@ -805,6 +818,14 @@ export class Image extends CardElement {
         if (selectActionJson != undefined) {
             this.selectAction = Action.createAction(selectActionJson);
             invokeSetParent(this.selectAction, this);
+        }
+
+        if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
+            this.pixelWidth = json["pixelWidth"];
+        }
+
+        if (json["pixelHeight"] && typeof json["pixelHeight"] === "number") {
+            this.pixelHeight = json["pixelHeight"];
         }
     }
 

@@ -463,18 +463,20 @@ function elementVisibilityChanged(element: Adaptive.CardElement) {
 }
 
 export class ToggleVisibilityAction extends Adaptive.Action {
-    targetElementId: string;
+    targetElementIds: Array<string> = [];
 
     getJsonTypeName(): string {
         return "Action.ToggleVisibility";
     }
 
     execute() {
-        if (this.targetElementId) {
-            var targetElement = this.parent.getRootElement().getElementById(this.targetElementId);
+        if (this.targetElementIds) {
+            for (var i = 0; i < this.targetElementIds.length; i++) {
+                var targetElement = this.parent.getRootElement().getElementById(this.targetElementIds[i]);
 
-            if (targetElement) {
-                targetElement.isVisible = !targetElement.isVisible;
+                if (targetElement) {
+                    targetElement.isVisible = !targetElement.isVisible;
+                }
             }
         }
     }
@@ -482,7 +484,7 @@ export class ToggleVisibilityAction extends Adaptive.Action {
     parse(json: any) {
         super.parse(json);
 
-        this.targetElementId = json["targetElementId"];
+        this.targetElementIds = json["targetElementIds"] as Array<string>;
     }
 }
 
