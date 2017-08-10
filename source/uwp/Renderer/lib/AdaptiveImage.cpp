@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveImage.h"
 
 #include "Util.h"
@@ -127,6 +128,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         *elementType = ElementType::Image;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_Height(IAdaptiveHeight** height)
+    {
+        return MakeAndInitialize<AdaptiveHeight>(height, m_sharedImage->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

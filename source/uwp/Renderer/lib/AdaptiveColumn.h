@@ -21,13 +21,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Column>& sharedColumn);
 
         // IAdaptiveColumn
-        IFACEMETHODIMP get_Size(_Out_ HSTRING* size);
-        IFACEMETHODIMP put_Size(_In_ HSTRING size);
+        IFACEMETHODIMP get_Width(_Out_ HSTRING* width);
+        IFACEMETHODIMP put_Width(_In_ HSTRING width);
 
         IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** items);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
+
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHeight** height);
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHeight* height);
 
         IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
         IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);

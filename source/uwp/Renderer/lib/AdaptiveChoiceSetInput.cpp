@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveChoiceSetInput.h"
 
 #include "Util.h"
@@ -102,6 +103,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         *elementType = ElementType::ChoiceSetInput;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveChoiceSetInput::get_Height(IAdaptiveHeight** height)
+    {
+        return MakeAndInitialize<AdaptiveHeight>(height, m_sharedChoiceSetInput->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveChoiceSetInput::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

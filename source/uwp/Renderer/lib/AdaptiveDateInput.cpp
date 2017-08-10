@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveHeight.h"
 #include "AdaptiveDateInput.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
@@ -106,6 +107,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         *elementType = ElementType::DateInput;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveDateInput::get_Height(IAdaptiveHeight** height)
+    {
+        return MakeAndInitialize<AdaptiveHeight>(height, m_sharedDateInput->GetHeight());
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveDateInput::put_Height(IAdaptiveHeight* height)
+    {
+        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

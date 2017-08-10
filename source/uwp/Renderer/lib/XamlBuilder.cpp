@@ -125,7 +125,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         *xamlTreeRoot = nullptr;
 
-        ComPtr<IPanel> childElementContainer;
+        ComPtr<IGrid> childElementContainer;
         ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, &childElementContainer);
 
         // Enumerate the child items of the card and build xaml for them
@@ -308,7 +308,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(IAdaptiveCard* adaptiveCard, IPanel** childElementContainer)
+    ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(IAdaptiveCard* adaptiveCard, IGrid** childElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
         // properties.  From back to fron these are:
@@ -335,9 +335,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get());
         }
 
-        // Now create the inner stack panel to serve as the root host for all the 
+        // Now create the inner grid to serve as the root host for all the 
         // body elements and apply padding from host configuration
-        ComPtr<IStackPanel> bodyElementHost = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<IGrid> bodyElementHost = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IFrameworkElement> bodyElementHostAsElement;
         THROW_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
         ComPtr<IAdaptiveSpacingDefinition> cardPadding;
@@ -519,7 +519,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     void XamlBuilder::BuildPanelChildren(
         IVector<IAdaptiveCardElement*>* children,
-        IPanel* parentPanel,
+        IGrid* parentGrid,
         std::shared_ptr<std::vector<InputItem>> inputElements,
         std::function<void(IUIElement* child)> childCreatedCallback)
     {
@@ -544,13 +544,26 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                         if (separationConfig != nullptr)
                         {
                             auto separator = CreateSeparator(separationConfig.Get());
-                            XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+                            XamlHelpers::AddRow(separator.Get(), parentGrid, { 1, GridUnitType::GridUnitType_Auto });
                         }
                     }
                 }
                 ComPtr<IUIElement> newControl;
                 m_adaptiveElementBuilder[elementType](element, inputElements, &newControl);
-                XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel);
+
+                IAdaptiveHeight* elementHeight;
+                THROW_IF_FAILED(element->get_Height(&elementHeight));
+                ABI::AdaptiveCards::XamlCardRenderer::HeightType heightType;
+                THROW_IF_FAILED(elementHeight->get_HeightType(&heightType));
+                if (heightType == ABI::AdaptiveCards::XamlCardRenderer::HeightType::Stretch)
+                {
+                    XamlHelpers::AddRow(newControl.Get(), parentGrid, { 1, GridUnitType::GridUnitType_Star });
+                }
+                else
+                {
+                    XamlHelpers::AddRow(newControl.Get(), parentGrid, { 1, GridUnitType::GridUnitType_Auto });
+                }
+
                 childCreatedCallback(newControl.Get());
             }
         });
@@ -625,7 +638,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IVector<IAdaptiveActionElement*>* children,
         XamlCardRenderer* renderer,
         std::shared_ptr<std::vector<InputItem>> inputElements,
-        IPanel* parentPanel)
+        IGrid* parentGrid)
     {
         // Create a separator between the body and the actions
         ComPtr<IAdaptiveActionsConfig> actionsConfig;
@@ -635,7 +648,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(actionsConfig->get_Separation(&separationConfig));
             
         auto separator = CreateSeparator(separationConfig.Get());
-        XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+        XamlHelpers::AddRow(separator.Get(), parentGrid, { 1, GridUnitType::GridUnitType_Auto });
 
         ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment actionAlignment;
         THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
@@ -856,10 +869,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             currentAction++;
         });
 
-        XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), parentPanel);
+        XamlHelpers::AddRow(actionsPanel.Get(), parentGrid, { 1, GridUnitType::GridUnitType_Auto });
 
         // TODO: EdgeToEdge show cards should not go in "parentPanel", which has margins applied to it from the adaptive card options
-        XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel.Get(), parentPanel);
+        XamlHelpers::AddRow(showCardsStackPanel.Get(), parentGrid, { 1, GridUnitType::GridUnitType_Auto });
     }
 
     _Use_decl_annotations_
@@ -1367,14 +1380,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IAdaptiveContainer> adaptiveContainer;
         THROW_IF_FAILED(cardElement.As(&adaptiveContainer));
 
-        ComPtr<IStackPanel> xamlStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-        xamlStackPanel->put_Orientation(Orientation::Orientation_Vertical);
+        ComPtr<IGrid> xamlGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
 
-        ComPtr<IPanel> stackPanelAsPanel;
-        THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveContainer->get_Items(&childItems));
-        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), inputElements, [](IUIElement*) {});
+        BuildPanelChildren(childItems.Get(), xamlGrid.Get(), inputElements, [](IUIElement*) {});
 
         // Add Border to container and style it from HostConfig
         ComPtr<IAdaptiveContainerConfig> containerConfig;
@@ -1401,17 +1411,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         Thickness borderThickness = ThicknessFromSpacingDefinition(hostBorderOptions.Get());
         THROW_IF_FAILED(containerBorder->put_BorderThickness(borderThickness));
 
-        ComPtr<IUIElement> stackPanelAsUIElement;
-        THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsUIElement));
-        THROW_IF_FAILED(containerBorder->put_Child(stackPanelAsUIElement.Get()));
+        ComPtr<IUIElement> gridAsUIElement;
+        THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
+        THROW_IF_FAILED(containerBorder->put_Child(gridAsUIElement.Get()));
 
         ComPtr<IStyle> style;
         std::wstring styleName = XamlStyleKeyGenerators::GenerateKeyForContainer(adaptiveContainer.Get());
         if (SUCCEEDED(TryGetResoureFromResourceDictionaries<IStyle>(styleName, &style)))
         {
-            ComPtr<IFrameworkElement> stackPanelAsFrameworkElement;
-            THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsFrameworkElement));
-            THROW_IF_FAILED(stackPanelAsFrameworkElement->put_Style(style.Get()));
+            ComPtr<IFrameworkElement> gridAsFrameworkElement;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsFrameworkElement));
+            THROW_IF_FAILED(gridAsFrameworkElement->put_Style(style.Get()));
         }
 
         THROW_IF_FAILED(containerBorder.CopyTo(containerControl));
@@ -1427,16 +1437,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IAdaptiveColumn> adaptiveColumn;
         THROW_IF_FAILED(cardElement.As(&adaptiveColumn));
 
-        ComPtr<IStackPanel> xamlStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-        xamlStackPanel->put_Orientation(Orientation::Orientation_Vertical);
+        ComPtr<IGrid> xamlGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
 
-        ComPtr<IPanel> stackPanelAsPanel;
-        THROW_IF_FAILED(xamlStackPanel.As(&stackPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
-        BuildPanelChildren(childItems.Get(), stackPanelAsPanel.Get(), inputElements, [](IUIElement*) {});
+        BuildPanelChildren(childItems.Get(), xamlGrid.Get(), inputElements, [](IUIElement*) {});
 
-        THROW_IF_FAILED(xamlStackPanel.CopyTo(ColumnControl));
+        THROW_IF_FAILED(xamlGrid.CopyTo(ColumnControl));
     }
 
     _Use_decl_annotations_
@@ -1495,16 +1502,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             // Determine if the column is auto, stretch, or percentage width, and set the column width appropriately
             ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
 
-            HString adaptiveColumnSize;
-            THROW_IF_FAILED(column->get_Size(adaptiveColumnSize.GetAddressOf()));
+            HString adaptiveColumnWidth;
+            THROW_IF_FAILED(column->get_Width(adaptiveColumnWidth.GetAddressOf()));
 
             INT32 isStretchResult;
-            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"stretch").Get(), &isStretchResult));
+            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"stretch").Get(), &isStretchResult));
 
             INT32 isAutoResult;
-            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnSize.Get(), HStringReference(L"auto").Get(), &isAutoResult));
+            THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"auto").Get(), &isAutoResult));
 
-            double sizeAsDouble = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+            double widthAsDouble = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
 
             GridLength columnWidth;
             if (isAutoResult == 0)
@@ -1513,17 +1520,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
                 columnWidth.Value = 0;
             }
-            else if (isStretchResult == 0 || !adaptiveColumnSize.IsValid() || (sizeAsDouble <= 0))
+            else if (isStretchResult == 0 || !adaptiveColumnWidth.IsValid() || (widthAsDouble <= 0))
             {
-                // If stretch specified, or column size invalid or set to non-positive, use stretch with default of 1
+                // If stretch specified, or column width invalid or set to non-positive, use stretch with default of 1
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
                 columnWidth.Value = 1;
             }
             else
             {
-                // If user specified specific valid size, use that star size
+                // If user specified specific valid width, use that star width
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
-                columnWidth.Value = _wtof(adaptiveColumnSize.GetRawBuffer(nullptr));
+                columnWidth.Value = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
             }
 
             THROW_IF_FAILED(columnDefinition->put_Width(columnWidth));

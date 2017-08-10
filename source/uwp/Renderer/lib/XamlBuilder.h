@@ -86,7 +86,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _Out_ T* valueResource);
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateRootCardElement(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** childElementContainer);
+            _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IGrid** childElementContainer);
         void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel, _In_ ABI::Windows::Foundation::IUriRuntimeClass* uri);
         template<typename T>
         void SetImageSource(T* destination, ABI::Windows::UI::Xaml::Media::IImageSource* imageSource);
@@ -97,7 +97,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         void FireAllImagesLoaded();
         void BuildPanelChildren(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* children,
-            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
+            _In_ ABI::Windows::UI::Xaml::Controls::IGrid* parentGrid,
             std::shared_ptr<std::vector<InputItem>> inputElements,
             _In_ std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
         void BuildShowCard(
@@ -109,7 +109,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,
             AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
             std::shared_ptr<std::vector<InputItem>> inputElements,
-            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
+            _In_ ABI::Windows::UI::Xaml::Controls::IGrid* parentGrid);
         void GetSeparationConfigForElement(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
             _In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation,

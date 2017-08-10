@@ -46,10 +46,10 @@ const PCWSTR c_defaultResourceDictionary = L"\
         <Setter Property=\"FontSize\" Value=\"8\"/> \
     </Style> \
 \
-    <Style TargetType=\"StackPanel\" x:Key=\"Container\"> \
+    <Style TargetType=\"Grid\" x:Key=\"Container\"> \
         <Setter Property=\"Margin\" Value=\"0,0,0,0\"/> \
     </Style> \
-    <Style TargetType=\"StackPanel\" x:Key=\"Container.StartGroup\"> \
+    <Style TargetType=\"Grid\" x:Key=\"Container.StartGroup\"> \
         <Setter Property=\"Margin\" Value=\"0,10,0,0\"/> \
     </Style> \
 \
