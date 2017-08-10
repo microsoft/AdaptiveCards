@@ -340,7 +340,7 @@ export abstract class CardElement {
     }
 
     getParentContainer(): Container {
-        var currentElement: CardElement = this;
+        var currentElement: CardElement = this.parent;
 
         while (currentElement) {
             if (currentElement instanceof Container) {
@@ -2397,7 +2397,9 @@ export class Container extends CardElement {
     }
 
     protected get hasBackground(): boolean {
-        return this.backgroundImage != undefined || this.colorPalette != "default";
+        var parentContainer = this.getParentContainer();
+
+        return this.backgroundImage != undefined || (parentContainer ? parentContainer.colorPalette != this.colorPalette : false);
     }
 
     protected get defaultColorPalette(): Enums.ColorPalette {
