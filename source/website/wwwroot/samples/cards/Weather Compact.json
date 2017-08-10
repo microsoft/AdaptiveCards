@@ -26,7 +26,7 @@
 							"items": [
 								{
 									"type": "Image",
-									"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
+									"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
 									"size": "small",
 									"horizontalAlignment": "center"
 								}

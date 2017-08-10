@@ -1,21 +1,20 @@
 //
-//  ACRInputControlTableViewController
-//  ACRInputControlTableViewController.h
+//  ACRInputControlTable
+//  ACRInputControlTable.h
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 #import <UIKit/UIKit.h>
-#import "ToggleInput.h"
-#import "ChoiceInput.h"
-#import "ChoiceSetInput.h"
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
+#import "ACRIBaseInputHandler.h"
 
-@interface ACRInputControlTableView:UITableView<UITableViewDataSource, UITableViewDelegate>
-- (instancetype)initWithInputToggle:(std::shared_ptr<AdaptiveCards::ToggleInput> const&)toggleInput
-                     WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
-                      WithSuperview:(UIView *)view;
-- (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
-                        WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
-                         WithSuperview:(UIView *)view;
+@interface ACRInputControlTableView:UITableView<UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler>
+
+@property NSString *id;
+@property NSString *valueOn;
+@property NSString *valueOff;
+@property BOOL isSelected;
+@property NSMutableDictionary *results;
+
 @end
