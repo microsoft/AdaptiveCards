@@ -139,7 +139,7 @@
           "description": "Label for button or link that represents this action"
         },
         "card": {
-          "$ref": "#/definitions/Container"
+          "$ref": "#/definitions/AdaptiveCard"
         }
       },
       "required": [
