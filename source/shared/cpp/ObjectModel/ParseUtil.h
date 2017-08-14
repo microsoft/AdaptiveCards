@@ -64,6 +64,13 @@ public:
         bool isRequired = false);
 
     template <typename T>
+    static std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
+        const Json::Value& json,
+        AdaptiveCardSchemaKey key,
+        const std::function<std::shared_ptr<T>(const Json::Value&)>& deserializer,
+        bool isRequired = false);
+
+    template <typename T>
     static std::vector<std::shared_ptr<T>> GetActionCollection(
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
@@ -155,6 +162,37 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(
         {
             // Use the parser that maps to the type
             elements.push_back(parsers.at(curElementType)(curJsonValue));
+        }
+    }
+
+    return elements;
+}
+
+template <typename T>
+std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollectionOfSingleType(
+    const Json::Value& json,
+    AdaptiveCardSchemaKey key,
+    const std::function<std::shared_ptr<T>(const Json::Value&)>& deserializer,
+    bool isRequired)
+{
+    auto elementArray = GetArray(json, key, isRequired);
+
+    std::vector<std::shared_ptr<T>> elements;
+    if (elementArray.empty())
+    {
+        return elements;
+    }
+
+    elements.reserve(elementArray.size());
+
+    // Deserialize every element in the array
+    for (const Json::Value& curJsonValue : elementArray)
+    {
+        // Parse the element
+        auto el = deserializer(curJsonValue);
+        if (el != nullptr)
+        {
+            elements.push_back(el);
         }
     }
 
