@@ -7,18 +7,10 @@
 
 #import <Foundation/Foundation.h>
 #import "ACRInputControlTableView.h"
-#import "ToggleInput.h"
-#import "ChoiceSetInput.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRInputControlTableView
-{
-    std::shared_ptr<ToggleInput> toggleInputDataSource;
-    std::shared_ptr<ChoiceSetInput>   choiceSetDataSource;
-    std::shared_ptr<HostConfig>  config;
-    bool isMultichoiceAllowed;
-}
 
 - (instancetype)initWithFrame:(CGRect)frame
                         style:(UITableViewStyle)style
@@ -30,47 +22,17 @@ using namespace AdaptiveCards;
         self.delegate = self;
         self.backgroundColor = UIColor.clearColor;
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        isMultichoiceAllowed = false;
-    }
-    return self;
-}
-
-- (instancetype)initWithInputToggle:(std::shared_ptr<ToggleInput> const&)toggleInput
-      WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-       WithSuperview:(UIView *)view
-{
-    self = [self initWithFrame:view.frame style:UITableViewStylePlain];
-    if(self)
-    {
-        toggleInputDataSource = toggleInput;
-        choiceSetDataSource   = nullptr;
-        config = hostConfig;
-    }
-    return self;
-}
-
-- (instancetype)initWithInputChoiceSet:(std::shared_ptr<ChoiceSetInput> const&)choiceSet
-                        WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
-                         WithSuperview:(UIView *)view
-{
-    self = [self initWithFrame:view.frame style:UITableViewStyleGrouped];
-    if(self)
-    {
-        choiceSetDataSource   = choiceSet;
-        toggleInputDataSource = nullptr;
-        config = hostConfig;
-        isMultichoiceAllowed = choiceSetDataSource->GetIsMultiSelect();
+        self.isSelected = NO;
+        self.id = nil;
     }
     return self;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(toggleInputDataSource)
-        return 1;
-    else
-        return choiceSetDataSource->GetChoices().size();
+    return 1;
 }
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return nil;
@@ -81,62 +43,43 @@ using namespace AdaptiveCards;
     return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *identifier = @"tabCellId";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if(!cell)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:identifier];
-    }
-
-    NSString *title = nil;
-
-    if(toggleInputDataSource)
-    {
-        title = [NSString stringWithCString:toggleInputDataSource->GetTitle().c_str()
-                           encoding:NSUTF8StringEncoding];
-    }
-    else
-    {
-        title = [NSString stringWithCString:choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
-                                   encoding:NSUTF8StringEncoding];
-    }
-    
-    cell.textLabel.text = title;
-    
-    return cell;
-}
-
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if([tableView cellForRowAtIndexPath:indexPath].accessoryType ==
        UITableViewCellAccessoryCheckmark)
     {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType =
         UITableViewCellAccessoryNone;
+        self.isSelected = NO;
+        self.results[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
     }
     else
     {
         [tableView cellForRowAtIndexPath:indexPath].accessoryType =
         UITableViewCellAccessoryCheckmark;
+        self.isSelected = YES;
+        self.results[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
     }
 }
 
-- (void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(isMultichoiceAllowed == false)
-    {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType =
-        UITableViewCellAccessoryNone;
-    }
+    return nil;
 }
 
 - (CGSize)intrinsicContentSize
 {
     [self layoutIfNeeded];
     return self.contentSize;
+}
+
+- (BOOL)validate:(NSError **)error
+{
+    // no need to validate
+    return YES;
+}
+
+- (void)getInput:(NSMutableDictionary *)dictionary
+{
 }
 @end

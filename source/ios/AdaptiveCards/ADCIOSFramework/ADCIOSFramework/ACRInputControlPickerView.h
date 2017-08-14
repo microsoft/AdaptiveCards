@@ -8,8 +8,9 @@
 #import "ChoiceSetInput.h"
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
+#import "ACRIBaseInputHandler.h"
 
-@interface ACRInputControlPickerView:UIPickerView<UIPickerViewDataSource, UIPickerViewDelegate>
+@interface ACRInputControlPickerView:UIPickerView<UIPickerViewDataSource, UIPickerViewDelegate, ACRIBaseInputHandler>
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
                             hostConfig:(std::shared_ptr<AdaptiveCards::HostConfig>     const&)hostConfig
                              superview:(UIView *)view;

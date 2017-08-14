@@ -6,6 +6,7 @@
 //
 
 #import "ACRBaseCardElementRenderer.h"
+#import "ACRIBaseInputHandler.h"
 
 @interface ACRInputToggleRenderer:ACRBaseCardElementRenderer
 

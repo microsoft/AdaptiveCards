@@ -36,7 +36,7 @@ using namespace AdaptiveCards;
    
         self.translatesAutoresizingMaskIntoConstraints = NO;
         CGSize target = [view systemLayoutSizeFittingSize:sz];        
-        self.frame = CGRectMake(0,0, (target.width / sz.width) * sz.width, sz.height);
+        self.frame = CGRectMake(0, 0, (target.width / sz.width) * sz.width, sz.height);
     }
     return self;
 }
@@ -51,9 +51,9 @@ using namespace AdaptiveCards;
     return 1;
 }
 
-- (UICollectionViewCell* )collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString* identifier = @"cellId";
+    static NSString *identifier = @"cellId";
     
     for(auto img :imgSet->GetImages())
     {
@@ -61,10 +61,11 @@ using namespace AdaptiveCards;
     }
     
     UIView* content = [[ACRImageRenderer getInstance] render:nil
+                                                      inputs:nil
                                                 withCardElem:imgSet->GetImages()[indexPath.row]
                                                andHostConfig:config];
     
-    UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell)
     {
         cell = [[UICollectionViewCell alloc] initWithFrame:content.frame];
@@ -74,8 +75,7 @@ using namespace AdaptiveCards;
     return cell;
 }
 - (CGFloat)collectionView:(UICollectionView *)collectionView
-                   layout:(UICollectionViewLayout *)collectionViewLayout 
-                   minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+                   layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     return 0;
 }

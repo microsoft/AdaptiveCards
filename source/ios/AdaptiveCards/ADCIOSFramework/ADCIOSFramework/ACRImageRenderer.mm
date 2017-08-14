@@ -118,6 +118,7 @@
     return constraints;
 }
 - (UIView *)render:(UIView *)viewGroup
+            inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
@@ -157,8 +158,8 @@
                                            withSuperview:wrappingview
                                                   toView:view]];
 
-    view.translatesAutoresizingMaskIntoConstraints = false;
-    wrappingview.translatesAutoresizingMaskIntoConstraints = false;
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     return wrappingview;
 }
 

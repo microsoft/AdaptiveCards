@@ -33,8 +33,10 @@
     NSMutableAttributedString *content =
     [[NSMutableAttributedString alloc] initWithString:text
                                            attributes:@{NSForegroundColorAttributeName:
-                                                            [ACRTextBlockRenderer getTextBlockColor:txtConfig.color withHostConfig:config andSubtleOption:txtConfig.isSubtle],
-                                                        NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtConfig.weight withHostConfig:config]}];
+                                                            [ACRTextBlockRenderer getTextBlockColor:txtConfig.color withHostConfig:config
+                                                                                    andSubtleOption:txtConfig.isSubtle],
+                                                            NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtConfig.weight
+                                                                                                                     withHostConfig:config]}];
     NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     [content addAttributes:@{NSParagraphStyleAttributeName:para} range:NSMakeRange(0,1)];
     lab.attributedText = content;
@@ -43,6 +45,7 @@
     return lab;
 }
 - (UIView *)render:(UIStackView *)viewGroup
+            inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
@@ -63,7 +66,7 @@
                               withTextConfig:config->factSet.title];
 
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str()
-                                                    encoding:NSUTF8StringEncoding];
+                                             encoding:NSUTF8StringEncoding];
         UILabel *valueLab = [self buildLabel:value 
                               withHostConfig:config
                               withTextConfig:config->factSet.value];
@@ -72,22 +75,27 @@
         [valueStack addArrangedSubview:valueLab];
     }
     
-    ACRColumnSetView *factSetView= [[ACRColumnSetView alloc] init];
+    ACRColumnSetView *factSetView = [[ACRColumnSetView alloc] init];
     
     [factSetView addArrangedSubview:titleStack];
     [titleStack setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
-    ACRSeparator *separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,20,20)
+    ACRSeparator *separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing)
                                                     withSuperview:factSetView
                                                            toAxis:UILayoutConstraintAxisHorizontal];
     [factSetView addArrangedSubview:valueStack];
 
-    separation = [[ACRSeparator alloc]initWithFrame:CGRectMake(0,0,20,20) 
-                                    withSuperview:factSetView
+    separation = [[ACRSeparator alloc] initWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing)
+                                       withSuperview:factSetView
                                               toAxis:UILayoutConstraintAxisHorizontal];
 
     [factSetView adjustHuggingForLastElement];
-    if(viewGroup) [ viewGroup addArrangedSubview:factSetView];
+    
+    if(viewGroup)
+    {
+        [viewGroup addArrangedSubview:factSetView];
+    }
+    
     return factSetView;
 }
 @end

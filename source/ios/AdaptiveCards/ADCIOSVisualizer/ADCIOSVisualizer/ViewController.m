@@ -6,7 +6,6 @@
 //
 
 #import "ViewController.h"
-#import <ADCIOSFramework/ACFramework.h>
 
 @interface ViewController ()
 
@@ -93,11 +92,12 @@
 {
     self.editableStr = jsonStr;
     ACRViewController *adcVc = [[ACRViewController alloc] init:jsonStr
-                                                     withFrame:CGRectMake(20, 250, 300, 850)];
+                                                     withFrame:CGRectMake(20, 250, 300, 1250)];
+    adcVc.acrActionDelegate = self;
     if(self.curView)
         [self.curView removeFromSuperview];
     self.curView = adcVc.view;
-    self.curView.frame = CGRectMake(20, 250, 300, 850);
+    self.curView.frame = CGRectMake(20, 250, 300, 1250);
     [self addChildViewController:adcVc];
     [self.view addSubview:adcVc.view];
     [adcVc didMoveToParentViewController:self];
@@ -106,5 +106,16 @@
 - (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr
 {
     [self update:jsonStr];
+}	
+
+- (void)didFetchUserResponses:(NSDictionary *)dictionary
+{
+    NSLog(@"user response fetched: %@", dictionary);
 }
+
+- (void)didFetchHttpRequest:(NSURLRequest *)request
+{
+    NSLog(@"Http Request fetched: %@", request);    
+}
+
 @end

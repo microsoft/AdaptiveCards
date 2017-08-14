@@ -8,6 +8,9 @@
 #include "ACRContentStackView.h"
 
 @implementation ACRContentStackView
+{
+    NSMutableArray* targets;
+}
 
 - (instancetype)init 
 {
@@ -79,6 +82,8 @@
     
     self.stackView.translatesAutoresizingMaskIntoConstraints = false;
     self.translatesAutoresizingMaskIntoConstraints = false;
+
+    targets = [[NSMutableArray alloc] init];
 }
 
 - (CGSize)intrinsicContentSize
@@ -91,6 +96,11 @@
     [self.stackView addArrangedSubview:view];
 }
 
+- (void)addTarget:(NSObject *)target
+{
+    [targets addObject:target];
+}
+
 // let the last element to strech
 - (void)adjustHuggingForLastElement
 {
@@ -98,6 +108,11 @@
         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
     if([self.stackView.arrangedSubviews count])
         [[self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count ] -1] setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+}
+
+- (UILayoutConstraintAxis) getAxis
+{
+    return self.stackView.axis;
 }
 
 @end
