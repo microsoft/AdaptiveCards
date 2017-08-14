@@ -53,6 +53,8 @@ function getEffectiveSpacing(spacing: Enums.Spacing): number {
             return hostConfig.spacing.large;
         case "extraLarge":
             return hostConfig.spacing.extraLarge;
+        case "padding":
+            return hostConfig.spacing.padding;
         default:
             return 0;
     }
@@ -60,12 +62,8 @@ function getEffectiveSpacing(spacing: Enums.Spacing): number {
 
 function getEffectivePadding(padding: Enums.Padding): number {
     switch (padding) {
-        case "small":
-            return hostConfig.padding.small;
         case "default":
-            return hostConfig.padding.default;
-        case "large":
-            return hostConfig.padding.large;
+            return hostConfig.spacing.padding;
         default:
             return 0;
     }
@@ -2222,102 +2220,104 @@ export class Container extends CardElement {
     }
 
     protected applyPadding(element: HTMLElement) {
-        var bleed = this.parent ? this.parent.canContentBleed() : false;
+        if (this.hasBackground) {
+            var useAutoPadding = AdaptiveCard.useAutoPadding && (this.parent ? this.parent.canContentBleed() : false);
 
-        if (bleed && this.hasBackground) {
-            var effectivePadding = this.getNonZeroPadding();
-            var effectiveMargin: HostConfig.IPaddingDefinition = {
-                top: effectivePadding.top,
-                right: effectivePadding.right,
-                bottom: effectivePadding.bottom,
-                left: effectivePadding.left,
-            };
+            if (useAutoPadding) {
+                var effectivePadding = this.getNonZeroPadding();
+                var effectiveMargin: HostConfig.IPaddingDefinition = {
+                    top: effectivePadding.top,
+                    right: effectivePadding.right,
+                    bottom: effectivePadding.bottom,
+                    left: effectivePadding.left,
+                };
 
-            if (!this.isAtTheVeryTop()) {
-                effectivePadding.top = "none";
-                effectiveMargin.top = "none";
-            }
-
-            if (!this.isAtTheVeryBottom()) {
-                effectivePadding.bottom = "none";
-                effectiveMargin.bottom = "none";
-            }
-
-            if (!this.isAtTheVeryLeft()) {
-                effectivePadding.left = "none";
-                effectiveMargin.left = "none";
-            }
-
-            if (!this.isAtTheVeryRight()) {
-                effectivePadding.right = "none";
-                effectiveMargin.right = "none";
-            }
-
-            if (effectivePadding.left != "none" || effectivePadding.right != "none") {
-                if (effectivePadding.left == "none") {
-                    effectivePadding.left = effectivePadding.right;
+                if (!this.isAtTheVeryTop()) {
+                    effectivePadding.top = "none";
+                    effectiveMargin.top = "none";
                 }
 
-                if (effectivePadding.right == "none") {
-                    effectivePadding.right = effectivePadding.left;
-                }
-            }
-
-            if (effectivePadding.top != "none" || effectivePadding.bottom != "none") {
-                if (effectivePadding.top == "none") {
-                    effectivePadding.top = effectivePadding.bottom;
+                if (!this.isAtTheVeryBottom()) {
+                    effectivePadding.bottom = "none";
+                    effectiveMargin.bottom = "none";
                 }
 
-                if (effectivePadding.bottom == "none") {
-                    effectivePadding.bottom = effectivePadding.top;
+                if (!this.isAtTheVeryLeft()) {
+                    effectivePadding.left = "none";
+                    effectiveMargin.left = "none";
                 }
-            }
 
-            if (effectivePadding.top != "none" || effectivePadding.right != "none" || effectivePadding.bottom != "none" || effectivePadding.left != "none") {
-                if (effectivePadding.top == "none") {
+                if (!this.isAtTheVeryRight()) {
+                    effectivePadding.right = "none";
+                    effectiveMargin.right = "none";
+                }
+
+                if (effectivePadding.left != "none" || effectivePadding.right != "none") {
+                    if (effectivePadding.left == "none") {
+                        effectivePadding.left = effectivePadding.right;
+                    }
+
+                    if (effectivePadding.right == "none") {
+                        effectivePadding.right = effectivePadding.left;
+                    }
+                }
+
+                if (effectivePadding.top != "none" || effectivePadding.bottom != "none") {
+                    if (effectivePadding.top == "none") {
+                        effectivePadding.top = effectivePadding.bottom;
+                    }
+
+                    if (effectivePadding.bottom == "none") {
+                        effectivePadding.bottom = effectivePadding.top;
+                    }
+                }
+
+                if (effectivePadding.top != "none" || effectivePadding.right != "none" || effectivePadding.bottom != "none" || effectivePadding.left != "none") {
+                    if (effectivePadding.top == "none") {
+                        effectivePadding.top = "default";
+                    }
+
+                    if (effectivePadding.right == "none") {
+                        effectivePadding.right = "default";
+                    }
+
+                    if (effectivePadding.bottom == "none") {
+                        effectivePadding.bottom = "default";
+                    }
+
+                    if (effectivePadding.left == "none") {
+                        effectivePadding.left = "default";
+                    }
+                }
+
+                if (effectivePadding.top == "none" && effectivePadding.right == "none" && effectivePadding.bottom == "none" && effectivePadding.left == "none") {
                     effectivePadding.top = "default";
-                }
-
-                if (effectivePadding.right == "none") {
                     effectivePadding.right = "default";
-                }
-
-                if (effectivePadding.bottom == "none") {
                     effectivePadding.bottom = "default";
-                }
-
-                if (effectivePadding.left == "none") {
                     effectivePadding.left = "default";
                 }
+
+                var physicalMargin = paddingToSpacingDefinition(effectiveMargin);
+                var physicalPadding = paddingToSpacingDefinition(effectivePadding);
+
+                element.style.marginTop = "-" + physicalMargin.top + "px";
+                element.style.marginRight = "-" + physicalMargin.right + "px";
+                element.style.marginBottom = "-" + physicalMargin.bottom + "px";
+                element.style.marginLeft = "-" + physicalMargin.left + "px";
+
+                element.style.paddingTop = physicalPadding.top + "px";
+                element.style.paddingRight = physicalPadding.right + "px";
+                element.style.paddingBottom = physicalPadding.bottom + "px";
+                element.style.paddingLeft = physicalPadding.left + "px";    
             }
+            else {
+                var physicalPadding = paddingToSpacingDefinition({ top: "default", right: "default", bottom: "default", left: "default" });
 
-            if (effectivePadding.top == "none" && effectivePadding.right == "none" && effectivePadding.bottom == "none" && effectivePadding.left == "none") {
-                effectivePadding.top = "default";
-                effectivePadding.right = "default";
-                effectivePadding.bottom = "default";
-                effectivePadding.left = "default";
+                element.style.paddingTop = physicalPadding.top + "px";
+                element.style.paddingRight = physicalPadding.right + "px";
+                element.style.paddingBottom = physicalPadding.bottom + "px";
+                element.style.paddingLeft = physicalPadding.left + "px";    
             }
-
-            var physicalMargin = paddingToSpacingDefinition(effectiveMargin);
-            var physicalPadding = paddingToSpacingDefinition(effectivePadding);
-
-            element.style.marginTop = "-" + physicalMargin.top + "px";
-            element.style.marginRight = "-" + physicalMargin.right + "px";
-            element.style.marginBottom = "-" + physicalMargin.bottom + "px";
-            element.style.marginLeft = "-" + physicalMargin.left + "px";
-
-            element.style.paddingTop = physicalPadding.top + "px";
-            element.style.paddingRight = physicalPadding.right + "px";
-            element.style.paddingBottom = physicalPadding.bottom + "px";
-            element.style.paddingLeft = physicalPadding.left + "px";    
-        }
-        else if (this.hasBackground) {
-            var physicalPadding = paddingToSpacingDefinition({ top: "default", right: "default", bottom: "default", left: "default" });
-
-            element.style.paddingTop = physicalPadding.top + "px";
-            element.style.paddingRight = physicalPadding.right + "px";
-            element.style.paddingBottom = physicalPadding.bottom + "px";
-            element.style.paddingLeft = physicalPadding.left + "px";    
         }
     }
 
@@ -2342,15 +2342,6 @@ export class Container extends CardElement {
         if (this.selectAction) {
             this._element.classList.add("ac-selectable");
         }
-
-        /*
-        var effectivePadding = paddingToSpacingDefinition(this.internalPadding);
-
-        this._element.style.paddingTop = effectivePadding.top + "px";
-        this._element.style.paddingRight = effectivePadding.right + "px";
-        this._element.style.paddingBottom = effectivePadding.bottom + "px";
-        this._element.style.paddingLeft = effectivePadding.left + "px";
-        */
 
         this._element.onclick = (e) => {
             if (this.selectAction != null) {
@@ -2424,14 +2415,6 @@ export class Container extends CardElement {
         }
     }
 
-    get padding(): HostConfig.IPaddingDefinition {
-        return this.internalPadding;
-    }
-
-    set padding(value: HostConfig.IPaddingDefinition) {
-        this.internalPadding = value;
-    }
-
     getJsonTypeName(): string {
         return "Container";
     }
@@ -2501,29 +2484,6 @@ export class Container extends CardElement {
         }
 
         this._colorPalette = Utils.getValueOrDefault<Enums.ColorPalette>(json["colorPalette"], null);
-
-        var jsonPadding = json["padding"];
-
-        if (jsonPadding) {
-            if (typeof jsonPadding === "string") {
-                var spacing = Utils.getValueOrDefault<Enums.Padding>(jsonPadding, "none");
-
-                this.padding = {
-                    top: spacing,
-                    right: spacing,
-                    bottom: spacing,
-                    left: spacing
-                };
-            }
-            else {
-                this.padding = {
-                    top: Utils.getValueOrDefault<Enums.Padding>(jsonPadding["top"], "none"),
-                    right: Utils.getValueOrDefault<Enums.Padding>(jsonPadding["right"], "none"),
-                    bottom: Utils.getValueOrDefault<Enums.Padding>(jsonPadding["bottom"], "none"),
-                    left: Utils.getValueOrDefault<Enums.Padding>(jsonPadding["left"], "none")
-                };
-            }
-        }
 
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName] as Array<any>;
@@ -3101,6 +3061,8 @@ export abstract class ContainerWithActions extends Container {
 export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
 
+    static useAutoPadding: boolean = false;
+
     static elementTypeRegistry = new TypeRegistry<CardElement>();
     static actionTypeRegistry = new TypeRegistry<Action>();
 
@@ -3155,11 +3117,11 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected get defaultPadding(): HostConfig.IPaddingDefinition {
-        return hostConfig.adaptiveCard.padding;
+        return { top: "default", right: "default", bottom: "default", left: "default" };
     }
 
     protected get allowCustomPadding(): boolean {
-        return hostConfig.adaptiveCard.allowCustomPadding;
+        return false;
     }
 
     protected get allowCustomColorPalette() {
@@ -3232,7 +3194,7 @@ AdaptiveCard.initialize();
 
 class InlineAdaptiveCard extends AdaptiveCard {
     protected get defaultPadding(): HostConfig.IPaddingDefinition {
-        return hostConfig.actions.showCard.padding;
+        return { top: "default", right: "default", bottom: "default", left: "default" };
     }
 
     protected get defaultColorPalette(): Enums.ColorPalette {
@@ -3251,12 +3213,8 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         default: 8,
         medium: 20,
         large: 30,
-        extraLarge: 40
-    },
-    padding: {
-        small: 10,
-        default: 20,
-        large: 30
+        extraLarge: 40,
+        padding: 20
     },
     separator: {
         lineThickness: 1,
@@ -3309,25 +3267,12 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         buttonSpacing: 20,
         showCard: {
             actionMode: "inlineEdgeToEdge",
-            inlineTopMargin: 16,
-            padding: {
-                top: "default",
-                right: "default",
-                bottom: "default",
-                left: "default"
-            }
+            inlineTopMargin: 16
         },
         actionsOrientation: "horizontal",
         actionAlignment: "left"
     },
     adaptiveCard: {
-        padding: {
-            left: "default",
-            top: "default",
-            right: "default",
-            bottom: "default"
-        },
-        allowCustomPadding: false,
         allowCustomColorPalette: false
     },
     textBlock: {

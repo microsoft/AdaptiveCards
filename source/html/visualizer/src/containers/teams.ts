@@ -21,12 +21,8 @@ export class TeamsContainer extends HostContainer {
                 default: 8,
                 medium: 20,
                 large: 30,
-                extraLarge: 40
-            },
-            padding: {
-                small: 10,
-                default: 20,
-                large: 40
+                extraLarge: 40,
+                padding: 20
             },
             separator: {
                 lineThickness: 1,
@@ -117,25 +113,12 @@ export class TeamsContainer extends HostContainer {
                 buttonSpacing: 10,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
-                    inlineTopMargin: 16,
-                    padding: {
-                        top: "default",
-                        right: "default",
-                        bottom: "default",
-                        left: "default"
-                    }
+                    inlineTopMargin: 16
                 },
                 actionsOrientation: "horizontal",
                 actionAlignment: "stretch"
             },
             adaptiveCard: {
-                padding: {
-                    left: "default",
-                    top: "default",
-                    right: "default",
-                    bottom: "default"
-                },
-                allowCustomPadding: false,
                 allowCustomColorPalette: false
             },
             textBlock: {

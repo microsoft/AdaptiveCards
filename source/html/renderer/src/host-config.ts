@@ -72,15 +72,11 @@ function parseColorPaletteDefinition(obj: any): IColorPaletteDefinition {
 }
 
 export interface IAdaptiveCardConfig {
-    padding: IPaddingDefinition,
-    allowCustomPadding: boolean,
     allowCustomColorPalette: boolean
 }
 
 function parseAdaptiveCardConfiguration(obj: any): IAdaptiveCardConfig {
     return obj ? {
-        padding: parsePaddingDefinition(obj["padding"]),
-        allowCustomPadding: obj["allowCustomPadding"],
         allowCustomColorPalette: obj["allowCustomColorPalette"]
     } : null;
 }
@@ -166,16 +162,14 @@ function parseFactSetConfiguration(obj: any): IFactSetConfig {
 export interface IShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode,
     inlineTopMargin: number,
-    colorPalette?: Enums.ColorPalette,
-    padding: IPaddingDefinition
+    colorPalette?: Enums.ColorPalette
 }
 
 function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
     return obj ? {
         actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inlineEdgeToEdge"),
         inlineTopMargin: obj["inlineTopMargin"],
-        colorPalette: Utils.getValueOrDefault<Enums.ColorPalette>(obj["colorPalette"], "emphasis"),
-        padding: parsePaddingDefinition(obj["padding"])
+        colorPalette: Utils.getValueOrDefault<Enums.ColorPalette>(obj["colorPalette"], "emphasis")
     } : null;
 }
 
@@ -230,12 +224,8 @@ export interface IHostConfig {
         default: number,
         medium: number,
         large: number,
-        extraLarge: number
-    },
-    padding: {
-        small: number,
-        default: number,
-        large: number
+        extraLarge: number,
+        padding: number
     },
     separator: {
         lineThickness: number,
@@ -281,12 +271,8 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
             default: obj["spacing"]["default"],
             medium: obj["spacing"]["medium"],
             large: obj["spacing"]["large"],
-            extraLarge: obj["spacing"]["extraLarge"]
-        },
-        padding: {
-            small: obj["padding"]["small"],
-            default: obj["padding"]["default"],
-            large: obj["padding"]["large"]
+            extraLarge: obj["spacing"]["extraLarge"],
+            padding: obj["spacing"]["padding"]
         },
         separator: {
             lineThickness: obj["separator"]["lineThickness"],

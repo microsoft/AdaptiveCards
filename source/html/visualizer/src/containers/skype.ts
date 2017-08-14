@@ -42,12 +42,8 @@ export class SkypeContainer extends HostContainer {
                 default: 8,
                 medium: 20,
                 large: 30,
-                extraLarge: 40
-            },
-            padding: {
-                small: 5,
-                default: 10,
-                large: 20
+                extraLarge: 40,
+                padding: 10
             },
             separator: {
                 lineThickness: 1,
@@ -138,25 +134,12 @@ export class SkypeContainer extends HostContainer {
                 buttonSpacing: 10,
                 showCard: {
                     actionMode: "popup",
-                    inlineTopMargin: 16,
-                    padding: {
-                        top: "default",
-                        right: "default",
-                        bottom: "default",
-                        left: "default"
-                    }
+                    inlineTopMargin: 16
                 },
                 actionsOrientation: "vertical",
                 actionAlignment: "stretch"
             },
             adaptiveCard: {
-                padding: {
-                    left: "default",
-                    top: "default",
-                    right: "default",
-                    bottom: "default"
-                },
-                allowCustomPadding: false,
                 allowCustomColorPalette: false
             },
             textBlock: {

@@ -489,7 +489,12 @@ export class ToggleVisibilityAction extends Adaptive.Action {
 }
 
 window.onload = () => {
-    Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+    // Enable beta features
+    if (location.search.indexOf("beta=true") >= 0) {
+        Adaptive.AdaptiveCard.useAutoPadding = true;
+
+        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+    }
 
     currentConfigPayload = Constants.defaultConfigPayload;
 

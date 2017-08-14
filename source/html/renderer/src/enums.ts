@@ -2,9 +2,9 @@ export type Size = "auto" | "stretch" | "small" | "medium" | "large";
 
 export type TextSize = "small" | "normal" | "medium" | "large" | "extraLarge";
 
-export type Spacing = "none" | "small" | "default" | "medium" | "large" | "extraLarge";
+export type Spacing = "none" | "small" | "default" | "medium" | "large" | "extraLarge" | "padding";
 
-export type Padding = "none" | "small" | "default" | "large";
+export type Padding = "none" | "default";
 
 export type TextWeight = "lighter" | "normal" | "bolder";
 
