@@ -114,7 +114,7 @@ export abstract class HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colorPalettes: {
+            containerStyles: {
                 default: {
                     backgroundColor: "#00000000",
                     fontColors: {
@@ -191,7 +191,7 @@ export abstract class HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                allowCustomColorPalette: false
+                allowCustomStyle: false
             },
             textBlock: {
                 color: "dark"

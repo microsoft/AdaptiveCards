@@ -47,7 +47,7 @@ export class FacebookContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colorPalettes: {
+            containerStyles: {
                 default: {
                     backgroundColor: "#FFF5F5F5",
                     fontColors: {
@@ -124,7 +124,7 @@ export class FacebookContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                allowCustomColorPalette: false
+                allowCustomStyle: false
             },
             textBlock: {
                 color: "dark"

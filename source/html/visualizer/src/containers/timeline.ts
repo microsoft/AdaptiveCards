@@ -57,7 +57,7 @@ export class TimelineContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colorPalettes: {
+            containerStyles: {
                 default: {
                     backgroundColor: "#535454",
                     fontColors: {
@@ -134,7 +134,7 @@ export class TimelineContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                allowCustomColorPalette: false
+                allowCustomStyle: false
             },
             textBlock: {
                 color: "light"

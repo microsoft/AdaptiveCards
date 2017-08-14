@@ -48,7 +48,7 @@ export class SlackContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colorPalettes: {
+            containerStyles: {
                 default: {
                     backgroundColor: "#00FFFFFF",
                     fontColors: {
@@ -125,7 +125,7 @@ export class SlackContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                allowCustomColorPalette: false
+                allowCustomStyle: false
             },
             textBlock: {
                 color: "dark"

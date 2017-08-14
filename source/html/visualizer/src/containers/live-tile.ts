@@ -57,7 +57,7 @@ export class LiveTileContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colorPalettes: {
+            containerStyles: {
                 default: {
                     backgroundColor: "#0078D7",
                     fontColors: {
@@ -134,7 +134,7 @@ export class LiveTileContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                allowCustomColorPalette: false
+                allowCustomStyle: false
             },
             textBlock: {
                 color: "light"

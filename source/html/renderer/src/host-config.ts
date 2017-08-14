@@ -45,7 +45,7 @@ function parseTextColorDefinition(obj: any): ITextColorDefinition {
     } : null;
 }
 
-export interface IColorPaletteDefinition {
+export interface IContainerStyleDefinition {
     backgroundColor?: string,
     fontColors: {
         dark: ITextColorDefinition,
@@ -57,7 +57,7 @@ export interface IColorPaletteDefinition {
     },
 }
 
-function parseColorPaletteDefinition(obj: any): IColorPaletteDefinition {
+function parseColorPaletteDefinition(obj: any): IContainerStyleDefinition {
     return obj ? {
         backgroundColor: obj["backgroundColor"],
         fontColors: {
@@ -72,12 +72,12 @@ function parseColorPaletteDefinition(obj: any): IColorPaletteDefinition {
 }
 
 export interface IAdaptiveCardConfig {
-    allowCustomColorPalette: boolean
+    allowCustomStyle: boolean
 }
 
 function parseAdaptiveCardConfiguration(obj: any): IAdaptiveCardConfig {
     return obj ? {
-        allowCustomColorPalette: obj["allowCustomColorPalette"]
+        allowCustomStyle: obj["allowCustomStyle"]
     } : null;
 }
 
@@ -162,14 +162,14 @@ function parseFactSetConfiguration(obj: any): IFactSetConfig {
 export interface IShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode,
     inlineTopMargin: number,
-    colorPalette?: Enums.ColorPalette
+    style?: Enums.ContainerStyle
 }
 
 function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
     return obj ? {
         actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inlineEdgeToEdge"),
         inlineTopMargin: obj["inlineTopMargin"],
-        colorPalette: Utils.getValueOrDefault<Enums.ColorPalette>(obj["colorPalette"], "emphasis")
+        style: Utils.getValueOrDefault<Enums.ContainerStyle>(obj["style"], "emphasis")
     } : null;
 }
 
@@ -215,9 +215,9 @@ export interface IHostConfig {
         medium: number,
         large: number
     }
-    colorPalettes: {
-        default: IColorPaletteDefinition,
-        emphasis: IColorPaletteDefinition
+    containerStyles: {
+        default: IContainerStyleDefinition,
+        emphasis: IContainerStyleDefinition
     },
     spacing: {
         small: number,
@@ -262,9 +262,9 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
             medium: obj["imageSizes"]["medium"],
             large: obj["imageSizes"]["large"],
         },
-        colorPalettes: {
-            default: parseColorPaletteDefinition(obj["colorPalettes"]["default"]),
-            emphasis: parseColorPaletteDefinition(obj["colorPalettes"]["emphasis"])
+        containerStyles: {
+            default: parseColorPaletteDefinition(obj["containerStyles"]["default"]),
+            emphasis: parseColorPaletteDefinition(obj["containerStyles"]["emphasis"])
         },
         spacing: {
             small: obj["spacing"]["small"],

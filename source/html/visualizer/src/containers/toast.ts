@@ -49,7 +49,7 @@ export class ToastContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colorPalettes: {
+            containerStyles: {
                 default: {
                     backgroundColor: "#1F1F1F",
                     fontColors: {
@@ -126,7 +126,7 @@ export class ToastContainer extends HostContainer {
                 actionAlignment: "stretch"
             },
             adaptiveCard: {
-                allowCustomColorPalette: false
+                allowCustomStyle: false
             },
             textBlock: {
                 color: "light"

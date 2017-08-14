@@ -63,7 +63,7 @@ export class SkypeContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colorPalettes: {
+            containerStyles: {
                 default: {
                     backgroundColor: "#EAEAEA",
                     fontColors: {
@@ -140,7 +140,7 @@ export class SkypeContainer extends HostContainer {
                 actionAlignment: "stretch"
             },
             adaptiveCard: {
-                allowCustomColorPalette: false
+                allowCustomStyle: false
             },
             textBlock: {
                 color: "dark"

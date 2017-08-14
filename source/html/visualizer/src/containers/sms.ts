@@ -47,7 +47,7 @@ export class SMSContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colorPalettes: {
+            containerStyles: {
                 default: {
                     backgroundColor: "#FFFFFF",
                     fontColors: {
@@ -124,7 +124,7 @@ export class SMSContainer extends HostContainer {
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                allowCustomColorPalette: false
+                allowCustomStyle: false
             },
             textBlock: {
                 color: "dark"

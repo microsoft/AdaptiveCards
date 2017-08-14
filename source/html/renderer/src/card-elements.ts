@@ -78,12 +78,12 @@ function paddingToSpacingDefinition(padding: HostConfig.IPaddingDefinition): Hos
     }
 }
 
-function getColorPaletteDefinition(colorPalette: Enums.ColorPalette) {
-    switch (colorPalette) {
+function getContainerStyleDefinition(containerStyle: Enums.ContainerStyle) {
+    switch (containerStyle) {
         case "emphasis":
-            return hostConfig.colorPalettes.emphasis;
+            return hostConfig.containerStyles.emphasis;
         default:
-            return hostConfig.colorPalettes.default;
+            return hostConfig.containerStyles.default;
     }
 }
 
@@ -450,32 +450,32 @@ export class TextBlock extends CardElement {
             element.style.lineHeight = computedLineHeight + "px";
 
             var parentContainer = this.getParentContainer();
-            var colorPaletteDefinition = getColorPaletteDefinition(parentContainer ? parentContainer.colorPalette : "default");
+            var styleDefinition = getContainerStyleDefinition(parentContainer ? parentContainer.style : "default");
 
             var actualTextColor = this.color ? this.color : hostConfig.textBlock.color;
             var colorDefinition: HostConfig.ITextColorDefinition;
 
             switch (actualTextColor) {
                 case "dark":
-                    colorDefinition = colorPaletteDefinition.fontColors.dark;
+                    colorDefinition = styleDefinition.fontColors.dark;
                     break;
                 case "light":
-                    colorDefinition = colorPaletteDefinition.fontColors.light;
+                    colorDefinition = styleDefinition.fontColors.light;
                     break;
                 case "accent":
-                    colorDefinition = colorPaletteDefinition.fontColors.accent;
+                    colorDefinition = styleDefinition.fontColors.accent;
                     break;
                 case "good":
-                    colorDefinition = colorPaletteDefinition.fontColors.good;
+                    colorDefinition = styleDefinition.fontColors.good;
                     break;
                 case "warning":
-                    colorDefinition = colorPaletteDefinition.fontColors.warning;
+                    colorDefinition = styleDefinition.fontColors.warning;
                     break;
                 case "attention":
-                    colorDefinition = colorPaletteDefinition.fontColors.attention;
+                    colorDefinition = styleDefinition.fontColors.attention;
                     break;
                 default:
-                    colorDefinition = colorPaletteDefinition.fontColors.dark;
+                    colorDefinition = styleDefinition.fontColors.dark;
                     break;
             }
 
@@ -2201,7 +2201,7 @@ export class BackgroundImage {
 
 export class Container extends CardElement {
     private _items: Array<CardElement> = [];
-    private _colorPalette?: Enums.ColorPalette = null;
+    private _style?: Enums.ContainerStyle = null;
 
     protected showBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastElement(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
@@ -2331,10 +2331,10 @@ export class Container extends CardElement {
             this.backgroundImage.apply(this._element);
         }
 
-        var colorPaletteDefinition = getColorPaletteDefinition(this.colorPalette);
+        var styleDefinition = getContainerStyleDefinition(this.style);
 
-        if (!Utils.isNullOrEmpty(colorPaletteDefinition.backgroundColor)) {
-            this._element.style.backgroundColor = Utils.stringToCssColor(colorPaletteDefinition.backgroundColor);
+        if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
+            this._element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
         }
 
         this.applyPadding(this._element);
@@ -2390,14 +2390,14 @@ export class Container extends CardElement {
     protected get hasBackground(): boolean {
         var parentContainer = this.getParentContainer();
 
-        return this.backgroundImage != undefined || (parentContainer ? parentContainer.colorPalette != this.colorPalette : false);
+        return this.backgroundImage != undefined || (parentContainer ? parentContainer.style != this.style : false);
     }
 
-    protected get defaultColorPalette(): Enums.ColorPalette {
+    protected get defaultStyle(): Enums.ContainerStyle {
         return "default";
     }
 
-    protected get allowCustomColorPalette(): boolean {
+    protected get allowCustomStyle(): boolean {
         return true;
     }
 
@@ -2406,12 +2406,12 @@ export class Container extends CardElement {
     selectAction: Action;
     backgroundImage: BackgroundImage;
 
-    get colorPalette(): Enums.ColorPalette {
-        if (this.allowCustomColorPalette) {
-            return this._colorPalette ? this._colorPalette : this.defaultColorPalette;
+    get style(): Enums.ContainerStyle {
+        if (this.allowCustomStyle) {
+            return this._style ? this._style : this.defaultStyle;
         }
         else {
-            return this.defaultColorPalette;
+            return this.defaultStyle;
         }
     }
 
@@ -2483,7 +2483,7 @@ export class Container extends CardElement {
             }
         }
 
-        this._colorPalette = Utils.getValueOrDefault<Enums.ColorPalette>(json["colorPalette"], null);
+        this._style = Utils.getValueOrDefault<Enums.ContainerStyle>(json["style"], null);
 
         if (json[itemsCollectionPropertyName] != null) {
             var items = json[itemsCollectionPropertyName] as Array<any>;
@@ -3124,8 +3124,8 @@ export class AdaptiveCard extends ContainerWithActions {
         return false;
     }
 
-    protected get allowCustomColorPalette() {
-        return hostConfig.adaptiveCard.allowCustomColorPalette;
+    protected get allowCustomStyle() {
+        return hostConfig.adaptiveCard.allowCustomStyle;
     }
 
     minVersion: IVersion = { major: 1, minor: 0 };
@@ -3197,8 +3197,8 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return { top: "default", right: "default", bottom: "default", left: "default" };
     }
 
-    protected get defaultColorPalette(): Enums.ColorPalette {
-        return hostConfig.actions.showCard.colorPalette ? hostConfig.actions.showCard.colorPalette : "emphasis";
+    protected get defaultStyle(): Enums.ContainerStyle {
+        return hostConfig.actions.showCard.style ? hostConfig.actions.showCard.style : "emphasis";
     }
 
     getForbiddenActionTypes(): Array<any> {
@@ -3233,7 +3233,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         normal: 400,
         bolder: 600
     },
-    colorPalettes: {
+    containerStyles: {
         default: {
             fontColors: {
                 dark: { normal: "#0000FF", subtle: "#222222" },
@@ -3273,7 +3273,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         actionAlignment: "left"
     },
     adaptiveCard: {
-        allowCustomColorPalette: false
+        allowCustomStyle: false
     },
     textBlock: {
         color: "dark"
