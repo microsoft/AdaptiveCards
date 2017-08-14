@@ -116,6 +116,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    HRESULT XamlBuilder::ImagesLoadingHadError()
+    {
+        FireImagesLoadingHadError();
+        return S_OK;
+    }
+
     _Use_decl_annotations_
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(
         IAdaptiveCard* adaptiveCard, 
@@ -468,12 +474,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IBitmapSource> bitmapSource;
         bitmapImage.As(&bitmapSource);
         ComPtr<IAsyncOperationWithProgress<IInputStream*, HttpProgress>> getStreamOperation;
-        httpClient->GetInputStreamAsync(imageUri, &getStreamOperation);
+        THROW_IF_FAILED(httpClient->GetInputStreamAsync(imageUri, &getStreamOperation));
 
         ComPtr<T> strongImageControl(imageControl);
         ComPtr<XamlBuilder> strongThis(this);
-        getStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>
-            ([strongThis, this, bitmapSource, strongImageControl](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
+        THROW_IF_FAILED(getStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>
+            ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
         {
             if (status == AsyncStatus::Completed)
             {
@@ -504,9 +510,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             }
             else
             {
-                return E_FAIL;
+                m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                return S_OK;
             }
-        }).Get());
+        }).Get()));
         m_getStreamOperations.push_back(getStreamOperation);
     }
 
@@ -515,6 +522,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         for (auto& listener : m_listeners)
         {
             listener->AllImagesLoaded();
+        }
+    }
+
+    void XamlBuilder::FireImagesLoadingHadError()
+    {
+        for (auto& listener : m_listeners)
+        {
+            listener->ImagesLoadingHadError();
         }
     }
 

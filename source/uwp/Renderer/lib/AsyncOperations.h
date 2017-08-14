@@ -53,6 +53,12 @@ public:
         return OnXamlImagesLoaded();
     }
 
+    // IXamlBuilderListener
+    IFACEMETHODIMP ImagesLoadingHadError()
+    {
+        return OnXamlImagesHadError();
+    }
+
 protected:
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_rootXamlElement;
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Core::ICoreDispatcher> m_dispatcher;
@@ -91,6 +97,7 @@ protected:
 
     virtual HRESULT XamlRenderCompleted(ABI::Windows::Foundation::IAsyncAction* action, ABI::Windows::Foundation::AsyncStatus status) = 0;
     virtual HRESULT OnXamlImagesLoaded() = 0;
+    virtual HRESULT OnXamlImagesHadError() = 0;
 
 private:
     std::function<ABI::Windows::UI::Xaml::IUIElement*(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard*)> m_dispatchFunction;
@@ -123,6 +130,12 @@ protected:
 
     HRESULT OnXamlImagesLoaded()
     {
+        return AsyncBase::FireCompletion();
+    }
+
+    HRESULT OnXamlImagesHadError()
+    {
+        AsyncBase::TryTransitionToError(E_FAIL);
         return AsyncBase::FireCompletion();
     }
 

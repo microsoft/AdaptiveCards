@@ -8,6 +8,7 @@ IImageLoadTrackerListener : public IInspectable
 {
 public:
     IFACEMETHOD(AllImagesLoaded)() = 0;
+    IFACEMETHOD(ImagesLoadingHadError)() = 0;
 };
 
 }}

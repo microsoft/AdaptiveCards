@@ -16,6 +16,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     public:
         ~ImageLoadTracker();
         void TrackBitmapImage(_In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapImage* bitmapImage);
+        void MarkFailedLoadBitmapImage(_In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapImage* bitmapImage);
 
         void AbandonOutstandingImages();
         HRESULT AddListener(_In_ IImageLoadTrackerListener* listener);
@@ -26,6 +27,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         Microsoft::WRL::Wrappers::SRWLock m_lock;
         int m_trackedImageCount = 0;
         int m_totalImageCount = 0;
+        bool m_hasFailure = false;
         std::unordered_map<IInspectable*, TrackedImageDetails> m_eventRegistrations;
         std::set<Microsoft::WRL::ComPtr<IImageLoadTrackerListener>> m_listeners;
 
@@ -34,5 +36,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         void ImageLoadResultReceived(_In_ IInspectable* sender);
         void UnsubscribeFromEvents(_In_ IInspectable* bitmapImage, _In_ TrackedImageDetails& trackedImageDetails);
         void FireAllImagesLoaded();
+        void FireImagesLoadingHadError();
     };
 }}
