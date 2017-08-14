@@ -620,16 +620,43 @@ namespace AdaptiveCards.Rendering
         protected static HtmlTag TextInputRender(TypedElement element, RenderContext context)
         {
             TextInput input = (TextInput)element;
-            var container = new Container { Separation = input.Separation };
-            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-            if (input.Value != null)
-                container.Items.Add(new TextBlock
+
+            HtmlTag uiTextInput;
+            if (input.IsMultiline)
+            {
+                uiTextInput = new HtmlTag("textarea");
+
+                if (!string.IsNullOrEmpty(input.Value))
                 {
-                    Text = input.Value,
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
-            return context.Render(container);
+                    uiTextInput.Text = input.Value;
+                }
+            }
+            else
+            {
+                uiTextInput = new HtmlTag("input").Attr("type", "text");
+
+                if (!string.IsNullOrEmpty(input.Value))
+                {
+                    uiTextInput.Attr("value", input.Value);
+                }
+            }
+
+            uiTextInput
+                .AddClass("ac-textinput")
+                .AddClass("ac-input")
+                .Style("width", "100%");
+
+            if (!string.IsNullOrEmpty(input.Placeholder))
+            {
+                uiTextInput.Attr("placeholder", input.Placeholder);
+            }
+
+            if (input.MaxLength > 0)
+            {
+                uiTextInput.Attr("maxLength", input.MaxLength.ToString());
+            }
+
+            return uiTextInput;
         }
 
         protected static HtmlTag TimeInputRender(TypedElement element, RenderContext context)
