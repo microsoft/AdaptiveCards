@@ -588,33 +588,57 @@ namespace AdaptiveCards.Rendering
         protected static HtmlTag DateInputRender(TypedElement element, RenderContext context)
         {
             DateInput input = (DateInput)element;
-            var container = new Container { Separation = input.Separation };
-            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-            if (input.Value != null)
-                container.Items.Add(new TextBlock
-                {
-                    Text = input.Value,
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
-            return context.Render(container);
+
+            var uiDateInput = new HtmlTag("input")
+                .Attr("type", "date")
+                .AddClass("ac-input")
+                .AddClass("ac-dateInput")
+                .Style("width", "100%");
+
+            if (!string.IsNullOrEmpty(input.Value))
+            {
+                uiDateInput.Attr("value", input.Value);
+            }
+
+            if (!string.IsNullOrEmpty(input.Min))
+            {
+                uiDateInput.Attr("min", input.Min);
+            }
+
+            if (!string.IsNullOrEmpty(input.Max))
+            {
+                uiDateInput.Attr("max", input.Max);
+            }
+
+            return uiDateInput;
         }
 
         protected static HtmlTag NumberInputRender(TypedElement element, RenderContext context)
         {
             NumberInput input = (NumberInput)element;
-            var container = new Container { Separation = input.Separation };
-            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
+
+            var uiNumberInput = new HtmlTag("input")
+                .AddClass("ac-input")
+                .AddClass("ac-numberInput")
+                .Attr("type", "number")
+                .Style("width", "100%");
+
+            if (!double.IsNaN(input.Min))
+            {
+                uiNumberInput.Attr("min", input.Min.ToString());
+            }
+
+            if (!double.IsNaN(input.Max))
+            {
+                uiNumberInput.Attr("max", input.Max.ToString());
+            }
+
             if (!double.IsNaN(input.Value))
             {
-                container.Items.Add(new TextBlock
-                {
-                    Text = input.Value.ToString(),
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
+                uiNumberInput.Attr("value", input.Value.ToString());
             }
-            return context.Render(container);
+
+            return uiNumberInput;
         }
 
         protected static HtmlTag TextInputRender(TypedElement element, RenderContext context)
@@ -662,16 +686,28 @@ namespace AdaptiveCards.Rendering
         protected static HtmlTag TimeInputRender(TypedElement element, RenderContext context)
         {
             TimeInput input = (TimeInput)element;
-            var container = new Container { Separation = input.Separation };
-            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-            if (input.Value != null)
-                container.Items.Add(new TextBlock
-                {
-                    Text = input.Value,
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
-            return context.Render(container);
+            var uiTimeInput = new HtmlTag("input")
+                .Attr("type", "time")
+                .AddClass("ac-input")
+                .AddClass("ac-timeInput")
+                .Style("width", "100%");
+
+            if (!string.IsNullOrEmpty(input.Value))
+            {
+                uiTimeInput.Attr("value", input.Value);
+            }
+
+            if (!string.IsNullOrEmpty(input.Min))
+            {
+                uiTimeInput.Attr("min", input.Min);
+            }
+
+            if (!string.IsNullOrEmpty(input.Max))
+            {
+                uiTimeInput.Attr("max", input.Max);
+            }
+
+            return uiTimeInput;
         }
 
         protected static HtmlTag ToggleInputRender(TypedElement element, RenderContext context)

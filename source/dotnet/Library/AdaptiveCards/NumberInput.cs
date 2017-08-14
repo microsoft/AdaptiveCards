@@ -47,9 +47,5 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         public double Max { get; set; } = double.NaN;
-
-        bool ShouldSerializeMin() { return Min != double.NaN; }
-        bool ShouldSerializeMax() { return Max != double.NaN; }
-        bool ShouldSerializeValue() { return Max != double.NaN; }
     }
 }
