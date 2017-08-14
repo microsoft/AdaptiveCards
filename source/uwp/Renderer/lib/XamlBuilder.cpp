@@ -142,7 +142,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         {
             ComPtr<IVector<IAdaptiveActionElement*>> actions;
             THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
-            BuildActions(actions.Get(), renderer, inputElements, childElementContainer.Get());
+            unsigned int bodyCount;
+            THROW_IF_FAILED(body->get_Size(&bodyCount));
+            BuildActions(actions.Get(), renderer, inputElements, childElementContainer.Get(), bodyCount > 0);
         }
 
         THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
@@ -625,17 +627,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IVector<IAdaptiveActionElement*>* children,
         XamlCardRenderer* renderer,
         std::shared_ptr<std::vector<InputItem>> inputElements,
-        IPanel* parentPanel)
+        IPanel* parentPanel,
+        bool insertSeparator)
     {
-        // Create a separator between the body and the actions
         ComPtr<IAdaptiveActionsConfig> actionsConfig;
         THROW_IF_FAILED(m_hostConfig->get_Actions(actionsConfig.GetAddressOf()));
 
-        ComPtr<IAdaptiveSeparationConfig> separationConfig;
-        THROW_IF_FAILED(actionsConfig->get_Separation(&separationConfig));
-            
-        auto separator = CreateSeparator(separationConfig.Get());
-        XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+        // Create a separator between the body and the actions
+        if (insertSeparator)
+        {
+            ComPtr<IAdaptiveSeparationConfig> separationConfig;
+            THROW_IF_FAILED(actionsConfig->get_Separation(&separationConfig));
+
+            auto separator = CreateSeparator(separationConfig.Get());
+            XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+        }
 
         ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment actionAlignment;
         THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
