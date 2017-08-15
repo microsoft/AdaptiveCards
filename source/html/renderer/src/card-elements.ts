@@ -202,6 +202,10 @@ export abstract class CardElement {
         this._internalPadding = value;
     }
 
+    protected get separatorOrientation(): Enums.Orientation {
+        return "horizontal";
+    }
+
     id: string;
     speak: string;
     horizontalAlignment: Enums.HorizontalAlignment = "left";
@@ -2233,8 +2237,11 @@ export class Container extends CardElement {
         }
     }
 
-    protected applyPadding(element: HTMLElement) {
+    protected applyPadding() {
         if (this.hasBackground) {
+            var physicalMargin: HostConfig.ISpacingDefinition = { top: 0, right: 0, bottom: 0, left: 0 };
+            var physicalPadding: HostConfig.ISpacingDefinition = { top: 0, right: 0, bottom: 0, left: 0 };
+
             var useAutoPadding = AdaptiveCard.useAutoPadding && (this.parent ? this.parent.canContentBleed() : false);
 
             if (useAutoPadding) {
@@ -2311,26 +2318,34 @@ export class Container extends CardElement {
                     effectivePadding.left = "default";
                 }
 
-                var physicalMargin = paddingToSpacingDefinition(effectiveMargin);
-                var physicalPadding = paddingToSpacingDefinition(effectivePadding);
-
-                element.style.marginTop = "-" + physicalMargin.top + "px";
-                element.style.marginRight = "-" + physicalMargin.right + "px";
-                element.style.marginBottom = "-" + physicalMargin.bottom + "px";
-                element.style.marginLeft = "-" + physicalMargin.left + "px";
-
-                element.style.paddingTop = physicalPadding.top + "px";
-                element.style.paddingRight = physicalPadding.right + "px";
-                element.style.paddingBottom = physicalPadding.bottom + "px";
-                element.style.paddingLeft = physicalPadding.left + "px";    
+                physicalMargin = paddingToSpacingDefinition(effectiveMargin);
+                physicalPadding = paddingToSpacingDefinition(effectivePadding);
             }
             else {
-                var physicalPadding = paddingToSpacingDefinition({ top: "default", right: "default", bottom: "default", left: "default" });
+                physicalPadding = paddingToSpacingDefinition({ top: "default", right: "default", bottom: "default", left: "default" });
+            }
 
-                element.style.paddingTop = physicalPadding.top + "px";
-                element.style.paddingRight = physicalPadding.right + "px";
-                element.style.paddingBottom = physicalPadding.bottom + "px";
-                element.style.paddingLeft = physicalPadding.left + "px";    
+            if (this.renderedElement) {
+                this.renderedElement.style.marginTop = "-" + physicalMargin.top + "px";
+                this.renderedElement.style.marginRight = "-" + physicalMargin.right + "px";
+                this.renderedElement.style.marginBottom = "-" + physicalMargin.bottom + "px";
+                this.renderedElement.style.marginLeft = "-" + physicalMargin.left + "px";
+
+                this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+                this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+                this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+                this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
+            }
+
+            if (this.separatorElement) {
+                if (this.separatorOrientation == "horizontal") {
+                    this.separatorElement.style.marginLeft = "-" + physicalMargin.left + "px";
+                    this.separatorElement.style.marginRight = "-" + physicalMargin.right + "px";
+                }
+                else {
+                    this.separatorElement.style.marginTop = "-" + physicalMargin.top + "px";
+                    this.separatorElement.style.marginBottom = "-" + physicalMargin.bottom + "px";
+                }
             }
         }
     }
@@ -2601,7 +2616,7 @@ export class Container extends CardElement {
     }
 
     updateLayout(processChildren: boolean = true) {
-        this.applyPadding(this.renderedElement);
+        this.applyPadding();
 
         if (processChildren) {
             for (var i = 0; i < this._items.length; i++) {
@@ -2636,6 +2651,10 @@ export class Column extends Container {
         else {
             renderedElement.style.flex = "1 1 auto";
         }
+    }
+
+    protected get separatorOrientation(): Enums.Orientation {
+        return "vertical";
     }
 
     width: number | "auto" | "stretch" = "auto";
@@ -3104,13 +3123,13 @@ export class AdaptiveCard extends ContainerWithActions {
 
     private _cardTypeName: string;
 
-    protected applyPadding(element: HTMLElement) {
+    protected applyPadding() {
         var effectivePadding = paddingToSpacingDefinition(this.internalPadding);
 
-        element.style.paddingTop = effectivePadding.top + "px";
-        element.style.paddingRight = effectivePadding.right + "px";
-        element.style.paddingBottom = effectivePadding.bottom + "px";
-        element.style.paddingLeft = effectivePadding.left + "px";
+        this.renderedElement.style.paddingTop = effectivePadding.top + "px";
+        this.renderedElement.style.paddingRight = effectivePadding.right + "px";
+        this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
+        this.renderedElement.style.paddingLeft = effectivePadding.left + "px";
     }
 
     protected get defaultPadding(): HostConfig.IPaddingDefinition {
