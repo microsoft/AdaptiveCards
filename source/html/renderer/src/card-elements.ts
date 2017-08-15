@@ -287,12 +287,13 @@ export abstract class CardElement {
             this.adjustRenderedElementSize(this._renderedElement);
         }
 
+        this.updateLayout(false);
         this.updateRenderedElementVisibility();
 
         return this._renderedElement;
     }
 
-    updateLayout() {
+    updateLayout(processChildren: boolean = true) {
         // Does nothing in base implementation
     }
 
@@ -2218,7 +2219,7 @@ export class Container extends CardElement {
 
     protected showBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastElement(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
-            this._element.style.paddingBottom = paddingToSpacingDefinition(this.internalPadding).bottom + "px";
+            this.renderedElement.style.paddingBottom = paddingToSpacingDefinition(this.internalPadding).bottom + "px";
 
             super.showBottomSpacer(this);
         }
@@ -2226,7 +2227,7 @@ export class Container extends CardElement {
 
     protected hideBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastElement(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
-            this._element.style.paddingBottom = "0px";
+            this.renderedElement.style.paddingBottom = "0px";
 
             super.hideBottomSpacer(this);
         }
@@ -2335,28 +2336,26 @@ export class Container extends CardElement {
     }
 
     protected internalRender(): HTMLElement {
-        this._element = document.createElement("div");
-        this._element.className = "ac-container";
-        this._element.style.display = "flex";
-        this._element.style.flexDirection = "column";
+        var element = document.createElement("div");
+        element.className = "ac-container";
+        element.style.display = "flex";
+        element.style.flexDirection = "column";
 
         if (this.backgroundImage) {
-            this.backgroundImage.apply(this._element);
+            this.backgroundImage.apply(element);
         }
 
         var styleDefinition = getContainerStyleDefinition(this.style);
 
         if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
-            this._element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
+            element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
         }
-
-        this.applyPadding(this._element);
 
         if (this.selectAction) {
-            this._element.classList.add("ac-selectable");
+            element.classList.add("ac-selectable");
         }
 
-        this._element.onclick = (e) => {
+        element.onclick = (e) => {
             if (this.selectAction != null) {
                 this.selectAction.execute();
                 e.cancelBubble = true;
@@ -2373,17 +2372,17 @@ export class Container extends CardElement {
                     if (renderedElementCount > 0 && this._items[i].separatorElement) {
                         this._items[i].separatorElement.style.flex = "0 0 auto";
 
-                        Utils.appendChild(this._element, this._items[i].separatorElement);
+                        Utils.appendChild(element, this._items[i].separatorElement);
                     }
 
-                    Utils.appendChild(this._element, renderedElement);
+                    Utils.appendChild(element, renderedElement);
 
                     renderedElementCount++;
                 }
             }
         }
 
-        return this._element;
+        return element;
     }
 
     protected get hasBackground(): boolean {
@@ -2399,8 +2398,6 @@ export class Container extends CardElement {
     protected get allowCustomStyle(): boolean {
         return true;
     }
-
-    protected _element: HTMLDivElement;
 
     selectAction: Action;
     backgroundImage: BackgroundImage;
@@ -2603,11 +2600,13 @@ export class Container extends CardElement {
         return speak;
     }
 
-    updateLayout() {
-        this.applyPadding(this._element);
+    updateLayout(processChildren: boolean = true) {
+        this.applyPadding(this.renderedElement);
 
-        for (var i = 0; i < this._items.length; i++) {
-            this._items[i].updateLayout();
+        if (processChildren) {
+            for (var i = 0; i < this._items.length; i++) {
+                this._items[i].updateLayout();
+            }
         }
     }
 }
@@ -2796,9 +2795,11 @@ export class ColumnSet extends CardElement {
         }
     }
 
-    updateLayout() {
-        for (var i = 0; i < this._columns.length; i++) {
-            this._columns[i].updateLayout();
+    updateLayout(processChildren: boolean = true) {
+        if (processChildren) {
+            for (var i = 0; i < this._columns.length; i++) {
+                this._columns[i].updateLayout();
+            }
         }
     }
 
@@ -2977,24 +2978,24 @@ export abstract class ContainerWithActions extends Container {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
-        super.internalRender();
+        var element = super.internalRender();
 
         this._actionCollection.actionStyle = this.actionStyle;
 
         var renderedActions = this._actionCollection.render();
 
         if (renderedActions) {
-            Utils.appendChild(this._element, Utils.renderSeparation(
+            Utils.appendChild(element, Utils.renderSeparation(
                 {
                     spacing: getEffectiveSpacing(hostConfig.actions.spacing),
                     lineThickness: null,
                     lineColor: null
                 },
                 "vertical"));
-            Utils.appendChild(this._element, renderedActions);
+            Utils.appendChild(element, renderedActions);
         }
 
-        return this._element.children.length > 0 ? this._element : null;
+        return element.children.length > 0 ? element : null;
     }
 
     actionStyle: Enums.ActionStyle = "link";
