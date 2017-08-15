@@ -113,12 +113,6 @@ export abstract class CardElement {
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
 
-    private setSeparatorElement(separatorElement: HTMLElement) {
-        this._separatorElement = separatorElement;
-
-        this.updateRenderedElementVisibility();
-    }
-
     private updateRenderedElementVisibility() {
         if (this._renderedElement) {
             this._renderedElement.style.visibility = this._isVisibile ? null : "collapse";
@@ -181,6 +175,16 @@ export abstract class CardElement {
     }
 
     protected abstract internalRender(): HTMLElement;
+
+    protected internalRenderSeparator(): HTMLElement {
+        return Utils.renderSeparation(
+            {
+                spacing: getEffectiveSpacing(this.spacing),
+                lineThickness: this.separator ? hostConfig.separator.lineThickness : null,
+                lineColor: this.separator ? hostConfig.separator.lineColor : null
+            },
+            "vertical");        
+    }
 
     protected get allowCustomPadding(): boolean {
         return true;
@@ -275,6 +279,7 @@ export abstract class CardElement {
 
     render(): HTMLElement {
         this._renderedElement = this.internalRender();
+        this._separatorElement = this.internalRenderSeparator();
 
         if (this._renderedElement) {
             this._renderedElement.style.boxSizing = "border-box";
@@ -389,6 +394,14 @@ export abstract class CardElement {
                 raiseElementVisibilityChangedEvent(this);
             }
         }
+    }
+
+    get renderedElement(): HTMLElement {
+        return this._renderedElement;        
+    }
+
+    get separatorElement(): HTMLElement {
+        return this._separatorElement;
     }
 }
 
@@ -2357,24 +2370,10 @@ export class Container extends CardElement {
                 var renderedElement = isElementAllowed(this._items[i], this.getForbiddenElementTypes()) ? this._items[i].render() : null;
 
                 if (renderedElement) {
-                    if (renderedElementCount > 0) {
-                        var separatorElement = Utils.renderSeparation(
-                            {
-                                spacing: getEffectiveSpacing(this._items[i].spacing),
-                                lineThickness: this._items[i].separator ? hostConfig.separator.lineThickness : null,
-                                lineColor: this._items[i].separator ? hostConfig.separator.lineColor : null
-                            },
-                            "vertical");
+                    if (renderedElementCount > 0 && this._items[i].separatorElement) {
+                        this._items[i].separatorElement.style.flex = "0 0 auto";
 
-                        if (separatorElement) {
-                            separatorElement.style.flex = "0 0 auto";
-
-                            Utils.appendChild(this._element, separatorElement);
-
-                            // Best way to emulate "internal" access
-                            this._items[i]["setSeparatorElement"](separatorElement);
-                        }
-
+                        Utils.appendChild(this._element, this._items[i].separatorElement);
                     }
 
                     Utils.appendChild(this._element, renderedElement);
@@ -2616,6 +2615,16 @@ export class Container extends CardElement {
 export class Column extends Container {
     private _computedWeight: number = 0;
 
+    protected internalRenderSeparator(): HTMLElement {
+        return Utils.renderSeparation(
+            {
+                spacing: getEffectiveSpacing(this.spacing),
+                lineThickness: this.separator ? hostConfig.separator.lineThickness : null,
+                lineColor: this.separator ? hostConfig.separator.lineColor : null
+            },
+            "horizontal");        
+    }
+
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         renderedElement.style.minWidth = "0";
 
@@ -2739,26 +2748,13 @@ export class ColumnSet extends CardElement {
                 var renderedColumn = this._columns[i].render();
 
                 if (renderedColumn) {
-                    Utils.appendChild(element, renderedColumn);
+                    if (renderedColumnCount > 0 && this._columns[i].separatorElement) {
+                        this._columns[i].separatorElement.style.flex = "0 0 auto";
 
-                    if (this._columns.length > 1 && i < this._columns.length - 1) {
-                        var separatorElement = Utils.renderSeparation(
-                            {
-                                spacing: getEffectiveSpacing(this._columns[i + 1].spacing),
-                                lineThickness: this._columns[i + 1].separator ? hostConfig.separator.lineThickness : null,
-                                lineColor: this._columns[i + 1].separator ? hostConfig.separator.lineColor : null
-                            },
-                            "horizontal");
-
-                        if (separatorElement) {
-                            separatorElement.style.flex = "0 0 auto";
-
-                            Utils.appendChild(element, separatorElement);
-                            
-                            // Best way to emulate "internal" access
-                            this._columns[i]["setSeparatorElement"](separatorElement);
-                        }
+                        Utils.appendChild(element, this._columns[i].separatorElement);
                     }
+
+                    Utils.appendChild(element, renderedColumn);
 
                     renderedColumnCount++;
                 }
