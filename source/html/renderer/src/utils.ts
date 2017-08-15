@@ -37,7 +37,7 @@ export function renderSeparation(separationDefinition: ISeparationDefinition, or
     if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
         var separator = document.createElement("div");
 
-        if (orientation == "vertical") {
+        if (orientation == "horizontal") {
             if (separationDefinition.lineThickness) {
                 separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
                 separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";

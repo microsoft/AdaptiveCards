@@ -113,6 +113,16 @@ export abstract class CardElement {
     private _renderedElement: HTMLElement = null;
     private _separatorElement: HTMLElement = null;
 
+    private internalRenderSeparator(): HTMLElement {
+        return Utils.renderSeparation(
+            {
+                spacing: getEffectiveSpacing(this.spacing),
+                lineThickness: this.separator ? hostConfig.separator.lineThickness : null,
+                lineColor: this.separator ? hostConfig.separator.lineColor : null
+            },
+            this.separatorOrientation);
+    }
+
     private updateRenderedElementVisibility() {
         if (this._renderedElement) {
             this._renderedElement.style.visibility = this._isVisibile ? null : "collapse";
@@ -175,16 +185,6 @@ export abstract class CardElement {
     }
 
     protected abstract internalRender(): HTMLElement;
-
-    protected internalRenderSeparator(): HTMLElement {
-        return Utils.renderSeparation(
-            {
-                spacing: getEffectiveSpacing(this.spacing),
-                lineThickness: this.separator ? hostConfig.separator.lineThickness : null,
-                lineColor: this.separator ? hostConfig.separator.lineColor : null
-            },
-            "vertical");        
-    }
 
     protected get allowCustomPadding(): boolean {
         return true;
@@ -2221,6 +2221,10 @@ export class Container extends CardElement {
     private _items: Array<CardElement> = [];
     private _style?: Enums.ContainerStyle = null;
 
+    private get hasExplicitStyle(): boolean {
+        return this._style != null;
+    }
+
     protected showBottomSpacer(requestingElement: CardElement) {
         if ((!requestingElement || this.isLastElement(requestingElement)) && hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
             this.renderedElement.style.paddingBottom = paddingToSpacingDefinition(this.internalPadding).bottom + "px";
@@ -2403,7 +2407,7 @@ export class Container extends CardElement {
     protected get hasBackground(): boolean {
         var parentContainer = this.getParentContainer();
 
-        return this.backgroundImage != undefined || (parentContainer ? parentContainer.style != this.style : false);
+        return this.backgroundImage != undefined || (this.hasExplicitStyle && (parentContainer ? parentContainer.style != this.style : false));
     }
 
     protected get defaultStyle(): Enums.ContainerStyle {
@@ -2628,16 +2632,6 @@ export class Container extends CardElement {
 
 export class Column extends Container {
     private _computedWeight: number = 0;
-
-    protected internalRenderSeparator(): HTMLElement {
-        return Utils.renderSeparation(
-            {
-                spacing: getEffectiveSpacing(this.spacing),
-                lineThickness: this.separator ? hostConfig.separator.lineThickness : null,
-                lineColor: this.separator ? hostConfig.separator.lineColor : null
-            },
-            "horizontal");        
-    }
 
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         renderedElement.style.minWidth = "0";
@@ -3004,13 +2998,15 @@ export abstract class ContainerWithActions extends Container {
         var renderedActions = this._actionCollection.render();
 
         if (renderedActions) {
-            Utils.appendChild(element, Utils.renderSeparation(
-                {
-                    spacing: getEffectiveSpacing(hostConfig.actions.spacing),
-                    lineThickness: null,
-                    lineColor: null
-                },
-                "vertical"));
+            Utils.appendChild(
+                element,
+                Utils.renderSeparation(
+                    {
+                        spacing: getEffectiveSpacing(hostConfig.actions.spacing),
+                        lineThickness: null,
+                        lineColor: null
+                    },
+                    "horizontal"));
             Utils.appendChild(element, renderedActions);
         }
 
