@@ -13,7 +13,7 @@
         <tags>Adaptive Cards</tags>
     </metadata>
     <files>
-        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$\"AdaptiveCards.XamlCardRenderer.winmd" target="lib\uap10.0"/>
+        <file src=$Build.ArtifactStagingDirectory$$BuildConfiguration$"AdaptiveCards.XamlCardRenderer.winmd" target="lib\uap10.0"/>
 
         <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.dll" target="runtimes\win10-x86\native"/>
         <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.exp" target="runtimes\win10-x86\native"/>
