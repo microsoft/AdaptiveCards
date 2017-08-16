@@ -13,25 +13,25 @@
         <tags>Adaptive Cards</tags>
     </metadata>
     <files>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.winmd" target="lib\uap10.0"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$\"AdaptiveCards.XamlCardRenderer.winmd" target="lib\uap10.0"/>
 
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.dll" target="runtimes\win10-x86\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.exp" target="runtimes\win10-x86\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.lib" target="runtimes\win10-x86\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.pri" target="runtimes\win10-x86\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.pdb" target="runtimes\win10-x86\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.dll" target="runtimes\win10-x86\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.exp" target="runtimes\win10-x86\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.lib" target="runtimes\win10-x86\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.pri" target="runtimes\win10-x86\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.pdb" target="runtimes\win10-x86\native"/>
         
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.dll" target="runtimes\win10-x64\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.exp" target="runtimes\win10-x64\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.lib" target="runtimes\win10-x64\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.pri" target="runtimes\win10-x64\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.pdb" target="runtimes\win10-x64\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.dll" target="runtimes\win10-x64\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.exp" target="runtimes\win10-x64\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.lib" target="runtimes\win10-x64\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.pri" target="runtimes\win10-x64\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.pdb" target="runtimes\win10-x64\native"/>
         
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.dll" target="runtimes\win10-arm\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.exp" target="runtimes\win10-arm\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.lib" target="runtimes\win10-arm\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.pri" target="runtimes\win10-arm\native"/>
-        <file src="$Build.ArtifactStagingDirectory$\$BuildConfiguration$\AdaptiveCards.XamlCardRenderer.pdb" target="runtimes\win10-arm\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.dll" target="runtimes\win10-arm\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.exp" target="runtimes\win10-arm\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.lib" target="runtimes\win10-arm\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.pri" target="runtimes\win10-arm\native"/>
+        <file src="$Build.ArtifactStagingDirectory$$BuildConfiguration$AdaptiveCards.XamlCardRenderer.pdb" target="runtimes\win10-arm\native"/>
 
         <file src="AdaptiveCards.UWP.Beta.targets" target="build\uap10.0"/>
         <file src="AdaptiveCards.UWP.Beta.native.targets" target="build\native"/>
