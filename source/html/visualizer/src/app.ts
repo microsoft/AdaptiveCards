@@ -462,7 +462,46 @@ function elementVisibilityChanged(element: Adaptive.CardElement) {
     alert("An element is now " + (element.isVisible ? "visible" : "invisible"));
 }
 
+export class ToggleVisibilityAction extends Adaptive.Action {
+    targetElementIds: Array<string> = [];
+
+    getJsonTypeName(): string {
+        return "Action.ToggleVisibility";
+    }
+
+    execute() {
+        if (this.targetElementIds) {
+            for (var i = 0; i < this.targetElementIds.length; i++) {
+                var targetElement = this.parent.getRootElement().getElementById(this.targetElementIds[i]);
+
+                if (targetElement) {
+                    targetElement.isVisible = !targetElement.isVisible;
+                }
+            }
+        }
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.targetElementIds = json["targetElementIds"] as Array<string>;
+    }
+}
+
 window.onload = () => {
+    // Enable beta features
+    if (location.search.indexOf("beta=true") >= 0) {
+        Adaptive.AdaptiveCard.useAutoPadding = true;
+
+        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+        
+        Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
+            if (typeof json["isVisible"] === "boolean") {
+                element.isVisible = json["isVisible"];
+            }        
+        }        
+    }
+
     currentConfigPayload = Constants.defaultConfigPayload;
 
     document.getElementById("editCard").onclick = (e) => {
@@ -483,12 +522,6 @@ window.onload = () => {
     Adaptive.AdaptiveCard.onElementVisibilityChanged = elementVisibilityChanged;
     */
 
-    Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
-        if (typeof json["isVisible"] === "boolean") {
-            element.isVisible = json["isVisible"];
-        }        
-    }
-    
     // Uncomment to test the onInlineCardExpanded event:
     // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
 

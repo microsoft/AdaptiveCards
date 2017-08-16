@@ -93,7 +93,8 @@ export abstract class HostContainer {
                 default: 8,
                 medium: 20,
                 large: 30,
-                extraLarge: 40
+                extraLarge: 40,
+                padding: 20
             },
             separator: {
                 lineThickness: 1,
@@ -113,30 +114,64 @@ export abstract class HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colors: {
-                dark: {
-                    normal: "#333333",
-                    subtle: "#EE333333"
+            containerStyles: {
+                default: {
+                    backgroundColor: "#00000000",
+                    fontColors: {
+                        dark: {
+                            normal: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        light: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#2E89FC",
+                            subtle: "#882E89FC" 
+                        },
+                        attention: {
+                            normal: "#FFD800",
+                            subtle: "#DDFFD800"
+                        },
+                        good: {
+                            normal: "#00FF00",
+                            subtle: "#DD00FF00"
+                        },
+                        warning: {
+                            normal: "#FF0000",
+                            subtle: "#DDFF0000"
+                        }
+                    }
                 },
-                light: {
-                    normal: "#FFFFFF",
-                    subtle: "#88FFFFFF"
-                },
-                accent: {
-                    normal: "#2E89FC",
-                    subtle: "#882E89FC" 
-                },
-                attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
+                emphasis: {
+                    backgroundColor: "08000000",
+                    fontColors: {
+                        dark: {
+                            normal: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        light: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#2E89FC",
+                            subtle: "#882E89FC" 
+                        },
+                        attention: {
+                            normal: "#FFD800",
+                            subtle: "#DDFFD800"
+                        },
+                        good: {
+                            normal: "#00FF00",
+                            subtle: "#DD00FF00"
+                        },
+                        warning: {
+                            normal: "#FF0000",
+                            subtle: "#DDFF0000"
+                        }
+                    }
                 }
             },
             imageSizes: {
@@ -150,46 +185,13 @@ export abstract class HostContainer {
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: "inlineEdgeToEdge",
-                    inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
-                    padding: {
-                        top: 16,
-                        right: 16,
-                        bottom: 16,
-                        left: 16
-                    }
+                    inlineTopMargin: 16
                 },
                 actionsOrientation: "horizontal",
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#00000000",
-                padding: {
-                    left: 20,
-                    top: 20,
-                    right: 20,
-                    bottom: 20
-                }
-            },
-            container: {
-                normal: {
-                },
-                emphasis: {
-                    backgroundColor: "#EEEEEE",
-                    borderColor: "#AAAAAA",
-                    borderThickness: {
-                        top: 1,
-                        right: 1,
-                        bottom: 1,
-                        left: 1
-                    },
-                    padding: {
-                        top: 10,
-                        right: 10,
-                        bottom: 10,
-                        left: 10
-                    }
-                }
+                allowCustomStyle: false
             },
             textBlock: {
                 color: "dark"

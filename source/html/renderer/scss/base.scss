@@ -1,7 +1,7 @@
 $font-family: 'Segoe UI', sans-serif;
 
 @mixin base-container (
-    $selectable-padding: 5px,
+    $selectable-padding: 0px,
     $selectable-hover-background: rgba(0, 0, 0, 0.1),
     $selectable-active-background: rgba(0, 0, 0, 0.15)
 ) {
