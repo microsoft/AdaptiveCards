@@ -13,13 +13,13 @@
         <tags>Adaptive Cards</tags>
     </metadata>
     <files>
-        <file src="..\x86\$Configuration$\AdaptiveCards.XamlCardRenderer.winmd" target="lib\uap10.0"/>
+        <file src="..\$Configuration$\AdaptiveCards.XamlCardRenderer.winmd" target="lib\uap10.0"/>
 
-        <file src="..\x86\$Configuration$\AdaptiveCards.XamlCardRenderer.dll" target="runtimes\win10-x86\native"/>
-        <file src="..\x86\$Configuration$\AdaptiveCards.XamlCardRenderer.exp" target="runtimes\win10-x86\native"/>
-        <file src="..\x86\$Configuration$\AdaptiveCards.XamlCardRenderer.lib" target="runtimes\win10-x86\native"/>
-        <file src="..\x86\$Configuration$\AdaptiveCards.XamlCardRenderer.pri" target="runtimes\win10-x86\native"/>
-        <file src="..\x86\$Configuration$\AdaptiveCards.XamlCardRenderer.pdb" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCards.XamlCardRenderer.dll" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCards.XamlCardRenderer.exp" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCards.XamlCardRenderer.lib" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCards.XamlCardRenderer.pri" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCards.XamlCardRenderer.pdb" target="runtimes\win10-x86\native"/>
 
         <file src="AdaptiveCards.UWP.Beta.targets" target="build\uap10.0"/>
         <file src="AdaptiveCards.UWP.Beta.native.targets" target="build\native"/>
