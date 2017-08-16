@@ -494,6 +494,12 @@ window.onload = () => {
         Adaptive.AdaptiveCard.useAutoPadding = true;
 
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+        
+        Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
+            if (typeof json["isVisible"] === "boolean") {
+                element.isVisible = json["isVisible"];
+            }        
+        }        
     }
 
     currentConfigPayload = Constants.defaultConfigPayload;
@@ -516,12 +522,6 @@ window.onload = () => {
     Adaptive.AdaptiveCard.onElementVisibilityChanged = elementVisibilityChanged;
     */
 
-    Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
-        if (typeof json["isVisible"] === "boolean") {
-            element.isVisible = json["isVisible"];
-        }        
-    }
-    
     // Uncomment to test the onInlineCardExpanded event:
     // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
 
