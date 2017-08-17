@@ -1,0 +1,29 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "vNext",
+    "primaryImage": {
+        "url": "http://",
+        "style": "person",
+        "placementPreference": [
+            "hero",
+            "background",
+            "bodyRight",
+            "bodyLeft"
+        ]
+    },
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Mother's day floral shop",
+            "size": "large",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "This past Mother's Day, esteemed florist Nicola Adam treated us to a floral workshop at our Vancouver location",
+            "wrap": true
+        }
+    ],
+    "actions": []
+}
