@@ -499,7 +499,18 @@ window.onload = () => {
             if (typeof json["isVisible"] === "boolean") {
                 element.isVisible = json["isVisible"];
             }        
-        }        
+        }
+
+        Adaptive.AdaptiveCard.onAnchorClicked = (anchor: HTMLAnchorElement) => {
+            if (anchor.href.startsWith("executeaction:")) {
+                alert("Executing inline action...");
+
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     }
 
     currentConfigPayload = Constants.defaultConfigPayload;
