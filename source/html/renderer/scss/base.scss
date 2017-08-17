@@ -24,6 +24,33 @@ $font-family: 'Segoe UI', sans-serif;
     cursor: pointer;
 }
 
+@mixin base-anchor(
+    $color: #005A9E,
+    $color-visited: #005A9E,
+    $color-active: #004D84,
+    $color-active-visited: #004D84
+) {
+    a.ac-anchor {
+        text-decoration: none
+    }
+    
+    a.ac-anchor:link {
+        color: $color
+    }
+
+    a.ac-anchor:visited {
+        color: $color-visited
+    }
+
+    a.ac-anchor:link:active {
+        color: $color-active
+    }
+
+    a.ac-anchor:visited:active {
+        color: $color-active-visited
+    }
+}
+
 @mixin base-push-button(
     $font-size: 14px, 
     $font-weight: 600, 

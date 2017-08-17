@@ -537,7 +537,14 @@ export class TextBlock extends CardElement {
             var anchors = element.getElementsByTagName("a");
 
             for (var i = 0; i < anchors.length; i++) {
-                anchors[i].target = "_blank";
+                var anchor = <HTMLAnchorElement>anchors[i];
+                anchor.classList.add("ac-anchor");
+                anchor.target = "_blank";
+                anchor.onclick = (e) => {
+                    if (raiseAnchorClickedEvent(anchor)) {
+                        e.preventDefault();
+                    }
+                }
             }
 
             if (this.wrap) {
@@ -2898,6 +2905,10 @@ export interface IVersion {
     minor: number;
 }
 
+function raiseAnchorClickedEvent(anchor: HTMLAnchorElement): boolean {
+    return AdaptiveCard.onAnchorClicked != null ? AdaptiveCard.onAnchorClicked(anchor) : false;
+}
+
 function raiseExecuteActionEvent(action: Action) {
     if (AdaptiveCard.onExecuteAction != null) {
         action.prepare(action.parent.getRootElement().getAllInputs());
@@ -3078,6 +3089,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static elementTypeRegistry = new TypeRegistry<CardElement>();
     static actionTypeRegistry = new TypeRegistry<Action>();
 
+    static onAnchorClicked: (anchor: HTMLAnchorElement) => boolean = null;
     static onExecuteAction: (action: Action) => void = null;
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
