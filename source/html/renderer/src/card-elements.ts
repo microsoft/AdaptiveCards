@@ -3211,6 +3211,10 @@ export class AdaptiveCard extends ContainerWithActions {
             return super.render();
         }
     }
+
+    canContentBleed(): boolean {
+        return true;
+    }
 }
 
 // This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
