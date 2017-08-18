@@ -65,7 +65,10 @@ private void ActionHandler(object sender, ActionEventArgs e) {
 }
 ```
 
-## Render UI
+## Render 
+
+* What about images failing to download? 
+* We need to support a scenario where we don't callback until the images are done
 
 ```csharp
 var ui = renderer.Render(card);
