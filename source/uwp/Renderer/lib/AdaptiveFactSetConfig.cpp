@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AdaptiveFactSetConfig.h"
-#include "AdaptiveSeparationConfig.h"
 #include "AdaptiveTextConfig.h"
 
 using namespace Microsoft::WRL;
@@ -56,18 +55,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_sharedFactSetConfig.spacing = value;
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Separation(IAdaptiveSeparationConfig** separationConfig)
-    {
-        return MakeAndInitialize<AdaptiveSeparationConfig>(separationConfig, m_sharedFactSetConfig.separation);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Separation(IAdaptiveSeparationConfig*)
-    {
-        return E_NOTIMPL;
     }
 }
 }

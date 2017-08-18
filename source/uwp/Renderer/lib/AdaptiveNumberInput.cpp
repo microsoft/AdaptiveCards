@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "AdaptiveNumberInput.h"
+#include "AdaptiveSeparator.h"
+
 #include "Util.h"
 #include <windows.foundation.collections.h>
 #include "XamlCardRendererComponent.h"
@@ -106,16 +108,39 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveNumberInput::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedNumberInput->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedNumberInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveNumberInput::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
     {
-        m_sharedNumberInput->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedNumberInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveNumberInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator ** separator)
+    {
+        *separator = nullptr;
+        auto sharedSeparator = m_sharedNumberInput->GetSeparator();
+        if (sharedSeparator != nullptr)
+        {
+            return MakeAndInitialize<AdaptiveSeparator>(separator, m_sharedNumberInput->GetSeparator());
+        }
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveNumberInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator)
+    {
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeperator(separator, &sharedSeparator));
+
+        m_sharedNumberInput->SetSeparator(sharedSeparator);
+
         return S_OK;
     }
 

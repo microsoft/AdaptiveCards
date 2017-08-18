@@ -28,8 +28,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight* textWeight);
         IFACEMETHODIMP put_Weight(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight textWeight);
 
-        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor);
-        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor);
+        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor* textColor);
+        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor textColor);
 
         IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
         IFACEMETHODIMP put_Wrap(_In_ boolean wrap);
@@ -46,8 +46,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
-        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
-        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing);
+
+        IFACEMETHODIMP get_Separator(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator);
+        IFACEMETHODIMP put_Separator(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator);
 
         IFACEMETHODIMP get_Speak(_Out_ HSTRING *speak);
         IFACEMETHODIMP put_Speak(_In_ HSTRING speak);

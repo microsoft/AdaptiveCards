@@ -26,32 +26,26 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTextInput;
         runtimeclass AdaptiveTimeInput;
         runtimeclass AdaptiveToggleInput;
+        runtimeclass AdaptiveSeparator;
 
         runtimeclass AdaptiveSpacingDefinition;
         runtimeclass AdaptiveFontSizesConfig;
         runtimeclass AdaptiveColorsConfig;
         runtimeclass AdaptiveColorConfig;
         runtimeclass AdaptiveTextConfig;
-        runtimeclass AdaptiveSeparationConfig;
         runtimeclass AdaptiveImageSizesConfig;
-        runtimeclass AdaptiveTextBlockConfig;
         runtimeclass AdaptiveImageSetConfig;
-        runtimeclass AdaptiveColumnConfig;
         runtimeclass AdaptiveContainerConfig;
         runtimeclass AdaptiveContainerStyleConfig;
-        runtimeclass AdaptiveColumnSetConfig;
         runtimeclass AdaptiveImageConfig;
         runtimeclass AdaptiveCardConfig;
         runtimeclass AdaptiveFactSetConfig;
         runtimeclass AdaptiveShowCardActionConfig;
         runtimeclass AdaptiveActionsConfig;
-        runtimeclass AdaptiveDateInputConfig;
-        runtimeclass AdaptiveTimeInputConfig;
-        runtimeclass AdaptiveNumberInputConfig;
-        runtimeclass AdaptiveToggleInputConfig;
-        runtimeclass AdaptiveTextInputConfig;
-        runtimeclass AdaptiveChoiceSetInputConfig;
         runtimeclass AdaptiveHostConfig;
+        runtimeclass AdaptiveSpacingConfig;
+        runtimeclass AdaptiveSeparatorThicknessConfig;
+
         runtimeclass AdaptiveActionEventArgs;
 
         interface IAdaptiveCardElement;
@@ -72,32 +66,26 @@ namespace AdaptiveCards
         interface IAdaptiveNumberInput;
         interface IAdaptiveTimeInput;
         interface IAdaptiveToggleInput;
+        interface IAdaptiveSeparator;
 
         interface IAdaptiveSpacingDefinition;
         interface IAdaptiveFontSizesConfig;
         interface IAdaptiveColorConfig;
         interface IAdaptiveColorsConfig;
         interface IAdaptiveTextConfig;
-        interface IAdaptiveSeparationConfig;
         interface IAdaptiveImageSizesConfig;
-        interface IAdaptiveTextBlockConfig;
         interface IAdaptiveImageSetConfig;
-        interface IAdaptiveColumnConfig;
         interface IAdaptiveContainerStyleConfig;
         interface IAdaptiveContainerConfig;
-        interface IAdaptiveColumnSetConfig;
         interface IAdaptiveImageConfig;
         interface IAdaptiveCardConfig;
         interface IAdaptiveFactSetConfig;
         interface IAdaptiveShowCardActionConfig;
         interface IAdaptiveActionsConfig;
-        interface IAdaptiveDateInputConfig;
-        interface IAdaptiveTimeInputConfig;
-        interface IAdaptiveNumberInputConfig;
-        interface IAdaptiveToggleInputConfig;
-        interface IAdaptiveTextInputConfig;
-        interface IAdaptiveChoiceSetInputConfig;
         interface IAdaptiveHostConfig;
+        interface IAdaptiveSpacingConfig;
+        interface IAdaptiveSeparatorThicknessConfig;
+
         interface IAdaptiveActionEventArgs;
 
         [version(NTDDI_WIN10_RS1)]
@@ -119,7 +107,7 @@ namespace AdaptiveCards
         } TextWeight;
 
         [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum TextColor
+        typedef [v1_enum] enum AdaptiveColor
         {
             Default = 0,
             Dark,
@@ -128,7 +116,7 @@ namespace AdaptiveCards
             Good,
             Warning,
             Attention
-        } TextColor;
+        } AdaptiveColor;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum HAlignment
@@ -187,11 +175,20 @@ namespace AdaptiveCards
         } ImageSize;
 
         [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum SeparationStyle {
+        typedef [v1_enum] enum SeparatorThickness {
+            Default = 0,
+            Thick,
+        } SeparatorThickness;
+
+        [version(NTDDI_WIN10_RS1)]
+        typedef [v1_enum] enum Spacing {
             Default = 0,
             None,
-            Strong,
-        } SeparationStyle;
+            Small,
+            Medium,
+            Large,
+            ExtraLarge,
+        } Spacing;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ActionsOrientation {
@@ -259,8 +256,34 @@ namespace AdaptiveCards
             [propget] HRESULT Speak([out, retval] HSTRING* value);
             [propput] HRESULT Speak([in] HSTRING value);
 
-            [propget] HRESULT Separation([out, retval] SeparationStyle* value);
-            [propput] HRESULT Separation([in] SeparationStyle value);
+            [propget] HRESULT Spacing([out, retval] Spacing* value);
+            [propput] HRESULT Spacing([in] Spacing value);
+
+            [propget] HRESULT Separator([out, retval] AdaptiveSeparator** value);
+            [propput] HRESULT Separator([in] AdaptiveSeparator* value);
+        };
+
+        [
+            uuid(a2a0727a-e4aa-423d-b5b0-4b85f7a534c4),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveSeparator)
+        ]
+        interface IAdaptiveSeparator : IInspectable
+        {
+            [propget] HRESULT Color([out, retval] AdaptiveColor* value);
+            [propput] HRESULT Color([in] AdaptiveColor value);
+
+            [propget] HRESULT Thickness([out, retval] SeparatorThickness* value);
+            [propput] HRESULT Thickness([in] SeparatorThickness value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveSeparator
+        {
+            [default] interface IAdaptiveSeparator;
         };
 
         [
@@ -276,8 +299,8 @@ namespace AdaptiveCards
             [propget] HRESULT Weight([out, retval] TextWeight* value);
             [propput] HRESULT Weight([in] TextWeight value);
 
-            [propget] HRESULT Color([out, retval] TextColor* value);
-            [propput] HRESULT Color([in] TextColor value);
+            [propget] HRESULT Color([out, retval] AdaptiveColor* value);
+            [propput] HRESULT Color([in] AdaptiveColor value);
 
             [propget] HRESULT Text([out, retval] HSTRING* value);
             [propput] HRESULT Text([in] HSTRING value);
@@ -943,8 +966,8 @@ namespace AdaptiveCards
             [propget] HRESULT Size([out, retval] TextSize* value);
             [propput] HRESULT Size([in] TextSize value);
 
-            [propget] HRESULT Color([out, retval] TextColor* value);
-            [propput] HRESULT Color([in] TextColor value);
+            [propget] HRESULT Color([out, retval] AdaptiveColor* value);
+            [propput] HRESULT Color([in] AdaptiveColor value);
  
             [propget] HRESULT IsSubtle([out, retval] boolean* value);
             [propput] HRESULT IsSubtle([in] boolean value);
@@ -960,29 +983,58 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(88e10cbc-0d67-42e3-bfcc-fd2ddb31dadd),
+            uuid(0e21ac82-4838-43cb-b7ef-7b023011061b),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveSeparationConfig)
+            exclusiveto(AdaptiveSpacingConfig)
         ]
-        interface IAdaptiveSeparationConfig : IInspectable
+        interface IAdaptiveSpacingConfig : IInspectable
         {
-            [propget] HRESULT Spacing([out, retval] UINT32 *value);
-            [propput] HRESULT Spacing([in] UINT32 value);
+            [propget] HRESULT Small([out, retval] UINT32 *value);
+            [propput] HRESULT Small([in] UINT32 value);
 
-            [propget] HRESULT LineThickness([out, retval] UINT32 *value);
-            [propput] HRESULT LineThickness([in] UINT32 value);
+            [propget] HRESULT Default([out, retval] UINT32 *value);
+            [propput] HRESULT Default([in] UINT32 value);
 
-            [propget] HRESULT LineColor([out, retval] Windows.UI.Color* value);
-            [propput] HRESULT LineColor([in] Windows.UI.Color value);
+            [propget] HRESULT Medium([out, retval] UINT32 *value);
+            [propput] HRESULT Medium([in] UINT32 value);
+
+            [propget] HRESULT Large([out, retval] UINT32 *value);
+            [propput] HRESULT Large([in] UINT32 value);
+
+            [propget] HRESULT ExtraLarge([out, retval] UINT32 *value);
+            [propput] HRESULT ExtraLarge([in] UINT32 value);
         };
 
         [
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveSeparationConfig
+        runtimeclass AdaptiveSpacingConfig
         {
-            [default] interface IAdaptiveSeparationConfig;
+            [default] interface IAdaptiveSpacingConfig;
+        };
+
+        [
+            uuid(c34a155d-6913-4f8b-9b94-f4ab8c578aee),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveSeparatorThicknessConfig)
+        ]
+        interface IAdaptiveSeparatorThicknessConfig : IInspectable
+        {
+            [propget] HRESULT Default([out, retval] UINT32 *value);
+            [propput] HRESULT Default([in] UINT32 value);
+
+            [propget] HRESULT Thick([out, retval] UINT32 *value);
+            [propput] HRESULT Thick([in] UINT32 value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveSeparatorThicknessConfig
+        {
+            [default] interface IAdaptiveSeparatorThicknessConfig;
         };
 
         [
@@ -1010,39 +1062,7 @@ namespace AdaptiveCards
         {
             [default] interface IAdaptiveImageSizesConfig;
         };
-
-        [
-            uuid(51417beb-2bbc-44e5-8210-6f61414cca6f),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveTextBlockConfig)
-        ]
-        interface IAdaptiveTextBlockConfig : IInspectable
-        {
-            [propget] HRESULT SmallSeparation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT SmallSeparation([in] AdaptiveSeparationConfig* value);
-
-            [propget] HRESULT NormalSeparation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT NormalSeparation([in] AdaptiveSeparationConfig* value);
-
-            [propget] HRESULT MediumSeparation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT MediumSeparation([in] AdaptiveSeparationConfig* value);
-
-            [propget] HRESULT LargeSeparation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT LargeSeparation([in] AdaptiveSeparationConfig* value);
-
-            [propget] HRESULT ExtraLargeSeparation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT ExtraLargeSeparation([in] AdaptiveSeparationConfig* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveTextBlockConfig
-        {
-            [default] interface IAdaptiveTextBlockConfig;
-        };
-        
+                
         [
             uuid(29685cc3-027f-4da8-9659-6d3a53c34d88),
             version(NTDDI_WIN10_RS1),
@@ -1052,9 +1072,6 @@ namespace AdaptiveCards
         {
             [propget] HRESULT ImageSize([out, retval] ImageSize* value);
             [propput] HRESULT ImageSize([in] ImageSize value);
-
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
         };
 
         [
@@ -1064,26 +1081,6 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageSetConfig
         {
             [default] interface IAdaptiveImageSetConfig;
-        };
-
-        [
-            uuid(0103c3c1-aa6e-4fb4-ab38-9c0ff1a6a00f),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveColumnConfig)
-        ]
-        interface IAdaptiveColumnConfig : IInspectable
-        {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig **value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig *value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveColumnConfig
-        {
-            [default] interface IAdaptiveColumnConfig;
         };
 
         [
@@ -1122,9 +1119,6 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveContainerConfig : IInspectable
         {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
-
             [propget] HRESULT Normal([out, retval] AdaptiveContainerStyleConfig** value);
             [propput] HRESULT Normal([in] AdaptiveContainerStyleConfig* value);
 
@@ -1140,46 +1134,6 @@ namespace AdaptiveCards
         runtimeclass AdaptiveContainerConfig
         {
             [default] interface IAdaptiveContainerConfig;
-        };
-
-        [
-            uuid(cc83d315-b819-4980-97b1-cf950e760fc4),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveColumnSetConfig)
-        ]
-        interface IAdaptiveColumnSetConfig : IInspectable
-        {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveColumnSetConfig
-        {
-            [default] interface IAdaptiveColumnSetConfig;
-        };
-
-        [
-            uuid(4b8664ce-92d4-4093-af07-0d46712ac09b),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveImageConfig)
-        ]
-        interface IAdaptiveImageConfig : IInspectable
-        {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveImageConfig
-        {
-            [default] interface IAdaptiveImageConfig;
         };
 
         [
@@ -1220,9 +1174,6 @@ namespace AdaptiveCards
 
             [propget] HRESULT Spacing([out][retval] UINT32* value);
             [propput] HRESULT Spacing([in] UINT32 value);
-
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
         };
 
         [
@@ -1285,8 +1236,8 @@ namespace AdaptiveCards
             [propget] HRESULT MaxActions([out][retval] UINT32* value);
             [propput] HRESULT MaxActions([in] UINT32 value);
 
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
+            [propget] HRESULT Spacing([out][retval] Spacing* value);
+            [propput] HRESULT Spacing([in] Spacing value);
         };
 
         [
@@ -1296,126 +1247,6 @@ namespace AdaptiveCards
         runtimeclass AdaptiveActionsConfig
         {
             [default] interface IAdaptiveActionsConfig;
-        };
-
-        [
-            uuid(11213517-1e67-49df-a471-13dc0b2a3e5c),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveDateInputConfig)
-        ]
-        interface IAdaptiveDateInputConfig : IInspectable
-        {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveDateInputConfig
-        {
-            [default] interface IAdaptiveDateInputConfig;
-        };
-
-        [
-            uuid(0a53b7db-e8d8-41a5-94ad-d0992ba2879e),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveTimeInputConfig)
-        ]
-        interface IAdaptiveTimeInputConfig : IInspectable
-        {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveTimeInputConfig
-        {
-            [default] interface IAdaptiveTimeInputConfig;
-        };
-
-        [
-            uuid(f0a43896-35e3-4d61-9057-c19da8dafa07),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveNumberInputConfig)
-        ]
-        interface IAdaptiveNumberInputConfig : IInspectable
-        {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveNumberInputConfig
-        {
-            [default] interface IAdaptiveNumberInputConfig;
-        };
-
-        [
-            uuid(78a7b94a-559a-4aec-8d34-6a88189460b3),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveToggleInputConfig)
-        ]
-        interface IAdaptiveToggleInputConfig : IInspectable
-        {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveToggleInputConfig
-        {
-            [default] interface IAdaptiveToggleInputConfig;
-        };
-
-        [
-            uuid(b9b3fccc-2d5a-4a15-9e72-b8f6e8d479e9),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveTextInputConfig)
-        ]
-        interface IAdaptiveTextInputConfig : IInspectable
-        {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveTextInputConfig
-        {
-            [default] interface IAdaptiveTextInputConfig;
-        };
-
-        [
-            uuid(0df8b226-303c-46a7-9c4b-0b4154bb9c7d),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveChoiceSetInputConfig)
-        ]
-        interface IAdaptiveChoiceSetInputConfig : IInspectable
-        {
-            [propget] HRESULT Separation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT Separation([in] AdaptiveSeparationConfig* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveChoiceSetInputConfig
-        {
-            [default] interface IAdaptiveChoiceSetInputConfig;
         };
 
         [
@@ -1443,8 +1274,11 @@ namespace AdaptiveCards
             [propget] HRESULT MaxActions([out, retval] UINT32 *value);
             [propput] HRESULT MaxActions([in] UINT32 value);
 
-            [propget] HRESULT StrongSeparation([out, retval] AdaptiveSeparationConfig** value);
-            [propput] HRESULT StrongSeparation([in] AdaptiveSeparationConfig* value);
+            [propget] HRESULT Spacing([out, retval] AdaptiveSpacingConfig** value);
+            [propput] HRESULT Spacing([in] AdaptiveSpacingConfig* value);
+
+            [propget] HRESULT SeparatorThickness([out, retval] AdaptiveSeparatorThicknessConfig** value);
+            [propput] HRESULT SeparatorThickness([in] AdaptiveSeparatorThicknessConfig* value);
 
             [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCardConfig** value);
             [propput] HRESULT AdaptiveCard([in] AdaptiveCardConfig* value);
@@ -1452,41 +1286,11 @@ namespace AdaptiveCards
             [propget] HRESULT ImageSet([out, retval] AdaptiveImageSetConfig** value);
             [propput] HRESULT ImageSet([in] AdaptiveImageSetConfig* value);
 
-            [propget] HRESULT Image([out, retval] AdaptiveImageConfig** value);
-            [propput] HRESULT Image([in] AdaptiveImageConfig* value);
-
             [propget] HRESULT FactSet([out, retval] AdaptiveFactSetConfig** value);
             [propput] HRESULT FactSet([in] AdaptiveFactSetConfig* value);
 
-            [propget] HRESULT Column([out, retval] AdaptiveColumnConfig** value);
-            [propput] HRESULT Column([in] AdaptiveColumnConfig* value);
-
             [propget] HRESULT Container([out, retval] AdaptiveContainerConfig** value);
             [propput] HRESULT Container([in] AdaptiveContainerConfig* value);
-
-            [propget] HRESULT ColumnSet([out, retval] AdaptiveColumnSetConfig** value);
-            [propput] HRESULT ColumnSet([in] AdaptiveColumnSetConfig* value);
-
-            [propget] HRESULT TextBlock([out, retval] AdaptiveTextBlockConfig** value);
-            [propput] HRESULT TextBlock([in] AdaptiveTextBlockConfig* value);
-
-            [propget] HRESULT DateInput([out, retval] AdaptiveDateInputConfig** value);
-            [propput] HRESULT DateInput([in] AdaptiveDateInputConfig* value);
-
-            [propget] HRESULT TimeInput([out, retval] AdaptiveTimeInputConfig** value);
-            [propput] HRESULT TimeInput([in] AdaptiveTimeInputConfig* value);
-
-            [propget] HRESULT NumberInput([out, retval] AdaptiveNumberInputConfig** value);
-            [propput] HRESULT NumberInput([in] AdaptiveNumberInputConfig* value);
-
-            [propget] HRESULT ToggleInput([out, retval] AdaptiveToggleInputConfig** value);
-            [propput] HRESULT ToggleInput([in] AdaptiveToggleInputConfig* value);
-
-            [propget] HRESULT TextInput([out, retval] AdaptiveTextInputConfig** value);
-            [propput] HRESULT TextInput([in] AdaptiveTextInputConfig* value);
-
-            [propget] HRESULT ChoiceSetInput([out, retval] AdaptiveChoiceSetInputConfig** value);
-            [propput] HRESULT ChoiceSetInput([in] AdaptiveChoiceSetInputConfig* value);
 
             [propget] HRESULT Actions([out, retval] AdaptiveActionsConfig** value);
             [propput] HRESULT Actions([in] AdaptiveActionsConfig* value);

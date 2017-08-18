@@ -77,23 +77,28 @@ namespace XamlCardVisualizer
             AdaptiveTextBlock textBlock1 = new AdaptiveTextBlock();
             textBlock1.Text = "Hello";
             textBlock1.Weight = TextWeight.Normal;
-            textBlock1.Color = TextColor.Warning;
+            textBlock1.Color = AdaptiveColor.Warning;
             textBlock1.Size = TextSize.Large;
             container1.Items.Add(textBlock1);
             AdaptiveTextBlock textBlock2 = new AdaptiveTextBlock();
             textBlock2.Text = "World";
             textBlock2.Weight = TextWeight.Normal;
-            textBlock2.Color = TextColor.Accent;
+            textBlock2.Color = AdaptiveColor.Accent;
             container1.Items.Add(textBlock2);
 
             card.Body.Add(container1);
 
+            AdaptiveSeparator separator = new AdaptiveSeparator();
+            separator.Color = AdaptiveColor.Dark;
+            separator.Thickness = SeparatorThickness.Thick;
+
             AdaptiveContainer container2 = new AdaptiveContainer();
+            container2.Separator = separator;
 
             AdaptiveTextBlock textBlock3 = new AdaptiveTextBlock();
             textBlock3.Text = "In new container";
             textBlock3.Weight = TextWeight.Normal;
-            textBlock3.Color = TextColor.Default;
+            textBlock3.Color = AdaptiveColor.Default;
             container2.Items.Add(textBlock3);
 
             card.Body.Add(container2);

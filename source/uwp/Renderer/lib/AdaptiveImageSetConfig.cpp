@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AdaptiveImageSetConfig.h"
-#include "AdaptiveSeparationConfig.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
@@ -31,18 +30,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_sharedImageSetConfig.imageSize = static_cast<AdaptiveCards::ImageSize>(imageSize);
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::get_Separation(IAdaptiveSeparationConfig** separationConfig)
-    {
-        return MakeAndInitialize<AdaptiveSeparationConfig>(separationConfig, m_sharedImageSetConfig.separation);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::put_Separation(IAdaptiveSeparationConfig*)
-    {
-        return E_NOTIMPL;
     }
 }
 }

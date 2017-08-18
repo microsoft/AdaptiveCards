@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveColumn.h"
+#include "AdaptiveSeparator.h"
 
 #include "Util.h"
 #include "Vector.h"
@@ -62,16 +63,39 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveColumn::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedColumn->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedColumn->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveColumn::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
     {
-        m_sharedColumn->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedColumn->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator ** separator)
+    {
+        *separator = nullptr;
+        auto sharedSeparator = m_sharedColumn->GetSeparator();
+        if (sharedSeparator != nullptr)
+        {
+            return MakeAndInitialize<AdaptiveSeparator>(separator, m_sharedColumn->GetSeparator());
+        }
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator)
+    {
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeperator(separator, &sharedSeparator));
+
+        m_sharedColumn->SetSeparator(sharedSeparator);
+
         return S_OK;
     }
 

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AdaptiveSeparator.h"
 #include "AdaptiveTextBlock.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
@@ -70,16 +71,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor)
+    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor* textColor)
     {
-        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextColor>(m_sharedTextBlock->GetTextColor());
+        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor>(m_sharedTextBlock->GetTextColor());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor)
+    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor textColor)
     {
-        m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::TextColor>(textColor));
+        m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::AdaptiveColor>(textColor));
         return S_OK;
     }
 
@@ -147,16 +148,39 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveTextBlock::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedTextBlock->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedTextBlock->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveTextBlock::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
     {
-        m_sharedTextBlock->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedTextBlock->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator ** separator)
+    {
+        *separator = nullptr;
+        auto sharedSeparator = m_sharedTextBlock->GetSeparator();
+        if (sharedSeparator != nullptr)
+        {
+            return MakeAndInitialize<AdaptiveSeparator>(separator, m_sharedTextBlock->GetSeparator());
+        }
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator)
+    {
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeperator(separator, &sharedSeparator));
+
+        m_sharedTextBlock->SetSeparator(sharedSeparator);
+
         return S_OK;
     }
 

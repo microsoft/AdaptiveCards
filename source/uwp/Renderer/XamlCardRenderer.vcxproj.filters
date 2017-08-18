@@ -32,27 +32,19 @@
     <ClCompile Include="lib\AdaptiveColorConfig.cpp" />
     <ClCompile Include="lib\AdaptiveSpacingDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveCardConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveChoiceSetInputConfig.cpp" />
     <ClCompile Include="lib\AdaptiveColorsConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveColumnConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveColumnSetConfig.cpp" />
     <ClCompile Include="lib\AdaptiveContainerConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveDateInputConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFactSetConfig.cpp" />
     <ClCompile Include="lib\AdaptiveHostConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveImageConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSetConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveNumberInputConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveSeparationConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveTextBlockConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveTextInputConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTextConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveTimeInputConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveToggleInputConfig.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveSpacingConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveSeparatorThicknessConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveSeparator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -94,27 +86,20 @@
     <ClInclude Include="lib\AdaptiveColorConfig.h" />
     <ClInclude Include="lib\AdaptiveSpacingDefinition.h" />
     <ClInclude Include="lib\AdaptiveCardConfig.h" />
-    <ClInclude Include="lib\AdaptiveChoiceSetInputConfig.h" />
     <ClInclude Include="lib\AdaptiveColorsConfig.h" />
-    <ClInclude Include="lib\AdaptiveColumnConfig.h" />
-    <ClInclude Include="lib\AdaptiveColumnSetConfig.h" />
     <ClInclude Include="lib\AdaptiveContainerConfig.h" />
-    <ClInclude Include="lib\AdaptiveDateInputConfig.h" />
     <ClInclude Include="lib\AdaptiveFactSetConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfig.h" />
-    <ClInclude Include="lib\AdaptiveImageConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSetConfig.h" />
-    <ClInclude Include="lib\AdaptiveNumberInputConfig.h" />
-    <ClInclude Include="lib\AdaptiveSeparationConfig.h" />
-    <ClInclude Include="lib\AdaptiveTextBlockConfig.h" />
-    <ClInclude Include="lib\AdaptiveTextInputConfig.h" />
     <ClInclude Include="lib\AdaptiveTextConfig.h" />
-    <ClInclude Include="lib\AdaptiveTimeInputConfig.h" />
-    <ClInclude Include="lib\AdaptiveToggleInputConfig.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
     <ClInclude Include="lib\AdaptiveFontSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
+    <ClInclude Include="lib\AdaptiveSpacingConfig.h" />
+    <ClInclude Include="lib\AdaptiveSeparatorThicknessConfig.h" />
+    <ClInclude Include="lib\AdaptiveSeparatorColorConfig.h" />
+    <ClInclude Include="lib\AdaptiveSeparator.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />
