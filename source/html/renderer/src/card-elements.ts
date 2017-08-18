@@ -422,6 +422,7 @@ export class TextBlock extends CardElement {
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             var element = document.createElement("div");
+            element.style.overflow = "hidden";
 
             if (hostConfig.fontFamily) {
                 element.style.fontFamily = hostConfig.fontFamily;
@@ -1064,13 +1065,15 @@ export class ToggleInput extends Input {
         var element = document.createElement("div");
         element.className = "ac-input";
         element.style.width = "100%";
+        element.style.display = "flex";
 
         this._checkboxInputElement = document.createElement("input");
         this._checkboxInputElement.type = "checkbox";
         this._checkboxInputElement.style.display = "inline-block";
         this._checkboxInputElement.style.verticalAlign = "middle";
         this._checkboxInputElement.style.margin = "0";
-
+        this._checkboxInputElement.style.flex = "0 0 auto";
+        
         if (this.defaultValue == this.valueOn) {
             this._checkboxInputElement.checked = true;
         }
@@ -1164,7 +1167,7 @@ export class ChoiceSetInput extends Input {
                 var element = document.createElement("div");
                 element.className = "ac-input";
                 element.style.width = "100%";
-
+                
                 this._toggleInputs = [];
 
                 for (var i = 0; i < this.choices.length; i++) {
@@ -1175,7 +1178,8 @@ export class ChoiceSetInput extends Input {
                     radioInput.style.verticalAlign = "middle";
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
-
+                    radioInput.style.flex = "0 0 auto";
+                    
                     if (this.choices[i].value == this.defaultValue) {
                         radioInput.checked = true;
                     }
@@ -1191,7 +1195,8 @@ export class ChoiceSetInput extends Input {
                     labelElement.style.verticalAlign = "middle";
 
                     var compoundInput = document.createElement("div");
-
+                    compoundInput.style.display = "flex";
+                    
                     Utils.appendChild(compoundInput, radioInput);
                     Utils.appendChild(compoundInput, labelElement);
 
@@ -1208,7 +1213,7 @@ export class ChoiceSetInput extends Input {
             var element = document.createElement("div");
             element.className = "ac-input";
             element.style.width = "100%";
-
+            
             this._toggleInputs = [];
 
             for (var i = 0; i < this.choices.length; i++) {
@@ -1218,6 +1223,7 @@ export class ChoiceSetInput extends Input {
                 checkboxInput.style.display = "inline-block";
                 checkboxInput.style.verticalAlign = "middle";
                 checkboxInput.value = this.choices[i].value;
+                checkboxInput.style.flex = "0 0 auto";
 
                 if (defaultValues) {
                     if (defaultValues.indexOf(this.choices[i].value) >= 0) {
@@ -1236,7 +1242,8 @@ export class ChoiceSetInput extends Input {
                 labelElement.style.verticalAlign = "middle";
 
                 var compoundInput = document.createElement("div");
-
+                compoundInput.style.display = "flex";
+                
                 Utils.appendChild(compoundInput, checkboxInput);
                 Utils.appendChild(compoundInput, labelElement);
 
