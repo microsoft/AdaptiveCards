@@ -4,7 +4,7 @@
         <id>AdaptiveCards.UWP.Beta</id>
         <version>1.0.0</version>
         <authors>Microsoft</authors>
-	<owners>microsoft, andrewbares</owners>
+        <owners>microsoft</owners>
         <projectUrl>https://github.com/microsoft/adaptivecards</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>Adaptive Cards library for UWP.</summary>
