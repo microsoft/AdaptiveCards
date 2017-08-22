@@ -2,7 +2,15 @@
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "vNext",
-    "primaryImage": {
+    "images": {
+        "hero": {
+
+        },
+        "bodyLeft": {
+            
+        }
+    },
+    "image": { // what about background plug another type of image?
         "url": "http://",
         "style": "person",
         "placementPreference": [
