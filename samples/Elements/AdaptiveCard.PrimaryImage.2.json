@@ -10,23 +10,30 @@
     },
     "title": "Mother's day floral shop",
     "subtitle": "This past Mother's Day, esteemed florist",
-    "images": {
-        "background": {
-            "url": "http://"
-        },
-        "inline": {
+    "images": [
+        {
             "url": "http://",
-            "style": "person"
+            "placement": [
+                "background", "hero"
+            ]
         },
-        "default": {
+        {
+            "url": "http://",
+            "style": "person",
+            "placement": [
+                "inline"
+            ]
+        },
+        {
             "url": "",
-            "preferredPlacement": [ // order matters, remove ones you don't want
-                "inline",
+            "placement": [
                 "hero",
                 "background"
             ]
+            // this is the general purpose image, it can be at the top, background (if not specified) and body left/right
+            // what about devs who want it above only, and not inline with body?
         }
-    },
+    ],
     "body": [
         {
             "type": "TextBlock",
