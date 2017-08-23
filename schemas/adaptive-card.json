@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
   "title": "Microsoft Adaptive Card Schema",
@@ -805,7 +805,8 @@
         },
         "value": {
           "type": "string",
-          "description": "The current selected value (default:false)"
+          "description": "The current selected value (default:false)",
+          "default": false
         },
         "valueOff": {
           "type": "string",
