@@ -1,11 +1,10 @@
 # Getting the SDK
 
+* TODO: Should it just be AdaptiveCards?
 
 ```console
 nuget install Microsoft.AdaptiveCards
-// TODO: or AdaptiveCards?
 ```
-
 
 # Instantiate card
 
@@ -17,22 +16,30 @@ using Microsoft.AdaptiveCards;
 ## From object model
 
 ```csharp
-AdaptiveCard card = new AdaptiveCard("1.0");
+AdaptiveCard card = new AdaptiveCard();
 
+card.Body.Add(new AdaptiveContainer());
 card.Body.Add(new AdaptiveTextBlock()); 
+card.Actions.Add(new AdaptiveHttpAction());
+
 // TODO: Adaptive prefix? We need to evaluate chance of conflict with other namespaces. Is it likely that a class would use AdapativeCards and System.UI.Xaml at the same time?
 
-card.Actions.Add(new ActionHttp());
-// TODO: HttpAction?
 ```
 
 ## Versioning
 
 ```csharp
-// TODO: Should this be required and part of the ctor?
-// TODO: Should this be a string?
-card.Version = "2.1"; 
-card.MinVersionRequired = "2.0";
+
+public class AdaptiveVersion 
+{
+    int Major; Minor; Patch;
+    string ToString();
+}
+
+// Version automatically provided by object model/renderer
+AdaptiveVersion version = card.Version;
+
+card.MinVersionRequired = new AdaptiveVersion(major: 2, minor: 0, patch: 0);
 card.FallbackText = "Please update your app to see this card";
 ```
 
@@ -41,29 +48,61 @@ card.FallbackText = "Please update your app to see this card";
 
 ```csharp
 // TODO: Should this be an enum or an interface? TypeScript currently has as enum
-public enum ValidationError {
-    ActionTypeNotAllowed = 0,
-    CollectionCantBeEmpty = 1,
-    ElementTypeNotAllowed = 2,
-    InteractivityNotAllowed = 3,
-    InvalidPropertyValue = 4,
-    MissingCardType = 5,
-    PropertyCantBeNull = 6,
-    TooManyActions = 7,
-    UnknownActionType = 8,
-    UnknownElementType = 9,
-    UnsupportedCardVersion = 10,
-    MissingVersion,
+public class ParseError  {
+    string Message;
+
+    SchemaValidationError;
+        //MissingCardType = 5,
+        //CollectionCantBeEmpty = 1,
+        //InvalidPropertyValue = 4,
+        //PropertyCantBeNull = 6,
+        //MissingVersion,
 
 }
 
-ParseValidationResult result = AdaptiveCard.FromJson(jsonString);
+        
+    Renderer Errors
+        UnsupportedCardVersion = 10,
+        ElementTypeNotAllowed = 2, // TODO: Do we need this?
+
+  
+
+public class ValidationWarning
+{
+  RendererWarnings
+        UnknownActionType = 8,
+        UnknownElementType = 9,
+            
+    HostConfigWarnings
+        InteractivityNotSupported = 3,
+        TooManyActions = 7,    
+}
+
+// Parse Errors
+// 1. Is it even valid json?
+// 2. Does it pass schema validation?
+
+// Warnings
+// 1. Does it violate host config?
+// 2. Unknown element 
+
+ParseResult result = AdaptiveCard.FromJson(jsonString);
 if (result.IsValid) {
-     // Get card from result
-    AdaptiveCard card = result.Card;   
+    // Get card from result
+    AdaptiveCard card = result.Card;
+
+} // else errors
+
+
+
+
+ParseResult result = AdaptiveCard.FromJson(jsonString);
+if (result.IsValid) {
+    // Any warnings?
+    IList<ValidationFailure> warnings = result.Warnings;
 }
 else {
-    IList<ValidationError> errors = result.Errors;
+    IList<ValidationFailure> errors = result.Errors;
 }
 ```
 
@@ -72,7 +111,7 @@ else {
 * Type casting errors (e.g., bool expected and we got a string)
 
 ```csharp
-ParseValidationResult result = card.Validate();
+ValidationResult result = card.Validate();
 if (!result.IsValid) {
     IList<ValidationError> errors = result.Errors;
 }
@@ -81,9 +120,7 @@ if (!result.IsValid) {
 ### Validate against Host Config
 
 ```csharp
-
 ValidationResult result = card.Validate(myHostConfig);
-
 ```
 
 # Render card
@@ -103,6 +140,7 @@ string schemaVersion = renderer.SupportedSchemaVersion;
 AdaptiveHostConfig hostConfig = new AdaptiveHostConfig();
 
 // ... or parse
+// Change to if 
 try {
     AdaptiveHostConfig hostConfig = AdaptiveHostConfig.FromJson(jsonString);
 }
@@ -130,10 +168,12 @@ hostConfig.MaxPayloadSize = "10"; // kB
 ## Wire up Action events
 
 ```csharp
+
 renderer.OnAction += ActionHander;
 
 private void ActionHandler(object sender, ActionEventArgs e) {
-    if(e.Action is OpenUrlAction) {
+    AdaptiveCard card = e.Card;
+    if(e.Action is AdaptiveOpenUrlAction) {
         // open URL
     }
     ...
@@ -182,16 +222,22 @@ RenderResult result = await renderer.RenderAsync(card, prefetchImages: true, can
 ## Override an existing element
 
 ```csharp
-public class CoolTextBlockRenderer : TextBlockRenderer
-{
-    override UIElement Render()
-    {
-        ...
-    }
+public class CoolTextBlockRenderer : IRenderer {
 
-    override void Parse(object?)  // TODO: what gets passed here?
+    UIElement Render(AdaptiveUnknownElement element)
     {
-        ...
+        string type = element.Type; // CoolTextBlock
+
+        dynamic d = JObject.Parse(element.Json);
+        AdaptiveTextBlock t1 = JsonConvert.DeserializeObject<AdaptiveTextBlock>(d.title);
+        AdaptiveTextBlock t2 = JsonConvert.DeserializeObject<AdaptiveTextBlock>(d.subtitle);
+
+        var tbRenderer = new TextBlockRenderer();
+        TextBlock t = (TextBlock)tbRendererv.Render(t1);
+        
+        // ...modify the XAML TextBlock
+
+        return t;
     }
 }
 
@@ -232,6 +278,16 @@ private string MarkdownHandler(string text) {
 
 ## Custom properties on elements
 
+
+```json
+{
+    "type": "TextBlock",
+    "flashing": true,
+    "extensions": {
+        "flashing": true
+    }
+}
+```
 
 # Next steps
 
