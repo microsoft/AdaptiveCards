@@ -181,5 +181,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
+        bool SupportsInteractivity();
     };
 }}
