@@ -87,20 +87,9 @@ std::shared_ptr<ChoiceSetInput> ChoiceSetInput::Deserialize(const Json::Value& j
     choiceSet->SetIsMultiSelect(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiSelect, false));
 
     // Parse Choices
-    auto choicesArray = ParseUtil::GetArray(json, AdaptiveCardSchemaKey::Choices, true);
-    std::vector<std::shared_ptr<ChoiceInput>> choices;
-
-    // Deserialize every choice in the array
-    for (const Json::Value& element : choicesArray)
-    {
-        auto choice = ChoiceInput::Deserialize(element);
-        if (choice != nullptr)
-        {
-            choices.push_back(choice);
-        }
-    }
-
+    auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, true);
     choiceSet->m_choices = std::move(choices);
+
     return choiceSet;
 }
 

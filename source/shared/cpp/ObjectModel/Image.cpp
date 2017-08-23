@@ -31,6 +31,11 @@ std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::Image);
 
+    return Image::DeserializeWithoutCheckingType(json);
+}
+
+std::shared_ptr<Image> Image::DeserializeWithoutCheckingType(const Json::Value& json)
+{
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));

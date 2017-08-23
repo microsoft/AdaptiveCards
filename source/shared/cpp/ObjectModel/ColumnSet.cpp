@@ -5,11 +5,6 @@
 
 using namespace AdaptiveCards;
 
-const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnSet::ColumnParser =
-{
-    { CardElementType::Column, Column::Deserialize }
-};
-
 ColumnSet::ColumnSet() : BaseCardElement(CardElementType::ColumnSet)
 {
 }
@@ -55,7 +50,7 @@ std::shared_ptr<ColumnSet> ColumnSet::Deserialize(const Json::Value& value)
     auto container = BaseCardElement::Deserialize<ColumnSet>(value);
 
     // Parse Columns
-    auto cardElements = ParseUtil::GetElementCollection<Column>(value, AdaptiveCardSchemaKey::Columns, ColumnParser, true);
+    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, true);
     container->m_columns = std::move(cardElements);
     return container;
 }
