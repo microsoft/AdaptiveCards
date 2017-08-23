@@ -2,23 +2,32 @@
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "vNext",
-    "images": {
-        "hero": {
-
+    "attribution": {
+        "image": {
+            "url": "http://"
         },
-        "bodyLeft": {
-            
-        }
+        "text": ""
     },
-    "image": { // what about background plug another type of image?
-        "url": "http://",
-        "style": "person",
-        "placementPreference": [
-            "hero",
-            "background",
-            "bodyRight",
-            "bodyLeft"
-        ]
+    "title": "Mother's day floral shop",
+    "subtitle": "This past Mother's Day, esteemed florist",
+    "images": {
+        "background": {
+            "url": "http://"
+        },
+        "inline": {
+            "url": "http://",
+            "style": "person"
+        },
+        "primary": {
+            "url": "",
+            "placementPreference": [
+                "hero",
+                "background",
+                "inline"
+            ]
+            // this is the general purpose image, it can be at the top, background (if not specified) and body left/right
+            // what about devs who want it above only, and not inline with body?
+        }
     },
     "body": [
         {
@@ -30,6 +39,7 @@
         {
             "type": "TextBlock",
             "text": "This past Mother's Day, esteemed florist Nicola Adam treated us to a floral workshop at our Vancouver location",
+            "isSubtle": true,
             "wrap": true
         }
     ],
