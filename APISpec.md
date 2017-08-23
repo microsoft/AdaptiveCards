@@ -17,10 +17,7 @@ using Microsoft.AdaptiveCards;
 ## From object model
 
 ```csharp
-AdaptiveCard card = new AdaptiveCard();
-
-// TODO: Should this be required and part of the ctor?
-card.Version = 1.0;
+AdaptiveCard card = new AdaptiveCard("1.0");
 
 card.Body.Add(new AdaptiveTextBlock()); 
 // TODO: Adaptive prefix? We need to evaluate chance of conflict with other namespaces. Is it likely that a class would use AdapativeCards and System.UI.Xaml at the same time?
@@ -28,6 +25,17 @@ card.Body.Add(new AdaptiveTextBlock());
 card.Actions.Add(new ActionHttp());
 // TODO: HttpAction?
 ```
+
+## Versioning
+
+```csharp
+// TODO: Should this be required and part of the ctor?
+// TODO: Should this be a string?
+card.Version = "2.1"; 
+card.MinVersionRequired = "2.0";
+card.FallbackText = "Please update your app to see this card";
+```
+
 
 ## Parse from JSON string
 
@@ -84,6 +92,9 @@ ValidationResult result = card.Validate(myHostConfig);
 
 ```csharp
 XamlCardRenderer renderer = new XamlCardRenderer();
+
+// Get the schema version this renderer supports
+string schemaVersion = renderer.SupportedSchemaVersion;
 ```
 
 ## Host Config
@@ -129,6 +140,18 @@ private void ActionHandler(object sender, ActionEventArgs e) {
 }
 ```
 
+## Inputs
+
+```csharp
+private void ActionHandler(object sender, ActionEventArgs e) {
+    if(e.Action is SubmitAction) {
+        e.Inputs[""] =  // TODO: FInish
+    }
+    ...
+}
+```
+
+
 ## Generate UI tree
 
 ```csharp
@@ -165,6 +188,11 @@ public class CoolTextBlockRenderer : TextBlockRenderer
     {
         ...
     }
+
+    override void Parse(object?)  // TODO: what gets passed here?
+    {
+        ...
+    }
 }
 
 renderer.ElementRenderers["TextBlock"] = new CoolTextBlockRenderer());
@@ -179,7 +207,7 @@ public class ProgressBarRenderer : IElementRenderer
         ...
     }
 
-    Parse() { // TODO: what goes here?
+    void Parse(object?) {
 
     }
 }
