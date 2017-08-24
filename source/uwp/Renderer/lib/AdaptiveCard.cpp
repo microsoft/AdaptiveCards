@@ -133,7 +133,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             &uriActivationFactory));
 
         HSTRING imageUri;
-        RETURN_IF_FAILED(UTF8ToHString(m_sharedAdaptiveCard->GetBackgroundImageUrl(), &imageUri));
+        RETURN_IF_FAILED(UTF8ToHString(m_sharedAdaptiveCard->GetBackgroundImage(), &imageUri));
         RETURN_IF_FAILED(uriActivationFactory->CreateUri(imageUri, url));
         return S_OK;
     }
@@ -151,7 +151,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         std::string urlString;
         RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-        m_sharedAdaptiveCard->SetBackgroundImageUrl(urlString);
+        m_sharedAdaptiveCard->SetBackgroundImage(urlString);
 
         return S_OK;
     } CATCH_RETURN;

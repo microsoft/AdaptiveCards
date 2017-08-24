@@ -42,6 +42,7 @@ enum class AdaptiveCardSchemaKey
     AltText,
     Attention,
     BackgroundColor,
+    BackgroundImage,
     BackgroundImageUrl,
     BaseCardElement,
     Body,
