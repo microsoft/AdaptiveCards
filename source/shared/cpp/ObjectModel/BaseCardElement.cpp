@@ -86,4 +86,3 @@ Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseAct
     }
     return Json::Value();
 }
-

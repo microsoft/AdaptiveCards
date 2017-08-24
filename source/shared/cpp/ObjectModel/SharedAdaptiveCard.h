@@ -13,7 +13,7 @@ class AdaptiveCard
 {
 public:
     AdaptiveCard();
-    AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl);
+    AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImage);
     AdaptiveCard(
         std::string version,
         std::string minVersion,
