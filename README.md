@@ -32,7 +32,7 @@ Adaptive Cards are designed to render anywhere that your users are. The followin
 |HTML|`npm install microsoft-adaptivecards`|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/html)|Beta|
 |iOS|*coming soon*|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/ios)|Alpha|
 |WPF|`nuget install Microsoft.AdaptiveCards`|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/dotnet)|Beta|
-|UWP|*coming soon*|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/uwp)|Alpha|
+|UWP|`dotnet add package AdaptiveCards.UWP.Nuget.Beta --version 1.0.0-CI-20170824-100922`|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/uwp)|Alpha|
 |Xamarin.Forms|*coming soon*|[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/dotnet)|Alpha|
 
 ## Contribute
