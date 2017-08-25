@@ -42,4 +42,3 @@ Json::Value BaseInputElement::SerializeToJsonValue()
 
     return root;
 }
-

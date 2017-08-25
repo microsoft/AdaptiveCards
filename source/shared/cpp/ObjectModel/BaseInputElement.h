@@ -44,4 +44,3 @@ std::shared_ptr<T> BaseInputElement::Deserialize(const Json::Value& json)
     return baseInputElement;
 }
 }
-
