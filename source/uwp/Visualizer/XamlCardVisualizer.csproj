@@ -51,7 +51,6 @@
     <Compile Include="Helpers\BindableBase.cs" />
     <Compile Include="Helpers\IListExtensions.cs" />
     <Compile Include="Helpers\PayloadValidator.cs" />
-    <Compile Include="Helpers\WeakEventHandler.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
