@@ -413,7 +413,7 @@ export abstract class CardElement {
 export class TextBlock extends CardElement {
     size: Enums.TextSize = "normal";
     weight: Enums.TextWeight = "normal";
-    color?: Enums.TextColor;
+    color: Enums.TextColor = "default";
     text: string;
     isSubtle: boolean = false;
     wrap: boolean = false;
@@ -471,16 +471,10 @@ export class TextBlock extends CardElement {
             var parentContainer = this.getParentContainer();
             var styleDefinition = getContainerStyleDefinition(parentContainer ? parentContainer.style : "default");
 
-            var actualTextColor = this.color ? this.color : hostConfig.textBlock.color;
+            var actualTextColor = this.color ? this.color : "default";
             var colorDefinition: HostConfig.ITextColorDefinition;
 
             switch (actualTextColor) {
-                case "dark":
-                    colorDefinition = styleDefinition.fontColors.dark;
-                    break;
-                case "light":
-                    colorDefinition = styleDefinition.fontColors.light;
-                    break;
                 case "accent":
                     colorDefinition = styleDefinition.fontColors.accent;
                     break;
@@ -494,7 +488,7 @@ export class TextBlock extends CardElement {
                     colorDefinition = styleDefinition.fontColors.attention;
                     break;
                 default:
-                    colorDefinition = styleDefinition.fontColors.dark;
+                    colorDefinition = styleDefinition.fontColors.default;
                     break;
             }
 
@@ -571,9 +565,9 @@ export class TextBlock extends CardElement {
         super.parse(json);
 
         this.text = json["text"];
-        this.size = Utils.getValueOrDefault<Enums.TextSize>(json["size"], "normal");
-        this.weight = Utils.getValueOrDefault<Enums.TextWeight>(json["weight"], "normal");
-        this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], hostConfig.textBlock.color);
+        this.size = Utils.getValueOrDefault<Enums.TextSize>(json["size"], this.size);
+        this.weight = Utils.getValueOrDefault<Enums.TextWeight>(json["weight"], this.weight);
+        this.color = Utils.getValueOrDefault<Enums.TextColor>(json["color"], this.color);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"] === undefined ? false : json["wrap"];
         this.maxLines = json["maxLines"];
@@ -3271,8 +3265,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
     containerStyles: {
         default: {
             fontColors: {
-                dark: { normal: "#0000FF", subtle: "#222222" },
-                light: { normal: "#FFFFFF", subtle: "#DDDDDD" },
+                default: { normal: "#0000FF", subtle: "#222222" },
                 accent: { normal: "#0000FF", subtle: "#0000DD" },
                 attention: { normal: "#FF6600", subtle: "#DD4400" },
                 good: { normal: "#00FF00", subtle: "#00DD00" },
@@ -3282,8 +3275,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         emphasis: {
             backgroundColor: "#EEEEEE",
             fontColors: {
-                dark: { normal: "#0000FF", subtle: "#222222" },
-                light: { normal: "#FFFFFF", subtle: "#DDDDDD" },
+                default: { normal: "#0000FF", subtle: "#222222" },
                 accent: { normal: "#0000FF", subtle: "#0000DD" },
                 attention: { normal: "#FF6600", subtle: "#DD4400" },
                 good: { normal: "#00FF00", subtle: "#00DD00" },
@@ -3310,9 +3302,6 @@ var defaultHostConfig: HostConfig.IHostConfig = {
     adaptiveCard: {
         allowCustomStyle: false
     },
-    textBlock: {
-        color: "dark"
-    },
     image: {
         size: "medium"
     },
@@ -3322,7 +3311,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
     },
     factSet: {
         title: {
-            color: "dark",
+            color: "default",
             size: "normal",
             isSubtle: false,
             weight: "bolder",
@@ -3330,7 +3319,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
             maxWidth: 150
         },
         value: {
-            color: "dark",
+            color: "default",
             size: "normal",
             isSubtle: false,
             weight: "normal",

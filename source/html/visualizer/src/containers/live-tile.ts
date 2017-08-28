@@ -61,11 +61,7 @@ export class LiveTileContainer extends HostContainer {
                 default: {
                     backgroundColor: "#0078D7",
                     fontColors: {
-                        dark: {
-                            normal: "#333333",
-                            subtle: "#EE333333"
-                        },
-                        light: {
+                        default: {
                             normal: "#FFFFFF",
                             subtle: "#88FFFFFF"
                         },
@@ -90,11 +86,7 @@ export class LiveTileContainer extends HostContainer {
                 emphasis: {
                     backgroundColor: "08000000",
                     fontColors: {
-                        dark: {
-                            normal: "#333333",
-                            subtle: "#EE333333"
-                        },
-                        light: {
+                        default: {
                             normal: "#FFFFFF",
                             subtle: "#88FFFFFF"
                         },
@@ -136,9 +128,6 @@ export class LiveTileContainer extends HostContainer {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "light"
-            },
             image: {
                 size: "medium"
             },
@@ -148,7 +137,7 @@ export class LiveTileContainer extends HostContainer {
             },
             factSet: {
                 title: {
-                    color: "light",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "bolder",
@@ -156,7 +145,7 @@ export class LiveTileContainer extends HostContainer {
                     maxWidth: 150,
                 },
                 value: {
-                    color: "light",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",
