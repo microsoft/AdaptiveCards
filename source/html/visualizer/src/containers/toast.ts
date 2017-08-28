@@ -53,11 +53,7 @@ export class ToastContainer extends HostContainer {
                 default: {
                     backgroundColor: "#1F1F1F",
                     fontColors: {
-                        dark: {
-                            normal: "#333333",
-                            subtle: "#EE333333"
-                        },
-                        light: {
+                        default: {
                             normal: "#FFFFFF",
                             subtle: "#88FFFFFF"
                         },
@@ -82,11 +78,7 @@ export class ToastContainer extends HostContainer {
                 emphasis: {
                     backgroundColor: "#19FFFFFF",
                     fontColors: {
-                        dark: {
-                            normal: "#333333",
-                            subtle: "#EE333333"
-                        },
-                        light: {
+                        default: {
                             normal: "#FFFFFF",
                             subtle: "#88FFFFFF"
                         },
@@ -128,9 +120,6 @@ export class ToastContainer extends HostContainer {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "light"
-            },
             image: {
                 size: "medium"
             },
@@ -140,7 +129,7 @@ export class ToastContainer extends HostContainer {
             },
             factSet: {
                 title: {
-                    color: "light",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "bolder",
@@ -148,7 +137,7 @@ export class ToastContainer extends HostContainer {
                     maxWidth: 150,
                 },
                 value: {
-                    color: "light",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",

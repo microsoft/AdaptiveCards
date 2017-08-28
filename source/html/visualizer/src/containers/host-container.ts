@@ -118,13 +118,9 @@ export abstract class HostContainer {
                 default: {
                     backgroundColor: "#00000000",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
-                        },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
                         },
                         accent: {
                             normal: "#2E89FC",
@@ -147,13 +143,9 @@ export abstract class HostContainer {
                 emphasis: {
                     backgroundColor: "08000000",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
-                        },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
                         },
                         accent: {
                             normal: "#2E89FC",
@@ -193,9 +185,6 @@ export abstract class HostContainer {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "dark"
-            },
             image: {
                 size: "medium"
             },
@@ -205,7 +194,7 @@ export abstract class HostContainer {
             },
             factSet: {
                 title: {
-                    color: "dark",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "bolder",
@@ -213,7 +202,7 @@ export abstract class HostContainer {
                     maxWidth: 150
                 },
                 value: {
-                    color: "dark",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",
