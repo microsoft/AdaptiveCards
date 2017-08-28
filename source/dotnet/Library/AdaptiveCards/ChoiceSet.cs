@@ -53,10 +53,7 @@ namespace AdaptiveCards
 #endif
         public List<Choice> Choices { get; set; } = new List<Choice>();
 
-        public bool ShouldSerializeStyle()
-        {
-            return Style != ChoiceInputStyle.Expanded;
-        }
+        public bool IsCompact => Style != ChoiceInputStyle.Expanded;
 
         public bool ShouldSerializeIsMultiSelect()
         {
