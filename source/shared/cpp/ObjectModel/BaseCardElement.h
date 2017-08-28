@@ -58,4 +58,3 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
     return cardElement;
 }
 }
-

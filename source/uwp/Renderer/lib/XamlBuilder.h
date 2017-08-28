@@ -109,7 +109,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,
             AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
             std::shared_ptr<std::vector<InputItem>> inputElements,
-            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
+            _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
+            _In_ bool insertSeparator);
         void GetSeparationConfigForElement(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
             _In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation,
@@ -180,5 +181,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* adaptiveCardElement,
             std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
+        bool SupportsInteractivity();
     };
 }}

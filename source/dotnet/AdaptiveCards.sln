@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{C443BF0A-C616-4E98-8994-C5BAE76AE556}"
 EndProject
@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Sample.BotCli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPFVisualizer", "WPFVisualizer", "{C7DBAF87-4295-4AA7-AADB-959B048187FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Html", "Library\AdaptiveCards.Html\AdaptiveCards.Html.csproj", "{13F4F606-87AA-4543-A37E-7118FD72C39B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Html", "Library\AdaptiveCards.Html\AdaptiveCards.Html.csproj", "{13F4F606-87AA-4543-A37E-7118FD72C39B}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AdaptiveCards.Xaml.Shared", "Library\AdaptiveCards.Xaml.Shared\AdaptiveCards.Xaml.Shared.shproj", "{D4E691C8-F685-4E48-83D8-A063868E5E51}"
 EndProject
@@ -34,6 +34,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Render2Image", "Samples\RenderImage\Render2Image.csproj", "{FEA3DF44-B05F-47F2-8F26-6EF45BB9B4F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Render2Html", "Samples\Render2Html\Render2Html.csproj", "{C21F0338-D2A7-4CD8-99BB-0C58C00CBA77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{57CE90F5-EDC6-4CA5-9680-4A106621B4AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Html.Test", "Test\AdaptiveCards.Html.Test\AdaptiveCards.Html.Test.csproj", "{9B454519-D567-47E4-ADEF-2DF0D60F69B6}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -629,6 +633,54 @@ Global
 		{C21F0338-D2A7-4CD8-99BB-0C58C00CBA77}.Release|x64.Build.0 = Release|Any CPU
 		{C21F0338-D2A7-4CD8-99BB-0C58C00CBA77}.Release|x86.ActiveCfg = Release|Any CPU
 		{C21F0338-D2A7-4CD8-99BB-0C58C00CBA77}.Release|x86.Build.0 = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|Any CPU.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|ARM.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|ARM.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|x64.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|x64.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|x86.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Ad-Hoc|x86.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|ARM.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|ARM.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|x64.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|x64.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|x86.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.AppStore|x86.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|x64.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Debug|x86.Build.0 = Debug|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|ARM.Build.0 = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|iPhone.Build.0 = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|x64.ActiveCfg = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|x64.Build.0 = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -648,5 +700,6 @@ Global
 		{23E6248B-CE11-47DB-BADE-D65E1B24E33B} = {C7727147-4AD9-4005-A8D0-EEEED82347D3}
 		{FEA3DF44-B05F-47F2-8F26-6EF45BB9B4F8} = {C7DBAF87-4295-4AA7-AADB-959B048187FD}
 		{C21F0338-D2A7-4CD8-99BB-0C58C00CBA77} = {C7DBAF87-4295-4AA7-AADB-959B048187FD}
+		{9B454519-D567-47E4-ADEF-2DF0D60F69B6} = {57CE90F5-EDC6-4CA5-9680-4A106621B4AF}
 	EndGlobalSection
 EndGlobal

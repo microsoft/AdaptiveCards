@@ -7,7 +7,7 @@
 
 #import "ACRInputDateRenderer.h"
 #import "ACRContentHoldingUIView.h"
-#import "DateInput.h"
+#import "ACRDateTextField.h"
 
 @implementation ACRInputDateRenderer
 
@@ -23,29 +23,21 @@
 }
 
 - (UIView *)render:(UIView *) viewGroup
+            inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &) elem
      andHostConfig:(std::shared_ptr<HostConfig> const &) config
 {
-    std::shared_ptr<DateInput> dateInput = std::dynamic_pointer_cast<DateInput>(elem);
-    UIDatePicker *datePicker = [[UIDatePicker alloc] init];
-    datePicker.datePickerMode = UIDatePickerModeDate;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.timeStyle = NSDateFormatterNoStyle;
-    formatter.dateStyle = NSDateFormatterShortStyle;
-    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    std::shared_ptr<BaseInputElement> dateInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
+    ACRDateTextField *dateField = [[ACRDateTextField alloc] initWithTimeDateInput:dateInput dateStyle:NSDateFormatterShortStyle];
 
-    NSString *placeHolderStr = [NSString stringWithCString:dateInput->GetValue().c_str()
-                                                  encoding:NSUTF8StringEncoding];
-    
-    NSDate *date = [formatter dateFromString:placeHolderStr];
-    datePicker.date = date;
-    
     if(viewGroup)
     {
-        [(UIStackView *)viewGroup addArrangedSubview: datePicker];
+        [(UIStackView *)viewGroup addArrangedSubview: dateField];
     }
     
-    return datePicker;
+    [inputs addObject:dateField];
+    
+    return dateField;
 }
 
 @end

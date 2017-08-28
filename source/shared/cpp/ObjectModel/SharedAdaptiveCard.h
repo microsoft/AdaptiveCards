@@ -13,12 +13,12 @@ class AdaptiveCard
 {
 public:
     AdaptiveCard();
-    AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImageUrl);
+    AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImage);
     AdaptiveCard(
         std::string version,
         std::string minVersion,
         std::string fallbackText,
-        std::string backgroundImageUrl,
+        std::string backgroundImage,
         std::vector<std::shared_ptr<BaseCardElement>>& body,
         std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
@@ -28,8 +28,8 @@ public:
     void SetMinVersion(const std::string value);
     std::string GetFallbackText() const;
     void SetFallbackText(const std::string value);
-    std::string GetBackgroundImageUrl () const;
-    void SetBackgroundImageUrl(const std::string value);
+    std::string GetBackgroundImage() const;
+    void SetBackgroundImage(const std::string value);
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetBody() const;
@@ -49,7 +49,7 @@ private:
     std::string m_version;
     std::string m_minVersion;
     std::string m_fallbackText;
-    std::string m_backgroundImageUrl;
+    std::string m_backgroundImage;
 
     std::vector<std::shared_ptr<BaseCardElement>> m_body;
     std::vector<std::shared_ptr<BaseActionElement>> m_actions;

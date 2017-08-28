@@ -15,3 +15,6 @@ FOUNDATION_EXPORT const unsigned char ADCIOSFrameworkVersionString[];
 
 #import <ADCIOSFramework/ACRViewController.h>
 
+#import <ADCIOSFramework/ACRActionDelegate.h>
+
+

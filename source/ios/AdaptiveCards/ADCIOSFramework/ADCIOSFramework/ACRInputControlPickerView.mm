@@ -16,6 +16,7 @@ using namespace AdaptiveCards;
     std::shared_ptr<ChoiceSetInput> choiceSetDataSource;
     std::shared_ptr<HostConfig> config;
     NSInteger defaultIdx;
+    NSString *id;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -29,6 +30,7 @@ using namespace AdaptiveCards;
         self.showsSelectionIndicator = YES;
         self.translatesAutoresizingMaskIntoConstraints = NO;
         defaultIdx = 0;
+        id = nil;
     }
     return self;
 }
@@ -45,17 +47,18 @@ using namespace AdaptiveCards;
         for(defaultIdx = 0; defaultIdx < choiceSetDataSource->GetChoices().size(); defaultIdx++)
             if(choiceSetDataSource->GetChoices()[defaultIdx]->GetIsSelected())
                 break;
-        
+
         defaultIdx %= choiceSetDataSource->GetChoices().size();
 
         config = hostConfig;
     }
+    id = [NSString stringWithCString:choiceSetDataSource->GetId().c_str() encoding:NSUTF8StringEncoding];
     return self;
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 1; 
+    return 1;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
@@ -63,9 +66,9 @@ using namespace AdaptiveCards;
     return choiceSetDataSource->GetChoices().size();
 }
 
-- (UIView *)pickerView:(UIPickerView *)pickerView 
-            viewForRow:(NSInteger)row 
-          forComponent:(NSInteger)component 
+- (UIView *)pickerView:(UIPickerView *)pickerView
+            viewForRow:(NSInteger)row
+          forComponent:(NSInteger)component
            reusingView:(UIView *)view
 {
     std::shared_ptr<ChoiceInput> choiceInput = choiceSetDataSource->GetChoices()[row];
@@ -82,4 +85,21 @@ using namespace AdaptiveCards;
 {
     [self selectRow:defaultIdx inComponent:0 animated:NO];
 }
+
+- (BOOL)validate:(NSError **)error
+{
+    // no need to validate
+    return YES;
+}
+
+- (void)getInput:(NSMutableDictionary *)dictionary
+{
+    NSInteger idx;
+    idx = [self selectedRowInComponent:0];
+    dictionary[id] =
+    [NSString stringWithCString:choiceSetDataSource->GetChoices()[(int) idx]->GetValue().c_str()
+                       encoding:NSUTF8StringEncoding];
+
+}
+
 @end

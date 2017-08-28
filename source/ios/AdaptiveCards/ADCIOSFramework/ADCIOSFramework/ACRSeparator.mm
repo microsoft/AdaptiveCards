@@ -38,14 +38,14 @@ using namespace AdaptiveCards;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame 
-                withSuperview:(ACRContentStackView *)superview
+                withSuperview:(UIView<ACRIContentHoldingView> *)superview
                        toAxis:(UILayoutConstraintAxis)huggingAxis
 
 {
     self = [self initWithFrame:frame];
     if(self && superview)
     {
-        axis = superview.stackView.axis;
+        axis = [superview getAxis];
         NSLayoutConstraint *constraints = 
             [self configAutoLayout:superview havingAxis:axis toAxis:huggingAxis];
         [superview addArrangedSubview: self];

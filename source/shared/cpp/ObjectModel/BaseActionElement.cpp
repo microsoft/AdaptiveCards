@@ -54,4 +54,3 @@ Json::Value BaseActionElement::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
     return root;
 }
-

@@ -12,7 +12,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     public:
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* action, HSTRING inputs);
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* action, _In_ HSTRING inputs);
 
         // IAdaptiveActionEventArgs
         IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement** action);

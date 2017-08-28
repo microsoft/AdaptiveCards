@@ -15,7 +15,7 @@ using namespace AdaptiveCards;
 
 @implementation ACRImageSetRenderer
 
-+ (ACRImageSetRenderer* )getInstance
++ (ACRImageSetRenderer *)getInstance
 {
     static ACRImageSetRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -26,14 +26,15 @@ using namespace AdaptiveCards;
     return CardElementType::ImageSet;
 }
 
-- (UIView* )render:(UIView* )viewGroup
+- (UIView *)render:(UIView *)viewGroup
+            inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    std::shared_ptr<ImageSet> imgSetElem = std::dynamic_pointer_cast<ImageSet>(elem);
-    ACRImageSetUICollectionView* view = [[ACRImageSetUICollectionView alloc] init:imgSetElem
-                                                                 WithHostConfig:config
-                                                                  WithSuperview:viewGroup];
+    std::shared_ptr<ImageSet>imgSetElem = std::dynamic_pointer_cast<ImageSet>(elem);
+    ACRImageSetUICollectionView *view = [[ACRImageSetUICollectionView alloc] init:imgSetElem
+                                                                   WithHostConfig:config
+                                                                    WithSuperview:viewGroup];
     [view registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"cellId"];
     
     [(UIStackView *)viewGroup addArrangedSubview:view];

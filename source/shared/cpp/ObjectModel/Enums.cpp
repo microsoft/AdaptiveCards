@@ -14,6 +14,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::AltText, "altText" },
     { AdaptiveCardSchemaKey::Attention, "attention" },
     { AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor" },
+    { AdaptiveCardSchemaKey::BackgroundImage, "backgroundImage" },
     { AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl" },
     { AdaptiveCardSchemaKey::BaseCardElement, "baseCardElement" },
     { AdaptiveCardSchemaKey::Body, "body" },

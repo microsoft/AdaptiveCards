@@ -6,8 +6,8 @@
 //
 #import <Foundation/Foundation.h>
 #import "ACRIBaseCardElementRenderer.h"
-@interface ACRBaseCardElementRenderer :NSObject <ACRIBaseCardElementRenderer>
-- (void) setSeparationConfig: (UIView* ) viewGroup;
+@interface ACRBaseCardElementRenderer:NSObject<ACRIBaseCardElementRenderer>
+- (void)setSeparationConfig:(UIView *)viewGroup;
             //SeparationStyle separationStyle,
             //SeparationConfig defaultSeparationConfig,
             //SeparationConfig strongSeparationConfig,

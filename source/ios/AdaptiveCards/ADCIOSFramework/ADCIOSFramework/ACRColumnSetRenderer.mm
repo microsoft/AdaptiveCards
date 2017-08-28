@@ -14,7 +14,7 @@
 
 @implementation ACRColumnSetRenderer
 
-+ (ACRColumnSetRenderer* )getInstance
++ (ACRColumnSetRenderer *)getInstance
 {
     static ACRColumnSetRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
@@ -25,27 +25,28 @@
     return CardElementType::ColumnSet;
 }
 
-- (UIView* )render:(UIStackView* )viewGroup
+- (UIView* )render:(UIStackView *)viewGroup
+            inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 { 
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
-    ACRColumnSetView* columnSetView = [[ACRColumnSetView alloc] init];
+    ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] init];
    
-    ACRBaseCardElementRenderer* columRenderer = 
+    ACRBaseCardElementRenderer *columRenderer = 
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]] ;
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
 
-    UIView* prevView = nil, * curView = nil;
+    UIView *prevView = nil, *curView = nil;
     long relativeColumnWidth = 0, prevRelColumnWidth = 0;
     float multiplier = 1.0;
-    NSMutableArray* constraints = [[NSMutableArray alloc] init];
+    NSMutableArray *constraints = [[NSMutableArray alloc] init];
     for(std::shared_ptr<Column> column:columns)
     {        
         [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
         
-        curView = (UIStackView* )[columRenderer render:columnSetView withCardElem:column andHostConfig:config];
+        curView = (UIStackView *)[columRenderer render:columnSetView inputs:inputs withCardElem:column andHostConfig:config];
         try
         {
             relativeColumnWidth = std::stoul(column->GetSize());
