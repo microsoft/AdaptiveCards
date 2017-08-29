@@ -16,6 +16,7 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 import com.microsoft.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Vector;
+import java.util.Locale;
 
 /**
  * Created by bekao on 4/27/2017.
