@@ -71,26 +71,31 @@ function getContainerStyleDefinition(hostConfig: HostConfig.IHostConfig, contain
     }
 }
 
+function createActionInstance(json: any): Action {
+    var actionType = json["type"];
+
+    var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
+
+    if (result) {
+        result.parse(json);
+    }
+    else {
+        raiseParseError(
+            {
+                error: Enums.ValidationError.UnknownActionType,
+                message: "Unknown action type: " + actionType
+            });
+    }
+
+    return result;
+}
+
 export interface IValidationError {
     error: Enums.ValidationError,
     message: string;
 }
 
 export abstract class CardElement {
-    static createElementInstance(typeName: string): CardElement {
-        var element = AdaptiveCard.elementTypeRegistry.createInstance(typeName);
-
-        if (!element) {
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.UnknownElementType,
-                    message: "Unknown element type: " + typeName
-                });
-        }
-
-        return element;
-    }
-
     private _hostConfig?: HostConfig.IHostConfig;
     private _internalPadding: HostConfig.IPaddingDefinition = null;
     private _parent: CardElement = null;
@@ -835,7 +840,7 @@ export class Image extends CardElement {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            this.selectAction = Action.createAction(selectActionJson);
+            this.selectAction = createActionInstance(selectActionJson);
             invokeSetParent(this.selectAction, this);
         }
 
@@ -1508,25 +1513,6 @@ class ActionButton {
 }
 
 export abstract class Action {
-    static createAction(json: any): Action {
-        var actionType = json["type"];
-
-        var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
-
-        if (result) {
-            result.parse(json);
-        }
-        else {
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.UnknownActionType,
-                    message: "Unknown action type: " + actionType
-                });
-        }
-
-        return result;
-    }
-
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
 
@@ -2152,7 +2138,7 @@ export class ActionSet extends CardElement {
             var jsonActions = json["actions"] as Array<any>;
 
             for (var i = 0; i < jsonActions.length; i++) {
-                this.addAction(Action.createAction(jsonActions[i]));
+                this.addAction(createActionInstance(jsonActions[i]));
             }
         }
     }
@@ -2537,8 +2523,16 @@ export class Container extends CardElement {
             for (var i = 0; i < items.length; i++) {
                 var elementType = items[i]["type"];
 
-                var element = CardElement.createElementInstance(elementType);
-
+                var element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
+                
+                if (!element) {
+                    raiseParseError(
+                        {
+                            error: Enums.ValidationError.UnknownElementType,
+                            message: "Unknown element type: " + elementType
+                        });
+                }
+            
                 this.addItem(element);
 
                 element.parse(items[i]);
@@ -2548,7 +2542,7 @@ export class Container extends CardElement {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            this.selectAction = Action.createAction(selectActionJson);
+            this.selectAction = createActionInstance(selectActionJson);
             invokeSetParent(this.selectAction, this);
         }
     }
@@ -2822,7 +2816,7 @@ export class ColumnSet extends CardElement {
         var selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
-            this.selectAction = Action.createAction(selectActionJson);
+            this.selectAction = createActionInstance(selectActionJson);
             invokeSetParent(this.selectAction, this);
         }
 
@@ -3073,7 +3067,7 @@ export abstract class ContainerWithActions extends Container {
             var jsonActions = json["actions"] as Array<any>;
 
             for (var i = 0; i < jsonActions.length; i++) {
-                var action = Action.createAction(jsonActions[i]);
+                var action = createActionInstance(jsonActions[i]);
 
                 if (action != null) {
                     this.addAction(action);
