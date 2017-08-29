@@ -98,8 +98,7 @@ public class ActionRendererRegistration
             IBaseActionElementRenderer renderer = m_typeToRendererMap.get(actionElement.GetElementType().swigValue());
             if (renderer == null)
             {
-                Toast.makeText(context, "Unsupported action element type: " + actionElement.GetElementType().toString(), Toast.LENGTH_SHORT);
-                Toast.show();
+                Toast.makeText(context, "Unsupported action element type: " + actionElement.GetElementType().toString(), Toast.LENGTH_SHORT).show();
                 continue;
             }
 
