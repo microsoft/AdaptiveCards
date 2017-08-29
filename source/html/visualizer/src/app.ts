@@ -39,18 +39,19 @@ function renderCard(): HTMLElement {
 
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
 
+    var json = JSON.parse(currentCardPayload);
+
+    var adaptiveCard = new Adaptive.AdaptiveCard();
+
     try {
-        var configuration = Adaptive.parseHostConfig(currentConfigPayload);
-        Adaptive.setHostConfig(configuration);
+        adaptiveCard.hostConfig = Adaptive.parseHostConfig(currentConfigPayload);
     }
     catch (e) {
         // TODO
     }
-
-    var json = JSON.parse(currentCardPayload);
-
-    var adaptiveCard = new Adaptive.AdaptiveCard();
+    
     adaptiveCard.parse(json);
+    
     lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
     showValidationErrors();
