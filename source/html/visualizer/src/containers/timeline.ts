@@ -61,11 +61,7 @@ export class TimelineContainer extends HostContainer {
                 default: {
                     backgroundColor: "#535454",
                     fontColors: {
-                        dark: {
-                            "normal": "#333333",
-                            "subtle": "#EE333333"
-                        },
-                        light: {
+                        default: {
                             "normal": "#FFFFFF",
                             "subtle": "#9C9E9F"
                         },
@@ -90,11 +86,7 @@ export class TimelineContainer extends HostContainer {
                 emphasis: {
                     backgroundColor: "#33000000",
                     fontColors: {
-                        dark: {
-                            "normal": "#333333",
-                            "subtle": "#EE333333"
-                        },
-                        light: {
+                        default: {
                             "normal": "#FFFFFF",
                             "subtle": "#9C9E9F"
                         },
@@ -136,9 +128,6 @@ export class TimelineContainer extends HostContainer {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "light"
-            },
             image: {
                 size: "medium"
             },
@@ -148,7 +137,7 @@ export class TimelineContainer extends HostContainer {
             },
             factSet: {
                 title: {
-                    color: "light",
+                    color: "default",
                     size: "normal",
                     isSubtle: true,
                     weight: "bolder",
@@ -156,7 +145,7 @@ export class TimelineContainer extends HostContainer {
                     maxWidth: 150,
                 },
                 value: {
-                    color: "light",
+                    color: "default",
                     size: "normal",
                     isSubtle: true,
                     weight: "normal",

@@ -48,8 +48,7 @@ function parseTextColorDefinition(obj: any): ITextColorDefinition {
 export interface IContainerStyleDefinition {
     backgroundColor?: string,
     fontColors: {
-        dark: ITextColorDefinition,
-        light: ITextColorDefinition,
+        default: ITextColorDefinition,
         accent: ITextColorDefinition,
         good: ITextColorDefinition,
         warning: ITextColorDefinition,
@@ -61,8 +60,7 @@ function parseColorPaletteDefinition(obj: any): IContainerStyleDefinition {
     return obj ? {
         backgroundColor: obj["backgroundColor"],
         fontColors: {
-            dark: parseTextColorDefinition(obj["fontColors"]["dark"]),
-            light: parseTextColorDefinition(obj["fontColors"]["light"]),
+            default: parseTextColorDefinition(obj["fontColors"]["default"]),
             accent: parseTextColorDefinition(obj["fontColors"]["accent"]),
             good: parseTextColorDefinition(obj["fontColors"]["good"]),
             warning: parseTextColorDefinition(obj["fontColors"]["warning"]),
@@ -78,16 +76,6 @@ export interface IAdaptiveCardConfig {
 function parseAdaptiveCardConfiguration(obj: any): IAdaptiveCardConfig {
     return obj ? {
         allowCustomStyle: obj["allowCustomStyle"]
-    } : null;
-}
-
-export interface ITextBlockConfig {
-    color: Enums.TextColor
-}
-
-function parseTextBlockConfiguration(obj: any): ITextBlockConfig {
-    return obj ? {
-        color: obj["color"]
     } : null;
 }
 
@@ -124,7 +112,7 @@ export interface IFactTextDefinition {
 function parseFactTextDefinition(obj: any): IFactTextDefinition {
     return obj ? {
         size: Utils.getValueOrDefault<Enums.TextSize>(obj["size"], "normal"),
-        color: Utils.getValueOrDefault<Enums.TextColor>(obj["color"], "dark"),
+        color: Utils.getValueOrDefault<Enums.TextColor>(obj["color"], "default"),
         isSubtle: obj["isSubtle"],
         weight: Utils.getValueOrDefault<Enums.TextWeight>(obj["weight"], "normal"),
         wrap: obj["wrap"]
@@ -233,7 +221,6 @@ export interface IHostConfig {
     }
     actions: IActionsConfig,
     adaptiveCard: IAdaptiveCardConfig,
-    textBlock: ITextBlockConfig,
     image: IImageConfig,
     imageSet: IImageSetConfig,
     factSet: IFactSetConfig
@@ -280,7 +267,6 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
         },
         actions: parseActionsConfiguration(obj["actions"]),
         adaptiveCard: parseAdaptiveCardConfiguration(obj["adaptiveCard"]),
-        textBlock: parseTextBlockConfiguration(obj["textBlock"]),
         image: parseImageConfiguration(obj["image"]),
         imageSet: parseImageSetConfiguration(obj["imageSet"]),
         factSet: parseFactSetConfiguration(obj["factSet"])

@@ -51,13 +51,9 @@ export class GroupMeContainer extends HostContainer {
                 default: {
                     backgroundColor: "#F7F7F7",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
-                        },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
                         },
                         accent: {
                             normal: "#2E89FC",
@@ -80,13 +76,9 @@ export class GroupMeContainer extends HostContainer {
                 emphasis: {
                     backgroundColor: "#08000000",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
-                        },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
                         },
                         accent: {
                             normal: "#2E89FC",
@@ -126,9 +118,6 @@ export class GroupMeContainer extends HostContainer {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "dark"
-            },
             image: {
                 size: "medium"
             },
@@ -138,7 +127,7 @@ export class GroupMeContainer extends HostContainer {
             },
             factSet: {
                 title: {
-                    color: "dark",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "bolder",
@@ -146,7 +135,7 @@ export class GroupMeContainer extends HostContainer {
                     maxWidth: 150
                 },
                 value: {
-                    color: "dark",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",

@@ -8,7 +8,7 @@ export type Padding = "none" | "default";
 
 export type TextWeight = "lighter" | "normal" | "bolder";
 
-export type TextColor = "dark" | "light" | "accent" | "good" | "warning" | "attention";
+export type TextColor = "default" | "accent" | "good" | "warning" | "attention";
 
 export type HorizontalAlignment = "left" | "center" | "right";
 

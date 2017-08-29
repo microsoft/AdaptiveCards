@@ -51,17 +51,13 @@ export class KikContainer extends HostContainer {
                 default: {
                     backgroundColor: "#FFFFFF",
                     fontColors: {
-                        accent: {
-                            normal: "#FF0000FF",
-                            subtle: "#b20000FF"
-                        },
-                        dark: {
+                        default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"
                         },
-                        light: {
-                            normal: "#FFFFFFFF",
-                            subtle: "#b2FFFFFF"
+                        accent: {
+                            normal: "#FF0000FF",
+                            subtle: "#b20000FF"
                         },
                         good: {
                             normal: "#FF008000",
@@ -80,17 +76,13 @@ export class KikContainer extends HostContainer {
                 emphasis: {
                     backgroundColor: "#08000000",
                     fontColors: {
-                        accent: {
-                            normal: "#FF0000FF",
-                            subtle: "#b20000FF"
-                        },
-                        dark: {
+                        default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"
                         },
-                        light: {
-                            normal: "#FFFFFFFF",
-                            subtle: "#b2FFFFFF"
+                        accent: {
+                            normal: "#FF0000FF",
+                            subtle: "#b20000FF"
                         },
                         good: {
                             normal: "#FF008000",
@@ -126,9 +118,6 @@ export class KikContainer extends HostContainer {
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "dark"
-            },
             image: {
                 size: "medium"
             },
@@ -138,7 +127,7 @@ export class KikContainer extends HostContainer {
             },
             factSet: {
                 title: {
-                    color: "dark",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "bolder",
@@ -146,7 +135,7 @@ export class KikContainer extends HostContainer {
                     maxWidth: 150
                 },
                 value: {
-                    color: "dark",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",
