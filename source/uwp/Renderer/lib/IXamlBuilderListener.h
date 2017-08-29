@@ -9,6 +9,7 @@ IXamlBuilderListener : public IInspectable
 public:
     IFACEMETHOD(AllImagesLoaded)() = 0;
     IFACEMETHOD(ImagesLoadingHadError)() = 0;
+    IFACEMETHOD(XamlBuilderHadError)() = 0;
 };
 
 }}
