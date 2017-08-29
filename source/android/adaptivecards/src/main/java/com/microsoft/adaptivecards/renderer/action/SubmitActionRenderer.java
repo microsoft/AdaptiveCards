@@ -56,6 +56,7 @@ public class SubmitActionRenderer extends BaseActionElementRenderer
                 if (excep != null)
                 {
                     Toast.makeText(v.getContext(), excep.getMessage(), Toast.LENGTH_SHORT);
+                    Toast.show();
                     return;
                 }
             }

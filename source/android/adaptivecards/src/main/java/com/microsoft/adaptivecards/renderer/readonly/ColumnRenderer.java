@@ -60,7 +60,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
     {
         BaseCardElementVector baseCardElementVector = column.GetItems();
         View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, baseCardElementVector, inputActionHandlerList, hostConfig);
-        String columnSize = column.GetSize().toLowerCase();
+        String columnSize = column.GetSize().toLowerCase(Locale);
         if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeAuto))
         {
             GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index));

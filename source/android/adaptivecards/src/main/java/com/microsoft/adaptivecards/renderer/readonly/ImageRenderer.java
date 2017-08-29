@@ -108,6 +108,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             else
             {
                 Toast.makeText(m_context, "Unable to load image: " + result.getException().getMessage(), Toast.LENGTH_SHORT);
+                Toast.show();
             }
         }
 

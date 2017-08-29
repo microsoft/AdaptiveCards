@@ -119,7 +119,7 @@ public class HttpActionRenderer extends BaseActionElementRenderer
                     return new HttpRequestResult<byte[]>(new IllegalArgumentException("body cannot be empty."));
                 }
 
-                String method = m_httpAction.GetMethod().toUpperCase();
+                String method = m_httpAction.GetMethod().toUpperCase(Locale);
                 Map<String, String> requestProperty = null;
                 if (method.equals(HttpRequestHelper.HTTP_METHOD_POST))
                 {
