@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 25
@@ -29,6 +30,24 @@ android {
     }
 }
 
+uploadArchives {
+        repositories.mavenDeployer {
+        configuration = configuration.deployerJars
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                authentication(
+                        userName: "adaptivecards"
+                        password: "Sird[oshkIt5"
+                )
+            }
+            pom {
+                setGroupId "com.github.Microsoft"
+                setArtifactId "adaptivecards"
+                setVersion '1.0.0'
+            }
+        }
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -36,4 +55,5 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
+    deployerJas "org.apache.maven.wagon:wagon-http:2.2"
 }
