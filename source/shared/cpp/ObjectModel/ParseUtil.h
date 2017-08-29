@@ -94,6 +94,7 @@ public:
     // throws if the key is missing or the value mapped to the key is the wrong type
     static void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
 
+    static std::string ToLowercase(const std::string value);
 
 private:
     ParseUtil();
