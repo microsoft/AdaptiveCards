@@ -99,6 +99,7 @@ public class ActionRendererRegistration
             if (renderer == null)
             {
                 Toast.makeText(context, "Unsupported action element type: " + actionElement.GetElementType().toString(), Toast.LENGTH_SHORT);
+                Toast.show();
                 continue;
             }
 
