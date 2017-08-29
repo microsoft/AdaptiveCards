@@ -355,6 +355,7 @@ function actionExecuted(action: Adaptive.Action) {
     }
 
     // Uncomment to test the action's setStatus method:
+    /*
     action.setStatus(
         {
             "type": "AdaptiveCard",
@@ -369,7 +370,8 @@ function actionExecuted(action: Adaptive.Action) {
         });
 
     window.setTimeout(actionCompletedCallback, 2000, action);
-
+    */
+    
     alert(message);
 }
 
@@ -488,9 +490,12 @@ export class ToggleVisibilityAction extends Adaptive.Action {
     }
 }
 
+var betaFeaturesEnabled: boolean = false;
+
 window.onload = () => {
-    // Enable beta features
-    if (location.search.indexOf("beta=true") >= 0) {
+    betaFeaturesEnabled = location.search.indexOf("beta=true") >= 0;
+
+    if (betaFeaturesEnabled) {
         Adaptive.AdaptiveCard.useAutoPadding = true;
 
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
