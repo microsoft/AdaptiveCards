@@ -88,45 +88,101 @@ namespace AdaptiveCards.Rendering
         protected static HtmlTag OpenUrlActionRender(TypedElement actionElement, RenderContext context)
         {
             OpenUrlAction action = (OpenUrlAction)actionElement;
-            if (context.Config.SupportsInteractivity)
+
+            if (!context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, action.Url, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
-                return uiButton;
+                return null;
             }
-            return null;
+
+            var buttonElement = new HtmlTag("button") { Text = action.Title }
+                .Attr("type", "button")
+                .Attr("url", action.Url)
+                .Style("overflow", "hidden")
+                .Style("white-space", "nowrap")
+                .Style("text-overflow", "ellipsis")
+                .Style("flex",
+                    context.Config.Actions.ActionAlignment == HorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                .AddClass("ac-pushButton")
+                .AddClass("ac-openUrlAction");
+
+            return buttonElement;
         }
 
         protected static HtmlTag ShowCardActionRender(TypedElement actionElement, RenderContext context)
         {
             ShowCardAction action = (ShowCardAction)actionElement;
-            if (context.Config.SupportsInteractivity)
+
+            if (!context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, null, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
-                return uiButton;
+                return null;
             }
-            return null;
+
+            var buttonElement = new HtmlTag("button") { Text = action.Title }
+                .Attr("type", "button")
+                .Style("overflow", "hidden")
+                .Style("white-space", "nowrap")
+                .Style("text-overflow", "ellipsis")
+                .Style("flex",
+                    context.Config.Actions.ActionAlignment == HorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                .AddClass("ac-linkButton")
+                .AddClass("ac-showCardAction");
+
+            return buttonElement;
         }
 
         protected static HtmlTag SubmitActionRender(TypedElement actionElement, RenderContext context)
         {
             SubmitAction action = (SubmitAction)actionElement;
-            if (context.Config.SupportsInteractivity)
+
+            if (!context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, null, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
-                return uiButton;
+                return null;
             }
-            return null;
+
+            var buttonElement = new HtmlTag("button") { Text = action.Title }
+                .Attr("type", "button")
+                .Style("overflow", "hidden")
+                .Style("white-space", "nowrap")
+                .Style("text-overflow", "ellipsis")
+                .Style("flex",
+                    context.Config.Actions.ActionAlignment == HorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                .AddClass("ac-pushButton")
+                .AddClass("ac-submitAction");
+
+            return buttonElement;
         }
 
         protected static HtmlTag HttpActionRender(TypedElement actionElement, RenderContext context)
         {
             HttpAction action = (HttpAction)actionElement;
-            if (context.Config.SupportsInteractivity)
+            if (!context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, null, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
-                return uiButton;
+                return null;
             }
-            return null;
+
+            var buttonElement = new HtmlTag("button") { Text = action.Title }
+                .Attr("type", "button")
+                .Attr("url", action.Url)
+                .Attr("method", action.Method)
+                .Style("overflow", "hidden")
+                .Style("white-space", "nowrap")
+                .Style("text-overflow", "ellipsis")
+                .Style("flex",
+                    context.Config.Actions.ActionAlignment == HorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                .AddClass("ac-pushButton")
+                .AddClass("ac-httpAction");
+
+            if (string.IsNullOrEmpty(action.Body))
+            {
+                buttonElement.Attr("body", action.Body);
+            }
+
+            if (!string.IsNullOrEmpty(action.HeadersJson))
+            {
+                buttonElement.Attr("header", action.HeadersJson);
+            }
+
+            return buttonElement;
         }
 
         protected static HtmlTag AdaptiveCardRender(TypedElement element, RenderContext context)
@@ -159,57 +215,149 @@ namespace AdaptiveCards.Rendering
                     if (uiElement != null)
                     {
                         if (uiContainer.Children.Any())
-                            switch (cardElement.Separation)
-                            {
-                                case SeparationStyle.None:
-                                    break;
-                                case SeparationStyle.Default:
-                                    {
-                                        SeparationConfig sep = context.GetElementSeparation(cardElement);
-                                        var uiSep = new DivTag()
-                                            .AddClass("ac-separator")
-                                            .Style("height", $"{sep.Spacing}px");
-                                        uiContainer.Children.Add(uiSep);
-                                    }
-                                    break;
-                                case SeparationStyle.Strong:
-                                    {
-                                        SeparationConfig sep = context.Config.StrongSeparation;
-                                        var uiSep = new DivTag()
-                                            .AddClass("ac-separator")
-                                            .Style("padding-top", $"{sep.Spacing}px")
-                                            .Style("margin-top", $"{sep.Spacing}px")
-                                            .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
-                                            .Style("border-top-width", $"{sep.LineThickness}px")
-                                            .Style("border-top-style", "solid")
-                                            ;
-                                        uiContainer.Children.Add(uiSep);
-                                    }
-                                    break;
-                            }
+                        {
+                            HtmlRenderer.AddSeparator(uiContainer, cardElement, context);
+                        }
+
                         uiContainer.Children.Add(uiElement);
                     }
                 }
             }
 
-            if (actions != null)
+            if (context.Config.SupportsInteractivity && actions != null)
             {
-                var uiActions = new DivTag()
-                    .AddClass("ac-actionset");
+                var uiButtonStrip = new DivTag()
+                    .AddClass("ac-actionset")
+                    .Style("display", "flex");
 
-                foreach (var action in actions.Take(context.Config.Actions.MaxActions))
+                // contains ShowCardAction.AdaptiveCard
+                var uiShowCardStrip = new DivTag()
+                    .Style("margin-top", context.Config.Actions.ShowCard.InlineTopMargin + "px");
+
+                if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
                 {
-                    // add actions
-                    var uiAction = context.Render(action);
-                    if (uiAction != null)
-                        uiActions.Children.Add(uiAction);
+                    uiButtonStrip.Style("flex-direction", "row");
+
+                    switch (context.Config.Actions.ActionAlignment)
+                    {
+                        case HorizontalAlignment.Center:
+                            uiButtonStrip.Style("justify-content", "center");
+                            break;
+                        case HorizontalAlignment.Right:
+                            uiButtonStrip.Style("justify-content", "flex-end");
+                            break;
+                        default:
+                            uiButtonStrip.Style("justify-content", "flex-start");
+                            break;
+                    }
+                }
+                else
+                {
+                    uiButtonStrip.Style("flex-direction", "column");
+                    switch (context.Config.Actions.ActionAlignment)
+                    {
+                        case HorizontalAlignment.Center:
+                            uiButtonStrip.Style("align-items", "center");
+                            break;
+                        case HorizontalAlignment.Right:
+                            uiButtonStrip.Style("align-items", "flex-end");
+                            break;
+                        case HorizontalAlignment.Stretch:
+                            uiButtonStrip.Style("align-items", "stretch");
+                            break;
+                        default:
+                            uiButtonStrip.Style("align-items", "flex-start");
+                            break;
+                    }
                 }
 
-                if (uiActions.Children.Any())
-                    uiContainer.Children.Add(uiActions);
+                var maxActions = Math.Min(context.Config.Actions.MaxActions, actions.Count);
+                for (var i = 0; i < maxActions; i++)
+                {
+                    // add actions
+                    var uiAction = context.Render(actions[i]);
+                    if (uiAction != null)
+                    {
+                        if (actions[i].Type == ShowCardAction.TYPE)
+                        {
+                            // add button-card mapping for clients to implement showcard action
+                            var cardId = "ac-showCard" + i;
+                            uiAction.Attr("ac-cardId", cardId);
+
+                            var uiCard = context.Render(((ShowCardAction)actions[i]).Card);
+                            if (uiCard != null)
+                            {
+                                uiCard.Attr(cardId, string.Empty)
+                                    .AddClass("ac-showCard")
+                                    .Style("display", "none");
+                                uiShowCardStrip.Children.Add(uiCard);
+                            }
+                        }
+                        uiButtonStrip.Children.Add(uiAction);
+                    }
+
+                    // add spacer between buttons according to config
+                    if (i < maxActions - 1 && context.Config.Actions.ButtonSpacing > 0)
+                    {
+                        var uiSpacer = new HtmlTag("div");
+
+                        if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
+                        {
+                            uiSpacer.Style("flex", "0 0 auto");
+                            uiSpacer.Style("width", context.Config.Actions.ButtonSpacing + "px");
+                        }
+                        else
+                        {
+                            uiSpacer.Style("height", context.Config.Actions.ButtonSpacing + "px");
+                        }
+                        uiButtonStrip.Children.Add(uiSpacer);
+                    }
+                }
+
+                if (uiButtonStrip.Children.Any())
+                {
+                    HtmlRenderer.AddSeparator(uiContainer, new ActionSet(), context);
+                    uiContainer.Children.Add(uiButtonStrip);
+                }
+
+                if (uiShowCardStrip.Children.Any())
+                {
+                    uiContainer.Children.Add(uiShowCardStrip);
+                }
             }
         }
 
+        protected static void AddSeparator(HtmlTag uiContainer, CardElement cardElement, RenderContext context)
+        {
+            switch (cardElement.Separation)
+            {
+                case SeparationStyle.None:
+                    return;
+                case SeparationStyle.Default:
+                    {
+                        SeparationConfig sep = context.GetElementSeparation(cardElement);
+                        var uiSep = new DivTag()
+                            .AddClass("ac-separator")
+                            .Style("height", $"{sep.Spacing}px");
+                        uiContainer.Children.Add(uiSep);
+                    }
+                    return;
+                case SeparationStyle.Strong:
+                    {
+                        SeparationConfig sep = context.Config.StrongSeparation;
+                        var uiSep = new DivTag()
+                                .AddClass("ac-separator")
+                                .Style("padding-top", $"{sep.Spacing}px")
+                                .Style("margin-top", $"{sep.Spacing}px")
+                                .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
+                                .Style("border-top-width", $"{sep.LineThickness}px")
+                                .Style("border-top-style", "solid")
+                            ;
+                        uiContainer.Children.Add(uiSep);
+                    }
+                    return;
+            }
+        }
 
         protected static HtmlTag ColumnRender(TypedElement element, RenderContext context)
         {
@@ -688,6 +836,7 @@ namespace AdaptiveCards.Rendering
             DateInput input = (DateInput)element;
 
             var uiDateInput = new HtmlTag("input")
+                .Attr("name", input.Id)
                 .Attr("type", "date")
                 .AddClass("ac-input")
                 .AddClass("ac-dateInput")
@@ -716,6 +865,7 @@ namespace AdaptiveCards.Rendering
             NumberInput input = (NumberInput)element;
 
             var uiNumberInput = new HtmlTag("input")
+                .Attr("name", input.Id)
                 .AddClass("ac-input")
                 .AddClass("ac-numberInput")
                 .Attr("type", "number")
@@ -764,6 +914,7 @@ namespace AdaptiveCards.Rendering
             }
 
             uiTextInput
+                .Attr("name", input.Id)
                 .AddClass("ac-textinput")
                 .AddClass("ac-input")
                 .Style("width", "100%");
@@ -786,6 +937,7 @@ namespace AdaptiveCards.Rendering
             TimeInput input = (TimeInput)element;
             var uiTimeInput = new HtmlTag("input")
                 .Attr("type", "time")
+                .Attr("name", input.Id)
                 .AddClass("ac-input")
                 .AddClass("ac-timeInput")
                 .Style("width", "100%");
@@ -828,7 +980,7 @@ namespace AdaptiveCards.Rendering
                 uiCheckboxInput.Attr("checked", string.Empty);
             }
 
-            var uiLabel = context.Render(new TextBlock {Text = toggleInput.Title})
+            var uiLabel = context.Render(new TextBlock { Text = toggleInput.Title })
                 .Style("display", "inline-block")
                 .Style("margin-left", "6px")
                 .Style("vertical-align", "middle");
