@@ -6,10 +6,11 @@
         "image": {
             "url": "http://"
         },
-        "text": ""
+        "text": "Cortana"
     },
     "title": "Mother's day floral shop",
     "subtitle": "This past Mother's Day, esteemed florist",
+    "category": "Home & Garden",
     "images": {
         "background": {
             "url": "http://"
@@ -18,8 +19,9 @@
             "url": "http://",
             "style": "person"
         },
-        "default": {
+        "card": {
             "url": "",
+            "aspectRatio": "", //TODO
             "preferredPlacement": [ // order matters, remove ones you don't want
                 "inline",
                 "hero",
