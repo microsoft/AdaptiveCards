@@ -32,7 +32,6 @@ android {
 
 uploadArchives {
         repositories.mavenDeployer {
-        configuration = configuration.deployerJars
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
                 authentication(userName: "adaptivecards", password: "Sird[oshkIt5")
             }
@@ -51,5 +50,4 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
-    deployerJars "org.apache.maven.wagon:wagon-http:2.2"
 }
