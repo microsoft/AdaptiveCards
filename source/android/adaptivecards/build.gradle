@@ -34,10 +34,7 @@ uploadArchives {
         repositories.mavenDeployer {
         configuration = configuration.deployerJars
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                authentication(
-                        userName: "adaptivecards"
-                        password: "Sird[oshkIt5"
-                )
+                authentication(userName: "adaptivecards", password: "Sird[oshkIt5")
             }
             pom {
                 setGroupId "com.github.Microsoft"
@@ -45,7 +42,6 @@ uploadArchives {
                 setVersion '1.0.0'
             }
         }
-    }
 }
 
 dependencies {
