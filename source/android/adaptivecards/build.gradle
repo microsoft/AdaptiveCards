@@ -51,5 +51,5 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
-    deployerJas "org.apache.maven.wagon:wagon-http:2.2"
+    deployerJars "org.apache.maven.wagon:wagon-http:2.2"
 }
