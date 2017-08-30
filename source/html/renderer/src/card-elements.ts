@@ -1096,8 +1096,8 @@ export class ToggleInput extends Input {
     }
 
     title: string;
-    valueOn: string;
-    valueOff: string;
+    valueOn: string = "true";
+    valueOff: string = "false";
 
     getJsonTypeName(): string {
         return "Input.Toggle";
@@ -2665,7 +2665,7 @@ export class Column extends Container {
             renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
         }
         else if (this.width === "auto") {
-            renderedElement.style.flex = "0 1 auto";
+            renderedElement.style.flex = "0 0 auto";
         }
         else {
             renderedElement.style.flex = "1 1 auto";
