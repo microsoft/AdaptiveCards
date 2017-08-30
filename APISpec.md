@@ -154,6 +154,8 @@ renderer.HostConfig = hostConfig;
 
 ### Host Config options
 
+*  TODO: Finalize all Host Config options
+
 ```csharp
 // Maximum image size to download
 hostConfig.MaxImageSize = "200"; // kB
@@ -172,8 +174,11 @@ hostConfig.MaxPayloadSize = "10"; // kB
 renderer.OnAction += ActionHander;
 
 private void ActionHandler(object sender, ActionEventArgs e) {
+    // What card was tapped
+    // TODO: File issue to make sure we can get the card instance in UWP
     AdaptiveCard card = e.Card;
-    if(e.Action is AdaptiveOpenUrlAction) {
+
+    if(e.Action is typeof(AdaptiveOpenUrlAction)) {
         // open URL
     }
     ...
@@ -182,12 +187,34 @@ private void ActionHandler(object sender, ActionEventArgs e) {
 
 ## Inputs
 
+// TODO: Document the fact that we do no input validation
+
 ```csharp
 private void ActionHandler(object sender, ActionEventArgs e) {
-    if(e.Action is SubmitAction) {
-        e.Inputs[""] =  // TODO: FInish
+    if(e.Action is typeof(SubmitAction) {
+        
+        // Includes data and all inputs    
+        MyForm form = JsonConvert.DeserializeObject<MyForm>(e.UserInputs.AsJson());
+
     }
     ...
+}
+```
+
+```json
+// Card JSON
+"body": [
+
+],
+"actions: [
+    
+]
+
+
+// Data-boudd
+{
+
+
 }
 ```
 
@@ -200,17 +227,22 @@ private void ActionHandler(object sender, ActionEventArgs e) {
 RenderResult result = await renderer.RenderAsync(card, cancellationToken: null);
 
 if(result.SuccessfullyRendererd) {
-    UIElement ui = result.UIElement;
+    FrameworkElement ui = result.FrameworkElement;
 }
 else {
-    // timed out
-    // images failed to load
+    // host config failure
+    // images failed to load/timeout
     // TODO: what else?
 }
 ```
 
 ### Prefetch images
 Prefetch images and don't return until they are finished
+
+// Custom Image resolver https://github.com/Microsoft/AdaptiveCards/issues/138
+
+* DECISION: UWP will beta with prefetch true only, others will be best effort. False we will try to add during polish false for perf improvements. 
+* ImageResolver will be part of 1.1 API
 
 ```csharp
 RenderResult result = await renderer.RenderAsync(card, prefetchImages: true, cancellationToken: null);
@@ -262,19 +294,38 @@ renderer.ElementRenderers["ProgressBar"] = new ProgressBarRenderer());
 ```
 
 ## Remove a renderer
+
 ```csharp
-renderer.ElementRenderers.Remove("HttpAction");
+renderer.ElementRenderers.Remove("AdaptiveHttpAction");
 ```
 
 ## Override markdown processing
 
 ```csharp
+// DECISION: Typescript will support, others on backburner
+// TODO: File issue not processing any text
+
 renderer.ProcessMarkdown = MarkdownHandler;
 
 private string MarkdownHandler(string text) {
     // process markdown
 }
 ```
+
+
+## Rich element styling
+
+```csharp
+renderer.ResourceDictionary = new ResourceDictionary();
+```
+
+```xaml
+
+```
+
+* Host Config will be the first run, set properties directly
+
+
 
 ## Custom properties on elements
 
@@ -292,4 +343,6 @@ private string MarkdownHandler(string text) {
 # Next steps
 
 * API reviiew on each platform
+* "Sample" apps exercising the API
+* Document the snippets
 * Any missing items/features of a specific renderer not accounted for?
