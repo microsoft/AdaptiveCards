@@ -147,7 +147,7 @@ export abstract class CardElement {
 
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         if (this.height === "auto") {
-            renderedElement.style.flex = "0 1 auto";
+            renderedElement.style.flex = "0 0 auto";
         }
         else {
             renderedElement.style.flex = "1 1 100%";
