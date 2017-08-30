@@ -1,11 +1,12 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -27,6 +28,19 @@ android {
             path "CMakeLists.txt"
         }
     }
+}
+
+uploadArchives {
+        repositories.mavenDeployer {
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                authentication(userName: "adaptivecards", password: "Sird[oshkIt5")
+            }
+            pom {
+                setGroupId "com.github.Microsoft"
+                setArtifactId "adaptivecards"
+                setVersion '1.0.0'
+            }
+        }
 }
 
 dependencies {
