@@ -299,7 +299,7 @@ Json::Value ParseUtil::ExtractJsonValue(const Json::Value& json, AdaptiveCardSch
 
 std::string ParseUtil::ToLowercase(std::string value)
 {
-    std::transform(value.begin(), value.end(), value.begin(), std::tolower);
+    std::transform(value.begin(), value.end(), value.begin(), [](char c) { return std::tolower(c); });
     return value;
 }
 
