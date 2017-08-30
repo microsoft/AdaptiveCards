@@ -194,6 +194,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_Image__SWIG_0();
   public final static native long new_Image__SWIG_1(int jarg1, String jarg2, String jarg3, int jarg4, int jarg5, String jarg6, int jarg7);
   public final static native long Image_Deserialize(long jarg1);
+  public final static native long Image_DeserializeWithoutCheckingType(long jarg1);
   public final static native long Image_DeserializeFromString(String jarg1);
   public final static native String Image_Serialize(long jarg1, Image jarg1_);
   public final static native long Image_SerializeToJsonValue(long jarg1, Image jarg1_);
@@ -424,8 +425,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void AdaptiveCard_SetMinVersion(long jarg1, AdaptiveCard jarg1_, String jarg2);
   public final static native String AdaptiveCard_GetFallbackText(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetFallbackText(long jarg1, AdaptiveCard jarg1_, String jarg2);
-  public final static native String AdaptiveCard_GetBackgroundImageUrl(long jarg1, AdaptiveCard jarg1_);
-  public final static native void AdaptiveCard_SetBackgroundImageUrl(long jarg1, AdaptiveCard jarg1_, String jarg2);
+  public final static native String AdaptiveCard_GetBackgroundImage(long jarg1, AdaptiveCard jarg1_);
+  public final static native void AdaptiveCard_SetBackgroundImage(long jarg1, AdaptiveCard jarg1_, String jarg2);
   public final static native long AdaptiveCard_GetBody__SWIG_0(long jarg1, AdaptiveCard jarg1_);
   public final static native long AdaptiveCard_GetActions(long jarg1, AdaptiveCard jarg1_);
   public final static native int AdaptiveCard_GetElementType(long jarg1, AdaptiveCard jarg1_);
