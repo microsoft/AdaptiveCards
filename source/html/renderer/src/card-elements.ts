@@ -1794,6 +1794,7 @@ class ActionCollection {
     private _actionCard: HTMLElement = null;
 
     showStatusCard(status: AdaptiveCard) {
+        invokeSetParent(status, this._owner);
         this._statusCard = status.render();
 
         this.refreshContainer();

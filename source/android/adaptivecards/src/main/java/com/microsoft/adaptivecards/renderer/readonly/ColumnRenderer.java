@@ -16,6 +16,7 @@ import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
 import com.microsoft.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Vector;
+import java.util.Locale;
 
 /**
  * Created by bekao on 4/27/2017.
@@ -60,7 +61,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
     {
         BaseCardElementVector baseCardElementVector = column.GetItems();
         View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, baseCardElementVector, inputActionHandlerList, hostConfig);
-        String columnSize = column.GetSize().toLowerCase();
+        String columnSize = column.GetSize().toLowerCase(Locale.getDefault());
         if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeAuto))
         {
             GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index));
