@@ -2,40 +2,45 @@
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "vNext",
+    "timestamp": "1 hour ago",
     "attribution": {
         "logo": {
             "url": "http://"
         },
-        "title": "Cortana"
+        "text": "Cortana",
+        "selectAction": {}
     },
     "title": "Mother's day floral shop",
     "subtitle": "This past Mother's Day, esteemed florist",
     "category": {
         "text": "Home & Garden",
-        "selectAction": {
-
-        },
+        "selectAction": {},
         "extensions": {
             "Microsoft.Windows.Notification.Id": "MyHeaderId"
         }
     },
     "images": {
-        "background": {
-            "url": "http://"
+        "background": { // "type": "BackgroundImage"
+            "url": "http://",
+            "overlay": "dark",
+            "opacity": 0.7
         },
-        "profile": {
+        "profile": { // "type": "Image"
             "url": "http://",
             "style": "person"
         },
-        "card": {
+        "card": { // "type": "CardImage"
             "url": "",
-            "aspectRatio": "vertical|horizontal|thumbnail|full",
+            "displayPreference": [
+                "vertical",
+                "horizontal",
+                "thumbnail",
+                "full"
+            ],
             "crop": "center"
         }
     },
     "body": "Hello World",
-    "selectAction": {
-
-    },
+    "selectAction": {},
     "actions": []
 }
