@@ -6,16 +6,19 @@
 
 ## Why?
 
-Adaptive Cards 1.0 does a fantastic job addressing the long-tail of customizable cards.
+Adaptive Cards 1.0 does a fantastic job addressing the long-tail of completely custom cards that developers asked for.
 
-* Portability
-* Approachability
-* Easily interchangable with OpenGraph/Twitter cards and Messenger templates
-* Semantic information gives us a bit more reasoning over the content
+That said, it isn't super easy or staight-forward to create common every-day cards. Nor is it possible to author a card that automatically adapts to multiple surfaces that vary significantly in their rendering bounds.
+
+> IMPORTANT: Before I go on, I want to stress that everything here is purely additive and optional. For developers who want to custom draw their own body, Adaptive Cards will remain the leader in this space. 
+
+* **Portability** - more structure means a card can be delivered to hosts with very different display limitations/dimensions
+* **Approachability** - a simple card like sharing a news article is now very straight-forward
+* **Interoperable** - this attributes make Adaptive Cards completely interchangable with OpenGraph/Twitter/Messenger templates
+* **Intelligence** - semantic information gives us a bit more ability to reason over the content
 
 
-That said, for simple cards that can easily adapt to multiple surfaces, we have some opportunity.
-
+# Schema additions
 
 
 ## Attribution
