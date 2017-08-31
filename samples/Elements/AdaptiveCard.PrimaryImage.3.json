@@ -3,7 +3,7 @@
     "type": "AdaptiveCard",
     "version": "vNext",
     "attribution": {
-        "image": {
+        "logo": {
             "url": "http://"
         },
         "text": "Cortana"
@@ -21,28 +21,15 @@
         },
         "card": {
             "url": "",
-            "aspectRatio": "", //TODO
-            "crop": "",
+            "aspectRatio": "vertical|horizontal|square", //TODO
+            "crop": "center",
             "placement": [ // order matters, remove ones you don't want
                 "inline",
-                "hero",
+                "bodyTop",
                 "background"
             ]
         }
     },
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "Mother's day floral shop",
-            "size": "large",
-            "wrap": true
-        },
-        {
-            "type": "TextBlock",
-            "text": "This past Mother's Day, esteemed florist Nicola Adam treated us to a floral workshop at our Vancouver location",
-            "isSubtle": true,
-            "wrap": true
-        }
-    ],
+    "body": "Hello World",
     "actions": []
 }
