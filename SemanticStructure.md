@@ -57,6 +57,7 @@ That said, it isn't super easy or staight-forward to create common every-day car
 
 ### Payload
 * TODO: Can bot developers provide/override this?
+* TODO: Probably should be an ISO date like 2016-12-13T20:45:00Z rather than text, since text quickly goes stale
 
 ```json
 {
