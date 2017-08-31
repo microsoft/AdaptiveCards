@@ -34,5 +34,8 @@
         }
     },
     "body": "Hello World",
+    "selectAction": {
+
+    },
     "actions": []
 }
