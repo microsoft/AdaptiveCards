@@ -27,6 +27,11 @@ export function isNullOrEmpty(value: string): boolean {
     return value === undefined || value === null || value === "";
 }
 
+export function stringEqualIgnoreCase(str1:string, str2:string): boolean{
+    if(isNullOrEmpty(str1) || isNullOrEmpty(str2)) return str1 === str2;
+    return str1.toLowerCase() === str2.toLowerCase();
+}
+
 export function appendChild(node: Node, child: Node) {
     if (child != null && child != undefined) {
         node.appendChild(child);
@@ -37,7 +42,7 @@ export function renderSeparation(separationDefinition: ISeparationDefinition, or
     if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
         var separator = document.createElement("div");
 
-        if (orientation == "horizontal") {
+        if ( stringEqualIgnoreCase(orientation, "horizontal")) {
             if (separationDefinition.lineThickness) {
                 separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
                 separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";

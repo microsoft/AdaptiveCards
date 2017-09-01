@@ -26,7 +26,7 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
 }
 
 function getEffectiveSpacing(hostConfig: HostConfig.IHostConfig, spacing: Enums.Spacing): number {
-    switch (spacing) {
+    switch (spacing.toLowerCase()) {
         case "small":
             return hostConfig.spacing.small;
         case "default":
@@ -35,7 +35,7 @@ function getEffectiveSpacing(hostConfig: HostConfig.IHostConfig, spacing: Enums.
             return hostConfig.spacing.medium;
         case "large":
             return hostConfig.spacing.large;
-        case "extraLarge":
+        case "extralarge":
             return hostConfig.spacing.extraLarge;
         case "padding":
             return hostConfig.spacing.padding;
@@ -45,7 +45,7 @@ function getEffectiveSpacing(hostConfig: HostConfig.IHostConfig, spacing: Enums.
 }
 
 function getEffectivePadding(hostConfig: HostConfig.IHostConfig, padding: Enums.Padding): number {
-    switch (padding) {
+    switch (padding.toLowerCase()) {
         case "default":
             return hostConfig.spacing.padding;
         default:
@@ -53,7 +53,7 @@ function getEffectivePadding(hostConfig: HostConfig.IHostConfig, padding: Enums.
     }
 }
 
-function paddingToSpacingDefinition(hostConfig: HostConfig.IHostConfig,padding: HostConfig.IPaddingDefinition): HostConfig.ISpacingDefinition {
+function paddingToSpacingDefinition(hostConfig: HostConfig.IHostConfig, padding: HostConfig.IPaddingDefinition): HostConfig.ISpacingDefinition {
     return {
         top: getEffectivePadding(hostConfig, padding.top),
         right: getEffectivePadding(hostConfig, padding.right),
@@ -63,7 +63,7 @@ function paddingToSpacingDefinition(hostConfig: HostConfig.IHostConfig,padding: 
 }
 
 function getContainerStyleDefinition(hostConfig: HostConfig.IHostConfig, containerStyle: Enums.ContainerStyle) {
-    switch (containerStyle) {
+    switch (containerStyle.toLowerCase()) {
         case "emphasis":
             return hostConfig.containerStyles.emphasis;
         default:
@@ -124,19 +124,19 @@ export abstract class CardElement {
     }
 
     protected internalGetNonZeroPadding(padding: HostConfig.IPaddingDefinition) {
-        if (padding.top == "none") {
+        if (Utils.stringEqualIgnoreCase(padding.top, "none")) {
             padding.top = this.internalPadding.top;
         }
 
-        if (padding.right == "none") {
+        if (Utils.stringEqualIgnoreCase(padding.right, "none")) {
             padding.right = this.internalPadding.right;
         }
 
-        if (padding.bottom == "none") {
+        if (Utils.stringEqualIgnoreCase(padding.bottom, "none")) {
             padding.bottom = this.internalPadding.bottom;
         }
 
-        if (padding.left == "none") {
+        if (Utils.stringEqualIgnoreCase(padding.left, "none")) {
             padding.left = this.internalPadding.left;
         }
 
@@ -146,7 +146,7 @@ export abstract class CardElement {
     }
 
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
-        if (this.height === "auto") {
+        if (Utils.stringEqualIgnoreCase(this.height, "auto")) {
             renderedElement.style.flex = "0 0 auto";
         }
         else {
@@ -240,15 +240,15 @@ export abstract class CardElement {
         var jsonSeparation = json["separation"];
 
         if (jsonSeparation !== undefined) {
-            if (jsonSeparation === "none") {
+            if (Utils.stringEqualIgnoreCase(jsonSeparation, "none")) {
                 this.spacing = "none";
                 this.separator = false;
             }
-            else if (jsonSeparation === "strong") {
+            else if (Utils.stringEqualIgnoreCase(jsonSeparation, "strong")) {
                 this.spacing = "large";
                 this.separator = true;
             }
-            else if (jsonSeparation === "default") {
+            else if (Utils.stringEqualIgnoreCase(jsonSeparation, "default")) {
                 this.spacing = "default";
                 this.separator = false;
             }
@@ -262,7 +262,7 @@ export abstract class CardElement {
 
         var jsonHeight = json["height"];
 
-        if (jsonHeight === "auto" || jsonHeight === "stretch") {
+        if (Utils.stringEqualIgnoreCase(jsonHeight, "auto") || Utils.stringEqualIgnoreCase(jsonHeight, "stretch")) {
             this.height = jsonHeight;
         }
     }
@@ -406,7 +406,7 @@ export abstract class CardElement {
     }
 
     get renderedElement(): HTMLElement {
-        return this._renderedElement;        
+        return this._renderedElement;
     }
 
     get separatorElement(): HTMLElement {
@@ -432,7 +432,7 @@ export class TextBlock extends CardElement {
                 element.style.fontFamily = this.hostConfig.fontFamily;
             }
 
-            switch (this.horizontalAlignment) {
+            switch (this.horizontalAlignment.toLowerCase()) {
                 case "center":
                     element.style.textAlign = "center";
                     break;
@@ -447,7 +447,7 @@ export class TextBlock extends CardElement {
             var cssStyle = "text ";
             var fontSize: number;
 
-            switch (this.size) {
+            switch (this.size.toLowerCase()) {
                 case "small":
                     fontSize = this.hostConfig.fontSizes.small;
                     break;
@@ -457,7 +457,7 @@ export class TextBlock extends CardElement {
                 case "large":
                     fontSize = this.hostConfig.fontSizes.large;
                     break;
-                case "extraLarge":
+                case "extralarge":
                     fontSize = this.hostConfig.fontSizes.extraLarge;
                     break;
                 default:
@@ -478,7 +478,7 @@ export class TextBlock extends CardElement {
             var actualTextColor = this.color ? this.color : "default";
             var colorDefinition: HostConfig.ITextColorDefinition;
 
-            switch (actualTextColor) {
+            switch (actualTextColor.toLowerCase()) {
                 case "accent":
                     colorDefinition = styleDefinition.fontColors.accent;
                     break;
@@ -500,7 +500,7 @@ export class TextBlock extends CardElement {
 
             var fontWeight: number;
 
-            switch (this.weight) {
+            switch (this.weight.toLowerCase()) {
                 case "lighter":
                     fontWeight = this.hostConfig.fontWeights.lighter;
                     break;
@@ -748,7 +748,7 @@ export class Image extends CardElement {
                 }
             }
 
-            switch (this.horizontalAlignment) {
+            switch (this.horizontalAlignment.toLowerCase()) {
                 case "center":
                     element.style.justifyContent = "center";
                     break;
@@ -774,7 +774,7 @@ export class Image extends CardElement {
                 }
             }
             else {
-                switch (this.size) {
+                switch (this.size.toLowerCase()) {
                     case "stretch":
                         imageElement.style.width = "100%";
                         imageElement.style.maxHeight = "500px";
@@ -795,7 +795,7 @@ export class Image extends CardElement {
                 }
             }
 
-            if (this.style == "person") {
+            if ( Utils.stringEqualIgnoreCase(this.style, "person")) {
                 imageElement.style.borderRadius = "50%";
                 imageElement.style.backgroundPosition = "50% 50%";
                 imageElement.style.backgroundRepeat = "no-repeat";
@@ -844,7 +844,7 @@ export class Image extends CardElement {
             invokeSetParent(this.selectAction, this);
         }
 
-        if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
+        if (Utils.stringEqualIgnoreCase(json["pixelWidth"], "number")) {
             this.pixelWidth = json["pixelWidth"];
         }
 
@@ -1073,8 +1073,8 @@ export class ToggleInput extends Input {
         this._checkboxInputElement.style.verticalAlign = "middle";
         this._checkboxInputElement.style.margin = "0";
         this._checkboxInputElement.style.flex = "0 0 auto";
-        
-        if (this.defaultValue == this.valueOn) {
+
+        if (Utils.stringEqualIgnoreCase(this.defaultValue, this.valueOn)) {
             this._checkboxInputElement.checked = true;
         }
 
@@ -1154,7 +1154,7 @@ export class ChoiceSetInput extends Input {
                     option.value = this.choices[i].value;
                     option.text = this.choices[i].title;
 
-                    if (this.choices[i].value == this.defaultValue) {
+                    if (Utils.stringEqualIgnoreCase(this.choices[i].value, this.defaultValue)) {
                         option.selected = true;
                     }
 
@@ -1168,7 +1168,7 @@ export class ChoiceSetInput extends Input {
                 var element = document.createElement("div");
                 element.className = "ac-input";
                 element.style.width = "100%";
-                
+
                 this._toggleInputs = [];
 
                 for (var i = 0; i < this.choices.length; i++) {
@@ -1180,8 +1180,8 @@ export class ChoiceSetInput extends Input {
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
                     radioInput.style.flex = "0 0 auto";
-                    
-                    if (this.choices[i].value == this.defaultValue) {
+
+                    if (Utils.stringEqualIgnoreCase(this.choices[i].value, this.defaultValue)) {
                         radioInput.checked = true;
                     }
 
@@ -1198,7 +1198,7 @@ export class ChoiceSetInput extends Input {
 
                     var compoundInput = document.createElement("div");
                     compoundInput.style.display = "flex";
-                    
+
                     Utils.appendChild(compoundInput, radioInput);
                     Utils.appendChild(compoundInput, labelElement);
 
@@ -1215,7 +1215,7 @@ export class ChoiceSetInput extends Input {
             var element = document.createElement("div");
             element.className = "ac-input";
             element.style.width = "100%";
-            
+
             this._toggleInputs = [];
 
             for (var i = 0; i < this.choices.length; i++) {
@@ -1246,7 +1246,7 @@ export class ChoiceSetInput extends Input {
 
                 var compoundInput = document.createElement("div");
                 compoundInput.style.display = "flex";
-                
+
                 Utils.appendChild(compoundInput, checkboxInput);
                 Utils.appendChild(compoundInput, labelElement);
 
@@ -1286,7 +1286,7 @@ export class ChoiceSetInput extends Input {
     parse(json: any) {
         super.parse(json);
 
-        this.isCompact = !(json["style"] === "expanded");
+        this.isCompact = !Utils.stringEqualIgnoreCase(json["style"], "expanded");
         this.isMultiSelect = json["isMultiSelect"];
         this.placeholder = json["placeholder"];
 
@@ -1452,7 +1452,7 @@ class ActionButton {
     }
 
     private updateCssStyle() {
-        this._element.className = this._style == "link" ? "ac-linkButton" : "ac-pushButton";
+        this._element.className = Utils.stringEqualIgnoreCase(this._style, "link") ? "ac-linkButton" : "ac-pushButton";
 
         if (this._action instanceof ShowCardAction) {
             this._element.classList.add("expandable");
@@ -1828,7 +1828,7 @@ class ActionCollection {
 
         var padding = paddingToSpacingDefinition(this._owner.hostConfig, this._owner.getNonZeroPadding());
 
-        if (this._owner.hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
+        if (Utils.stringEqualIgnoreCase(this._owner.hostConfig.actions.showCard.actionMode, "inlineEdgeToEdge")) {
             if (this._actionCard !== null) {
                 this._actionCard.style.paddingLeft = padding.left + "px";
                 this._actionCard.style.paddingRight = padding.right + "px";
@@ -1887,7 +1887,7 @@ class ActionCollection {
         else {
             this.hideStatusCard();
 
-            if (this._owner.hostConfig.actions.showCard.actionMode == "popup") {
+            if (Utils.stringEqualIgnoreCase(this._owner.hostConfig.actions.showCard.actionMode, "popup")) {
                 actionButton.action.execute();
             }
             else if (actionButton.action === this._expandedAction) {
@@ -1994,10 +1994,10 @@ class ActionCollection {
             var buttonStrip = document.createElement("div");
             buttonStrip.style.display = "flex";
 
-            if (this._owner.hostConfig.actions.actionsOrientation == "horizontal") {
+            if (Utils.stringEqualIgnoreCase(this._owner.hostConfig.actions.actionsOrientation, "horizontal")) {
                 buttonStrip.style.flexDirection = "row";
 
-                switch (this._owner.hostConfig.actions.actionAlignment) {
+                switch (this._owner.hostConfig.actions.actionAlignment.toLowerCase()) {
                     case "center":
                         buttonStrip.style.justifyContent = "center";
                         break;
@@ -2012,7 +2012,7 @@ class ActionCollection {
             else {
                 buttonStrip.style.flexDirection = "column";
 
-                switch (this._owner.hostConfig.actions.actionAlignment) {
+                switch (this._owner.hostConfig.actions.actionAlignment.toLowerCase()) {
                     case "center":
                         buttonStrip.style.alignItems = "center";
                         break;
@@ -2033,7 +2033,7 @@ class ActionCollection {
                     var actionButton = new ActionButton(this.items[i], this.actionStyle);
                     actionButton.element.style.overflow = "hidden";
                     actionButton.element.style.overflow = "table-cell";
-                    actionButton.element.style.flex = this._owner.hostConfig.actions.actionAlignment == "stretch" ? "0 1 100%" : "0 1 auto";
+                    actionButton.element.style.flex = Utils.stringEqualIgnoreCase(this._owner.hostConfig.actions.actionAlignment, "stretch") ? "0 1 100%" : "0 1 auto";
                     actionButton.text = this.items[i].title;
                     actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
@@ -2049,7 +2049,7 @@ class ActionCollection {
                     else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
                         var spacer = document.createElement("div");
 
-                        if (this._owner.hostConfig.actions.actionsOrientation == "horizontal") {
+                        if (Utils.stringEqualIgnoreCase(this._owner.hostConfig.actions.actionsOrientation, "horizontal")) {
                             spacer.style.flex = "0 0 auto";
                             spacer.style.width = this._owner.hostConfig.actions.buttonSpacing + "px";
                         }
@@ -2181,14 +2181,14 @@ export class BackgroundImage {
         if (this.url) {
             element.style.backgroundImage = "url('" + this.url + "')";
 
-            switch (this.mode) {
+            switch (this.mode.toLowerCase()) {
                 case "repeat":
                     element.style.backgroundRepeat = "repeat";
                     break;
-                case "repeatHorizontally":
+                case "repeathorizontally":
                     element.style.backgroundRepeat = "repeat-x";
                     break;
-                case "repeatVertically":
+                case "repeathertically":
                     element.style.backgroundRepeat = "repeat-y";
                     break;
                 case "stretch":
@@ -2198,7 +2198,7 @@ export class BackgroundImage {
                     break;
             }
 
-            switch (this.horizontalAlignment) {
+            switch (this.horizontalAlignment.toLowerCase()) {
                 case "center":
                     element.style.backgroundPositionX = "center";
                     break;
@@ -2207,7 +2207,7 @@ export class BackgroundImage {
                     break;
             }
 
-            switch (this.verticalAlignment) {
+            switch (this.verticalAlignment.toLowerCase()) {
                 case "center":
                     element.style.backgroundPositionY = "center";
                     break;
@@ -2224,18 +2224,18 @@ export class Container extends CardElement {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
             return false;
         }
-    
+
         if (forbiddenElementTypes) {
             for (var i = 0; i < forbiddenElementTypes.length; i++) {
-                if (element.getJsonTypeName() === forbiddenElementTypes[i]) {
+                if (Utils.stringEqualIgnoreCase(element.getJsonTypeName(), forbiddenElementTypes[i])) {
                     return false;
                 }
             }
         }
-    
+
         return true;
     }
-    
+
     private _items: Array<CardElement> = [];
     private _style?: Enums.ContainerStyle = null;
 
@@ -2244,7 +2244,7 @@ export class Container extends CardElement {
     }
 
     protected showBottomSpacer(requestingElement: CardElement) {
-        if ((!requestingElement || this.isLastElement(requestingElement)) && this.hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
+        if ((!requestingElement || this.isLastElement(requestingElement)) && Utils.stringEqualIgnoreCase(this.hostConfig.actions.showCard.actionMode, "inlineEdgeToEdge")) {
             this.renderedElement.style.paddingBottom = paddingToSpacingDefinition(this.hostConfig, this.internalPadding).bottom + "px";
 
             super.showBottomSpacer(this);
@@ -2252,7 +2252,7 @@ export class Container extends CardElement {
     }
 
     protected hideBottomSpacer(requestingElement: CardElement) {
-        if ((!requestingElement || this.isLastElement(requestingElement)) && this.hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
+        if ((!requestingElement || this.isLastElement(requestingElement)) && Utils.stringEqualIgnoreCase(this.hostConfig.actions.showCard.actionMode, "inlineEdgeToEdge")) {
             this.renderedElement.style.paddingBottom = "0px";
 
             super.hideBottomSpacer(this);
@@ -2295,45 +2295,51 @@ export class Container extends CardElement {
                     effectiveMargin.right = "none";
                 }
 
-                if (effectivePadding.left != "none" || effectivePadding.right != "none") {
-                    if (effectivePadding.left == "none") {
+                if (!Utils.stringEqualIgnoreCase(effectivePadding.left, "none") || !Utils.stringEqualIgnoreCase(effectivePadding.right, "none")) {
+                    if (Utils.stringEqualIgnoreCase(effectivePadding.left, "none")) {
                         effectivePadding.left = effectivePadding.right;
                     }
 
-                    if (effectivePadding.right == "none") {
+                    if (Utils.stringEqualIgnoreCase(effectivePadding.right, "none")) {
                         effectivePadding.right = effectivePadding.left;
                     }
                 }
 
-                if (effectivePadding.top != "none" || effectivePadding.bottom != "none") {
-                    if (effectivePadding.top == "none") {
+                if (!Utils.stringEqualIgnoreCase(effectivePadding.top, "none") || !Utils.stringEqualIgnoreCase(effectivePadding.bottom, "none")) {
+                    if (Utils.stringEqualIgnoreCase(effectivePadding.top, "none")) {
                         effectivePadding.top = effectivePadding.bottom;
                     }
 
-                    if (effectivePadding.bottom == "none") {
+                    if (Utils.stringEqualIgnoreCase(effectivePadding.bottom, "none")) {
                         effectivePadding.bottom = effectivePadding.top;
                     }
                 }
 
-                if (effectivePadding.top != "none" || effectivePadding.right != "none" || effectivePadding.bottom != "none" || effectivePadding.left != "none") {
-                    if (effectivePadding.top == "none") {
+                if (!Utils.stringEqualIgnoreCase(effectivePadding.top, "none") ||
+                    !Utils.stringEqualIgnoreCase(effectivePadding.right, "none") ||
+                    !Utils.stringEqualIgnoreCase(effectivePadding.bottom, "none") ||
+                    !Utils.stringEqualIgnoreCase(effectivePadding.left, "none")) {
+                    if (Utils.stringEqualIgnoreCase(effectivePadding.top, "none")) {
                         effectivePadding.top = "default";
                     }
 
-                    if (effectivePadding.right == "none") {
+                    if (Utils.stringEqualIgnoreCase(effectivePadding.right, "none")) {
                         effectivePadding.right = "default";
                     }
 
-                    if (effectivePadding.bottom == "none") {
+                    if (Utils.stringEqualIgnoreCase(effectivePadding.bottom, "none")) {
                         effectivePadding.bottom = "default";
                     }
 
-                    if (effectivePadding.left == "none") {
+                    if (Utils.stringEqualIgnoreCase(effectivePadding.left, "none")) {
                         effectivePadding.left = "default";
                     }
                 }
 
-                if (effectivePadding.top == "none" && effectivePadding.right == "none" && effectivePadding.bottom == "none" && effectivePadding.left == "none") {
+                if (Utils.stringEqualIgnoreCase(effectivePadding.top, "none") &&
+                    Utils.stringEqualIgnoreCase(effectivePadding.right, "none") &&
+                    Utils.stringEqualIgnoreCase(effectivePadding.bottom, "none") &&
+                    Utils.stringEqualIgnoreCase(effectivePadding.left, "none")) {
                     effectivePadding.top = "default";
                     effectivePadding.right = "default";
                     effectivePadding.bottom = "default";
@@ -2360,7 +2366,7 @@ export class Container extends CardElement {
             }
 
             if (this.separatorElement) {
-                if (this.separatorOrientation == "horizontal") {
+                if (Utils.stringEqualIgnoreCase(this.separatorOrientation, "horizontal")) {
                     this.separatorElement.style.marginLeft = "-" + physicalMargin.left + "px";
                     this.separatorElement.style.marginRight = "-" + physicalMargin.right + "px";
                 }
@@ -2463,7 +2469,7 @@ export class Container extends CardElement {
     }
 
     isLastElement(element: CardElement): boolean {
-        for (var i = this._items.length - 1; i >= 0; i --) {
+        for (var i = this._items.length - 1; i >= 0; i--) {
             if (this._items[i].isVisible) {
                 return this._items[i] == element;
             }
@@ -2525,7 +2531,7 @@ export class Container extends CardElement {
                 var elementType = items[i]["type"];
 
                 var element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
-                
+
                 if (!element) {
                     raiseParseError(
                         {
@@ -2533,7 +2539,7 @@ export class Container extends CardElement {
                             message: "Unknown element type: " + elementType
                         });
                 }
-            
+
                 this.addItem(element);
 
                 element.parse(items[i]);
@@ -2665,7 +2671,7 @@ export class Column extends Container {
         if (typeof this.width === "number") {
             renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
         }
-        else if (this.width === "auto") {
+        else if (Utils.stringEqualIgnoreCase(this.width, "auto")) {
             renderedElement.style.flex = "0 0 auto";
         }
         else {
@@ -2708,7 +2714,7 @@ export class Column extends Container {
             }
         }
         else if (typeof jsonWidth === "string") {
-            if (jsonWidth != "auto" && jsonWidth != "stretch") {
+            if (!Utils.stringEqualIgnoreCase(jsonWidth, "auto") && !Utils.stringEqualIgnoreCase(jsonWidth, "stretch")) {
                 var sizeAsNumber = parseInt(jsonWidth);
 
                 if (!isNaN(sizeAsNumber)) {
@@ -2753,7 +2759,7 @@ export class ColumnSet extends CardElement {
                 element.classList.add("ac-selectable");
             }
 
-            switch (this.horizontalAlignment) {
+            switch (this.horizontalAlignment.toLowerCase()) {
                 case "center":
                     element.style.justifyContent = "center";
                     break;
@@ -2972,7 +2978,7 @@ export class TypeRegistry<T> {
 
     private findTypeRegistration(typeName: string): ITypeRegistration<T> {
         for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].typeName === typeName) {
+            if (Utils.stringEqualIgnoreCase(this._items[i].typeName, typeName)) {
                 return this._items[i];
             }
         }
@@ -3002,7 +3008,7 @@ export class TypeRegistry<T> {
 
     unregisterType(typeName: string) {
         for (var i = 0; i < this._items.length; i++) {
-            if (this._items[i].typeName === typeName) {
+            if (Utils.stringEqualIgnoreCase(this._items[i].typeName, typeName)) {
                 this._items.splice(i, 1);
 
                 return;
@@ -3181,7 +3187,7 @@ export class AdaptiveCard extends ContainerWithActions {
     validate(): Array<IValidationError> {
         var result: Array<IValidationError> = [];
 
-        if (this._cardTypeName != "AdaptiveCard") {
+        if (!Utils.stringEqualIgnoreCase(this._cardTypeName, "adaptivecard")) {
             result.push(
                 {
                     error: Enums.ValidationError.MissingCardType,
