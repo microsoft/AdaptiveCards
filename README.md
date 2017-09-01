@@ -30,7 +30,7 @@ Adaptive Cards are designed to render anywhere that your users are. The followin
 |---|---|---|---|
 | Android | *coming soon* | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/android) | ![Build status](https://img.shields.io/vso/build/Microsoft/8d47e068-03c8-4cdc-aa9b-fc6929290322/17418.svg) |
 | HTML | [![npm install](https://img.shields.io/npm/v/microsoft-adaptivecards.svg)](https://www.npmjs.com/package/microsoft-adaptivecards) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/html)|Beta|
-| iOS | *coming soon* |[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/ios) | ![Build status](https://img.shields.io/vso/build/Microsoft/8d47e068-03c8-4cdc-aa9b-fc6929290322/17416.svg)|
+| iOS | *coming soon* |[Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/ios) | ![Build status](https://img.shields.io/vso/build/Microsoft/8d47e068-03c8-4cdc-aa9b-fc6929290322/16990.svg)|
 | WPF | [![Nuget install](https://img.shields.io/nuget/v/Microsoft.AdaptiveCards.svg)](https://www.nuget.org/packages/Microsoft.AdaptiveCards/) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/dotnet)| Beta |
 | UWP | [![Nuget install](https://img.shields.io/nuget/vpre/AdaptiveCards.UWP.Beta.svg)](https://www.nuget.org/packages/AdaptiveCards.UWP.Beta) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/uwp) | ![Build Status](https://img.shields.io/vso/build/Microsoft/8d47e068-03c8-4cdc-aa9b-fc6929290322/16850.svg) |
 | Xamarin.Forms | *No ETA yet* | [Source](https://github.com/Microsoft/AdaptiveCards/tree/master/source/dotnet) | Alpha |
