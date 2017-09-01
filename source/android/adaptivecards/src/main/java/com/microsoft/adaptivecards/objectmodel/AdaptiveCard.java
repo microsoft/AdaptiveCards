@@ -39,12 +39,12 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_0(), true);
   }
 
-  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImageUrl) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, minVersion, fallbackText, backgroundImageUrl), true);
+  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, minVersion, fallbackText, backgroundImage), true);
   }
 
-  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImageUrl, BaseCardElementVector body, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, minVersion, fallbackText, backgroundImageUrl, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  public AdaptiveCard(String version, String minVersion, String fallbackText, String backgroundImage, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, minVersion, fallbackText, backgroundImage, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public String GetVersion() {
@@ -71,12 +71,12 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetFallbackText(swigCPtr, this, value);
   }
 
-  public String GetBackgroundImageUrl() {
-    return AdaptiveCardObjectModelJNI.AdaptiveCard_GetBackgroundImageUrl(swigCPtr, this);
+  public String GetBackgroundImage() {
+    return AdaptiveCardObjectModelJNI.AdaptiveCard_GetBackgroundImage(swigCPtr, this);
   }
 
-  public void SetBackgroundImageUrl(String value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCard_SetBackgroundImageUrl(swigCPtr, this, value);
+  public void SetBackgroundImage(String value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetBackgroundImage(swigCPtr, this, value);
   }
 
   public BaseCardElementVector GetBody() {

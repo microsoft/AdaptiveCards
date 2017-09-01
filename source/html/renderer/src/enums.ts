@@ -29,6 +29,7 @@ export type BackgroundImageMode = "stretch" | "repeatHorizontally" | "repeatVert
 export type ContainerStyle = "default" | "emphasis";
 
 export enum ValidationError {
+    Hint,
     ActionTypeNotAllowed,
     CollectionCantBeEmpty,
     Deprecated,
