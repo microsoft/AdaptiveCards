@@ -59,7 +59,7 @@ std::string Column::GetSize() const
 
 void Column::SetSize(const std::string value)
 {
-    m_size = value;
+    m_size = ParseUtil::ToLowercase(value);
 }
 
 const std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems() const
@@ -100,7 +100,7 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
 {
     auto column = BaseCardElement::Deserialize<Column>(value);
 
-    column->SetSize(ParseUtil::ToLowercase(ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size)));
+    column->SetSize(ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size));
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, CardElementParsers, true);
