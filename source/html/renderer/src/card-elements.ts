@@ -844,7 +844,7 @@ export class Image extends CardElement {
             invokeSetParent(this.selectAction, this);
         }
 
-        if (Utils.stringEqualIgnoreCase(json["pixelWidth"], "number")) {
+        if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
             this.pixelWidth = json["pixelWidth"];
         }
 
@@ -2188,7 +2188,7 @@ export class BackgroundImage {
                 case "repeathorizontally":
                     element.style.backgroundRepeat = "repeat-x";
                     break;
-                case "repeathertically":
+                case "repeatvertically":
                     element.style.backgroundRepeat = "repeat-y";
                     break;
                 case "stretch":
