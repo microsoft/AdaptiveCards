@@ -2666,10 +2666,10 @@ export class Column extends Container {
             renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
         }
         else if (this.width === "auto") {
-            renderedElement.style.flex = "0 0 auto";
+            renderedElement.style.flex = "0 1 auto";
         }
         else {
-            renderedElement.style.flex = "1 1 auto";
+            renderedElement.style.flex = "1 1 50px";
         }
     }
 
@@ -2832,6 +2832,33 @@ export class ColumnSet extends CardElement {
                 this.addColumn(column);
             }
         }
+    }
+
+    validate(): Array<IValidationError> {
+        var result: Array<IValidationError> = [];
+        var weightedColumns: number = 0;
+        var stretchedColumns: number = 0;
+
+        for (var i = 0; i < this._columns.length; i++) {
+            if (typeof this._columns[i].width === "number") {
+                weightedColumns++;
+            }
+            else if (this._columns[i].width === "stretch") {
+                stretchedColumns++;
+            }
+
+            result = result.concat(this._columns[i].validate());
+        }
+
+        if (weightedColumns > 0 && stretchedColumns > 0) {
+            result.push(
+                {
+                    error: Enums.ValidationError.Hint,
+                    message: "It is not recommended to use weighted and stretched columns in the same ColumnSet, because in such a situation stretched columns will always get the minimum amount of space."
+                });
+        }
+
+        return result;
     }
 
     updateLayout(processChildren: boolean = true) {
