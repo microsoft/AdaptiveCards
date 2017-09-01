@@ -777,11 +777,9 @@ export class Image extends CardElement {
                 switch (this.size) {
                     case "stretch":
                         imageElement.style.width = "100%";
-                        imageElement.style.maxHeight = "500px";
                         break;
                     case "auto":
                         imageElement.style.maxWidth = "100%";
-                        imageElement.style.maxHeight = "500px";
                         break;
                     case "small":
                         imageElement.style.maxWidth = this.hostConfig.imageSizes.small + "px";
@@ -2378,14 +2376,16 @@ export class Container extends CardElement {
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
-        if (this.backgroundImage) {
-            this.backgroundImage.apply(element);
-        }
+        if (this.hasBackground) {
+            if (this.backgroundImage) {
+                this.backgroundImage.apply(element);
+            }
 
-        var styleDefinition = getContainerStyleDefinition(this.hostConfig, this.style);
+            var styleDefinition = getContainerStyleDefinition(this.hostConfig, this.style);
 
-        if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
-            element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
+            if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
+                element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
+            }
         }
 
         if (this.selectAction) {
@@ -3196,6 +3196,10 @@ export class AdaptiveCard extends ContainerWithActions {
 
     protected get allowCustomStyle() {
         return this.hostConfig.adaptiveCard.allowCustomStyle;
+    }
+
+    protected get hasBackground(): boolean {
+        return true;
     }
 
     minVersion: IVersion = { major: 1, minor: 0 };
