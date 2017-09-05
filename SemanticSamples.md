@@ -1,7 +1,8 @@
 # Types of cards
 
 Below are a few common types of cards and their associated payloads.
-> WDG DESIGN: Please help me create representative comps of these paylods in various windows experiences
+
+> WDG DESIGN: Please help me create representative comps of these paylods in various windows experiences :)
 
 1. News Article (Zuckerberg)
 2. Bing Answer (Justin Trudeau)
@@ -9,11 +10,10 @@ Below are a few common types of cards and their associated payloads.
 4. Stock quote (S&P 500)
 5. Video
 
+
 # News Article
 
-![Card1](https://1j9zgw.dm2301.livefilestore.com/y4ptWg5OxKjjVrNXX1FigxJTEHqSjPdZ0lN7wQUIlSQfW5-iM6N3_oDQ30QaHfhdEzkRn4BHidbt1vb1NMSjIrfe_McPeMfO4k5Asn0Zi5LkytPAeqrAEmzHXhDxyL5Vb_dCR17e7sFJulF5X7PJIRV4wpRpa41Atn0psb0KpfSp6Fpm4B4yJiu_pCM0B95egjc/card1.png?psid=1)
-
-> Design TODO: show comps for Timeline, Action Center, NTP
+* Skype: https://app.zeplin.io/project/598cec21ff7f3d2b30d629a2/screen/5996293c707db5fe3a26a61a
 
 ```json
 {
@@ -44,6 +44,7 @@ Below are a few common types of cards and their associated payloads.
 # Bing Answer
 
 * "Who is Justin Trudeau?"
+* Skype: https://app.zeplin.io/project/598cec21ff7f3d2b30d629a2/screen/599620e26486e43b0e085739
 
 ```json
 {
@@ -75,6 +76,8 @@ Below are a few common types of cards and their associated payloads.
 ```
 
 # Starbucks
+
+* Skype: https://app.zeplin.io/project/598cec21ff7f3d2b30d629a2/screen/599620e3388b2323e5bea88f
 
 ```json
 {
@@ -113,6 +116,7 @@ Below are a few common types of cards and their associated payloads.
 # Stock quote
 
 * TODO: does this card have a title or should it just be a body of TextBlocks?
+* Skype: https://app.zeplin.io/project/598cec21ff7f3d2b30d629a2/screen/59972ca4e8176a3f7dd8ad53
 
 ```json
 {
@@ -151,6 +155,7 @@ Below are a few common types of cards and their associated payloads.
 
 * TODO: Finish this schema
 * See: https://docs.microsoft.com/en-us/dotnet/api/microsoft.bot.connector.videocard?view=botbuilder-3.8
+* Skype: https://app.zeplin.io/project/598cec21ff7f3d2b30d629a2/screen/5997335a132b75ab89ef147e
 
 ```json
 {
