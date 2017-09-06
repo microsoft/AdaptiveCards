@@ -41,16 +41,6 @@ uploadArchives {
         repositories {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                copy{
-                    from '.'
-                    into './build/outputs/aar/'
-                    include 'adaptivecards-release.aar.asc'
-                }
-                copy {
-                    from '.'
-                    into './build/poms/'
-                    include 'pom-default.xml.asc'
-                }
                 pom.artifactId ="adaptivecards-android-arm"
 
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
