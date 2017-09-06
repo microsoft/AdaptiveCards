@@ -41,6 +41,8 @@ Below are a few common types of cards and their associated payloads.
 }
 ```
 
+![Toast](https://user-images.githubusercontent.com/13246069/30088137-6090ead6-9259-11e7-9efc-33d5af0f7ae3.png)
+
 # Bing Answer
 
 * "Who is Justin Trudeau?"
@@ -74,6 +76,9 @@ Below are a few common types of cards and their associated payloads.
     }
 }
 ```
+
+![Toast](https://user-images.githubusercontent.com/13246069/30088194-b15cda60-9259-11e7-9f8f-3a0c2afbaf9c.png)
+
 
 # Starbucks
 
@@ -112,6 +117,9 @@ Below are a few common types of cards and their associated payloads.
 }
 ```
 
+![Toast](https://user-images.githubusercontent.com/13246069/30088478-7bf9fcfc-925b-11e7-96e1-bac1e4b2ec84.png)
+
+
 
 # Stock quote
 
@@ -146,6 +154,9 @@ Below are a few common types of cards and their associated payloads.
     ]
 }
 ```
+
+![Toast](https://user-images.githubusercontent.com/13246069/30088498-9e838806-925b-11e7-8a22-c75aa9724b16.png)
+
 
 # Weather
 
