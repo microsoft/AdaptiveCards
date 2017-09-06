@@ -51,13 +51,13 @@ uploadArchives {
                     into './build/poms/'
                     include 'pom-default.xml.asc'
                 }
-                pom.artifactId ="adaptivecards"
+                pom.artifactId ="adaptivecards-android-arm"
 
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
                     authentication(userName: NexusUserName, password: NexusPassword)
                 }
                 pom {
-                    setGroupId "com.github.Microsoft.AdaptiveCards"
+                    setGroupId "io.adaptivecards"
                     setVersion '1.0.0'
                 }
 
