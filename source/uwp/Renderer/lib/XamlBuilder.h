@@ -21,6 +21,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // IImageLoadTrackerListener
         STDMETHODIMP AllImagesLoaded();
+        STDMETHODIMP ImagesLoadingHadError();
 
         void BuildXamlTreeFromAdaptiveCard(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard, 
@@ -95,6 +96,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
         void FireAllImagesLoaded();
+        void FireImagesLoadingHadError();
         void BuildPanelChildren(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
