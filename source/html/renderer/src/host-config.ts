@@ -155,7 +155,7 @@ export interface IShowCardActionConfig {
 
 function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
     return obj ? {
-        actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inlineEdgeToEdge"),
+        actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inline"),
         inlineTopMargin: obj["inlineTopMargin"],
         style: Utils.getValueOrDefault<Enums.ContainerStyle>(obj["style"], "emphasis")
     } : null;
