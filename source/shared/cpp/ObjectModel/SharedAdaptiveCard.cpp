@@ -47,19 +47,30 @@ AdaptiveCard::AdaptiveCard()
 {
 }
 
-AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImage) :
-    m_version(version),
-    m_minVersion(minVersion),
-    m_fallbackText(fallbackText),
-    m_backgroundImage(backgroundImage)
-{
-}
-
-AdaptiveCard::AdaptiveCard(std::string version, std::string minVersion, std::string fallbackText, std::string backgroundImage, std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
+AdaptiveCard::AdaptiveCard(std::string version,
+    std::string minVersion,
+    std::string fallbackText,
+    std::string backgroundImage,
+    std::string speak) :
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
     m_backgroundImage(backgroundImage),
+    m_speak(speak)
+{
+}
+
+AdaptiveCard::AdaptiveCard(std::string version,
+    std::string minVersion,
+    std::string fallbackText,
+    std::string backgroundImage,
+    std::string speak,
+    std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
+    m_version(version),
+    m_minVersion(minVersion),
+    m_fallbackText(fallbackText),
+    m_backgroundImage(backgroundImage),
+    m_speak(speak),
     m_body(body),
     m_actions(actions)
 {
@@ -88,6 +99,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     std::string backgroundImageUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImageUrl);
     std::string backgroundImage = backgroundImageUrl != "" ? backgroundImageUrl :
         ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage);
+    std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
 
     // Parse body
     auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers, false);
@@ -95,7 +107,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     // Parse actions if present
     auto actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, AdaptiveCard::ActionParsers);
 
-    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, body, actions);
+    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, speak, body, actions);
     return result;
 }
 
@@ -107,6 +119,7 @@ Json::Value AdaptiveCard::SerializeToJsonValue()
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinVersion)] = GetMinVersion();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FallbackText)] = GetFallbackText();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = GetBackgroundImage();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
 
     std::string bodyPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body);
     root[bodyPropertyName] = Json::Value(Json::arrayValue);
@@ -174,6 +187,16 @@ std::string AdaptiveCard::GetBackgroundImage() const
 void AdaptiveCard::SetBackgroundImage(const std::string value)
 {
     m_backgroundImage = value;
+}
+
+std::string AdaptiveCard::GetSpeak() const
+{
+    return m_speak;
+}
+
+void AdaptiveCard::SetSpeak(const std::string value)
+{
+    m_speak = value;
 }
 
 const CardElementType AdaptiveCard::GetElementType() const

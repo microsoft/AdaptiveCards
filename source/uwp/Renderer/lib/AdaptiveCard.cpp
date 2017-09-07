@@ -124,7 +124,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_BackgroundImageUrl(IUriRuntimeClass** url)
+    HRESULT AdaptiveCard::get_BackgroundImage(IUriRuntimeClass** url)
     {
         *url = nullptr;
         ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
@@ -139,7 +139,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_BackgroundImageUrl(IUriRuntimeClass* url) try
+    HRESULT AdaptiveCard::put_BackgroundImage(IUriRuntimeClass* url) try
     {
         if (url == nullptr)
         {
@@ -155,6 +155,21 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         return S_OK;
     } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Speak(HSTRING* speak)
+    {
+        return UTF8ToHString(m_sharedAdaptiveCard->GetSpeak(), speak);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Speak(HSTRING speak)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(speak, out));
+        m_sharedAdaptiveCard->SetSpeak(out);
+        return S_OK;
+    }
 
     _Use_decl_annotations_
     HRESULT AdaptiveCard::ToJsonString(HSTRING* jsonString)

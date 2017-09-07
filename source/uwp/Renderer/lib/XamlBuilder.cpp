@@ -329,7 +329,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         ComPtr<IUriRuntimeClass> backgroundImageUrl;
-        if (SUCCEEDED(adaptiveCard->get_BackgroundImageUrl(&backgroundImageUrl)))
+        if (SUCCEEDED(adaptiveCard->get_BackgroundImage(&backgroundImageUrl)))
         {
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get());
         }
