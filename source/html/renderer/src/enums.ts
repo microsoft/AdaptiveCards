@@ -20,7 +20,7 @@ export type ActionStyle = "button" | "link";
 
 export type ImageStyle = "normal" | "person";
 
-export type ShowCardActionMode = "inline" | "inlineEdgeToEdge" | "popup";
+export type ShowCardActionMode = "inline" | "popup";
 
 export type Orientation = "horizontal" | "vertical";
 

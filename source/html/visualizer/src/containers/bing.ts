@@ -115,7 +115,7 @@ export class BingContainer extends HostContainer {
                 spacing: "default",
                 buttonSpacing: 10, 
                 showCard: { 
-                    actionMode: "inlineEdgeToEdge", 
+                    actionMode: "inline", 
                     inlineTopMargin: 16
                 }, 
                 actionsOrientation: "vertical", 

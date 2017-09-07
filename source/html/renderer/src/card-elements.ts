@@ -782,13 +782,13 @@ export class Image extends CardElement {
                         imageElement.style.maxWidth = "100%";
                         break;
                     case "small":
-                        imageElement.style.maxWidth = this.hostConfig.imageSizes.small + "px";
+                        imageElement.style.width = this.hostConfig.imageSizes.small + "px";
                         break;
                     case "large":
-                        imageElement.style.maxWidth = this.hostConfig.imageSizes.large + "px";
+                        imageElement.style.width = this.hostConfig.imageSizes.large + "px";
                         break;
                     case "medium":
-                        imageElement.style.maxWidth = this.hostConfig.imageSizes.medium + "px";
+                        imageElement.style.width = this.hostConfig.imageSizes.medium + "px";
                         break;
                 }
             }
@@ -1826,26 +1826,24 @@ class ActionCollection {
 
         var padding = paddingToSpacingDefinition(this._owner.hostConfig, this._owner.getNonZeroPadding());
 
-        if (this._owner.hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
-            if (this._actionCard !== null) {
-                this._actionCard.style.paddingLeft = padding.left + "px";
-                this._actionCard.style.paddingRight = padding.right + "px";
+        if (this._actionCard !== null) {
+            this._actionCard.style.paddingLeft = padding.left + "px";
+            this._actionCard.style.paddingRight = padding.right + "px";
 
-                this._actionCard.style.marginLeft = "-" + padding.left + "px";
-                this._actionCard.style.marginRight = "-" + padding.right + "px";
+            this._actionCard.style.marginLeft = "-" + padding.left + "px";
+            this._actionCard.style.marginRight = "-" + padding.right + "px";
 
-                Utils.appendChild(this._actionCardContainer, this._actionCard);
-            }
+            Utils.appendChild(this._actionCardContainer, this._actionCard);
+        }
 
-            if (this._statusCard !== null) {
-                this._statusCard.style.paddingLeft = padding.left + "px";
-                this._statusCard.style.paddingRight = padding.right + "px";
+        if (this._statusCard !== null) {
+            this._statusCard.style.paddingLeft = padding.left + "px";
+            this._statusCard.style.paddingRight = padding.right + "px";
 
-                this._statusCard.style.marginLeft = "-" + padding.left + "px";
-                this._statusCard.style.marginRight = "-" + padding.right + "px";
+            this._statusCard.style.marginLeft = "-" + padding.left + "px";
+            this._statusCard.style.marginRight = "-" + padding.right + "px";
 
-                Utils.appendChild(this._actionCardContainer, this._statusCard);
-            }
+            Utils.appendChild(this._actionCardContainer, this._statusCard);
         }
     }
 
@@ -1869,6 +1867,7 @@ class ActionCollection {
         this._expandedAction = action;
 
         this.refreshContainer();
+
         raiseInlineCardExpandedEvent(action, true);
     }
 
@@ -1977,7 +1976,7 @@ class ActionCollection {
         var element = document.createElement("div");
 
         this._actionCardContainer = document.createElement("div");
-
+        
         this._renderedActionCount = 0;
 
         var maxActions = this._owner.hostConfig.actions.maxActions ? Math.min(this._owner.hostConfig.actions.maxActions, this.items.length) : this.items.length;
@@ -2041,7 +2040,7 @@ class ActionCollection {
 
                     this._renderedActionCount++;
 
-                    if (this._renderedActionCount >= this._owner.hostConfig.actions.maxActions) {
+                    if (this._renderedActionCount >= this._owner.hostConfig.actions.maxActions || i == this.items.length - 1) {
                         break;
                     }
                     else if (this._owner.hostConfig.actions.buttonSpacing > 0) {
@@ -2242,7 +2241,7 @@ export class Container extends CardElement {
     }
 
     protected showBottomSpacer(requestingElement: CardElement) {
-        if ((!requestingElement || this.isLastElement(requestingElement)) && this.hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
+        if ((!requestingElement || this.isLastElement(requestingElement))) {
             this.renderedElement.style.paddingBottom = paddingToSpacingDefinition(this.hostConfig, this.internalPadding).bottom + "px";
 
             super.showBottomSpacer(this);
@@ -2250,7 +2249,7 @@ export class Container extends CardElement {
     }
 
     protected hideBottomSpacer(requestingElement: CardElement) {
-        if ((!requestingElement || this.isLastElement(requestingElement)) && this.hostConfig.actions.showCard.actionMode == "inlineEdgeToEdge") {
+        if ((!requestingElement || this.isLastElement(requestingElement))) {
             this.renderedElement.style.paddingBottom = "0px";
 
             super.hideBottomSpacer(this);
@@ -3342,7 +3341,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         spacing: "default",
         buttonSpacing: 20,
         showCard: {
-            actionMode: "inlineEdgeToEdge",
+            actionMode: "inline",
             inlineTopMargin: 16
         },
         actionsOrientation: "horizontal",

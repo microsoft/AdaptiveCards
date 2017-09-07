@@ -59,7 +59,7 @@ export const defaultConfigPayload: string = `{
 		"buttonSpacing": 20,
 		"stretch": false,
 		"showCard": {
-			"actionMode": "inlineEdgeToEdge",
+			"actionMode": "inline",
 			"inlineTopMargin": 16,
 			"backgroundColor": "#08000000",
 			"padding": {

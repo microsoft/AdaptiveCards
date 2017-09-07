@@ -126,7 +126,7 @@ export class HeadlessContainer extends HostContainer {
                 spacing: "default",
                 buttonSpacing: 20,
                 showCard: {
-                    actionMode: "inlineEdgeToEdge",
+                    actionMode: "inline",
                     inlineTopMargin: 16
                 },
                 actionsOrientation: "horizontal",
