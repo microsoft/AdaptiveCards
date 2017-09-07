@@ -2375,6 +2375,10 @@ export class Container extends CardElement {
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
+        if (this.pixelHeight && this.pixelHeight > 0) {
+            element.style.height = this.pixelHeight + "px";
+        }
+
         if (this.hasBackground) {
             if (this.backgroundImage) {
                 this.backgroundImage.apply(element);
@@ -2437,6 +2441,7 @@ export class Container extends CardElement {
 
     selectAction: Action;
     backgroundImage: BackgroundImage;
+    pixelHeight?: number = null;
 
     get style(): Enums.ContainerStyle {
         if (this.allowCustomStyle) {
@@ -2661,14 +2666,19 @@ export class Column extends Container {
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         renderedElement.style.minWidth = "0";
 
-        if (typeof this.width === "number") {
-            renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
-        }
-        else if (this.width === "auto") {
-            renderedElement.style.flex = "0 1 auto";
+        if (this.pixelWidth && this.pixelWidth > 0) {
+            renderedElement.style.width = this.pixelWidth + "px";
         }
         else {
-            renderedElement.style.flex = "1 1 50px";
+            if (typeof this.width === "number") {
+                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width) + "%";
+            }
+            else if (this.width === "auto") {
+                renderedElement.style.flex = "0 1 auto";
+            }
+            else {
+                renderedElement.style.flex = "1 1 50px";
+            }
         }
     }
 
@@ -2677,6 +2687,7 @@ export class Column extends Container {
     }
 
     width: number | "auto" | "stretch" = "auto";
+    pixelWidth?: number = null;
 
     getJsonTypeName(): string {
         return "Column";
@@ -3174,7 +3185,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return !unsupportedVersion;
     }
 
-    private _cardTypeName: string;
+    private _cardTypeName: string = "AdaptiveCard";
 
     protected applyPadding() {
         var effectivePadding = paddingToSpacingDefinition(this.hostConfig, this.internalPadding);

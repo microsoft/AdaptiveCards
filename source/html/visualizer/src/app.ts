@@ -1,6 +1,8 @@
 ﻿import * as Adaptive from "microsoft-adaptivecards";
 import * as Constants from "./constants";
 
+import { TemplateDemo } from "./CardTemplate";
+
 import { HostContainer } from "./containers/host-container";
 import { LiveTileContainer } from "./containers/live-tile";
 import { SkypeContainer } from "./containers/skype";
@@ -40,8 +42,17 @@ function renderCard(): HTMLElement {
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
 
     var json = JSON.parse(currentCardPayload);
+    var adaptiveCard = new Adaptive.AdaptiveCard;
 
-    var adaptiveCard = new Adaptive.AdaptiveCard();
+    if (json["type"] === "TemplateDemo") {
+        var template = new TemplateDemo();
+        template.parse(json);
+
+        adaptiveCard = template.convertToAdaptive();
+    }
+    else {
+        adaptiveCard.parse(json);
+    }
 
     try {
         adaptiveCard.hostConfig = Adaptive.parseHostConfig(currentConfigPayload);
@@ -49,8 +60,6 @@ function renderCard(): HTMLElement {
     catch (e) {
         // TODO
     }
-    
-    adaptiveCard.parse(json);
     
     lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
