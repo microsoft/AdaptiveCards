@@ -1,6 +1,7 @@
 # Justin Timberlake said it best
 
 > I'm bringing semantics back
+>
 > You other cards don't know how to act
 
 
@@ -8,24 +9,34 @@
 
 Adaptive Cards 1.0 does a fantastic job addressing the long-tail of completely custom cards that developers asked for.
 
-That said, it isn't super easy or staight-forward to create common every-day cards. Nor is it possible to author a card that automatically adapts to multiple surfaces that vary significantly in their rendering bounds.
+That said, it isn't super easy or staight-forward to create every-day cards with some text and an image or two. 
+
+Nor is it possible to author a card that automatically adapts to multiple surfaces. 
+
+![cards in windows](https://tg9blq.dm2301.livefilestore.com/y4phy89csvKi5yZnhOSVXReEEw3JJP7gMB_buOedrwYNe5J_V6ypfPsm_V6oOkP1JFpr-1vR1OWJcCVsWfftFYLjswu3gFfzOpUNIGrTz-0VCdIy1h8wKRaze-5Tsgow7oJ0kg_HwYo4wO8n3nDJwAK0J8CRhhMqyvomYsqw7hcBSLIcLyEmcw74jr94yvJVvVK7CmRxU1tQcccNVkv85KBVw/semantic-cards-windows.png?psid=1)
+
+The **experience owners** above have their own visual identity and visual constraints -- and should be able to render adaptive cards in the best way for them. Similarly, **card authors** should be able to write a single card payload that truly adapts to the host experience. 
+
+## Benefits of more semantics
+
+* **Portability** - more structure means a card can be interpreted by hosts with very different visual limitations/constraints
+* **Approachability** - common cards with some text and an image shouldn't _require_ complex structures like ColumnSet
+* **Interoperable** - semantic attributes make Adaptive Cards completely interchangable with OpenGraph/Twitter cards
+* **Intelligence** - semantic information gives us a bit more ability to reason over the content
 
 > IMPORTANT: Before I go on, I want to stress that everything here is purely additive and optional. For developers who want to custom draw their own body, Adaptive Cards will remain the leader in this space. 
-
-* **Portability** - more structure means a card can be delivered to hosts with very different display limitations/dimensions
-* **Approachability** - a simple card like sharing a news article is now very straight-forward
-* **Interoperable** - this attributes make Adaptive Cards completely interchangable with OpenGraph/Twitter/Messenger templates
-* **Intelligence** - semantic information gives us a bit more ability to reason over the content
 
 
 # Schema additions
 
+This proposal expands on what it means to be a "card". Today we've defined a card as a free-form "body" and some "actions". 
+
+Based on feedback from host apps, card authors, and industry analysis, we've identified a few additional top-level attributes to AdaptiveCard.
 
 ## Attribution
+Card content that is attributed to a third-party. E.g., Bing, Twitter, etc. It also provides a `selectAction` to make the element invokable.
 
-### Seen in
-* Skype 
-* Windows (Timeline, Notifications, NTP)
+![attribution](https://tg9blq.dm2301.livefilestore.com/y4pHnuywgNAjpw7vgxPSVMMLFIfeKg0cbJhN_rVv4nu08omRAs_ORs8aY1OCrmBELIPeqOqhiiCHbmOEFHaZTCV6690w_omd5uKITCri0GroQ44h7J82qw6vQ5qIQuLLwqrm7XHn6ENEge2O3qlDvdkvTwO5VdweZpL2Zp4BYVsFY56NILh8LxgMTXByOCLSLZtwhZ2sA4sEwmYCw2cCteybw/card-attribution.jpg?psid=1)
 
 ### Payload 
 ```json
@@ -33,11 +44,12 @@ That said, it isn't super easy or staight-forward to create common every-day car
     "type": "AdaptiveCard",
     "attribution": {
         "logo": {
-            "url": "http://"
+            "url": "http://bing.com/logo"
         },
-        "text": "Cortana",
+        "text": "Bing",
         "selectAction": {}
     }
+}
 ```
 
 ### Host Config
@@ -49,38 +61,8 @@ That said, it isn't super easy or staight-forward to create common every-day car
 * TODO: Where does it go in the card? How can hosts change it?
 
 
-## Timestamp
-
-### Seen in
-* Skype? 
-* Notifications
-
-### Payload
-* TODO: Can bot developers provide/override this?
-* TODO: Probably should be an ISO date like 2016-12-13T20:45:00Z rather than text, since text quickly goes stale
-
-```json
-{
-    "type": "AdaptiveCard",
-    "timestamp": "1 hour ago"
-}
-```
-
-### Host Config
-```json
-{
-    "adaptiveCard": {
-        "timestamp": {} // TextBlockConfig
-    }
-}
-```
-
-### Renderer Requirements
-// todo
-
-
-
 ## Title/Subtitle
+Cards often (but not always) have a title as an entry point to the content. By standardizing these properties we allow hosts to describe their title visual properties making it very easy for a card to port around and retain visual consistency within the host.
 
 ### Seen in
 * Skype
@@ -100,6 +82,11 @@ That said, it isn't super easy or staight-forward to create common every-day car
 {
     "adaptiveCard": {
         "title": { // TextBlockConfig
+            "textWeight": "bolder",
+            "wrap": true,
+            "maxLines": 2
+        },
+        "subtitle": { // TextBlockConfig
             "wrap": true,
             "maxLines": 3
         }
@@ -112,10 +99,15 @@ That said, it isn't super easy or staight-forward to create common every-day car
 
 
 ## Category
+Cards occasionally fall into a particular category, usually with a specific UI treatment and a touch target.
+
+![category](https://tg9blq.dm2301.livefilestore.com/y4py0WlIrGyNmgC-eyQLjEzA19y4kXqoEVLLuJlqD8gWc6S5QsTuUeQS2s6_kRE1b7SHGxISI6j4vqBY7rHeDLUGE8tri35zbt0tX9v2BSdwQbBvCuDWuty3dT9-jnf3ld9TKE5Y9NfmCECC8HXRtpHvm3latAvsOmh0ObJytDsFdeDMe17MKgYC6FV5HVbba2YaDgIobxmMQ8hm2TgYoAI2g/card-category.jpg?psid=1)
+
+For feeds of cards, like Action Center, this information can be used to group cards together. E.g., Outlook notifications can be grouped by email accounts.
 
 ### Seen in
 * Skype
-* Windows (Timeline, Notifications, NTP)
+* Windows (Notifications, NTP)
 
 ### Payload
 ```json
@@ -146,35 +138,62 @@ That said, it isn't super easy or staight-forward to create common every-day car
 
 ## Images
 
-This feature defines the three types of images commonly seen in Cards and groups them together into a single object. 
+Cards can be broadly considered to have three types of images. 
 
-> NOTE: this proposal is a **breaking change** from 0.5 and would **remove** the `backgroundImage` property on `AdaptiveCard` and move it into the proposed object
+### Background image
+A specialized type of image that covers the entire background of the card.
 
-* **Background image** - a specialized type of image that covers the entire background of the card
-* **Profile image** - a specialized type of image on the left side of a card typically showing a contact or person who generated the card, e.g., an IM or email from a contact 
-* **Card image** - this is the generic image associated with a card, commonly seen in videos, articles, music, places, etc
+![bg](https://tg9blq.dm2301.livefilestore.com/y4pClxjM6TozOjzqkEaFtrVobVW_X5N40pf02AetSLH_PCajarWTXPXRRhNmA0srUPOS9E0ZZHBFDRwA8UkiKCqyz7Be7LWU3G_5wCXS6KNumi9EZnnPdtVSa4yC8g45_yStufHX25CZh4vs9ZVIawyTeDHvQQpfZM5gqnp-E_am88LIZyIBdYh_oyzun-dlFkQQ4mRIHjLSqGId07eSpRAgg/card-weather.jpg?psid=1)
 
-![Images](https://bxqbjg.dm2301.livefilestore.com/y4pn86HWEvQrEFJTgehRMuFS32jkU3AYBiLcmE2IQypmbwB22Y6yL9v1xxuXDExclHG2_K3Xb-E1xMxGn9OMEaqjfOlaPbQ8TtHw749zL3mftNAUOmSZW3x0rqfCEXTizBgOecm2PydLq42Im-dKpzoImAVf3ewPW4Ld_0qVlu0QFFRrmbytEigBcw0_z_FWdZa/card-images.png?psid=1)
+> NOTE: this proposal is a **breaking change** from 0.5 and would **remove** the `backgroundImage` property on `AdaptiveCard` and move it into the `images` object.
 
-### Seen in
-* Skype
-* Windows (Timeline, Notifications, NTP)
-
-### Payload
 ```json
 {
     "type": "AdaptiveCard",
     "images": {
-        "background": { // "type": "BackgroundImage"
+        "background": {
             "url": "http://",
-            "overlay": "dark",
+            "overlay": "light|dark",
             "opacity": 0.7
-        },
-        "profile": { // "type": "Image"
+        }
+    }
+}
+```
+
+### Profile image
+A specialized type of image on the left side of the card, typically showing a contact or person who generated the card, e.g., an IM or email from a contact 
+
+![profile](https://tg9blq.dm2301.livefilestore.com/y4po6WND489AUw6l-Twoay730f5bR1RKBqudzNQ9kN7-DLzdz16nO6NjO47og-X9L2ncwIcEK2pdDTVQFZ87LIJVULXtkbxhg9RyzGiVrD35pDFf7oigKZyMeCRPugiBP46iSoRkvnElA1d0cOmRL04uvPPGiCxp8xO76APAEuV8UB9C9TwwtbRS5Yt9V2_Xi1WhD44KMG4AhbaOPt0CqP9jQ/card-profileimage.png?psid=1)
+
+```json
+{
+    "type": "AdaptiveCard",
+    "images": {
+        "profile": {
             "url": "http://",
             "style": "person"
-        },
-        "card": { // "type": "CardImage"
+        }
+    }
+}
+```
+
+### Card image
+The "hero" image associated with the card content. Host apps are free to use this image however they wish: 
+* full width at the top of the card
+* vertically along the right side
+* a small thumbnail
+* inline with the content
+* or even as the background (like Timeline)
+
+Card authors can influence the placement using the `displayPreference` property. 
+
+![images](https://tg9blq.dm2301.livefilestore.com/y4plSLQJ5lL5BaiDXMDeov5ru32ODMPa5gvNAx75vtMoqBByMsVC5yjsKpYPlO-hI4yaFbmICOBfMCWcCHgSmsFUe8SddIjITKMFIHkwkA5CehNUcltx7h1JpfwxteiFafUrmmwlPaxbM27xsvYLHO-SgrhvHPD_wPpGcyH_90AUgwGZZDalkjB-hCWoudaOaauJoGR_jY8SFXfCspI4zg4kQ/card-images.jpg?psid=1)
+
+```json
+{
+    "type": "AdaptiveCard",
+    "images": {
+        "card": { 
             "url": "",
             "displayPreference": [
                 "vertical",
@@ -187,14 +206,24 @@ This feature defines the three types of images commonly seen in Cards and groups
 }
 ```
 
-### DisplayPreference
+#### DisplayPreference
+Many images are best suited for a particular aspect ratio, so a card author should be able to explicitly restrict or influence where the image appears. 
 
- Preference | Requirement
- --- | --- 
+**Removing** an option from the array explicitly removes support for the aspect ratio. E.g., if a developer _only_ wants the image displayed horizontally they would set `displayPreference: [ "horizontal" ]`
+
+> FUTURE: In the future we could use image analysis to find best placement and crop
+
+
+Preference | Requirement
+--- | --- 
 vertical | X
 horizontal | Y
 thumbnail | Z
 full | A
+
+#### Renderer requirements
+
+* The card image causes the `body` content to reflow based on where it's placed
 
 ### Host Config
 ```json
@@ -220,11 +249,39 @@ full | A
 }
 ```
 
-### Renderer Requirements
-* Images 
-* FUTURE: Image analysis to find best placement and crop
+## Timestamp
 
-## AdaptiveCard SelectAction
+### Seen in
+* Skype
+* Notifications
+
+### Payload
+* TODO: Can bot developers provide/override this?
+* TODO: Probably should be an ISO date like  rather than text, since text quickly goes stale
+
+```json
+{
+    "type": "AdaptiveCard",
+    "timestamp": "2016-12-13T20:45:00Z"
+}
+```
+
+### Host Config
+```json
+{
+    "adaptiveCard": {
+        "timestamp": {
+            "format": "friendly|explicit" // "1 hour ago"
+        } // TimestampConfic, based on TextBlockConfig
+    }
+}
+```
+
+### Renderer Requirements
+* TODO
+
+
+## SelectAction
 This property makes the entire card a touch target.
 
 ### Payload
@@ -235,7 +292,8 @@ This property makes the entire card a touch target.
 }
 ```
 
-## Secondary/Overflow actions
+## Secondary actions
+
 
 ```json
 {
@@ -257,7 +315,6 @@ This property makes the entire card a touch target.
 
 
 ## String shortcuts for common payloads
-
 We can make it easier/less verbose for common operations.
 
 ### Payload
@@ -275,7 +332,7 @@ We can make it easier/less verbose for common operations.
 
 ### Renderer Requirements
 * If `body` is a string, insert a default `TextBlock` and set the `text` to the string value
-* If an `Image` is a string create an `Image` and set the `url` to the string value
+* If an `Image` is a string, create an `Image` and set the `url` to the string value
 
 ## All together
 
@@ -284,7 +341,7 @@ We can make it easier/less verbose for common operations.
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "vNext",
-    "timestamp": "1 hour ago",
+    "timestamp": "2016-12-13T20:45:00Z",
     "attribution": {
         "logo": {
             "url": "http://"
