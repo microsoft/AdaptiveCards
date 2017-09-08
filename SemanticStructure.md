@@ -145,7 +145,9 @@ A specialized type of image that covers the entire background of the card.
 
 ![bg](https://tg9blq.dm2301.livefilestore.com/y4pClxjM6TozOjzqkEaFtrVobVW_X5N40pf02AetSLH_PCajarWTXPXRRhNmA0srUPOS9E0ZZHBFDRwA8UkiKCqyz7Be7LWU3G_5wCXS6KNumi9EZnnPdtVSa4yC8g45_yStufHX25CZh4vs9ZVIawyTeDHvQQpfZM5gqnp-E_am88LIZyIBdYh_oyzun-dlFkQQ4mRIHjLSqGId07eSpRAgg/card-weather.jpg?psid=1)
 
-> NOTE: this proposal is a **breaking change** from 0.5 and would **remove** the `backgroundImage` property on `AdaptiveCard` and move it into the `images` object.
+> NOTE: the proposals below are a **breaking change** from 0.5 and would **remove** the `backgroundImage` property on `AdaptiveCard` and move it into a more robust object.
+
+**OPTION 1**
 
 ```json
 {
@@ -160,8 +162,27 @@ A specialized type of image that covers the entire background of the card.
 }
 ```
 
+**OPTION 2**
+This optional more naturally enables background color, and also aligns closer to the concept of backgrounds for `Columns`/`Containers`.
+
+```json
+{
+    "type": "AdaptiveCard",
+    "background": {
+        "color": "",
+        "image": {
+            "url": "",
+            "overlay": "light|dark",
+            "opacity": 0.7
+        }
+    }
+}
+```
+
+
 ### Profile image
-A specialized type of image on the left side of the card, typically showing a contact or person who generated the card, e.g., an IM or email from a contact 
+
+A specialized type of image usually on the left side of the card, typically showing a contact or person who generated the card, e.g., an IM or email from a contact 
 
 ![profile](https://tg9blq.dm2301.livefilestore.com/y4po6WND489AUw6l-Twoay730f5bR1RKBqudzNQ9kN7-DLzdz16nO6NjO47og-X9L2ncwIcEK2pdDTVQFZ87LIJVULXtkbxhg9RyzGiVrD35pDFf7oigKZyMeCRPugiBP46iSoRkvnElA1d0cOmRL04uvPPGiCxp8xO76APAEuV8UB9C9TwwtbRS5Yt9V2_Xi1WhD44KMG4AhbaOPt0CqP9jQ/card-profileimage.png?psid=1)
 
@@ -250,6 +271,7 @@ full | A
 ```
 
 ## Timestamp
+This one I'm not entirely convinced on, but happy to take feedback from folks. 
 
 ### Seen in
 * Skype
@@ -257,7 +279,6 @@ full | A
 
 ### Payload
 * TODO: Can bot developers provide/override this?
-* TODO: Probably should be an ISO date like  rather than text, since text quickly goes stale
 
 ```json
 {
@@ -272,7 +293,7 @@ full | A
     "adaptiveCard": {
         "timestamp": {
             "format": "friendly|explicit" // "1 hour ago"
-        } // TimestampConfic, based on TextBlockConfig
+        } // TimestampConfig, based on TextBlockConfig
     }
 }
 ```
