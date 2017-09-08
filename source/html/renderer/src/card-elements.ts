@@ -3303,6 +3303,7 @@ export class AdaptiveCard extends ContainerWithActions {
         else {
             renderedCard = super.render();
             renderedCard.tabIndex = 0;
+            
             if (!Utils.isNullOrEmpty(this.speak)) {
                 renderedCard.setAttribute("aria-label", this.speak);
             }
