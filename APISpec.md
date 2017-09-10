@@ -1,17 +1,41 @@
-# Getting the SDK
+# TOC
 
-* TODO: Should it just be AdaptiveCards?
+1. Install the SDK 
+2. Get a card
+- From object model
+- Parse JSON
+3. Render a card
+- Instantiate a renderer
+- Wire up action callback
+- Retrieve input values
+4. Basic customization
+- HostConfig
+- Native platform styling
+5. Advanced customization
+- Override element renderer
+- Register custom element renderer
+- Remove element renderer
+- Extension properties on elements
+
+
+1.1 NOTES:
+1. Toggle visibility of elements
+
+
+# Getting and using the SDK
+
+* TODO: Should it be AdaptiveCards or Microsoft.AdaptiveCards?
 
 ```console
-nuget install Microsoft.AdaptiveCards
+nuget install AdaptiveCards
 ```
-
-# Instantiate card
 
 ```csharp
 // Should be same as library name
-using Microsoft.AdaptiveCards; 
+using AdaptiveCards; 
 ```
+
+# Instantiate card
 
 ## From object model
 
@@ -19,99 +43,72 @@ using Microsoft.AdaptiveCards;
 AdaptiveCard card = new AdaptiveCard();
 
 card.Body.Add(new AdaptiveContainer());
+card.Body.Add(new AdaptiveImage()); 
 card.Body.Add(new AdaptiveTextBlock()); 
 card.Actions.Add(new AdaptiveHttpAction());
 
-// TODO: Adaptive prefix? We need to evaluate chance of conflict with other namespaces. Is it likely that a class would use AdapativeCards and System.UI.Xaml at the same time?
-
+// NAMING: Consensus in the room was to include the Adaptive prefix for object-model types
+// Argument being we aren't describing "images" or "containers", they are "adaptive images" just like "adaptive cards" 
+// Also seems highly likely that our other namespace would conflict with native UI stack and need to be aliased.
 ```
 
 ## Versioning
 
 ```csharp
-
-public class AdaptiveVersion 
+public class AdaptiveSchemaVersion 
 {
-    int Major; Minor; Patch;
+    int Major; Minor;
     string ToString();
 }
 
 // Version automatically provided by object model/renderer
 AdaptiveVersion version = card.Version;
 
-card.MinVersionRequired = new AdaptiveVersion(major: 2, minor: 0, patch: 0);
-card.FallbackText = "Please update your app to see this card";
+card.MinVersionRequired = new AdaptiveVersion(major: 2, minor: 0);
+card.FallbackText = "This card isn't supported. Please check your app for updates.";
 ```
 
 
 ## Parse from JSON string
 
 ```csharp
-// TODO: Should this be an enum or an interface? TypeScript currently has as enum
-public class ParseError  {
-    string Message;
+// TODO: Should this be an enum or class? TypeScript currently has as enum
+public class ParseFailure  {
+    string Message { get; }
 
-    SchemaValidationError;
+    bool IsError { get; }
+
+    //SchemaViolation
         //MissingCardType = 5,
         //CollectionCantBeEmpty = 1,
         //InvalidPropertyValue = 4,
         //PropertyCantBeNull = 6,
         //MissingVersion,
-
 }
 
-        
-    Renderer Errors
-        UnsupportedCardVersion = 10,
-        ElementTypeNotAllowed = 2, // TODO: Do we need this?
-
-  
-
-public class ValidationWarning
-{
-  RendererWarnings
-        UnknownActionType = 8,
-        UnknownElementType = 9,
-            
-    HostConfigWarnings
-        InteractivityNotSupported = 3,
-        TooManyActions = 7,    
-}
 
 // Parse Errors
 // 1. Is it even valid json?
 // 2. Does it pass schema validation?
 
-// Warnings
-// 1. Does it violate host config?
-// 2. Unknown element 
+// Parse warnings
+// Are there any?
 
 ParseResult result = AdaptiveCard.FromJson(jsonString);
 if (result.IsValid) {
     // Get card from result
+    IList<ParseFailure> warnings = result.Warnings;
     AdaptiveCard card = result.Card;
-
-} // else errors
-
-
-
-
-ParseResult result = AdaptiveCard.FromJson(jsonString);
-if (result.IsValid) {
-    // Any warnings?
-    IList<ValidationFailure> warnings = result.Warnings;
-}
-else {
-    IList<ValidationFailure> errors = result.Errors;
+} else {
+    // Get errors?
+    IList<ParseFailure> errors = result.Errors;
 }
 ```
 
 ### Validate card against Host Config errors
 
-* Type casting errors (e.g., bool expected and we got a string)
-
 ```csharp
-ValidationResult result = card.Validate();
+ValidationResult result = card.Validate(myHostConfig);
 if (!result.IsValid) {
     IList<ValidationError> errors = result.Errors;
 }
@@ -128,25 +125,23 @@ ValidationResult result = card.Validate(myHostConfig);
 ## Instantiate a renderer
 
 ```csharp
-XamlCardRenderer renderer = new XamlCardRenderer();
+AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
 
 // Get the schema version this renderer supports
 string schemaVersion = renderer.SupportedSchemaVersion;
 ```
 
+
+
 ## Host Config
+* TODO: What should the defaults be? Should they all share it? Should we embed a common hostConfig.json file in the binaries?
+* TODO: I think HostConfig needs to be versioned as well for parsing?
 
 ```csharp
 AdaptiveHostConfig hostConfig = new AdaptiveHostConfig();
 
 // ... or parse
-// Change to if 
-try {
-    AdaptiveHostConfig hostConfig = AdaptiveHostConfig.FromJson(jsonString);
-}
-catch (ParseException e) {
-    // we throw here since it's assumed you created the host config, and it should never be expected to fail
-}
+ParseResult<AdaptiveHostConfig> parseResult = AdaptiveHostConfig.FromJson(jsonString);
 
 // We should provide a reasonable default if this property isn't set
 renderer.HostConfig = hostConfig;
@@ -155,6 +150,8 @@ renderer.HostConfig = hostConfig;
 ### Host Config options
 
 *  TODO: Finalize all Host Config options
+* Host Config will be the first run, set properties directly
+
 
 ```csharp
 // Maximum image size to download
@@ -167,7 +164,54 @@ hostConfig.MaxPayloadSize = "10"; // kB
 // https://github.com/Microsoft/AdaptiveCards/blob/master/samples/Themes/bing.json
 ```
 
+## Native platform styling
+
+```csharp
+renderer.ResourceDictionary = myResourceDictionary;
+```
+
+An example XAML ResourceDictionary
+```xml
+<ResourceDictionary>
+    <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+            <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="0.7" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="1.0" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+
+        </Style.Triggers>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="Transparent">
+                        <ContentPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
+```
+
+
 ## Wire up Action events
+
+1. DAN NOTES: Event even if we have a default action like showcard, considerations for inline vs popup
+1. Ability to renfered the UI element 
 
 ```csharp
 
@@ -183,6 +227,23 @@ private void ActionHandler(object sender, ActionEventArgs e) {
     }
     ...
 }
+```
+
+### Option 2 (per Andrew's thread)
+
+* In this model OpenUrl and ShowCard are implemented by default, and other actions would only show up if explicitly supported. We should show warnings for any actions we dropped. 
+
+```c#
+public class WindowsForegroundAction : IAdaptiveAction {
+    string TypeName => "WindowsAction.Foreground";
+
+    Action<Card> OnInvoke = (card) => ...; // activate app
+}
+
+renderer.RegisterAction<WindowsForegroundAction>((e) => {
+    // activate app
+})
+
 ```
 
 ## Inputs
@@ -201,20 +262,41 @@ private void ActionHandler(object sender, ActionEventArgs e) {
 }
 ```
 
-```json
-// Card JSON
-"body": [
+### Input data binding
 
+* TODO: Move this to implementation spec
+https://github.com/Microsoft/AdaptiveCards/issues/390
+
+**Payload**
+
+```json
+"body": [
+    {
+        "type": "Input.Text",
+        "id": "myTextInput"
+    },
+     {
+        "type": "Input.Number",
+        "id": "myNumberInput"
+    }
 ],
-"actions: [
-    
+"actions": [
+    {
+        "type": "Action.Submit",
+        "data": { 
+            "myCustomData": "5"
+        }
+    }
 ]
 
 
-// Data-boudd
+**Callback JSON**
+
+```json
 {
-
-
+    "myCustomData": "5",
+    "myTextInput": "Hello Input.Text",
+    "myNumberInput": 5
 }
 ```
 
@@ -226,11 +308,35 @@ private void ActionHandler(object sender, ActionEventArgs e) {
 // This means a card could be added to the app and then images load causing re-layout
 RenderResult result = await renderer.RenderAsync(card, cancellationToken: null);
 
-if(result.SuccessfullyRendererd) {
+public class RenderWarning
+{
+  RendererWarnings
+        UnknownActionType = 8,
+        UnknownElementType = 9,
+            
+    HostConfigWarnings
+        InteractivityNotSupported = 3,
+        TooManyActions = 7,    
+}
+
+public class RenderError
+{
+    UnsupportedCardVersion = 10,
+    ElementTypeNotAllowed = 2, // TODO ASK DAVID: Do we need this?
+}
+
+RenderResult result = renderer.Render(card);
+result.Errors
+result.Warnings 
+```
+
+
+if(result.Suceeded) {
     FrameworkElement ui = result.FrameworkElement;
 }
 else {
-    // host config failure
+    
+    // host config warnings
     // images failed to load/timeout
     // TODO: what else?
 }
@@ -281,6 +387,8 @@ renderer.ElementRenderers["TextBlock"] = new CoolTextBlockRenderer());
 ```csharp
 public class ProgressBarRenderer : IElementRenderer
 {
+    static const TypeName = "ProgressBar";
+
     UIElement Render() {
         ...
     }
@@ -290,13 +398,13 @@ public class ProgressBarRenderer : IElementRenderer
     }
 }
 
-renderer.ElementRenderers["ProgressBar"] = new ProgressBarRenderer());
+renderer.ElementRenderers[ProgressBarRenderer.TypeName] = new ProgressBarRenderer());
 ```
 
 ## Remove a renderer
 
 ```csharp
-renderer.ElementRenderers.Remove("AdaptiveHttpAction");
+renderer.ElementRenderers.Remove("Action.Http");
 ```
 
 ## Override markdown processing
@@ -312,18 +420,6 @@ private string MarkdownHandler(string text) {
 }
 ```
 
-
-## Rich element styling
-
-```csharp
-renderer.ResourceDictionary = new ResourceDictionary();
-```
-
-```xaml
-
-```
-
-* Host Config will be the first run, set properties directly
 
 
 
@@ -342,7 +438,7 @@ renderer.ResourceDictionary = new ResourceDictionary();
 
 # Next steps
 
-* API reviiew on each platform
+* API review on each platform
 * "Sample" apps exercising the API
-* Document the snippets
+* Document the major pieces (https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/wpf)
 * Any missing items/features of a specific renderer not accounted for?
