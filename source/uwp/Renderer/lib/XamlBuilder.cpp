@@ -1883,6 +1883,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveDateInput->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(datePicker->put_PlaceholderText(placeHolderText.Get()));
 
+        // Make the picker stretch full width
+        ComPtr<IFrameworkElement> datePickerAsFrameworkElement;
+        THROW_IF_FAILED(datePicker.As(&datePickerAsFrameworkElement));
+        datePickerAsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Stretch);
+
         AddInputItemToVector(inputElements, adaptiveCardElement, datePicker.Get());
             
         // TODO: Handle parsing dates for min/max and value
@@ -2015,6 +2020,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         ComPtr<ITimePicker> timePicker = XamlHelpers::CreateXamlClass<ITimePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TimePicker));
+
+        // Make the picker stretch full width
+        ComPtr<IFrameworkElement> timePickerAsFrameworkElement;
+        THROW_IF_FAILED(timePicker.As(&timePickerAsFrameworkElement));
+        timePickerAsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Stretch);
 
         AddInputItemToVector(inputElements, adaptiveCardElement, timePicker.Get());
 
