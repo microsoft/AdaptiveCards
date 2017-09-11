@@ -116,6 +116,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    HRESULT XamlBuilder::ImagesLoadingHadError()
+    {
+        FireImagesLoadingHadError();
+        return S_OK;
+    }
+
     _Use_decl_annotations_
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(
         IAdaptiveCard* adaptiveCard, 
@@ -135,10 +141,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::shared_ptr<std::vector<InputItem>> inputElements = std::make_shared<std::vector<InputItem>>();
         BuildPanelChildren(body.Get(), childElementContainer.Get(), inputElements, [](IUIElement*) {});
 
-        boolean supportsInteractivity;
-        THROW_IF_FAILED(m_hostConfig->get_SupportsInteractivity(&supportsInteractivity));
-
-        if (supportsInteractivity)
+        if (this->SupportsInteractivity())
         {
             ComPtr<IVector<IAdaptiveActionElement*>> actions;
             THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
@@ -332,7 +335,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         ComPtr<IUriRuntimeClass> backgroundImageUrl;
-        if (SUCCEEDED(adaptiveCard->get_BackgroundImageUrl(&backgroundImageUrl)))
+        if (SUCCEEDED(adaptiveCard->get_BackgroundImage(&backgroundImageUrl)))
         {
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get());
         }
@@ -468,12 +471,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IBitmapSource> bitmapSource;
         bitmapImage.As(&bitmapSource);
         ComPtr<IAsyncOperationWithProgress<IInputStream*, HttpProgress>> getStreamOperation;
-        httpClient->GetInputStreamAsync(imageUri, &getStreamOperation);
+        THROW_IF_FAILED(httpClient->GetInputStreamAsync(imageUri, &getStreamOperation));
 
         ComPtr<T> strongImageControl(imageControl);
         ComPtr<XamlBuilder> strongThis(this);
-        getStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>
-            ([strongThis, this, bitmapSource, strongImageControl](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
+        THROW_IF_FAILED(getStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>
+            ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
         {
             if (status == AsyncStatus::Completed)
             {
@@ -504,9 +507,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             }
             else
             {
-                return E_FAIL;
+                m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                return S_OK;
             }
-        }).Get());
+        }).Get()));
         m_getStreamOperations.push_back(getStreamOperation);
     }
 
@@ -515,6 +519,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         for (auto& listener : m_listeners)
         {
             listener->AllImagesLoaded();
+        }
+    }
+
+    void XamlBuilder::FireImagesLoadingHadError()
+    {
+        for (auto& listener : m_listeners)
+        {
+            listener->ImagesLoadingHadError();
         }
     }
 
@@ -1823,6 +1835,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::shared_ptr<std::vector<InputItem>> inputElements,
         IUIElement** choiceInputSet)
     {
+        if (!this->SupportsInteractivity())
+        {
+            return;
+        }
+
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveChoiceSetInput> adaptiveChoiceSetInput;
         THROW_IF_FAILED(cardElement.As(&adaptiveChoiceSetInput));
@@ -1851,6 +1868,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::shared_ptr<std::vector<InputItem>> inputElements,
         IUIElement** dateInputControl)
     {
+        if (!this->SupportsInteractivity())
+        {
+            return;
+        }
+
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveDateInput> adaptiveDateInput;
         THROW_IF_FAILED(cardElement.As(&adaptiveDateInput));
@@ -1874,6 +1896,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::shared_ptr<std::vector<InputItem>> inputElements,
         IUIElement** numberInputControl)
     {
+        if (!this->SupportsInteractivity())
+        {
+            return;
+        }
+
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveNumberInput> adaptiveNumberInput;
         THROW_IF_FAILED(cardElement.As(&adaptiveNumberInput));
@@ -1915,6 +1942,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::shared_ptr<std::vector<InputItem>> inputElements,
         IUIElement** textInputControl)
     {
+        if (!this->SupportsInteractivity())
+        {
+            return;
+        }
+
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveTextInput> adaptiveTextInput;
         THROW_IF_FAILED(cardElement.As(&adaptiveTextInput));
@@ -1977,6 +2009,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::shared_ptr<std::vector<InputItem>> inputElements,
         IUIElement** timeInputControl)
     {
+        if (!this->SupportsInteractivity())
+        {
+            return;
+        }
+
         ComPtr<ITimePicker> timePicker = XamlHelpers::CreateXamlClass<ITimePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TimePicker));
 
         AddInputItemToVector(inputElements, adaptiveCardElement, timePicker.Get());
@@ -1992,6 +2029,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         std::shared_ptr<std::vector<InputItem>> inputElements,
         IUIElement** toggleInputControl)
     {
+        if (!this->SupportsInteractivity())
+        {
+            return;
+        }
+
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
         THROW_IF_FAILED(cardElement.As(&adaptiveToggleInput));
@@ -2018,5 +2060,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         // TODO: 11508861
         THROW_IF_FAILED(checkBox.CopyTo(toggleInputControl));
+    }
+
+    bool XamlBuilder::SupportsInteractivity()
+    {
+        boolean supportsInteractivity;
+        THROW_IF_FAILED(m_hostConfig->get_SupportsInteractivity(&supportsInteractivity));
+        return Boolify(supportsInteractivity);
     }
 }}

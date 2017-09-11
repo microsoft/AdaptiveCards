@@ -28,7 +28,8 @@ export class ToastContainer extends HostContainer {
                 default: 8,
                 medium: 20,
                 large: 30,
-                extraLarge: 40
+                extraLarge: 40,
+                padding: 10
             },
             separator: {
                 lineThickness: 1,
@@ -48,30 +49,56 @@ export class ToastContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colors: {
-                dark: {
-                    normal: "#333333",
-                    subtle: "#EE333333"
+            containerStyles: {
+                default: {
+                    backgroundColor: "#1F1F1F",
+                    fontColors: {
+                        default: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#2E89FC",
+                            subtle: "#882E89FC" 
+                        },
+                        attention: {
+                            normal: "#FFD800",
+                            subtle: "#DDFFD800"
+                        },
+                        good: {
+                            normal: "#00FF00",
+                            subtle: "#DD00FF00"
+                        },
+                        warning: {
+                            normal: "#FF0000",
+                            subtle: "#DDFF0000"
+                        }
+                    }
                 },
-                light: {
-                    normal: "#FFFFFF",
-                    subtle: "#88FFFFFF"
-                },
-                accent: {
-                    normal: "#2E89FC",
-                    subtle: "#882E89FC" 
-                },
-                attention: {
-                    normal: "#FFD800",
-                    subtle: "#DDFFD800"
-                },
-                good: {
-                    normal: "#00FF00",
-                    subtle: "#DD00FF00"
-                },
-                warning: {
-                    normal: "#FF0000",
-                    subtle: "#DDFF0000"
+                emphasis: {
+                    backgroundColor: "#19FFFFFF",
+                    fontColors: {
+                        default: {
+                            normal: "#FFFFFF",
+                            subtle: "#88FFFFFF"
+                        },
+                        accent: {
+                            normal: "#2E89FC",
+                            subtle: "#882E89FC" 
+                        },
+                        attention: {
+                            normal: "#FFD800",
+                            subtle: "#DDFFD800"
+                        },
+                        good: {
+                            normal: "#00FF00",
+                            subtle: "#DD00FF00"
+                        },
+                        warning: {
+                            normal: "#FF0000",
+                            subtle: "#DDFF0000"
+                        }
+                    }
                 }
             },
             imageSizes: {
@@ -84,49 +111,14 @@ export class ToastContainer extends HostContainer {
                 spacing: "default",
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: "inlineEdgeToEdge",
-                    inlineTopMargin: 16,
-                    backgroundColor: "#22FFFFFF",
-                    padding: {
-                        top: 10,
-                        right: 10,
-                        bottom: 10,
-                        left: 10
-                    }
+                    actionMode: "inline",
+                    inlineTopMargin: 16
                 },
                 actionsOrientation: "horizontal",
                 actionAlignment: "stretch"
             },
             adaptiveCard: {
-                backgroundColor: "#1F1F1F",
-                padding: {
-                    left: 10,
-                    top: 10,
-                    right: 10,
-                    bottom: 10
-                }
-            },
-            container: {
-                normal: {
-                },
-                emphasis: {
-                    backgroundColor: "#22FFFFFF",
-                    borderThickness: {
-                        top: 1,
-                        right: 1,
-                        bottom: 1,
-                        left: 1
-                    },
-                    padding: {
-                        top: 10,
-                        right: 10,
-                        bottom: 10,
-                        left: 10
-                    }
-                }
-            },
-            textBlock: {
-                color: "light"
+                allowCustomStyle: false
             },
             image: {
                 size: "medium"
@@ -137,7 +129,7 @@ export class ToastContainer extends HostContainer {
             },
             factSet: {
                 title: {
-                    color: "light",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "bolder",
@@ -145,7 +137,7 @@ export class ToastContainer extends HostContainer {
                     maxWidth: 150,
                 },
                 value: {
-                    color: "light",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",

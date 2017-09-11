@@ -1,4 +1,6 @@
-@import 'node_modules/adaptive-cards/scss/base';
+@import 'node_modules/microsoft-adaptivecards/scss/base';
+
+@include base-anchor();
 
 @include base-container();
 

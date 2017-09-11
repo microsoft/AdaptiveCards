@@ -6,7 +6,9 @@ using System.Reflection;
 using System.Xml;
 using HtmlTags;
 using Microsoft.MarkedNet;
+using AdaptiveCards.Html;
 using AdaptiveCards.Rendering.Config;
+using System.Xml.Linq;
 
 namespace AdaptiveCards.Rendering
 {
@@ -86,45 +88,101 @@ namespace AdaptiveCards.Rendering
         protected static HtmlTag OpenUrlActionRender(TypedElement actionElement, RenderContext context)
         {
             OpenUrlAction action = (OpenUrlAction)actionElement;
-            if (context.Config.SupportsInteractivity)
+
+            if (!context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, action.Url, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
-                return uiButton;
+                return null;
             }
-            return null;
+
+            var buttonElement = new HtmlTag("button") { Text = action.Title }
+                .Attr("type", "button")
+                .Attr("url", action.Url)
+                .Style("overflow", "hidden")
+                .Style("white-space", "nowrap")
+                .Style("text-overflow", "ellipsis")
+                .Style("flex",
+                    context.Config.Actions.ActionAlignment == HorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                .AddClass("ac-pushButton")
+                .AddClass("ac-openUrlAction");
+
+            return buttonElement;
         }
 
         protected static HtmlTag ShowCardActionRender(TypedElement actionElement, RenderContext context)
         {
             ShowCardAction action = (ShowCardAction)actionElement;
-            if (context.Config.SupportsInteractivity)
+
+            if (!context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, null, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
-                return uiButton;
+                return null;
             }
-            return null;
+
+            var buttonElement = new HtmlTag("button") { Text = action.Title }
+                .Attr("type", "button")
+                .Style("overflow", "hidden")
+                .Style("white-space", "nowrap")
+                .Style("text-overflow", "ellipsis")
+                .Style("flex",
+                    context.Config.Actions.ActionAlignment == HorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                .AddClass("ac-linkButton")
+                .AddClass("ac-showCardAction");
+
+            return buttonElement;
         }
 
         protected static HtmlTag SubmitActionRender(TypedElement actionElement, RenderContext context)
         {
             SubmitAction action = (SubmitAction)actionElement;
-            if (context.Config.SupportsInteractivity)
+
+            if (!context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, null, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
-                return uiButton;
+                return null;
             }
-            return null;
+
+            var buttonElement = new HtmlTag("button") { Text = action.Title }
+                .Attr("type", "button")
+                .Style("overflow", "hidden")
+                .Style("white-space", "nowrap")
+                .Style("text-overflow", "ellipsis")
+                .Style("flex",
+                    context.Config.Actions.ActionAlignment == HorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                .AddClass("ac-pushButton")
+                .AddClass("ac-submitAction");
+
+            return buttonElement;
         }
 
         protected static HtmlTag HttpActionRender(TypedElement actionElement, RenderContext context)
         {
             HttpAction action = (HttpAction)actionElement;
-            if (context.Config.SupportsInteractivity)
+            if (!context.Config.SupportsInteractivity)
             {
-                var uiButton = new LinkTag(action.Title, null, $"ac-{action.Type.Replace(".", "").ToLower()}", "ac-action");
-                return uiButton;
+                return null;
             }
-            return null;
+
+            var buttonElement = new HtmlTag("button") { Text = action.Title }
+                .Attr("type", "button")
+                .Attr("url", action.Url)
+                .Attr("method", action.Method)
+                .Style("overflow", "hidden")
+                .Style("white-space", "nowrap")
+                .Style("text-overflow", "ellipsis")
+                .Style("flex",
+                    context.Config.Actions.ActionAlignment == HorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                .AddClass("ac-pushButton")
+                .AddClass("ac-httpAction");
+
+            if (string.IsNullOrEmpty(action.Body))
+            {
+                buttonElement.Attr("body", action.Body);
+            }
+
+            if (!string.IsNullOrEmpty(action.HeadersJson))
+            {
+                buttonElement.Attr("header", action.HeadersJson);
+            }
+
+            return buttonElement;
         }
 
         protected static HtmlTag AdaptiveCardRender(TypedElement element, RenderContext context)
@@ -157,57 +215,149 @@ namespace AdaptiveCards.Rendering
                     if (uiElement != null)
                     {
                         if (uiContainer.Children.Any())
-                            switch (cardElement.Separation)
-                            {
-                                case SeparationStyle.None:
-                                    break;
-                                case SeparationStyle.Default:
-                                    {
-                                        SeparationConfig sep = context.GetElementSeparation(cardElement);
-                                        var uiSep = new DivTag()
-                                            .AddClass("ac-separator")
-                                            .Style("height", $"{sep.Spacing}px");
-                                        uiContainer.Children.Add(uiSep);
-                                    }
-                                    break;
-                                case SeparationStyle.Strong:
-                                    {
-                                        SeparationConfig sep = context.Config.StrongSeparation;
-                                        var uiSep = new DivTag()
-                                            .AddClass("ac-separator")
-                                            .Style("padding-top", $"{sep.Spacing}px")
-                                            .Style("margin-top", $"{sep.Spacing}px")
-                                            .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
-                                            .Style("border-top-width", $"{sep.LineThickness}px")
-                                            .Style("border-top-style", "solid")
-                                            ;
-                                        uiContainer.Children.Add(uiSep);
-                                    }
-                                    break;
-                            }
+                        {
+                            HtmlRenderer.AddSeparator(uiContainer, cardElement, context);
+                        }
+
                         uiContainer.Children.Add(uiElement);
                     }
                 }
             }
 
-            if (actions != null)
+            if (context.Config.SupportsInteractivity && actions != null)
             {
-                var uiActions = new DivTag()
-                    .AddClass("ac-actionset");
+                var uiButtonStrip = new DivTag()
+                    .AddClass("ac-actionset")
+                    .Style("display", "flex");
 
-                foreach (var action in actions.Take(context.Config.Actions.MaxActions))
+                // contains ShowCardAction.AdaptiveCard
+                var uiShowCardStrip = new DivTag()
+                    .Style("margin-top", context.Config.Actions.ShowCard.InlineTopMargin + "px");
+
+                if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
                 {
-                    // add actions
-                    var uiAction = context.Render(action);
-                    if (uiAction != null)
-                        uiActions.Children.Add(uiAction);
+                    uiButtonStrip.Style("flex-direction", "row");
+
+                    switch (context.Config.Actions.ActionAlignment)
+                    {
+                        case HorizontalAlignment.Center:
+                            uiButtonStrip.Style("justify-content", "center");
+                            break;
+                        case HorizontalAlignment.Right:
+                            uiButtonStrip.Style("justify-content", "flex-end");
+                            break;
+                        default:
+                            uiButtonStrip.Style("justify-content", "flex-start");
+                            break;
+                    }
+                }
+                else
+                {
+                    uiButtonStrip.Style("flex-direction", "column");
+                    switch (context.Config.Actions.ActionAlignment)
+                    {
+                        case HorizontalAlignment.Center:
+                            uiButtonStrip.Style("align-items", "center");
+                            break;
+                        case HorizontalAlignment.Right:
+                            uiButtonStrip.Style("align-items", "flex-end");
+                            break;
+                        case HorizontalAlignment.Stretch:
+                            uiButtonStrip.Style("align-items", "stretch");
+                            break;
+                        default:
+                            uiButtonStrip.Style("align-items", "flex-start");
+                            break;
+                    }
                 }
 
-                if (uiActions.Children.Any())
-                    uiContainer.Children.Add(uiActions);
+                var maxActions = Math.Min(context.Config.Actions.MaxActions, actions.Count);
+                for (var i = 0; i < maxActions; i++)
+                {
+                    // add actions
+                    var uiAction = context.Render(actions[i]);
+                    if (uiAction != null)
+                    {
+                        if (actions[i].Type == ShowCardAction.TYPE)
+                        {
+                            // add button-card mapping for clients to implement showcard action
+                            var cardId = "ac-showCard" + i;
+                            uiAction.Attr("ac-cardId", cardId);
+
+                            var uiCard = context.Render(((ShowCardAction)actions[i]).Card);
+                            if (uiCard != null)
+                            {
+                                uiCard.Attr(cardId, string.Empty)
+                                    .AddClass("ac-showCard")
+                                    .Style("display", "none");
+                                uiShowCardStrip.Children.Add(uiCard);
+                            }
+                        }
+                        uiButtonStrip.Children.Add(uiAction);
+                    }
+
+                    // add spacer between buttons according to config
+                    if (i < maxActions - 1 && context.Config.Actions.ButtonSpacing > 0)
+                    {
+                        var uiSpacer = new HtmlTag("div");
+
+                        if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
+                        {
+                            uiSpacer.Style("flex", "0 0 auto");
+                            uiSpacer.Style("width", context.Config.Actions.ButtonSpacing + "px");
+                        }
+                        else
+                        {
+                            uiSpacer.Style("height", context.Config.Actions.ButtonSpacing + "px");
+                        }
+                        uiButtonStrip.Children.Add(uiSpacer);
+                    }
+                }
+
+                if (uiButtonStrip.Children.Any())
+                {
+                    HtmlRenderer.AddSeparator(uiContainer, new ActionSet(), context);
+                    uiContainer.Children.Add(uiButtonStrip);
+                }
+
+                if (uiShowCardStrip.Children.Any())
+                {
+                    uiContainer.Children.Add(uiShowCardStrip);
+                }
             }
         }
 
+        protected static void AddSeparator(HtmlTag uiContainer, CardElement cardElement, RenderContext context)
+        {
+            switch (cardElement.Separation)
+            {
+                case SeparationStyle.None:
+                    return;
+                case SeparationStyle.Default:
+                    {
+                        SeparationConfig sep = context.GetElementSeparation(cardElement);
+                        var uiSep = new DivTag()
+                            .AddClass("ac-separator")
+                            .Style("height", $"{sep.Spacing}px");
+                        uiContainer.Children.Add(uiSep);
+                    }
+                    return;
+                case SeparationStyle.Strong:
+                    {
+                        SeparationConfig sep = context.Config.StrongSeparation;
+                        var uiSep = new DivTag()
+                                .AddClass("ac-separator")
+                                .Style("padding-top", $"{sep.Spacing}px")
+                                .Style("margin-top", $"{sep.Spacing}px")
+                                .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
+                                .Style("border-top-width", $"{sep.LineThickness}px")
+                                .Style("border-top-style", "solid")
+                            ;
+                        uiContainer.Children.Add(uiSep);
+                    }
+                    return;
+            }
+        }
 
         protected static HtmlTag ColumnRender(TypedElement element, RenderContext context)
         {
@@ -425,7 +575,6 @@ namespace AdaptiveCards.Rendering
             var uiTextBlock = new DivTag()
                 .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
                 .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
-                .Style("width", "100%")
                 .Style("box-sizing", "border-box")
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
@@ -441,12 +590,12 @@ namespace AdaptiveCards.Rendering
                     .Style("max-height", $"{lineHeight * textBlock.MaxLines}px")
                     .Style("overflow", "hidden");
 
-            var wrapStyle = "";
+            var setWrapStyleOnParagraph = false;
             if (textBlock.Wrap == false)
             {
                 uiTextBlock = uiTextBlock
                     .Style("white-space", "nowrap");
-                wrapStyle = "text-overflow: ellipsis; overflow: hidden";
+                setWrapStyleOnParagraph = true;
             }
             else
             {
@@ -454,14 +603,32 @@ namespace AdaptiveCards.Rendering
                     .Style("word-wrap", "break-word");
             }
 
-            var marked = new Marked();
-            marked.Options.Mangle = false;
-            marked.Options.Sanitize = true;
+            var textTags = MarkdownToHtmlTagConverter.Convert(RendererUtilities.ApplyTextFunctions(textBlock.Text));
+            uiTextBlock.Children.AddRange(textTags);
 
-            var html = marked.Parse(RendererUtilities.ApplyTextFunctions(textBlock.Text))
-                .Replace("<p>", $"<p style='margin-top: 0px;margin-bottom: 0px;{wrapStyle}'>");
-            uiTextBlock.Children.Add(new LiteralTag(html));
+            Action<HtmlTag> setParagraphStyles = null;
+            setParagraphStyles = (HtmlTag htmlTag) =>
+            {
+                if (htmlTag.Element?.ToLowerInvariant() == "p")
+                {
+                    htmlTag.Style("margin-top", "0px");
+                    htmlTag.Style("margin-bottom", "0px");
+                    htmlTag.Style("width", "100%");
 
+                    if (setWrapStyleOnParagraph)
+                    {
+                        htmlTag.Style("text-overflow", "ellipsis");
+                        htmlTag.Style("overflow", "hidden");
+                    }
+                }
+
+                foreach (var child in htmlTag.Children)
+                {
+                    setParagraphStyles(child);
+                }
+            };
+
+            setParagraphStyles(uiTextBlock);
 
             return uiTextBlock;
         }
@@ -554,67 +721,172 @@ namespace AdaptiveCards.Rendering
             return uiImageSet;
         }
 
+        /// <summary>
+        /// 1. IsMultiSelect == false && IsCompact == true => render as a drop down select element
+        /// 2. IsMultiSelect == false && IsCompact == false => render as a list of radio buttons
+        /// 3. IsMultiSelect == true => render as a list of toggle inputs
+        /// </summary>
         protected static HtmlTag ChoiceSetRender(TypedElement element, RenderContext context)
         {
             ChoiceSet choiceSet = (ChoiceSet)element;
-            var choiceText = GetFallbackText(choiceSet);
-            if (choiceText == null)
+            if (!choiceSet.IsMultiSelect)
             {
-                var choices = choiceSet.Choices.Select(choice => choice.Title).ToList();
-                if (choiceSet.Style == ChoiceInputStyle.Compact)
-                    if (choiceSet.IsMultiSelect)
-                        choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " and ")}";
-                    else
-                        choiceText = $"Choices: {RendererUtilities.JoinString(choices, ", ", " or ")}";
-                else // if (this.Style == ChoiceInputStyle.Expanded)
-                    choiceText = $"* {RendererUtilities.JoinString(choices, "\n* ", "\n* ")}";
+                if (choiceSet.IsCompact)
+                {
+                    var uiSelectElement = new HtmlTag("select")
+                        .Attr("name", choiceSet.Id)
+                        .AddClass("ac-input")
+                        .AddClass("ac-multichoiceInput")
+                        .Style("width", "100%");
+
+                    foreach (var choice in choiceSet.Choices)
+                    {
+                        var option = new HtmlTag("option") { Text = choice.Title }
+                            .Attr("value", choice.Value);
+
+                        if (choice.Value == choiceSet.Value)
+                        {
+                            option.Attr("selected", string.Empty);
+                        }
+                        uiSelectElement.Append(option);
+                    }
+
+                    return uiSelectElement;
+                }
+                else
+                {
+                    // render as a series of radio buttons
+                    var uiElement = new HtmlTag("div")
+                        .AddClass("ac-input")
+                        .Style("width", "100%");
+
+                    foreach (var choice in choiceSet.Choices)
+                    {
+                        var uiRadioInput = new HtmlTag("input")
+                            .Attr("type", "radio")
+                            .Attr("name", choiceSet.Id)
+                            .Attr("value", choice.Value)
+                            .Style("margin", "0px")
+                            .Style("display", "inline-block")
+                            .Style("vertical-align", "middle");
+
+                        if (choice.Value == choiceSet.Value)
+                        {
+                            uiRadioInput.Attr("checked", string.Empty);
+                        }
+
+                        var uiLabel = context.Render(new TextBlock() { Text = choice.Title })
+                            .Style("display", "inline-block")
+                            .Style("margin-left", "6px")
+                            .Style("vertical-align", "middle");
+
+                        var compoundInputElement = new HtmlTag("div")
+                            .Append(uiRadioInput)
+                            .Append(uiLabel);
+
+                        uiElement.Append(compoundInputElement);
+                    }
+
+                    return uiElement;
+                }
             }
-            var container = new Container { Separation = choiceSet.Separation };
-            container.Items.Add(new TextBlock
+            else
             {
-                Text = choiceText,
-                Wrap = true
-            });
-            container.Items.Add(new TextBlock
-            {
-                Text =
-                    RendererUtilities.JoinString(choiceSet.Choices.Where(c => c.IsSelected).Select(c => c.Title).ToList(), ", ", " and "),
-                Color = TextColor.Accent,
-                Wrap = true
-            });
-            return context.Render(container);
+                // the default values are specified by a comma separated string input.value
+                var defaultValues = choiceSet.Value?.Split(',').Select(p => p.Trim()).ToList() ?? new List<string>();
+
+                // render as a list of toggle inputs
+                var uiElement = new HtmlTag("div")
+                    .AddClass("ac-input")
+                    .Attr("width", "100%");
+
+                foreach (var choice in choiceSet.Choices)
+                {
+                    var uiCheckboxInput = new HtmlTag("input")
+                        .Attr("type", "checkbox")
+                        .Attr("name", choiceSet.Id)
+                        .Attr("value", choice.Value)
+                        .Style("margin", "0px")
+                        .Style("display", "inline-block")
+                        .Style("vertical-align", "middle");
+
+                    if (defaultValues.Contains(choice.Value))
+                    {
+                        uiCheckboxInput.Attr("checked", string.Empty);
+                    }
+
+                    var uiLabel = context.Render(new TextBlock() { Text = choice.Title })
+                        .Style("display", "inline-block")
+                        .Style("margin-left", "6px")
+                        .Style("vertical-align", "middle");
+
+                    var compoundInputElement = new HtmlTag("div")
+                        .Append(uiCheckboxInput)
+                        .Append(uiLabel);
+
+                    uiElement.Append(compoundInputElement);
+                }
+
+                return uiElement;
+            }
         }
 
         protected static HtmlTag DateInputRender(TypedElement element, RenderContext context)
         {
             DateInput input = (DateInput)element;
-            var container = new Container { Separation = input.Separation };
-            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-            if (input.Value != null)
-                container.Items.Add(new TextBlock
-                {
-                    Text = input.Value,
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
-            return context.Render(container);
+
+            var uiDateInput = new HtmlTag("input")
+                .Attr("name", input.Id)
+                .Attr("type", "date")
+                .AddClass("ac-input")
+                .AddClass("ac-dateInput")
+                .Style("width", "100%");
+
+            if (!string.IsNullOrEmpty(input.Value))
+            {
+                uiDateInput.Attr("value", input.Value);
+            }
+
+            if (!string.IsNullOrEmpty(input.Min))
+            {
+                uiDateInput.Attr("min", input.Min);
+            }
+
+            if (!string.IsNullOrEmpty(input.Max))
+            {
+                uiDateInput.Attr("max", input.Max);
+            }
+
+            return uiDateInput;
         }
 
         protected static HtmlTag NumberInputRender(TypedElement element, RenderContext context)
         {
             NumberInput input = (NumberInput)element;
-            var container = new Container { Separation = input.Separation };
-            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
+
+            var uiNumberInput = new HtmlTag("input")
+                .Attr("name", input.Id)
+                .AddClass("ac-input")
+                .AddClass("ac-numberInput")
+                .Attr("type", "number")
+                .Style("width", "100%");
+
+            if (!double.IsNaN(input.Min))
+            {
+                uiNumberInput.Attr("min", input.Min.ToString());
+            }
+
+            if (!double.IsNaN(input.Max))
+            {
+                uiNumberInput.Attr("max", input.Max.ToString());
+            }
+
             if (!double.IsNaN(input.Value))
             {
-                container.Items.Add(new TextBlock
-                {
-                    Text = input.Value.ToString(),
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
+                uiNumberInput.Attr("value", input.Value.ToString());
             }
-            return context.Render(container);
+
+            return uiNumberInput;
         }
 
         protected static HtmlTag TextInputRender(TypedElement element, RenderContext context)
@@ -642,6 +914,7 @@ namespace AdaptiveCards.Rendering
             }
 
             uiTextInput
+                .Attr("name", input.Id)
                 .AddClass("ac-textinput")
                 .AddClass("ac-input")
                 .Style("width", "100%");
@@ -662,34 +935,57 @@ namespace AdaptiveCards.Rendering
         protected static HtmlTag TimeInputRender(TypedElement element, RenderContext context)
         {
             TimeInput input = (TimeInput)element;
-            var container = new Container { Separation = input.Separation };
-            container.Items.Add(new TextBlock { Text = GetFallbackText(input) ?? input.Placeholder });
-            if (input.Value != null)
-                container.Items.Add(new TextBlock
-                {
-                    Text = input.Value,
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
-            return context.Render(container);
+            var uiTimeInput = new HtmlTag("input")
+                .Attr("type", "time")
+                .Attr("name", input.Id)
+                .AddClass("ac-input")
+                .AddClass("ac-timeInput")
+                .Style("width", "100%");
+
+            if (!string.IsNullOrEmpty(input.Value))
+            {
+                uiTimeInput.Attr("value", input.Value);
+            }
+
+            if (!string.IsNullOrEmpty(input.Min))
+            {
+                uiTimeInput.Attr("min", input.Min);
+            }
+
+            if (!string.IsNullOrEmpty(input.Max))
+            {
+                uiTimeInput.Attr("max", input.Max);
+            }
+
+            return uiTimeInput;
         }
 
         protected static HtmlTag ToggleInputRender(TypedElement element, RenderContext context)
         {
-            ToggleInput input = (ToggleInput)element;
-            var container = new Container { Separation = input.Separation };
-            container.Items.Add(new TextBlock { Text = GetFallbackText(input) });
-            if (input.Value != null)
-                container.Items.Add(new TextBlock
-                {
-                    Text =
-                        input.Value == (input.ValueOn ?? "true")
-                            ? input.ValueOn ?? "selected"
-                            : input.ValueOff ?? "not selected",
-                    Color = TextColor.Accent,
-                    Wrap = true
-                });
-            return context.Render(container);
+            ToggleInput toggleInput = (ToggleInput)element;
+
+            var uiElement = new HtmlTag("div")
+                .AddClass("ac-input")
+                .Style("width", "100%");
+
+            var uiCheckboxInput = new HtmlTag("input")
+                .Attr("type", "checkbox")
+                .Attr("name", toggleInput.Id)
+                .Style("display", "inline-block")
+                .Style("vertical-align", "middle")
+                .Style("margin", "0px");
+
+            if (toggleInput.Value == toggleInput.ValueOn)
+            {
+                uiCheckboxInput.Attr("checked", string.Empty);
+            }
+
+            var uiLabel = context.Render(new TextBlock { Text = toggleInput.Title })
+                .Style("display", "inline-block")
+                .Style("margin-left", "6px")
+                .Style("vertical-align", "middle");
+
+            return uiElement.Append(uiCheckboxInput).Append(uiLabel);
         }
 
         protected static string GetFallbackText(CardElement cardElement)

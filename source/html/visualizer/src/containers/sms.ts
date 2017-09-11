@@ -26,7 +26,8 @@ export class SMSContainer extends HostContainer {
                 default: 8,
                 medium: 20,
                 large: 30,
-                extraLarge: 40
+                extraLarge: 40,
+                padding: 10
             },
             separator: {
                 lineThickness: 1,
@@ -46,34 +47,56 @@ export class SMSContainer extends HostContainer {
                 normal: 400,
                 bolder: 600
             },
-            colors:{
-//                default: {
-//                    normal: "#FF000000",
-//                    subtle: "#b2000000"
-//                },
-                accent: {
-                    normal: "#FF0000FF",
-                    subtle: "#b20000FF"
+            containerStyles: {
+                default: {
+                    backgroundColor: "#FFFFFF",
+                    fontColors: {
+                        default: {
+                            normal: "#FF101010",
+                            subtle: "#b2101010"
+                        },
+                        accent: {
+                            normal: "#FF0000FF",
+                            subtle: "#b20000FF"
+                        },
+                        good: {
+                            normal: "#FF008000",
+                            subtle: "#b2008000"
+                        },
+                        warning: {
+                            normal: "#FFFFD700",
+                            subtle: "#b2FFD700"
+                        },
+                        attention: {
+                            normal: "#FF8B0000",
+                            subtle: "#b28B0000"
+                        }
+                    }
                 },
-                dark: {
-                    normal: "#FF101010",
-                    subtle: "#b2101010"
-                },
-                light: {
-                    normal: "#FFFFFFFF",
-                    subtle: "#b2FFFFFF"
-                },
-                good: {
-                    normal: "#FF008000",
-                    subtle: "#b2008000"
-                },
-                warning: {
-                    normal: "#FFFFD700",
-                    subtle: "#b2FFD700"
-                },
-                attention: {
-                    normal: "#FF8B0000",
-                    subtle: "#b28B0000"
+                emphasis: {
+                    backgroundColor: "#08000000",
+                    fontColors: {
+                        default: {
+                            normal: "#FF101010",
+                            subtle: "#b2101010"
+                        },
+                        accent: {
+                            normal: "#FF0000FF",
+                            subtle: "#b20000FF"
+                        },
+                        good: {
+                            normal: "#FF008000",
+                            subtle: "#b2008000"
+                        },
+                        warning: {
+                            normal: "#FFFFD700",
+                            subtle: "#b2FFD700"
+                        },
+                        attention: {
+                            normal: "#FF8B0000",
+                            subtle: "#b28B0000"
+                        }
+                    }
                 }
             },
             imageSizes: {
@@ -86,50 +109,14 @@ export class SMSContainer extends HostContainer {
                 spacing: "default",
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: "inlineEdgeToEdge",
-                    inlineTopMargin: 16,
-                    backgroundColor: "#08000000",
-                    padding: {
-                        top: 8,
-                        right: 8,
-                        bottom: 8,
-                        left: 8
-                    }
+                    actionMode: "inline",
+                    inlineTopMargin: 16
                 },
                 actionsOrientation: "horizontal",
                 actionAlignment: "left"
             },
             adaptiveCard: {
-                backgroundColor: "#FFFFFF",
-                padding: {
-                    left: 8,
-                    top: 8,
-                    right: 8,
-                    bottom: 8
-                }
-            },
-            container: {
-                normal: {
-                },
-                emphasis: {
-                    backgroundColor: "#EEEEEE",
-                    borderColor: "#AAAAAA",
-                    borderThickness: {
-                        top: 1,
-                        right: 1,
-                        bottom: 1,
-                        left: 1
-                    },
-                    padding: {
-                        top: 10,
-                        right: 10,
-                        bottom: 10,
-                        left: 10
-                    }
-                }
-            },
-            textBlock: {
-                color: "dark"
+                allowCustomStyle: false
             },
             image: {
                 size: "medium"
@@ -140,7 +127,7 @@ export class SMSContainer extends HostContainer {
             },
             factSet: {
                 title: {
-                    color: "dark",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "bolder",
@@ -148,7 +135,7 @@ export class SMSContainer extends HostContainer {
                     maxWidth: 150
                 },
                 value: {
-                    color: "dark",
+                    color: "default",
                     size: "normal",
                     isSubtle: false,
                     weight: "normal",

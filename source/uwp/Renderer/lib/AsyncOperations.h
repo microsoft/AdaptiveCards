@@ -53,6 +53,16 @@ public:
         return OnXamlImagesLoaded();
     }
 
+    IFACEMETHODIMP ImagesLoadingHadError()
+    {
+        return OnXamlImagesHadError();
+    }
+
+    IFACEMETHODIMP XamlBuilderHadError()
+    {
+        return OnXamlBuilderHadError();
+    }
+
 protected:
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_rootXamlElement;
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Core::ICoreDispatcher> m_dispatcher;
@@ -67,7 +77,15 @@ protected:
             MakeAgileDispatcherCallback([this]() -> HRESULT
         {
             m_builder->AddListener(this);
-            m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get());
+            try
+            {
+                m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get());
+            }
+            catch (...)
+            {
+                //Catch all non-Image loading related problems.
+                return XamlBuilderHadError();
+            }
             return S_OK;
         }).Get(),
             &dispatcherAsyncAction);
@@ -91,6 +109,13 @@ protected:
 
     virtual HRESULT XamlRenderCompleted(ABI::Windows::Foundation::IAsyncAction* action, ABI::Windows::Foundation::AsyncStatus status) = 0;
     virtual HRESULT OnXamlImagesLoaded() = 0;
+    virtual HRESULT OnXamlImagesHadError() = 0;
+
+    HRESULT OnXamlBuilderHadError()
+    {
+        AsyncBase::TryTransitionToError(E_FAIL);
+        return AsyncBase::FireCompletion();
+    }
 
 private:
     std::function<ABI::Windows::UI::Xaml::IUIElement*(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard*)> m_dispatchFunction;
@@ -123,6 +148,12 @@ protected:
 
     HRESULT OnXamlImagesLoaded()
     {
+        return AsyncBase::FireCompletion();
+    }
+
+    HRESULT OnXamlImagesHadError()
+    {
+        AsyncBase::TryTransitionToError(E_FAIL);
         return AsyncBase::FireCompletion();
     }
 

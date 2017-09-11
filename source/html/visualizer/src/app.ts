@@ -39,18 +39,19 @@ function renderCard(): HTMLElement {
 
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
 
+    var json = JSON.parse(currentCardPayload);
+
+    var adaptiveCard = new Adaptive.AdaptiveCard();
+
     try {
-        var configuration = Adaptive.parseHostConfig(currentConfigPayload);
-        Adaptive.setHostConfig(configuration);
+        adaptiveCard.hostConfig = Adaptive.parseHostConfig(currentConfigPayload);
     }
     catch (e) {
         // TODO
     }
-
-    var json = JSON.parse(currentCardPayload);
-
-    var adaptiveCard = new Adaptive.AdaptiveCard();
+    
     adaptiveCard.parse(json);
+    
     lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
     showValidationErrors();
@@ -355,6 +356,7 @@ function actionExecuted(action: Adaptive.Action) {
     }
 
     // Uncomment to test the action's setStatus method:
+    /*
     action.setStatus(
         {
             "type": "AdaptiveCard",
@@ -369,7 +371,8 @@ function actionExecuted(action: Adaptive.Action) {
         });
 
     window.setTimeout(actionCompletedCallback, 2000, action);
-
+    */
+    
     alert(message);
 }
 
@@ -462,7 +465,60 @@ function elementVisibilityChanged(element: Adaptive.CardElement) {
     alert("An element is now " + (element.isVisible ? "visible" : "invisible"));
 }
 
+export class ToggleVisibilityAction extends Adaptive.Action {
+    targetElementIds: Array<string> = [];
+
+    getJsonTypeName(): string {
+        return "Action.ToggleVisibility";
+    }
+
+    execute() {
+        if (this.targetElementIds) {
+            for (var i = 0; i < this.targetElementIds.length; i++) {
+                var targetElement = this.parent.getRootElement().getElementById(this.targetElementIds[i]);
+
+                if (targetElement) {
+                    targetElement.isVisible = !targetElement.isVisible;
+                }
+            }
+        }
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.targetElementIds = json["targetElementIds"] as Array<string>;
+    }
+}
+
+var betaFeaturesEnabled: boolean = false;
+
 window.onload = () => {
+    betaFeaturesEnabled = location.search.indexOf("beta=true") >= 0;
+
+    if (betaFeaturesEnabled) {
+        Adaptive.AdaptiveCard.useAutoPadding = true;
+
+        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
+        
+        Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
+            if (typeof json["isVisible"] === "boolean") {
+                element.isVisible = json["isVisible"];
+            }        
+        }
+
+        Adaptive.AdaptiveCard.onAnchorClicked = (anchor: HTMLAnchorElement) => {
+            if (anchor.href.startsWith("executeaction:")) {
+                alert("Executing inline action...");
+
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
     currentConfigPayload = Constants.defaultConfigPayload;
 
     document.getElementById("editCard").onclick = (e) => {
@@ -483,12 +539,6 @@ window.onload = () => {
     Adaptive.AdaptiveCard.onElementVisibilityChanged = elementVisibilityChanged;
     */
 
-    Adaptive.AdaptiveCard.onParseElement = (element: Adaptive.CardElement, json: any) => {
-        if (typeof json["isVisible"] === "boolean") {
-            element.isVisible = json["isVisible"];
-        }        
-    }
-    
     // Uncomment to test the onInlineCardExpanded event:
     // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
 

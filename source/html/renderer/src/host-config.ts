@@ -17,71 +17,65 @@ function parseSpacingDefinition(obj: any): ISpacingDefinition {
     } : null;
 }
 
-export interface IColorDefinition {
+export interface IPaddingDefinition {
+    top: Enums.Padding,
+    right: Enums.Padding,
+    bottom: Enums.Padding,
+    left: Enums.Padding
+}
+
+function parsePaddingDefinition(obj: any): IPaddingDefinition {
+    return obj ? {
+        top: Utils.getValueOrDefault<Enums.Padding>(obj["top"], "none"),
+        right: Utils.getValueOrDefault<Enums.Padding>(obj["right"], "none"),
+        bottom: Utils.getValueOrDefault<Enums.Padding>(obj["bottom"], "none"),
+        left: Utils.getValueOrDefault<Enums.Padding>(obj["left"], "none")
+    } : null;
+}
+
+export interface ITextColorDefinition {
     normal: string,
     subtle: string
 }
 
-function parseColorDefinition(obj: any): IColorDefinition {
+function parseTextColorDefinition(obj: any): ITextColorDefinition {
     return obj ? {
         normal: obj["normal"],
         subtle: obj["subtle"]
     } : null;
 }
 
-export interface ISeparationDefinition {
-    spacing: number,
-    lineThickness?: number,
-    lineColor?: string
+export interface IContainerStyleDefinition {
+    backgroundColor?: string,
+    fontColors: {
+        default: ITextColorDefinition,
+        accent: ITextColorDefinition,
+        good: ITextColorDefinition,
+        warning: ITextColorDefinition,
+        attention: ITextColorDefinition
+    },
+}
+
+function parseColorPaletteDefinition(obj: any): IContainerStyleDefinition {
+    return obj ? {
+        backgroundColor: obj["backgroundColor"],
+        fontColors: {
+            default: parseTextColorDefinition(obj["fontColors"]["default"]),
+            accent: parseTextColorDefinition(obj["fontColors"]["accent"]),
+            good: parseTextColorDefinition(obj["fontColors"]["good"]),
+            warning: parseTextColorDefinition(obj["fontColors"]["warning"]),
+            attention: parseTextColorDefinition(obj["fontColors"]["attention"])
+        }
+    } : null;
 }
 
 export interface IAdaptiveCardConfig {
-    backgroundColor: string,
-    padding: ISpacingDefinition
+    allowCustomStyle: boolean
 }
 
 function parseAdaptiveCardConfiguration(obj: any): IAdaptiveCardConfig {
     return obj ? {
-        backgroundColor: obj["backgroundColor"],
-        padding: parseSpacingDefinition(obj["padding"])
-    } : null;
-}
-
-export interface ITextBlockConfig {
-    color: Enums.TextColor
-}
-
-function parseTextBlockConfiguration(obj: any): ITextBlockConfig {
-    return obj ? {
-        color: obj["color"]
-    } : null;
-}
-
-export interface IContainerStyleDefinition {
-    backgroundColor?: string,
-    padding?: ISpacingDefinition,
-    borderColor?: string,
-    borderThickness?: ISpacingDefinition
-}
-
-function parseContainerStyleDefinition(obj: any): IContainerStyleDefinition {
-    return obj ? {
-        backgroundColor: obj["backgroundColor"],
-        padding: parseSpacingDefinition(obj["padding"]),
-        borderColor: obj["borderColor"],
-        borderThickness: parseSpacingDefinition(obj["borderThickness"])
-    } : null;
-}
-
-export interface IContainerConfig {
-    normal: IContainerStyleDefinition,
-    emphasis: IContainerStyleDefinition
-}
-
-function parseContainerConfiguration(obj: any): IContainerConfig {
-    return obj ? {
-        normal: parseContainerStyleDefinition(obj["normal"]),
-        emphasis: parseContainerStyleDefinition(obj["emphasis"])
+        allowCustomStyle: obj["allowCustomStyle"]
     } : null;
 }
 
@@ -118,7 +112,7 @@ export interface IFactTextDefinition {
 function parseFactTextDefinition(obj: any): IFactTextDefinition {
     return obj ? {
         size: Utils.getValueOrDefault<Enums.TextSize>(obj["size"], "normal"),
-        color: Utils.getValueOrDefault<Enums.TextColor>(obj["color"], "dark"),
+        color: Utils.getValueOrDefault<Enums.TextColor>(obj["color"], "default"),
         isSubtle: obj["isSubtle"],
         weight: Utils.getValueOrDefault<Enums.TextWeight>(obj["weight"], "normal"),
         wrap: obj["wrap"]
@@ -156,16 +150,14 @@ function parseFactSetConfiguration(obj: any): IFactSetConfig {
 export interface IShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode,
     inlineTopMargin: number,
-    backgroundColor: string,
-    padding: ISpacingDefinition
+    style?: Enums.ContainerStyle
 }
 
 function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
     return obj ? {
-        actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inlineEdgeToEdge"),
+        actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inline"),
         inlineTopMargin: obj["inlineTopMargin"],
-        backgroundColor: obj["backgroundColor"],
-        padding: parseSpacingDefinition(obj["padding"])
+        style: Utils.getValueOrDefault<Enums.ContainerStyle>(obj["style"], "emphasis")
     } : null;
 }
 
@@ -211,20 +203,17 @@ export interface IHostConfig {
         medium: number,
         large: number
     }
-    colors: {
-        dark: IColorDefinition,
-        light: IColorDefinition,
-        accent: IColorDefinition,
-        good: IColorDefinition,
-        warning: IColorDefinition,
-        attention: IColorDefinition
+    containerStyles: {
+        default: IContainerStyleDefinition,
+        emphasis: IContainerStyleDefinition
     },
     spacing: {
         small: number,
         default: number,
         medium: number,
         large: number,
-        extraLarge: number
+        extraLarge: number,
+        padding: number
     },
     separator: {
         lineThickness: number,
@@ -232,8 +221,6 @@ export interface IHostConfig {
     }
     actions: IActionsConfig,
     adaptiveCard: IAdaptiveCardConfig,
-    container: IContainerConfig,
-    textBlock: ITextBlockConfig,
     image: IImageConfig,
     imageSet: IImageSetConfig,
     factSet: IFactSetConfig
@@ -262,20 +249,17 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
             medium: obj["imageSizes"]["medium"],
             large: obj["imageSizes"]["large"],
         },
-        colors: {
-            dark: parseColorDefinition(obj["colors"]["dark"]),
-            light: parseColorDefinition(obj["colors"]["light"]),
-            accent: parseColorDefinition(obj["colors"]["accent"]),
-            good: parseColorDefinition(obj["colors"]["good"]),
-            warning: parseColorDefinition(obj["colors"]["warning"]),
-            attention: parseColorDefinition(obj["colors"]["attention"])
-        },        
+        containerStyles: {
+            default: parseColorPaletteDefinition(obj["containerStyles"]["default"]),
+            emphasis: parseColorPaletteDefinition(obj["containerStyles"]["emphasis"])
+        },
         spacing: {
             small: obj["spacing"]["small"],
             default: obj["spacing"]["default"],
             medium: obj["spacing"]["medium"],
             large: obj["spacing"]["large"],
-            extraLarge: obj["spacing"]["extraLarge"]
+            extraLarge: obj["spacing"]["extraLarge"],
+            padding: obj["spacing"]["padding"]
         },
         separator: {
             lineThickness: obj["separator"]["lineThickness"],
@@ -283,8 +267,6 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
         },
         actions: parseActionsConfiguration(obj["actions"]),
         adaptiveCard: parseAdaptiveCardConfiguration(obj["adaptiveCard"]),
-        container: parseContainerConfiguration(obj["container"]),
-        textBlock: parseTextBlockConfiguration(obj["textBlock"]),
         image: parseImageConfiguration(obj["image"]),
         imageSet: parseImageSetConfiguration(obj["imageSet"]),
         factSet: parseFactSetConfiguration(obj["factSet"])
