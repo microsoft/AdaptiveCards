@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using AdaptiveCards.XamlCardRenderer;
+using XamlCardVisualizer.ViewModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -26,161 +27,73 @@ namespace XamlCardVisualizer
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        //Use Literal Host Config String while Visualizer is updated with HostConfig Panel
-        const string hostConfigString = @"{
-                ""fontSizes"": {
-                    ""small"": 10,
-                    ""normal"" : 20,
-                    ""medium"" : 30,
-                    ""large"" : 40,
-                    ""extraLarge"" : 50
-                },
-                ""colors"": {
-                    ""default"": {
-                        ""normal"": ""#FF000000"",
-                        ""subtle"" : ""#b2000000""
-                        },
-                    ""accent"" : {
-                        ""normal"": ""#FF0000FF"",
-                        ""subtle"" : ""#b20000FF""
-                        },
-                    ""dark"" : {
-                        ""normal"": ""#FF101010"",
-                        ""subtle"" : ""#b2101010""
-                        },
-                        ""light"" : {
-                            ""normal"": ""#FFFFFFFF"",
-                            ""subtle"" : ""#b2FFFFFF""
-                        },
-                        ""good"" : {
-                            ""normal"": ""#FF008000"",
-                            ""subtle"" : ""#b2008000""
-                            },
-                        ""warning"" : {
-                            ""normal"": ""#FFFFD700"",
-                            ""subtle"" : ""#b2FFD700""
-                        },
-                        ""attention"" : {
-                        ""normal"": ""#FF8B0000"",
-                        ""subtle"" : ""#b28B0000""
-                        }}
-                }";
+        public MainPageViewModel ViewModel { get; set; }
 
         public MainPage()
         {
             this.InitializeComponent();
 
-            // Construct a temporary object model tree until the parser is available
-            AdaptiveCard card = new AdaptiveCard();
-            AdaptiveContainer container1 = new AdaptiveContainer();
-
-            AdaptiveTextBlock textBlock1 = new AdaptiveTextBlock();
-            textBlock1.Text = "Hello";
-            textBlock1.Weight = TextWeight.Normal;
-            textBlock1.Color = TextColor.Warning;
-            textBlock1.Size = TextSize.Large;
-            container1.Items.Add(textBlock1);
-            AdaptiveTextBlock textBlock2 = new AdaptiveTextBlock();
-            textBlock2.Text = "World";
-            textBlock2.Weight = TextWeight.Normal;
-            textBlock2.Color = TextColor.Accent;
-            container1.Items.Add(textBlock2);
-
-            card.Body.Add(container1);
-
-            AdaptiveContainer container2 = new AdaptiveContainer();
-
-            AdaptiveTextBlock textBlock3 = new AdaptiveTextBlock();
-            textBlock3.Text = "In new container";
-            textBlock3.Weight = TextWeight.Normal;
-            textBlock3.Color = TextColor.Default;
-            container2.Items.Add(textBlock3);
-
-            card.Body.Add(container2);
-
-            AdaptiveImage image = new AdaptiveImage();
-            image.Url = new Uri("https://unsplash.it/360/202?image=883");
-            card.Body.Add(image);
-
-            m_renderer = new AdaptiveCards.XamlCardRenderer.XamlCardRenderer();
-
-            AdaptiveHostConfig hostConfig = AdaptiveHostConfig.CreateHostConfigFromJson(hostConfigString);
-            m_renderer.SetHostConfig(hostConfig);
-
-            m_renderer.Action += async (sender, e) =>
-            {
-                if (m_actionDialog != null)
-                {
-                    m_actionDialog.Hide();
-                }
-
-                m_actionDialog = new ContentDialog();
-
-                if (e.Action.ActionType == ActionType.ShowCard)
-                {
-                    AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
-                    m_actionDialog.Content = await m_renderer.RenderCardAsXamlAsync(showCardAction.Card);
-                }
-                else
-                {
-                    m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs;
-                }
-
-                m_actionDialog.PrimaryButtonText = "Close";
-
-                await m_actionDialog.ShowAsync();
-            };
-
-            PopulateXamlContent(card);
+            Load();
         }
 
-        private async void PopulateXamlContent(AdaptiveCard card)
+        private async void Load()
         {
-            renderedXamlPresenter.Content = await m_renderer.RenderCardAsXamlAsync(card);
+            IsEnabled = false;
+
+            ViewModel = await MainPageViewModel.LoadAsync();
+            DataContext = ViewModel;
+
+            IsEnabled = true;
         }
 
-        private async void loadFileButton_Clicked(object sender, RoutedEventArgs args)
+        private void loadFileButton_Clicked(object sender, RoutedEventArgs args)
         {
-            FileOpenPicker openPicker = new FileOpenPicker();
-            openPicker.ViewMode = PickerViewMode.List;
-            openPicker.FileTypeFilter.Add(".json");
+            ViewModel.OpenDocument();
+        }
 
-            StorageFile file = await openPicker.PickSingleFileAsync();
-            if (file != null)
+        private void ButtonNewCard_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.NewDocument();
+        }
+
+        private void AppBarNew_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.NewDocument();
+        }
+
+        private void AppBarOpen_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OpenDocument();
+        }
+
+        private async void AppBarSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.CurrentDocument == null)
             {
-                this.adaptiveJson.Document.SetText(Windows.UI.Text.TextSetOptions.None, await FileIO.ReadTextAsync(file));
+                return;
             }
-            else
+
+            IsEnabled = false;
+            await ViewModel.CurrentDocument.SaveAsync();
+            IsEnabled = true;
+        }
+
+        private void CommandBar_Opening(object sender, object e)
+        {
+            SetIsCompactOnAppBarButtons(false);
+        }
+
+        private void CommandBar_Closing(object sender, object e)
+        {
+            SetIsCompactOnAppBarButtons(true);
+        }
+
+        private void SetIsCompactOnAppBarButtons(bool isCompact)
+        {
+            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<AppBarButton>())
             {
+                button.IsCompact = isCompact;
             }
         }
-
-        private async void generateButton_Clicked(object sender, RoutedEventArgs args)
-        {
-            renderedXamlPresenter.Content = null;
-
-            string adaptiveJsonText;
-            this.adaptiveJson.Document.GetText(Windows.UI.Text.TextGetOptions.None, out adaptiveJsonText);
-            try
-            {
-                renderedXamlPresenter.Content = await m_renderer.RenderAdaptiveJsonAsXamlAsync(adaptiveJsonText);
-            }
-            catch (Exception)
-            {
-                GenerateErrorUI();
-            }
-        }
-
-        private void GenerateErrorUI()
-        {
-            Grid errorGrid = new Grid();
-            TextBlock errorText = new TextBlock();
-            errorText.Text = "An error occurred attempting to generate a visual from this Json";
-            errorGrid.Children.Add(errorText);
-            renderedXamlPresenter.Content = errorGrid;
-        }
-
-        private AdaptiveCards.XamlCardRenderer.XamlCardRenderer m_renderer;
-        private ContentDialog m_actionDialog;
     }
 }
