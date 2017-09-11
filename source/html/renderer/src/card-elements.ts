@@ -53,7 +53,7 @@ function getEffectivePadding(hostConfig: HostConfig.IHostConfig, padding: Enums.
     }
 }
 
-function paddingToSpacingDefinition(hostConfig: HostConfig.IHostConfig,padding: HostConfig.IPaddingDefinition): HostConfig.ISpacingDefinition {
+function paddingToSpacingDefinition(hostConfig: HostConfig.IHostConfig, padding: HostConfig.IPaddingDefinition): HostConfig.ISpacingDefinition {
     return {
         top: getEffectivePadding(hostConfig, padding.top),
         right: getEffectivePadding(hostConfig, padding.right),
@@ -406,7 +406,7 @@ export abstract class CardElement {
     }
 
     get renderedElement(): HTMLElement {
-        return this._renderedElement;        
+        return this._renderedElement;
     }
 
     get separatorElement(): HTMLElement {
@@ -738,7 +738,18 @@ export class Image extends CardElement {
             element.style.alignItems = "flex-start";
 
             if (this.selectAction != null) {
+                element.tabIndex = 0
+                element.setAttribute("role", "button");
+                element.setAttribute("aria-label", this.selectAction.title);
                 element.classList.add("ac-selectable");
+            }
+
+            element.onkeypress = (e) => {
+                if (this.selectAction) {
+                    if (e.keyCode == 13 || e.keyCode == 32) { // enter or space pressed
+                        this.selectAction.execute();
+                    }
+                }
             }
 
             element.onclick = (e) => {
@@ -800,6 +811,7 @@ export class Image extends CardElement {
             }
 
             imageElement.src = this.url;
+            imageElement.alt = this.altText;
 
             element.appendChild(imageElement);
         }
@@ -813,6 +825,7 @@ export class Image extends CardElement {
     selectAction: Action;
     pixelWidth?: number = null;
     pixelHeight?: number = null;
+    altText: string = "";
 
     getJsonTypeName(): string {
         return "Image";
@@ -834,6 +847,7 @@ export class Image extends CardElement {
         this.url = json["url"];
         this.style = Utils.getValueOrDefault<Enums.ImageStyle>(json["style"], this.style);
         this.size = Utils.getValueOrDefault<Enums.Size>(json["size"], this.size);
+        this.altText = json["altText"];
 
         var selectActionJson = json["selectAction"];
 
@@ -841,6 +855,7 @@ export class Image extends CardElement {
             this.selectAction = createActionInstance(selectActionJson);
             invokeSetParent(this.selectAction, this);
         }
+
 
         if (json["pixelWidth"] && typeof json["pixelWidth"] === "number") {
             this.pixelWidth = json["pixelWidth"];
@@ -993,9 +1008,11 @@ export class TextInput extends Input {
             this._textareaElement = document.createElement("textarea");
             this._textareaElement.className = "ac-input ac-textInput ac-multiline";
             this._textareaElement.style.width = "100%";
+            this._textareaElement.tabIndex = 0;
 
             if (!Utils.isNullOrEmpty(this.placeholder)) {
                 this._textareaElement.placeholder = this.placeholder;
+                this._textareaElement.setAttribute("aria-label", this.placeholder)
             }
 
             if (!Utils.isNullOrEmpty(this.defaultValue)) {
@@ -1013,9 +1030,11 @@ export class TextInput extends Input {
             this._inputElement.type = "text";
             this._inputElement.className = "ac-input ac-textInput";
             this._inputElement.style.width = "100%";
+            this._inputElement.tabIndex = 0;
 
             if (!Utils.isNullOrEmpty(this.placeholder)) {
                 this._inputElement.placeholder = this.placeholder;
+                this._inputElement.setAttribute("aria-label", this.placeholder)
             }
 
             if (!Utils.isNullOrEmpty(this.defaultValue)) {
@@ -1071,7 +1090,9 @@ export class ToggleInput extends Input {
         this._checkboxInputElement.style.verticalAlign = "middle";
         this._checkboxInputElement.style.margin = "0";
         this._checkboxInputElement.style.flex = "0 0 auto";
-        
+        this._checkboxInputElement.setAttribute("aria-label", this.title);
+        this._checkboxInputElement.tabIndex = 0;
+
         if (this.defaultValue == this.valueOn) {
             this._checkboxInputElement.checked = true;
         }
@@ -1151,6 +1172,7 @@ export class ChoiceSetInput extends Input {
                     var option = document.createElement("option");
                     option.value = this.choices[i].value;
                     option.text = this.choices[i].title;
+                    option.setAttribute("aria-label", this.choices[i].title);
 
                     if (this.choices[i].value == this.defaultValue) {
                         option.selected = true;
@@ -1166,7 +1188,7 @@ export class ChoiceSetInput extends Input {
                 var element = document.createElement("div");
                 element.className = "ac-input";
                 element.style.width = "100%";
-                
+
                 this._toggleInputs = [];
 
                 for (var i = 0; i < this.choices.length; i++) {
@@ -1178,7 +1200,8 @@ export class ChoiceSetInput extends Input {
                     radioInput.name = this.id;
                     radioInput.value = this.choices[i].value;
                     radioInput.style.flex = "0 0 auto";
-                    
+                    radioInput.setAttribute("aria-label", this.choices[i].title);
+
                     if (this.choices[i].value == this.defaultValue) {
                         radioInput.checked = true;
                     }
@@ -1196,7 +1219,7 @@ export class ChoiceSetInput extends Input {
 
                     var compoundInput = document.createElement("div");
                     compoundInput.style.display = "flex";
-                    
+
                     Utils.appendChild(compoundInput, radioInput);
                     Utils.appendChild(compoundInput, labelElement);
 
@@ -1213,7 +1236,7 @@ export class ChoiceSetInput extends Input {
             var element = document.createElement("div");
             element.className = "ac-input";
             element.style.width = "100%";
-            
+
             this._toggleInputs = [];
 
             for (var i = 0; i < this.choices.length; i++) {
@@ -1224,6 +1247,7 @@ export class ChoiceSetInput extends Input {
                 checkboxInput.style.verticalAlign = "middle";
                 checkboxInput.value = this.choices[i].value;
                 checkboxInput.style.flex = "0 0 auto";
+                checkboxInput.setAttribute("aria-label", this.choices[i].title);
 
                 if (defaultValues) {
                     if (defaultValues.indexOf(this.choices[i].value) >= 0) {
@@ -1244,7 +1268,7 @@ export class ChoiceSetInput extends Input {
 
                 var compoundInput = document.createElement("div");
                 compoundInput.style.display = "flex";
-                
+
                 Utils.appendChild(compoundInput, checkboxInput);
                 Utils.appendChild(compoundInput, labelElement);
 
@@ -1353,9 +1377,15 @@ export class NumberInput extends Input {
         this._numberInputElement.min = this.min;
         this._numberInputElement.max = this.max;
         this._numberInputElement.style.width = "100%";
+        this._numberInputElement.tabIndex = 0;
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._numberInputElement.value = this.defaultValue;
+        }
+
+        if (!Utils.isNullOrEmpty(this.placeholder)) {
+            this._numberInputElement.placeholder = this.placeholder;
+            this._numberInputElement.setAttribute("aria-label", this.placeholder);
         }
 
         return this._numberInputElement;
@@ -1363,6 +1393,8 @@ export class NumberInput extends Input {
 
     min: string;
     max: string;
+    placeholder: string;
+
 
     getJsonTypeName(): string {
         return "Input.Number";
@@ -1371,6 +1403,7 @@ export class NumberInput extends Input {
     parse(json: any) {
         super.parse(json);
 
+        this.placeholder = json["placeholder"];
         this.min = json["min"];
         this.max = json["max"];
     }
@@ -1472,6 +1505,7 @@ class ActionButton {
 
         this._element = document.createElement("button");
         this._element.type = "button";
+
         this._element.style.overflow = "hidden";
         this._element.style.whiteSpace = "nowrap";
         this._element.style.textOverflow = "ellipsis";
@@ -1493,6 +1527,7 @@ class ActionButton {
     set text(value: string) {
         this._text = value;
         this._element.innerText = this._text;
+        this._element.setAttribute("aria-label", this._text);
     }
 
     get element(): HTMLElement {
@@ -1976,7 +2011,7 @@ class ActionCollection {
         var element = document.createElement("div");
 
         this._actionCardContainer = document.createElement("div");
-        
+
         this._renderedActionCount = 0;
 
         var maxActions = this._owner.hostConfig.actions.maxActions ? Math.min(this._owner.hostConfig.actions.maxActions, this.items.length) : this.items.length;
@@ -2221,7 +2256,7 @@ export class Container extends CardElement {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
             return false;
         }
-    
+
         if (forbiddenElementTypes) {
             for (var i = 0; i < forbiddenElementTypes.length; i++) {
                 if (element.getJsonTypeName() === forbiddenElementTypes[i]) {
@@ -2229,10 +2264,10 @@ export class Container extends CardElement {
                 }
             }
         }
-    
+
         return true;
     }
-    
+
     private _items: Array<CardElement> = [];
     private _style?: Enums.ContainerStyle = null;
 
@@ -2389,12 +2424,23 @@ export class Container extends CardElement {
 
         if (this.selectAction) {
             element.classList.add("ac-selectable");
+            element.tabIndex = 0;
+            element.setAttribute("role", "button");
+            element.setAttribute("aria-label", this.selectAction.title);
         }
 
         element.onclick = (e) => {
             if (this.selectAction != null) {
                 this.selectAction.execute();
                 e.cancelBubble = true;
+            }
+        }
+
+        element.onkeypress = (e) => {
+            if (this.selectAction != null) {
+                if (e.keyCode == 13 || e.keyCode == 32) { // enter or space pressed
+                    this.selectAction.execute();
+                }
             }
         }
 
@@ -2462,7 +2508,7 @@ export class Container extends CardElement {
     }
 
     isLastElement(element: CardElement): boolean {
-        for (var i = this._items.length - 1; i >= 0; i --) {
+        for (var i = this._items.length - 1; i >= 0; i--) {
             if (this._items[i].isVisible) {
                 return this._items[i] == element;
             }
@@ -2524,7 +2570,7 @@ export class Container extends CardElement {
                 var elementType = items[i]["type"];
 
                 var element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
-                
+
                 if (!element) {
                     raiseParseError(
                         {
@@ -2532,7 +2578,7 @@ export class Container extends CardElement {
                             message: "Unknown element type: " + elementType
                         });
                 }
-            
+
                 this.addItem(element);
 
                 element.parse(items[i]);
@@ -3253,12 +3299,17 @@ export class AdaptiveCard extends ContainerWithActions {
         if (!this.isVersionSupported()) {
             renderedCard = document.createElement("div");
             renderedCard.innerHTML = this.fallbackText ? this.fallbackText : "The specified card version is not supported.";
-
-            return renderedCard;
         }
         else {
-            return super.render();
+            renderedCard = super.render();
+            renderedCard.tabIndex = 0;
+            
+            if (!Utils.isNullOrEmpty(this.speak)) {
+                renderedCard.setAttribute("aria-label", this.speak);
+            }
         }
+
+        return renderedCard;
     }
 
     canContentBleed(): boolean {
@@ -3276,6 +3327,13 @@ class InlineAdaptiveCard extends AdaptiveCard {
 
     protected get defaultStyle(): Enums.ContainerStyle {
         return this.hostConfig.actions.showCard.style ? this.hostConfig.actions.showCard.style : "emphasis";
+    }
+
+    render() {
+        var renderedCard = super.render();
+        renderedCard.setAttribute("aria-live", "polite");
+        renderedCard.removeAttribute("tabindex");
+        return renderedCard;
     }
 
     getForbiddenActionTypes(): Array<any> {
