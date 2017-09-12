@@ -11,7 +11,7 @@
     "prebuild-css": "node-sass ./scss/ -o ./css --output-style expanded",
     "build-css": "postcss ./css/*.css --use autoprefixer --replace --no-map",
     "watch": "webpack --watch",
-    "start": "http-server -c-1 -o",
+    "start": "http-server -c-1 -o -p 5666",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

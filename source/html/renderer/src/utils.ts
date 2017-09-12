@@ -27,22 +27,39 @@ export function isNullOrEmpty(value: string): boolean {
     return value === undefined || value === null || value === "";
 }
 
-export function stringEqualIgnoreCase(str1:string, str2:string): boolean{
-    if(isNullOrEmpty(str1) || isNullOrEmpty(str2)) return str1 === str2;
-    return str1.toLowerCase() === str2.toLowerCase();
-}
-
 export function appendChild(node: Node, child: Node) {
     if (child != null && child != undefined) {
         node.appendChild(child);
     }
 }
 
+export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
+    if (isNullOrEmpty(name)) {
+        return defaultValue;
+    }
+
+    for (var key in targetEnum) {
+        let isValueProperty = parseInt(key, 10) >= 0
+        if (isValueProperty) {
+            let value = targetEnum[key];
+            if (typeof value === 'string' || value instanceof String) {
+                console.log(value, name);
+                if (value.toLowerCase() === name.toLowerCase()) {
+                    return parseInt(key, 10);
+                }
+            }
+        }
+    }
+
+    return defaultValue;
+}
+
+
 export function renderSeparation(separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
     if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
         var separator = document.createElement("div");
 
-        if ( stringEqualIgnoreCase(orientation, "horizontal")) {
+        if (orientation == Enums.Orientation.Horizontal) {
             if (separationDefinition.lineThickness) {
                 separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
                 separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
