@@ -199,7 +199,7 @@ namespace XamlCardVisualizer.ViewModel
 
                 // Custom image handler
                 //var resolvers = _renderer.ImageResolvers;
-                //_renderer.ImageResolvers.Set("https", new MyImageHandler());
+                _renderer.ImageResolvers.Set("https", new MyImageHandler());
 
                 //resolvers.Set("http", new MyImageHandler());
 

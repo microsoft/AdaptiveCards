@@ -132,7 +132,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         boolean isOuterCard)
     {
         *xamlTreeRoot = nullptr;
-        //m_renderer = renderer;
+        m_renderer = renderer;
 
         ComPtr<IPanel> childElementContainer;
         ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, &childElementContainer);
@@ -463,7 +463,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IBitmapSource> bitmapSource;
         bitmapImage.As(&bitmapSource);
 
-        /*IXamlCardImageResolvers* resolvers;
+        IXamlCardImageResolvers* resolvers;
         THROW_IF_FAILED(m_renderer->get_ImageResolvers(&resolvers));
 
         HSTRING schemeName;
@@ -474,7 +474,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         if (resolver != nullptr)
         {
-            return;
             ComPtr<IXamlCardGetImageStreamArgs> args;
             THROW_IF_FAILED(MakeAndInitialize<XamlCardGetImageStreamArgs>(&args, imageUri));
 
@@ -510,7 +509,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             }).Get()));
 
             return;
-        }*/
+        }
 
         // Create the HttpClient to load the image stream
         ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter =
