@@ -21,6 +21,10 @@ swig -c++ -java -package com.microsoft.adaptivecards.objectmodel -outdir main/ja
 1. Follow "To compile" section
 2. Build->"Build APK" or "Generate Signed APK..."
 
+# To add adaptivecards library to new project:
+1. add the following to the build.gradle of a project that will use the library
+    compile 'io.adaptivecards:adaptivecards-android-arm:0.5.0'
+
 TODO:
 1. Speech
 2. AdaptiveCard

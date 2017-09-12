@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		F47ACEE01F62495B0010BEF0 /* AdaptiveCards-Universal */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = F47ACEE11F62495B0010BEF0 /* Build configuration list for PBXAggregateTarget "AdaptiveCards-Universal" */;
+			buildPhases = (
+				F47ACEE41F6249610010BEF0 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "AdaptiveCards-Universal";
+			productName = "AdaptiveCards-Universal";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D01F32E53A008846EC /* ACRActionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D41F32F756008846EC /* ACROpenURLTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D21F32F756008846EC /* ACROpenURLTarget.h */; };
@@ -22,8 +36,7 @@
 		F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */; };
 		F401A87F1F1045CA006D7AF2 /* ACRContentHoldingUIView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A87D1F1045CA006D7AF2 /* ACRContentHoldingUIView.h */; };
 		F401A8801F1045CA006D7AF2 /* ACRContentHoldingUIView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A87E1F1045CA006D7AF2 /* ACRContentHoldingUIView.mm */; };
-		F423C0BF1EE1FBAA00905679 /* ADCIOSFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F423C0B51EE1FBA900905679 /* ADCIOSFramework.framework */; };
-		F423C0C41EE1FBAA00905679 /* ADCIOSFrameworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0C31EE1FBAA00905679 /* ADCIOSFrameworkTests.m */; };
+		F423C0BF1EE1FBAA00905679 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F423C0B51EE1FBA900905679 /* AdaptiveCards.framework */; };
 		F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C0B81EE1FBAA00905679 /* ACFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F423C14C1EE1FFF100905679 /* ACRViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C1481EE1FFF100905679 /* ACRViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F423C14D1EE1FFF100905679 /* ACRViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F423C1491EE1FFF100905679 /* ACRViewController.mm */; };
@@ -127,6 +140,7 @@
 		F448732E1EE22AF100FCAFAE /* json-forwards.h in Headers */ = {isa = PBXBuildFile; fileRef = F448732C1EE22AF100FCAFAE /* json-forwards.h */; };
 		F448732F1EE22AF100FCAFAE /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = F448732D1EE22AF100FCAFAE /* json.h */; };
 		F45A071F1EF4BD67007C6503 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A071E1EF4BD67007C6503 /* UIKit.framework */; };
+		F4A5CABA1F623F4500242D62 /* AdaptiveCardsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */; };
 		F4C1F5D51F2187900018CB78 /* ACRInputDateRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */; };
 		F4C1F5D61F2187900018CB78 /* ACRInputDateRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */; };
 		F4C1F5D91F218ABC0018CB78 /* ACRInputTimeRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */; };
@@ -166,7 +180,7 @@
 			containerPortal = F423C0AC1EE1FBA900905679 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = F423C0B41EE1FBA900905679;
-			remoteInfo = ADCIOSFramework;
+			remoteInfo = AdaptiveCards;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -186,12 +200,10 @@
 		F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetRenderer.mm; sourceTree = "<group>"; };
 		F401A87D1F1045CA006D7AF2 /* ACRContentHoldingUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIView.h; sourceTree = "<group>"; };
 		F401A87E1F1045CA006D7AF2 /* ACRContentHoldingUIView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIView.mm; sourceTree = "<group>"; };
-		F423C0B51EE1FBA900905679 /* ADCIOSFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ADCIOSFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F423C0B51EE1FBA900905679 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0B81EE1FBAA00905679 /* ACFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACFramework.h; sourceTree = "<group>"; };
 		F423C0B91EE1FBAA00905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F423C0BE1EE1FBAA00905679 /* ADCIOSFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADCIOSFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F423C0C31EE1FBAA00905679 /* ADCIOSFrameworkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCIOSFrameworkTests.m; sourceTree = "<group>"; };
-		F423C0C51EE1FBAA00905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F423C0BE1EE1FBAA00905679 /* AdaptiveCardsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdaptiveCardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C1481EE1FFF100905679 /* ACRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRViewController.h; sourceTree = "<group>"; };
 		F423C1491EE1FFF100905679 /* ACRViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRViewController.mm; sourceTree = "<group>"; };
 		F42741061EF8624F00399FBB /* ACRIBaseCardElementRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRIBaseCardElementRenderer.h; sourceTree = "<group>"; };
@@ -296,6 +308,7 @@
 		F45A071A1EF4BC44007C6503 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F45A071C1EF4BCC3007C6503 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F45A071E1EF4BD67007C6503 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdaptiveCardsTests.m; sourceTree = "<group>"; };
 		F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputDateRenderer.h; sourceTree = "<group>"; };
 		F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputDateRenderer.mm; sourceTree = "<group>"; };
 		F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputTimeRenderer.h; sourceTree = "<group>"; };
@@ -343,7 +356,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F423C0BF1EE1FBAA00905679 /* ADCIOSFramework.framework in Frameworks */,
+				F423C0BF1EE1FBAA00905679 /* AdaptiveCards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,8 +366,8 @@
 		F423C0AB1EE1FBA900905679 = {
 			isa = PBXGroup;
 			children = (
-				F423C0B71EE1FBA900905679 /* ADCIOSFramework */,
-				F423C0C21EE1FBAA00905679 /* ADCIOSFrameworkTests */,
+				F423C0B71EE1FBA900905679 /* AdaptiveCards */,
+				F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */,
 				F423C0B61EE1FBA900905679 /* Products */,
 				F45A07191EF4BC44007C6503 /* Frameworks */,
 			);
@@ -363,13 +376,13 @@
 		F423C0B61EE1FBA900905679 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F423C0B51EE1FBA900905679 /* ADCIOSFramework.framework */,
-				F423C0BE1EE1FBAA00905679 /* ADCIOSFrameworkTests.xctest */,
+				F423C0B51EE1FBA900905679 /* AdaptiveCards.framework */,
+				F423C0BE1EE1FBAA00905679 /* AdaptiveCardsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F423C0B71EE1FBA900905679 /* ADCIOSFramework */ = {
+		F423C0B71EE1FBA900905679 /* AdaptiveCards */ = {
 			isa = PBXGroup;
 			children = (
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
@@ -385,16 +398,15 @@
 				F42979411F322C3E00E89914 /* ACRErrors.m */,
 				F423C0B91EE1FBAA00905679 /* Info.plist */,
 			);
-			path = ADCIOSFramework;
+			path = AdaptiveCards;
 			sourceTree = "<group>";
 		};
-		F423C0C21EE1FBAA00905679 /* ADCIOSFrameworkTests */ = {
+		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
-				F423C0C31EE1FBAA00905679 /* ADCIOSFrameworkTests.m */,
-				F423C0C51EE1FBAA00905679 /* Info.plist */,
+				F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */,
 			);
-			path = ADCIOSFrameworkTests;
+			path = AdaptiveCardsTests;
 			sourceTree = "<group>";
 		};
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
@@ -675,9 +687,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		F423C0B41EE1FBA900905679 /* ADCIOSFramework */ = {
+		F423C0B41EE1FBA900905679 /* AdaptiveCards */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F423C0C91EE1FBAA00905679 /* Build configuration list for PBXNativeTarget "ADCIOSFramework" */;
+			buildConfigurationList = F423C0C91EE1FBAA00905679 /* Build configuration list for PBXNativeTarget "AdaptiveCards" */;
 			buildPhases = (
 				F423C0B01EE1FBA900905679 /* Sources */,
 				F423C0B11EE1FBA900905679 /* Frameworks */,
@@ -688,27 +700,28 @@
 			);
 			dependencies = (
 			);
-			name = ADCIOSFramework;
-			productName = ADCIOSFramework;
-			productReference = F423C0B51EE1FBA900905679 /* ADCIOSFramework.framework */;
+			name = AdaptiveCards;
+			productName = AdaptiveCards;
+			productReference = F423C0B51EE1FBA900905679 /* AdaptiveCards.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		F423C0BD1EE1FBAA00905679 /* ADCIOSFrameworkTests */ = {
+		F423C0BD1EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F423C0CC1EE1FBAA00905679 /* Build configuration list for PBXNativeTarget "ADCIOSFrameworkTests" */;
+			buildConfigurationList = F423C0CC1EE1FBAA00905679 /* Build configuration list for PBXNativeTarget "AdaptiveCardsTests" */;
 			buildPhases = (
 				F423C0BA1EE1FBAA00905679 /* Sources */,
 				F423C0BB1EE1FBAA00905679 /* Frameworks */,
 				F423C0BC1EE1FBAA00905679 /* Resources */,
+				F47ACEDA1F6248C00010BEF0 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				F423C0C11EE1FBAA00905679 /* PBXTargetDependency */,
 			);
-			name = ADCIOSFrameworkTests;
-			productName = ADCIOSFrameworkTests;
-			productReference = F423C0BE1EE1FBAA00905679 /* ADCIOSFrameworkTests.xctest */;
+			name = AdaptiveCardsTests;
+			productName = AdaptiveCardsTests;
+			productReference = F423C0BE1EE1FBAA00905679 /* AdaptiveCardsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -728,9 +741,13 @@
 						CreatedOnToolsVersion = 8.3.2;
 						ProvisioningStyle = Automatic;
 					};
+					F47ACEE01F62495B0010BEF0 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
-			buildConfigurationList = F423C0AF1EE1FBA900905679 /* Build configuration list for PBXProject "ADCIOSFramework" */;
+			buildConfigurationList = F423C0AF1EE1FBA900905679 /* Build configuration list for PBXProject "AdaptiveCards" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -742,8 +759,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F423C0B41EE1FBA900905679 /* ADCIOSFramework */,
-				F423C0BD1EE1FBAA00905679 /* ADCIOSFrameworkTests */,
+				F423C0B41EE1FBA900905679 /* AdaptiveCards */,
+				F423C0BD1EE1FBAA00905679 /* AdaptiveCardsTests */,
+				F47ACEE01F62495B0010BEF0 /* AdaptiveCards-Universal */,
 			);
 		};
 /* End PBXProject section */
@@ -764,6 +782,35 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F47ACEDA1F6248C00010BEF0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "######################\n# Options\n######################\nNULL=\n\nREVEAL_ARCHIVE_IN_FINDER=false\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\n\n######################\n# Build Frameworks\n######################\nif [ -d ${PROJECT_NAME}.xcworkspace ]; then\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nelse\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nfi\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n\n######################\n# Make an universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n# For Swift framework, Swiftmodule needs to be copied in the universal framework\nif [ -d \"${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" ]; then\ncp -f ${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule\\/${NULL}* \"${FRAMEWORK}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" | echo\nfi\n\nif [ -d \"${DEVICE_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" ]; then\ncp -f ${DEVICE_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule\\/${NULL}* \"${FRAMEWORK}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" | echo\nfi\n\n######################\n# On Release, copy the result to release directory\n######################\nOUTPUT_DIR=\"${PROJECT_DIR}/Output\"\nTARGET_DIR=\"${OUTPUT_DIR}/${FRAMEWORK_NAME}-${CONFIGURATION}-iphoneuniversal/\"\n\nrm -rf \"$TARGET_DIR\"\nmkdir -p \"$TARGET_DIR\"\n\ncp -rf \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\ncp -r \"${FRAMEWORK}\" \"$TARGET_DIR\"\n\nif [ ${REVEAL_ARCHIVE_IN_FINDER} = true ]; then\nopen \"${OUTPUT_DIR}/\"\nfi";
+		};
+		F47ACEE41F6249610010BEF0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "######################\n# Options\n######################\nNULL=\n\nREVEAL_ARCHIVE_IN_FINDER=false\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\n\n######################\n# Build Frameworks\n######################\nif [ -d ${PROJECT_NAME}.xcworkspace ]; then\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nelse\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nfi\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n\n######################\n# Make an universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n######################\n# On Release, copy the result to release directory\n######################\nOUTPUT_DIR=\"${PROJECT_DIR}/Output\"\nTARGET_DIR=\"${OUTPUT_DIR}/${FRAMEWORK_NAME}-${CONFIGURATION}-iphoneuniversal/\"\n\nrm -rf \"$TARGET_DIR\"\nmkdir -p \"$TARGET_DIR\"\n\ncp -rf \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\ncp -r \"${FRAMEWORK}\" \"$TARGET_DIR\"\n\nif [ ${REVEAL_ARCHIVE_IN_FINDER} = true ]; then\nopen \"${OUTPUT_DIR}/\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F423C0B01EE1FBA900905679 /* Sources */ = {
@@ -846,7 +893,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F423C0C41EE1FBAA00905679 /* ADCIOSFrameworkTests.m in Sources */,
+				F4A5CABA1F623F4500242D62 /* AdaptiveCardsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -855,7 +902,7 @@
 /* Begin PBXTargetDependency section */
 		F423C0C11EE1FBAA00905679 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F423C0B41EE1FBA900905679 /* ADCIOSFramework */;
+			target = F423C0B41EE1FBA900905679 /* AdaptiveCards */;
 			targetProxy = F423C0C01EE1FBAA00905679 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -968,13 +1015,13 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = ADCIOSFramework/Info.plist;
+				INFOPLIST_FILE = AdaptiveCards/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSFramework;
+				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SKIP_INSTALL = YES;
@@ -991,13 +1038,13 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = ADCIOSFramework/Info.plist;
+				INFOPLIST_FILE = AdaptiveCards/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSFramework;
+				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SKIP_INSTALL = YES;
@@ -1008,9 +1055,9 @@
 		F423C0CD1EE1FBAA00905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = ADCIOSFrameworkTests/Info.plist;
+				INFOPLIST_FILE = AdaptiveCardsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSFrameworkTests;
+				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCardsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1018,9 +1065,25 @@
 		F423C0CE1EE1FBAA00905679 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = ADCIOSFrameworkTests/Info.plist;
+				INFOPLIST_FILE = AdaptiveCardsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = MSFT.ADCIOSFrameworkTests;
+				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCardsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		F47ACEE21F62495B0010BEF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F47ACEE31F62495B0010BEF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1028,7 +1091,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F423C0AF1EE1FBA900905679 /* Build configuration list for PBXProject "ADCIOSFramework" */ = {
+		F423C0AF1EE1FBA900905679 /* Build configuration list for PBXProject "AdaptiveCards" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F423C0C71EE1FBAA00905679 /* Debug */,
@@ -1037,7 +1100,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F423C0C91EE1FBAA00905679 /* Build configuration list for PBXNativeTarget "ADCIOSFramework" */ = {
+		F423C0C91EE1FBAA00905679 /* Build configuration list for PBXNativeTarget "AdaptiveCards" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F423C0CA1EE1FBAA00905679 /* Debug */,
@@ -1046,11 +1109,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F423C0CC1EE1FBAA00905679 /* Build configuration list for PBXNativeTarget "ADCIOSFrameworkTests" */ = {
+		F423C0CC1EE1FBAA00905679 /* Build configuration list for PBXNativeTarget "AdaptiveCardsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F423C0CD1EE1FBAA00905679 /* Debug */,
 				F423C0CE1EE1FBAA00905679 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F47ACEE11F62495B0010BEF0 /* Build configuration list for PBXAggregateTarget "AdaptiveCards-Universal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F47ACEE21F62495B0010BEF0 /* Debug */,
+				F47ACEE31F62495B0010BEF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

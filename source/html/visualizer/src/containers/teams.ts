@@ -114,7 +114,7 @@ export class TeamsContainer extends HostContainer {
                 spacing: Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
                 actionsOrientation: Orientation.Horizontal,

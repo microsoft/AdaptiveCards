@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F423C0B41EE1FBA900905679"
-               BuildableName = "ADCIOSFramework.framework"
-               BlueprintName = "ADCIOSFramework"
-               ReferencedContainer = "container:ADCIOSFramework.xcodeproj">
+               BuildableName = "AdaptiveCards.framework"
+               BlueprintName = "AdaptiveCards"
+               ReferencedContainer = "container:AdaptiveCards.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F423C0BD1EE1FBAA00905679"
-               BuildableName = "ADCIOSFrameworkTests.xctest"
-               BlueprintName = "ADCIOSFrameworkTests"
-               ReferencedContainer = "container:ADCIOSFramework.xcodeproj">
+               BuildableName = "AdaptiveCardsTests.xctest"
+               BlueprintName = "AdaptiveCardsTests"
+               ReferencedContainer = "container:AdaptiveCards.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F423C0B41EE1FBA900905679"
-            BuildableName = "ADCIOSFramework.framework"
-            BlueprintName = "ADCIOSFramework"
-            ReferencedContainer = "container:ADCIOSFramework.xcodeproj">
+            BuildableName = "AdaptiveCards.framework"
+            BlueprintName = "AdaptiveCards"
+            ReferencedContainer = "container:AdaptiveCards.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,9 +65,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F423C0B41EE1FBA900905679"
-            BuildableName = "ADCIOSFramework.framework"
-            BlueprintName = "ADCIOSFramework"
-            ReferencedContainer = "container:ADCIOSFramework.xcodeproj">
+            BuildableName = "AdaptiveCards.framework"
+            BlueprintName = "AdaptiveCards"
+            ReferencedContainer = "container:AdaptiveCards.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -83,9 +83,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F423C0B41EE1FBA900905679"
-            BuildableName = "ADCIOSFramework.framework"
-            BlueprintName = "ADCIOSFramework"
-            ReferencedContainer = "container:ADCIOSFramework.xcodeproj">
+            BuildableName = "AdaptiveCards.framework"
+            BlueprintName = "AdaptiveCards"
+            ReferencedContainer = "container:AdaptiveCards.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

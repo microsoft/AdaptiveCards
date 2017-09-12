@@ -108,7 +108,7 @@ export abstract class HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
@@ -134,7 +134,7 @@ export abstract class HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FFD800",
@@ -159,7 +159,7 @@ export abstract class HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FFD800",
@@ -186,7 +186,7 @@ export abstract class HostContainer {
                 spacing: Spacing.Default,
                 buttonSpacing: 20,
                 showCard: {
-                     actionMode:ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
                 actionsOrientation: Orientation.Horizontal,
@@ -253,7 +253,7 @@ export abstract class HostContainer {
             this.processNodes(nodes, output);
 
             var serializer = new XMLSerializer();
-            
+
             speechString = vkbeautify.xml(serializer.serializeToString(dom));;
         }
         else {

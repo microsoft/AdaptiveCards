@@ -74,7 +74,6 @@ export enum ImageStyle {
 
 export enum ShowCardActionMode {
     Inline,
-    InlineEdgeToEdge,
     Popup
 }
 
