@@ -7,11 +7,6 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    HRESULT XamlCardGetImageStreamArgs::RuntimeClassInitialize()
-    {
-        return S_OK;
-    }
-
     _Use_decl_annotations_
     HRESULT XamlCardGetImageStreamArgs::RuntimeClassInitialize(IUriRuntimeClass* url)
     {

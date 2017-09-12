@@ -13,6 +13,8 @@
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
 #include "XamlBuilder.h"
+#include "XamlCardGetImageStreamArgs.h"
+#include "XamlCardImageResolvers.h"
 #include "XamlHelpers.h"
 #include "XamlStyleKeyGenerators.h"
 #include "json/json.h"
@@ -130,7 +132,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         boolean isOuterCard)
     {
         *xamlTreeRoot = nullptr;
-        m_renderer = renderer;
+        //m_renderer = renderer;
 
         ComPtr<IPanel> childElementContainer;
         ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, &childElementContainer);
@@ -461,7 +463,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IBitmapSource> bitmapSource;
         bitmapImage.As(&bitmapSource);
 
-        IXamlCardImageResolvers* resolvers;
+        /*IXamlCardImageResolvers* resolvers;
         THROW_IF_FAILED(m_renderer->get_ImageResolvers(&resolvers));
 
         HSTRING schemeName;
@@ -472,10 +474,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         if (resolver != nullptr)
         {
-            /*ComPtr<IXamlCardGetImageStreamArgs> args;
-            THROW_IF_FAILED(MakeAndInitialize<XamlCardGetImageStreamArgs>(&args, imageUri));*/
+            return;
+            ComPtr<IXamlCardGetImageStreamArgs> args;
+            THROW_IF_FAILED(MakeAndInitialize<XamlCardGetImageStreamArgs>(&args, imageUri));
 
-            /*ComPtr<IAsyncOperation<IRandomAccessStream*>> getImageStreamOperation;
+            ComPtr<IAsyncOperation<IRandomAccessStream*>> getImageStreamOperation;
             THROW_IF_FAILED(resolver->GetImageStreamAsync(args.Get(), &getImageStreamOperation));
 
             ComPtr<T> strongImageControl(imageControl);
@@ -504,8 +507,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                     m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
                     return S_OK;
                 }
-            }).Get()));*/
-        }
+            }).Get()));
+
+            return;
+        }*/
 
         // Create the HttpClient to load the image stream
         ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter =

@@ -15,14 +15,23 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT XamlCardImageResolvers::Set(HSTRING scheme, IXamlCardImageResolver* resolver)
     {
-        m_imageResolvers[scheme] = resolver;
+        std::string schemeString;
+        RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
+        m_imageResolvers[schemeString] = resolver;
+        /*ComPtr<IXamlCardImageResolver> localResolver(resolver);
+        m_imageResolvers[scheme] = localResolver;*/
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT XamlCardImageResolvers::Get(HSTRING scheme, IXamlCardImageResolver** resolver)
     {
-        *resolver = m_imageResolvers[scheme];
+        std::string schemeString;
+        RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
+        //*resolver = m_imageResolvers[scheme];
+        ComPtr<IXamlCardImageResolver> resolverPtr = m_imageResolvers[schemeString];
+        ComPtr<IXamlCardImageResolver> localResolver(resolverPtr);
+        *resolver = localResolver.Detach();
         return S_OK;
     }
 }}

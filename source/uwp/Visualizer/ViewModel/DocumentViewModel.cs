@@ -14,6 +14,8 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using XamlCardVisualizer.Helpers;
+using Windows.Foundation;
+using Windows.Storage.Streams;
 
 namespace XamlCardVisualizer.ViewModel
 {
@@ -158,7 +160,7 @@ namespace XamlCardVisualizer.ViewModel
 
             try
             {
-                RenderedCard = _renderer.RenderAdaptiveJsonAsXaml(payload);
+                RenderedCard = await _renderer.RenderAdaptiveJsonAsXamlAsync(payload);
                 if (RenderedCard is FrameworkElement)
                 {
                     (RenderedCard as FrameworkElement).VerticalAlignment = VerticalAlignment.Top;
@@ -195,6 +197,17 @@ namespace XamlCardVisualizer.ViewModel
                 _renderer = new XamlCardRenderer();
                 //_renderer.SetHostConfig
 
+                // Custom image handler
+                //var resolvers = _renderer.ImageResolvers;
+                //_renderer.ImageResolvers.Set("https", new MyImageHandler());
+
+                //resolvers.Set("http", new MyImageHandler());
+
+                if (_renderer.ImageResolvers.Get("https") != null)
+                {
+                    Debug.WriteLine("Awesome");
+                }
+
                 _renderer.Action += async (sender, e) =>
                 {
                     var m_actionDialog = new ContentDialog();
@@ -221,6 +234,20 @@ namespace XamlCardVisualizer.ViewModel
                     Debugger.Break();
                 }
                 throw;
+            }
+        }
+
+        private class MyImageHandler : IXamlCardImageResolver
+        {
+            public IAsyncOperation<IRandomAccessStream> GetImageStreamAsync(XamlCardGetImageStreamArgs args)
+            {
+                return GetImageStreamHelperAsync(args).AsAsyncOperation();
+            }
+
+            private async Task<IRandomAccessStream> GetImageStreamHelperAsync(XamlCardGetImageStreamArgs args)
+            {
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/StoreLogo.png"));
+                return await file.OpenAsync(FileAccessMode.Read);
             }
         }
     }

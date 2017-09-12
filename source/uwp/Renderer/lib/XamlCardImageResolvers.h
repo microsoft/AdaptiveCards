@@ -17,7 +17,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP Get(_In_ HSTRING scheme, _Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IXamlCardImageResolver** resolver);
 
     private:
-        std::map<HSTRING, ABI::AdaptiveCards::XamlCardRenderer::IXamlCardImageResolver*> m_imageResolvers;
+        std::map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardImageResolver>> m_imageResolvers;
     };
 
     ActivatableClass(XamlCardImageResolvers);

@@ -11,7 +11,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_XamlCardGetImageStreamArgs, BaseTrust)
 
     public:
-        HRESULT RuntimeClassInitialize();
         HRESULT RuntimeClassInitialize(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
         IFACEMETHODIMP get_Url(_Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url);
