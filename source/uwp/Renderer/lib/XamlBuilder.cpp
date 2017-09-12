@@ -463,13 +463,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IBitmapSource> bitmapSource;
         bitmapImage.As(&bitmapSource);
 
-        IXamlCardImageResolvers* resolvers;
+        ComPtr<IXamlCardImageResolvers> resolvers;
         THROW_IF_FAILED(m_renderer->get_ImageResolvers(&resolvers));
 
         HSTRING schemeName;
         THROW_IF_FAILED(imageUri->get_SchemeName(&schemeName));
 
-        IXamlCardImageResolver* resolver;
+        ComPtr<IXamlCardImageResolver> resolver;
         THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
 
         if (resolver != nullptr)
