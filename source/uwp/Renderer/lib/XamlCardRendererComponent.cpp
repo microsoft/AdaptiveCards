@@ -32,7 +32,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT XamlCardRenderer::RuntimeClassInitialize()
     {
         m_events.reset(new ActionEventSource);
-        return MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig);
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
+        //RETURN_IF_FAILED(MakeAndInitialize<XamlCardImageResolvers>(&m_imageResolvers));
     }
 
     _Use_decl_annotations_
@@ -153,4 +154,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return m_hostConfig.Get();
     }
 
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::get_ImageResolvers(IXamlCardImageResolvers** value)
+    {
+        *value = m_imageResolvers.Get();
+        return S_OK;
+    }
 }}

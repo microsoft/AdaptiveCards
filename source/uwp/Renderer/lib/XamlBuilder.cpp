@@ -130,6 +130,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         boolean isOuterCard)
     {
         *xamlTreeRoot = nullptr;
+        m_renderer = renderer;
 
         ComPtr<IPanel> childElementContainer;
         ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, &childElementContainer);
@@ -452,6 +453,60 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     template<typename T>
     void XamlBuilder::PopulateImageFromUrlAsync(IUriRuntimeClass* imageUri, T* imageControl)
     {
+        // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
+        // the tracker to subscribe to the ImageLoaded/Failed events
+        ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+        m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+        THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
+        ComPtr<IBitmapSource> bitmapSource;
+        bitmapImage.As(&bitmapSource);
+
+        IXamlCardImageResolvers* resolvers;
+        THROW_IF_FAILED(m_renderer->get_ImageResolvers(&resolvers));
+
+        HSTRING schemeName;
+        THROW_IF_FAILED(imageUri->get_SchemeName(&schemeName));
+
+        IXamlCardImageResolver* resolver;
+        THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
+
+        if (resolver != nullptr)
+        {
+            /*ComPtr<IXamlCardGetImageStreamArgs> args;
+            THROW_IF_FAILED(MakeAndInitialize<XamlCardGetImageStreamArgs>(&args, imageUri));*/
+
+            /*ComPtr<IAsyncOperation<IRandomAccessStream*>> getImageStreamOperation;
+            THROW_IF_FAILED(resolver->GetImageStreamAsync(args.Get(), &getImageStreamOperation));
+
+            ComPtr<T> strongImageControl(imageControl);
+            ComPtr<XamlBuilder> strongThis(this);
+            THROW_IF_FAILED(getImageStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
+                ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
+            {
+                if (status == AsyncStatus::Completed)
+                {
+                    // Load the image stream into an in memory random access stream, which is what
+                    // SetSource needs
+                    ComPtr<IRandomAccessStream> randomAccessStream;
+                    RETURN_IF_FAILED(operation->GetResults(&randomAccessStream));
+
+                    randomAccessStream->Seek(0);
+                    RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+
+                    ComPtr<IImageSource> imageSource;
+                    RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+
+                    SetImageSource(strongImageControl.Get(), imageSource.Get());
+                    return S_OK;
+                }
+                else
+                {
+                    m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                    return S_OK;
+                }
+            }).Get()));*/
+        }
+
         // Create the HttpClient to load the image stream
         ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter =
             XamlHelpers::CreateXamlClass<IHttpBaseProtocolFilter>(HStringReference(RuntimeClass_Windows_Web_Http_Filters_HttpBaseProtocolFilter));
@@ -463,13 +518,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Web_Http_HttpClient).Get(), httpClientFactory.ReleaseAndGetAddressOf()));
         THROW_IF_FAILED(httpClientFactory->Create(httpFilter.Get(), httpClient.ReleaseAndGetAddressOf()));
 
-        // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
-        // the tracker to subscribe to the ImageLoaded/Failed events
-        ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-        m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
-        THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
-        ComPtr<IBitmapSource> bitmapSource;
-        bitmapImage.As(&bitmapSource);
         ComPtr<IAsyncOperationWithProgress<IInputStream*, HttpProgress>> getStreamOperation;
         THROW_IF_FAILED(httpClient->GetInputStreamAsync(imageUri, &getStreamOperation));
 

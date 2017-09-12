@@ -171,6 +171,8 @@
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
+    <ClInclude Include="lib\XamlCardGetImageStreamArgs.h" />
+    <ClInclude Include="lib\XamlCardImageResolvers.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
@@ -222,6 +224,8 @@
     <ClCompile Include="lib\InputItem.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
+    <ClCompile Include="lib\XamlCardGetImageStreamArgs.cpp" />
+    <ClCompile Include="lib\XamlCardImageResolvers.cpp" />
     <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
     <ClCompile Include="dll\dll.cpp" />
     <ClInclude Include="lib\XamlHelpers.h" />
