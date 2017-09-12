@@ -1,4 +1,4 @@
-import { HostContainer} from "./host-container";
+import { HostContainer } from "./host-container";
 import {
     IHostConfig,
     Size,
@@ -51,7 +51,7 @@ export class LiveTileContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: false,
             fontFamily: "Segoe UI",
@@ -77,7 +77,7 @@ export class LiveTileContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#00c2ff",
-                            subtle: "#8800c2ff" 
+                            subtle: "#8800c2ff"
                         },
                         attention: {
                             normal: "#ffa700",
@@ -102,7 +102,7 @@ export class LiveTileContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#00c2ff",
-                            subtle: "#8800c2ff" 
+                            subtle: "#8800c2ff"
                         },
                         attention: {
                             normal: "#ffa700",
@@ -129,7 +129,7 @@ export class LiveTileContainer extends HostContainer {
                 spacing: Spacing.Default,
                 buttonSpacing: 20,
                 showCard: {
-                     actionMode:ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: ShowCardActionMode.InlineEdgeToEdge,
                     inlineTopMargin: 16
                 },
                 actionsOrientation: Orientation.Horizontal,

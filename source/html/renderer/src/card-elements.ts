@@ -3416,7 +3416,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         spacing: Enums.Spacing.Default,
         buttonSpacing: 20,
         showCard: {
-            actionMode: Enums.ShowCardActionMode.Inline,
+            actionMode: Enums.ShowCardActionMode.InlineEdgeToEdge,
             inlineTopMargin: 16
         },
         actionsOrientation: Enums.Orientation.Horizontal,

@@ -41,7 +41,7 @@ export class FacebookContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: false,
             fontFamily: "Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;",

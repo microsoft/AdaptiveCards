@@ -41,7 +41,7 @@ export class KikContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: false,
             fontFamily: "Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;",
@@ -119,7 +119,7 @@ export class KikContainer extends HostContainer {
                 spacing: Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                     actionMode:ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: ShowCardActionMode.InlineEdgeToEdge,
                     inlineTopMargin: 16
                 },
                 actionsOrientation: Orientation.Horizontal,

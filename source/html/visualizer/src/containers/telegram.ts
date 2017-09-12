@@ -42,7 +42,7 @@ export class TelegramContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: false,
             fontFamily: "Tahoma,Verdana,Segoe,sans-serif;",
@@ -68,7 +68,7 @@ export class TelegramContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FF0000",
@@ -93,7 +93,7 @@ export class TelegramContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FF0000",
@@ -120,7 +120,7 @@ export class TelegramContainer extends HostContainer {
                 spacing: Spacing.Default,
                 buttonSpacing: 20,
                 showCard: {
-                     actionMode:ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: ShowCardActionMode.InlineEdgeToEdge,
                     inlineTopMargin: 16
                 },
                 actionsOrientation: Orientation.Horizontal,

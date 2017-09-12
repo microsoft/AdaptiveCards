@@ -57,7 +57,7 @@ export class SkypeContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
@@ -83,7 +83,7 @@ export class SkypeContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FF0000",
@@ -108,7 +108,7 @@ export class SkypeContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FF0000",
@@ -139,7 +139,7 @@ export class SkypeContainer extends HostContainer {
                     inlineTopMargin: 16
                 },
                 actionsOrientation: Orientation.Vertical,
-                actionAlignment:ActionAlignment.Stretch
+                actionAlignment: ActionAlignment.Stretch
             },
             adaptiveCard: {
                 allowCustomStyle: false

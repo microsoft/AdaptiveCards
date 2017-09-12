@@ -1,4 +1,4 @@
-import { HostContainer} from "./host-container";
+import { HostContainer } from "./host-container";
 import {
     IHostConfig,
     Size,
@@ -36,7 +36,7 @@ export class TeamsContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
@@ -62,7 +62,7 @@ export class TeamsContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#cc3300",
@@ -87,7 +87,7 @@ export class TeamsContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#cc3300",
@@ -114,7 +114,7 @@ export class TeamsContainer extends HostContainer {
                 spacing: Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode:ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: ShowCardActionMode.InlineEdgeToEdge,
                     inlineTopMargin: 16
                 },
                 actionsOrientation: Orientation.Horizontal,
@@ -143,7 +143,7 @@ export class TeamsContainer extends HostContainer {
                     color: TextColor.Default,
                     size: TextSize.Normal,
                     isSubtle: false,
-                    weight:TextWeight.Normal,
+                    weight: TextWeight.Normal,
                     wrap: true,
                 },
                 spacing: 10

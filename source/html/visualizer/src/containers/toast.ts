@@ -1,4 +1,4 @@
-import { HostContainer} from "./host-container";
+import { HostContainer } from "./host-container";
 import {
     IHostConfig,
     Size,
@@ -43,7 +43,7 @@ export class ToastContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
@@ -69,7 +69,7 @@ export class ToastContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FFD800",
@@ -94,7 +94,7 @@ export class ToastContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FFD800",
@@ -121,7 +121,7 @@ export class ToastContainer extends HostContainer {
                 spacing: Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                     actionMode:ShowCardActionMode.InlineEdgeToEdge,
+                    actionMode: ShowCardActionMode.InlineEdgeToEdge,
                     inlineTopMargin: 16
                 },
                 actionsOrientation: Orientation.Horizontal,
