@@ -421,10 +421,9 @@ private string MarkdownHandler(string text) {
 ```
 
 
-
-
 ## Custom properties on elements
 
+* Should Host Config allow hosts to declare their custom extensions? We could build tooling around it if so
 
 ```json
 {

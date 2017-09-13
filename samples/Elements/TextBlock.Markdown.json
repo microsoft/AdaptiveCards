@@ -1,0 +1,15 @@
+{
+    "$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "0.5",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "This is some **bold** text"
+        },
+        {
+            "type": "TextBlock",
+            "text": "This is some _italic_ text"
+        }
+    ]
+}
