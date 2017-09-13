@@ -52,20 +52,31 @@ struct TextConfig
 {
     TextWeight weight = TextWeight::Normal;
     TextSize size = TextSize::Normal;
-    TextColor color = TextColor::Default;
+    Color color = Color::Default;
     bool isSubtle = false;
 
     static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
 };
 
-struct SeparationConfig
+struct SpacingConfig
 {
-    unsigned int spacing = 10;
-    unsigned int lineThickness = 0;
-    std::string lineColor = "#FF101010";
+    unsigned int smallSpacing = 3;
+    unsigned int defaultSpacing = 8;
+    unsigned int mediumSpacing = 20;
+    unsigned int largeSpacing = 30;
+    unsigned int extraLargeSpacing = 40;
 
-    static SeparationConfig Deserialize(const Json::Value& json, const SeparationConfig& defaultValue);
+    static SpacingConfig Deserialize(const Json::Value& json, const SpacingConfig& defaultValue);
 };
+
+struct SeparatorThicknessConfig
+{
+    unsigned int defaultSeparatorThickness = 1;
+    unsigned int thickSeparatorThickness = 4;
+
+    static SeparatorThicknessConfig Deserialize(const Json::Value& json, const SeparatorThicknessConfig& defaultValue);
+};
+
 struct ImageSizesConfig
 {
     unsigned int smallSize = 80;
@@ -75,29 +86,11 @@ struct ImageSizesConfig
     static ImageSizesConfig Deserialize(const Json::Value& json, const ImageSizesConfig& defaultValue);
 };
 
-struct TextBlockConfig
-{
-    SeparationConfig smallSeparation;
-    SeparationConfig normalSeparation;
-    SeparationConfig mediumSeparation;
-    SeparationConfig largeSeparation;
-    SeparationConfig extraLargeSeparation;
-
-    static TextBlockConfig Deserialize(const Json::Value& json, const TextBlockConfig& defaultValue);
-};
-
 struct ImageSetConfig
 {
     ImageSize imageSize = ImageSize::Medium;
-    SeparationConfig separation;
 
     static ImageSetConfig Deserialize(const Json::Value& json, const ImageSetConfig& defaultValue);
-};
-
-struct ColumnConfig
-{
-    SeparationConfig separation;
-    static ColumnConfig Deserialize(const Json::Value& json, const ColumnConfig& defaultValue);
 };
 
 struct ContainerStyleConfig
@@ -112,25 +105,10 @@ struct ContainerStyleConfig
 
 struct ContainerConfig
 {
-    SeparationConfig separation;
     ContainerStyleConfig normal;
     ContainerStyleConfig emphasis = { "#FFEEEEEE", "#FFAAAAAA", SpacingDefinition{ 1, 1, 1, 1 }, SpacingDefinition{10, 10, 10, 10 } };
 
     static ContainerConfig Deserialize(const Json::Value& json, const ContainerConfig& defaultValue);
-};
-
-struct ColumnSetConfig
-{
-    SeparationConfig separation;
-
-    static ColumnSetConfig Deserialize(const Json::Value& json, const ColumnSetConfig& defaultValue);
-};
-
-struct ImageConfig
-{
-    SeparationConfig separation;
-
-    static ImageConfig Deserialize(const Json::Value& json, const ImageConfig& defaultValue);
 };
 
 struct AdaptiveCardConfig
@@ -146,7 +124,6 @@ struct FactSetConfig
     TextConfig title = { TextWeight::Bolder };
     TextConfig value;
     unsigned int spacing = 20;
-    SeparationConfig separation;
 
     static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
 };
@@ -168,51 +145,9 @@ struct ActionsConfig
     ActionAlignment actionAlignment = ActionAlignment::Center;
     unsigned int buttonSpacing = 8;
     unsigned int maxActions = 5;
-    SeparationConfig separation;
+    Spacing spacing;
 
     static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
-};
-
-struct DateInputConfig
-{
-    SeparationConfig separation;
-
-    static DateInputConfig Deserialize(const Json::Value& json, const DateInputConfig& defaultValue);
-};
-
-struct TimeInputConfig
-{
-    SeparationConfig separation;
-
-    static TimeInputConfig Deserialize(const Json::Value& json, const TimeInputConfig& defaultValue);
-};
-
-struct NumberInputConfig
-{
-    SeparationConfig separation;
-
-    static NumberInputConfig Deserialize(const Json::Value& json, const NumberInputConfig& defaultValue);
-};
-
-struct ToggleInputConfig
-{
-    SeparationConfig separation;
-
-    static ToggleInputConfig Deserialize(const Json::Value& json, const ToggleInputConfig& defaultValue);
-};
-
-struct TextInputConfig
-{
-    SeparationConfig separation;
-
-    static TextInputConfig Deserialize(const Json::Value& json, const TextInputConfig& defaultValue);
-};
-
-struct ChoiceSetConfig
-{
-    SeparationConfig separation;
-
-    static ChoiceSetConfig Deserialize(const Json::Value& json, const ChoiceSetConfig& defaultValue);
 };
 
 struct HostConfig
@@ -223,21 +158,12 @@ struct HostConfig
     ColorsConfig colors;
     ImageSizesConfig imageSizes;
     unsigned int maxActions = 5;
-    SeparationConfig strongSeparation = { 20, 1, "#FF707070" };
+    SeparatorThicknessConfig separatorThickness;
+    SpacingConfig spacing;
     AdaptiveCardConfig adaptiveCard;
     ImageSetConfig imageSet;
-    ImageConfig image;
     FactSetConfig factSet;
-    ColumnConfig column;
     ContainerConfig container;
-    ColumnSetConfig columnSet;
-    TextBlockConfig textBlock;
-    DateInputConfig dateInput;
-    TimeInputConfig timeInput;
-    NumberInputConfig numberInput;
-    ToggleInputConfig toggleInput;
-    TextInputConfig textInput;
-    ChoiceSetConfig choiceSet;
     ActionsConfig actions;
 
     static HostConfig Deserialize(const Json::Value& json);

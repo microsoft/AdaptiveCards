@@ -31,6 +31,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SharedAdaptiveCard.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HostConfig.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -67,6 +68,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SharedAdaptiveCard.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

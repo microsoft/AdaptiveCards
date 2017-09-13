@@ -11,19 +11,21 @@ ImageSet::ImageSet() :
 }
 
 ImageSet::ImageSet(
-    SeparationStyle separation,
+    Spacing spacing, 
+    std::shared_ptr<Separator> separation,
     std::string speak,
     std::vector<std::shared_ptr<Image>>& images) :
-    BaseCardElement(CardElementType::ImageSet, separation, speak),
+    BaseCardElement(CardElementType::ImageSet, spacing, separation, speak),
     m_images(images),
     m_imageSize(ImageSize::Default)
 {
 }
 
 ImageSet::ImageSet(
-    SeparationStyle separation,
+    Spacing spacing, 
+    std::shared_ptr<Separator> separation,
     std::string speak) :
-    BaseCardElement(CardElementType::ImageSet, separation, speak),
+    BaseCardElement(CardElementType::ImageSet, spacing, separation, speak),
     m_imageSize(ImageSize::Auto)
 {
 }
