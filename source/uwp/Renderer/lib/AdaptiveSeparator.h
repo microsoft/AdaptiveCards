@@ -18,8 +18,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Separator>& sharedSeparator);
 
         // IAdaptiveSeparator
-        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor* color);
-        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor color);
+        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor* color);
+        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor color);
 
         IFACEMETHODIMP get_Thickness(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparatorThickness* thickness);
         IFACEMETHODIMP put_Thickness(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparatorThickness thickness);

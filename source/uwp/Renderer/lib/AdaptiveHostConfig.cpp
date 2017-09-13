@@ -4,7 +4,7 @@
 #include "AdaptiveActionsConfig.h"
 #include "AdaptiveCardConfig.h"
 #include "AdaptiveColorsConfig.h"
-#include "AdaptiveContainerConfig.h"
+#include "AdaptiveContainerStylesDefinition.h"
 #include "AdaptiveFactSetConfig.h"
 #include "AdaptiveFontSizesConfig.h"
 #include "AdaptiveImageSetConfig.h"
@@ -87,13 +87,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveHostConfig::get_Colors(IAdaptiveColorsConfig** colorsConfig)
+    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition ** value)
     {
-        return MakeAndInitialize<AdaptiveColorsConfig>(colorsConfig, m_sharedHostConfig.colors);
+        return MakeAndInitialize<AdaptiveContainerStylesDefinition>(value, m_sharedHostConfig.containerStyles);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveHostConfig::put_Colors(IAdaptiveColorsConfig* )
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition * value)
     {
         return E_NOTIMPL;
     }
@@ -180,18 +180,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::put_FactSet(IAdaptiveFactSetConfig* )
-    {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_Container(IAdaptiveContainerConfig** containerConfig)
-    {
-        return MakeAndInitialize<AdaptiveContainerConfig>(containerConfig, m_sharedHostConfig.container);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_Container(IAdaptiveContainerConfig* )
     {
         return E_NOTIMPL;
     }

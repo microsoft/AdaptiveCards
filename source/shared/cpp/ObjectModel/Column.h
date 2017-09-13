@@ -11,8 +11,8 @@ class Column : public BaseCardElement
 {
 public:
     Column();
-    Column(Spacing spacing, bool separator, std::string speak, std::string size);
-    Column(Spacing spacing, bool separator, std::string speak, std::string size, std::vector<std::shared_ptr<BaseCardElement>>& items);
+    Column(Spacing spacing, bool separation, std::string speak, std::string size, ContainerStyle style);
+    Column(Spacing spacing, bool separation, std::string speak, std::string size, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
@@ -22,6 +22,9 @@ public:
 
     std::string GetSize() const;
     void SetSize(const std::string value);
+
+    ContainerStyle GetStyle() const;
+    void SetStyle(const ContainerStyle value);
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
@@ -34,5 +37,6 @@ private:
     std::string m_size;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
     std::shared_ptr<BaseActionElement> m_selectAction;
+    ContainerStyle m_style;
 };
 }

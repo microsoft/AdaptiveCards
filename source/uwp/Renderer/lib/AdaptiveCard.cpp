@@ -157,6 +157,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
+    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style)
+    {
+        *style = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle>(m_sharedAdaptiveCard->GetStyle());
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style)
+    {
+        m_sharedAdaptiveCard->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveCard::get_Speak(HSTRING* speak)
     {
         return UTF8ToHString(m_sharedAdaptiveCard->GetSpeak(), speak);

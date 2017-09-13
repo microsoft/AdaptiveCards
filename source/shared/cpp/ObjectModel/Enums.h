@@ -39,6 +39,7 @@ enum class AdaptiveCardSchemaKey
     ActionSetConfig,
     ActionsOrientation,
     AdaptiveCard,
+    AllowCustomStyle,
     AltText,
     Attention,
     BackgroundColor,
@@ -56,12 +57,12 @@ enum class AdaptiveCardSchemaKey
     ChoiceSet,
     Color,
     ColorConfig,
-    Colors,
+    ForegroundColors,
     Column,
     Columns,
     ColumnSet,
     Container,
-    ContainerStyleConfig,
+    ContainerStyles,
     Dark,
     Data,
     DateInput,
@@ -157,7 +158,7 @@ enum class TextWeight {
     Bolder
 };
 
-enum class Color {
+enum class ForegroundColor {
     Default = 0,
     Dark,
     Light,
@@ -262,7 +263,8 @@ enum class ActionMode {
 };
 
 enum class ContainerStyle {
-    Normal = 0,
+    None,
+    Default,
     Emphasis
 };
 
@@ -278,8 +280,8 @@ ActionType ActionTypeFromString(const std::string& actionType);
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
 HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);
 
-const std::string ColorToString(Color type);
-Color ColorFromString(const std::string& type);
+const std::string ForegroundColorToString(ForegroundColor type);
+ForegroundColor ForegroundColorFromString(const std::string& type);
 
 const std::string TextWeightToString(TextWeight type);
 TextWeight TextWeightFromString(const std::string& type);

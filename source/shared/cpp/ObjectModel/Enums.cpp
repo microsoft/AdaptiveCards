@@ -11,6 +11,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::ActionSetConfig, "actionSetConfig" },
     { AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation" },
     { AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard" },
+    { AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle" },
     { AdaptiveCardSchemaKey::AltText, "altText" },
     { AdaptiveCardSchemaKey::Attention, "attention" },
     { AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor" },
@@ -28,12 +29,11 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::ChoiceSet, "choiceSet" },
     { AdaptiveCardSchemaKey::Color, "color" },
     { AdaptiveCardSchemaKey::ColorConfig, "colorConfig" },
-    { AdaptiveCardSchemaKey::Colors, "colors" },
+    { AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors" },
     { AdaptiveCardSchemaKey::Column, "column" },
     { AdaptiveCardSchemaKey::Columns, "columns" },
     { AdaptiveCardSchemaKey::ColumnSet, "columnSet" },
     { AdaptiveCardSchemaKey::Container, "container" },
-    { AdaptiveCardSchemaKey::ContainerStyleConfig, "containerStyleConfig" },
     { AdaptiveCardSchemaKey::Dark, "dark" },
     { AdaptiveCardSchemaKey::Data, "data"},
     { AdaptiveCardSchemaKey::DateInput, "dateInput" },
@@ -204,19 +204,19 @@ static std::unordered_map<HorizontalAlignment, std::string, EnumHash> Horizontal
 static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo>
 HorizontalAlignmentNameToEnum = GenerateStringToEnumMap<HorizontalAlignment>(HorizontalAlignmentEnumToName);
 
-static std::unordered_map<Color, std::string, EnumHash> ColorEnumToName =
+static std::unordered_map<ForegroundColor, std::string, EnumHash> ColorEnumToName =
 {
-    {Color::Accent, "Accent"},
-    {Color::Attention, "Attention"},
-    {Color::Dark, "Dark" },
-    {Color::Default, "Default"},
-    {Color::Good, "Good"},
-    {Color::Light, "Light" },
-    {Color::Warning, "Warning"},
+    {ForegroundColor::Accent, "Accent"},
+    {ForegroundColor::Attention, "Attention"},
+    {ForegroundColor::Dark, "Dark" },
+    {ForegroundColor::Default, "Default"},
+    {ForegroundColor::Good, "Good"},
+    {ForegroundColor::Light, "Light" },
+    {ForegroundColor::Warning, "Warning"},
 };
 
-static std::unordered_map<std::string, Color, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-ColorNameToEnum = GenerateStringToEnumMap<Color>(ColorEnumToName);
+static std::unordered_map<std::string, ForegroundColor, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+ColorNameToEnum = GenerateStringToEnumMap<ForegroundColor>(ColorEnumToName);
 
 static std::unordered_map<TextWeight, std::string, EnumHash> TextWeightEnumToName =
 {
@@ -281,8 +281,8 @@ TextInputStyleNameToEnum = GenerateStringToEnumMap<TextInputStyle>(TextInputStyl
 
 static std::unordered_map<ContainerStyle, std::string, EnumHash> ContainerStyleEnumToName =
 {
+    { ContainerStyle::Default, "Default" },
     { ContainerStyle::Emphasis, "Emphasis" },
-    { ContainerStyle::Normal, "Normal" },
 };
 
 static std::unordered_map<std::string, ContainerStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo>
@@ -378,20 +378,20 @@ HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment)
     return HorizontalAlignmentNameToEnum[alignment];
 }
 
-const std::string ColorToString(Color color)
+const std::string ForegroundColorToString(ForegroundColor color)
 {
     if (ColorEnumToName.find(color) == ColorEnumToName.end())
     {
-        throw std::out_of_range("Invalid Color type");
+        throw std::out_of_range("Invalid ForegroundColor type");
     }
     return ColorEnumToName[color];
 }
 
-Color ColorFromString(const std::string& color)
+ForegroundColor ForegroundColorFromString(const std::string& color)
 {
     if (ColorNameToEnum.find(color) == ColorNameToEnum.end())
     {
-        throw std::out_of_range("Invalid Color: " + color);
+        throw std::out_of_range("Invalid ForegroundColor: " + color);
     }
 
     return ColorNameToEnum[color];

@@ -26,9 +26,15 @@ HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *col
 
 HRESULT GetColorFromAdaptiveColor(
     ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor adaptiveColor,
+    ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor adaptiveColor,
+    ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle containerStyle,
     bool isSubtle,
     ABI::Windows::UI::Color *uiColor) noexcept;
+
+HRESULT GetBackgroundColorFromStyle(
+    ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style,
+    _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;
 
 HRESULT GetSpacingSizeFromSpacing(
     ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,

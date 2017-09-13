@@ -22,9 +22,9 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result.fontSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontSizesConfig>(
         json, AdaptiveCardSchemaKey::FontSizes, result.fontSizes, FontSizesConfig::Deserialize);
 
-    result.colors = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorsConfig>(
-        json, AdaptiveCardSchemaKey::Colors, result.colors, ColorsConfig::Deserialize);
-
+    result.containerStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStylesDefinition>(
+        json, AdaptiveCardSchemaKey::ContainerStyles, result.containerStyles, ContainerStylesDefinition::Deserialize);
+        
     result.imageSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageSizesConfig>(
         json, AdaptiveCardSchemaKey::ImageSizes, result.imageSizes, ImageSizesConfig::Deserialize);
 
@@ -116,8 +116,8 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
     result.size = ParseUtil::GetEnumValue<TextSize>(
         json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
-    result.color = ParseUtil::GetEnumValue<Color>(
-        json, AdaptiveCardSchemaKey::Color, defaultValue.color, ColorFromString);
+    result.color = ParseUtil::GetEnumValue<ForegroundColor>(
+        json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
 
     result.isSubtle = ParseUtil::GetBool(
         json, AdaptiveCardSchemaKey::IsSubtle, defaultValue.isSubtle);
@@ -142,8 +142,7 @@ AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value& json, cons
     result.padding = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
         json, AdaptiveCardSchemaKey::Padding, defaultValue.padding, SpacingDefinition::Deserialize);
 
-    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
-    result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
+    result.allowCustomStyle = ParseUtil::GetBool(json, AdaptiveCardSchemaKey::AllowCustomStyle, defaultValue.allowCustomStyle);
 
     return result;
 }
@@ -171,48 +170,15 @@ FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetC
     return result;
 }
 
-ContainerStyleConfig ContainerStyleConfig::Deserialize(const Json::Value& json, const ContainerStyleConfig& defaultValue)
-{
-    ContainerStyleConfig result;
-    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
-    result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
-
-    std::string borderColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BorderColor);
-    result.borderColor = borderColor == "" ? defaultValue.borderColor : borderColor;
-
-    result.borderThickness = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
-        json, AdaptiveCardSchemaKey::BorderThickness, defaultValue.borderThickness, SpacingDefinition::Deserialize);
-
-    result.padding = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
-        json, AdaptiveCardSchemaKey::Padding, defaultValue.padding, SpacingDefinition::Deserialize);
-
-    return result;
-
-}
-
-ContainerConfig ContainerConfig::Deserialize(const Json::Value& json, const ContainerConfig& defaultValue)
-{
-    ContainerConfig result;
-
-    result.emphasis = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleConfig>(
-        json, AdaptiveCardSchemaKey::Emphasis, defaultValue.emphasis, ContainerStyleConfig::Deserialize);
-
-    result.normal = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleConfig>(
-        json, AdaptiveCardSchemaKey::Normal, defaultValue.normal, ContainerStyleConfig::Deserialize);
-
-    return result;
-}
-
 ShowCardActionConfig ShowCardActionConfig::Deserialize(const Json::Value&json, const ShowCardActionConfig& defaultValue)
 {
     ShowCardActionConfig result;
     result.actionMode = ParseUtil::GetEnumValue<ActionMode>(
         json, AdaptiveCardSchemaKey::ActionMode, defaultValue.actionMode, ActionModeFromString);
-
-    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
-    result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
-
     result.inlineTopMargin = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::InlineTopMargin, defaultValue.inlineTopMargin);
+    result.style = ParseUtil::GetEnumValue<ContainerStyle>(
+        json, AdaptiveCardSchemaKey::Style, defaultValue.style, ContainerStyleFromString);
+
     result.padding = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
         json, AdaptiveCardSchemaKey::Padding, defaultValue.padding, SpacingDefinition::Deserialize);
 
@@ -272,6 +238,32 @@ SeparatorThicknessConfig AdaptiveCards::SeparatorThicknessConfig::Deserialize(co
 
     result.thickSeparatorThickness = ParseUtil::GetUInt(
         json, AdaptiveCardSchemaKey::Thick, defaultValue.thickSeparatorThickness);
+
+    return result;
+}
+
+ContainerStyleDefinition AdaptiveCards::ContainerStyleDefinition::Deserialize(const Json::Value & json, const ContainerStyleDefinition & defaultValue)
+{
+    ContainerStyleDefinition result;
+
+    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
+    result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
+
+    result.foregroundColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorsConfig>(
+        json, AdaptiveCardSchemaKey::ForegroundColors, defaultValue.foregroundColors, ColorsConfig::Deserialize);
+
+    return result;
+}
+
+ContainerStylesDefinition AdaptiveCards::ContainerStylesDefinition::Deserialize(const Json::Value & json, const ContainerStylesDefinition & defaultValue)
+{
+    ContainerStylesDefinition result;
+
+    result.defaultPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultPalette, ContainerStyleDefinition::Deserialize);
+
+    result.emphasisPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Emphasis, defaultValue.emphasisPalette, ContainerStyleDefinition::Deserialize);
 
     return result;
 }

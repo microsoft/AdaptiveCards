@@ -229,14 +229,14 @@ HRESULT GenerateSharedSeparator(
     ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator,
     std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut) noexcept try
 {
-    ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor color;
+    ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor color;
     RETURN_IF_FAILED(separator->get_Color(&color));
 
     ABI::AdaptiveCards::XamlCardRenderer::SeparatorThickness thickness;
     RETURN_IF_FAILED(separator->get_Thickness(&thickness));
 
     auto sharedSeparator = std::make_shared<Separator>();
-    sharedSeparator->SetColor(static_cast<AdaptiveCards::Color>(color));
+    sharedSeparator->SetColor(static_cast<AdaptiveCards::ForegroundColor>(color));
     sharedSeparator->SetThickness(static_cast<AdaptiveCards::SeparatorThickness>(thickness));
 
     *sharedSeparatorOut = sharedSeparator;
@@ -267,35 +267,49 @@ HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *col
 
 HRESULT GetColorFromAdaptiveColor(
     ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
-    ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor adaptiveColor,
+    ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor adaptiveColor,
+    ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle containerStyle,
     bool isSubtle,
     ABI::Windows::UI::Color * uiColor) noexcept try
 {
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition> styles;
+    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&styles));
+
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleDefinition> styleDefinition;
+    if (containerStyle == ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle_Default)
+    {
+        RETURN_IF_FAILED(styles->get_Default(&styleDefinition));
+    }
+    else
+    {
+        RETURN_IF_FAILED(styles->get_Emphasis(&styleDefinition));
+    }
+
     ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorsConfig> colorsConfig;
-    THROW_IF_FAILED(hostConfig->get_Colors(&colorsConfig));
+    RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig)); 
 
     ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig> colorConfig;
     switch (adaptiveColor)
     {
-    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Accent:
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Accent:
         RETURN_IF_FAILED(colorsConfig->get_Accent(&colorConfig));
         break;
-    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Dark:
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Dark:
         RETURN_IF_FAILED(colorsConfig->get_Dark(&colorConfig));
         break;
-    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Light:
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Light:
         RETURN_IF_FAILED(colorsConfig->get_Light(&colorConfig));
         break;
-    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Good:
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Good:
         RETURN_IF_FAILED(colorsConfig->get_Good(&colorConfig));
         break;
-    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Warning:
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Warning:
         RETURN_IF_FAILED(colorsConfig->get_Warning(&colorConfig));
         break;
-    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Attention:
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Attention:
         RETURN_IF_FAILED(colorsConfig->get_Attention(&colorConfig));
         break;
-    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Default:
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Default:
     default:
         RETURN_IF_FAILED(colorsConfig->get_Default(&colorConfig));
         break;
@@ -336,6 +350,29 @@ HRESULT GetSpacingSizeFromSpacing(
         RETURN_IF_FAILED(spacingConfig->get_Default(spacingSize));
         break;
     }
+
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetBackgroundColorFromStyle(
+    ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style,
+    _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept try
+{
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition> containerStyles;
+    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
+
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleDefinition> styleDefinition;
+    if (style == ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle::Default)
+    {
+        RETURN_IF_FAILED(containerStyles->get_Default(&styleDefinition));
+    }
+    else
+    {
+        RETURN_IF_FAILED(containerStyles->get_Emphasis(&styleDefinition));
+    }
+
+    RETURN_IF_FAILED(styleDefinition->get_BackgroundColor(backgroundColor));
 
     return S_OK;
 } CATCH_RETURN;

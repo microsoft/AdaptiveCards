@@ -7,7 +7,7 @@ TextBlock::TextBlock() :
     BaseCardElement(CardElementType::TextBlock),
     m_textSize(TextSize::Normal),
     m_textWeight(TextWeight::Normal),
-    m_textColor(Color::Default),
+    m_textColor(ForegroundColor::Default),
     m_isSubtle(false),
     m_wrap(false),
     m_hAlignment(HorizontalAlignment::Left),
@@ -22,7 +22,7 @@ TextBlock::TextBlock(
     std::string text,
     TextSize textSize,
     TextWeight textWeight,
-    Color textColor,
+    ForegroundColor textColor,
     bool isSubtle,
     bool wrap,
     int maxLines,
@@ -47,7 +47,7 @@ std::shared_ptr<TextBlock> TextBlock::Deserialize(const Json::Value& json)
 
     textBlock->SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
     textBlock->SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Normal, TextSizeFromString));
-    textBlock->SetTextColor(ParseUtil::GetEnumValue<Color>(json, AdaptiveCardSchemaKey::Color, Color::Default, ColorFromString));
+    textBlock->SetTextColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
     textBlock->SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Normal, TextWeightFromString));
     textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
     textBlock->SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
@@ -73,7 +73,7 @@ Json::Value TextBlock::SerializeToJsonValue()
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(GetTextSize());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ColorToString(GetTextColor());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(GetTextColor());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(GetTextWeight());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = 
         HorizontalAlignmentToString(GetHorizontalAlignment());
@@ -115,12 +115,12 @@ void TextBlock::SetTextWeight(const TextWeight value)
     m_textWeight = value;
 }
 
-Color TextBlock::GetTextColor() const
+ForegroundColor TextBlock::GetTextColor() const
 {
     return m_textColor;
 }
 
-void TextBlock::SetTextColor(const Color value)
+void TextBlock::SetTextColor(const ForegroundColor value)
 {
     m_textColor = value;
 }

@@ -19,7 +19,6 @@
     <ClCompile Include="lib\AdaptiveShowCardAction.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitAction.cpp" />
     <ClCompile Include="lib\AdaptiveActionEventArgs.cpp" />
-    <ClCompile Include="lib\AdaptiveContainerStyleConfig.cpp" />
     <ClCompile Include="lib\InputItem.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceInput.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInput.cpp" />
@@ -32,7 +31,6 @@
     <ClCompile Include="lib\AdaptiveSpacingDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveCardConfig.cpp" />
     <ClCompile Include="lib\AdaptiveColorsConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveContainerConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFactSetConfig.cpp" />
     <ClCompile Include="lib\AdaptiveHostConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSetConfig.cpp" />
@@ -46,6 +44,8 @@
     <ClCompile Include="lib\AdaptiveSpacingConfig.cpp" />
     <ClCompile Include="lib\AdaptiveSeparatorThicknessConfig.cpp" />
     <ClCompile Include="lib\AdaptiveSeparator.cpp" />
+    <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -74,7 +74,6 @@
     <ClInclude Include="lib\AdaptiveShowCardAction.h" />
     <ClInclude Include="lib\AdaptiveSubmitAction.h" />
     <ClInclude Include="lib\AdaptiveActionEventArgs.h" />
-    <ClInclude Include="lib\AdaptiveContainerStyleConfig.h" />
     <ClInclude Include="lib\InputItem.h" />
     <ClInclude Include="lib\AdaptiveChoiceInput.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInput.h" />
@@ -87,7 +86,6 @@
     <ClInclude Include="lib\AdaptiveSpacingDefinition.h" />
     <ClInclude Include="lib\AdaptiveCardConfig.h" />
     <ClInclude Include="lib\AdaptiveColorsConfig.h" />
-    <ClInclude Include="lib\AdaptiveContainerConfig.h" />
     <ClInclude Include="lib\AdaptiveFactSetConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSetConfig.h" />
@@ -101,6 +99,8 @@
     <ClInclude Include="lib\AdaptiveSpacingConfig.h" />
     <ClInclude Include="lib\AdaptiveSeparatorThicknessConfig.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
+    <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />
