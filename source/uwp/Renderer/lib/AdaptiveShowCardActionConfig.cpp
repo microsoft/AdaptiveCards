@@ -35,13 +35,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::get_BackgroundColor(Color* value)
+    HRESULT AdaptiveShowCardActionConfig::get_BackgroundColor(ABI::Windows::UI::Color* value)
     {
         return GetColorFromString(m_sharedShowCardActionConfig.backgroundColor, value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_BackgroundColor(Color /*value*/)
+    HRESULT AdaptiveShowCardActionConfig::put_BackgroundColor(ABI::Windows::UI::Color /*value*/)
     {
         return E_NOTIMPL;
     }

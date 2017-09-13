@@ -205,19 +205,19 @@ static std::unordered_map<HorizontalAlignment, std::string, EnumHash> Horizontal
 static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo>
 HorizontalAlignmentNameToEnum = GenerateStringToEnumMap<HorizontalAlignment>(HorizontalAlignmentEnumToName);
 
-static std::unordered_map<AdaptiveColor, std::string, EnumHash> ColorEnumToName =
+static std::unordered_map<Color, std::string, EnumHash> ColorEnumToName =
 {
-    {AdaptiveColor::Accent, "Accent"},
-    {AdaptiveColor::Attention, "Attention"},
-    {AdaptiveColor::Dark, "Dark" },
-    {AdaptiveColor::Default, "Default"},
-    {AdaptiveColor::Good, "Good"},
-    {AdaptiveColor::Light, "Light" },
-    {AdaptiveColor::Warning, "Warning"},
+    {Color::Accent, "Accent"},
+    {Color::Attention, "Attention"},
+    {Color::Dark, "Dark" },
+    {Color::Default, "Default"},
+    {Color::Good, "Good"},
+    {Color::Light, "Light" },
+    {Color::Warning, "Warning"},
 };
 
-static std::unordered_map<std::string, AdaptiveColor, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-ColorNameToEnum = GenerateStringToEnumMap<AdaptiveColor>(ColorEnumToName);
+static std::unordered_map<std::string, Color, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+ColorNameToEnum = GenerateStringToEnumMap<Color>(ColorEnumToName);
 
 static std::unordered_map<TextWeight, std::string, EnumHash> TextWeightEnumToName =
 {
@@ -379,20 +379,20 @@ HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment)
     return HorizontalAlignmentNameToEnum[alignment];
 }
 
-const std::string ColorToString(AdaptiveColor color)
+const std::string ColorToString(Color color)
 {
     if (ColorEnumToName.find(color) == ColorEnumToName.end())
     {
-        throw std::out_of_range("Invalid AdaptiveColor type");
+        throw std::out_of_range("Invalid Color type");
     }
     return ColorEnumToName[color];
 }
 
-AdaptiveColor ColorFromString(const std::string& color)
+Color ColorFromString(const std::string& color)
 {
     if (ColorNameToEnum.find(color) == ColorNameToEnum.end())
     {
-        throw std::out_of_range("Invalid AdaptiveColor: " + color);
+        throw std::out_of_range("Invalid Color: " + color);
     }
 
     return ColorNameToEnum[color];

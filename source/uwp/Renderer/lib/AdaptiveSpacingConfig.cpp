@@ -12,11 +12,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
 
-    HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize(SpacingConfig spacingConfig) noexcept
+    HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize(SpacingConfig spacingConfig) noexcept try
     {
         m_sharedSpacingConfig = spacingConfig;
         return S_OK;
-    }
+    } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveSpacingConfig::get_Small(UINT32* smallSpacing)
@@ -33,14 +33,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveSpacingConfig::get_Default(UINT32* smallSpacing)
+    HRESULT AdaptiveSpacingConfig::get_Default(UINT32* smallSpacing)
     {
         *smallSpacing = m_sharedSpacingConfig.defaultSpacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveSpacingConfig::put_Default(UINT32 smallSpacing)
+    HRESULT AdaptiveSpacingConfig::put_Default(UINT32 smallSpacing)
     {
         m_sharedSpacingConfig.smallSpacing = smallSpacing;
         return S_OK;
@@ -75,16 +75,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveSpacingConfig::get_ExtraLarge(UINT32* largeSpacing)
+    HRESULT AdaptiveSpacingConfig::get_ExtraLarge(UINT32* extraLargeSpacing)
     {
-        *largeSpacing = m_sharedSpacingConfig.largeSpacing;
+        *extraLargeSpacing = m_sharedSpacingConfig.extraLargeSpacing;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveSpacingConfig::put_ExtraLarge(UINT32 largeSpacing)
+    HRESULT AdaptiveSpacingConfig::put_ExtraLarge(UINT32 extraLargeSpacing)
     {
-        m_sharedSpacingConfig.largeSpacing = largeSpacing;
+        m_sharedSpacingConfig.extraLargeSpacing = extraLargeSpacing;
         return S_OK;
     }
 }

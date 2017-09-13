@@ -59,8 +59,12 @@ HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
 
-HRESULT GenerateSharedSeperator(
-    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator,
-    std::shared_ptr<AdaptiveCards::Separator> * sharedSeparatorOut)noexcept;
+HRESULT GenerateSeparatorProjection(
+    std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** projectedSeparator) noexcept;
+
+HRESULT GenerateSharedSeparator(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator,
+    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut)noexcept;
 
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;

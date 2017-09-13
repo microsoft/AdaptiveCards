@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AdaptiveTextInput.h"
-#include "AdaptiveSeparator.h"
 
 #include "Util.h"
 #include <windows.foundation.collections.h>
@@ -135,22 +134,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator ** separator)
+    HRESULT AdaptiveTextInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
     {
-        *separator = nullptr;
-        auto sharedSeparator = m_sharedTextInput->GetSeparator();
-        if (sharedSeparator != nullptr)
-        {
-            return MakeAndInitialize<AdaptiveSeparator>(separator, m_sharedTextInput->GetSeparator());
-        }
-        return S_OK;
+        return GenerateSeparatorProjection(m_sharedTextInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator)
+    HRESULT AdaptiveTextInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
     {
         std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeperator(separator, &sharedSeparator));
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedTextInput->SetSeparator(sharedSeparator);
 

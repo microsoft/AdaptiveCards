@@ -17,14 +17,14 @@ public:
     SeparatorThickness GetThickness() const;
     void SetThickness(SeparatorThickness value);
 
-    AdaptiveColor GetColor() const;
-    void SetColor(const AdaptiveColor value);
+    Color GetColor() const;
+    void SetColor(const Color value);
 
     static std::shared_ptr<Separator> Deserialize(const Json::Value& root);
     static std::shared_ptr<Separator> DeserializeFromString(const std::string& jsonString);
 
 private:
     SeparatorThickness m_thickness;
-    AdaptiveColor m_color;
+    Color m_color;
 };
 }

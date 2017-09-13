@@ -36,7 +36,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveSeparator::put_Color(ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor color)
     {
-        m_sharedSeparator->SetColor(static_cast<AdaptiveCards::AdaptiveColor>(color));
+        m_sharedSeparator->SetColor(static_cast<AdaptiveCards::Color>(color));
         return S_OK;
     }
 

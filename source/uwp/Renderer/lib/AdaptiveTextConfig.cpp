@@ -56,7 +56,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor textColor)
     {
-        m_sharedTextConfig.color = static_cast<AdaptiveCards::AdaptiveColor>(textColor);
+        m_sharedTextConfig.color = static_cast<AdaptiveCards::Color>(textColor);
         return S_OK;
     }
 

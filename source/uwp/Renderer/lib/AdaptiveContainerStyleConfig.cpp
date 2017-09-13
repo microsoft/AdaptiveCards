@@ -15,25 +15,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::get_BackgroundColor(Color* value)
+    HRESULT AdaptiveContainerStyleConfig::get_BackgroundColor(ABI::Windows::UI::Color* value)
     {
         return GetColorFromString(m_sharedContainerStyleConfig.backgroundColor, value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::put_BackgroundColor(Color /*value*/)
+    HRESULT AdaptiveContainerStyleConfig::put_BackgroundColor(ABI::Windows::UI::Color /*value*/)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::get_BorderColor(Color* value)
+    HRESULT AdaptiveContainerStyleConfig::get_BorderColor(ABI::Windows::UI::Color* value)
     {
         return GetColorFromString(m_sharedContainerStyleConfig.borderColor, value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleConfig::put_BorderColor(Color /*value*/)
+    HRESULT AdaptiveContainerStyleConfig::put_BorderColor(ABI::Windows::UI::Color /*value*/)
     {
         return E_NOTIMPL;
     }

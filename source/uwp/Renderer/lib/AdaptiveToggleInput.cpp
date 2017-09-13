@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AdaptiveToggleInput.h"
-#include "AdaptiveSeparator.h"
 
 #include "Util.h"
 #include <windows.foundation.collections.h>
@@ -125,22 +124,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator ** separator)
+    HRESULT AdaptiveToggleInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
     {
-        *separator = nullptr;
-        auto sharedSeparator = m_sharedToggleInput->GetSeparator();
-        if (sharedSeparator != nullptr)
-        {
-            return MakeAndInitialize<AdaptiveSeparator>(separator, m_sharedToggleInput->GetSeparator());
-        }
-        return S_OK;
+        return GenerateSeparatorProjection(m_sharedToggleInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator)
+    HRESULT AdaptiveToggleInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
     {
         std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeperator(separator, &sharedSeparator));
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedToggleInput->SetSeparator(sharedSeparator);
 

@@ -17,7 +17,7 @@ public:
         std::string text,
         TextSize textSize,
         TextWeight textWeight,
-        AdaptiveColor color,
+        Color color,
         bool isSubtle,
         bool wrap,
         int maxLines,
@@ -38,8 +38,8 @@ public:
     TextWeight GetTextWeight() const;
     void SetTextWeight(const TextWeight value);
 
-    AdaptiveColor GetTextColor() const;
-    void SetTextColor(const AdaptiveColor value);
+    Color GetTextColor() const;
+    void SetTextColor(const Color value);
 
     bool GetWrap() const;
     void SetWrap(const bool value);
@@ -57,7 +57,7 @@ private:
     std::string m_text;
     TextSize m_textSize;
     TextWeight m_textWeight;
-    AdaptiveColor m_textColor;
+    Color m_textColor;
     bool m_isSubtle;
     bool m_wrap;
     unsigned int m_maxLines;

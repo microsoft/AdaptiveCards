@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AdaptiveChoiceSetInput.h"
-#include "AdaptiveSeparator.h"
 
 #include "Util.h"
 #include "Vector.h"
@@ -120,22 +119,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator ** separator)
+    HRESULT AdaptiveChoiceSetInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
     {
-        *separator = nullptr;
-        auto sharedSeparator = m_sharedChoiceSetInput->GetSeparator();
-        if (sharedSeparator != nullptr)
-        {
-            return MakeAndInitialize<AdaptiveSeparator>(separator, m_sharedChoiceSetInput->GetSeparator());
-        }
-        return S_OK;
+        return GenerateSeparatorProjection(m_sharedChoiceSetInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator)
+    HRESULT AdaptiveChoiceSetInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
     {
         std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeperator(separator, &sharedSeparator));
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedChoiceSetInput->SetSeparator(sharedSeparator);
 

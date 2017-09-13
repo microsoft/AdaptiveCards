@@ -116,7 +116,7 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
     result.size = ParseUtil::GetEnumValue<TextSize>(
         json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
-    result.color = ParseUtil::GetEnumValue<AdaptiveColor>(
+    result.color = ParseUtil::GetEnumValue<Color>(
         json, AdaptiveCardSchemaKey::Color, defaultValue.color, ColorFromString);
 
     result.isSubtle = ParseUtil::GetBool(

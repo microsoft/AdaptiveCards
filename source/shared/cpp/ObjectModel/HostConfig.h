@@ -52,7 +52,7 @@ struct TextConfig
 {
     TextWeight weight = TextWeight::Normal;
     TextSize size = TextSize::Normal;
-    AdaptiveColor color = AdaptiveColor::Default;
+    Color color = Color::Default;
     bool isSubtle = false;
 
     static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);

@@ -157,7 +157,7 @@ enum class TextWeight {
     Bolder
 };
 
-enum class AdaptiveColor {
+enum class Color {
     Default = 0,
     Dark,
     Light,
@@ -279,8 +279,8 @@ ActionType ActionTypeFromString(const std::string& actionType);
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
 HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);
 
-const std::string ColorToString(AdaptiveColor type);
-AdaptiveColor ColorFromString(const std::string& type);
+const std::string ColorToString(Color type);
+Color ColorFromString(const std::string& type);
 
 const std::string TextWeightToString(TextWeight type);
 TextWeight TextWeightFromString(const std::string& type);

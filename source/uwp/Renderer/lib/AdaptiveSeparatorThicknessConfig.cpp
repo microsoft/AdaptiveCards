@@ -12,11 +12,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
 
-    HRESULT AdaptiveSeparatorThicknessConfig::RuntimeClassInitialize(SeparatorThicknessConfig SeparatorThicknessConfig) noexcept
+    HRESULT AdaptiveSeparatorThicknessConfig::RuntimeClassInitialize(SeparatorThicknessConfig SeparatorThicknessConfig) noexcept try
     {
         m_sharedSeparatorThicknessConfig = SeparatorThicknessConfig;
         return S_OK;
-    }
+    } CATCH_RETURN;
 
     _Use_decl_annotations_
         HRESULT AdaptiveSeparatorThicknessConfig::get_Default(UINT32* smallSeparatorThickness)

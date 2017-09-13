@@ -322,7 +322,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         ComPtr<IPanel> rootAsPanel;
         THROW_IF_FAILED(rootElement.As(&rootAsPanel));
-        Color backgroundColor;
+        ABI::Windows::UI::Color backgroundColor;
         if (SUCCEEDED(adaptiveCardConfig->get_BackgroundColor(&backgroundColor)))
         {
             ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
@@ -547,7 +547,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                     bool needsSeparator;
                     UINT spacing;
                     UINT separatorThickness;
-                    Color separatorColor;
+                    ABI::Windows::UI::Color separatorColor;
                     GetSeparationConfigForElement(element, &spacing, &separatorThickness, &separatorColor, &needsSeparator);
                     if (needsSeparator)
                     {
@@ -614,7 +614,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(showCardFrameworkElement->put_Margin(margin));
 
         // Set the background color
-        Color backgroundColor;
+        ABI::Windows::UI::Color backgroundColor;
         THROW_IF_FAILED(showCardActionConfig->get_BackgroundColor(&backgroundColor));
         ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
         ComPtr<IPanel> showCardAsPanel;
@@ -647,7 +647,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             UINT spacingSize;
             THROW_IF_FAILED(GetSpacingSizeFromSpacing(m_hostConfig.Get(), spacing, &spacingSize));
 
-            Color color = { 0 };
+            ABI::Windows::UI::Color color = { 0 };
             auto separator = CreateSeparator(spacingSize, 0, color);
             XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
         }
@@ -892,7 +892,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IAdaptiveCardElement* cardElement,
         UINT* spacing,
         UINT* separatorThickness,
-        Color* separatorColor,
+        ABI::Windows::UI::Color* separatorColor,
         bool * needsSeparator)
     {
         ABI::AdaptiveCards::XamlCardRenderer::Spacing elementSpacing;
@@ -904,7 +904,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IAdaptiveSeparator> elementSeparator;
         THROW_IF_FAILED(cardElement->get_Separator(&elementSeparator));
 
-        Color localColor = { 0 };
+        ABI::Windows::UI::Color localColor = { 0 };
         UINT localThickness = 0;
         if (elementSeparator != nullptr)
         {
@@ -974,7 +974,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         ComPtr<ITextBlock> localTextBlock(xamlTextBlock);
 
-        Color fontColor;
+        ABI::Windows::UI::Color fontColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(), color, isSubtle, &fontColor));
 
         ComPtr<IBrush> fontColorBrush = GetSolidColorBrush(fontColor);
@@ -1287,11 +1287,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             containerConfig->get_Emphasis(&containerStyleConfig));
 
         ComPtr<IBorder> containerBorder = XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
-        Color borderColor;
+        ABI::Windows::UI::Color borderColor;
         THROW_IF_FAILED(containerStyleConfig->get_BorderColor(&borderColor));
         ComPtr<IBrush> borderColorBrush = GetSolidColorBrush(borderColor);
         THROW_IF_FAILED(containerBorder->put_BorderBrush(borderColorBrush.Get()));
-        Color backgroundColor;
+        ABI::Windows::UI::Color backgroundColor;
         THROW_IF_FAILED(containerStyleConfig->get_BackgroundColor(&backgroundColor));
         ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
         THROW_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
@@ -1373,7 +1373,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 bool needsSeparator;
                 UINT spacing;
                 UINT separatorThickness;
-                Color separatorColor;
+                ABI::Windows::UI::Color separatorColor;
                 GetSeparationConfigForElement(columnAsCardElement.Get(), &spacing, &separatorThickness, &separatorColor, &needsSeparator);
 
                 if (needsSeparator)

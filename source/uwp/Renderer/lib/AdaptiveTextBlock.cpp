@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "AdaptiveSeparator.h"
 #include "AdaptiveTextBlock.h"
 #include "Util.h"
 #include <windows.foundation.collections.h>
@@ -80,7 +79,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor textColor)
     {
-        m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::AdaptiveColor>(textColor));
+        m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::Color>(textColor));
         return S_OK;
     }
 
@@ -162,22 +161,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator ** separator)
+    HRESULT AdaptiveTextBlock::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
     {
-        *separator = nullptr;
-        auto sharedSeparator = m_sharedTextBlock->GetSeparator();
-        if (sharedSeparator != nullptr)
-        {
-            return MakeAndInitialize<AdaptiveSeparator>(separator, m_sharedTextBlock->GetSeparator());
-        }
-        return S_OK;
+        return GenerateSeparatorProjection(m_sharedTextBlock->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator)
+    HRESULT AdaptiveTextBlock::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
     {
         std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeperator(separator, &sharedSeparator));
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedTextBlock->SetSeparator(sharedSeparator);
 

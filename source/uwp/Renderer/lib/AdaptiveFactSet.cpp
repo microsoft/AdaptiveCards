@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AdaptiveFactSet.h"
-#include "AdaptiveSeparator.h"
 
 #include "Util.h"
 #include "Vector.h"
@@ -63,22 +62,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator ** separator)
+    HRESULT AdaptiveFactSet::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
     {
-        *separator = nullptr;
-        auto sharedSeparator = m_sharedFactSet->GetSeparator();
-        if (sharedSeparator != nullptr)
-        {
-            return MakeAndInitialize<AdaptiveSeparator>(separator, m_sharedFactSet->GetSeparator());
-        }
-        return S_OK;
+        return GenerateSeparatorProjection(m_sharedFactSet->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator)
+    HRESULT AdaptiveFactSet::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
     {
         std::shared_ptr<Separator> sharedSeparator;
-        RETURN_IF_FAILED(GenerateSharedSeperator(separator, &sharedSeparator));
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedFactSet->SetSeparator(sharedSeparator);
 

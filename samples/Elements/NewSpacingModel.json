@@ -42,10 +42,10 @@
         },
         {
             "type": "TextBlock",
-            "text": "separator:thick/default",
+            "text": "separator:thick/attention",
             "separator": {
                 "thickness": "thick",
-                "color": "default"
+                "color": "attention"
             }
         },
         {
@@ -58,11 +58,11 @@
         },
         {
             "type": "TextBlock",
-            "text": "spacing:large separator:thick/accent",
+            "text": "spacing:large separator:thick/warning",
             "spacing": "large",
             "separator": {
                 "thickness": "thick",
-                "color": "accent"
+                "color": "warning"
             }
         }
     ]

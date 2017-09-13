@@ -16,6 +16,7 @@
 #include "AdaptiveImageSet.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveTextBlock.h"
@@ -217,9 +218,21 @@ HRESULT GenerateInputChoicesProjection(
     return S_OK;
 } CATCH_RETURN;
 
-HRESULT GenerateSharedSeperator(
-    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator * separator,
-    std::shared_ptr<AdaptiveCards::Separator> * sharedSeparatorOut) noexcept try
+HRESULT GenerateSeparatorProjection(
+    std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** projectedSeparator) noexcept try
+{
+    *projectedSeparator = nullptr;
+    if (sharedSeparator != nullptr)
+    {
+        return MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveSeparator>(projectedSeparator, sharedSeparator);
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateSharedSeparator(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator,
+    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut) noexcept try
 {
     ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor color;
     RETURN_IF_FAILED(separator->get_Color(&color));
@@ -228,14 +241,14 @@ HRESULT GenerateSharedSeperator(
     RETURN_IF_FAILED(separator->get_Thickness(&thickness));
 
     auto sharedSeparator = std::make_shared<Separator>();
-    sharedSeparator->SetColor(static_cast<AdaptiveCards::AdaptiveColor>(color));
+    sharedSeparator->SetColor(static_cast<AdaptiveCards::Color>(color));
     sharedSeparator->SetThickness(static_cast<AdaptiveCards::SeparatorThickness>(thickness));
 
     *sharedSeparatorOut = sharedSeparator;
     return S_OK;
 } CATCH_RETURN;
 
-HRESULT GetColorFromString(std::string colorString, Color *color) noexcept try
+HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept try
 {
     std::string alphaString = colorString.substr(1, 2);
     INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
