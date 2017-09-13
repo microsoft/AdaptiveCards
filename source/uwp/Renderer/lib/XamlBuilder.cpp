@@ -463,20 +463,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IBitmapSource> bitmapSource;
         bitmapImage.As(&bitmapSource);
 
+        // Get the image resolvers
         ComPtr<IXamlCardImageResolvers> resolvers;
         THROW_IF_FAILED(m_renderer->get_ImageResolvers(&resolvers));
 
+        // Get the image url scheme
         HSTRING schemeName;
         THROW_IF_FAILED(imageUri->get_SchemeName(&schemeName));
 
+        // Get the resolver for the image
         ComPtr<IXamlCardImageResolver> resolver;
         THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
 
         if (resolver != nullptr)
         {
+            // Create the arguments to pass to the resolver
             ComPtr<IXamlCardGetImageStreamArgs> args;
             THROW_IF_FAILED(MakeAndInitialize<XamlCardGetImageStreamArgs>(&args, imageUri));
 
+            // And call the resolver to get the image stream
             ComPtr<IAsyncOperation<IRandomAccessStream*>> getImageStreamOperation;
             THROW_IF_FAILED(resolver->GetImageStreamAsync(args.Get(), &getImageStreamOperation));
 
@@ -487,12 +492,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             {
                 if (status == AsyncStatus::Completed)
                 {
-                    // Load the image stream into an in memory random access stream, which is what
-                    // SetSource needs
+                    // Get the random access stream
                     ComPtr<IRandomAccessStream> randomAccessStream;
                     RETURN_IF_FAILED(operation->GetResults(&randomAccessStream));
 
-                    randomAccessStream->Seek(0);
+                    if (randomAccessStream == nullptr)
+                    {
+                        m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                        return S_OK;
+                    }
+
                     RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
 
                     ComPtr<IImageSource> imageSource;
@@ -510,6 +519,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
             return;
         }
+
+        // TODO: The following code should be moved into a default ImageResolver, but figuring
+        // out how to return the correct async operation from this type of C++ code seems tricky
+        // so leaving this code here for now.
 
         // Create the HttpClient to load the image stream
         ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter =

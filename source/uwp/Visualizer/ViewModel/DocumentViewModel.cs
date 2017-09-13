@@ -198,15 +198,10 @@ namespace XamlCardVisualizer.ViewModel
                 //_renderer.SetHostConfig
 
                 // Custom image handler
-                //var resolvers = _renderer.ImageResolvers;
-                _renderer.ImageResolvers.Set("https", new MyImageHandler());
-
-                //resolvers.Set("http", new MyImageHandler());
-
-                if (_renderer.ImageResolvers.Get("https") != null)
-                {
-                    Debug.WriteLine("Awesome");
-                }
+                IXamlCardImageResolver httpHandler = new MyHttpImageHandler();
+                _renderer.ImageResolvers.Set("http", httpHandler);
+                _renderer.ImageResolvers.Set("https", httpHandler);
+                _renderer.ImageResolvers.Set("ms-appx", new MyAppxImageHandler());
 
                 _renderer.Action += async (sender, e) =>
                 {
@@ -237,7 +232,7 @@ namespace XamlCardVisualizer.ViewModel
             }
         }
 
-        private class MyImageHandler : IXamlCardImageResolver
+        private class MyHttpImageHandler : IXamlCardImageResolver
         {
             public IAsyncOperation<IRandomAccessStream> GetImageStreamAsync(XamlCardGetImageStreamArgs args)
             {
@@ -247,6 +242,20 @@ namespace XamlCardVisualizer.ViewModel
             private async Task<IRandomAccessStream> GetImageStreamHelperAsync(XamlCardGetImageStreamArgs args)
             {
                 StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/StoreLogo.png"));
+                return await file.OpenAsync(FileAccessMode.Read);
+            }
+        }
+
+        private class MyAppxImageHandler : IXamlCardImageResolver
+        {
+            public IAsyncOperation<IRandomAccessStream> GetImageStreamAsync(XamlCardGetImageStreamArgs args)
+            {
+                return GetImageStreamHelperAsync(args).AsAsyncOperation();
+            }
+
+            private async Task<IRandomAccessStream> GetImageStreamHelperAsync(XamlCardGetImageStreamArgs args)
+            {
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(args.Url);
                 return await file.OpenAsync(FileAccessMode.Read);
             }
         }
