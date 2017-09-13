@@ -43,12 +43,9 @@ function renderCard(): HTMLElement {
 
     var adaptiveCard = new Adaptive.AdaptiveCard();
 
-    try {
-        adaptiveCard.hostConfig = Adaptive.parseHostConfig(currentConfigPayload);
-    }
-    catch (e) {
-        // TODO
-    }
+    
+    adaptiveCard.hostConfig = Adaptive.parseHostConfig(currentConfigPayload);
+   
     
     adaptiveCard.parse(json);
     

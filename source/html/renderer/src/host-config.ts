@@ -26,10 +26,10 @@ export interface IPaddingDefinition {
 
 function parsePaddingDefinition(obj: any): IPaddingDefinition {
     return obj ? {
-        top: Utils.getValueOrDefault<Enums.Padding>(obj["top"], "none"),
-        right: Utils.getValueOrDefault<Enums.Padding>(obj["right"], "none"),
-        bottom: Utils.getValueOrDefault<Enums.Padding>(obj["bottom"], "none"),
-        left: Utils.getValueOrDefault<Enums.Padding>(obj["left"], "none")
+        top: Utils.getValueOrDefault<Enums.Padding>(obj["top"], Enums.Padding.None),
+        right: Utils.getValueOrDefault<Enums.Padding>(obj["right"], Enums.Padding.None),
+        bottom: Utils.getValueOrDefault<Enums.Padding>(obj["bottom"], Enums.Padding.None),
+        left: Utils.getValueOrDefault<Enums.Padding>(obj["left"], Enums.Padding.None),
     } : null;
 }
 
@@ -106,15 +106,15 @@ export interface IFactTextDefinition {
     color: Enums.TextColor,
     isSubtle: boolean,
     weight: Enums.TextWeight,
-    wrap: boolean    
+    wrap: boolean
 }
 
 function parseFactTextDefinition(obj: any): IFactTextDefinition {
     return obj ? {
-        size: Utils.getValueOrDefault<Enums.TextSize>(obj["size"], "normal"),
-        color: Utils.getValueOrDefault<Enums.TextColor>(obj["color"], "default"),
+        size: Utils.getValueOrDefault<Enums.TextSize>(obj["size"], Enums.TextSize.Normal),
+        color: Utils.getValueOrDefault<Enums.TextColor>(obj["color"], Enums.TextColor.Default),
         isSubtle: obj["isSubtle"],
-        weight: Utils.getValueOrDefault<Enums.TextWeight>(obj["weight"], "normal"),
+        weight: Utils.getValueOrDefault<Enums.TextWeight>(obj["weight"], Enums.TextWeight.Normal),
         wrap: obj["wrap"]
     } : null;
 }
@@ -155,9 +155,9 @@ export interface IShowCardActionConfig {
 
 function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
     return obj ? {
-        actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], "inline"),
+        actionMode: Utils.getValueOrDefault<Enums.ShowCardActionMode>(obj["actionMode"], Enums.ShowCardActionMode.Inline),
         inlineTopMargin: obj["inlineTopMargin"],
-        style: Utils.getValueOrDefault<Enums.ContainerStyle>(obj["style"], "emphasis")
+        style: Utils.getValueOrDefault<Enums.ContainerStyle>(obj["style"], Enums.ContainerStyle.Emphasis)
     } : null;
 }
 
@@ -166,7 +166,7 @@ export interface IActionsConfig {
     spacing: Enums.Spacing,
     buttonSpacing: number,
     showCard: IShowCardActionConfig,
-    preExpandSingleShowCardAction?: boolean,    
+    preExpandSingleShowCardAction?: boolean,
     actionsOrientation: Enums.Orientation,
     actionAlignment: Enums.ActionAlignment
 }
@@ -174,12 +174,12 @@ export interface IActionsConfig {
 function parseActionsConfiguration(obj: any): IActionsConfig {
     return obj ? {
         maxActions: obj["maxActions"],
-        spacing: Utils.getValueOrDefault<Enums.Spacing>(obj["spacing"], "default"),
+        spacing: Utils.getValueOrDefault<Enums.Spacing>(obj["spacing"], Enums.Spacing.Default),
         buttonSpacing: obj["buttonSpacing"],
         showCard: parseShowCardActionConfiguration(obj["showCard"]),
         preExpandSingleShowCardAction: Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false),
-        actionsOrientation: Utils.getValueOrDefault<Enums.Orientation>(obj["actionsOrientation"], "horizontal"),
-        actionAlignment: Utils.getValueOrDefault<Enums.ActionAlignment>(obj["actionAlignment"], "left"),
+        actionsOrientation: Utils.getValueOrDefault<Enums.Orientation>(obj["actionsOrientation"], Enums.Orientation.Horizontal),
+        actionAlignment: Utils.getValueOrDefault<Enums.ActionAlignment>(obj["actionAlignment"], Enums.ActionAlignment.Left),
     } : null;
 }
 
@@ -217,7 +217,7 @@ export interface IHostConfig {
     },
     separator: {
         lineThickness: number,
-        lineColor: string        
+        lineColor: string
     }
     actions: IActionsConfig,
     adaptiveCard: IAdaptiveCardConfig,
