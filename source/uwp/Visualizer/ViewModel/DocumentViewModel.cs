@@ -14,8 +14,6 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using XamlCardVisualizer.Helpers;
-using Windows.Foundation;
-using Windows.Storage.Streams;
 
 namespace XamlCardVisualizer.ViewModel
 {
@@ -160,7 +158,7 @@ namespace XamlCardVisualizer.ViewModel
 
             try
             {
-                RenderedCard = await _renderer.RenderAdaptiveJsonAsXamlAsync(payload);
+                RenderedCard = _renderer.RenderAdaptiveJsonAsXaml(payload);
                 if (RenderedCard is FrameworkElement)
                 {
                     (RenderedCard as FrameworkElement).VerticalAlignment = VerticalAlignment.Top;
@@ -197,12 +195,6 @@ namespace XamlCardVisualizer.ViewModel
                 _renderer = new XamlCardRenderer();
                 //_renderer.SetHostConfig
 
-                // Custom image handler
-                IXamlCardImageResolver httpHandler = new MyHttpImageHandler();
-                _renderer.ImageResolvers.Set("http", httpHandler);
-                _renderer.ImageResolvers.Set("https", httpHandler);
-                _renderer.ImageResolvers.Set("ms-appx", new MyAppxImageHandler());
-
                 _renderer.Action += async (sender, e) =>
                 {
                     var m_actionDialog = new ContentDialog();
@@ -229,34 +221,6 @@ namespace XamlCardVisualizer.ViewModel
                     Debugger.Break();
                 }
                 throw;
-            }
-        }
-
-        private class MyHttpImageHandler : IXamlCardImageResolver
-        {
-            public IAsyncOperation<IRandomAccessStream> GetImageStreamAsync(XamlCardGetImageStreamArgs args)
-            {
-                return GetImageStreamHelperAsync(args).AsAsyncOperation();
-            }
-
-            private async Task<IRandomAccessStream> GetImageStreamHelperAsync(XamlCardGetImageStreamArgs args)
-            {
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/StoreLogo.png"));
-                return await file.OpenAsync(FileAccessMode.Read);
-            }
-        }
-
-        private class MyAppxImageHandler : IXamlCardImageResolver
-        {
-            public IAsyncOperation<IRandomAccessStream> GetImageStreamAsync(XamlCardGetImageStreamArgs args)
-            {
-                return GetImageStreamHelperAsync(args).AsAsyncOperation();
-            }
-
-            private async Task<IRandomAccessStream> GetImageStreamHelperAsync(XamlCardGetImageStreamArgs args)
-            {
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(args.Url);
-                return await file.OpenAsync(FileAccessMode.Read);
             }
         }
     }
