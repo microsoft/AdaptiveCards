@@ -40,10 +40,11 @@ export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name:
 
     for (var key in targetEnum) {
         let isValueProperty = parseInt(key, 10) >= 0
+
         if (isValueProperty) {
             let value = targetEnum[key];
+            
             if (typeof value === 'string' || value instanceof String) {
-                console.log(value, name);
                 if (value.toLowerCase() === name.toLowerCase()) {
                     return parseInt(key, 10);
                 }
