@@ -1,0 +1,69 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "0.5",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "no spacing/separation"
+        },
+        {
+            "type": "TextBlock",
+            "text": "spacing:small",
+            "spacing": "small"
+        },
+        {
+            "type": "TextBlock",
+            "text": "spacing:default",
+            "spacing": "default"
+        },
+        {
+            "type": "TextBlock",
+            "text": "spacing:medium",
+            "spacing": "medium"
+        },
+        {
+            "type": "TextBlock",
+            "text": "spacing:large",
+            "spacing": "large"
+        },
+        {
+            "type": "TextBlock",
+            "text": "spacing:extralarge",
+            "spacing": "extralarge"
+        },
+        {
+            "type": "TextBlock",
+            "text": "separator:default/default",
+            "separator": {
+                "thickness": "default",
+                "color": "default"
+            }
+        },
+        {
+            "type": "TextBlock",
+            "text": "separator:thick/attention",
+            "separator": {
+                "thickness": "thick",
+                "color": "attention"
+            }
+        },
+        {
+            "type": "TextBlock",
+            "text": "separator:thick/accent",
+            "separator": {
+                "thickness": "thick",
+                "color": "accent"
+            }
+        },
+        {
+            "type": "TextBlock",
+            "text": "spacing:large separator:thick/warning",
+            "spacing": "large",
+            "separator": {
+                "thickness": "thick",
+                "color": "warning"
+            }
+        }
+    ]
+}

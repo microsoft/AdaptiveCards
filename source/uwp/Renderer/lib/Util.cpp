@@ -16,6 +16,7 @@
 #include "AdaptiveImageSet.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveTextBlock.h"
@@ -217,7 +218,37 @@ HRESULT GenerateInputChoicesProjection(
     return S_OK;
 } CATCH_RETURN;
 
-HRESULT GetColorFromString(std::string colorString, Color *color) noexcept try
+HRESULT GenerateSeparatorProjection(
+    std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** projectedSeparator) noexcept try
+{
+    *projectedSeparator = nullptr;
+    if (sharedSeparator != nullptr)
+    {
+        return MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveSeparator>(projectedSeparator, sharedSeparator);
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateSharedSeparator(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator,
+    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut) noexcept try
+{
+    ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor color;
+    RETURN_IF_FAILED(separator->get_Color(&color));
+
+    ABI::AdaptiveCards::XamlCardRenderer::SeparatorThickness thickness;
+    RETURN_IF_FAILED(separator->get_Thickness(&thickness));
+
+    auto sharedSeparator = std::make_shared<Separator>();
+    sharedSeparator->SetColor(static_cast<AdaptiveCards::Color>(color));
+    sharedSeparator->SetThickness(static_cast<AdaptiveCards::SeparatorThickness>(thickness));
+
+    *sharedSeparatorOut = sharedSeparator;
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept try
 {
     std::string alphaString = colorString.substr(1, 2);
     INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
@@ -235,6 +266,81 @@ HRESULT GetColorFromString(std::string colorString, Color *color) noexcept try
     color->R = static_cast<BYTE>(red);
     color->B = static_cast<BYTE>(blue);
     color->G = static_cast<BYTE>(green);
+
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetColorFromAdaptiveColor(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor adaptiveColor,
+    bool isSubtle,
+    ABI::Windows::UI::Color * uiColor) noexcept try
+{
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorsConfig> colorsConfig;
+    THROW_IF_FAILED(hostConfig->get_Colors(&colorsConfig));
+
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig> colorConfig;
+    switch (adaptiveColor)
+    {
+    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Accent:
+        RETURN_IF_FAILED(colorsConfig->get_Accent(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Dark:
+        RETURN_IF_FAILED(colorsConfig->get_Dark(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Light:
+        RETURN_IF_FAILED(colorsConfig->get_Light(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Good:
+        RETURN_IF_FAILED(colorsConfig->get_Good(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Warning:
+        RETURN_IF_FAILED(colorsConfig->get_Warning(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Attention:
+        RETURN_IF_FAILED(colorsConfig->get_Attention(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Default:
+    default:
+        RETURN_IF_FAILED(colorsConfig->get_Default(&colorConfig));
+        break;
+    }
+
+    RETURN_IF_FAILED(isSubtle ? colorConfig->get_Subtle(uiColor) : colorConfig->get_Normal(uiColor));
+
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetSpacingSizeFromSpacing(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing,
+    UINT* spacingSize) noexcept try
+{
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingConfig> spacingConfig;
+    RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
+
+    switch (spacing)
+    {
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::None:
+        *spacingSize = 0;
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Small:
+        RETURN_IF_FAILED(spacingConfig->get_Small(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Medium:
+        RETURN_IF_FAILED(spacingConfig->get_Medium(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Large:
+        RETURN_IF_FAILED(spacingConfig->get_Large(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::ExtraLarge:
+        RETURN_IF_FAILED(spacingConfig->get_ExtraLarge(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Default:
+    default:
+        RETURN_IF_FAILED(spacingConfig->get_Default(spacingSize));
+        break;
+    }
 
     return S_OK;
 } CATCH_RETURN;

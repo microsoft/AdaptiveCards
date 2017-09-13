@@ -48,16 +48,33 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveColumnSet::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedColumnSet->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedColumnSet->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveColumnSet::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
     {
-        m_sharedColumnSet->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedColumnSet->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
+    {
+        return GenerateSeparatorProjection(m_sharedColumnSet->GetSeparator(), separator);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
+    {
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedColumnSet->SetSeparator(sharedSeparator);
+
         return S_OK;
     }
 

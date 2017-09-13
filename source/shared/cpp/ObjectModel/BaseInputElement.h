@@ -12,7 +12,7 @@ class BaseInputElement : public BaseCardElement
 {
 public:
     BaseInputElement(CardElementType elementType);
-    BaseInputElement(CardElementType type, SeparationStyle separationStyle, std::string speak);
+    BaseInputElement(CardElementType type, Spacing spacing, std::shared_ptr<Separator> separator, std::string speak);
 
     std::string GetId() const;
     void SetId(const std::string value);

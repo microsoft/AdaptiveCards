@@ -42,6 +42,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\NumberInput.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleInput.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleInput.h" />

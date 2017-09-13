@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "AdaptiveContainerConfig.h"
 #include "AdaptiveContainerStyleConfig.h"
-#include "AdaptiveSeparationConfig.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
@@ -18,18 +17,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_sharedContainerConfig = containerConfig;
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainerConfig::get_Separation(IAdaptiveSeparationConfig** separationConfig)
-    {
-        return MakeAndInitialize<AdaptiveSeparationConfig>(separationConfig, m_sharedContainerConfig.separation);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainerConfig::put_Separation(IAdaptiveSeparationConfig*)
-    {
-        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

@@ -17,9 +17,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ContainerConfig containerConfig) noexcept;
 
-        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationConfig** separationConfig);
-        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationConfig* separationConfig);
-
         IFACEMETHODIMP get_Normal(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleConfig** containerStyleconfig);
         IFACEMETHODIMP put_Normal(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleConfig* containerStyleconfig);
 

@@ -9,18 +9,20 @@ FactSet::FactSet() : BaseCardElement(CardElementType::FactSet)
 }
 
 FactSet::FactSet(
-    SeparationStyle separation,
+    Spacing spacing,
+    std::shared_ptr<Separator> separation,
     std::string speak,
     std::vector<std::shared_ptr<Fact>>& facts) :
-    BaseCardElement(CardElementType::FactSet, separation, speak),
+    BaseCardElement(CardElementType::FactSet, spacing, separation, speak),
     m_facts(facts)
 {
 }
 
 FactSet::FactSet(
-    SeparationStyle separation,
+    Spacing spacing,
+    std::shared_ptr<Separator> separation,
     std::string speak) :
-    BaseCardElement(CardElementType::FactSet, separation, speak)
+    BaseCardElement(CardElementType::FactSet, spacing, separation, speak)
 {
 }
 

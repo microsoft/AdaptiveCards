@@ -107,7 +107,7 @@ enum class AdaptiveCardSchemaKey
     Placeholder,
     Right,
     SelectAction,
-    Separation,
+    Separator,
     ShowActionMode,
     ShowCard,
     ShowCardActionConfig,
@@ -117,7 +117,6 @@ enum class AdaptiveCardSchemaKey
     SpacingDefinition,
     Speak,
     Stretch,
-    StrongSeparation,
     Style,
     Subtle,
     SupportsInteractivity,
@@ -126,6 +125,8 @@ enum class AdaptiveCardSchemaKey
     TextConfig,
     TextInput,
     TextWeight,
+    Thick,
+    Thickness,
     TimeInput,
     Title,
     ToggleInput,
@@ -156,7 +157,7 @@ enum class TextWeight {
     Bolder
 };
 
-enum class TextColor {
+enum class Color {
     Default = 0,
     Dark,
     Light,
@@ -236,10 +237,18 @@ enum class ChoiceSetStyle
     Expanded
 };
 
-enum class SeparationStyle {
+enum class SeparatorThickness {
+    Default = 0,
+    Thick,
+};
+
+enum class Spacing {
     Default = 0,
     None,
-    Strong,
+    Small,
+    Medium,
+    Large,
+    ExtraLarge,
 };
 
 enum class ActionsOrientation {
@@ -270,8 +279,8 @@ ActionType ActionTypeFromString(const std::string& actionType);
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
 HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);
 
-const std::string TextColorToString(TextColor type);
-TextColor TextColorFromString(const std::string& type);
+const std::string ColorToString(Color type);
+Color ColorFromString(const std::string& type);
 
 const std::string TextWeightToString(TextWeight type);
 TextWeight TextWeightFromString(const std::string& type);
@@ -282,8 +291,11 @@ TextSize TextSizeFromString(const std::string& size);
 const std::string ImageSizeToString(ImageSize size);
 ImageSize ImageSizeFromString(const std::string& size);
 
-const std::string SeparationStyleToString(SeparationStyle style);
-SeparationStyle SeparationStyleFromString(const std::string& style);
+const std::string SpacingToString(Spacing spacing);
+Spacing SpacingFromString(const std::string& spacing);
+
+const std::string SeparatorThicknessToString(SeparatorThickness separatorThickness);
+SeparatorThickness SeparatorThicknessFromString(const std::string& separatorThickness);
 
 const std::string ImageStyleToString(ImageStyle style);
 ImageStyle ImageStyleFromString(const std::string& style);

@@ -9,18 +9,20 @@ ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetIn
 }
 
 ChoiceSetInput::ChoiceSetInput(
-    SeparationStyle separation,
+    Spacing spacing, 
+    std::shared_ptr<Separator> separation,
     std::string speak,
     std::vector<std::shared_ptr<ChoiceInput>>& choices) :
-    BaseInputElement(CardElementType::ChoiceSetInput, separation, speak),
+    BaseInputElement(CardElementType::ChoiceSetInput, spacing, separation, speak),
     m_choices(choices)
 {
 }
 
 ChoiceSetInput::ChoiceSetInput(
-    SeparationStyle separation,
+    Spacing spacing,
+    std::shared_ptr<Separator> separation,
     std::string speak) :
-    BaseInputElement(CardElementType::ChoiceSetInput, separation, speak)
+    BaseInputElement(CardElementType::ChoiceSetInput, spacing, separation, speak)
 {
 }
 

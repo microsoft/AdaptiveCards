@@ -11,8 +11,8 @@ class Column : public BaseCardElement
 {
 public:
     Column();
-    Column(SeparationStyle separation, std::string speak, std::string size);
-    Column(SeparationStyle separation, std::string speak, std::string size, std::vector<std::shared_ptr<BaseCardElement>>& items);
+    Column(Spacing spacing, std::shared_ptr<Separator> separation, std::string speak, std::string size);
+    Column(Spacing spacing, std::shared_ptr<Separator> separation, std::string speak, std::string size, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
