@@ -20,8 +20,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Padding(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition** value);
         IFACEMETHODIMP put_Padding(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition* value);
 
-        IFACEMETHODIMP get_BackgroundColor(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_BackgroundColor(_In_ ABI::Windows::UI::Color value);
+        IFACEMETHODIMP get_AllowCustomStyle(_Out_ boolean* allowCustomStyle);
+        IFACEMETHODIMP put_AllowCustomStyle(_In_ boolean allowCustomStyle);
 
     private:
         AdaptiveCards::AdaptiveCardConfig m_sharedAdaptiveCardConfig;

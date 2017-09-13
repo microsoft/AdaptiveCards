@@ -47,16 +47,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::get_Color(ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor* textColor)
+    HRESULT AdaptiveTextConfig::get_Color(ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor* textColor)
     {
-        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor>(m_sharedTextConfig.color);
+        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor>(m_sharedTextConfig.color);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor textColor)
+    HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor textColor)
     {
-        m_sharedTextConfig.color = static_cast<AdaptiveCards::Color>(textColor);
+        m_sharedTextConfig.color = static_cast<AdaptiveCards::ForegroundColor>(textColor);
         return S_OK;
     }
 

@@ -18,12 +18,14 @@ public:
         std::string minVersion,
         std::string fallbackText,
         std::string backgroundImage,
+        ContainerStyle style,
         std::string speak);
     AdaptiveCard(
         std::string version,
         std::string minVersion,
         std::string fallbackText,
         std::string backgroundImage,
+        ContainerStyle style,
         std::string speak,
         std::vector<std::shared_ptr<BaseCardElement>>& body,
         std::vector<std::shared_ptr<BaseActionElement>>& actions);
@@ -38,6 +40,8 @@ public:
     void SetBackgroundImage(const std::string value);
     std::string GetSpeak() const;
     void SetSpeak(const std::string value);
+    ContainerStyle GetStyle() const;
+    void SetStyle(const ContainerStyle value);
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetBody();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetBody() const;
@@ -59,6 +63,7 @@ private:
     std::string m_fallbackText;
     std::string m_backgroundImage;
     std::string m_speak;
+    ContainerStyle m_style;
 
     std::vector<std::shared_ptr<BaseCardElement>> m_body;
     std::vector<std::shared_ptr<BaseActionElement>> m_actions;

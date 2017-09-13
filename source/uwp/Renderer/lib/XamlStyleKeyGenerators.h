@@ -115,9 +115,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         static std::wstring GetTextColorFromTextBlock(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* adaptiveTextBlock)
         {
-            ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor textColor;
+            ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor textColor;
             THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));
-            std::string colorString = AdaptiveCards::ColorToString(static_cast<AdaptiveCards::Color>(textColor));
+            std::string colorString = AdaptiveCards::ForegroundColorToString(static_cast<AdaptiveCards::ForegroundColor>(textColor));
             std::wstring colorWideString(colorString.begin(), colorString.end());
             return colorWideString;
         }
