@@ -8,13 +8,13 @@
 #import <UIKit/UIKit.h>
 
 //! Project version number for ACFramework.
-FOUNDATION_EXPORT double ADCIOSFrameworkVersionNumber;
+FOUNDATION_EXPORT double AdaptiveCardsFrameworkVersionNumber;
 
 //! Project version string for AFramework.
-FOUNDATION_EXPORT const unsigned char ADCIOSFrameworkVersionString[];
+FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 
-#import <ADCIOSFramework/ACRViewController.h>
+#import <AdaptiveCards/ACRViewController.h>
 
-#import <ADCIOSFramework/ACRActionDelegate.h>
+#import <AdaptiveCards/ACRActionDelegate.h>
 
 
