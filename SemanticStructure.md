@@ -114,6 +114,10 @@ For feeds of cards, like Action Center, this information can be used to group ca
 * Skype
 * Windows (Notifications, NTP)
 
+| Host | Screenshot |
+| ---- | ---------- |
+| Toast notification | ![Toasts with category](SemanticImages/category-toast.png) |
+
 ### Payload
 ```json
 {
