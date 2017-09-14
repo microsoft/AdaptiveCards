@@ -69,6 +69,10 @@ Cards often (but not always) have a title as an entry point to the content. By s
 * Skype
 * Windows (Timeline, Notifications, NTP)
 
+| Host | Screenshot |
+| ---- | ---------- |
+| Toast notification | ![Toast with title/subtitle](SemanticImages/title-subtitle-toast.png) |
+
 ### Payload
 ```json
 {
