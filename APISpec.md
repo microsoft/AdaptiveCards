@@ -308,6 +308,11 @@ https://github.com/Microsoft/AdaptiveCards/issues/390
 // This means a card could be added to the app and then images load causing re-layout
 RenderResult result = await renderer.RenderAsync(card, cancellationToken: null);
 
+// TODO: Andrew suggested we move the action here to allow a customizable handler based on the type of card
+result.OnAction((e) => {
+
+}
+
 public class RenderWarning
 {
   RendererWarnings
@@ -328,8 +333,6 @@ public class RenderError
 RenderResult result = renderer.Render(card);
 result.Errors
 result.Warnings 
-```
-
 
 if(result.Suceeded) {
     FrameworkElement ui = result.FrameworkElement;

@@ -4,15 +4,15 @@
     "version": "0.5",
     "body": [
         {
-            "type": "Image",
-            "url": "http://adaptivecards.io/api/cat"
+            "type": "TextBlock",
+            "text": "Action.OpenUrl schema"
         }
     ],
     "actions": [
         {
             "type": "Action.OpenUrl",
             "title": "Action.OpenUrl",
-            "url": "http://adaptivecards.io/api/cat"
+            "url": "http://adaptivecards.io"
         }
     ]
 }

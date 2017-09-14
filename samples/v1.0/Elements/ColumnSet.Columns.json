@@ -5,7 +5,6 @@
     "body": [
         {
             "type": "ColumnSet",
-
             "columns": [
                 {
                     "type": "Column",
