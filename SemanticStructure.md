@@ -27,6 +27,7 @@ The **experience owners** above have their own visual identity and visual constr
 > IMPORTANT: Before I go on, I want to stress that everything here is purely additive and optional. For developers who want to custom draw their own body, Adaptive Cards will remain the leader in this space. 
 
 
+
 # Schema additions
 
 This proposal expands on what it means to be a "card". Today we've defined a card as a free-form "body" and some "actions". 
@@ -412,6 +413,89 @@ We can make it easier/less verbose for common operations.
             "type": "Action.Submit",
             "title": "Remind me later",
             "placement": [ "overflow" ]
+        }
+    ]
+}
+```
+
+# `Extensions` alternative
+
+
+An alternative to the proposal below would be to take some of the concepts and group them into an `extensions` or `metadata` array. One advantage of this design would allow hosts to pick-and-choose what pieces of a card are applicable to them, including adding new "parts".
+
+```json
+{
+    "type": "AdaptiveCard",
+    "version": "vNext",
+    "extensions": [
+        {
+            "type": "Attribution",
+            "logo": "",
+            "text": "Bing"
+        },
+        {
+            "type": "Category",
+            "text": "Politics",
+            "selectAction": {}
+        },
+        {
+            // Showing a custom Category with additional data, some spec issues here with this concept
+            // Should it have a different name than Category?
+            "@context": "http://google.com/cards/now",
+            "type": "Category",
+            "text": "Bing",
+            "subtext": "",
+            "image": ""
+        },
+        {
+            "@context": "http://microsoft.com/windows/notifications",
+            "type": "Audio",
+            "src": "",
+            "loop": "twice"
+        },
+    ],
+    "metadata": [
+        {
+            "@context": "http://schema.org",
+            "@type": "LocalBusiness",
+            "name": "Microsoft",
+            "address": {
+                "@type": "Address",
+                "line1": "1 Microsoft Way"
+            }
+        }
+    ],
+    "title": {
+        "text": "Here's how the CEOs on Fortune's '40 Under 40' list are doing leading the something or other",
+
+        "extensions": [ // element extensions. Pretty verbose. Maybe extensions only exist at the card level?
+            {
+                "@context": "http://microsoft.com/windows/notifications",
+                "@type": "ToastText",
+                "maxLines": 2,
+                "wrap": true
+            }
+        ],
+
+        "microsoft.notification.maxLines": 3, // and we use additionalProperties at element level?
+        "microsoft.notification.wrap": true, 
+
+        "microsoft.notification": { // or this form of additional property?
+            "maxLines": 3,
+            "wrap": true
+        }
+    },
+    "body": "Fortune released its annual '40 Under 40' list of the most influential people under the age of 40, which includes Mark Zuckerberg.",
+    "images": {
+        "card": {
+            "url": "http://findimage",
+            "displayPreference": [ "vertical", "thumbnail" ]
+        }
+    },
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Action One"
         }
     ]
 }
