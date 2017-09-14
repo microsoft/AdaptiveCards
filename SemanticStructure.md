@@ -195,6 +195,12 @@ A specialized type of image usually on the left side of the card, typically show
 
 ![profile](https://tg9blq.dm2301.livefilestore.com/y4po6WND489AUw6l-Twoay730f5bR1RKBqudzNQ9kN7-DLzdz16nO6NjO47og-X9L2ncwIcEK2pdDTVQFZ87LIJVULXtkbxhg9RyzGiVrD35pDFf7oigKZyMeCRPugiBP46iSoRkvnElA1d0cOmRL04uvPPGiCxp8xO76APAEuV8UB9C9TwwtbRS5Yt9V2_Xi1WhD44KMG4AhbaOPt0CqP9jQ/card-profileimage.png?psid=1)
 
+
+
+| Host | Screenshot |
+| ---- | ---------- |
+| Toast notification | ![Toasts with profile image](SemanticImages/profile-toast.png) |
+
 ```json
 {
     "type": "AdaptiveCard",
