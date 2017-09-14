@@ -288,11 +288,17 @@ full | A
 ```
 
 ## Timestamp
-This one I'm not entirely convinced on, but happy to take feedback from folks. 
+This one I'm not entirely convinced on, but happy to take feedback from folks.
+
+This property allows developers to override the default timestamp with a specific time. For example, if the content of the message was actually from 1 hour ago, devs can assign that and it'll be displayed with that time instead of the current time.
 
 ### Seen in
 * Skype
 * Notifications
+
+| Host | Screenshot |
+| ---- | ---------- |
+| Toast notification | ![Toast with timestamp](SemanticImages/timestamp-toast.png) |
 
 ### Payload
 * TODO: Can bot developers provide/override this?
