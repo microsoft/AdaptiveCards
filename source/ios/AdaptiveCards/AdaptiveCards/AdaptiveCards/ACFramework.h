@@ -19,4 +19,6 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 
 #import <AdaptiveCards/ACRHostConfig.h>
 
+#import <AdaptiveCards/ACOAdaptiveCards.h>
+
 
