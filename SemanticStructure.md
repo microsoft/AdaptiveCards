@@ -195,11 +195,9 @@ A specialized type of image usually on the left side of the card, typically show
 
 ![profile](https://tg9blq.dm2301.livefilestore.com/y4po6WND489AUw6l-Twoay730f5bR1RKBqudzNQ9kN7-DLzdz16nO6NjO47og-X9L2ncwIcEK2pdDTVQFZ87LIJVULXtkbxhg9RyzGiVrD35pDFf7oigKZyMeCRPugiBP46iSoRkvnElA1d0cOmRL04uvPPGiCxp8xO76APAEuV8UB9C9TwwtbRS5Yt9V2_Xi1WhD44KMG4AhbaOPt0CqP9jQ/card-profileimage.png?psid=1)
 
-
-
 | Host | Screenshot |
 | ---- | ---------- |
-| Toast notification | ![Toasts with profile image](SemanticImages/profile-toast.png) |
+| Toast notification | ![Toast with profile image](SemanticImages/profile-toast.png) |
 
 ```json
 {
@@ -224,6 +222,10 @@ The "hero" image associated with the card content. Host apps are free to use thi
 Card authors can influence the placement using the `displayPreference` property. 
 
 ![images](https://tg9blq.dm2301.livefilestore.com/y4plSLQJ5lL5BaiDXMDeov5ru32ODMPa5gvNAx75vtMoqBByMsVC5yjsKpYPlO-hI4yaFbmICOBfMCWcCHgSmsFUe8SddIjITKMFIHkwkA5CehNUcltx7h1JpfwxteiFafUrmmwlPaxbM27xsvYLHO-SgrhvHPD_wPpGcyH_90AUgwGZZDalkjB-hCWoudaOaauJoGR_jY8SFXfCspI4zg4kQ/card-images.jpg?psid=1)
+
+| Host | Screenshot |
+| ---- | ---------- |
+| Toast notification | ![Toast with card image](SemanticImages/cardimage-toast.png) |
 
 ```json
 {
