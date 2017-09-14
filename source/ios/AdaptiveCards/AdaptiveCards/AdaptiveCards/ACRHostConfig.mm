@@ -6,32 +6,26 @@
 //
 #import <Foundation/Foundation.h>
 #import "ACRHostConfig.h"
-#import "HostConfig.h"
-
-using namespace AdaptiveCards;
+#import "ACRHostConfigInternal.h"
 
 @implementation ACRHostConfig
-{
-    HostConfig hostConfig;
-}
 
 - (instancetype)init
 {
-    self = [self initWithJson:nil];
+    self = [super init];
     return self;
 }
 
-- (instancetype)initWithJson:(NSString *)payload
+- (ACRHostConfig *)fromJson:(NSString *)payload;
 {
-    self = [super init];
-    if(self)
+    ACRHostConfig *config = [[ACRHostConfigInternal alloc] init];
+
+    if(config)
     {
-        if(payload)
-        {
-            hostConfig = AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String]));
-        }
+        return [config fromJson:payload];
     }
-    return self;
+
+    return nil;
 }
 
 @end

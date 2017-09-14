@@ -4,7 +4,11 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
+
+#import <Foundation/Foundation.h>
+
 @interface ACRHostConfig:NSObject
 - (instancetype)init;
-- (instancetype)initWithJson:(NSString *)payload;
+// Helper for creating hostconfig objects
+- (ACRHostConfig *)fromJson:(NSString *)payload;
 @end    

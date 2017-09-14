@@ -93,6 +93,8 @@
     self.editableStr = jsonStr;
     ACRViewController *adcVc = [[ACRViewController alloc] init:jsonStr
                                                      withFrame:CGRectMake(20, 250, 300, 1250)];
+    ACRHostConfig *config = [[ACRHostConfig alloc] init];
+    
     adcVc.acrActionDelegate = self;
     if(self.curView)
         [self.curView removeFromSuperview];
