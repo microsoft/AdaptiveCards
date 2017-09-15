@@ -1,7 +1,7 @@
 {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "$schema": "../../../schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
             "type": "ColumnSet",
@@ -21,7 +21,7 @@
                 },
                 {
                     "type": "Column",
-                    "separation": "none",
+                    "spacing": "none",
                     "items": [
                         {
                             "type": "TextBlock",
@@ -35,7 +35,7 @@
                 },
                 {
                     "type": "Column",
-                    "separation": "default",
+                    "spacing": "default",
                     "items": [
                         {
                             "type": "TextBlock",
@@ -47,9 +47,11 @@
                         }
                     ]
                 },
-                                {
+                {
                     "type": "Column",
-                    "separation": "strong",
+                    "separator": {
+                        "thickness": "thick"
+                    },
                     "items": [
                         {
                             "type": "TextBlock",

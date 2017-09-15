@@ -1,8 +1,12 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
+        {
+            "type": "TextBlock",
+            "text": "Present a form and submit it back to the originator"
+        },
         {
             "type": "Input.Text",
             "id":"firstName",

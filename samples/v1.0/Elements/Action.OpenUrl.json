@@ -1,11 +1,11 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
-            "text": "Action.OpenUrl schema"
+            "text": "This card's action will open a URL"
         }
     ],
     "actions": [
