@@ -1,16 +1,40 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
+            "type": "TextBlock",
+            "text": "Default text input"
+        },
+        {
             "type": "Input.Text",
-            "id": "1234",
+            "id": "input1",
+            "placeholder": "enter comment",
+            "maxLength": 500
+        },
+        {
+            "type": "TextBlock",
+            "text": "Multiline text input"
+        },
+        {
+            "type": "Input.Text",
+            "id": "input2",
             "placeholder": "enter comment",
             "maxLength": 500,
-            "isMultiline": false,
-            "speak":"What comments do you have?",
-            "value": "This is a pre-filled value"
+            "isMultiline": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Pre-filled value"
+        },
+        {
+            "type": "Input.Text",
+            "id": "input2",
+            "placeholder": "enter comment",
+            "maxLength": 500,
+            "isMultiline": true,
+            "value": "This value was pre-filled"
         }
     ]
 }

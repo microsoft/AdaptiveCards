@@ -1,41 +1,41 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
-            "text": "color:default",
+            "text": "color: default",
             "color": "default"
         },
         {
             "type": "TextBlock",
-            "text": "color:accent",
+            "text": "color: accent",
             "color": "accent"
         },
         {
             "type": "TextBlock",
-            "text": "color:good",
+            "text": "color: good",
             "color": "good"
         },
         {
             "type": "TextBlock",
-            "text": "color:warning",
+            "text": "color: warning",
             "color": "warning"
         },
         {
             "type": "TextBlock",
-            "text": "color:attention",
+            "text": "color: attention",
             "color": "attention"
         },
         {
             "type": "TextBlock",
-            "text": "color:light",
+            "text": "color: light",
             "color": "light"
         },
         {
             "type": "TextBlock",
-            "text": "color:dark",
+            "text": "color: dark",
             "color": "dark"
         }
     ]

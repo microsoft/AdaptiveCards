@@ -1,12 +1,15 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
+        {
+            "type": "TextBlock",
+            "text": "What time do you want to meet?"
+        },
         {
             "type": "Input.Time",
             "id": "1234",
-            "placeholder": "What time do you want to meet?",
             "min": "9:00 AM",
             "max": "5:00 PM",
             "value": "11:00 AM"

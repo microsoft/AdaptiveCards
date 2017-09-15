@@ -10,6 +10,27 @@
       "$ref": "#/definitions/AdaptiveCard"
     }
   ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "version of schema that this card was authored "
+    },
+    "minVersionRequired": {
+      "type": "string",
+      "description": "if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore"
+    },
+    "fallbackText": {
+      "type": "string",
+      "description": "if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. "
+    },
+    "speak": {
+      "type": "string",
+      "description": "Specifies what should be spoken for this entire Item. This is simple text or SSML fragment"
+    }
+  },
+  "required": [
+    "version"
+  ],
   "definitions": {
     "Action": {
       "anyOf": [
@@ -123,27 +144,10 @@
         "title": {
           "type": "string",
           "description": "Title/caption for the adaptive card."
-        },
-        "version": {
-          "type": "string",
-          "description": "version of schema that this card was authored "
-        },
-        "minVersionRequired": {
-          "type": "string",
-          "description": "if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore"
-        },
-        "fallbackText": {
-          "type": "string",
-          "description": "if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. "
-        },
-        "speak": {
-          "type": "string",
-          "description": "Specifies what should be spoken for this entire Item. This is simple text or SSML fragment"
         }
       },
       "required": [
-        "type",
-        "version"
+        "type"
       ]
     },
     "CardElement": {
@@ -167,49 +171,51 @@
         "type"
       ]
     },
-    "CardElements": {
-      "additionalItems": true,
+    "CardElements": { 
       "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/TextBlock"
-          },
-          {
-            "$ref": "#/definitions/Image"
-          },
-          {
-            "$ref": "#/definitions/Container"
-          },
-          {
-            "$ref": "#/definitions/ColumnSet"
-          },
-          {
-            "$ref": "#/definitions/FactSet"
-          },
-          {
-            "$ref": "#/definitions/ImageSet"
-          },
-          {
-            "$ref": "#/definitions/Input.Text"
-          },
-          {
-            "$ref": "#/definitions/Input.Number"
-          },
-          {
-            "$ref": "#/definitions/Input.Date"
-          },
-          {
-            "$ref": "#/definitions/Input.Time"
-          },
-          {
-            "$ref": "#/definitions/Input.Toggle"
-          },
-          {
-            "$ref": "#/definitions/Input.ChoiceSet"
-          }
-        ]
-      }
+      "additionalItems": true,
+      "items": [
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBlock"
+            },
+            {
+              "$ref": "#/definitions/Image"
+            },
+            {
+              "$ref": "#/definitions/Container"
+            },
+            {
+              "$ref": "#/definitions/ColumnSet"
+            },
+            {
+              "$ref": "#/definitions/FactSet"
+            },
+            {
+              "$ref": "#/definitions/ImageSet"
+            },
+            {
+              "$ref": "#/definitions/Input.Text"
+            },
+            {
+              "$ref": "#/definitions/Input.Number"
+            },
+            {
+              "$ref": "#/definitions/Input.Date"
+            },
+            {
+              "$ref": "#/definitions/Input.Time"
+            },
+            {
+              "$ref": "#/definitions/Input.Toggle"
+            },
+            {
+              "$ref": "#/definitions/Input.ChoiceSet"
+            }
+          ]
+        }
+      ]
     },
     "Choice": {
       "additionalProperties": true,
@@ -217,10 +223,6 @@
         "title": {
           "type": "string",
           "description": "The text for a choice"
-        },
-        "isSelected": {
-          "type": "boolean",
-          "description": "is the choice selected"
         },
         "value": {
           "type": "string",

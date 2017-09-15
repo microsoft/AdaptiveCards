@@ -1,7 +1,7 @@
 {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "$schema": "../../../schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
@@ -16,8 +16,7 @@
             "choices": [
                 {
                     "title": "Red",
-                    "value": "1",
-                    "isSelected": true
+                    "value": "1"
                 },
                 {
                     "title": "Green",
@@ -42,8 +41,7 @@
             "choices": [
                 {
                     "title": "Red",
-                    "value": "1",
-                    "isSelected": true
+                    "value": "1"
                 },
                 {
                     "title": "Green",
@@ -68,8 +66,7 @@
             "choices": [
                 {
                     "title": "Red",
-                    "value": "1",
-                    "isSelected": true
+                    "value": "1"
                 },
                 {
                     "title": "Green",
@@ -77,8 +74,7 @@
                 },
                 {
                     "title": "Blue",
-                    "value": "3",
-                    "isSelected": true
+                    "value": "3"
                 }
             ]
         },
@@ -95,8 +91,7 @@
             "choices": [
                 {
                     "title": "Red",
-                    "value": "1",
-                    "isSelected": true
+                    "value": "1"
                 },
                 {
                     "title": "Green",
@@ -104,8 +99,7 @@
                 },
                 {
                     "title": "Blue",
-                    "value": "3",
-                    "isSelected": true
+                    "value": "3"
                 }
             ]
         }

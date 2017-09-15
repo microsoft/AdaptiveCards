@@ -5,38 +5,52 @@
   "body": [
     {
       "type": "TextBlock",
-      "text": "horizontalAlignment:left",
-      "weight": "bolder"
+      "text": "spacing: none",
+      "weight": "bolder",
+      "size": "medium"
     },
     {
       "type": "Image",
       "url": "http://adaptivecards.io/api/cat",
       "size": "medium",
-      "horizontalAlignment": "left"
+      "spacing": "none"
     },
     {
       "type": "TextBlock",
-      "text": "horizontalAlignment:center",
+      "text": "spacing: default",
       "weight": "bolder",
-      "horizontalAlignment": "center"
+      "size": "medium"
     },
     {
       "type": "Image",
       "url": "http://adaptivecards.io/api/cat",
       "size": "medium",
-      "horizontalAlignment": "center"
+      "spacing": "default"
     },
     {
       "type": "TextBlock",
-      "text": "horizontalAlignment:right",
+      "text": "spacing: large",
       "weight": "bolder",
-      "horizontalAlignment": "right"
+      "size": "medium"
     },
     {
       "type": "Image",
       "url": "http://adaptivecards.io/api/cat",
       "size": "medium",
-      "horizontalAlignment": "right"
+      "spacing": "large"
+    },
+    {
+      "type": "TextBlock",
+      "text": "spacing: medium, separator: default",
+      "weight": "bolder",
+      "size": "medium"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/api/cat",
+      "size": "medium",
+      "spacing": "large",
+      "separator": {}
     }
   ]
 }

@@ -1,21 +1,21 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
-            "text": "weight:lighter",
+            "text": "weight: lighter",
             "weight": "lighter"
         },
         {
             "type": "TextBlock",
-            "text": "weight:normal",
+            "text": "weight: normal",
             "weight": "normal"
         },
         {
             "type": "TextBlock",
-            "text": "weight:bolder",
+            "text": "weight: bolder",
             "weight": "bolder"
         }
     ]

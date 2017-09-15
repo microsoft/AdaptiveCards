@@ -1,5 +1,5 @@
 {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "$schema": "../../../schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
@@ -12,7 +12,7 @@
         {
             "type": "Action.ShowCard",
             "title": "Action.ShowCard",
-            "card": { // TODO: Scema violation
+            "card": {
                 "type": "AdaptiveCard",
                 "body": [
                     {

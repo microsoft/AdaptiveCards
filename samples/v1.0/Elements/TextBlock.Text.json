@@ -1,11 +1,11 @@
 {
     "$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
-            "text": "This is some text"
+            "text": "This is some text, by default it does not wrap"
         }
     ]
 }

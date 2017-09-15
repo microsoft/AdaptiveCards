@@ -1,21 +1,22 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
-            "text": "SOME ELEMENT BEFORE THE CONTAINER"
+            "text": "Container Spacing",
+            "size": "extraLarge"
         },
         {
             "type": "Container",
-            "separation": "none",
+            "spacing": "none",
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "separation:none",
+                    "text": "spacing: none",
                     "weight": "bolder",
-                    "size": "large"
+                    "size": "medium"
                 },
                 {
                     "type": "Image",
@@ -26,13 +27,14 @@
         },
         {
             "type": "Container",
-            "separation": "default",
+            "spacing": "default",
+            "separator": {},
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "separation:default",
+                    "text": "spacing: default, separator: default",
                     "weight": "bolder",
-                    "size": "large"
+                    "size": "medium"
                 },
                 {
                     "type": "Image",
@@ -43,13 +45,17 @@
         },
         {
             "type": "Container",
-            "separation": "strong",
+            "spacing": "extraLarge",
+            "separator": {
+                "thickness": "thick",
+                "color": "accent"
+            },
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "separation:strong",
+                    "text": "spacing: extraLarge, separator: thick accent",
                     "weight": "bolder",
-                    "size": "large"
+                    "size": "medium"
                 },
                 {
                     "type": "Image",

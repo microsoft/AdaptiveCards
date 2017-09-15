@@ -1,0 +1,15 @@
+{
+    "$schema": "../../schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "This tests that unknown elements are OK"
+        },
+        {
+            "type": "AmazingFeature",
+            "isAwesome": true
+        }        
+    ]
+}
