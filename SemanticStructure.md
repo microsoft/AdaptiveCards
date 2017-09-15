@@ -522,3 +522,67 @@ An alternative to the proposal below would be to take some of the concepts and g
     ]
 }
 ```
+
+
+# `Extensions` alternative #2
+
+Another way these extensions could be formatted...
+
+```json
+{
+    "type": "AdaptiveCard",
+    "version": "vNext",
+    "extensions": {
+
+        "adaptiveCard.attribution": {
+            "logo": "",
+            "text": "Bing"
+        },
+
+        "adaptiveCard.category": {
+            "text": "Politics",
+            "selectAction": {}
+        },
+
+        "microsoft.toast.audio": {
+            "src": "",
+            "loop": "twice"
+        },
+    },
+
+    "title": {
+        "text": "Here's how the CEOs on Fortune's '40 Under 40' list are doing leading the something or other",
+
+        "extensions": { // element extensions. Pretty verbose. Maybe extensions only exist at the card level?
+            "microsoft.toast": {
+                "maxLines": 2,
+                "wrap": true
+            }
+        },
+
+        "microsoft.toast.maxLines": 3, // and we use additionalProperties at element level?
+        "microsoft.toast.wrap": true, 
+
+        "microsoft.toast": { // or this form of additional property?
+            "maxLines": 3,
+            "wrap": true
+        }
+    },
+
+    "body": "Fortune released its annual '40 Under 40' list of the most influential people under the age of 40, which includes Mark Zuckerberg.",
+
+    "images": {
+        "card": {
+            "url": "http://findimage",
+            "displayPreference": [ "vertical", "thumbnail" ]
+        }
+    },
+
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Action One"
+        }
+    ]
+}
+```
