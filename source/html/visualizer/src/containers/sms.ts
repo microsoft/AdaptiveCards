@@ -1,5 +1,15 @@
 import { HostContainer } from "./host-container";
-import * as Adaptive from "microsoft-adaptivecards";
+import {
+    IHostConfig,
+    Size,
+    TextSize,
+    TextColor,
+    TextWeight,
+    Spacing,
+    ShowCardActionMode,
+    Orientation,
+    ActionAlignment
+} from "microsoft-adaptivecards";
 
 export class SMSContainer extends HostContainer {
     private _width: number;
@@ -19,7 +29,7 @@ export class SMSContainer extends HostContainer {
         return outerElement;
     }
 
-    public getHostConfig(): Adaptive.IHostConfig {
+    public getHostConfig(): IHostConfig {
         return {
             spacing: {
                 small: 3,
@@ -31,7 +41,7 @@ export class SMSContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: false,
             fontFamily: "Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;",
@@ -51,17 +61,13 @@ export class SMSContainer extends HostContainer {
                 default: {
                     backgroundColor: "#FFFFFF",
                     fontColors: {
-                        accent: {
-                            normal: "#FF0000FF",
-                            subtle: "#b20000FF"
-                        },
-                        dark: {
+                        default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"
                         },
-                        light: {
-                            normal: "#FFFFFFFF",
-                            subtle: "#b2FFFFFF"
+                        accent: {
+                            normal: "#FF0000FF",
+                            subtle: "#b20000FF"
                         },
                         good: {
                             normal: "#FF008000",
@@ -80,17 +86,13 @@ export class SMSContainer extends HostContainer {
                 emphasis: {
                     backgroundColor: "#08000000",
                     fontColors: {
-                        accent: {
-                            normal: "#FF0000FF",
-                            subtle: "#b20000FF"
-                        },
-                        dark: {
+                        default: {
                             normal: "#FF101010",
                             subtle: "#b2101010"
                         },
-                        light: {
-                            normal: "#FFFFFFFF",
-                            subtle: "#b2FFFFFF"
+                        accent: {
+                            normal: "#FF0000FF",
+                            subtle: "#b20000FF"
                         },
                         good: {
                             normal: "#FF008000",
@@ -114,42 +116,39 @@ export class SMSContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: "default",
+                spacing: Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: "inlineEdgeToEdge",
+                    actionMode: ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: "horizontal",
-                actionAlignment: "left"
+                actionsOrientation: Orientation.Horizontal,
+                actionAlignment: ActionAlignment.Left
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "dark"
-            },
             image: {
-                size: "medium"
+                size: Size.Medium,
             },
             imageSet: {
-                imageSize: "medium",
+                imageSize: Size.Medium,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: "dark",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "bolder",
+                    weight: TextWeight.Bolder,
                     wrap: true,
                     maxWidth: 150
                 },
                 value: {
-                    color: "dark",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "normal",
+                    weight: TextWeight.Normal,
                     wrap: true
                 },
                 spacing: 10

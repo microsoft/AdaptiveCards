@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Locale;
 
 /**
  * Created by bekao on 6/26/2017.
@@ -119,7 +120,7 @@ public class HttpActionRenderer extends BaseActionElementRenderer
                     return new HttpRequestResult<byte[]>(new IllegalArgumentException("body cannot be empty."));
                 }
 
-                String method = m_httpAction.GetMethod().toUpperCase();
+                String method = m_httpAction.GetMethod().toUpperCase(Locale.getDefault());
                 Map<String, String> requestProperty = null;
                 if (method.equals(HttpRequestHelper.HTTP_METHOD_POST))
                 {

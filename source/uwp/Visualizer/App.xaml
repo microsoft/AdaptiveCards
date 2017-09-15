@@ -3,6 +3,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:XamlCardVisualizer"
-    RequestedTheme="Light">
+    RequestedTheme="Light"
+    xmlns:converters="using:XamlCardVisualizer.Converters">
+
+    <Application.Resources>
+        <converters:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
+
+        <Style x:Key="HorizontalListViewItemContainerStyle" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+        
+    </Application.Resources>
 
 </Application>

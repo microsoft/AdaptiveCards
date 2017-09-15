@@ -32,7 +32,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT XamlCardRenderer::RuntimeClassInitialize()
     {
         m_events.reset(new ActionEventSource);
-        return S_OK;
+        return MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig);
     }
 
     _Use_decl_annotations_

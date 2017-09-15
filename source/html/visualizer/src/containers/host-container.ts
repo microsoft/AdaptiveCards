@@ -1,4 +1,14 @@
-import * as Adaptive from "microsoft-adaptivecards";
+import {
+    IHostConfig,
+    Size,
+    TextSize,
+    TextColor,
+    TextWeight,
+    Spacing,
+    ShowCardActionMode,
+    Orientation,
+    ActionAlignment
+} from "microsoft-adaptivecards";
 import * as vkbeautify from "vkbeautify";
 
 declare var SpeechSynthesisUtterance: any;
@@ -86,7 +96,7 @@ export abstract class HostContainer {
         }
     }
 
-    public getHostConfig(): Adaptive.IHostConfig {
+    public getHostConfig(): IHostConfig {
         return {
             spacing: {
                 small: 3,
@@ -98,7 +108,7 @@ export abstract class HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
@@ -118,17 +128,13 @@ export abstract class HostContainer {
                 default: {
                     backgroundColor: "#00000000",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
                         },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
-                        },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FFD800",
@@ -147,17 +153,13 @@ export abstract class HostContainer {
                 emphasis: {
                     backgroundColor: "08000000",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
                         },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
-                        },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FFD800",
@@ -181,42 +183,39 @@ export abstract class HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: "default",
+                spacing: Spacing.Default,
                 buttonSpacing: 20,
                 showCard: {
-                    actionMode: "inlineEdgeToEdge",
+                    actionMode: ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: "horizontal",
-                actionAlignment: "left"
+                actionsOrientation: Orientation.Horizontal,
+                actionAlignment: ActionAlignment.Left
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "dark"
-            },
             image: {
-                size: "medium"
+                size: Size.Medium,
             },
             imageSet: {
-                imageSize: "medium",
+                imageSize: Size.Medium,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: "dark",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "bolder",
+                    weight: TextWeight.Bolder,
                     wrap: true,
                     maxWidth: 150
                 },
                 value: {
-                    color: "dark",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "normal",
+                    weight: TextWeight.Normal,
                     wrap: true
                 },
                 spacing: 10
@@ -254,7 +253,7 @@ export abstract class HostContainer {
             this.processNodes(nodes, output);
 
             var serializer = new XMLSerializer();
-            
+
             speechString = vkbeautify.xml(serializer.serializeToString(dom));;
         }
         else {

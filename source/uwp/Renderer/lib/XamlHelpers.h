@@ -54,6 +54,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             T* xamlElement,
             ABI::Windows::UI::Xaml::Controls::IPanel* panel)
         {
+            if (!xamlElement)
+            {
+                return;
+            }
+
             Microsoft::WRL::ComPtr<T> localXamlElement(xamlElement);
 
             ComPtr<IUIElement> elementToAppend;

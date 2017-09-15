@@ -1,5 +1,15 @@
 import { HostContainer } from "./host-container";
-import * as Adaptive from "microsoft-adaptivecards";
+import {
+    IHostConfig,
+    Size,
+    TextSize,
+    TextColor,
+    TextWeight,
+    Spacing,
+    ShowCardActionMode,
+    Orientation,
+    ActionAlignment
+} from "microsoft-adaptivecards";
 
 export class GroupMeContainer extends HostContainer {
     private _width: number;
@@ -19,7 +29,7 @@ export class GroupMeContainer extends HostContainer {
         return outerElement;
     }
 
-    public getHostConfig(): Adaptive.IHostConfig {
+    public getHostConfig(): IHostConfig {
         return {
             spacing: {
                 small: 3,
@@ -31,7 +41,7 @@ export class GroupMeContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: false,
             fontFamily: "'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif",
@@ -51,13 +61,9 @@ export class GroupMeContainer extends HostContainer {
                 default: {
                     backgroundColor: "#F7F7F7",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
-                        },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
                         },
                         accent: {
                             normal: "#2E89FC",
@@ -80,13 +86,9 @@ export class GroupMeContainer extends HostContainer {
                 emphasis: {
                     backgroundColor: "#08000000",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
-                        },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
                         },
                         accent: {
                             normal: "#2E89FC",
@@ -114,42 +116,39 @@ export class GroupMeContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: "default",
+                spacing: Spacing.Default,
                 buttonSpacing: 20,
                 showCard: {
-                    actionMode: "inlineEdgeToEdge",
+                    actionMode: ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: "horizontal",
-                actionAlignment: "left"
+                actionsOrientation: Orientation.Horizontal,
+                actionAlignment: ActionAlignment.Left
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "dark"
-            },
             image: {
-                size: "medium"
+                size: Size.Medium,
             },
             imageSet: {
-                imageSize: "medium",
+                imageSize: Size.Medium,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: "dark",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "bolder",
+                    weight: TextWeight.Bolder,
                     wrap: true,
                     maxWidth: 150
                 },
                 value: {
-                    color: "dark",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "normal",
+                    weight: TextWeight.Normal,
                     wrap: true
                 },
                 spacing: 10

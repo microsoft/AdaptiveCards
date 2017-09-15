@@ -1,5 +1,15 @@
 import { HostContainer } from "./host-container";
-import * as Adaptive from "microsoft-adaptivecards";
+import {
+    IHostConfig,
+    Size,
+    TextSize,
+    TextColor,
+    TextWeight,
+    Spacing,
+    ShowCardActionMode,
+    Orientation,
+    ActionAlignment
+} from "microsoft-adaptivecards";
 
 export class SkypeContainer extends HostContainer {
     private _width: number;
@@ -35,7 +45,7 @@ export class SkypeContainer extends HostContainer {
         this._width = width;
     }
 
-    public getHostConfig(): Adaptive.IHostConfig {
+    public getHostConfig(): IHostConfig {
         return {
             spacing: {
                 small: 3,
@@ -47,7 +57,7 @@ export class SkypeContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
@@ -67,17 +77,13 @@ export class SkypeContainer extends HostContainer {
                 default: {
                     backgroundColor: "#EAEAEA",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
                         },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
-                        },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FF0000",
@@ -96,17 +102,13 @@ export class SkypeContainer extends HostContainer {
                 emphasis: {
                     backgroundColor: "#08000000",
                     fontColors: {
-                        dark: {
+                        default: {
                             normal: "#333333",
                             subtle: "#EE333333"
                         },
-                        light: {
-                            normal: "#FFFFFF",
-                            subtle: "#88FFFFFF"
-                        },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FF0000",
@@ -130,42 +132,39 @@ export class SkypeContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: "default",
+                spacing: Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: "popup",
+                    actionMode: ShowCardActionMode.Popup,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: "vertical",
-                actionAlignment: "stretch"
+                actionsOrientation: Orientation.Vertical,
+                actionAlignment: ActionAlignment.Stretch
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
-            textBlock: {
-                color: "dark"
-            },
             image: {
-                size: "medium"
+                size: Size.Medium,
             },
             imageSet: {
-                imageSize: "medium",
+                imageSize: Size.Medium,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: "dark",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "bolder",
+                    weight: TextWeight.Bolder,
                     wrap: true,
                     maxWidth: 150,
                 },
                 value: {
-                    color: "dark",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "normal",
+                    weight: TextWeight.Normal,
                     wrap: true,
                 },
                 spacing: 5
