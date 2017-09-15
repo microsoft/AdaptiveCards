@@ -5,7 +5,7 @@ To install:
 please add the following to Podfile
 pod 'AdaptiveCards'
 
-if you already know cocoapods, you can skip ahead to creating sample section
+if you already know cocoapods, you can skip ahead to creating sample app section
 you can learn more about AdaptiveCards pod  here https://cocoapods.org/?q=ADaptiveCArds
 To learn more about cocoapods in general check here https://guides.cocoapods.org
 To learn more about cocoapods installation check here https://guides.cocoapods.org/using/getting-started.html
@@ -58,13 +58,13 @@ AdaptiveCards renderer will return a ViewController
 ACRViewController *vc = [[ACRViewController alloc] init:str withFrame:CGRectMake(20,10,100,200)];
 [self.view addSubview:vc.view];
 
-Please view sure to add exceptions for specific domains in info.plist or add following to info.plist 
+Please be sure to add exceptions for specific domains to info.plist or add the following to info.plist 
 <key>NSAppTransportSecurity</key>
     <dict>
      <key>NSAllowsArbitraryLoads</key>
      <true/>
     </dict>
-for more information on NSAppTransportSecurity check here https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33
+for more information on NSAppTransportSecurity plese check here https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33
 
 To Do:
 1. HostConfig
