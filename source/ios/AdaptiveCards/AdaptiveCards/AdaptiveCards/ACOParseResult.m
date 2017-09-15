@@ -14,6 +14,7 @@
     if(self)
     {
         self.IsValid = NO;
+        self.config = nil;
         self.card = nil;
     }
     return self;

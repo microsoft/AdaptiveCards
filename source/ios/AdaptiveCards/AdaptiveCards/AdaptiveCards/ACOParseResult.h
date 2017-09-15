@@ -8,9 +8,11 @@
 #import "ACOParseResult.h"
 
 @class ACOAdaptiveCards;
+@class ACOHostConfig;
 
 @interface ACOParseResult:NSObject
 
+@property ACOHostConfig *config;
 @property ACOAdaptiveCards *card;
 @property BOOL IsValid;
 

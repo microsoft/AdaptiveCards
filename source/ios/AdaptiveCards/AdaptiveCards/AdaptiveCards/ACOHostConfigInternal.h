@@ -4,13 +4,11 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACRHostConfig.h"
+#import "ACOHostConfig.h"
 #import "HostConfig.h"
 
 using namespace AdaptiveCards;
 
-@interface ACRHostConfigInternal:ACRHostConfig
-
-@property HostConfig hostConfig;
+@interface ACOHostConfigInternal:ACOHostConfig
 
 @end    

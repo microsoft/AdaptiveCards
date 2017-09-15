@@ -93,7 +93,8 @@
     self.editableStr = jsonStr;
     ACRViewController *adcVc = [[ACRViewController alloc] init:jsonStr
                                                      withFrame:CGRectMake(20, 250, 300, 1250)];
-    ACRHostConfig *config = [[ACRHostConfig alloc] init];
+    
+    ACOParseResult *result = [ACOHostConfig fromJson:self.hostconfig];
     
     adcVc.acrActionDelegate = self;
     if(self.curView)
@@ -108,7 +109,12 @@
 - (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr
 {
     [self update:jsonStr];
-}	
+}
+
+- (void)source:(ACVTableViewController *)avcTabVc userconfig:(NSString *)payload
+{
+    self.hostconfig = payload;
+}
 
 - (void)didFetchUserResponses:(NSDictionary *)dictionary
 {

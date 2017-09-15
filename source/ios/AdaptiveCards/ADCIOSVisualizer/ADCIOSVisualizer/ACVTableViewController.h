@@ -10,6 +10,8 @@
 @protocol ACVTableViewControllerDelegate
 - (void) fromACVTable: (ACVTableViewController *) avcTabVc
      userSelectedJson: (NSString*) jsonStr;
+- (void) source:(ACVTableViewController *) avcTabVc
+     userconfig:(NSString *) payload;
 @end
 
 @interface ACVTableViewController: UITableViewController

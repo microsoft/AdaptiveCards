@@ -6,9 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ACOParseResult.h"
 
-@interface ACRHostConfig:NSObject
+@interface ACOHostConfig:NSObject
+
 - (instancetype)init;
-// Helper for creating hostconfig objects
-- (ACRHostConfig *)fromJson:(NSString *)payload;
+
++ (ACOParseResult *)fromJson:(NSString *)payload;
 @end    
