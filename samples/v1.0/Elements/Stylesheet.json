@@ -21,9 +21,9 @@
 				},
 				{
 					"type": "TextBlock",
-					"size": "normal",
+					"size": "default",
 					"weight": "lighter",
-					"text": "The quick brown fox jumps over the lazy dog. (size = normal)"
+					"text": "The quick brown fox jumps over the lazy dog. (size = default)"
 				},
 				{
 					"type": "TextBlock",
@@ -62,8 +62,8 @@
 				},
 				{
 					"type": "TextBlock",
-					"size": "normal",
-					"text": "The quick brown fox jumps over the lazy dog. (size = normal)"
+					"size": "default",
+					"text": "The quick brown fox jumps over the lazy dog. (size = default)"
 				},
 				{
 					"type": "TextBlock",
@@ -100,9 +100,9 @@
 				},
 				{
 					"type": "TextBlock",
-					"size": "normal",
+					"size": "default",
 					"weight": "bolder",
-					"text": "The quick brown fox jumps over the lazy dog. (size = normal)"
+					"text": "The quick brown fox jumps over the lazy dog. (size = default)"
 				},
 				{
 					"type": "TextBlock",

@@ -107,7 +107,7 @@
         "Small": {
           "type": "number"
         },
-        "Normal": {
+        "Default": {
           "type": "number"
         },
         "Medium": {
