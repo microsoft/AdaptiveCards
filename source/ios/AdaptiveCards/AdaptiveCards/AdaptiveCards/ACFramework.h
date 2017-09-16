@@ -28,3 +28,5 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import <AdaptiveCards/ACRRenderResult.h>
 
 
+
+
