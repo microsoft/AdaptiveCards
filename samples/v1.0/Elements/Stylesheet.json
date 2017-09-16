@@ -8,7 +8,7 @@
 			"text": "**weight = lighter**",
 			"size": "extraLarge",
 			"spacing": "large",
-			"separator": {}
+			"separator": true
 		},
 		{
 			"type": "Container",
@@ -50,7 +50,7 @@
 			"text": "**weight = default**",
 			"size": "extraLarge",
 			"spacing": "large",
-			"separator": {}
+			"separator": true
 		},
 		{
 			"type": "Container",
@@ -87,7 +87,7 @@
 			"text": "**weight = bolder**",
 			"size": "extraLarge",
 			"spacing": "large",
-			"separator": {}
+			"separator": true
 		},
 		{
 			"type": "Container",
@@ -129,7 +129,7 @@
 			"text": "**Text colors**",
 			"size": "extraLarge",
 			"spacing": "large",
-			"separator": {}
+			"separator": true
 		},
 		{
 			"type": "Container",

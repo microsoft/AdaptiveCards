@@ -15,9 +15,9 @@
       "type": "string",
       "description": "version of schema that this card was authored "
     },
-    "minVersionRequired": {
+    "minVersion": {
       "type": "string",
-      "description": "if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore"
+      "description": "if a client doesn't support the minVersion the card should be rejected and return the fallbackText.  If it does, then the elements that are not supported are safe to ignore"
     },
     "fallbackText": {
       "type": "string",
@@ -109,7 +109,7 @@
           "description": "Label for button or link that represents this action"
         },
         "data": {
-          "type": "object",
+          "type": [ "string", "object" ],
           "description": "initial data that input fields will be combined with. This is essentially 'hidden' properties"
         }
       },
@@ -164,7 +164,9 @@
           "$ref": "#/definitions/SpacingStyle"
         },
         "separator": {
-          "$ref": "#/definitions/SeparatorStyle"
+          "type": "boolean",
+          "description": "The Separator object type describes the look and feel of a separation line between two elements.",
+          "default": false
         }
       },
       "required": [
@@ -289,6 +291,10 @@
             "$ref": "#/definitions/Column"
           }
         },
+        "selectAction": {
+          "$ref": "#/definitions/Action",
+          "description": "The action that is executed when the ColumnSet is clicked/tapped."
+        },
         "type": {
           "type": "string",
           "description": "Must be ColumnSet",
@@ -321,7 +327,7 @@
           "type": "string",
           "description": "Style hint for Container",
           "enum": [
-            "normal",
+            "default",
             "emphasis"
           ]
         },
@@ -478,7 +484,7 @@
       "type": "string",
       "description": "Controls the way Image Items are displayed",
       "enum": [
-        "normal",
+        "default",
         "person"
       ]
     },
@@ -776,7 +782,7 @@
           "description": "controls size of the text.",
           "enum": [
             "small",
-            "normal",
+            "default",
             "medium",
             "large",
             "extraLarge"
@@ -798,7 +804,7 @@
           "description": "Controls the weight of TextBlock Items",
           "enum": [
             "lighter",
-            "normal",
+            "default",
             "bolder"
           ]
         },

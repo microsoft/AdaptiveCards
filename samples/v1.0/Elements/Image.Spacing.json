@@ -41,7 +41,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "spacing: medium, separator: default",
+      "text": "spacing: medium, separator: true",
       "weight": "bolder",
       "size": "medium"
     },
@@ -50,7 +50,7 @@
       "url": "http://adaptivecards.io/api/cat",
       "size": "medium",
       "spacing": "large",
-      "separator": {}
+      "separator": true
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
@@ -21,16 +21,8 @@
         },
         {
             "type": "TextBlock",
-            "text": "separator: default",
-            "separator": {}
-        },
-           {
-            "type": "TextBlock",
-            "text": "separator: thick, color: accent",
-            "separator": {
-                "thickness": "thick",
-                "color": "accent"
-            }
+            "text": "separator: true",
+            "separator": true
         }
     ]
 }

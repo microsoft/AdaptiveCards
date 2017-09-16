@@ -64,7 +64,7 @@ public class AdaptiveSchemaVersion
 // Version automatically provided by object model/renderer
 AdaptiveVersion version = card.Version;
 
-card.MinVersionRequired = new AdaptiveVersion(major: 2, minor: 0);
+card.MinVersion = new AdaptiveVersion(major: 2, minor: 0);
 card.FallbackText = "This card isn't supported. Please check your app for updates.";
 ```
 
@@ -311,7 +311,7 @@ RenderResult result = await renderer.RenderAsync(card, cancellationToken: null);
 // TODO: Andrew suggested we move the action here to allow a customizable handler based on the type of card
 result.OnAction((e) => {
 
-}
+});
 
 public class RenderWarning
 {
@@ -437,10 +437,3 @@ private string MarkdownHandler(string text) {
     }
 }
 ```
-
-# Next steps
-
-* API review on each platform
-* "Sample" apps exercising the API
-* Document the major pieces (https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/wpf)
-* Any missing items/features of a specific renderer not accounted for?

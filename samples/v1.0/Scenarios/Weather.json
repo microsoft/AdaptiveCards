@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "0.5",
+	"version": "1.0",
 	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
 	"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Background-Dark.jpg",
 	"body": [
@@ -10,7 +10,7 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": "35",
+					"size": 35,
 					"items": [
 						{
 							"type": "Image",
@@ -21,7 +21,7 @@
 				},
 				{
 					"type": "Column",
-					"size": "65",
+					"size": 65,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -55,7 +55,7 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": "20",
+					"size": 20,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -90,7 +90,7 @@
 				},
 				{
 					"type": "Column",
-					"size": "20",
+					"size": 20,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -125,7 +125,7 @@
 				},
 				{
 					"type": "Column",
-					"size": "20",
+					"size": 20,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -160,7 +160,7 @@
 				},
 				{
 					"type": "Column",
-					"size": "20",
+					"size": 20,
 					"items": [
 						{
 							"type": "TextBlock",

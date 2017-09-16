@@ -1,7 +1,7 @@
 {
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
-  "version": "0.5",
+  "version": "1.0",
   "speak": "The Seattle Seahawks beat the Carolina Panthers 40-7",
   "body": [
     {

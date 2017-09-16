@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "0.5",
+	"version": "1.0",
 	"body": [
 		{
 			"type": "TextBlock",
@@ -11,7 +11,6 @@
 		},
 		{
 			"type": "ColumnSet",
-			"speak": "",
 			"columns": [
 				{
 					"type": "Column",
@@ -67,14 +66,12 @@
 	],
 	"actions": [
 		{
-			"type": "Action.Http",
-			"method": "POST",
+			"type": "Action.OpenUrl",
 			"title": "View more work items",
 			"url": "http://someurl.com"
 		},
 		{
-			"type": "Action.Http",
-			"method": "POST",
+			"type": "Action.OpenUrl",
 			"title": "View more work items",
 			"url": "http://someurl.com"
 		}

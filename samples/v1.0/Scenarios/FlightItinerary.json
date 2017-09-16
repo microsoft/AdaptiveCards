@@ -1,6 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"version": "0.5",
+	"version": "1.0",
 	"type": "AdaptiveCard",
 	"speak": "<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>",
 	"body": [
@@ -26,7 +26,8 @@
 			"type": "TextBlock",
 			"text": "2 Stops",
 			"weight": "bolder",
-			"separation": "strong"
+			"spacing": "medium",
+			"separator": true
 		},
 		{
 			"type": "TextBlock",
@@ -92,7 +93,8 @@
 		{
 			"type": "TextBlock",
 			"text": "Non-Stop",
-			"separation": "strong",
+			"spacing": "medium",
+			"separator": true,
 			"weight": "bolder"
 		},
 		{
@@ -158,7 +160,8 @@
 		},
 		{
 			"type": "ColumnSet",
-			"separation": "strong",
+			"spacing": "medium",
+			"separator": true,
 			"columns": [
 				{
 					"type": "Column",

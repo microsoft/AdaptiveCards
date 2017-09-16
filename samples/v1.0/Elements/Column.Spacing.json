@@ -1,5 +1,5 @@
 {
-    "$schema": "../../../schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
@@ -92,9 +92,7 @@
                 {
                     "type": "Column",
                     "spacing": "none",
-                    "separator": {
-                        "thickness": "default"
-                    },
+                    "separator": true,
                     "items": [
                         {
                             "type": "TextBlock",
@@ -109,9 +107,7 @@
                 {
                     "type": "Column",
                     "spacing": "medium",
-                    "separator": {
-                        "thickness": "default"
-                    },
+                    "separator": true,
                     "items": [
                         {
                             "type": "TextBlock",
@@ -126,82 +122,11 @@
                 {
                     "type": "Column",
                     "spacing": "extraLarge",
-                    "separator": {
-                        "thickness": "default"
-                    },
+                    "separator": true,
                     "items": [
                         {
                             "type": "TextBlock",
                             "text": "extraLarge"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/api/cat"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "type": "Column",
-                    "spacing": "extraLarge",
-                    "width": "auto",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Advanced"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "spacing": "default",
-                    "separator": {
-                        "thickness": "thick"
-                    },
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "thick"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/api/cat"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "spacing": "default",
-                    "separator": {
-                        "thickness": "default",
-                        "color": "accent"
-                    },
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "accent"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/api/cat"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "spacing": "extraLarge",
-                    "separator": {
-                        "thickness": "thick",
-                        "color": "accent"
-                    },
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "thick accent"
                         },
                         {
                             "type": "Image",

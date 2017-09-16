@@ -28,11 +28,11 @@
         {
             "type": "Container",
             "spacing": "default",
-            "separator": {},
+            "separator": true,
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "spacing: default, separator: default",
+                    "text": "spacing: default, separator: true",
                     "weight": "bolder",
                     "size": "medium"
                 },
@@ -46,14 +46,11 @@
         {
             "type": "Container",
             "spacing": "extraLarge",
-            "separator": {
-                "thickness": "thick",
-                "color": "accent"
-            },
+            "separator": true,
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "spacing: extraLarge, separator: thick accent",
+                    "text": "spacing: extraLarge, separator: true",
                     "weight": "bolder",
                     "size": "medium"
                 },

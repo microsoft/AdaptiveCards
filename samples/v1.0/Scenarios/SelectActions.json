@@ -1,7 +1,7 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
     "body": [
         {
             "type": "TextBlock",
@@ -30,10 +30,8 @@
                     ],
                     "actions": [
                         {
-                            "type": "Action.Http",
-                            "method": "POST",
-                            "title": "OK",
-                            "url": "http://google.com?dueDate={{dueDate.value}}"
+                            "type": "Action.Submit",
+                            "title": "OK"
                         }
                     ]
                 }
@@ -48,7 +46,6 @@
                     "url": "http://connectorsdemo.azurewebsites.net/images/MicrosoftSurface_024_Cafe_OH-06315_VS_R1c.jpg",
                     "selectAction": {
                         "type": "Action.OpenUrl",
-                        "title": "",
                         "url": "https://www.bing.com/images/search?q=puppies&FORM=HDRSC2"
                     }
                 },

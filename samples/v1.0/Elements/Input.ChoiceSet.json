@@ -1,5 +1,5 @@
 {
-    "$schema": "../../../schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
@@ -61,12 +61,12 @@
             "type": "Input.ChoiceSet",
             "id": "myColor3",
             "isMultiSelect": true,
-            "value": "1,3",
+            "value": [ "1", "3" ],
             "style": "compact",
             "choices": [
                 {
                     "title": "Red",
-                    "value": "1"
+                    "value": "Hello, world"
                 },
                 {
                     "title": "Green",

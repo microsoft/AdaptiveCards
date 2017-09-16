@@ -1,15 +1,15 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "0.5",
+    "version": "1.0",
+    "speak": "<s>Serious Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",    
     "body": [
         {
-            "speak": "<s>Serious Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
             "type": "ColumnSet",
             "columns": [
                 {
                     "type": "Column",
-                    "size": "2",
+                    "size": 2
                     "items": [
                         {
                             "type": "TextBlock",
@@ -31,7 +31,7 @@
                 },
                 {
                     "type": "Column",
-                    "size": "1",
+                    "size": 1,
                     "items": [
                         {
                             "type": "Image",
@@ -45,14 +45,12 @@
     ],
     "actions": [
         {
-            "type": "Action.Http",
-            "method": "POST",
+            "type": "Action.OpenUrl",
             "title": "More Info",
             "url": "http://foo.com"
         },
         {
-            "type": "Action.Http",
-            "method": "POST",
+            "type": "Action.OpenUrl",
             "title": "View on Foursquare",
             "url": "http://foo.com"
         }

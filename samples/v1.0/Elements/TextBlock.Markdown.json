@@ -1,5 +1,5 @@
 {
-    "$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
@@ -13,15 +13,15 @@
         },
         {
             "type": "TextBlock",
-            "text": "- Bullet \r- List \r"  
-        }     ,
+            "text": "- Bullet \r- List \r"
+        },
         {
             "type": "TextBlock",
-            "text": "1. Numbered\r2. List\r"  
-        } ,
-           {
+            "text": "1. Numbered\r2. List\r"
+        },
+        {
             "type": "TextBlock",
-            "text": "Check out [Adaptive Cards](http://adaptivecards.io)"  
-        } 
+            "text": "Check out [Adaptive Cards](http://adaptivecards.io)"
+        }
     ]
 }

@@ -1,10 +1,11 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
+	"version": "1.0",
+	"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
 	"body": [
 		{
 			"type": "Container",
-			"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
 			"items": [
 				{
 					"type": "TextBlock",
@@ -55,12 +56,10 @@
 				{
 					"type": "TextBlock",
 					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-					"speak": "",
 					"wrap": true
 				},
 				{
 					"type": "FactSet",
-					"speak": "It has been assigned to: David Claux",
 					"facts": [
 						{
 							"title": "Board:",
@@ -97,15 +96,10 @@
 					}
 				],
 				"actions": [
-				    {
-				        "type": "Action.Http",
-				        "title": "OK",
-				        "url": "http://xyz.com",
-                        "headers": {
-							"content-type": "application/json"
-						},
-						"body": "{ 'dueDate' : '{{dueDate.value}}' }"
-				    }
+					{
+						"type": "Action.Submit",
+						"title": "OK"
+					}
 				]
 			}
 		},
@@ -124,14 +118,8 @@
 				],
 				"actions": [
 					{
-						"type": "Action.Http",
-						"method": "POST",
-						"title": "OK",
-						"url": "http://xyz.com",
-						"headers": {
-							"content-type": "application/json"
-						},
-						"body": "{ 'comment' : '{{comment.value}}' }"
+						"type": "Action.Submit",
+						"title": "OK"
 					}
 				]
 			}
