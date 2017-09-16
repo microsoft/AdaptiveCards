@@ -1,4 +1,4 @@
-﻿<html lang="en">
+<html lang="en">
 <head>
     <meta charset = "utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -63,6 +63,7 @@
 <a href="#CalendarReminder" id='CalendarReminderLink' class="elementLink w3-bar-item w3-button">Calendar Reminder</a>
 <a href="#FlightItinerary" id='FlightItineraryLink' class="elementLink w3-bar-item w3-button">Flight Itinerary</a>
 <a href="#FlightUpdate" id='FlightUpdateLink' class="elementLink w3-bar-item w3-button">Flight Update</a>
+<a href="#FoodOrder" id='FoodOrderLink' class="elementLink w3-bar-item w3-button">Food Order</a>
 <a href="#ImageGallery" id='ImageGalleryLink' class="elementLink w3-bar-item w3-button">Image Gallery</a>
 <a href="#InputForm" id='InputFormLink' class="elementLink w3-bar-item w3-button">Input Form</a>
 <a href="#Restaurant" id='RestaurantLink' class="elementLink w3-bar-item w3-button">Restaurant</a>
@@ -189,7 +190,7 @@
                         "headers": {
 							"content-type": "application/json"
 						},
-						"body": "{ 'comment' : '{{dueDate.value}}' }"
+						"body": "{ 'dueDate' : '{{dueDate.value}}' }"
 				    }
 				]
 			}
@@ -224,7 +225,7 @@
 		{
 			"type": "Action.OpenUrl",
 			"title": "View",
-			"url": "http://foo.com"
+			"url": "http://microsoft.com"
 		}
 	]
 });</script>
@@ -719,6 +720,206 @@
 	]
 });</script>
 </div>
+<div class='element' id='FoodOrderContent' style='display:none'>
+<div id='FoodOrderCard' class='card' ></div>
+<a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Food Order.json'>Try it Yourself »</a>
+<script>renderCard('FoodOrderCard', {
+        "type": "AdaptiveCard",
+        "version": "0.5",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "Almost there...",
+            "size": "large",
+            "weight": "bolder"
+          },
+          {
+            "type": "TextBlock",
+            "text": "Before we finish up booking, just letting you know that your scuba class comes with a delicious lunch meal!",
+            "size": "normal",
+            "wrap": true
+          },
+          {
+            "type": "TextBlock",
+            "text": "Please let us know your protein preference:",
+            "size": "normal",
+            "wrap": true
+          },
+          {
+            "type": "ImageSet",
+            "imageSize": "medium",
+            "images": [
+              {
+                "type": "Image",
+                "url": "http://contososcubabot.azurewebsites.net/assets/steak.jpg"
+              },
+              {
+                "type": "Image",
+                "url": "http://contososcubabot.azurewebsites.net/assets/chicken.jpg"
+              },
+              {
+                "type": "Image",
+                "url": "http://contososcubabot.azurewebsites.net/assets/tofu.jpg"
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.ShowCard",
+            "title": "Beef",
+            "card": {
+              "type": "AdaptiveCard",
+              "body": [
+                {
+                  "type": "TextBlock",
+                  "text": "What are you allergic to?",
+                  "size": "medium",
+                  "wrap": true
+                },
+                {
+                  "type": "Input.ChoiceSet",
+                  "id": "BeefAllergy",
+                  "style": "expanded",
+                  "isMultiSelect": true,
+                  "choices": [
+                    {
+                      "title": "Peanut",
+                      "value": "peanut"
+                    },
+                    {
+                      "title": "Seafood",
+                      "value": "seafood"
+                    }
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": "Action.Http",
+                  "method": "POST",
+                  "title": "OK",
+                  "url": "http://xyz.com",
+                  "headers": {
+                    "content-type": "application/json"
+                  },
+                  "body": "{ 'comment' : '{{comment.value}}' }"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Action.ShowCard",
+            "title": "Chicken",
+            "card": {
+              "type": "AdaptiveCard",
+              "body": [
+                {
+                  "type": "TextBlock",
+                  "text": "What are you allergic to?",
+                  "size": "medium",
+                  "wrap": true
+                },
+                {
+                  "type": "Input.ChoiceSet",
+                  "id": "ChickenAllergy",
+                  "style": "expanded",
+                  "isMultiSelet": true,
+                  "choices": [
+                    {
+                      "title": "Peanut",
+                      "value": "peanut"
+                    },
+                    {
+                      "title": "Seafood",
+                      "value": "seafood"
+                    }
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": "Action.Http",
+                  "method": "POST",
+                  "title": "OK",
+                  "url": "http://xyz.com",
+                  "headers": {
+                    "content-type": "application/json"
+                  },
+                  "body": "{ 'comment' : '{{comment.value}}' }"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Action.ShowCard",
+            "title": "Tofu (Vegetarian)",
+            "card": {
+              "type": "AdaptiveCard",
+              "body": [
+                {
+                  "type": "TextBlock",
+                  "text": "Are you a vegan?",
+                  "size": "medium",
+                  "wrap": true
+                },
+                {
+                  "type": "Input.ChoiceSet",
+                  "id": "Vegetarian",
+                  "style": "expanded",
+
+                  "choices": [
+                    {
+                      "title": "I am a vegan.",
+                      "value": "vegan"
+                    },
+                    {
+                      "title": "I'm not a vegan.",
+                      "value": "notVegan",
+                      "isSelected": true
+                    }
+                  ]
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "What are you allergic to?",
+                  "size": "medium",
+                  "wrap": true
+                },
+                {
+                  "type": "Input.ChoiceSet",
+                  "id": "Allergy",
+                  "style": "expanded",
+                  "isMultiSelet": true,
+                  "choices": [
+                    {
+                      "title": "Peanut",
+                      "value": "peanut"
+                    },
+                    {
+                      "title": "Seafood",
+                      "value": "seafood"
+                    }
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": "Action.Http",
+                  "method": "POST",
+                  "title": "OK",
+                  "url": "http://xyz.com",
+                  "headers": {
+                    "content-type": "application/json"
+                  },
+                  "body": "{ 'comment' : '{{comment.value}}' }"
+                }
+              ]
+            }
+          }
+        ]
+      });</script>
+</div>
 <div class='element' id='ImageGalleryContent' style='display:none'>
 <div id='ImageGalleryCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Image Gallery.json'>Try it Yourself »</a>
@@ -787,94 +988,90 @@
 <div id='InputFormCard' class='card' ></div>
 <a class='trymelink' target='_blank' href='/visualizer/?card=/samples/cards/Input Form.json'>Try it Yourself »</a>
 <script>renderCard('InputFormCard', {
-        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "type": "AdaptiveCard",
-        "version": "0.5",
-        "body": [
-          {
-            "type": "ColumnSet",
-            "columns": [
-              {
-                "type": "Column",
-                "size": 2,
-                "items": [
-                  {
-                    "type": "TextBlock",
-                    "text": "Tell us about yourself...",
-                    "weight": "bolder",
-                    "size": "large"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "text": "We just need a few more details to get you booked for the trip of a lifetime!",
-                    "isSubtle": true,
-                    "wrap": true
-                  },
-                  {
-                    "type": "TextBlock",
-                    "text": "Don't worry, we'll never share or sell your information.",
-                    "isSubtle": true,
-                    "wrap": true,
-                    "size": "small"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "text": "Your name",
-                    "wrap": true
-                  },
-                  {
-                    "type": "Input.Text",
-                    "id": "myName",
-                    "placeholder": "Last, First",
-                    "separataion": "none"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "text": "Your email",
-                    "wrap": true
-                  },
-                  {
-                    "type": "Input.Text",
-                    "id": "myEmail",
-                    "placeholder": "youremail@example.com",
-                    "style": "email",
-                    "separataion": "none"
-                  },
-                  {
-                    "type": "TextBlock",
-                    "text": "Phone Number"
-                  },
-                  {
-                    "type": "Input.Text",
-                    "id": "myTel",
-                    "placeholder": "xxx.xxx.xxxx",
-                    "style": "tel"
-                  }
-                ]
-              },
-              {
-                "type": "Column",
-                "size": 1,
-                "items": [
-                  {
-                    "type": "Image",
-                    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg",
-                    "size": "auto"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "actions": [
-          {
-            "type": "Action.Submit",
-            "title":  "Submit" 
-          }
-        ]
-          
-      }
-);</script>
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "0.5",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "size": 2,
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Tell us about yourself...",
+              "weight": "bolder",
+              "size": "large"
+            },
+            {
+              "type": "TextBlock",
+              "text": "We just need a few more details to get you booked for the trip of a lifetime!",
+              "isSubtle": true,
+              "wrap": true
+            },
+            {
+              "type": "TextBlock",
+              "text": "Don't worry, we'll never share or sell your information.",
+              "isSubtle": true,
+              "wrap": true,
+              "size": "small"
+            },
+            {
+              "type": "TextBlock",
+              "text": "Your name",
+              "wrap": true
+            },
+            {
+              "type": "Input.Text",
+              "id": "myName",
+              "placeholder": "Last, First"
+            },
+            {
+              "type": "TextBlock",
+              "text": "Your email",
+              "wrap": true
+            },
+            {
+              "type": "Input.Text",
+              "id": "myEmail",
+              "placeholder": "youremail@example.com",
+              "style": "email"
+            },
+            {
+              "type": "TextBlock",
+              "text": "Phone Number"
+            },
+            {
+              "type": "Input.Text",
+              "id": "myTel",
+              "placeholder": "xxx.xxx.xxxx",
+              "style": "tel"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "size": 1,
+          "items": [
+            {
+              "type": "Image",
+              "url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg",
+              "size": "auto"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Submit"
+    }
+  ]
+});</script>
 </div>
 <div class='element' id='RestaurantContent' style='display:none'>
 <div id='RestaurantCard' class='card' ></div>
@@ -1008,7 +1205,8 @@
             ]
         }
     ]
-});</script>
+}
+);</script>
 </div>
 <div class='element' id='WeatherCompactContent' style='display:none'>
 <div id='WeatherCompactCard' class='card' ></div>
@@ -1041,7 +1239,7 @@
 							"items": [
 								{
 									"type": "Image",
-									"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
+									"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
 									"size": "small",
 									"horizontalAlignment": "center"
 								}
@@ -1104,7 +1302,8 @@
 			]
 		}
 	]
-});</script>
+}
+);</script>
 </div>
 <div class='element' id='WeatherLargeContent' style='display:none'>
 <div id='WeatherLargeCard' class='card' ></div>
