@@ -16,9 +16,9 @@
     return self;
 }
 
-+ (ACOParseResult *)fromJson:(NSString *)payload;
++ (ACOParseResult *)FromJson:(NSString *)payload;
 {
-    return [ACOHostConfigInternal fromJson:payload];
+    return [ACOHostConfigInternal FromJson:payload];
 }
 
 @end

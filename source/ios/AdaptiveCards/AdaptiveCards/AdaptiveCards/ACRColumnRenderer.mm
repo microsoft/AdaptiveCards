@@ -7,7 +7,7 @@
 
 #import "ACRColumnRenderer.h"
 #import "ACRColumnView.h"
-#import "ACRRenderer.h"
+#import "ACRRendererInternal.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
 
@@ -28,12 +28,12 @@
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
-{ 
+{
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
     ACRColumnView* column = [[ACRColumnView alloc] init];
     [viewGroup addArrangedSubview:column];
-    [ACRRenderer render:column
+    [ACRRendererInternal render:column
                  inputs:inputs
           withCardElems:columnElem->GetItems()
           andHostConfig:config];
@@ -44,9 +44,9 @@
     {
         [column setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     }
-    
+
     [column adjustHuggingForLastElement];
-    
+
     return column;
 }
 

@@ -144,8 +144,8 @@
   },
   "imageSizes": {
     "small": 60,
-    "medium": 120,
-    "large": 180
+    "medium": 80,
+    "large": 140
   },
   "image": {
     "separation": {

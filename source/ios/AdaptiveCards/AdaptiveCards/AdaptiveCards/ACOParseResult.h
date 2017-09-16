@@ -5,8 +5,6 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOParseResult.h"
-
 @class ACOAdaptiveCards;
 @class ACOHostConfig;
 

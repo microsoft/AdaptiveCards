@@ -20,7 +20,7 @@ using namespace AdaptiveCards;
     return self;
 }
 
-+ (ACOParseResult *)fromJson:(NSString *)payload;
++ (ACOParseResult *)FromJson:(NSString *)payload;
 {
     ACOParseResult *result = [[ACOParseResult alloc] init];
 
@@ -38,7 +38,11 @@ using namespace AdaptiveCards;
             result.IsValid = NO;
         }
     }
-    return self;
+    return result;
 }
 
+- (std::shared_ptr<HostConfig> const &)getHostConfig
+{
+    return hostConfig;
+}
 @end

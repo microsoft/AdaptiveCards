@@ -12,5 +12,5 @@
 
 - (instancetype)init;
 
-+ (ACOParseResult *)fromJson:(NSString *)payload;
++ (ACOParseResult *)FromJson:(NSString *)payload;
 @end    

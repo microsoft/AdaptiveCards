@@ -5,7 +5,6 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-#import "ACOAdaptiveCards.h"
 #import "ACOAdaptiveCardsInternal.h"
 
 @implementation ACOAdaptiveCards

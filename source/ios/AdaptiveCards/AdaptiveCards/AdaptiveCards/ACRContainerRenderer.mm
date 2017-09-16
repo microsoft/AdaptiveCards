@@ -7,7 +7,7 @@
 
 #import "ACRContainerRenderer.h"
 #import "ACRColumnView.h"
-#import "ACRRenderer.h"
+#import "ACRRendererInternal.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
 
@@ -32,7 +32,7 @@
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
     /// will update name to make intention clear
     ACRColumnView *container = [[ACRColumnView alloc] init];
-    [ACRRenderer render:container
+    [ACRRendererInternal render:container
                  inputs:inputs
           withCardElems:containerElem->GetItems()
           andHostConfig:config];

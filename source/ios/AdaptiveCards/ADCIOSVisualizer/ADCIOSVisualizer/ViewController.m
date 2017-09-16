@@ -91,19 +91,28 @@
 - (void)update:(NSString *) jsonStr
 {
     self.editableStr = jsonStr;
-    ACRViewController *adcVc = [[ACRViewController alloc] init:jsonStr
-                                                     withFrame:CGRectMake(20, 250, 300, 1250)];
+    ACRRenderResult *renderResult;
+    ACOParseResult *hostconfigParseResult = [ACOHostConfig FromJson:self.hostconfig];
+    ACOParseResult *cardParseResult       = [ACOAdaptiveCards FromJson:jsonStr];
+    if(hostconfigParseResult.IsValid == YES && cardParseResult.IsValid == YES)
+    {
+        renderResult = [ACRRenderer render:cardParseResult.card
+                                    config:hostconfigParseResult.config
+                                     frame:CGRectMake(20, 250, 300, 1250)];
+    }	
     
-    ACOParseResult *result = [ACOHostConfig fromJson:self.hostconfig];
-    
-    adcVc.acrActionDelegate = self;
-    if(self.curView)
-        [self.curView removeFromSuperview];
-    self.curView = adcVc.view;
-    self.curView.frame = CGRectMake(20, 250, 300, 1250);
-    [self addChildViewController:adcVc];
-    [self.view addSubview:adcVc.view];
-    [adcVc didMoveToParentViewController:self];
+    if(renderResult.Suceeded == YES)
+    {
+        ACRViewController *adcVc = renderResult.viewcontroller;
+        adcVc.acrActionDelegate = self;
+        if(self.curView)
+            [self.curView removeFromSuperview];
+        self.curView = adcVc.view;
+        self.curView.frame = CGRectMake(20, 250, 300, 1250);
+        [self addChildViewController:adcVc];
+        [self.view addSubview:adcVc.view];
+        [adcVc didMoveToParentViewController:self];
+    }
 }
 
 - (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr

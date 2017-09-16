@@ -8,12 +8,15 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ACRActionDelegate.h"
+#import "ACOAdaptiveCards.h"
+#import "ACOHostConfig.h"
 
 @interface ACRViewController :UIViewController
 
-@property NSString* jsonString;
 @property (weak) id<ACRActionDelegate> acrActionDelegate;
 
-- (instancetype)init:(NSString* )str withFrame:(CGRect)frame;
+- (instancetype)init:(ACOAdaptiveCards *)card 
+          hostconfig:(ACOHostConfig *)config
+               frame:(CGRect)frame;
 
 @end

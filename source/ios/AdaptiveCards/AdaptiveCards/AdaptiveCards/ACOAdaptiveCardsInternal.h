@@ -6,7 +6,9 @@
 //
 
 #import "ACOAdaptiveCards.h"
+#import "SharedAdaptiveCard.h"
+using namespace AdaptiveCards;
 
 @interface ACOAdaptiveCardsInternal:ACOAdaptiveCards
-
-@end    
+- (std::shared_ptr<AdaptiveCard> const &) getCard;
+@end

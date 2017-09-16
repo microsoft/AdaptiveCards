@@ -11,4 +11,6 @@ using namespace AdaptiveCards;
 
 @interface ACOHostConfigInternal:ACOHostConfig
 
+- (std::shared_ptr<HostConfig> const &)getHostConfig;
+
 @end    
