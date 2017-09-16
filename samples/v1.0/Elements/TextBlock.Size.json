@@ -14,8 +14,8 @@
         },
         {
             "type": "TextBlock",
-            "text": "size:normal",
-            "size": "normal"
+            "text": "size:default",
+            "size": "default"
         },
         {
             "type": "TextBlock",

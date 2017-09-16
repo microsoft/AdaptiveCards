@@ -10,8 +10,8 @@
         },
         {
             "type": "TextBlock",
-            "text": "weight: normal",
-            "weight": "normal"
+            "text": "weight: default",
+            "weight": "default"
         },
         {
             "type": "TextBlock",

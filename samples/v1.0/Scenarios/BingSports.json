@@ -39,7 +39,6 @@
                   "type": "TextBlock",
                   "text": "CAR",
                   "horizontalAlignment": "center",
-                  "size": "normal",
                   "weight": "bolder"
                 }
               ],
@@ -85,7 +84,6 @@
                   "type": "TextBlock",
                   "text": "SEA",
                   "horizontalAlignment": "center",
-                  "size": "normal",
                   "weight": "bolder"
                 }
               ]
