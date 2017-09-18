@@ -5,8 +5,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 {
     class XamlCardResourceResolvers :
         public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolvers>
+            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+            ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolvers>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_XamlCardResourceResolvers, BaseTrust)
 
