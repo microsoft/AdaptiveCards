@@ -38,8 +38,8 @@ using namespace AdaptiveCards;
     self = [self initWithNibName:nil bundle:nil];
     if(self)
     {
-        //card getCard];
         self->adaptiveCard = [((ACOAdaptiveCardsInternal *)card) getCard];
+        // if check fails, default host config is used
         if([config isKindOfClass:[ACOHostConfigInternal class]] == YES)
             hostConfig = [((ACOHostConfigInternal *)config) getHostConfig];
         guideFrame = frame;

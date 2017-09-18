@@ -42,7 +42,7 @@ using namespace AdaptiveCards;
     return result;
 }
 
-- (std::shared_ptr<AdaptiveCard> const &) getCard;
+- (std::shared_ptr<AdaptiveCard> const &)getCard
 {
     return adaptiveCard;
 }

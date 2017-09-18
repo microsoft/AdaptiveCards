@@ -16,14 +16,14 @@
     return self;
 }
 
-+ (ACRRenderResult *)render:(ACOAdaptiveCards *)card config:(ACOHostConfig *)config frame:(CGRect) frame
-{ 
++ (ACRRenderResult *)render:(ACOAdaptiveCards *)card config:(ACOHostConfig *)config frame:(CGRect)frame
+{
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
 
     if([card isKindOfClass:[ACOAdaptiveCardsInternal class]] == NO)
         return result;
 
-    ACRViewController *viewcontroller = [[ACRViewController alloc] init:card 
+    ACRViewController *viewcontroller = [[ACRViewController alloc] init:card
                                                              hostconfig:config
                                                                   frame:frame];
 

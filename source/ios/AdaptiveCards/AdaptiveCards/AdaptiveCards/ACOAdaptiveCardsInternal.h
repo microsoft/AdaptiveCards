@@ -10,5 +10,5 @@
 using namespace AdaptiveCards;
 
 @interface ACOAdaptiveCardsInternal:ACOAdaptiveCards
-- (std::shared_ptr<AdaptiveCard> const &) getCard;
+- (std::shared_ptr<AdaptiveCard> const &)getCard;
 @end
