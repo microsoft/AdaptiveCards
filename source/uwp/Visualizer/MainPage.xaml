@@ -43,6 +43,11 @@
                         IsCompact="True"/>
                 </StackPanel>
             </CommandBar.Content>
+            <CommandBar.SecondaryCommands>
+                <AppBarToggleButton
+                    Label="Use Async Render Method"
+                    IsChecked="{Binding UseAsyncRenderMethod, Mode=TwoWay}"/>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
 
         <Grid Grid.Row="1">

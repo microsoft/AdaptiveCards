@@ -14,6 +14,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using XamlCardVisualizer.Helpers;
+using XamlCardVisualizer.ResourceResolvers;
 
 namespace XamlCardVisualizer.ViewModel
 {
@@ -39,7 +40,7 @@ namespace XamlCardVisualizer.ViewModel
             set { SetPayload(value); }
         }
 
-        private async void SetPayload(string value)
+        private void SetPayload(string value)
         {
             if (value == null)
             {
@@ -53,6 +54,11 @@ namespace XamlCardVisualizer.ViewModel
 
             SetProperty(ref _payload, value);
 
+            ReRender();
+        }
+
+        public async void ReRender()
+        {
             if (!IsRendering)
             {
                 IsRendering = true;
@@ -158,7 +164,15 @@ namespace XamlCardVisualizer.ViewModel
 
             try
             {
-                RenderedCard = _renderer.RenderAdaptiveJsonAsXaml(payload);
+                if (Settings.UseAsyncRenderMethod)
+                {
+                    RenderedCard = await _renderer.RenderAdaptiveJsonAsXamlAsync(payload);
+                }
+                else
+                {
+                    RenderedCard = _renderer.RenderAdaptiveJsonAsXaml(payload);
+                }
+
                 if (RenderedCard is FrameworkElement)
                 {
                     (RenderedCard as FrameworkElement).VerticalAlignment = VerticalAlignment.Top;
@@ -194,6 +208,9 @@ namespace XamlCardVisualizer.ViewModel
             {
                 _renderer = new XamlCardRenderer();
                 //_renderer.SetHostConfig
+
+                // Custom resource resolvers
+                _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
 
                 _renderer.Action += async (sender, e) =>
                 {
