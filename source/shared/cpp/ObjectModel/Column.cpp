@@ -59,7 +59,7 @@ std::string Column::GetSize() const
 
 void Column::SetSize(const std::string value)
 {
-    m_size = value;
+    m_size = ParseUtil::ToLowercase(value);
 }
 
 const std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems() const

@@ -306,7 +306,7 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(9F68A612-9DCB-4710-8121-A116BD33B69B),
+            uuid(1fbf16f2-7c70-4b19-9d76-fb107fc33821),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveCard),
         ]
@@ -327,8 +327,11 @@ namespace AdaptiveCards
             [propget] HRESULT FallbackText([out, retval] HSTRING* value);
             [propput] HRESULT FallbackText([in] HSTRING value);
 
-            [propget] HRESULT BackgroundImageUrl([out, retval] Windows.Foundation.Uri** value);
-            [propput] HRESULT BackgroundImageUrl([in] Windows.Foundation.Uri* value);
+            [propget] HRESULT BackgroundImage([out, retval] Windows.Foundation.Uri** value);
+            [propput] HRESULT BackgroundImage([in] Windows.Foundation.Uri* value);
+
+            [propget] HRESULT Speak([out, retval] HSTRING* value);
+            [propput] HRESULT Speak([in] HSTRING value);
 
             HRESULT ToJsonString([out, retval] HSTRING* value);
         };

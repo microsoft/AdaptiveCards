@@ -1,0 +1,28 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Spacing controls the amount of space between this element and ths one before it",
+            "size": "medium",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "spacing: default",
+            "spacing": "default"
+        },
+        {
+            "type": "TextBlock",
+            "text": "spacing: none",
+            "separation": "none"
+        },
+        {
+            "type": "TextBlock",
+            "text": "separator: true",
+            "separator": true
+        }
+    ]
+}

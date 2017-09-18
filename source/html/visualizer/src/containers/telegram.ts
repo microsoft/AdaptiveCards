@@ -1,5 +1,15 @@
 import { HostContainer } from "./host-container";
-import * as Adaptive from "microsoft-adaptivecards";
+import {
+    IHostConfig,
+    Size,
+    TextSize,
+    TextColor,
+    TextWeight,
+    Spacing,
+    ShowCardActionMode,
+    Orientation,
+    ActionAlignment
+} from "microsoft-adaptivecards";
 
 export class TelegramContainer extends HostContainer {
     private _width: number;
@@ -20,7 +30,7 @@ export class TelegramContainer extends HostContainer {
         return outerElement;
     }
 
-    public getHostConfig(): Adaptive.IHostConfig {
+    public getHostConfig(): IHostConfig {
         return {
             spacing: {
                 small: 3,
@@ -32,7 +42,7 @@ export class TelegramContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: false,
             fontFamily: "Tahoma,Verdana,Segoe,sans-serif;",
@@ -58,7 +68,7 @@ export class TelegramContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FF0000",
@@ -83,7 +93,7 @@ export class TelegramContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#FF0000",
@@ -107,39 +117,39 @@ export class TelegramContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: "default",
+                spacing: Spacing.Default,
                 buttonSpacing: 20,
                 showCard: {
-                    actionMode: "inline",
+                    actionMode: ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: "horizontal",
-                actionAlignment: "left"
+                actionsOrientation: Orientation.Horizontal,
+                actionAlignment: ActionAlignment.Left
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
             image: {
-                size: "medium"
+                size: Size.Medium,
             },
             imageSet: {
-                imageSize: "medium",
+                imageSize: Size.Medium,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: "default",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "bolder",
+                    weight: TextWeight.Bolder,
                     wrap: true,
                     maxWidth: 150
                 },
                 value: {
-                    color: "default",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Normal,
                     isSubtle: false,
-                    weight: "normal",
+                    weight: TextWeight.Normal,
                     wrap: true
                 },
                 spacing: 10

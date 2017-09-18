@@ -116,6 +116,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    HRESULT XamlBuilder::ImagesLoadingHadError()
+    {
+        FireImagesLoadingHadError();
+        return S_OK;
+    }
+
     _Use_decl_annotations_
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(
         IAdaptiveCard* adaptiveCard, 
@@ -329,7 +335,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         ComPtr<IUriRuntimeClass> backgroundImageUrl;
-        if (SUCCEEDED(adaptiveCard->get_BackgroundImageUrl(&backgroundImageUrl)))
+        if (SUCCEEDED(adaptiveCard->get_BackgroundImage(&backgroundImageUrl)))
         {
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImageUrl.Get());
         }
@@ -469,8 +475,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         ComPtr<T> strongImageControl(imageControl);
         ComPtr<XamlBuilder> strongThis(this);
-        getStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>
-            ([strongThis, this, bitmapSource, strongImageControl](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
+        THROW_IF_FAILED(getStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>
+            ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperationWithProgress<IInputStream*, HttpProgress>* operation, AsyncStatus status) -> HRESULT
         {
             if (status == AsyncStatus::Completed)
             {
@@ -501,9 +507,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             }
             else
             {
-                return E_FAIL;
+                m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                return S_OK;
             }
-        }).Get());
+        }).Get()));
         m_getStreamOperations.push_back(getStreamOperation);
     }
 
@@ -512,6 +519,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         for (auto& listener : m_listeners)
         {
             listener->AllImagesLoaded();
+        }
+    }
+
+    void XamlBuilder::FireImagesLoadingHadError()
+    {
+        for (auto& listener : m_listeners)
+        {
+            listener->ImagesLoadingHadError();
         }
     }
 
@@ -678,16 +693,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             switch (actionAlignment)
             {
             case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Center:
-                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center);
+                THROW_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center));
                 break;
             case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Left:
-                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left);
+                THROW_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left));
                 break;
             case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Right:
-                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right);
+                THROW_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right));
                 break;
             case ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment::Stretch:
-                actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch);
+                THROW_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
                 break;
             }
 
@@ -1338,13 +1353,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         switch (adaptiveHorizontalAlignment)
         {
             case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Left:
-                THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Left));
+                THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left));
                 break;
             case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Right:
-                THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Right));
+                THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right));
                 break;
             case ABI::AdaptiveCards::XamlCardRenderer::HAlignment::Center:
-                THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Center));
+                THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center));
                 break;
         }
 
@@ -1868,6 +1883,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveDateInput->get_Placeholder(placeHolderText.GetAddressOf()));
         THROW_IF_FAILED(datePicker->put_PlaceholderText(placeHolderText.Get()));
 
+        // Make the picker stretch full width
+        ComPtr<IFrameworkElement> datePickerAsFrameworkElement;
+        THROW_IF_FAILED(datePicker.As(&datePickerAsFrameworkElement));
+        THROW_IF_FAILED(datePickerAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+
         AddInputItemToVector(inputElements, adaptiveCardElement, datePicker.Get());
             
         // TODO: Handle parsing dates for min/max and value
@@ -2000,6 +2020,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         ComPtr<ITimePicker> timePicker = XamlHelpers::CreateXamlClass<ITimePicker>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TimePicker));
+
+        // Make the picker stretch full width
+        ComPtr<IFrameworkElement> timePickerAsFrameworkElement;
+        THROW_IF_FAILED(timePicker.As(&timePickerAsFrameworkElement));
+        THROW_IF_FAILED(timePickerAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
 
         AddInputItemToVector(inputElements, adaptiveCardElement, timePicker.Get());
 

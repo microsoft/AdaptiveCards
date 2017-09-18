@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 android {
     compileSdkVersion 25
@@ -28,6 +30,55 @@ android {
         }
     }
 }
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives")}
+    sign configurations.archives
+}
+
+
+uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                pom.artifactId ="adaptivecards-android-arm"
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                    authentication(userName: NexusUserName, password: NexusPassword)
+                }
+                pom {
+                    setGroupId "io.adaptivecards"
+                    setVersion '0.5.0'
+                }
+
+                pom.project {
+                    name 'Android Adaptive Cards Library'
+                    description 'Android Adaptive Cards Lib'
+                    url 'https://github.com/Microsoft/AdaptiveCards'
+
+                    scm {
+                        url  'https://github.com/Microsoft/AdaptiveCards'
+                    }
+
+                    licenses {
+                        license {
+                            name 'MIT'
+                            url 'https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'microsoft'
+                            name 'adaptivecards'
+                        }
+                    }
+                }
+
+            }
+        }
+    }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

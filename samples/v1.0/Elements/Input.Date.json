@@ -1,0 +1,17 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Date Input"
+        },
+        {
+            "type": "Input.Date",
+            "id": "1234",
+            "placeholder": "Enter a date",
+            "value": "20157-10-12T12:00:00"
+        }
+    ]
+}

@@ -33,11 +33,34 @@ export function appendChild(node: Node, child: Node) {
     }
 }
 
+export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
+    if (isNullOrEmpty(name)) {
+        return defaultValue;
+    }
+
+    for (var key in targetEnum) {
+        let isValueProperty = parseInt(key, 10) >= 0
+
+        if (isValueProperty) {
+            let value = targetEnum[key];
+            
+            if (value && typeof value === "string") {
+                if (value.toLowerCase() === name.toLowerCase()) {
+                    return parseInt(key, 10);
+                }
+            }
+        }
+    }
+
+    return defaultValue;
+}
+
+
 export function renderSeparation(separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
     if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
         var separator = document.createElement("div");
 
-        if (orientation == "horizontal") {
+        if (orientation == Enums.Orientation.Horizontal) {
             if (separationDefinition.lineThickness) {
                 separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
                 separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
