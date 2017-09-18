@@ -68,37 +68,37 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\..\..\samples\Scenarios\BingSports.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\BingSports.json">
       <Link>Samples\BingSports.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\BingStock.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\BingStock.json">
       <Link>Samples\BingStock.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\CalendarReminder.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\CalendarReminder.json">
       <Link>Samples\CalendarReminder.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\FlightItinerary.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightItinerary.json">
       <Link>Samples\FlightItinerary.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\FlightUpdate.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightUpdate.json">
       <Link>Samples\FlightUpdate.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\ImageGallery.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\ImageGallery.json">
       <Link>Samples\ImageGallery.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\Inputs.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\Inputs.json">
       <Link>Samples\Inputs.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\Restaurant.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\Restaurant.json">
       <Link>Samples\Restaurant.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\TrelloCardCreated.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\TrelloCardCreated.json">
       <Link>Samples\TrelloCardCreated.json</Link>
     </Content>
     <Content Include="..\..\..\schemas\adaptive-card.json">
       <Link>Schemas\adaptive-card.json</Link>
     </Content>
-    <Content Include="..\..\..\schemas\renderer-options.json">
+    <Content Include="..\..\..\schemas\host-config.json">
       <Link>Schemas\renderer-options.json</Link>
     </Content>
     <None Include="XamlCardVisualizer_TemporaryKey.pfx" />
