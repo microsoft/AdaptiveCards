@@ -1,32 +1,98 @@
-export type Size = "auto" | "stretch" | "small" | "medium" | "large";
+export enum Size {
+    Auto,
+    Stretch,
+    Small,
+    Medium,
+    Large
+}
 
-export type TextSize = "small" | "normal" | "medium" | "large" | "extraLarge";
+export enum TextSize {
+    Small,
+    Normal,
+    Medium,
+    Large,
+    ExtraLarge
+}
 
-export type Spacing = "none" | "small" | "default" | "medium" | "large" | "extraLarge" | "padding";
+export enum Spacing {
+    None,
+    Small,
+    Default,
+    Medium,
+    Large,
+    ExtraLarge,
+    Padding
+}
 
-export type Padding = "none" | "default";
+export enum Padding {
+    None,
+    Default
+}
 
-export type TextWeight = "lighter" | "normal" | "bolder";
+export enum TextWeight {
+    Lighter,
+    Normal,
+    Bolder
+}
 
-export type TextColor = "default" | "accent" | "good" | "warning" | "attention";
+export enum TextColor {
+    Default,
+    Accent,
+    Good,
+    Warning,
+    Attention
+}
 
-export type HorizontalAlignment = "left" | "center" | "right";
+export enum HorizontalAlignment {
+    Left,
+    Center,
+    Right
+}
 
-export type VerticalAlignment = "top" | "center" | "bottom";
+export enum VerticalAlignment {
+    Top,
+    Center,
+    Bottom
+}
 
-export type ActionAlignment = "left" | "center" | "right" | "stretch";
+export enum ActionAlignment {
+    Left,
+    Center,
+    Right,
+    Stretch
+}
 
-export type ActionStyle = "button" | "link";
+export enum ActionStyle {
+    Button,
+    Link
+}
 
-export type ImageStyle = "normal" | "person";
+export enum ImageStyle {
+    Normal,
+    Person
+}
 
-export type ShowCardActionMode = "inline" | "popup";
+export enum ShowCardActionMode {
+    Inline,
+    Popup
+}
 
-export type Orientation = "horizontal" | "vertical";
+export enum Orientation {
+    Horizontal,
+    Vertical
+}
 
-export type BackgroundImageMode = "stretch" | "repeatHorizontally" | "repeatVertically" | "repeat";
+export enum BackgroundImageMode {
+    Stretch,
+    RepeatHorizontally,
+    RepeatVertically,
+    Repeat
+}
 
-export type ContainerStyle = "default" | "emphasis";
+export enum ContainerStyle {
+    Default,
+    Emphasis
+}
 
 export enum ValidationError {
     Hint,
