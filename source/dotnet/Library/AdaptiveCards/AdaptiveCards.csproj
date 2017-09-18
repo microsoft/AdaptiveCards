@@ -16,9 +16,9 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageLicenseUrl>https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE</PackageLicenseUrl>
-    <AssemblyVersion>0.5.0.0</AssemblyVersion>
-    <Version>0.5</Version>
-    <FileVersion>0.5.0.0</FileVersion>
+    <AssemblyVersion>0.5.1.0</AssemblyVersion>
+    <Version>0.5.1</Version>
+    <FileVersion>0.5.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net4.5.2|AnyCPU'">

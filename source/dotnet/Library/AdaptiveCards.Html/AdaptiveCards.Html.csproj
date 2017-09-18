@@ -18,9 +18,11 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <RepositoryType />
     <PackageReleaseNotes />
-    <Version>0.5.2</Version>
+    <Version>0.5.3</Version>
     <VersionPrefix>0.5.2</VersionPrefix>
     <Product>Microsoft.AdaptiveCards.Html</Product>
+    <AssemblyVersion>0.5.3.0</AssemblyVersion>
+    <FileVersion>0.5.3.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

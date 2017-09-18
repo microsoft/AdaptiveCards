@@ -1,0 +1,67 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ImageSet",
+            "imageSize": "small",
+            "images": [
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/1"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/2"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/0"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/1"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/2"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/0"
+                }
+            ]
+        },
+        {
+            "type": "ImageSet",
+            "imageSize": "large",
+            "images": [
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/1"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/2"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/0"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/1"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/2"
+                },
+                {
+                    "type": "Image",
+                    "url": "http://adaptivecards.io/api/cat/0"
+                }
+            ]
+        }
+    ]
+}

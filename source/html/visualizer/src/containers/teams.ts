@@ -1,5 +1,15 @@
-import { HostContainer} from "./host-container";
-import * as Adaptive from "microsoft-adaptivecards";
+import { HostContainer } from "./host-container";
+import {
+    IHostConfig,
+    Size,
+    TextSize,
+    TextColor,
+    TextWeight,
+    Spacing,
+    ShowCardActionMode,
+    Orientation,
+    ActionAlignment
+} from "microsoft-adaptivecards";
 
 export class TeamsContainer extends HostContainer {
     protected renderContainer(renderedCard: HTMLElement): HTMLElement {
@@ -14,7 +24,7 @@ export class TeamsContainer extends HostContainer {
         return element;
     }
 
-    public getHostConfig(): Adaptive.IHostConfig {
+    public getHostConfig(): IHostConfig {
         return {
             spacing: {
                 small: 3,
@@ -26,20 +36,20 @@ export class TeamsContainer extends HostContainer {
             },
             separator: {
                 lineThickness: 1,
-                lineColor: "#EEEEEE"        
+                lineColor: "#EEEEEE"
             },
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
-                normal: 14,
+                default: 14,
                 medium: 17,
                 large: 21,
                 extraLarge: 26
             },
             fontWeights: {
                 lighter: 200,
-                normal: 400,
+                default: 400,
                 bolder: 600
             },
             containerStyles: {
@@ -52,7 +62,7 @@ export class TeamsContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#cc3300",
@@ -77,7 +87,7 @@ export class TeamsContainer extends HostContainer {
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC" 
+                            subtle: "#882E89FC"
                         },
                         attention: {
                             normal: "#cc3300",
@@ -101,39 +111,39 @@ export class TeamsContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: "default",
+                spacing: Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: "inline",
+                    actionMode: ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: "horizontal",
-                actionAlignment: "stretch"
+                actionsOrientation: Orientation.Horizontal,
+                actionAlignment: ActionAlignment.Stretch
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
             image: {
-                size: "medium"
+                size: Size.Medium
             },
             imageSet: {
-                imageSize: "medium",
+                imageSize: Size.Medium,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: "default",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Default,
                     isSubtle: false,
-                    weight: "bolder",
+                    weight: TextWeight.Bolder,
                     wrap: true,
                     maxWidth: 150,
                 },
                 value: {
-                    color: "default",
-                    size: "normal",
+                    color: TextColor.Default,
+                    size: TextSize.Default,
                     isSubtle: false,
-                    weight: "normal",
+                    weight: TextWeight.Default,
                     wrap: true,
                 },
                 spacing: 10
