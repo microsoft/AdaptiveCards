@@ -34,7 +34,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_events.reset(new ActionEventSource);
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
-        RETURN_IF_FAILED(MakeAndInitialize<XamlCardResourceResolvers>(&m_resourceResolvers));
+        return MakeAndInitialize<XamlCardResourceResolvers>(&m_resourceResolvers);
     }
 
     _Use_decl_annotations_
