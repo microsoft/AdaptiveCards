@@ -44,7 +44,7 @@ export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name:
         if (isValueProperty) {
             let value = targetEnum[key];
             
-            if (typeof value === 'string' || value instanceof String) {
+            if (value && typeof value === "string") {
                 if (value.toLowerCase() === name.toLowerCase()) {
                     return parseInt(key, 10);
                 }

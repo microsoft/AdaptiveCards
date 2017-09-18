@@ -47,14 +47,14 @@ export class GroupMeContainer extends HostContainer {
             fontFamily: "'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif",
             fontSizes: {
                 small: 13,
-                normal: 15,
+                default: 15,
                 medium: 17,
                 large: 20,
                 extraLarge: 23
             },
             fontWeights: {
                 lighter: 200,
-                normal: 400,
+                default: 400,
                 bolder: 600
             },
             containerStyles: {
@@ -138,7 +138,7 @@ export class GroupMeContainer extends HostContainer {
             factSet: {
                 title: {
                     color: TextColor.Default,
-                    size: TextSize.Normal,
+                    size: TextSize.Default,
                     isSubtle: false,
                     weight: TextWeight.Bolder,
                     wrap: true,
@@ -146,9 +146,9 @@ export class GroupMeContainer extends HostContainer {
                 },
                 value: {
                     color: TextColor.Default,
-                    size: TextSize.Normal,
+                    size: TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Normal,
+                    weight: TextWeight.Default,
                     wrap: true
                 },
                 spacing: 10
