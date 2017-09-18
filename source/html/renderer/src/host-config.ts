@@ -111,10 +111,10 @@ export interface IFactTextDefinition {
 
 function parseFactTextDefinition(obj: any): IFactTextDefinition {
     return obj ? {
-        size: Utils.getValueOrDefault<Enums.TextSize>(obj["size"], Enums.TextSize.Normal),
+        size: Utils.getValueOrDefault<Enums.TextSize>(obj["size"], Enums.TextSize.Default),
         color: Utils.getValueOrDefault<Enums.TextColor>(obj["color"], Enums.TextColor.Default),
         isSubtle: obj["isSubtle"],
-        weight: Utils.getValueOrDefault<Enums.TextWeight>(obj["weight"], Enums.TextWeight.Normal),
+        weight: Utils.getValueOrDefault<Enums.TextWeight>(obj["weight"], Enums.TextWeight.Default),
         wrap: obj["wrap"]
     } : null;
 }
@@ -188,14 +188,14 @@ export interface IHostConfig {
     fontFamily?: string,
     fontSizes: {
         small: number,
-        normal: number,
+        default: number,
         medium: number,
         large: number,
         extraLarge: number
     },
     fontWeights: {
         lighter: number,
-        normal: number,
+        default: number,
         bolder: number
     },
     imageSizes: {
@@ -234,14 +234,14 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
         fontFamily: obj["fontFamily"],
         fontSizes: {
             small: obj["fontSizes"]["small"],
-            normal: obj["fontSizes"]["normal"],
+            default: obj["fontSizes"]["default"],
             medium: obj["fontSizes"]["medium"],
             large: obj["fontSizes"]["large"],
             extraLarge: obj["fontSizes"]["extraLarge"]
         },
         fontWeights: {
             lighter: obj["fontWeights"]["lighter"],
-            normal: obj["fontWeights"]["normal"],
+            default: obj["fontWeights"]["default"],
             bolder: obj["fontWeights"]["bolder"]
         },
         imageSizes: {

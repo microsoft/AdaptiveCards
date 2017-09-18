@@ -8,7 +8,7 @@ export enum Size {
 
 export enum TextSize {
     Small,
-    Normal,
+    Default,
     Medium,
     Large,
     ExtraLarge
@@ -31,7 +31,7 @@ export enum Padding {
 
 export enum TextWeight {
     Lighter,
-    Normal,
+    Default,
     Bolder
 }
 
@@ -68,7 +68,7 @@ export enum ActionStyle {
 }
 
 export enum ImageStyle {
-    Normal,
+    Default,
     Person
 }
 
