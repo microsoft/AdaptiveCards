@@ -3,12 +3,12 @@
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
-    class XamlCardGetImageStreamArgs :
+    class XamlCardGetResourceStreamArgs :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-        ABI::AdaptiveCards::XamlCardRenderer::IXamlCardGetImageStreamArgs>
+        ABI::AdaptiveCards::XamlCardRenderer::IXamlCardGetResourceStreamArgs>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_XamlCardGetImageStreamArgs, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_XamlCardGetResourceStreamArgs, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);

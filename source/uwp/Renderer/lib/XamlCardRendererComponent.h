@@ -42,13 +42,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT SendActionEvent(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionEventArgs* eventArgs);
         ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* GetHostConfig();
 
-        IFACEMETHODIMP get_ImageResolvers(
-            _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IXamlCardImageResolvers** value);
+        IFACEMETHODIMP get_ResourceResolvers(
+            _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolvers** value);
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig> m_hostConfig;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardImageResolvers> m_imageResolvers;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolvers> m_resourceResolvers;
 
         std::shared_ptr<ActionEventSource> m_events;
 

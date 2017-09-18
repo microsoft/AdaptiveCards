@@ -13,8 +13,8 @@
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
 #include "XamlBuilder.h"
-#include "XamlCardGetImageStreamArgs.h"
-#include "XamlCardImageResolvers.h"
+#include "XamlCardGetResourceStreamArgs.h"
+#include "XamlCardResourceResolvers.h"
 #include "XamlHelpers.h"
 #include "XamlStyleKeyGenerators.h"
 #include "json/json.h"
@@ -463,31 +463,31 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ComPtr<IBitmapSource> bitmapSource;
         bitmapImage.As(&bitmapSource);
 
-        // Get the image resolvers
-        ComPtr<IXamlCardImageResolvers> resolvers;
-        THROW_IF_FAILED(m_renderer->get_ImageResolvers(&resolvers));
+        // Get the resource resolvers
+        ComPtr<IXamlCardResourceResolvers> resolvers;
+        THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resolvers));
 
         // Get the image url scheme
         HSTRING schemeName;
         THROW_IF_FAILED(imageUri->get_SchemeName(&schemeName));
 
         // Get the resolver for the image
-        ComPtr<IXamlCardImageResolver> resolver;
+        ComPtr<IXamlCardResourceResolver> resolver;
         THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
 
         if (resolver != nullptr)
         {
             // Create the arguments to pass to the resolver
-            ComPtr<IXamlCardGetImageStreamArgs> args;
-            THROW_IF_FAILED(MakeAndInitialize<XamlCardGetImageStreamArgs>(&args, imageUri));
+            ComPtr<IXamlCardGetResourceStreamArgs> args;
+            THROW_IF_FAILED(MakeAndInitialize<XamlCardGetResourceStreamArgs>(&args, imageUri));
 
             // And call the resolver to get the image stream
-            ComPtr<IAsyncOperation<IRandomAccessStream*>> getImageStreamOperation;
-            THROW_IF_FAILED(resolver->GetImageStreamAsync(args.Get(), &getImageStreamOperation));
+            ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
+            THROW_IF_FAILED(resolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
 
             ComPtr<T> strongImageControl(imageControl);
             ComPtr<XamlBuilder> strongThis(this);
-            THROW_IF_FAILED(getImageStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
+            THROW_IF_FAILED(getResourceStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
                 ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
             {
                 if (status == AsyncStatus::Completed)
@@ -520,7 +520,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             return;
         }
 
-        // TODO: The following code should be moved into a default ImageResolver, but figuring
+        // TODO: The following code should be moved into a default ResourceResolver, but figuring
         // out how to return the correct async operation from this type of C++ code seems tricky
         // so leaving this code here for now.
 

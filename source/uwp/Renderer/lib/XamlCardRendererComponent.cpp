@@ -6,7 +6,7 @@
 #include <windows.foundation.collections.h>
 #include <Windows.UI.Xaml.h>
 #include "XamlBuilder.h"
-#include "XamlCardImageResolvers.h"
+#include "XamlCardResourceResolvers.h"
 #include "XamlHelpers.h"
 #include "AdaptiveHostConfig.h"
 
@@ -34,7 +34,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_events.reset(new ActionEventSource);
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
-        RETURN_IF_FAILED(MakeAndInitialize<XamlCardImageResolvers>(&m_imageResolvers));
+        RETURN_IF_FAILED(MakeAndInitialize<XamlCardResourceResolvers>(&m_resourceResolvers));
     }
 
     _Use_decl_annotations_
@@ -156,10 +156,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::get_ImageResolvers(IXamlCardImageResolvers** value)
+    HRESULT XamlCardRenderer::get_ResourceResolvers(IXamlCardResourceResolvers** value)
     {
-        ComPtr<IXamlCardImageResolvers> localImageResolvers(m_imageResolvers);
-        *value = localImageResolvers.Detach();
+        ComPtr<IXamlCardResourceResolvers> localResourceResolvers(m_resourceResolvers);
+        *value = localResourceResolvers.Detach();
         return S_OK;
     }
 }}
