@@ -229,7 +229,7 @@ private void ActionHandler(object sender, ActionEventArgs e) {
 }
 ```
 
-### Option 2 (per Andrew's thread)
+### Option 2 
 
 * In this model OpenUrl and ShowCard are implemented by default, and other actions would only show up if explicitly supported. We should show warnings for any actions we dropped. 
 
@@ -240,7 +240,7 @@ public class WindowsForegroundAction : IAdaptiveAction {
     Action<Card> OnInvoke = (card) => ...; // activate app
 }
 
-renderer.RegisterAction<WindowsForegroundAction>((e) => {
+renderer.ActionHandlers.Set<WindowsForegroundAction>((e) => {
     // activate app
 })
 
@@ -310,7 +310,7 @@ RenderResult result = await renderer.RenderAsync(card, cancellationToken: null);
 
 // TODO: Andrew suggested we move the action here to allow a customizable handler based on the type of card
 result.OnAction((e) => {
-
+    
 });
 
 public class RenderWarning
