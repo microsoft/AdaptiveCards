@@ -3,48 +3,50 @@
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
-	"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Background-Dark.jpg",
+	"backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Background-Dark.jpg",
 	"body": [
 		{
 			"type": "ColumnSet",
 			"columns": [
 				{
 					"type": "Column",
-					"size": 35,
+					"width": "35",
 					"items": [
 						{
 							"type": "Image",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png",
 							"size": "stretch"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": 65,
+					"width": "65",
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "**Monday April 1**",
-							"size": "large"
+							"text": "Monday April 1",
+							"weight": "bolder",
+							"size": "large",
+							"color": "light"
 						},
 						{
 							"type": "TextBlock",
 							"text": "63 / 42",
 							"size": "medium",
-							"separation": "none"
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
 							"isSubtle": true,
 							"text": "20% chance of rain",
-							"separation": "none"
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
 							"isSubtle": true,
 							"text": "Winds 5 mph NE",
-							"separation": "none"
+							"spacing": "none"
 						}
 					]
 				}
@@ -55,7 +57,7 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": 20,
+					"width": "20",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -66,7 +68,7 @@
 						{
 							"type": "Image",
 							"size": "auto",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 						},
 						{
 							"type": "TextBlock",
@@ -80,7 +82,7 @@
 							"isSubtle": true,
 							"wrap": false,
 							"text": "52",
-							"separation": "none"
+							"spacing": "none"
 						}
 					],
 					"selectAction": {
@@ -90,7 +92,7 @@
 				},
 				{
 					"type": "Column",
-					"size": 20,
+					"width": "20",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -101,7 +103,7 @@
 						{
 							"type": "Image",
 							"size": "auto",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
 						},
 						{
 							"type": "TextBlock",
@@ -115,7 +117,7 @@
 							"isSubtle": true,
 							"wrap": false,
 							"text": "48",
-							"separation": "none"
+							"spacing": "none"
 						}
 					],
 					"selectAction": {
@@ -125,7 +127,7 @@
 				},
 				{
 					"type": "Column",
-					"size": 20,
+					"width": "20",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -136,7 +138,7 @@
 						{
 							"type": "Image",
 							"size": "auto",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 						},
 						{
 							"type": "TextBlock",
@@ -150,7 +152,7 @@
 							"isSubtle": true,
 							"wrap": false,
 							"text": "49",
-							"separation": "none"
+							"spacing": "none"
 						}
 					],
 					"selectAction": {
@@ -160,7 +162,7 @@
 				},
 				{
 					"type": "Column",
-					"size": 20,
+					"width": "20",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -171,7 +173,7 @@
 						{
 							"type": "Image",
 							"size": "auto",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly Cloudy-Square.png"
 						},
 						{
 							"type": "TextBlock",
@@ -185,7 +187,7 @@
 							"isSubtle": true,
 							"wrap": false,
 							"text": "51",
-							"separation": "none"
+							"spacing": "none"
 						}
 					],
 					"selectAction": {

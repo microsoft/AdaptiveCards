@@ -7,7 +7,8 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "THIS SHOULD NOT APPEAR! It should show the fallback text"
+            "text": "THIS SHOULD NOT APPEAR! It should show the fallback text",
+            "wrap": true
         }        
     ]
 }
