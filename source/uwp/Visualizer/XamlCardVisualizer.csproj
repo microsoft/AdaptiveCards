@@ -66,11 +66,8 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\BingSports.json">
-      <Link>Samples\BingSports.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\BingStock.json">
-      <Link>Samples\BingStock.json</Link>
+    <Content Include="..\..\..\samples\v1.0\Scenarios\StockUpdate.json">
+      <Link>Samples\StockUpdate.json</Link>
     </Content>
     <Content Include="..\..\..\samples\v1.0\Scenarios\CalendarReminder.json">
       <Link>Samples\CalendarReminder.json</Link>
@@ -90,8 +87,8 @@
     <Content Include="..\..\..\samples\v1.0\Scenarios\Restaurant.json">
       <Link>Samples\Restaurant.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\v1.0\Scenarios\TrelloCardCreated.json">
-      <Link>Samples\TrelloCardCreated.json</Link>
+    <Content Include="..\..\..\samples\v1.0\Scenarios\ActivityUpdate.json">
+      <Link>Samples\ActivityUpdate.json</Link>
     </Content>
     <Content Include="..\..\..\schemas\adaptive-card.json">
       <Link>Schemas\adaptive-card.json</Link>
