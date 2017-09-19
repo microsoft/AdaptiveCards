@@ -124,7 +124,10 @@ function loadStyleSheetAndConfig() {
 
     styleSheetLinkElement.href = selectedHostContainer.styleSheet;
 
-    currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfig(), null, '\t');
+    currentConfigPayload = JSON.stringify(selectedHostContainer.getHostConfig(), (k,v) => {
+        console.log(k,v, typeof k, typeof v);
+        return v;
+    }, '\t');
 
     if (!isCardEditor) {
         setEditorText(currentConfigPayload);
