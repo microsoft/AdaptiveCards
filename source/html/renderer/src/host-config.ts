@@ -166,7 +166,6 @@ export interface IActionsConfig {
     spacing: Enums.Spacing,
     buttonSpacing: number,
     showCard: IShowCardActionConfig,
-    preExpandSingleShowCardAction?: boolean,
     actionsOrientation: Enums.Orientation,
     actionAlignment: Enums.ActionAlignment
 }
@@ -177,7 +176,6 @@ function parseActionsConfiguration(obj: any): IActionsConfig {
         spacing: Utils.parseHostConfigEnum(Enums.Spacing, obj["spacing"], Enums.Spacing.Default),
         buttonSpacing: obj["buttonSpacing"],
         showCard: parseShowCardActionConfiguration(obj["showCard"]),
-        preExpandSingleShowCardAction: Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false),
         actionsOrientation: Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal),
         actionAlignment: Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left),
     } : null;

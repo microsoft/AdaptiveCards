@@ -1177,8 +1177,9 @@ export class ToggleInput extends Input {
         super.parse(json);
 
         this.title = json["title"];
-        this.valueOn = json["valueOn"];
-        this.valueOff = json["valueOff"];
+
+        this.valueOn = Utils.getValueOrDefault<string>(json["valueOn"], this.valueOn);
+        this.valueOff = Utils.getValueOrDefault<string>(json["valueOff"], this.valueOff);
     }
 
     get value(): string {
@@ -2069,7 +2070,7 @@ class ActionCollection {
 
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
-        if (this._owner.hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
+        if (AdaptiveCard.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
             this.showActionCard(<ShowCardAction>this.items[0]);
             this._renderedActionCount = 1;
         }
@@ -3238,6 +3239,7 @@ export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
 
     static useAutoPadding: boolean = false;
+    static preExpandSingleShowCardAction: boolean = false;
 
     static elementTypeRegistry = new TypeRegistry<CardElement>();
     static actionTypeRegistry = new TypeRegistry<Action>();
