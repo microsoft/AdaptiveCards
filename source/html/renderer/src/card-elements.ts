@@ -1177,8 +1177,9 @@ export class ToggleInput extends Input {
         super.parse(json);
 
         this.title = json["title"];
-        this.valueOn = json["valueOn"];
-        this.valueOff = json["valueOff"];
+
+        this.valueOn = Utils.getValueOrDefault<string>(json["valueOn"], this.valueOn);
+        this.valueOff = Utils.getValueOrDefault<string>(json["valueOff"], this.valueOff);
     }
 
     get value(): string {
