@@ -9,18 +9,18 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": "auto",
+					"width": "auto",
 					"items": [
 						{
 							"type": "Image",
 							"size": "small",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Airplane.png"
+							"url": "http://messagecardplayground.azurewebsites.net/assets/Airplane.png"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": "stretch",
+					"width": "stretch",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -32,6 +32,7 @@
 							"type": "TextBlock",
 							"text": "DELAYED",
 							"horizontalAlignment": "right",
+							"spacing": "none",
 							"size": "large",
 							"color": "attention"
 						}
@@ -41,56 +42,64 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "medium",
 			"separator": true,
+			"spacing": "medium",
 			"columns": [
 				{
 					"type": "Column",
-					"size": "stretch",
+					"width": "stretch",
 					"items": [
 						{
 							"type": "TextBlock",
 							"text": "Passengers",
-							"isSubtle": true
+							"isSubtle": true,
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
-							"text": "Sarah Hum"
+							"text": "Sarah Hum",
+							"spacing": "small"
 						},
 						{
 							"type": "TextBlock",
-							"text": "Jeremy Goldberg"
+							"text": "Jeremy Goldberg",
+							"spacing": "small"
 						},
 						{
 							"type": "TextBlock",
-							"text": "Evan Litvak"
+							"text": "Evan Litvak",
+							"spacing": "small"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": "auto",
+					"width": "auto",
 					"items": [
 						{
 							"type": "TextBlock",
 							"text": "Seat",
 							"horizontalAlignment": "right",
-							"isSubtle": true
+							"isSubtle": true,
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
 							"text": "14A",
-							"horizontalAlignment": "right"
+							"horizontalAlignment": "right",
+							"spacing": "small"
 						},
 						{
 							"type": "TextBlock",
 							"text": "14B",
-							"horizontalAlignment": "right"
+							"horizontalAlignment": "right",
+							"spacing": "small"
 						},
 						{
 							"type": "TextBlock",
 							"text": "14C",
-							"horizontalAlignment": "right"
+							"horizontalAlignment": "right",
+							"spacing": "small"
 						}
 					]
 				}
@@ -103,54 +112,60 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
 							"text": "Flight",
-							"isSubtle": true
+							"isSubtle": true,
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
-							"text": "KL0605"
+							"text": "KL0605",
+							"spacing": "small"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
 							"text": "Departs",
 							"isSubtle": true,
-							"horizontalAlignment": "center"
+							"horizontalAlignment": "center",
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
 							"text": "10:10 AM",
 							"color": "attention",
 							"weight": "bolder",
-							"horizontalAlignment": "center"
+							"horizontalAlignment": "center",
+							"spacing": "small"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
 							"text": "Arrives",
 							"isSubtle": true,
-							"horizontalAlignment": "right"
+							"horizontalAlignment": "right",
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
 							"text": "12:00 AM",
 							"color": "attention",
 							"horizontalAlignment": "right",
-							"weight": "bolder"
+							"weight": "bolder",
+							"spacing": "small"
 						}
 					]
 				}
@@ -163,7 +178,7 @@
 			"columns": [
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -174,28 +189,29 @@
 							"type": "TextBlock",
 							"text": "AMS",
 							"size": "extraLarge",
-							"color": "accent"
+							"color": "accent",
+							"spacing": "none"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": "auto",
+					"width": "auto",
 					"items": [
 						{
 							"type": "TextBlock",
 							"text": " "
 						},
 						{
-							"type": "Image",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/airplane.png",
+							"type":"Image",
+							"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
 							"size": "small"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -208,7 +224,8 @@
 							"text": "SFO",
 							"horizontalAlignment": "right",
 							"size": "extraLarge",
-							"color": "accent"
+							"color": "accent",
+							"spacing": "none"
 						}
 					]
 				}
