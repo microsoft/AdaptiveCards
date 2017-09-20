@@ -12,34 +12,38 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Sarah Hum"
+			"text": "Sarah Hum",
+			"separator": true
 		},
 		{
 			"type": "TextBlock",
-			"text": "Jeremy Goldberg"
+			"text": "Jeremy Goldberg",
+			"spacing": "none"
 		},
 		{
 			"type": "TextBlock",
-			"text": "Evan Litvak"
+			"text": "Evan Litvak",
+			"spacing": "none"
 		},
 		{
 			"type": "TextBlock",
 			"text": "2 Stops",
 			"weight": "bolder",
-			"spacing": "medium",
-			"separator": true
+			"spacing": "medium"
 		},
 		{
 			"type": "TextBlock",
 			"text": "Fri, October 10 8:30 AM",
-			"weight": "bolder"
+			"weight": "bolder",
+			"spacing": "none"
 		},
 		{
 			"type": "ColumnSet",
+			"separator": true,
 			"columns": [
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -50,13 +54,14 @@
 							"type": "TextBlock",
 							"size": "extraLarge",
 							"color": "accent",
-							"text": "SFO"
+							"text": "SFO",
+							"spacing": "none"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": "auto",
+					"width": "auto",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -64,14 +69,15 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/airplane.png",
-							"size": "small"
+							"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
+							"size": "small",
+							"spacing": "none"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -84,7 +90,8 @@
 							"horizontalAlignment": "right",
 							"size": "extraLarge",
 							"color": "accent",
-							"text": "AMS"
+							"text": "AMS",
+							"spacing": "none"
 						}
 					]
 				}
@@ -93,21 +100,22 @@
 		{
 			"type": "TextBlock",
 			"text": "Non-Stop",
-			"spacing": "medium",
-			"separator": true,
-			"weight": "bolder"
+			"weight": "bolder",
+			"spacing": "medium"
 		},
 		{
 			"type": "TextBlock",
 			"text": "Fri, October 18 9:50 PM",
-			"weight": "bolder"
+			"weight": "bolder",
+			"spacing": "none"
 		},
 		{
 			"type": "ColumnSet",
+			"separator": true,
 			"columns": [
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -118,13 +126,14 @@
 							"type": "TextBlock",
 							"size": "extraLarge",
 							"color": "accent",
-							"text": "AMS"
+							"text": "AMS",
+							"spacing": "none"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": "auto",
+					"width": "auto",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -132,14 +141,15 @@
 						},
 						{
 							"type": "Image",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/airplane.png",
-							"size": "small"
+							"url": "http://messagecardplayground.azurewebsites.net/assets/airplane.png",
+							"size": "small",
+							"spacing": "none"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
@@ -149,10 +159,12 @@
 						},
 						{
 							"type": "TextBlock",
+							"topSpacing": "none",
 							"horizontalAlignment": "right",
 							"size": "extraLarge",
 							"color": "accent",
-							"text": "SFO"
+							"text": "SFO",
+							"spacing": "none"
 						}
 					]
 				}
@@ -160,12 +172,11 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "medium",
-			"separator": true,
+			"spacing": "strong",
 			"columns": [
 				{
 					"type": "Column",
-					"size": "1",
+					"width": "1",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -177,7 +188,7 @@
 				},
 				{
 					"type": "Column",
-					"size": 1,
+					"width": 1,
 					"items": [
 						{
 							"type": "TextBlock",
