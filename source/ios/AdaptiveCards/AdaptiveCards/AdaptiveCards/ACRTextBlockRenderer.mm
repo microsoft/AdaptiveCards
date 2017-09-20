@@ -66,39 +66,39 @@
     return wrappingview;
 }
 
-+ (UIColor *)getTextBlockColor:(TextColor)txtClr
++ (UIColor *)getTextBlockColor:(Color)txtClr
                 withHostConfig:(std::shared_ptr<HostConfig> const &)config
                andSubtleOption:(bool)isSubtle
 {
     long num = 0;
     std::string str;
     switch (txtClr) {
-        case TextColor::Dark:{
+        case Color::Dark:{
             str = (isSubtle) ?
                 config->colors.dark.subtle :config->colors.dark.normal;
             break;
         }
-        case TextColor::Light:{
+        case Color::Light:{
             str = (isSubtle) ?
                 config->colors.light.subtle :config->colors.light.normal;
             break;
         }
-        case TextColor::Accent:{
+        case Color::Accent:{
             str = (isSubtle) ?
                 config->colors.accent.subtle :config->colors.accent.normal;
             break;
         }
-        case TextColor::Good:{
+        case Color::Good:{
             str = (isSubtle) ?
                 config->colors.good.subtle :config->colors.good.normal;
             break;
         }
-        case TextColor::Warning:{
+        case Color::Warning:{
             str = (isSubtle) ?
                 config->colors.warning.subtle :config->colors.warning.normal;
             break;
         }
-        case TextColor::Attention:{
+        case Color::Attention:{
             str = (isSubtle) ?
                 config->colors.attention.subtle :config->colors.attention.normal;
             break;
