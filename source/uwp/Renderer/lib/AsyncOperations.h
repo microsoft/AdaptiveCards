@@ -33,7 +33,15 @@ public:
         THROW_IF_FAILED(coreWindow->get_Dispatcher(&m_dispatcher));
 
         m_builder = Microsoft::WRL::Make<AdaptiveCards::XamlCardRenderer::XamlBuilder>();
-        m_builder->SetHostConfig(m_renderer->GetHostConfig());
+        THROW_IF_FAILED(m_builder->SetHostConfig(m_renderer->GetHostConfig()));
+        THROW_IF_FAILED(m_builder->SetOverrideDictionary(m_renderer->GetOverrideDictionary()));
+        UINT32 width = 0;
+        UINT32 height = 0;
+        bool explicitDimensions = m_renderer->GetFixedDimensions(&width, &height);
+        if (explicitDimensions)
+        {
+            THROW_IF_FAILED(m_builder->SetFixedDimensions(width, height));
+        }
     }
 
     // IAsyncOperation

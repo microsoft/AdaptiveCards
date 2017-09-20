@@ -58,6 +58,23 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    HRESULT  XamlCardRenderer::SetFixedDimensions(_In_ UINT32 desiredWidth, _In_ UINT32 desiredHeight)
+    {
+        m_explicitDimensions = true;
+        m_desiredWidth = desiredWidth;
+        m_desiredHeight = desiredHeight;
+
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT  XamlCardRenderer::ResetFixedDimensions()
+    {
+        m_explicitDimensions = false;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT XamlCardRenderer::add_Action(
         ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>* handler,
         EventRegistrationToken* token)
@@ -85,12 +102,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             
             if (m_overrideDictionary != nullptr)
             {
-                builder.SetOverrideDictionary(m_overrideDictionary.Get());
+                THROW_IF_FAILED(builder.SetOverrideDictionary(m_overrideDictionary.Get()));
             }
 
             if (m_hostConfig != nullptr)
             {
-                builder.SetHostConfig(m_hostConfig.Get());
+                THROW_IF_FAILED(builder.SetHostConfig(m_hostConfig.Get()));
+            }
+
+            if (m_explicitDimensions)
+            {
+                THROW_IF_FAILED(builder.SetFixedDimensions(m_desiredWidth, m_desiredHeight));
             }
 
             // This path is used for synchronous Xaml card rendering, so we don't want
@@ -162,4 +184,24 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *value = localResourceResolvers.Detach();
         return S_OK;
     }
+
+    ABI::Windows::UI::Xaml::IResourceDictionary* XamlCardRenderer::GetOverrideDictionary()
+    {
+        return m_overrideDictionary.Get();
+    }
+
+    bool XamlCardRenderer::GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height)
+    {
+        *width = 0;
+        *height = 0;
+
+        if (m_explicitDimensions)
+        {
+            *width = m_desiredWidth;
+            *height = m_desiredHeight;
+        }
+
+        return m_explicitDimensions;
+    }
+
 }}
