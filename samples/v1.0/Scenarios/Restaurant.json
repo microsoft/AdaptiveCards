@@ -1,42 +1,49 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
-    "speak": "<s>Serious Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",    
+    "version": "0.5",
     "body": [
         {
+            "speak": "<s>Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.</s>",
             "type": "ColumnSet",
             "columns": [
                 {
                     "type": "Column",
-                    "size": 2
+                    "width": 2,
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Serious Pie",
+                            "text": "PIZZA"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Tom's Pie",
                             "weight": "bolder",
-                            "size": "extraLarge"
+                            "size": "extraLarge",
+                            "spacing": "none"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "9.3 · $$ · Pizza",
-                            "isSubtle": true
+                            "text": "4.2 ★★★☆ (93) · $$",
+                            "isSubtle": true,
+                            "spacing": "none"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "The BEST artisan pizza in Seattle!",
+                            "text": "**Matt H. said** \"I'm compelled to give this place 5 stars due to the number of times I've chosen to eat here this past year!\"",
+                            "size": "small",
                             "wrap": true
                         }
                     ]
                 },
                 {
                     "type": "Column",
-                    "size": 1,
+                    "width": 1,
                     "items": [
                         {
                             "type": "Image",
                             "url": "http://res.cloudinary.com/sagacity/image/upload/c_crop,h_670,w_635,x_0,y_0/c_scale,w_640/v1397425743/Untitled-4_lviznp.jpg",
-                            "size":"auto"
+                            "size": "auto"
                         }
                     ]
                 }
@@ -47,12 +54,7 @@
         {
             "type": "Action.OpenUrl",
             "title": "More Info",
-            "url": "http://foo.com"
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "View on Foursquare",
-            "url": "http://foo.com"
+            "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         }
     ]
 }
