@@ -139,6 +139,7 @@ enum class AdaptiveCardSchemaKey
     Version,
     Warning,
     Weight,
+    Width,
     Wrap,
 };
 
