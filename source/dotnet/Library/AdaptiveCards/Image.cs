@@ -73,7 +73,7 @@ namespace AdaptiveCards
 
         public bool ShouldSerializeStyle()
         {
-            return Style != ImageStyle.Normal;
+            return Style != ImageStyle.Default;
         }
 
         public bool ShouldSerializeHorizontalAlignment()
