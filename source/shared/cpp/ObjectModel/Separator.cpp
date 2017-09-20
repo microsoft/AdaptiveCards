@@ -12,7 +12,7 @@ std::shared_ptr<Separator> Separator::Deserialize(const Json::Value& json)
 {
     std::shared_ptr<Separator> separator = std::make_shared<Separator>();
 
-    separator->SetColor(ParseUtil::GetEnumValue<Color>(json, AdaptiveCardSchemaKey::Color, Color::Default, ColorFromString));
+    separator->SetColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
     separator->SetThickness(ParseUtil::GetEnumValue<SeparatorThickness>(json, AdaptiveCardSchemaKey::Thickness, SeparatorThickness::Default, SeparatorThicknessFromString));
 
     return separator;
@@ -32,18 +32,18 @@ std::string Separator::Serialize()
 Json::Value Separator::SerializeToJsonValue()
 {
     Json::Value root;
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ColorToString(GetColor());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(GetColor());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Thickness)] = SeparatorThicknessToString(GetThickness());
 
     return root;
 }
 
-Color Separator::GetColor() const
+ForegroundColor Separator::GetColor() const
 {
     return m_color;
 }
 
-void Separator::SetColor(const Color value)
+void Separator::SetColor(const ForegroundColor value)
 {
     m_color = value;
 }

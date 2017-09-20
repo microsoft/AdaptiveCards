@@ -35,15 +35,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::get_BackgroundColor(ABI::Windows::UI::Color* value)
+        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style)
     {
-        return GetColorFromString(m_sharedShowCardActionConfig.backgroundColor, value);
+        *style = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle>(m_sharedShowCardActionConfig.style);
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_BackgroundColor(ABI::Windows::UI::Color /*value*/)
+        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style)
     {
-        return E_NOTIMPL;
+        m_sharedShowCardActionConfig.style = static_cast<AdaptiveCards::ContainerStyle>(style);
+        return S_OK;
     }
 
     _Use_decl_annotations_

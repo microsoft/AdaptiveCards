@@ -27,16 +27,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSeparator::get_Color(ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor* color)
+    HRESULT AdaptiveSeparator::get_Color(ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor* color)
     {
-        *color = static_cast<ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor>(m_sharedSeparator->GetColor());
+        *color = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor>(m_sharedSeparator->GetColor());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSeparator::put_Color(ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor color)
+    HRESULT AdaptiveSeparator::put_Color(ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor color)
     {
-        m_sharedSeparator->SetColor(static_cast<AdaptiveCards::Color>(color));
+        m_sharedSeparator->SetColor(static_cast<AdaptiveCards::ForegroundColor>(color));
         return S_OK;
     }
 

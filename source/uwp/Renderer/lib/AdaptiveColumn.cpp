@@ -50,6 +50,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style)
+    {
+        *style = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle>(m_sharedColumn->GetStyle());
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style)
+    {
+        m_sharedColumn->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Items(IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);

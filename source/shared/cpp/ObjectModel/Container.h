@@ -20,8 +20,8 @@ public:
     std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
-    ContainerStyle GetContainerStyle() const;
-    void SetContainerStyle(const ContainerStyle value);
+    ContainerStyle GetStyle() const;
+    void SetStyle(const ContainerStyle value);
 
     static std::shared_ptr<Container> Deserialize(const Json::Value& root);
     static std::shared_ptr<Container> DeserializeFromString(const std::string& jsonString);
