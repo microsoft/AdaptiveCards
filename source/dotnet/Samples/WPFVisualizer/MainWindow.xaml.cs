@@ -56,8 +56,8 @@ namespace WpfVisualizer
             hostConfig.AdaptiveCard.BackgroundColor = Colors.WhiteSmoke.ToString();
             this.Renderer = new XamlRendererExtended(hostConfig, this.Resources, _onAction, _OnMissingInput);
             this.hostConfigEditor.SelectedObject = hostConfig;
-
-            foreach (var style in Directory.GetFiles(@"..\..\..\..\..\..\samples\Themes", "*.json"))
+            
+            foreach (var style in Directory.GetFiles(@"..\..\..\..\..\..\samples\v1.0\HostConfig", "*.json"))
             {
                 this.hostConfigs.Items.Add(new ComboBoxItem()
                 {
