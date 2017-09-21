@@ -13,7 +13,7 @@ public:
     Image();
     Image(
         Spacing spacing,
-        std::shared_ptr<Separator> separator,
+        bool separator,
         std::string speak,
         std::string uri,
         ImageStyle imageStyle,

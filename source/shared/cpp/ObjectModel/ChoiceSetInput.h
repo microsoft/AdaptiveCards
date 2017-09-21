@@ -12,8 +12,8 @@ class ChoiceSetInput : public BaseInputElement
 {
 public:
     ChoiceSetInput();
-    ChoiceSetInput(Spacing spacing, std::shared_ptr<Separator> separation, std::string speak);
-    ChoiceSetInput(Spacing spacing, std::shared_ptr<Separator> separation, std::string speak, std::vector<std::shared_ptr<ChoiceInput>>& choices);
+    ChoiceSetInput(Spacing spacing, bool separation, std::string speak);
+    ChoiceSetInput(Spacing spacing, bool separation, std::string speak, std::vector<std::shared_ptr<ChoiceInput>>& choices);
 
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
