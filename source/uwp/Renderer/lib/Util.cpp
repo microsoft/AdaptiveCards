@@ -376,3 +376,19 @@ HRESULT GetBackgroundColorFromStyle(
 
     return S_OK;
 } CATCH_RETURN;
+
+HSTRING SerializeInputItems(const std::vector<::XamlCardRenderer::InputItem>& inputElements)
+{
+    Json::Value jsonValue;
+    for (auto& inputElement : inputElements)
+    {
+        inputElement.Serialize(jsonValue);
+    }
+
+    Json::StyledWriter writer;
+    std::string inputString = writer.write(jsonValue);
+
+    HSTRING inputHString;
+    THROW_IF_FAILED(UTF8ToHString(inputString, &inputHString));
+    return inputHString;
+}

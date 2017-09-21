@@ -2,9 +2,11 @@
 
 #include "AdaptiveCards.XamlCardRenderer.h"
 #include <windows.foundation.collections.h>
+#include <wrl.h>
 
 using namespace ABI::Windows::Foundation::Collections;
 using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -21,6 +23,28 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             return t;
         }
     };
+
+    template <>
+    struct Wrap<HSTRING>
+    {
+        typedef std::wstring type;
+        static std::wstring MakeWrap(const HSTRING& t)
+        {
+            HString str;
+            str.Set(t);
+            unsigned int len = 0;
+            std::wstring retvalue = str.GetRawBuffer(&len);
+            return retvalue;
+        }
+        static HSTRING Unwrap(const std::wstring& t)
+        {
+            HString hstr;
+            hstr.Set(t.c_str(), t.length());
+            HSTRING retvalue = hstr.Detach();
+            return retvalue;
+        }
+    };
+
 
     template <typename T>
     struct Wrap<T*>

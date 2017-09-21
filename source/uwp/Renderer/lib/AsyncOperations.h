@@ -4,6 +4,7 @@
 #include "XamlBuilder.h"
 #include "XamlCardRendererComponent.h"
 #include "XamlHelpers.h"
+#include "RenderedAdaptiveCard.h"
 
 #define MakeAgileDispatcherCallback ::Microsoft::WRL::Callback<::Microsoft::WRL::Implements<::Microsoft::WRL::RuntimeClassFlags<::Microsoft::WRL::ClassicCom>, ::ABI::Windows::UI::Core::IDispatchedHandler, ::Microsoft::WRL::FtmBase>>
 
@@ -87,7 +88,9 @@ protected:
             m_builder->AddListener(this);
             try
             {
-                m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get());
+                ComPtr<AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard> renderResult;
+                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard>(&renderResult));
+                m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get(), renderResult.Get());
             }
             catch (...)
             {

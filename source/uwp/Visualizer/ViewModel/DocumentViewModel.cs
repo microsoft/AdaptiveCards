@@ -164,14 +164,43 @@ namespace XamlCardVisualizer.ViewModel
 
             try
             {
-                if (Settings.UseAsyncRenderMethod)
+                RenderedAdaptiveCard renderResult = Settings.UseAsyncRenderMethod ? _renderer.RenderAdaptiveCardFromJsonString(payload) : _renderer.RenderAdaptiveCardFromJsonString(payload);
+                if (renderResult.IsRenderedSuccessfully)
                 {
-                    RenderedCard = await _renderer.RenderAdaptiveJsonAsXamlAsync(payload);
+                    RenderedCard = renderResult.FrameworkElement;
+                    renderResult.Action += async (sender, e) =>
+                    {
+                        var m_actionDialog = new ContentDialog();
+
+                        if (e.Action.ActionType == ActionType.ShowCard)
+                        {
+                            AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
+                            m_actionDialog.Content = await _renderer.RenderCardAsXamlAsync(showCardAction.Card);
+                        }
+                        else
+                        {
+                            m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs;
+                        }
+
+                        m_actionDialog.PrimaryButtonText = "Close";
+
+                        await m_actionDialog.ShowAsync();
+                    };
                 }
                 else
                 {
-                    RenderedCard = _renderer.RenderAdaptiveJsonAsXaml(payload);
+                    IList<string> renderingErrors = renderResult.Errors;
+                    foreach (string error in renderingErrors)
+                    {
+                        newErrors.Add(new ErrorViewModel()
+                        {
+                            Message = error,
+                            Type = ErrorViewModelType.Error
+                        });
+                    }
+
                 }
+
 
                 if (RenderedCard is FrameworkElement)
                 {
@@ -211,25 +240,6 @@ namespace XamlCardVisualizer.ViewModel
 
                 // Custom resource resolvers
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
-
-                _renderer.Action += async (sender, e) =>
-                {
-                    var m_actionDialog = new ContentDialog();
-
-                    if (e.Action.ActionType == ActionType.ShowCard)
-                    {
-                        AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
-                        m_actionDialog.Content = await _renderer.RenderCardAsXamlAsync(showCardAction.Card);
-                    }
-                    else
-                    {
-                        m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs;
-                    }
-
-                    m_actionDialog.PrimaryButtonText = "Close";
-
-                    await m_actionDialog.ShowAsync();
-                };
             }
             catch
             {

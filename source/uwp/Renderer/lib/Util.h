@@ -4,6 +4,7 @@
 #include <string>
 
 #include "AdaptiveCards.XamlCardRenderer.h"
+#include "InputItem.h"
 #include <BaseCardElement.h>
 #include <BaseActionElement.h>
 #include <ChoiceInput.h>
@@ -73,4 +74,6 @@ HRESULT GenerateSharedSeparator(
     ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator,
     std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut)noexcept;
 
-typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;
+HSTRING SerializeInputItems(const std::vector<AdaptiveCards::XamlCardRenderer::InputItem>& inputElements);
+
+typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;

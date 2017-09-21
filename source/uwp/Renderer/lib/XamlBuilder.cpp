@@ -124,6 +124,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IAdaptiveCard* adaptiveCard,
         IUIElement** xamlTreeRoot, 
         XamlCardRenderer* renderer,
+        RenderedAdaptiveCard* renderResult,
         boolean isOuterCard,
         ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle defaultContainerStyle)
     {
@@ -156,7 +157,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
 
         std::shared_ptr<std::vector<InputItem>> inputElements = std::make_shared<std::vector<InputItem>>();
-        BuildPanelChildren(body.Get(), childElementContainer.Get(), inputElements, containerStyle, [](IUIElement*) {});
+        BuildPanelChildren(body.Get(), childElementContainer.Get(), renderResult->GetInputItems(), containerStyle, [](IUIElement*) {});
 
         if (this->SupportsInteractivity())
         {
@@ -164,7 +165,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
             unsigned int bodyCount;
             THROW_IF_FAILED(body->get_Size(&bodyCount));
-            BuildActions(actions.Get(), renderer, inputElements, childElementContainer.Get(), bodyCount > 0);
+            BuildActions(actions.Get(), renderer, childElementContainer.Get(), bodyCount > 0, renderResult);
         }
 
         THROW_IF_FAILED(rootElement.CopyTo(xamlTreeRoot));
@@ -666,9 +667,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         XamlCardRenderer* renderer,
         IAdaptiveShowCardActionConfig* showCardActionConfig,
         IAdaptiveActionElement* action,
+        RenderedAdaptiveCard* renderResult,
         IUIElement** uiShowCard)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
+        ComPtr<RenderedAdaptiveCard> localRenderResult(renderResult);
         ComPtr<IAdaptiveShowCardAction> showCardAction;
         THROW_IF_FAILED(localAction.As(&showCardAction));
 
@@ -679,7 +682,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(showCardAction->get_Card(showCard.GetAddressOf()));
 
         ComPtr<IUIElement> localUiShowCard;
-        BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), renderer, false, showCardConfigStyle);
+        BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), renderer, localRenderResult.Get(), false, showCardConfigStyle);
 
         ComPtr<IGrid2> showCardGrid;
         THROW_IF_FAILED(localUiShowCard.As(&showCardGrid));
@@ -725,13 +728,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     void XamlBuilder::BuildActions(
         IVector<IAdaptiveActionElement*>* children,
         XamlCardRenderer* renderer,
-        std::shared_ptr<std::vector<InputItem>> inputElements,
         IPanel* parentPanel,
-        bool insertSeparator)
+        bool insertSeparator,
+        RenderedAdaptiveCard* renderResult)
     {
         ComPtr<IAdaptiveActionsConfig> actionsConfig;
         THROW_IF_FAILED(m_hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-
+        ComPtr<RenderedAdaptiveCard> strongRenderResult(renderResult);
         // Create a separator between the body and the actions
         if (insertSeparator)
         {
@@ -892,7 +895,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard && 
                     showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
                 {
-                    BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), uiShowCard.GetAddressOf());
+                    BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), strongRenderResult.Get(), uiShowCard.GetAddressOf());
                     allShowCards->push_back(uiShowCard);
 
                     ComPtr<IPanel> showCardsPanel;
@@ -905,7 +908,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 THROW_IF_FAILED(button.As(&buttonBase));
 
                 EventRegistrationToken clickToken;
-                THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, strongRenderer, inputElements](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, strongRenderer, strongRenderResult](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
                     if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard &&
                         showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
@@ -929,22 +932,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                     else
                     {
                         // Serialize the inputElements into Json.
-                        Json::Value jsonValue;
-                        for (auto& inputElement : *inputElements)
-                        {
-                            inputElement.Serialize(jsonValue);
-                        }
-
-                        Json::StyledWriter writer;
-                        std::string inputString = writer.write(jsonValue);
-
-                        HString inputHString;
-                        THROW_IF_FAILED(UTF8ToHString(inputString, inputHString.GetAddressOf()));
+                        HSTRING inputHString = SerializeInputItems(*(strongRenderResult->GetInputItems()));
 
                         // TODO: Data binding for inputs 
                         ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputHString.Get()));
-                        THROW_IF_FAILED(strongRenderer->SendActionEvent(eventArgs.Get()));
+                        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputHString));
+                        THROW_IF_FAILED(strongRenderResult->SendActionEvent(eventArgs.Get()));
                     }
 
                     return S_OK;

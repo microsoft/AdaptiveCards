@@ -24,24 +24,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP SetFixedDimensions(_In_ UINT32 desiredWidth, _In_ UINT32 desiredHeight);
         IFACEMETHODIMP ResetFixedDimensions();
 
-        IFACEMETHODIMP add_Action(
-            _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>* handler,
-            _Out_ EventRegistrationToken* token);
-
-        IFACEMETHODIMP remove_Action(
-            _In_ EventRegistrationToken token);
-
-        IFACEMETHODIMP RenderCardAsXaml(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
+        IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
+            _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IRenderedAdaptiveCard** result);
         IFACEMETHODIMP RenderCardAsXamlAsync(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
             _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::Windows::UI::Xaml::UIElement*>** result);
 
-        IFACEMETHODIMP RenderAdaptiveJsonAsXaml(_In_ HSTRING adaptiveJson, 
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
+        IFACEMETHODIMP RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson, 
+            _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IRenderedAdaptiveCard** result);
         IFACEMETHODIMP RenderAdaptiveJsonAsXamlAsync(_In_ HSTRING adaptiveJson,
             _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::Windows::UI::Xaml::UIElement*>** result);
 
-        HRESULT SendActionEvent(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionEventArgs* eventArgs);
         ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* GetHostConfig();
         ABI::Windows::UI::Xaml::IResourceDictionary* GetOverrideDictionary();
         bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
@@ -57,8 +49,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
-
-        std::shared_ptr<ActionEventSource> m_events;
 
         HRESULT CreateAdaptiveCardFromJson(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** adaptiveCard);
     };

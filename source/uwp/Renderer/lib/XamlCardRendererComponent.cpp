@@ -9,6 +9,8 @@
 #include "XamlCardResourceResolvers.h"
 #include "XamlHelpers.h"
 #include "AdaptiveHostConfig.h"
+#include "InputItem.h"
+#include "RenderedAdaptiveCard.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
@@ -32,7 +34,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     HRESULT XamlCardRenderer::RuntimeClassInitialize()
     {
-        m_events.reset(new ActionEventSource);
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
         return MakeAndInitialize<XamlCardResourceResolvers>(&m_resourceResolvers);
     }
@@ -75,31 +76,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::add_Action(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>* handler,
-        EventRegistrationToken* token)
-    {
-        return m_events->Add(handler, token);
-    }
-
-    _Use_decl_annotations_
-    HRESULT XamlCardRenderer::remove_Action(EventRegistrationToken token)
-    {
-        return m_events->Remove(token);
-    }
-
-    _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderCardAsXaml(
+    HRESULT XamlCardRenderer::RenderAdaptiveCard(
         IAdaptiveCard* adaptiveCard, 
-        IUIElement** result) try
+        IRenderedAdaptiveCard** result)
     {
-        *result = nullptr;
+        ComPtr<::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard>(&renderedCard));
+        renderedCard->SetOriginatingCard(adaptiveCard);
 
         if (adaptiveCard)
         {
-            XamlBuilder builder;
             ComPtr<IUIElement> xamlTreeRoot;
-            
+            XamlBuilder builder;
+
             if (m_overrideDictionary != nullptr)
             {
                 THROW_IF_FAILED(builder.SetOverrideDictionary(m_overrideDictionary.Get()));
@@ -119,13 +108,31 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             // to manually download the image assets and instead just want xaml to do
             // that automatically
             builder.SetEnableXamlImageHandling(true);
-
-            builder.BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this);
-            *result = xamlTreeRoot.Detach();
+            try
+            {
+                builder.BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this, renderedCard.Get());
+                renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
+            }
+            catch (...)
+            {
+                HString error;
+                RETURN_IF_FAILED(error.Set(L"There was an error rendering this card"));
+                ComPtr<IVector<HSTRING>> errors;
+                RETURN_IF_FAILED(renderedCard->get_Errors(&errors));
+                errors->Append(error.Detach());
+            }
         }
-
+        else
+        {
+            HString error;
+            RETURN_IF_FAILED(error.Set(L"There was an error in the card attempting to being rendered."));
+            ComPtr<IVector<HSTRING>> errors;
+            RETURN_IF_FAILED(renderedCard->get_Errors(&errors));
+            errors->Append(error.Detach());
+        }
+        *result = renderedCard.Detach();
         return S_OK;
-    } CATCH_RETURN;
+    }
 
     _Use_decl_annotations_
     HRESULT XamlCardRenderer::RenderCardAsXamlAsync(
@@ -137,14 +144,29 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderAdaptiveJsonAsXaml(
+    HRESULT XamlCardRenderer::RenderAdaptiveCardFromJsonString(
         HSTRING adaptiveJson,
-        IUIElement** result)
+        IRenderedAdaptiveCard** result)
     {
-        ComPtr<IAdaptiveCard> adaptiveCard;
-        RETURN_IF_FAILED(CreateAdaptiveCardFromJson(adaptiveJson, &adaptiveCard));
+        ComPtr<::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard>(&renderedCard));
 
-        return RenderCardAsXaml(adaptiveCard.Get(), result);
+        ComPtr<IAdaptiveCard> adaptiveCard;
+        HRESULT hr = CreateAdaptiveCardFromJson(adaptiveJson, &adaptiveCard);
+        if (FAILED(hr))
+        {
+            HString error;
+            RETURN_IF_FAILED(error.Set(L"There was an error in the card attempting to being rendered."));
+            ComPtr<IVector<HSTRING>> errors;
+            RETURN_IF_FAILED(renderedCard->get_Errors(&errors));
+            errors->Append(error.Detach());
+            *result = renderedCard.Detach();
+            return S_OK;
+        }
+        else
+        {
+            return RenderAdaptiveCard(adaptiveCard.Get(), result);
+        }
     }
 
     _Use_decl_annotations_
@@ -165,11 +187,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
         RETURN_IF_FAILED(adaptiveCardStatics->CreateCardFromJson(adaptiveJson, adaptiveCard));
         return S_OK;
-    }
-
-    HRESULT XamlCardRenderer::SendActionEvent(IAdaptiveActionEventArgs* eventArgs)
-    {
-        return m_events->InvokeAll(this, eventArgs);
     }
 
     IAdaptiveHostConfig* XamlCardRenderer::GetHostConfig()
