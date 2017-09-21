@@ -554,7 +554,7 @@ namespace AdaptiveCards.Rendering
                 case TextSize.ExtraLarge:
                     fontSize = context.Config.FontSizes.ExtraLarge;
                     break;
-                case TextSize.Normal:
+                case TextSize.Default:
                 default:
                     fontSize = context.Config.FontSizes.Normal;
                     break;
@@ -666,7 +666,7 @@ namespace AdaptiveCards.Rendering
 
             switch (image.Style)
             {
-                case ImageStyle.Normal:
+                case ImageStyle.Default:
                     break;
                 case ImageStyle.Person:
                     uiImage = uiImage.Style("background-position", "50% 50%")
