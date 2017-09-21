@@ -391,7 +391,11 @@ namespace AdaptiveCards.Rendering
 
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
             {
+                if (col.Width != null && double.TryParse(col.Width, out double widthVal))
+                    return widthVal;
+#pragma warning disable CS0618 // Type or member is obsolete
                 if (double.TryParse(col.Size ?? "0", out double val))
+#pragma warning restore CS0618 // Type or member is obsolete
                     return val;
                 return 0;
             }).Sum());
@@ -431,19 +435,23 @@ namespace AdaptiveCards.Rendering
                 }
 
                 // do some sizing magic 
-                var size = column.Size?.ToLower();
-                if (size == null || size == ColumnSize.Stretch.ToLower())
+                var width = column.Width?.ToLower();
+                if(string.IsNullOrEmpty(width))
+#pragma warning disable CS0618 // Type or member is obsolete
+                    width = column.Size?.ToLower();
+#pragma warning restore CS0618 // Type or member is obsolete
+                if (width == null || width == ColumnWidth.Stretch.ToLower())
                 {
                     uiColumn = uiColumn.Style("flex", "1 1 auto");
                 }
-                else if (size == ColumnSize.Auto.ToLower())
+                else if (width == ColumnWidth.Auto.ToLower())
                 {
                     uiColumn = uiColumn.Style("flex", "0 1 auto");
                 }
                 else
                 {
                     double val;
-                    if (double.TryParse(size, out val))
+                    if (double.TryParse(width, out val))
                     {
                         var percent = Convert.ToInt32(100 * (val / max));
                         uiColumn = uiColumn.Style("flex", $"1 1 {percent}%");
@@ -554,7 +562,7 @@ namespace AdaptiveCards.Rendering
                 case TextSize.ExtraLarge:
                     fontSize = context.Config.FontSizes.ExtraLarge;
                     break;
-                case TextSize.Normal:
+                case TextSize.Default:
                 default:
                     fontSize = context.Config.FontSizes.Normal;
                     break;
@@ -666,7 +674,7 @@ namespace AdaptiveCards.Rendering
 
             switch (image.Style)
             {
-                case ImageStyle.Normal:
+                case ImageStyle.Default:
                     break;
                 case ImageStyle.Person:
                     uiImage = uiImage.Style("background-position", "50% 50%")

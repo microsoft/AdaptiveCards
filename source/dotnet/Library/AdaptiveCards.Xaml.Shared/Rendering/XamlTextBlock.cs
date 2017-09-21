@@ -73,7 +73,7 @@ namespace AdaptiveCards.Rendering
                 case TextSize.ExtraLarge:
                     uiTextBlock.FontSize = context.Config.FontSizes.ExtraLarge;
                     break;
-                case TextSize.Normal:
+                case TextSize.Default:
                 default:
                     uiTextBlock.FontSize = context.Config.FontSizes.Normal;
                     break;
