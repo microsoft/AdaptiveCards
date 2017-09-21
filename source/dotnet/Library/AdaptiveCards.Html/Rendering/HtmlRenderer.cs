@@ -79,7 +79,6 @@ namespace AdaptiveCards.Rendering
             this.SetRenderer<ToggleInput>(ToggleInputRender); ;
 
             this.SetRenderer<SubmitAction>(SubmitActionRender);
-            this.SetRenderer<HttpAction>(HttpActionRender);
             this.SetRenderer<OpenUrlAction>(OpenUrlActionRender);
             this.SetRenderer<ShowCardAction>(ShowCardActionRender);
         }
@@ -151,40 +150,7 @@ namespace AdaptiveCards.Rendering
 
             return buttonElement;
         }
-
-        protected static HtmlTag HttpActionRender(TypedElement actionElement, RenderContext context)
-        {
-            HttpAction action = (HttpAction)actionElement;
-            if (!context.Config.SupportsInteractivity)
-            {
-                return null;
-            }
-
-            var buttonElement = new HtmlTag("button") { Text = action.Title }
-                .Attr("type", "button")
-                .Attr("url", action.Url)
-                .Attr("method", action.Method)
-                .Style("overflow", "hidden")
-                .Style("white-space", "nowrap")
-                .Style("text-overflow", "ellipsis")
-                .Style("flex",
-                    context.Config.Actions.ActionAlignment == HorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
-                .AddClass("ac-pushButton")
-                .AddClass("ac-httpAction");
-
-            if (string.IsNullOrEmpty(action.Body))
-            {
-                buttonElement.Attr("body", action.Body);
-            }
-
-            if (!string.IsNullOrEmpty(action.HeadersJson))
-            {
-                buttonElement.Attr("header", action.HeadersJson);
-            }
-
-            return buttonElement;
-        }
-
+        
         protected static HtmlTag AdaptiveCardRender(TypedElement element, RenderContext context)
         {
             AdaptiveCard card = (AdaptiveCard)element;

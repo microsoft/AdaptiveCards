@@ -13,7 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlActionSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlUtilities.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlHttpAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlOpenUrlAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlShowCardAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlSubmitAction.cs" />
