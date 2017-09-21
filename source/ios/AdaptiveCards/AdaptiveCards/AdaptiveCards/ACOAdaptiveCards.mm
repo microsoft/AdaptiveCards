@@ -9,12 +9,6 @@
 
 @implementation ACOAdaptiveCards
 
-- (instancetype)init
-{
-    self = [super init];
-    return self;
-}
-
 + (ACOParseResult *)FromJson:(NSString *)payload;
 {
     return [ACOAdaptiveCardsInternal FromJson:payload];

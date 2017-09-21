@@ -10,7 +10,6 @@
 
 @interface ACOAdaptiveCards:NSObject
 
-- (instancetype)init;
 + (ACOParseResult *)FromJson:(NSString *)payload;
 
 @end    

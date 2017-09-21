@@ -13,7 +13,7 @@
     self = [super init];
     if(self)
     {
-        self.Suceeded= NO;
+        self.succeeded= NO;
         self.viewcontroller = nil;
     }
     return self;

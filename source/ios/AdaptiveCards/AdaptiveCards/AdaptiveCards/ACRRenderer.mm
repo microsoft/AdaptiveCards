@@ -20,15 +20,12 @@
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
 
-    if([card isKindOfClass:[ACOAdaptiveCardsInternal class]] == NO)
-        return result;
-
     ACRViewController *viewcontroller = [[ACRViewController alloc] init:card
                                                              hostconfig:config
                                                                   frame:frame];
 
     result.viewcontroller = viewcontroller;
-    result.Suceeded = YES;
+    result.succeeded = YES;
     return result;
 }
 

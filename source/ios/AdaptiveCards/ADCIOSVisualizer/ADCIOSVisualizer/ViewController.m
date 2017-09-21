@@ -94,14 +94,14 @@
     ACRRenderResult *renderResult;
     ACOParseResult *hostconfigParseResult = [ACOHostConfig FromJson:self.hostconfig];
     ACOParseResult *cardParseResult       = [ACOAdaptiveCards FromJson:jsonStr];
-    if(hostconfigParseResult.IsValid == YES && cardParseResult.IsValid == YES)
+    if(hostconfigParseResult.IsValid && cardParseResult.IsValid)
     {
         renderResult = [ACRRenderer render:cardParseResult.card
                                     config:hostconfigParseResult.config
                                      frame:CGRectMake(20, 250, 300, 1250)];
     }	
     
-    if(renderResult.Suceeded == YES)
+    if(renderResult.succeeded)
     {
         ACRViewController *adcVc = renderResult.viewcontroller;
         adcVc.acrActionDelegate = self;

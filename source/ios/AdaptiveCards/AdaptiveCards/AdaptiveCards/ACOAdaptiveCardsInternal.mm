@@ -15,12 +15,6 @@ using namespace AdaptiveCards;
     std::shared_ptr<AdaptiveCard> adaptiveCard;
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    return self;
-}
-
 + (ACOParseResult *)FromJson:(NSString *)payload;
 {
     ACOParseResult *result = [[ACOParseResult alloc] init];

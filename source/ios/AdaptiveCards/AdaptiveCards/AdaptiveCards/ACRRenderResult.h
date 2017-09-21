@@ -13,6 +13,6 @@
 @interface ACRRenderResult:NSObject
 
 @property ACRViewController *viewcontroller;
-@property BOOL Suceeded;
+@property BOOL succeeded;
 
 @end    
