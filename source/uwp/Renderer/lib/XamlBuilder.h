@@ -24,7 +24,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         STDMETHODIMP ImagesLoadingHadError();
 
         void BuildXamlTreeFromAdaptiveCard(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard, 
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
+            _Inout_ std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot, 
             AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
             boolean isOuterCard = true);
@@ -41,6 +42,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             std::function<void(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*,
                 std::shared_ptr<std::vector<InputItem>> inputElements,
                 ABI::Windows::UI::Xaml::IUIElement**)>> m_adaptiveElementBuilder;
+
+        std::shared_ptr<ActionEventSource> m_events;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardRenderer> m_renderer;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IPropertyValueStatics> m_propertyValueStatics;
@@ -108,6 +111,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveShowCardActionConfig* showCardActionConfig,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* action,
+            std::shared_ptr<std::vector<InputItem>> inputElements,
             ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,

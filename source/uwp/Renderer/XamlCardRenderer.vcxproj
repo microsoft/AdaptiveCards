@@ -117,6 +117,7 @@
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
     <ClInclude Include="lib\AdaptiveFontSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
+    <ClInclude Include="lib\AdaptiveRenderResult.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionConfig.h" />
     <ClInclude Include="lib\AdaptiveSpacingDefinition.h" />
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -177,6 +178,7 @@
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveRenderResult.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionConfig.cpp" />
     <ClCompile Include="lib\AdaptiveSpacingDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveCard.cpp" />

@@ -97,6 +97,8 @@ namespace XamlCardVisualizer.ViewModel
             private set { SetProperty(ref _renderedCard, value); }
         }
 
+        private AdaptiveRenderResult _renderResult;
+
         public ObservableCollection<ErrorViewModel> Errors { get; private set; } = new ObservableCollection<ErrorViewModel>();
 
         public static async Task<DocumentViewModel> LoadFromFileAsync(MainPageViewModel mainPageViewModel, IStorageFile file, string token)
@@ -164,14 +166,20 @@ namespace XamlCardVisualizer.ViewModel
 
             try
             {
-                if (Settings.UseAsyncRenderMethod)
+                 _renderResult = Settings.UseAsyncRenderMethod ? await _renderer.RenderAdaptiveJsonAsXamlAsync(payload) : _renderer.RenderAdaptiveJsonAsXaml(payload); ;
+                if (_renderResult.IsValid())
                 {
-                    RenderedCard = await _renderer.RenderAdaptiveJsonAsXamlAsync(payload);
+                    RenderedCard = _renderResult.UI;
                 }
                 else
                 {
-                    RenderedCard = _renderer.RenderAdaptiveJsonAsXaml(payload);
+                    newErrors.Add(new ErrorViewModel()
+                    {
+                        Message = "Rendering failed",
+                        Type = ErrorViewModelType.Error
+                    });
                 }
+
 
                 if (RenderedCard is FrameworkElement)
                 {

@@ -4,6 +4,7 @@
 #include <string>
 
 #include "AdaptiveCards.XamlCardRenderer.h"
+#include "InputItem.h"
 #include <BaseCardElement.h>
 #include <BaseActionElement.h>
 #include <ChoiceInput.h>
@@ -47,5 +48,7 @@ HRESULT GenerateImagesProjection(
 HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
+
+HSTRING SerializeInputItems(const std::vector<AdaptiveCards::XamlCardRenderer::InputItem>& inputElements);
 
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;

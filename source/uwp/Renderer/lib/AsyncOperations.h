@@ -1,6 +1,9 @@
 #pragma once
+
 #include "AdaptiveCards.XamlCardRenderer.h"
 #include <wrl\async.h>
+#include "AdaptiveRenderResult.h"
+#include "InputItem.h"
 #include "XamlBuilder.h"
 #include "XamlCardRendererComponent.h"
 #include "XamlHelpers.h"
@@ -33,6 +36,7 @@ public:
         THROW_IF_FAILED(coreWindow->get_Dispatcher(&m_dispatcher));
 
         m_builder = Microsoft::WRL::Make<AdaptiveCards::XamlCardRenderer::XamlBuilder>();
+        m_inputElements = std::make_shared<std::vector<AdaptiveCards::XamlCardRenderer::InputItem>>();
         THROW_IF_FAILED(m_builder->SetHostConfig(m_renderer->GetHostConfig()));
         THROW_IF_FAILED(m_builder->SetOverrideDictionary(m_renderer->GetOverrideDictionary()));
         UINT32 width = 0;
@@ -77,21 +81,26 @@ protected:
     Microsoft::WRL::ComPtr<AdaptiveCards::XamlCardRenderer::XamlBuilder> m_builder;
     Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard> m_card;
     Microsoft::WRL::ComPtr<AdaptiveCards::XamlCardRenderer::XamlCardRenderer> m_renderer;
+    std::shared_ptr<std::vector<AdaptiveCards::XamlCardRenderer::InputItem>> m_inputElements;
+    bool m_isValid;
 
     HRESULT OnStart(void) override
     {
+        Microsoft::WRL::ComPtr<RenderAsyncBase<T>> strongThis(this);
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncAction> dispatcherAsyncAction;
         m_dispatcher->RunAsync(ABI::Windows::UI::Core::CoreDispatcherPriority_Normal,
-            MakeAgileDispatcherCallback([this]() -> HRESULT
+            MakeAgileDispatcherCallback([this, strongThis]() -> HRESULT
         {
             m_builder->AddListener(this);
             try
             {
-                m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get());
+                m_builder->BuildXamlTreeFromAdaptiveCard(m_card.Get(), m_inputElements, &m_rootXamlElement, m_renderer.Get());
+                m_isValid = m_rootXamlElement != nullptr;
             }
             catch (...)
             {
                 //Catch all non-Image loading related problems.
+                m_isValid = false;
                 return XamlBuilderHadError();
             }
             return S_OK;
@@ -130,22 +139,28 @@ private:
 };
 
 
-
 class RenderCardAsXamlAsyncOperation : 
-    public RenderAsyncBase<ABI::Windows::UI::Xaml::UIElement>
+    public RenderAsyncBase<ABI::AdaptiveCards::XamlCardRenderer::AdaptiveRenderResult>
 {
 public:
     RenderCardAsXamlAsyncOperation(
         ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* card,
         AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer)
-        : RenderAsyncBase<ABI::Windows::UI::Xaml::UIElement>(card, renderer)
+        : RenderAsyncBase<ABI::AdaptiveCards::XamlCardRenderer::AdaptiveRenderResult>(card, renderer)
     {
         AsyncBase::Start();
     }
 
-    STDMETHODIMP ABI::Windows::Foundation::IAsyncOperation_impl<TResult_complex>::GetResults(ABI::Windows::UI::Xaml::IUIElement** rootElement)
+    STDMETHODIMP ABI::Windows::Foundation::IAsyncOperation_impl<TResult_complex>::GetResults(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveRenderResult** renderResult)
     {
-        return m_rootXamlElement.CopyTo(rootElement);
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveRenderResult> result;
+        RETURN_IF_FAILED(Microsoft::WRL::Details::MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveRenderResult>(
+            &result,
+            m_isValid,
+            m_card.Get(),
+            m_rootXamlElement.Get(),
+            m_inputElements));
+        return result.CopyTo(renderResult);
     }
 
 protected:

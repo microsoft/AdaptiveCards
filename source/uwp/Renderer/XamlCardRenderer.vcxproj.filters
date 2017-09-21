@@ -55,6 +55,7 @@
     <ClCompile Include="lib\AdaptiveShowCardActionConfig.cpp" />
     <ClCompile Include="lib\XamlCardResourceResolvers.cpp" />
     <ClCompile Include="lib\XamlCardGetResourceStreamArgs.cpp" />
+    <ClCompile Include="lib\AdaptiveRenderResult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
     <ClInclude Include="lib\XamlCardGetResourceStreamArgs.h" />
     <ClInclude Include="lib\XamlCardResourceResolvers.h" />
+    <ClInclude Include="lib\AdaptiveRenderResult.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />
