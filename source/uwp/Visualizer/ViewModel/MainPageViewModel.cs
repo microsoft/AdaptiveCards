@@ -23,6 +23,23 @@ namespace XamlCardVisualizer.ViewModel
             set { SetProperty(ref _currentDocument, value); }
         }
 
+        public bool UseAsyncRenderMethod
+        {
+            get { return Settings.UseAsyncRenderMethod; }
+            set
+            {
+                if (value != Settings.UseAsyncRenderMethod)
+                {
+                    Settings.UseAsyncRenderMethod = value;
+
+                    foreach (var doc in OpenDocuments)
+                    {
+                        doc.ReRender();
+                    }
+                }
+            }
+        }
+
         public void NewDocument()
         {
             OpenDocuments.Add(new DocumentViewModel()

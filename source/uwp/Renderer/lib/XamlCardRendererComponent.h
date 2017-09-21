@@ -46,9 +46,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         ABI::Windows::UI::Xaml::IResourceDictionary* GetOverrideDictionary();
         bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
 
+        IFACEMETHODIMP get_ResourceResolvers(
+            _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolvers** value);
+
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig> m_hostConfig;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolvers> m_resourceResolvers;
 
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;

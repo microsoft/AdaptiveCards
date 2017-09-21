@@ -53,6 +53,8 @@
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionConfig.cpp" />
+    <ClCompile Include="lib\XamlCardResourceResolvers.cpp" />
+    <ClCompile Include="lib\XamlCardGetResourceStreamArgs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -115,6 +117,8 @@
     <ClInclude Include="lib\AdaptiveFontSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
+    <ClInclude Include="lib\XamlCardGetResourceStreamArgs.h" />
+    <ClInclude Include="lib\XamlCardResourceResolvers.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />
