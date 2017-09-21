@@ -23,6 +23,16 @@ namespace AdaptiveCards
 #if NET452
         [XmlAttribute]
 #endif
+        [System.Obsolete("Column.Size has been deprecated.  Use Column.Width", false)]
         public string Size { get; set; }
+
+        /// <summary>
+        ///     Width for the column (either ColumnWidth string or number which is relative size of the column)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if NET452
+        [XmlAttribute]
+#endif
+        public string Width { get; set; }
     }
 }
