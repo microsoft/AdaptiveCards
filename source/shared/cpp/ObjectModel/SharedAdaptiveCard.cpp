@@ -78,7 +78,11 @@ AdaptiveCard::AdaptiveCard(std::string version,
 {
 }
 
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile) throw (AdaptiveCards::AdaptiveCardParseException)
+#ifdef __ANDROID__
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile) throw(AdaptiveCards::AdaptiveCardParseException)
+#else
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile)
+#endif // __ANDROID__
 {
     std::ifstream jsonFileStream(jsonFile);
 
@@ -88,7 +92,10 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::strin
     return AdaptiveCard::Deserialize(root);
 }
 
+#ifdef __ANDROID__
 std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException)
+#else
+std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
 {
     ParseUtil::ThrowIfNotJsonObject(json);
 
@@ -112,6 +119,15 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
 
     auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, body, actions);
     return result;
+}
+
+#ifdef __ANDROID__
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException)
+#else
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(const std::string& jsonString)
+#endif // __ANDROID__
+{
+    return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 Json::Value AdaptiveCard::SerializeToJsonValue()
@@ -145,12 +161,6 @@ std::string AdaptiveCard::Serialize()
 {
     Json::FastWriter writer;
     return writer.write(SerializeToJsonValue());
-}
-
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException)
-{
-    return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
-}
 
 std::string AdaptiveCard::GetVersion() const
 {
