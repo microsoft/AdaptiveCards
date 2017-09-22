@@ -48,7 +48,6 @@ Container::Container(
 Container::Container(
     Spacing spacing,
     bool separator,
-    
     ContainerStyle style) :
     BaseCardElement(CardElementType::Container, spacing, separator),
     m_style(style)

@@ -22,7 +22,7 @@ ImageSet::ImageSet(
 
 ImageSet::ImageSet(
     Spacing spacing, 
-    bool separation,
+    bool separation) :
     BaseCardElement(CardElementType::ImageSet, spacing, separation),
     m_imageSize(ImageSize::Auto)
 {

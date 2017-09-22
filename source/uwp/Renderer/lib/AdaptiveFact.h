@@ -24,9 +24,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Value(_In_ HSTRING* value);
         IFACEMETHODIMP put_Value(_Out_ HSTRING value);
 
-        
-        
-
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
     private:
