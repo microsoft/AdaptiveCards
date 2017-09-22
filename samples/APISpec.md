@@ -256,14 +256,17 @@ else {
 // option 1
 renderer.OnAction += ActionHander;
 
-// option 2
+// option 2 (event per card)
 result.OnAction += ActionHandler;
+
+// TODO: Should we include both options and follow XAML's pattern of e.Handled = true, if a card doesn't have an action we bubble up to the Renderer? Not sure if this would apply to every platform, so maybe not worth it for now?
 
 private void ActionHandler(object sender, ActionEventArgs e) {
      // What card was tapped
     AdaptiveCard card = e.Card;
 
     // Note: we DO NOT do any input validation, be prepared to parse the data gracefully
+    // RawString is outlined here https://github.com/Microsoft/AdaptiveCards/issues/652
     JObject inputs = e.UserInputs.AsJson(InputValueMode.RawString);
     JObject data = e.Data;
     AdaptiveActionBase action = e.Action;
