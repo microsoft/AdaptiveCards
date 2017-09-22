@@ -31,7 +31,6 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseInputElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HostConfig.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\HttpAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Column.cpp" />
@@ -61,7 +60,6 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\HttpAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
