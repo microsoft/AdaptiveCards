@@ -96,6 +96,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::strin
 std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
 std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
+#endif // __ANDROID__
 {
     ParseUtil::ThrowIfNotJsonObject(json);
 
@@ -161,6 +162,7 @@ std::string AdaptiveCard::Serialize()
 {
     Json::FastWriter writer;
     return writer.write(SerializeToJsonValue());
+}
 
 std::string AdaptiveCard::GetVersion() const
 {
