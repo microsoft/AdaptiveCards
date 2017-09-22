@@ -59,13 +59,13 @@ namespace XamlCardVisualizer.ViewModel
         {
             IsOutdated = true;
 
-            if (!IsReloading)
+            if (!IsLoading)
             {
-                IsReloading = true;
+                IsLoading = true;
 
                 await Task.Delay(1000);
 
-                IsReloading = false;
+                IsLoading = false;
                 NotifyPropertyChanged(DelayedUpdatePayload);
                 Load();
             }
@@ -79,14 +79,14 @@ namespace XamlCardVisualizer.ViewModel
             }
         }
 
-        private bool _isReloading;
+        private bool _isLoading;
         /// <summary>
-        /// Represents whether the system is delaying reloading. Views should indicate this.
+        /// Represents whether the system is delaying loading. Views should indicate this.
         /// </summary>
-        public bool IsReloading
+        public bool IsLoading
         {
-            get { return _isReloading; }
-            private set { SetProperty(ref _isReloading, value); }
+            get { return _isLoading; }
+            private set { SetProperty(ref _isLoading, value); }
         }
 
         /// <summary>

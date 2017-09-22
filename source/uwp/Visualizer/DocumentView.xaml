@@ -20,12 +20,23 @@
         <local:GenericDocumentView />
 
         <!--Preview-->
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="11,0,0,0" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+        <Grid
+            Grid.Column="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="11,0,0,0" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+                <Border
+                    x:Name="AdaptiveCardHostContainer"
+                    Child="{Binding RenderedCard}"
+                    Padding="12"/>
+            </ScrollViewer>
             <Border
-                x:Name="AdaptiveCardHostContainer"
-                Child="{Binding RenderedCard}"
-                Padding="12"/>
-        </ScrollViewer>
+                Background="#11000000"
+                Visibility="{Binding IsLoading}">
+                <ProgressRing
+                    IsActive="True"
+                    Width="40"
+                    Height="40"/>
+            </Border>
+        </Grid>
 
         <!--Vertical draggable column splitter-->
         <toolkitControls:GridSplitter
