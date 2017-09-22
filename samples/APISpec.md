@@ -96,7 +96,7 @@ AdaptiveSchemaVersion schemaVersion = renderer.SupportedSchemaVersion; // 1.0
 ## Render a Card
 
 ```csharp
-RenderedAdaptiveCard renderedCard = await renderer.RenderCardAsync(card, cancellationToken: null);
+RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
 
 // Validate the rendered card
 if(!renderedCard.IsRenderedSuccessfully) {
@@ -106,9 +106,10 @@ if(!renderedCard.IsRenderedSuccessfully) {
     return;
 }
 
+
 // Prefetch images
 // TODO: Should this be load assets? Like audio, and other media? I'm not sure if we want to group all those together, hmmm
-await renderedCard.LoadImagesAsync(cancellationToken: null);
+await renderedCard.WaitForImagesAsync();
 
 // Get the UI element
 FrameworkElement ui = renderedCard.FrameworkElement;
