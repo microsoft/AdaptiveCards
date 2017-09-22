@@ -1,6 +1,6 @@
 //
-//  ACOAdaptiveCards.h
-//  ACOAdaptiveCards
+//  ACOAdaptiveCard.h
+//  ACOAdaptiveCard
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
@@ -8,8 +8,8 @@
 #import <Foundation/Foundation.h>
 #import "ACOParseResult.h"
 
-@interface ACOAdaptiveCards:NSObject
+@interface ACOAdaptiveCard:NSObject
 
-+ (ACOParseResult *)FromJson:(NSString *)payload;
++ (ACOParseResult *)fromJson:(NSString *)payload;
 
 @end    

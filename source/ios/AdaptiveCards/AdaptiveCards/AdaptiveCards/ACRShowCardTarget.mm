@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <SafariServices/SafariServices.h>
 #import "ACRShowCardTarget.h"
-#import "ACRRendererInternal.h"
+#import "ACRRendererPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRViewController.h"
@@ -55,7 +55,7 @@
         else
         {
             NSMutableArray *inputs = [[NSMutableArray alloc] init];
-            UIView *adcView = [ACRRendererInternal renderWithAdaptiveCards:_adaptiveCard
+            UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                             inputs:inputs
                                                     viewController:_vc
                                                         guideFrame:_superview.frame

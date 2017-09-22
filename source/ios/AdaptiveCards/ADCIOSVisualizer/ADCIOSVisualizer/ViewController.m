@@ -92,8 +92,8 @@
 {
     self.editableStr = jsonStr;
     ACRRenderResult *renderResult;
-    ACOParseResult *hostconfigParseResult = [ACOHostConfig FromJson:self.hostconfig];
-    ACOParseResult *cardParseResult       = [ACOAdaptiveCards FromJson:jsonStr];
+    ACOParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig];
+    ACOParseResult *cardParseResult       = [ACOAdaptiveCard fromJson:jsonStr];
     if(hostconfigParseResult.IsValid && cardParseResult.IsValid)
     {
         renderResult = [ACRRenderer render:cardParseResult.card

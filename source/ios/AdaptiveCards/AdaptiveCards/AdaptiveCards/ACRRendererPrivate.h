@@ -1,6 +1,6 @@
 //
-//  ACRRenderer
-//  ACRRenderer.h
+//  ACRRendererPrivate
+//  ACRRendererPrivate.h
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
@@ -12,8 +12,9 @@
 #import "ACRIContentHoldingView.h"
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
+#import "ACRRenderer.h"
 
-@interface ACRRendererInternal:NSObject
+@interface ACRRenderer()
 
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                              inputs:(NSMutableArray *)inputs

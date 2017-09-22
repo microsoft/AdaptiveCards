@@ -7,7 +7,7 @@
 
 #import "ACRColumnRenderer.h"
 #import "ACRColumnView.h"
-#import "ACRRendererInternal.h"
+#import "ACRRendererPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
 
@@ -33,7 +33,7 @@
 
     ACRColumnView* column = [[ACRColumnView alloc] init];
     [viewGroup addArrangedSubview:column];
-    [ACRRendererInternal render:column
+    [ACRRenderer render:column
                  inputs:inputs
           withCardElems:columnElem->GetItems()
           andHostConfig:config];

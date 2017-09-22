@@ -1,21 +1,22 @@
 //
-//  ACOAdaptiveCardsInternal.mm
-//  ACOAdaptiveCardsInternal.h
+//  ACOAdaptiveCard.mm
+//  ACOAdaptiveCard.h
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACOAdaptiveCardsInternal.h"
+#import <Foundation/Foundation.h>
 #import "ACOParseResult.h"
 #import "SharedAdaptiveCard.h"
+#import "ACOAdaptiveCardPrivate.h"
 
 using namespace AdaptiveCards;
 
-@implementation ACOAdaptiveCardsInternal
+@implementation ACOAdaptiveCard
 {
-    std::shared_ptr<AdaptiveCard> adaptiveCard;
+    std::shared_ptr<AdaptiveCard> _adaptiveCard;
 }
 
-+ (ACOParseResult *)FromJson:(NSString *)payload;
++ (ACOParseResult *)fromJson:(NSString *)payload;
 {
     ACOParseResult *result = [[ACOParseResult alloc] init];
 
@@ -23,8 +24,8 @@ using namespace AdaptiveCards;
     {
         try
         {
-            ACOAdaptiveCardsInternal *card = [[ACOAdaptiveCardsInternal alloc] init];
-            card->adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]));
+            ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
+            card->_adaptiveCard = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]));
             result.card = card;
             result.IsValid = YES;
         }
@@ -38,6 +39,6 @@ using namespace AdaptiveCards;
 
 - (std::shared_ptr<AdaptiveCard> const &)getCard
 {
-    return adaptiveCard;
+    return _adaptiveCard;
 }
 @end

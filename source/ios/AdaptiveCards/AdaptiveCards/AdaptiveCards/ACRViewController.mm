@@ -7,40 +7,40 @@
 
 #import "ACRViewController.h"
 #import "ACOHostConfigPrivate.h"
-#import "ACOAdaptiveCardsInternal.h"
+#import "ACOAdaptiveCardPrivate.h"
 #import "SharedAdaptiveCard.h"
-#import "ACRRendererInternal.h"
+#import "ACRRendererPrivate.h"
 #import <AVFoundation/AVFoundation.h>
 
 using namespace AdaptiveCards;
 
 @implementation ACRViewController
 {
-    std::shared_ptr<AdaptiveCard> adaptiveCard;
-    std::shared_ptr<HostConfig> hostConfig;
-    CGRect guideFrame;
+    std::shared_ptr<AdaptiveCard> _adaptiveCard;
+    std::shared_ptr<HostConfig> _hostConfig;
+    CGRect _guideFrame;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-        guideFrame = CGRectMake(0, 0, 0, 0);
-        hostConfig = std::make_shared<HostConfig>();
+        _guideFrame = CGRectMake(0, 0, 0, 0);
+        _hostConfig = std::make_shared<HostConfig>();
     }
     return self;
 }
 
-- (instancetype)init:(ACOAdaptiveCards *)card
+- (instancetype)init:(ACOAdaptiveCard *)card
           hostconfig:(ACOHostConfig *)config
                frame:(CGRect)frame
 {
     self = [self initWithNibName:nil bundle:nil];
     if(self)
     {
-        self->adaptiveCard = [((ACOAdaptiveCardsInternal *)card) getCard];
-        hostConfig = [config getHostConfig];
-        guideFrame = frame;
+        _adaptiveCard = [card getCard];
+        _hostConfig = [config getHostConfig];
+        _guideFrame = frame;
     }
     return self;
 }
@@ -53,14 +53,14 @@ using namespace AdaptiveCards;
 - (void)render
 {
     UIView *view = self.view;
-    view.frame = guideFrame;
+    view.frame = _guideFrame;
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
 
-    UIView *newView = [ACRRendererInternal renderWithAdaptiveCards:adaptiveCard
+    UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                              inputs:inputs
                                                      viewController:self
-                                                         guideFrame:guideFrame
-                                                         hostconfig:hostConfig];
+                                                         guideFrame:_guideFrame
+                                                         hostconfig:_hostConfig];
 
     [view addSubview:newView];
 

@@ -8,12 +8,12 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ACRRenderResult.h"
-#import "ACOAdaptiveCards.h"
+#import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
 
 @interface ACRRenderer:NSObject
 
 - (instancetype)init;
-+ (ACRRenderResult *)render:(ACOAdaptiveCards *)card config:(ACOHostConfig *)config frame:(CGRect) frame;
++ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect) frame;
 
 @end    

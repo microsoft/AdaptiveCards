@@ -8,14 +8,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ACRActionDelegate.h"
-#import "ACOAdaptiveCards.h"
+#import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
 
 @interface ACRViewController :UIViewController
 
 @property (weak) id<ACRActionDelegate> acrActionDelegate;
 
-- (instancetype)init:(ACOAdaptiveCards *)card 
+- (instancetype)init:(ACOAdaptiveCard *)card 
           hostconfig:(ACOHostConfig *)config
                frame:(CGRect)frame;
 
