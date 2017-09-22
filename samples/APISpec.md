@@ -56,11 +56,12 @@ card.Actions.Add(new AdaptiveHttpAction());
 ```csharp
 public class AdaptiveSchemaVersion 
 {
-    int Major; Minor;
-    string ToString();
+    int Major;
+    int Minor;
+    string ToString(); // "1.1"
 }
 
-// Version automatically provided by object model/renderer
+
 AdaptiveVersion version = card.Version;
 
 card.MinVersion = new AdaptiveVersion(major: 2, minor: 0);
@@ -71,29 +72,8 @@ card.FallbackText = "This card isn't supported. Please check your app for update
 ## Parse from JSON string
 
 ```csharp
-// TODO: Should this be an enum or class? TypeScript currently has as enum
-public class ParseFailure  {
-    string Message { get; }
 
-    bool IsError { get; }
-
-    //SchemaViolation
-        //MissingCardType = 5,
-        //CollectionCantBeEmpty = 1,
-        //InvalidPropertyValue = 4,
-        //PropertyCantBeNull = 6,
-        //MissingVersion,
-}
-
-
-// Parse Errors
-// 1. Is it even valid json?
-// 2. Does it pass schema validation?
-
-// Parse warnings
-// Are there any?
-
-ParseResult result = AdaptiveCard.FromJson(jsonString);
+AdaptiveCardParseResult result = AdaptiveCard.FromJson(jsonString);
 if (result.IsValid) {
     // Get card from result
     IList<ParseFailure> warnings = result.Warnings;
@@ -104,72 +84,120 @@ if (result.IsValid) {
 }
 ```
 
-### Validate card against Host Config errors
-
-```csharp
-ValidationResult result = card.Validate(myHostConfig);
-if (!result.IsValid) {
-    IList<ValidationError> errors = result.Errors;
-}
-```
-
-### Validate against Host Config
-
-```csharp
-ValidationResult result = card.Validate(myHostConfig);
-```
 
 # Render card
 
 ## Instantiate a renderer
 
 ```csharp
-AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
-
-// Get the schema version this renderer supports
-string schemaVersion = renderer.SupportedSchemaVersion;
-```
-
-
-
-## Host Config
-* TODO: What should the defaults be? Should they all share it? Should we embed a common hostConfig.json file in the binaries?
-* TODO: I think HostConfig needs to be versioned as well for parsing?
-
-```csharp
+// Create a default Host Config for now
 AdaptiveHostConfig hostConfig = new AdaptiveHostConfig();
 
-// ... or parse
-ParseResult<AdaptiveHostConfig> parseResult = AdaptiveHostConfig.FromJson(jsonString);
+AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
 
-// We should provide a reasonable default if this property isn't set
-renderer.HostConfig = hostConfig;
+// Get the schema version this renderer supports
+AdaptiveSchemaVersion schemaVersion = renderer.SupportedSchemaVersion; // 1.0
 ```
 
-### Host Config options
 
-*  TODO: Finalize all Host Config options
-* Host Config will be the first run, set properties directly
-
+## Render a Card
 
 ```csharp
+RenderedCard renderedCard = await renderer.RenderCardAsync(card, cancellationToken: null);
+
+// Validate the rendered card
+if(!renderedCard.IsRenderedSuccessfully) {
+    // TODO: FINISH THIS
+    IList<string> warnings = renderedCard.Warnings;
+    IList<string> errors = renderedCard.Errors;
+    return;
+}
+
+// Prefetch images
+// TODO: Should this be load assets? Like audio, and other media? I'm not sure if we want to group all those together, hmmm
+await renderedCard.LoadImagesAsync(cancellationToken: null);
+
+// Get the UI element
+FrameworkElement ui = renderedCard.FrameworkElement;
+
+// Just for fun, get the AdaptiveCard object model back out
+AdaptiveCard originatingCard = renderedCard.OriginatingCard;
+```
+
+
+## Wire up Action events
+
+```csharp
+// Handle the events when a user taps on an Action
+renderedCard.OnAction += ActionHandler;
+
+private void ActionHandler(object sender, AdaptiveActionEventArgs e) {
+     // What card was tapped
+    RenderedAdaptiveCard card = e.RenderedCard;
+
+    // What Action was tapped
+    AdaptiveActionBase action = e.Action;
+    
+    if(action is typeof(OpenUrlAction)) {
+        // open URL
+    }
+    else if(action is typeof(SubmitAction)) {
+        
+        SubmitAction submitAction = (SubmitAction)action;
+
+        // Get the data, which could be a string or object
+        JObject data = submitAction.Data;
+
+        // Get the user inputs as a JSON object
+        // Note: we DO NOT do any input validation, be prepared to parse the data gracefully
+        // RawString is outlined here https://github.com/Microsoft/AdaptiveCards/issues/652
+        JObject inputs = card.UserInputs.AsJson(InputValueMode.RawString);
+
+        // Serialize the JObject to a custom type 
+        MyForm form = inputs.ToObject<MyForm>();
+    }
+    else if (action is typeof(ShowCardAction)) {
+        scrollViewer.ScrollIntoView(card.FrameworkElement);
+    }
+}
+```
+
+## Host Config 
+
+```csharp
+// Parse a Host Config from JSON
+HostConfigParseResult parseResult = AdaptiveHostConfig.FromJson(jsonString);
+
+if (result.IsValid) {
+    IList<ParseFailure> warnings = result.Warnings;
+    AdaptiveHostConfig hostConfig = result.HostConfig;
+} else {
+    IList<ParseFailure> errors = result.Errors;
+}
+
+// Or set properties directly
+
 // Maximum image size to download
 hostConfig.MaxImageSize = "200"; // kB
 
 // Maximum payload size before we throw on Render or Validate
 hostConfig.MaxPayloadSize = "10"; // kB
 
-// TODO: more thorough review of these options is necessary
-// https://github.com/Microsoft/AdaptiveCards/blob/master/samples/Themes/bing.json
+// Assign the Host Config to the renderer
+renderer.HostConfig = hostConfig;
 ```
 
 ## Native platform styling
 
+A Host App can apply native platform style for when Host Config isn't robust enough.
+
 ```csharp
+// Provide a custom resource dictionary to the Renderer
 renderer.ResourceDictionary = myResourceDictionary;
 ```
 
 An example XAML ResourceDictionary
+
 ```xml
 <ResourceDictionary>
     <Style x:Key="Adaptive.Action.Tap" TargetType="Button">
@@ -207,108 +235,6 @@ An example XAML ResourceDictionary
 ```
 
 
-## Generate UI tree
-
-```csharp
-// Render and let the UI stack download images 
-// This means a card could be added to the app and then images load causing re-layout
-RenderResult result = await renderer.RenderAsync(card, prefetchImages: false, cancellationToken: null);
-
-public class RenderWarning
-{
-  RendererWarnings
-        UnknownActionType = 8,
-        UnknownElementType = 9,
-            
-    HostConfigWarnings
-        InteractivityNotSupported = 3,
-        TooManyActions = 7,    
-}
-
-public class RenderError
-{
-    UnsupportedCardVersion = 10,
-    ElementTypeNotAllowed = 2, // TODO ASK DAVID: Do we need this?
-}
-
-RenderResult result = renderer.Render(card);
-result.Errors
-result.Warnings 
-
-if(result.Suceeded) {
-    FrameworkElement ui = result.FrameworkElement;
-}
-else {
-    
-    // host config warnings
-    // images failed to load/timeout
-    // TODO: what else?
-}
-```
-
-
-## Wire up Action events
-
-1. DAN NOTES: Event even if we have a default action like showcard, considerations for inline vs popup
-
-```csharp
-
-// option 1
-renderer.OnAction += ActionHander;
-
-// option 2 (event per card)
-result.OnAction += ActionHandler;
-
-// TODO: Should we include both options and follow XAML's pattern of e.Handled = true, if a card doesn't have an action we bubble up to the Renderer? Not sure if this would apply to every platform, so maybe not worth it for now?
-
-private void ActionHandler(object sender, ActionEventArgs e) {
-     // What card was tapped
-    AdaptiveCard card = e.Card;
-
-    // Note: we DO NOT do any input validation, be prepared to parse the data gracefully
-    // RawString is outlined here https://github.com/Microsoft/AdaptiveCards/issues/652
-    JObject inputs = e.UserInputs.AsJson(InputValueMode.RawString);
-
-    // option 2, MY PREFERENCE
-    // Put this functionality on the AdaptiveCard object, so it can be used not just in the event
-    JObject inputs = e.Card.UserInputs.AsJson(InputValueMode.RawString);
-
-    AdaptiveActionBase action = e.Action;
-    
-    if(action is typeof(OpenUrlAction)) {
-        // open URL
-    }
-    else if(action is typeof(SubmitAction) {
-        
-        SubmitAction = action as SubmitAction;
-
-        // Get the data, which could be a string or object
-        JObject data = e.Action.Data;
-
-        // Serialize the JObject to a custom type 
-        MyForm form = inputs.ToObject<MyForm>();
-    }
-    else if (action is typeof(ShowCardAction)) {
-        // TODO: What has the mapping of the Card and the UI tree? How do I get access to the raw UI elements?
-        // scrollViewer.ScrollIntoView(e.Card);
-    }
-    ...
-}
-```
-
-### Prefetch images
-Prefetch images and don't return until they are finished
-
-// Custom Image resolver https://github.com/Microsoft/AdaptiveCards/issues/138
-
-* DECISION: UWP will beta with prefetch true only, others will be best effort. False we will try to add during polish false for perf improvements. 
-* ImageResolver will be part of 1.1 API
-
-```csharp
-RenderResult result = await renderer.RenderAsync(card, prefetchImages: true, cancellationToken: null);
-
-```
-
 # Extensibility
 
 ## Override an existing element
@@ -333,7 +259,7 @@ public class CoolTextBlockRenderer : IRenderer {
     }
 }
 
-renderer.ElementRenderers["TextBlock"] = new CoolTextBlockRenderer());
+renderer.ElementRenderers.Set("TextBlock", new CoolTextBlockRenderer());
 ```
 
 ## Render a custom element
@@ -352,7 +278,7 @@ public class ProgressBarRenderer : IElementRenderer
     }
 }
 
-renderer.ElementRenderers[ProgressBarRenderer.TypeName] = new ProgressBarRenderer());
+renderer.ElementRenderers.Set(ProgressBarRenderer.TypeName, new ProgressBarRenderer());
 ```
 
 ## Remove a renderer
@@ -360,20 +286,6 @@ renderer.ElementRenderers[ProgressBarRenderer.TypeName] = new ProgressBarRendere
 ```csharp
 renderer.ElementRenderers.Remove("Action.Http");
 ```
-
-## Override markdown processing
-
-```csharp
-// DECISION: Typescript will support, others on backburner
-// TODO: File issue not processing any text
-
-renderer.ProcessMarkdown = MarkdownHandler;
-
-private string MarkdownHandler(string text) {
-    // process markdown
-}
-```
-
 
 ## Additional properties on elements
 
@@ -394,3 +306,79 @@ if(blurStr != null {
    bool blur = bool.Parse(blurStr);
 }
 ```
+
+## Override markdown processing
+
+```csharp
+// DECISION: Typescript will support, others on backburner
+// TODO: File issue not processing any text
+
+renderer.ProcessMarkdown = MarkdownHandler;
+
+private string MarkdownHandler(string text) {
+    // process markdown
+}
+```
+
+
+# IGNORE BELOW THIS FOR NOW
+
+
+## Parsing and Validation
+
+## This section is not complete
+
+### Validate card against Host Config errors
+
+```csharp
+ValidationResult result = card.Validate(myHostConfig);
+if (!result.IsValid) {
+    IList<ValidationError> errors = result.Errors;
+}
+```
+
+### Validate against Host Config
+
+```csharp
+ValidationResult result = card.Validate(myHostConfig);
+```
+
+
+public class ParseFailure  {
+    string Message { get; }
+
+    bool IsError { get; }
+
+    //SchemaViolation
+        //MissingCardType = 5,
+        //CollectionCantBeEmpty = 1,
+        //InvalidPropertyValue = 4,
+        //PropertyCantBeNull = 6,
+        //MissingVersion,
+}
+
+
+// Parse Errors
+// 1. Is it even valid json?
+// 2. Does it pass schema validation?
+
+// Parse warnings
+// Are there any?
+
+
+public class RenderWarning
+{
+  RendererWarnings
+        UnknownActionType = 8,
+        UnknownElementType = 9,
+            
+    HostConfigWarnings
+        InteractivityNotSupported = 3,
+        TooManyActions = 7,    
+}
+
+public class RenderError
+{
+    UnsupportedCardVersion = 10,
+    ElementTypeNotAllowed = 2, // TODO ASK DAVID: Do we need this?
+}
