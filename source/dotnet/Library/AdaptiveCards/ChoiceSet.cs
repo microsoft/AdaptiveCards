@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Xml.Serialization;
+using System;
 
 namespace AdaptiveCards
 {
@@ -100,6 +101,7 @@ namespace AdaptiveCards
 #if NET452
         [XmlElement]
 #endif
+        [Obsolete("ChoiceSet.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
 
         public bool ShouldSerializeIsSelected()

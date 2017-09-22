@@ -56,6 +56,7 @@ namespace AdaptiveCards.Rendering
         public static string GetFallbackText(CardElement cardElement)
         {
 #if WPF
+#pragma warning disable CS0618 // Type or member is obsolete
             if (!string.IsNullOrEmpty(cardElement.Speak))
             {
                 var doc = new System.Xml.XmlDocument();
@@ -67,6 +68,7 @@ namespace AdaptiveCards.Rendering
                 doc.LoadXml(xml);
                 return doc.InnerText;
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 #elif XAMARIN
             // TODO: Xamarin fallback
 #endif
