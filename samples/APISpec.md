@@ -1,21 +1,3 @@
-# TOC
-
-1. Install the SDK 
-2. Get a card
-- From object model
-- Parse JSON
-3. Render a card
-- Instantiate a renderer
-- Wire up action callback
-- Retrieve input values
-4. Basic customization
-- HostConfig
-- Native platform styling
-5. Advanced customization
-- Override element renderer
-- Register custom element renderer
-- Remove element renderer
-- Extension properties on elements
 
 # Getting and using the SDK
 
@@ -303,6 +285,8 @@ if(blurStr != null {
 
 ## Override markdown processing
 
+* TODO: This is NOT final yet
+
 ```csharp
 // DECISION: Typescript will support, others on backburner
 // TODO: File issue not processing any text
@@ -313,66 +297,3 @@ private string MarkdownHandler(string text) {
     // process markdown
 }
 ```
-
-
-# IGNORE BELOW THIS FOR NOW
-
-
-## Parsing and Validation
-
-## This section is not complete
-
-### Validate card against Host Config errors
-
-```csharp
-ValidationResult result = card.Validate(myHostConfig);
-if (!result.IsValid) {
-    IList<ValidationError> errors = result.Errors;
-}
-```
-
-### Validate against Host Config
-
-```csharp
-ValidationResult result = card.Validate(myHostConfig);
-```
-
-
-public class ParseFailure  {
-    string Message { get; }
-
-    bool IsError { get; }
-
-    //SchemaViolation
-        //MissingCardType = 5,
-        //CollectionCantBeEmpty = 1,
-        //InvalidPropertyValue = 4,
-        //PropertyCantBeNull = 6,
-        //MissingVersion,
-}
-
-
-// Parse Errors
-// 1. Is it even valid json?
-// 2. Does it pass schema validation?
-
-// Parse warnings
-// Are there any?
-
-
-public class RenderWarning
-{
-  RendererWarnings
-        UnknownActionType = 8,
-        UnknownElementType = 9,
-            
-    HostConfigWarnings
-        InteractivityNotSupported = 3,
-        TooManyActions = 7,    
-}
-
-public class RenderError
-{
-    UnsupportedCardVersion = 10,
-    ElementTypeNotAllowed = 2, // TODO ASK DAVID: Do we need this?
-}
