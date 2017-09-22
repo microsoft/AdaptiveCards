@@ -4,7 +4,6 @@
 #include "Container.h"
 #include "DateInput.h"
 #include "FactSet.h"
-#include "HttpAction.h"
 #include "Image.h"
 #include "ImageSet.h"
 #include "NumberInput.h"
@@ -37,7 +36,6 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
 
 const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> AdaptiveCard::ActionParsers =
 {
-    { ActionType::Http, HttpAction::Deserialize },
     { ActionType::OpenUrl, OpenUrlAction::Deserialize },
     { ActionType::ShowCard, ShowCardAction::Deserialize },
     { ActionType::Submit, SubmitAction::Deserialize },

@@ -11,7 +11,6 @@
 #include "AdaptiveDateInput.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
-#include "AdaptiveHttpAction.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveImageSet.h"
 #include "AdaptiveNumberInput.h"
@@ -133,10 +132,6 @@ HRESULT GenerateActionsProjection(
         ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement> projectedContainedAction;
         switch (containedAction->GetElementType())
         {
-            case ActionType::Http:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveHttpAction>(&projectedContainedAction,
-                    std::static_pointer_cast<AdaptiveCards::HttpAction>(containedAction)));
-                break;
             case ActionType::OpenUrl:
                 RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveOpenUrlAction>(&projectedContainedAction,
                     std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(containedAction)));

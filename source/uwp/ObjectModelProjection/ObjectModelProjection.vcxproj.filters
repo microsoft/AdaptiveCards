@@ -18,7 +18,6 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseActionElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\HttpAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ShowCardAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SubmitAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseInputElement.cpp" />
@@ -55,7 +54,6 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\HttpAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ShowCardAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SubmitAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
