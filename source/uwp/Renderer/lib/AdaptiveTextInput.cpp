@@ -158,21 +158,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedTextInput->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedTextInput->SetSpeak(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveTextInput::get_IsRequired(boolean* isRequired)
     {
         *isRequired = m_sharedTextInput->GetIsRequired();

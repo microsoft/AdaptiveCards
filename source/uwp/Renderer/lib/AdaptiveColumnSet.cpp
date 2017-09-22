@@ -86,19 +86,4 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedColumnSet->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedColumnSet->SetSpeak(out);
-        return S_OK;
-    }
-
 }}

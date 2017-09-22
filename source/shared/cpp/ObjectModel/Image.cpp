@@ -14,13 +14,12 @@ Image::Image() :
 Image::Image(
     Spacing spacing,
     bool separator,
-    std::string speak,
     std::string url,
     ImageStyle imageStyle,
     ImageSize imageSize,
     std::string altText,
     HorizontalAlignment hAlignment) :
-    BaseCardElement(CardElementType::Image, spacing, separator, speak),
+    BaseCardElement(CardElementType::Image, spacing, separator),
     m_url(url),
     m_imageStyle(imageStyle),
     m_imageSize(imageSize),

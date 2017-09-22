@@ -13,9 +13,8 @@ ImageSet::ImageSet() :
 ImageSet::ImageSet(
     Spacing spacing, 
     bool separation,
-    std::string speak,
     std::vector<std::shared_ptr<Image>>& images) :
-    BaseCardElement(CardElementType::ImageSet, spacing, separation, speak),
+    BaseCardElement(CardElementType::ImageSet, spacing, separation),
     m_images(images),
     m_imageSize(ImageSize::Default)
 {
@@ -23,9 +22,8 @@ ImageSet::ImageSet(
 
 ImageSet::ImageSet(
     Spacing spacing, 
-    bool separation,
-    std::string speak) :
-    BaseCardElement(CardElementType::ImageSet, spacing, separation, speak),
+    bool separation) :
+    BaseCardElement(CardElementType::ImageSet, spacing, separation),
     m_imageSize(ImageSize::Auto)
 {
 }

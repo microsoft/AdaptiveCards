@@ -147,21 +147,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedToggleInput->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedToggleInput->SetSpeak(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveToggleInput::get_IsRequired(boolean* isRequired)
     {
         *isRequired = m_sharedToggleInput->GetIsRequired();

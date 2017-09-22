@@ -148,21 +148,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedTimeInput->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedTimeInput->SetSpeak(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveTimeInput::get_IsRequired(boolean* isRequired)
     {
         *isRequired = m_sharedTimeInput->GetIsRequired();

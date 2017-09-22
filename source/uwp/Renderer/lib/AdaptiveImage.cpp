@@ -168,19 +168,4 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedImage->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveImage::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedImage->SetSpeak(out);
-        return S_OK;
-    }
-
 }}

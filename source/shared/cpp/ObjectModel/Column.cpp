@@ -38,21 +38,19 @@ Column::Column() : BaseCardElement(CardElementType::Column), m_size("Auto")
 Column::Column(
     Spacing spacing,
     bool separation,
-    std::string speak,
     std::string size,
     ContainerStyle style,
     std::vector<std::shared_ptr<BaseCardElement>>& items) :
-    BaseCardElement(CardElementType::Column, spacing, separation, speak), m_size(size), m_style(style), m_items(items)
+    BaseCardElement(CardElementType::Column, spacing, separation), m_size(size), m_style(style), m_items(items)
 {
 }
 
 Column::Column(
     Spacing spacing, 
     bool separation,
-    std::string speak,
     std::string size,
     ContainerStyle style) :
-    BaseCardElement(CardElementType::Column, spacing, separation, speak), m_size(size), m_style(style)
+    BaseCardElement(CardElementType::Column, spacing, separation), m_size(size), m_style(style)
 {
 }
 
