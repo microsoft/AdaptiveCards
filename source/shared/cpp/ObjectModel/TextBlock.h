@@ -10,12 +10,14 @@ class TextBlock : public BaseCardElement
 {
 public:
     TextBlock();
-    TextBlock(SeparationStyle separationStyle,
+    TextBlock(
+        Spacing spacing, 
+        std::shared_ptr<Separator> separator,
         std::string speak,
         std::string text,
         TextSize textSize,
         TextWeight textWeight,
-        TextColor textColor,
+        Color color,
         bool isSubtle,
         bool wrap,
         int maxLines,
@@ -36,8 +38,8 @@ public:
     TextWeight GetTextWeight() const;
     void SetTextWeight(const TextWeight value);
 
-    TextColor GetTextColor() const;
-    void SetTextColor(const TextColor value);
+    Color GetTextColor() const;
+    void SetTextColor(const Color value);
 
     bool GetWrap() const;
     void SetWrap(const bool value);
@@ -55,7 +57,7 @@ private:
     std::string m_text;
     TextSize m_textSize;
     TextWeight m_textWeight;
-    TextColor m_textColor;
+    Color m_textColor;
     bool m_isSubtle;
     bool m_wrap;
     unsigned int m_maxLines;

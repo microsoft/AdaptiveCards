@@ -11,14 +11,16 @@ Image::Image() :
 {
 }
 
-Image::Image(SeparationStyle separationStyle,
+Image::Image(
+    Spacing spacing,
+    std::shared_ptr<Separator> separator,
     std::string speak,
     std::string url,
     ImageStyle imageStyle,
     ImageSize imageSize,
     std::string altText,
     HorizontalAlignment hAlignment) :
-    BaseCardElement(CardElementType::Image, separationStyle, speak),
+    BaseCardElement(CardElementType::Image, spacing, separator, speak),
     m_url(url),
     m_imageStyle(imageStyle),
     m_imageSize(imageSize),

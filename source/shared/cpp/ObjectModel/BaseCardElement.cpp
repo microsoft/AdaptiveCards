@@ -2,8 +2,8 @@
 #include "HttpAction.h"
 #include "ShowCardAction.h"
 #include "OpenUrlAction.h"
-#include "SubmitAction.h"
 #include "ParseUtil.h"
+#include "SubmitAction.h"
 
 using namespace AdaptiveCards;
 
@@ -17,16 +17,18 @@ const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionEle
 
 BaseCardElement::BaseCardElement(
     CardElementType type,
-    SeparationStyle separationStyle,
+    Spacing spacing,
+    std::shared_ptr<Separator> separator,
     std::string speak) :
     m_type(type),
-    m_separationStyle(separationStyle),
+    m_spacing(spacing),
+    m_separator(separator),
     m_speak(speak)
 {
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
-    m_type(type), m_separationStyle(SeparationStyle::Default), m_speak("")
+    m_type(type), m_spacing(Spacing::Default), m_speak("")
 {
 }
 
@@ -34,14 +36,24 @@ AdaptiveCards::BaseCardElement::~BaseCardElement()
 {
 }
 
-SeparationStyle BaseCardElement::GetSeparationStyle() const
+std::shared_ptr<Separator> BaseCardElement::GetSeparator() const
 {
-    return m_separationStyle;
+    return m_separator;
 }
 
-void BaseCardElement::SetSeparationStyle(const SeparationStyle value)
+void BaseCardElement::SetSeparator(const std::shared_ptr<Separator> value)
 {
-    m_separationStyle = value;
+    m_separator = value;
+}
+
+Spacing BaseCardElement::GetSpacing() const
+{
+    return m_spacing;
+}
+
+void BaseCardElement::SetSpacing(const Spacing value)
+{
+    m_spacing = value;
 }
 
 std::string BaseCardElement::GetSpeak() const
@@ -64,7 +76,14 @@ Json::Value BaseCardElement::SerializeToJsonValue()
     Json::Value root;
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(GetElementType());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separation)] = SeparationStyleToString(GetSeparationStyle());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)] = SpacingToString(GetSpacing());
+
+    Json::Value jsonSeparator;
+    jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ColorToString(GetSeparator()->GetColor());
+    jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Thickness)] = SeparatorThicknessToString(GetSeparator()->GetThickness());
+
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = jsonSeparator;
+
     return root;
 }
 
