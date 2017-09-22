@@ -27,11 +27,10 @@
 * TODO: Should it be AdaptiveCards or Microsoft.AdaptiveCards?
 
 ```console
-nuget install AdaptiveCards
+dotnet add package AdaptiveCards
 ```
 
 ```csharp
-// Should be same as library name
 using AdaptiveCards; 
 ```
 
@@ -208,110 +207,12 @@ An example XAML ResourceDictionary
 ```
 
 
-## Wire up Action events
-
-1. DAN NOTES: Event even if we have a default action like showcard, considerations for inline vs popup
-1. Ability to renfered the UI element 
-
-```csharp
-
-renderer.OnAction += ActionHander;
-
-private void ActionHandler(object sender, ActionEventArgs e) {
-    // What card was tapped
-    // TODO: File issue to make sure we can get the card instance in UWP
-    AdaptiveCard card = e.Card;
-
-    if(e.Action is typeof(AdaptiveOpenUrlAction)) {
-        // open URL
-    }
-    ...
-}
-```
-
-### Option 2 
-
-* In this model OpenUrl and ShowCard are implemented by default, and other actions would only show up if explicitly supported. We should show warnings for any actions we dropped. 
-
-```c#
-public class WindowsForegroundAction : IAdaptiveAction {
-    string TypeName => "WindowsAction.Foreground";
-
-    Action<Card> OnInvoke = (card) => ...; // activate app
-}
-
-renderer.ActionHandlers.Set<WindowsForegroundAction>((e) => {
-    // activate app
-})
-
-```
-
-## Inputs
-
-// TODO: Document the fact that we do no input validation
-
-```csharp
-private void ActionHandler(object sender, ActionEventArgs e) {
-    if(e.Action is typeof(SubmitAction) {
-        
-        // Includes data and all inputs    
-        MyForm form = JsonConvert.DeserializeObject<MyForm>(e.UserInputs.AsJson());
-
-    }
-    ...
-}
-```
-
-### Input data binding
-
-* TODO: Move this to implementation spec
-https://github.com/Microsoft/AdaptiveCards/issues/390
-
-**Payload**
-
-```json
-"body": [
-    {
-        "type": "Input.Text",
-        "id": "myTextInput"
-    },
-     {
-        "type": "Input.Number",
-        "id": "myNumberInput"
-    }
-],
-"actions": [
-    {
-        "type": "Action.Submit",
-        "data": { 
-            "myCustomData": "5"
-        }
-    }
-]
-
-
-**Callback JSON**
-
-```json
-{
-    "myCustomData": "5",
-    "myTextInput": "Hello Input.Text",
-    "myNumberInput": 5
-}
-```
-
-
 ## Generate UI tree
 
 ```csharp
 // Render and let the UI stack download images 
 // This means a card could be added to the app and then images load causing re-layout
-RenderResult result = await renderer.RenderAsync(card, cancellationToken: null);
-
-// TODO: Andrew suggested we move the action here to allow a customizable handler based on the type of card
-result.OnAction((e) => {
-    
-});
+RenderResult result = await renderer.RenderAsync(card, prefetchImages: false, cancellationToken: null);
 
 public class RenderWarning
 {
@@ -342,6 +243,41 @@ else {
     // host config warnings
     // images failed to load/timeout
     // TODO: what else?
+}
+```
+
+
+## Wire up Action events
+
+1. DAN NOTES: Event even if we have a default action like showcard, considerations for inline vs popup
+
+```csharp
+
+// option 1
+renderer.OnAction += ActionHander;
+
+// option 2
+result.OnAction += ActionHandler;
+
+private void ActionHandler(object sender, ActionEventArgs e) {
+     // What card was tapped
+    AdaptiveCard card = e.Card;
+
+    // Note: we DO NOT do any input validation, be prepared to parse the data gracefully
+    JObject inputs = e.UserInputs.AsJson(InputValueMode.RawString);
+    JObject data = e.Data;
+    AdaptiveActionBase action = e.Action;
+    
+    if(action is typeof(OpenUrlAction)) {
+        // open URL
+    }
+    else if(action is typeof(SubmitAction) {
+        
+        // Includes data and all inputs    
+        MyForm form = JsonConvert.DeserializeObject<MyForm>(e.UserInputs.AsJson());
+
+    }
+    ...
 }
 ```
 
@@ -424,16 +360,22 @@ private string MarkdownHandler(string text) {
 ```
 
 
-## Custom properties on elements
+## Additional properties on elements
 
 * Should Host Config allow hosts to declare their custom extensions? We could build tooling around it if so
+https://github.com/Microsoft/AdaptiveCards/issues/234
 
 ```json
 {
-    "type": "TextBlock",
-    "flashing": true,
-    "extensions": {
-        "flashing": true
-    }
+    "type": "Image",
+    "src": "http://",
+    "-blur": true
+}
+```
+
+```csharp
+string blurStr = image.AdditionalProperties["-blur"];
+if(blurStr != null {
+   bool blur = bool.Parse(blurStr);
 }
 ```
