@@ -154,7 +154,6 @@ $font-family: 'Segoe UI', sans-serif;
         font-family: $font-family;
         font-size: $font-size;
         color: $color;
-        height: 31px;
         
         &.ac-textInput {
             resize: none;
@@ -162,6 +161,10 @@ $font-family: 'Segoe UI', sans-serif;
 
         &.ac-textInput.ac-multiline {
             height: 72px;
+        }
+
+        &.ac-textInput, &.ac-numberInput, &.ac-dateInput, &.ac-timeInput {
+            height: 31px;
         }
 
         &.ac-textInput, &.ac-numberInput, &.ac-dateInput, &.ac-timeInput, &.ac-multichoiceInput {

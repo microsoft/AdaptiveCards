@@ -73,7 +73,6 @@ a.ac-anchor:visited:active {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   color: black;
-  height: 31px;
 }
 
 .ac-input.ac-textInput {
@@ -82,6 +81,10 @@ a.ac-anchor:visited:active {
 
 .ac-input.ac-textInput.ac-multiline {
   height: 72px;
+}
+
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput {
+  height: 31px;
 }
 
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
