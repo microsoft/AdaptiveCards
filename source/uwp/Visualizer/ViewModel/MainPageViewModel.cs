@@ -21,7 +21,15 @@ namespace XamlCardVisualizer.ViewModel
         public DocumentViewModel CurrentDocument
         {
             get { return _currentDocument; }
-            set { SetProperty(ref _currentDocument, value); }
+            set
+            {
+                SetProperty(ref _currentDocument, value);
+
+                if (value != null)
+                {
+                    value.ReloadIfNeeded();
+                }
+            }
         }
 
         public HostConfigEditorViewModel HostConfigEditor { get; private set; }
@@ -42,17 +50,22 @@ namespace XamlCardVisualizer.ViewModel
 
         private void ReRenderCards()
         {
+            // Set all card docs to outdated
             foreach (var doc in OpenDocuments)
             {
-                doc.Reload();
+                doc.IsOutdated = true;
+            }
+
+            if (CurrentDocument != null)
+            {
+                // Reload the current doc
+                CurrentDocument.ReloadIfNeeded();
             }
         }
 
         public void NewDocument()
         {
-            OpenDocuments.Add(new DocumentViewModel(this)
-            {
-                Payload = @"{
+            OpenDocuments.Add(DocumentViewModel.LoadFromPayload(this, @"{
   ""type"": ""AdaptiveCard"",
   ""version"": ""0.5"",
   ""body"": [
@@ -61,8 +74,7 @@ namespace XamlCardVisualizer.ViewModel
       ""text"": ""Untitled card""
     }
   ]
-}"
-            });
+}"));
             CurrentDocument = OpenDocuments.Last();
         }
 

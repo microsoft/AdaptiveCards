@@ -22,7 +22,7 @@ namespace XamlCardVisualizer.ViewModel
     {
         private static XamlCardRenderer _renderer;
 
-        public DocumentViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
+        private DocumentViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
 
         private UIElement _renderedCard;
         public UIElement RenderedCard
@@ -34,8 +34,16 @@ namespace XamlCardVisualizer.ViewModel
         public static async Task<DocumentViewModel> LoadFromFileAsync(MainPageViewModel mainPageViewModel, IStorageFile file, string token)
         {
             var answer = new DocumentViewModel(mainPageViewModel);
-            await answer.LoadFromFileAsync(file, token);
+            await answer.LoadFromFileAsync(file, token, assignPayloadWithoutLoading: true);
             return answer;
+        }
+
+        public static DocumentViewModel LoadFromPayload(MainPageViewModel mainPageViewModel, string payload)
+        {
+            return new DocumentViewModel(mainPageViewModel)
+            {
+                _payload = payload
+            };
         }
 
         protected override async void LoadPayload(string payload)

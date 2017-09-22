@@ -29,7 +29,9 @@ namespace XamlCardVisualizer.ViewModel
             MainPageViewModel = model;
         }
 
-        private string _payload = "";
+        public bool IsOutdated { get; set; } = true;
+
+        protected string _payload = "";
         public string Payload
         {
             get { return _payload; }
@@ -55,6 +57,8 @@ namespace XamlCardVisualizer.ViewModel
 
         public async void Reload()
         {
+            IsOutdated = true;
+
             if (!IsReloading)
             {
                 IsReloading = true;
@@ -64,6 +68,14 @@ namespace XamlCardVisualizer.ViewModel
                 IsReloading = false;
                 NotifyPropertyChanged(DelayedUpdatePayload);
                 Load();
+            }
+        }
+
+        public void ReloadIfNeeded()
+        {
+            if (IsOutdated)
+            {
+                Reload();
             }
         }
 
@@ -88,12 +100,21 @@ namespace XamlCardVisualizer.ViewModel
 
         public ObservableCollection<ErrorViewModel> Errors { get; private set; } = new ObservableCollection<ErrorViewModel>();
 
-        protected async Task LoadFromFileAsync(IStorageFile file, string token)
+        protected async Task LoadFromFileAsync(IStorageFile file, string token, bool assignPayloadWithoutLoading)
         {
             this.Name = file.Name;
             this.File = file;
             this.Token = token;
-            Payload = await FileIO.ReadTextAsync(file);
+
+            string payloadText = await FileIO.ReadTextAsync(file);
+            if (assignPayloadWithoutLoading)
+            {
+                _payload = payloadText;
+            }
+            else
+            {
+                Payload = payloadText;
+            }
         }
 
         public async Task SaveAsync()
@@ -138,6 +159,8 @@ namespace XamlCardVisualizer.ViewModel
                     }
                 });
             }
+
+            IsOutdated = false;
         }
 
         protected abstract void LoadPayload(string payload);
