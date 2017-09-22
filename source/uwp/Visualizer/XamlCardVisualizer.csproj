@@ -48,6 +48,9 @@
     <Compile Include="DocumentView.xaml.cs">
       <DependentUpon>DocumentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GenericDocumentView.xaml.cs">
+      <DependentUpon>GenericDocumentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\BindableBase.cs" />
     <Compile Include="Helpers\IListExtensions.cs" />
     <Compile Include="Helpers\PayloadValidator.cs" />
@@ -55,10 +58,14 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceResolvers\MySymbolResourceResolver.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="TabView.xaml.cs">
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ErrorViewModel.cs" />
+    <Compile Include="ViewModel\GenericDocumentViewModel.cs" />
+    <Compile Include="ViewModel\HostConfigEditorViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\DocumentViewModel.cs" />
   </ItemGroup>
@@ -66,42 +73,42 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\..\..\samples\Scenarios\BingSports.json">
-      <Link>Samples\BingSports.json</Link>
+    <Content Include="..\..\..\samples\v1.0\Scenarios\StockUpdate.json">
+      <Link>Samples\StockUpdate.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\BingStock.json">
-      <Link>Samples\BingStock.json</Link>
-    </Content>
-    <Content Include="..\..\..\samples\Scenarios\CalendarReminder.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\CalendarReminder.json">
       <Link>Samples\CalendarReminder.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\FlightItinerary.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightItinerary.json">
       <Link>Samples\FlightItinerary.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\FlightUpdate.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\FlightUpdate.json">
       <Link>Samples\FlightUpdate.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\ImageGallery.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\ImageGallery.json">
       <Link>Samples\ImageGallery.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\Inputs.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\Inputs.json">
       <Link>Samples\Inputs.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\Restaurant.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\Restaurant.json">
       <Link>Samples\Restaurant.json</Link>
     </Content>
-    <Content Include="..\..\..\samples\Scenarios\TrelloCardCreated.json">
-      <Link>Samples\TrelloCardCreated.json</Link>
+    <Content Include="..\..\..\samples\v1.0\Scenarios\ActivityUpdate.json">
+      <Link>Samples\ActivityUpdate.json</Link>
     </Content>
     <Content Include="..\..\..\schemas\adaptive-card.json">
       <Link>Schemas\adaptive-card.json</Link>
     </Content>
-    <Content Include="..\..\..\schemas\renderer-options.json">
+    <Content Include="..\..\..\schemas\host-config.json">
       <Link>Schemas\renderer-options.json</Link>
     </Content>
+    <Content Include="HostConfigs\DefaultHostConfig.json" />
     <None Include="XamlCardVisualizer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Symbols\down.png" />
+    <Content Include="Assets\Symbols\up.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -117,6 +124,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="DocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GenericDocumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,9 +165,7 @@
       <Version>3.0.3</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="HostConfigs\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

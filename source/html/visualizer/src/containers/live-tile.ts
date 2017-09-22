@@ -57,14 +57,14 @@ export class LiveTileContainer extends HostContainer {
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
-                normal: 14,
+                default: 14,
                 medium: 17,
                 large: 21,
                 extraLarge: 26
             },
             fontWeights: {
                 lighter: 200,
-                normal: 400,
+                default: 400,
                 bolder: 600
             },
             containerStyles: {
@@ -148,7 +148,7 @@ export class LiveTileContainer extends HostContainer {
             factSet: {
                 title: {
                     color: TextColor.Default,
-                    size: TextSize.Normal,
+                    size: TextSize.Default,
                     isSubtle: false,
                     weight: TextWeight.Bolder,
                     wrap: true,
@@ -156,9 +156,9 @@ export class LiveTileContainer extends HostContainer {
                 },
                 value: {
                     color: TextColor.Default,
-                    size: TextSize.Normal,
+                    size: TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Normal,
+                    weight: TextWeight.Default,
                     wrap: true,
                 },
                 spacing: 10

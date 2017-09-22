@@ -7,7 +7,7 @@
 
 #import "ACRContainerRenderer.h"
 #import "ACRColumnView.h"
-#import "ACRRenderer.h"
+#import "ACRRendererPrivate.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
 

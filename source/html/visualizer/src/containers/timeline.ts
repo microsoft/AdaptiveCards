@@ -57,14 +57,14 @@ export class TimelineContainer extends HostContainer {
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
-                normal: 13,
+                default: 13,
                 medium: 20,
                 large: 24,
                 extraLarge: 26
             },
             fontWeights: {
                 lighter: 200,
-                normal: 400,
+                default: 400,
                 bolder: 600
             },
             containerStyles: {
@@ -148,7 +148,7 @@ export class TimelineContainer extends HostContainer {
             factSet: {
                 title: {
                     color: TextColor.Default,
-                    size: TextSize.Normal,
+                    size: TextSize.Default,
                     isSubtle: true,
                     weight: TextWeight.Bolder,
                     wrap: false,
@@ -156,9 +156,9 @@ export class TimelineContainer extends HostContainer {
                 },
                 value: {
                     color: TextColor.Default,
-                    size: TextSize.Normal,
+                    size: TextSize.Default,
                     isSubtle: true,
-                    weight: TextWeight.Normal,
+                    weight: TextWeight.Default,
                     wrap: true,
                 },
                 spacing: 10

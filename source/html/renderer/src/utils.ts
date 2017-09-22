@@ -43,8 +43,8 @@ export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name:
 
         if (isValueProperty) {
             let value = targetEnum[key];
-            
-            if (typeof value === 'string' || value instanceof String) {
+
+            if (value && typeof value === "string") {
                 if (value.toLowerCase() === name.toLowerCase()) {
                     return parseInt(key, 10);
                 }
@@ -55,6 +55,15 @@ export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name:
     return defaultValue;
 }
 
+export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: any): any {
+    if (typeof value === "string") {
+        return getEnumValueOrDefault(targetEnum, value, defaultValue);
+    } else if (typeof value === "number") {
+        return getValueOrDefault<typeof targetEnum>(value, defaultValue);
+    } else {
+        return defaultValue;
+    }
+}
 
 export function renderSeparation(separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
     if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {

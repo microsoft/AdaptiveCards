@@ -13,6 +13,8 @@
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
 #include "XamlBuilder.h"
+#include "XamlCardGetResourceStreamArgs.h"
+#include "XamlCardResourceResolvers.h"
 #include "XamlHelpers.h"
 #include "XamlStyleKeyGenerators.h"
 #include "json/json.h"
@@ -130,6 +132,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         boolean isOuterCard)
     {
         *xamlTreeRoot = nullptr;
+        m_renderer = renderer;
 
         ComPtr<IPanel> childElementContainer;
         ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, &childElementContainer);
@@ -431,6 +434,78 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     template<typename T>
     void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri, T* uiElement)
     {
+        // Get the resource resolvers
+        ComPtr<IXamlCardResourceResolvers> resolvers;
+        THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resolvers));
+
+        // Get the image url scheme
+        HSTRING schemeName;
+        THROW_IF_FAILED(imageUri->get_SchemeName(&schemeName));
+
+        // Get the resolver for the image
+        ComPtr<IXamlCardResourceResolver> resolver;
+        THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
+
+        // If we have a resolver
+        if (resolver != nullptr)
+        {
+            // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
+            // the tracker to subscribe to the ImageLoaded/Failed events
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+
+            if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
+            {
+                m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+            }
+
+            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
+            ComPtr<IBitmapSource> bitmapSource;
+            bitmapImage.As(&bitmapSource);
+
+            // Create the arguments to pass to the resolver
+            ComPtr<IXamlCardGetResourceStreamArgs> args;
+            THROW_IF_FAILED(MakeAndInitialize<XamlCardGetResourceStreamArgs>(&args, imageUri));
+
+            // And call the resolver to get the image stream
+            ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
+            THROW_IF_FAILED(resolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
+
+            ComPtr<T> strongImageControl(uiElement);
+            ComPtr<XamlBuilder> strongThis(this);
+            THROW_IF_FAILED(getResourceStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
+                ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
+            {
+                if (status == AsyncStatus::Completed)
+                {
+                    // Get the random access stream
+                    ComPtr<IRandomAccessStream> randomAccessStream;
+                    RETURN_IF_FAILED(operation->GetResults(&randomAccessStream));
+
+                    if (randomAccessStream == nullptr)
+                    {
+                        m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                        return S_OK;
+                    }
+
+                    RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+
+                    ComPtr<IImageSource> imageSource;
+                    RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+
+                    SetImageSource(strongImageControl.Get(), imageSource.Get());
+                    return S_OK;
+                }
+                else
+                {
+                    m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                    return S_OK;
+                }
+            }).Get()));
+
+            return;
+        }
+
+        // Otherwise, no resolver...
         if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
         {
             // If we've been explicitly told to let Xaml handle the image loading, or there are

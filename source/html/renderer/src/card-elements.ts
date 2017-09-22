@@ -420,8 +420,8 @@ export abstract class CardElement {
 }
 
 export class TextBlock extends CardElement {
-    size: Enums.TextSize = Enums.TextSize.Normal;
-    weight: Enums.TextWeight = Enums.TextWeight.Normal;
+    size: Enums.TextSize = Enums.TextSize.Default;
+    weight: Enums.TextWeight = Enums.TextWeight.Default;
     color: Enums.TextColor = Enums.TextColor.Default;
     text: string;
     isSubtle: boolean = false;
@@ -466,7 +466,7 @@ export class TextBlock extends CardElement {
                     fontSize = this.hostConfig.fontSizes.extraLarge;
                     break;
                 default:
-                    fontSize = this.hostConfig.fontSizes.normal;
+                    fontSize = this.hostConfig.fontSizes.default;
                     break;
             }
 
@@ -513,7 +513,7 @@ export class TextBlock extends CardElement {
                     fontWeight = this.hostConfig.fontWeights.bolder;
                     break;
                 default:
-                    fontWeight = this.hostConfig.fontWeights.normal;
+                    fontWeight = this.hostConfig.fontWeights.default;
                     break;
             }
 
@@ -574,8 +574,37 @@ export class TextBlock extends CardElement {
         super.parse(json);
 
         this.text = json["text"];
-        this.size = Utils.getEnumValueOrDefault(Enums.TextSize, json["size"], this.size);
-        this.weight = Utils.getEnumValueOrDefault(Enums.TextWeight, json["weight"], this.weight);
+
+        var sizeString = json["size"];
+
+        if (sizeString && typeof sizeString === "string" && sizeString.toLowerCase() === "normal") {
+            this.size = Enums.TextSize.Default;
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The TextBlock.size value \"normal\" is deprecated and will be removed. Use \"default\" instead."
+                });
+        }
+        else {
+            this.size = Utils.getEnumValueOrDefault(Enums.TextSize, sizeString, this.size);
+        }
+
+        var weightString = json["weight"];
+
+        if (weightString && typeof weightString === "string" && weightString.toLowerCase() === "normal") {
+            this.weight = Enums.TextWeight.Default;
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The TextBlock.weight value \"normal\" is deprecated and will be removed. Use \"default\" instead."
+                });
+        }
+        else {
+            this.weight = Utils.getEnumValueOrDefault(Enums.TextWeight, weightString, this.weight);
+        }
+
         this.color = Utils.getEnumValueOrDefault(Enums.TextColor, json["color"], this.color);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"] === undefined ? false : json["wrap"];
@@ -824,7 +853,7 @@ export class Image extends CardElement {
         return element;
     }
 
-    style: Enums.ImageStyle = Enums.ImageStyle.Normal;
+    style: Enums.ImageStyle = Enums.ImageStyle.Default;
     url: string;
     size: Enums.Size = Enums.Size.Auto;
     selectAction: Action;
@@ -850,7 +879,23 @@ export class Image extends CardElement {
         super.parse(json);
 
         this.url = json["url"];
-        this.style = Utils.getEnumValueOrDefault(Enums.ImageStyle, json["style"], this.style);
+
+
+        var styleString = json["style"];
+
+        if (styleString && typeof styleString === "string" && styleString.toLowerCase() === "normal") {
+            this.style = Enums.ImageStyle.Default;
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.Deprecated,
+                    message: "The Image.style value \"normal\" is deprecated and will be removed. Use \"default\" instead."
+                });
+        }
+        else {
+            this.style = Utils.getEnumValueOrDefault(Enums.ImageStyle, styleString, this.style);
+        }
+
         this.size = Utils.getEnumValueOrDefault(Enums.Size, json["size"], this.size);
         this.altText = json["altText"];
 
@@ -1132,8 +1177,9 @@ export class ToggleInput extends Input {
         super.parse(json);
 
         this.title = json["title"];
-        this.valueOn = json["valueOn"];
-        this.valueOff = json["valueOff"];
+
+        this.valueOn = Utils.getValueOrDefault<string>(json["valueOn"], this.valueOn);
+        this.valueOff = Utils.getValueOrDefault<string>(json["valueOff"], this.valueOff);
     }
 
     get value(): string {
@@ -2017,14 +2063,14 @@ class ActionCollection {
         var element = document.createElement("div");
 
         this._actionCardContainer = document.createElement("div");
-
+        
         this._renderedActionCount = 0;
 
         var maxActions = this._owner.hostConfig.actions.maxActions ? Math.min(this._owner.hostConfig.actions.maxActions, this.items.length) : this.items.length;
 
         var forbiddenActionTypes = this._owner.getForbiddenActionTypes();
 
-        if (this._owner.hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
+        if (AdaptiveCard.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && isActionAllowed(this.items[i], forbiddenActionTypes)) {
             this.showActionCard(<ShowCardAction>this.items[0]);
             this._renderedActionCount = 1;
         }
@@ -3193,6 +3239,7 @@ export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: IVersion = { major: 1, minor: 0 };
 
     static useAutoPadding: boolean = false;
+    static preExpandSingleShowCardAction: boolean = false;
 
     static elementTypeRegistry = new TypeRegistry<CardElement>();
     static actionTypeRegistry = new TypeRegistry<Action>();
@@ -3375,14 +3422,14 @@ var defaultHostConfig: HostConfig.IHostConfig = {
     fontFamily: "Segoe UI",
     fontSizes: {
         small: 8,
-        normal: 10,
+        default: 10,
         medium: 12,
         large: 14,
         extraLarge: 16
     },
     fontWeights: {
         lighter: 200,
-        normal: 400,
+        default: 400,
         bolder: 600
     },
     containerStyles: {
@@ -3435,7 +3482,7 @@ var defaultHostConfig: HostConfig.IHostConfig = {
     factSet: {
         title: {
             color: Enums.TextColor.Default,
-            size: Enums.TextSize.Normal,
+            size: Enums.TextSize.Default,
             isSubtle: false,
             weight: Enums.TextWeight.Bolder,
             wrap: true,
@@ -3443,9 +3490,9 @@ var defaultHostConfig: HostConfig.IHostConfig = {
         },
         value: {
             color: Enums.TextColor.Default,
-            size: Enums.TextSize.Normal,
+            size: Enums.TextSize.Default,
             isSubtle: false,
-            weight: Enums.TextWeight.Normal,
+            weight: Enums.TextWeight.Default,
             wrap: true
         },
         spacing: 10

@@ -6,58 +6,64 @@
 //
 
 #import "ACRViewController.h"
-#import "ACRHostConfig.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACOAdaptiveCardPrivate.h"
 #import "SharedAdaptiveCard.h"
-#import "ACRRenderer.h"
+#import "ACRRendererPrivate.h"
 #import <AVFoundation/AVFoundation.h>
 
 using namespace AdaptiveCards;
 
 @implementation ACRViewController
 {
-    std::shared_ptr<AdaptiveCard> adaptiveCard;
-    std::shared_ptr<HostConfig> config;
-    CGRect guideFrame;
+    std::shared_ptr<AdaptiveCard> _adaptiveCard;
+    std::shared_ptr<HostConfig> _hostConfig;
+    CGRect _guideFrame;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-        self.jsonString = nil;
-        guideFrame = CGRectMake(0, 0, 0, 0);
-        config = std::make_shared<HostConfig>();
+        _guideFrame = CGRectMake(0, 0, 0, 0);
+        _hostConfig = std::make_shared<HostConfig>();
     }
     return self;
 }
 
-- (instancetype)init:(NSString *)str withFrame:(CGRect)frame {
+- (instancetype)init:(ACOAdaptiveCard *)card
+          hostconfig:(ACOHostConfig *)config
+               frame:(CGRect)frame
+{
     self = [self initWithNibName:nil bundle:nil];
-    if(self) {
-        self.jsonString = str;
-        guideFrame = frame;
+    if(self)
+    {
+        _adaptiveCard = [card getCard];
+        _hostConfig = [config getHostConfig];
+        _guideFrame = frame;
     }
-    
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self buildViewFromADC:self.jsonString];
+    [self render];
 }
 
-- (void)buildViewFromADC:(NSString *)str
+- (void)render
 {
     UIView *view = self.view;
-    view.frame = guideFrame;
+    view.frame = _guideFrame;
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
-    UIView *newView = [ACRRenderer renderWithJson:str
-                                           inputs:inputs
-                                   viewController:self
-                                       guideFrame:guideFrame
-                                       hostconfig:config];
+
+    UIView *newView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
+                                                             inputs:inputs
+                                                     viewController:self
+                                                         guideFrame:_guideFrame
+                                                         hostconfig:_hostConfig];
+
     [view addSubview:newView];
-    
+
     NSLayoutConstraint *constraint =
     [NSLayoutConstraint constraintWithItem:view
                                  attribute:NSLayoutAttributeLeading
@@ -67,7 +73,7 @@ using namespace AdaptiveCards;
                                 multiplier:1.0
                                   constant:0];
     [view addConstraint:constraint];
-    
+
     constraint =
     [NSLayoutConstraint constraintWithItem:view
                                  attribute:NSLayoutAttributeTrailing
@@ -77,7 +83,7 @@ using namespace AdaptiveCards;
                                 multiplier:1.0
                                   constant:0];
     [view addConstraint:constraint];
-    
+
     constraint =
     [NSLayoutConstraint constraintWithItem:view
                                  attribute:NSLayoutAttributeTop
@@ -87,7 +93,7 @@ using namespace AdaptiveCards;
                                 multiplier:1.0
                                   constant:0];
     [view addConstraint:constraint];
-    
+
     constraint =
     [NSLayoutConstraint constraintWithItem:view
                                  attribute:NSLayoutAttributeBottom
