@@ -1,7 +1,7 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.9",
+    "version": "0.5",
     "speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
     "body": [
         {
@@ -10,41 +10,44 @@
                 {
                     "type": "TextBlock",
                     "text": "Microsoft Corp (NASDAQ: MSFT)",
+                    "size": "medium",
                     "isSubtle": true
                 },
                 {
                     "type": "TextBlock",
-                    "text": "January 19, 4:00 PM EST",
+                    "text": "September 19, 4:00 PM EST",
                     "isSubtle": true
                 }
             ]
         },
         {
             "type": "Container",
+            "spacing": "none",
             "items": [
                 {
                     "type": "ColumnSet",
                     "columns": [
                         {
                             "type": "Column",
-                            "size": "stretch",
+                            "width": "stretch",
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "62.30",
+                                    "text": "75.30",
                                     "size": "extraLarge"
                                 },
                                 {
                                     "type": "TextBlock",
                                     "text": "▼ 0.20 (0.32%)",
                                     "size": "small",
-                                    "color": "attention"
+                                    "color": "attention",
+                                    "spacing": "none"
                                 }
                             ]
                         },
                         {
                             "type": "Column",
-                            "size": "auto",
+                            "width": "auto",
                             "items": [
                                 {
                                     "type": "FactSet",

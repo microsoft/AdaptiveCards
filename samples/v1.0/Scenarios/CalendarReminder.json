@@ -13,13 +13,13 @@
     {
       "type": "TextBlock",
       "text": "Conf Room 112/3377 (10)",
-      "isSubtle": true
+      "isSubtle":true
     },
     {
       "type": "TextBlock",
       "text": "12:30 PM - 1:30 PM",
-      "isSubtle": true,
-      "separation": "none"
+      "isSubtle":true,
+      "spacing":"none"
     },
     {
       "type": "TextBlock",
@@ -28,11 +28,13 @@
     {
       "type": "Input.ChoiceSet",
       "id": "snooze",
-      "style": "compact",
+      "style":"compact",
+      "value": "5",
       "choices": [
         {
           "title": "5 minutes",
-          "value": "5"
+          "value": "5",
+          "isSelected": true
         },
         {
           "title": "15 minutes",
@@ -48,18 +50,13 @@
   "actions": [
     {
       "type": "Action.Submit",
-      "data": "snooze",
-      "title": "Snooze"
+      "title": "Snooze",
+      "data": { "x": "snooze" }
     },
     {
       "type": "Action.Submit",
-      "data": "late",
-      "title": "I'll be late"
-    },
-    {
-      "type": "Action.Submit",
-      "data": "dismiss",
-      "title": "Dismiss"
+      "title": "I'll be late",
+      "data": { "x": "late" }
     }
   ]
 }

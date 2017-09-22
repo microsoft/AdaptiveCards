@@ -9,6 +9,8 @@ namespace AdaptiveCards
     namespace XamlCardRenderer
     {
         runtimeclass XamlCardRenderer;
+        runtimeclass XamlCardResourceResolvers;
+        runtimeclass XamlCardGetResourceStreamArgs;
 
         runtimeclass AdaptiveTextBlock;
         runtimeclass AdaptiveCard;
@@ -53,6 +55,10 @@ namespace AdaptiveCards
         runtimeclass AdaptiveChoiceSetInputConfig;
         runtimeclass AdaptiveHostConfig;
         runtimeclass AdaptiveActionEventArgs;
+
+        interface IXamlCardResourceResolvers;
+        interface IXamlCardResourceResolver;
+        interface IXamlCardGetResourceStreamArgs;
 
         interface IAdaptiveCardElement;
         interface IAdaptiveActionElement;
@@ -766,9 +772,13 @@ namespace AdaptiveCards
         ]
         interface IXamlCardRenderer : IInspectable
         {
+            [propget] HRESULT ResourceResolvers([out, retval] XamlCardResourceResolvers** value);
+
             HRESULT SetRenderOptions([in] RenderOptions options);
             HRESULT SetOverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);
             HRESULT SetHostConfig([in] AdaptiveHostConfig* hostConfig);
+            HRESULT SetFixedDimensions([in] UINT32 desiredWidth, [in] UINT32 desiredHeight);
+            HRESULT ResetFixedDimensions();
 
             HRESULT RenderCardAsXaml([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.UI.Xaml.UIElement** result);
             HRESULT RenderCardAsXamlAsync([in] AdaptiveCard* adaptiveCard, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
@@ -1611,6 +1621,67 @@ namespace AdaptiveCards
         {
             [default] interface IAdaptiveSubmitAction;
             interface IAdaptiveActionElement;
+        };
+
+        [
+            uuid(3b655db6-54d2-47e7-8658-b58ced5fb237),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(XamlCardResourceResolvers)
+        ]
+        interface IXamlCardResourceResolvers : IInspectable
+        {
+            HRESULT Set([in] HSTRING scheme, [in] IXamlCardResourceResolver* resolver);
+            HRESULT Get([in] HSTRING scheme, [out, retval] IXamlCardResourceResolver** resolver);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass XamlCardResourceResolvers
+        {
+            [default] interface IXamlCardResourceResolvers;
+        };
+
+        [
+            uuid(30f17ba9-133a-4484-8002-a8f4b6764e3f),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IXamlCardResourceResolver : IInspectable
+        {
+            HRESULT GetResourceStreamAsync([in] XamlCardGetResourceStreamArgs* args, [out, retval] Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream*>** result);
+        };
+
+        [
+            uuid(e1d63f44-6550-454f-99f4-d02df5ae9b8c),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(XamlCardGetResourceStreamArgs)
+        ]
+        interface IXamlCardGetResourceStreamArgsFactory : IInspectable
+        {
+            HRESULT CreateXamlCardGetResourceStreamArgs(
+                [in] Windows.Foundation.Uri* value,
+                [out, retval] XamlCardGetResourceStreamArgs** args
+                );
+        };
+
+        [
+            uuid(0eea761b-5a3e-4f1f-86f6-d511c178e671),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(XamlCardGetResourceStreamArgs)
+        ]
+        interface IXamlCardGetResourceStreamArgs : IInspectable
+        {
+            [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(IXamlCardGetResourceStreamArgsFactory, NTDDI_WIN10_RS1)
+        ]
+        runtimeclass XamlCardGetResourceStreamArgs
+        {
+            [default] interface IXamlCardGetResourceStreamArgs;
         };
     }
 }
