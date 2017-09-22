@@ -47,7 +47,7 @@ FontSizesConfig FontSizesConfig::Deserialize(const Json::Value& json, const Font
 {
     FontSizesConfig result;
     result.smallFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Small, defaultValue.smallFontSize);
-    result.normalFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Normal, defaultValue.normalFontSize);
+    result.defaultFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Default, defaultValue.defaultFontSize);
     result.mediumFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Medium, defaultValue.mediumFontSize);
     result.largeFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Large, defaultValue.largeFontSize);
     result.extraLargeFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::ExtraLarge, defaultValue.extraLargeFontSize);
@@ -69,11 +69,11 @@ SpacingDefinition SpacingDefinition::Deserialize(const Json::Value& json, const 
 ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig& defaultValue)
 {
     ColorConfig result;
-    std::string normal = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Normal);
-    result.normal = normal == "" ? defaultValue.normal : normal;
+    std::string defaultColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Default);
+    result.defaultColor = defaultColor == "" ? defaultValue.defaultColor : defaultColor;
 
-    std::string subtle = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
-    result.subtle = subtle == "" ? defaultValue.subtle: subtle;
+    std::string subtleColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
+    result.subtleColor = subtleColor == "" ? defaultValue.subtleColor: subtleColor;
 
     return result;
 }

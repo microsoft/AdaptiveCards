@@ -17,8 +17,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ColorConfig colorConfig) noexcept;
 
-        IFACEMETHODIMP get_Normal(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_Normal(_In_ ABI::Windows::UI::Color value);
+        IFACEMETHODIMP get_Default(_Out_ ABI::Windows::UI::Color* value);
+        IFACEMETHODIMP put_Default(_In_ ABI::Windows::UI::Color value);
 
         IFACEMETHODIMP get_Subtle(_Out_ ABI::Windows::UI::Color* value);
         IFACEMETHODIMP put_Subtle(_In_ ABI::Windows::UI::Color value);

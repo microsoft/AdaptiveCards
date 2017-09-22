@@ -1093,9 +1093,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Small:
             THROW_IF_FAILED(fontSizesConfig->get_Small(&fontSize));
             break;
-        case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Normal:
-            THROW_IF_FAILED(fontSizesConfig->get_Normal(&fontSize));
-            break;
         case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Medium:
             THROW_IF_FAILED(fontSizesConfig->get_Medium(&fontSize));
             break;
@@ -1105,8 +1102,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         case ABI::AdaptiveCards::XamlCardRenderer::TextSize::ExtraLarge:
             THROW_IF_FAILED(fontSizesConfig->get_ExtraLarge(&fontSize));
             break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextSize::Default:
         default:
-            THROW_IF_FAILED(fontSizesConfig->get_Normal(&fontSize));
+            THROW_IF_FAILED(fontSizesConfig->get_Default(&fontSize));
             break;
         }
         THROW_IF_FAILED(localTextBlock->put_FontSize((double)fontSize));
@@ -1117,12 +1115,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Lighter:
             THROW_IF_FAILED(m_fontWeightsStatics->get_Light(&xamlFontWeight));
             break;
-        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Normal:
-            THROW_IF_FAILED(m_fontWeightsStatics->get_Normal(&xamlFontWeight));
-            break;
         case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Bolder:
             THROW_IF_FAILED(m_fontWeightsStatics->get_Bold(&xamlFontWeight));
             break;
+        case ABI::AdaptiveCards::XamlCardRenderer::TextWeight::Default:
         default:
             THROW_IF_FAILED(m_fontWeightsStatics->get_Normal(&xamlFontWeight));
             break;

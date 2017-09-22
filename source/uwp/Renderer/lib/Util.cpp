@@ -315,7 +315,7 @@ HRESULT GetColorFromAdaptiveColor(
         break;
     }
 
-    RETURN_IF_FAILED(isSubtle ? colorConfig->get_Subtle(uiColor) : colorConfig->get_Normal(uiColor));
+    RETURN_IF_FAILED(isSubtle ? colorConfig->get_Subtle(uiColor) : colorConfig->get_Default(uiColor));
 
     return S_OK;
 } CATCH_RETURN;
