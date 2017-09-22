@@ -11,12 +11,9 @@
     $background-color: rgba(255, 255, 255, 0.2),
     $hover-background-color: null,
     $hover-border: 2px solid rgba(255, 255, 255, 0.6),
-    $active-background-color: rgba(255, 255, 255, 0.4)
-    );
-
-.ac-linkButton {
-    @extend .ac-pushButton;
-}
+    $active-background-color: rgba(255, 255, 255, 0.4),
+    $color: white
+);
 
 @include base-input(
     $color: white,
@@ -24,4 +21,4 @@
     $hover-border: 2px solid #A5A5A5,
     $background-color: #0C0C0C,
     $hover-background-color: #0C0C0C
-    );
+);

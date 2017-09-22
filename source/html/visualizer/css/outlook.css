@@ -2,6 +2,13 @@
   cursor: pointer;
 }
 
+@font-face {
+  font-family: 'FabricMDL2Icons';
+  src: url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.woff") format("woff"), url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 a.ac-anchor {
   text-decoration: none;
 }
@@ -49,7 +56,54 @@ a.ac-anchor:visited:active {
       -ms-user-select: none;
           user-select: none;
   height: 31px;
-  border: none;
+  background-color: white;
+  color: #0078D7;
+  border: 1px solid #B2E0FF;
+}
+
+.ac-pushButton:hover {
+  background-color: #0078D7;
+  color: white;
+  border: 1px solid #73C1FD;
+}
+
+.ac-pushButton:active {
+  background-color: #464B93;
+  color: white;
+  border: 1px solid #464B93;
+}
+
+.ac-pushButton.subdued {
+  color: #666666;
+  border: 1px solid #EEEEEE;
+}
+
+.ac-pushButton.subdued:hover {
+  background-color: #0078D7;
+  color: white;
+  border: 1px solid #0078D7;
+}
+
+.ac-pushButton.expanded {
+  background-color: #0078D7;
+  color: white;
+  border: 1px solid #0078D7;
+}
+
+.ac-pushButton.expandable:after {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-family: 'FabricMDL2Icons';
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+  margin: auto 0px auto 6px;
+  content: '\E70D';
+}
+
+.ac-pushButton.expandable.expanded:after {
+  content: '\E70E';
 }
 
 .ac-input {
@@ -70,16 +124,4 @@ a.ac-anchor:visited:active {
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
   border: 1px solid #DDDDDD;
   padding: 4px 8px 4px 8px;
-}
-
-.webChatOuterContainer {
-  background-color: #ECEFF1;
-  border: 1px solid #E6E6E6;
-  padding: 8px;
-  width: 416px;
-  border-radius: 4px;
-}
-
-.webChatInnerContainer {
-  border: 1px solid #D2DDE5;
 }

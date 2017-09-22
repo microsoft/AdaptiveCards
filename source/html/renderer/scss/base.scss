@@ -54,112 +54,90 @@ $font-family: 'Segoe UI', sans-serif;
 @mixin base-push-button(
     $font-size: 14px, 
     $font-weight: 600, 
-    $border: none, 
+    $height: 31px,
     $padding: 4px 10px 5px 10px, 
-    $background-color: #0078D7,
-    $color: white,
     $user-select: none,
-    $hover-color: null,
-    $hover-background-color: #005A9E,
-    $hover-border: null,
+    
+    $background-color: null,
+    $active-background-color: null,
+    $subdued-background-color: null,
+    $subdued-hover-background-color: null,
+    $subdued-active-background-color: null,
+    $hover-background-color: null,
+    $expanded-background-color: null,
+    $expanded-active-background-color: null,
+    
+    $color: null,
     $active-color: null,
-    $active-background-color: #004D84
-     ) {
+    $subdued-color: null,
+    $subdued-hover-color: null,
+    $subdued-active-color: null,
+    $hover-color: null,
+    $expanded-color: null,
+    $expanded-active-color: null,
 
+    $border: none, 
+    $active-border: null,
+    $subdued-border: null,
+    $subdued-hover-border: null,
+    $subdued-active-border: null,
+    $hover-border: null,
+    $expanded-border: null,
+    $expanded-active-border: null
+) {
     .ac-pushButton {
-        font-family: $font-family;
-        font-size: $font-size;
-        font-weight: $font-weight;
         overflow: hidden;
         text-overflow: ellipsis;
-        border: $border;
-        padding: $padding;
         text-align: center;
         vertical-align: middle;
         cursor: default;
-        background-color: $background-color;
-        color: $color;    
-        user-select: $user-select;
-
-        &:hover {
-            background-color: $hover-background-color;
-            border: $hover-border;
-            color: $hover-color
-        }
-
-        &:active {
-            background-color: $active-background-color;
-            color: $active-color
-        }
-    }
-}
-
-@mixin base-link-button(
-    $active-background-color: null,
-    $active-color: #004D84,
-    $background-color: transparent,
-    $border: none,
-    $color: #0078D7,
-    $cursor: pointer,
-    $font-size: 14px,
-    $font-weight: 600,
-    $hover-background-color: null,
-    $hover-border: null,
-    $hover-color: #005A9E,
-    $padding: 0,
-    $subdued: true,
-    $text-align: null,
-    $vertical-align: null
-    ) {
-
-    .ac-linkButton {
         font-family: $font-family;
         font-size: $font-size;
         font-weight: $font-weight;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        cursor: $cursor;
-        border: $border;
         padding: $padding;
-        text-align: $text-align;
-        vertical-align: $vertical-align;
-        color: $color;
+        user-select: $user-select;
+        height: $height;
+        
         background-color: $background-color;
-        user-select: none;
+        color: $color;    
+        border: $border;
 
         &:hover {
             background-color: $hover-background-color;
-            border: $hover-border;
             color: $hover-color;
+            border: $hover-border;
         }
 
         &:active {
             background-color: $active-background-color;
             color: $active-color;
+            border: $active-border;
         }
-        
-        @if $subdued {
-            &.ac-subdued {
-                color: #666666;
-                font-weight: 500;
-            }
 
-            &.ac-subdued:hover {
-                color: #005A9E;
-            }
+        &.subdued {
+            background-color: $subdued-background-color;
+            color: $subdued-color;
+            border: $subdued-border;
+        }
 
-            &.ac-subdued:active {
-                color: #004D84;
-            }
+        &.subdued:hover {
+            background-color: $subdued-hover-background-color;
+            color: $subdued-hover-color;
+            border: $subdued-hover-border;
+        }
+
+        &.subdued:active {
+            background-color: $subdued-active-background-color;
+            color: $subdued-active-color;
+            border: $subdued-active-border;
+        }
+
+        &.expanded {
+            background-color: $expanded-background-color;
+            color: $expanded-color;
+            border: $expanded-border;
         }
     }
-
-    /*
-    Other styles that can be specified:
-        .ac-linkButton.ac-expanded
-        .ac-linkButton.ac-expanded:hover
-        .ac-linkButton.ac-expanded:active
-    */
 }
 
 @mixin base-input(
@@ -176,9 +154,9 @@ $font-family: 'Segoe UI', sans-serif;
         font-family: $font-family;
         font-size: $font-size;
         color: $color;
-
+        height: 31px;
+        
         &.ac-textInput {
-            height: 30px;
             resize: none;
         }
 
