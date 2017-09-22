@@ -103,7 +103,7 @@ AdaptiveSchemaVersion schemaVersion = renderer.SupportedSchemaVersion; // 1.0
 ## Render a Card
 
 ```csharp
-RenderedCard renderedCard = await renderer.RenderCardAsync(card, cancellationToken: null);
+RenderedAdaptiveCard renderedCard = await renderer.RenderCardAsync(card, cancellationToken: null);
 
 // Validate the rendered card
 if(!renderedCard.IsRenderedSuccessfully) {
