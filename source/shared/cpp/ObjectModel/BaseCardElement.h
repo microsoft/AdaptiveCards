@@ -13,7 +13,7 @@ class Container;
 class BaseCardElement
 {
 public:
-    BaseCardElement(CardElementType type, Spacing spacing, bool separator, std::string speak);
+    BaseCardElement(CardElementType type, Spacing spacing, bool separator);
     BaseCardElement(CardElementType type);
 
     virtual ~BaseCardElement();
@@ -28,9 +28,6 @@ public:
 
     Spacing GetSpacing() const;
     void SetSpacing(const Spacing value);
-
-    std::string GetSpeak() const;
-    void SetSpeak(const std::string value);
 
     const CardElementType GetElementType() const;
 
@@ -51,7 +48,6 @@ private:
     Spacing m_spacing;
     //std::shared_ptr<Separator> m_separator; Issue #629 to make separator an object
     bool m_separator;
-    std::string m_speak;
 };
 
 template <typename T>
@@ -62,7 +58,6 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
 
     ParseUtil::ThrowIfNotJsonObject(json);
 
-    baseCardElement->SetSpeak(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak));
     baseCardElement->SetSpacing(
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString)); 
     baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));

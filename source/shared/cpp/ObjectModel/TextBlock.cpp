@@ -18,7 +18,6 @@ TextBlock::TextBlock() :
 TextBlock::TextBlock(
     Spacing spacing,
     bool separator,
-    std::string speak,
     std::string text,
     TextSize textSize,
     TextWeight textWeight,
@@ -27,7 +26,7 @@ TextBlock::TextBlock(
     bool wrap,
     int maxLines,
     HorizontalAlignment hAlignment) :
-    BaseCardElement(CardElementType::TextBlock, spacing, separator, speak),
+    BaseCardElement(CardElementType::TextBlock, spacing, separator),
     m_text(text),
     m_textSize(textSize),
     m_textWeight(textWeight),

@@ -79,18 +79,4 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedOpenUrlAction->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedOpenUrlAction->SetSpeak(out);
-        return S_OK;
-    }
 }}

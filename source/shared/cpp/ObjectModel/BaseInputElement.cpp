@@ -8,8 +8,8 @@ BaseInputElement::BaseInputElement(CardElementType elementType) :
 {
 }
 
-BaseInputElement::BaseInputElement(CardElementType elementType, Spacing spacing, bool separator, std::string speak) :
-    BaseCardElement(elementType, spacing, separator, speak)
+BaseInputElement::BaseInputElement(CardElementType elementType, Spacing spacing, bool separator) :
+    BaseCardElement(elementType, spacing, separator)
 {
 }
 

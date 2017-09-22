@@ -35,9 +35,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separator(boolean* separator);
         IFACEMETHODIMP put_Separator(boolean separator);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING *speak);
-        IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
-
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_items;
         std::shared_ptr<AdaptiveCards::Container> m_sharedContainer;

@@ -11,8 +11,8 @@ class Container : public BaseCardElement
 {
 public:
     Container();
-    Container(Spacing spacing, bool separator, std::string speak, ContainerStyle style);
-    Container(Spacing spacing, bool separator, std::string speak, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
+    Container(Spacing spacing, bool separator, ContainerStyle style);
+    Container(Spacing spacing, bool separator, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
     virtual std::string Serialize();
     Json::Value SerializeToJsonValue();

@@ -51,8 +51,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separator(boolean* separator);
         IFACEMETHODIMP put_Separator(boolean separator);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
-        IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
 
     private:
         std::shared_ptr<AdaptiveCards::TextInput> m_sharedTextInput;

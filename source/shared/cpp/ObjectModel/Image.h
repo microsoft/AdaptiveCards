@@ -14,7 +14,6 @@ public:
     Image(
         Spacing spacing,
         bool separator,
-        std::string speak,
         std::string uri,
         ImageStyle imageStyle,
         ImageSize imageSize,

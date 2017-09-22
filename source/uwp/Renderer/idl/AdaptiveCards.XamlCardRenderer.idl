@@ -261,9 +261,6 @@ namespace AdaptiveCards
         {
             [propget] HRESULT ElementType([out, retval] ElementType* value);
 
-            [propget] HRESULT Speak([out, retval] HSTRING* value);
-            [propput] HRESULT Speak([in] HSTRING value);
-
             [propget] HRESULT Spacing([out, retval] Spacing* value);
             [propput] HRESULT Spacing([in] Spacing value);
 
@@ -465,9 +462,6 @@ namespace AdaptiveCards
         interface IAdaptiveChoiceInput : IInspectable
         {
             [propget] HRESULT ElementType([out, retval] ElementType* value);
-
-            [propget] HRESULT Speak([out, retval] HSTRING* value);
-            [propput] HRESULT Speak([in] HSTRING value);
 
             [propget] HRESULT Title([out, retval] HSTRING* value);
             [propput] HRESULT Title([in] HSTRING value);
@@ -747,9 +741,6 @@ namespace AdaptiveCards
         interface IAdaptiveFact : IInspectable
         {
             [propget] HRESULT ElementType([out, retval] ElementType* value);
-
-            [propget] HRESULT Speak([out, retval] HSTRING* value);
-            [propput] HRESULT Speak([in] HSTRING value);
 
             [propget] HRESULT Title([out, retval] HSTRING* value);
             [propput] HRESULT Title([in] HSTRING value);
@@ -1331,9 +1322,6 @@ namespace AdaptiveCards
 
             [propget] HRESULT Title([out, retval] HSTRING* value);
             [propput] HRESULT Title([in] HSTRING value);
-
-            [propget] HRESULT Speak([out, retval] HSTRING* value);
-            [propput] HRESULT Speak([in] HSTRING value);
         };
 
         [
