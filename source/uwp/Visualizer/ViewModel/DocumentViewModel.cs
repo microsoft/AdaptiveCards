@@ -14,75 +14,15 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using XamlCardVisualizer.Helpers;
+using XamlCardVisualizer.ResourceResolvers;
 
 namespace XamlCardVisualizer.ViewModel
 {
-    public class DocumentViewModel : BindableBase
+    public class DocumentViewModel : GenericDocumentViewModel
     {
         private static XamlCardRenderer _renderer;
 
-        public MainPageViewModel MainPageViewModel { get; private set; }
-        public string Token { get; private set; }
-        public IStorageFile File { get; private set; }
-
-        private string _name = "Untitled";
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
-        }
-
-        private string _payload = "";
-        public string Payload
-        {
-            get { return _payload; }
-            set { SetPayload(value); }
-        }
-
-        private async void SetPayload(string value)
-        {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            if (object.Equals(_payload, value))
-            {
-                return;
-            }
-
-            SetProperty(ref _payload, value);
-
-            if (!IsRendering)
-            {
-                IsRendering = true;
-
-                await Task.Delay(1000);
-
-                IsRendering = false;
-                NotifyPropertyChanged(DelayedUpdatePayload);
-                Render();
-            }
-        }
-
-        private bool _isRendering;
-        /// <summary>
-        /// Represents whether the system is delaying rendering. Views should indicate this.
-        /// </summary>
-        public bool IsRendering
-        {
-            get { return _isRendering; }
-            private set { SetProperty(ref _isRendering, value); }
-        }
-
-        /// <summary>
-        /// This property will be notified of changes on a delayed schedule, so that it's not
-        /// changing every single time a character is typed. Views presenting 
-        /// </summary>
-        public string DelayedUpdatePayload
-        {
-            get { return Payload; }
-        }
+        private DocumentViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
 
         private UIElement _renderedCard;
         public UIElement RenderedCard
@@ -91,46 +31,23 @@ namespace XamlCardVisualizer.ViewModel
             private set { SetProperty(ref _renderedCard, value); }
         }
 
-        public ObservableCollection<ErrorViewModel> Errors { get; private set; } = new ObservableCollection<ErrorViewModel>();
-
         public static async Task<DocumentViewModel> LoadFromFileAsync(MainPageViewModel mainPageViewModel, IStorageFile file, string token)
         {
-            return new DocumentViewModel()
+            var answer = new DocumentViewModel(mainPageViewModel);
+            await answer.LoadFromFileAsync(file, token, assignPayloadWithoutLoading: true);
+            return answer;
+        }
+
+        public static DocumentViewModel LoadFromPayload(MainPageViewModel mainPageViewModel, string payload)
+        {
+            return new DocumentViewModel(mainPageViewModel)
             {
-                MainPageViewModel = mainPageViewModel,
-                Name = file.Name,
-                Payload = await FileIO.ReadTextAsync(file),
-                Token = token,
-                File = file
+                _payload = payload
             };
         }
 
-        public async Task SaveAsync()
+        protected override async void LoadPayload(string payload)
         {
-            try
-            {
-                await FileIO.WriteTextAsync(File, Payload);
-            }
-            catch (Exception ex)
-            {
-                var dontWait = new MessageDialog(ex.ToString()).ShowAsync();
-            }
-        }
-
-        private async void Render()
-        {
-            if (string.IsNullOrWhiteSpace(Payload))
-            {
-                SetSingleError(new ErrorViewModel()
-                {
-                    Message = "Invalid payload",
-                    Type = ErrorViewModelType.Error
-                });
-                return;
-            }
-
-            string payload = Payload;
-
             var newErrors = await PayloadValidator.ValidateAsync(payload);
             if (newErrors.Any(i => i.Type == ErrorViewModelType.Error))
             {
@@ -142,7 +59,7 @@ namespace XamlCardVisualizer.ViewModel
             {
                 if (_renderer == null)
                 {
-                    InitializeRenderer();
+                    InitializeRenderer(MainPageViewModel.HostConfigEditor.HostConfig);
                 }
             }
             catch (Exception ex)
@@ -158,7 +75,15 @@ namespace XamlCardVisualizer.ViewModel
 
             try
             {
-                RenderedCard = _renderer.RenderAdaptiveJsonAsXaml(payload);
+                if (Settings.UseAsyncRenderMethod)
+                {
+                    RenderedCard = await _renderer.RenderAdaptiveJsonAsXamlAsync(payload);
+                }
+                else
+                {
+                    RenderedCard = _renderer.RenderAdaptiveJsonAsXaml(payload);
+                }
+
                 if (RenderedCard is FrameworkElement)
                 {
                     (RenderedCard as FrameworkElement).VerticalAlignment = VerticalAlignment.Top;
@@ -177,23 +102,18 @@ namespace XamlCardVisualizer.ViewModel
             }
         }
 
-        private void SetSingleError(ErrorViewModel error)
-        {
-            MakeErrorsLike(new List<ErrorViewModel>() { error });
-        }
-
-        private void MakeErrorsLike(List<ErrorViewModel> errors)
-        {
-            errors.Sort();
-            Errors.MakeListLike(errors);
-        }
-
-        private static void InitializeRenderer()
+        public static void InitializeRenderer(AdaptiveHostConfig hostConfig)
         {
             try
             {
                 _renderer = new XamlCardRenderer();
-                //_renderer.SetHostConfig
+                if (hostConfig != null)
+                {
+                    _renderer.SetHostConfig(hostConfig);
+                }
+
+                // Custom resource resolvers
+                _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
 
                 _renderer.Action += async (sender, e) =>
                 {

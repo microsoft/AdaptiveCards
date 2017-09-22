@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <SafariServices/SafariServices.h>
 #import "ACRShowCardTarget.h"
-#import "ACRRenderer.h"
+#import "ACRRendererPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRViewController.h"
@@ -16,13 +16,13 @@
 @implementation ACRShowCardTarget
 {
     std::shared_ptr<AdaptiveCards::AdaptiveCard> _adaptiveCard;
-    std::shared_ptr<AdaptiveCards::HostConfig> _config; 
+    std::shared_ptr<AdaptiveCards::HostConfig> _config;
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak UIViewController *_vc;
     __weak UIView *_adcView;
 }
 
-- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard 
+- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                               config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                                   vc:(UIViewController *)vc
@@ -59,7 +59,7 @@
                                                             inputs:inputs
                                                     viewController:_vc
                                                         guideFrame:_superview.frame
-            
+
                                                         hostconfig:_config];
             ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc]
                                                      initWithFrame:CGRectMake(0,0,
@@ -88,10 +88,10 @@
             [wrappingView addConstraints:horzConst];
             [wrappingView addConstraints:vertConst];
             _adcView = wrappingView;
-            
+
             long num = std::stoul(_config->actions.showCard.backgroundColor.substr(1), nullptr, 16);
             wrappingView.translatesAutoresizingMaskIntoConstraints = NO;
-            wrappingView.backgroundColor = 
+            wrappingView.backgroundColor =
                 [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
                                 green:((num & 0x0000FF00) >>  8) / 255.0
                                  blue:((num & 0x000000FF)) / 255.0

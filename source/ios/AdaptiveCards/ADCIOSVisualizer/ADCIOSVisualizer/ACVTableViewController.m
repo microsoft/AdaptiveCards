@@ -16,15 +16,20 @@
 {
     [super viewDidLoad];
 
-    pathsToFiles = [[NSBundle mainBundle] pathsForResourcesOfType:@"json" inDirectory:nil];
+    NSBundle *main = [NSBundle mainBundle];
+    pathsToFiles = [main pathsForResourcesOfType:@"json" inDirectory:nil];
     NSInteger cnt = [pathsToFiles count];
     enum DesiredIdx { eDefaultViewIdx = 2 };
     if(cnt >= eDefaultViewIdx)
     {
+        [_delegate source:self userconfig:[NSString stringWithContentsOfFile:[main pathForResource:@"hostconfig" ofType:@"json"]
+                                                                    encoding:NSUTF8StringEncoding
+                                                                       error:nil]];
         [_delegate fromACVTable:self userSelectedJson:
          [NSString stringWithContentsOfFile:pathsToFiles[[pathsToFiles count] - eDefaultViewIdx]
                                    encoding:NSUTF8StringEncoding
                                       error:nil]];
+        
     }
 }
 

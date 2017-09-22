@@ -10,7 +10,7 @@
 #import "HostConfig.h"
 
 @interface UIButton(ACRButton)
-+ (UIButton* )acr_renderButton:(UIViewController *)vc
++ (UIButton *)acr_renderButton:(UIViewController *)vc
                          title:(NSString *)title
                  andHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;
 @end

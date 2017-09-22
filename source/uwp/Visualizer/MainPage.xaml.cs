@@ -90,10 +90,38 @@ namespace XamlCardVisualizer
 
         private void SetIsCompactOnAppBarButtons(bool isCompact)
         {
-            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<AppBarButton>())
+            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ICommandBarElement>())
             {
                 button.IsCompact = isCompact;
             }
+        }
+
+        private void AppBarHostConfigEditor_Click(object sender, RoutedEventArgs e)
+        {
+            SetIsInHostConfigEditor(!IsInHostConfigEditor);
+        }
+
+        public bool IsInHostConfigEditor { get; private set; }
+
+        private void SetIsInHostConfigEditor(bool isInHostConfigEditor)
+        {
+            IsInHostConfigEditor = isInHostConfigEditor;
+
+            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ButtonBase>())
+            {
+                if (button != AppBarHostConfigEditor)
+                {
+                    button.IsEnabled = !isInHostConfigEditor;
+                }
+            }
+
+            HostConfigEditorView.Visibility = isInHostConfigEditor ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void HostConfigTransparentBackdrop_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            AppBarHostConfigEditor.IsChecked = false;
+            SetIsInHostConfigEditor(false);
         }
     }
 }
