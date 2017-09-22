@@ -5,7 +5,7 @@ using namespace AdaptiveCards;
 
 Image::Image() :
     BaseCardElement(CardElementType::Image),
-    m_imageStyle(ImageStyle::Normal),
+    m_imageStyle(ImageStyle::Default),
     m_imageSize(ImageSize::Auto),
     m_hAlignment(HorizontalAlignment::Left)
 {
@@ -40,7 +40,7 @@ std::shared_ptr<Image> Image::DeserializeWithoutCheckingType(const Json::Value& 
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
-    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Normal, ImageStyleFromString));
+    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
     image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::Default, ImageSizeFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));

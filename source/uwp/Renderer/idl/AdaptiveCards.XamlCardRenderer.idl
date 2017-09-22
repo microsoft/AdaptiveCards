@@ -100,7 +100,7 @@ namespace AdaptiveCards
         typedef [v1_enum] enum TextSize
         {
             Small = 0,
-            Normal,
+            Default,
             Medium,
             Large,
             ExtraLarge
@@ -110,7 +110,7 @@ namespace AdaptiveCards
         typedef [v1_enum] enum TextWeight
         {
             Lighter = 0,
-            Normal,
+            Default,
             Bolder
         } TextWeight;
 
@@ -167,7 +167,7 @@ namespace AdaptiveCards
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ImageStyle {
-            Normal = 0,
+            Default = 0,
             Person
         } ImageStyle;
 
@@ -925,8 +925,8 @@ namespace AdaptiveCards
             [propget] HRESULT Small([out, retval] UINT32 *value);
             [propput] HRESULT Small([in] UINT32 value);
 
-            [propget] HRESULT Normal([out, retval] UINT32 *value);
-            [propput] HRESULT Normal([in] UINT32 value);
+            [propget] HRESULT Default([out, retval] UINT32 *value);
+            [propput] HRESULT Default([in] UINT32 value);
 
             [propget] HRESULT Medium([out, retval] UINT32 *value);
             [propput] HRESULT Medium([in] UINT32 value);
@@ -954,8 +954,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveColorConfig : IInspectable
         {
-            [propget] HRESULT Normal([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT Normal([in] Windows.UI.Color value);
+            [propget] HRESULT Default([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT Default([in] Windows.UI.Color value);
 
             [propget] HRESULT Subtle([out][retval] Windows.UI.Color* value);
             [propput] HRESULT Subtle([in] Windows.UI.Color value);

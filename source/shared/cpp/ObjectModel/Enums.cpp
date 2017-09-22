@@ -73,7 +73,6 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Method, "method" },
     { AdaptiveCardSchemaKey::Min, "min" },
     { AdaptiveCardSchemaKey::MinVersion, "minVersion" },
-    { AdaptiveCardSchemaKey::Normal, "normal" },
     { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
     { AdaptiveCardSchemaKey::Padding, "padding" },
     { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
@@ -174,12 +173,16 @@ SeparatorThicknessNameToEnum = GenerateStringToEnumMap<SeparatorThickness>(Separ
 
 static std::unordered_map<ImageStyle, std::string, EnumHash> ImageStyleEnumToName =
 {
-    {ImageStyle::Normal, "normal"},
+    {ImageStyle::Default, "default"},
     {ImageStyle::Person, "person"}
 };
 
-static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-ImageStyleNameToEnum = GenerateStringToEnumMap<ImageStyle>(ImageStyleEnumToName);
+static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageStyleNameToEnum = 
+{
+    { "default", ImageStyle::Default},
+    { "person", ImageStyle::Person},
+    { "normal", ImageStyle::Default} // Back compat to support "Normal" for "Default" for pre V1.0 payloads
+};
 
 static std::unordered_map<ImageSize, std::string, EnumHash> ImageSizeEnumToName =
 {
@@ -222,23 +225,35 @@ static std::unordered_map<TextWeight, std::string, EnumHash> TextWeightEnumToNam
 {
     {TextWeight::Bolder, "Bolder"},
     {TextWeight::Lighter, "Lighter"},
-    {TextWeight::Normal, "Normal"},
+    {TextWeight::Default, "Default"},
 };
 
-static std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-TextWeightNameToEnum = GenerateStringToEnumMap<TextWeight>(TextWeightEnumToName);
+static std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextWeightNameToEnum = 
+{
+    { "Bolder", TextWeight::Bolder},
+    { "Lighter", TextWeight::Lighter},
+    { "Default", TextWeight::Default},
+    { "Normal", TextWeight::Default }, // Back compat to support "Normal" for "Default" for pre V1.0 payloads
+};
 
 static std::unordered_map<TextSize, std::string, EnumHash> TextSizeEnumToName =
 {
     {TextSize::ExtraLarge, "ExtraLarge"},
     {TextSize::Large, "Large"},
     {TextSize::Medium, "Medium"},
-    {TextSize::Normal, "Normal"},
+    {TextSize::Default, "Default"},
     {TextSize::Small, "Small"},
 };
 
-static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-TextSizeNameToEnum = GenerateStringToEnumMap<TextSize>(TextSizeEnumToName);
+static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextSizeNameToEnum = 
+{
+    { "ExtraLarge", TextSize::ExtraLarge },
+    { "Large", TextSize::Large },
+    { "Medium", TextSize::Medium },
+    { "Default", TextSize::Default },
+    { "Small", TextSize::Small },
+    { "Normal", TextSize::Default }, // Back compat to support "Normal" for "Default" for pre V1.0 payloads
+};
 
 static std::unordered_map<ActionsOrientation, std::string, EnumHash> ActionsOrientationEnumToName =
 {

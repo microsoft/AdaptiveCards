@@ -102,7 +102,6 @@ enum class AdaptiveCardSchemaKey
     Method,
     Min,
     MinVersion,
-    Normal,
     NumberInput,
     Padding,
     Placeholder,
@@ -146,7 +145,7 @@ enum class AdaptiveCardSchemaKey
 enum class TextSize
 {
     Small = 0,
-    Normal,
+    Default,
     Medium,
     Large,
     ExtraLarge
@@ -154,7 +153,7 @@ enum class TextSize
 
 enum class TextWeight {
     Lighter = 0,
-    Normal,
+    Default,
     Bolder
 };
 
@@ -175,7 +174,7 @@ enum class HorizontalAlignment {
 };
 
 enum class ImageStyle {
-    Normal = 0,
+    Default = 0,
     Person
 };
 

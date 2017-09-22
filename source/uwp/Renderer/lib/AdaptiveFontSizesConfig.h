@@ -20,8 +20,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Small(_Out_ UINT32 *value);
         IFACEMETHODIMP put_Small(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_Normal(_Out_ UINT32 *value);
-        IFACEMETHODIMP put_Normal(_In_ UINT32 value);
+        IFACEMETHODIMP get_Default(_Out_ UINT32 *value);
+        IFACEMETHODIMP put_Default(_In_ UINT32 value);
 
         IFACEMETHODIMP get_Medium(_Out_ UINT32 *value);
         IFACEMETHODIMP put_Medium(_In_ UINT32 value);

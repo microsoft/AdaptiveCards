@@ -19,7 +19,7 @@ struct SpacingDefinition
 struct FontSizesConfig
 {
     unsigned int smallFontSize = 10;
-    unsigned int normalFontSize = 12;
+    unsigned int defaultFontSize = 12;
     unsigned int mediumFontSize = 14;
     unsigned int largeFontSize = 17;
     unsigned int extraLargeFontSize = 20;
@@ -29,8 +29,8 @@ struct FontSizesConfig
 
 struct ColorConfig
 {
-    std::string normal;
-    std::string subtle;
+    std::string defaultColor;
+    std::string subtleColor;
 
     static ColorConfig Deserialize(const Json::Value& json, const ColorConfig& defaultValue);
 };
@@ -50,8 +50,8 @@ struct ColorsConfig
 
 struct TextConfig
 {
-    TextWeight weight = TextWeight::Normal;
-    TextSize size = TextSize::Normal;
+    TextWeight weight = TextWeight::Default;
+    TextSize size = TextSize::Default;
     ForegroundColor color = ForegroundColor::Default;
     bool isSubtle = false;
 
