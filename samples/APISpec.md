@@ -268,7 +268,7 @@ private void ActionHandler(object sender, ActionEventArgs e) {
     // Note: we DO NOT do any input validation, be prepared to parse the data gracefully
     // RawString is outlined here https://github.com/Microsoft/AdaptiveCards/issues/652
     JObject inputs = e.UserInputs.AsJson(InputValueMode.RawString);
-    JObject data = e.Data;
+
     AdaptiveActionBase action = e.Action;
     
     if(action is typeof(OpenUrlAction)) {
@@ -276,6 +276,11 @@ private void ActionHandler(object sender, ActionEventArgs e) {
     }
     else if(action is typeof(SubmitAction) {
         
+        SubmitAction = action as SubmitAction;
+
+        // Get the data, which could be a string or object
+        JObject data = e.Action.Data;
+
         // Includes data and all inputs    
         MyForm form = JsonConvert.DeserializeObject<MyForm>(e.UserInputs.AsJson());
 
