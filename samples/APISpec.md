@@ -17,14 +17,7 @@
 - Remove element renderer
 - Extension properties on elements
 
-
-1.1 NOTES:
-1. Toggle visibility of elements
-
-
 # Getting and using the SDK
-
-* TODO: Should it be AdaptiveCards or Microsoft.AdaptiveCards?
 
 ```console
 dotnet add package AdaptiveCards
