@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdaptiveCards.XamlCardRenderer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace XamlCardVisualizer.ViewModel
             set { SetProperty(ref _currentDocument, value); }
         }
 
+        public HostConfigEditorViewModel HostConfigEditor { get; private set; }
+
         public bool UseAsyncRenderMethod
         {
             get { return Settings.UseAsyncRenderMethod; }
@@ -32,17 +35,22 @@ namespace XamlCardVisualizer.ViewModel
                 {
                     Settings.UseAsyncRenderMethod = value;
 
-                    foreach (var doc in OpenDocuments)
-                    {
-                        doc.ReRender();
-                    }
+                    ReRenderCards();
                 }
+            }
+        }
+
+        private void ReRenderCards()
+        {
+            foreach (var doc in OpenDocuments)
+            {
+                doc.Reload();
             }
         }
 
         public void NewDocument()
         {
-            OpenDocuments.Add(new DocumentViewModel()
+            OpenDocuments.Add(new DocumentViewModel(this)
             {
                 Payload = @"{
   ""type"": ""AdaptiveCard"",
@@ -96,6 +104,9 @@ namespace XamlCardVisualizer.ViewModel
         {
             var viewModel = new MainPageViewModel();
 
+            viewModel.HostConfigEditor = await HostConfigEditorViewModel.LoadAsync(viewModel);
+            viewModel.HostConfigEditor.HostConfigChanged += viewModel.HostConfigEditor_HostConfigChanged;
+
             var tokens = await GetFileTokensAsync();
             ObservableCollection<DocumentViewModel> documents = new ObservableCollection<DocumentViewModel>();
             foreach (string token in tokens)
@@ -140,6 +151,12 @@ namespace XamlCardVisualizer.ViewModel
             viewModel.OpenDocuments = documents;
             viewModel.CurrentDocument = documents.FirstOrDefault();
             return viewModel;
+        }
+
+        private void HostConfigEditor_HostConfigChanged(object sender, AdaptiveHostConfig e)
+        {
+            DocumentViewModel.InitializeRenderer(e);
+            ReRenderCards();
         }
 
         private static async Task<string[]> GetFileTokensAsync()
