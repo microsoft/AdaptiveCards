@@ -21,8 +21,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Column>& sharedColumn);
 
         // IAdaptiveColumn
-        IFACEMETHODIMP get_Size(_Out_ HSTRING* size);
-        IFACEMETHODIMP put_Size(_In_ HSTRING size);
+        IFACEMETHODIMP get_Width(_Out_ HSTRING* width);
+        IFACEMETHODIMP put_Width(_In_ HSTRING width);
 
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style);
         IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style);

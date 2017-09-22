@@ -111,6 +111,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Version, "version" },
     { AdaptiveCardSchemaKey::Warning, "warning" },
     { AdaptiveCardSchemaKey::Weight, "weight" },
+    { AdaptiveCardSchemaKey::Width, "width" },
     { AdaptiveCardSchemaKey::Wrap, "wrap" },
 };
 
