@@ -160,7 +160,6 @@ namespace AdaptiveCards
             Unsupported = 0, 
             ShowCard,
             Submit,
-            Http,
             OpenUrl
         } ActionType;
 
@@ -1339,32 +1338,6 @@ namespace AdaptiveCards
 
             [propget] HRESULT Speak([out, retval] HSTRING* value);
             [propput] HRESULT Speak([in] HSTRING value);
-        };
-
-        [
-            uuid(3d2b3b79-af79-46c5-9657-d862f2dee109),
-            version(NTDDI_WIN10_RS1),
-        ]
-        interface IAdaptiveHttpAction : IInspectable
-        {
-            [propput] HRESULT Url([in] Windows.Foundation.Uri* value);
-            [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
-
-            [propget] HRESULT Method([out, retval] HSTRING* value);
-            [propput] HRESULT Method([in] HSTRING value);
-
-            [propget] HRESULT Body([out, retval] HSTRING* value);
-            [propput] HRESULT Body([in] HSTRING value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveHttpAction
-        {
-            [default] interface IAdaptiveHttpAction;
-            interface IAdaptiveActionElement;
         };
 
         [
