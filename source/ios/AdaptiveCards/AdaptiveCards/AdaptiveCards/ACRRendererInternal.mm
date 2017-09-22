@@ -6,7 +6,6 @@
 //
 
 #import "ACOAdaptiveCardsInternal.h"
-#import "ACOHostConfigInternal.h"
 #import "ACRRendererInternal.h"
 #import "ACRRegistration.h"
 #import "ACRBaseCardElementRenderer.h"

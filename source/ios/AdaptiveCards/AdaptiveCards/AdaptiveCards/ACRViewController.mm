@@ -6,7 +6,7 @@
 //
 
 #import "ACRViewController.h"
-#import "ACOHostConfigInternal.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACOAdaptiveCardsInternal.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRRendererInternal.h"
@@ -39,9 +39,7 @@ using namespace AdaptiveCards;
     if(self)
     {
         self->adaptiveCard = [((ACOAdaptiveCardsInternal *)card) getCard];
-        // if check fails, default host config is used
-        if([config isKindOfClass:[ACOHostConfigInternal class]] == YES)
-            hostConfig = [((ACOHostConfigInternal *)config) getHostConfig];
+        hostConfig = [config getHostConfig];
         guideFrame = frame;
     }
     return self;

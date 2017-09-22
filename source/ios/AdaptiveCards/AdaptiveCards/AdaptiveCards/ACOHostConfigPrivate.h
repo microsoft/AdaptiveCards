@@ -1,6 +1,6 @@
 //
-//  ACRHostConfigInternal.h
-//  ACRHostConfigInternal
+//  ACRHostConfigPrivate.h
+//  ACRHostConfigPrivate
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
@@ -9,7 +9,7 @@
 
 using namespace AdaptiveCards;
 
-@interface ACOHostConfigInternal:ACOHostConfig
+@interface ACOHostConfig()
 
 - (std::shared_ptr<HostConfig> const &)getHostConfig;
 
