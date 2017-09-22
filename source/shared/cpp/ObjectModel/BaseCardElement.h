@@ -13,13 +13,18 @@ class Container;
 class BaseCardElement
 {
 public:
-    BaseCardElement(CardElementType type, Spacing spacing, std::shared_ptr<Separator> separator);
+    BaseCardElement(CardElementType type, Spacing spacing, bool separator);
     BaseCardElement(CardElementType type);
 
     virtual ~BaseCardElement();
 
+    /* Issue #629 to make separator an object
     std::shared_ptr<Separator> GetSeparator() const;
     void SetSeparator(const std::shared_ptr<Separator> value);
+    */
+
+    bool GetSeparator() const;
+    void SetSeparator(const bool value);
 
     Spacing GetSpacing() const;
     void SetSpacing(const Spacing value);
@@ -41,7 +46,8 @@ private:
     static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
     CardElementType m_type;
     Spacing m_spacing;
-    std::shared_ptr<Separator> m_separator;
+    //std::shared_ptr<Separator> m_separator; Issue #629 to make separator an object
+    bool m_separator;
 };
 
 template <typename T>
@@ -54,12 +60,15 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
 
     baseCardElement->SetSpacing(
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString)); 
+    baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
   
+    /* Issue #629 to make separator an object
     Json::Value separatorJson = json.get(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator), Json::Value());
     if (!separatorJson.empty())
     {
         baseCardElement->SetSeparator(Separator::Deserialize(separatorJson));
     }
+    */
 
     return cardElement;
 }

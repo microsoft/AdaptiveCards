@@ -36,7 +36,7 @@ Container::Container() : BaseCardElement(CardElementType::Container), m_style(Co
 
 Container::Container(
     Spacing spacing,
-    std::shared_ptr<Separator> separator,
+    bool separator,
     ContainerStyle style,
     std::vector<std::shared_ptr<BaseCardElement>>& items) :
     BaseCardElement(CardElementType::Container, spacing, separator),
@@ -47,8 +47,7 @@ Container::Container(
 
 Container::Container(
     Spacing spacing,
-    std::shared_ptr<Separator> separator,
-    
+    bool separator,
     ContainerStyle style) :
     BaseCardElement(CardElementType::Container, spacing, separator),
     m_style(style)

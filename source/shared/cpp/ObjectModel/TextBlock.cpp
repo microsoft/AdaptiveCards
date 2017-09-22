@@ -17,7 +17,7 @@ TextBlock::TextBlock() :
 
 TextBlock::TextBlock(
     Spacing spacing,
-    std::shared_ptr<Separator> separator,
+    bool separator,
     std::string text,
     TextSize textSize,
     TextWeight textWeight,

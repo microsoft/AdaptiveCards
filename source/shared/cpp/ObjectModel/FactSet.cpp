@@ -10,7 +10,7 @@ FactSet::FactSet() : BaseCardElement(CardElementType::FactSet)
 
 FactSet::FactSet(
     Spacing spacing,
-    std::shared_ptr<Separator> separation,
+    bool separation,
     std::vector<std::shared_ptr<Fact>>& facts) :
     BaseCardElement(CardElementType::FactSet, spacing, separation),
     m_facts(facts)
@@ -19,7 +19,7 @@ FactSet::FactSet(
 
 FactSet::FactSet(
     Spacing spacing,
-    std::shared_ptr<Separator> separation) :
+    bool separation) :
     BaseCardElement(CardElementType::FactSet, spacing, separation)
 {
 }

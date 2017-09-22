@@ -16,7 +16,7 @@ const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionEle
 BaseCardElement::BaseCardElement(
     CardElementType type,
     Spacing spacing,
-    std::shared_ptr<Separator> separator) :
+    bool separator) :
     m_type(type),
     m_spacing(spacing),
     m_separator(separator)
@@ -32,12 +32,12 @@ AdaptiveCards::BaseCardElement::~BaseCardElement()
 {
 }
 
-std::shared_ptr<Separator> BaseCardElement::GetSeparator() const
+bool BaseCardElement::GetSeparator() const
 {
     return m_separator;
 }
 
-void BaseCardElement::SetSeparator(const std::shared_ptr<Separator> value)
+void BaseCardElement::SetSeparator(const bool value)
 {
     m_separator = value;
 }
@@ -62,12 +62,15 @@ Json::Value BaseCardElement::SerializeToJsonValue()
     Json::Value root;
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(GetElementType());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)] = SpacingToString(GetSpacing());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = GetSeparator();
 
+    /* Issue #629 to make separator an object
     Json::Value jsonSeparator;
     jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ColorToString(GetSeparator()->GetColor());
     jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Thickness)] = SeparatorThicknessToString(GetSeparator()->GetThickness());
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = jsonSeparator;
+    */
 
     return root;
 }

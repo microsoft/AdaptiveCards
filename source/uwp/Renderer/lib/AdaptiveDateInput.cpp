@@ -42,13 +42,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::get_Min(HSTRING* min)
+    HRESULT AdaptiveDateInput::get_Min(HSTRING* min)
     {
         return UTF8ToHString(m_sharedDateInput->GetMin(), min);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::put_Min(HSTRING min)
+    HRESULT AdaptiveDateInput::put_Min(HSTRING min)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(min, out));
@@ -57,13 +57,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::get_Placeholder(HSTRING* placeholder)
+    HRESULT AdaptiveDateInput::get_Placeholder(HSTRING* placeholder)
     {
         return UTF8ToHString(m_sharedDateInput->GetPlaceholder(), placeholder);
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveDateInput::put_Placeholder(HSTRING placeholder)
+    HRESULT AdaptiveDateInput::put_Placeholder(HSTRING placeholder)
     {
         std::string out;
         RETURN_IF_FAILED(HStringToUTF8(placeholder, out));
@@ -123,18 +123,26 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
+    HRESULT AdaptiveDateInput::get_Separator(boolean* separator)
     {
-        return GenerateSeparatorProjection(m_sharedDateInput->GetSeparator(), separator);
+        *separator = m_sharedDateInput->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedDateInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
+    HRESULT AdaptiveDateInput::put_Separator(boolean separator)
     {
+        m_sharedDateInput->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
         std::shared_ptr<Separator> sharedSeparator;
         RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedDateInput->SetSeparator(sharedSeparator);
+        */
 
         return S_OK;
     }

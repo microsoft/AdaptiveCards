@@ -10,7 +10,7 @@ ChoiceSetInput::ChoiceSetInput() : BaseInputElement(CardElementType::ChoiceSetIn
 
 ChoiceSetInput::ChoiceSetInput(
     Spacing spacing, 
-    std::shared_ptr<Separator> separation,
+    bool separation,
     std::vector<std::shared_ptr<ChoiceInput>>& choices) :
     BaseInputElement(CardElementType::ChoiceSetInput, spacing, separation),
     m_choices(choices)
@@ -19,7 +19,7 @@ ChoiceSetInput::ChoiceSetInput(
 
 ChoiceSetInput::ChoiceSetInput(
     Spacing spacing,
-    std::shared_ptr<Separator> separation) :
+    bool separation) :
     BaseInputElement(CardElementType::ChoiceSetInput, spacing, separation)
 {
 }

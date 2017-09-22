@@ -62,18 +62,26 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
+    HRESULT AdaptiveColumnSet::get_Separator(boolean* separator)
     {
-        return GenerateSeparatorProjection(m_sharedColumnSet->GetSeparator(), separator);
+        *separator = m_sharedColumnSet->GetSeparator();
+        return S_OK;
+
+        // Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedColumnSet->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
+    HRESULT AdaptiveColumnSet::put_Separator(boolean separator)
     {
+        m_sharedColumnSet->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
         std::shared_ptr<Separator> sharedSeparator;
         RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedColumnSet->SetSeparator(sharedSeparator);
+        */
 
         return S_OK;
     }

@@ -134,19 +134,26 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
+    HRESULT AdaptiveTextInput::get_Separator(boolean* separator)
     {
-        return GenerateSeparatorProjection(m_sharedTextInput->GetSeparator(), separator);
+        *separator = m_sharedTextInput->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedTextInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
+    HRESULT AdaptiveTextInput::put_Separator(boolean separator)
     {
+        m_sharedTextInput->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
         std::shared_ptr<Separator> sharedSeparator;
         RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedTextInput->SetSeparator(sharedSeparator);
-
+        */
         return S_OK;
     }
 
