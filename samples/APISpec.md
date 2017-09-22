@@ -269,6 +269,10 @@ private void ActionHandler(object sender, ActionEventArgs e) {
     // RawString is outlined here https://github.com/Microsoft/AdaptiveCards/issues/652
     JObject inputs = e.UserInputs.AsJson(InputValueMode.RawString);
 
+    // option 2, MY PREFERENCE
+    // Put this functionality on the AdaptiveCard object, so it can be used not just in the event
+    JObject inputs = e.Card.UserInputs.AsJson(InputValueMode.RawString);
+
     AdaptiveActionBase action = e.Action;
     
     if(action is typeof(OpenUrlAction)) {
@@ -281,9 +285,12 @@ private void ActionHandler(object sender, ActionEventArgs e) {
         // Get the data, which could be a string or object
         JObject data = e.Action.Data;
 
-        // Includes data and all inputs    
-        MyForm form = JsonConvert.DeserializeObject<MyForm>(e.UserInputs.AsJson());
-
+        // Serialize the JObject to a custom type 
+        MyForm form = inputs.ToObject<MyForm>();
+    }
+    else if (action is typeof(ShowCardAction)) {
+        // TODO: What has the mapping of the Card and the UI tree? How do I get access to the raw UI elements?
+        // scrollViewer.ScrollIntoView(e.Card);
     }
     ...
 }
