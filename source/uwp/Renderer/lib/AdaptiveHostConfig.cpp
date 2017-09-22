@@ -87,13 +87,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition ** value)
+    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition** value)
     {
         return MakeAndInitialize<AdaptiveContainerStylesDefinition>(value, m_sharedHostConfig.containerStyles);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition * value)
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition* value)
     {
         return E_NOTIMPL;
     }

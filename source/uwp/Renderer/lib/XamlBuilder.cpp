@@ -332,7 +332,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(
         IAdaptiveCard* adaptiveCard, 
-        ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle containerStyle, 
+        ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle containerStyle,
         IPanel** childElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
@@ -1003,7 +1003,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         UINT localThickness = 0; 
         if (hasSeparator)
         {
-            THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(), ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Default, false, &localColor));
+            THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(), ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Default, ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle::Default, false, &localColor));
             localThickness = 1;
         }
 

@@ -33,12 +33,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardConfig::get_AllowCustomStyle(boolean * allowCustomStyle)
+    HRESULT AdaptiveCardConfig::get_AllowCustomStyle(boolean* allowCustomStyle)
     {
         *allowCustomStyle = m_sharedAdaptiveCardConfig.allowCustomStyle;
         return S_OK;
     }
-    
+
     _Use_decl_annotations_
     HRESULT AdaptiveCardConfig::put_AllowCustomStyle(boolean allowCustomStyle)
     {
