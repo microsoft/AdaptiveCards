@@ -9,9 +9,9 @@ dotnet add package AdaptiveCards
 using AdaptiveCards; 
 ```
 
-# Instantiate card
+## Instantiate card
 
-## From object model
+### From object model
 
 ```csharp
 AdaptiveCard card = new AdaptiveCard();
@@ -26,7 +26,22 @@ card.Actions.Add(new AdaptiveHttpAction());
 // Also seems highly likely that our other namespace would conflict with native UI stack and need to be aliased.
 ```
 
-## Versioning
+### Parse JSON
+
+```csharp
+
+AdaptiveCardParseResult result = AdaptiveCard.FromJson(jsonString);
+if (result.IsValid) {
+    // Get card from result
+    IList<ParseFailure> warnings = result.Warnings;
+    AdaptiveCard card = result.Card;
+} else {
+    // Get errors?
+    IList<ParseFailure> errors = result.Errors;
+}
+```
+
+### Versioning
 
 ```csharp
 public class AdaptiveSchemaVersion 
@@ -44,25 +59,9 @@ card.FallbackText = "This card isn't supported. Please check your app for update
 ```
 
 
-## Parse from JSON string
+## Render card
 
-```csharp
-
-AdaptiveCardParseResult result = AdaptiveCard.FromJson(jsonString);
-if (result.IsValid) {
-    // Get card from result
-    IList<ParseFailure> warnings = result.Warnings;
-    AdaptiveCard card = result.Card;
-} else {
-    // Get errors?
-    IList<ParseFailure> errors = result.Errors;
-}
-```
-
-
-# Render card
-
-## Instantiate a renderer
+### Instantiate a renderer
 
 ```csharp
 // Create a default Host Config for now
@@ -75,7 +74,7 @@ AdaptiveSchemaVersion schemaVersion = renderer.SupportedSchemaVersion; // 1.0
 ```
 
 
-## Render a Card
+### Render a Card
 
 ```csharp
 RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
@@ -101,7 +100,7 @@ AdaptiveCard originatingCard = renderedCard.OriginatingCard;
 ```
 
 
-## Wire up Action events
+### Wire up Action events
 
 ```csharp
 // Handle the events when a user taps on an Action
@@ -138,7 +137,7 @@ private void ActionHandler(object sender, AdaptiveActionEventArgs e) {
 }
 ```
 
-## Host Config 
+### Host Config 
 
 ```csharp
 // Parse a Host Config from JSON
@@ -163,7 +162,7 @@ hostConfig.MaxPayloadSize = "10"; // kB
 renderer.HostConfig = hostConfig;
 ```
 
-## Native platform styling
+### Native platform styling
 
 A Host App can apply native platform style for when Host Config isn't robust enough.
 
@@ -211,9 +210,9 @@ An example XAML ResourceDictionary
 ```
 
 
-# Extensibility
+## Extensibility
 
-## Override an existing element
+### Override an existing element
 
 ```csharp
 public class CoolTextBlockRenderer : IRenderer {
@@ -238,7 +237,7 @@ public class CoolTextBlockRenderer : IRenderer {
 renderer.ElementRenderers.Set("TextBlock", new CoolTextBlockRenderer());
 ```
 
-## Render a custom element
+### Render a custom element
 
 ```csharp
 public class ProgressBarRenderer : IElementRenderer
@@ -257,13 +256,13 @@ public class ProgressBarRenderer : IElementRenderer
 renderer.ElementRenderers.Set(ProgressBarRenderer.TypeName, new ProgressBarRenderer());
 ```
 
-## Remove a renderer
+### Remove a renderer
 
 ```csharp
 renderer.ElementRenderers.Remove("Action.Http");
 ```
 
-## Additional properties on elements
+### Additional properties on elements
 
 * Should Host Config allow hosts to declare their custom extensions? We could build tooling around it if so
 https://github.com/Microsoft/AdaptiveCards/issues/234
