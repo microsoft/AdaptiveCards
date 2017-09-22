@@ -1,10 +1,10 @@
 import * as Enums from "./enums";
 import * as Utils from "./utils";
 
-export interface ISpacingDefinition {
-    left: number,
-    top: number,
-    right: number,
+export class ISpacingDefinition {
+    left: number;
+    top: number;
+    right: number;
     bottom: number
 }
 
@@ -17,46 +17,56 @@ function parseSpacingDefinition(obj: any): ISpacingDefinition {
     } : null;
 }
 
-export interface IPaddingDefinition {
-    top: Enums.Padding,
-    right: Enums.Padding,
-    bottom: Enums.Padding,
-    left: Enums.Padding
+export class PaddingDefinition {
+    top: Enums.Padding;
+    right: Enums.Padding;
+    bottom: Enums.Padding;
+    left: Enums.Padding;
+
+    toJSON() {
+        return {
+            top: Enums.Padding[this.top],
+            right: Enums.Padding[this.right],
+            bottom: Enums.Padding[this.bottom],
+            left: Enums.Padding[this.left],
+        }
+    }
 }
 
-function parsePaddingDefinition(obj: any): IPaddingDefinition {
-    return obj ? {
+function parsePaddingDefinition(obj: any): PaddingDefinition {
+    return obj ? Object.assign(new PaddingDefinition(), {
         top: Utils.parseHostConfigEnum(Enums.Padding, obj["top"], Enums.Padding.None),
         right: Utils.parseHostConfigEnum(Enums.Padding, obj["right"], Enums.Padding.None),
         bottom: Utils.parseHostConfigEnum(Enums.Padding, obj["bottom"], Enums.Padding.None),
         left: Utils.parseHostConfigEnum(Enums.Padding, obj["left"], Enums.Padding.None),
-    } : null;
+    }
+    ) : null;
 }
 
-export interface ITextColorDefinition {
-    normal: string,
-    subtle: string
+export class TextColorDefinition {
+    normal: string;
+    subtle: string;
 }
 
-function parseTextColorDefinition(obj: any): ITextColorDefinition {
+function parseTextColorDefinition(obj: any): TextColorDefinition {
     return obj ? {
         normal: obj["normal"],
         subtle: obj["subtle"]
     } : null;
 }
 
-export interface IContainerStyleDefinition {
-    backgroundColor?: string,
+export class ContainerStyleDefinition {
+    backgroundColor?: string;
     fontColors: {
-        default: ITextColorDefinition,
-        accent: ITextColorDefinition,
-        good: ITextColorDefinition,
-        warning: ITextColorDefinition,
-        attention: ITextColorDefinition
-    },
+        default: TextColorDefinition,
+        accent: TextColorDefinition,
+        good: TextColorDefinition,
+        warning: TextColorDefinition,
+        attention: TextColorDefinition
+    };
 }
 
-function parseColorPaletteDefinition(obj: any): IContainerStyleDefinition {
+function parseColorPaletteDefinition(obj: any): ContainerStyleDefinition {
     return obj ? {
         backgroundColor: obj["backgroundColor"],
         fontColors: {
@@ -69,62 +79,85 @@ function parseColorPaletteDefinition(obj: any): IContainerStyleDefinition {
     } : null;
 }
 
-export interface IAdaptiveCardConfig {
-    allowCustomStyle: boolean
+export class AdaptiveCardConfig {
+    allowCustomStyle: boolean;
 }
 
-function parseAdaptiveCardConfiguration(obj: any): IAdaptiveCardConfig {
+function parseAdaptiveCardConfiguration(obj: any): AdaptiveCardConfig {
     return obj ? {
         allowCustomStyle: obj["allowCustomStyle"]
     } : null;
 }
 
-export interface IImageConfig {
-    size: Enums.Size
+export class ImageConfig {
+    size: Enums.Size;
+
+    toJSON() {
+        return {
+            size: Enums.Size[this.size]
+        }
+    }
 }
 
-function parseImageConfiguration(obj: any): IImageConfig {
-    return obj ? {
+function parseImageConfiguration(obj: any): ImageConfig {
+    return obj ? Object.assign(new ImageConfig(), {
         size: obj["size"]
-    } : null;
+    }) : null;
 }
 
-export interface IImageSetConfig {
+export class ImageSetConfig {
     imageSize: Enums.Size
     maxImageHeight: number
+
+    toJSON() {
+        return {
+            imageSize: Enums.Size[this.imageSize],
+            maxImageHeight: this.maxImageHeight
+        }
+    }
 }
 
-function parseImageSetConfiguration(obj: any): IImageSetConfig {
-    return obj ? {
+function parseImageSetConfiguration(obj: any): ImageSetConfig {
+    return obj ? Object.assign(new ImageSetConfig(), {
         imageSize: obj["imageSize"],
         maxImageHeight: Utils.getValueOrDefault<number>("maxImageHeight", 100)
-    } : null;
+    }) : null;
 }
 
-export interface IFactTextDefinition {
-    size: Enums.TextSize,
-    color: Enums.TextColor,
-    isSubtle: boolean,
-    weight: Enums.TextWeight,
-    wrap: boolean
+export class FactTextDefinition {
+    size: Enums.TextSize;
+    color: Enums.TextColor;
+    isSubtle: boolean;
+    weight: Enums.TextWeight;
+    wrap: boolean;
+
+    toJSON(): any {
+        return {
+            size: Enums.TextSize[this.size],
+            color: Enums.TextColor[this.color],
+            isSubtle: this.isSubtle,
+            weight: Enums.TextWeight[this.weight],
+            warp: this.wrap
+        }
+    }
 }
 
-function parseFactTextDefinition(obj: any): IFactTextDefinition {
-    return obj ? {
+function parseFactTextDefinition(obj: any): FactTextDefinition {
+    return obj ? Object.assign(new FactTextDefinition(), {
         size: Utils.parseHostConfigEnum(Enums.TextSize, obj["size"], Enums.TextSize.Default),
         color: Utils.parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default),
         isSubtle: obj["isSubtle"],
         weight: Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Default),
         wrap: obj["wrap"]
-    } : null;
+    }) : null;
 }
 
-export interface IFactTitleDefinition extends IFactTextDefinition {
+export class FactTitleDefinition extends FactTextDefinition {
     maxWidth?: number;
 }
 
-function parseFactTitleDefinition(obj: any): IFactTitleDefinition {
-    var result: IFactTitleDefinition = parseFactTextDefinition(obj);
+function parseFactTitleDefinition(obj: any): FactTitleDefinition {
+    var result: FactTitleDefinition = parseFactTextDefinition(obj);
 
     if (result) {
         result.maxWidth = obj["maxWidth"];
@@ -133,13 +166,13 @@ function parseFactTitleDefinition(obj: any): IFactTitleDefinition {
     return result;
 }
 
-export interface IFactSetConfig {
-    title: IFactTitleDefinition,
-    value: IFactTextDefinition,
-    spacing: number
+export class FactSetConfig {
+    title: FactTitleDefinition = new FactTitleDefinition();
+    value: FactTextDefinition = new FactTextDefinition();
+    spacing: number;
 }
 
-function parseFactSetConfiguration(obj: any): IFactSetConfig {
+function parseFactSetConfiguration(obj: any): FactSetConfig {
     return obj ? {
         title: parseFactTitleDefinition(obj["title"]),
         value: parseFactTextDefinition(obj["value"]),
@@ -147,64 +180,86 @@ function parseFactSetConfiguration(obj: any): IFactSetConfig {
     } : null;
 }
 
-export interface IShowCardActionConfig {
-    actionMode: Enums.ShowCardActionMode,
-    inlineTopMargin: number,
-    style?: Enums.ContainerStyle
+export class ShowCardActionConfig {
+    actionMode: Enums.ShowCardActionMode;
+    inlineTopMargin: number;
+    style?: Enums.ContainerStyle;
+
+    toJSON() {
+        return {
+            actionMode: Enums.ShowCardActionMode[this.actionMode],
+            inlineTopMargin: this.inlineTopMargin,
+            style: Enums.ContainerStyle[this.style]
+        }
+    }
 }
 
-function parseShowCardActionConfiguration(obj: any): IShowCardActionConfig {
-    return obj ? {
+function parseShowCardActionConfiguration(obj: any): ShowCardActionConfig {
+    return obj ? Object.assign(new ShowCardActionConfig(), {
         actionMode: Utils.parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline),
         inlineTopMargin: obj["inlineTopMargin"],
         style: Utils.parseHostConfigEnum(Enums.ContainerStyle, obj["style"], Enums.ContainerStyle.Emphasis)
-    } : null;
+    }) : null;
 }
 
-export interface IActionsConfig {
-    maxActions: number,
-    spacing: Enums.Spacing,
-    buttonSpacing: number,
-    showCard: IShowCardActionConfig,
-    actionsOrientation: Enums.Orientation,
-    actionAlignment: Enums.ActionAlignment
+export class ActionsConfig {
+    maxActions: number;
+    spacing: Enums.Spacing;
+    buttonSpacing: number;
+    showCard: ShowCardActionConfig = new ShowCardActionConfig();
+    preExpandSingleShowCardAction?: boolean;
+    actionsOrientation: Enums.Orientation;
+    actionAlignment: Enums.ActionAlignment;
+
+    toJSON() {
+        return {
+            maxActions: this.maxActions,
+            spacing: Enums.Spacing[this.spacing],
+            buttonSpacing: this.buttonSpacing,
+            showCard: this.showCard,
+            preExpandSingleShowCardAction: this.preExpandSingleShowCardAction,
+            actionsOrientation: Enums.Orientation[this.actionsOrientation],
+            actionAlignment: Enums.ActionAlignment[this.actionAlignment]
+        }
+    }
 }
 
-function parseActionsConfiguration(obj: any): IActionsConfig {
-    return obj ? {
+function parseActionsConfiguration(obj: any): ActionsConfig {
+    return obj ? Object.assign(new ActionsConfig(), {
         maxActions: obj["maxActions"],
         spacing: Utils.parseHostConfigEnum(Enums.Spacing, obj["spacing"], Enums.Spacing.Default),
         buttonSpacing: obj["buttonSpacing"],
         showCard: parseShowCardActionConfiguration(obj["showCard"]),
+        preExpandSingleShowCardAction: Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false),
         actionsOrientation: Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal),
         actionAlignment: Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left),
-    } : null;
+    }) : null;
 }
 
-export interface IHostConfig {
-    supportsInteractivity: boolean,
-    fontFamily?: string,
+export class HostConfig {
+    supportsInteractivity: boolean;
+    fontFamily?: string;
     fontSizes: {
         small: number,
         default: number,
         medium: number,
         large: number,
         extraLarge: number
-    },
+    };
     fontWeights: {
         lighter: number,
         default: number,
         bolder: number
-    },
+    };
     imageSizes: {
         small: number,
         medium: number,
         large: number
-    }
+    };
     containerStyles: {
-        default: IContainerStyleDefinition,
-        emphasis: IContainerStyleDefinition
-    },
+        default: ContainerStyleDefinition,
+        emphasis: ContainerStyleDefinition
+    };
     spacing: {
         small: number,
         default: number,
@@ -212,22 +267,22 @@ export interface IHostConfig {
         large: number,
         extraLarge: number,
         padding: number
-    },
+    };
     separator: {
         lineThickness: number,
         lineColor: string
     }
-    actions: IActionsConfig,
-    adaptiveCard: IAdaptiveCardConfig,
-    image: IImageConfig,
-    imageSet: IImageSetConfig,
-    factSet: IFactSetConfig
+    actions: ActionsConfig = new ActionsConfig();
+    adaptiveCard: AdaptiveCardConfig = new AdaptiveCardConfig();
+    image: ImageConfig = new ImageConfig();
+    imageSet: ImageSetConfig = new ImageSetConfig();
+    factSet: FactSetConfig = new FactSetConfig();
 }
 
-export function parseHostConfig(serializedConfiguration: string): IHostConfig {
+export function parseHostConfig(serializedConfiguration: string): HostConfig {
     var obj = JSON.parse(serializedConfiguration);
 
-    return obj ? {
+    return obj ? Object.assign(new HostConfig(), {
         supportsInteractivity: obj["supportsInteractivity"],
         fontFamily: obj["fontFamily"],
         fontSizes: {
@@ -268,5 +323,5 @@ export function parseHostConfig(serializedConfiguration: string): IHostConfig {
         image: parseImageConfiguration(obj["image"]),
         imageSet: parseImageSetConfiguration(obj["imageSet"]),
         factSet: parseFactSetConfiguration(obj["factSet"])
-    } : null;
+    }) : null;
 }

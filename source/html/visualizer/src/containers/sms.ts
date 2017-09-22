@@ -1,6 +1,7 @@
 import { HostContainer } from "./host-container";
+import {merge} from 'lodash';
 import {
-    IHostConfig,
+    HostConfig,
     Size,
     TextSize,
     TextColor,
@@ -8,7 +9,9 @@ import {
     Spacing,
     ShowCardActionMode,
     Orientation,
-    ActionAlignment
+    ActionAlignment,
+    FactTitleDefinition,
+    FactTextDefinition
 } from "microsoft-adaptivecards";
 
 export class SMSContainer extends HostContainer {
@@ -29,8 +32,8 @@ export class SMSContainer extends HostContainer {
         return outerElement;
     }
 
-    public getHostConfig(): IHostConfig {
-        return {
+    public getHostConfig(): HostConfig {
+        return merge(new HostConfig(), {
             spacing: {
                 small: 3,
                 default: 8,
@@ -153,6 +156,6 @@ export class SMSContainer extends HostContainer {
                 },
                 spacing: 10
             }
-        };
+        });
     }
 }
