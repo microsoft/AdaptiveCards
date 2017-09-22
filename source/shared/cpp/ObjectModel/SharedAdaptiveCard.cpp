@@ -77,7 +77,7 @@ AdaptiveCard::AdaptiveCard(std::string version,
 #ifdef __ANDROID__
 std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
-std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile) throw (AdaptiveCards::AdaptiveCardParseException)
+std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile)
 #endif // __ANDROID__
 {
     std::ifstream jsonFileStream(jsonFile);
@@ -91,8 +91,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::DeserializeFromFile(const std::strin
 #ifdef __ANDROID__
 std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
-std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException)
-#endif // __ANDROID__
+std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
 {
     ParseUtil::ThrowIfNotJsonObject(json);
 

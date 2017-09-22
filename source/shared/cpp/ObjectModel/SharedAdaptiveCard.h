@@ -49,9 +49,9 @@ public:
     static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException);
 #else
-    static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string& jsonFile) throw(AdaptiveCards::AdaptiveCardParseException);
-    static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json) throw(AdaptiveCards::AdaptiveCardParseException);
-    static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString) throw(AdaptiveCards::AdaptiveCardParseException);
+    static std::shared_ptr<AdaptiveCard> DeserializeFromFile(const std::string& jsonFile);
+    static std::shared_ptr<AdaptiveCard> Deserialize(const Json::Value& json);
+    static std::shared_ptr<AdaptiveCard> DeserializeFromString(const std::string& jsonString);
 #endif // __ANDROID__
     Json::Value SerializeToJsonValue();
     std::string Serialize();
