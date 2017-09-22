@@ -2352,7 +2352,7 @@ export class Container extends CardElement {
 
             if (useAutoPadding) {
                 var effectivePadding = this.getNonZeroPadding();
-                var effectiveMargin: HostConfig.PaddingDefinition = Object.assign(new HostConfig.PaddingDefinition,{
+                var effectiveMargin: HostConfig.PaddingDefinition = Object.assign(new HostConfig.PaddingDefinition(), {
                     top: effectivePadding.top,
                     right: effectivePadding.right,
                     bottom: effectivePadding.bottom,
@@ -2435,12 +2435,12 @@ export class Container extends CardElement {
             }
             else {
                 physicalPadding = paddingToSpacingDefinition(this.hostConfig, Object.assign(new HostConfig.PaddingDefinition(),
-                {
-                    top: Enums.Padding.Default,
-                    right: Enums.Padding.Default,
-                    bottom: Enums.Padding.Default,
-                    left: Enums.Padding.Default
-                }));
+                    {
+                        top: Enums.Padding.Default,
+                        right: Enums.Padding.Default,
+                        bottom: Enums.Padding.Default,
+                        left: Enums.Padding.Default
+                    }));
             }
 
             if (this.renderedElement) {
@@ -3298,7 +3298,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     protected get defaultPadding(): HostConfig.PaddingDefinition {
         return Object.assign(
-            new HostConfig.PaddingDefinition(), 
+            new HostConfig.PaddingDefinition(),
             { top: Enums.Padding.Default, right: Enums.Padding.Default, bottom: Enums.Padding.Default, left: Enums.Padding.Default }
         );
     }
@@ -3391,7 +3391,7 @@ AdaptiveCard.initialize();
 class InlineAdaptiveCard extends AdaptiveCard {
     protected get defaultPadding(): HostConfig.PaddingDefinition {
         return Object.assign(
-            new HostConfig.PaddingDefinition(), 
+            new HostConfig.PaddingDefinition(),
             { top: Enums.Padding.Default, right: Enums.Padding.Default, bottom: Enums.Padding.Default, left: Enums.Padding.Default }
         );
     }
@@ -3469,7 +3469,7 @@ var defaultHostConfig: HostConfig.HostConfig = {
         maxActions: 5,
         spacing: Enums.Spacing.Default,
         buttonSpacing: 20,
-        showCard: Object.assign(new HostConfig.ShowCardActionConfig(),{
+        showCard: Object.assign(new HostConfig.ShowCardActionConfig(), {
             actionMode: Enums.ShowCardActionMode.Inline,
             inlineTopMargin: 16
         }),
@@ -3479,15 +3479,15 @@ var defaultHostConfig: HostConfig.HostConfig = {
     adaptiveCard: {
         allowCustomStyle: false
     },
-    image: Object.assign(new HostConfig.ImageConfig(),{
+    image: Object.assign(new HostConfig.ImageConfig(), {
         size: Enums.Size.Medium
     }),
-    imageSet: Object.assign(new HostConfig.ImageSetConfig(),{
+    imageSet: Object.assign(new HostConfig.ImageSetConfig(), {
         imageSize: Enums.Size.Medium,
         maxImageHeight: 100
     }),
     factSet: {
-        title: Object.assign(new HostConfig.FactTitleDefinition(),{
+        title: Object.assign(new HostConfig.FactTitleDefinition(), {
             color: Enums.TextColor.Default,
             size: Enums.TextSize.Default,
             isSubtle: false,
@@ -3495,7 +3495,7 @@ var defaultHostConfig: HostConfig.HostConfig = {
             wrap: true,
             maxWidth: 150
         }),
-        value: Object.assign(new HostConfig.FactTextDefinition(),{
+        value: Object.assign(new HostConfig.FactTextDefinition(), {
             color: Enums.TextColor.Default,
             size: Enums.TextSize.Default,
             isSubtle: false,
