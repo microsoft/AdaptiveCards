@@ -4,6 +4,7 @@
 #include <string>
 
 #include "AdaptiveCards.XamlCardRenderer.h"
+#include "InputItem.h"
 #include <BaseCardElement.h>
 #include <BaseActionElement.h>
 #include <ChoiceInput.h>
@@ -59,12 +60,13 @@ HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
 
+HSTRING SerializeInputItems(const std::vector<AdaptiveCards::XamlCardRenderer::InputItem>& inputElements);
 HRESULT GenerateSeparatorProjection(
     std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
     ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** projectedSeparator) noexcept;
 
 HRESULT GenerateSharedSeparator(
     ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator,
-    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut)noexcept;
+    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut) noexcept;
 
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;

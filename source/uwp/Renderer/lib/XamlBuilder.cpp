@@ -13,6 +13,8 @@
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
 #include "XamlBuilder.h"
+#include "XamlCardGetResourceStreamArgs.h"
+#include "XamlCardResourceResolvers.h"
 #include "XamlHelpers.h"
 #include "XamlStyleKeyGenerators.h"
 #include "json/json.h"
@@ -120,11 +122,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(
         IAdaptiveCard* adaptiveCard, 
+        std::shared_ptr<std::vector<InputItem>> inputElements,
         IUIElement** xamlTreeRoot, 
         XamlCardRenderer* renderer,
         boolean isOuterCard)
     {
         *xamlTreeRoot = nullptr;
+        m_renderer = renderer;
 
         ComPtr<IPanel> childElementContainer;
         ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, &childElementContainer);
@@ -132,8 +136,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // Enumerate the child items of the card and build xaml for them
         ComPtr<IVector<IAdaptiveCardElement*>> body;
         THROW_IF_FAILED(adaptiveCard->get_Body(&body));
-
-        std::shared_ptr<std::vector<InputItem>> inputElements = std::make_shared<std::vector<InputItem>>();
         BuildPanelChildren(body.Get(), childElementContainer.Get(), inputElements, [](IUIElement*) {});
 
         if (this->SupportsInteractivity())
@@ -426,6 +428,78 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     template<typename T>
     void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUri, T* uiElement)
     {
+        // Get the resource resolvers
+        ComPtr<IXamlCardResourceResolvers> resolvers;
+        THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resolvers));
+
+        // Get the image url scheme
+        HSTRING schemeName;
+        THROW_IF_FAILED(imageUri->get_SchemeName(&schemeName));
+
+        // Get the resolver for the image
+        ComPtr<IXamlCardResourceResolver> resolver;
+        THROW_IF_FAILED(resolvers->Get(schemeName, &resolver));
+
+        // If we have a resolver
+        if (resolver != nullptr)
+        {
+            // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
+            // the tracker to subscribe to the ImageLoaded/Failed events
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+
+            if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
+            {
+                m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+            }
+
+            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
+            ComPtr<IBitmapSource> bitmapSource;
+            bitmapImage.As(&bitmapSource);
+
+            // Create the arguments to pass to the resolver
+            ComPtr<IXamlCardGetResourceStreamArgs> args;
+            THROW_IF_FAILED(MakeAndInitialize<XamlCardGetResourceStreamArgs>(&args, imageUri));
+
+            // And call the resolver to get the image stream
+            ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
+            THROW_IF_FAILED(resolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
+
+            ComPtr<T> strongImageControl(uiElement);
+            ComPtr<XamlBuilder> strongThis(this);
+            THROW_IF_FAILED(getResourceStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
+                ([strongThis, this, bitmapSource, strongImageControl, bitmapImage](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
+            {
+                if (status == AsyncStatus::Completed)
+                {
+                    // Get the random access stream
+                    ComPtr<IRandomAccessStream> randomAccessStream;
+                    RETURN_IF_FAILED(operation->GetResults(&randomAccessStream));
+
+                    if (randomAccessStream == nullptr)
+                    {
+                        m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                        return S_OK;
+                    }
+
+                    RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+
+                    ComPtr<IImageSource> imageSource;
+                    RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+
+                    SetImageSource(strongImageControl.Get(), imageSource.Get());
+                    return S_OK;
+                }
+                else
+                {
+                    m_imageLoadTracker.MarkFailedLoadBitmapImage(bitmapImage.Get());
+                    return S_OK;
+                }
+            }).Get()));
+
+            return;
+        }
+
+        // Otherwise, no resolver...
         if ((m_enableXamlImageHandling) || (m_listeners.size() == 0))
         {
             // If we've been explicitly told to let Xaml handle the image loading, or there are
@@ -567,6 +641,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         XamlCardRenderer* renderer,
         IAdaptiveShowCardActionConfig* showCardActionConfig,
         IAdaptiveActionElement* action,
+        std::shared_ptr<std::vector<InputItem>> inputElements,
         IUIElement** uiShowCard)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
@@ -577,7 +652,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         THROW_IF_FAILED(showCardAction->get_Card(showCard.GetAddressOf()));
 
         ComPtr<IUIElement> localUiShowCard;
-        BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), renderer, false);
+        BuildXamlTreeFromAdaptiveCard(showCard.Get(), inputElements, localUiShowCard.GetAddressOf(), renderer, false);
 
         ComPtr<IGrid2> showCardGrid;
         THROW_IF_FAILED(localUiShowCard.As(&showCardGrid));
@@ -798,7 +873,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 if (actionType == ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard && 
                     showCardActionMode != ABI::AdaptiveCards::XamlCardRenderer::ActionMode_Popup)
                 {
-                    BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), uiShowCard.GetAddressOf());
+                    BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), inputElements, uiShowCard.GetAddressOf());
                     allShowCards->push_back(uiShowCard);
 
                     ComPtr<IPanel> showCardsPanel;
@@ -835,22 +910,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                     else
                     {
                         // Serialize the inputElements into Json.
-                        Json::Value jsonValue;
-                        for (auto& inputElement : *inputElements)
-                        {
-                            inputElement.Serialize(jsonValue);
-                        }
-
-                        Json::StyledWriter writer;
-                        std::string inputString = writer.write(jsonValue);
-
-                        HString inputHString;
-                        THROW_IF_FAILED(UTF8ToHString(inputString, inputHString.GetAddressOf()));
+                        HSTRING inputHString = SerializeInputItems(*inputElements);
 
                         // TODO: Data binding for inputs 
                         ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputHString.Get()));
-                        THROW_IF_FAILED(strongRenderer->SendActionEvent(eventArgs.Get()));
+                        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputHString));
+                        //THROW_IF_FAILED(strongRenderer->SendActionEvent(eventArgs.Get()));
                     }
 
                     return S_OK;
