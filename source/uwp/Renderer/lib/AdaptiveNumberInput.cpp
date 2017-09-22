@@ -121,19 +121,26 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
+    HRESULT AdaptiveNumberInput::get_Separator(boolean* separator)
     {
-        return GenerateSeparatorProjection(m_sharedNumberInput->GetSeparator(), separator);
+        *separator = m_sharedNumberInput->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedNumberInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
+    HRESULT AdaptiveNumberInput::put_Separator(boolean separator)
     {
+        m_sharedNumberInput->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
         std::shared_ptr<Separator> sharedSeparator;
         RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedNumberInput->SetSeparator(sharedSeparator);
-
+        */
         return S_OK;
     }
 
