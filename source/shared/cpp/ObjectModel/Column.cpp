@@ -40,8 +40,9 @@ Column::Column(
     bool separation,
     std::string speak,
     std::string size,
+    ContainerStyle style,
     std::vector<std::shared_ptr<BaseCardElement>>& items) :
-    BaseCardElement(CardElementType::Column, spacing, separation, speak), m_size(size), m_items(items)
+    BaseCardElement(CardElementType::Column, spacing, separation, speak), m_size(size), m_style(style), m_items(items)
 {
 }
 
@@ -49,8 +50,9 @@ Column::Column(
     Spacing spacing, 
     bool separation,
     std::string speak,
-    std::string size) :
-    BaseCardElement(CardElementType::Column, spacing, separation, speak), m_size(size)
+    std::string size,
+    ContainerStyle style) :
+    BaseCardElement(CardElementType::Column, spacing, separation, speak), m_size(size), m_style(style)
 {
 }
 
@@ -62,6 +64,16 @@ std::string Column::GetSize() const
 void Column::SetSize(const std::string value)
 {
     m_size = ParseUtil::ToLowercase(value);
+}
+
+ContainerStyle AdaptiveCards::Column::GetStyle() const
+{
+    return m_style;
+}
+
+void AdaptiveCards::Column::SetStyle(const ContainerStyle value)
+{
+    m_style = value;
 }
 
 const std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems() const
@@ -103,6 +115,9 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
     auto column = BaseCardElement::Deserialize<Column>(value);
 
     column->SetSize(ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size));
+
+    column->SetStyle(
+        ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, CardElementParsers, true);

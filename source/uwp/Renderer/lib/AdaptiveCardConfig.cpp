@@ -33,14 +33,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardConfig::get_BackgroundColor(ABI::Windows::UI::Color* value)
+    HRESULT AdaptiveCardConfig::get_AllowCustomStyle(boolean* allowCustomStyle)
     {
-        return GetColorFromString(m_sharedAdaptiveCardConfig.backgroundColor, value);
+        *allowCustomStyle = m_sharedAdaptiveCardConfig.allowCustomStyle;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardConfig::put_BackgroundColor(ABI::Windows::UI::Color /*value*/)
+    HRESULT AdaptiveCardConfig::put_AllowCustomStyle(boolean allowCustomStyle)
     {
-        return E_NOTIMPL;
+        m_sharedAdaptiveCardConfig.allowCustomStyle = allowCustomStyle;
+        return S_OK;
     }
 }}

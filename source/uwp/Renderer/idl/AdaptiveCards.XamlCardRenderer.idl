@@ -37,7 +37,6 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTextConfig;
         runtimeclass AdaptiveImageSizesConfig;
         runtimeclass AdaptiveImageSetConfig;
-        runtimeclass AdaptiveContainerConfig;
         runtimeclass AdaptiveContainerStyleConfig;
         runtimeclass AdaptiveImageConfig;
         runtimeclass AdaptiveCardConfig;
@@ -47,6 +46,8 @@ namespace AdaptiveCards
         runtimeclass AdaptiveHostConfig;
         runtimeclass AdaptiveSpacingConfig;
         runtimeclass AdaptiveSeparatorThicknessConfig;
+        runtimeclass AdaptiveContainerStyleDefinition;
+        runtimeclass AdaptiveContainerStylesDefinition;
 
         runtimeclass AdaptiveActionEventArgs;
 
@@ -82,7 +83,6 @@ namespace AdaptiveCards
         interface IAdaptiveImageSizesConfig;
         interface IAdaptiveImageSetConfig;
         interface IAdaptiveContainerStyleConfig;
-        interface IAdaptiveContainerConfig;
         interface IAdaptiveImageConfig;
         interface IAdaptiveCardConfig;
         interface IAdaptiveFactSetConfig;
@@ -91,6 +91,8 @@ namespace AdaptiveCards
         interface IAdaptiveHostConfig;
         interface IAdaptiveSpacingConfig;
         interface IAdaptiveSeparatorThicknessConfig;
+        interface IAdaptiveContainerStyleDefinition;
+        interface IAdaptiveContainerStylesDefinition;
 
         interface IAdaptiveActionEventArgs;
 
@@ -113,7 +115,7 @@ namespace AdaptiveCards
         } TextWeight;
 
         [version(NTDDI_WIN10_RS1)]
-        typedef [v1_enum] enum AdaptiveColor
+        typedef [v1_enum] enum ForegroundColor
         {
             Default = 0,
             Dark,
@@ -122,7 +124,7 @@ namespace AdaptiveCards
             Good,
             Warning,
             Attention
-        } AdaptiveColor;
+        } ForegroundColor;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum HAlignment
@@ -232,7 +234,8 @@ namespace AdaptiveCards
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ContainerStyle {
-            Normal = 0,
+            None = 0,
+            Default,
             Emphasis
         } ContainerStyle;
 
@@ -275,8 +278,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveSeparator : IInspectable
         {
-            [propget] HRESULT Color([out, retval] AdaptiveColor* value);
-            [propput] HRESULT Color([in] AdaptiveColor value);
+            [propget] HRESULT Color([out, retval] ForegroundColor* value);
+            [propput] HRESULT Color([in] ForegroundColor value);
 
             [propget] HRESULT Thickness([out, retval] SeparatorThickness* value);
             [propput] HRESULT Thickness([in] SeparatorThickness value);
@@ -304,8 +307,8 @@ namespace AdaptiveCards
             [propget] HRESULT Weight([out, retval] TextWeight* value);
             [propput] HRESULT Weight([in] TextWeight value);
 
-            [propget] HRESULT Color([out, retval] AdaptiveColor* value);
-            [propput] HRESULT Color([in] AdaptiveColor value);
+            [propget] HRESULT Color([out, retval] ForegroundColor* value);
+            [propput] HRESULT Color([in] ForegroundColor value);
 
             [propget] HRESULT Text([out, retval] HSTRING* value);
             [propput] HRESULT Text([in] HSTRING value);
@@ -360,6 +363,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT Speak([out, retval] HSTRING* value);
             [propput] HRESULT Speak([in] HSTRING value);
+
+            [propget] HRESULT Style([out, retval] ContainerStyle* value);
+            [propput] HRESULT Style([in] ContainerStyle value);
 
             HRESULT ToJsonString([out, retval] HSTRING* value);
         };
@@ -697,6 +703,9 @@ namespace AdaptiveCards
             [propget] HRESULT Size([out, retval] HSTRING* value);
             [propput] HRESULT Size([in] HSTRING value);
 
+            [propget] HRESULT Style([out, retval] ContainerStyle* value);
+            [propput] HRESULT Style([in] ContainerStyle value);
+
             [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
         };
 
@@ -870,6 +879,52 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(ae687d0f-ce50-483c-8478-a17d017d4c25),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveContainerStyleDefinition)
+        ]
+        interface IAdaptiveContainerStyleDefinition : IInspectable
+        {
+            [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
+
+            [propget] HRESULT ForegroundColors([out, retval] AdaptiveColorsConfig** value);
+            [propput] HRESULT ForegroundColors([in] AdaptiveColorsConfig* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveContainerStyleDefinition
+        {
+            [default] interface IAdaptiveContainerStyleDefinition;
+        };
+
+        [
+            uuid(7e57fadd-78a6-4501-a769-a8a44bb9f9d2),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveContainerStylesDefinition)
+        ]
+        interface IAdaptiveContainerStylesDefinition : IInspectable
+        {
+            [propget] HRESULT Default([out, retval] AdaptiveContainerStyleDefinition** value);
+            [propput] HRESULT Default([in] AdaptiveContainerStyleDefinition* value);
+
+            [propget] HRESULT Emphasis([out, retval] AdaptiveContainerStyleDefinition** value);
+            [propput] HRESULT Emphasis([in] AdaptiveContainerStyleDefinition* value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveContainerStylesDefinition
+        {
+            [default] interface IAdaptiveContainerStylesDefinition;
+        };
+
+        [
             uuid(ebca0eab-b08b-4087-9c42-4667ec6ab0e0),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveFontSizesConfig)
@@ -975,8 +1030,8 @@ namespace AdaptiveCards
             [propget] HRESULT Size([out, retval] TextSize* value);
             [propput] HRESULT Size([in] TextSize value);
 
-            [propget] HRESULT Color([out, retval] AdaptiveColor* value);
-            [propput] HRESULT Color([in] AdaptiveColor value);
+            [propget] HRESULT Color([out, retval] ForegroundColor* value);
+            [propput] HRESULT Color([in] ForegroundColor value);
  
             [propget] HRESULT IsSubtle([out, retval] boolean* value);
             [propput] HRESULT IsSubtle([in] boolean value);
@@ -1093,59 +1148,6 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(51b57d16-6155-4bbe-bf1a-516382ac9e81),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveContainerStyleConfig)
-        ]
-        interface IAdaptiveContainerStyleConfig : IInspectable
-        {
-            [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
-
-            [propget] HRESULT BorderColor([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT BorderColor([in] Windows.UI.Color value);
-
-            [propget] HRESULT Padding([out, retval] AdaptiveSpacingDefinition** value);
-            [propput] HRESULT Padding([in] AdaptiveSpacingDefinition* value);
-
-            [propget] HRESULT BorderThickness([out, retval] AdaptiveSpacingDefinition** value);
-            [propput] HRESULT BorderThickness([in] AdaptiveSpacingDefinition* value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveContainerStyleConfig
-        {
-            [default] interface IAdaptiveContainerStyleConfig;
-        };
-
-        [
-            uuid(740419b1-29de-435d-b8da-e34f1bd5afee),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveContainerConfig)
-        ]
-        interface IAdaptiveContainerConfig : IInspectable
-        {
-            [propget] HRESULT Normal([out, retval] AdaptiveContainerStyleConfig** value);
-            [propput] HRESULT Normal([in] AdaptiveContainerStyleConfig* value);
-
-            [propget] HRESULT Emphasis([out, retval] AdaptiveContainerStyleConfig** value);
-            [propput] HRESULT Emphasis([in] AdaptiveContainerStyleConfig* value);
-
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveContainerConfig
-        {
-            [default] interface IAdaptiveContainerConfig;
-        };
-
-        [
             uuid(9363ea9c-9f73-4e7d-8d6e-0559ac52b314),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveCardConfig)
@@ -1155,8 +1157,8 @@ namespace AdaptiveCards
             [propget] HRESULT Padding([out, retval] AdaptiveSpacingDefinition** value);
             [propput] HRESULT Padding([in] AdaptiveSpacingDefinition* value);
 
-            [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
+            [propget] HRESULT AllowCustomStyle([out, retval] boolean* value);
+            [propput] HRESULT AllowCustomStyle([in] boolean value);
         };
 
         [
@@ -1204,8 +1206,8 @@ namespace AdaptiveCards
             [propget] HRESULT ActionMode([out, retval] ActionMode *value);
             [propput] HRESULT ActionMode([in] ActionMode value);
 
-            [propget] HRESULT BackgroundColor([out][retval] Windows.UI.Color* value);
-            [propput] HRESULT BackgroundColor([in] Windows.UI.Color value);
+            [propget] HRESULT Style([out, retval] ContainerStyle* value);
+            [propput] HRESULT Style([in] ContainerStyle value);
 
             [propget] HRESULT Padding([out, retval] AdaptiveSpacingDefinition** value);
             [propput] HRESULT Padding([in] AdaptiveSpacingDefinition* value);
@@ -1274,8 +1276,8 @@ namespace AdaptiveCards
             [propget] HRESULT SupportsInteractivity([out, retval] boolean* value);
             [propput] HRESULT SupportsInteractivity([in] boolean value);
 
-            [propget] HRESULT Colors([out, retval] AdaptiveColorsConfig** value);
-            [propput] HRESULT Colors([in] AdaptiveColorsConfig* value);
+            [propget] HRESULT ContainerStyles([out, retval] AdaptiveContainerStylesDefinition** value);
+            [propput] HRESULT ContainerStyles([in] AdaptiveContainerStylesDefinition* value);
 
             [propget] HRESULT ImageSizes([out, retval] AdaptiveImageSizesConfig** value);
             [propput] HRESULT ImageSizes([in] AdaptiveImageSizesConfig* value);
@@ -1294,9 +1296,6 @@ namespace AdaptiveCards
 
             [propget] HRESULT FactSet([out, retval] AdaptiveFactSetConfig** value);
             [propput] HRESULT FactSet([in] AdaptiveFactSetConfig* value);
-
-            [propget] HRESULT Container([out, retval] AdaptiveContainerConfig** value);
-            [propput] HRESULT Container([in] AdaptiveContainerConfig* value);
 
             [propget] HRESULT Actions([out, retval] AdaptiveActionsConfig** value);
             [propput] HRESULT Actions([in] AdaptiveActionsConfig* value);

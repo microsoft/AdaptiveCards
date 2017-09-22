@@ -24,6 +24,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Size(_Out_ HSTRING* size);
         IFACEMETHODIMP put_Size(_In_ HSTRING size);
 
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style);
+        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style);
+
         IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** items);
 
         // IAdaptiveCardElement

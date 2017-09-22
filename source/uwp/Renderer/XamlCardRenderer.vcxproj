@@ -115,6 +115,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
+    <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
+    <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
@@ -124,7 +126,6 @@
     <ClInclude Include="lib\AdaptiveSpacingDefinition.h" />
     <ClInclude Include="lib\AdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveCardConfig.h" />
-    <ClInclude Include="lib\AdaptiveContainerStyleConfig.h" />
     <ClInclude Include="lib\AdaptiveChoiceInput.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInput.h" />
     <ClInclude Include="lib\AdaptiveColorConfig.h" />
@@ -132,7 +133,6 @@
     <ClInclude Include="lib\AdaptiveColumn.h" />
     <ClInclude Include="lib\AdaptiveColumnSet.h" />
     <ClInclude Include="lib\AdaptiveContainer.h" />
-    <ClInclude Include="lib\AdaptiveContainerConfig.h" />
     <ClInclude Include="lib\AdaptiveFact.h" />
     <ClInclude Include="lib\AdaptiveFactSet.h" />
     <ClInclude Include="lib\AdaptiveFactSetConfig.h" />
@@ -166,6 +166,8 @@
     <ClInclude Include="lib\XamlCardResourceResolvers.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveSeparator.cpp" />
@@ -175,7 +177,6 @@
     <ClCompile Include="lib\AdaptiveSpacingDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveCardConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveContainerStyleConfig.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceInput.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInput.cpp" />
     <ClCompile Include="lib\AdaptiveColorConfig.cpp" />
@@ -183,7 +184,6 @@
     <ClCompile Include="lib\AdaptiveColumn.cpp" />
     <ClCompile Include="lib\AdaptiveColumnSet.cpp" />
     <ClCompile Include="lib\AdaptiveContainer.cpp" />
-    <ClCompile Include="lib\AdaptiveContainerConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFact.cpp" />
     <ClCompile Include="lib\AdaptiveFactSet.cpp" />
     <ClCompile Include="lib\AdaptiveFactSetConfig.cpp" />

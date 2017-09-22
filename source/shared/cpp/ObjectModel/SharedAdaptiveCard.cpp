@@ -49,11 +49,13 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string minVersion,
     std::string fallbackText,
     std::string backgroundImage,
+    ContainerStyle style,
     std::string speak) :
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
     m_backgroundImage(backgroundImage),
+    m_style(style),
     m_speak(speak)
 {
 }
@@ -62,12 +64,14 @@ AdaptiveCard::AdaptiveCard(std::string version,
     std::string minVersion,
     std::string fallbackText,
     std::string backgroundImage,
+    ContainerStyle style,
     std::string speak,
     std::vector<std::shared_ptr<BaseCardElement>>& body, std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
     m_backgroundImage(backgroundImage),
+    m_style(style),
     m_speak(speak),
     m_body(body),
     m_actions(actions)
@@ -98,6 +102,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     std::string backgroundImage = backgroundImageUrl != "" ? backgroundImageUrl :
         ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage);
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
+    ContainerStyle style = ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
 
     // Parse body
     auto body = ParseUtil::GetElementCollection<BaseCardElement>(json, AdaptiveCardSchemaKey::Body, AdaptiveCard::CardElementParsers, false);
@@ -105,7 +110,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::Deserialize(const Json::Value& json)
     // Parse actions if present
     auto actions = ParseUtil::GetActionCollection<BaseActionElement>(json, AdaptiveCardSchemaKey::Actions, AdaptiveCard::ActionParsers);
 
-    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, speak, body, actions);
+    auto result = std::make_shared<AdaptiveCard>(version, minVersion, fallbackText, backgroundImage, style, speak, body, actions);
     return result;
 }
 
@@ -195,6 +200,16 @@ std::string AdaptiveCard::GetSpeak() const
 void AdaptiveCard::SetSpeak(const std::string value)
 {
     m_speak = value;
+}
+
+ContainerStyle AdaptiveCards::AdaptiveCard::GetStyle() const
+{
+    return m_style;
+}
+
+void AdaptiveCards::AdaptiveCard::SetStyle(const ContainerStyle value)
+{
+    m_style = value;
 }
 
 const CardElementType AdaptiveCard::GetElementType() const
