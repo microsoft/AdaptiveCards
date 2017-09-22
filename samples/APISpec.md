@@ -21,9 +21,7 @@ card.Body.Add(new AdaptiveImage());
 card.Body.Add(new AdaptiveTextBlock()); 
 card.Actions.Add(new AdaptiveHttpAction());
 
-// NAMING: Consensus in the room was to include the Adaptive prefix for object-model types
-// Argument being we aren't describing "images" or "containers", they are "adaptive images" just like "adaptive cards" 
-// Also seems highly likely that our other namespace would conflict with native UI stack and need to be aliased.
+// NAMING: Use best judgement per platform. If naming collisions are likely, e.g., another Image type will exist, consider prefixing model types with "Adaptive": AdaptiveImage vs Image
 ```
 
 ### Parse JSON
