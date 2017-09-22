@@ -112,7 +112,13 @@ std::shared_ptr<Column> Column::Deserialize(const Json::Value& value)
 {
     auto column = BaseCardElement::Deserialize<Column>(value);
 
-    column->SetWidth(ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width));
+    std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
+    if (columnWidth == "")
+    {
+        // Look in "size" for back-compat with pre V1.0 cards
+        columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
+    }
+    column->SetWidth(columnWidth);
 
     column->SetStyle(
         ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
