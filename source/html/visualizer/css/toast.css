@@ -66,6 +66,7 @@ a.ac-anchor:visited:active {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   color: white;
+  height: 31px;
 }
 
 .ac-input.ac-textInput {
