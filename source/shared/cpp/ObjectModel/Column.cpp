@@ -37,7 +37,7 @@ Column::Column() : BaseCardElement(CardElementType::Column), m_size("Auto")
 
 Column::Column(
     Spacing spacing,
-    std::shared_ptr<Separator> separation,
+    bool separation,
     std::string speak,
     std::string size,
     std::vector<std::shared_ptr<BaseCardElement>>& items) :
@@ -47,7 +47,7 @@ Column::Column(
 
 Column::Column(
     Spacing spacing, 
-    std::shared_ptr<Separator> separation,
+    bool separation,
     std::string speak,
     std::string size) :
     BaseCardElement(CardElementType::Column, spacing, separation, speak), m_size(size)

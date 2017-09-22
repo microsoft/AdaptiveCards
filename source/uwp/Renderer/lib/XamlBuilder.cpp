@@ -976,11 +976,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         UINT localSpacing;
         THROW_IF_FAILED(GetSpacingSizeFromSpacing(m_hostConfig.Get(), elementSpacing, &localSpacing));
 
-        ComPtr<IAdaptiveSeparator> elementSeparator;
-        THROW_IF_FAILED(cardElement->get_Separator(&elementSeparator));
+        boolean hasSeparator;
+        THROW_IF_FAILED(cardElement->get_Separator(&hasSeparator));
 
         ABI::Windows::UI::Color localColor = { 0 };
-        UINT localThickness = 0;
+        UINT localThickness = 0; 
+        if (hasSeparator)
+        {
+            THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(), ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor::Default, false, &localColor));
+            localThickness = 1;
+        }
+
+        // This block of code is currently not in use as we are not currently using the element 
+        // separator object.  Leaving this code here to be used when issue #629 makes separator an object
+        ComPtr<IAdaptiveSeparator> elementSeparator;
         if (elementSeparator != nullptr)
         {
             ABI::AdaptiveCards::XamlCardRenderer::AdaptiveColor elementSeparatorColor;
@@ -989,7 +998,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(), elementSeparatorColor, false, &localColor));
 
             ComPtr<IAdaptiveSeparatorThicknessConfig> separatorThicknessConfig;
-            THROW_IF_FAILED(m_hostConfig->get_SeparatorThickness(&separatorThicknessConfig));
+            //THROW_IF_FAILED(m_hostConfig->get_SeparatorThickness(&separatorThicknessConfig));
 
             ABI::AdaptiveCards::XamlCardRenderer::SeparatorThickness elementSeparatorThickness;
             elementSeparator->get_Thickness(&elementSeparatorThickness);
@@ -1004,9 +1013,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 break;
             }
         }
-
-        *needsSeparator = 
-            (elementSeparator != nullptr) || 
+        
+        *needsSeparator = hasSeparator ||
             (elementSpacing != ABI::AdaptiveCards::XamlCardRenderer::Spacing::None);
 
         *spacing = localSpacing;

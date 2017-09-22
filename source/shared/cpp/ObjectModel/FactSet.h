@@ -12,8 +12,8 @@ class FactSet : public BaseCardElement
 {
 public:
     FactSet();
-    FactSet(Spacing spacing, std::shared_ptr<Separator> separation, std::string speak);
-    FactSet(Spacing spacing, std::shared_ptr<Separator> separation, std::string speak, std::vector<std::shared_ptr<Fact>>& facts);
+    FactSet(Spacing spacing, bool separation, std::string speak);
+    FactSet(Spacing spacing, bool separation, std::string speak, std::vector<std::shared_ptr<Fact>>& facts);
 
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();

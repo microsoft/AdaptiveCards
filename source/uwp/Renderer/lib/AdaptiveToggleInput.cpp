@@ -124,18 +124,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator)
+    HRESULT AdaptiveToggleInput::get_Separator(boolean* separator)
     {
-        return GenerateSeparatorProjection(m_sharedToggleInput->GetSeparator(), separator);
+        *separator = m_sharedToggleInput->GetSeparator();
+        return S_OK;
+
+        //return GenerateSeparatorProjection(m_sharedToggleInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator)
+    HRESULT AdaptiveToggleInput::put_Separator(boolean separator)
     {
+        m_sharedToggleInput->SetSeparator(separator);
+
+        /*
         std::shared_ptr<Separator> sharedSeparator;
         RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
 
         m_sharedToggleInput->SetSeparator(sharedSeparator);
+        */
 
         return S_OK;
     }

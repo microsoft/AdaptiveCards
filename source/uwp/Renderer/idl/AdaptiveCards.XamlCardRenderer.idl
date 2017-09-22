@@ -264,8 +264,8 @@ namespace AdaptiveCards
             [propget] HRESULT Spacing([out, retval] Spacing* value);
             [propput] HRESULT Spacing([in] Spacing value);
 
-            [propget] HRESULT Separator([out, retval] AdaptiveSeparator** value);
-            [propput] HRESULT Separator([in] AdaptiveSeparator* value);
+            [propget] HRESULT Separator([out, retval] boolean* value);
+            [propput] HRESULT Separator([in] boolean value);
         };
 
         [
@@ -1285,9 +1285,6 @@ namespace AdaptiveCards
 
             [propget] HRESULT Spacing([out, retval] AdaptiveSpacingConfig** value);
             [propput] HRESULT Spacing([in] AdaptiveSpacingConfig* value);
-
-            [propget] HRESULT SeparatorThickness([out, retval] AdaptiveSeparatorThicknessConfig** value);
-            [propput] HRESULT SeparatorThickness([in] AdaptiveSeparatorThicknessConfig* value);
 
             [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCardConfig** value);
             [propput] HRESULT AdaptiveCard([in] AdaptiveCardConfig* value);
