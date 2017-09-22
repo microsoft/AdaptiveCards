@@ -694,8 +694,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveColumn : IInspectable
         {
-            [propget] HRESULT Size([out, retval] HSTRING* value);
-            [propput] HRESULT Size([in] HSTRING value);
+            [propget] HRESULT Width([out, retval] HSTRING* value);
+            [propput] HRESULT Width([in] HSTRING value);
 
             [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
         };
