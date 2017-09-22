@@ -43,21 +43,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedSubmitAction->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedSubmitAction->SetSpeak(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveSubmitAction::get_DataJson(HSTRING* data)
     {
         return UTF8ToHString(m_sharedSubmitAction->GetDataJson(), data);

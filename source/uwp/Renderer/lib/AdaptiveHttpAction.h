@@ -34,9 +34,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
         IFACEMETHODIMP put_Title(_In_ HSTRING title);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
-        IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
-
     private:
         std::shared_ptr<AdaptiveCards::HttpAction> m_sharedHttpAction;
     };

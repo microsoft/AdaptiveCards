@@ -13,7 +13,6 @@ public:
     TextBlock(
         Spacing spacing, 
         std::shared_ptr<Separator> separator,
-        std::string speak,
         std::string text,
         TextSize textSize,
         TextWeight textWeight,

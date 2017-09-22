@@ -45,9 +45,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separator(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** separator);
         IFACEMETHODIMP put_Separator(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING *text);
-        IFACEMETHODIMP put_Speak(_In_ HSTRING text);
-
     private:
         std::shared_ptr<AdaptiveCards::Image> m_sharedImage;
     };

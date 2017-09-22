@@ -14,7 +14,6 @@ public:
     Image(
         Spacing spacing,
         std::shared_ptr<Separator> separator,
-        std::string speak,
         std::string uri,
         ImageStyle imageStyle,
         ImageSize imageSize,
