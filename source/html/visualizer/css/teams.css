@@ -35,78 +35,48 @@ a.ac-anchor:visited:active {
 }
 
 .ac-pushButton {
-  font-family: "Segoe UI", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
-  border: none;
-  padding: 4px 10px 5px 10px;
   text-align: center;
   vertical-align: middle;
   cursor: default;
-  background-color: #0078D7;
-  color: white;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-.ac-pushButton:hover {
-  background-color: #005A9E;
-}
-
-.ac-pushButton:active {
-  background-color: #004D84;
-}
-
-.ac-linkButton {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: default;
-  border: 2px solid #5D60B3;
   padding: 4px 10px 5px 10px;
-  color: #5D60B3;
-  background-color: white;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  height: 31px;
+  background-color: white;
+  color: #5D60B3;
+  border: 2px solid #5D60B3;
 }
 
-.ac-linkButton:hover {
+.ac-pushButton:hover {
   background-color: #5D60B3;
   color: white;
 }
 
-.ac-linkButton:active {
+.ac-pushButton:active {
   background-color: #4F5399;
   color: white;
 }
 
-/*
-    Other styles that can be specified:
-        .ac-linkButton.ac-expanded
-        .ac-linkButton.ac-expanded:hover
-        .ac-linkButton.ac-expanded:active
-    */
-.ac-linkButton {
-  text-align: center;
-  vertical-align: middle;
+.ac-pushButton.expanded {
+  background-color: #4F5399;
+  color: white;
 }
 
 .ac-input {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   color: black;
+  height: 31px;
 }
 
 .ac-input.ac-textInput {
-  height: 30px;
   resize: none;
 }
 

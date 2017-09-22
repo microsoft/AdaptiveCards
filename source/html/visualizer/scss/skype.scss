@@ -29,10 +29,6 @@
     line-height: 20px;
 }
 
-.ac-linkButton {
-    @extend .ac-pushButton;
-}
-
 @include base-input();
 
 /*Bot hexagon*/

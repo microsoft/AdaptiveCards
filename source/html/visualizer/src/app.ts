@@ -15,6 +15,7 @@ import { KikContainer } from "./containers/kik";
 import { FacebookContainer } from "./containers/facebook";
 import { BingContainer } from "./containers/bing";
 import { TimelineContainer } from "./containers/timeline";
+import { OutlookContainer } from "./containers/outlook";
 
 import * as ace from "brace";
 import "brace/mode/json";
@@ -222,6 +223,11 @@ function setupContainerPicker() {
         new HostContainerOption(
             "Microsoft Teams",
             new TeamsContainer("css/teams.css")));
+
+    hostContainerOptions.push(
+        new HostContainerOption(
+            "Microsoft Outlook Actionable Messages",
+            new OutlookContainer("css/outlook.css")));
 
     hostContainerOptions.push(
         new HostContainerOption(
