@@ -219,7 +219,6 @@ enum class ActionType
     Unsupported = 0, 
     ShowCard,
     Submit,
-    Http,
     OpenUrl,
 };
 

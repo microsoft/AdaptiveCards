@@ -142,7 +142,6 @@ CardElementTypeNameToEnum = GenerateStringToEnumMap<CardElementType>(CardElement
 
 static std::unordered_map<ActionType, std::string, EnumHash> ActionTypeEnumToName =
 {
-    { ActionType::Http, "Action.Http" },
     { ActionType::OpenUrl, "Action.OpenUrl" },
     { ActionType::ShowCard, "Action.ShowCard" },
     { ActionType::Submit, "Action.Submit" }
