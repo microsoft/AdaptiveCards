@@ -140,21 +140,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedDateInput->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedDateInput->SetSpeak(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveDateInput::get_IsRequired(boolean* isRequired)
     {
         *isRequired = m_sharedDateInput->GetIsRequired();

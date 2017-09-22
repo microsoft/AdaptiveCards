@@ -70,7 +70,6 @@ AdaptiveCard::AdaptiveCard(std::string version,
     m_minVersion(minVersion),
     m_fallbackText(fallbackText),
     m_backgroundImage(backgroundImage),
-    m_speak(speak),
     m_body(body),
     m_actions(actions)
 {

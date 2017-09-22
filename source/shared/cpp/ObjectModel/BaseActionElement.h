@@ -10,13 +10,9 @@ namespace AdaptiveCards
 class BaseActionElement
 {
 public:
-    BaseActionElement(ActionType type, std::string speak);
     BaseActionElement(ActionType type);
 
     virtual ~BaseActionElement();
-
-    std::string GetSpeak() const;
-    void SetSpeak(const std::string value);
 
     std::string GetTitle() const;
     void SetTitle(const std::string value);
@@ -31,7 +27,6 @@ public:
 
 private:
     ActionType m_type;
-    std::string m_speak;
     std::string m_title;
 };
 
@@ -44,7 +39,6 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
     ParseUtil::ThrowIfNotJsonObject(json);
 
     BaseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
-    BaseActionElement->SetSpeak(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak));
 
     return cardElement;
 }

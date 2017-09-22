@@ -3,32 +3,13 @@
 
 using namespace AdaptiveCards;
 
-BaseActionElement::BaseActionElement(
-    ActionType type,
-    std::string speak) :
-    m_type(type),
-    m_speak(speak)
-{
-}
-
 BaseActionElement::BaseActionElement(ActionType type) :
-    m_type(type), 
-    m_speak("")
+    m_type(type)
 {
 }
 
 AdaptiveCards::BaseActionElement::~BaseActionElement()
 {
-}
-
-std::string BaseActionElement::GetSpeak() const
-{
-    return m_speak;
-}
-
-void BaseActionElement::SetSpeak(const std::string value)
-{
-    m_speak = value;
 }
 
 std::string BaseActionElement::GetTitle() const
@@ -50,7 +31,6 @@ Json::Value BaseActionElement::SerializeToJsonValue()
 {
     Json::Value root;
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = ActionTypeToString(GetElementType());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak)] = GetSpeak();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = GetTitle();
     return root;
 }
