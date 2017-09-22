@@ -266,5 +266,8 @@ build*
 makefile.inc
 product.pbxproj
 
+# Mac
+**/.DS_Store
+
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h

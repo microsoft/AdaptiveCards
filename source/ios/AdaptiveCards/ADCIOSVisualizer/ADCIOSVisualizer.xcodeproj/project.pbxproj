@@ -69,6 +69,7 @@
 		F4D33E9A1F05916F00941E44 /* Restaurant.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E8F1F05916F00941E44 /* Restaurant.json */; };
 		F4D33E9B1F05916F00941E44 /* Stock Update.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E901F05916F00941E44 /* Stock Update.json */; };
 		F4D33E9C1F05916F00941E44 /* Weather Compact.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E911F05916F00941E44 /* Weather Compact.json */; };
+		F4D852581F6B726D00669636 /* hostconfig.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D852571F6B726D00669636 /* hostconfig.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -173,6 +174,7 @@
 		F4D33E8F1F05916F00941E44 /* Restaurant.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Restaurant.json; path = ../../../website/wwwroot/samples/cards/Restaurant.json; sourceTree = "<group>"; };
 		F4D33E901F05916F00941E44 /* Stock Update.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Stock Update.json"; path = "../../../website/wwwroot/samples/cards/Stock Update.json"; sourceTree = "<group>"; };
 		F4D33E911F05916F00941E44 /* Weather Compact.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Weather Compact.json"; path = "../../../website/wwwroot/samples/cards/Weather Compact.json"; sourceTree = "<group>"; };
+		F4D852571F6B726D00669636 /* hostconfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = hostconfig.json; path = ADCIOSVisualizer/hostconfig.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,6 +273,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				F4D852561F6B725400669636 /* HostConfig */,
 				F4D33E881F05916F00941E44 /* Activity Update.json */,
 				F4D33E891F05916F00941E44 /* Calendar Reminder.json */,
 				F4D33E8A1F05916F00941E44 /* Flight Itinerary.json */,
@@ -323,6 +326,14 @@
 				F4D33E5B1F045BA800941E44 /* TextBlock.Wrap.json */,
 			);
 			name = Jsons;
+			sourceTree = "<group>";
+		};
+		F4D852561F6B725400669636 /* HostConfig */ = {
+			isa = PBXGroup;
+			children = (
+				F4D852571F6B726D00669636 /* hostconfig.json */,
+			);
+			name = HostConfig;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -441,6 +452,7 @@
 				F4D33E821F045BA800941E44 /* TextBlock.Wrap.json in Resources */,
 				F4D33E931F05916F00941E44 /* Activity Update.json in Resources */,
 				F4D33E731F045BA800941E44 /* Input.Date.json in Resources */,
+				F4D852581F6B726D00669636 /* hostconfig.json in Resources */,
 				F4D33E9B1F05916F00941E44 /* Stock Update.json in Resources */,
 				F4D33E801F045BA800941E44 /* TextBlock.Text.json in Resources */,
 				F4D33E5F1F045BA800941E44 /* Action.Submit.json in Resources */,
