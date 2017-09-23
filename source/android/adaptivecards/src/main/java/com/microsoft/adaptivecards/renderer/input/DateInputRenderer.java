@@ -86,7 +86,7 @@ public class DateInputRenderer extends TextInputRenderer
             }
         });
 
-        setSeparationConfig(context, viewGroup, dateInput.GetSeparationStyle(), hostConfig.getDateInput().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
         return editText;
     }
 

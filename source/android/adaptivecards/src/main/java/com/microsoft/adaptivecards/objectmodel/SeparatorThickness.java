@@ -8,10 +8,9 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public final class SeparationStyle {
-  public final static SeparationStyle Default = new SeparationStyle("Default", AdaptiveCardObjectModelJNI.SeparationStyle_Default_get());
-  public final static SeparationStyle None = new SeparationStyle("None");
-  public final static SeparationStyle Strong = new SeparationStyle("Strong");
+public final class SeparatorThickness {
+  public final static SeparatorThickness Default = new SeparatorThickness("Default", AdaptiveCardObjectModelJNI.SeparatorThickness_Default_get());
+  public final static SeparatorThickness Thick = new SeparatorThickness("Thick");
 
   public final int swigValue() {
     return swigValue;
@@ -21,33 +20,33 @@ public final class SeparationStyle {
     return swigName;
   }
 
-  public static SeparationStyle swigToEnum(int swigValue) {
+  public static SeparatorThickness swigToEnum(int swigValue) {
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
     for (int i = 0; i < swigValues.length; i++)
       if (swigValues[i].swigValue == swigValue)
         return swigValues[i];
-    throw new IllegalArgumentException("No enum " + SeparationStyle.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + SeparatorThickness.class + " with value " + swigValue);
   }
 
-  private SeparationStyle(String swigName) {
+  private SeparatorThickness(String swigName) {
     this.swigName = swigName;
     this.swigValue = swigNext++;
   }
 
-  private SeparationStyle(String swigName, int swigValue) {
+  private SeparatorThickness(String swigName, int swigValue) {
     this.swigName = swigName;
     this.swigValue = swigValue;
     swigNext = swigValue+1;
   }
 
-  private SeparationStyle(String swigName, SeparationStyle swigEnum) {
+  private SeparatorThickness(String swigName, SeparatorThickness swigEnum) {
     this.swigName = swigName;
     this.swigValue = swigEnum.swigValue;
     swigNext = this.swigValue+1;
   }
 
-  private static SeparationStyle[] swigValues = { Default, None, Strong };
+  private static SeparatorThickness[] swigValues = { Default, Thick };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

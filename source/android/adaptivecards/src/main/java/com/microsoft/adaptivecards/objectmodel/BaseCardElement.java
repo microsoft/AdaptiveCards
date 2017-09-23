@@ -35,12 +35,21 @@ public class BaseCardElement {
     }
   }
 
-  public SeparationStyle GetSeparationStyle() {
-    return SeparationStyle.swigToEnum(AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparationStyle(swigCPtr, this));
+  public Separator GetSeparator() {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparator(swigCPtr, this);
+    return (cPtr == 0) ? null : new Separator(cPtr, true);
   }
 
-  public void SetSeparationStyle(SeparationStyle value) {
-    AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparationStyle(swigCPtr, this, value.swigValue());
+  public void SetSeparator(Separator value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparator(swigCPtr, this, Separator.getCPtr(value), value);
+  }
+
+  public Spacing GetSpacing() {
+    return Spacing.swigToEnum(AdaptiveCardObjectModelJNI.BaseCardElement_GetSpacing(swigCPtr, this));
+  }
+
+  public void SetSpacing(Spacing value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetSpacing(swigCPtr, this, value.swigValue());
   }
 
   public String GetSpeak() {

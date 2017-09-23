@@ -1,7 +1,6 @@
 package com.microsoft.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
@@ -10,16 +9,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.microsoft.adaptivecards.objectmodel.Separator;
+import com.microsoft.adaptivecards.objectmodel.Spacing;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
+import com.microsoft.adaptivecards.objectmodel.Color;
 import com.microsoft.adaptivecards.objectmodel.ColorsConfig;
 import com.microsoft.adaptivecards.objectmodel.FontSizesConfig;
 import com.microsoft.adaptivecards.objectmodel.HorizontalAlignment;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
-import com.microsoft.adaptivecards.objectmodel.SeparationConfig;
-import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
 import com.microsoft.adaptivecards.objectmodel.TextBlock;
-import com.microsoft.adaptivecards.objectmodel.TextColor;
 import com.microsoft.adaptivecards.objectmodel.TextSize;
 import com.microsoft.adaptivecards.objectmodel.TextWeight;
 import com.microsoft.adaptivecards.renderer.BaseCardElementRenderer;
@@ -51,86 +50,38 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static SeparationConfig setTextSize(TextView textView, TextSize textSize, HostConfig hostConfig)
+    static void setTextSize(TextView textView, TextSize textSize, HostConfig hostConfig)
     {
         FontSizesConfig fontSizesConfig = hostConfig.getFontSizes();
-        SeparationConfig separationConfig;
         if (textSize.swigValue() == TextSize.ExtraLarge.swigValue())
         {
             textView.setTextSize(fontSizesConfig.getExtraLargeFontSize());
-            separationConfig = hostConfig.getTextBlock().getExtraLargeSeparation();
         }
         else if (textSize.swigValue() == TextSize.Large.swigValue())
         {
             textView.setTextSize(fontSizesConfig.getLargeFontSize());
-            separationConfig = hostConfig.getTextBlock().getLargeSeparation();
         }
         else if (textSize.swigValue() == TextSize.Medium.swigValue())
         {
             textView.setTextSize(fontSizesConfig.getMediumFontSize());
-            separationConfig = hostConfig.getTextBlock().getMediumSeparation();
         }
         else if (textSize.swigValue() == TextSize.Normal.swigValue())
         {
             textView.setTextSize(fontSizesConfig.getNormalFontSize());
-            separationConfig = hostConfig.getTextBlock().getNormalSeparation();
         }
         else if (textSize.swigValue() == TextSize.Small.swigValue())
         {
             textView.setTextSize(fontSizesConfig.getSmallFontSize());
-            separationConfig = hostConfig.getTextBlock().getSmallSeparation();
         }
         else
         {
             throw new IllegalArgumentException("Unknown text size: " + textSize.toString());
         }
-
-        return separationConfig;
     }
 
-    static void setTextSizeAndSeparationConfig(Context context, TextView textView, ViewGroup viewGroup, TextSize textSize, SeparationStyle separationStyle, HostConfig hostConfig)
+    static void setTextColor(TextView textView, Color textColor, boolean isSubtle, ColorsConfig colorsConfig)
     {
-        SeparationConfig separationConfig = setTextSize(textView, textSize, hostConfig);
-        setSeparationConfig(context, viewGroup, separationStyle, separationConfig, hostConfig.getStrongSeparation(), true /* horizontal line */);
-    }
-
-    static void setTextColor(TextView textView, TextColor textColor, boolean isSubtle, ColorsConfig colorsConfig)
-    {
-        com.microsoft.adaptivecards.objectmodel.ColorConfig colorConfig;
-        if (textColor.swigValue() == TextColor.Accent.swigValue())
-        {
-            colorConfig = colorsConfig.getAccent();
-        }
-        else if (textColor.swigValue() == TextColor.Attention.swigValue())
-        {
-            colorConfig = colorsConfig.getAttention();
-        }
-        else if (textColor.swigValue() == TextColor.Dark.swigValue())
-        {
-            colorConfig = colorsConfig.getDark();
-        }
-        else if (textColor.swigValue() == TextColor.Default.swigValue())
-        {
-            colorConfig = colorsConfig.getDefaultColor();
-        }
-        else if (textColor.swigValue() == TextColor.Good.swigValue())
-        {
-            colorConfig = colorsConfig.getGood();
-        }
-        else if (textColor.swigValue() == TextColor.Light.swigValue())
-        {
-            colorConfig = colorsConfig.getLight();
-        }
-        else if (textColor.swigValue() == TextColor.Warning.swigValue())
-        {
-            colorConfig = colorsConfig.getWarning();
-        }
-        else
-        {
-            throw new IllegalArgumentException("Unknown text color: " + textColor.toString());
-        }
-
-        textView.setTextColor(Color.parseColor(isSubtle ? colorConfig.getSubtle() : colorConfig.getNormal()));
+        textView.setTextColor(getColor(textColor, colorsConfig, isSubtle));
     }
 
     static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
@@ -185,8 +136,9 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setText(textBlock.GetText());
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());
-        setTextSizeAndSeparationConfig(context, textView, viewGroup, textBlock.GetTextSize(), textBlock.GetSeparationStyle(), hostConfig);
-        setTextColor(textView, textBlock.GetTextColor(), textBlock.GetIsSubtle(), hostConfig.getColors());
+        setTextSize(textView, textBlock.GetTextSize(), hostConfig);
+        setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
+        textView.setTextColor(getColor(textBlock.GetTextColor(), hostConfig.getColors(), textBlock.GetIsSubtle()));
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         int maxLines = (int)textBlock.GetMaxLines();

@@ -41,12 +41,12 @@ public class ImageSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_0(), true);
   }
 
-  public ImageSet(SeparationStyle separation, String speak) {
-    this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_1(separation.swigValue(), speak), true);
+  public ImageSet(Spacing spacing, Separator separation, String speak) {
+    this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_1(spacing.swigValue(), Separator.getCPtr(separation), separation, speak), true);
   }
 
-  public ImageSet(SeparationStyle separation, String speak, ImageVector images) {
-    this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_2(separation.swigValue(), speak, ImageVector.getCPtr(images), images), true);
+  public ImageSet(Spacing spacing, Separator separation, String speak, ImageVector images) {
+    this(AdaptiveCardObjectModelJNI.new_ImageSet__SWIG_2(spacing.swigValue(), Separator.getCPtr(separation), separation, speak, ImageVector.getCPtr(images), images), true);
   }
 
   public String Serialize() {

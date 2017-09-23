@@ -86,7 +86,7 @@ public class TimeInputRenderer extends TextInputRenderer
             }
         });
 
-        setSeparationConfig(context, viewGroup, timeInput.GetSeparationStyle(), hostConfig.getTimeInput().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
         return editText;
     }
     

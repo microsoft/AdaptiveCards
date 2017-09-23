@@ -43,15 +43,6 @@ public class ImageSetConfig {
     return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageSetConfig_imageSize_get(swigCPtr, this));
   }
 
-  public void setSeparation(SeparationConfig value) {
-    AdaptiveCardObjectModelJNI.ImageSetConfig_separation_set(swigCPtr, this, SeparationConfig.getCPtr(value), value);
-  }
-
-  public SeparationConfig getSeparation() {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageSetConfig_separation_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
-  }
-
   public static ImageSetConfig Deserialize(SWIGTYPE_p_Json__Value json, ImageSetConfig defaultValue) {
     return new ImageSetConfig(AdaptiveCardObjectModelJNI.ImageSetConfig_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json), ImageSetConfig.getCPtr(defaultValue), defaultValue), true);
   }

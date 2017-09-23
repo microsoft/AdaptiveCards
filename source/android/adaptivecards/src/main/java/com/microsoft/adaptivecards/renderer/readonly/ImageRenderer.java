@@ -207,7 +207,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageLoaderAsync.execute(image.GetUrl());
         setImageSize(imageView, image.GetImageSize(), hostConfig.getImageSizes());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        setSeparationConfig(context, viewGroup, image.GetSeparationStyle(), hostConfig.getImage().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, true /* horizontal line */);
         viewGroup.addView(setHorizontalAlignment(context, imageView, image.GetHorizontalAlignment()));
         return imageView;
     }
