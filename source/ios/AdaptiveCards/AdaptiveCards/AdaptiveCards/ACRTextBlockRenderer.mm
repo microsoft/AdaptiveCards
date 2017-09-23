@@ -31,7 +31,7 @@
     UILabel *lab = [[UILabel alloc] init];
     NSString *textBlockStr = [NSString stringWithCString:txtBlck->GetText().c_str()
                                                 encoding:NSUTF8StringEncoding];
-    
+
     NSMutableAttributedString *content =
     [[NSMutableAttributedString alloc] initWithString:textBlockStr
                                            attributes:@{NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() withHostConfig:config andSubtleOption:txtBlck->GetIsSubtle()],
@@ -48,69 +48,69 @@
     }
     UIFontDescriptor *dec = lab.font.fontDescriptor;
     lab.font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]];
-    
+
     CGSize intrinsicSz = [lab intrinsicContentSize];
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
-    
+
     [wrappingview addSubview:lab];
-    
+
     [wrappingview setAlignmentForSubview:txtBlck->GetHorizontalAlignment()];
-    
+
     if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:wrappingview];
-    
+
     wrappingview.translatesAutoresizingMaskIntoConstraints = false;
-    
+
     lab.translatesAutoresizingMaskIntoConstraints = false;
-    
+
     return wrappingview;
 }
 
-+ (UIColor *)getTextBlockColor:(Color)txtClr
-                withHostConfig:(std::shared_ptr<HostConfig> const &)config
++ (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
+                  colorsConfig:(ColorsConfig const &)config
                andSubtleOption:(bool)isSubtle
 {
     long num = 0;
-    std::string str;
+    std::string *str;
     switch (txtClr) {
         case Color::Dark:{
             str = (isSubtle) ?
-                config->colors.dark.subtle :config->colors.dark.normal;
+                &config.dark.subtle : &config.dark.normal;
             break;
         }
         case Color::Light:{
             str = (isSubtle) ?
-                config->colors.light.subtle :config->colors.light.normal;
+                &config.light.subtle : &config.light.normal;
             break;
         }
         case Color::Accent:{
             str = (isSubtle) ?
-                config->colors.accent.subtle :config->colors.accent.normal;
+                &config.accent.subtle : &config.accent.normal;
             break;
         }
         case Color::Good:{
             str = (isSubtle) ?
-                config->colors.good.subtle :config->colors.good.normal;
+                &config.good.subtle : &config.good.normal;
             break;
         }
         case Color::Warning:{
             str = (isSubtle) ?
-                config->colors.warning.subtle :config->colors.warning.normal;
+                &config.warning.subtle : &config.warning.normal;
             break;
         }
         case Color::Attention:{
             str = (isSubtle) ?
-                config->colors.attention.subtle :config->colors.attention.normal;
+                &config.attention.subtle : &config.attention.normal;
             break;
         }
         default:{
             str = (isSubtle) ?
-                config->colors.dark.subtle :config->colors.dark.normal;
+                &config.dark.subtle : &config.dark.normal;
             break;
         }
     }
-    
-    num = std::stoul(str.substr(1), nullptr, 16);
+
+    num = std::stoul(str->substr(1), nullptr, 16);
 
     return [UIColor colorWithRed:((num & 0x00FF0000)>> 16)/ 255.0
                            green:((num & 0x0000FF00)>> 8)/ 255.0
@@ -138,7 +138,7 @@
     }
 }
 
-- (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock 
+- (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock
                           withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (txtBlock->GetHorizontalAlignment()){
@@ -152,11 +152,11 @@
             return NSTextAlignmentLeft;
     }
 }
-     
+
 + (NSNumber *)getTextBlockTextWeight:(TextWeight)weight
                       withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    switch (weight) { 
+    switch (weight) {
         case TextWeight::Normal:
             return @0;
         case TextWeight::Lighter:

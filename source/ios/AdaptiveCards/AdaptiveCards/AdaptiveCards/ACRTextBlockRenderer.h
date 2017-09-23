@@ -15,8 +15,8 @@
                       withHostConfig:(std::shared_ptr<HostConfig> const &)config;
 + (int)getTextBlockTextSize:(TextSize)txtSz
              withHostConfig:(std::shared_ptr<HostConfig> const &)config;
-+ (UIColor *)getTextBlockColor:(Color)txtClr
++ (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
                 withHostConfig:(std::shared_ptr<HostConfig> const &)config
                andSubtleOption:(bool)IsSubtle;
-
+                                     
 @end

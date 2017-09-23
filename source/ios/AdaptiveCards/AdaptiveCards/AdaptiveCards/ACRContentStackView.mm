@@ -7,12 +7,15 @@
 
 #include "ACRContentStackView.h"
 
+using namespace AdaptiveCards;
+
 @implementation ACRContentStackView
 {
     NSMutableArray* targets;
+    ContainerStyle _style;
 }
 
-- (instancetype)init 
+- (instancetype)init
 {
     return [self initWithFrame:CGRectMake(0,0,0,0)];
 }
@@ -25,15 +28,15 @@
         _stackView = [[UIStackView alloc] initWithFrame:frame];
         [self config];
     }
-    
+
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
 
-    if (self) 
+    if (self)
     {
         _stackView = [[UIStackView alloc] init];
         [self config];
@@ -42,10 +45,22 @@
     return self;
 }
 
+- (ContainerStyle)getStyle(void)
+{
+    return _style;
+}
+
+- (void)setStyle:(ContainerStyle)style
+{
+    _style = style;
+}
+
 - (void)config
-{ 
+{
     if(!self.stackView) return;
-    
+
+    _style = ContainerStyle::None;
+
     [self addSubview:self.stackView];
     [self addConstraint:
      [NSLayoutConstraint constraintWithItem:self
@@ -79,7 +94,7 @@
                                   attribute:NSLayoutAttributeBottom
                                  multiplier:1
                                    constant:0]];
-    
+
     self.stackView.translatesAutoresizingMaskIntoConstraints = false;
     self.translatesAutoresizingMaskIntoConstraints = false;
 

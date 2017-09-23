@@ -14,5 +14,7 @@
 - (UILayoutConstraintAxis)getAxis;
 - (void)addTarget:(NSObject *)target;
 - (void)adjustHuggingForLastElement;
+- (AdaptiveCards::ContainerStyle)getStyle(void);
+- (void)setStyle:(AdaptiveCards::CContainerStyle)style;
 
 @end
