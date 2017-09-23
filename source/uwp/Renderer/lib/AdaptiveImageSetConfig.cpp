@@ -31,5 +31,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedImageSetConfig.imageSize = static_cast<AdaptiveCards::ImageSize>(imageSize);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT  AdaptiveImageSetConfig::get_MaxImageHeight(UINT32* maxImageHeight)
+    {
+        *maxImageHeight = m_sharedImageSetConfig.maxImageHeight;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT  AdaptiveImageSetConfig::put_MaxImageHeight(UINT32 maxImageHeight)
+    {
+        m_sharedImageSetConfig.maxImageHeight = maxImageHeight;
+        return S_OK;
+    }
 }
 }

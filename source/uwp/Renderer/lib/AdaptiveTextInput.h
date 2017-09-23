@@ -29,7 +29,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_IsMultiline(_Out_ boolean* isMultiline);
         IFACEMETHODIMP put_IsMultiline(_In_ boolean isMultiline);
 
-        IFACEMETHODIMP get_MaxLength(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_MaxLength(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxLength(_In_ UINT32 value);
 
         IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle *textInputStyle);

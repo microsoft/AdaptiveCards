@@ -87,5 +87,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedSpacingConfig.extraLargeSpacing = extraLargeSpacing;
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSpacingConfig::get_Padding(UINT32* paddingSpacing)
+    {
+        *paddingSpacing = m_sharedSpacingConfig.paddingSpacing;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSpacingConfig::put_Padding(UINT32 paddingSpacing)
+    {
+        m_sharedSpacingConfig.paddingSpacing = paddingSpacing;
+        return S_OK;
+    }
 }
 }

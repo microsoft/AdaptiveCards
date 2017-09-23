@@ -54,7 +54,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig> m_hostConfig;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Text::IFontWeightsStatics> m_fontWeightsStatics;
 
         UINT m_fixedWidth = 0;
         UINT m_fixedHeight = 0;
@@ -65,16 +64,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(
             UINT spacing, UINT separatorThickness, ABI::Windows::UI::Color separatorColor, bool isHorizontal = true);
-        static void ApplyMarginToXamlElement(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition* spacingDefinition,
+        void ApplyMarginToXamlElement(
             _Inout_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
-        static ABI::Windows::UI::Xaml::Thickness ThicknessFromSpacingDefinition(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition* spacingDefinition);
         void StyleXamlTextBlock(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::TextSize size,
             _In_ ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor color,
             ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle containerStyle,
             _In_ bool isSubtle,
+            bool wrap,
+            UINT32 maxWidth,
             _In_ ABI::AdaptiveCards::XamlCardRenderer::TextWeight weight,
             _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
         void StyleXamlTextBlock(
@@ -122,7 +121,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _In_ bool insertSeparator);
         void GetSeparationConfigForElement(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
-            ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style,
             _Out_ UINT* spacing,
             _Out_ UINT* separatorThickness,
             _Out_ ABI::Windows::UI::Color* separatorColor,

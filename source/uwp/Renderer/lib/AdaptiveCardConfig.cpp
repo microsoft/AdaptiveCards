@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Util.h"
 #include "AdaptiveCardConfig.h"
-#include "AdaptiveSpacingDefinition.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
@@ -18,18 +17,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_sharedAdaptiveCardConfig = adaptiveCardConfig;
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardConfig::get_Padding(IAdaptiveSpacingDefinition** spacingDefinition)
-    {
-        return MakeAndInitialize<AdaptiveSpacingDefinition>(spacingDefinition, m_sharedAdaptiveCardConfig.padding);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardConfig::put_Padding(IAdaptiveSpacingDefinition* /*value*/)
-    {
-        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

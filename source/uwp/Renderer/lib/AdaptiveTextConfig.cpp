@@ -73,5 +73,29 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedTextConfig.isSubtle = Boolify(isSubtle);
         return S_OK;
     }
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextConfig::get_Wrap(boolean* wrap)
+    {
+        *wrap = m_sharedTextConfig.wrap;
+        return S_OK;
+    }
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextConfig::put_Wrap(boolean wrap)
+    {
+        m_sharedTextConfig.wrap = Boolify(wrap);
+        return S_OK;
+    }
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextConfig::get_MaxWidth(UINT32* maxWidth)
+    {
+        *maxWidth = m_sharedTextConfig.maxWidth;
+        return S_OK;
+    }
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextConfig::put_MaxWidth(UINT32 maxWidth)
+    {
+        m_sharedTextConfig.maxWidth = maxWidth;
+        return S_OK;
+    }
 }
 }

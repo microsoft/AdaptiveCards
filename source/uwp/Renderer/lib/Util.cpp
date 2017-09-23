@@ -251,16 +251,16 @@ HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *col
     std::string redString = colorString.substr(3, 2);
     INT32 red = strtol(redString.c_str(), nullptr, 16);
 
-    std::string blueString = colorString.substr(5, 2);
-    INT32 blue = strtol(blueString.c_str(), nullptr, 16);
-
-    std::string greenString = colorString.substr(7, 2);
+    std::string greenString = colorString.substr(5, 2);
     INT32 green = strtol(greenString.c_str(), nullptr, 16);
+
+    std::string blueString = colorString.substr(7, 2);
+    INT32 blue = strtol(blueString.c_str(), nullptr, 16);
 
     color->A = static_cast<BYTE>(alpha);
     color->R = static_cast<BYTE>(red);
-    color->B = static_cast<BYTE>(blue);
     color->G = static_cast<BYTE>(green);
+    color->B = static_cast<BYTE>(blue);
 
     return S_OK;
 } CATCH_RETURN;
@@ -344,6 +344,9 @@ HRESULT GetSpacingSizeFromSpacing(
         break;
     case ABI::AdaptiveCards::XamlCardRenderer::Spacing::ExtraLarge:
         RETURN_IF_FAILED(spacingConfig->get_ExtraLarge(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Padding:
+        RETURN_IF_FAILED(spacingConfig->get_Padding(spacingSize));
         break;
     case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Default:
     default:

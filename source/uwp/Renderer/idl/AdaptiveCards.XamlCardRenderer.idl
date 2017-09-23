@@ -30,8 +30,8 @@ namespace AdaptiveCards
         runtimeclass AdaptiveToggleInput;
         runtimeclass AdaptiveSeparator;
 
-        runtimeclass AdaptiveSpacingDefinition;
         runtimeclass AdaptiveFontSizesConfig;
+        runtimeclass AdaptiveFontWeightsConfig;
         runtimeclass AdaptiveColorsConfig;
         runtimeclass AdaptiveColorConfig;
         runtimeclass AdaptiveTextConfig;
@@ -45,7 +45,7 @@ namespace AdaptiveCards
         runtimeclass AdaptiveActionsConfig;
         runtimeclass AdaptiveHostConfig;
         runtimeclass AdaptiveSpacingConfig;
-        runtimeclass AdaptiveSeparatorThicknessConfig;
+        runtimeclass AdaptiveSeparatorConfig;
         runtimeclass AdaptiveContainerStyleDefinition;
         runtimeclass AdaptiveContainerStylesDefinition;
 
@@ -75,8 +75,8 @@ namespace AdaptiveCards
         interface IAdaptiveToggleInput;
         interface IAdaptiveSeparator;
 
-        interface IAdaptiveSpacingDefinition;
         interface IAdaptiveFontSizesConfig;
+        interface IAdaptiveFontWeightsConfig;
         interface IAdaptiveColorConfig;
         interface IAdaptiveColorsConfig;
         interface IAdaptiveTextConfig;
@@ -90,7 +90,7 @@ namespace AdaptiveCards
         interface IAdaptiveActionsConfig;
         interface IAdaptiveHostConfig;
         interface IAdaptiveSpacingConfig;
-        interface IAdaptiveSeparatorThicknessConfig;
+        interface IAdaptiveSeparatorConfig;
         interface IAdaptiveContainerStyleDefinition;
         interface IAdaptiveContainerStylesDefinition;
 
@@ -173,7 +173,7 @@ namespace AdaptiveCards
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ImageSize {
-            Default = 0,
+            None = 0,
             Auto,
             Stretch,
             Small,
@@ -195,6 +195,7 @@ namespace AdaptiveCards
             Medium,
             Large,
             ExtraLarge,
+            Padding
         } Spacing;
 
         [version(NTDDI_WIN10_RS1)]
@@ -213,8 +214,7 @@ namespace AdaptiveCards
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum ActionMode {
-            InlineEdgeToEdge = 0,
-            Inline,
+            Inline = 0,
             Popup
         } ActionMode;
 
@@ -319,7 +319,7 @@ namespace AdaptiveCards
             [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
             [propput] HRESULT HorizontalAlignment([in] HAlignment value);
 
-            [propget] HRESULT MaxLines([out, retval] UINT32 *value);
+            [propget] HRESULT MaxLines([out, retval] UINT32* value);
             [propput] HRESULT MaxLines([in] UINT32 value);
         };
 
@@ -580,7 +580,7 @@ namespace AdaptiveCards
             [propget] HRESULT IsMultiline([out, retval] boolean* value);
             [propput] HRESULT IsMultiline([in] boolean value);
 
-            [propget] HRESULT MaxLength([out, retval] UINT32 *value);
+            [propget] HRESULT MaxLength([out, retval] UINT32* value);
             [propput] HRESULT MaxLength([in] UINT32 value);
 
             [propget] HRESULT Placeholder([out, retval] HSTRING* value);
@@ -841,35 +841,6 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(c49685af-df56-49ea-8fce-ce302788edc5),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveSpacingDefinition)
-        ]
-        interface IAdaptiveSpacingDefinition : IInspectable
-        {
-            [propget] HRESULT Left([out, retval] UINT32 *value);
-            [propput] HRESULT Left([in] UINT32 value);
-
-            [propget] HRESULT Right([out, retval] UINT32 *value);
-            [propput] HRESULT Right([in] UINT32 value);
-
-            [propget] HRESULT Bottom([out, retval] UINT32 *value);
-            [propput] HRESULT Bottom([in] UINT32 value);
-
-            [propget] HRESULT Top([out, retval] UINT32 *value);
-            [propput] HRESULT Top([in] UINT32 value);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
-        ]
-        runtimeclass AdaptiveSpacingDefinition
-        {
-            [default] interface IAdaptiveSpacingDefinition;
-        };
-
-        [
             uuid(ae687d0f-ce50-483c-8478-a17d017d4c25),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveContainerStyleDefinition)
@@ -922,19 +893,19 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveFontSizesConfig : IInspectable
         {
-            [propget] HRESULT Small([out, retval] UINT32 *value);
+            [propget] HRESULT Small([out, retval] UINT32* value);
             [propput] HRESULT Small([in] UINT32 value);
 
-            [propget] HRESULT Default([out, retval] UINT32 *value);
+            [propget] HRESULT Default([out, retval] UINT32* value);
             [propput] HRESULT Default([in] UINT32 value);
 
-            [propget] HRESULT Medium([out, retval] UINT32 *value);
+            [propget] HRESULT Medium([out, retval] UINT32* value);
             [propput] HRESULT Medium([in] UINT32 value);
 
-            [propget] HRESULT Large([out, retval] UINT32 *value);
+            [propget] HRESULT Large([out, retval] UINT32* value);
             [propput] HRESULT Large([in] UINT32 value);
 
-            [propget] HRESULT ExtraLarge([out, retval] UINT32 *value);
+            [propget] HRESULT ExtraLarge([out, retval] UINT32* value);
             [propput] HRESULT ExtraLarge([in] UINT32 value);
         };
 
@@ -945,6 +916,32 @@ namespace AdaptiveCards
         runtimeclass AdaptiveFontSizesConfig
         {
             [default] interface IAdaptiveFontSizesConfig;
+        };
+
+        [
+            uuid(23c9d287-afdc-4ca4-87b4-92c551e4c8bc),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveFontWeightsConfig)
+        ]
+        interface IAdaptiveFontWeightsConfig : IInspectable
+        {
+            [propget] HRESULT Lighter([out, retval] UINT16 *value);
+            [propput] HRESULT Lighter([in] UINT16 value);
+
+            [propget] HRESULT Default([out, retval] UINT16 *value);
+            [propput] HRESULT Default([in] UINT16 value);
+
+            [propget] HRESULT Bolder([out, retval] UINT16 *value);
+            [propput] HRESULT Bolder([in] UINT16 value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveFontWeightsConfig
+        {
+            [default] interface IAdaptiveFontWeightsConfig;
         };
 
         [
@@ -1026,6 +1023,12 @@ namespace AdaptiveCards
  
             [propget] HRESULT IsSubtle([out, retval] boolean* value);
             [propput] HRESULT IsSubtle([in] boolean value);
+
+            [propget] HRESULT Wrap([out, retval] boolean* value);
+            [propput] HRESULT Wrap([in] boolean value);
+
+            [propget] HRESULT MaxWidth([out, retval] UINT32* value);
+            [propput] HRESULT MaxWidth([in] UINT32 value);
         };
 
         [
@@ -1044,20 +1047,23 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveSpacingConfig : IInspectable
         {
-            [propget] HRESULT Small([out, retval] UINT32 *value);
+            [propget] HRESULT Small([out, retval] UINT32* value);
             [propput] HRESULT Small([in] UINT32 value);
 
-            [propget] HRESULT Default([out, retval] UINT32 *value);
+            [propget] HRESULT Default([out, retval] UINT32* value);
             [propput] HRESULT Default([in] UINT32 value);
 
-            [propget] HRESULT Medium([out, retval] UINT32 *value);
+            [propget] HRESULT Medium([out, retval] UINT32* value);
             [propput] HRESULT Medium([in] UINT32 value);
 
-            [propget] HRESULT Large([out, retval] UINT32 *value);
+            [propget] HRESULT Large([out, retval] UINT32* value);
             [propput] HRESULT Large([in] UINT32 value);
 
-            [propget] HRESULT ExtraLarge([out, retval] UINT32 *value);
+            [propget] HRESULT ExtraLarge([out, retval] UINT32* value);
             [propput] HRESULT ExtraLarge([in] UINT32 value);
+
+            [propget] HRESULT Padding([out, retval] UINT32* value);
+            [propput] HRESULT Padding([in] UINT32 value);
         };
 
         [
@@ -1072,24 +1078,24 @@ namespace AdaptiveCards
         [
             uuid(c34a155d-6913-4f8b-9b94-f4ab8c578aee),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveSeparatorThicknessConfig)
+            exclusiveto(AdaptiveSeparatorConfig)
         ]
-        interface IAdaptiveSeparatorThicknessConfig : IInspectable
+        interface IAdaptiveSeparatorConfig : IInspectable
         {
-            [propget] HRESULT Default([out, retval] UINT32 *value);
-            [propput] HRESULT Default([in] UINT32 value);
+            [propget] HRESULT LineThickness([out, retval] UINT32* value);
+            [propput] HRESULT LineThickness([in] UINT32 value);
 
-            [propget] HRESULT Thick([out, retval] UINT32 *value);
-            [propput] HRESULT Thick([in] UINT32 value);
+            [propget] HRESULT LineColor([out][retval] Windows.UI.Color* value);
+            [propput] HRESULT LineColor([in] Windows.UI.Color value);
         };
 
         [
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass AdaptiveSeparatorThicknessConfig
+        runtimeclass AdaptiveSeparatorConfig
         {
-            [default] interface IAdaptiveSeparatorThicknessConfig;
+            [default] interface IAdaptiveSeparatorConfig;
         };
 
         [
@@ -1099,13 +1105,13 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveImageSizesConfig : IInspectable
         {
-            [propget] HRESULT Small([out, retval] UINT32 *value);
+            [propget] HRESULT Small([out, retval] UINT32* value);
             [propput] HRESULT Small([in] UINT32 value);
 
-            [propget] HRESULT Medium([out, retval] UINT32 *value);
+            [propget] HRESULT Medium([out, retval] UINT32* value);
             [propput] HRESULT Medium([in] UINT32 value);
 
-            [propget] HRESULT Large([out, retval] UINT32 *value);
+            [propget] HRESULT Large([out, retval] UINT32* value);
             [propput] HRESULT Large([in] UINT32 value);
         };
 
@@ -1127,6 +1133,9 @@ namespace AdaptiveCards
         {
             [propget] HRESULT ImageSize([out, retval] ImageSize* value);
             [propput] HRESULT ImageSize([in] ImageSize value);
+        
+            [propget] HRESULT MaxImageHeight([out, retval] UINT32* value);
+            [propput] HRESULT MaxImageHeight([in] UINT32 value);
         };
 
         [
@@ -1136,6 +1145,26 @@ namespace AdaptiveCards
         runtimeclass AdaptiveImageSetConfig
         {
             [default] interface IAdaptiveImageSetConfig;
+        }
+
+        [
+            uuid(ba0d7d84-d708-4919-a2f2-5c322a6f5460),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveImageConfig)
+        ]
+        interface IAdaptiveImageConfig : IInspectable
+        {
+            [propget] HRESULT ImageSize([out, retval] ImageSize* value);
+            [propput] HRESULT ImageSize([in] ImageSize value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveImageConfig
+        {
+            [default] interface IAdaptiveImageConfig;
         };
 
         [
@@ -1145,9 +1174,6 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveCardConfig : IInspectable
         {
-            [propget] HRESULT Padding([out, retval] AdaptiveSpacingDefinition** value);
-            [propput] HRESULT Padding([in] AdaptiveSpacingDefinition* value);
-
             [propget] HRESULT AllowCustomStyle([out, retval] boolean* value);
             [propput] HRESULT AllowCustomStyle([in] boolean value);
         };
@@ -1200,10 +1226,7 @@ namespace AdaptiveCards
             [propget] HRESULT Style([out, retval] ContainerStyle* value);
             [propput] HRESULT Style([in] ContainerStyle value);
 
-            [propget] HRESULT Padding([out, retval] AdaptiveSpacingDefinition** value);
-            [propput] HRESULT Padding([in] AdaptiveSpacingDefinition* value);
-
-            [propget] HRESULT InlineTopMargin([out, retval] UINT32 *value);
+            [propget] HRESULT InlineTopMargin([out, retval] UINT32* value);
             [propput] HRESULT InlineTopMargin([in] UINT32 value);
         };
 
@@ -1264,6 +1287,9 @@ namespace AdaptiveCards
             [propget] HRESULT FontSizes([out, retval] AdaptiveFontSizesConfig** value);
             [propput] HRESULT FontSizes([in] AdaptiveFontSizesConfig* value);
 
+            [propget] HRESULT FontWeights([out, retval] AdaptiveFontWeightsConfig** value);
+            [propput] HRESULT FontWeights([in] AdaptiveFontWeightsConfig* value);
+
             [propget] HRESULT SupportsInteractivity([out, retval] boolean* value);
             [propput] HRESULT SupportsInteractivity([in] boolean value);
 
@@ -1273,8 +1299,8 @@ namespace AdaptiveCards
             [propget] HRESULT ImageSizes([out, retval] AdaptiveImageSizesConfig** value);
             [propput] HRESULT ImageSizes([in] AdaptiveImageSizesConfig* value);
 
-            [propget] HRESULT MaxActions([out, retval] UINT32 *value);
-            [propput] HRESULT MaxActions([in] UINT32 value);
+            [propget] HRESULT Separator([out, retval] AdaptiveSeparatorConfig** value);
+            [propput] HRESULT Separator([in] AdaptiveSeparatorConfig* value);
 
             [propget] HRESULT Spacing([out, retval] AdaptiveSpacingConfig** value);
             [propput] HRESULT Spacing([in] AdaptiveSpacingConfig* value);
@@ -1284,6 +1310,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT ImageSet([out, retval] AdaptiveImageSetConfig** value);
             [propput] HRESULT ImageSet([in] AdaptiveImageSetConfig* value);
+
+            [propget] HRESULT Image([out, retval] AdaptiveImageConfig** value);
+            [propput] HRESULT Image([in] AdaptiveImageConfig* value);
 
             [propget] HRESULT FactSet([out, retval] AdaptiveFactSetConfig** value);
             [propput] HRESULT FactSet([in] AdaptiveFactSetConfig* value);
