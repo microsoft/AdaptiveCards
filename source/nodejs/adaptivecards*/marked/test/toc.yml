@@ -1,0 +1,8 @@
+- Cards:
+  - AdaptiveCard
+- Card Elements:
+  - TextBlock
+  - Image
+- Containers:
+  - Container
+  - ColumnSet
