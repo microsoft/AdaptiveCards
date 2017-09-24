@@ -3,25 +3,34 @@ var defined = require('./defined');
 var defaultValue = require('./defaultValue');
 var style = require('./style');
 var clone = require('./clone');
-var docModel = require('./docModel');
+var buildModel = require('./buildModel');
 
 module.exports = {
-    generateMarkdown
+    generateMarkdown,
+    getSchemaMarkdown
 };
 
 function generateMarkdown(options) {
- 
-    var model = docModel.getModel(options.schema, options.toc, options.rootObject);
-    
-    var md = '';
-    // todo Microsoft adaptive card scehma
-    md += getTableOfContentsMarkdown(model);
-    md += getSchemaMarkdown(model);
-    return md;
+    return new Promise(function (resolve, reject) {
+
+        buildModel(options).then(function (model) {
+
+            var md = '';
+            // todo Microsoft adaptive card scehma
+            md += getTableOfContentsMarkdown(model);
+            md += getSchemaMarkdown(model);
+            resolve(md);
+
+        }).catch(function (err) {
+
+            reject(err);
+
+        });
+    });
 }
 
 function getSchemaMarkdown(model) {
-   var md =  "";
+    var md = "";
 
     for (var k in model) {
         var root = model[k];
@@ -29,7 +38,7 @@ function getSchemaMarkdown(model) {
 
         for (var c in root.children) {
             var child = root.children[c];
-            
+
             md += style.getSectionMarkdown(child.name, 2);
 
             md += child.description + "\n\n";
@@ -56,7 +65,7 @@ function getTableOfContentsMarkdown(model) {
             md += style.bulletItem(style.getTOCLink(child.name, child.name) + " - " + child.description, 1);
         }
 
-        md += "\n";    
+        md += "\n";
     }
 
 

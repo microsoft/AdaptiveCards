@@ -1,53 +1,71 @@
 "use strict"
-var defined = require('./defined');
-var defaultValue = require('./defaultValue');
+var fs = require('fs');
+var path = require('path');
+var refParser = require('json-schema-ref-parser');
+var yaml = require('js-yaml');
+var generateMarkdown = require("../lib/generateMarkdown");
+var defined = require('../lib/defined');
+var defaultValue = require('../lib/defaultValue');
 var clone = require('./clone');
 
+module.exports = buildModel;
 
-module.exports = { getModel };
+function buildModel(options) {
 
-function getModel(schema, toc, defaultObject) {
+    return new Promise(function (resolve, reject) {
 
-    var items = [];
+        var rawSchema = JSON.parse(fs.readFileSync(options.schema));
+        var toc = yaml.safeLoad(fs.readFileSync(options.toc));
+        var rootDefinition = defaultValue(options.rootDefinition, null);
 
-    for (var index in toc) {
-        var rootObj = toc[index];
+        var items = [];
 
-        var root = {
-            title: getObjectName(rootObj),
-            children: []
-        };
+        refParser.dereference(rawSchema)
+            .then(function (schema) {
 
-        for (var childIndex in rootObj[root.title]) {
+                for (var index in toc) {
+                    var rootObj = toc[index];
 
-            var child = {
-                name: rootObj[root.title][childIndex]
-            };
+                    var root = {
+                        title: getObjectName(rootObj),
+                        children: []
+                    };
 
-            var objSchema = schema.definitions[child.name];
-            if (objSchema !== undefined) {
-                objSchema = resolveInheritance(objSchema);
+                    for (var childIndex in rootObj[root.title]) {
 
-                if(child.name == "AdaptiveCard") {
-                    mergeProperties(objSchema.properties, schema.properties);
+                        var child = {
+                            name: rootObj[root.title][childIndex]
+                        };
+
+                        var objSchema = schema.definitions[child.name];
+                        if (objSchema !== undefined) {
+                            objSchema = resolveInheritance(objSchema);
+
+                            if (child.name === rootDefinition) {
+                                mergeProperties(objSchema.properties, schema.properties);
+                            }
+
+                            child.title = objSchema.title;
+                            child.description = defaultValue(objSchema.description, objSchema.title);
+                            child.properties = objSchema.properties;
+
+                            for (var p in child.properties) {
+                                child.properties[p].realType = getPropertyType(child.properties[p]);
+                            }
+                            root.children.push(child);
+                        }
+
+                    }
+
+                    items.push(root);
                 }
 
-                child.title = objSchema.title;
-                child.description = defaultValue(objSchema.description, objSchema.title);
-                child.properties = objSchema.properties;
-
-                for (var p in child.properties) {
-                    child.properties[p].realType = getPropertyType(child.properties[p]);
-                }
-                root.children.push(child);
-            }
-
-        }
-
-        items.push(root);
-    }
-
-    return items;
+                resolve(items);
+            })
+            .catch(function (err) {
+                reject(err);
+            });
+    });
 }
 
 
@@ -135,7 +153,7 @@ function getPropertyType(schema) {
     }
 
     // arrays
-    if(type == 'array') {
+    if (type == 'array') {
         var s = "";
     }
 
