@@ -30,8 +30,16 @@
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
-    /// will update name to make intention clear
-    ACRColumnView *container = [[ACRColumnView alloc] init];
+
+    ContainerStyle style = containerElem->GetStyle();
+
+    if(style == ContainerStyle::None)
+    {
+        style = [viewGroup getStyle];
+    }
+
+    ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:style hostConfig:config];
+
     [ACRRenderer render:container
                  inputs:inputs
           withCardElems:containerElem->GetItems()

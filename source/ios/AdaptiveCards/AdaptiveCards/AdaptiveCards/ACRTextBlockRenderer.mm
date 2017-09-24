@@ -22,7 +22,7 @@
     return CardElementType::TextBlock;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -31,10 +31,15 @@
     UILabel *lab = [[UILabel alloc] init];
     NSString *textBlockStr = [NSString stringWithCString:txtBlck->GetText().c_str()
                                                 encoding:NSUTF8StringEncoding];
+    ContainerStyle style = [viewGroup getStyle];
+
+    ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)?
+        config->containerStyles.emphasisPalette.foregroundColors:
+        config->containerStyles.defaultPalette.foregroundColors;
 
     NSMutableAttributedString *content =
     [[NSMutableAttributedString alloc] initWithString:textBlockStr
-                                           attributes:@{NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() withHostConfig:config andSubtleOption:txtBlck->GetIsSubtle()],
+                                           attributes:@{NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],
                                                             NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]}];
     NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     para.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
@@ -57,7 +62,7 @@
 
     [wrappingview setAlignmentForSubview:txtBlck->GetHorizontalAlignment()];
 
-    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:wrappingview];
+    [viewGroup addArrangedSubview:wrappingview];
 
     wrappingview.translatesAutoresizingMaskIntoConstraints = false;
 
@@ -68,44 +73,44 @@
 
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
                   colorsConfig:(ColorsConfig const &)config
-               andSubtleOption:(bool)isSubtle
+                  subtleOption:(bool)isSubtle
 {
     long num = 0;
-    std::string *str;
+    const std::string *str;
     switch (txtClr) {
-        case Color::Dark:{
+        case ForegroundColor::Dark:{
             str = (isSubtle) ?
-                &config.dark.subtle : &config.dark.normal;
+                &config.dark.subtleColor: &config.dark.defaultColor;
             break;
         }
-        case Color::Light:{
+        case ForegroundColor::Light:{
             str = (isSubtle) ?
-                &config.light.subtle : &config.light.normal;
+                &config.light.subtleColor: &config.light.defaultColor;
             break;
         }
-        case Color::Accent:{
+        case ForegroundColor::Accent:{
             str = (isSubtle) ?
-                &config.accent.subtle : &config.accent.normal;
+                &config.accent.subtleColor: &config.accent.defaultColor;
             break;
         }
-        case Color::Good:{
+        case ForegroundColor::Good:{
             str = (isSubtle) ?
-                &config.good.subtle : &config.good.normal;
+                &config.good.subtleColor: &config.good.defaultColor;
             break;
         }
-        case Color::Warning:{
+        case ForegroundColor::Warning:{
             str = (isSubtle) ?
-                &config.warning.subtle : &config.warning.normal;
+                &config.warning.subtleColor: &config.warning.defaultColor;
             break;
         }
-        case Color::Attention:{
+        case ForegroundColor::Attention:{
             str = (isSubtle) ?
-                &config.attention.subtle : &config.attention.normal;
+                &config.attention.subtleColor: &config.attention.defaultColor;
             break;
         }
         default:{
             str = (isSubtle) ?
-                &config.dark.subtle : &config.dark.normal;
+                &config.dark.subtleColor: &config.dark.defaultColor;
             break;
         }
     }
@@ -125,8 +130,8 @@
     switch (txtSz){
         case TextSize::Small:
             return config->fontSizes.smallFontSize;
-        case TextSize::Normal:
-            return config->fontSizes.normalFontSize;
+        case TextSize::Default:
+            return config->fontSizes.defaultFontSize;
         case TextSize::Medium:
             return config->fontSizes.mediumFontSize;
         case TextSize::Large:
@@ -134,7 +139,7 @@
         case TextSize::ExtraLarge:
             return config->fontSizes.extraLargeFontSize;
         default:
-            return config->fontSizes.normalFontSize;
+            return config->fontSizes.defaultFontSize;
     }
 }
 
@@ -157,7 +162,7 @@
                       withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (weight) {
-        case TextWeight::Normal:
+        case TextWeight::Default:
             return @0;
         case TextWeight::Lighter:
             return @1;

@@ -15,9 +15,15 @@ using namespace AdaptiveCards;
     ContainerStyle _style;
 }
 
-- (instancetype)init
+- (instancetype)initWithStyle:(ContainerStyle)style
+                   hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    return [self initWithFrame:CGRectMake(0,0,0,0)];
+    self = [self initWithFrame:CGRectMake(0,0,0,0)];
+    if(self)
+    {
+        [self setBackgroundColor:style hostConfig:config];
+    }
+    return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -45,14 +51,30 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (ContainerStyle)getStyle(void)
+- (ContainerStyle)getStyle
 {
     return _style;
 }
 
-- (void)setStyle:(ContainerStyle)style
+- (void)setBackgroundColor:(ContainerStyle)style
+                hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     _style = style;
+    long num = 0;
+    if(style == ContainerStyle::Emphasis)
+    {
+        num = std::stoul(config->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
+    }
+    else
+    {
+        num = std::stoul(config->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
+    }
+
+    self.backgroundColor =
+        [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
+                        green:((num & 0x0000FF00) >>  8) / 255.0
+                         blue:((num & 0x000000FF)) / 255.0
+                        alpha:((num & 0xFF000000) >> 24) / 255.0];
 }
 
 - (void)config

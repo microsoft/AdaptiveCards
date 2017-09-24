@@ -89,7 +89,7 @@
             [wrappingView addConstraints:vertConst];
             _adcView = wrappingView;
 
-            ContainerStyle style = (_config->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : config->actions.showCard.style;
+            ContainerStyle style = (_config->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : _config->actions.showCard.style;
 
             long num = 0;
 

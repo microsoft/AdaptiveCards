@@ -26,18 +26,22 @@
 }
 
 - (UILabel *)buildLabel:(NSString *)text
-               cardElem:(std::shared_ptr<BaseCardElement> const &)elem
             hostConfig:(std::shared_ptr<HostConfig> const &)config
             textConfig:(TextConfig const &)txtConfig
+        containerStyle:(ContainerStyle)style
 {
     UILabel *lab = [[UILabel alloc] init];
 
-    ColorsConfig const &config = (_config->adaptiveCard.allowCustomStyle)? elem: config->actions.showCard.style;
+    ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)?
+        config->containerStyles.emphasisPalette.foregroundColors:
+        config->containerStyles.defaultPalette.foregroundColors;
+
     NSMutableAttributedString *content =
     [[NSMutableAttributedString alloc] initWithString:text
                                            attributes:@{NSForegroundColorAttributeName:
-                                                            [ACRTextBlockRenderer getTextBlockColor:txtConfig.color withHostConfig:config
-                                                                                    andSubtleOption:txtConfig.isSubtle],
+                                                            [ACRTextBlockRenderer getTextBlockColor:txtConfig.color
+                                                                                        colorsConfig:colorConfig
+                                                                                       subtleOption:txtConfig.isSubtle],
                                                             NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtConfig.weight
                                                                                                                      withHostConfig:config]}];
     NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
@@ -47,7 +51,7 @@
     lab.font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtConfig.size withHostConfig:config]];
     return lab;
 }
-- (UIView *)render:(UIStackView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -59,20 +63,23 @@
 
     UIStackView *valueStack = [[UIStackView alloc] init];
     valueStack.axis = UILayoutConstraintAxisVertical;
+    ContainerStyle style = [viewGroup getStyle];
 
     for(auto fact :fctSet->GetFacts())
     {
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str()
                                                     encoding:NSUTF8StringEncoding];
         UILabel *titleLab = [self buildLabel:title
-                              withHostConfig:config
-                              withTextConfig:config->factSet.title];
+                                  hostConfig:config
+                                  textConfig:config->factSet.title
+                              containerStyle:style];
 
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str()
                                              encoding:NSUTF8StringEncoding];
         UILabel *valueLab = [self buildLabel:value
-                              withHostConfig:config
-                              withTextConfig:config->factSet.value];
+                                  hostConfig:config
+                                  textConfig:config->factSet.value
+                              containerStyle:style];
 
         [titleStack addArrangedSubview:titleLab];
         [valueStack addArrangedSubview:valueLab];
@@ -94,10 +101,7 @@
 
     [factSetView adjustHuggingForLastElement];
 
-    if(viewGroup)
-    {
-        [viewGroup addArrangedSubview:factSetView];
-    }
+    [viewGroup addArrangedSubview:factSetView];
 
     return factSetView;
 }
