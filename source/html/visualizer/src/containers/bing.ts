@@ -39,7 +39,7 @@ export class BingContainer extends HostContainer {
     }
 
     public getHostConfig(): HostConfig {
-        return merge(new HostConfig(), {
+        return new HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
