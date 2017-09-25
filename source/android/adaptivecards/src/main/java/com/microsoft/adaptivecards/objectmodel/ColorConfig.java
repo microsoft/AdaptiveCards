@@ -35,20 +35,20 @@ public class ColorConfig {
     }
   }
 
-  public void setNormal(String value) {
-    AdaptiveCardObjectModelJNI.ColorConfig_normal_set(swigCPtr, this, value);
+  public void setDefaultColor(String value) {
+    AdaptiveCardObjectModelJNI.ColorConfig_defaultColor_set(swigCPtr, this, value);
   }
 
-  public String getNormal() {
-    return AdaptiveCardObjectModelJNI.ColorConfig_normal_get(swigCPtr, this);
+  public String getDefaultColor() {
+    return AdaptiveCardObjectModelJNI.ColorConfig_defaultColor_get(swigCPtr, this);
   }
 
-  public void setSubtle(String value) {
-    AdaptiveCardObjectModelJNI.ColorConfig_subtle_set(swigCPtr, this, value);
+  public void setSubtleColor(String value) {
+    AdaptiveCardObjectModelJNI.ColorConfig_subtleColor_set(swigCPtr, this, value);
   }
 
-  public String getSubtle() {
-    return AdaptiveCardObjectModelJNI.ColorConfig_subtle_get(swigCPtr, this);
+  public String getSubtleColor() {
+    return AdaptiveCardObjectModelJNI.ColorConfig_subtleColor_get(swigCPtr, this);
   }
 
   public static ColorConfig Deserialize(SWIGTYPE_p_Json__Value json, ColorConfig defaultValue) {

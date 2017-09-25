@@ -15,6 +15,7 @@ public final class Spacing {
   public final static Spacing Medium = new Spacing("Medium");
   public final static Spacing Large = new Spacing("Large");
   public final static Spacing ExtraLarge = new Spacing("ExtraLarge");
+  public final static Spacing Padding = new Spacing("Padding");
 
   public final int swigValue() {
     return swigValue;
@@ -50,7 +51,7 @@ public final class Spacing {
     swigNext = this.swigValue+1;
   }
 
-  private static Spacing[] swigValues = { Default, None, Small, Medium, Large, ExtraLarge };
+  private static Spacing[] swigValues = { Default, None, Small, Medium, Large, ExtraLarge, Padding };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

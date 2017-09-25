@@ -61,7 +61,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
     {
         BaseCardElementVector baseCardElementVector = column.GetItems();
         View returnedView = CardRendererRegistration.getInstance().render(context, fragmentManager, null, column, baseCardElementVector, inputActionHandlerList, hostConfig);
-        String columnSize = column.GetSize().toLowerCase(Locale.getDefault());
+        String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
         if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeAuto))
         {
             GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(index));
@@ -82,7 +82,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
             }
             catch (NumberFormatException numFormatExcep)
             {
-                throw new IllegalArgumentException("Column Size (" + column.GetSize() + ") is not a valid weight ('auto', 'stretch', <integer>).");
+                throw new IllegalArgumentException("Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>).");
             }
         }
 

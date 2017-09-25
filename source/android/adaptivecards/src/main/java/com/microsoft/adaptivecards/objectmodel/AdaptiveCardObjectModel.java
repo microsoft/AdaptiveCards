@@ -41,12 +41,12 @@ public class AdaptiveCardObjectModel {
     return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.HorizontalAlignmentFromString(alignment));
   }
 
-  public static String ColorToString(Color type) {
-    return AdaptiveCardObjectModelJNI.ColorToString(type.swigValue());
+  public static String ForegroundColorToString(ForegroundColor type) {
+    return AdaptiveCardObjectModelJNI.ForegroundColorToString(type.swigValue());
   }
 
-  public static Color ColorFromString(String type) {
-    return Color.swigToEnum(AdaptiveCardObjectModelJNI.ColorFromString(type));
+  public static ForegroundColor ForegroundColorFromString(String type) {
+    return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.ForegroundColorFromString(type));
   }
 
   public static String TextWeightToString(TextWeight type) {

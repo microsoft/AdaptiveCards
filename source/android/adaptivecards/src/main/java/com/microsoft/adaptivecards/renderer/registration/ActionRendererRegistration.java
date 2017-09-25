@@ -11,7 +11,6 @@ import com.microsoft.adaptivecards.objectmodel.BaseActionElement;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElementVector;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.IBaseActionElementRenderer;
-import com.microsoft.adaptivecards.renderer.action.HttpActionRenderer;
 import com.microsoft.adaptivecards.renderer.action.OpenUrlActionRenderer;
 import com.microsoft.adaptivecards.renderer.action.ShowCardActionRenderer;
 import com.microsoft.adaptivecards.renderer.action.SubmitActionRenderer;
@@ -31,7 +30,6 @@ public class ActionRendererRegistration
     private ActionRendererRegistration()
     {
         // Register Action Renderers
-        m_typeToRendererMap.put(ActionType.Http.swigValue(), HttpActionRenderer.getInstance());
         m_typeToRendererMap.put(ActionType.OpenUrl.swigValue(), OpenUrlActionRenderer.getInstance());
         m_typeToRendererMap.put(ActionType.ShowCard.swigValue(), ShowCardActionRenderer.getInstance());
         m_typeToRendererMap.put(ActionType.Submit.swigValue(), SubmitActionRenderer.getInstance());

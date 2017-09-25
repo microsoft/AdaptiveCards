@@ -86,7 +86,7 @@ public class DateInputRenderer extends TextInputRenderer
             }
         });
 
-        setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), hostConfig, true /* horizontal line */);
         return editText;
     }
 

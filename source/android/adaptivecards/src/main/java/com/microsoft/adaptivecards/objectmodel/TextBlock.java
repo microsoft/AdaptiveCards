@@ -41,8 +41,8 @@ public class TextBlock extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_0(), true);
   }
 
-  public TextBlock(Spacing spacing, Separator separator, String speak, String text, TextSize textSize, TextWeight textWeight, Color color, boolean isSubtle, boolean wrap, int maxLines, HorizontalAlignment hAlignment) {
-    this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_1(spacing.swigValue(), Separator.getCPtr(separator), separator, speak, text, textSize.swigValue(), textWeight.swigValue(), color.swigValue(), isSubtle, wrap, maxLines, hAlignment.swigValue()), true);
+  public TextBlock(Spacing spacing, boolean separator, String text, TextSize textSize, TextWeight textWeight, ForegroundColor color, boolean isSubtle, boolean wrap, int maxLines, HorizontalAlignment hAlignment) {
+    this(AdaptiveCardObjectModelJNI.new_TextBlock__SWIG_1(spacing.swigValue(), separator, text, textSize.swigValue(), textWeight.swigValue(), color.swigValue(), isSubtle, wrap, maxLines, hAlignment.swigValue()), true);
   }
 
   public static TextBlock Deserialize(SWIGTYPE_p_Json__Value root) {
@@ -87,11 +87,11 @@ public class TextBlock extends BaseCardElement {
     AdaptiveCardObjectModelJNI.TextBlock_SetTextWeight(swigCPtr, this, value.swigValue());
   }
 
-  public Color GetTextColor() {
-    return Color.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetTextColor(swigCPtr, this));
+  public ForegroundColor GetTextColor() {
+    return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetTextColor(swigCPtr, this));
   }
 
-  public void SetTextColor(Color value) {
+  public void SetTextColor(ForegroundColor value) {
     AdaptiveCardObjectModelJNI.TextBlock_SetTextColor(swigCPtr, this, value.swigValue());
   }
 

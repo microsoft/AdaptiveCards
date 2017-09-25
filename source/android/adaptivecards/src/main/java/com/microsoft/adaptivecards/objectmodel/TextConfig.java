@@ -51,12 +51,12 @@ public class TextConfig {
     return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextConfig_size_get(swigCPtr, this));
   }
 
-  public void setColor(Color value) {
+  public void setColor(ForegroundColor value) {
     AdaptiveCardObjectModelJNI.TextConfig_color_set(swigCPtr, this, value.swigValue());
   }
 
-  public Color getColor() {
-    return Color.swigToEnum(AdaptiveCardObjectModelJNI.TextConfig_color_get(swigCPtr, this));
+  public ForegroundColor getColor() {
+    return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.TextConfig_color_get(swigCPtr, this));
   }
 
   public void setIsSubtle(boolean value) {
@@ -65,6 +65,22 @@ public class TextConfig {
 
   public boolean getIsSubtle() {
     return AdaptiveCardObjectModelJNI.TextConfig_isSubtle_get(swigCPtr, this);
+  }
+
+  public void setWrap(boolean value) {
+    AdaptiveCardObjectModelJNI.TextConfig_wrap_set(swigCPtr, this, value);
+  }
+
+  public boolean getWrap() {
+    return AdaptiveCardObjectModelJNI.TextConfig_wrap_get(swigCPtr, this);
+  }
+
+  public void setMaxWidth(long value) {
+    AdaptiveCardObjectModelJNI.TextConfig_maxWidth_set(swigCPtr, this, value);
+  }
+
+  public long getMaxWidth() {
+    return AdaptiveCardObjectModelJNI.TextConfig_maxWidth_get(swigCPtr, this);
   }
 
   public static TextConfig Deserialize(SWIGTYPE_p_Json__Value json, TextConfig defaultValue) {
