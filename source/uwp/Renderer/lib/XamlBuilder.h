@@ -7,6 +7,7 @@
 #include "XamlCardRendererComponent.h"
 #include <windows.storage.h>
 #include "InputItem.h"
+#include "RenderedAdaptiveCard.h"
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
@@ -24,9 +25,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         STDMETHODIMP ImagesLoadingHadError();
 
         void BuildXamlTreeFromAdaptiveCard(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard, 
-            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot, 
-            AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* adaptiveCard,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** xamlTreeRoot,
+            _In_ AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
+            _Inout_ AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard* renderResult,
             boolean isOuterCard = true,
             ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle defaultContainerStyle = ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle::Default);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
@@ -112,13 +114,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveShowCardActionConfig* showCardActionConfig,
             ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* action,
+            AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard* renderResult,
             ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
         void BuildActions(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement*>* children,
-            AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
-            std::shared_ptr<std::vector<InputItem>> inputElements,
+            _In_ AdaptiveCards::XamlCardRenderer::XamlCardRenderer* renderer,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
-            _In_ bool insertSeparator);
+            _In_ bool insertSeparator,
+            _Inout_ AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard* renderResult);
         void GetSeparationConfigForElement(
             _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* element,
             _Out_ UINT* spacing,

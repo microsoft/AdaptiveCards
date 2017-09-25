@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Data.Json;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -164,13 +165,48 @@ namespace XamlCardVisualizer.ViewModel
 
             try
             {
-                if (Settings.UseAsyncRenderMethod)
+                JsonObject jsonObject;
+                if (JsonObject.TryParse(payload, out jsonObject))
                 {
-                    RenderedCard = await _renderer.RenderAdaptiveJsonAsXamlAsync(payload);
+                    RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCardFromJson(jsonObject);
+                    if (renderResult.IsRenderedSuccessfully)
+                    {
+                        RenderedCard = renderResult.FrameworkElement;
+                        renderResult.Action += async (sender, e) =>
+                        {
+                            var m_actionDialog = new ContentDialog();
+
+                            if (e.Action.ActionType == ActionType.ShowCard)
+                            {
+                                AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
+                                m_actionDialog.Content = await _renderer.RenderCardAsXamlAsync(showCardAction.Card);
+                            }
+                            else
+                            {
+                                m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs.ToString();
+                            }
+
+                            m_actionDialog.PrimaryButtonText = "Close";
+
+                            await m_actionDialog.ShowAsync();
+                        };
+                    }
+                    else
+                    {
+                        newErrors.Add(new ErrorViewModel()
+                        {
+                            Message = "There was an error Rendering this card",
+                            Type = ErrorViewModelType.Error
+                        });
+                    }
                 }
                 else
                 {
-                    RenderedCard = _renderer.RenderAdaptiveJsonAsXaml(payload);
+                    newErrors.Add(new ErrorViewModel()
+                    {
+                        Message = "There was an error creating a JsonObject from the card",
+                        Type = ErrorViewModelType.Error
+                    });
                 }
 
                 if (RenderedCard is FrameworkElement)
@@ -211,25 +247,6 @@ namespace XamlCardVisualizer.ViewModel
 
                 // Custom resource resolvers
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
-
-                _renderer.Action += async (sender, e) =>
-                {
-                    var m_actionDialog = new ContentDialog();
-
-                    if (e.Action.ActionType == ActionType.ShowCard)
-                    {
-                        AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
-                        m_actionDialog.Content = await _renderer.RenderCardAsXamlAsync(showCardAction.Card);
-                    }
-                    else
-                    {
-                        m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs;
-                    }
-
-                    m_actionDialog.PrimaryButtonText = "Close";
-
-                    await m_actionDialog.ShowAsync();
-                };
             }
             catch
             {

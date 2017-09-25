@@ -7,6 +7,7 @@
 #include <windows.foundation.collections.h>
 
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -16,16 +17,33 @@ using namespace Microsoft::WRL::Wrappers;
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
     _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::CreateCardFromJson(HSTRING adaptiveJson, IAdaptiveCard** card) noexcept try
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCard** card) noexcept try
     {
         *card = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
 
-        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(adaptiveJsonString);
-        return MakeAndInitialize<AdaptiveCard>(card, sharedAdaptiveCard);
+        return FromJsonString(adaptiveJsonString, card);
     } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveCard** card) noexcept try
+    {
+        *card = nullptr;
+
+        std::string adaptiveJsonString;
+        RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
+
+        return FromJsonString(adaptiveJsonString, card);
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(const std::string jsonString, IAdaptiveCard** card)
+    {
+        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString);
+        return MakeAndInitialize<AdaptiveCard>(card, sharedAdaptiveCard);
+    }
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
@@ -186,8 +204,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::ToJsonString(HSTRING* jsonString)
+    HRESULT AdaptiveCard::ToJson(IJsonObject** result)
     {
-        return UTF8ToHString(m_sharedAdaptiveCard->Serialize(), jsonString);
+        return StringToJsonObject(m_sharedAdaptiveCard->Serialize(), result);
     }
 }}

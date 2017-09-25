@@ -16,7 +16,7 @@ using namespace AdaptiveCards::XamlCardRenderer;
 
 void InputItem::SerializeTextInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     ComPtr<ITextBox> textBox;
     THROW_IF_FAILED(m_uiInputElement.As(&textBox));
@@ -35,7 +35,7 @@ void InputItem::SerializeTextInput(
 
 void InputItem::SerializeDateInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     ComPtr<ICalendarDatePicker> datePicker;
     THROW_IF_FAILED(m_uiInputElement.As(&datePicker));
@@ -67,7 +67,7 @@ void InputItem::SerializeDateInput(
 
 void InputItem::SerializeTimeInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     ComPtr<ITimePicker> timePicker;
     THROW_IF_FAILED(m_uiInputElement.As(&timePicker));
@@ -88,7 +88,7 @@ void InputItem::SerializeTimeInput(
 
 void InputItem::SerializeToggleInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     boolean checkedValue = false;
     XamlHelpers::GetToggleValue(m_uiInputElement.Get(), &checkedValue);
@@ -115,7 +115,7 @@ void InputItem::SerializeToggleInput(
 void InputItem::GetChoiceValue(
     IAdaptiveChoiceSetInput* choiceInput,
     INT32 selectedIndex,
-    std::string& choiceValue)
+    std::string& choiceValue) const
 {
     if (selectedIndex != -1)
     {
@@ -134,7 +134,7 @@ void InputItem::GetChoiceValue(
 
 void InputItem::SerializeChoiceSetInput(
     Json::Value& jsonValue,
-    const char * idString)
+    const char * idString) const
 {
     ComPtr<IAdaptiveChoiceSetInput> choiceInput;
     THROW_IF_FAILED(m_adaptiveInputElement.As(&choiceInput));
@@ -216,7 +216,7 @@ void InputItem::SerializeChoiceSetInput(
     }
 }
 
-void InputItem::Serialize(Json::Value & jsonValue)
+void InputItem::Serialize(Json::Value & jsonValue) const
 {
     ComPtr<IAdaptiveCardElement> cardElement;
     THROW_IF_FAILED(m_adaptiveInputElement.As(&cardElement));

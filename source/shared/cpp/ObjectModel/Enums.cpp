@@ -471,23 +471,23 @@ ImageSize ImageSizeFromString(const std::string& size)
     return ImageSizeNameToEnum[size];
 }
 
-const std::string SpacingToString(Spacing color)
+const std::string SpacingToString(Spacing spacing)
 {
-    if (SpacingEnumToName.find(color) == SpacingEnumToName.end())
+    if (SpacingEnumToName.find(spacing) == SpacingEnumToName.end())
     {
         throw std::out_of_range("Invalid Spacing type");
     }
-    return SpacingEnumToName[color];
+    return SpacingEnumToName[spacing];
 }
 
-Spacing SpacingFromString(const std::string& color)
+Spacing SpacingFromString(const std::string& spacing)
 {
-    if (SpacingNameToEnum.find(color) == SpacingNameToEnum.end())
+    if (SpacingNameToEnum.find(spacing) == SpacingNameToEnum.end())
     {
-        throw std::out_of_range("Invalid Spacing: " + color);
+        throw std::out_of_range("Invalid Spacing: " + spacing);
     }
 
-    return SpacingNameToEnum[color];
+    return SpacingNameToEnum[spacing];
 }
 
 const std::string SeparatorThicknessToString(SeparatorThickness thickness)

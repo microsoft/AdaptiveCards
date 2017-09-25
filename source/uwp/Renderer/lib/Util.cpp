@@ -27,8 +27,13 @@
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::UI;
 using namespace std;
+using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Wrappers;
+using namespace AdaptiveCards::XamlCardRenderer;
+using namespace Windows::Foundation;
 
 HRESULT UTF8ToHString(const string& in, HSTRING* out)
 {
@@ -379,3 +384,35 @@ HRESULT GetBackgroundColorFromStyle(
 
     return S_OK;
 } CATCH_RETURN;
+
+HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
+{
+    ComPtr<IJsonObjectStatics> jObjectStatics;
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(), &jObjectStatics));
+    HSTRING inputsHString;
+    THROW_IF_FAILED(UTF8ToHString(inputString, &inputsHString));
+    ComPtr<IJsonObject> jObject;
+    RETURN_IF_FAILED(jObjectStatics->Parse(inputsHString, &jObject));
+
+    *result = jObject.Detach();
+    return S_OK;
+}
+
+HRESULT JsonObjectToString(IJsonObject* inputJson, string& result)
+{
+    HSTRING asHstring;
+    RETURN_IF_FAILED(JsonObjectToHString(inputJson, &asHstring));
+    return HStringToUTF8(asHstring, result);
+}
+
+HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
+{
+    if (!inputJson)
+    {
+        return E_INVALIDARG;
+    }
+    ComPtr<IJsonObject> localInputJson(inputJson);
+    ComPtr<IJsonValue> asJsonValue;
+    RETURN_IF_FAILED(localInputJson.As(&asJsonValue));
+    return(asJsonValue->Stringify(result));
+}

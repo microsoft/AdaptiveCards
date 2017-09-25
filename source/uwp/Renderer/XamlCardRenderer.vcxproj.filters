@@ -44,6 +44,8 @@
     <ClCompile Include="lib\AdaptiveSeparator.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
+    <ClCompile Include="lib\RenderedAdaptiveCard.cpp" />
+    <ClCompile Include="lib\AdaptiveInputs.cpp" />
     <ClCompile Include="lib\AdaptiveFontWeightsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageConfig.cpp" />
     <ClCompile Include="lib\AdaptiveSeparatorConfig.cpp" />
@@ -100,6 +102,8 @@
     <ClInclude Include="lib\AdaptiveSeparator.h" />
     <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
+    <ClInclude Include="lib\RenderedAdaptiveCard.h" />
+    <ClInclude Include="lib\AdaptiveInputs.h" />
     <ClInclude Include="lib\AdaptiveFontWeightsConfig.h" />
     <ClInclude Include="lib\AdaptiveImageConfig.h" />
     <ClInclude Include="lib\AdaptiveSeparatorConfig.h" />
