@@ -16,6 +16,7 @@ using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Storage::Streams;
@@ -152,11 +153,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard>(&renderedCard));
 
         ComPtr<IAdaptiveCard> adaptiveCard;
-        HRESULT hr = CreateAdaptiveCardFromJson(adaptiveJson, &adaptiveCard);
+        HRESULT hr = CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCard);
         if (FAILED(hr))
         {
             HString error;
-            RETURN_IF_FAILED(error.Set(L"There was an error in the card attempting to being rendered."));
+            RETURN_IF_FAILED(error.Set(L"There was an error creating the card from Json."));
             ComPtr<IVector<HSTRING>> errors;
             RETURN_IF_FAILED(renderedCard->get_Errors(&errors));
             errors->Append(error.Detach());
@@ -170,23 +171,32 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+    HRESULT XamlCardRenderer::RenderAdaptiveCardFromJson(
+            IJsonObject* adaptiveJson,
+            IRenderedAdaptiveCard** result)
+    {
+        HSTRING adaptiveJsonAsHstring;
+        RETURN_IF_FAILED(JsonObjectToHString(adaptiveJson, &adaptiveJsonAsHstring));
+        return RenderAdaptiveCardFromJsonString(adaptiveJsonAsHstring, result);
+    }
+
+    _Use_decl_annotations_
     HRESULT XamlCardRenderer::RenderAdaptiveJsonAsXamlAsync(
         HSTRING adaptiveJson,
         IAsyncOperation<UIElement*>** result)
     {
         ComPtr<IAdaptiveCard> adaptiveCard;
-        RETURN_IF_FAILED(CreateAdaptiveCardFromJson(adaptiveJson, &adaptiveCard));
+        RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCard));
 
         return RenderCardAsXamlAsync(adaptiveCard.Get(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::CreateAdaptiveCardFromJson(HSTRING adaptiveJson, ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** adaptiveCard)
+    HRESULT XamlCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson, ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** adaptiveCard)
     {
         ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
-        RETURN_IF_FAILED(adaptiveCardStatics->CreateCardFromJson(adaptiveJson, adaptiveCard));
-        return S_OK;
+        return adaptiveCardStatics->FromJsonString(adaptiveJson, adaptiveCard);
     }
 
     IAdaptiveHostConfig* XamlCardRenderer::GetHostConfig()

@@ -384,7 +384,6 @@ HRESULT GetBackgroundColorFromStyle(
 
 HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 {
-
     ComPtr<IJsonObjectStatics> jObjectStatics;
     RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(), &jObjectStatics));
     HSTRING inputsHString;
@@ -398,6 +397,13 @@ HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 
 HRESULT JsonObjectToString(IJsonObject* inputJson, string& result)
 {
+    HSTRING asHstring;
+    RETURN_IF_FAILED(JsonObjectToHString(inputJson, &asHstring));
+    return HStringToUTF8(asHstring, result);
+}
+
+HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
+{
     if (!inputJson)
     {
         return E_INVALIDARG;
@@ -405,8 +411,5 @@ HRESULT JsonObjectToString(IJsonObject* inputJson, string& result)
     ComPtr<IJsonObject> localInputJson(inputJson);
     ComPtr<IJsonValue> asJsonValue;
     RETURN_IF_FAILED(localInputJson.As(&asJsonValue));
-    HSTRING asHstring;
-    RETURN_IF_FAILED(asJsonValue->Stringify(&asHstring));
-    return HStringToUTF8(asHstring, result);
-
+    return(asJsonValue->Stringify(result));
 }

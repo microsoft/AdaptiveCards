@@ -32,9 +32,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveInputs::get_AsJson(IJsonObject** value)
+    HRESULT AdaptiveInputs::AsJson(InputValueMode inputMode, IJsonObject** value)
     {
-        std::string inputItemsAsString = InputItem::InputItemCollectionAsJsonString(*m_inputItems);
+        std::string inputItemsAsString;
+        switch (inputMode)
+        {
+        case InputValueMode::RawString:
+        default:
+            inputItemsAsString = GetInputItemsAsJsonString();
+            break;
+        }
+
         return StringToJsonObject(inputItemsAsString, value);
     }
 
@@ -43,6 +51,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return m_inputItems;
     }
 
+    std::string AdaptiveInputs::GetInputItemsAsJsonString()
+    {
+        Json::Value jsonValue;
+        for (auto& inputElement : *m_inputItems)
+        {
+            inputElement.Serialize(jsonValue);
+        }
 
+        Json::StreamWriterBuilder writerBuilder;
+        std::unique_ptr<Json::StreamWriter> writer(writerBuilder.newStreamWriter());
+        std::ostringstream outStream;
+        writer->write(jsonValue, &outStream);
+        return outStream.str();
+    }
 
 }}

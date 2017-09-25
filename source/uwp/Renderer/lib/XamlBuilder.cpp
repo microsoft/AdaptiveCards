@@ -936,7 +936,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                         ComPtr<IAdaptiveInputs> gatheredInputs;
                         THROW_IF_FAILED(strongRenderResult->get_UserInputs(&gatheredInputs));
                         ComPtr<IJsonObject> inputsAsJson;
-                        THROW_IF_FAILED(gatheredInputs->get_AsJson(&inputsAsJson));
+                        THROW_IF_FAILED(gatheredInputs->AsJson(InputValueMode::RawString, &inputsAsJson));
 
                         // TODO: Data binding for inputs 
                         ComPtr<IAdaptiveActionEventArgs> eventArgs;

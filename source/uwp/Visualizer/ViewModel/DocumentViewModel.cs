@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Data.Json;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -164,43 +165,49 @@ namespace XamlCardVisualizer.ViewModel
 
             try
             {
-                RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCardFromJsonString(payload);
-                if (renderResult.IsRenderedSuccessfully)
+                JsonObject jsonObject;
+                if (JsonObject.TryParse(payload, out jsonObject))
                 {
-                    RenderedCard = renderResult.FrameworkElement;
-                    renderResult.Action += async (sender, e) =>
+                    RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCardFromJson(jsonObject);
+                    if (renderResult.IsRenderedSuccessfully)
                     {
-                        var m_actionDialog = new ContentDialog();
-
-                        if (e.Action.ActionType == ActionType.ShowCard)
+                        RenderedCard = renderResult.FrameworkElement;
+                        renderResult.Action += async (sender, e) =>
                         {
-                            AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
-                            m_actionDialog.Content = await _renderer.RenderCardAsXamlAsync(showCardAction.Card);
-                        }
-                        else
-                        {
-                            m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs.ToString();
-                        }
+                            var m_actionDialog = new ContentDialog();
 
-                        m_actionDialog.PrimaryButtonText = "Close";
+                            if (e.Action.ActionType == ActionType.ShowCard)
+                            {
+                                AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
+                                m_actionDialog.Content = await _renderer.RenderCardAsXamlAsync(showCardAction.Card);
+                            }
+                            else
+                            {
+                                m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs.ToString();
+                            }
 
-                        await m_actionDialog.ShowAsync();
-                    };
-                }
-                else
-                {
-                    IList<string> renderingErrors = renderResult.Errors;
-                    foreach (string error in renderingErrors)
+                            m_actionDialog.PrimaryButtonText = "Close";
+
+                            await m_actionDialog.ShowAsync();
+                        };
+                    }
+                    else
                     {
                         newErrors.Add(new ErrorViewModel()
                         {
-                            Message = error,
+                            Message = "There was an error Rendering this card",
                             Type = ErrorViewModelType.Error
                         });
                     }
-
                 }
-
+                else
+                {
+                    newErrors.Add(new ErrorViewModel()
+                    {
+                        Message = "There was an error creating a JsonObject from the card",
+                        Type = ErrorViewModelType.Error
+                    });
+                }
 
                 if (RenderedCard is FrameworkElement)
                 {

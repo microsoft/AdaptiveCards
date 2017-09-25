@@ -16,7 +16,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         {}
 
         void Serialize(Json::Value& jsonValue) const;
-        static std::string InputItemCollectionAsJsonString(const std::vector<AdaptiveCards::XamlCardRenderer::InputItem>& inputElements);
 
     private:
         void SerializeChoiceSetInput(Json::Value& jsonValue, const char* idString) const;

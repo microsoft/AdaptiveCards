@@ -17,11 +17,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize() noexcept;
 
         // IAdaptiveInputs
-        IFACEMETHODIMP get_AsJson(_Out_ ABI::Windows::Data::Json::IJsonObject** value);
+        IFACEMETHODIMP AsJson(_In_ ABI::AdaptiveCards::XamlCardRenderer::InputValueMode inputMode, _Out_ ABI::Windows::Data::Json::IJsonObject** value);
 
         std::shared_ptr<std::vector<InputItem>> GetInputItems();
 
     private:
+        std::string GetInputItemsAsJsonString();
         std::shared_ptr<std::vector<AdaptiveCards::XamlCardRenderer::InputItem>> m_inputItems;
     };
 

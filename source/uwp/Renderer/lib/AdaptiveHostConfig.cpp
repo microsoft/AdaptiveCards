@@ -14,20 +14,38 @@
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::Windows::Data::Json;
 
 namespace AdaptiveCards { namespace XamlCardRenderer
 {
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfigStaticsImpl::CreateHostConfigFromJson(HSTRING adaptiveJson, IAdaptiveHostConfig** config) noexcept try
+    HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveHostConfig** config) noexcept try
     {
         *config = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
+        return FromJsonString(adaptiveJsonString, config);
 
-        HostConfig sharedHostConfig = HostConfig::DeserializeFromString(adaptiveJsonString);
-        return MakeAndInitialize<AdaptiveHostConfig>(config, sharedHostConfig);
     } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfigStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveHostConfig** config) noexcept try
+    {
+        *config = nullptr;
+
+        std::string adaptiveJsonString;
+        RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
+
+        return FromJsonString(adaptiveJsonString, config);
+    } CATCH_RETURN;
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(const std::string jsonString, IAdaptiveHostConfig** config)
+    {
+        HostConfig sharedHostConfig = HostConfig::DeserializeFromString(jsonString);
+        return MakeAndInitialize<AdaptiveHostConfig>(config, sharedHostConfig);
+    }
 
     HRESULT AdaptiveHostConfig::RuntimeClassInitialize() noexcept try
     {

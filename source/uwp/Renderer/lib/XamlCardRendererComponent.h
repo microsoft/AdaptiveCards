@@ -34,6 +34,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP RenderAdaptiveJsonAsXamlAsync(_In_ HSTRING adaptiveJson,
             _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::Windows::UI::Xaml::UIElement*>** result);
 
+        IFACEMETHODIMP RenderAdaptiveCardFromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
+            _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IRenderedAdaptiveCard** result);
+
         ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* GetHostConfig();
         ABI::Windows::UI::Xaml::IResourceDictionary* GetOverrideDictionary();
         bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
@@ -50,7 +53,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
 
-        HRESULT CreateAdaptiveCardFromJson(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** adaptiveCard);
+        HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** adaptiveCard);
     };
 
     ActivatableClass(XamlCardRenderer);

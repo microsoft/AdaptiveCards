@@ -23,8 +23,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IRenderedAdaptiveCard
         IFACEMETHODIMP get_OriginatingCard(_COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** value);
         IFACEMETHODIMP get_FrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** value);
-        IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<HSTRING>** value);
-        IFACEMETHODIMP get_Warnings(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<HSTRING>** value);
         IFACEMETHODIMP get_IsRenderedSuccessfully(_Out_ boolean* value);
         IFACEMETHODIMP get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputs** value);
         IFACEMETHODIMP add_Action(
@@ -34,6 +32,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             _Out_ EventRegistrationToken* token);
         IFACEMETHODIMP remove_Action(_In_ EventRegistrationToken token);
 
+        HRESULT get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<HSTRING>** value);
+        HRESULT get_Warnings(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<HSTRING>** value);
         std::shared_ptr<std::vector<InputItem>> GetInputItems();
         void SetFrameworkElement(ABI::Windows::UI::Xaml::IUIElement* value);
         void SetOriginatingCard(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* value);

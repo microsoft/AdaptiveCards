@@ -373,17 +373,18 @@ namespace AdaptiveCards
             [propget] HRESULT Style([out, retval] ContainerStyle* value);
             [propput] HRESULT Style([in] ContainerStyle value);
 
-            HRESULT ToJsonString([out, retval] HSTRING* value);
+            HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
         };
 
         [
-            uuid(C312AD20-DFE3-4418-819F-E3CB7A0CD2FE),
+            uuid(bace01f2-5642-4366-879a-dec601d8b7e3),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveCard),
         ]
         interface IAdaptiveCardStatics : IInspectable
         {
-            HRESULT CreateCardFromJson([in] HSTRING adaptiveJson, [out, retval] AdaptiveCard** card);
+            HRESULT FromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] AdaptiveCard** card);
+            HRESULT FromJsonString([in] HSTRING adaptiveJson, [out, retval] AdaptiveCard** card);
         };
 
         [
@@ -816,6 +817,8 @@ namespace AdaptiveCards
 
             HRESULT RenderAdaptiveJsonAsXamlAsync([in] HSTRING adaptiveJson, [out, retval] Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.UIElement*>** result);
             HRESULT RenderAdaptiveCardFromJsonString([in] HSTRING adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
+
+            HRESULT RenderAdaptiveCardFromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
         };
 
         [
@@ -1299,13 +1302,14 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(b90caf09-4257-4b00-a9d0-8c3cc4f8b76e),
+            uuid(1a09b9b7-d678-495f-949e-3ad677424fdb),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveHostConfig),
         ]
         interface IAdaptiveHostConfigStatics : IInspectable
         {
-            HRESULT CreateHostConfigFromJson([in] HSTRING hostConfigJson, [out, retval] AdaptiveHostConfig** config);
+            HRESULT FromJsonString([in] HSTRING hostConfigJson, [out, retval] AdaptiveHostConfig** config);
+            HRESULT FromJson([in] Windows.Data.Json.JsonObject* hostConfigJson, [out, retval] AdaptiveHostConfig** config);
         };
 
         [
@@ -1462,10 +1466,6 @@ namespace AdaptiveCards
 
             [propget] HRESULT FrameworkElement([out, retval] Windows.UI.Xaml.UIElement** value);
 
-            [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<HSTRING>** value);
-
-            [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<HSTRING>** value);
-
             [propget] HRESULT IsRenderedSuccessfully([out, retval] boolean* value);
 
             [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
@@ -1490,7 +1490,7 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveInputs : IInspectable
         {
-            [propget] HRESULT AsJson([out, retval] Windows.Data.Json.JsonObject** value);
+            HRESULT AsJson([in] InputValueMode inputMode, [out, retval] Windows.Data.Json.JsonObject** value);
         };
 
         [

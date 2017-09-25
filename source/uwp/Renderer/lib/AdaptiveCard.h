@@ -41,7 +41,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
-        IFACEMETHODIMP ToJsonString(_Out_ HSTRING* elementType);
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_body;
@@ -63,7 +63,11 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         // IAdaptiveCardStatics
-        IFACEMETHODIMP CreateCardFromJson(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card) noexcept;
+        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card) noexcept;
+        IFACEMETHODIMP FromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card) noexcept;
+
+    private:
+        HRESULT FromJsonString(_In_ const std::string jsonString, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card);
     };
 
     ActivatableClassWithFactory(AdaptiveCard, AdaptiveCardStaticsImpl);
