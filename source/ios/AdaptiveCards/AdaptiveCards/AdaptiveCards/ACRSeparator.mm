@@ -129,8 +129,9 @@ using namespace AdaptiveCards;
             separator->width  = spacing;
             separator->height = spacing;
             // Shared model has not implemented support
-            // separator->rgb = std::stoul(requestedSeperation->lineColor.substr(1), nullptr, 16);
-            // separator->lineWidth = separatorHstCnfig->lineThickness;
+            std::string lineColor = "#B2000000";
+            separator->rgb = std::stoul(lineColor.substr(1), nullptr, 16);
+            separator->lineWidth = 1;
             separator.backgroundColor = UIColor.clearColor;
             [superview addArrangedSubview:separator];
 
@@ -160,7 +161,7 @@ using namespace AdaptiveCards;
             return config->spacing.smallSpacing;
         case Spacing::Default:
             return config->spacing.defaultSpacing;
-        case Spacing::None:
+        default:
             break;
     }
 

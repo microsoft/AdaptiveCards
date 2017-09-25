@@ -61,21 +61,38 @@
                                                         guideFrame:_superview.frame
 
                                                         hostconfig:_config];
+            unsigned int padding = 0;
+            
+            switch (_config->actions.spacing)
+            {
+                case Spacing::ExtraLarge:
+                    padding = _config->spacing.extraLargeSpacing;
+                case Spacing::Large:
+                    padding = _config->spacing.largeSpacing;
+                case Spacing::Medium:
+                    padding = _config->spacing.mediumSpacing;
+                case Spacing::Small:
+                    padding = _config->spacing.smallSpacing;
+                case Spacing::Default:
+                    padding =  _config->spacing.defaultSpacing;
+                default:
+                    break;
+            }
             ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc]
                                                      initWithFrame:CGRectMake(0,0,
                                                                               adcView.frame.size.width +
-                                                                              _config->actions.showCard.padding.left +
-                                                                              _config->actions.showCard.padding.right,
+                                                                              padding +
+                                                                              padding,
                                                                               adcView.frame.size.height +
-                                                                              _config->actions.showCard.padding.top +
-                                                                              _config->actions.showCard.padding.bottom)];
+                                                                              padding +
+                                                                              padding)];
             [wrappingView addSubview:adcView];
             NSString *horString = [[NSString alloc] initWithFormat:@"H:|-%u-[adcView]-%u-|",
-                                   _config->actions.showCard.padding.left,
-                                   _config->actions.showCard.padding.right];
+                                   padding,
+                                   padding];
             NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-%u-|",
-                                   _config->actions.showCard.padding.top,
-                                   _config->actions.showCard.padding.bottom];
+                                   padding,
+                                   padding];
             NSDictionary *dictionary = NSDictionaryOfVariableBindings(wrappingView, adcView);
             NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
                                                                          options:0
