@@ -172,7 +172,7 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "strong",
+			"spacing": "medium",
 			"columns": [
 				{
 					"type": "Column",
