@@ -61,7 +61,7 @@
             "type": "Input.ChoiceSet",
             "id": "myColor3",
             "isMultiSelect": true,
-            "value": [ "1", "3" ],
+            "value": "1,3",
             "style": "compact",
             "choices": [
                 {
@@ -84,7 +84,7 @@
         },
         {
             "type": "Input.ChoiceSet",
-            "id": "myColor3",
+            "id": "myColor4",
             "isMultiSelect": true,
             "value": "1",
             "style": "expanded",
@@ -102,6 +102,12 @@
                     "value": "3"
                 }
             ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "OK"
         }
     ]
 }
