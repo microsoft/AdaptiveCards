@@ -125,13 +125,15 @@ using namespace AdaptiveCards;
         if(separator)
         {
             // Shared model has not implemented support
-            // std::shared_ptr<Separator> requestedSeperation = elem->GetSeparator();
             separator->width  = spacing;
             separator->height = spacing;
-            // Shared model has not implemented support
-            std::string lineColor = "#B2000000";
-            separator->rgb = std::stoul(lineColor.substr(1), nullptr, 16);
-            separator->lineWidth = 1;
+            if(elem->GetSeparator())
+            {
+                std::string lineColor = "#B2000000";
+                separator->rgb		 = std::stoul(lineColor.substr(1), nullptr, 16);
+                separator->lineWidth = 1;
+            }
+
             separator.backgroundColor = UIColor.clearColor;
             [superview addArrangedSubview:separator];
 
