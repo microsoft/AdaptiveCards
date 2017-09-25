@@ -168,4 +168,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedImage->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImage::put_Id(HSTRING id)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedImage->SetId(out);
+        return S_OK;
+    }
 }}

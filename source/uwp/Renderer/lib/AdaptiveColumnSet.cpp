@@ -86,4 +86,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedColumnSet->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::put_Id(HSTRING id)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedColumnSet->SetId(out);
+        return S_OK;
+    }
 }}

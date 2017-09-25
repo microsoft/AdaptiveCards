@@ -266,6 +266,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT Separator([out, retval] boolean* value);
             [propput] HRESULT Separator([in] boolean value);
+
+            [propget] HRESULT Id([out, retval] HSTRING* value);
+            [propput] HRESULT Id([in] HSTRING value);
         };
 
         [
@@ -448,9 +451,6 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveInputElement : IInspectable
         {
-            [propget] HRESULT Id([out, retval] HSTRING* value);
-            [propput] HRESULT Id([in] HSTRING value);
-
             [propget] HRESULT IsRequired([out, retval] boolean* value);
             [propput] HRESULT IsRequired([in] boolean value);
         };
@@ -1322,6 +1322,9 @@ namespace AdaptiveCards
 
             [propget] HRESULT Title([out, retval] HSTRING* value);
             [propput] HRESULT Title([in] HSTRING value);
+
+            [propget] HRESULT Id([out, retval] HSTRING* value);
+            [propput] HRESULT Id([in] HSTRING value);
         };
 
         [
