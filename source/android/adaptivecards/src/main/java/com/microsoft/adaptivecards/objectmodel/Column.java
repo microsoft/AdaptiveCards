@@ -41,12 +41,12 @@ public class Column extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_Column__SWIG_0(), true);
   }
 
-  public Column(SeparationStyle separation, String speak, String size) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_1(separation.swigValue(), speak, size), true);
+  public Column(Spacing spacing, Separator separation, String speak, String size) {
+    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_1(spacing.swigValue(), Separator.getCPtr(separation), separation, speak, size), true);
   }
 
-  public Column(SeparationStyle separation, String speak, String size, BaseCardElementVector items) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_2(separation.swigValue(), speak, size, BaseCardElementVector.getCPtr(items), items), true);
+  public Column(Spacing spacing, Separator separation, String speak, String size, BaseCardElementVector items) {
+    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_2(spacing.swigValue(), Separator.getCPtr(separation), separation, speak, size, BaseCardElementVector.getCPtr(items), items), true);
   }
 
   public String Serialize() {

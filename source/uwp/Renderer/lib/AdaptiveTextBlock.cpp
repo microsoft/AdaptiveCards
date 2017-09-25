@@ -184,4 +184,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedTextBlock->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_Id(HSTRING id)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedTextBlock->SetId(out);
+        return S_OK;
+    }
 }}

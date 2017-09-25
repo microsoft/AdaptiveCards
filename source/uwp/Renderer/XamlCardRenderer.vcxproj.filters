@@ -28,7 +28,6 @@
     <ClCompile Include="lib\AdaptiveTimeInput.cpp" />
     <ClCompile Include="lib\AdaptiveToggleInput.cpp" />
     <ClCompile Include="lib\AdaptiveColorConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveSpacingDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveCardConfig.cpp" />
     <ClCompile Include="lib\AdaptiveColorsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFactSetConfig.cpp" />
@@ -42,12 +41,14 @@
     <ClCompile Include="lib\XamlCardResourceResolvers.cpp" />
     <ClCompile Include="lib\XamlCardGetResourceStreamArgs.cpp" />
     <ClCompile Include="lib\AdaptiveSpacingConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveSeparatorThicknessConfig.cpp" />
     <ClCompile Include="lib\AdaptiveSeparator.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
     <ClCompile Include="lib\RenderedAdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveInputs.cpp" />
+    <ClCompile Include="lib\AdaptiveFontWeightsConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveImageConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveSeparatorConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -85,7 +86,6 @@
     <ClInclude Include="lib\AdaptiveTimeInput.h" />
     <ClInclude Include="lib\AdaptiveToggleInput.h" />
     <ClInclude Include="lib\AdaptiveColorConfig.h" />
-    <ClInclude Include="lib\AdaptiveSpacingDefinition.h" />
     <ClInclude Include="lib\AdaptiveCardConfig.h" />
     <ClInclude Include="lib\AdaptiveColorsConfig.h" />
     <ClInclude Include="lib\AdaptiveFactSetConfig.h" />
@@ -99,12 +99,14 @@
     <ClInclude Include="lib\XamlCardGetResourceStreamArgs.h" />
     <ClInclude Include="lib\XamlCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveSpacingConfig.h" />
-    <ClInclude Include="lib\AdaptiveSeparatorThicknessConfig.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
     <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
     <ClInclude Include="lib\RenderedAdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveInputs.h" />
+    <ClInclude Include="lib\AdaptiveFontWeightsConfig.h" />
+    <ClInclude Include="lib\AdaptiveImageConfig.h" />
+    <ClInclude Include="lib\AdaptiveSeparatorConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

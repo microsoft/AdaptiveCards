@@ -16,7 +16,7 @@ ImageSet::ImageSet(
     std::vector<std::shared_ptr<Image>>& images) :
     BaseCardElement(CardElementType::ImageSet, spacing, separation),
     m_images(images),
-    m_imageSize(ImageSize::Default)
+    m_imageSize(ImageSize::None)
 {
 }
 
@@ -58,7 +58,11 @@ Json::Value ImageSet::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)] = ImageSizeToString(GetImageSize());
+    ImageSize imageSize = GetImageSize();
+    if (imageSize != ImageSize::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)] = ImageSizeToString(GetImageSize());
+    }
 
     std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
@@ -77,7 +81,7 @@ std::shared_ptr<ImageSet> ImageSet::Deserialize(const Json::Value& value)
     auto imageSet = BaseCardElement::Deserialize<ImageSet>(value);
 
     // Get ImageSize
-    imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::Auto, ImageSizeFromString);
+    imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
 
     // Parse Images
     auto images = ParseUtil::GetElementCollectionOfSingleType<Image>(value, AdaptiveCardSchemaKey::Images, Image::DeserializeWithoutCheckingType, true);

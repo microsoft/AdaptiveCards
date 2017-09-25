@@ -2,14 +2,20 @@ package com.microsoft.adaptivecards.renderer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.microsoft.adaptivecards.objectmodel.SeparationConfig;
-import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
+import com.microsoft.adaptivecards.objectmodel.Color;
+import com.microsoft.adaptivecards.objectmodel.ColorConfig;
+import com.microsoft.adaptivecards.objectmodel.ColorsConfig;
+import com.microsoft.adaptivecards.objectmodel.HostConfig;
+import com.microsoft.adaptivecards.objectmodel.Separator;
+import com.microsoft.adaptivecards.objectmodel.SeparatorThickness;
+import com.microsoft.adaptivecards.objectmodel.SeparatorThicknessConfig;
+import com.microsoft.adaptivecards.objectmodel.Spacing;
+import com.microsoft.adaptivecards.objectmodel.SpacingConfig;
 
 /**
  * Created by bekao on 5/11/2017.
@@ -17,42 +23,119 @@ import com.microsoft.adaptivecards.objectmodel.SeparationStyle;
 
 public abstract class BaseCardElementRenderer implements IBaseCardElementRenderer
 {
-    protected static void setSeparationConfig(
-            Context context,
-            ViewGroup viewGroup,
-            SeparationStyle separationStyle,
-            SeparationConfig defaultSeparationConfig,
-            SeparationConfig strongSeparationConfig,
-            boolean horizontalLine)
+    protected static int getSpacingSize(Spacing spacing, SpacingConfig defauiltSpacingConfig)
     {
-        if (separationStyle.swigValue() == SeparationStyle.None.swigValue())
+        long spacingSize = 0;
+        if (spacing.swigValue() == Spacing.None.swigValue())
         {
-            return;
+            return 0;
+        }
+        else if (spacing.swigValue() == Spacing.Default.swigValue())
+        {
+            spacingSize = defauiltSpacingConfig.getDefaultSpacing();
+        }
+        else if (spacing.swigValue() == Spacing.ExtraLarge.swigValue())
+        {
+            spacingSize = defauiltSpacingConfig.getExtraLargeSpacing();
+        }
+        else if (spacing.swigValue() == Spacing.Large.swigValue())
+        {
+            spacingSize = defauiltSpacingConfig.getLargeSpacing();
+        }
+        else if (spacing.swigValue() == Spacing.Medium.swigValue())
+        {
+            spacingSize = defauiltSpacingConfig.getMediumSpacing();
+        }
+        else if (spacing.swigValue() == Spacing.Small.swigValue())
+        {
+            spacingSize = defauiltSpacingConfig.getSmallSpacing();
+        }
+//        else if (spacing.swigValue() == Spacing.Padding.swigValue())
+//        {
+//            spacingSize = defauiltSpacingConfig.getSmallSpacing();
+//        }
+        else
+        {
+            throw new IllegalArgumentException("Unknown spacing style: " + spacing.toString());
         }
 
-        SeparationConfig separationConfig;
-        if (separationStyle.swigValue() == SeparationStyle.Default.swigValue())
+        return (int) spacingSize;
+    }
+
+    protected static int getSeparatorThicknessSize(SeparatorThickness separatorThickness, SeparatorThicknessConfig defaultSeparatorThicknessConfig)
+    {
+        long separatorThicknessSize = 0;
+        if (separatorThickness.swigValue() == SeparatorThickness.Default.swigValue())
         {
-            separationConfig = defaultSeparationConfig;
+            separatorThicknessSize = defaultSeparatorThicknessConfig.getDefaultSeparatorThickness();
         }
-        else if (separationStyle.swigValue() == SeparationStyle.Strong.swigValue())
+        else if (separatorThickness.swigValue() == SeparatorThickness.Thick.swigValue())
         {
-            separationConfig = strongSeparationConfig;
+            separatorThicknessSize = defaultSeparatorThicknessConfig.getThickSeparatorThickness();
+        }
+
+        return (int) separatorThicknessSize;
+    }
+
+    protected static int getColor(Color color, ColorsConfig colorsConfig, boolean isSubtle)
+    {
+        com.microsoft.adaptivecards.objectmodel.ColorConfig colorConfig;
+        if (color.swigValue() == Color.Accent.swigValue())
+        {
+            colorConfig = colorsConfig.getAccent();
+        }
+        else if (color.swigValue() == Color.Attention.swigValue())
+        {
+            colorConfig = colorsConfig.getAttention();
+        }
+        else if (color.swigValue() == Color.Dark.swigValue())
+        {
+            colorConfig = colorsConfig.getDark();
+        }
+        else if (color.swigValue() == Color.Default.swigValue())
+        {
+            colorConfig = colorsConfig.getDefaultColor();
+        }
+        else if (color.swigValue() == Color.Good.swigValue())
+        {
+            colorConfig = colorsConfig.getGood();
+        }
+        else if (color.swigValue() == Color.Light.swigValue())
+        {
+            colorConfig = colorsConfig.getLight();
+        }
+        else if (color.swigValue() == Color.Warning.swigValue())
+        {
+            colorConfig = colorsConfig.getWarning();
         }
         else
         {
-            throw new IllegalArgumentException("Unknown separation style: " + separationStyle.toString());
+            throw new IllegalArgumentException("Unknown color: " + color.toString());
         }
 
+        return android.graphics.Color.parseColor(isSubtle ? colorConfig.getSubtle() : colorConfig.getNormal());
+    }
+
+    protected static void setSpacingAndSeparator(
+            Context context,
+            ViewGroup viewGroup,
+            Spacing spacing,
+            Separator separator,
+            HostConfig hostConfig,
+            boolean horizontalLine)
+    {
+        int spacingSize = getSpacingSize(spacing, hostConfig.getSpacing());
+        int separatorThickness = getSeparatorThicknessSize(separator.GetThickness(), hostConfig.getSeparatorThickness());
+        int separatorColor = getColor(separator.GetColor(), hostConfig.getColors(), false /* TBD: separator subtle always false? */);
+
         View view = new ImageView(context);
-        int lineThickness = (int) Math.min(separationConfig.getLineThickness(), Integer.MAX_VALUE);
         LinearLayout.LayoutParams params;
-        if (lineThickness > 0)
+        if (separatorThickness > 0)
         {
-            view.setBackgroundColor(Color.parseColor(separationConfig.getLineColor()));
+            view.setBackgroundColor(separatorColor);
             params = new LinearLayout.LayoutParams(
-                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : lineThickness,
-                    horizontalLine ? lineThickness : LinearLayout.LayoutParams.MATCH_PARENT);
+                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : separatorThickness,
+                    horizontalLine ? separatorThickness : LinearLayout.LayoutParams.MATCH_PARENT);
         }
         else
         {
@@ -61,10 +144,10 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
                     horizontalLine ? LinearLayout.LayoutParams.WRAP_CONTENT : LinearLayout.LayoutParams.MATCH_PARENT);
         }
         params.setMargins(
-                horizontalLine ? 0 : (int)separationConfig.getSpacing() /* left */,
-                horizontalLine ? (int)separationConfig.getSpacing() : 0 /* top */,
-                horizontalLine ? 0 : (int)separationConfig.getSpacing() /* right */,
-                horizontalLine ? (int)separationConfig.getSpacing() : 0 /* bottom */);
+                horizontalLine ? 0 : spacingSize /* left */,
+                horizontalLine ? spacingSize : 0 /* top */,
+                horizontalLine ? 0 : spacingSize /* right */,
+                horizontalLine ? spacingSize : 0 /* bottom */);
         view.setLayoutParams(params);
         viewGroup.addView(view);
     }

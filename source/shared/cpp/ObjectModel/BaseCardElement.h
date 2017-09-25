@@ -29,6 +29,9 @@ public:
     Spacing GetSpacing() const;
     void SetSpacing(const Spacing value);
 
+    std::string GetId() const;
+    void SetId(const std::string value);
+
     const CardElementType GetElementType() const;
 
     virtual std::string Serialize() = 0;
@@ -46,6 +49,7 @@ private:
     static const std::unordered_map<ActionType, std::function<std::shared_ptr<BaseActionElement>(const Json::Value&)>, EnumHash> ActionParsers;
     CardElementType m_type;
     Spacing m_spacing;
+    std::string m_id;
     //std::shared_ptr<Separator> m_separator; Issue #629 to make separator an object
     bool m_separator;
 };
@@ -61,6 +65,7 @@ std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
     baseCardElement->SetSpacing(
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString)); 
     baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
+    baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
   
     /* Issue #629 to make separator an object
     Json::Value separatorJson = json.get(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator), Json::Value());

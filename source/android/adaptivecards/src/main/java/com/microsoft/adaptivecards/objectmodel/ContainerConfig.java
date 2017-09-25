@@ -35,15 +35,6 @@ public class ContainerConfig {
     }
   }
 
-  public void setSeparation(SeparationConfig value) {
-    AdaptiveCardObjectModelJNI.ContainerConfig_separation_set(swigCPtr, this, SeparationConfig.getCPtr(value), value);
-  }
-
-  public SeparationConfig getSeparation() {
-    long cPtr = AdaptiveCardObjectModelJNI.ContainerConfig_separation_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
-  }
-
   public void setNormal(ContainerStyleConfig value) {
     AdaptiveCardObjectModelJNI.ContainerConfig_normal_set(swigCPtr, this, ContainerStyleConfig.getCPtr(value), value);
   }

@@ -41,12 +41,12 @@ public class FactSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_0(), true);
   }
 
-  public FactSet(SeparationStyle separation, String speak) {
-    this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_1(separation.swigValue(), speak), true);
+  public FactSet(Spacing spacing, Separator separation, String speak) {
+    this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_1(spacing.swigValue(), Separator.getCPtr(separation), separation, speak), true);
   }
 
-  public FactSet(SeparationStyle separation, String speak, FactVector facts) {
-    this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_2(separation.swigValue(), speak, FactVector.getCPtr(facts), facts), true);
+  public FactSet(Spacing spacing, Separator separation, String speak, FactVector facts) {
+    this(AdaptiveCardObjectModelJNI.new_FactSet__SWIG_2(spacing.swigValue(), Separator.getCPtr(separation), separation, speak, FactVector.getCPtr(facts), facts), true);
   }
 
   public String Serialize() {

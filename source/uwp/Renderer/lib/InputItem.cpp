@@ -225,7 +225,7 @@ void InputItem::Serialize(Json::Value & jsonValue) const
     THROW_IF_FAILED(cardElement->get_ElementType(&elementType));
 
     HString id;
-    THROW_IF_FAILED(m_adaptiveInputElement->get_Id(id.GetAddressOf()));
+    THROW_IF_FAILED(cardElement->get_Id(id.GetAddressOf()));
 
     std::string idString;
     THROW_IF_FAILED(HStringToUTF8(id.Get(), idString));

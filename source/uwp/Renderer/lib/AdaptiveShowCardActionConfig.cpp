@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Util.h"
-#include "AdaptiveSpacingDefinition.h"
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
@@ -46,18 +45,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_sharedShowCardActionConfig.style = static_cast<AdaptiveCards::ContainerStyle>(style);
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::get_Padding(IAdaptiveSpacingDefinition** spacingDefinition)
-    {
-        return MakeAndInitialize<AdaptiveSpacingDefinition>(spacingDefinition, m_sharedShowCardActionConfig.padding);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_Padding(IAdaptiveSpacingDefinition* /*value*/)
-    {
-        return E_NOTIMPL;
     }
 
     _Use_decl_annotations_

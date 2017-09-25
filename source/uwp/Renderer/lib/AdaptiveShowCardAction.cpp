@@ -52,4 +52,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard;
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardAction::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedShowCardAction->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveShowCardAction::put_Id(HSTRING id)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedShowCardAction->SetId(out);
+        return S_OK;
+    }
 }}

@@ -38,6 +38,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
         IFACEMETHODIMP put_Separator(_In_ boolean separator);
 
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
     private:
 

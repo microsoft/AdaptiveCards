@@ -47,6 +47,7 @@ enum class AdaptiveCardSchemaKey
     BackgroundImageUrl,
     BaseCardElement,
     Body,
+    Bolder,
     BorderColor,
     BorderThickness,
     Bottom,
@@ -92,12 +93,15 @@ enum class AdaptiveCardSchemaKey
     Large,
     Left,
     Light,
+    Lighter,
     LineColor,
     LineThickness,
     Max,
     MaxActions,
+    MaxImageHeight,
     MaxLength,
     MaxLines,
+    MaxWidth,
     Medium,
     Method,
     Min,
@@ -180,7 +184,7 @@ enum class ImageStyle {
 };
 
 enum class ImageSize {
-    Default = 0,
+    None = 0,
     Auto,
     Stretch,
     Small,
@@ -249,6 +253,7 @@ enum class Spacing {
     Medium,
     Large,
     ExtraLarge,
+    Padding
 };
 
 enum class ActionsOrientation {
@@ -257,8 +262,7 @@ enum class ActionsOrientation {
 };
 
 enum class ActionMode {
-    InlineEdgeToEdge = 0,
-    Inline,
+    Inline = 0,
     Popup
 };
 

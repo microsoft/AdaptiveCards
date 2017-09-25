@@ -41,12 +41,12 @@ public class Container extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_Container__SWIG_0(), true);
   }
 
-  public Container(SeparationStyle separation, String speak, ContainerStyle style) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(separation.swigValue(), speak, style.swigValue()), true);
+  public Container(Spacing spacing, Separator separator, String speak, ContainerStyle style) {
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(spacing.swigValue(), Separator.getCPtr(separator), separator, speak, style.swigValue()), true);
   }
 
-  public Container(SeparationStyle separation, String speak, ContainerStyle style, BaseCardElementVector items) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_2(separation.swigValue(), speak, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
+  public Container(Spacing spacing, Separator separator, String speak, ContainerStyle style, BaseCardElementVector items) {
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_2(spacing.swigValue(), Separator.getCPtr(separator), separator, speak, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
   }
 
   public String Serialize() {

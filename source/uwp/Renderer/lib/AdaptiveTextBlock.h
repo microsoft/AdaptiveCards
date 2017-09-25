@@ -37,7 +37,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle);
         IFACEMETHODIMP put_IsSubtle(_In_ boolean isSubtle);
 
-        IFACEMETHODIMP get_MaxLines(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_MaxLines(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxLines(_In_ UINT32 value);
 
         IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::XamlCardRenderer::HAlignment* hAlignment);
@@ -51,6 +51,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         IFACEMETHODIMP get_Separator(boolean* separator);
         IFACEMETHODIMP put_Separator(boolean separator);
+
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
     private:
         std::shared_ptr<AdaptiveCards::TextBlock> m_sharedTextBlock;

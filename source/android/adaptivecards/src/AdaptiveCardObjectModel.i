@@ -21,6 +21,7 @@ namespace std {
 #include "pch.h"
 #include <memory>
 #include "../../../shared/cpp/ObjectModel/Enums.h"
+#include "../../../shared/cpp/ObjectModel/Separator.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
@@ -48,6 +49,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %}
 
+%shared_ptr(AdaptiveCards::Separator)
 %shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::BaseInputElement)
@@ -371,6 +373,7 @@ namespace std {
 
 %include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
+%include "../../../shared/cpp/ObjectModel/Separator.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"

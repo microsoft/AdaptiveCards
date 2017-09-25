@@ -79,4 +79,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedOpenUrlAction->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::put_Id(HSTRING id)
+    {
+        std::string out;
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedOpenUrlAction->SetId(out);
+        return S_OK;
+    }
 }}

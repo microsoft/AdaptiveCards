@@ -23,9 +23,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style);
         IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style);
 
-        IFACEMETHODIMP get_Padding(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition** value);
-        IFACEMETHODIMP put_Padding(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition* value);
-
         IFACEMETHODIMP get_InlineTopMargin(_Out_ UINT32* value);
         IFACEMETHODIMP put_InlineTopMargin(_In_ UINT32 value);
 
