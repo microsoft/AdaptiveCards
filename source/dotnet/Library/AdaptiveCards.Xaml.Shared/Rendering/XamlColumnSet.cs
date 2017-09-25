@@ -10,6 +10,7 @@ using System.Windows.Shapes;
 #elif XAMARIN
 using Xamarin.Forms;
 using FrameworkElement = Xamarin.Forms.View;
+using Button = AdaptiveCards.Rendering.ContentButton;
 #endif
 
 namespace AdaptiveCards.Rendering
@@ -87,6 +88,16 @@ namespace AdaptiveCards.Rendering
                 uiColumnSet.Children.Add(uiContainer);
             }
 
+            if (columnSet.SelectAction != null)
+            {
+                var uiButton = (Button)context.Render(columnSet.SelectAction);
+                if (uiButton != null)
+                {
+                    uiButton.Content = uiColumnSet;
+                    uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
+                    return uiButton;
+                }
+            }
             return uiColumnSet;
         }
 
