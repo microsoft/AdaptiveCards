@@ -11,7 +11,7 @@ using namespace AdaptiveCards;
 
 @implementation ACRContentStackView
 {
-    NSMutableArray* targets;
+    NSMutableArray* _targets;
     ContainerStyle _style;
 }
 
@@ -120,7 +120,7 @@ using namespace AdaptiveCards;
     self.stackView.translatesAutoresizingMaskIntoConstraints = false;
     self.translatesAutoresizingMaskIntoConstraints = false;
 
-    targets = [[NSMutableArray alloc] init];
+    _targets = [[NSMutableArray alloc] init];
 }
 
 - (CGSize)intrinsicContentSize
@@ -135,7 +135,7 @@ using namespace AdaptiveCards;
 
 - (void)addTarget:(NSObject *)target
 {
-    [targets addObject:target];
+    [_targets addObject:target];
 }
 
 // let the last element to strech
