@@ -164,7 +164,7 @@ namespace XamlCardVisualizer.ViewModel
 
             try
             {
-                RenderedAdaptiveCard renderResult = Settings.UseAsyncRenderMethod ? _renderer.RenderAdaptiveCardFromJsonString(payload) : _renderer.RenderAdaptiveCardFromJsonString(payload);
+                RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCardFromJsonString(payload);
                 if (renderResult.IsRenderedSuccessfully)
                 {
                     RenderedCard = renderResult.FrameworkElement;
@@ -179,7 +179,7 @@ namespace XamlCardVisualizer.ViewModel
                         }
                         else
                         {
-                            m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs;
+                            m_actionDialog.Content = "We got an action!\n" + e.Action.ActionType + "\n" + e.Inputs.ToString();
                         }
 
                         m_actionDialog.PrimaryButtonText = "Close";

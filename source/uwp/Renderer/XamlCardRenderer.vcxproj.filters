@@ -47,6 +47,7 @@
     <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
     <ClCompile Include="lib\RenderedAdaptiveCard.cpp" />
+    <ClCompile Include="lib\AdaptiveInputs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -103,6 +104,7 @@
     <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
     <ClInclude Include="lib\RenderedAdaptiveCard.h" />
+    <ClInclude Include="lib\AdaptiveInputs.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

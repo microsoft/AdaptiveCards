@@ -27,8 +27,13 @@
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::UI;
 using namespace std;
+using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Wrappers;
+using namespace AdaptiveCards::XamlCardRenderer;
+using namespace Windows::Foundation;
 
 HRESULT UTF8ToHString(const string& in, HSTRING* out)
 {
@@ -377,18 +382,31 @@ HRESULT GetBackgroundColorFromStyle(
     return S_OK;
 } CATCH_RETURN;
 
-HSTRING SerializeInputItems(const std::vector<::XamlCardRenderer::InputItem>& inputElements)
+HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 {
-    Json::Value jsonValue;
-    for (auto& inputElement : inputElements)
+
+    ComPtr<IJsonObjectStatics> jObjectStatics;
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(), &jObjectStatics));
+    HSTRING inputsHString;
+    THROW_IF_FAILED(UTF8ToHString(inputString, &inputsHString));
+    ComPtr<IJsonObject> jObject;
+    RETURN_IF_FAILED(jObjectStatics->Parse(inputsHString, &jObject));
+
+    *result = jObject.Detach();
+    return S_OK;
+}
+
+HRESULT JsonObjectToString(IJsonObject* inputJson, string& result)
+{
+    if (!inputJson)
     {
-        inputElement.Serialize(jsonValue);
+        return E_INVALIDARG;
     }
+    ComPtr<IJsonObject> localInputJson(inputJson);
+    ComPtr<IJsonValue> asJsonValue;
+    RETURN_IF_FAILED(localInputJson.As(&asJsonValue));
+    HSTRING asHstring;
+    RETURN_IF_FAILED(asJsonValue->Stringify(&asHstring));
+    return HStringToUTF8(asHstring, result);
 
-    Json::StyledWriter writer;
-    std::string inputString = writer.write(jsonValue);
-
-    HSTRING inputHString;
-    THROW_IF_FAILED(UTF8ToHString(inputString, &inputHString));
-    return inputHString;
 }

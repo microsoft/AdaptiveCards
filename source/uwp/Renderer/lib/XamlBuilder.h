@@ -46,8 +46,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                 std::shared_ptr<std::vector<InputItem>> inputElements,
                 ABI::Windows::UI::Xaml::IUIElement**)>> m_adaptiveElementBuilder;
 
-        std::shared_ptr<ActionEventSource> m_events;
-
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardRenderer> m_renderer;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IPropertyValueStatics> m_propertyValueStatics;
         ImageLoadTracker m_imageLoadTracker;

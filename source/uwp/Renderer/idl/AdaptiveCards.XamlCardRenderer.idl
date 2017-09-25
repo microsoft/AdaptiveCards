@@ -53,8 +53,6 @@ namespace AdaptiveCards
         runtimeclass RenderedAdaptiveCard;
         runtimeclass AdaptiveInputs;
 
-
-
         interface IXamlCardResourceResolvers;
         interface IXamlCardResourceResolver;
         interface IXamlCardGetResourceStreamArgs;
@@ -799,7 +797,7 @@ namespace AdaptiveCards
         }RenderOptions;
 
         [
-            uuid(DB7C7BB8-C313-440A-A421-B52620107F8B),
+            uuid(b4f101af-1743-4552-807f-54c0f49a2004),
             version(NTDDI_WIN10_RS1),
             exclusiveto(XamlCardRenderer),
         ]
@@ -830,14 +828,14 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(6853cff8-60ee-4270-9cd2-23b25cd8703f),
+            uuid(6bc7a30c-6971-474d-8dd3-bb9e1bcde381),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveActionEventArgs)
         ]
         interface IAdaptiveActionEventArgs : IInspectable
         {
             [propget] HRESULT Action([out, retval] IAdaptiveActionElement** action);
-            [propget] HRESULT Inputs([out, retval] HSTRING* value);
+            [propget] HRESULT Inputs([out, retval] Windows.Data.Json.JsonObject** value);
         }
 
         [
@@ -1378,8 +1376,8 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveSubmitAction : IInspectable
         {
-            [propget] HRESULT DataJson([out, retval] HSTRING* value);
-            [propput] HRESULT DataJson([in] HSTRING value);
+            [propget] HRESULT DataJson([out, retval] Windows.Data.Json.JsonObject** value);
+            [propput] HRESULT DataJson([in] Windows.Data.Json.JsonObject* value);
         };
 
         [
@@ -1470,7 +1468,7 @@ namespace AdaptiveCards
 
             [propget] HRESULT IsRenderedSuccessfully([out, retval] boolean* value);
 
-            // [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
+            [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
 
             [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
             [eventremove] HRESULT Action([in] EventRegistrationToken token);

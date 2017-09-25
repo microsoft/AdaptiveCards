@@ -22,6 +22,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Storage;
@@ -931,12 +932,15 @@ namespace AdaptiveCards { namespace XamlCardRenderer
                     }
                     else
                     {
-                        // Serialize the inputElements into Json.
-                        HSTRING inputHString = SerializeInputItems(*(strongRenderResult->GetInputItems()));
+                        // get the inputElements in Json form.
+                        ComPtr<IAdaptiveInputs> gatheredInputs;
+                        THROW_IF_FAILED(strongRenderResult->get_UserInputs(&gatheredInputs));
+                        ComPtr<IJsonObject> inputsAsJson;
+                        THROW_IF_FAILED(gatheredInputs->get_AsJson(&inputsAsJson));
 
                         // TODO: Data binding for inputs 
                         ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputHString));
+                        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputsAsJson.Get()));
                         THROW_IF_FAILED(strongRenderResult->SendActionEvent(eventArgs.Get()));
                     }
 

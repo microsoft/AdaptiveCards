@@ -119,6 +119,7 @@
     <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
+    <ClInclude Include="lib\AdaptiveInputs.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
     <ClInclude Include="lib\RenderedAdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveSeparatorThicknessConfig.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveInputs.cpp" />
     <ClCompile Include="lib\AdaptiveSeparator.cpp" />
     <ClCompile Include="lib\RenderedAdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveSeparatorThicknessConfig.cpp" />

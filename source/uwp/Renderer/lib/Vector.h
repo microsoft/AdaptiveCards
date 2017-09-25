@@ -27,20 +27,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     template <>
     struct Wrap<HSTRING>
     {
-        typedef std::wstring type;
-        static std::wstring MakeWrap(const HSTRING& t)
+        typedef std::string type;
+        static std::string MakeWrap(const HSTRING& t)
         {
-            HString str;
-            str.Set(t);
-            unsigned int len = 0;
-            std::wstring retvalue = str.GetRawBuffer(&len);
-            return retvalue;
+            std::string wrappedValue;
+            HStringToUTF8(t, wrappedValue);
+            return wrappedValue;
         }
-        static HSTRING Unwrap(const std::wstring& t)
+        static HSTRING Unwrap(const std::string& t)
         {
-            HString hstr;
-            hstr.Set(t.c_str(), t.length());
-            HSTRING retvalue = hstr.Detach();
+            HSTRING retvalue;
+            UTF8ToHString(t, &retvalue);
             return retvalue;
         }
     };

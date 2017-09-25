@@ -260,3 +260,18 @@ void InputItem::Serialize(Json::Value & jsonValue) const
         }
     }
 }
+
+std::string InputItem::InputItemCollectionAsJsonString(const std::vector<AdaptiveCards::XamlCardRenderer::InputItem>& inputElements)
+{
+    Json::Value jsonValue;
+    for (auto& inputElement : inputElements)
+    {
+        inputElement.Serialize(jsonValue);
+    }
+
+    Json::StreamWriterBuilder writerBuilder;
+    std::unique_ptr<Json::StreamWriter> writer(writerBuilder.newStreamWriter());
+    std::ostringstream outStream;
+    writer->write(jsonValue, &outStream);
+    return outStream.str();
+}

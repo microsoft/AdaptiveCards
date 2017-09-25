@@ -2,7 +2,6 @@
 #include "RenderedAdaptiveCard.h"
 
 #include "AdaptiveCard.h"
-#include "AsyncOperations.h"
 #include <windows.foundation.collections.h>
 #include <Windows.UI.Xaml.h>
 #include "XamlBuilder.h"
@@ -30,19 +29,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         RETURN_IF_FAILED(MakeAndInitialize<Vector<HSTRING>>(&m_errors));
         RETURN_IF_FAILED(MakeAndInitialize<Vector<HSTRING>>(&m_warnings));
-        m_inputs = std::make_shared<std::vector<InputItem>>();
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveInputs>(&m_inputs));
         m_events.reset(new ActionEventSource);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_OriginatingCard(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** value)
+    HRESULT RenderedAdaptiveCard::get_OriginatingCard(IAdaptiveCard** value)
     {
         return m_originatingCard.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_FrameworkElement(ABI::Windows::UI::Xaml::IUIElement** value)
+    HRESULT RenderedAdaptiveCard::get_FrameworkElement(IUIElement** value)
     {
         return m_frameworkElement.CopyTo(value);
     }
@@ -54,6 +53,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         RETURN_IF_FAILED(m_errors->get_Size(&errorsSize));
         *value = errorsSize == 0;
         return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputs** value)
+    {
+        return m_inputs.CopyTo(value);
     }
 
     _Use_decl_annotations_
@@ -97,13 +102,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_originatingCard = value;
     }
 
-    void RenderedAdaptiveCard::SetInputItems(std::shared_ptr<std::vector<InputItem>> value)
-    {
-        m_inputs = value;
-    }
-
     std::shared_ptr<std::vector<InputItem>> RenderedAdaptiveCard::GetInputItems()
     {
-        return m_inputs;
+        return m_inputs->GetInputItems();
     }
 }}
