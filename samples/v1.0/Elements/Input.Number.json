@@ -5,11 +5,17 @@
     "body": [
         {
             "type": "Input.Number",
-            "id": "1234",
+            "id": "number",
             "placeholder": "Enter a number",
             "min": 1,
             "max": 10,
             "value": 3
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "OK"
         }
     ]
 }

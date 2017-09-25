@@ -124,7 +124,7 @@ private void ActionHandler(object sender, AdaptiveActionEventArgs e) {
         // Get the user inputs as a JSON object
         // Note: we DO NOT do any input validation, be prepared to parse the data gracefully
         // RawString is outlined here https://github.com/Microsoft/AdaptiveCards/issues/652
-        JObject inputs = card.UserInputs.AsJson(InputValueMode.RawString);
+        JObject inputs = e.RenderedCard.UserInputs.AsJson(InputValueMode.RawString);
 
         // Serialize the JObject to a custom type 
         MyForm form = inputs.ToObject<MyForm>();
