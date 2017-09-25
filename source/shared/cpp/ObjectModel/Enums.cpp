@@ -19,6 +19,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl" },
     { AdaptiveCardSchemaKey::BaseCardElement, "baseCardElement" },
     { AdaptiveCardSchemaKey::Body, "body" },
+    { AdaptiveCardSchemaKey::Bolder, "bolder" },
     { AdaptiveCardSchemaKey::BorderColor, "borderColor" },
     { AdaptiveCardSchemaKey::BorderThickness, "borderThickness" },
     { AdaptiveCardSchemaKey::Bottom, "bottom" },
@@ -63,12 +64,14 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Large, "large" },
     { AdaptiveCardSchemaKey::Left, "left" },
     { AdaptiveCardSchemaKey::Light, "light" },
+    { AdaptiveCardSchemaKey::Lighter, "lighter" },
     { AdaptiveCardSchemaKey::LineColor, "lineColor" },
     { AdaptiveCardSchemaKey::LineThickness, "lineThickness" },
     { AdaptiveCardSchemaKey::Max, "max" },
     { AdaptiveCardSchemaKey::MaxActions, "maxActions" },
     { AdaptiveCardSchemaKey::MaxLength, "maxLength" },
     { AdaptiveCardSchemaKey::MaxLines, "maxLines" },
+    { AdaptiveCardSchemaKey::MaxWidth, "maxWidth" },
     { AdaptiveCardSchemaKey::Medium, "medium" },
     { AdaptiveCardSchemaKey::Method, "method" },
     { AdaptiveCardSchemaKey::Min, "min" },
@@ -188,7 +191,6 @@ static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInse
 static std::unordered_map<ImageSize, std::string, EnumHash> ImageSizeEnumToName =
 {
     { ImageSize::Auto, "Auto" },
-    { ImageSize::Default, "Auto" },
     { ImageSize::Large, "Large" },
     { ImageSize::Medium, "Medium" },
     { ImageSize::Small, "Small" },
@@ -267,7 +269,6 @@ ActionsOrientationNameToEnum = GenerateStringToEnumMap<ActionsOrientation>(Actio
 
 static std::unordered_map<ActionMode, std::string, EnumHash> ActionModeEnumToName =
 {
-    { ActionMode::InlineEdgeToEdge, "InlineEdgeToEdge" },
     { ActionMode::Inline, "Inline" },
     { ActionMode::Popup, "Popup" }
 };

@@ -26,10 +26,10 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_ActionAlignment(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment* value);
         IFACEMETHODIMP put_ActionAlignment(_In_ ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment value);
 
-        IFACEMETHODIMP get_ButtonSpacing(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_ButtonSpacing(_Out_ UINT32* value);
         IFACEMETHODIMP put_ButtonSpacing(_In_ UINT32 value);
 
-        IFACEMETHODIMP get_MaxActions(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_MaxActions(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxActions(_In_ UINT32 value);
 
         IFACEMETHODIMP get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* value);

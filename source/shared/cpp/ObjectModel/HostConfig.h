@@ -6,15 +6,6 @@
 
 namespace AdaptiveCards
 {
-struct SpacingDefinition
-{
-    unsigned int left = 0;
-    unsigned int right = 0;
-    unsigned int top = 0;
-    unsigned int bottom = 0;
-
-    static SpacingDefinition Deserialize(const Json::Value& json, const SpacingDefinition& defaultValue);
-};
 
 struct FontSizesConfig
 {
@@ -25,6 +16,15 @@ struct FontSizesConfig
     unsigned int extraLargeFontSize = 20;
 
     static FontSizesConfig Deserialize(const Json::Value& json, const FontSizesConfig& defaultValue);
+};
+
+struct FontWeightsConfig
+{
+    unsigned int lighterWeight = 200;
+    unsigned int defaultWeight = 400;
+    unsigned int bolderWeight = 800;
+
+    static FontWeightsConfig Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue);
 };
 
 struct ColorConfig
@@ -54,6 +54,8 @@ struct TextConfig
     TextSize size = TextSize::Default;
     ForegroundColor color = ForegroundColor::Default;
     bool isSubtle = false;
+    bool wrap = true;
+    unsigned int maxWidth = 150;
 
     static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
 };
@@ -65,16 +67,17 @@ struct SpacingConfig
     unsigned int mediumSpacing = 20;
     unsigned int largeSpacing = 30;
     unsigned int extraLargeSpacing = 40;
+    unsigned int paddingSpacing = 20;
 
     static SpacingConfig Deserialize(const Json::Value& json, const SpacingConfig& defaultValue);
 };
 
-struct SeparatorThicknessConfig
+struct SeparatorConfig
 {
-    unsigned int defaultSeparatorThickness = 1;
-    unsigned int thickSeparatorThickness = 4;
+    unsigned int lineThickness = 1;
+    std::string lineColor = "#B2000000";
 
-    static SeparatorThicknessConfig Deserialize(const Json::Value& json, const SeparatorThicknessConfig& defaultValue);
+    static SeparatorConfig Deserialize(const Json::Value& json, const SeparatorConfig& defaultValue);
 };
 
 struct ImageSizesConfig
@@ -89,13 +92,20 @@ struct ImageSizesConfig
 struct ImageSetConfig
 {
     ImageSize imageSize = ImageSize::Medium;
+    unsigned int maxImageHeight = 100;
 
     static ImageSetConfig Deserialize(const Json::Value& json, const ImageSetConfig& defaultValue);
 };
 
+struct ImageConfig
+{
+    ImageSize imageSize = ImageSize::Medium;
+
+    static ImageConfig Deserialize(const Json::Value& json, const ImageConfig& defaultValue);
+};
+
 struct AdaptiveCardConfig
 {
-    SpacingDefinition padding = { 8, 8, 8, 8 };
     bool allowCustomStyle = true;
 
     static AdaptiveCardConfig Deserialize(const Json::Value& json, const AdaptiveCardConfig& defaultValue);
@@ -105,7 +115,7 @@ struct FactSetConfig
 {
     TextConfig title = { TextWeight::Bolder };
     TextConfig value;
-    unsigned int spacing = 20;
+    unsigned int spacing = 10;
 
     static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
 };
@@ -124,13 +134,13 @@ struct ContainerStylesDefinition
     ContainerStyleDefinition emphasisPalette = 
     { "#08000000",
         {
-            { "#333333", "#EE333333" },     //defaultColor
-            { "#2E89FC", "#882E89FC" },     //accent
+            { "#FF000000", "#B2000000" },   //defaultColor
+            { "#FF0000FF", "#B20000FF" },   //accent
             { "#FF101010", "#B2101010" },   //dark
             { "#FFFFFFFF", "#B2FFFFFF" },   //light
-            { "#54a254", "#DD54a254" },     //good
-            { "#e69500", "#DDe69500" },     //warning
-            { "#cc3300", "#DDcc3300" }      //attention
+            { "#FF008000", "#B2008000" },   //good
+            { "#FFFFD700", "#B2FFD700" },   //warning
+            { "#FF8B0000", "#B28B0000" }    //attention
         }
     };
 
@@ -139,10 +149,9 @@ struct ContainerStylesDefinition
 
 struct ShowCardActionConfig
 {
-    ActionMode actionMode = ActionMode::InlineEdgeToEdge;
+    ActionMode actionMode = ActionMode::Inline;
     ContainerStyle style = ContainerStyle::Emphasis;
     unsigned int inlineTopMargin = 16;
-    SpacingDefinition padding = { 16, 16, 16, 16 };
 
     static ShowCardActionConfig Deserialize(const Json::Value& json, const ShowCardActionConfig& defaultValue);
 };
@@ -151,10 +160,10 @@ struct ActionsConfig
 {
     ShowCardActionConfig showCard;
     ActionsOrientation actionsOrientation = ActionsOrientation::Horizontal;
-    ActionAlignment actionAlignment = ActionAlignment::Center;
-    unsigned int buttonSpacing = 8;
+    ActionAlignment actionAlignment = ActionAlignment::Stretch;
+    unsigned int buttonSpacing = 10;
     unsigned int maxActions = 5;
-    Spacing spacing;
+    Spacing spacing = Spacing::Default;
 
     static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
 };
@@ -163,10 +172,11 @@ struct HostConfig
 {
     std::string fontFamily = "Calibri";
     FontSizesConfig fontSizes;
+    FontWeightsConfig fontWeights;
     bool supportsInteractivity = true;
     ImageSizesConfig imageSizes;
-    unsigned int maxActions = 5;
-    SeparatorThicknessConfig separatorThickness;
+    ImageConfig image;
+    SeparatorConfig separator;
     SpacingConfig spacing;
     AdaptiveCardConfig adaptiveCard;
     ImageSetConfig imageSet;

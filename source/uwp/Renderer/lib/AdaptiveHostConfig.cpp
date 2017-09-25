@@ -7,10 +7,12 @@
 #include "AdaptiveContainerStylesDefinition.h"
 #include "AdaptiveFactSetConfig.h"
 #include "AdaptiveFontSizesConfig.h"
+#include "AdaptiveFontWeightsConfig.h"
+#include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
 #include "AdaptiveImageSizesConfig.h"
 #include "AdaptiveSpacingConfig.h"
-#include "AdaptiveSeparatorThicknessConfig.h"
+#include "AdaptiveSeparatorConfig.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
@@ -73,6 +75,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
+     HRESULT AdaptiveHostConfig::get_FontWeights(IAdaptiveFontWeightsConfig** fontWeightsConfig)
+    {
+        return MakeAndInitialize<AdaptiveFontWeightsConfig>(fontWeightsConfig, m_sharedHostConfig.fontWeights);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::put_FontWeights(IAdaptiveFontWeightsConfig*)
+    {
+        return E_NOTIMPL;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_SupportsInteractivity(boolean* supporsInteractivity)
     {
         *supporsInteractivity = m_sharedHostConfig.supportsInteractivity;
@@ -110,40 +124,26 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return E_NOTIMPL;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_MaxActions(UINT32* maxActions)
-    {
-        *maxActions = m_sharedHostConfig.maxActions;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_MaxActions(UINT32 maxActions)
-    {
-        m_sharedHostConfig.maxActions = maxActions;
-        return S_OK;
-    }
-
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingConfig ** spacingConfig)
+    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingConfig** spacingConfig)
     {
         return MakeAndInitialize<AdaptiveSpacingConfig>(spacingConfig, m_sharedHostConfig.spacing);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingConfig * spacingConfig)
+    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingConfig* spacingConfig)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_SeparatorThickness(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparatorThicknessConfig ** separatorThicknessConfig)
+    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparatorConfig** separatorConfig)
     {
-        return MakeAndInitialize<AdaptiveSeparatorThicknessConfig>(separatorThicknessConfig, m_sharedHostConfig.separatorThickness);
+        return MakeAndInitialize<AdaptiveSeparatorConfig>(separatorConfig, m_sharedHostConfig.separator);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_SeparatorThickness(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparatorThicknessConfig * separatorThicknessConfig)
+    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparatorConfig* separatorConfig)
     {
         return E_NOTIMPL;
     }
@@ -168,6 +168,18 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::put_ImageSet(IAdaptiveImageSetConfig* )
+    {
+        return E_NOTIMPL;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::get_Image(IAdaptiveImageConfig** imageConfig)
+    {
+        return MakeAndInitialize<AdaptiveImageConfig>(imageConfig, m_sharedHostConfig.image);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::put_Image(IAdaptiveImageConfig*)
     {
         return E_NOTIMPL;
     }

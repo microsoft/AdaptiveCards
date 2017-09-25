@@ -23,7 +23,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Value(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig** valueTextConfig);
         IFACEMETHODIMP put_Value(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig* valueTextConfig);
 
-        IFACEMETHODIMP get_Spacing(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_Spacing(_Out_ UINT32* value);
         IFACEMETHODIMP put_Spacing(_In_ UINT32 value);
 
     private:

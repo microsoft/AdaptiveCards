@@ -29,6 +29,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle);
         IFACEMETHODIMP put_IsSubtle(_In_ boolean isSubtle);
 
+        IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
+        IFACEMETHODIMP put_Wrap(_In_ boolean wrap);
+
+        IFACEMETHODIMP get_MaxWidth(_Out_ UINT32* maxWidth);
+        IFACEMETHODIMP put_MaxWidth(_In_ UINT32 maxWidth);
+
     private:
         TextConfig m_sharedTextConfig;
     };
