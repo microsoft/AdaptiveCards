@@ -1,0 +1,20 @@
+body, p { font-size: 14px;}
+h1{font-size:28px;}
+h2{font-size:24px;}
+h3{font-size:22px;}
+h4{font-size:16px;}
+h5{font-size:14px;}
+h6{font-size:12px;}
+
+.code-snippet > pre {
+    font-size: 12px;
+    overflow: auto;
+    max-width: 600px;
+    max-height: 400px;
+}
+
+.adaptivecard { 
+    display: none; 
+    max-height: 400px; 
+}
+

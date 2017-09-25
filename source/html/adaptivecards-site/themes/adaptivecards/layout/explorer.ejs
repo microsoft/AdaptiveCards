@@ -1,0 +1,45 @@
+
+<div class="w3-content" style="max-width:1564px">
+
+
+<div id="sidebar" class="w3-sidebar w3-bar-block w3-light-grey w3-card-2" style="width: 180px">
+  <% page.schema.forEach(function(root) { %>
+      <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+        <%= root.title %></i>
+      </button>
+      <div class="w3-white w3-card-2">
+        <% root.children.forEach(function(child) { %>
+          <a href="<%- url_for('./explorer/' + child.name + '.html') %>" class="w3-bar-item w3-button"><%= child.name %></a>
+        <% }) %>
+      </div>
+  <% }) %>
+
+</div>
+
+<div class="w3-container" style="margin-left: 200px">
+  <h1><%= page.element.name %></h1>
+
+  <p><%= page.element.description %></p>
+
+  <div class="ac-properties"> 
+    <%- markdown(page.propertiesSummary) %>
+  </div>
+
+
+  <% page.element.examples.forEach(function (example, i) { %>
+    <% if(i == 0) { %>
+      <h2>Example</h2>
+      <%- partial("_partial/code-example", { examplePath: example }) %>
+  <% }}) %>
+
+
+
+  <h3>Properties</h3>
+
+
+  <%- propertiesDetails(page.element.properties) %>
+
+  <a class='trymelink' target='_blank' href='/visualizer?card=/explorer/cards/TextBlock.Color.json'>Try it Yourself »</a>
+</div>
+
+</div>
