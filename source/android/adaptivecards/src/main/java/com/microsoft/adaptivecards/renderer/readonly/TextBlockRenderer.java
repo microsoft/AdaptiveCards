@@ -134,7 +134,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setSingleLine(!textBlock.GetWrap());
         setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(textView, textBlock.GetTextSize(), hostConfig);
-        setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), hostConfig, true);
+        setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));

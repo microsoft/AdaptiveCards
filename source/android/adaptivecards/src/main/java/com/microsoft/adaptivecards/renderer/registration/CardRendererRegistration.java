@@ -68,7 +68,7 @@ public class CardRendererRegistration
 
     public void registerRenderer(CardElementType cardElementType, IBaseCardElementRenderer renderer)
     {
-        if (cardElementType != null || cardElementType == CardElementType.Unsupported)
+        if (cardElementType == null || cardElementType == CardElementType.Unsupported)
         {
             throw new IllegalArgumentException("cardElementType is null or unsupported");
         }
