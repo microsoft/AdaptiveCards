@@ -49,7 +49,7 @@
         curView = (UIStackView *)[columRenderer render:columnSetView inputs:inputs withCardElem:column andHostConfig:config];
         try
         {
-            relativeColumnWidth = std::stoul(column->GetSize());
+            relativeColumnWidth = std::stoul(column->GetWidth());
             if(prevRelColumnWidth)
                 multiplier = ((float)relativeColumnWidth) / prevRelColumnWidth;
         }

@@ -57,7 +57,7 @@
 
     [column setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [column setClipsToBounds:TRUE];
-    if(columnElem->GetSize() == "stretch")
+    if(columnElem->GetWidth() == "stretch")
     {
         [column setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     }
