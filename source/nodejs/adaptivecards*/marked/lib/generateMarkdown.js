@@ -1,4 +1,6 @@
 "use strict";
+
+var fs = require('fs');
 var defined = require('./defined');
 var defaultValue = require('./defaultValue');
 var style = require('./style');
@@ -7,7 +9,11 @@ var buildModel = require('./buildModel');
 
 module.exports = {
     generateMarkdown,
-    getSchemaMarkdown
+    getSchemaMarkdown,
+    createPropertiesSummary,
+    createPropertiesDetails,
+    createPropertyDetails,
+    getExampleForProperty
 };
 
 function generateMarkdown(options) {
@@ -19,6 +25,7 @@ function generateMarkdown(options) {
             // todo Microsoft adaptive card scehma
             md += getTableOfContentsMarkdown(model);
             md += getSchemaMarkdown(model);
+
             resolve(md);
 
         }).catch(function (err) {
@@ -43,8 +50,10 @@ function getSchemaMarkdown(model) {
 
             md += child.description + "\n\n";
             md += createPropertiesSummary(child.properties) + "\n";
+            md += createPropertiesDetails(child) + "\n"
         }
     }
+
     return md;
 }
 
@@ -193,4 +202,208 @@ function getPropertySummary(property, knownTypes, autoLink) {
         description: description,
         required: required
     };
+}
+
+
+function createPropertiesDetails(schema, headerLevel, knownTypes, autoLink) {
+    var md = '';
+
+    var properties = schema.properties;
+    for (var name in properties) {
+        if (properties.hasOwnProperty(name)) {
+            var property = properties[name];
+            md += createPropertyDetails(property, headerLevel, knownTypes, autoLink);
+        }
+    }
+
+    return md + '\n';
+}
+
+function createPropertyDetails(property, headerLevel, knownTypes, autoLink) {
+    var md = '';
+
+    var summary = getPropertySummary(property, knownTypes, autoLink);
+    var type = summary.type;
+
+    md += style.getHeaderMarkdown(property.name, headerLevel) + (summary.required === 'Yes' ? style.requiredIcon : '') + '\n\n';
+
+    // TODO: Add plugin point for custom JSON schema properties like gltf_*
+    var detailedDescription = autoLinkDescription(property.gltf_detailedDescription, knownTypes, autoLink);
+    if (defined(detailedDescription)) {
+        md += detailedDescription + '\n';
+    } else if (defined(summary.description)) {
+        md += summary.description + '\n';
+    }
+
+    md += '* ' + style.propertyDetails('Type') + ': ' + summary.formattedType + '\n';
+
+    var uniqueItems = property.uniqueItems;
+    if (defined(uniqueItems) && uniqueItems) {
+        md += '   * Each element in the array must be unique.\n';
+    }
+
+    // TODO: items is a full schema
+    var items = property.items;
+    if (defined(items)) {
+        var itemsExclusiveMinimum = (defined(items.exclusiveMinimum) && items.exclusiveMinimum);
+        var minString = itemsExclusiveMinimum ? 'greater than' : 'greater than or equal to';
+
+        var itemsExclusiveMaximum = (defined(items.exclusiveMaximum) && items.exclusiveMaximum);
+        var maxString = itemsExclusiveMaximum ? 'less than' : 'less than or equal to';
+
+        if (defined(items.minimum) && defined(items.maximum)) {
+            md += '   * Each element in the array must be ' + minString + ' ' + style.minMax(items.minimum) + ' and ' + maxString + ' ' + style.minMax(items.maximum) + '.\n';
+        } else if (defined(items.minimum)) {
+            md += '   * Each element in the array must be ' + minString + ' ' + style.minMax(items.minimum) + '.\n';
+        } else if (defined(items.maximum)) {
+            md += '   * Each element in the array must be ' + maxString + ' ' + style.minMax(items.maximum) + '.\n';
+        }
+
+        if (defined(items.minLength) && defined(items.maxLength)) {
+            md += '   * Each element in the array must have length between ' + style.minMax(items.minLength) + ' and ' + style.minMax(items.maxLength) + '.\n';
+        } else if (defined(items.minLength)) {
+            md += '   * Each element in the array must have length greater than or equal to ' + style.minMax(items.minLength) + '.\n';
+        } else if (defined(items.maxLength)) {
+            md += '   * Each element in the array must have length less than or equal to ' + style.minMax(items.maxLength) + '.\n';
+        }
+
+        var itemsString = getEnumString(items, type, 3);
+        if (defined(itemsString)) {
+            md += '   * Each element in the array must be one of the following values:\n' + itemsString;
+        }
+    }
+
+    md += '* ' + style.propertyDetails('Required') + ': ' + summary.required + '\n';
+
+    var minimum = property.minimum;
+    if (defined(minimum)) {
+        var exclusiveMinimum = (defined(property.exclusiveMinimum) && property.exclusiveMinimum);
+        md += '* ' + style.propertyDetails('Minimum') + ': ' + style.minMax((exclusiveMinimum ? ' > ' : ' >= ') + minimum) + '\n';
+    }
+
+    var maximum = property.maximum;
+    if (defined(maximum)) {
+        var exclusiveMaximum = (defined(property.exclusiveMaximum) && property.exclusiveMaximum);
+        md += '* ' + style.propertyDetails('Maximum') + ': ' + style.minMax((exclusiveMaximum ? ' < ' : ' <= ') + maximum) + '\n';
+    }
+
+    var format = property.format;
+    if (defined(format)) {
+        md += '* ' + style.propertyDetails('Format') + ': ' + format + '\n';
+    }
+
+    // TODO: maxLength
+    var minLength = property.minLength;
+    if (defined(minLength)) {
+        md += '* ' + style.propertyDetails('Minimum Length') + style.minMax(': >= ' + minLength) + '\n';
+    }
+
+    var enumString = getEnumString(property, type, 1);
+    if (defined(enumString)) {
+        md += '* ' + style.propertyDetails('Allowed values') + ':\n' + enumString;
+    }
+
+    var additionalProperties = property.additionalProperties;
+    if (defined(additionalProperties) && (typeof additionalProperties === 'object')) {
+        var additionalPropertiesType = getPropertyType(additionalProperties);
+        if (defined(additionalPropertiesType)) {
+            // TODO: additionalProperties is really a full schema
+            var formattedType = style.typeValue(additionalPropertiesType)
+            if ((additionalProperties.type === 'object') && defined(property.title)) {
+                formattedType = style.linkType(property.title, property.title, autoLink);
+            }
+
+            md += '* ' + style.propertyDetails('Type of each property') + ': ' + formattedType + '\n';
+        }
+    }
+
+
+    property.examples.forEach(function (example, i) {
+        if (i == 0) {
+            md += "\n" + style.getHeaderMarkdown("Example", 3);
+        }
+
+        md += getExampleForProperty(example);
+    });
+
+
+    return md + '\n';
+}
+
+function getExampleForProperty(example) {
+
+    var exampleContent = fs.readFileSync(example, "utf8");
+    // TODO: Support other types of example languages
+    return style.typeValue(exampleContent, "json");
+}
+
+/**
+ * @function getEnumString
+ * Gets the string describing the possible enum values.
+ * Will try getting the information from the enum/gltf_enumNames properties, but if they don't exist,
+ * it will fall back to trying to get the values from the anyOf object.
+ * @param  {object} schema The schema object that may be of an enum type.
+ * @param  {string} type The name of the object type for the enum values (e.g. string, integer, etc..)
+ * @param  {integer} depth How deep the bullet points for enum values should be.  Maximum is 2.
+ * @return {string} A string that enumerates all the possible enum values for this schema object.
+ */
+function getEnumString(schema, type, depth) {
+    var propertyEnum = schema['enum'];
+    if (!defined(propertyEnum)) {
+        // It's possible that the enum value is defined using the anyOf construct instead.
+        return getAnyOfEnumString(schema, type, depth);
+    }
+
+    var propertyEnumNames = schema['gltf_enumNames'];
+
+    var allowedValues = '';
+    var length = propertyEnum.length;
+    for (var i = 0; i < length; ++i) {
+        var element = style.enumElement(propertyEnum[i], type);
+        if (defined(propertyEnumNames)) {
+            element += " " + propertyEnumNames[i];
+        }
+
+        allowedValues += style.bulletItem(element, depth);
+    }
+    return allowedValues;
+}
+
+/**
+ * @function getAnyOfEnumString
+ * Gets the string describing the possible enum values, if they are defined within a JSON anyOf object.
+ * @param  {object} schema The schema object that may be of an enum type.
+ * @param  {string} type The name of the object type for the enum values (e.g. string, integer, etc..)
+ * @param  {integer} depth How deep the bullet points for enum values should be.  Maximum is 2.
+ * @return {string} A string that enumerates all the possible enum values for this schema object.
+ */
+function getAnyOfEnumString(schema, type, depth) {
+    var propertyAnyOf = schema['anyOf'];
+    if (!defined(propertyAnyOf)) {
+        return undefined;
+    }
+
+    var allowedValues = '';
+    var length = propertyAnyOf.length;
+    for (var i = 0; i < length; ++i) {
+        var element = propertyAnyOf[i];
+        var enumValue = element['enum'];
+        var enumDescription = element['description'];
+
+        // The likely scenario when there's no enum value is that it's the object
+        // containing the _type_ of the enum.  Otherwise, it should be an array with
+        // a single value in it.
+        if (!defined(enumValue) || !Array.isArray(enumValue) || enumValue.length === 0) {
+            continue;
+        }
+
+        var enumString = style.enumElement(enumValue[0], type);
+        if (defined(enumDescription)) {
+            enumString += " " + enumDescription;
+        }
+
+        allowedValues += style.bulletItem(enumString, depth);
+    }
+
+    return allowedValues;
 }

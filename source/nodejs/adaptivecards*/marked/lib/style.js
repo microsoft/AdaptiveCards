@@ -121,6 +121,8 @@ const REFERENCE = "schema-";
 * @return {string} The markdown string that should be placed prior to the title of the header
 */
 function getHeaderMarkdown(content, level) {
+    level = defaultValue(level, 2);
+
     var md = '';
     for (var i = 0; i < level; ++i) {
         md += '#';
@@ -193,16 +195,22 @@ function styleBold(string) {
 * @function styleCode
 * Returns back a markdown string that displays the provided object as code.
 * @param  {object} code - The object to be displayed as code. It might be a string, or a number, or ...
+* @param  {string} codeLang - The language for the code. If specified will create a tripple back-tip
 * @return {string} The code in markdown code syntax
 */
-function styleCode(code) {
+function styleCode(code, codeLang) {
     if (defined(code)) {
         // The object might be a string or it might be a number or something else.
         // Let's make sure it's a string first.
         var stringified = code.toString();
 
         if (stringified.length > 0) {
-            return '`' + stringified + '`';
+            if (defined(codeLang)) {
+                return '```' + codeLang + '\n' + stringified + '```\n'; 
+            }
+            else {
+                return '`' + stringified + '`';
+            }
         }
     }
 

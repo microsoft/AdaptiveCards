@@ -16,11 +16,13 @@ if (!defined(argv._[0]) || defined(argv.h) || defined(argv.help)) {
 var schemaPath = argv._[0];
 var tocPath = argv._[1];
 var rootDefinition = defaultValue(argv.r, null);
+var examplesPath = defaultValue(argv.e, null)
 
-markedSchema.generateMarkdown({
+markedSchema.generateMarkdown.generateMarkdown({
     schema: schemaPath,
     toc: tocPath,
-    rootDefinition: rootDefinition
+    rootDefinition: rootDefinition,
+    examplesPath: examplesPath
 }).then(function (md) {
     process.stdout.write(md);
 }).catch(function (err) {

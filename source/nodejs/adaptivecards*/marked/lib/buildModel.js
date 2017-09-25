@@ -3,10 +3,10 @@ var fs = require('fs');
 var path = require('path');
 var refParser = require('json-schema-ref-parser');
 var yaml = require('js-yaml');
-var generateMarkdown = require("../lib/generateMarkdown");
 var defined = require('../lib/defined');
 var defaultValue = require('../lib/defaultValue');
 var clone = require('./clone');
+var glob = require("glob");
 
 module.exports = buildModel;
 
@@ -34,7 +34,8 @@ function buildModel(options) {
                     for (var childIndex in rootObj[root.title]) {
 
                         var child = {
-                            name: rootObj[root.title][childIndex]
+                            name: rootObj[root.title][childIndex],
+                            examples: []
                         };
 
                         var objSchema = schema.definitions[child.name];
@@ -47,17 +48,29 @@ function buildModel(options) {
 
                             child.title = objSchema.title;
                             child.description = defaultValue(objSchema.description, objSchema.title);
+                            
+                            if (defined(options.examplesPath)) {
+                                child.examples = glob.sync(path.join(options.examplesPath, "**/" + child.name + "*.json"), { nocase: false })
+                            }
                             child.properties = objSchema.properties;
 
-                            for (var p in child.properties) {
-                                child.properties[p].realType = getPropertyType(child.properties[p]);
+                            for (var name in child.properties) {
+                                if (child.properties.hasOwnProperty(name)) {
+                                    var property = child.properties[name];
+                                    property.name = name;
+                                    property.realType = getPropertyType(property);
+                                    property.examples = [];
+
+                                    if (defined(options.examplesPath)) {
+                                        property.examples = glob.sync(path.join(options.examplesPath, "**/" + child.name + "." + name + ".json"), { nocase: false });
+                                    }
+                                }
                             }
                             root.children.push(child);
                         }
 
+                        items.push(root);
                     }
-
-                    items.push(root);
                 }
 
                 resolve(items);
@@ -67,6 +80,7 @@ function buildModel(options) {
             });
     });
 }
+
 
 
 function getObjectName(obj) {
