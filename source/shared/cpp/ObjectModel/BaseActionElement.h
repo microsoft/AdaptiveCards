@@ -17,6 +17,9 @@ public:
     std::string GetTitle() const;
     void SetTitle(const std::string value);
 
+    std::string GetId() const;
+    void SetId(const std::string value);
+
     const ActionType GetElementType() const;
 
     virtual std::string Serialize() = 0;
@@ -28,17 +31,19 @@ public:
 private:
     ActionType m_type;
     std::string m_title;
+    std::string m_id;
 };
 
 template <typename T>
 std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
 {
     std::shared_ptr<T> cardElement = std::make_shared<T>();
-    std::shared_ptr<BaseActionElement> BaseActionElement = cardElement;
+    std::shared_ptr<BaseActionElement> baseActionElement = cardElement;
 
     ParseUtil::ThrowIfNotJsonObject(json);
 
-    BaseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
+    baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
+    baseActionElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
 
     return cardElement;
 }
