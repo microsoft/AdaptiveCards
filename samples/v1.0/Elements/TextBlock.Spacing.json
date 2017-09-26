@@ -16,8 +16,7 @@
         },
         {
             "type": "TextBlock",
-            "text": "spacing: none",
-            "separation": "none"
+            "text": "spacing: none"
         },
         {
             "type": "TextBlock",

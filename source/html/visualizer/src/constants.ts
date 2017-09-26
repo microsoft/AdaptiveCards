@@ -176,14 +176,14 @@ export const defaultConfigPayload: string = `{
 export const defaultPayload: string = `{
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
+	"version": "1.0",
 	"body": [
 		{
 			"type": "Container",
-			"speak": "<s>Card created by Miguel Garcia: Publish Adaptive Card schema</s>",
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "Card created: Publish Adaptive Card schema",
+					"text": "Publish Adaptive Card schema",
 					"weight": "bolder",
 					"size": "medium"
 				},
@@ -192,11 +192,11 @@ export const defaultPayload: string = `{
 					"columns": [
 						{
 							"type": "Column",
-							"size": "auto",
+							"width": "auto",
 							"items": [
 								{
 									"type": "Image",
-									"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+									"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
 									"size": "small",
 									"style": "person"
 								}
@@ -204,17 +204,18 @@ export const defaultPayload: string = `{
 						},
 						{
 							"type": "Column",
-							"size": "stretch",
+							"width": "stretch",
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "**Miguel Garcia**",
+									"text": "Matt Hidinger",
+									"weight": "bolder",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
-									"separation": "none",
-									"text": "Created {{DATE(2017-02-14T06:08:39Z,Long)}} {{TIME(2017-02-14T06:08:39Z)}}",
+									"spacing": "none",
+									"text": "Created {{DATE(2017-02-14T06:08:39Z,Short)}}",
 									"isSubtle": true,
 									"wrap": true
 								}
@@ -229,13 +230,11 @@ export const defaultPayload: string = `{
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "Now that we have define the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-					"speak": "",
+					"text": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
 					"wrap": true
 				},
 				{
 					"type": "FactSet",
-					"speak": "It has been assigned to: David Claux",
 					"facts": [
 						{
 							"title": "Board:",
@@ -247,7 +246,7 @@ export const defaultPayload: string = `{
 						},
 						{
 							"title": "Assigned to:",
-							"value": "David Claux"
+							"value": "Matt Hidinger"
 						},
 						{
 							"title": "Due date:",
@@ -273,14 +272,9 @@ export const defaultPayload: string = `{
 				],
 				"actions": [
 				    {
-				        "type": "Action.Http",
-				        "title": "OK",
-				        "url": "http://xyz.com",
-                        "headers": {
-							"content-type": "application/json"
-						},
-						"body": "{ 'comment' : '{{comment.value}}' }"
-				    }
+				        "type": "Action.Submit",
+				        "title": "OK"
+			        }
 				]
 			}
 		},
@@ -299,14 +293,8 @@ export const defaultPayload: string = `{
 				],
 				"actions": [
 					{
-						"type": "Action.Http",
-						"method": "POST",
-						"title": "OK",
-						"url": "http://xyz.com",
-						"headers": {
-							"content-type": "application/json"
-						},
-						"body": "{ 'comment' : '{{comment.value}}' }"
+						"type": "Action.Submit",
+						"title": "OK"
 					}
 				]
 			}
@@ -314,7 +302,7 @@ export const defaultPayload: string = `{
 		{
 			"type": "Action.OpenUrl",
 			"title": "View",
-			"url": "http://foo.com"
+			"url": "http://adaptivecards.io"
 		}
 	]
 }`;

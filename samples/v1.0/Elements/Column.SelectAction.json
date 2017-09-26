@@ -15,7 +15,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards.io/api/cat"
+                            "url": "http://adaptivecards.io/content/cats/1.png"
                         }
                     ],
                     "selectAction": {
@@ -33,7 +33,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards.io/api/cat"
+                            "url": "http://adaptivecards.io/content/cats/1.png"
                         }
                     ],
                     "selectAction": {
@@ -51,7 +51,7 @@
                         },
                         {
                             "type": "Image",
-                            "url": "http://adaptivecards.io/api/cat"
+                            "url": "http://adaptivecards.io/content/cats/1.png"
                         }
                     ],
                     "selectAction": {

@@ -10,6 +10,15 @@ h4{font-size:16px;}
 h5{font-size:14px;}
 h6{font-size:12px;}
 
+.cardEditor {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    margin: 10px;
+}
+
 .code-snippet > pre {
     font-size: 12px;
     overflow: auto;
