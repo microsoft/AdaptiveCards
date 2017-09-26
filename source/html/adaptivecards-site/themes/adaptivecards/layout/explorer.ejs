@@ -23,28 +23,29 @@
   </nav>
 
   <div class="w3-main" style="margin-left: 260px">
-    <div class="w3-container ">
-      <h1><%= page.element.name %></h1>
+    <div class="w3-cell-row ">
+      <div class="w3-container w3-cell w3-mobile">
+        <h1><%= page.element.name %></h1>
 
-      <p><%= page.element.description %></p>
+        <p><%= page.element.description %></p>
 
-      <div class="ac-properties"> 
-        <%- markdown(page.propertiesSummary) %>
+        <div class="ac-properties w3-margin-top"> 
+          <%- markdown(page.propertiesSummary) %>
+        </div>
+        
       </div>
-
-
-      <% page.element.examples.forEach(function (example, i) { %>
-        <% if(i == 0) { %>
-          <h2>Example</h2>
-          <%- partial("_partial/code-example", { examplePath: example }) %>
-      <% }}) %>
-
-
-
-      <h2>Properties</h2>
-
-
-      <%- propertiesDetails(page.element.properties) %>
+    <div class="w3-container w3-cell w3-mobile" style="width: 300px">
     </div>
   </div>
+
+
+  <% page.element.examples.forEach(function (example, i) { %>
+    <% if(i == 0) { %>
+      <h2 class="w3-container">Example</h2>
+      <%- partial("_partial/code-example", { examplePath: example }) %>
+  <% }}) %>
+
+
+  <%- propertiesDetails(page.element.properties) %>
+
 </div>

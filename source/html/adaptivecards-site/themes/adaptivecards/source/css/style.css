@@ -12,17 +12,21 @@ h6{font-size:12px;}
 .code-snippet > pre {
     font-size: 12px;
     overflow: auto;
-    max-width: 600px;
+    width: 100%;
     max-height: 400px;
-}
-
-pre {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
     padding: 0;
 }
+
 
 .adaptivecard { 
     display: none; 
     max-height: 400px; 
+    border: solid 1px lightgray;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    
 }
 
 /* Weird conflicts were happening with the docs CSS when it was named toc */
