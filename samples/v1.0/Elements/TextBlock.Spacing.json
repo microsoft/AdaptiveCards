@@ -5,7 +5,7 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "Spacing controls the amount of space between this element and ths one before it",
+            "text": "Spacing controls the amount of space between this element and the one before it",
             "size": "medium",
             "wrap": true
         },
