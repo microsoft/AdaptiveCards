@@ -1,6 +1,7 @@
-body, p { 
+body { 
     font-size: 14px;
     font-family: segoe-ui_normal,Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif;
+    min-height: 100px;
 }
 h1{font-size:28px;}
 h2{font-size:24px;}
@@ -56,6 +57,11 @@ h6{font-size:12px;}
     padding-bottom: 3px;
     margin: 0;
     display: block;
+}
+
+/* Cards with a speak tag have <s> tags sometimes */
+s {
+    text-decoration: none;
 }
 
 .toc-todo .selectedHolder {

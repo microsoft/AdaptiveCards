@@ -163,7 +163,14 @@
     $('pre code').each(function (i, block) {
       hljs.highlightBlock(block);
     });
+
+    // weird bug the Visualizer editor isn't loading correctly
+    window.setTimeout(function() {
+      window.dispatchEvent(new Event('resize'));
+    }, 200);
+
   });
+
 
   var sidebar = new StickySidebar('#sidebar-todo', {
     topSpacing: 30,

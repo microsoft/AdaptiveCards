@@ -10,7 +10,7 @@
               <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> <%= root.title %></span>
                 <ul>
                   <% root.children.forEach(function(child) { %>
-                    <li class='<%= page.path.indexOf(child.name + ".html") > 0 ? "selectedHolder" : "" %>'>
+                    <li class='<%= is_current(child.name + ".html") ? "selectedHolder" : "" %>'>
                       <a href="<%- url_for('explorer/' + child.name + '.html') %>"><%= child.name %></a>
                     </li>
                   <% }) %>

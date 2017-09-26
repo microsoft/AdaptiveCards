@@ -1,9 +1,9 @@
 # Header
 menu:
   Documentation: https://docs.microsoft.com/en-us/adaptive-cards/
-  Schema Explorer: /explorer/AdaptiveCard.html
+  Schema Explorer: /explorer
   Visualizer: /visualizer
-  Samples: /samples/ActivityUpdate.html
+  Samples: /samples
   Connect: /connect
   
 #rss: /atom.xml

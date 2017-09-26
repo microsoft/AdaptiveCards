@@ -19,11 +19,11 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
             examplesPath: "C:/Dev/Projects/AdaptiveCards/samples/v1.0/"
         }).then(function (schemaModel) {
             var pages = [];
- 
+
             schemaModel.forEach(function (root) {
                 root.children.forEach(function (child) {
 
-                    pages.push({
+                    var page = {
                         path: "explorer/" + child.name + ".html",
                         layout: "explorer",
                         data: {
@@ -31,7 +31,21 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
                             element: child,
                             propertiesSummary: markedschema.generateMarkdown.createPropertiesSummary(child.properties)
                         }
-                    });
+                    }
+                    pages.push(page);
+
+                    // Set the default root as the index
+                    if (child.name === "AdaptiveCard") {
+                        pages.push({
+                            path: "explorer/index.html",
+                            layout: "explorer",
+                            data: {
+                                schema: schemaModel,
+                                element: child,
+                                propertiesSummary: markedschema.generateMarkdown.createPropertiesSummary(child.properties)
+                            }
+                        });
+                    }
                 });
             });
 
