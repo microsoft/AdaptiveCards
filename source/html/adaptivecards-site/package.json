@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build-visualizer": "cd ../visualizer && npm run build-all",
-    "build-all": "npm run build-visualizer && hexo generate"
+    "build-all": "cd ../visualizer && npm run build-all",
+    "build-and-generate": "npm run build-all && hexo generate"
   },
   "hexo": {
     "version": "3.3.9"

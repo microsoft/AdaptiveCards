@@ -6,7 +6,7 @@ hexo.extend.generator.register("generator-connect", function (locals) {
         path: "connect/index.html",
         layout: "connect",
         data: {
-            
+            title: "Connect"
         }
     }
 });

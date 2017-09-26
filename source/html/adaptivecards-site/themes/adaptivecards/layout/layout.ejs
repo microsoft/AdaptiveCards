@@ -2,13 +2,13 @@
 
 <body>
 
-<%- partial('_partial/header', null, {cache: !config.relative_link}) %>
+<%- partial('_partial/header', null, {cache: false}) %>
 
 <div id="mainContent">
   <%- body %>
 </div>
         
-<%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+<%- partial('_partial/footer', null, {cache: false}) %>
 
 </body>
 </html>

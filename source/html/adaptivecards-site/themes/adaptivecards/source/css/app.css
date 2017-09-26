@@ -2,7 +2,6 @@ body {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
     font-weight: normal;
-    height: 100vh;
     margin: 0;
     padding: 0;
 }
@@ -59,10 +58,8 @@ body {
 
 
 #editor {
-    height: 100vh;
-    height: -webkit-calc(100vh - 20px);
-    height: -moz-calc(100vh - 20px);
-    height: calc(100vh - 20px);
+    height: calc(100vh - 160px);
+    border: 1px solid #EEEEEE;    
 }
 
 .leftPane {

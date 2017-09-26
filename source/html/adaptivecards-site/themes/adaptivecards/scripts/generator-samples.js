@@ -5,10 +5,11 @@ var glob = require("glob");
 var path = require("path");
 var changeCase = require("change-case");
 
-var samplesPath = "C:/Dev/Projects/AdaptiveCards/samples/v1.0/Scenarios/*.json";
+var samplesPath = "../../../samples/v1.0/Scenarios/*.json";
 
 hexo.extend.generator.register("generator-sampleBrowser", function (locals) {
 
+    // Get all the samples from the Scenarios folder
     var samples = glob.sync(samplesPath, { nocase: false }).map(function (samplePath) {
         return {
             jsonPath: samplePath,
@@ -28,6 +29,8 @@ hexo.extend.generator.register("generator-sampleBrowser", function (locals) {
                 samples: samples
             }
         };
+
+        // Generate an index.html for the first one
         if(i === 0) {
             generated.push({
                 path: "samples/index.html",
