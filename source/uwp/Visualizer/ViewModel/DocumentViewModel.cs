@@ -90,7 +90,11 @@ namespace XamlCardVisualizer.ViewModel
                             if (e.Action.ActionType == ActionType.ShowCard)
                             {
                                 AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
-                                m_actionDialog.Content = await _renderer.RenderCardAsXamlAsync(showCardAction.Card);
+                                RenderedAdaptiveCard renderedShowCard = _renderer.RenderAdaptiveCard(showCardAction.Card);
+                                if (renderedShowCard.IsRenderedSuccessfully)
+                                {
+                                    m_actionDialog.Content = renderedShowCard.FrameworkElement;
+                                }
                             }
                             else
                             {

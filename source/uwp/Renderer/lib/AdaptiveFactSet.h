@@ -36,6 +36,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
+        IFACEMETHODIMP get_Type(_Out_ HSTRING* value);
+
     private:
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveFact*>> m_facts;

@@ -31,6 +31,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
+        IFACEMETHODIMP get_Type(_Out_ HSTRING* value);
+
     private:
         std::shared_ptr<AdaptiveCards::ShowCardAction> m_sharedShowCardAction;
     };

@@ -78,5 +78,8 @@ HRESULT StringToJsonObject(const std::string inputString, ABI::Windows::Data::Js
 HRESULT JsonObjectToHString(ABI::Windows::Data::Json::IJsonObject* inputJson, HSTRING* result);
 HRESULT JsonObjectToString(ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
 
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::XamlCardRenderer::ActionType projectedActionType, HSTRING* result);
+HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::XamlCardRenderer::ElementType projectedElementType, HSTRING* result);
+
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;
 

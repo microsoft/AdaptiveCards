@@ -100,4 +100,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedFactSet->SetId(out);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::get_Type(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
+    }
 }}

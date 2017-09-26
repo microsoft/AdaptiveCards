@@ -22,6 +22,7 @@
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTimeInput.h"
 #include "AdaptiveToggleInput.h"
+#include "enums.h"
 #include "util.h"
 
 using namespace AdaptiveCards;
@@ -390,10 +391,15 @@ HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
     ComPtr<IJsonObjectStatics> jObjectStatics;
     RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(), &jObjectStatics));
     HSTRING inputsHString;
-    THROW_IF_FAILED(UTF8ToHString(inputString, &inputsHString));
+    RETURN_IF_FAILED(UTF8ToHString(inputString, &inputsHString));
     ComPtr<IJsonObject> jObject;
-    RETURN_IF_FAILED(jObjectStatics->Parse(inputsHString, &jObject));
-
+    HRESULT hr = jObjectStatics->Parse(inputsHString, &jObject);
+    if (FAILED(hr))
+    {
+        RETURN_IF_FAILED(ActivateInstance(
+            HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(),
+            &jObject));
+    }
     *result = jObject.Detach();
     return S_OK;
 }
@@ -415,4 +421,16 @@ HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
     ComPtr<IJsonValue> asJsonValue;
     RETURN_IF_FAILED(localInputJson.As(&asJsonValue));
     return(asJsonValue->Stringify(result));
+}
+
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::XamlCardRenderer::ActionType projectedActionType, HSTRING* result)
+{
+    ActionType sharedActionType = static_cast<ActionType>(projectedActionType);
+    return UTF8ToHString(ActionTypeToString(sharedActionType), result);
+}
+
+HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::XamlCardRenderer::ElementType projectedElementType, HSTRING* result)
+{
+    CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
+    return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }

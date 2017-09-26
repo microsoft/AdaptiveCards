@@ -20,7 +20,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IXamlCardRenderer
         IFACEMETHODIMP SetRenderOptions(_In_ ABI::AdaptiveCards::XamlCardRenderer::RenderOptions options);
         IFACEMETHODIMP SetOverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
-        IFACEMETHODIMP SetHostConfig(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig);
+        IFACEMETHODIMP put_HostConfig(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig);
+        IFACEMETHODIMP get_HostConfig(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig** hostConfig);
         IFACEMETHODIMP SetFixedDimensions(_In_ UINT32 desiredWidth, _In_ UINT32 desiredHeight);
         IFACEMETHODIMP ResetFixedDimensions();
 
@@ -37,6 +38,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP RenderAdaptiveCardFromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
             _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IRenderedAdaptiveCard** result);
 
+        IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementRendererRegistration** result);
+        IFACEMETHODIMP get_ActionRenderers(_COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionRendererRegistration** result);
+
         ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* GetHostConfig();
         ABI::Windows::UI::Xaml::IResourceDictionary* GetOverrideDictionary();
         bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
@@ -48,6 +52,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig> m_hostConfig;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolvers> m_resourceResolvers;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionRendererRegistration> m_actionRendererRegistration;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveRenderContext> m_renderContext;
+
+        HRESULT RegisterDefaultElementRenderers();
+        HRESULT RegisterDefaultActionRenderers();
 
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
