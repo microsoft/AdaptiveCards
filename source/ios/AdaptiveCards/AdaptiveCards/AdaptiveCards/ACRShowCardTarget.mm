@@ -16,13 +16,13 @@
 @implementation ACRShowCardTarget
 {
     std::shared_ptr<AdaptiveCards::AdaptiveCard> _adaptiveCard;
-    std::shared_ptr<AdaptiveCards::HostConfig> _config; 
+    std::shared_ptr<AdaptiveCards::HostConfig> _config;
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak UIViewController *_vc;
     __weak UIView *_adcView;
 }
 
-- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard 
+- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCards::AdaptiveCard> const &)adaptiveCard
                               config:(std::shared_ptr<AdaptiveCards::HostConfig> const&)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                                   vc:(UIViewController *)vc
@@ -59,23 +59,45 @@
                                                             inputs:inputs
                                                     viewController:_vc
                                                         guideFrame:_superview.frame
-            
+
                                                         hostconfig:_config];
+            unsigned int padding = 0;
+
+            switch (_config->actions.spacing)
+            {
+                case Spacing::ExtraLarge:
+                    padding = _config->spacing.extraLargeSpacing;
+                    break;
+                case Spacing::Large:
+                    padding = _config->spacing.largeSpacing;
+                    break;
+                case Spacing::Medium:
+                    padding = _config->spacing.mediumSpacing;
+                    break;
+                case Spacing::Small:
+                    padding = _config->spacing.smallSpacing;
+                    break;
+                case Spacing::Default:
+                    padding =  _config->spacing.defaultSpacing;
+                    break;
+                default:
+                    break;
+            }
             ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc]
                                                      initWithFrame:CGRectMake(0,0,
                                                                               adcView.frame.size.width +
-                                                                              _config->actions.showCard.padding.left +
-                                                                              _config->actions.showCard.padding.right,
+                                                                              padding +
+                                                                              padding,
                                                                               adcView.frame.size.height +
-                                                                              _config->actions.showCard.padding.top +
-                                                                              _config->actions.showCard.padding.bottom)];
+                                                                              padding +
+                                                                              padding)];
             [wrappingView addSubview:adcView];
             NSString *horString = [[NSString alloc] initWithFormat:@"H:|-%u-[adcView]-%u-|",
-                                   _config->actions.showCard.padding.left,
-                                   _config->actions.showCard.padding.right];
+                                   padding,
+                                   padding];
             NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-%u-|",
-                                   _config->actions.showCard.padding.top,
-                                   _config->actions.showCard.padding.bottom];
+                                   padding,
+                                   padding];
             NSDictionary *dictionary = NSDictionaryOfVariableBindings(wrappingView, adcView);
             NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
                                                                          options:0
@@ -88,10 +110,27 @@
             [wrappingView addConstraints:horzConst];
             [wrappingView addConstraints:vertConst];
             _adcView = wrappingView;
-            
-            long num = std::stoul(_config->actions.showCard.backgroundColor.substr(1), nullptr, 16);
+
+            ContainerStyle style = (_config->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : _config->actions.showCard.style;
+
+            long num = 0;
+
+            if(style == ContainerStyle::None)
+            {
+                style = [_superview getStyle];
+            }
+
+            if(style == ContainerStyle::Emphasis)
+            {
+                num = std::stoul(_config->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
+            }
+            else
+            {
+                num = std::stoul(_config->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
+            }
+
             wrappingView.translatesAutoresizingMaskIntoConstraints = NO;
-            wrappingView.backgroundColor = 
+            wrappingView.backgroundColor =
                 [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
                                 green:((num & 0x0000FF00) >>  8) / 255.0
                                  blue:((num & 0x000000FF)) / 255.0

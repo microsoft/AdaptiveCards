@@ -6,7 +6,6 @@
 //
 
 #import "ACRViewController.h"
-#import "ACRHostConfig.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRRenderer.h"
 #import <AVFoundation/AVFoundation.h>
