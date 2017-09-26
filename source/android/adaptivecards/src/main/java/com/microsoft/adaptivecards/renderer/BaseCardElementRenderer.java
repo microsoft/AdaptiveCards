@@ -103,6 +103,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             Context context,
             ViewGroup viewGroup,
             Spacing spacing,
+            boolean separator,
             HostConfig hostConfig,
             boolean horizontalLine)
     {
@@ -112,7 +113,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
 
         View view = new ImageView(context);
         LinearLayout.LayoutParams params;
-        if (separatorThickness > 0)
+        if (separator && separatorThickness > 0)
         {
             view.setBackgroundColor(separatorColor);
             params = new LinearLayout.LayoutParams(

@@ -117,7 +117,7 @@ public class CardRendererRegistration
             IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementType().toString());
             if (renderer == null)
             {
-                Toast.makeText(context, "Unsupported card element type: " + cardElement.GetElementType().toString(), Toast.LENGTH_SHORT);
+                Toast.makeText(context, "Unsupported card element type: " + cardElement.GetElementType().toString(), Toast.LENGTH_SHORT).show();
                 continue;
             }
 

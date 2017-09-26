@@ -103,7 +103,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         {
             if (result.isSuccessful())
             {
-                m_imageView.setImageBitmap(result.getResult());
+                m_imageView.setImageBitmap( result.getResult());
             }
             else
             {
@@ -203,7 +203,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageLoaderAsync.execute(image.GetUrl());
         setImageSize(imageView, image.GetImageSize(), hostConfig.getImageSizes());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), hostConfig, true /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, true /* horizontal line */);
         viewGroup.addView(setHorizontalAlignment(context, imageView, image.GetHorizontalAlignment()));
         return imageView;
     }
