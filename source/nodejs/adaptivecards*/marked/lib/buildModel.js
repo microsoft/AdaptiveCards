@@ -50,7 +50,7 @@ function buildModel(options) {
                             child.description = defaultValue(objSchema.description, objSchema.title);
                             
                             if (defined(options.examplesPath)) {
-                                child.examples = glob.sync(path.join(options.examplesPath, "**/" + child.name + "*.json"), { nocase: false })
+                                child.examples = glob.sync(path.join(options.examplesPath, "/**/" + child.name + ".json"), { nocase: false })
                             }
                             child.properties = objSchema.properties;
 
@@ -69,8 +69,10 @@ function buildModel(options) {
                             root.children.push(child);
                         }
 
-                        items.push(root);
                     }
+
+                    items.push(root);
+                    
                 }
 
                 resolve(items);

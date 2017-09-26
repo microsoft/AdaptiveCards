@@ -109,7 +109,7 @@ module.exports = {
     /**
     * @property {string} The markdown string used for displaying the icon used to indicate a value is required.
     */
-    requiredIcon: ' :white_check_mark: '
+    requiredIcon: ''
 }
 
 const REFERENCE = "schema-";

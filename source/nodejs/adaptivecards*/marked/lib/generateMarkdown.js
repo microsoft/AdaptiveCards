@@ -50,7 +50,9 @@ function getSchemaMarkdown(model) {
 
             md += child.description + "\n\n";
             md += createPropertiesSummary(child.properties) + "\n";
-            md += createPropertiesDetails(child) + "\n"
+
+            // TODO: refactor this to be a "summary-only" generation
+            //md += createPropertiesDetails(child) + "\n"
         }
     }
 
@@ -97,8 +99,8 @@ function createPropertiesSummary(properties, knownTypes, autoLink) {
 
                 md += '|' + style.propertyNameSummary(name) +
                     '|' + summary.formattedType +
-                    '|' + (summary.required === 'Yes' ? style.requiredIcon : '') + summary.required +
-                    '|' + defaultValue(defaultValue(summary.title, summary.description), '') + '\n';
+                    '|' + (summary.required === 'Yes' ? style.requiredIcon : ' ') + summary.required +
+                    '|' + defaultValue(defaultValue(summary.title, summary.description), '&nbsp;') + '\n';
             }
         }
 
@@ -317,14 +319,14 @@ function createPropertyDetails(property, headerLevel, knownTypes, autoLink) {
         }
     }
 
+    // TODO: fix adding samples later
+    // property.examples.forEach(function (example, i) {
+    //     if (i == 0) {
+    //         md += "\n" + style.getHeaderMarkdown("Example", 3);
+    //     }
 
-    property.examples.forEach(function (example, i) {
-        if (i == 0) {
-            md += "\n" + style.getHeaderMarkdown("Example", 3);
-        }
-
-        md += getExampleForProperty(example);
-    });
+    //     md += getExampleForProperty(example);
+    // });
 
 
     return md + '\n';
