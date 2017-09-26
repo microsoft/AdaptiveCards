@@ -160,8 +160,20 @@
 
   });
 
-  $('.ac-properties table').addClass("w3-table w3-bordered w3-striped")
+  $('.ac-properties table').addClass("w3-table w3-bordered w3-responsive")
 
+  $(document).ready(function() {
+    $('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
+    });
+  });
+
+  var sidebar = new StickySidebar('#sidebar-todo', {
+    topSpacing: 30,
+    bottomSpacing: 20,
+    containerSelector: '#content-wrapper',
+    innerWrapperSelector: '.sidebar__inner'
+  });
 
   // Search
   var $searchWrap = $('#search-form-wrap'),

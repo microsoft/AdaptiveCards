@@ -4,6 +4,9 @@ var markedschema = require("marked-schema");
 var marked = require("marked");
 var fs = require("hexo-fs");
 
+// TODO: Get UHF
+// https://uhf.microsoft.com/en-US/shell/xml/UHFPortal?headerId=MSDocsHeader-AdaptiveCards&footerid=UHFPortalFooter
+
 hexo.extend.generator.register("generator-explorer", function (locals) {
 
     return new Promise(function (resolve, reject) {
