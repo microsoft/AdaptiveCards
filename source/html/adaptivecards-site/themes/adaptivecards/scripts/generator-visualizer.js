@@ -17,7 +17,7 @@ hexo.extend.generator.register("generator-visualizer", function (locals) {
 
     return {
         path: "visualizer/index.html",
-        layout: ["x", "visualizer" ],
+        layout: "visualizer",
         data: {
             
         }

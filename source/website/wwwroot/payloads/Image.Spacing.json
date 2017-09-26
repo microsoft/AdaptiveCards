@@ -1,0 +1,56 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "spacing: none",
+      "weight": "bolder",
+      "size": "medium"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "medium",
+      "spacing": "none"
+    },
+    {
+      "type": "TextBlock",
+      "text": "spacing: default",
+      "weight": "bolder",
+      "size": "medium"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "medium",
+      "spacing": "default"
+    },
+    {
+      "type": "TextBlock",
+      "text": "spacing: large",
+      "weight": "bolder",
+      "size": "medium"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "medium",
+      "spacing": "large"
+    },
+    {
+      "type": "TextBlock",
+      "text": "spacing: medium, separator: true",
+      "weight": "bolder",
+      "size": "medium"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "medium",
+      "spacing": "large",
+      "separator": true
+    }
+  ]
+}

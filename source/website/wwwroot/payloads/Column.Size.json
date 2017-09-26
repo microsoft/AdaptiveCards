@@ -1,0 +1,59 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width":"auto",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1 (auto)"
+                        },
+                        {
+                            "type": "Image",
+                            "size":"large",
+                            "url": "http://adaptivecards.io/content/cats/1.png"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width":"stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment":"center",
+                            "text": "Column 2 (stretch)"
+                        },
+                        {
+                            "type": "Image",
+                            "size":"large",
+                            "horizontalAlignment":"center",
+                            "url": "http://adaptivecards.io/content/cats/1.png"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width":"auto",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 3 (auto)"
+                        },
+                        {
+                            "type": "Image",
+                            "size":"large",
+                            "url": "http://adaptivecards.io/content/cats/1.png"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
