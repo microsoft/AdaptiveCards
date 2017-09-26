@@ -12,14 +12,14 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     RenderedAdaptiveCard::RenderedAdaptiveCard()
     {
@@ -29,7 +29,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         RETURN_IF_FAILED(MakeAndInitialize<Vector<HSTRING>>(&m_errors));
         RETURN_IF_FAILED(MakeAndInitialize<Vector<HSTRING>>(&m_warnings));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::XamlCardRenderer::AdaptiveInputs>(&m_inputs));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Uwp::AdaptiveInputs>(&m_inputs));
         m_events.reset(new ActionEventSource);
         return S_OK;
     }
@@ -56,14 +56,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveInputs** value)
+    HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveCards::Uwp::IAdaptiveInputs** value)
     {
         return m_inputs.CopyTo(value);
     }
 
     _Use_decl_annotations_
     HRESULT RenderedAdaptiveCard::add_Action(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>* handler,
+        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Uwp::RenderedAdaptiveCard*, ABI::AdaptiveCards::Uwp::AdaptiveActionEventArgs*>* handler,
         EventRegistrationToken* token)
     {
         return m_events->Add(handler, token);
@@ -97,7 +97,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_frameworkElement = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingCard(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* value)
+    void RenderedAdaptiveCard::SetOriginatingCard(ABI::AdaptiveCards::Uwp::IAdaptiveCard* value)
     {
         m_originatingCard = value;
     }

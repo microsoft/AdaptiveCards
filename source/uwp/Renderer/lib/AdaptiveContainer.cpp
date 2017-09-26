@@ -4,16 +4,16 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     AdaptiveContainer::AdaptiveContainer()
     {
@@ -48,28 +48,28 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style)
+    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
     {
-        *style = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle>(m_sharedContainer->GetStyle());
+        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedContainer->GetStyle());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style)
+    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
     {
         m_sharedContainer->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
+    HRESULT AdaptiveContainer::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedContainer->GetSpacing());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedContainer->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
+    HRESULT AdaptiveContainer::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
         m_sharedContainer->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;

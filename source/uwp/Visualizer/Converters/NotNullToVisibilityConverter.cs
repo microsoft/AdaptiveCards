@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace XamlCardVisualizer.Converters
+namespace AdaptiveCardVisualizer.Converters
 {
     public class NotNullToVisibilityConverter : IValueConverter
     {

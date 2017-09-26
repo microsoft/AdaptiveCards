@@ -2,9 +2,9 @@
 #include "AdaptiveImageConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize() noexcept try
     {
@@ -19,14 +19,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageConfig::get_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize)
+    HRESULT AdaptiveImageConfig::get_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize* imageSize)
     {
-        *imageSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ImageSize>(m_sharedImageConfig.imageSize);
+        *imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(m_sharedImageConfig.imageSize);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize)
+    HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize imageSize)
     {
         m_sharedImageConfig.imageSize = static_cast<AdaptiveCards::ImageSize>(imageSize);
         return S_OK;

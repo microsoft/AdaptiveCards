@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace XamlCardVisualizer
+namespace AdaptiveCardVisualizer
 {
     public static class Settings
     {

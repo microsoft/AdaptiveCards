@@ -6,7 +6,7 @@
 #include "Vector.h"
 #include <windows.foundation.collections.h>
 
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -14,7 +14,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCard** card) noexcept try
@@ -175,14 +175,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style)
+    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
     {
-        *style = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle>(m_sharedAdaptiveCard->GetStyle());
+        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedAdaptiveCard->GetStyle());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style)
+    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
     {
         m_sharedAdaptiveCard->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(style));
         return S_OK;

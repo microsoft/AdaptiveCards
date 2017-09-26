@@ -3,16 +3,16 @@
 
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveNumberInput::RuntimeClassInitialize() noexcept try
     {
@@ -107,14 +107,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
+    HRESULT AdaptiveNumberInput::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedNumberInput->GetSpacing());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedNumberInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
+    HRESULT AdaptiveNumberInput::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
         m_sharedNumberInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;

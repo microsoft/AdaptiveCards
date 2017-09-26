@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 #include "AdaptiveActionRendererRegistration.h"
 #include "AdaptiveCard.h"
@@ -26,7 +26,7 @@
 #include "InputItem.h"
 #include "RenderedAdaptiveCard.h"
 #include "XamlBuilder.h"
-#include "XamlCardResourceResolvers.h"
+#include "AdaptiveCardResourceResolvers.h"
 #include "XamlHelpers.h"
 #include <windows.foundation.collections.h>
 #include <Windows.UI.Xaml.h>
@@ -34,7 +34,7 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -46,13 +46,13 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
-    XamlCardRenderer::XamlCardRenderer()
+    AdaptiveCardRenderer::AdaptiveCardRenderer()
     {
     }
 
-    HRESULT XamlCardRenderer::RuntimeClassInitialize()
+    HRESULT AdaptiveCardRenderer::RuntimeClassInitialize()
     {
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionRendererRegistration>(&m_actionRendererRegistration));
@@ -63,38 +63,38 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             m_hostConfig.Get(),
             m_elementRendererRegistration.Get(),
             m_actionRendererRegistration.Get()));
-        return MakeAndInitialize<XamlCardResourceResolvers>(&m_resourceResolvers);
+        return MakeAndInitialize<AdaptiveCardResourceResolvers>(&m_resourceResolvers);
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::SetRenderOptions(ABI::AdaptiveCards::XamlCardRenderer::RenderOptions /*options*/)
+    HRESULT AdaptiveCardRenderer::SetRenderOptions(ABI::AdaptiveCards::Uwp::RenderOptions /*options*/)
     {
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::SetOverrideStyles(ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary)
+    HRESULT AdaptiveCardRenderer::SetOverrideStyles(ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary)
     {
         m_overrideDictionary = overrideDictionary;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  XamlCardRenderer::put_HostConfig(IAdaptiveHostConfig* hostConfig)
+    HRESULT AdaptiveCardRenderer::put_HostConfig(IAdaptiveHostConfig* hostConfig)
     {
         m_hostConfig = hostConfig;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  XamlCardRenderer::get_HostConfig(IAdaptiveHostConfig** hostConfig)
+    HRESULT AdaptiveCardRenderer::get_HostConfig(IAdaptiveHostConfig** hostConfig)
     {
         *hostConfig = m_hostConfig.Get();
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  XamlCardRenderer::SetFixedDimensions(_In_ UINT32 desiredWidth, _In_ UINT32 desiredHeight)
+    HRESULT AdaptiveCardRenderer::SetFixedDimensions(_In_ UINT32 desiredWidth, _In_ UINT32 desiredHeight)
     {
         m_explicitDimensions = true;
         m_desiredWidth = desiredWidth;
@@ -104,19 +104,19 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  XamlCardRenderer::ResetFixedDimensions()
+    HRESULT AdaptiveCardRenderer::ResetFixedDimensions()
     {
         m_explicitDimensions = false;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderAdaptiveCard(
+    HRESULT AdaptiveCardRenderer::RenderAdaptiveCard(
         IAdaptiveCard* adaptiveCard, 
         IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveCards::Uwp::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::RenderedAdaptiveCard>(&renderedCard));
         renderedCard->SetOriginatingCard(adaptiveCard);
 
         if (adaptiveCard)
@@ -170,7 +170,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderCardAsXamlAsync(
+    HRESULT AdaptiveCardRenderer::RenderCardAsXamlAsync(
         IAdaptiveCard* adaptiveCard,
         IAsyncOperation<UIElement*>** result)
     {
@@ -179,12 +179,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderAdaptiveCardFromJsonString(
+    HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(
         HSTRING adaptiveJson,
         IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveCards::Uwp::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::RenderedAdaptiveCard>(&renderedCard));
 
         ComPtr<IAdaptiveCard> adaptiveCard;
         HRESULT hr = CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCard);
@@ -205,7 +205,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderAdaptiveCardFromJson(
+    HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJson(
             IJsonObject* adaptiveJson,
             IRenderedAdaptiveCard** result)
     {
@@ -215,7 +215,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RenderAdaptiveJsonAsXamlAsync(
+    HRESULT AdaptiveCardRenderer::RenderAdaptiveJsonAsXamlAsync(
         HSTRING adaptiveJson,
         IAsyncOperation<UIElement*>** result)
     {
@@ -226,32 +226,32 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson, ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** adaptiveCard)
+    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson, ABI::AdaptiveCards::Uwp::IAdaptiveCard** adaptiveCard)
     {
         ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
         return adaptiveCardStatics->FromJsonString(adaptiveJson, adaptiveCard);
     }
 
-    IAdaptiveHostConfig* XamlCardRenderer::GetHostConfig()
+    IAdaptiveHostConfig* AdaptiveCardRenderer::GetHostConfig()
     {
         return m_hostConfig.Get();
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::get_ResourceResolvers(IXamlCardResourceResolvers** value)
+    HRESULT AdaptiveCardRenderer::get_ResourceResolvers(IAdaptiveCardResourceResolvers** value)
     {
-        ComPtr<IXamlCardResourceResolvers> localResourceResolvers(m_resourceResolvers);
+        ComPtr<IAdaptiveCardResourceResolvers> localResourceResolvers(m_resourceResolvers);
         *value = localResourceResolvers.Detach();
         return S_OK;
     }
 
-    ABI::Windows::UI::Xaml::IResourceDictionary* XamlCardRenderer::GetOverrideDictionary()
+    ABI::Windows::UI::Xaml::IResourceDictionary* AdaptiveCardRenderer::GetOverrideDictionary()
     {
         return m_overrideDictionary.Get();
     }
 
-    bool XamlCardRenderer::GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height)
+    bool AdaptiveCardRenderer::GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height)
     {
         *width = 0;
         *height = 0;
@@ -266,20 +266,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::get_ElementRenderers(IAdaptiveElementRendererRegistration **value)
+    HRESULT AdaptiveCardRenderer::get_ElementRenderers(IAdaptiveElementRendererRegistration **value)
     {
         *value = m_elementRendererRegistration.Get();
         return S_OK;
     }
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::get_ActionRenderers(IAdaptiveActionRendererRegistration **value)
+    HRESULT AdaptiveCardRenderer::get_ActionRenderers(IAdaptiveActionRendererRegistration **value)
     {
         *value = m_actionRendererRegistration.Get();
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RegisterDefaultElementRenderers()
+    HRESULT AdaptiveCardRenderer::RegisterDefaultElementRenderers()
     {
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.ChoiceSet").Get(), Make<AdaptiveChoiceSetInputRenderer>().Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), Make<AdaptiveColumnRenderer>().Get()));
@@ -298,7 +298,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT XamlCardRenderer::RegisterDefaultActionRenderers()
+    HRESULT AdaptiveCardRenderer::RegisterDefaultActionRenderers()
     {
         RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.Submit").Get(), Make<AdaptiveSubmitActionRenderer>().Get()));
         RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.OpenUrl").Get(), Make<AdaptiveOpenUrlActionRenderer>().Get()));

@@ -2,9 +2,9 @@
 #include "AdaptiveSeparatorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize() noexcept try
     {

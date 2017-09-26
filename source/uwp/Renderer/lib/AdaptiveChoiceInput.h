@@ -1,17 +1,17 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 #include "Enums.h"
 #include "ChoiceInput.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     class AdaptiveChoiceInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput>
+            ABI::AdaptiveCards::Uwp::IAdaptiveChoiceInput>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveChoiceInput, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveChoiceInput, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -27,7 +27,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_IsSelected(_Out_ boolean* isSelected);
         IFACEMETHODIMP put_IsSelected(_In_ boolean isSelected);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Uwp::ElementType* elementType);
 
     private:
         std::shared_ptr<AdaptiveCards::ChoiceInput> m_sharedChoiceInput;

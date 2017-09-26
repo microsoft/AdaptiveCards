@@ -4,16 +4,16 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     AdaptiveImageSet::AdaptiveImageSet()
     {
@@ -41,14 +41,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize* imageSize)
     {
-        *imageSize = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ImageSize>(m_sharedImageSet->GetImageSize());
+        *imageSize = static_cast<ABI::AdaptiveCards::Uwp::ImageSize>(m_sharedImageSet->GetImageSize());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::Uwp::ImageSize imageSize)
     {
         m_sharedImageSet->SetImageSize(static_cast<AdaptiveCards::ImageSize>(imageSize));
         return S_OK; 
@@ -62,14 +62,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
+    HRESULT AdaptiveImageSet::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedImageSet->GetSpacing());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedImageSet->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
+    HRESULT AdaptiveImageSet::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
         m_sharedImageSet->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;

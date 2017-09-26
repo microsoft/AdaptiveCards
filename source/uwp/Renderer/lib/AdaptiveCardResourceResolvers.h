@@ -1,24 +1,24 @@
 #pragma once
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
-    class XamlCardResourceResolvers :
+    class AdaptiveCardResourceResolvers :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolvers>
+            ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolvers>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_XamlCardResourceResolvers, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveCardResourceResolvers, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        IFACEMETHODIMP Set(_In_ HSTRING scheme, _In_ ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolver* resolver);
-        IFACEMETHODIMP Get(_In_ HSTRING scheme, _Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolver** resolver);
+        IFACEMETHODIMP Set(_In_ HSTRING scheme, _In_ ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolver* resolver);
+        IFACEMETHODIMP Get(_In_ HSTRING scheme, _Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolver** resolver);
 
     private:
-        std::map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IXamlCardResourceResolver>> m_resourceResolvers;
+        std::map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardResourceResolver>> m_resourceResolvers;
     };
 
-    ActivatableClass(XamlCardResourceResolvers);
+    ActivatableClass(AdaptiveCardResourceResolvers);
 }}

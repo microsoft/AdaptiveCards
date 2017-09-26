@@ -5,7 +5,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveContainerStyleDefinition::RuntimeClassInitialize() noexcept try
     {
@@ -32,13 +32,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStyleDefinition::get_ForegroundColors(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorsConfig** colorsConfig)
+    HRESULT  AdaptiveContainerStyleDefinition::get_ForegroundColors(ABI::AdaptiveCards::Uwp::IAdaptiveColorsConfig** colorsConfig)
     {
         return MakeAndInitialize<AdaptiveColorsConfig>(colorsConfig, m_sharedContainerStyleDefinition.foregroundColors);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStyleDefinition::put_ForegroundColors(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorsConfig*)
+    HRESULT  AdaptiveContainerStyleDefinition::put_ForegroundColors(ABI::AdaptiveCards::Uwp::IAdaptiveColorsConfig*)
     {
         return E_NOTIMPL;
     }

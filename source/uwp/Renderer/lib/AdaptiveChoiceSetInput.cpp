@@ -4,16 +4,16 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
@@ -63,14 +63,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle* choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveCards::Uwp::ChoiceSetStyle* choiceSetStyle)
     {
-        *choiceSetStyle = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle>(m_sharedChoiceSetInput->GetChoiceSetStyle());
+        *choiceSetStyle = static_cast<ABI::AdaptiveCards::Uwp::ChoiceSetStyle>(m_sharedChoiceSetInput->GetChoiceSetStyle());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::XamlCardRenderer::ChoiceSetStyle choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::Uwp::ChoiceSetStyle choiceSetStyle)
     {
         m_sharedChoiceSetInput->SetChoiceSetStyle(static_cast<AdaptiveCards::ChoiceSetStyle>(choiceSetStyle));
         return S_OK;
@@ -105,14 +105,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
+    HRESULT AdaptiveChoiceSetInput::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedChoiceSetInput->GetSpacing());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedChoiceSetInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
+    HRESULT AdaptiveChoiceSetInput::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
         m_sharedChoiceSetInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;

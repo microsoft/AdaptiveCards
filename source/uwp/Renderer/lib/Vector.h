@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 #include <windows.foundation.collections.h>
 #include <wrl.h>
 
@@ -8,7 +8,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     template <typename T>
     struct Wrap
@@ -63,7 +63,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     template <class T>
     class Iterator : public RuntimeClass<IIterator<T>>
     {
-        InspectableClass(L"AdaptiveCards.XamlCardReader.Iterator", BaseTrust)
+        InspectableClass(L"AdaptiveCards.AdaptiveCardReader.Iterator", BaseTrust)
 
     private:
         typedef typename std::vector<typename Wrap<T>::type> WrappedVector;
@@ -148,7 +148,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IIterable<T>,
         Microsoft::WRL::FtmBase>
     {
-        InspectableClass(L"AdaptiveCards.XamlCardReader.Vector", BaseTrust)
+        InspectableClass(L"AdaptiveCards.AdaptiveCardReader.Vector", BaseTrust)
 
     private:
         typedef typename std::vector<typename Wrap<T>::type> WrappedVector;

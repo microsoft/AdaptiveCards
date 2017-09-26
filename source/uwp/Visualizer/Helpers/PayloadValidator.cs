@@ -10,9 +10,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
-using XamlCardVisualizer.ViewModel;
+using AdaptiveCardVisualizer.ViewModel;
 
-namespace XamlCardVisualizer.Helpers
+namespace AdaptiveCardVisualizer.Helpers
 {
     public static class PayloadValidator
     {

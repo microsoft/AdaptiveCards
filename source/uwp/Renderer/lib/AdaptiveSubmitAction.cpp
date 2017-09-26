@@ -3,10 +3,10 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
     {
@@ -37,9 +37,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveCards::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::Submit;
+        *actionType = ABI::AdaptiveCards::Uwp::ActionType::Submit;
         return S_OK;
     }
 

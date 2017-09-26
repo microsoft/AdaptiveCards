@@ -1,4 +1,4 @@
-﻿using AdaptiveCards.XamlCardRenderer;
+﻿using AdaptiveCards.Uwp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -14,14 +14,14 @@ using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using XamlCardVisualizer.Helpers;
-using XamlCardVisualizer.ResourceResolvers;
+using AdaptiveCardVisualizer.Helpers;
+using AdaptiveCardVisualizer.ResourceResolvers;
 
-namespace XamlCardVisualizer.ViewModel
+namespace AdaptiveCardVisualizer.ViewModel
 {
     public class DocumentViewModel : GenericDocumentViewModel
     {
-        private static XamlCardRenderer _renderer;
+        private static AdaptiveCardRenderer _renderer;
 
         private DocumentViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
 
@@ -146,7 +146,7 @@ namespace XamlCardVisualizer.ViewModel
         {
             try
             {
-                _renderer = new XamlCardRenderer();
+                _renderer = new AdaptiveCardRenderer();
                 if (hostConfig != null)
                 {
                     _renderer.HostConfig = hostConfig;

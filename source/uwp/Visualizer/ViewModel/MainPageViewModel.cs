@@ -9,9 +9,9 @@ using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
-using XamlCardVisualizer.Helpers;
+using AdaptiveCardVisualizer.Helpers;
 
-namespace XamlCardVisualizer.ViewModel
+namespace AdaptiveCardVisualizer.ViewModel
 {
     public class MainPageViewModel : BindableBase
     {
