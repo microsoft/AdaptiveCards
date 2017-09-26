@@ -1406,6 +1406,8 @@ namespace AdaptiveCards
 
             [propget] HRESULT Id([out, retval] HSTRING* value);
             [propput] HRESULT Id([in] HSTRING value);
+
+            [propget] HRESULT Type([out, retval] HSTRING* value);
         };
 
         [
@@ -1707,9 +1709,9 @@ namespace AdaptiveCards
         {
             [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
 
-            [propget] HRESULT ElementRendererRegistration([out, retval] AdaptiveElementRendererRegistration** value);
+            [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** value);
 
-            [propget] HRESULT ActionRendererRegistration([out, retval] AdaptiveActionRendererRegistration** value);
+            [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** value);
 
         };
 

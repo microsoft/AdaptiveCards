@@ -16,7 +16,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     } CATCH_RETURN;
 
-
     _Use_decl_annotations_
     HRESULT AdaptiveColumnRenderer::Render(
         IAdaptiveCardElement* cardElement,

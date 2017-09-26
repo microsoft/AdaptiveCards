@@ -36,14 +36,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::get_ElementRendererRegistration(IAdaptiveElementRendererRegistration** value)
+    HRESULT AdaptiveRenderContext::get_ElementRenderers(IAdaptiveElementRendererRegistration** value)
     {
         value = &m_elementRendererRegistration;
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::get_ActionRendererRegistration(IAdaptiveActionRendererRegistration** value)
+    HRESULT AdaptiveRenderContext::get_ActionRenderers(IAdaptiveActionRendererRegistration** value)
     {
         value = &m_actionRendererRegistration;
         return S_OK;
