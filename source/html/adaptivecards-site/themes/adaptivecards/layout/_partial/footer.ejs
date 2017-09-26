@@ -17,21 +17,21 @@
 <% } %>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <%- js('js/sticky-sidebar.js') %>
-<%- js('js/adaptive-cards.js') %>
-
-<% if(is_current("visualizer")) { %>
-  <%- js("visualizer/built/visualizer-with-renderer.js") %>
-<% } %>
-
-<%- js('js/script') %>
-
 
 <% /* from UHF MSDocsHeader-AdaptiveCards */ %>
 <script src="https://statics-uhf-eus.akamaized.net/shell/_scrf/js/themes=default/87-0bce27/f8-3b6b36/ea-962395/79-8a148a/f2-1d184e/90-1e650e/64-5bbd4a/5d-f9c916/e8-497be9/fb-9086e3/d7-748562/71-cabf1b/45-ab2026/65-eb25b1/21-de971d/df-f8d789/ea-955802/8b-daf680/7d-dec6ac/21-0be778/4a-4774eb/8c-131ebd/1f-2c26b9/75-61dbdc/fe-16c6b5/fe-7734a7/7a-6864d5/53-234da1/e2-5d02cf/6e-aaef0a?ver=2.0&iife=1"></script><script src="https://mem.gfx.ms/meversion?partner=MSDocsAdaptivecards&market=en-us"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<% if(is_current("visualizer") || true) { %>
+  <%- js("visualizer/built/visualizer-with-renderer.js") %>
+<% } else { %>
+  <%- js('js/adaptive-cards.js') %>
+<% } %>  
+
+<%- js('js/script') %>
+
+
 
 <script>
 
