@@ -165,9 +165,9 @@
     });
 
     // weird bug the Visualizer editor isn't loading correctly
-    window.setTimeout(function() {
-      window.dispatchEvent(new Event('resize'));
-    }, 200);
+    // window.setTimeout(function() {
+    //   window.dispatchEvent(new Event('resize'));
+    // }, 200);
 
   });
 

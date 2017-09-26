@@ -4334,12 +4334,10 @@ var AdaptiveCard = (function (_super) {
     };
     AdaptiveCard.prototype.applyPadding = function () {
         var effectivePadding = paddingToSpacingDefinition(this.hostConfig, this.internalPadding);
-        if (this.renderedElement) {
-            this.renderedElement.style.paddingTop = effectivePadding.top + "px";
-            this.renderedElement.style.paddingRight = effectivePadding.right + "px";
-            this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
-            this.renderedElement.style.paddingLeft = effectivePadding.left + "px";
-        }
+        this.renderedElement.style.paddingTop = effectivePadding.top + "px";
+        this.renderedElement.style.paddingRight = effectivePadding.right + "px";
+        this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
+        this.renderedElement.style.paddingLeft = effectivePadding.left + "px";
     };
     Object.defineProperty(AdaptiveCard.prototype, "defaultPadding", {
         get: function () {

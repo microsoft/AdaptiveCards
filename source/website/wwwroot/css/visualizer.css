@@ -56,13 +56,13 @@ body {
     margin: 0px 10px 10px 10px;
 }
 
-.cardEditor {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    height: 100%;
-    min-height: 0;
-    margin: 10px;
+
+
+#editor {
+    height: 100vh;
+    height: -webkit-calc(100vh - 20px);
+    height: -moz-calc(100vh - 20px);
+    height: calc(100vh - 20px);
 }
 
 .leftPane {
@@ -91,17 +91,6 @@ body {
 div.markupRender {
     margin-right: 20px;
     margin-bottom: 20px;
-}
-
-#editor {
-    -webkit-box-flex: 1;
-        -ms-flex: 1 1 auto;
-            flex: 1 1 auto;
-    box-sizing: border-box;
-    resize: none;
-    white-space: nowrap;
-    overflow: auto;
-    border: 1px solid #EEEEEE;
 }
 
 .button {

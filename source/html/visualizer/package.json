@@ -5,7 +5,7 @@
   "main": "built/visualizer.js",
   "private": true,
   "scripts": {
-    "build-all": "cd ../renderer && npm install && npm run build && cd ../visualizer && npm run build",
+    "build-all": "cd ../renderer && npm run build && cd ../visualizer && npm run build",
     "force-update": "npm install adaptive-cards -f",
     "build": "webpack",
     "build-verbose": "webpack --display-error-details",
