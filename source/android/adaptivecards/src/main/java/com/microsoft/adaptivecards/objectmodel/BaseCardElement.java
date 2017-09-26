@@ -35,13 +35,12 @@ public class BaseCardElement {
     }
   }
 
-  public Separator GetSeparator() {
-    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparator(swigCPtr, this);
-    return (cPtr == 0) ? null : new Separator(cPtr, true);
+  public boolean GetSeparator() {
+    return AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparator(swigCPtr, this);
   }
 
-  public void SetSeparator(Separator value) {
-    AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparator(swigCPtr, this, Separator.getCPtr(value), value);
+  public void SetSeparator(boolean value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparator(swigCPtr, this, value);
   }
 
   public Spacing GetSpacing() {
@@ -52,12 +51,12 @@ public class BaseCardElement {
     AdaptiveCardObjectModelJNI.BaseCardElement_SetSpacing(swigCPtr, this, value.swigValue());
   }
 
-  public String GetSpeak() {
-    return AdaptiveCardObjectModelJNI.BaseCardElement_GetSpeak(swigCPtr, this);
+  public String GetId() {
+    return AdaptiveCardObjectModelJNI.BaseCardElement_GetId(swigCPtr, this);
   }
 
-  public void SetSpeak(String value) {
-    AdaptiveCardObjectModelJNI.BaseCardElement_SetSpeak(swigCPtr, this, value);
+  public void SetId(String value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetId(swigCPtr, this, value);
   }
 
   public CardElementType GetElementType() {

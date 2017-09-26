@@ -103,7 +103,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         {
             if (result.isSuccessful())
             {
-                m_imageView.setImageBitmap(result.getResult());
+                m_imageView.setImageBitmap( result.getResult());
             }
             else
             {
@@ -141,10 +141,6 @@ public class ImageRenderer extends BaseCardElementRenderer
         {
             imageView.setMaxWidth((int)imageSizesConfig.getLargeSize());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
-        else if (imageSize.swigValue() == ImageSize.Default.swigValue())
-        {
-            // Default Android
         }
         else
         {

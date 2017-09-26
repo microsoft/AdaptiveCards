@@ -59,7 +59,7 @@ public class ImageSetRenderer implements IBaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to ImageSet object model.");
         }
 
-        IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image);
+        IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
         if (imageRenderer == null)
         {
             throw new IllegalArgumentException("No renderer registered for: " + CardElementType.Image.toString());

@@ -35,20 +35,20 @@ public class BaseActionElement {
     }
   }
 
-  public String GetSpeak() {
-    return AdaptiveCardObjectModelJNI.BaseActionElement_GetSpeak(swigCPtr, this);
-  }
-
-  public void SetSpeak(String value) {
-    AdaptiveCardObjectModelJNI.BaseActionElement_SetSpeak(swigCPtr, this, value);
-  }
-
   public String GetTitle() {
     return AdaptiveCardObjectModelJNI.BaseActionElement_GetTitle(swigCPtr, this);
   }
 
   public void SetTitle(String value) {
     AdaptiveCardObjectModelJNI.BaseActionElement_SetTitle(swigCPtr, this, value);
+  }
+
+  public String GetId() {
+    return AdaptiveCardObjectModelJNI.BaseActionElement_GetId(swigCPtr, this);
+  }
+
+  public void SetId(String value) {
+    AdaptiveCardObjectModelJNI.BaseActionElement_SetId(swigCPtr, this, value);
   }
 
   public ActionType GetElementType() {

@@ -71,14 +71,6 @@ public class ChoiceInput {
     AdaptiveCardObjectModelJNI.ChoiceInput_SetIsSelected(swigCPtr, this, value);
   }
 
-  public String GetSpeak() {
-    return AdaptiveCardObjectModelJNI.ChoiceInput_GetSpeak(swigCPtr, this);
-  }
-
-  public void SetSpeak(String value) {
-    AdaptiveCardObjectModelJNI.ChoiceInput_SetSpeak(swigCPtr, this, value);
-  }
-
   public static ChoiceInput Deserialize(SWIGTYPE_p_Json__Value root) {
     long cPtr = AdaptiveCardObjectModelJNI.ChoiceInput_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(root));
     return (cPtr == 0) ? null : new ChoiceInput(cPtr, true);

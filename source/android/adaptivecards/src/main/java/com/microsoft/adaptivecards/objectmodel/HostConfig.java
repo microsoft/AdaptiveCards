@@ -52,21 +52,21 @@ public class HostConfig {
     return (cPtr == 0) ? null : new FontSizesConfig(cPtr, false);
   }
 
+  public void setFontWeights(FontWeightsConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_fontWeights_set(swigCPtr, this, FontWeightsConfig.getCPtr(value), value);
+  }
+
+  public FontWeightsConfig getFontWeights() {
+    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_fontWeights_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new FontWeightsConfig(cPtr, false);
+  }
+
   public void setSupportsInteractivity(boolean value) {
     AdaptiveCardObjectModelJNI.HostConfig_supportsInteractivity_set(swigCPtr, this, value);
   }
 
   public boolean getSupportsInteractivity() {
     return AdaptiveCardObjectModelJNI.HostConfig_supportsInteractivity_get(swigCPtr, this);
-  }
-
-  public void setColors(ColorsConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_colors_set(swigCPtr, this, ColorsConfig.getCPtr(value), value);
-  }
-
-  public ColorsConfig getColors() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_colors_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new ColorsConfig(cPtr, false);
   }
 
   public void setImageSizes(ImageSizesConfig value) {
@@ -78,21 +78,22 @@ public class HostConfig {
     return (cPtr == 0) ? null : new ImageSizesConfig(cPtr, false);
   }
 
-  public void setMaxActions(long value) {
-    AdaptiveCardObjectModelJNI.HostConfig_maxActions_set(swigCPtr, this, value);
+  public void setImage(ImageConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_image_set(swigCPtr, this, ImageConfig.getCPtr(value), value);
   }
 
-  public long getMaxActions() {
-    return AdaptiveCardObjectModelJNI.HostConfig_maxActions_get(swigCPtr, this);
+  public ImageConfig getImage() {
+    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_image_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ImageConfig(cPtr, false);
   }
 
-  public void setSeparatorThickness(SeparatorThicknessConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_separatorThickness_set(swigCPtr, this, SeparatorThicknessConfig.getCPtr(value), value);
+  public void setSeparator(SeparatorConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_separator_set(swigCPtr, this, SeparatorConfig.getCPtr(value), value);
   }
 
-  public SeparatorThicknessConfig getSeparatorThickness() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_separatorThickness_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SeparatorThicknessConfig(cPtr, false);
+  public SeparatorConfig getSeparator() {
+    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_separator_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new SeparatorConfig(cPtr, false);
   }
 
   public void setSpacing(SpacingConfig value) {
@@ -131,15 +132,6 @@ public class HostConfig {
     return (cPtr == 0) ? null : new FactSetConfig(cPtr, false);
   }
 
-  public void setContainer(ContainerConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_container_set(swigCPtr, this, ContainerConfig.getCPtr(value), value);
-  }
-
-  public ContainerConfig getContainer() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_container_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new ContainerConfig(cPtr, false);
-  }
-
   public void setActions(ActionsConfig value) {
     AdaptiveCardObjectModelJNI.HostConfig_actions_set(swigCPtr, this, ActionsConfig.getCPtr(value), value);
   }
@@ -147,6 +139,15 @@ public class HostConfig {
   public ActionsConfig getActions() {
     long cPtr = AdaptiveCardObjectModelJNI.HostConfig_actions_get(swigCPtr, this);
     return (cPtr == 0) ? null : new ActionsConfig(cPtr, false);
+  }
+
+  public void setContainerStyles(ContainerStylesDefinition value) {
+    AdaptiveCardObjectModelJNI.HostConfig_containerStyles_set(swigCPtr, this, ContainerStylesDefinition.getCPtr(value), value);
+  }
+
+  public ContainerStylesDefinition getContainerStyles() {
+    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_containerStyles_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ContainerStylesDefinition(cPtr, false);
   }
 
   public static HostConfig Deserialize(SWIGTYPE_p_Json__Value json) {

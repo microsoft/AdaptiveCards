@@ -21,7 +21,6 @@ namespace std {
 #include "pch.h"
 #include <memory>
 #include "../../../shared/cpp/ObjectModel/Enums.h"
-#include "../../../shared/cpp/ObjectModel/Separator.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
@@ -40,7 +39,6 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/TextInput.h"
 #include "../../../shared/cpp/ObjectModel/TimeInput.h"
 #include "../../../shared/cpp/ObjectModel/ToggleInput.h"
-#include "../../../shared/cpp/ObjectModel/HttpAction.h"
 #include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 #include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 #include "../../../shared/cpp/ObjectModel/SubmitAction.h"
@@ -49,7 +47,6 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 %}
 
-%shared_ptr(AdaptiveCards::Separator)
 %shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::BaseInputElement)
@@ -68,7 +65,6 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextInput)
 %shared_ptr(AdaptiveCards::TimeInput)
 %shared_ptr(AdaptiveCards::ToggleInput)
-%shared_ptr(AdaptiveCards::HttpAction)
 %shared_ptr(AdaptiveCards::OpenUrlAction)
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
@@ -311,21 +307,6 @@ namespace std {
     }
 };
 
-%exception AdaptiveCards::HttpAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
-    $action
-    if (!result) {
-        jclass excep = jenv->FindClass("java/lang/ClassCastException");
-        if (excep) {
-            jenv->ThrowNew(excep, "dynamic_cast exception");
-        }
-    }
-}
-%extend AdaptiveCards::HttpAction {
-    static AdaptiveCards::HttpAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
-        return dynamic_cast<AdaptiveCards::HttpAction *>(baseActionElement);
-    }
-};
-
 %exception AdaptiveCards::OpenUrlAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
     $action
     if (!result) {
@@ -373,7 +354,6 @@ namespace std {
 
 %include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
-%include "../../../shared/cpp/ObjectModel/Separator.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
@@ -392,7 +372,6 @@ namespace std {
 %include "../../../shared/cpp/ObjectModel/TextInput.h"
 %include "../../../shared/cpp/ObjectModel/TimeInput.h"
 %include "../../../shared/cpp/ObjectModel/ToggleInput.h"
-%include "../../../shared/cpp/ObjectModel/HttpAction.h"
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"

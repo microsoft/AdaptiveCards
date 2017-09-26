@@ -9,12 +9,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.microsoft.adaptivecards.objectmodel.Separator;
-import com.microsoft.adaptivecards.objectmodel.Spacing;
+import com.microsoft.adaptivecards.objectmodel.ForegroundColor;
 import com.microsoft.adaptivecards.renderer.inputhandler.IInputHandler;
 import com.microsoft.adaptivecards.objectmodel.BaseCardElement;
-import com.microsoft.adaptivecards.objectmodel.Color;
-import com.microsoft.adaptivecards.objectmodel.ColorsConfig;
 import com.microsoft.adaptivecards.objectmodel.FontSizesConfig;
 import com.microsoft.adaptivecards.objectmodel.HorizontalAlignment;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
@@ -35,7 +32,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     private TextBlockRenderer()
     {
         // Set up Text Weight Map
-        m_textWeightMap.put(TextWeight.Normal, g_textWeightNormal);
+        m_textWeightMap.put(TextWeight.Default, g_textWeightDefault);
         m_textWeightMap.put(TextWeight.Bolder, g_textWeightBolder);
         m_textWeightMap.put(TextWeight.Lighter, g_textWeightLighter);
     }
@@ -65,9 +62,9 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         {
             textView.setTextSize(fontSizesConfig.getMediumFontSize());
         }
-        else if (textSize.swigValue() == TextSize.Normal.swigValue())
+        else if (textSize.swigValue() == TextSize.Default.swigValue())
         {
-            textView.setTextSize(fontSizesConfig.getNormalFontSize());
+            textView.setTextSize(fontSizesConfig.getDefaultFontSize());
         }
         else if (textSize.swigValue() == TextSize.Small.swigValue())
         {
@@ -77,11 +74,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         {
             throw new IllegalArgumentException("Unknown text size: " + textSize.toString());
         }
-    }
-
-    static void setTextColor(TextView textView, Color textColor, boolean isSubtle, ColorsConfig colorsConfig)
-    {
-        textView.setTextColor(getColor(textColor, colorsConfig, isSubtle));
     }
 
     static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
@@ -112,6 +104,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setTypeface(null, m_textWeightMap.get(textWeight));
     }
 
+    static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle)
+    {
+        textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
+    }
+
     @Override
     public View render(
             Context context,
@@ -138,7 +135,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextWeight(textView, textBlock.GetTextWeight());
         setTextSize(textView, textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
-        textView.setTextColor(getColor(textBlock.GetTextColor(), hostConfig.getColors(), textBlock.GetIsSubtle()));
+        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         int maxLines = (int)textBlock.GetMaxLines();
@@ -156,7 +153,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     private HashMap<TextWeight, Integer> m_textWeightMap = new HashMap<TextWeight, Integer>();
 
     // Text Weight Constants
-    private final int g_textWeightNormal = Typeface.NORMAL;
+    private final int g_textWeightDefault = Typeface.NORMAL;
     private final int g_textWeightBolder = Typeface.BOLD;
     private final int g_textWeightLighter = Typeface.ITALIC;
 }

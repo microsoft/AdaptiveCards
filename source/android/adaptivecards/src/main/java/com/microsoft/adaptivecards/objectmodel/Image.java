@@ -41,8 +41,8 @@ public class Image extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_Image__SWIG_0(), true);
   }
 
-  public Image(Spacing spacing, Separator separator, String speak, String uri, ImageStyle imageStyle, ImageSize imageSize, String altText, HorizontalAlignment hAlignment) {
-    this(AdaptiveCardObjectModelJNI.new_Image__SWIG_1(spacing.swigValue(), Separator.getCPtr(separator), separator, speak, uri, imageStyle.swigValue(), imageSize.swigValue(), altText, hAlignment.swigValue()), true);
+  public Image(Spacing spacing, boolean separator, String uri, ImageStyle imageStyle, ImageSize imageSize, String altText, HorizontalAlignment hAlignment) {
+    this(AdaptiveCardObjectModelJNI.new_Image__SWIG_1(spacing.swigValue(), separator, uri, imageStyle.swigValue(), imageSize.swigValue(), altText, hAlignment.swigValue()), true);
   }
 
   public static Image Deserialize(SWIGTYPE_p_Json__Value root) {

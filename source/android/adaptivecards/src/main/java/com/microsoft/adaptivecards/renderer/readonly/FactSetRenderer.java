@@ -43,7 +43,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
     {
         TextView textView = new TextView(context);
         textView.setText(text);
-        TextBlockRenderer.setTextColor(textView, textConfig.getColor(), textConfig.getIsSubtle(), hostConfig.getColors());
+
+        TextBlockRenderer.setTextColor(textView, textConfig.getColor(), hostConfig, textConfig.getIsSubtle());
         TextBlockRenderer.setTextSize(textView, textConfig.getSize(), hostConfig);
         TextBlockRenderer.getInstance().setTextWeight(textView, textConfig.getWeight());
         GridLayout.LayoutParams parem = new GridLayout.LayoutParams(
@@ -82,8 +83,6 @@ public class FactSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
-            String speak = fact.GetSpeak(); // TODO
-
             gridLayout.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig));
             gridLayout.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig));
         }
