@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Adaptive Cards">
-<meta property="og:url" content="http://adaptivecards.io/visualizer/index.html">
+<meta property="og:url" content="http://adaptivecards.io/connect/index.html">
 <meta property="og:site_name" content="Adaptive Cards">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Adaptive Cards">
@@ -107,37 +107,48 @@
 
 <div id="mainContent">
   
-<div class="w3-row w3-light-grey w3-padding">
-  <div class="w3-container w3-twothird w3-middle ">
-    <div id="editCard" class="button">Card editor</div>
-    <div id="editConfig" class="button subdued" style="margin-left: 4px;">Configuration editor</div>
-
-    <div style="display: none">
-        <input type="file" id="filePicker">
+<div class="w3-container" id="topic" style="margin-top:200px;margin-left:auto;margin-right:auto;max-width:1200px;">
+    <h1>Connect with us</h1>
+    <p class="banner-text">Tell us what’s working well, what you want to see added or improved, and find out about new updates.</p>
+    <div class="w3-row">
+        <div class="w3-third" style="margin-top:20px;">
+            <div class="w3-container w3-cell">
+                <a href="https://github.com/Microsoft/AdaptiveCards/issues" target="_blank"><img src="/content/connect/github.png" style="display:flex" /></a>
+            </div>
+            <div class="w3-container w3-cell">
+                <a href="https://github.com/Microsoft/AdaptiveCards/issues"><h2>GitHub</h2></a>
+                <div>Found a bug, or want to give us feedback? <a href="https://github.com/Microsoft/AdaptiveCards/issues">Tell us on GitHub</a>.</div>
+            </div>
+        </div>
+        <div class="w3-third" style="margin-top:20px;">
+            <div class="w3-container w3-cell">
+                <a class="" href="http://stackoverflow.com/questions/tagged/adaptive-cards" target="_blank"><img src="/content/connect/stackoverflow.png" style="display:flex" / /></a>
+            </div>
+            <div class="w3-container w3-cell">
+                <a href="http://stackoverflow.com/questions/tagged/adaptive-cards" target="_blank"><h2>Stack Overflow</h2></a>
+                <div>Engage with your peers and ask questions about Adaptive Cards on <a href="http://stackoverflow.com/questions/tagged/adaptive-cards" target="_blank">Stack Overflow</a> using the tag <b>adaptive-cards.</b></div>
+            </div>
+        </div>
+        <!--<div class="callout col-md-4">
+            <a class="icon blog img-circle" href="http://blogs.msdn.com/b/typescript/" target="_blank"><img src="content/connect/blog.png" /></a>
+            <a href="http://blogs.msdn.com/b/typescript/" target="_blank"><h2>Blog</h2></a>
+            <div class="text">Learn about the latest TypeScript developments via our <a href="http://blogs.msdn.com/b/typescript/" target="_blank">blog</a>!</div>
+        </div>-->
+        <div class="w3-third" style="margin-top:20px;">
+            <div class="w3-container w3-cell">
+                <a class="" href="http://twitter.com/#!/search/realtime/%23adaptivecards" target="_blank"><img src="/content/connect/twitter.png" style="display:flex" / /></a>
+            </div>
+            <div class="w3-container w3-cell">
+                <a href="http://twitter.com/#!/search/realtime/%23adaptivecards" target="_blank"><h2>Twitter</h2></a>
+                <div class="">Stay up to date via the #adaptivecards tag!</div>
+            </div>
+            <!--<div class="callout col-md-4">
+        <a class="icon friends-of-typescript img-circle" href="/community/friends.html"><img src="content/connect/friends.png" /></a>
+        <a href="/community/friends.html"><h2>Friends of TypeScript</h2></a>
+        <div class="text">Learn about <a href="/community/friends.html">who's already improving their workflows</a> with TypeScript!</div>
+    </div>-->
+        </div>
     </div>
-    <div id="loadSample" class="button">Load sample from file...</div>
-  </div>
-
-
-
-  <div style="w3-container w3-onethird">
-        <span style="margin-right: 6px;">Select a container:</span>
-        <select id="hostContainerPicker" class="select"></select>
-    </div>
-</div>
-  
-<div class="w3-row">
-
-  <div id="editor" class="w3-col" style="width: 60%">
-  </div>
-
-  <div class="w3-col" style="width: 40%">
-    <div id="errorContainer" class="errorContainer"></div>
-    <div class="w3-container w3-padding-16">
-      <div id="content" class="markupRender w3-container"></div>
-    </div>
-  </div>
-</div>
 </div>
         
 

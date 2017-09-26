@@ -21,7 +21,7 @@
 <%- js('js/sticky-sidebar.js') %>
 <%- js('js/adaptive-cards.js') %>
 
-<% if(page.path.indexOf("visualizer") >= 0) { %>
+<% if(is_current("visualizer")) { %>
   <%- js("visualizer/built/visualizer-with-renderer.js") %>
 <% } %>
 
