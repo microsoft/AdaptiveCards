@@ -62,19 +62,24 @@
 
                                                         hostconfig:_config];
             unsigned int padding = 0;
-            
+
             switch (_config->actions.spacing)
             {
                 case Spacing::ExtraLarge:
                     padding = _config->spacing.extraLargeSpacing;
+                    break;
                 case Spacing::Large:
                     padding = _config->spacing.largeSpacing;
+                    break;
                 case Spacing::Medium:
                     padding = _config->spacing.mediumSpacing;
+                    break;
                 case Spacing::Small:
                     padding = _config->spacing.smallSpacing;
+                    break;
                 case Spacing::Default:
                     padding =  _config->spacing.defaultSpacing;
+                    break;
                 default:
                     break;
             }

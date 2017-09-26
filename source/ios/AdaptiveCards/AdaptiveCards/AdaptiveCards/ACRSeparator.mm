@@ -129,8 +129,7 @@ using namespace AdaptiveCards;
             separator->height = spacing;
             if(elem->GetSeparator())
             {
-                std::string lineColor = "#B2000000";
-                separator->rgb		 = std::stoul(lineColor.substr(1), nullptr, 16);
+                separator->rgb		 = 0xB2000000;
                 separator->lineWidth = 1;
             }
 
