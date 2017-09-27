@@ -36,7 +36,6 @@ namespace AdaptiveCards
             types[ToggleInput.TYPE] = typeof(ToggleInput);
             types[SubmitAction.TYPE] = typeof(SubmitAction);
             types[OpenUrlAction.TYPE] = typeof(OpenUrlAction);
-            types[HttpAction.TYPE] = typeof(HttpAction);
             types[ShowCardAction.TYPE] = typeof(ShowCardAction);
             return types;
         });

@@ -228,15 +228,6 @@ namespace WpfVisualizer
                 AC.SubmitAction action = (AC.SubmitAction)e.Action;
                 System.Windows.MessageBox.Show(this, JsonConvert.SerializeObject(e.Data, Newtonsoft.Json.Formatting.Indented), "SubmitAction");
             }
-            else if (e.Action is AC.HttpAction)
-            {
-                AC.HttpAction action = (AC.HttpAction)e.Action;
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine($"HEADERS={JsonConvert.SerializeObject(action.Headers)}");
-                sb.AppendLine($"BODY={action.Body}");
-                sb.AppendLine($"DATA={e.Data}");
-                System.Windows.MessageBox.Show(this, sb.ToString(), $"HttpAction {action.Method} {action.Url}");
-            }
         }
 
         private void GoToPage(object sender, ExecutedRoutedEventArgs e)
