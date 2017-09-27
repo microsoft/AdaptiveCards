@@ -18,7 +18,7 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        ///     The initial value for the field
+        ///      Comma separated string of selected Choice values
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if NET452
@@ -91,6 +91,7 @@ namespace AdaptiveCards
 #if NET452
         [XmlAttribute]
 #endif
+        [System.Obsolete("Choice.IsSelected has been deprecated.  Use ChoiceSet.Value", false)]
         public bool IsSelected { get; set; } = false;
 
         /// <summary>
@@ -104,7 +105,9 @@ namespace AdaptiveCards
 
         public bool ShouldSerializeIsSelected()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             return IsSelected;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }
