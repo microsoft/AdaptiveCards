@@ -215,7 +215,7 @@
         }
       ]
     },
-    "Choice": {
+    "Input.Choice": {
       "additionalProperties": true,
       "properties": {
         "title": {
@@ -224,7 +224,7 @@
         },
         "value": {
           "type": "string",
-          "description": "the raw value for the choice"
+          "description": "The raw value for the choice. NOTE: do not use a ',' in the value, since MultiSelect ChoiceSet returns a comma-delimited string of choice values"
         }
       },
       "required": [
@@ -503,7 +503,7 @@
           "type": "array",
           "description": "the choice options",
           "items": {
-            "$ref": "#/definitions/Choice"
+            "$ref": "#/definitions/Input.Choice"
           }
         },
         "id": {
@@ -512,7 +512,8 @@
         },
         "isMultiSelect": {
           "type": "boolean",
-          "description": "allow multiple choices to be selected (Default=false)"
+          "description": "allow multiple choices to be selected",
+          "default": false
         },
         "style": {
           "$ref": "#/definitions/ChoiceInputStyle"
@@ -523,6 +524,10 @@
             "Input.ChoiceSet"
           ],
           "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "description": "The initial choice (or set of choices) that should be selected. For multi-select, specifcy a comma-separated string of values"
         }
       },
       "required": [
@@ -546,11 +551,11 @@
         },
         "max": {
           "type": "string",
-          "description": "hint of maximum value expressed in iso-8601 format (may be ignored by some clients)"
+          "description": "hint of maximum value expressed in ISO-8601 format (may be ignored by some clients)"
         },
         "min": {
           "type": "string",
-          "description": "hint of minimum value expressed in iso-8601 format (may be ignored by some clients)"
+          "description": "hint of minimum value expressed in ISO-8601 format (may be ignored by some clients)"
         },
         "placeholder": {
           "type": "string",
@@ -565,7 +570,7 @@
         },
         "value": {
           "type": "string",
-          "description": "The initial value for a field expressed in iso-8601 format"
+          "description": "The initial value for a field expressed in ISO-8601 format"
         }
       },
       "required": [
@@ -694,7 +699,7 @@
         },
         "value": {
           "type": "string",
-          "description": "The initial value for a field expressed in iso-8601 format"
+          "description": "The initial value for a field expressed in ISO-8601 format"
         }
       },
       "required": [

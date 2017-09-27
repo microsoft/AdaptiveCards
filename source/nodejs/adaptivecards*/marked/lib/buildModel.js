@@ -31,42 +31,48 @@ function buildModel(options) {
                         children: []
                     };
 
-                    for (var childIndex in rootObj[root.title]) {
+                    for (var definitionIndex in rootObj[root.title]) {
 
-                        var child = {
-                            name: rootObj[root.title][childIndex],
+                        var definition = {
+                            name: rootObj[root.title][definitionIndex],
                             examples: []
                         };
 
-                        var objSchema = schema.definitions[child.name];
+                        var objSchema = schema.definitions[definition.name];
                         if (objSchema !== undefined) {
                             objSchema = resolveInheritance(objSchema);
 
-                            if (child.name === rootDefinition) {
+                            if (definition.name === rootDefinition) {
                                 mergeProperties(objSchema.properties, schema.properties);
                             }
 
-                            child.title = objSchema.title;
-                            child.description = defaultValue(objSchema.description, objSchema.title);
+                            
+                            definition.title = objSchema.title;
+                            definition.description = defaultValue(objSchema.description, objSchema.title);
+                            
                             
                             if (defined(options.examplesPath)) {
-                                child.examples = glob.sync(path.join(options.examplesPath, "/**/" + child.name + ".json"), { nocase: false })
+                                definition.examples = glob.sync(path.join(options.examplesPath, "/**/" + definition.name + ".json"), { nocase: false })
                             }
-                            child.properties = objSchema.properties;
+                            definition.properties = objSchema.properties;
 
-                            for (var name in child.properties) {
-                                if (child.properties.hasOwnProperty(name)) {
-                                    var property = child.properties[name];
+                            for (var name in definition.properties) {
+                                if (definition.properties.hasOwnProperty(name)) {
+                                    var property = definition.properties[name];
                                     property.name = name;
                                     property.realType = getPropertyType(property);
                                     property.examples = [];
+                                    property.required = objSchema.required && objSchema.required.indexOf(name) > -1;
 
                                     if (defined(options.examplesPath)) {
-                                        property.examples = glob.sync(path.join(options.examplesPath, "**/" + child.name + "." + name + ".json"), { nocase: false });
+                                        property.examples = glob.sync(path.join(options.examplesPath, "**/" + definition.name + "." + name + ".json"), { nocase: false });
                                     }
                                 }
                             }
-                            root.children.push(child);
+                            root.children.push(definition);
+                        }
+                        else {
+                            console.warn("WARN: Unable to locate schema definition for " + definition.name);
                         }
 
                     }
