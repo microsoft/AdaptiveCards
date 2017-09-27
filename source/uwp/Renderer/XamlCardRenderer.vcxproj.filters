@@ -49,6 +49,8 @@
     <ClCompile Include="lib\AdaptiveFontWeightsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageConfig.cpp" />
     <ClCompile Include="lib\AdaptiveSeparatorConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveActionParserRegistration.cpp" />
+    <ClCompile Include="lib\AdaptiveElementParserRegistration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -107,6 +109,8 @@
     <ClInclude Include="lib\AdaptiveFontWeightsConfig.h" />
     <ClInclude Include="lib\AdaptiveImageConfig.h" />
     <ClInclude Include="lib\AdaptiveSeparatorConfig.h" />
+    <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
+    <ClInclude Include="lib\AdaptiveElementParserRegistration.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />

@@ -114,9 +114,11 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
     <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveElementParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveFontSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveFontWeightsConfig.h" />
     <ClInclude Include="lib\AdaptiveImageConfig.h" />
@@ -168,9 +170,11 @@
     <ClInclude Include="lib\XamlCardGetResourceStreamArgs.h" />
     <ClInclude Include="lib\XamlCardResourceResolvers.h" />
     <ClInclude Include="lib\XamlCardRendererComponent.h" />
+    <ClCompile Include="lib\AdaptiveActionParserRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveElementParserRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFontWeightsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageConfig.cpp" />

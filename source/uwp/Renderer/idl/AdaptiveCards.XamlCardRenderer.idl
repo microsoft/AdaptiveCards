@@ -53,6 +53,9 @@ namespace AdaptiveCards
         runtimeclass RenderedAdaptiveCard;
         runtimeclass AdaptiveInputs;
 
+        runtimeclass AdaptiveElementParserRegistration;
+        runtimeclass AdaptiveActionParserRegistration;
+
         interface IXamlCardResourceResolvers;
         interface IXamlCardResourceResolver;
         interface IXamlCardGetResourceStreamArgs;
@@ -98,6 +101,13 @@ namespace AdaptiveCards
         interface IRenderedAdaptiveCard;
         interface IAdaptiveInputs;
         interface IAdaptiveActionEventArgs;
+
+        interface IAdaptiveElementParserRegistration;
+        interface IAdaptiveElementParserRegistrationStatics;
+        interface IAdaptiveActionParserRegistration;
+        interface IAdaptiveActionParserRegistrationStatics;
+        interface IAdaptiveElementParser;
+        interface IAdaptiveActionParser;
 
         [version(NTDDI_WIN10_RS1)]
         typedef [v1_enum] enum TextSize
@@ -1532,6 +1542,86 @@ namespace AdaptiveCards
         runtimeclass AdaptiveInputs
         {
             [default] interface IAdaptiveInputs;
+        };
+
+        [
+            uuid(c42c7757-8cf0-49dc-8c8e-a341963eaba2),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveElementParser : IInspectable
+        {
+            HRESULT FromJson([in] Windows.Data.Json.JsonObject* inputJson, [out, retval] IAdaptiveCardElement** result);
+        };
+
+        [
+            uuid(ae307fdc-6a4e-4e10-a9d4-518ccee99c3b),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveElementParserRegistration)
+        ]
+        interface IAdaptiveElementParserRegistration : IInspectable
+        {
+            HRESULT Set([in] HSTRING type, [in] IAdaptiveElementParser* parser);
+            HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveElementParser** result);
+            HRESULT Remove([in] HSTRING type);
+        };
+
+        [
+            uuid(f17ba6c5-9eb7-43db-8d72-db5d398d3d39),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveElementParserRegistration),
+        ]
+        interface IAdaptiveElementParserRegistrationStatics : IInspectable
+        {
+            HRESULT GetDefault([out, retval] AdaptiveElementParserRegistration** result);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveElementParserRegistration
+        {
+            [default] interface IAdaptiveElementParserRegistration;
+        };
+
+        [
+            uuid(a730c2e9-6ee8-4b03-b706-60138c66a4a8),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveActionParserRegistration)
+        ]
+        interface IAdaptiveActionParserRegistration : IInspectable
+        {
+            HRESULT Set([in] HSTRING type, [in] IAdaptiveActionParser* Parser);
+            HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveActionParser** result);
+            HRESULT Remove([in] HSTRING type);
+        };
+
+        [
+            uuid(27e0c83f-143a-4d32-a4a9-9794312fd051),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveActionParserRegistration),
+        ]
+        interface IAdaptiveActionParserRegistrationStatics : IInspectable
+        {
+            HRESULT GetDefault([out, retval] AdaptiveActionParserRegistration** result);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1)
+        ]
+        runtimeclass AdaptiveActionParserRegistration
+        {
+            [default] interface IAdaptiveActionParserRegistration;
+        };
+
+        [
+            uuid(355d37ed-d622-49c0-9b43-75975f1b6dbe),
+            version(NTDDI_WIN10_RS1)
+        ]
+        interface IAdaptiveActionParser : IInspectable
+        {
+            HRESULT FromJson([in] Windows.Data.Json.JsonObject* inputJson, [out, retval] IAdaptiveActionElement** result);
         };
     }
 }
