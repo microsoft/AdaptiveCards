@@ -21,6 +21,8 @@ HRESULT UTF8ToHString(const std::string& in, HSTRING* out);
 // (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
 HRESULT HStringToUTF8(const HSTRING& in, std::string &out);
 
+std::string HStringToUTF8(const HSTRING& in);
+
 bool Boolify(const boolean value);
 
 HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept;
@@ -77,6 +79,9 @@ HRESULT GenerateSharedSeparator(
 HRESULT StringToJsonObject(const std::string inputString, ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT JsonObjectToHString(ABI::Windows::Data::Json::IJsonObject* inputJson, HSTRING* result);
 HRESULT JsonObjectToString(ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
+
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::XamlCardRenderer::ActionType projectedActionType, HSTRING* result);
+HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::XamlCardRenderer::ElementType projectedElementType, HSTRING* result);
 
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;
 

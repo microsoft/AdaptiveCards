@@ -22,7 +22,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT AdaptiveElementParserRegistration::Set(HSTRING type, IAdaptiveElementParser* Parser)
     {
         ComPtr<IAdaptiveElementParser> localParser(Parser);
-        (*m_registration)[TypeAsRegistrationKey(type)] = localParser;
+        (*m_registration)[HStringToUTF8(type)] = localParser;
 
         return S_OK;
     }
@@ -32,7 +32,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         *result = nullptr;
 
-        RegistrationMap::iterator found = m_registration->find(TypeAsRegistrationKey(type));
+        RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
         if (found != m_registration->end())
         {
             *result = found->second.Get();
@@ -43,16 +43,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT AdaptiveElementParserRegistration::Remove(HSTRING type)
     {
-        m_registration->erase(TypeAsRegistrationKey(type));
+        m_registration->erase(HStringToUTF8(type));
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-    std::string AdaptiveElementParserRegistration::TypeAsRegistrationKey(HSTRING type)
-    {
-        std::string typeAsKey;
-        HStringToUTF8(type, typeAsKey);
-        return typeAsKey;
     }
 
     _Use_decl_annotations_

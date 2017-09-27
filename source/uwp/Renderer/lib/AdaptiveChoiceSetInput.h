@@ -47,12 +47,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         IFACEMETHODIMP get_Separator(boolean* separator);
         IFACEMETHODIMP put_Separator(boolean separator);
+        
+        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
     private:
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput*>> m_choices;
 
-        //Using a Container as backing element for now
         std::shared_ptr<AdaptiveCards::ChoiceSetInput> m_sharedChoiceSetInput;
     };
 

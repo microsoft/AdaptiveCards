@@ -72,4 +72,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedSubmitAction->SetId(out);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::get_ActionTypeString(HSTRING* type)
+    {
+        ::ActionType typeEnum;
+        RETURN_IF_FAILED(get_ActionType(&typeEnum));
+        return ProjectedActionTypeToHString(typeEnum, type);
+    }
 }}

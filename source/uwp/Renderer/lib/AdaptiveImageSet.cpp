@@ -114,5 +114,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedImageSet->SetId(out);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveImageSet::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
+    }
 }
 }
