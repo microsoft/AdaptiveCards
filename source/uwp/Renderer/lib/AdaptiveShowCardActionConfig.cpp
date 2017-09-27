@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Util.h"
-#include "AdaptiveSpacingDefinition.h"
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
@@ -35,27 +34,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::get_BackgroundColor(Color* value)
+        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style)
     {
-        return GetColorFromString(m_sharedShowCardActionConfig.backgroundColor, value);
+        *style = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle>(m_sharedShowCardActionConfig.style);
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_BackgroundColor(Color /*value*/)
+        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style)
     {
-        return E_NOTIMPL;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::get_Padding(IAdaptiveSpacingDefinition** spacingDefinition)
-    {
-        return MakeAndInitialize<AdaptiveSpacingDefinition>(spacingDefinition, m_sharedShowCardActionConfig.padding);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_Padding(IAdaptiveSpacingDefinition* /*value*/)
-    {
-        return E_NOTIMPL;
+        m_sharedShowCardActionConfig.style = static_cast<AdaptiveCards::ContainerStyle>(style);
+        return S_OK;
     }
 
     _Use_decl_annotations_

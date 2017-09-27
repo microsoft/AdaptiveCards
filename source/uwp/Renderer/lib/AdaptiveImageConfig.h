@@ -17,8 +17,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ImageConfig ImageConfig) noexcept;
 
-        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationConfig** separationConfig);
-        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationConfig* separationConfig);
+        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize);
+        IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize);
 
     private:
         ImageConfig m_sharedImageConfig;

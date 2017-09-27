@@ -5,20 +5,21 @@ using namespace AdaptiveCards;
 
 Image::Image() :
     BaseCardElement(CardElementType::Image),
-    m_imageStyle(ImageStyle::Normal),
+    m_imageStyle(ImageStyle::Default),
     m_imageSize(ImageSize::Auto),
     m_hAlignment(HorizontalAlignment::Left)
 {
 }
 
-Image::Image(SeparationStyle separationStyle,
-    std::string speak,
+Image::Image(
+    Spacing spacing,
+    bool separator,
     std::string url,
     ImageStyle imageStyle,
     ImageSize imageSize,
     std::string altText,
     HorizontalAlignment hAlignment) :
-    BaseCardElement(CardElementType::Image, separationStyle, speak),
+    BaseCardElement(CardElementType::Image, spacing, separator),
     m_url(url),
     m_imageStyle(imageStyle),
     m_imageSize(imageSize),
@@ -39,8 +40,8 @@ std::shared_ptr<Image> Image::DeserializeWithoutCheckingType(const Json::Value& 
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
-    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Normal, ImageStyleFromString));
-    image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::Default, ImageSizeFromString));
+    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
+    image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
     image->SetSelectAction(BaseCardElement::DeserializeSelectAction(json, AdaptiveCardSchemaKey::SelectAction));
@@ -58,7 +59,12 @@ Json::Value Image::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = ImageSizeToString(GetImageSize());
+    ImageSize imageSize = GetImageSize();
+    if (imageSize != ImageSize::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = ImageSizeToString(GetImageSize());
+    }
+
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ImageStyleToString(GetImageStyle());
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url)] = GetUrl();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =

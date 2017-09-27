@@ -9,8 +9,7 @@
 package com.microsoft.adaptivecards.objectmodel;
 
 public final class ActionMode {
-  public final static ActionMode InlineEdgeToEdge = new ActionMode("InlineEdgeToEdge", AdaptiveCardObjectModelJNI.ActionMode_InlineEdgeToEdge_get());
-  public final static ActionMode Inline = new ActionMode("Inline");
+  public final static ActionMode Inline = new ActionMode("Inline", AdaptiveCardObjectModelJNI.ActionMode_Inline_get());
   public final static ActionMode Popup = new ActionMode("Popup");
 
   public final int swigValue() {
@@ -47,7 +46,7 @@ public final class ActionMode {
     swigNext = this.swigValue+1;
   }
 
-  private static ActionMode[] swigValues = { InlineEdgeToEdge, Inline, Popup };
+  private static ActionMode[] swigValues = { Inline, Popup };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

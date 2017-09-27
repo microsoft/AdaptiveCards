@@ -54,17 +54,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveShowCardAction::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedShowCardAction->GetSpeak(), speak);
+        return UTF8ToHString(m_sharedShowCardAction->GetId(), id);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::put_Speak(HSTRING speak)
+    HRESULT AdaptiveShowCardAction::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedShowCardAction->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedShowCardAction->SetId(out);
         return S_OK;
     }
 }}

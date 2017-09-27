@@ -35,13 +35,12 @@ public class ImageConfig {
     }
   }
 
-  public void setSeparation(SeparationConfig value) {
-    AdaptiveCardObjectModelJNI.ImageConfig_separation_set(swigCPtr, this, SeparationConfig.getCPtr(value), value);
+  public void setImageSize(ImageSize value) {
+    AdaptiveCardObjectModelJNI.ImageConfig_imageSize_set(swigCPtr, this, value.swigValue());
   }
 
-  public SeparationConfig getSeparation() {
-    long cPtr = AdaptiveCardObjectModelJNI.ImageConfig_separation_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
+  public ImageSize getImageSize() {
+    return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageConfig_imageSize_get(swigCPtr, this));
   }
 
   public static ImageConfig Deserialize(SWIGTYPE_p_Json__Value json, ImageConfig defaultValue) {

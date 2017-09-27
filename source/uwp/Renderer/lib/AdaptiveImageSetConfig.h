@@ -20,8 +20,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize* imageSize);
         IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveCards::XamlCardRenderer::ImageSize imageSize);
 
-        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationConfig** separationConfig);
-        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparationConfig* separationConfig);
+        IFACEMETHODIMP get_MaxImageHeight(_Out_ UINT32* maxImageHeight);
+        IFACEMETHODIMP put_MaxImageHeight(_In_ UINT32 maxImageHeight);
 
     private:
         ImageSetConfig m_sharedImageSetConfig;

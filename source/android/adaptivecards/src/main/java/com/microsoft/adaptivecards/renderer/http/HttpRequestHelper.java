@@ -1,5 +1,7 @@
 package com.microsoft.adaptivecards.renderer.http;
 
+import android.text.TextUtils;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,6 +13,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
+
+import static java.net.HttpURLConnection.HTTP_MOVED_PERM;
+import static java.net.HttpURLConnection.HTTP_MOVED_TEMP;
+import static java.net.HttpURLConnection.HTTP_SEE_OTHER;
 
 /**
  * Created by bekao on 7/4/2017.
@@ -64,10 +70,18 @@ public abstract class HttpRequestHelper
     {
         HttpURLConnection conn = connect(url, HTTP_METHOD_GET, requestProperty, false, true);
         conn.connect();
-        BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
-        byte[] bytes = copyInputStreamToByteArray(inputStream);
-        inputStream.close();
-        return bytes;
+        int code = conn.getResponseCode();
+        boolean redirected = code == HTTP_MOVED_PERM || code == HTTP_MOVED_TEMP || code == HTTP_SEE_OTHER;
+        String location = conn.getHeaderField("Location");
+        if (!redirected || TextUtils.isEmpty(location))
+        {
+            BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
+            byte[] bytes = copyInputStreamToByteArray(inputStream);
+            inputStream.close();
+            return bytes;
+        }
+
+        return get(location, requestProperty);
     }
 
     public static byte[] get(String url)

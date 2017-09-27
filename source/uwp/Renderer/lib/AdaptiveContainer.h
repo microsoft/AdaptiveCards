@@ -21,19 +21,22 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::Container>& sharedcontainer);
 
         // IAdaptiveContainer
-        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* separation);
-        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle separation);
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style);
+        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style);
 
         IFACEMETHODIMP get_Items(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>** items);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
-        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
-        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING *speak);
-        IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
+        IFACEMETHODIMP get_Separator(boolean* separator);
+        IFACEMETHODIMP put_Separator(boolean separator);
+
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_items;

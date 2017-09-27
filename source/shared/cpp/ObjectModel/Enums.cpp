@@ -11,6 +11,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::ActionSetConfig, "actionSetConfig" },
     { AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation" },
     { AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard" },
+    { AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle" },
     { AdaptiveCardSchemaKey::AltText, "altText" },
     { AdaptiveCardSchemaKey::Attention, "attention" },
     { AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor" },
@@ -18,6 +19,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl" },
     { AdaptiveCardSchemaKey::BaseCardElement, "baseCardElement" },
     { AdaptiveCardSchemaKey::Body, "body" },
+    { AdaptiveCardSchemaKey::Bolder, "bolder" },
     { AdaptiveCardSchemaKey::BorderColor, "borderColor" },
     { AdaptiveCardSchemaKey::BorderThickness, "borderThickness" },
     { AdaptiveCardSchemaKey::Bottom, "bottom" },
@@ -28,12 +30,11 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::ChoiceSet, "choiceSet" },
     { AdaptiveCardSchemaKey::Color, "color" },
     { AdaptiveCardSchemaKey::ColorConfig, "colorConfig" },
-    { AdaptiveCardSchemaKey::Colors, "colors" },
+    { AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors" },
     { AdaptiveCardSchemaKey::Column, "column" },
     { AdaptiveCardSchemaKey::Columns, "columns" },
     { AdaptiveCardSchemaKey::ColumnSet, "columnSet" },
     { AdaptiveCardSchemaKey::Container, "container" },
-    { AdaptiveCardSchemaKey::ContainerStyleConfig, "containerStyleConfig" },
     { AdaptiveCardSchemaKey::Dark, "dark" },
     { AdaptiveCardSchemaKey::Data, "data"},
     { AdaptiveCardSchemaKey::DateInput, "dateInput" },
@@ -63,23 +64,25 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Large, "large" },
     { AdaptiveCardSchemaKey::Left, "left" },
     { AdaptiveCardSchemaKey::Light, "light" },
+    { AdaptiveCardSchemaKey::Lighter, "lighter" },
     { AdaptiveCardSchemaKey::LineColor, "lineColor" },
     { AdaptiveCardSchemaKey::LineThickness, "lineThickness" },
     { AdaptiveCardSchemaKey::Max, "max" },
     { AdaptiveCardSchemaKey::MaxActions, "maxActions" },
     { AdaptiveCardSchemaKey::MaxLength, "maxLength" },
     { AdaptiveCardSchemaKey::MaxLines, "maxLines" },
+    { AdaptiveCardSchemaKey::MaxWidth, "maxWidth" },
     { AdaptiveCardSchemaKey::Medium, "medium" },
     { AdaptiveCardSchemaKey::Method, "method" },
     { AdaptiveCardSchemaKey::Min, "min" },
     { AdaptiveCardSchemaKey::MinVersion, "minVersion" },
-    { AdaptiveCardSchemaKey::Normal, "normal" },
     { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
     { AdaptiveCardSchemaKey::Padding, "padding" },
     { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
     { AdaptiveCardSchemaKey::Right, "right" },
     { AdaptiveCardSchemaKey::SelectAction, "selectAction" },
-    { AdaptiveCardSchemaKey::Separation, "separation" },
+    { AdaptiveCardSchemaKey::Separator, "separator" },
+    { AdaptiveCardSchemaKey::Thickness, "thickness" },
     { AdaptiveCardSchemaKey::ShowActionMode, "showActionMode" },
     { AdaptiveCardSchemaKey::ShowCard, "showCard" },
     { AdaptiveCardSchemaKey::ShowCardActionConfig, "showCardActionConfig" },
@@ -89,7 +92,6 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::SpacingDefinition, "spacingDefinition" },
     { AdaptiveCardSchemaKey::Speak, "speak" },
     { AdaptiveCardSchemaKey::Stretch, "stretch" },
-    { AdaptiveCardSchemaKey::StrongSeparation, "strongSeparation" },
     { AdaptiveCardSchemaKey::Style, "style" },
     { AdaptiveCardSchemaKey::Subtle, "subtle" },
     { AdaptiveCardSchemaKey::SupportsInteractivity, "supportsInteractivity" },
@@ -98,6 +100,8 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::TextConfig, "textConfig" },
     { AdaptiveCardSchemaKey::TextInput, "textInput" },
     { AdaptiveCardSchemaKey::TextWeight, "weight" },
+    { AdaptiveCardSchemaKey::Thick, "thick" },
+    { AdaptiveCardSchemaKey::Thickness, "thickness" },
     { AdaptiveCardSchemaKey::TimeInput, "timeInput" },
     { AdaptiveCardSchemaKey::Title, "title" },
     { AdaptiveCardSchemaKey::ToggleInput, "toggleInput" },
@@ -110,6 +114,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Version, "version" },
     { AdaptiveCardSchemaKey::Warning, "warning" },
     { AdaptiveCardSchemaKey::Weight, "weight" },
+    { AdaptiveCardSchemaKey::Width, "width" },
     { AdaptiveCardSchemaKey::Wrap, "wrap" },
 };
 
@@ -140,7 +145,6 @@ CardElementTypeNameToEnum = GenerateStringToEnumMap<CardElementType>(CardElement
 
 static std::unordered_map<ActionType, std::string, EnumHash> ActionTypeEnumToName =
 {
-    { ActionType::Http, "Action.Http" },
     { ActionType::OpenUrl, "Action.OpenUrl" },
     { ActionType::ShowCard, "Action.ShowCard" },
     { ActionType::Submit, "Action.Submit" }
@@ -149,29 +153,44 @@ static std::unordered_map<ActionType, std::string, EnumHash> ActionTypeEnumToNam
 static std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo>
 ActionTypeNameToEnum = GenerateStringToEnumMap<ActionType>(ActionTypeEnumToName);
 
-static std::unordered_map<SeparationStyle, std::string, EnumHash> SeparationStyleEnumToName =
+static std::unordered_map<Spacing, std::string, EnumHash> SpacingEnumToName =
 {
-    { SeparationStyle::Default, "default" },
-    { SeparationStyle::None, "none" },
-    { SeparationStyle::Strong, "strong" }
+    { Spacing::Default, "default" },
+    { Spacing::None, "none" },
+    { Spacing::Small, "small" },
+    { Spacing::Medium, "medium" },
+    { Spacing::Large, "large" },
+    { Spacing::ExtraLarge, "extraLarge" },
 };
 
-static std::unordered_map<std::string, SeparationStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-SeparationStyleNameToEnum = GenerateStringToEnumMap<SeparationStyle>(SeparationStyleEnumToName);
+static std::unordered_map<std::string, Spacing, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+SpacingNameToEnum = GenerateStringToEnumMap<Spacing>(SpacingEnumToName);
+
+static std::unordered_map<SeparatorThickness, std::string, EnumHash> SeparatorThicknessEnumToName =
+{
+    { SeparatorThickness::Default, "default" },
+    { SeparatorThickness::Thick, "thick" },
+};
+
+static std::unordered_map<std::string, SeparatorThickness, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+SeparatorThicknessNameToEnum = GenerateStringToEnumMap<SeparatorThickness>(SeparatorThicknessEnumToName);
 
 static std::unordered_map<ImageStyle, std::string, EnumHash> ImageStyleEnumToName =
 {
-    {ImageStyle::Normal, "normal"},
+    {ImageStyle::Default, "default"},
     {ImageStyle::Person, "person"}
 };
 
-static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-ImageStyleNameToEnum = GenerateStringToEnumMap<ImageStyle>(ImageStyleEnumToName);
+static std::unordered_map<std::string, ImageStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> ImageStyleNameToEnum = 
+{
+    { "default", ImageStyle::Default},
+    { "person", ImageStyle::Person},
+    { "normal", ImageStyle::Default} // Back compat to support "Normal" for "Default" for pre V1.0 payloads
+};
 
 static std::unordered_map<ImageSize, std::string, EnumHash> ImageSizeEnumToName =
 {
     { ImageSize::Auto, "Auto" },
-    { ImageSize::Default, "Auto" },
     { ImageSize::Large, "Large" },
     { ImageSize::Medium, "Medium" },
     { ImageSize::Small, "Small" },
@@ -191,41 +210,53 @@ static std::unordered_map<HorizontalAlignment, std::string, EnumHash> Horizontal
 static std::unordered_map<std::string, HorizontalAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo>
 HorizontalAlignmentNameToEnum = GenerateStringToEnumMap<HorizontalAlignment>(HorizontalAlignmentEnumToName);
 
-static std::unordered_map<TextColor, std::string, EnumHash> TextColorEnumToName =
+static std::unordered_map<ForegroundColor, std::string, EnumHash> ColorEnumToName =
 {
-    {TextColor::Accent, "Accent"},
-    {TextColor::Attention, "Attention"},
-    {TextColor::Dark, "Dark"},
-    {TextColor::Default, "Default"},
-    {TextColor::Good, "Good"},
-    {TextColor::Light, "Light"},
-    {TextColor::Warning, "Warning"},
+    {ForegroundColor::Accent, "Accent"},
+    {ForegroundColor::Attention, "Attention"},
+    {ForegroundColor::Dark, "Dark" },
+    {ForegroundColor::Default, "Default"},
+    {ForegroundColor::Good, "Good"},
+    {ForegroundColor::Light, "Light" },
+    {ForegroundColor::Warning, "Warning"},
 };
 
-static std::unordered_map<std::string, TextColor, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-TextColorNameToEnum = GenerateStringToEnumMap<TextColor>(TextColorEnumToName);
+static std::unordered_map<std::string, ForegroundColor, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+ColorNameToEnum = GenerateStringToEnumMap<ForegroundColor>(ColorEnumToName);
 
 static std::unordered_map<TextWeight, std::string, EnumHash> TextWeightEnumToName =
 {
     {TextWeight::Bolder, "Bolder"},
     {TextWeight::Lighter, "Lighter"},
-    {TextWeight::Normal, "Normal"},
+    {TextWeight::Default, "Default"},
 };
 
-static std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-TextWeightNameToEnum = GenerateStringToEnumMap<TextWeight>(TextWeightEnumToName);
+static std::unordered_map<std::string, TextWeight, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextWeightNameToEnum = 
+{
+    { "Bolder", TextWeight::Bolder},
+    { "Lighter", TextWeight::Lighter},
+    { "Default", TextWeight::Default},
+    { "Normal", TextWeight::Default }, // Back compat to support "Normal" for "Default" for pre V1.0 payloads
+};
 
 static std::unordered_map<TextSize, std::string, EnumHash> TextSizeEnumToName =
 {
     {TextSize::ExtraLarge, "ExtraLarge"},
     {TextSize::Large, "Large"},
     {TextSize::Medium, "Medium"},
-    {TextSize::Normal, "Normal"},
+    {TextSize::Default, "Default"},
     {TextSize::Small, "Small"},
 };
 
-static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-TextSizeNameToEnum = GenerateStringToEnumMap<TextSize>(TextSizeEnumToName);
+static std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> TextSizeNameToEnum = 
+{
+    { "ExtraLarge", TextSize::ExtraLarge },
+    { "Large", TextSize::Large },
+    { "Medium", TextSize::Medium },
+    { "Default", TextSize::Default },
+    { "Small", TextSize::Small },
+    { "Normal", TextSize::Default }, // Back compat to support "Normal" for "Default" for pre V1.0 payloads
+};
 
 static std::unordered_map<ActionsOrientation, std::string, EnumHash> ActionsOrientationEnumToName =
 {
@@ -238,7 +269,6 @@ ActionsOrientationNameToEnum = GenerateStringToEnumMap<ActionsOrientation>(Actio
 
 static std::unordered_map<ActionMode, std::string, EnumHash> ActionModeEnumToName =
 {
-    { ActionMode::InlineEdgeToEdge, "InlineEdgeToEdge" },
     { ActionMode::Inline, "Inline" },
     { ActionMode::Popup, "Popup" }
 };
@@ -268,8 +298,8 @@ TextInputStyleNameToEnum = GenerateStringToEnumMap<TextInputStyle>(TextInputStyl
 
 static std::unordered_map<ContainerStyle, std::string, EnumHash> ContainerStyleEnumToName =
 {
+    { ContainerStyle::Default, "Default" },
     { ContainerStyle::Emphasis, "Emphasis" },
-    { ContainerStyle::Normal, "Normal" },
 };
 
 static std::unordered_map<std::string, ContainerStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo>
@@ -365,23 +395,23 @@ HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment)
     return HorizontalAlignmentNameToEnum[alignment];
 }
 
-const std::string TextColorToString(TextColor color)
+const std::string ForegroundColorToString(ForegroundColor color)
 {
-    if (TextColorEnumToName.find(color) == TextColorEnumToName.end())
+    if (ColorEnumToName.find(color) == ColorEnumToName.end())
     {
-        throw std::out_of_range("Invalid TextColor type");
+        throw std::out_of_range("Invalid ForegroundColor type");
     }
-    return TextColorEnumToName[color];
+    return ColorEnumToName[color];
 }
 
-TextColor TextColorFromString(const std::string& color)
+ForegroundColor ForegroundColorFromString(const std::string& color)
 {
-    if (TextColorNameToEnum.find(color) == TextColorNameToEnum.end())
+    if (ColorNameToEnum.find(color) == ColorNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextColor: " + color);
+        throw std::out_of_range("Invalid ForegroundColor: " + color);
     }
 
-    return TextColorNameToEnum[color];
+    return ColorNameToEnum[color];
 }
 
 const std::string TextWeightToString(TextWeight weight)
@@ -441,23 +471,42 @@ ImageSize ImageSizeFromString(const std::string& size)
     return ImageSizeNameToEnum[size];
 }
 
-const std::string SeparationStyleToString(SeparationStyle type)
+const std::string SpacingToString(Spacing spacing)
 {
-    if (SeparationStyleEnumToName.find(type) == SeparationStyleEnumToName.end())
+    if (SpacingEnumToName.find(spacing) == SpacingEnumToName.end())
     {
-        throw std::out_of_range("Invalid SeparationStyle type");
+        throw std::out_of_range("Invalid Spacing type");
     }
-    return SeparationStyleEnumToName[type];
+    return SpacingEnumToName[spacing];
 }
 
-SeparationStyle SeparationStyleFromString(const std::string& style)
+Spacing SpacingFromString(const std::string& spacing)
 {
-    if (SeparationStyleNameToEnum.find(style) == SeparationStyleNameToEnum.end())
+    if (SpacingNameToEnum.find(spacing) == SpacingNameToEnum.end())
     {
-        throw std::out_of_range("Invalid SeparationStyle: " + style);
+        throw std::out_of_range("Invalid Spacing: " + spacing);
     }
 
-    return SeparationStyleNameToEnum[style];
+    return SpacingNameToEnum[spacing];
+}
+
+const std::string SeparatorThicknessToString(SeparatorThickness thickness)
+{
+    if (SeparatorThicknessEnumToName.find(thickness) == SeparatorThicknessEnumToName.end())
+    {
+        throw std::out_of_range("Invalid SeparatorThickness type");
+    }
+    return SeparatorThicknessEnumToName[thickness];
+}
+
+SeparatorThickness SeparatorThicknessFromString(const std::string& thickness)
+{
+    if (SeparatorThicknessNameToEnum.find(thickness) == SeparatorThicknessNameToEnum.end())
+    {
+        throw std::out_of_range("Invalid SeparatorThickness: " + thickness);
+    }
+
+    return SeparatorThicknessNameToEnum[thickness];
 }
 
 const std::string ImageStyleToString(ImageStyle style)

@@ -16,60 +16,67 @@
 		F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F423C0861EE1FB6100905679 /* LaunchScreen.storyboard */; };
 		F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.m */; };
 		F423C09E1EE1FB6100905679 /* ADCIOSVisualizerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C09D1EE1FB6100905679 /* ADCIOSVisualizerUITests.m */; };
-		F436607B1F0707B900EBA868 /* Weather Large.json in Resources */ = {isa = PBXBuildFile; fileRef = F436607A1F0707B900EBA868 /* Weather Large.json */; };
+		F4933CC21F79852C00F6EBFD /* Action.OpenUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C951F79852C00F6EBFD /* Action.OpenUrl.json */; };
+		F4933CC31F79852C00F6EBFD /* Action.ShowCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C961F79852C00F6EBFD /* Action.ShowCard.json */; };
+		F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */; };
+		F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C981F79852C00F6EBFD /* Action.Submit.json */; };
+		F4933CC61F79852C00F6EBFD /* Column.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C991F79852C00F6EBFD /* Column.SelectAction.json */; };
+		F4933CC71F79852C00F6EBFD /* Column.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */; };
+		F4933CC81F79852C00F6EBFD /* Column.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9B1F79852C00F6EBFD /* Column.Style.json */; };
+		F4933CC91F79852C00F6EBFD /* Column.Width.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9C1F79852C00F6EBFD /* Column.Width.json */; };
+		F4933CCA1F79852C00F6EBFD /* Column.WidthRatio.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9D1F79852C00F6EBFD /* Column.WidthRatio.json */; };
+		F4933CCB1F79852C00F6EBFD /* ColumnSet.Columns.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9E1F79852C00F6EBFD /* ColumnSet.Columns.json */; };
+		F4933CCC1F79852C00F6EBFD /* ColumnSet.Separator.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9F1F79852C00F6EBFD /* ColumnSet.Separator.json */; };
+		F4933CCD1F79852C00F6EBFD /* ColumnSet.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA01F79852C00F6EBFD /* ColumnSet.Spacing.json */; };
+		F4933CCE1F79852C00F6EBFD /* Container.Items.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA11F79852C00F6EBFD /* Container.Items.json */; };
+		F4933CCF1F79852C00F6EBFD /* Container.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA21F79852C00F6EBFD /* Container.SelectAction.json */; };
+		F4933CD01F79852C00F6EBFD /* Container.Separator.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA31F79852C00F6EBFD /* Container.Separator.json */; };
+		F4933CD11F79852C00F6EBFD /* Container.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA41F79852C00F6EBFD /* Container.Spacing.json */; };
+		F4933CD21F79852C00F6EBFD /* Container.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA51F79852C00F6EBFD /* Container.Style.json */; };
+		F4933CD31F79852C00F6EBFD /* FactSet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA61F79852C00F6EBFD /* FactSet.json */; };
+		F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA71F79852C00F6EBFD /* Image.HorizontalAlignment.json */; };
+		F4933CD51F79852C00F6EBFD /* Image.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA81F79852C00F6EBFD /* Image.SelectAction.json */; };
+		F4933CD61F79852C00F6EBFD /* Image.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA91F79852C00F6EBFD /* Image.Size.json */; };
+		F4933CD71F79852C00F6EBFD /* Image.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAA1F79852C00F6EBFD /* Image.Spacing.json */; };
+		F4933CD81F79852C00F6EBFD /* Image.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAB1F79852C00F6EBFD /* Image.Style.json */; };
+		F4933CD91F79852C00F6EBFD /* Image.Url.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAC1F79852C00F6EBFD /* Image.Url.json */; };
+		F4933CDA1F79852C00F6EBFD /* ImageSet.ImageSize.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAD1F79852C00F6EBFD /* ImageSet.ImageSize.json */; };
+		F4933CDB1F79852C00F6EBFD /* ImageSet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAE1F79852C00F6EBFD /* ImageSet.json */; };
+		F4933CDC1F79852C00F6EBFD /* Input.ChoiceSet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAF1F79852C00F6EBFD /* Input.ChoiceSet.json */; };
+		F4933CDD1F79852C00F6EBFD /* Input.Date.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB01F79852C00F6EBFD /* Input.Date.json */; };
+		F4933CDE1F79852C00F6EBFD /* Input.Number.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB11F79852C00F6EBFD /* Input.Number.json */; };
+		F4933CDF1F79852C00F6EBFD /* Input.Text.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB21F79852C00F6EBFD /* Input.Text.json */; };
+		F4933CE01F79852C00F6EBFD /* Input.Text.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB31F79852C00F6EBFD /* Input.Text.Style.json */; };
+		F4933CE11F79852C00F6EBFD /* Input.Time.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB41F79852C00F6EBFD /* Input.Time.json */; };
+		F4933CE21F79852C00F6EBFD /* Input.Toggle.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB51F79852C00F6EBFD /* Input.Toggle.json */; };
+		F4933CE31F79852C00F6EBFD /* Stylesheet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB61F79852C00F6EBFD /* Stylesheet.json */; };
+		F4933CE41F79852C00F6EBFD /* TextBlock.Color.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB71F79852C00F6EBFD /* TextBlock.Color.json */; };
+		F4933CE51F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB81F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json */; };
+		F4933CE61F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CB91F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json */; };
+		F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBA1F79852C00F6EBFD /* TextBlock.IsSubtle.json */; };
+		F4933CE81F79852C00F6EBFD /* TextBlock.Markdown.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBB1F79852C00F6EBFD /* TextBlock.Markdown.json */; };
+		F4933CE91F79852C00F6EBFD /* TextBlock.MaxLines.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBC1F79852C00F6EBFD /* TextBlock.MaxLines.json */; };
+		F4933CEA1F79852C00F6EBFD /* TextBlock.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBD1F79852C00F6EBFD /* TextBlock.Size.json */; };
+		F4933CEB1F79852C00F6EBFD /* TextBlock.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBE1F79852C00F6EBFD /* TextBlock.Spacing.json */; };
+		F4933CEC1F79852C00F6EBFD /* TextBlock.Text.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBF1F79852C00F6EBFD /* TextBlock.Text.json */; };
+		F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CC01F79852C00F6EBFD /* TextBlock.Weight.json */; };
+		F4933CEE1F79852C00F6EBFD /* TextBlock.Wrap.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CC11F79852C00F6EBFD /* TextBlock.Wrap.json */; };
+		F4933CFC1F79853B00F6EBFD /* ActivityUpdate.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */; };
+		F4933CFD1F79853B00F6EBFD /* CalendarReminder.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF01F79853B00F6EBFD /* CalendarReminder.json */; };
+		F4933CFE1F79853B00F6EBFD /* FlightItinerary.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF11F79853B00F6EBFD /* FlightItinerary.json */; };
+		F4933CFF1F79853B00F6EBFD /* FlightUpdate.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF21F79853B00F6EBFD /* FlightUpdate.json */; };
+		F4933D001F79853B00F6EBFD /* FoodOrder.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF31F79853B00F6EBFD /* FoodOrder.json */; };
+		F4933D011F79853B00F6EBFD /* ImageGallery.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF41F79853B00F6EBFD /* ImageGallery.json */; };
+		F4933D021F79853B00F6EBFD /* InputForm.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF51F79853B00F6EBFD /* InputForm.json */; };
+		F4933D031F79853B00F6EBFD /* Inputs.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF61F79853B00F6EBFD /* Inputs.json */; };
+		F4933D041F79853B00F6EBFD /* Restaurant.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF71F79853B00F6EBFD /* Restaurant.json */; };
+		F4933D051F79853B00F6EBFD /* SportsGameUpdate.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF81F79853B00F6EBFD /* SportsGameUpdate.json */; };
+		F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF91F79853B00F6EBFD /* StockUpdate.json */; };
+		F4933D071F79853B00F6EBFD /* WeatherCompact.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CFA1F79853B00F6EBFD /* WeatherCompact.json */; };
+		F4933D081F79853B00F6EBFD /* WeatherLarge.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CFB1F79853B00F6EBFD /* WeatherLarge.json */; };
 		F49CECC01F62412E00D7FB55 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */; };
 		F49CECC11F62412E00D7FB55 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F4D33E5C1F045BA800941E44 /* Action.Http.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E351F045BA800941E44 /* Action.Http.json */; };
-		F4D33E5D1F045BA800941E44 /* Action.OpenUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E361F045BA800941E44 /* Action.OpenUrl.json */; };
-		F4D33E5E1F045BA800941E44 /* Action.ShowCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E371F045BA800941E44 /* Action.ShowCard.json */; };
-		F4D33E5F1F045BA800941E44 /* Action.Submit.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E381F045BA800941E44 /* Action.Submit.json */; };
-		F4D33E601F045BA800941E44 /* Column.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E391F045BA800941E44 /* Column.SelectAction.json */; };
-		F4D33E611F045BA800941E44 /* Column.Separation.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E3A1F045BA800941E44 /* Column.Separation.json */; };
-		F4D33E621F045BA800941E44 /* Column.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E3B1F045BA800941E44 /* Column.Size.json */; };
-		F4D33E631F045BA800941E44 /* Column.SizeRatio.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E3C1F045BA800941E44 /* Column.SizeRatio.json */; };
-		F4D33E641F045BA800941E44 /* ColumnSet.Columns.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E3D1F045BA800941E44 /* ColumnSet.Columns.json */; };
-		F4D33E651F045BA800941E44 /* ColumnSet.Separation.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E3E1F045BA800941E44 /* ColumnSet.Separation.json */; };
-		F4D33E661F045BA800941E44 /* Container.Items.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E3F1F045BA800941E44 /* Container.Items.json */; };
-		F4D33E671F045BA800941E44 /* Container.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E401F045BA800941E44 /* Container.SelectAction.json */; };
-		F4D33E681F045BA800941E44 /* Container.Separation.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E411F045BA800941E44 /* Container.Separation.json */; };
-		F4D33E691F045BA800941E44 /* FactSet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E421F045BA800941E44 /* FactSet.json */; };
-		F4D33E6A1F045BA800941E44 /* Image.HorizontalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E431F045BA800941E44 /* Image.HorizontalAlignment.json */; };
-		F4D33E6B1F045BA800941E44 /* Image.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E441F045BA800941E44 /* Image.SelectAction.json */; };
-		F4D33E6C1F045BA800941E44 /* Image.Separation.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E451F045BA800941E44 /* Image.Separation.json */; };
-		F4D33E6D1F045BA800941E44 /* Image.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E461F045BA800941E44 /* Image.Size.json */; };
-		F4D33E6E1F045BA800941E44 /* Image.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E471F045BA800941E44 /* Image.Style.json */; };
-		F4D33E6F1F045BA800941E44 /* Image.Url.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E481F045BA800941E44 /* Image.Url.json */; };
-		F4D33E701F045BA800941E44 /* ImageSet.ImageSize.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E491F045BA800941E44 /* ImageSet.ImageSize.json */; };
-		F4D33E711F045BA800941E44 /* ImageSet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E4A1F045BA800941E44 /* ImageSet.json */; };
-		F4D33E721F045BA800941E44 /* Input.ChoiceSet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E4B1F045BA800941E44 /* Input.ChoiceSet.json */; };
-		F4D33E731F045BA800941E44 /* Input.Date.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E4C1F045BA800941E44 /* Input.Date.json */; };
-		F4D33E741F045BA800941E44 /* Input.Number.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E4D1F045BA800941E44 /* Input.Number.json */; };
-		F4D33E751F045BA800941E44 /* Input.Text.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E4E1F045BA800941E44 /* Input.Text.json */; };
-		F4D33E761F045BA800941E44 /* Input.Text.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E4F1F045BA800941E44 /* Input.Text.Style.json */; };
-		F4D33E771F045BA800941E44 /* Input.Time.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E501F045BA800941E44 /* Input.Time.json */; };
-		F4D33E781F045BA800941E44 /* Input.Toggle.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E511F045BA800941E44 /* Input.Toggle.json */; };
-		F4D33E791F045BA800941E44 /* Stylesheet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E521F045BA800941E44 /* Stylesheet.json */; };
-		F4D33E7A1F045BA800941E44 /* TextBlock.Color.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E531F045BA800941E44 /* TextBlock.Color.json */; };
-		F4D33E7B1F045BA800941E44 /* TextBlock.HorizontalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E541F045BA800941E44 /* TextBlock.HorizontalAlignment.json */; };
-		F4D33E7C1F045BA800941E44 /* TextBlock.IsSubtle.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E551F045BA800941E44 /* TextBlock.IsSubtle.json */; };
-		F4D33E7D1F045BA800941E44 /* TextBlock.MaxLines.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E561F045BA800941E44 /* TextBlock.MaxLines.json */; };
-		F4D33E7E1F045BA800941E44 /* TextBlock.Separation.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E571F045BA800941E44 /* TextBlock.Separation.json */; };
-		F4D33E7F1F045BA800941E44 /* TextBlock.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E581F045BA800941E44 /* TextBlock.Size.json */; };
-		F4D33E801F045BA800941E44 /* TextBlock.Text.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E591F045BA800941E44 /* TextBlock.Text.json */; };
-		F4D33E811F045BA800941E44 /* TextBlock.Weight.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E5A1F045BA800941E44 /* TextBlock.Weight.json */; };
-		F4D33E821F045BA800941E44 /* TextBlock.Wrap.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E5B1F045BA800941E44 /* TextBlock.Wrap.json */; };
 		F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D33E851F04705800941E44 /* ACVTableViewController.m */; };
-		F4D33E931F05916F00941E44 /* Activity Update.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E881F05916F00941E44 /* Activity Update.json */; };
-		F4D33E941F05916F00941E44 /* Calendar Reminder.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E891F05916F00941E44 /* Calendar Reminder.json */; };
-		F4D33E951F05916F00941E44 /* Flight Itinerary.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E8A1F05916F00941E44 /* Flight Itinerary.json */; };
-		F4D33E961F05916F00941E44 /* Flight Update.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E8B1F05916F00941E44 /* Flight Update.json */; };
-		F4D33E971F05916F00941E44 /* Food Order.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E8C1F05916F00941E44 /* Food Order.json */; };
-		F4D33E981F05916F00941E44 /* Image Gallery.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E8D1F05916F00941E44 /* Image Gallery.json */; };
-		F4D33E991F05916F00941E44 /* Input Form.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E8E1F05916F00941E44 /* Input Form.json */; };
-		F4D33E9A1F05916F00941E44 /* Restaurant.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E8F1F05916F00941E44 /* Restaurant.json */; };
-		F4D33E9B1F05916F00941E44 /* Stock Update.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E901F05916F00941E44 /* Stock Update.json */; };
-		F4D33E9C1F05916F00941E44 /* Weather Compact.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D33E911F05916F00941E44 /* Weather Compact.json */; };
-		F4D852581F6B726D00669636 /* hostconfig.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D852571F6B726D00669636 /* hostconfig.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,60 +128,67 @@
 		F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADCIOSVisualizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C09D1EE1FB6100905679 /* ADCIOSVisualizerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCIOSVisualizerUITests.m; sourceTree = "<group>"; };
 		F423C09F1EE1FB6100905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F436607A1F0707B900EBA868 /* Weather Large.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Weather Large.json"; path = "../../../website/wwwroot/samples/cards/Weather Large.json"; sourceTree = "<group>"; };
+		F4933C951F79852C00F6EBFD /* Action.OpenUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.json; path = ../../../../samples/v1.0/Elements/Action.OpenUrl.json; sourceTree = "<group>"; };
+		F4933C961F79852C00F6EBFD /* Action.ShowCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.json; sourceTree = "<group>"; };
+		F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
+		F4933C981F79852C00F6EBFD /* Action.Submit.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.json; path = ../../../../samples/v1.0/Elements/Action.Submit.json; sourceTree = "<group>"; };
+		F4933C991F79852C00F6EBFD /* Column.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.SelectAction.json; path = ../../../../samples/v1.0/Elements/Column.SelectAction.json; sourceTree = "<group>"; };
+		F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Spacing.json; path = ../../../../samples/v1.0/Elements/Column.Spacing.json; sourceTree = "<group>"; };
+		F4933C9B1F79852C00F6EBFD /* Column.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Style.json; path = ../../../../samples/v1.0/Elements/Column.Style.json; sourceTree = "<group>"; };
+		F4933C9C1F79852C00F6EBFD /* Column.Width.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Width.json; path = ../../../../samples/v1.0/Elements/Column.Width.json; sourceTree = "<group>"; };
+		F4933C9D1F79852C00F6EBFD /* Column.WidthRatio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.WidthRatio.json; path = ../../../../samples/v1.0/Elements/Column.WidthRatio.json; sourceTree = "<group>"; };
+		F4933C9E1F79852C00F6EBFD /* ColumnSet.Columns.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Columns.json; path = ../../../../samples/v1.0/Elements/ColumnSet.Columns.json; sourceTree = "<group>"; };
+		F4933C9F1F79852C00F6EBFD /* ColumnSet.Separator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Separator.json; path = ../../../../samples/v1.0/Elements/ColumnSet.Separator.json; sourceTree = "<group>"; };
+		F4933CA01F79852C00F6EBFD /* ColumnSet.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Spacing.json; path = ../../../../samples/v1.0/Elements/ColumnSet.Spacing.json; sourceTree = "<group>"; };
+		F4933CA11F79852C00F6EBFD /* Container.Items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Items.json; path = ../../../../samples/v1.0/Elements/Container.Items.json; sourceTree = "<group>"; };
+		F4933CA21F79852C00F6EBFD /* Container.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.SelectAction.json; path = ../../../../samples/v1.0/Elements/Container.SelectAction.json; sourceTree = "<group>"; };
+		F4933CA31F79852C00F6EBFD /* Container.Separator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Separator.json; path = ../../../../samples/v1.0/Elements/Container.Separator.json; sourceTree = "<group>"; };
+		F4933CA41F79852C00F6EBFD /* Container.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Spacing.json; path = ../../../../samples/v1.0/Elements/Container.Spacing.json; sourceTree = "<group>"; };
+		F4933CA51F79852C00F6EBFD /* Container.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Style.json; path = ../../../../samples/v1.0/Elements/Container.Style.json; sourceTree = "<group>"; };
+		F4933CA61F79852C00F6EBFD /* FactSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FactSet.json; path = ../../../../samples/v1.0/Elements/FactSet.json; sourceTree = "<group>"; };
+		F4933CA71F79852C00F6EBFD /* Image.HorizontalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.HorizontalAlignment.json; path = ../../../../samples/v1.0/Elements/Image.HorizontalAlignment.json; sourceTree = "<group>"; };
+		F4933CA81F79852C00F6EBFD /* Image.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.SelectAction.json; path = ../../../../samples/v1.0/Elements/Image.SelectAction.json; sourceTree = "<group>"; };
+		F4933CA91F79852C00F6EBFD /* Image.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Size.json; path = ../../../../samples/v1.0/Elements/Image.Size.json; sourceTree = "<group>"; };
+		F4933CAA1F79852C00F6EBFD /* Image.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Spacing.json; path = ../../../../samples/v1.0/Elements/Image.Spacing.json; sourceTree = "<group>"; };
+		F4933CAB1F79852C00F6EBFD /* Image.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Style.json; path = ../../../../samples/v1.0/Elements/Image.Style.json; sourceTree = "<group>"; };
+		F4933CAC1F79852C00F6EBFD /* Image.Url.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Url.json; path = ../../../../samples/v1.0/Elements/Image.Url.json; sourceTree = "<group>"; };
+		F4933CAD1F79852C00F6EBFD /* ImageSet.ImageSize.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ImageSet.ImageSize.json; path = ../../../../samples/v1.0/Elements/ImageSet.ImageSize.json; sourceTree = "<group>"; };
+		F4933CAE1F79852C00F6EBFD /* ImageSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ImageSet.json; path = ../../../../samples/v1.0/Elements/ImageSet.json; sourceTree = "<group>"; };
+		F4933CAF1F79852C00F6EBFD /* Input.ChoiceSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.ChoiceSet.json; path = ../../../../samples/v1.0/Elements/Input.ChoiceSet.json; sourceTree = "<group>"; };
+		F4933CB01F79852C00F6EBFD /* Input.Date.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Date.json; path = ../../../../samples/v1.0/Elements/Input.Date.json; sourceTree = "<group>"; };
+		F4933CB11F79852C00F6EBFD /* Input.Number.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Number.json; path = ../../../../samples/v1.0/Elements/Input.Number.json; sourceTree = "<group>"; };
+		F4933CB21F79852C00F6EBFD /* Input.Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Text.json; path = ../../../../samples/v1.0/Elements/Input.Text.json; sourceTree = "<group>"; };
+		F4933CB31F79852C00F6EBFD /* Input.Text.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Text.Style.json; path = ../../../../samples/v1.0/Elements/Input.Text.Style.json; sourceTree = "<group>"; };
+		F4933CB41F79852C00F6EBFD /* Input.Time.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Time.json; path = ../../../../samples/v1.0/Elements/Input.Time.json; sourceTree = "<group>"; };
+		F4933CB51F79852C00F6EBFD /* Input.Toggle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Toggle.json; path = ../../../../samples/v1.0/Elements/Input.Toggle.json; sourceTree = "<group>"; };
+		F4933CB61F79852C00F6EBFD /* Stylesheet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Stylesheet.json; path = ../../../../samples/v1.0/Elements/Stylesheet.json; sourceTree = "<group>"; };
+		F4933CB71F79852C00F6EBFD /* TextBlock.Color.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Color.json; path = ../../../../samples/v1.0/Elements/TextBlock.Color.json; sourceTree = "<group>"; };
+		F4933CB81F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.DateTimeFormatting.json; path = ../../../../samples/v1.0/Elements/TextBlock.DateTimeFormatting.json; sourceTree = "<group>"; };
+		F4933CB91F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.HorizontalAlignment.json; path = ../../../../samples/v1.0/Elements/TextBlock.HorizontalAlignment.json; sourceTree = "<group>"; };
+		F4933CBA1F79852C00F6EBFD /* TextBlock.IsSubtle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.IsSubtle.json; path = ../../../../samples/v1.0/Elements/TextBlock.IsSubtle.json; sourceTree = "<group>"; };
+		F4933CBB1F79852C00F6EBFD /* TextBlock.Markdown.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Markdown.json; path = ../../../../samples/v1.0/Elements/TextBlock.Markdown.json; sourceTree = "<group>"; };
+		F4933CBC1F79852C00F6EBFD /* TextBlock.MaxLines.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.MaxLines.json; path = ../../../../samples/v1.0/Elements/TextBlock.MaxLines.json; sourceTree = "<group>"; };
+		F4933CBD1F79852C00F6EBFD /* TextBlock.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Size.json; path = ../../../../samples/v1.0/Elements/TextBlock.Size.json; sourceTree = "<group>"; };
+		F4933CBE1F79852C00F6EBFD /* TextBlock.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Spacing.json; path = ../../../../samples/v1.0/Elements/TextBlock.Spacing.json; sourceTree = "<group>"; };
+		F4933CBF1F79852C00F6EBFD /* TextBlock.Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Text.json; path = ../../../../samples/v1.0/Elements/TextBlock.Text.json; sourceTree = "<group>"; };
+		F4933CC01F79852C00F6EBFD /* TextBlock.Weight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Weight.json; path = ../../../../samples/v1.0/Elements/TextBlock.Weight.json; sourceTree = "<group>"; };
+		F4933CC11F79852C00F6EBFD /* TextBlock.Wrap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Wrap.json; path = ../../../../samples/v1.0/Elements/TextBlock.Wrap.json; sourceTree = "<group>"; };
+		F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ActivityUpdate.json; path = ../../../../samples/v1.0/Scenarios/ActivityUpdate.json; sourceTree = "<group>"; };
+		F4933CF01F79853B00F6EBFD /* CalendarReminder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CalendarReminder.json; path = ../../../../samples/v1.0/Scenarios/CalendarReminder.json; sourceTree = "<group>"; };
+		F4933CF11F79853B00F6EBFD /* FlightItinerary.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlightItinerary.json; path = ../../../../samples/v1.0/Scenarios/FlightItinerary.json; sourceTree = "<group>"; };
+		F4933CF21F79853B00F6EBFD /* FlightUpdate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlightUpdate.json; path = ../../../../samples/v1.0/Scenarios/FlightUpdate.json; sourceTree = "<group>"; };
+		F4933CF31F79853B00F6EBFD /* FoodOrder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FoodOrder.json; path = ../../../../samples/v1.0/Scenarios/FoodOrder.json; sourceTree = "<group>"; };
+		F4933CF41F79853B00F6EBFD /* ImageGallery.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ImageGallery.json; path = ../../../../samples/v1.0/Scenarios/ImageGallery.json; sourceTree = "<group>"; };
+		F4933CF51F79853B00F6EBFD /* InputForm.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = InputForm.json; path = ../../../../samples/v1.0/Scenarios/InputForm.json; sourceTree = "<group>"; };
+		F4933CF61F79853B00F6EBFD /* Inputs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Inputs.json; path = ../../../../samples/v1.0/Scenarios/Inputs.json; sourceTree = "<group>"; };
+		F4933CF71F79853B00F6EBFD /* Restaurant.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Restaurant.json; path = ../../../../samples/v1.0/Scenarios/Restaurant.json; sourceTree = "<group>"; };
+		F4933CF81F79853B00F6EBFD /* SportsGameUpdate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SportsGameUpdate.json; path = ../../../../samples/v1.0/Scenarios/SportsGameUpdate.json; sourceTree = "<group>"; };
+		F4933CF91F79853B00F6EBFD /* StockUpdate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = StockUpdate.json; path = ../../../../samples/v1.0/Scenarios/StockUpdate.json; sourceTree = "<group>"; };
+		F4933CFA1F79853B00F6EBFD /* WeatherCompact.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WeatherCompact.json; path = ../../../../samples/v1.0/Scenarios/WeatherCompact.json; sourceTree = "<group>"; };
+		F4933CFB1F79853B00F6EBFD /* WeatherLarge.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WeatherLarge.json; path = ../../../../samples/v1.0/Scenarios/WeatherLarge.json; sourceTree = "<group>"; };
 		F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4D33E351F045BA800941E44 /* Action.Http.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Http.json; path = ../../../website/wwwroot/explorer/cards/Action.Http.json; sourceTree = "<group>"; };
-		F4D33E361F045BA800941E44 /* Action.OpenUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.json; path = ../../../website/wwwroot/explorer/cards/Action.OpenUrl.json; sourceTree = "<group>"; };
-		F4D33E371F045BA800941E44 /* Action.ShowCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.json; path = ../../../website/wwwroot/explorer/cards/Action.ShowCard.json; sourceTree = "<group>"; };
-		F4D33E381F045BA800941E44 /* Action.Submit.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.json; path = ../../../website/wwwroot/explorer/cards/Action.Submit.json; sourceTree = "<group>"; };
-		F4D33E391F045BA800941E44 /* Column.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.SelectAction.json; path = ../../../website/wwwroot/explorer/cards/Column.SelectAction.json; sourceTree = "<group>"; };
-		F4D33E3A1F045BA800941E44 /* Column.Separation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Separation.json; path = ../../../website/wwwroot/explorer/cards/Column.Separation.json; sourceTree = "<group>"; };
-		F4D33E3B1F045BA800941E44 /* Column.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Size.json; path = ../../../website/wwwroot/explorer/cards/Column.Size.json; sourceTree = "<group>"; };
-		F4D33E3C1F045BA800941E44 /* Column.SizeRatio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.SizeRatio.json; path = ../../../website/wwwroot/explorer/cards/Column.SizeRatio.json; sourceTree = "<group>"; };
-		F4D33E3D1F045BA800941E44 /* ColumnSet.Columns.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Columns.json; path = ../../../website/wwwroot/explorer/cards/ColumnSet.Columns.json; sourceTree = "<group>"; };
-		F4D33E3E1F045BA800941E44 /* ColumnSet.Separation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Separation.json; path = ../../../website/wwwroot/explorer/cards/ColumnSet.Separation.json; sourceTree = "<group>"; };
-		F4D33E3F1F045BA800941E44 /* Container.Items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Items.json; path = ../../../website/wwwroot/explorer/cards/Container.Items.json; sourceTree = "<group>"; };
-		F4D33E401F045BA800941E44 /* Container.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.SelectAction.json; path = ../../../website/wwwroot/explorer/cards/Container.SelectAction.json; sourceTree = "<group>"; };
-		F4D33E411F045BA800941E44 /* Container.Separation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Separation.json; path = ../../../website/wwwroot/explorer/cards/Container.Separation.json; sourceTree = "<group>"; };
-		F4D33E421F045BA800941E44 /* FactSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FactSet.json; path = ../../../website/wwwroot/explorer/cards/FactSet.json; sourceTree = "<group>"; };
-		F4D33E431F045BA800941E44 /* Image.HorizontalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.HorizontalAlignment.json; path = ../../../website/wwwroot/explorer/cards/Image.HorizontalAlignment.json; sourceTree = "<group>"; };
-		F4D33E441F045BA800941E44 /* Image.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.SelectAction.json; path = ../../../website/wwwroot/explorer/cards/Image.SelectAction.json; sourceTree = "<group>"; };
-		F4D33E451F045BA800941E44 /* Image.Separation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Separation.json; path = ../../../website/wwwroot/explorer/cards/Image.Separation.json; sourceTree = "<group>"; };
-		F4D33E461F045BA800941E44 /* Image.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Size.json; path = ../../../website/wwwroot/explorer/cards/Image.Size.json; sourceTree = "<group>"; };
-		F4D33E471F045BA800941E44 /* Image.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Style.json; path = ../../../website/wwwroot/explorer/cards/Image.Style.json; sourceTree = "<group>"; };
-		F4D33E481F045BA800941E44 /* Image.Url.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Url.json; path = ../../../website/wwwroot/explorer/cards/Image.Url.json; sourceTree = "<group>"; };
-		F4D33E491F045BA800941E44 /* ImageSet.ImageSize.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ImageSet.ImageSize.json; path = ../../../website/wwwroot/explorer/cards/ImageSet.ImageSize.json; sourceTree = "<group>"; };
-		F4D33E4A1F045BA800941E44 /* ImageSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ImageSet.json; path = ../../../website/wwwroot/explorer/cards/ImageSet.json; sourceTree = "<group>"; };
-		F4D33E4B1F045BA800941E44 /* Input.ChoiceSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.ChoiceSet.json; path = ../../../website/wwwroot/explorer/cards/Input.ChoiceSet.json; sourceTree = "<group>"; };
-		F4D33E4C1F045BA800941E44 /* Input.Date.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Date.json; path = ../../../website/wwwroot/explorer/cards/Input.Date.json; sourceTree = "<group>"; };
-		F4D33E4D1F045BA800941E44 /* Input.Number.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Number.json; path = ../../../website/wwwroot/explorer/cards/Input.Number.json; sourceTree = "<group>"; };
-		F4D33E4E1F045BA800941E44 /* Input.Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Text.json; path = ../../../website/wwwroot/explorer/cards/Input.Text.json; sourceTree = "<group>"; };
-		F4D33E4F1F045BA800941E44 /* Input.Text.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Text.Style.json; path = ../../../website/wwwroot/explorer/cards/Input.Text.Style.json; sourceTree = "<group>"; };
-		F4D33E501F045BA800941E44 /* Input.Time.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Time.json; path = ../../../website/wwwroot/explorer/cards/Input.Time.json; sourceTree = "<group>"; };
-		F4D33E511F045BA800941E44 /* Input.Toggle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Toggle.json; path = ../../../website/wwwroot/explorer/cards/Input.Toggle.json; sourceTree = "<group>"; };
-		F4D33E521F045BA800941E44 /* Stylesheet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Stylesheet.json; path = ../../../website/wwwroot/explorer/cards/Stylesheet.json; sourceTree = "<group>"; };
-		F4D33E531F045BA800941E44 /* TextBlock.Color.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Color.json; path = ../../../website/wwwroot/explorer/cards/TextBlock.Color.json; sourceTree = "<group>"; };
-		F4D33E541F045BA800941E44 /* TextBlock.HorizontalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.HorizontalAlignment.json; path = ../../../website/wwwroot/explorer/cards/TextBlock.HorizontalAlignment.json; sourceTree = "<group>"; };
-		F4D33E551F045BA800941E44 /* TextBlock.IsSubtle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.IsSubtle.json; path = ../../../website/wwwroot/explorer/cards/TextBlock.IsSubtle.json; sourceTree = "<group>"; };
-		F4D33E561F045BA800941E44 /* TextBlock.MaxLines.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.MaxLines.json; path = ../../../website/wwwroot/explorer/cards/TextBlock.MaxLines.json; sourceTree = "<group>"; };
-		F4D33E571F045BA800941E44 /* TextBlock.Separation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Separation.json; path = ../../../website/wwwroot/explorer/cards/TextBlock.Separation.json; sourceTree = "<group>"; };
-		F4D33E581F045BA800941E44 /* TextBlock.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Size.json; path = ../../../website/wwwroot/explorer/cards/TextBlock.Size.json; sourceTree = "<group>"; };
-		F4D33E591F045BA800941E44 /* TextBlock.Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Text.json; path = ../../../website/wwwroot/explorer/cards/TextBlock.Text.json; sourceTree = "<group>"; };
-		F4D33E5A1F045BA800941E44 /* TextBlock.Weight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Weight.json; path = ../../../website/wwwroot/explorer/cards/TextBlock.Weight.json; sourceTree = "<group>"; };
-		F4D33E5B1F045BA800941E44 /* TextBlock.Wrap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Wrap.json; path = ../../../website/wwwroot/explorer/cards/TextBlock.Wrap.json; sourceTree = "<group>"; };
 		F4D33E841F04705800941E44 /* ACVTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACVTableViewController.h; sourceTree = "<group>"; };
 		F4D33E851F04705800941E44 /* ACVTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACVTableViewController.m; sourceTree = "<group>"; };
-		F4D33E881F05916F00941E44 /* Activity Update.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Activity Update.json"; path = "../../../website/wwwroot/samples/cards/Activity Update.json"; sourceTree = "<group>"; };
-		F4D33E891F05916F00941E44 /* Calendar Reminder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Calendar Reminder.json"; path = "../../../website/wwwroot/samples/cards/Calendar Reminder.json"; sourceTree = "<group>"; };
-		F4D33E8A1F05916F00941E44 /* Flight Itinerary.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Flight Itinerary.json"; path = "../../../website/wwwroot/samples/cards/Flight Itinerary.json"; sourceTree = "<group>"; };
-		F4D33E8B1F05916F00941E44 /* Flight Update.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Flight Update.json"; path = "../../../website/wwwroot/samples/cards/Flight Update.json"; sourceTree = "<group>"; };
-		F4D33E8C1F05916F00941E44 /* Food Order.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Food Order.json"; path = "../../../website/wwwroot/samples/cards/Food Order.json"; sourceTree = "<group>"; };
-		F4D33E8D1F05916F00941E44 /* Image Gallery.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Image Gallery.json"; path = "../../../website/wwwroot/samples/cards/Image Gallery.json"; sourceTree = "<group>"; };
-		F4D33E8E1F05916F00941E44 /* Input Form.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Input Form.json"; path = "../../../website/wwwroot/samples/cards/Input Form.json"; sourceTree = "<group>"; };
-		F4D33E8F1F05916F00941E44 /* Restaurant.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Restaurant.json; path = ../../../website/wwwroot/samples/cards/Restaurant.json; sourceTree = "<group>"; };
-		F4D33E901F05916F00941E44 /* Stock Update.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Stock Update.json"; path = "../../../website/wwwroot/samples/cards/Stock Update.json"; sourceTree = "<group>"; };
-		F4D33E911F05916F00941E44 /* Weather Compact.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Weather Compact.json"; path = "../../../website/wwwroot/samples/cards/Weather Compact.json"; sourceTree = "<group>"; };
-		F4D852571F6B726D00669636 /* hostconfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = hostconfig.json; path = ADCIOSVisualizer/hostconfig.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,57 +287,64 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
-				F4D852561F6B725400669636 /* HostConfig */,
-				F4D33E881F05916F00941E44 /* Activity Update.json */,
-				F4D33E891F05916F00941E44 /* Calendar Reminder.json */,
-				F4D33E8A1F05916F00941E44 /* Flight Itinerary.json */,
-				F4D33E8B1F05916F00941E44 /* Flight Update.json */,
-				F4D33E8C1F05916F00941E44 /* Food Order.json */,
-				F4D33E8D1F05916F00941E44 /* Image Gallery.json */,
-				F4D33E8E1F05916F00941E44 /* Input Form.json */,
-				F4D33E8F1F05916F00941E44 /* Restaurant.json */,
-				F4D33E901F05916F00941E44 /* Stock Update.json */,
-				F436607A1F0707B900EBA868 /* Weather Large.json */,
-				F4D33E911F05916F00941E44 /* Weather Compact.json */,
-				F4D33E351F045BA800941E44 /* Action.Http.json */,
-				F4D33E361F045BA800941E44 /* Action.OpenUrl.json */,
-				F4D33E371F045BA800941E44 /* Action.ShowCard.json */,
-				F4D33E381F045BA800941E44 /* Action.Submit.json */,
-				F4D33E391F045BA800941E44 /* Column.SelectAction.json */,
-				F4D33E3A1F045BA800941E44 /* Column.Separation.json */,
-				F4D33E3B1F045BA800941E44 /* Column.Size.json */,
-				F4D33E3C1F045BA800941E44 /* Column.SizeRatio.json */,
-				F4D33E3D1F045BA800941E44 /* ColumnSet.Columns.json */,
-				F4D33E3E1F045BA800941E44 /* ColumnSet.Separation.json */,
-				F4D33E3F1F045BA800941E44 /* Container.Items.json */,
-				F4D33E401F045BA800941E44 /* Container.SelectAction.json */,
-				F4D33E411F045BA800941E44 /* Container.Separation.json */,
-				F4D33E421F045BA800941E44 /* FactSet.json */,
-				F4D33E431F045BA800941E44 /* Image.HorizontalAlignment.json */,
-				F4D33E441F045BA800941E44 /* Image.SelectAction.json */,
-				F4D33E451F045BA800941E44 /* Image.Separation.json */,
-				F4D33E461F045BA800941E44 /* Image.Size.json */,
-				F4D33E471F045BA800941E44 /* Image.Style.json */,
-				F4D33E481F045BA800941E44 /* Image.Url.json */,
-				F4D33E491F045BA800941E44 /* ImageSet.ImageSize.json */,
-				F4D33E4A1F045BA800941E44 /* ImageSet.json */,
-				F4D33E4B1F045BA800941E44 /* Input.ChoiceSet.json */,
-				F4D33E4C1F045BA800941E44 /* Input.Date.json */,
-				F4D33E4D1F045BA800941E44 /* Input.Number.json */,
-				F4D33E4E1F045BA800941E44 /* Input.Text.json */,
-				F4D33E4F1F045BA800941E44 /* Input.Text.Style.json */,
-				F4D33E501F045BA800941E44 /* Input.Time.json */,
-				F4D33E511F045BA800941E44 /* Input.Toggle.json */,
-				F4D33E521F045BA800941E44 /* Stylesheet.json */,
-				F4D33E531F045BA800941E44 /* TextBlock.Color.json */,
-				F4D33E541F045BA800941E44 /* TextBlock.HorizontalAlignment.json */,
-				F4D33E551F045BA800941E44 /* TextBlock.IsSubtle.json */,
-				F4D33E561F045BA800941E44 /* TextBlock.MaxLines.json */,
-				F4D33E571F045BA800941E44 /* TextBlock.Separation.json */,
-				F4D33E581F045BA800941E44 /* TextBlock.Size.json */,
-				F4D33E591F045BA800941E44 /* TextBlock.Text.json */,
-				F4D33E5A1F045BA800941E44 /* TextBlock.Weight.json */,
-				F4D33E5B1F045BA800941E44 /* TextBlock.Wrap.json */,
+				F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */,
+				F4933CF01F79853B00F6EBFD /* CalendarReminder.json */,
+				F4933CF11F79853B00F6EBFD /* FlightItinerary.json */,
+				F4933CF21F79853B00F6EBFD /* FlightUpdate.json */,
+				F4933CF31F79853B00F6EBFD /* FoodOrder.json */,
+				F4933CF41F79853B00F6EBFD /* ImageGallery.json */,
+				F4933CF51F79853B00F6EBFD /* InputForm.json */,
+				F4933CF61F79853B00F6EBFD /* Inputs.json */,
+				F4933CF71F79853B00F6EBFD /* Restaurant.json */,
+				F4933CF81F79853B00F6EBFD /* SportsGameUpdate.json */,
+				F4933CF91F79853B00F6EBFD /* StockUpdate.json */,
+				F4933CFA1F79853B00F6EBFD /* WeatherCompact.json */,
+				F4933CFB1F79853B00F6EBFD /* WeatherLarge.json */,
+				F4933C951F79852C00F6EBFD /* Action.OpenUrl.json */,
+				F4933C961F79852C00F6EBFD /* Action.ShowCard.json */,
+				F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */,
+				F4933C981F79852C00F6EBFD /* Action.Submit.json */,
+				F4933C991F79852C00F6EBFD /* Column.SelectAction.json */,
+				F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */,
+				F4933C9B1F79852C00F6EBFD /* Column.Style.json */,
+				F4933C9C1F79852C00F6EBFD /* Column.Width.json */,
+				F4933C9D1F79852C00F6EBFD /* Column.WidthRatio.json */,
+				F4933C9E1F79852C00F6EBFD /* ColumnSet.Columns.json */,
+				F4933C9F1F79852C00F6EBFD /* ColumnSet.Separator.json */,
+				F4933CA01F79852C00F6EBFD /* ColumnSet.Spacing.json */,
+				F4933CA11F79852C00F6EBFD /* Container.Items.json */,
+				F4933CA21F79852C00F6EBFD /* Container.SelectAction.json */,
+				F4933CA31F79852C00F6EBFD /* Container.Separator.json */,
+				F4933CA41F79852C00F6EBFD /* Container.Spacing.json */,
+				F4933CA51F79852C00F6EBFD /* Container.Style.json */,
+				F4933CA61F79852C00F6EBFD /* FactSet.json */,
+				F4933CA71F79852C00F6EBFD /* Image.HorizontalAlignment.json */,
+				F4933CA81F79852C00F6EBFD /* Image.SelectAction.json */,
+				F4933CA91F79852C00F6EBFD /* Image.Size.json */,
+				F4933CAA1F79852C00F6EBFD /* Image.Spacing.json */,
+				F4933CAB1F79852C00F6EBFD /* Image.Style.json */,
+				F4933CAC1F79852C00F6EBFD /* Image.Url.json */,
+				F4933CAD1F79852C00F6EBFD /* ImageSet.ImageSize.json */,
+				F4933CAE1F79852C00F6EBFD /* ImageSet.json */,
+				F4933CAF1F79852C00F6EBFD /* Input.ChoiceSet.json */,
+				F4933CB01F79852C00F6EBFD /* Input.Date.json */,
+				F4933CB11F79852C00F6EBFD /* Input.Number.json */,
+				F4933CB21F79852C00F6EBFD /* Input.Text.json */,
+				F4933CB31F79852C00F6EBFD /* Input.Text.Style.json */,
+				F4933CB41F79852C00F6EBFD /* Input.Time.json */,
+				F4933CB51F79852C00F6EBFD /* Input.Toggle.json */,
+				F4933CB61F79852C00F6EBFD /* Stylesheet.json */,
+				F4933CB71F79852C00F6EBFD /* TextBlock.Color.json */,
+				F4933CB81F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json */,
+				F4933CB91F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json */,
+				F4933CBA1F79852C00F6EBFD /* TextBlock.IsSubtle.json */,
+				F4933CBB1F79852C00F6EBFD /* TextBlock.Markdown.json */,
+				F4933CBC1F79852C00F6EBFD /* TextBlock.MaxLines.json */,
+				F4933CBD1F79852C00F6EBFD /* TextBlock.Size.json */,
+				F4933CBE1F79852C00F6EBFD /* TextBlock.Spacing.json */,
+				F4933CBF1F79852C00F6EBFD /* TextBlock.Text.json */,
+				F4933CC01F79852C00F6EBFD /* TextBlock.Weight.json */,
+				F4933CC11F79852C00F6EBFD /* TextBlock.Wrap.json */,
 			);
 			name = Jsons;
 			sourceTree = "<group>";
@@ -443,60 +464,67 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4D33E6E1F045BA800941E44 /* Image.Style.json in Resources */,
-				F4D33E6B1F045BA800941E44 /* Image.SelectAction.json in Resources */,
-				F4D33E611F045BA800941E44 /* Column.Separation.json in Resources */,
-				F4D33E791F045BA800941E44 /* Stylesheet.json in Resources */,
-				F4D33E951F05916F00941E44 /* Flight Itinerary.json in Resources */,
-				F4D33E7B1F045BA800941E44 /* TextBlock.HorizontalAlignment.json in Resources */,
-				F4D33E821F045BA800941E44 /* TextBlock.Wrap.json in Resources */,
-				F4D33E931F05916F00941E44 /* Activity Update.json in Resources */,
-				F4D33E731F045BA800941E44 /* Input.Date.json in Resources */,
-				F4D852581F6B726D00669636 /* hostconfig.json in Resources */,
-				F4D33E9B1F05916F00941E44 /* Stock Update.json in Resources */,
-				F4D33E801F045BA800941E44 /* TextBlock.Text.json in Resources */,
-				F4D33E5F1F045BA800941E44 /* Action.Submit.json in Resources */,
-				F4D33E5C1F045BA800941E44 /* Action.Http.json in Resources */,
-				F4D33E6D1F045BA800941E44 /* Image.Size.json in Resources */,
-				F4D33E711F045BA800941E44 /* ImageSet.json in Resources */,
-				F4D33E9C1F05916F00941E44 /* Weather Compact.json in Resources */,
-				F4D33E621F045BA800941E44 /* Column.Size.json in Resources */,
-				F4D33E6A1F045BA800941E44 /* Image.HorizontalAlignment.json in Resources */,
-				F4D33E601F045BA800941E44 /* Column.SelectAction.json in Resources */,
-				F4D33E7E1F045BA800941E44 /* TextBlock.Separation.json in Resources */,
-				F4D33E631F045BA800941E44 /* Column.SizeRatio.json in Resources */,
-				F4D33E961F05916F00941E44 /* Flight Update.json in Resources */,
-				F4D33E6C1F045BA800941E44 /* Image.Separation.json in Resources */,
+				F4933CDE1F79852C00F6EBFD /* Input.Number.json in Resources */,
+				F4933CE41F79852C00F6EBFD /* TextBlock.Color.json in Resources */,
+				F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */,
+				F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */,
+				F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */,
+				F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */,
+				F4933CCC1F79852C00F6EBFD /* ColumnSet.Separator.json in Resources */,
+				F4933CCA1F79852C00F6EBFD /* Column.WidthRatio.json in Resources */,
+				F4933CD91F79852C00F6EBFD /* Image.Url.json in Resources */,
+				F4933D081F79853B00F6EBFD /* WeatherLarge.json in Resources */,
+				F4933CCD1F79852C00F6EBFD /* ColumnSet.Spacing.json in Resources */,
+				F4933CC21F79852C00F6EBFD /* Action.OpenUrl.json in Resources */,
+				F4933CFE1F79853B00F6EBFD /* FlightItinerary.json in Resources */,
+				F4933CC81F79852C00F6EBFD /* Column.Style.json in Resources */,
+				F4933CE81F79852C00F6EBFD /* TextBlock.Markdown.json in Resources */,
+				F4933D021F79853B00F6EBFD /* InputForm.json in Resources */,
+				F4933D031F79853B00F6EBFD /* Inputs.json in Resources */,
+				F4933CD21F79852C00F6EBFD /* Container.Style.json in Resources */,
+				F4933CD81F79852C00F6EBFD /* Image.Style.json in Resources */,
+				F4933CDD1F79852C00F6EBFD /* Input.Date.json in Resources */,
+				F4933CE91F79852C00F6EBFD /* TextBlock.MaxLines.json in Resources */,
+				F4933CDA1F79852C00F6EBFD /* ImageSet.ImageSize.json in Resources */,
+				F4933CFD1F79853B00F6EBFD /* CalendarReminder.json in Resources */,
+				F4933CE31F79852C00F6EBFD /* Stylesheet.json in Resources */,
+				F4933D011F79853B00F6EBFD /* ImageGallery.json in Resources */,
+				F4933D051F79853B00F6EBFD /* SportsGameUpdate.json in Resources */,
+				F4933D001F79853B00F6EBFD /* FoodOrder.json in Resources */,
+				F4933CE21F79852C00F6EBFD /* Input.Toggle.json in Resources */,
+				F4933CD01F79852C00F6EBFD /* Container.Separator.json in Resources */,
+				F4933CFC1F79853B00F6EBFD /* ActivityUpdate.json in Resources */,
+				F4933CD51F79852C00F6EBFD /* Image.SelectAction.json in Resources */,
+				F4933CDB1F79852C00F6EBFD /* ImageSet.json in Resources */,
+				F4933CC61F79852C00F6EBFD /* Column.SelectAction.json in Resources */,
+				F4933D041F79853B00F6EBFD /* Restaurant.json in Resources */,
 				F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */,
 				F423C0851EE1FB6100905679 /* Assets.xcassets in Resources */,
-				F4D33E681F045BA800941E44 /* Container.Separation.json in Resources */,
-				F4D33E741F045BA800941E44 /* Input.Number.json in Resources */,
-				F4D33E761F045BA800941E44 /* Input.Text.Style.json in Resources */,
-				F4D33E671F045BA800941E44 /* Container.SelectAction.json in Resources */,
-				F4D33E651F045BA800941E44 /* ColumnSet.Separation.json in Resources */,
-				F4D33E6F1F045BA800941E44 /* Image.Url.json in Resources */,
-				F4D33E981F05916F00941E44 /* Image Gallery.json in Resources */,
-				F4D33E661F045BA800941E44 /* Container.Items.json in Resources */,
-				F4D33E701F045BA800941E44 /* ImageSet.ImageSize.json in Resources */,
+				F4933CE01F79852C00F6EBFD /* Input.Text.Style.json in Resources */,
+				F4933CC71F79852C00F6EBFD /* Column.Spacing.json in Resources */,
+				F4933CC31F79852C00F6EBFD /* Action.ShowCard.json in Resources */,
+				F4933CD31F79852C00F6EBFD /* FactSet.json in Resources */,
+				F4933CC91F79852C00F6EBFD /* Column.Width.json in Resources */,
+				F4933CE51F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json in Resources */,
+				F4933CFF1F79853B00F6EBFD /* FlightUpdate.json in Resources */,
+				F4933D071F79853B00F6EBFD /* WeatherCompact.json in Resources */,
+				F4933CE11F79852C00F6EBFD /* Input.Time.json in Resources */,
+				F4933CEB1F79852C00F6EBFD /* TextBlock.Spacing.json in Resources */,
+				F4933CE61F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json in Resources */,
+				F4933CEA1F79852C00F6EBFD /* TextBlock.Size.json in Resources */,
+				F4933CEE1F79852C00F6EBFD /* TextBlock.Wrap.json in Resources */,
+				F4933CCB1F79852C00F6EBFD /* ColumnSet.Columns.json in Resources */,
+				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
+				F4933CEC1F79852C00F6EBFD /* TextBlock.Text.json in Resources */,
+				F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */,
+				F4933CD61F79852C00F6EBFD /* Image.Size.json in Resources */,
 				F423C0801EE1FB6100905679 /* Main.storyboard in Resources */,
-				F4D33E7A1F045BA800941E44 /* TextBlock.Color.json in Resources */,
-				F4D33E721F045BA800941E44 /* Input.ChoiceSet.json in Resources */,
-				F4D33E7C1F045BA800941E44 /* TextBlock.IsSubtle.json in Resources */,
-				F4D33E781F045BA800941E44 /* Input.Toggle.json in Resources */,
-				F4D33E941F05916F00941E44 /* Calendar Reminder.json in Resources */,
-				F4D33E691F045BA800941E44 /* FactSet.json in Resources */,
-				F4D33E991F05916F00941E44 /* Input Form.json in Resources */,
-				F4D33E5D1F045BA800941E44 /* Action.OpenUrl.json in Resources */,
-				F4D33E5E1F045BA800941E44 /* Action.ShowCard.json in Resources */,
-				F436607B1F0707B900EBA868 /* Weather Large.json in Resources */,
-				F4D33E9A1F05916F00941E44 /* Restaurant.json in Resources */,
-				F4D33E641F045BA800941E44 /* ColumnSet.Columns.json in Resources */,
-				F4D33E751F045BA800941E44 /* Input.Text.json in Resources */,
-				F4D33E811F045BA800941E44 /* TextBlock.Weight.json in Resources */,
-				F4D33E7F1F045BA800941E44 /* TextBlock.Size.json in Resources */,
-				F4D33E7D1F045BA800941E44 /* TextBlock.MaxLines.json in Resources */,
-				F4D33E971F05916F00941E44 /* Food Order.json in Resources */,
-				F4D33E771F045BA800941E44 /* Input.Time.json in Resources */,
+				F4933CD71F79852C00F6EBFD /* Image.Spacing.json in Resources */,
+				F4933CCE1F79852C00F6EBFD /* Container.Items.json in Resources */,
+				F4933CDF1F79852C00F6EBFD /* Input.Text.json in Resources */,
+				F4933CD11F79852C00F6EBFD /* Container.Spacing.json in Resources */,
+				F4933CCF1F79852C00F6EBFD /* Container.SelectAction.json in Resources */,
+				F4933CDC1F79852C00F6EBFD /* Input.ChoiceSet.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

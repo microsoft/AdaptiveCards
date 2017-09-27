@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AdaptiveImageSetConfig.h"
-#include "AdaptiveSeparationConfig.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::XamlCardRenderer;
@@ -34,15 +33,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::get_Separation(IAdaptiveSeparationConfig** separationConfig)
+    HRESULT  AdaptiveImageSetConfig::get_MaxImageHeight(UINT32* maxImageHeight)
     {
-        return MakeAndInitialize<AdaptiveSeparationConfig>(separationConfig, m_sharedImageSetConfig.separation);
+        *maxImageHeight = m_sharedImageSetConfig.maxImageHeight;
+        return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveImageSetConfig::put_Separation(IAdaptiveSeparationConfig*)
+    HRESULT  AdaptiveImageSetConfig::put_MaxImageHeight(UINT32 maxImageHeight)
     {
-        return E_NOTIMPL;
+        m_sharedImageSetConfig.maxImageHeight = maxImageHeight;
+        return S_OK;
     }
 }
 }

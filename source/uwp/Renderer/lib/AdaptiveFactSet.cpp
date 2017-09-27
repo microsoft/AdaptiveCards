@@ -48,32 +48,56 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveFactSet::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedFactSet->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedFactSet->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveFactSet::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
     {
-        m_sharedFactSet->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedFactSet->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveFactSet::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedFactSet->GetSpeak(), speak);
+        *separator = m_sharedFactSet->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedFactSet->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::put_Speak(HSTRING speak)
+    HRESULT AdaptiveFactSet::put_Separator(boolean separator)
+    {
+        m_sharedFactSet->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedFactSet->SetSeparator(sharedSeparator);
+        */
+
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedFactSet->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFactSet::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedFactSet->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedFactSet->SetId(out);
         return S_OK;
     }
-
 }}

@@ -11,8 +11,9 @@ class Image : public BaseCardElement
 {
 public:
     Image();
-    Image(SeparationStyle separationStyle,
-        std::string speak,
+    Image(
+        Spacing spacing,
+        bool separator,
         std::string uri,
         ImageStyle imageStyle,
         ImageSize imageSize,

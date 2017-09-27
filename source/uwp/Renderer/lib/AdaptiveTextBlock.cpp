@@ -70,16 +70,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor)
+    HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor* textColor)
     {
-        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextColor>(m_sharedTextBlock->GetTextColor());
+        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor>(m_sharedTextBlock->GetTextColor());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor)
+    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor textColor)
     {
-        m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::TextColor>(textColor));
+        m_sharedTextBlock->SetTextColor(static_cast<AdaptiveCards::ForegroundColor>(textColor));
         return S_OK;
     }
 
@@ -147,32 +147,55 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveTextBlock::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedTextBlock->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedTextBlock->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveTextBlock::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
     {
-        m_sharedTextBlock->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedTextBlock->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveTextBlock::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedTextBlock->GetSpeak(), speak);
+        *separator = m_sharedTextBlock->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedTextBlock->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_Speak(HSTRING speak)
+    HRESULT AdaptiveTextBlock::put_Separator(boolean separator)
+    {
+        m_sharedTextBlock->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedTextBlock->SetSeparator(sharedSeparator);
+        */
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedTextBlock->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedTextBlock->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedTextBlock->SetId(out);
         return S_OK;
     }
-
 }}

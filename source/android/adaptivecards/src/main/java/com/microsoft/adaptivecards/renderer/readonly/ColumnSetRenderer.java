@@ -59,7 +59,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to ColumnSet object model.");
         }
 
-        IBaseCardElementRenderer columnRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Column);
+        IBaseCardElementRenderer columnRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Column.toString());
         if (columnRenderer == null)
         {
             throw new UnknownError(CardElementType.Column.toString() + " is not a registered renderer.");

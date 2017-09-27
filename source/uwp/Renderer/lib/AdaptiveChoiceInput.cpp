@@ -57,21 +57,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::get_Speak(HSTRING* speak)
-    {
-        return UTF8ToHString(m_sharedChoiceInput->GetSpeak(), speak);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceInput::put_Speak(HSTRING speak)
-    {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedChoiceInput->SetSpeak(out);
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
     HRESULT AdaptiveChoiceInput::get_IsSelected(boolean* isSelected)
     {
         *isSelected = m_sharedChoiceInput->GetIsSelected();

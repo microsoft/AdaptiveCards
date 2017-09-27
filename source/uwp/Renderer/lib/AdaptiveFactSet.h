@@ -27,11 +27,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
-        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
-        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing);
 
-        IFACEMETHODIMP get_Speak(_In_ HSTRING *speak);
-        IFACEMETHODIMP put_Speak(_Out_ HSTRING speak);
+        IFACEMETHODIMP get_Separator(boolean* separator);
+        IFACEMETHODIMP put_Separator(boolean separator);
+
+        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
     private:
         // TODO: MSFT 11015796: Sync UWP Projection container classes to Shared object model counterparts.
