@@ -122,6 +122,10 @@ namespace AdaptiveCards.Rendering
                     return this.Config.TimeInput.Separation;
                 case NumberInput.TYPE:
                     return this.Config.NumberInput.Separation;
+                case ToggleInput.TYPE:
+                    return this.Config.ToggleInput.Separation;
+                case FactSet.TYPE:
+                    return this.Config.FactSet.Separation;
             }
             throw new Exception("Unknown type " + element.Type);
         }

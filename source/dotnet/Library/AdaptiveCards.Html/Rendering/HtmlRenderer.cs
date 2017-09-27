@@ -422,8 +422,8 @@ namespace AdaptiveCards.Rendering
                         uiColumnSet.Children.Add(new DivTag()
                             .AddClass($"ac-columnseparator")
                             .Style("flex", "0 0 auto")
-                            .Style("padding-left", $"{sep.Spacing}")
-                            .Style("margin-left", $"{sep.Spacing}")
+                            .Style("padding-left", $"{sep.Spacing}px")
+                            .Style("margin-left", $"{sep.Spacing}px")
                             .Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
                             .Style("border-left-width", $"{sep.LineThickness}px")
                             .Style("border-left-style", $"solid"));
