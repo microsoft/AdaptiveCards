@@ -69,15 +69,19 @@ namespace AdaptiveCards.Rendering
 
 
                 // do some sizing magic using the magic GridUnitType.Star
-                var size = column.Size?.ToLower();
-                if (size == null || size == ColumnSize.Stretch.ToLower())
+                var width = column.Width?.ToLower();
+                if (string.IsNullOrEmpty(width))
+#pragma warning disable CS0618 // Type or member is obsolete
+                    width = column.Size?.ToLower();
+#pragma warning restore CS0618 // Type or member is obsolete
+                if (width == null || width == ColumnWidth.Stretch.ToLower())
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                else if (size == ColumnSize.Auto.ToLower())
+                else if (width == ColumnWidth.Auto.ToLower())
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 else
                 {
                     double val;
-                    if (double.TryParse(size, out val))
+                    if (double.TryParse(width, out val))
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
                     else
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
