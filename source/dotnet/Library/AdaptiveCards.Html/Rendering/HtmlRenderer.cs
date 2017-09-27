@@ -355,6 +355,11 @@ namespace AdaptiveCards.Rendering
                 .Style("overflow", "hidden")
                 .Style("display", "flex");
 
+            if (context.Config.SupportsInteractivity && columnSet.SelectAction != null)
+            {
+                uiColumnSet.AddClass("ac-tap");
+            }
+
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
             {
                 if (col.Width != null && double.TryParse(col.Width, out double widthVal))
@@ -365,7 +370,7 @@ namespace AdaptiveCards.Rendering
                     return val;
                 return 0;
             }).Sum());
-
+            
             foreach (var column in columnSet.Columns)
             {
                 var uiColumn = context.Render(column);

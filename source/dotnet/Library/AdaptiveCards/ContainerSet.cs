@@ -24,5 +24,11 @@ namespace AdaptiveCards
         [XmlElement(ElementName = "Column", Type = typeof(Column))]
 #endif
         public List<Column> Columns { get; set; } = new List<Column>();
+
+        /// <summary>
+        ///     Action for this ColumnSet (this allows a default action at the column set level)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ActionBase SelectAction { get; set; }
     }
 }
