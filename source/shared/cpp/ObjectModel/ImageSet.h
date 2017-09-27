@@ -12,8 +12,8 @@ class BaseCardElement;
     {
         public:
         ImageSet();
-        ImageSet(SeparationStyle separation, std::string speak);
-        ImageSet(SeparationStyle separation, std::string speak, std::vector<std::shared_ptr<Image>>& images);
+        ImageSet(Spacing spacing, bool separation);
+        ImageSet(Spacing spacing, bool separation, std::vector<std::shared_ptr<Image>>& images);
 
         virtual std::string Serialize();
         virtual Json::Value SerializeToJsonValue();

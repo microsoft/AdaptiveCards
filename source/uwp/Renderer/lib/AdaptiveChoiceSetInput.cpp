@@ -105,31 +105,41 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveChoiceSetInput::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedChoiceSetInput->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedChoiceSetInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveChoiceSetInput::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
     {
-        m_sharedChoiceSetInput->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedChoiceSetInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveChoiceSetInput::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedChoiceSetInput->GetSpeak(), speak);
+        *separator = m_sharedChoiceSetInput->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedChoiceSetInput->GetSeparator(), separator); 
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_Speak(HSTRING speak)
+    HRESULT AdaptiveChoiceSetInput::put_Separator(boolean separator)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedChoiceSetInput->SetSpeak(out);
+        m_sharedChoiceSetInput->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedChoiceSetInput->SetSeparator(sharedSeparator);
+        */
+
         return S_OK;
     }
 }}

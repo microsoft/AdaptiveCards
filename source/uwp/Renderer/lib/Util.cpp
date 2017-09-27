@@ -11,11 +11,11 @@
 #include "AdaptiveDateInput.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
-#include "AdaptiveHttpAction.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveImageSet.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveTextBlock.h"
@@ -27,8 +27,13 @@
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
+using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::UI;
 using namespace std;
+using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Wrappers;
+using namespace AdaptiveCards::XamlCardRenderer;
+using namespace Windows::Foundation;
 
 HRESULT UTF8ToHString(const string& in, HSTRING* out)
 {
@@ -132,10 +137,6 @@ HRESULT GenerateActionsProjection(
         ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement> projectedContainedAction;
         switch (containedAction->GetElementType())
         {
-            case ActionType::Http:
-                RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveHttpAction>(&projectedContainedAction,
-                    std::static_pointer_cast<AdaptiveCards::HttpAction>(containedAction)));
-                break;
             case ActionType::OpenUrl:
                 RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveOpenUrlAction>(&projectedContainedAction,
                     std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(containedAction)));
@@ -217,7 +218,37 @@ HRESULT GenerateInputChoicesProjection(
     return S_OK;
 } CATCH_RETURN;
 
-HRESULT GetColorFromString(std::string colorString, Color *color) noexcept try
+HRESULT GenerateSeparatorProjection(
+    std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** projectedSeparator) noexcept try
+{
+    *projectedSeparator = nullptr;
+    if (sharedSeparator != nullptr)
+    {
+        return MakeAndInitialize<::AdaptiveCards::XamlCardRenderer::AdaptiveSeparator>(projectedSeparator, sharedSeparator);
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GenerateSharedSeparator(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator,
+    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut) noexcept try
+{
+    ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor color;
+    RETURN_IF_FAILED(separator->get_Color(&color));
+
+    ABI::AdaptiveCards::XamlCardRenderer::SeparatorThickness thickness;
+    RETURN_IF_FAILED(separator->get_Thickness(&thickness));
+
+    auto sharedSeparator = std::make_shared<Separator>();
+    sharedSeparator->SetColor(static_cast<AdaptiveCards::ForegroundColor>(color));
+    sharedSeparator->SetThickness(static_cast<AdaptiveCards::SeparatorThickness>(thickness));
+
+    *sharedSeparatorOut = sharedSeparator;
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept try
 {
     std::string alphaString = colorString.substr(1, 2);
     INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
@@ -238,3 +269,150 @@ HRESULT GetColorFromString(std::string colorString, Color *color) noexcept try
 
     return S_OK;
 } CATCH_RETURN;
+
+HRESULT GetColorFromAdaptiveColor(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor adaptiveColor,
+    ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle containerStyle,
+    bool isSubtle,
+    ABI::Windows::UI::Color * uiColor) noexcept try
+{
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition> styles;
+    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&styles));
+
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleDefinition> styleDefinition;
+    if (containerStyle == ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle_Default)
+    {
+        RETURN_IF_FAILED(styles->get_Default(&styleDefinition));
+    }
+    else
+    {
+        RETURN_IF_FAILED(styles->get_Emphasis(&styleDefinition));
+    }
+
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorsConfig> colorsConfig;
+    RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig)); 
+
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveColorConfig> colorConfig;
+    switch (adaptiveColor)
+    {
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Accent:
+        RETURN_IF_FAILED(colorsConfig->get_Accent(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Dark:
+        RETURN_IF_FAILED(colorsConfig->get_Dark(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Light:
+        RETURN_IF_FAILED(colorsConfig->get_Light(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Good:
+        RETURN_IF_FAILED(colorsConfig->get_Good(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Warning:
+        RETURN_IF_FAILED(colorsConfig->get_Warning(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Attention:
+        RETURN_IF_FAILED(colorsConfig->get_Attention(&colorConfig));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor::Default:
+    default:
+        RETURN_IF_FAILED(colorsConfig->get_Default(&colorConfig));
+        break;
+    }
+
+    RETURN_IF_FAILED(isSubtle ? colorConfig->get_Subtle(uiColor) : colorConfig->get_Default(uiColor));
+
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetSpacingSizeFromSpacing(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing,
+    UINT* spacingSize) noexcept try
+{
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingConfig> spacingConfig;
+    RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
+
+    switch (spacing)
+    {
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::None:
+        *spacingSize = 0;
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Small:
+        RETURN_IF_FAILED(spacingConfig->get_Small(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Medium:
+        RETURN_IF_FAILED(spacingConfig->get_Medium(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Large:
+        RETURN_IF_FAILED(spacingConfig->get_Large(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::ExtraLarge:
+        RETURN_IF_FAILED(spacingConfig->get_ExtraLarge(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Padding:
+        RETURN_IF_FAILED(spacingConfig->get_Padding(spacingSize));
+        break;
+    case ABI::AdaptiveCards::XamlCardRenderer::Spacing::Default:
+    default:
+        RETURN_IF_FAILED(spacingConfig->get_Default(spacingSize));
+        break;
+    }
+
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetBackgroundColorFromStyle(
+    ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style,
+    _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept try
+{
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition> containerStyles;
+    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
+
+    ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleDefinition> styleDefinition;
+    if (style == ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle::Default)
+    {
+        RETURN_IF_FAILED(containerStyles->get_Default(&styleDefinition));
+    }
+    else
+    {
+        RETURN_IF_FAILED(containerStyles->get_Emphasis(&styleDefinition));
+    }
+
+    RETURN_IF_FAILED(styleDefinition->get_BackgroundColor(backgroundColor));
+
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
+{
+    ComPtr<IJsonObjectStatics> jObjectStatics;
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Data_Json_JsonObject).Get(), &jObjectStatics));
+    HSTRING inputsHString;
+    THROW_IF_FAILED(UTF8ToHString(inputString, &inputsHString));
+    ComPtr<IJsonObject> jObject;
+    RETURN_IF_FAILED(jObjectStatics->Parse(inputsHString, &jObject));
+
+    *result = jObject.Detach();
+    return S_OK;
+}
+
+HRESULT JsonObjectToString(IJsonObject* inputJson, string& result)
+{
+    HSTRING asHstring;
+    RETURN_IF_FAILED(JsonObjectToHString(inputJson, &asHstring));
+    return HStringToUTF8(asHstring, result);
+}
+
+HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
+{
+    if (!inputJson)
+    {
+        return E_INVALIDARG;
+    }
+    ComPtr<IJsonObject> localInputJson(inputJson);
+    ComPtr<IJsonValue> asJsonValue;
+    RETURN_IF_FAILED(localInputJson.As(&asJsonValue));
+    return(asJsonValue->Stringify(result));
+}

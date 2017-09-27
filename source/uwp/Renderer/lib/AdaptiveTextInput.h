@@ -29,7 +29,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_IsMultiline(_Out_ boolean* isMultiline);
         IFACEMETHODIMP put_IsMultiline(_In_ boolean isMultiline);
 
-        IFACEMETHODIMP get_MaxLength(_Out_ UINT32 *value);
+        IFACEMETHODIMP get_MaxLength(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxLength(_In_ UINT32 value);
 
         IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle *textInputStyle);
@@ -45,11 +45,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ElementType* elementType);
 
-        IFACEMETHODIMP get_Separation(_Out_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation);
-        IFACEMETHODIMP put_Separation(_In_ ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing);
 
-        IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
-        IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
+        IFACEMETHODIMP get_Separator(boolean* separator);
+        IFACEMETHODIMP put_Separator(boolean separator);
+
 
     private:
         std::shared_ptr<AdaptiveCards::TextInput> m_sharedTextInput;

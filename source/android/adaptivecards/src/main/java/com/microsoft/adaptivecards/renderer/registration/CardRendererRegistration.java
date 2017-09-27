@@ -2,6 +2,7 @@ package com.microsoft.adaptivecards.renderer.registration;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -39,21 +40,21 @@ public class CardRendererRegistration
     private CardRendererRegistration()
     {
         // Register Readonly Renderers
-        m_typeToRendererMap.put(CardElementType.Column.swigValue(), ColumnRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.ColumnSet.swigValue(), ColumnSetRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.Container.swigValue(), ContainerRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.FactSet.swigValue(), FactSetRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.Image.swigValue(), ImageRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.ImageSet.swigValue(), ImageSetRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.TextBlock.swigValue(), TextBlockRenderer.getInstance());
+        registerRenderer(CardElementType.Column.toString(), ColumnRenderer.getInstance());
+        registerRenderer(CardElementType.ColumnSet.toString(), ColumnSetRenderer.getInstance());
+        registerRenderer(CardElementType.Container.toString(), ContainerRenderer.getInstance());
+        registerRenderer(CardElementType.FactSet.toString(), FactSetRenderer.getInstance());
+        registerRenderer(CardElementType.Image.toString(), ImageRenderer.getInstance());
+        registerRenderer(CardElementType.ImageSet.toString(), ImageSetRenderer.getInstance());
+        registerRenderer(CardElementType.TextBlock.toString(), TextBlockRenderer.getInstance());
 
         // Register Input Renderers
-        m_typeToRendererMap.put(CardElementType.TextInput.swigValue(), TextInputRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.NumberInput.swigValue(), NumberInputRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.DateInput.swigValue(), DateInputRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.TimeInput.swigValue(), TimeInputRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.ToggleInput.swigValue(), ToggleInputRenderer.getInstance());
-        m_typeToRendererMap.put(CardElementType.ChoiceSetInput.swigValue(), ChoiceSetInputRenderer.getInstance());
+        registerRenderer(CardElementType.TextInput.toString(), TextInputRenderer.getInstance());
+        registerRenderer(CardElementType.NumberInput.toString(), NumberInputRenderer.getInstance());
+        registerRenderer(CardElementType.DateInput.toString(), DateInputRenderer.getInstance());
+        registerRenderer(CardElementType.TimeInput.toString(), TimeInputRenderer.getInstance());
+        registerRenderer(CardElementType.ToggleInput.toString(), ToggleInputRenderer.getInstance());
+        registerRenderer(CardElementType.ChoiceSetInput.toString(), ChoiceSetInputRenderer.getInstance());
     }
 
     public static CardRendererRegistration getInstance()
@@ -66,9 +67,9 @@ public class CardRendererRegistration
         return s_instance;
     }
 
-    public void registerRenderer(CardElementType cardElementType, IBaseCardElementRenderer renderer)
+    public void registerRenderer(String cardElementType, IBaseCardElementRenderer renderer)
     {
-        if (cardElementType != null || cardElementType == CardElementType.Unsupported)
+        if (TextUtils.isEmpty(cardElementType) || CardElementType.Unsupported.toString().equals(cardElementType))
         {
             throw new IllegalArgumentException("cardElementType is null or unsupported");
         }
@@ -77,12 +78,12 @@ public class CardRendererRegistration
             throw new IllegalArgumentException("renderer is null");
         }
 
-        m_typeToRendererMap.put(cardElementType.swigValue(), renderer);
+        m_typeToRendererMap.put(cardElementType, renderer);
     }
 
-    public IBaseCardElementRenderer getRenderer(CardElementType cardElementType)
+    public IBaseCardElementRenderer getRenderer(String cardElementType)
     {
-        return m_typeToRendererMap.get(cardElementType.swigValue());
+        return m_typeToRendererMap.get(cardElementType);
     }
 
     public View render(
@@ -113,10 +114,10 @@ public class CardRendererRegistration
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
-            IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementType().swigValue());
+            IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementType().toString());
             if (renderer == null)
             {
-                Toast.makeText(context, "Unsupported card element type: " + cardElement.GetElementType().toString(), Toast.LENGTH_SHORT);
+                Toast.makeText(context, "Unsupported card element type: " + cardElement.GetElementType().toString(), Toast.LENGTH_SHORT).show();
                 continue;
             }
 
@@ -128,5 +129,5 @@ public class CardRendererRegistration
 
     private static CardRendererRegistration s_instance = null;
 
-    private HashMap<Integer, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<Integer, IBaseCardElementRenderer>();
+    private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
 }

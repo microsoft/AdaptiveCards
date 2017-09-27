@@ -35,21 +35,12 @@ public class AdaptiveCardConfig {
     }
   }
 
-  public void setPadding(SpacingDefinition value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCardConfig_padding_set(swigCPtr, this, SpacingDefinition.getCPtr(value), value);
+  public void setAllowCustomStyle(boolean value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCardConfig_allowCustomStyle_set(swigCPtr, this, value);
   }
 
-  public SpacingDefinition getPadding() {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCardConfig_padding_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SpacingDefinition(cPtr, false);
-  }
-
-  public void setBackgroundColor(String value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCardConfig_backgroundColor_set(swigCPtr, this, value);
-  }
-
-  public String getBackgroundColor() {
-    return AdaptiveCardObjectModelJNI.AdaptiveCardConfig_backgroundColor_get(swigCPtr, this);
+  public boolean getAllowCustomStyle() {
+    return AdaptiveCardObjectModelJNI.AdaptiveCardConfig_allowCustomStyle_get(swigCPtr, this);
   }
 
   public static AdaptiveCardConfig Deserialize(SWIGTYPE_p_Json__Value json, AdaptiveCardConfig defaultValue) {

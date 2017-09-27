@@ -105,7 +105,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             layout.removeAllViews();
             layout.addView(AdaptiveCardRenderer.getInstance().render(getApplicationContext(), getSupportFragmentManager(), adaptiveCard, this, this, new HostConfig()));
         }
-        catch (java.io.IOException ex)
+        catch (Exception ex)
         {
             if (showErrorToast)
             {

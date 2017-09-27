@@ -20,11 +20,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_ActionMode(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ActionMode* value);
         IFACEMETHODIMP put_ActionMode(_In_ ABI::AdaptiveCards::XamlCardRenderer::ActionMode value);
 
-        IFACEMETHODIMP get_BackgroundColor(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_BackgroundColor(_In_ ABI::Windows::UI::Color value);
-
-        IFACEMETHODIMP get_Padding(_Out_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition** value);
-        IFACEMETHODIMP put_Padding(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingDefinition* value);
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style);
+        IFACEMETHODIMP put_Style(_In_ ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style);
 
         IFACEMETHODIMP get_InlineTopMargin(_Out_ UINT32* value);
         IFACEMETHODIMP put_InlineTopMargin(_In_ UINT32 value);

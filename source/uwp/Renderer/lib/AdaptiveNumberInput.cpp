@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveNumberInput.h"
+
 #include "Util.h"
 #include <windows.foundation.collections.h>
 #include "XamlCardRendererComponent.h"
@@ -106,31 +107,40 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveNumberInput::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedNumberInput->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedNumberInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveNumberInput::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
     {
-        m_sharedNumberInput->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedNumberInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveNumberInput::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedNumberInput->GetSpeak(), speak);
+        *separator = m_sharedNumberInput->GetSeparator();
+        return S_OK;
+
+        //Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedNumberInput->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveNumberInput::put_Speak(HSTRING speak)
+    HRESULT AdaptiveNumberInput::put_Separator(boolean separator)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedNumberInput->SetSpeak(out);
+        m_sharedNumberInput->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedNumberInput->SetSeparator(sharedSeparator);
+        */
         return S_OK;
     }
 

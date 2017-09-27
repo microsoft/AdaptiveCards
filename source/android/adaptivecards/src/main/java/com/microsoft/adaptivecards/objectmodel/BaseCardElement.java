@@ -35,20 +35,28 @@ public class BaseCardElement {
     }
   }
 
-  public SeparationStyle GetSeparationStyle() {
-    return SeparationStyle.swigToEnum(AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparationStyle(swigCPtr, this));
+  public boolean GetSeparator() {
+    return AdaptiveCardObjectModelJNI.BaseCardElement_GetSeparator(swigCPtr, this);
   }
 
-  public void SetSeparationStyle(SeparationStyle value) {
-    AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparationStyle(swigCPtr, this, value.swigValue());
+  public void SetSeparator(boolean value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparator(swigCPtr, this, value);
   }
 
-  public String GetSpeak() {
-    return AdaptiveCardObjectModelJNI.BaseCardElement_GetSpeak(swigCPtr, this);
+  public Spacing GetSpacing() {
+    return Spacing.swigToEnum(AdaptiveCardObjectModelJNI.BaseCardElement_GetSpacing(swigCPtr, this));
   }
 
-  public void SetSpeak(String value) {
-    AdaptiveCardObjectModelJNI.BaseCardElement_SetSpeak(swigCPtr, this, value);
+  public void SetSpacing(Spacing value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetSpacing(swigCPtr, this, value.swigValue());
+  }
+
+  public String GetId() {
+    return AdaptiveCardObjectModelJNI.BaseCardElement_GetId(swigCPtr, this);
+  }
+
+  public void SetId(String value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetId(swigCPtr, this, value);
   }
 
   public CardElementType GetElementType() {

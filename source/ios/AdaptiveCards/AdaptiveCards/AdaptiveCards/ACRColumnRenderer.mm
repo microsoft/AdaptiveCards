@@ -31,7 +31,24 @@
 {
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
-    ACRColumnView* column = [[ACRColumnView alloc] init];
+    ContainerStyle style = ContainerStyle::Default;
+
+    // Not set; apply parent's style
+    if(columnElem->GetStyle() == ContainerStyle::None)
+    {
+        style = [viewGroup getStyle];
+    }
+    // apply elem's style if custom style is allowed
+    else if (config->adaptiveCard.allowCustomStyle)
+    {
+        style = columnElem->GetStyle();
+    }
+    else
+    {
+        style = ContainerStyle::Default;
+    }
+
+    ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:style hostConfig:config];
     [viewGroup addArrangedSubview:column];
     [ACRRenderer render:column
                  inputs:inputs
@@ -40,7 +57,7 @@
 
     [column setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [column setClipsToBounds:TRUE];
-    if(columnElem->GetSize() == "stretch")
+    if(columnElem->GetWidth() == "stretch")
     {
         [column setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     }

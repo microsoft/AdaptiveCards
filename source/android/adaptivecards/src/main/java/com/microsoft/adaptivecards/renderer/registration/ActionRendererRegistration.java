@@ -1,6 +1,7 @@
 package com.microsoft.adaptivecards.renderer.registration;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -9,9 +10,9 @@ import android.widget.Toast;
 import com.microsoft.adaptivecards.objectmodel.ActionType;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElement;
 import com.microsoft.adaptivecards.objectmodel.BaseActionElementVector;
+import com.microsoft.adaptivecards.objectmodel.CardElementType;
 import com.microsoft.adaptivecards.objectmodel.HostConfig;
 import com.microsoft.adaptivecards.renderer.IBaseActionElementRenderer;
-import com.microsoft.adaptivecards.renderer.action.HttpActionRenderer;
 import com.microsoft.adaptivecards.renderer.action.OpenUrlActionRenderer;
 import com.microsoft.adaptivecards.renderer.action.ShowCardActionRenderer;
 import com.microsoft.adaptivecards.renderer.action.SubmitActionRenderer;
@@ -31,10 +32,9 @@ public class ActionRendererRegistration
     private ActionRendererRegistration()
     {
         // Register Action Renderers
-        m_typeToRendererMap.put(ActionType.Http.swigValue(), HttpActionRenderer.getInstance());
-        m_typeToRendererMap.put(ActionType.OpenUrl.swigValue(), OpenUrlActionRenderer.getInstance());
-        m_typeToRendererMap.put(ActionType.ShowCard.swigValue(), ShowCardActionRenderer.getInstance());
-        m_typeToRendererMap.put(ActionType.Submit.swigValue(), SubmitActionRenderer.getInstance());
+        registerRenderer(ActionType.OpenUrl.toString(), OpenUrlActionRenderer.getInstance());
+        registerRenderer(ActionType.ShowCard.toString(), ShowCardActionRenderer.getInstance());
+        registerRenderer(ActionType.Submit.toString(), SubmitActionRenderer.getInstance());
     }
 
     public static ActionRendererRegistration getInstance()
@@ -47,9 +47,9 @@ public class ActionRendererRegistration
         return s_instance;
     }
 
-    public void registerRenderer(ActionType actionType, IBaseActionElementRenderer renderer)
+    public void registerRenderer(String actionType, IBaseActionElementRenderer renderer)
     {
-        if (actionType != null || actionType == actionType.Unsupported)
+        if (TextUtils.isEmpty(actionType) || ActionType.Unsupported.toString().equals(actionType))
         {
             throw new IllegalArgumentException("actionType is null or unsupported");
         }
@@ -58,12 +58,12 @@ public class ActionRendererRegistration
             throw new IllegalArgumentException("renderer is null");
         }
 
-        m_typeToRendererMap.put(actionType.swigValue(), renderer);
+        m_typeToRendererMap.put(actionType, renderer);
     }
 
-    public IBaseActionElementRenderer getRenderer(ActionType actionType)
+    public IBaseActionElementRenderer getRenderer(String actionType)
     {
-        return m_typeToRendererMap.get(actionType.swigValue());
+        return m_typeToRendererMap.get(actionType);
     }
 
     public View render(
@@ -95,7 +95,7 @@ public class ActionRendererRegistration
         for (int i = 0; i < size; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
-            IBaseActionElementRenderer renderer = m_typeToRendererMap.get(actionElement.GetElementType().swigValue());
+            IBaseActionElementRenderer renderer = m_typeToRendererMap.get(actionElement.GetElementType().toString());
             if (renderer == null)
             {
                 Toast.makeText(context, "Unsupported action element type: " + actionElement.GetElementType().toString(), Toast.LENGTH_SHORT).show();
@@ -110,5 +110,5 @@ public class ActionRendererRegistration
 
     private static ActionRendererRegistration s_instance = null;
 
-    private HashMap<Integer, IBaseActionElementRenderer> m_typeToRendererMap = new HashMap<Integer, IBaseActionElementRenderer>();
+    private HashMap<String, IBaseActionElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseActionElementRenderer>();
 }

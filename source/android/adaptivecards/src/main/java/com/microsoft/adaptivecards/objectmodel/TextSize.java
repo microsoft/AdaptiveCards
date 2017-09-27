@@ -10,7 +10,7 @@ package com.microsoft.adaptivecards.objectmodel;
 
 public final class TextSize {
   public final static TextSize Small = new TextSize("Small", AdaptiveCardObjectModelJNI.TextSize_Small_get());
-  public final static TextSize Normal = new TextSize("Normal");
+  public final static TextSize Default = new TextSize("Default");
   public final static TextSize Medium = new TextSize("Medium");
   public final static TextSize Large = new TextSize("Large");
   public final static TextSize ExtraLarge = new TextSize("ExtraLarge");
@@ -49,7 +49,7 @@ public final class TextSize {
     swigNext = this.swigValue+1;
   }
 
-  private static TextSize[] swigValues = { Small, Normal, Medium, Large, ExtraLarge };
+  private static TextSize[] swigValues = { Small, Default, Medium, Large, ExtraLarge };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

@@ -10,7 +10,7 @@ package com.microsoft.adaptivecards.objectmodel;
 
 public final class TextWeight {
   public final static TextWeight Lighter = new TextWeight("Lighter", AdaptiveCardObjectModelJNI.TextWeight_Lighter_get());
-  public final static TextWeight Normal = new TextWeight("Normal");
+  public final static TextWeight Default = new TextWeight("Default");
   public final static TextWeight Bolder = new TextWeight("Bolder");
 
   public final int swigValue() {
@@ -47,7 +47,7 @@ public final class TextWeight {
     swigNext = this.swigValue+1;
   }
 
-  private static TextWeight[] swigValues = { Lighter, Normal, Bolder };
+  private static TextWeight[] swigValues = { Lighter, Default, Bolder };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

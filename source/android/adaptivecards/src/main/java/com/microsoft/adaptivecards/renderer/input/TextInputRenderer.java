@@ -139,7 +139,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
         setTextInputStyle(editText, textInput.GetTextInputStyle());
-        setSeparationConfig(context, viewGroup, textInput.GetSeparationStyle(), hostConfig.getTextInput().getSeparation(), hostConfig.getStrongSeparation(), true /* horizontal line */);
+        setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
         int maxLength = (int) Math.min(textInput.GetMaxLength(), Integer.MAX_VALUE);
         if (maxLength > 0)
         {

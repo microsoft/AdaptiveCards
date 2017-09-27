@@ -39,8 +39,8 @@ public class Fact {
     this(AdaptiveCardObjectModelJNI.new_Fact__SWIG_0(), true);
   }
 
-  public Fact(String title, String value, String speak) {
-    this(AdaptiveCardObjectModelJNI.new_Fact__SWIG_1(title, value, speak), true);
+  public Fact(String title, String value) {
+    this(AdaptiveCardObjectModelJNI.new_Fact__SWIG_1(title, value), true);
   }
 
   public String Serialize() {
@@ -65,14 +65,6 @@ public class Fact {
 
   public void SetValue(String value) {
     AdaptiveCardObjectModelJNI.Fact_SetValue(swigCPtr, this, value);
-  }
-
-  public String GetSpeak() {
-    return AdaptiveCardObjectModelJNI.Fact_GetSpeak(swigCPtr, this);
-  }
-
-  public void SetSpeak(String value) {
-    AdaptiveCardObjectModelJNI.Fact_SetSpeak(swigCPtr, this, value);
   }
 
   public static Fact Deserialize(SWIGTYPE_p_Json__Value root) {

@@ -48,32 +48,56 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle* separation)
+    HRESULT AdaptiveColumnSet::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
     {
-        *separation = static_cast<ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle>(m_sharedColumnSet->GetSeparationStyle());
+        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedColumnSet->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Separation(ABI::AdaptiveCards::XamlCardRenderer::SeparationStyle separation)
+    HRESULT AdaptiveColumnSet::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
     {
-        m_sharedColumnSet->SetSeparationStyle(static_cast<AdaptiveCards::SeparationStyle>(separation));
+        m_sharedColumnSet->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveColumnSet::get_Separator(boolean* separator)
     {
-        return UTF8ToHString(m_sharedColumnSet->GetSpeak(), speak);
+        *separator = m_sharedColumnSet->GetSeparator();
+        return S_OK;
+
+        // Issue #629 to make separator an object
+        //return GenerateSeparatorProjection(m_sharedColumnSet->GetSeparator(), separator);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveColumnSet::put_Speak(HSTRING speak)
+    HRESULT AdaptiveColumnSet::put_Separator(boolean separator)
+    {
+        m_sharedColumnSet->SetSeparator(separator);
+
+        /*Issue #629 to make separator an object
+        std::shared_ptr<Separator> sharedSeparator;
+        RETURN_IF_FAILED(GenerateSharedSeparator(separator, &sharedSeparator));
+
+        m_sharedColumnSet->SetSeparator(sharedSeparator);
+        */
+
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::get_Id(HSTRING* id)
+    {
+        return UTF8ToHString(m_sharedColumnSet->GetId(), id);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedColumnSet->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedColumnSet->SetId(out);
         return S_OK;
     }
-
 }}

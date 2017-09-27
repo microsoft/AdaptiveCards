@@ -22,7 +22,7 @@
     return CardElementType::TextBlock;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
             inputs:(NSMutableArray *)inputs
       withCardElem:(std::shared_ptr<BaseCardElement> const &)elem
      andHostConfig:(std::shared_ptr<HostConfig> const &)config
@@ -31,10 +31,15 @@
     UILabel *lab = [[UILabel alloc] init];
     NSString *textBlockStr = [NSString stringWithCString:txtBlck->GetText().c_str()
                                                 encoding:NSUTF8StringEncoding];
-    
+    ContainerStyle style = [viewGroup getStyle];
+
+    ColorsConfig &colorConfig = (style == ContainerStyle::Emphasis)?
+        config->containerStyles.emphasisPalette.foregroundColors:
+        config->containerStyles.defaultPalette.foregroundColors;
+
     NSMutableAttributedString *content =
     [[NSMutableAttributedString alloc] initWithString:textBlockStr
-                                           attributes:@{NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() withHostConfig:config andSubtleOption:txtBlck->GetIsSubtle()],
+                                           attributes:@{NSForegroundColorAttributeName:[ACRTextBlockRenderer getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],
                                                             NSStrokeWidthAttributeName:[ACRTextBlockRenderer getTextBlockTextWeight:txtBlck->GetTextWeight() withHostConfig:config]}];
     NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
     para.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
@@ -48,69 +53,69 @@
     }
     UIFontDescriptor *dec = lab.font.fontDescriptor;
     lab.font = [UIFont fontWithDescriptor:dec size:[ACRTextBlockRenderer getTextBlockTextSize:txtBlck->GetTextSize() withHostConfig:config]];
-    
+
     CGSize intrinsicSz = [lab intrinsicContentSize];
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicSz.width, intrinsicSz.height)];
-    
+
     [wrappingview addSubview:lab];
-    
+
     [wrappingview setAlignmentForSubview:txtBlck->GetHorizontalAlignment()];
-    
-    if(viewGroup)[(UIStackView *)viewGroup addArrangedSubview:wrappingview];
-    
+
+    [viewGroup addArrangedSubview:wrappingview];
+
     wrappingview.translatesAutoresizingMaskIntoConstraints = false;
-    
+
     lab.translatesAutoresizingMaskIntoConstraints = false;
-    
+
     return wrappingview;
 }
 
-+ (UIColor *)getTextBlockColor:(TextColor)txtClr
-                withHostConfig:(std::shared_ptr<HostConfig> const &)config
-               andSubtleOption:(bool)isSubtle
++ (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
+                  colorsConfig:(ColorsConfig const &)config
+                  subtleOption:(bool)isSubtle
 {
     long num = 0;
-    std::string str;
+    const std::string *str;
     switch (txtClr) {
-        case TextColor::Dark:{
+        case ForegroundColor::Dark:{
             str = (isSubtle) ?
-                config->colors.dark.subtle :config->colors.dark.normal;
+                &config.dark.subtleColor: &config.dark.defaultColor;
             break;
         }
-        case TextColor::Light:{
+        case ForegroundColor::Light:{
             str = (isSubtle) ?
-                config->colors.light.subtle :config->colors.light.normal;
+                &config.light.subtleColor: &config.light.defaultColor;
             break;
         }
-        case TextColor::Accent:{
+        case ForegroundColor::Accent:{
             str = (isSubtle) ?
-                config->colors.accent.subtle :config->colors.accent.normal;
+                &config.accent.subtleColor: &config.accent.defaultColor;
             break;
         }
-        case TextColor::Good:{
+        case ForegroundColor::Good:{
             str = (isSubtle) ?
-                config->colors.good.subtle :config->colors.good.normal;
+                &config.good.subtleColor: &config.good.defaultColor;
             break;
         }
-        case TextColor::Warning:{
+        case ForegroundColor::Warning:{
             str = (isSubtle) ?
-                config->colors.warning.subtle :config->colors.warning.normal;
+                &config.warning.subtleColor: &config.warning.defaultColor;
             break;
         }
-        case TextColor::Attention:{
+        case ForegroundColor::Attention:{
             str = (isSubtle) ?
-                config->colors.attention.subtle :config->colors.attention.normal;
+                &config.attention.subtleColor: &config.attention.defaultColor;
             break;
         }
         default:{
             str = (isSubtle) ?
-                config->colors.dark.subtle :config->colors.dark.normal;
+                &config.dark.subtleColor: &config.dark.defaultColor;
             break;
         }
     }
-    
-    num = std::stoul(str.substr(1), nullptr, 16);
+
+    num = std::stoul(str->substr(1), nullptr, 16);
 
     return [UIColor colorWithRed:((num & 0x00FF0000)>> 16)/ 255.0
                            green:((num & 0x0000FF00)>> 8)/ 255.0
@@ -125,8 +130,8 @@
     switch (txtSz){
         case TextSize::Small:
             return config->fontSizes.smallFontSize;
-        case TextSize::Normal:
-            return config->fontSizes.normalFontSize;
+        case TextSize::Default:
+            return config->fontSizes.defaultFontSize;
         case TextSize::Medium:
             return config->fontSizes.mediumFontSize;
         case TextSize::Large:
@@ -134,11 +139,11 @@
         case TextSize::ExtraLarge:
             return config->fontSizes.extraLargeFontSize;
         default:
-            return config->fontSizes.normalFontSize;
+            return config->fontSizes.defaultFontSize;
     }
 }
 
-- (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock 
+- (NSTextAlignment)getTextBlockAlignment:(std::shared_ptr<TextBlock> const &)txtBlock
                           withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     switch (txtBlock->GetHorizontalAlignment()){
@@ -152,12 +157,12 @@
             return NSTextAlignmentLeft;
     }
 }
-     
+
 + (NSNumber *)getTextBlockTextWeight:(TextWeight)weight
                       withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    switch (weight) { 
-        case TextWeight::Normal:
+    switch (weight) {
+        case TextWeight::Default:
             return @0;
         case TextWeight::Lighter:
             return @1;
