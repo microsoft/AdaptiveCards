@@ -41,12 +41,12 @@ public class AdaptiveCardObjectModel {
     return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.HorizontalAlignmentFromString(alignment));
   }
 
-  public static String TextColorToString(TextColor type) {
-    return AdaptiveCardObjectModelJNI.TextColorToString(type.swigValue());
+  public static String ForegroundColorToString(ForegroundColor type) {
+    return AdaptiveCardObjectModelJNI.ForegroundColorToString(type.swigValue());
   }
 
-  public static TextColor TextColorFromString(String type) {
-    return TextColor.swigToEnum(AdaptiveCardObjectModelJNI.TextColorFromString(type));
+  public static ForegroundColor ForegroundColorFromString(String type) {
+    return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.ForegroundColorFromString(type));
   }
 
   public static String TextWeightToString(TextWeight type) {
@@ -73,12 +73,20 @@ public class AdaptiveCardObjectModel {
     return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageSizeFromString(size));
   }
 
-  public static String SeparationStyleToString(SeparationStyle style) {
-    return AdaptiveCardObjectModelJNI.SeparationStyleToString(style.swigValue());
+  public static String SpacingToString(Spacing spacing) {
+    return AdaptiveCardObjectModelJNI.SpacingToString(spacing.swigValue());
   }
 
-  public static SeparationStyle SeparationStyleFromString(String style) {
-    return SeparationStyle.swigToEnum(AdaptiveCardObjectModelJNI.SeparationStyleFromString(style));
+  public static Spacing SpacingFromString(String spacing) {
+    return Spacing.swigToEnum(AdaptiveCardObjectModelJNI.SpacingFromString(spacing));
+  }
+
+  public static String SeparatorThicknessToString(SeparatorThickness separatorThickness) {
+    return AdaptiveCardObjectModelJNI.SeparatorThicknessToString(separatorThickness.swigValue());
+  }
+
+  public static SeparatorThickness SeparatorThicknessFromString(String separatorThickness) {
+    return SeparatorThickness.swigToEnum(AdaptiveCardObjectModelJNI.SeparatorThicknessFromString(separatorThickness));
   }
 
   public static String ImageStyleToString(ImageStyle style) {

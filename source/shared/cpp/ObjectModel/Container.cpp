@@ -30,26 +30,26 @@ const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCard
     { CardElementType::ToggleInput, ToggleInput::Deserialize },
 };
 
-Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::Normal)
+Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None)
 {
 }
 
 Container::Container(
-    SeparationStyle separation,
-    std::string speak,
+    Spacing spacing,
+    bool separator,
     ContainerStyle style,
     std::vector<std::shared_ptr<BaseCardElement>>& items) :
-    BaseCardElement(CardElementType::Container, separation, speak),
+    BaseCardElement(CardElementType::Container, spacing, separator),
     m_style(style),
     m_items(items)
 {
 }
 
 Container::Container(
-    SeparationStyle separation,
-    std::string speak,
+    Spacing spacing,
+    bool separator,
     ContainerStyle style) :
-    BaseCardElement(CardElementType::Container, separation, speak),
+    BaseCardElement(CardElementType::Container, spacing, separator),
     m_style(style)
 {
 }
@@ -64,12 +64,12 @@ std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
     return m_items;
 }
 
-ContainerStyle Container::GetContainerStyle() const
+ContainerStyle Container::GetStyle() const
 {
     return m_style;
 }
 
-void Container::SetContainerStyle(const ContainerStyle value)
+void Container::SetStyle(const ContainerStyle value)
 {
     m_style = value;
 }
@@ -94,7 +94,7 @@ Json::Value Container::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetContainerStyle());
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
 
     std::string itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
@@ -114,8 +114,8 @@ std::shared_ptr<Container> Container::Deserialize(const Json::Value& value)
 
     auto container = BaseCardElement::Deserialize<Container>(value);
 
-    container->SetContainerStyle(
-        ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::Normal, ContainerStyleFromString));
+    container->SetStyle(
+        ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection<BaseCardElement>(value, AdaptiveCardSchemaKey::Items, Container::CardElementParsers, true);

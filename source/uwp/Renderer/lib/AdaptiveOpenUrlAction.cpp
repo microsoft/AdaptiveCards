@@ -80,17 +80,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_Speak(HSTRING* speak)
+    HRESULT AdaptiveOpenUrlAction::get_Id(HSTRING* id)
     {
-        return UTF8ToHString(m_sharedOpenUrlAction->GetSpeak(), speak);
+        return UTF8ToHString(m_sharedOpenUrlAction->GetId(), id);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::put_Speak(HSTRING speak)
+    HRESULT AdaptiveOpenUrlAction::put_Id(HSTRING id)
     {
         std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(speak, out));
-        m_sharedOpenUrlAction->SetSpeak(out);
+        RETURN_IF_FAILED(HStringToUTF8(id, out));
+        m_sharedOpenUrlAction->SetId(out);
         return S_OK;
     }
 }}

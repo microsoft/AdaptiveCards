@@ -4,6 +4,7 @@
 #include <string>
 
 #include "AdaptiveCards.XamlCardRenderer.h"
+#include "InputItem.h"
 #include <BaseCardElement.h>
 #include <BaseActionElement.h>
 #include <ChoiceInput.h>
@@ -23,6 +24,23 @@ HRESULT HStringToUTF8(const HSTRING& in, std::string &out);
 bool Boolify(const boolean value);
 
 HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept;
+
+HRESULT GetColorFromAdaptiveColor(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor adaptiveColor,
+    ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle containerStyle,
+    bool isSubtle,
+    ABI::Windows::UI::Color *uiColor) noexcept;
+
+HRESULT GetBackgroundColorFromStyle(
+    ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style,
+    _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;
+
+HRESULT GetSpacingSizeFromSpacing(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+    ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing,
+    UINT* spacingSize) noexcept;
 
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
@@ -48,4 +66,17 @@ HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
 
-typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::XamlCardRenderer*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;
+HRESULT GenerateSeparatorProjection(
+    std::shared_ptr<AdaptiveCards::Separator> sharedSeparator,
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator** projectedSeparator) noexcept;
+
+HRESULT GenerateSharedSeparator(
+    ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparator* separator,
+    std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut)noexcept;
+
+HRESULT StringToJsonObject(const std::string inputString, ABI::Windows::Data::Json::IJsonObject** result);
+HRESULT JsonObjectToHString(ABI::Windows::Data::Json::IJsonObject* inputJson, HSTRING* result);
+HRESULT JsonObjectToString(ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
+
+typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::XamlCardRenderer::RenderedAdaptiveCard*, ABI::AdaptiveCards::XamlCardRenderer::AdaptiveActionEventArgs*>> ActionEventSource;
+

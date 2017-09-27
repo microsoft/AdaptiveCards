@@ -76,13 +76,12 @@ public class ActionsConfig {
     return AdaptiveCardObjectModelJNI.ActionsConfig_maxActions_get(swigCPtr, this);
   }
 
-  public void setSeparation(SeparationConfig value) {
-    AdaptiveCardObjectModelJNI.ActionsConfig_separation_set(swigCPtr, this, SeparationConfig.getCPtr(value), value);
+  public void setSpacing(Spacing value) {
+    AdaptiveCardObjectModelJNI.ActionsConfig_spacing_set(swigCPtr, this, value.swigValue());
   }
 
-  public SeparationConfig getSeparation() {
-    long cPtr = AdaptiveCardObjectModelJNI.ActionsConfig_separation_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SeparationConfig(cPtr, false);
+  public Spacing getSpacing() {
+    return Spacing.swigToEnum(AdaptiveCardObjectModelJNI.ActionsConfig_spacing_get(swigCPtr, this));
   }
 
   public static ActionsConfig Deserialize(SWIGTYPE_p_Json__Value json, ActionsConfig defaultValue) {

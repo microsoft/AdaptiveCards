@@ -55,7 +55,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             return styleKey;
         }
 
-        static std::wstring GenerateKeyForImage(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage* image)
+        static std::wstring GenerateKeyForImage(
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage* image)
         {
             Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage> adaptiveImage(image);
             Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement> adaptiveCardElement;
@@ -63,7 +65,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
             std::wstring styleKey = GetElementTypeAsString(CardElementType::Image);
             styleKey.append(c_StyleSeparator);
-            styleKey.append(GetSizeFromImage(adaptiveImage.Get()).c_str());
+
+            styleKey.append(GetSizeFromImage(hostConfig, adaptiveImage.Get()).c_str());
 
             return styleKey;
         }
@@ -95,10 +98,20 @@ namespace AdaptiveCards { namespace XamlCardRenderer
             return sizeWideString;
         }
 
-        static std::wstring GetSizeFromImage(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage* adaptiveImage)
+        static std::wstring GetSizeFromImage(
+            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig, 
+            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImage* adaptiveImage)
         {
             ABI::AdaptiveCards::XamlCardRenderer::ImageSize size;
             THROW_IF_FAILED(adaptiveImage->get_Size(&size));
+            
+            if (size == ABI::AdaptiveCards::XamlCardRenderer::ImageSize::None)
+            {
+                Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveImageConfig> imageConfig;
+                THROW_IF_FAILED(hostConfig->get_Image(&imageConfig));
+                THROW_IF_FAILED(imageConfig->get_ImageSize(&size));
+            }
+
             std::string sizeString = AdaptiveCards::ImageSizeToString(static_cast<AdaptiveCards::ImageSize>(size));
             std::wstring sizeWideString(sizeString.begin(), sizeString.end());
             return sizeWideString;
@@ -115,9 +128,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         static std::wstring GetTextColorFromTextBlock(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextBlock* adaptiveTextBlock)
         {
-            ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor;
+            ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor textColor;
             THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));
-            std::string colorString = AdaptiveCards::TextColorToString(static_cast<AdaptiveCards::TextColor>(textColor));
+            std::string colorString = AdaptiveCards::ForegroundColorToString(static_cast<AdaptiveCards::ForegroundColor>(textColor));
             std::wstring colorWideString(colorString.begin(), colorString.end());
             return colorWideString;
         }

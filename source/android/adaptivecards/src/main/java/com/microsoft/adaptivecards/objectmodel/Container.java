@@ -41,12 +41,12 @@ public class Container extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_Container__SWIG_0(), true);
   }
 
-  public Container(SeparationStyle separation, String speak, ContainerStyle style) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(separation.swigValue(), speak, style.swigValue()), true);
+  public Container(Spacing spacing, boolean separator, ContainerStyle style) {
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(spacing.swigValue(), separator, style.swigValue()), true);
   }
 
-  public Container(SeparationStyle separation, String speak, ContainerStyle style, BaseCardElementVector items) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_2(separation.swigValue(), speak, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
+  public Container(Spacing spacing, boolean separator, ContainerStyle style, BaseCardElementVector items) {
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_2(spacing.swigValue(), separator, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
   }
 
   public String Serialize() {
@@ -61,12 +61,12 @@ public class Container extends BaseCardElement {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
   }
 
-  public ContainerStyle GetContainerStyle() {
-    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.Container_GetContainerStyle(swigCPtr, this));
+  public ContainerStyle GetStyle() {
+    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.Container_GetStyle(swigCPtr, this));
   }
 
-  public void SetContainerStyle(ContainerStyle value) {
-    AdaptiveCardObjectModelJNI.Container_SetContainerStyle(swigCPtr, this, value.swigValue());
+  public void SetStyle(ContainerStyle value) {
+    AdaptiveCardObjectModelJNI.Container_SetStyle(swigCPtr, this, value.swigValue());
   }
 
   public static Container Deserialize(SWIGTYPE_p_Json__Value root) {

@@ -12,14 +12,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     public:
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* action, _In_ HSTRING inputs);
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* action, _In_ ABI::Windows::Data::Json::IJsonObject* inputs);
 
         // IAdaptiveActionEventArgs
         IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement** action);
-        IFACEMETHODIMP get_Inputs(_Out_ HSTRING* inputs);
+        IFACEMETHODIMP get_Inputs(_Outptr_ ABI::Windows::Data::Json::IJsonObject** inputs);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement> m_action;
-        Microsoft::WRL::Wrappers::HString m_inputs;
+        Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_inputs;
     };
 }}

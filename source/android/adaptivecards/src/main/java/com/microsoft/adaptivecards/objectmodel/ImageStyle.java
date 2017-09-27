@@ -9,7 +9,7 @@
 package com.microsoft.adaptivecards.objectmodel;
 
 public final class ImageStyle {
-  public final static ImageStyle Normal = new ImageStyle("Normal", AdaptiveCardObjectModelJNI.ImageStyle_Normal_get());
+  public final static ImageStyle Default = new ImageStyle("Default", AdaptiveCardObjectModelJNI.ImageStyle_Default_get());
   public final static ImageStyle Person = new ImageStyle("Person");
 
   public final int swigValue() {
@@ -46,7 +46,7 @@ public final class ImageStyle {
     swigNext = this.swigValue+1;
   }
 
-  private static ImageStyle[] swigValues = { Normal, Person };
+  private static ImageStyle[] swigValues = { Default, Person };
   private static int swigNext = 0;
   private final int swigValue;
   private final String swigName;

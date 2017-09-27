@@ -17,19 +17,18 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
 
     result.supportsInteractivity = ParseUtil::GetBool(
         json, AdaptiveCardSchemaKey::SupportsInteractivity, result.supportsInteractivity);
-    result.maxActions = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxActions, result.maxActions);
 
     result.fontSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontSizesConfig>(
         json, AdaptiveCardSchemaKey::FontSizes, result.fontSizes, FontSizesConfig::Deserialize);
 
-    result.colors = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorsConfig>(
-        json, AdaptiveCardSchemaKey::Colors, result.colors, ColorsConfig::Deserialize);
-
+    result.containerStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStylesDefinition>(
+        json, AdaptiveCardSchemaKey::ContainerStyles, result.containerStyles, ContainerStylesDefinition::Deserialize);
+        
     result.imageSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageSizesConfig>(
         json, AdaptiveCardSchemaKey::ImageSizes, result.imageSizes, ImageSizesConfig::Deserialize);
 
-    result.strongSeparation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::StrongSeparation, result.strongSeparation, SeparationConfig::Deserialize);
+    result.spacing = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingConfig>(
+        json, AdaptiveCardSchemaKey::Spacing, result.spacing, SpacingConfig::Deserialize);
 
     result.adaptiveCard = ParseUtil::ExtractJsonValueAndMergeWithDefault<AdaptiveCardConfig>(
         json, AdaptiveCardSchemaKey::AdaptiveCard, result.adaptiveCard, AdaptiveCardConfig::Deserialize);
@@ -44,33 +43,21 @@ FontSizesConfig FontSizesConfig::Deserialize(const Json::Value& json, const Font
 {
     FontSizesConfig result;
     result.smallFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Small, defaultValue.smallFontSize);
-    result.normalFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Normal, defaultValue.normalFontSize);
+    result.defaultFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Default, defaultValue.defaultFontSize);
     result.mediumFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Medium, defaultValue.mediumFontSize);
     result.largeFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Large, defaultValue.largeFontSize);
     result.extraLargeFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::ExtraLarge, defaultValue.extraLargeFontSize);
     return result;
 }
 
-SpacingDefinition SpacingDefinition::Deserialize(const Json::Value& json, const SpacingDefinition& defaultValue)
-{
-
-    SpacingDefinition result;
-    result.left = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Left, defaultValue.left);
-    result.right = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Right, defaultValue.right);
-    result.top = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Top, defaultValue.top);
-    result.bottom = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Bottom, defaultValue.bottom);
-
-    return result;
-}
-
 ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig& defaultValue)
 {
     ColorConfig result;
-    std::string normal = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Normal);
-    result.normal = normal == "" ? defaultValue.normal : normal;
+    std::string defaultColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Default);
+    result.defaultColor = defaultColor == "" ? defaultValue.defaultColor : defaultColor;
 
-    std::string subtle = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
-    result.subtle = subtle == "" ? defaultValue.subtle: subtle;
+    std::string subtleColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Subtle);
+    result.subtleColor = subtleColor == "" ? defaultValue.subtleColor: subtleColor;
 
     return result;
 }
@@ -113,23 +100,17 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
     result.size = ParseUtil::GetEnumValue<TextSize>(
         json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
-    result.color = ParseUtil::GetEnumValue<TextColor>(
-        json, AdaptiveCardSchemaKey::Color, defaultValue.color, TextColorFromString);
+    result.color = ParseUtil::GetEnumValue<ForegroundColor>(
+        json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
 
     result.isSubtle = ParseUtil::GetBool(
         json, AdaptiveCardSchemaKey::IsSubtle, defaultValue.isSubtle);
 
-    return result;
-}
+    result.wrap = ParseUtil::GetBool(
+        json, AdaptiveCardSchemaKey::Wrap, defaultValue.wrap);
 
-SeparationConfig SeparationConfig::Deserialize(const Json::Value& json, const SeparationConfig& defaultValue)
-{
-    SeparationConfig result;
-    std::string lineColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::LineColor);
-    result.lineColor = lineColor == "" ? defaultValue.lineColor : lineColor;
-
-    result.spacing = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Spacing, defaultValue.spacing);
-    result.lineThickness = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::LineThickness, defaultValue.lineThickness);
+    result.maxWidth = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::MaxWidth, defaultValue.maxWidth);
 
     return result;
 }
@@ -147,12 +128,7 @@ ImageSizesConfig ImageSizesConfig::Deserialize(const Json::Value& json, const Im
 AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value& json, const AdaptiveCardConfig& defaultValue)
 {
     AdaptiveCardConfig result;
-
-    result.padding = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
-        json, AdaptiveCardSchemaKey::Padding, defaultValue.padding, SpacingDefinition::Deserialize);
-
-    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
-    result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
+    result.allowCustomStyle = ParseUtil::GetBool(json, AdaptiveCardSchemaKey::AllowCustomStyle, defaultValue.allowCustomStyle);
 
     return result;
 }
@@ -163,25 +139,14 @@ ImageSetConfig ImageSetConfig::Deserialize(const Json::Value& json, const ImageS
     result.imageSize = ParseUtil::GetEnumValue<ImageSize>(
         json, AdaptiveCardSchemaKey::ImageSet, defaultValue.imageSize, ImageSizeFromString);
 
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
+    result.maxImageHeight = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxImageHeight, defaultValue.maxImageHeight);
 
-    return result;
-}
-
-ImageConfig ImageConfig::Deserialize(const Json::Value& json, const ImageConfig& defaultValue)
-{
-    ImageConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
     return result;
 }
 
 FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetConfig& defaultValue)
 {
     FactSetConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
 
     result.spacing = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Spacing, defaultValue.spacing);
     result.title = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextConfig>(
@@ -193,145 +158,14 @@ FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetC
     return result;
 }
 
-ColumnConfig ColumnConfig::Deserialize(const Json::Value& json, const ColumnConfig& defaultValue)
-{
-    ColumnConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
-
-    return result;
-}
-
-ContainerStyleConfig ContainerStyleConfig::Deserialize(const Json::Value& json, const ContainerStyleConfig& defaultValue)
-{
-    ContainerStyleConfig result;
-    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
-    result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
-
-    std::string borderColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BorderColor);
-    result.borderColor = borderColor == "" ? defaultValue.borderColor : borderColor;
-
-    result.borderThickness = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
-        json, AdaptiveCardSchemaKey::BorderThickness, defaultValue.borderThickness, SpacingDefinition::Deserialize);
-
-    result.padding = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
-        json, AdaptiveCardSchemaKey::Padding, defaultValue.padding, SpacingDefinition::Deserialize);
-
-    return result;
-
-}
-
-ContainerConfig ContainerConfig::Deserialize(const Json::Value& json, const ContainerConfig& defaultValue)
-{
-    ContainerConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
-
-    result.emphasis = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleConfig>(
-        json, AdaptiveCardSchemaKey::Emphasis, defaultValue.emphasis, ContainerStyleConfig::Deserialize);
-
-    result.normal = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleConfig>(
-        json, AdaptiveCardSchemaKey::Normal, defaultValue.normal, ContainerStyleConfig::Deserialize);
-
-    return result;
-}
-
-ColumnSetConfig ColumnSetConfig::Deserialize(const Json::Value& json, const ColumnSetConfig& defaultValue)
-{
-    ColumnSetConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
-
-    return result;
-}
-
-TextBlockConfig TextBlockConfig::Deserialize(const Json::Value& json, const TextBlockConfig& defaultValue)
-{
-    TextBlockConfig result;
-    result.extraLargeSeparation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::ExtraLarge, defaultValue.extraLargeSeparation, SeparationConfig::Deserialize);
-
-    result.largeSeparation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Large, defaultValue.largeSeparation, SeparationConfig::Deserialize);
-
-    result.mediumSeparation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Medium, defaultValue.mediumSeparation, SeparationConfig::Deserialize);
-
-    result.normalSeparation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Normal, defaultValue.normalSeparation, SeparationConfig::Deserialize);
-
-    result.smallSeparation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Small, defaultValue.smallSeparation, SeparationConfig::Deserialize);
-
-    return result;
-}
-
-DateInputConfig DateInputConfig::Deserialize(const Json::Value& json, const DateInputConfig& defaultValue)
-{
-    DateInputConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
-
-    return result;
-}
-
-TimeInputConfig TimeInputConfig::Deserialize(const Json::Value& json, const TimeInputConfig& defaultValue)
-{
-    TimeInputConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
-
-    return result;
-}
-
-NumberInputConfig NumberInputConfig::Deserialize(const Json::Value& json, const NumberInputConfig& defaultValue)
-{
-    NumberInputConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
-
-    return result;
-}
-
-ToggleInputConfig ToggleInputConfig::Deserialize(const Json::Value& json, const ToggleInputConfig& defaultValue)
-{
-    ToggleInputConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
-
-    return result;
-}
-
-TextInputConfig TextInputConfig::Deserialize(const Json::Value& json, const TextInputConfig& defaultValue)
-{
-    TextInputConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
-
-    return result;
-}
-
-ChoiceSetConfig ChoiceSetConfig::Deserialize(const Json::Value& json, const ChoiceSetConfig& defaultValue)
-{
-    ChoiceSetConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
-
-    return result;
-}
-
 ShowCardActionConfig ShowCardActionConfig::Deserialize(const Json::Value&json, const ShowCardActionConfig& defaultValue)
 {
     ShowCardActionConfig result;
     result.actionMode = ParseUtil::GetEnumValue<ActionMode>(
         json, AdaptiveCardSchemaKey::ActionMode, defaultValue.actionMode, ActionModeFromString);
-
-    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
-    result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
-
     result.inlineTopMargin = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::InlineTopMargin, defaultValue.inlineTopMargin);
-    result.padding = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingDefinition>(
-        json, AdaptiveCardSchemaKey::Padding, defaultValue.padding, SpacingDefinition::Deserialize);
+    result.style = ParseUtil::GetEnumValue<ContainerStyle>(
+        json, AdaptiveCardSchemaKey::Style, defaultValue.style, ContainerStyleFromString);
 
     return result;
 }
@@ -339,8 +173,6 @@ ShowCardActionConfig ShowCardActionConfig::Deserialize(const Json::Value&json, c
 ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsConfig& defaultValue)
 {
     ActionsConfig result;
-    result.separation = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparationConfig>(
-        json, AdaptiveCardSchemaKey::Separation, defaultValue.separation, SeparationConfig::Deserialize);
 
     result.actionsOrientation = ParseUtil::GetEnumValue<ActionsOrientation>(
         json, AdaptiveCardSchemaKey::ActionsOrientation, defaultValue.actionsOrientation, ActionsOrientationFromString);
@@ -356,6 +188,96 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
 
     result.showCard = ParseUtil::ExtractJsonValueAndMergeWithDefault<ShowCardActionConfig>(
         json, AdaptiveCardSchemaKey::ShowCard, defaultValue.showCard, ShowCardActionConfig::Deserialize);
+
+    return result;
+}
+
+SpacingConfig AdaptiveCards::SpacingConfig::Deserialize(const Json::Value & json, const SpacingConfig & defaultValue)
+{
+    SpacingConfig result;
+
+    result.smallSpacing = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::Small, defaultValue.smallSpacing);
+
+    result.defaultSpacing = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultSpacing);
+
+    result.mediumSpacing = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::Medium, defaultValue.mediumSpacing);
+
+    result.largeSpacing = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::Large, defaultValue.largeSpacing);
+
+    result.extraLargeSpacing = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::ExtraLarge, defaultValue.extraLargeSpacing);
+
+    result.paddingSpacing = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::Padding, defaultValue.paddingSpacing);
+
+    return result;
+}
+
+SeparatorConfig AdaptiveCards::SeparatorConfig::Deserialize(const Json::Value & json, const SeparatorConfig & defaultValue)
+{
+    SeparatorConfig result;
+
+    result.lineThickness = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::LineThickness, defaultValue.lineThickness);
+
+    std::string lineColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::LineColor);
+    result.lineColor = lineColor == "" ? defaultValue.lineColor : lineColor;
+
+    return result;
+}
+
+ContainerStyleDefinition AdaptiveCards::ContainerStyleDefinition::Deserialize(const Json::Value & json, const ContainerStyleDefinition & defaultValue)
+{
+    ContainerStyleDefinition result;
+
+    std::string backgroundColor = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor);
+    result.backgroundColor = backgroundColor == "" ? defaultValue.backgroundColor : backgroundColor;
+
+    result.foregroundColors = ParseUtil::ExtractJsonValueAndMergeWithDefault<ColorsConfig>(
+        json, AdaptiveCardSchemaKey::ForegroundColors, defaultValue.foregroundColors, ColorsConfig::Deserialize);
+
+    return result;
+}
+
+ContainerStylesDefinition AdaptiveCards::ContainerStylesDefinition::Deserialize(const Json::Value & json, const ContainerStylesDefinition & defaultValue)
+{
+    ContainerStylesDefinition result;
+
+    result.defaultPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultPalette, ContainerStyleDefinition::Deserialize);
+
+    result.emphasisPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Emphasis, defaultValue.emphasisPalette, ContainerStyleDefinition::Deserialize);
+
+    return result;
+}
+
+FontWeightsConfig AdaptiveCards::FontWeightsConfig::Deserialize(const Json::Value & json, const FontWeightsConfig & defaultValue)
+{
+    FontWeightsConfig result;
+
+    result.lighterWeight = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::Lighter, defaultValue.lighterWeight);
+
+    result.defaultWeight = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::Default, defaultValue.defaultWeight);
+
+    result.bolderWeight = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::Bolder, defaultValue.bolderWeight);
+
+    return result;
+}
+
+ImageConfig AdaptiveCards::ImageConfig::Deserialize(const Json::Value & json, const ImageConfig & defaultValue)
+{
+    ImageConfig result;
+
+    result.imageSize = ParseUtil::GetEnumValue<ImageSize>(
+        json, AdaptiveCardSchemaKey::ImageSize, defaultValue.imageSize, ImageSizeFromString);
 
     return result;
 }

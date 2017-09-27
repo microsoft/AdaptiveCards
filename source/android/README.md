@@ -26,7 +26,7 @@ swig -c++ -java -package com.microsoft.adaptivecards.objectmodel -outdir main/ja
     compile 'io.adaptivecards:adaptivecards-android-arm:1.0.0'
 For more information, please go to http://search.maven.org/ and search adaptivecards-android-arm
 TODO:
-1. Speech
+1. Scenario->Restaurant.json is not rendered correctly
 2. AdaptiveCard
     a. version
     b. minVersion
@@ -35,16 +35,11 @@ TODO:
     a. Font Family
 4. Image
     a. altText
-5. Separation (ColumnSet, Column, ImageSet, FactSet, Input.Text)
-    a. Horizontal line???
-    b. Input.Text/Number,Date,Time,Toggle/ChoiceSet (only contains one separation config - normal vs strong?)
+5. Separation - Container/ColumnSet
 6. SelectAction (Column, Image)
-7. HostConfig (Actions, Input.Text, Input.Number, Input.Date, Input.Time)
 
 Questions:
 Action - HTTP:
 	- Should there be a callback to indicate success or failure and response data?
 	- HTTP Header is missing in shared model
 
-Input.Toggle - what is the difference in behavior between expanded vs compact? (ChoiceInputStyle)
-Input.ChoiceSet - style is listed twice

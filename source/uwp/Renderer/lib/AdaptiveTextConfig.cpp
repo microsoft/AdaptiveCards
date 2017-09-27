@@ -47,16 +47,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::get_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor)
+    HRESULT AdaptiveTextConfig::get_Color(ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor* textColor)
     {
-        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextColor>(m_sharedTextConfig.color);
+        *textColor = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor>(m_sharedTextConfig.color);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor)
+    HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor textColor)
     {
-        m_sharedTextConfig.color = static_cast<AdaptiveCards::TextColor>(textColor);
+        m_sharedTextConfig.color = static_cast<AdaptiveCards::ForegroundColor>(textColor);
         return S_OK;
     }
 
@@ -71,6 +71,30 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     HRESULT AdaptiveTextConfig::put_IsSubtle(boolean isSubtle)
     {
         m_sharedTextConfig.isSubtle = Boolify(isSubtle);
+        return S_OK;
+    }
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextConfig::get_Wrap(boolean* wrap)
+    {
+        *wrap = m_sharedTextConfig.wrap;
+        return S_OK;
+    }
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextConfig::put_Wrap(boolean wrap)
+    {
+        m_sharedTextConfig.wrap = Boolify(wrap);
+        return S_OK;
+    }
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextConfig::get_MaxWidth(UINT32* maxWidth)
+    {
+        *maxWidth = m_sharedTextConfig.maxWidth;
+        return S_OK;
+    }
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextConfig::put_MaxWidth(UINT32 maxWidth)
+    {
+        m_sharedTextConfig.maxWidth = maxWidth;
         return S_OK;
     }
 }

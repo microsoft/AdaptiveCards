@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AdaptiveActionsConfig.h"
-#include "AdaptiveSeparationConfig.h"
 #include "AdaptiveShowCardActionConfig.h"
 #include "Util.h"
 
@@ -48,16 +47,30 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionsConfig::get_MaxActions(UINT32* value)
+    HRESULT AdaptiveActionsConfig::get_MaxActions(UINT32* value)
     {
         *value = m_sharedActionsConfig.maxActions;
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveActionsConfig::put_MaxActions(UINT32 value)
+    HRESULT AdaptiveActionsConfig::put_MaxActions(UINT32 value)
     {
         m_sharedActionsConfig.maxActions = value;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveActionsConfig::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* value)
+    {
+        *value = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedActionsConfig.spacing);
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveActionsConfig::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing value)
+    {
+        m_sharedActionsConfig.spacing = static_cast<AdaptiveCards::Spacing>(value);
         return S_OK;
     }
 
@@ -87,17 +100,5 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     {
         m_sharedActionsConfig.actionsOrientation = static_cast<AdaptiveCards::ActionsOrientation>(value);
         return S_OK;
-    }
-
-    _Use_decl_annotations_
-        HRESULT AdaptiveActionsConfig::get_Separation(IAdaptiveSeparationConfig** separationConfig)
-    {
-        return MakeAndInitialize<AdaptiveSeparationConfig>(separationConfig, m_sharedActionsConfig.separation);
-    }
-
-    _Use_decl_annotations_
-        HRESULT AdaptiveActionsConfig::put_Separation(IAdaptiveSeparationConfig*)
-    {
-        return E_NOTIMPL;
     }
 }}

@@ -23,11 +23,17 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextSize* textSize);
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextSize textSize);
 
-        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::XamlCardRenderer::TextColor* textColor);
-        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveCards::XamlCardRenderer::TextColor textColor);
+        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor* textColor);
+        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveCards::XamlCardRenderer::ForegroundColor textColor);
 
         IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle);
         IFACEMETHODIMP put_IsSubtle(_In_ boolean isSubtle);
+
+        IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
+        IFACEMETHODIMP put_Wrap(_In_ boolean wrap);
+
+        IFACEMETHODIMP get_MaxWidth(_Out_ UINT32* maxWidth);
+        IFACEMETHODIMP put_MaxWidth(_In_ UINT32 maxWidth);
 
     private:
         TextConfig m_sharedTextConfig;
