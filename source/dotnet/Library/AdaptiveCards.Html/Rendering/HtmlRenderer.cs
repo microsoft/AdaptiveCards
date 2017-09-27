@@ -793,7 +793,7 @@ namespace AdaptiveCards.Rendering
             else
             {
                 // the default values are specified by a comma separated string input.value
-                var defaultValues = choiceSet.Value?.Split(',').Select(p => p.Trim()).ToList() ?? new List<string>();
+                var defaultValues = choiceSet.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
 
                 // render as a list of toggle inputs
                 var uiElement = new HtmlTag("div")

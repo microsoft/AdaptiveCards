@@ -78,13 +78,13 @@ namespace AdaptiveCards.Rendering
                 {
                     if (choiceSet.IsMultiSelect == true)
                     {
-                        List<string> values = new List<string>();
+                        string values = string.Empty;
                         foreach (var item in uiChoices.Items)
                         {
                             CheckBox checkBox = (CheckBox)item;
                             Choice choice = checkBox.DataContext as Choice;
                             if (checkBox.IsChecked == true)
-                                values.Add(choice.Value);
+                                values += (values == string.Empty ? "" : ",") + choice.Value;
                         }
                         return values;
                     }
