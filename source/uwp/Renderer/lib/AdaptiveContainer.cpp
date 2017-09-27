@@ -116,7 +116,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Type(HSTRING* type)
+    HRESULT AdaptiveContainer::get_ElementTypeString(HSTRING* type)
     {
         ElementType typeEnum;
         RETURN_IF_FAILED(get_ElementType(&typeEnum));

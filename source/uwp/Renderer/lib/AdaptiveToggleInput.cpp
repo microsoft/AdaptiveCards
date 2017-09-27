@@ -161,7 +161,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveToggleInput::get_Type(HSTRING* type)
+    HRESULT AdaptiveToggleInput::get_ElementTypeString(HSTRING* type)
     {
         ElementType typeEnum;
         RETURN_IF_FAILED(get_ElementType(&typeEnum));

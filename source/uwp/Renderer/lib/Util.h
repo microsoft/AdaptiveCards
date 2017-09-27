@@ -21,6 +21,8 @@ HRESULT UTF8ToHString(const std::string& in, HSTRING* out);
 // (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
 HRESULT HStringToUTF8(const HSTRING& in, std::string &out);
 
+std::string HStringToUTF8(const HSTRING& in);
+
 bool Boolify(const boolean value);
 
 HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept;

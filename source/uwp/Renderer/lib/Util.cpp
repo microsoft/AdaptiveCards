@@ -58,6 +58,14 @@ HRESULT HStringToUTF8(const HSTRING& in, string& out)
     return S_OK;
 }
 
+std::string HStringToUTF8(const HSTRING &in)
+{
+    std::string typeAsKey;
+    HRESULT hr = HStringToUTF8(in, typeAsKey);
+    return FAILED(hr) ? "" : typeAsKey;
+}
+
+
 bool Boolify(const boolean value)
 {
     return value > 0 ? true : false;

@@ -29,7 +29,6 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     private:
         std::shared_ptr<RegistrationMap> m_registration;
-        std::string TypeAsRegistrationKey(_In_ HSTRING type);
     };
 
     ActivatableClass(AdaptiveActionRendererRegistration);

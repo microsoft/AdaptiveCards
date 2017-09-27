@@ -281,28 +281,28 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     _Use_decl_annotations_
     HRESULT XamlCardRenderer::RegisterDefaultElementRenderers()
     {
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.ChoiceSet").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveChoiceSetInputRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveColumnRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ColumnSet").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveColumnSetRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Container").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveContainerRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Date").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveDateInputRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"FactSet").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveFactSetRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Image").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveImageRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ImageSet").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveImageSetRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Number").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveNumberInputRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"TextBlock").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveTextBlockRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Text").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveTextInputRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Time").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveTimeInputRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Toggle").Get(), ComPtr<IAdaptiveElementRenderer>(Make<AdaptiveToggleInputRenderer>().Get()).Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.ChoiceSet").Get(), Make<AdaptiveChoiceSetInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), Make<AdaptiveColumnRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ColumnSet").Get(), Make<AdaptiveColumnSetRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Container").Get(), Make<AdaptiveContainerRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Date").Get(), Make<AdaptiveDateInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"FactSet").Get(), Make<AdaptiveFactSetRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Image").Get(), Make<AdaptiveImageRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ImageSet").Get(), Make<AdaptiveImageSetRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Number").Get(), Make<AdaptiveNumberInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"TextBlock").Get(), Make<AdaptiveTextBlockRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Text").Get(), Make<AdaptiveTextInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Time").Get(), Make<AdaptiveTimeInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Toggle").Get(), Make<AdaptiveToggleInputRenderer>().Get()));
         return S_OK;
     }
 
     _Use_decl_annotations_
     HRESULT XamlCardRenderer::RegisterDefaultActionRenderers()
     {
-        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.Submit").Get(), ComPtr<IAdaptiveActionRenderer>(Make<AdaptiveSubmitActionRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.OpenUrl").Get(), ComPtr<IAdaptiveActionRenderer>(Make<AdaptiveOpenUrlActionRenderer>().Get()).Get()));
-        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.ShowCard").Get(), ComPtr<IAdaptiveActionRenderer>(Make<AdaptiveShowCardActionRenderer>().Get()).Get()));
+        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.Submit").Get(), Make<AdaptiveSubmitActionRenderer>().Get()));
+        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.OpenUrl").Get(), Make<AdaptiveOpenUrlActionRenderer>().Get()));
+        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.ShowCard").Get(), Make<AdaptiveShowCardActionRenderer>().Get()));
         return S_OK;
     }
 

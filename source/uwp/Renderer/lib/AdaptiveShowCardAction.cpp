@@ -69,7 +69,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_Type(HSTRING* type)
+    HRESULT AdaptiveShowCardAction::get_ActionTypeString(HSTRING* type)
     {
         ::ActionType typeEnum;
         RETURN_IF_FAILED(get_ActionType(&typeEnum));

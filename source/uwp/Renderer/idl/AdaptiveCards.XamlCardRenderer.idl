@@ -193,6 +193,7 @@ namespace AdaptiveCards
             TextInput,
             TimeInput,
             ToggleInput,
+            Custom
         } ElementType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -201,7 +202,8 @@ namespace AdaptiveCards
             Unsupported = 0, 
             ShowCard,
             Submit,
-            OpenUrl
+            OpenUrl,
+            Custom
         } ActionType;
 
         [version(NTDDI_WIN10_RS1)]
@@ -315,7 +317,7 @@ namespace AdaptiveCards
             [propget] HRESULT Id([out, retval] HSTRING* value);
             [propput] HRESULT Id([in] HSTRING value);
 
-            [propget] HRESULT Type([out, retval] HSTRING* value);
+            [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
         };
 
         [
@@ -1407,7 +1409,7 @@ namespace AdaptiveCards
             [propget] HRESULT Id([out, retval] HSTRING* value);
             [propput] HRESULT Id([in] HSTRING value);
 
-            [propget] HRESULT Type([out, retval] HSTRING* value);
+            [propget] HRESULT ActionTypeString([out, retval] HSTRING* value);
         };
 
         [

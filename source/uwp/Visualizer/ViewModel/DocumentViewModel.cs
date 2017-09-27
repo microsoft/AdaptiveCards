@@ -149,7 +149,7 @@ namespace XamlCardVisualizer.ViewModel
                 _renderer = new XamlCardRenderer();
                 if (hostConfig != null)
                 {
-                    _renderer.SetHostConfig(hostConfig);
+                    _renderer.HostConfig = hostConfig;
                 }
 
                 // Custom resource resolvers

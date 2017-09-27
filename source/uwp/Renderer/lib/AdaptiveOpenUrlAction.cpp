@@ -95,7 +95,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveOpenUrlAction::get_Type(HSTRING* type)
+    HRESULT AdaptiveOpenUrlAction::get_ActionTypeString(HSTRING* type)
     {
         ::ActionType typeEnum;
         RETURN_IF_FAILED(get_ActionType(&typeEnum));

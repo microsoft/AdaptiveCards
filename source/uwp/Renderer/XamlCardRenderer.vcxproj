@@ -198,6 +198,7 @@
     <ClCompile Include="lib\AdaptiveColumnSetRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveContainerRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveElementParserRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveDateInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveElementRendererRegistration.cpp" />

@@ -48,7 +48,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Separator(boolean* separator);
         IFACEMETHODIMP put_Separator(boolean separator);
 
-        IFACEMETHODIMP get_Type(_Out_ HSTRING* value);
+        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
     private:
         std::shared_ptr<AdaptiveCards::ToggleInput> m_sharedToggleInput;

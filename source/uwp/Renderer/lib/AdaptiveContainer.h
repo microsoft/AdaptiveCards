@@ -38,7 +38,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
-        IFACEMETHODIMP get_Type(_Out_ HSTRING* value);
+        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement*>> m_items;

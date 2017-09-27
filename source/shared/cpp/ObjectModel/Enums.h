@@ -217,6 +217,7 @@ enum class CardElementType
     TimeInput,
     ToggleInput,
     ChoiceSetInput,
+    Custom
 };
 
 enum class ActionType
@@ -225,6 +226,7 @@ enum class ActionType
     ShowCard,
     Submit,
     OpenUrl,
+    Custom
 };
 
 enum class ActionAlignment
