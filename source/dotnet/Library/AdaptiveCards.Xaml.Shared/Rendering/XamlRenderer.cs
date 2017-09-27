@@ -68,7 +68,6 @@ namespace AdaptiveCards.Rendering
             this.SetRenderer<ToggleInput>(XamlToggleInput.Render); ;
 
             this.SetRenderer<SubmitAction>(XamlSubmitAction.Render);
-            this.SetRenderer<HttpAction>(XamlHttpAction.Render); ;
             this.SetRenderer<OpenUrlAction>(XamlOpenUrlAction.Render);
             this.SetRenderer<ShowCardAction>(XamlShowCardAction.Render);
         }
