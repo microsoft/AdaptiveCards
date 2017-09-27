@@ -37,7 +37,7 @@ namespace AdaptiveCards.Rendering
                 case TextWeight.Lighter:
                     uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(300);
                     break;
-                case TextWeight.Normal:
+                case TextWeight.Default:
                 default:
                     uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(400);
                     break;

@@ -123,27 +123,32 @@ namespace AdaptiveCards
         /// <summary>
         ///     Default text size
         /// </summary>
-        Normal,
+        Default = 0,
+        /// <summary>
+        ///     Default text size
+        /// </summary>
+        [Obsolete("TextSize.Normal has been deprecated.  Use TextSize.Default", false)]
+        Normal = 0,
 
         /// <summary>
         ///     Smallest text size
         /// </summary>
-        Small,
+        Small = 1,
 
         /// <summary>
-        ///     Slightly larger than normal
+        ///     Slightly larger than default
         /// </summary>
-        Medium,
+        Medium = 2,
 
         /// <summary>
         ///     Slightly larger then medium
         /// </summary>
-        Large,
+        Large = 3,
 
         /// <summary>
         ///     The largest text size
         /// </summary>
-        ExtraLarge
+        ExtraLarge = 4
     }
 
     /// <summary>
@@ -155,17 +160,23 @@ namespace AdaptiveCards
         /// <summary>
         ///     The default text weight
         /// </summary>
-        Normal,
+        Default = 0,
+
+        /// <summary>
+        ///     The default text weight
+        /// </summary>
+        [Obsolete("TextWeight.Normal has been deprecated.  Use TextWeight.Default", false)]
+        Normal = 0,
 
         /// <summary>
         ///     Lighter text (thinner stroke)
         /// </summary>
-        Lighter,
+        Lighter = 1,
 
         /// <summary>
         ///     Bolder text (wider stroke)
         /// </summary>
-        Bolder
+        Bolder = 2
     }
 
     /// <summary>
@@ -246,12 +257,18 @@ namespace AdaptiveCards
         /// <summary>
         ///     The image is displayed within a rectangle.
         /// </summary>
-        Normal,
+        Default = 0,
+
+        /// <summary>
+        ///     The image is displayed within a rectangle.
+        /// </summary>
+        [Obsolete("ImageStyle.Normal has been deprecated.  Use ImageStyle.Default", false)]
+        Normal = 0,
 
         /// <summary>
         ///     The image is cropped to a circle, a common way to represent people photos.
         /// </summary>
-        Person
+        Person = 1
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]

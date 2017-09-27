@@ -99,7 +99,7 @@ namespace AdaptiveCards.Rendering.Config
                         {
                             case TextSize.Small:
                                 return this.TextBlock.Separations.Small;
-                            case TextSize.Normal:
+                            case TextSize.Default:
                                 return this.TextBlock.Separations.Normal;
                             case TextSize.Medium:
                                 return this.TextBlock.Separations.Medium;
