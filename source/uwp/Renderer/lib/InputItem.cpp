@@ -78,7 +78,6 @@ void InputItem::SerializeTimeInput(
     UINT64 hours = totalMinutes / 60;
     UINT64 minutesPastTheHour = totalMinutes - (hours * 60);
 
-    // TODO: Confirm desired time format
     char buffer[6];
     sprintf_s(buffer, sizeof(buffer), "%02llu:%02llu", hours, minutesPastTheHour);
 
