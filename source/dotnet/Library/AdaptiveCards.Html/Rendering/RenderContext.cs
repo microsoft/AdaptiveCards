@@ -95,7 +95,7 @@ namespace AdaptiveCards.Rendering
                             return this.Config.TextBlock.Separations.Large;
                         case TextSize.ExtraLarge:
                             return this.Config.TextBlock.Separations.ExtraLarge;
-                        case TextSize.Normal:
+                        case TextSize.Default:
                         default:
                             return this.Config.TextBlock.Separations.Normal;
                     }

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Xml.Serialization;
+using System;
 
 namespace AdaptiveCards
 {
@@ -41,7 +42,9 @@ namespace AdaptiveCards
         {
             Title = title;
             Value = value;
+#pragma warning disable CS0618 // Type or member is obsolete
             Speak = speak;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
@@ -69,6 +72,7 @@ namespace AdaptiveCards
 #if NET452
         [XmlElement]
 #endif
+        [Obsolete("FactSet.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
     }
 }
