@@ -267,10 +267,12 @@ namespace WpfVisualizer
             {
                 foreach (var element in card.Body)
                 {
+#pragma warning disable CS0618 // Type or member is obsolete
                     if (element.Speak != null)
                     {
                         _synth.SpeakSsmlAsync(FixSSML(element.Speak));
                     }
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
             }
         }

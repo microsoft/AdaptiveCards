@@ -964,6 +964,7 @@ namespace AdaptiveCards.Rendering
 
         protected static string GetFallbackText(CardElement cardElement)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             if (!string.IsNullOrEmpty(cardElement.Speak))
             {
 #if NET452
@@ -978,6 +979,7 @@ namespace AdaptiveCards.Rendering
                 return doc.InnerText;
 #endif
             }
+#pragma warning restore CS0618 // Type or member is obsolete
             return null;
         }
     }
