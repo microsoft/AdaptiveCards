@@ -29,6 +29,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
         IFACEMETHODIMP get_DataJson(_Out_ ABI::Windows::Data::Json::IJsonObject** data);
         IFACEMETHODIMP put_DataJson(_In_ ABI::Windows::Data::Json::IJsonObject* data);
+
+        IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
     private:
         std::shared_ptr<AdaptiveCards::SubmitAction> m_sharedSubmitAction;
     };

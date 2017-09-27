@@ -100,4 +100,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedColumnSet->SetId(out);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumnSet::get_ElementTypeString(HSTRING* type)
+    {
+        ElementType typeEnum;
+        RETURN_IF_FAILED(get_ElementType(&typeEnum));
+        return ProjectedElementTypeToHString(typeEnum, type);
+    }
 }}

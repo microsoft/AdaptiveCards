@@ -90,7 +90,11 @@ namespace XamlCardVisualizer.ViewModel
                             if (e.Action.ActionType == ActionType.ShowCard)
                             {
                                 AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
-                                m_actionDialog.Content = await _renderer.RenderCardAsXamlAsync(showCardAction.Card);
+                                RenderedAdaptiveCard renderedShowCard = _renderer.RenderAdaptiveCard(showCardAction.Card);
+                                if (renderedShowCard.IsRenderedSuccessfully)
+                                {
+                                    m_actionDialog.Content = renderedShowCard.FrameworkElement;
+                                }
                             }
                             else
                             {
@@ -145,7 +149,7 @@ namespace XamlCardVisualizer.ViewModel
                 _renderer = new XamlCardRenderer();
                 if (hostConfig != null)
                 {
-                    _renderer.SetHostConfig(hostConfig);
+                    _renderer.HostConfig = hostConfig;
                 }
 
                 // Custom resource resolvers

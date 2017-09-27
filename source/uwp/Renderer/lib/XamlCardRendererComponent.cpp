@@ -1,16 +1,35 @@
 ﻿#include "pch.h"
 #include "XamlCardRendererComponent.h"
 
+#include "AdaptiveActionRendererRegistration.h"
 #include "AdaptiveCard.h"
+#include "AdaptiveChoiceSetInputRenderer.h"
+#include "AdaptiveColumnRenderer.h"
+#include "AdaptiveColumnSetRenderer.h"
+#include "AdaptiveContainerRenderer.h"
+#include "AdaptiveDateInputRenderer.h"
+#include "AdaptiveElementRendererRegistration.h"
+#include "AdaptiveFactSetRenderer.h"
+#include "AdaptiveHostConfig.h"
+#include "AdaptiveImageRenderer.h"
+#include "AdaptiveImageSetRenderer.h"
+#include "AdaptiveNumberInputRenderer.h"
+#include "AdaptiveOpenUrlActionRenderer.h"
+#include "AdaptiveRenderContext.h"
+#include "AdaptiveShowCardActionRenderer.h"
+#include "AdaptiveSubmitActionRenderer.h"
+#include "AdaptiveTextBlockRenderer.h"
+#include "AdaptiveTextInputRenderer.h"
+#include "AdaptiveTimeInputRenderer.h"
+#include "AdaptiveToggleInputRenderer.h"
 #include "AsyncOperations.h"
-#include <windows.foundation.collections.h>
-#include <Windows.UI.Xaml.h>
+#include "InputItem.h"
+#include "RenderedAdaptiveCard.h"
 #include "XamlBuilder.h"
 #include "XamlCardResourceResolvers.h"
 #include "XamlHelpers.h"
-#include "AdaptiveHostConfig.h"
-#include "InputItem.h"
-#include "RenderedAdaptiveCard.h"
+#include <windows.foundation.collections.h>
+#include <Windows.UI.Xaml.h>
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
@@ -35,7 +54,15 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     HRESULT XamlCardRenderer::RuntimeClassInitialize()
     {
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionRendererRegistration>(&m_actionRendererRegistration));
+        RETURN_IF_FAILED(RegisterDefaultElementRenderers());
+        RETURN_IF_FAILED(RegisterDefaultActionRenderers());
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderContext>(&m_renderContext,
+            m_hostConfig.Get(),
+            m_elementRendererRegistration.Get(),
+            m_actionRendererRegistration.Get()));
         return MakeAndInitialize<XamlCardResourceResolvers>(&m_resourceResolvers);
     }
 
@@ -53,9 +80,16 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  XamlCardRenderer::SetHostConfig(IAdaptiveHostConfig* hostConfig)
+    HRESULT  XamlCardRenderer::put_HostConfig(IAdaptiveHostConfig* hostConfig)
     {
         m_hostConfig = hostConfig;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT  XamlCardRenderer::get_HostConfig(IAdaptiveHostConfig** hostConfig)
+    {
+        *hostConfig = m_hostConfig.Get();
         return S_OK;
     }
 
@@ -229,6 +263,47 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         return m_explicitDimensions;
+    }
+
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::get_ElementRenderers(IAdaptiveElementRendererRegistration **value)
+    {
+        *value = m_elementRendererRegistration.Get();
+        return S_OK;
+    }
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::get_ActionRenderers(IAdaptiveActionRendererRegistration **value)
+    {
+        *value = m_actionRendererRegistration.Get();
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::RegisterDefaultElementRenderers()
+    {
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.ChoiceSet").Get(), Make<AdaptiveChoiceSetInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), Make<AdaptiveColumnRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ColumnSet").Get(), Make<AdaptiveColumnSetRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Container").Get(), Make<AdaptiveContainerRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Date").Get(), Make<AdaptiveDateInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"FactSet").Get(), Make<AdaptiveFactSetRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Image").Get(), Make<AdaptiveImageRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ImageSet").Get(), Make<AdaptiveImageSetRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Number").Get(), Make<AdaptiveNumberInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"TextBlock").Get(), Make<AdaptiveTextBlockRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Text").Get(), Make<AdaptiveTextInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Time").Get(), Make<AdaptiveTimeInputRenderer>().Get()));
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Toggle").Get(), Make<AdaptiveToggleInputRenderer>().Get()));
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT XamlCardRenderer::RegisterDefaultActionRenderers()
+    {
+        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.Submit").Get(), Make<AdaptiveSubmitActionRenderer>().Get()));
+        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.OpenUrl").Get(), Make<AdaptiveOpenUrlActionRenderer>().Get()));
+        RETURN_IF_FAILED(m_actionRendererRegistration->Set(HStringReference(L"Action.ShowCard").Get(), Make<AdaptiveShowCardActionRenderer>().Get()));
+        return S_OK;
     }
 
 }}

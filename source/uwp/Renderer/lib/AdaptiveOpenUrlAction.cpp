@@ -93,4 +93,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         m_sharedOpenUrlAction->SetId(out);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::get_ActionTypeString(HSTRING* type)
+    {
+        ::ActionType typeEnum;
+        RETURN_IF_FAILED(get_ActionType(&typeEnum));
+        return ProjectedActionTypeToHString(typeEnum, type);
+    }
 }}

@@ -138,6 +138,7 @@ static std::unordered_map<CardElementType, std::string, EnumHash> CardElementTyp
     { CardElementType::TimeInput, "Input.Time" },
     { CardElementType::ToggleInput, "Input.Toggle" },
     { CardElementType::TextBlock, "TextBlock" },
+    {CardElementType::Custom, "Custom"}
 };
 
 static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> 
@@ -147,7 +148,8 @@ static std::unordered_map<ActionType, std::string, EnumHash> ActionTypeEnumToNam
 {
     { ActionType::OpenUrl, "Action.OpenUrl" },
     { ActionType::ShowCard, "Action.ShowCard" },
-    { ActionType::Submit, "Action.Submit" }
+    { ActionType::Submit, "Action.Submit" },
+    {ActionType::Custom, "Custom" }
 };
 
 static std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo>
