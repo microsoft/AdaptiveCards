@@ -31,7 +31,7 @@ namespace AdaptiveCards.Rendering
 
                 if (uiContainer.RowDefinitions.Count > 0)
                 {
-                    XamlContainer.AddSeperator(context, new ActionSet(), uiContainer, SeparationStyle.Default);
+                    XamlContainer.AddSeperator(context, new Container(), uiContainer, SeparationStyle.Default);
                 }
                 uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);

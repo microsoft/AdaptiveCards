@@ -27,7 +27,6 @@ namespace AdaptiveCards
             types[ColumnSet.TYPE] = typeof(ColumnSet);
             types[FactSet.TYPE] = typeof(FactSet);
             types[ImageSet.TYPE] = typeof(ImageSet);
-            types[ActionSet.TYPE] = typeof(ActionSet);
             types[TextInput.TYPE] = typeof(TextInput);
             types[DateInput.TYPE] = typeof(DateInput);
             types[TimeInput.TYPE] = typeof(TimeInput);
