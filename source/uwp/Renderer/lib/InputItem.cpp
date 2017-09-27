@@ -49,12 +49,11 @@ void InputItem::SerializeDateInput(
         DateTime date;
         THROW_IF_FAILED(dateRef->get_Value(&date));
 
-        ComPtr<IDateTimeFormatterStatics> dateTimeStatics;
-        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Globalization_DateTimeFormatting_DateTimeFormatter).Get(), &dateTimeStatics));
+        ComPtr<IDateTimeFormatterFactory> dateTimeFactory;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Globalization_DateTimeFormatting_DateTimeFormatter).Get(), &dateTimeFactory));
 
-        // TODO: Confirm desired date format
         ComPtr<IDateTimeFormatter> dateTimeFormatter;
-        THROW_IF_FAILED(dateTimeStatics->get_ShortDate(&dateTimeFormatter));
+        THROW_IF_FAILED(dateTimeFactory->CreateDateTimeFormatter(HStringReference(L"{year.full}-{month.integer(2)}-{day.integer(2)}").Get(), &dateTimeFormatter));
 
         HString formattedDate;
         THROW_IF_FAILED(dateTimeFormatter->Format(date, formattedDate.GetAddressOf()));
@@ -79,7 +78,6 @@ void InputItem::SerializeTimeInput(
     UINT64 hours = totalMinutes / 60;
     UINT64 minutesPastTheHour = totalMinutes - (hours * 60);
 
-    // TODO: Confirm desired time format
     char buffer[6];
     sprintf_s(buffer, sizeof(buffer), "%02llu:%02llu", hours, minutesPastTheHour);
 
@@ -172,8 +170,8 @@ void InputItem::SerializeChoiceSetInput(
 
         if (isMultiSelect)
         {
-            // For multiselect, gather all the inputs in a Json::arrayValue
-            Json::Value multiSelectValues(Json::arrayValue);
+            // For multiselect, gather all the inputs in a comma delimited list
+            std::string multiSelectValues;
             for (UINT i = 0; i < size; i++)
             {
                 ComPtr<IUIElement> currentElement;
@@ -186,7 +184,7 @@ void InputItem::SerializeChoiceSetInput(
                 {
                     std::string choiceValue;
                     GetChoiceValue(choiceInput.Get(), i, choiceValue);
-                    multiSelectValues.append(Json::Value(choiceValue.c_str()));
+                    multiSelectValues += (i == 0) ? choiceValue : "," + choiceValue;
                 }
             }
             jsonValue[idString] = multiSelectValues;
