@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <SafariServices/SafariServices.h>
 #import "ACRShowCardTarget.h"
-#import "ACRRenderer.h"
+#import "ACRRendererPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRViewController.h"

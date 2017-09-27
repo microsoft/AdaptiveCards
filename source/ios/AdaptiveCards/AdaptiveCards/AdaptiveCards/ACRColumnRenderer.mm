@@ -7,7 +7,7 @@
 
 #import "ACRColumnRenderer.h"
 #import "ACRColumnView.h"
-#import "ACRRenderer.h"
+#import "ACRRendererPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
 

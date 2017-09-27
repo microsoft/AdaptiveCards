@@ -34,30 +34,31 @@ a.ac-anchor:visited:active {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-.ac-pushButton, .ac-linkButton {
-  font-family: "Segoe UI", sans-serif;
-  font-size: 15px;
-  font-weight: 500;
+.ac-pushButton {
   overflow: hidden;
   text-overflow: ellipsis;
-  border: 2px solid transparent;
-  padding: 4px 10px 5px 10px;
   text-align: center;
   vertical-align: middle;
   cursor: default;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 4px 10px 5px 10px;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  height: 31px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid transparent;
 }
 
-.ac-pushButton:hover, .ac-linkButton:hover {
+.ac-pushButton:hover {
   border: 2px solid rgba(255, 255, 255, 0.6);
 }
 
-.ac-pushButton:active, .ac-linkButton:active {
+.ac-pushButton:active {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -65,15 +66,19 @@ a.ac-anchor:visited:active {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   color: white;
+  height: 31px;
 }
 
 .ac-input.ac-textInput {
-  height: 30px;
   resize: none;
 }
 
 .ac-input.ac-textInput.ac-multiline {
   height: 72px;
+}
+
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput {
+  height: 31px;
 }
 
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {

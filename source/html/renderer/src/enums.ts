@@ -62,11 +62,6 @@ export enum ActionAlignment {
     Stretch
 }
 
-export enum ActionStyle {
-    Button,
-    Link
-}
-
 export enum ImageStyle {
     Default,
     Person

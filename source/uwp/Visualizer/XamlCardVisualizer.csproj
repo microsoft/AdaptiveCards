@@ -45,6 +45,9 @@
     <Compile Include="DocumentView.xaml.cs">
       <DependentUpon>DocumentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GenericDocumentView.xaml.cs">
+      <DependentUpon>GenericDocumentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\BindableBase.cs" />
     <Compile Include="Helpers\IListExtensions.cs" />
     <Compile Include="Helpers\PayloadValidator.cs" />
@@ -58,6 +61,8 @@
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ErrorViewModel.cs" />
+    <Compile Include="ViewModel\GenericDocumentViewModel.cs" />
+    <Compile Include="ViewModel\HostConfigEditorViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\DocumentViewModel.cs" />
   </ItemGroup>
@@ -95,6 +100,7 @@
     <Content Include="..\..\..\schemas\host-config.json">
       <Link>Schemas\renderer-options.json</Link>
     </Content>
+    <Content Include="HostConfigs\DefaultHostConfig.json" />
     <None Include="XamlCardVisualizer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +121,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="DocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GenericDocumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,9 +162,7 @@
       <Version>3.0.3</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="HostConfigs\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

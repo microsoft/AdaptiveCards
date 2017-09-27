@@ -43,5 +43,11 @@
             "placeholder": "url",
             "style":"url"
         }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "OK"
+        }
     ]
 }

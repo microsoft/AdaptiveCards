@@ -76,13 +76,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP RenderedAdaptiveCard::get_Errors(ABI::Windows::Foundation::Collections::IVector<HSTRING>** value)
+    HRESULT RenderedAdaptiveCard::get_Errors(ABI::Windows::Foundation::Collections::IVector<HSTRING>** value)
     {
         return m_errors.CopyTo(value);
     }
 
     _Use_decl_annotations_
-    IFACEMETHODIMP RenderedAdaptiveCard::get_Warnings(ABI::Windows::Foundation::Collections::IVector<HSTRING>** value)
+    HRESULT RenderedAdaptiveCard::get_Warnings(ABI::Windows::Foundation::Collections::IVector<HSTRING>** value)
     {
         return m_warnings.CopyTo(value);
     }

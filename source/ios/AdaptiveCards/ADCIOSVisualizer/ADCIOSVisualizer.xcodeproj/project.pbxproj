@@ -349,6 +349,14 @@
 			name = Jsons;
 			sourceTree = "<group>";
 		};
+		F4D852561F6B725400669636 /* HostConfig */ = {
+			isa = PBXGroup;
+			children = (
+				F4D852571F6B726D00669636 /* hostconfig.json */,
+			);
+			name = HostConfig;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */

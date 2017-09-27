@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdaptiveCards.XamlCardRenderer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -20,8 +21,18 @@ namespace XamlCardVisualizer.ViewModel
         public DocumentViewModel CurrentDocument
         {
             get { return _currentDocument; }
-            set { SetProperty(ref _currentDocument, value); }
+            set
+            {
+                SetProperty(ref _currentDocument, value);
+
+                if (value != null)
+                {
+                    value.ReloadIfNeeded();
+                }
+            }
         }
+
+        public HostConfigEditorViewModel HostConfigEditor { get; private set; }
 
         public bool UseAsyncRenderMethod
         {
@@ -32,19 +43,29 @@ namespace XamlCardVisualizer.ViewModel
                 {
                     Settings.UseAsyncRenderMethod = value;
 
-                    foreach (var doc in OpenDocuments)
-                    {
-                        doc.ReRender();
-                    }
+                    ReRenderCards();
                 }
+            }
+        }
+
+        private void ReRenderCards()
+        {
+            // Set all card docs to outdated
+            foreach (var doc in OpenDocuments)
+            {
+                doc.IsOutdated = true;
+            }
+
+            if (CurrentDocument != null)
+            {
+                // Reload the current doc
+                CurrentDocument.ReloadIfNeeded();
             }
         }
 
         public void NewDocument()
         {
-            OpenDocuments.Add(new DocumentViewModel()
-            {
-                Payload = @"{
+            OpenDocuments.Add(DocumentViewModel.LoadFromPayload(this, @"{
   ""type"": ""AdaptiveCard"",
   ""version"": ""0.5"",
   ""body"": [
@@ -53,8 +74,7 @@ namespace XamlCardVisualizer.ViewModel
       ""text"": ""Untitled card""
     }
   ]
-}"
-            });
+}"));
             CurrentDocument = OpenDocuments.Last();
         }
 
@@ -95,6 +115,9 @@ namespace XamlCardVisualizer.ViewModel
         public static async Task<MainPageViewModel> LoadAsync()
         {
             var viewModel = new MainPageViewModel();
+
+            viewModel.HostConfigEditor = await HostConfigEditorViewModel.LoadAsync(viewModel);
+            viewModel.HostConfigEditor.HostConfigChanged += viewModel.HostConfigEditor_HostConfigChanged;
 
             var tokens = await GetFileTokensAsync();
             ObservableCollection<DocumentViewModel> documents = new ObservableCollection<DocumentViewModel>();
@@ -140,6 +163,12 @@ namespace XamlCardVisualizer.ViewModel
             viewModel.OpenDocuments = documents;
             viewModel.CurrentDocument = documents.FirstOrDefault();
             return viewModel;
+        }
+
+        private void HostConfigEditor_HostConfigChanged(object sender, AdaptiveHostConfig e)
+        {
+            DocumentViewModel.InitializeRenderer(e);
+            ReRenderCards();
         }
 
         private static async Task<string[]> GetFileTokensAsync()

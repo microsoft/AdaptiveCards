@@ -1523,7 +1523,6 @@ enum ActionButtonState {
 
 class ActionButton {
     private _action: Action;
-    private _style: Enums.ActionStyle = Enums.ActionStyle.Link;
     private _element: HTMLButtonElement = null;
     private _state: ActionButtonState = ActionButtonState.Normal;
     private _text: string;
@@ -1535,7 +1534,7 @@ class ActionButton {
     }
 
     private updateCssStyle() {
-        this._element.className = this._style === Enums.ActionStyle.Link ? "ac-linkButton" : "ac-pushButton";
+        this._element.className = "ac-pushButton";
 
         if (this._action instanceof ShowCardAction) {
             this._element.classList.add("expandable");
@@ -1551,9 +1550,8 @@ class ActionButton {
         }
     }
 
-    constructor(action: Action, style: Enums.ActionStyle) {
+    constructor(action: Action) {
         this._action = action;
-        this._style = style;
 
         this._element = document.createElement("button");
         this._element.type = "button";
@@ -1996,7 +1994,6 @@ class ActionCollection {
     }
 
     items: Array<Action> = [];
-    actionStyle: Enums.ActionStyle = Enums.ActionStyle.Link;
     onHideActionCardPane: () => void = null;
     onShowActionCardPane: (action: ShowCardAction) => void = null;
 
@@ -2114,7 +2111,7 @@ class ActionCollection {
 
             for (var i = 0; i < this.items.length; i++) {
                 if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
-                    var actionButton = new ActionButton(this.items[i], this.actionStyle);
+                    var actionButton = new ActionButton(this.items[i]);
                     actionButton.element.style.overflow = "hidden";
                     actionButton.element.style.overflow = "table-cell";
                     actionButton.element.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
@@ -2191,12 +2188,8 @@ export class ActionSet extends CardElement {
     private _actionCollection: ActionCollection;
 
     protected internalRender(): HTMLElement {
-        this._actionCollection.actionStyle = this.actionStyle;
-
         return this._actionCollection.render();
     }
-
-    actionStyle: Enums.ActionStyle = Enums.ActionStyle.Link;
 
     constructor() {
         super();
@@ -2216,8 +2209,6 @@ export class ActionSet extends CardElement {
 
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json);
-
-        this.actionStyle = Utils.getEnumValueOrDefault(Enums.ActionStyle, json["actionStyle"], this.actionStyle);
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;
@@ -3158,8 +3149,6 @@ export abstract class ContainerWithActions extends Container {
     protected internalRender(): HTMLElement {
         var element = super.internalRender();
 
-        this._actionCollection.actionStyle = this.actionStyle;
-
         var renderedActions = this._actionCollection.render();
 
         if (renderedActions) {
@@ -3178,8 +3167,6 @@ export abstract class ContainerWithActions extends Container {
         return element.children.length > 0 ? element : null;
     }
 
-    actionStyle: Enums.ActionStyle = Enums.ActionStyle.Link;
-
     constructor() {
         super();
 
@@ -3196,8 +3183,6 @@ export abstract class ContainerWithActions extends Container {
 
     parse(json: any, itemsCollectionPropertyName: string = "items") {
         super.parse(json, itemsCollectionPropertyName);
-
-        this.actionStyle = Utils.getEnumValueOrDefault(Enums.ActionStyle, json["actionStyle"], this.actionStyle);
 
         if (json["actions"] != undefined) {
             var jsonActions = json["actions"] as Array<any>;

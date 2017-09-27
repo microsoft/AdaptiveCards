@@ -2,8 +2,7 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
-  "title": "Microsoft Adaptive Card Schema",
-  "description": "Card schema for the adaptive card.",
+  "title": "Microsoft Adaptive Card Schema",  
   "additionalProperties": true,
   "allOf": [
     {
@@ -128,6 +127,7 @@
     "AdaptiveCard": {
       "additionalProperties": true,
       "type": "object",
+      "description": "Card schema for an adaptive card",
       "properties": {
         "type": {
           "type": "string",
@@ -140,10 +140,6 @@
         },
         "body": {
           "$ref": "#/definitions/CardElements"
-        },
-        "title": {
-          "type": "string",
-          "description": "Title/caption for the adaptive card."
         }
       },
       "required": [
@@ -249,6 +245,11 @@
       "additionalProperties": true,
       "type": "object",
       "description": "Defines a container that is part of a ColumnSet",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "items": {
           "$ref": "#/definitions/CardElements"

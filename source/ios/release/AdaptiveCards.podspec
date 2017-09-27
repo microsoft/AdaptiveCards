@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
   spec.name             = 'AdaptiveCards'
 
-  spec.version          = '0.5.0'
+  spec.version          = '0.5.1'
   
   spec.license          = { :type => 'MIT', :file => 'LICENSE.txt' } 
   

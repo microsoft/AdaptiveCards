@@ -9,10 +9,16 @@
         },
         {
             "type": "Input.Time",
-            "id": "1234",
+            "id": "time",
             "min": "9:00 AM",
             "max": "5:00 PM",
             "value": "11:00 AM"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "OK"
         }
     ]
 }
