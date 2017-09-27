@@ -108,8 +108,6 @@ namespace AdaptiveCards.Rendering
                     return this.Config.ColumnSet.Separation;
                 case Column.TYPE:
                     return this.Config.Column.Separation;
-                case ActionSet.TYPE:
-                    return this.Config.Actions.Separation;
                 case ImageSet.TYPE:
                     return this.Config.ImageSet.Separation;
                 case ChoiceSet.TYPE:

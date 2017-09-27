@@ -129,9 +129,6 @@ namespace AdaptiveCards.Rendering.Config
                 case AdaptiveCards.ImageSet.TYPE:
                     return this.ImageSet.Separation;
 
-                case AdaptiveCards.ActionSet.TYPE:
-                    return this.Actions.Separation;
-
                 case AdaptiveCards.ChoiceSet.TYPE:
                     return this.ChoiceSet.Separation;
 

@@ -64,7 +64,6 @@ namespace AdaptiveCards.Rendering
             this.SetRenderer<TextBlock>(TextBlockRender);
             this.SetRenderer<Image>(ImageRender);
 
-            this.SetRenderer<ActionSet>(ActionSetRender);
             this.SetRenderer<Container>(ContainerRender);
             this.SetRenderer<Column>(ColumnRender);
             this.SetRenderer<ColumnSet>(ColumnSetRender);
@@ -282,7 +281,7 @@ namespace AdaptiveCards.Rendering
 
                 if (uiButtonStrip.Children.Any())
                 {
-                    HtmlRenderer.AddSeparator(uiContainer, new ActionSet(), context);
+                    HtmlRenderer.AddSeparator(uiContainer, new Container(), context);
                     uiContainer.Children.Add(uiButtonStrip);
                 }
 
@@ -460,16 +459,6 @@ namespace AdaptiveCards.Rendering
 
             return uiContainer;
         }
-
-        protected static HtmlTag ActionSetRender(TypedElement element, RenderContext context)
-        {
-            ActionSet actionSet = (ActionSet)element;
-            var uiContainer = new DivTag()
-                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}");
-            AddContainerElements(uiContainer, null, actionSet.Actions, context);
-            return uiContainer;
-        }
-
 
         protected static HtmlTag FactSetRender(TypedElement element, RenderContext context)
         {
