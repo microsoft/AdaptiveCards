@@ -1,0 +1,28 @@
+
+<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+
+
+  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
+    <div class="sidebar__inner">
+      <div class="w3-panels w3-padding-larges">
+
+          <ul>
+             <% page.samples.forEach(function(sample) { %>
+              <li class='<%= is_current(sample.htmlPath) ? "selectedHolder" : "" %>'>
+                <a href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
+              </li>
+            <% }) %>
+          </ul>
+
+      </div>
+    </div>
+  </nav>
+  
+  <div class="w3-main" style="margin-left: 260px">
+
+      <h1 class="w3-container"><%= page.title %></h1>
+      <%- partial("_partial/code-example", { examplePath: page.sample.jsonPath }) %>
+
+  </div>
+  
+</div>

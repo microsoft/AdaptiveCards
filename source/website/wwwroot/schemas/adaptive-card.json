@@ -1,42 +1,33 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
-  "title": "Microsoft Adaptive Card Schema",
-  "description": "Card schema for the adaptive card.",
+  "title": "Microsoft Adaptive Card Schema",  
+  "additionalProperties": true,
+  "allOf": [
+    {
+      "$ref": "#/definitions/AdaptiveCard"
+    }
+  ],
   "properties": {
-    "type": {
-      "type": "string",
-      "enum": [
-        "AdaptiveCard"
-      ]
-    },
-    "title": {
-      "type": "string",
-      "description": "Title/caption for the adaptive card."
-    },
-    "body": {
-      "$ref": "#/definitions/CardElements"
-    },
-    "actions": {
-      "$ref": "#/definitions/Actions"
-    },
     "version": {
       "type": "string",
       "description": "version of schema that this card was authored "
     },
     "minVersion": {
       "type": "string",
-      "description": "if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore"
+      "description": "if a client doesn't support the minVersion the card should be rejected and return the fallbackText.  If it does, then the elements that are not supported are safe to ignore"
     },
     "fallbackText": {
       "type": "string",
       "description": "if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. "
+    },
+    "speak": {
+      "type": "string",
+      "description": "Specifies what should be spoken for this entire Item. This is simple text or SSML fragment"
     }
   },
   "required": [
-    "type",
-    "body",
     "version"
   ],
   "definitions": {
@@ -49,58 +40,12 @@
           "$ref": "#/definitions/Action.ShowCard"
         },
         {
-          "$ref": "#/definitions/Action.Http"
-        },
-        {
           "$ref": "#/definitions/Action.OpenUrl"
         }
       ]
     },
-    "Action.Http": {
-      "additionalProperties": false,
-      "description": "Action.Http represents the properties needed to do an Http request. All input properties are available for use via data binding. Properties can be data bound to the Uri and Body properties, allowing you to send a request to an arbitrary url.",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "Action.Http"
-          ]
-        },
-        "body": {
-          "type": "string",
-          "description": "content to post (can have binding information)"
-        },
-        "headers": {
-          "type": "object",
-          "description": "Object which represents headers Example: { \"content-type\":\"application/json\" }"
-        },
-        "method": {
-          "type": "string",
-          "enum": [
-            "POST",
-            "PUT",
-            "DELETE",
-            "GET"
-          ],
-          "description": "Http method (Default: POST)"
-        },
-        "title": {
-          "type": "string",
-          "description": "Label for button or link that represents this action"
-        },
-        "url": {
-          "type": "string",
-          "description": "url to use (can have binding information)"
-        }
-      },
-      "required": [
-        "type",
-        "url"
-      ],
-      "type": "object"
-    },
     "Action.OpenUrl": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "When Action.OpenUrl is invoked it will show the given url, either by launching it to an external web browser or showing in-situ with embedded web browser.",
       "properties": {
         "title": {
@@ -125,7 +70,7 @@
       "type": "object"
     },
     "Action.ShowCard": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Action.ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.",
       "properties": {
         "type": {
@@ -149,7 +94,7 @@
       "type": "object"
     },
     "Action.Submit": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "description": "Submit action gathers up input fields, merges with optional data field and generates event to client asking for data to be submitted. It is up to the client to determine how that data is processed. For example: With BotFramework bots the client would send an activity through the messaging medium to the bot.",
       "properties": {
         "type": {
@@ -163,7 +108,7 @@
           "description": "Label for button or link that represents this action"
         },
         "data": {
-          "type": "object",
+          "type": [ "string", "object" ],
           "description": "initial data that input fields will be combined with. This is essentially 'hidden' properties"
         }
       },
@@ -180,100 +125,102 @@
       "type": "array"
     },
     "AdaptiveCard": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
+      "description": "Card schema for an adaptive card",
       "properties": {
-        "actions": {
-          "$ref": "#/definitions/Actions"
-        },
-        "body": {
-          "$ref": "#/definitions/CardElements"
-        },
-        "title": {
-          "type": "string",
-          "description": "Title/caption for the adaptive card."
-        },
         "type": {
           "type": "string",
           "enum": [
             "AdaptiveCard"
           ]
         },
-        "version": {
-          "type": "string",
-          "description": "version of schema that this card was authored "
+        "actions": {
+          "$ref": "#/definitions/Actions"
         },
-        "minVersion": {
-          "type": "string",
-          "description": "if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not supported are safe to ignore"
-        },
-        "fallbackText": {
-          "type": "string",
-          "description": "if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. "
+        "body": {
+          "$ref": "#/definitions/CardElements"
         }
       },
       "required": [
-        "type",
-        "version"
-      ],
-      "type": "object"
+        "type"
+      ]
     },
     "CardElement": {
-      "oneOf": [
-        {
-          "$ref": "#/definitions/TextBlock"
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string"
         },
-        {
-          "$ref": "#/definitions/Image"
+        "id": {
+          "type": "string",
+          "description": "A unique Id associated with the element"
         },
-        {
-          "$ref": "#/definitions/Container"
+        "spacing": {
+          "$ref": "#/definitions/SpacingStyle"
         },
+        "separator": {
+          "type": "boolean",
+          "description": "The Separator object type describes the look and feel of a separation line between two elements.",
+          "default": false
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "CardElements": { 
+      "type": "array",
+      "additionalItems": true,
+      "items": [
         {
-          "$ref": "#/definitions/ColumnSet"
-        },
-        {
-          "$ref": "#/definitions/FactSet"
-        },
-        {
-          "$ref": "#/definitions/ImageSet"
-        },
-        {
-          "$ref": "#/definitions/Input.Text"
-        },
-        {
-          "$ref": "#/definitions/Input.Number"
-        },
-        {
-          "$ref": "#/definitions/Input.Date"
-        },
-        {
-          "$ref": "#/definitions/Input.Time"
-        },
-        {
-          "$ref": "#/definitions/Input.Toggle"
-        },
-        {
-          "$ref": "#/definitions/Input.ChoiceSet"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBlock"
+            },
+            {
+              "$ref": "#/definitions/Image"
+            },
+            {
+              "$ref": "#/definitions/Container"
+            },
+            {
+              "$ref": "#/definitions/ColumnSet"
+            },
+            {
+              "$ref": "#/definitions/FactSet"
+            },
+            {
+              "$ref": "#/definitions/ImageSet"
+            },
+            {
+              "$ref": "#/definitions/Input.Text"
+            },
+            {
+              "$ref": "#/definitions/Input.Number"
+            },
+            {
+              "$ref": "#/definitions/Input.Date"
+            },
+            {
+              "$ref": "#/definitions/Input.Time"
+            },
+            {
+              "$ref": "#/definitions/Input.Toggle"
+            },
+            {
+              "$ref": "#/definitions/Input.ChoiceSet"
+            }
+          ]
         }
       ]
     },
-    "CardElements": {
-      "additionalItems": true,
-      "items": {
-        "$ref": "#/definitions/CardElement"
-      },
-      "type": "array"
-    },
     "Choice": {
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "title": {
           "type": "string",
           "description": "The text for a choice"
-        },
-        "isSelected": {
-          "type": "boolean",
-          "description": "is the choice selected"
         },
         "value": {
           "type": "string",
@@ -295,8 +242,14 @@
       ]
     },
     "Column": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "Defines a container that is part of a ColumnSet",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "items": {
           "$ref": "#/definitions/CardElements"
@@ -304,18 +257,12 @@
         "selectAction": {
           "$ref": "#/definitions/Action"
         },
-        "size": {
+        "width": {
           "type": [
             "string",
             "number"
           ],
-          "description": "auto, stretch, or a number representing relative width of the column in the column group"
-        },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
+          "description": "\"auto\", \"stretch\", or a number representing relative width of the column in the column group"
         },
         "type": {
           "type": "string",
@@ -326,14 +273,18 @@
         }
       },
       "required": [
-        "type",
         "items"
-      ],
-      "type": "object"
+      ]
     },
     "ColumnSet": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "The column group Item adds the ability to have a set of Column objects",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "columns": {
           "type": "array",
@@ -341,11 +292,9 @@
             "$ref": "#/definitions/Column"
           }
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
+        "selectAction": {
+          "$ref": "#/definitions/Action",
+          "description": "The action that is executed when the ColumnSet is clicked/tapped."
         },
         "type": {
           "type": "string",
@@ -354,16 +303,17 @@
             "ColumnSet"
           ]
         }
-      },
-      "required": [
-        "type",
-        "columns"
-      ],
-      "type": "object"
+      }
     },
     "Container": {
-      "additionalProperties": false,
-      "description": "The Container is a CardItem which contains a list of CardItems that are logically grouped",
+      "additionalProperties": true,
+      "type": "object",
+      "description": "Containers group items together",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "actions": {
           "$ref": "#/definitions/Actions"
@@ -374,17 +324,11 @@
         "selectAction": {
           "$ref": "#/definitions/Action"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
-        },
         "style": {
           "type": "string",
           "description": "Style hint for Container",
           "enum": [
-            "normal",
+            "default",
             "emphasis"
           ]
         },
@@ -397,19 +341,15 @@
         }
       },
       "required": [
-        "type",
         "items"
-      ],
-      "type": "object"
+      ]
     },
     "Fact": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "properties": {
         "title": {
           "type": "string"
-        },
-        "speak": {
-          "$ref": "#/definitions/Speak"
         },
         "value": {
           "type": "string"
@@ -418,24 +358,23 @@
       "required": [
         "title",
         "value"
-      ],
-      "type": "object"
+      ]
     },
     "FactSet": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "The FactSet Item makes it simple to display a series of facts (e.g. name/value pairs) in a tabular form.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "facts": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Fact"
           }
-        },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
         },
         "type": {
           "type": "string",
@@ -446,10 +385,8 @@
         }
       },
       "required": [
-        "type",
         "facts"
-      ],
-      "type": "object"
+      ]
     },
     "HorizontalAlignment": {
       "type": "string",
@@ -461,8 +398,14 @@
       ]
     },
     "Image": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "The Image Item allows for the inclusion of images in an Adaptive Card.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "altText": {
           "type": "string",
@@ -476,12 +419,6 @@
         },
         "size": {
           "$ref": "#/definitions/ImageSize"
-        },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
         },
         "style": {
           "$ref": "#/definitions/ImageStyle"
@@ -499,14 +436,18 @@
         }
       },
       "required": [
-        "type",
         "url"
-      ],
-      "type": "object"
+      ]
     },
     "ImageSet": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "The ImageSet allows for the inclusion of a collection images like a photogallery.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "images": {
           "type": "array",
@@ -517,12 +458,6 @@
         "imageSize": {
           "$ref": "#/definitions/ImageSize"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
-        },
         "type": {
           "type": "string",
           "description": "Must be ImageSet",
@@ -532,10 +467,8 @@
         }
       },
       "required": [
-        "type",
         "images"
-      ],
-      "type": "object"
+      ]
     },
     "ImageSize": {
       "type": "string",
@@ -552,13 +485,19 @@
       "type": "string",
       "description": "Controls the way Image Items are displayed",
       "enum": [
-        "normal",
+        "default",
         "person"
       ]
     },
     "Input.ChoiceSet": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "Shows an array of Choice objects",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "choices": {
           "type": "array",
@@ -578,12 +517,6 @@
         "style": {
           "$ref": "#/definitions/ChoiceInputStyle"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
-        },
         "type": {
           "description": "Must be Input.ChoiceInput",
           "enum": [
@@ -593,15 +526,19 @@
         }
       },
       "required": [
-        "type",
         "id",
         "choices"
-      ],
-      "type": "object"
+      ]
     },
     "Input.Date": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "Input.Date collects Date from the user,",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -619,12 +556,6 @@
           "type": "string",
           "description": "Title Description of the input desired"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
-        },
         "type": {
           "type": "string",
           "description": "The type must be Input.Date",
@@ -638,14 +569,18 @@
         }
       },
       "required": [
-        "type",
         "id"
-      ],
-      "type": "object"
+      ]
     },
     "Input.Number": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "Input.Number collects number from the user,",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -663,12 +598,6 @@
           "type": "string",
           "description": "Title Description of the input desired"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
-        },
         "type": {
           "type": "string",
           "description": "The type must be Input.Number",
@@ -682,14 +611,18 @@
         }
       },
       "required": [
-        "type",
         "id"
-      ],
-      "type": "object"
+      ]
     },
     "Input.Text": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "Input.Text collects text from the user,",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -707,12 +640,6 @@
           "type": "string",
           "description": "Title Description of the input desired"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
-        },
         "style": {
           "$ref": "#/definitions/TextInputStyle"
         },
@@ -729,14 +656,18 @@
         }
       },
       "required": [
-        "type",
         "id"
-      ],
-      "type": "object"
+      ]
     },
     "Input.Time": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "Input.Time collects Time from the user,",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -754,12 +685,6 @@
           "type": "string",
           "description": "Title Description of the input desired"
         },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
-        },
         "type": {
           "type": "string",
           "description": "The type must be Input.Time",
@@ -773,24 +698,22 @@
         }
       },
       "required": [
-        "type",
         "id"
-      ],
-      "type": "object"
+      ]
     },
     "Input.Toggle": {
-      "additionalProperties": false,
-      "description": "Input.Toggle collects text from the user,",
+      "additionalProperties": true,
+      "type": "object",
+      "description": "Input.Toggle collects a true/false response from the user",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "id": {
           "type": "string",
           "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
-        },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
         },
         "title": {
           "type": "string",
@@ -817,19 +740,19 @@
         }
       },
       "required": [
-        "type",
         "id",
         "title"
-      ],
-      "type": "object"
-    },
-    "Speak": {
-      "type": "string",
-      "description": "Specifies what should be spoken for this entire Item. This is simple text or SSML fragment"
+      ]
     },
     "TextBlock": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "type": "object",
       "description": "The TextBlock Item allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
       "properties": {
         "color": {
           "type": "string",
@@ -860,17 +783,11 @@
           "description": "controls size of the text.",
           "enum": [
             "small",
-            "normal",
+            "default",
             "medium",
             "large",
             "extraLarge"
           ]
-        },
-        "speak": {
-          "$ref": "#/definitions/Speak"
-        },
-        "separation": {
-          "$ref": "#/definitions/SeparationStyle"
         },
         "text": {
           "type": "string",
@@ -884,13 +801,13 @@
           ]
         },
         "weight": {
+          "type": "string",
           "description": "Controls the weight of TextBlock Items",
           "enum": [
             "lighter",
-            "normal",
+            "default",
             "bolder"
-          ],
-          "type": "string"
+          ]
         },
         "wrap": {
           "type": "boolean",
@@ -898,18 +815,42 @@
         }
       },
       "required": [
-        "type",
         "text"
-      ],
-      "type": "object"
+      ]
     },
-    "SeparationStyle": {
+    "SeparatorStyle": {
+      "type": "object",
+      "description": "Indicates whether there should be a visible separator (e.g. a line) between the element and the one before it. If this property is not specified, no separator is displayed. If it is, a separator line is displayed. A separator will only appear if there was a preceding element.",
+      "properties": {
+        "thickness": {
+          "type": "string",
+          "description": "Specifies the thickness of the separation line.",
+          "enum": [
+            "default",
+            "thick"
+          ]
+        },
+        "color": {
+          "type": "string",
+          "description": "Specifies the color of the separation line.",
+          "enum": [
+            "default",
+            "accent"
+          ]
+        }
+      }
+    },
+    "SpacingStyle": {
       "type": "string",
-      "description": "Controls how Items are rendered relative to previous elements.",
+      "description": "Controls the amount of spacing between this element and the previous element.",
       "enum": [
-        "default",
         "none",
-        "strong"
+        "small",
+        "default",
+        "medium",
+        "large",
+        "extraLarge",
+        "padding"
       ]
     },
     "TextInputStyle": {

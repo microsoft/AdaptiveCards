@@ -11,8 +11,28 @@
           align-items: flex-start;
 }
 
+a.ac-anchor {
+  text-decoration: none;
+}
+
+a.ac-anchor:link {
+  color: #005A9E;
+}
+
+a.ac-anchor:visited {
+  color: #005A9E;
+}
+
+a.ac-anchor:link:active {
+  color: #004D84;
+}
+
+a.ac-anchor:visited:active {
+  color: #004D84;
+}
+
 .ac-container.ac-selectable {
-  padding: 5px;
+  padding: 0px;
 }
 
 .ac-container.ac-selectable:hover {
@@ -23,31 +43,32 @@
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-.ac-pushButton, .ac-linkButton {
-  font-family: "Segoe UI", sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+.ac-pushButton {
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 4px 10px 6px 10px;
   text-align: center;
   vertical-align: middle;
   cursor: default;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 4px 10px 6px 10px;
+  height: 31px;
   background-color: white;
   color: #0078d7;
 }
 
-.ac-pushButton:hover, .ac-linkButton:hover {
+.ac-pushButton:hover {
   background-color: #0078d7;
   color: #fff;
 }
 
-.ac-pushButton:active, .ac-linkButton:active {
+.ac-pushButton:active {
   background-color: #0078d7;
   color: #fff;
 }
 
-.ac-pushButton, .ac-linkButton {
+.ac-pushButton {
   border: 2px solid #dcdcdc;
   border-radius: 20px;
   line-height: 20px;
@@ -57,15 +78,19 @@
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   color: black;
+  height: 31px;
 }
 
 .ac-input.ac-textInput {
-  height: 30px;
   resize: none;
 }
 
 .ac-input.ac-textInput.ac-multiline {
   height: 72px;
+}
+
+.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput {
+  height: 31px;
 }
 
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {

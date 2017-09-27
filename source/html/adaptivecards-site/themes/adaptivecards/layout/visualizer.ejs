@@ -1,0 +1,32 @@
+
+<div class="w3-row w3-light-grey w3-padding">
+  <div class="w3-container w3-twothird w3-middle ">
+    <div id="editCard" class="button">Card editor</div>
+    <div id="editConfig" class="button subdued" style="margin-left: 4px;">Configuration editor</div>
+
+    <div style="display: none">
+        <input type="file" id="filePicker">
+    </div>
+    <div id="loadSample" class="button">Load sample from file...</div>
+  </div>
+
+
+
+  <div style="w3-container w3-onethird">
+        <span style="margin-right: 6px;">Select a container:</span>
+        <select id="hostContainerPicker" class="select"></select>
+    </div>
+</div>
+  
+<div class="w3-row">
+
+  <div id="editor" class="w3-col" style="width: 60%">
+  </div>
+
+  <div class="w3-col" style="width: 40%">
+    <div id="errorContainer" class="errorContainer"></div>
+    <div class="w3-container w3-padding-16">
+      <div id="content" class="markupRender w3-container"></div>
+    </div>
+  </div>
+</div>

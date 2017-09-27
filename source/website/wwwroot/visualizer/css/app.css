@@ -1,4 +1,7 @@
 body {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -17,7 +20,7 @@ body {
     background-color: white;
     box-shadow: 0 0 15px -5px rgba(0,0,0,.4);
     padding: 20px;
-    width: 300px;
+    min-width: 300px;
 }
 
 .errorContainer {
@@ -38,16 +41,7 @@ body {
     height: inherit;
 }
 
-.navBar {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 auto;
-            flex: 0 0 auto;
-}
-
 .uiHeader {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
     -webkit-box-flex: 0;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
@@ -83,7 +77,7 @@ body {
         -ms-flex: 1 1 50%;
             flex: 1 1 50%;
     overflow: auto;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .rightPane {
@@ -91,6 +85,7 @@ body {
         -ms-flex: 1 1 50%;
             flex: 1 1 50%;
     overflow: auto;
+    margin-left: 10px;
 }
 
 div.markupRender {
@@ -128,9 +123,7 @@ div.markupRender {
     -moz-user-select: none;      /* Firefox */
     -ms-user-select: none;       /* Internet Explorer/Edge */
     user-select: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: inline-block;
 }
 
 .button:hover {
