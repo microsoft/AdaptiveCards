@@ -107,17 +107,17 @@ public class AdaptiveCard {
     return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCard_GetElementType(swigCPtr, this));
   }
 
-  public static AdaptiveCard DeserializeFromFile(String jsonFile) {
+  public static AdaptiveCard DeserializeFromFile(String jsonFile) throws java.io.IOException {
     long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromFile(jsonFile);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard Deserialize(SWIGTYPE_p_Json__Value json) {
+  public static AdaptiveCard Deserialize(SWIGTYPE_p_Json__Value json) throws java.io.IOException {
     long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_Deserialize(SWIGTYPE_p_Json__Value.getCPtr(json));
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 
-  public static AdaptiveCard DeserializeFromString(String jsonString) {
+  public static AdaptiveCard DeserializeFromString(String jsonString) throws java.io.IOException {
     long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_DeserializeFromString(jsonString);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }

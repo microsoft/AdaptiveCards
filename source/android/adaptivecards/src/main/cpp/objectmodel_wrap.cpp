@@ -419,6 +419,18 @@ SWIGINTERN AdaptiveCards::SubmitAction *AdaptiveCards_SubmitAction_dynamic_cast(
 extern "C" {
 #endif
 
+SWIGEXPORT jint JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI__1_1ANDROID_1_1_1get(JNIEnv *jenv, jclass jcls) {
+  jint jresult = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (int)(1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElementVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *result = 0 ;
@@ -7974,7 +7986,18 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   std::string arg1_str(arg1_pstr);
   arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  result = AdaptiveCards::AdaptiveCard::DeserializeFromFile((std::string const &)*arg1);
+  try {
+    result = AdaptiveCards::AdaptiveCard::DeserializeFromFile((std::string const &)*arg1);
+  }
+  catch(AdaptiveCards::AdaptiveCardParseException &_e) {
+    {
+      jclass excep = jenv->FindClass("java/io/IOException");
+      if (excep)
+      jenv->ThrowNew(excep, (&_e)->what());
+      return 0;
+    }
+  }
+  
   *(std::shared_ptr< AdaptiveCards::AdaptiveCard > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::AdaptiveCard >(result) : 0; 
   return jresult;
 }
@@ -7992,7 +8015,18 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
     return 0;
   } 
-  result = AdaptiveCards::AdaptiveCard::Deserialize((Json::Value const &)*arg1);
+  try {
+    result = AdaptiveCards::AdaptiveCard::Deserialize((Json::Value const &)*arg1);
+  }
+  catch(AdaptiveCards::AdaptiveCardParseException &_e) {
+    {
+      jclass excep = jenv->FindClass("java/io/IOException");
+      if (excep)
+      jenv->ThrowNew(excep, (&_e)->what());
+      return 0;
+    }
+  }
+  
   *(std::shared_ptr< AdaptiveCards::AdaptiveCard > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::AdaptiveCard >(result) : 0; 
   return jresult;
 }
@@ -8014,7 +8048,18 @@ SWIGEXPORT jlong JNICALL Java_com_microsoft_adaptivecards_objectmodel_AdaptiveCa
   std::string arg1_str(arg1_pstr);
   arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  result = AdaptiveCards::AdaptiveCard::DeserializeFromString((std::string const &)*arg1);
+  try {
+    result = AdaptiveCards::AdaptiveCard::DeserializeFromString((std::string const &)*arg1);
+  }
+  catch(AdaptiveCards::AdaptiveCardParseException &_e) {
+    {
+      jclass excep = jenv->FindClass("java/io/IOException");
+      if (excep)
+      jenv->ThrowNew(excep, (&_e)->what());
+      return 0;
+    }
+  }
+  
   *(std::shared_ptr< AdaptiveCards::AdaptiveCard > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::AdaptiveCard >(result) : 0; 
   return jresult;
 }
