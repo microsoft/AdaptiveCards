@@ -133,28 +133,5 @@ namespace AdaptiveCards.Rendering
             answer = new RenderedAdaptiveCard(el, card);
             return answer;
         }
-
-        /// <summary>
-        /// AdaptiveCard
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        [Obsolete("Use RenderCard instead")]
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
-        {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
-            {
-                Config = hostConfig ?? this.HostConfig,
-                Resources = this.Resources,
-                ElementRenderers = this.ElementRenderers
-            };
-            return context.Render(card);
-        }
-
-        [Obsolete("Use RenderCard instead, passing in the Card property within the ShowCardAction")]
-        public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
-        {
-            return RenderAdaptiveCard(showCard.Card);
-        }
     }
 }
