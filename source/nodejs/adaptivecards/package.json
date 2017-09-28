@@ -1,6 +1,6 @@
 {
   "name": "adaptivecards",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta2",
   "description": "Adaptive Card TypeScript/Javascript library for HTML Clients",
   "homepage": "http://adaptivecards.io",
   "keywords": [
