@@ -54,7 +54,10 @@ namespace WpfVisualizer
 
             var hostConfig = new HostConfig();
             hostConfig.AdaptiveCard.BackgroundColor = Colors.WhiteSmoke.ToString();
-            this.Renderer = new XamlRendererExtended(hostConfig, this.Resources, _onAction, _OnMissingInput);
+            this.Renderer = new XamlRendererExtended(hostConfig)
+            {
+                Resources = this.Resources
+            };
             this.hostConfigEditor.SelectedObject = hostConfig;
 
             foreach (var style in Directory.GetFiles(@"..\..\..\..\..\..\samples\v1.0\HostConfig", "*.json"))
@@ -115,7 +118,10 @@ namespace WpfVisualizer
                     this.cardGrid.Children.Clear();
                     if (_card != null)
                     {
-                        this.Renderer = new XamlRendererExtended(this.HostConfig, this.Resources, _onAction, _OnMissingInput);
+                        this.Renderer = new XamlRendererExtended(this.HostConfig)
+                        {
+                            Resources = this.Resources
+                        };
                         var result = this.Renderer.RenderCard(_card);
                         if (result.FrameworkElement != null)
                         {

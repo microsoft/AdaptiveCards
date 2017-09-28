@@ -14,24 +14,12 @@ namespace AdaptiveCards.Rendering
 
     public class XamlRendererExtended : AdaptiveCardRenderer
     {
-        public XamlRendererExtended(HostConfig hostConfig,
-            ResourceDictionary resources,
-            Action<object, ActionEventArgs> actionCallback = null,
-            Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(hostConfig, resources, actionCallback, missingDataCallback)
+        public XamlRendererExtended(HostConfig hostConfig)
+            : base(hostConfig)
         {
             SetObjectTypes();
         }
 
-#if WPF
-        public XamlRendererExtended(HostConfig hostConfig, string stylePath,
-            Action<object, ActionEventArgs> actionCallback = null,
-            Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(hostConfig, stylePath, actionCallback, missingDataCallback)
-        {
-            SetObjectTypes();
-        }
-#endif
         private void SetObjectTypes()
         {
             this.ElementRenderers.Set<TextInput>(XamlExTextInput.Render);
