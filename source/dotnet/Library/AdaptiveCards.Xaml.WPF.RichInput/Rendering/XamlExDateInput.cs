@@ -42,11 +42,10 @@ namespace AdaptiveCards.Rendering
                 return string.Empty;
 
             DateTime dateTime;
-            var parsed = DateTime.TryParse(text, null, System.Globalization.DateTimeStyles.RoundtripKind, out dateTime);
-            if (!parsed)
-                return string.Empty;
+            if(DateTime.TryParse(text, null, System.Globalization.DateTimeStyles.RoundtripKind, out dateTime))
+                return dateTime.ToString("yyyy-MM-dd");
 
-            return dateTime.ToString("yyyy-MM-dd");
+            return text;
         }
     }
 }
