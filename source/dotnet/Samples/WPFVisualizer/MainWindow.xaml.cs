@@ -55,7 +55,7 @@ namespace WpfVisualizer
             var hostConfig = new HostConfig();
 
             hostConfig.ContainerStyles.Default.BackgroundColor = Colors.WhiteSmoke.ToString();
-            this.Renderer = new XamlRendererExtended(hostConfig, this.Resources, _onAction, _OnMissingInput);
+            this.Renderer = new XamlRendererExtended(hostConfig);
 
             this.hostConfigEditor.SelectedObject = hostConfig;
 
