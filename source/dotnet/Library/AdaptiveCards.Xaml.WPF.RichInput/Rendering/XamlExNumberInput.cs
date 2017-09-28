@@ -6,9 +6,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlExNumberInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(NumberInput input, RenderContext context)
         {
-            NumberInput input = (NumberInput)element;
             if (context.Config.SupportsInteractivity)
             {
 

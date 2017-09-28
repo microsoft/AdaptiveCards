@@ -11,13 +11,12 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlTimeInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(TimeInput input, RenderContext context)
         {
-            TimeInput input = (TimeInput)element;
             if (context.Config.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };
-				textBox.SetPlaceholder(input.Placeholder);
+                textBox.SetPlaceholder(input.Placeholder);
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.Time");
                 textBox.SetContext(input);
                 context.InputBindings.Add(input.Id, () => textBox.Text);

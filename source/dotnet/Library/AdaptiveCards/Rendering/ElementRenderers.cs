@@ -6,18 +6,36 @@ using System.Threading.Tasks;
 
 namespace AdaptiveCards.Rendering
 {
-    public class ElementRenderers<TUIElement, TContext> : Dictionary<Type, Func<TypedElement, TContext, TUIElement>>
+    public class ElementRenderers<TUIElement, TContext>
         where TUIElement : class
         where TContext : class
     {
-        public void Set<TElement>(Func<TypedElement, TContext, TUIElement> renderer)
+        private Dictionary<Type, Func<TypedElement, TContext, TUIElement>> _dictionary = new Dictionary<Type, Func<TypedElement, TContext, TUIElement>>();
+
+        public void Set<TElement>(Func<TElement, TContext, TUIElement> renderer)
+            where TElement : TypedElement
         {
-            this[typeof(TElement)] = renderer;
+            _dictionary[typeof(TElement)] = (typedElement, tContext) =>
+            {
+                return renderer((TElement)typedElement, tContext);
+            };
         }
 
         public void Remove<TElement>()
+            where TElement : TypedElement
         {
-            this.Remove(typeof(TElement));
+            _dictionary.Remove(typeof(TElement));
+        }
+
+        public Func<TElement, TContext, TUIElement> Get<TElement>()
+            where TElement : TypedElement
+        {
+            return Get(typeof(TElement));
+        }
+
+        public Func<TypedElement, TContext, TUIElement> Get(Type type)
+        {
+            return _dictionary[type];
         }
     }
 }

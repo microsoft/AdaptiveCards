@@ -36,6 +36,7 @@ namespace AdaptiveCards.Rendering
 
         [Obsolete("Use ElementRenderers.Set instead")]
         public void SetRenderer<TElement>(Func<TypedElement, TContext, TUIElement> renderer)
+            where TElement : TypedElement
         {
             ElementRenderers.Set<TElement>(renderer);
         }

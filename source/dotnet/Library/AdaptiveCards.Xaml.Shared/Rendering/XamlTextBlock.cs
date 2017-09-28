@@ -22,9 +22,8 @@ namespace AdaptiveCards.Rendering
 
     public static partial class XamlTextBlock
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(TextBlock textBlock, RenderContext context)
         {
-            TextBlock textBlock = (TextBlock)element;
             var uiTextBlock = CreateControl(textBlock, context);
 
             ColorConfig colorOption;

@@ -17,9 +17,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlImage
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(Image image, RenderContext context)
         {
-            Image image = (Image)element;
             var uiImage = new UI.Image();
             uiImage.SetSource(image.Url,context);
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);

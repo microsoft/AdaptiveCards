@@ -69,7 +69,7 @@ namespace AdaptiveCards.Rendering
             this.ElementRenderers.Set<NumberInput>(XamlNumberInput.Render);
             this.ElementRenderers.Set<DateInput>(XamlDateInput.Render);
             this.ElementRenderers.Set<TimeInput>(XamlTimeInput.Render);
-            this.ElementRenderers.Set<ToggleInput>(XamlToggleInput.Render); ;
+            this.ElementRenderers.Set<ToggleInput>(XamlToggleInput.Render);
 
             this.ElementRenderers.Set<SubmitAction>(XamlSubmitAction.Render);
             this.ElementRenderers.Set<OpenUrlAction>(XamlOpenUrlAction.Render);

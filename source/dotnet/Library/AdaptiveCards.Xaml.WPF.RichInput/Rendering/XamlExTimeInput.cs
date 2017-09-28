@@ -6,9 +6,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlExTimeInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(TimeInput input, RenderContext context)
         {
-            TimeInput input = (TimeInput)element;
             if (context.Config.SupportsInteractivity)
             {
                 var timePicker = new TimePicker();

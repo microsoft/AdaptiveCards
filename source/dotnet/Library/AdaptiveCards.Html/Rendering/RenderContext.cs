@@ -12,7 +12,7 @@ namespace AdaptiveCards.Rendering
 {
     public class RenderContext
     {
-        public RenderContext(HostConfig hostConfig, Dictionary<Type, Func<TypedElement, RenderContext, HtmlTag>> elementRenderers)
+        public RenderContext(HostConfig hostConfig, ElementRenderers<HtmlTag, RenderContext> elementRenderers)
         {
             // clone it
             this.Config = JsonConvert.DeserializeObject<HostConfig>(JsonConvert.SerializeObject(hostConfig));
@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering
 
         public HostConfig Config { get; set; }
 
-        public Dictionary<Type, Func<TypedElement, RenderContext, HtmlTag>> ElementRenderers { get; set; }
+        public ElementRenderers<HtmlTag, RenderContext> ElementRenderers { get; set; }
 
         /// <summary>
         /// Helper to deal with casting
@@ -30,7 +30,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         public HtmlTag Render(TypedElement element)
         {
-            return this.ElementRenderers[element.GetType()](element, this);
+            return this.ElementRenderers.Get(element.GetType())(element, this);
         }
 
 

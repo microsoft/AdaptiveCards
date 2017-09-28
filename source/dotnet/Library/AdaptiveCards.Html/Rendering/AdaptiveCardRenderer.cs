@@ -93,10 +93,8 @@ namespace AdaptiveCards.Rendering
         }
 
 
-        protected static HtmlTag OpenUrlActionRender(TypedElement actionElement, RenderContext context)
+        protected static HtmlTag OpenUrlActionRender(OpenUrlAction action, RenderContext context)
         {
-            OpenUrlAction action = (OpenUrlAction)actionElement;
-
             if (!context.Config.SupportsInteractivity)
             {
                 return null;
@@ -116,10 +114,8 @@ namespace AdaptiveCards.Rendering
             return buttonElement;
         }
 
-        protected static HtmlTag ShowCardActionRender(TypedElement actionElement, RenderContext context)
+        protected static HtmlTag ShowCardActionRender(ShowCardAction action, RenderContext context)
         {
-            ShowCardAction action = (ShowCardAction)actionElement;
-
             if (!context.Config.SupportsInteractivity)
             {
                 return null;
@@ -138,10 +134,8 @@ namespace AdaptiveCards.Rendering
             return buttonElement;
         }
 
-        protected static HtmlTag SubmitActionRender(TypedElement actionElement, RenderContext context)
+        protected static HtmlTag SubmitActionRender(SubmitAction action, RenderContext context)
         {
-            SubmitAction action = (SubmitAction)actionElement;
-
             if (!context.Config.SupportsInteractivity)
             {
                 return null;
@@ -160,9 +154,8 @@ namespace AdaptiveCards.Rendering
             return buttonElement;
         }
         
-        protected static HtmlTag AdaptiveCardRender(TypedElement element, RenderContext context)
+        protected static HtmlTag AdaptiveCardRender(AdaptiveCard card, RenderContext context)
         {
-            AdaptiveCard card = (AdaptiveCard)element;
             var uiCard = new DivTag()
                 .AddClass($"ac-{card.Type.ToLower()}")
                 .Style("width", "100%")
@@ -334,11 +327,10 @@ namespace AdaptiveCards.Rendering
             }
         }
 
-        protected static HtmlTag ColumnRender(TypedElement element, RenderContext context)
+        protected static HtmlTag ColumnRender(Column column, RenderContext context)
         {
-            Column column = (Column)element;
             var uiColumn = new DivTag()
-                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}");
+                .AddClass($"ac-{column.Type.Replace(".", "").ToLower()}");
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
@@ -356,11 +348,10 @@ namespace AdaptiveCards.Rendering
             return uiColumn;
         }
 
-        protected static HtmlTag ColumnSetRender(TypedElement element, RenderContext context)
+        protected static HtmlTag ColumnSetRender(ColumnSet columnSet, RenderContext context)
         {
-            ColumnSet columnSet = (ColumnSet)element;
             var uiColumnSet = new DivTag()
-                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
+                .AddClass($"ac-{columnSet.Type.Replace(".", "").ToLower()}")
                 .Style("overflow", "hidden")
                 .Style("display", "flex");
 
@@ -448,11 +439,10 @@ namespace AdaptiveCards.Rendering
             return uiColumnSet;
         }
 
-        protected static HtmlTag ContainerRender(TypedElement element, RenderContext context)
+        protected static HtmlTag ContainerRender(Container container, RenderContext context)
         {
-            Container container = (Container)element;
             var uiContainer = new DivTag()
-                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}");
+                .AddClass($"ac-{container.Type.Replace(".", "").ToLower()}");
 
             AddContainerElements(uiContainer, container.Items, null, context);
 
@@ -470,11 +460,10 @@ namespace AdaptiveCards.Rendering
             return uiContainer;
         }
 
-        protected static HtmlTag FactSetRender(TypedElement element, RenderContext context)
+        protected static HtmlTag FactSetRender(FactSet factSet, RenderContext context)
         {
-            FactSet factSet = (FactSet)element;
             var uiFactSet = (TableTag)new TableTag()
-                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
+                .AddClass($"ac-{factSet.Type.Replace(".", "").ToLower()}")
                 .Style("overflow", "hidden");
 
             foreach (var fact in factSet.Facts)
@@ -513,10 +502,8 @@ namespace AdaptiveCards.Rendering
             return uiFactSet;
         }
 
-        protected static HtmlTag TextBlockRender(TypedElement element, RenderContext context)
+        protected static HtmlTag TextBlockRender(TextBlock textBlock, RenderContext context)
         {
-            TextBlock textBlock = (TextBlock)element;
-
             int fontSize;
             switch (textBlock.Size)
             {
@@ -534,7 +521,7 @@ namespace AdaptiveCards.Rendering
                     break;
                 case TextSize.Default:
                 default:
-                    fontSize = context.Config.FontSizes.Normal;
+                    fontSize = context.Config.FontSizes.Default;
                     break;
             }
             int weight = 400;
@@ -551,7 +538,7 @@ namespace AdaptiveCards.Rendering
             var lineHeight = fontSize * 1.2;
 
             var uiTextBlock = new DivTag()
-                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
+                .AddClass($"ac-{textBlock.Type.Replace(".", "").ToLower()}")
                 .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
                 .Style("box-sizing", "border-box")
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
@@ -611,11 +598,10 @@ namespace AdaptiveCards.Rendering
             return uiTextBlock;
         }
 
-        protected static HtmlTag ImageRender(TypedElement element, RenderContext context)
+        protected static HtmlTag ImageRender(Image image, RenderContext context)
         {
-            Image image = (Image)element;
             var uiDiv = new HtmlTag("div")
-                .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
+                .AddClass($"ac-{image.Type.Replace(".", "").ToLower()}")
                 .Style("display", "block")
                 .Style("box-sizing", "border-box");
 
@@ -681,9 +667,8 @@ namespace AdaptiveCards.Rendering
             return uiDiv;
         }
 
-        protected static HtmlTag ImageSetRender(TypedElement element, RenderContext context)
+        protected static HtmlTag ImageSetRender(ImageSet imageSet, RenderContext context)
         {
-            ImageSet imageSet = (ImageSet)element;
             var uiImageSet = new DivTag()
                 .AddClass(imageSet.Type.ToLower());
 
@@ -704,9 +689,8 @@ namespace AdaptiveCards.Rendering
         /// 2. IsMultiSelect == false && IsCompact == false => render as a list of radio buttons
         /// 3. IsMultiSelect == true => render as a list of toggle inputs
         /// </summary>
-        protected static HtmlTag ChoiceSetRender(TypedElement element, RenderContext context)
+        protected static HtmlTag ChoiceSetRender(ChoiceSet choiceSet, RenderContext context)
         {
-            ChoiceSet choiceSet = (ChoiceSet)element;
             if (!choiceSet.IsMultiSelect)
             {
                 if (choiceSet.IsCompact)
@@ -809,10 +793,8 @@ namespace AdaptiveCards.Rendering
             }
         }
 
-        protected static HtmlTag DateInputRender(TypedElement element, RenderContext context)
+        protected static HtmlTag DateInputRender(DateInput input, RenderContext context)
         {
-            DateInput input = (DateInput)element;
-
             var uiDateInput = new HtmlTag("input")
                 .Attr("name", input.Id)
                 .Attr("type", "date")
@@ -838,10 +820,8 @@ namespace AdaptiveCards.Rendering
             return uiDateInput;
         }
 
-        protected static HtmlTag NumberInputRender(TypedElement element, RenderContext context)
+        protected static HtmlTag NumberInputRender(NumberInput input, RenderContext context)
         {
-            NumberInput input = (NumberInput)element;
-
             var uiNumberInput = new HtmlTag("input")
                 .Attr("name", input.Id)
                 .AddClass("ac-input")
@@ -867,10 +847,8 @@ namespace AdaptiveCards.Rendering
             return uiNumberInput;
         }
 
-        protected static HtmlTag TextInputRender(TypedElement element, RenderContext context)
+        protected static HtmlTag TextInputRender(TextInput input, RenderContext context)
         {
-            TextInput input = (TextInput)element;
-
             HtmlTag uiTextInput;
             if (input.IsMultiline)
             {
@@ -910,9 +888,8 @@ namespace AdaptiveCards.Rendering
             return uiTextInput;
         }
 
-        protected static HtmlTag TimeInputRender(TypedElement element, RenderContext context)
+        protected static HtmlTag TimeInputRender(TimeInput input, RenderContext context)
         {
-            TimeInput input = (TimeInput)element;
             var uiTimeInput = new HtmlTag("input")
                 .Attr("type", "time")
                 .Attr("name", input.Id)
@@ -938,10 +915,8 @@ namespace AdaptiveCards.Rendering
             return uiTimeInput;
         }
 
-        protected static HtmlTag ToggleInputRender(TypedElement element, RenderContext context)
+        protected static HtmlTag ToggleInputRender(ToggleInput toggleInput, RenderContext context)
         {
-            ToggleInput toggleInput = (ToggleInput)element;
-
             var uiElement = new HtmlTag("div")
                 .AddClass("ac-input")
                 .Style("width", "100%");

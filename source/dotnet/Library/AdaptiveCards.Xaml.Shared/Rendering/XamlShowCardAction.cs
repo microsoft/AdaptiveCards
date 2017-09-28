@@ -13,9 +13,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlShowCardAction
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(ShowCardAction action, RenderContext context)
         {
-            ShowCardAction action = (ShowCardAction)element;
             if (context.Config.SupportsInteractivity)
             {
                 Button uiButton = XamlUtilities.CreateActionButton(action, context);
