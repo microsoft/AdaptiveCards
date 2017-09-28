@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Schema Explorer | Adaptive Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Schema Explorer">
+<meta property="og:url" content="http://adaptivecards.io/explorer/index.html">
+<meta property="og:site_name" content="Adaptive Cards">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Schema Explorer">
+  
+  
+  
+  
+    <link rel="icon" href="/content/favicon.ico">
+  
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+  <link rel="stylesheet" href="https://docs.microsoft.com/_themes/docs.theme/master/en-us/_themes/css/500aeba2527cd489eed0.site.css ">
+  <link rel="stylesheet" href="https://docs.microsoft.com/_themes/docs.theme/master/en-us/_themes/css/500aeba2527cd489eed0.conceptual.css ">
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+
+
+  
+    <link rel="stylesheet" href="/css/style.css">
+  
+
+  <link rel="stylesheet" href="/visualizer/css/outlook.css">
+
+  
+
+
+  <link rel="stylesheet" href="https://statics-uhf-eus.akamaized.net/west-european/shell/_scrf/css/themes=default.device=uplevel_web_pc_webkit_chrome/59-bc11b0/dd-86b6b8/a4-a4a73d/a9-795ebf/34-34de2e/4b-2601fd?ver=2.0" type="text/css" media="all" />
+
+</head>
+
+
+<body>
+
+<section id="headerArea" data-m='{"cN":"headerArea","cT":"Area_coreuiArea","id":"a1Body","sN":1,"aN":"Body"}'>
+ <div id="headerRegion" data-region-key="headerregion" data-m='{"cN":"headerRegion","cT":"Region_coreui-region","id":"r1a1","sN":1,"aN":"a1"}' >
+ 
+ <div id="headerUniversalHeader" data-m='{"cN":"headerUniversalHeader","cT":"Module_coreui-universalheader","id":"m1r1a1","sN":1,"aN":"r1a1"}' data-module-id="Category|headerRegion|headerRegion|headerUniversalHeader|coreui-universalheader">
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <header role="banner" class="c-universal-header context-uhf no-js " itemscope="itemscope" data-header-footprint="en-us/MSDocsAdaptivecards/MSDocsAdaptivecardsheader" itemtype="http://schema.org/Organization">
+ <div class="theme-light js-global-head f-closed " ms.pgarea='Universal Header'>
+ <div>
+ <button class="c-action-trigger c-glyph glyph-global-nav-button" aria-label="Header navigation menu" aria-expanded="false" ms.title='Mobile menu button'></button>
+ <button class="c-action-trigger c-glyph glyph-arrow-htmllegacy" aria-expanded="false" ms.title='Close Search'></button>
+ <a id="uhfLogo" class="c-logo" itemprop="url" href="https://www.microsoft.com" aria-label="Microsoft" ms.cmpgrp='GlobalNav_Logo'>
+ <img itemprop="logo" itemscope="itemscope" class="c-image" alt="Microsoft" src="https://assets.onestore.ms/cdnfiles/external/uhf/long/9a49a7e9d8e881327e81b9eb43dabc01de70a9bb/images/microsoft-gray.png" />
+ <span>Microsoft</span>
+ </a>
+ <div class="f-mobile-title">
+ <button class="c-action-trigger c-glyph glyph-chevron-left" aria-label="See more menu options" ms.title='Mobile back button'></button>
+ <span data-global-title="Microsoft home" class="js-mobile-title">Adaptive Cards</span>
+ <button class="c-action-trigger c-glyph glyph-chevron-right" aria-label="See more menu options" ms.title='Mobile forward button'></button>
+ </div>
+ 
+ </div>
+ 
+ 
+ </div>
+ <div class="theme-dark brand-neutral js-cat-head" itemprop="brand" itemscope="itemscope" itemtype="http://schema.org/Brand" ms.cmpgrp='UHF category nav'>
+ 
+ <div>
+ <a id="uhfCatLogo" class="c-logo" href="http://adaptivecards.io" aria-label="Adaptive Cards" itemprop="url" ms.title='Adaptive Cards'>
+ <span>Adaptive Cards</span>
+ </a>
+ 
+ <button class="c-action-trigger c-glyph glyph-chevron-left" aria-label="Scroll left" title="Scroll left" ms.title='Previous'></button>
+ 
+ <button class="c-action-trigger c-glyph glyph-chevron-right" aria-label="Scroll right" title="Scroll right" ms.title='Next'></button>
+ <nav id="uhf-c-nav" role="navigation" aria-labelledby="uhfCatLogo" >
+ 
+ <a id="shellmenu_0" class="c-uhf-nav-link" href="https://docs.microsoft.com/en-us/adaptive-cards" ms.title='Documentation'>Documentation</a><a id="shellmenu_1" class="c-uhf-nav-link" href="http://adaptivecards.io/explorer/" ms.title='Schema Explorer'>Schema Explorer</a><a id="Visualizer" class="c-uhf-nav-link" href="http://adaptivecards.io/visualizer/" ms.title='Visualizer'>Visualizer</a><a id="shellmenu_3" class="c-uhf-nav-link" href="http://adaptivecards.io/samples/" ms.title='Samples'>Samples</a><a id="shellmenu_4" class="c-uhf-nav-link" href="http://adaptivecards.io/connect/" ms.title='Connect'>Connect</a> </nav>
+ 
+ </div>
+ 
+ 
+ 
+ </div>
+ 
+ 
+ </header>
+ 
+ 
+ </div>
+ </div>
+ 
+ </section>
+
+<div id="mainContent">
+  
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
+
+
+  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
+    <div class="sidebar__inner">
+      <div class="w3-panels w3-padding-larges">
+        <ul aria-treegrid="true">
+          
+              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Cards</span>
+                <ul>
+                  
+                    <li class=''>
+                      <a href="/explorer/AdaptiveCard.html">AdaptiveCard</a>
+                    </li>
+                  
+                </ul>
+              </li>
+          
+              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Card Elements</span>
+                <ul>
+                  
+                    <li class=''>
+                      <a href="/explorer/TextBlock.html">TextBlock</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Image.html">Image</a>
+                    </li>
+                  
+                </ul>
+              </li>
+          
+              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Containers</span>
+                <ul>
+                  
+                    <li class=''>
+                      <a href="/explorer/Container.html">Container</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/ColumnSet.html">ColumnSet</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Column.html">Column</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/FactSet.html">FactSet</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Fact.html">Fact</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/ImageSet.html">ImageSet</a>
+                    </li>
+                  
+                </ul>
+              </li>
+          
+              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Actions</span>
+                <ul>
+                  
+                    <li class=''>
+                      <a href="/explorer/Action.OpenUrl.html">Action.OpenUrl</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Action.Submit.html">Action.Submit</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Action.ShowCard.html">Action.ShowCard</a>
+                    </li>
+                  
+                </ul>
+              </li>
+          
+              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Inputs</span>
+                <ul>
+                  
+                    <li class=''>
+                      <a href="/explorer/Input.Text.html">Input.Text</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Input.Number.html">Input.Number</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Input.Date.html">Input.Date</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Input.Time.html">Input.Time</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Input.Toggle.html">Input.Toggle</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
+                    </li>
+                  
+                    <li class=''>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
+                    </li>
+                  
+                </ul>
+              </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="w3-main" style="margin-left: 260px">
+    <div class="w3-cell-row ">
+      <div class="w3-container w3-cell w3-mobile">
+        <h1>AdaptiveCard</h1>
+
+        <p>Card schema for an adaptive card</p>
+
+        <div class="ac-properties w3-margin-top"> 
+          <table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>type</strong></td>
+<td><code>&quot;AdaptiveCard&quot;</code></td>
+<td>Yes</td>
+<td>Must be AdaptiveCard</td>
+</tr>
+<tr>
+<td><strong>actions</strong></td>
+<td><code>Action[]</code></td>
+<td>No</td>
+<td>The Actions to show in the card’s action bar</td>
+</tr>
+<tr>
+<td><strong>body</strong></td>
+<td><code>array[]</code></td>
+<td>No</td>
+<td>The Card Elements to show in the primary card region</td>
+</tr>
+<tr>
+<td><strong>version</strong></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>version of schema that this card was authored </td>
+</tr>
+<tr>
+<td><strong>minVersion</strong></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>if a client doesn’t support the minVersion the card should be rejected and return the fallbackText.  If it does, then the elements that are not supported are safe to ignore</td>
+</tr>
+<tr>
+<td><strong>fallbackText</strong></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. </td>
+</tr>
+<tr>
+<td><strong>speak</strong></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Specifies what should be spoken for this entire Item. This is simple text or SSML fragment</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+        
+      </div>
+    <div class="w3-container w3-cell w3-mobile" style="width: 300px">
+    </div>
+  </div>
+
+
+  
+    
+      <h2 class="w3-container">Example</h2>
+      
+<div class="w3-cell-row">
+    
+    <div class="w3-container w3-cell w3-mobile code-snippet">
+        <pre><code class='json'>{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Publish Adaptive Card schema",
+					"weight": "bolder",
+					"size": "medium"
+				},
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"width": "auto",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+									"size": "small",
+									"style": "person"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"width": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Matt Hidinger",
+									"weight": "bolder",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "none",
+									"text": "Created {{DATE(2017-02-14T06:08:39Z,Short)}}",
+									"isSubtle": true,
+									"wrap": true
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+					"wrap": true
+				},
+				{
+					"type": "FactSet",
+					"facts": [
+						{
+							"title": "Board:",
+							"value": "Adaptive Card"
+						},
+						{
+							"title": "List:",
+							"value": "Backlog"
+						},
+						{
+							"title": "Assigned to:",
+							"value": "Matt Hidinger"
+						},
+						{
+							"title": "Due date:",
+							"value": "Not set"
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Set due date",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Date",
+						"id": "dueDate",
+						"title": "Select due date"
+					}
+				],
+				"actions": [
+				    {
+				        "type": "Action.Submit",
+				        "title": "OK"
+			        }
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Comment",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"isMultiline": true,
+						"placeholder": "Enter your comment"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "OK"
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "View",
+			"url": "http://adaptivecards.io"
+		}
+	]
+}</code></pre>
+    </div>
+
+    <div class="w3-container w3-cell w3-mobile" style="width: 300px">
+        <div class="adaptivecard">{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Publish Adaptive Card schema",
+					"weight": "bolder",
+					"size": "medium"
+				},
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"width": "auto",
+							"items": [
+								{
+									"type": "Image",
+									"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+									"size": "small",
+									"style": "person"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"width": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Matt Hidinger",
+									"weight": "bolder",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "none",
+									"text": "Created {{DATE(2017-02-14T06:08:39Z,Short)}}",
+									"isSubtle": true,
+									"wrap": true
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+					"wrap": true
+				},
+				{
+					"type": "FactSet",
+					"facts": [
+						{
+							"title": "Board:",
+							"value": "Adaptive Card"
+						},
+						{
+							"title": "List:",
+							"value": "Backlog"
+						},
+						{
+							"title": "Assigned to:",
+							"value": "Matt Hidinger"
+						},
+						{
+							"title": "Due date:",
+							"value": "Not set"
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Set due date",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Date",
+						"id": "dueDate",
+						"title": "Select due date"
+					}
+				],
+				"actions": [
+				    {
+				        "type": "Action.Submit",
+				        "title": "OK"
+			        }
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Comment",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"isMultiline": true,
+						"placeholder": "Enter your comment"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "OK"
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "View",
+			"url": "http://adaptivecards.io"
+		}
+	]
+}</div>
+        <a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/AdaptiveCard.json">Try it Yourself »</a>
+    </div>
+
+   
+</div>
+  
+
+
+  <h2 class="w3-container">Properties</h2><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
+<p>Must be AdaptiveCard</p>
+<ul>
+<li><strong>Type</strong>: <code>&quot;AdaptiveCard&quot;</code></li>
+<li><strong>Required</strong>: Yes</li>
+<li><strong>Allowed values</strong>:<ul>
+<li><code>AdaptiveCard</code></li>
+</ul>
+</li>
+</ul>
+</div><div class="w3-container"><h3 id="dedupe-headeractions">actions</h3>
+<p>The Actions to show in the card&#39;s action bar</p>
+<ul>
+<li><strong>Type</strong>: <code>Action[]</code><ul>
+<li>Each element in the array must be one of the following values:</li>
+</ul>
+</li>
+<li><strong>Required</strong>: No</li>
+</ul>
+</div><div class="w3-container"><h3 id="dedupe-headerbody">body</h3>
+<p>The Card Elements to show in the primary card region</p>
+<ul>
+<li><strong>Type</strong>: <code>array[]</code></li>
+<li><strong>Required</strong>: No</li>
+</ul>
+</div><div class="w3-container"><h3 id="dedupe-headerversion">version</h3>
+<p>version of schema that this card was authored </p>
+<ul>
+<li><strong>Type</strong>: <code>string</code></li>
+<li><strong>Required</strong>: Yes</li>
+</ul>
+</div><div class="w3-container"><h3 id="dedupe-headerminversion">minVersion</h3>
+<p>if a client doesn&#39;t support the minVersion the card should be rejected and return the fallbackText.  If it does, then the elements that are not supported are safe to ignore</p>
+<ul>
+<li><strong>Type</strong>: <code>string</code></li>
+<li><strong>Required</strong>: No</li>
+</ul>
+</div><div class="w3-container"><h3 id="dedupe-headerfallbacktext">fallbackText</h3>
+<p>if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. </p>
+<ul>
+<li><strong>Type</strong>: <code>string</code></li>
+<li><strong>Required</strong>: No</li>
+</ul>
+</div><div class="w3-container"><h3 id="dedupe-headerspeak">speak</h3>
+<p>Specifies what should be spoken for this entire Item. This is simple text or SSML fragment</p>
+<ul>
+<li><strong>Type</strong>: <code>string</code></li>
+<li><strong>Required</strong>: No</li>
+</ul>
+</div>
+
+</div>
+</div>
+        
+
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="/js/sticky-sidebar.js"></script>
+
+
+<script src="https://statics-uhf-eus.akamaized.net/shell/_scrf/js/themes=default/87-0bce27/f8-3b6b36/ea-962395/79-8a148a/f2-1d184e/90-1e650e/64-5bbd4a/5d-f9c916/e8-497be9/fb-9086e3/d7-748562/71-cabf1b/45-ab2026/65-eb25b1/21-de971d/df-f8d789/ea-955802/8b-daf680/7d-dec6ac/21-0be778/4a-4774eb/8c-131ebd/1f-2c26b9/75-61dbdc/fe-16c6b5/fe-7734a7/7a-6864d5/53-234da1/e2-5d02cf/6e-aaef0a?ver=2.0&iife=1"></script><script src="https://mem.gfx.ms/meversion?partner=MSDocsAdaptivecards&market=en-us"></script>
+
+
+
+
+  <script src="/js/adaptive-cards.js"></script>
+  
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+
+  // Used to toggle the menu on small screens when clicking on the menu button
+  function toggleNav() {
+      var x = document.getElementById("nav");
+      if (x.className.indexOf("w3-show") == -1) {
+          x.className += " w3-show";
+      } else { 
+          x.className = x.className.replace(" w3-show", "");
+      }
+  }
+</script>
+
+</body>
+</html>
