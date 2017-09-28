@@ -32,34 +32,6 @@ namespace AdaptiveCards.Rendering
             SetObjectTypes();
         }
 
-        [Obsolete("Use the single-parameter constructor instead")]
-        public AdaptiveCardRenderer(HostConfig hostConfig,
-            ResourceDictionary resources,
-            Action<object, ActionEventArgs> actionCallback = null,
-            Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(hostConfig)
-        {
-            this.Resources = resources;
-            this.actionCallback = actionCallback;
-            this.missingDataCallback = missingDataCallback;
-            SetObjectTypes();
-        }
-
-#if WPF
-        [Obsolete("Use the single-parameter constructor instead")]
-        public AdaptiveCardRenderer(HostConfig hostConfig,
-            string stylePath,
-            Action<object, ActionEventArgs> actionCallback = null,
-            Action<object, MissingInputEventArgs> missingDataCallback = null)
-            : base(hostConfig)
-        {
-            this.StylePath = stylePath;
-            this.actionCallback = actionCallback;
-            this.missingDataCallback = missingDataCallback;
-            SetObjectTypes();
-        }
-#endif
-
         private void SetObjectTypes()
         {
             this.ElementRenderers.Set<AdaptiveCard>(XamlAdaptiveCard.Render);
@@ -160,29 +132,6 @@ namespace AdaptiveCards.Rendering
 
             answer = new RenderedAdaptiveCard(el, card);
             return answer;
-        }
-
-        /// <summary>
-        /// AdaptiveCard
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        [Obsolete("Use RenderCard instead")]
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
-        {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
-            {
-                Config = hostConfig ?? this.HostConfig,
-                Resources = this.Resources,
-                ElementRenderers = this.ElementRenderers
-            };
-            return context.Render(card);
-        }
-
-        [Obsolete("Use RenderCard instead, passing in the Card property within the ShowCardAction")]
-        public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
-        {
-            return RenderAdaptiveCard(showCard.Card);
         }
     }
 }

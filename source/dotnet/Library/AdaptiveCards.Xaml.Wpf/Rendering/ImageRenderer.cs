@@ -110,16 +110,24 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
         {
-            // Have to use obsolete method since the official image resolver isn't coded up yet
-            var uiCard = this._xamlRenderer.RenderAdaptiveCard(card, imageResolver);
+            // TODO: When ResourceResolver support is added, wire up the image resolver
+            var result = this._xamlRenderer.RenderCard(card);
+            if (result.FrameworkElement != null)
+            {
+                var uiCard = result.FrameworkElement;
 
-            uiCard.Measure(new System.Windows.Size(width, 4000));
-            uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));
-            uiCard.UpdateLayout();
+                uiCard.Measure(new System.Windows.Size(width, 4000));
+                uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));
+                uiCard.UpdateLayout();
 
-            RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)width, (int)uiCard.DesiredSize.Height, 96, 96, PixelFormats.Default);
-            bitmapImage.Render(uiCard);
-            return bitmapImage;
+                RenderTargetBitmap bitmapImage = new RenderTargetBitmap((int)width, (int)uiCard.DesiredSize.Height, 96, 96, PixelFormats.Default);
+                bitmapImage.Render(uiCard);
+                return bitmapImage;
+            }
+            else
+            {
+                throw new Exception("Rendering failed");
+            }
         }
     }
 

@@ -29,7 +29,10 @@ namespace WpfVisualizer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var renderer = new XamlRendererExtended(new HostConfig(), this._resources, OnAction);
+            var renderer = new XamlRendererExtended(new HostConfig())
+            {
+                Resources = this._resources
+            };
             var result = renderer.RenderCard(_card.Card);
 
             if (result.FrameworkElement != null)
