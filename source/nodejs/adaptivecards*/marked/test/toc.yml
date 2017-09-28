@@ -22,9 +22,3 @@
   - Input.Toggle
   - Input.ChoiceSet
   - Input.Choice
-- Enumerations:
-  - ImageSize
-  - ImageStyle
-  - HorizontalAlignment
-  - SeparatorStyle
-  - ChoiceInputStyle

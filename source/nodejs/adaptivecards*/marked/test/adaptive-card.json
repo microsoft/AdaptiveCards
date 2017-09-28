@@ -149,7 +149,8 @@
         }
       },
       "required": [
-        "type"
+        "type",
+        "version"
       ]
     },
     "CardElement": {
@@ -222,6 +223,8 @@
       ]
     },
     "Input.Choice": {
+      "type": "object",
+      "description": "Describes a Choice input. The value should be a simple string without a \",\"",
       "additionalProperties": true,
       "properties": {
         "type":{
@@ -236,14 +239,13 @@
         },
         "value": {
           "type": "string",
-          "description": "The raw value for the choice. NOTE: do not use a ',' in the value, since MultiSelect ChoiceSet returns a comma-delimited string of choice values"
+          "description": "The raw value for the choice. NOTE: do not use a \",\" in the value, since MultiSelect ChoiceSet returns a comma-delimited string of choice values"
         }
       },
       "required": [
         "title",
         "value"
-      ],
-      "type": "object"
+      ]
     },
     "ChoiceInputStyle": {
       "type": "string",
@@ -361,6 +363,7 @@
     "Fact": {
       "additionalProperties": true,
       "type": "object",
+      "description": "Describes a Fact in a FactSet as a key/value pair",
       "properties": {
         "type": {
           "type": "string",
@@ -443,6 +446,7 @@
           "$ref": "#/definitions/Action"
         },
         "size": {
+          "type": "object",
           "$ref": "#/definitions/ImageSize"
         },
         "style": {
@@ -498,7 +502,8 @@
     },
     "ImageSize": {
       "type": "string",
-      "description": "Controls the horizontal size (width) of Item. ",
+      "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify \"auto\" for true image dimension or \"stretch\" to force it to fill the container",
+      "default": "auto",
       "enum": [
         "auto",
         "stretch",
@@ -509,7 +514,7 @@
     },
     "ImageStyle": {
       "type": "string",
-      "description": "Controls the way Image Items are displayed",
+      "description": "Controls the way Images are displayed",
       "enum": [
         "default",
         "person"

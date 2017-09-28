@@ -44,54 +44,56 @@ function buildModel(options) {
                         definition.name = name;
                         definition.examples = [];
 
-                        if (objSchema !== undefined) {
-                            objSchema = resolveInheritance(objSchema);
 
-                            if (definition.name === rootDefinition) {
-                                mergeProperties(objSchema.properties, schema.properties);
-                            }
+                        objSchema = resolveInheritance(objSchema);
 
-                            definition.title = objSchema.title;
-                            definition.description = defaultValue(objSchema.description, objSchema.title);
-                            definition.properties = objSchema.properties;
+                        if (definition.name === rootDefinition) {
+                            mergeProperties(objSchema.properties, schema.properties);
+                        }
 
-                            if (defined(options.examplesPath)) {
-                                definition.examples = glob.sync(path.join(options.examplesPath, "/**/" + definition.name + ".json"), { nocase: false })
-                            }
+                        definition.title = objSchema.title;
+                        definition.description = defaultValue(objSchema.description, objSchema.title);
+                        definition.properties = objSchema.properties;
 
-                            for (var name in definition.properties) {
-                                if (definition.properties.hasOwnProperty(name)) {
-                                    var property = definition.properties[name];
-                                    property.name = name;
-                                    property.realType = getPropertyType(property);
-                                    property.examples = [];
-                                    property.required = objSchema.required && objSchema.required.indexOf(name) > -1;
+                        if (defined(options.examplesPath)) {
+                            definition.examples = glob.sync(path.join(options.examplesPath, "/**/" + definition.name + ".json"), { nocase: false })
+                        }
 
-                                    // Get the types of elements allowed in an array
-                                    if (property.type === "array") {
-                                        if (property.items.anyOf) {
-                                            property.itemTypes = property.items.anyOf.map(function (p) {
-                                                if (p.properties.type) {
-                                                    // Only get the first enum out, but this should be improved later
-                                                    return p.properties.type.enum;
-                                                }
-                                            });
-                                        }
-                                        else {
-                                            var arrayItemProperties = property.items.properties;
-                                            if (arrayItemProperties && arrayItemProperties.type) {
-                                                property.itemTypes = arrayItemProperties.type.enum;
+                        for (var name in definition.properties) {
+                            if (definition.properties.hasOwnProperty(name)) {
+                                var property = definition.properties[name];
+                                property.name = name;
+                                property.realType = getPropertyType(property);
+                                property.required = objSchema.required && objSchema.required.indexOf(name) > -1;
+                                property.examples = [];
+
+                                if (defined(options.examplesPath)) {
+                                    property.examples = glob.sync(path.join(options.examplesPath, "**/" + definition.name + "." + property.name + ".json"), { nocase: false });
+                                }
+
+                                // Get the types of elements allowed in an array
+                                if (property.type === "array") {
+                                    if (property.items.anyOf) {
+                                        property.itemTypes = property.items.anyOf.map(function (p) {
+                                            if (p.properties.type) {
+                                                // Only get the first enum out, but this should be improved later
+                                                return p.properties.type.enum;
                                             }
-                                        }
-
-                                        if (defined(options.examplesPath)) {
-                                            property.examples = glob.sync(path.join(options.examplesPath, "**/" + definition.name + "." + name + ".json"), { nocase: false });
+                                        });
+                                    }
+                                    else {
+                                        var arrayItemProperties = property.items.properties;
+                                        if (arrayItemProperties && arrayItemProperties.type) {
+                                            property.itemTypes = arrayItemProperties.type.enum;
                                         }
                                     }
                                 }
+
                             }
-                            root.children.push(definition);
                         }
+
+                        root.children.push(definition);
+                        
                     }
 
                     items.push(root);
@@ -188,7 +190,7 @@ function getPropertyType(schema) {
     var enumValues = schema['enum'];
     if (defined(enumValues)) {
         if (enumValues.length == 1)
-            return "**\"" + enumValues[0] + "\"**";
+            return "\"" + enumValues[0] + "\"";
     }
 
     // arrays
