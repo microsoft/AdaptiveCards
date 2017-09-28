@@ -116,16 +116,24 @@ namespace WpfVisualizer
                     if (_card != null)
                     {
                         this.Renderer = new XamlRendererExtended(this.HostConfig, this.Resources, _onAction, _OnMissingInput);
-                        var uiCard = this.Renderer.RenderCard(_card, hostConfig: HostConfig);
-                        uiCard.Effect = new DropShadowEffect()
+                        var result = this.Renderer.RenderCard(_card);
+                        if (result.FrameworkElement != null)
                         {
-                            BlurRadius = 15,
-                            Direction = -90,
-                            RenderingBias = RenderingBias.Quality,
-                            ShadowDepth = 2
-                        };
- 
-                        this.cardGrid.Children.Add(uiCard);
+                            // Wire up click handler
+                            result.OnAction += _onAction;
+
+                            var uiCard = result.FrameworkElement;
+
+                            uiCard.Effect = new DropShadowEffect()
+                            {
+                                BlurRadius = 15,
+                                Direction = -90,
+                                RenderingBias = RenderingBias.Quality,
+                                ShadowDepth = 2
+                            };
+
+                            this.cardGrid.Children.Add(uiCard);
+                        }
                     }
                 }
                 catch (Exception err)

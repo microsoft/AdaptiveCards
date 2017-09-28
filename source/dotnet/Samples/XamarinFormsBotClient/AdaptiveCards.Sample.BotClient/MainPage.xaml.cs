@@ -133,13 +133,24 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    var xaml = _renderer.RenderCard(card);
-                    
-                    xaml.WidthRequest = 350;
-                    xaml.Margin = new Thickness(8);
-                    xaml.BackgroundColor = Color.LightGray;
+                    var result = _renderer.RenderCard(card);
 
-                    Items.Children.Add(xaml);
+                    if (result.View != null)
+                    {
+                        // Wire up click handler
+                        result.OnAction += (s, args) =>
+                        {
+                            _onAction?.Invoke(s, args);
+                        };
+
+                        var xaml = result.View;
+
+                        xaml.WidthRequest = 350;
+                        xaml.Margin = new Thickness(8);
+                        xaml.BackgroundColor = Color.LightGray;
+
+                        Items.Children.Add(xaml);
+                    }
                 });
             }
 

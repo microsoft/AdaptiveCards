@@ -30,9 +30,15 @@ namespace WpfVisualizer
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var renderer = new XamlRendererExtended(new HostConfig(), this._resources, OnAction);
-            var element = renderer.RenderCard(_card.Card);
+            var result = renderer.RenderCard(_card.Card);
 
-            this.Body.Children.Add(element);
+            if (result.FrameworkElement != null)
+            {
+                // Wire up click handler
+                result.OnAction += OnAction;
+
+                this.Body.Children.Add(result.FrameworkElement);
+            }
         }
 
         private void OnAction(object sender, ActionEventArgs e)

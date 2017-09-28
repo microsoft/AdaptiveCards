@@ -48,7 +48,7 @@ namespace AdaptiveCards.Rendering
             _xamlRenderer = new AdaptiveCardRenderer(hostConfig)
             {
                 StylePath = stylePath
-            }
+            };
         }
 
         public AdaptiveCardRenderer Renderer { get { return this._xamlRenderer; } }
@@ -110,7 +110,8 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
         {
-            var uiCard = this._xamlRenderer.RenderCard(card, imageResolver);
+            // Have to use obsolete method since the official image resolver isn't coded up yet
+            var uiCard = this._xamlRenderer.RenderAdaptiveCard(card, imageResolver);
 
             uiCard.Measure(new System.Windows.Size(width, 4000));
             uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));

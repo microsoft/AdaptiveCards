@@ -132,11 +132,43 @@ namespace AdaptiveCards.Rendering
         }
 
         /// <summary>
+        /// Renders an adaptive card.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
+        {
+            FrameworkElement el = null;
+            RenderedAdaptiveCard answer = null;
+
+            try
+            {
+                Action<object, ActionEventArgs> actionCallback = (sender, args) =>
+                {
+                    answer?.InvokeOnAction(args);
+                };
+
+                RenderContext context = new RenderContext(actionCallback, null)
+                {
+                    Config = this.HostConfig,
+                    Resources = this.Resources,
+                    ElementRenderers = this.ElementRenderers
+                };
+                el = context.Render(card);
+            }
+            catch { }
+
+            answer = new RenderedAdaptiveCard(el, card);
+            return answer;
+        }
+
+        /// <summary>
         /// AdaptiveCard
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
+        [Obsolete("Use RenderCard instead")]
+        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
@@ -150,7 +182,7 @@ namespace AdaptiveCards.Rendering
         [Obsolete("Use RenderCard instead, passing in the Card property within the ShowCardAction")]
         public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
         {
-            return RenderCard(showCard.Card);
+            return RenderAdaptiveCard(showCard.Card);
         }
     }
 }
