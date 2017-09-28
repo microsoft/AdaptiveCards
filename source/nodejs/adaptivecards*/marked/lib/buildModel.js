@@ -72,6 +72,7 @@ function buildModel(options) {
                                         if (property.items.anyOf) {
                                             property.itemTypes = property.items.anyOf.map(function (p) {
                                                 if (p.properties.type) {
+                                                    // Only get the first enum out, but this should be improved later
                                                     return p.properties.type.enum;
                                                 }
                                             });

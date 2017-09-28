@@ -155,17 +155,12 @@ function getPropertySummary(property, knownTypes, autoLink) {
 
         // Custom logic to calculate the types of items in the array
         if (property.itemTypes) {
-            if (property.itemTypes.length > 5) {
-                // Split on . so Action.Submit => Action
-                var split = property.itemTypes.forEach(function (t) {
-                    var split = t.split(".");
-                    return split.length > 0 ? split[0] : "";
-                });
-                
-                formattedType = "`" + typePrefix + "[]`";
-            } else {
-                formattedType = "`" + property.itemTypes[0] + "[]`";
+            // Split on . so Action.Submit => Action
+            var t = property.itemTypes[0];
+            if (property.itemTypes.length > 1 && t[0].indexOf(".") > -1) {
+                t = t[0].split(".")[0];
             }
+            formattedType = "`" + t + "[]`";
         } else {
             var arrayInfo = '[' + insideBrackets + ']';
 
