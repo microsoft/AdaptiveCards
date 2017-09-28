@@ -69,27 +69,27 @@ namespace AdaptiveCards.Rendering
 
         private void SetObjectTypes()
         {
-            this.SetRenderer<AdaptiveCard>(AdaptiveCardRender);
+            this.ElementRenderers.Set<AdaptiveCard>(AdaptiveCardRender);
 
-            this.SetRenderer<TextBlock>(TextBlockRender);
-            this.SetRenderer<Image>(ImageRender);
+            this.ElementRenderers.Set<TextBlock>(TextBlockRender);
+            this.ElementRenderers.Set<Image>(ImageRender);
 
-            this.SetRenderer<Container>(ContainerRender);
-            this.SetRenderer<Column>(ColumnRender);
-            this.SetRenderer<ColumnSet>(ColumnSetRender);
-            this.SetRenderer<FactSet>(FactSetRender);
-            this.SetRenderer<ImageSet>(ImageSetRender);
+            this.ElementRenderers.Set<Container>(ContainerRender);
+            this.ElementRenderers.Set<Column>(ColumnRender);
+            this.ElementRenderers.Set<ColumnSet>(ColumnSetRender);
+            this.ElementRenderers.Set<FactSet>(FactSetRender);
+            this.ElementRenderers.Set<ImageSet>(ImageSetRender);
 
-            this.SetRenderer<ChoiceSet>(ChoiceSetRender);
-            this.SetRenderer<TextInput>(TextInputRender);
-            this.SetRenderer<NumberInput>(NumberInputRender);
-            this.SetRenderer<DateInput>(DateInputRender);
-            this.SetRenderer<TimeInput>(TimeInputRender);
-            this.SetRenderer<ToggleInput>(ToggleInputRender); ;
+            this.ElementRenderers.Set<ChoiceSet>(ChoiceSetRender);
+            this.ElementRenderers.Set<TextInput>(TextInputRender);
+            this.ElementRenderers.Set<NumberInput>(NumberInputRender);
+            this.ElementRenderers.Set<DateInput>(DateInputRender);
+            this.ElementRenderers.Set<TimeInput>(TimeInputRender);
+            this.ElementRenderers.Set<ToggleInput>(ToggleInputRender); ;
 
-            this.SetRenderer<SubmitAction>(SubmitActionRender);
-            this.SetRenderer<OpenUrlAction>(OpenUrlActionRender);
-            this.SetRenderer<ShowCardAction>(ShowCardActionRender);
+            this.ElementRenderers.Set<SubmitAction>(SubmitActionRender);
+            this.ElementRenderers.Set<OpenUrlAction>(OpenUrlActionRender);
+            this.ElementRenderers.Set<ShowCardAction>(ShowCardActionRender);
         }
 
 

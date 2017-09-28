@@ -34,10 +34,10 @@ namespace AdaptiveCards.Rendering
 #endif
         private void SetObjectTypes()
         {
-            this.SetRenderer<TextInput>(XamlExTextInput.Render);
-            this.SetRenderer<NumberInput>(XamlExNumberInput.Render);
-            this.SetRenderer<DateInput>(XamlExDateInput.Render);
-            this.SetRenderer<TimeInput>(XamlExTimeInput.Render);
+            this.ElementRenderers.Set<TextInput>(XamlExTextInput.Render);
+            this.ElementRenderers.Set<NumberInput>(XamlExNumberInput.Render);
+            this.ElementRenderers.Set<DateInput>(XamlExDateInput.Render);
+            this.ElementRenderers.Set<TimeInput>(XamlExTimeInput.Render);
         }
     }
 }

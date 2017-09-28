@@ -53,27 +53,27 @@ namespace AdaptiveCards.Rendering
 
         private void SetObjectTypes()
         {
-            this.SetRenderer<AdaptiveCard>(XamlAdaptiveCard.Render);
+            this.ElementRenderers.Set<AdaptiveCard>(XamlAdaptiveCard.Render);
 
-            this.SetRenderer<TextBlock>(XamlTextBlock.Render);
-            this.SetRenderer<Image>(XamlImage.Render);
+            this.ElementRenderers.Set<TextBlock>(XamlTextBlock.Render);
+            this.ElementRenderers.Set<Image>(XamlImage.Render);
 
-            this.SetRenderer<Container>(XamlContainer.Render);
-            this.SetRenderer<Column>(XamlColumn.Render);
-            this.SetRenderer<ColumnSet>(XamlColumnSet.Render);
-            this.SetRenderer<FactSet>(XamlFactSet.Render);
-            this.SetRenderer<ImageSet>(XamlImageSet.Render);
+            this.ElementRenderers.Set<Container>(XamlContainer.Render);
+            this.ElementRenderers.Set<Column>(XamlColumn.Render);
+            this.ElementRenderers.Set<ColumnSet>(XamlColumnSet.Render);
+            this.ElementRenderers.Set<FactSet>(XamlFactSet.Render);
+            this.ElementRenderers.Set<ImageSet>(XamlImageSet.Render);
 
-            this.SetRenderer<ChoiceSet>(XamlChoiceSet.Render);
-            this.SetRenderer<TextInput>(XamlTextInput.Render);
-            this.SetRenderer<NumberInput>(XamlNumberInput.Render);
-            this.SetRenderer<DateInput>(XamlDateInput.Render);
-            this.SetRenderer<TimeInput>(XamlTimeInput.Render);
-            this.SetRenderer<ToggleInput>(XamlToggleInput.Render); ;
+            this.ElementRenderers.Set<ChoiceSet>(XamlChoiceSet.Render);
+            this.ElementRenderers.Set<TextInput>(XamlTextInput.Render);
+            this.ElementRenderers.Set<NumberInput>(XamlNumberInput.Render);
+            this.ElementRenderers.Set<DateInput>(XamlDateInput.Render);
+            this.ElementRenderers.Set<TimeInput>(XamlTimeInput.Render);
+            this.ElementRenderers.Set<ToggleInput>(XamlToggleInput.Render); ;
 
-            this.SetRenderer<SubmitAction>(XamlSubmitAction.Render);
-            this.SetRenderer<OpenUrlAction>(XamlOpenUrlAction.Render);
-            this.SetRenderer<ShowCardAction>(XamlShowCardAction.Render);
+            this.ElementRenderers.Set<SubmitAction>(XamlSubmitAction.Render);
+            this.ElementRenderers.Set<OpenUrlAction>(XamlOpenUrlAction.Render);
+            this.ElementRenderers.Set<ShowCardAction>(XamlShowCardAction.Render);
         }
 
         /// <summary>

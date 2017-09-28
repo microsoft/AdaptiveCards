@@ -32,11 +32,12 @@ namespace AdaptiveCards.Rendering
 
         public HostConfig HostConfig { get; set; }
 
-        public Dictionary<Type, Func<TypedElement, TContext, TUIElement>> ElementRenderers = new Dictionary<Type, Func<TypedElement, TContext, TUIElement>>();
+        public ElementRenderers<TUIElement, TContext> ElementRenderers { get; private set; } = new ElementRenderers<TUIElement, TContext>();
 
+        [Obsolete("Use ElementRenderers.Set instead")]
         public void SetRenderer<TElement>(Func<TypedElement, TContext, TUIElement> renderer)
         {
-            ElementRenderers[typeof(TElement)] = renderer;
+            ElementRenderers.Set<TElement>(renderer);
         }
     }
 }
