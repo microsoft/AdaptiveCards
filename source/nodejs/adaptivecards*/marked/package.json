@@ -4,7 +4,7 @@
   "description": "Create markdown from a JSON schema file",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node bin/marked-schema ./test/adaptive-card.json ./test/toc.yml -r AdaptiveCard -e C:/Dev/Projects/AdaptiveCards/samples/v1.0"
+    "test": "node bin/marked-schema c:/dev/projects/adaptivecards/schemas/adaptive-card.json ./test/toc.yml -r AdaptiveCard -e C:/Dev/Projects/AdaptiveCards/samples/v1.0"
   },
   "keywords": [
     "json-schema"
