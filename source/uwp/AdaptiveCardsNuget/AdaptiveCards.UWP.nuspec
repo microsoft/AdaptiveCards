@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>AdaptiveCards.Renderer.Uwp</id>
-        <version>1.0.0</version>
+        <version>1.0-beta.1</version>
         <authors>Microsoft</authors>
         <owners>microsoft</owners>
         <projectUrl>https://github.com/microsoft/adaptivecards</projectUrl>
