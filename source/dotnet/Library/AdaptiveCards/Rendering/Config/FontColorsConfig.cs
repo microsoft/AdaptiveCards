@@ -9,36 +9,36 @@ using Newtonsoft.Json.Serialization;
 namespace AdaptiveCards.Rendering.Config
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ColorsConfig
+    public class FontColorsConfig
     {
-        public ColorsConfig() { }
+        public FontColorsConfig() { }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColorConfig Default { get; set; } = new ColorConfig("#FF000000");
+        public FontColorConfig Default { get; set; } = new FontColorConfig("#FF000000");
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColorConfig Accent { get; set; } = new ColorConfig("#FF0000FF");
+        public FontColorConfig Accent { get; set; } = new FontColorConfig("#FF0000FF");
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColorConfig Dark { get; set; } = new ColorConfig("#FF101010");
+        public FontColorConfig Dark { get; set; } = new FontColorConfig("#FF101010");
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColorConfig Light { get; set; } = new ColorConfig("#FFFFFFFF");
+        public FontColorConfig Light { get; set; } = new FontColorConfig("#FFFFFFFF");
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColorConfig Good { get; set; } = new ColorConfig("#FF008000");
+        public FontColorConfig Good { get; set; } = new FontColorConfig("#FF008000");
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColorConfig Warning { get; set; } = new ColorConfig("#FFFFD700");
+        public FontColorConfig Warning { get; set; } = new FontColorConfig("#FFFFD700");
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ColorConfig Attention { get; set; } = new ColorConfig("#FF8B0000");
+        public FontColorConfig Attention { get; set; } = new FontColorConfig("#FF8B0000");
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ColorConfig
+    public class FontColorConfig
     {
-        public ColorConfig(string normal, string subtle = null)
+        public FontColorConfig(string normal, string subtle = null)
         {
             this.Normal = normal;
             if (subtle == null)

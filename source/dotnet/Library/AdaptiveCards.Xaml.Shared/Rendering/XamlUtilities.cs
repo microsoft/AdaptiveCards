@@ -20,7 +20,7 @@ namespace AdaptiveCards.Rendering
 
         public static Button CreateActionButton(ActionBase action, RenderContext context)
         {
-            ActionConfig styling = context.Config.Actions;
+            ActionsConfig styling = context.Config.Actions;
             var uiButton = new Button()
             {
 #if WPF
@@ -37,7 +37,7 @@ namespace AdaptiveCards.Rendering
             {
                 Text = action.Title,                
                 FontSize = styling.FontSize,
-                Margin = new Thickness(styling.Padding.Left, styling.Padding.Top, styling.Padding.Right, styling.Padding.Bottom) ,
+                Margin = new Thickness(8, 8, 8, 8) ,
             };
             uiTitle.SetFontWeight(styling.FontWeight);
             uiTitle.SetColor(styling.TextColor, context);

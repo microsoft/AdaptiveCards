@@ -303,7 +303,7 @@ namespace AdaptiveCards.Rendering
                     return;
                 case SeparationStyle.Default:
                     {
-                        SeparationConfig sep = context.GetElementSeparation(cardElement);
+                        SeparatorConfig sep = context.GetElementSeparation(cardElement);
                         var uiSep = new DivTag()
                             .AddClass("ac-separator")
                             .Style("height", $"{sep.Spacing}px");
@@ -312,7 +312,7 @@ namespace AdaptiveCards.Rendering
                     return;
                 case SeparationStyle.Strong:
                     {
-                        SeparationConfig sep = context.Config.StrongSeparation;
+                        SeparatorConfig sep = context.Config.StrongSeparation;
                         var uiSep = new DivTag()
                                 .AddClass("ac-separator")
                                 .Style("padding-top", $"{sep.Spacing}px")
@@ -378,7 +378,7 @@ namespace AdaptiveCards.Rendering
                 // Add horizontal Seperator
                 if (uiColumnSet.Children.Any())
                 {
-                    SeparationConfig sep = null;
+                    SeparatorConfig sep = null;
                     switch (column.Separation)
                     {
                         case SeparationStyle.None:

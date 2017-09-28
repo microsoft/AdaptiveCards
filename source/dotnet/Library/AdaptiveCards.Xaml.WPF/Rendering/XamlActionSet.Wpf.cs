@@ -31,13 +31,13 @@ namespace AdaptiveCards.Rendering
 
                 if (uiContainer.RowDefinitions.Count > 0)
                 {
-                    XamlContainer.AddSeperator(context, new Container(), uiContainer, SeparationStyle.Default);
+                    XamlContainer.AddSeperator(context, new Container(), uiContainer);
                 }
                 uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);
                 uiContainer.Children.Add(uiActionBar);
 
-                bool isInline = (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline || context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.InlineEdgeToEdge);
+                bool isInline = (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline);
 
                 if (isInline &&
                     actionsToProcess.Where(a => a is ShowCardAction).Any())
@@ -74,19 +74,7 @@ namespace AdaptiveCards.Rendering
                                 Grid uiShowCardContainer = new Grid();
                                 uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
                                 uiShowCardContainer.DataContext = showCardAction;
-                                if (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.InlineEdgeToEdge)
-                                {
-                                    uiShowCardContainer.Margin = new Thickness(
-                                        left: context.Config.AdaptiveCard.Padding.Left * -1,
-                                        top: context.Config.Actions.ShowCard.InlineTopMargin,
-                                        right: context.Config.AdaptiveCard.Padding.Right * -1,
-                                        bottom: context.Config.AdaptiveCard.Padding.Bottom * -1);
-                                }
-                                else
-                                {
-                                    uiShowCardContainer.Margin = new Thickness(0, context.Config.Actions.ShowCard.InlineTopMargin, 0, 0);
-                                }
-                                uiShowCardContainer.Background = context.GetColorBrush(context.Config.Actions.ShowCard.BackgroundColor);
+                                uiShowCardContainer.Margin = new Thickness(0, context.Config.Actions.ShowCard.InlineTopMargin, 0, 0);
                                 uiShowCardContainer.Visibility = Visibility.Collapsed;
 
                                 // render the card

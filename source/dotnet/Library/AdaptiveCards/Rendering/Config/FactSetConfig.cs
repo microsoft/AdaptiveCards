@@ -9,7 +9,7 @@ using Newtonsoft.Json.Serialization;
 namespace AdaptiveCards.Rendering.Config
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class FactSetConfig : CardElementConfig
+    public class FactSetConfig
     {
         public FactSetConfig() { }
 
@@ -17,13 +17,13 @@ namespace AdaptiveCards.Rendering.Config
         /// TextBlock to use for Titles in factsets
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextConfig Title { get; set; } = new TextConfig() { Size = TextSize.Default, Color = TextColor.Default, IsSubtle = false, Weight = TextWeight.Bolder };
+        public TextBlockConfig Title { get; set; } = new TextBlockConfig() { Size = TextSize.Default, Color = TextColor.Default, IsSubtle = false, Weight = TextWeight.Bolder };
 
         /// <summary>
         /// TextBlock to use for Values in fact sets
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TextConfig Value { get; set; } = new TextConfig();
+        public TextBlockConfig Value { get; set; } = new TextBlockConfig();
 
         /// <summary>
         /// Spacing between facts and values

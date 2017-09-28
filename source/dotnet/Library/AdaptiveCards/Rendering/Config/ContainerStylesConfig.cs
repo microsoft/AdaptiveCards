@@ -10,15 +10,13 @@ using System.Threading.Tasks;
 namespace AdaptiveCards.Rendering.Config
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ColumnConfig
+    public class ContainerStylesConfig
     {
-        public ColumnConfig() { }
-
-        /// <summary>
-        /// Separation settings between elements
-        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public SeparationConfig Separation { get; set; } = new SeparationConfig() { Spacing = 10 };
+        public ContainerStyleConfig Default { get; set; } = new ContainerStyleConfig();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ContainerStyleConfig Emphasis { get; set; } = new ContainerStyleConfig() { };
     }
 
 }

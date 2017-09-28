@@ -36,7 +36,7 @@ namespace AdaptiveCards.Rendering
 
         public string GetColor(TextColor color, bool isSubtle)
         {
-            ColorConfig colorConfig;
+            FontColorConfig colorConfig;
             switch (color)
             {
                 case TextColor.Accent:
@@ -79,7 +79,7 @@ namespace AdaptiveCards.Rendering
             return color;
         }
 
-        public SeparationConfig GetElementSeparation(TypedElement element)
+        public SeparatorConfig GetElementSeparation(TypedElement element)
         {
             switch(element.Type)
             {
@@ -103,7 +103,7 @@ namespace AdaptiveCards.Rendering
                 case Image.TYPE:
                     return this.Config.Image.Separation;
                 case Container.TYPE:
-                    return this.Config.Container.Separation;
+                    return this.Config.ContainerStyles.Separation;
                 case ColumnSet.TYPE:
                     return this.Config.ColumnSet.Separation;
                 case Column.TYPE:

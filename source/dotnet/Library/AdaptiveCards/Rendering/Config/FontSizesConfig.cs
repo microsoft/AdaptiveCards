@@ -18,13 +18,6 @@ namespace AdaptiveCards.Rendering.Config
 
         public int Default { get; set; } = 12;
 
-        [Obsolete("Use Default instead")]
-        public int Normal
-        {
-            get { return Default; }
-            set { Default = value; }
-        }
-
         public int Medium { get; set; } = 14;
 
         public int Large { get; set; } = 17;
