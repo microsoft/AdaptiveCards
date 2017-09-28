@@ -21,21 +21,26 @@ card.Body.Add(new AdaptiveImage());
 card.Body.Add(new AdaptiveTextBlock()); 
 card.Actions.Add(new AdaptiveHttpAction());
 
-// NAMING: Use best judgement per platform. If naming collisions are likely, e.g., another Image type will exist, consider prefixing model types with "Adaptive": AdaptiveImage vs Image
+// NAMING: Use best judgement per platform. If naming collisions are likely, e.g., another Image type will exist, consider prefixing model types and enums with "Adaptive": AdaptiveImage vs Image
 ```
 
 ### Parse JSON
 
 ```csharp
-
 AdaptiveCardParseResult result = AdaptiveCard.FromJson(jsonString);
-if (result.IsValid) {
+
+if (result.Card != null)
+{
     // Get card from result
-    IList<ParseFailure> warnings = result.Warnings;
     AdaptiveCard card = result.Card;
-} else {
-    // Get errors?
-    IList<ParseFailure> errors = result.Errors;
+}
+else
+{
+    // Failed parsing
+    
+    // FUTURE
+    IEnumerable<ParseResult> errors = result.Errors;
+    IEnumerable<ParseResult> warnings = result.Warnings;
 }
 ```
 
@@ -47,12 +52,14 @@ public class AdaptiveSchemaVersion
     int Major;
     int Minor;
     string ToString(); // "1.1"
+    
+    public AdaptiveSchemaVersion(int major, int minor);
 }
 
 
-AdaptiveVersion version = card.Version;
+AdaptiveSchemaVersion version = card.Version;
 
-card.MinVersion = new AdaptiveVersion(major: 2, minor: 0);
+card.MinVersion = new AdaptiveSchemaVersion(major: 2, minor: 0);
 card.FallbackText = "This card isn't supported. Please check your app for updates.";
 ```
 
@@ -62,10 +69,11 @@ card.FallbackText = "This card isn't supported. Please check your app for update
 ### Instantiate a renderer
 
 ```csharp
-// Create a default Host Config for now
-AdaptiveHostConfig hostConfig = new AdaptiveHostConfig();
+// Create a default renderer
+AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
 
-AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);
+// Or use a custom host config
+renderer = new AdaptiveCardRenderer(hostConfig);
 
 // Get the schema version this renderer supports
 AdaptiveSchemaVersion schemaVersion = renderer.SupportedSchemaVersion; // 1.0
@@ -78,15 +86,18 @@ AdaptiveSchemaVersion schemaVersion = renderer.SupportedSchemaVersion; // 1.0
 RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
 
 // Validate the rendered card
-if(!renderedCard.IsRenderedSuccessfully) {
-    // TODO: FINISH THIS
-    IList<string> warnings = renderedCard.Warnings;
-    IList<string> errors = renderedCard.Errors;
+if (renderedCard.FrameworkElement == null)
+{
+    // Failed rendering
+    
+    // FUTURE
+    IEnumerable<string> errors = renderedCard.Errors;
+    IEnumerable<string> warnings = renderedCard.Warnings;
     return;
 }
 
 
-// Prefetch images
+// FUTURE: Wait for images to load
 // TODO: Should this be load assets? Like audio, and other media? I'm not sure if we want to group all those together, hmmm
 await renderedCard.WaitForImagesAsync();
 
@@ -139,13 +150,19 @@ private void ActionHandler(object sender, AdaptiveActionEventArgs e) {
 
 ```csharp
 // Parse a Host Config from JSON
-HostConfigParseResult parseResult = AdaptiveHostConfig.FromJson(jsonString);
+HostConfigParseResult result = AdaptiveHostConfig.FromJson(jsonString);
 
-if (result.IsValid) {
-    IList<ParseFailure> warnings = result.Warnings;
+if (result.HostConfig != null)
+{
     AdaptiveHostConfig hostConfig = result.HostConfig;
-} else {
-    IList<ParseFailure> errors = result.Errors;
+}
+else
+{
+    // Failed parsing
+    
+    // FUTURE
+    IEnumerable<ParseResult> errors = result.Errors;
+    IEnumerable<ParseResult> warnings = result.Warnings;
 }
 
 // Or set properties directly
