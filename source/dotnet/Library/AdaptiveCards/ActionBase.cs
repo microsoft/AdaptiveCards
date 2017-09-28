@@ -7,7 +7,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     Base of Action types
     /// </summary>
-    public class ActionBase : TypedElement
+    public abstract class ActionBase : TypedElement
     {
         /// <summary>
         ///     Title of the action
