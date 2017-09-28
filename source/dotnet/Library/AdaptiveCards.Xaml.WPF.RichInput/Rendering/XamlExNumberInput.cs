@@ -27,7 +27,7 @@ namespace AdaptiveCards.Rendering
                 numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
                 numberPicker.DataContext = input;
-                context.InputBindings.Add(input.Id, () => numberPicker.Value);
+                context.InputBindings.Add(input.Id, () => numberPicker.Value?.ToString());
                 return numberPicker;
             }
             else
