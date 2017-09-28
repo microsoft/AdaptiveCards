@@ -68,6 +68,8 @@
     <ClCompile Include="lib\AdaptiveOpenUrlActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveCardParseResult.cpp" />
+    <ClCompile Include="lib\AdaptiveHostConfigParseResult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -147,6 +149,8 @@
     <ClInclude Include="lib\AdaptiveOpenUrlActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveSubmitActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveCardParseResult.h" />
+    <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Uwp.idl" />

@@ -10,7 +10,7 @@ namespace AdaptiveCards.Rendering.Config
 {
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ImageSetConfig : CardElementConfig
+    public class ImageSetConfig
     {
         public ImageSetConfig() { }
 

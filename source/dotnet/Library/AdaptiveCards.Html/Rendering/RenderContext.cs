@@ -36,29 +36,29 @@ namespace AdaptiveCards.Rendering
 
         public string GetColor(TextColor color, bool isSubtle)
         {
-            ColorConfig colorConfig;
+            FontColorConfig colorConfig;
             switch (color)
             {
                 case TextColor.Accent:
-                    colorConfig = Config.Colors.Accent;
+                    colorConfig = Config.ContainerStyles.Default.FontColors.Accent;
                     break;
                 case TextColor.Good:
-                    colorConfig = Config.Colors.Good;
+                    colorConfig = Config.ContainerStyles.Default.FontColors.Good;
                     break;
                 case TextColor.Warning:
-                    colorConfig = Config.Colors.Warning;
+                    colorConfig = Config.ContainerStyles.Default.FontColors.Warning;
                     break;
                 case TextColor.Attention:
-                    colorConfig = Config.Colors.Attention;
+                    colorConfig = Config.ContainerStyles.Default.FontColors.Attention;
                     break;
                 case TextColor.Dark:
-                    colorConfig = Config.Colors.Dark;
+                    colorConfig = Config.ContainerStyles.Default.FontColors.Dark;
                     break;
                 case TextColor.Light:
-                    colorConfig = Config.Colors.Light;
+                    colorConfig = Config.ContainerStyles.Default.FontColors.Light;
                     break;
                 default:
-                    colorConfig = Config.Colors.Default;
+                    colorConfig = Config.ContainerStyles.Default.FontColors.Default;
                     break;
             }
             return GetRGBColor(isSubtle ? colorConfig.Subtle : colorConfig.Normal);
@@ -78,55 +78,5 @@ namespace AdaptiveCards.Rendering
             }
             return color;
         }
-
-        public SeparationConfig GetElementSeparation(TypedElement element)
-        {
-            switch(element.Type)
-            {
-                case TextBlock.TYPE:
-                    TextBlock tb = (TextBlock)element;
-                    switch(tb.Size)
-                    {
-                        case TextSize.Small:
-                            return this.Config.TextBlock.Separations.Small;
-                        case TextSize.Medium:
-                            return this.Config.TextBlock.Separations.Medium;
-                        case TextSize.Large:
-                            return this.Config.TextBlock.Separations.Large;
-                        case TextSize.ExtraLarge:
-                            return this.Config.TextBlock.Separations.ExtraLarge;
-                        case TextSize.Default:
-                        default:
-                            return this.Config.TextBlock.Separations.Normal;
-                    }
-
-                case Image.TYPE:
-                    return this.Config.Image.Separation;
-                case Container.TYPE:
-                    return this.Config.Container.Separation;
-                case ColumnSet.TYPE:
-                    return this.Config.ColumnSet.Separation;
-                case Column.TYPE:
-                    return this.Config.Column.Separation;
-                case ImageSet.TYPE:
-                    return this.Config.ImageSet.Separation;
-                case ChoiceSet.TYPE:
-                    return this.Config.ChoiceSet.Separation;
-                case TextInput.TYPE:
-                    return this.Config.ImageSet.Separation;
-                case DateInput.TYPE:
-                    return this.Config.DateInput.Separation;
-                case TimeInput.TYPE:
-                    return this.Config.TimeInput.Separation;
-                case NumberInput.TYPE:
-                    return this.Config.NumberInput.Separation;
-                case ToggleInput.TYPE:
-                    return this.Config.ToggleInput.Separation;
-                case FactSet.TYPE:
-                    return this.Config.FactSet.Separation;
-            }
-            throw new Exception("Unknown type " + element.Type);
-        }
-
     }
 }

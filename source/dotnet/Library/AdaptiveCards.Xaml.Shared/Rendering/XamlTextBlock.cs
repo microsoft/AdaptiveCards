@@ -26,30 +26,30 @@ namespace AdaptiveCards.Rendering
         {
             var uiTextBlock = CreateControl(textBlock, context);
 
-            ColorConfig colorOption;
+            FontColorConfig colorOption;
             switch (textBlock.Color)
             {
                 case TextColor.Accent:
-                    colorOption = context.Config.Colors.Accent;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Accent;
                     break;
                 case TextColor.Attention:
-                    colorOption = context.Config.Colors.Attention;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Attention;
                     break;
                 case TextColor.Dark:
-                    colorOption = context.Config.Colors.Dark;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Dark;
                     break;
                 case TextColor.Good:
-                    colorOption = context.Config.Colors.Good;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Good;
                     break;
                 case TextColor.Light:
-                    colorOption = context.Config.Colors.Light;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Light;
                     break;
                 case TextColor.Warning:
-                    colorOption = context.Config.Colors.Warning;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Warning;
                     break;
                 case TextColor.Default:
                 default:
-                    colorOption = context.Config.Colors.Default;
+                    colorOption = context.Config.ContainerStyles.Default.FontColors.Default;
                     break;
             }
 

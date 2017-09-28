@@ -96,6 +96,7 @@ namespace AdaptiveCards
     ///     Controls the emphasize of an element to the previous element
     /// </summary>
     [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<SeparationStyle>), true)]
+    [Obsolete("Use Spacing and Separator instead")]
     public enum SeparationStyle
     {
         /// <summary>
@@ -112,6 +113,22 @@ namespace AdaptiveCards
         ///     Strongly separate the element from the previous element
         /// </summary>
         Strong
+    }
+
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<Spacing>), true)]
+    public enum Spacing
+    {
+        Default,
+        None,
+        Small,
+        Medium,
+        Large,
+        ExtraLarge,
+
+        /// <summary>
+        /// This results in the same padding that's applied to the card itself.
+        /// </summary>
+        Padding
     }
 
     /// <summary>

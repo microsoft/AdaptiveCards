@@ -53,11 +53,10 @@ namespace WpfVisualizer
             _timer.Start();
 
             var hostConfig = new HostConfig();
-            hostConfig.AdaptiveCard.BackgroundColor = Colors.WhiteSmoke.ToString();
-            this.Renderer = new XamlRendererExtended(hostConfig)
-            {
-                Resources = this.Resources
-            };
+
+            hostConfig.ContainerStyles.Default.BackgroundColor = Colors.WhiteSmoke.ToString();
+            this.Renderer = new XamlRendererExtended(hostConfig, this.Resources, _onAction, _OnMissingInput);
+
             this.hostConfigEditor.SelectedObject = hostConfig;
 
             foreach (var style in Directory.GetFiles(@"..\..\..\..\..\..\samples\v1.0\HostConfig", "*.json"))

@@ -74,11 +74,11 @@ namespace AdaptiveCards { namespace Uwp
         }
 
         // IAdaptiveHostConfigStatics
-        IFACEMETHODIMP FromJsonString(_In_ HSTRING hostConfigJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig** config) noexcept;
-        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* hostConfigJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig** config) noexcept;
+        IFACEMETHODIMP FromJsonString(_In_ HSTRING hostConfigJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfigParseResult** config) noexcept;
+        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* hostConfigJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfigParseResult** config) noexcept;
 
     private:
-        HRESULT FromJsonString(_In_ const std::string jsonString, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig** config);
+        HRESULT FromJsonString(_In_ const std::string jsonString, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveHostConfigParseResult** config);
     };
 
     ActivatableClassWithFactory(AdaptiveHostConfig, AdaptiveHostConfigStaticsImpl);
