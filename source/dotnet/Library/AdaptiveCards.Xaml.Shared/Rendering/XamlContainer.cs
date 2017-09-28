@@ -21,10 +21,9 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlContainer
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(Container container, RenderContext context)
         {
             var containerStyle = context.Config.Container.Normal;
-            Container container = (Container)element;
             var uiContainer = new Grid();
             uiContainer.Margin = new Thickness(containerStyle.Padding.Left, containerStyle.Padding.Top, containerStyle.Padding.Right, containerStyle.Padding.Bottom);
             uiContainer.Style = context.GetStyle("Adaptive.Container");

@@ -21,9 +21,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlAdaptiveCard
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(AdaptiveCard card, RenderContext context)
         {
-            AdaptiveCard card = (AdaptiveCard)element;
             var outerGrid = new Grid();
             outerGrid.Style = context.GetStyle("Adaptive.Card");
 #if WPF

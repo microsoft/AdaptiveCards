@@ -9,9 +9,10 @@
     <Import_RootNamespace>AdaptiveCards</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveCardRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveXamlMarkdownRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderedAdaptiveCard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlContainer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlActionSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlOpenUrlAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlShowCardAction.cs" />
@@ -30,6 +31,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlToggleInput.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlTextBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderContext.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\XamlRenderer.cs" />
   </ItemGroup>
 </Project>

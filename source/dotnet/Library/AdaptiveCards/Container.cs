@@ -28,7 +28,6 @@ namespace AdaptiveCards
         [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(FactSet))]
-        [XmlElement(typeof(ActionSet))]
         [XmlElement(typeof(TextInput), ElementName = TextInput.TYPE)]
         [XmlElement(typeof(DateInput), ElementName = DateInput.TYPE)]
         [XmlElement(typeof(TimeInput), ElementName = TimeInput.TYPE)]

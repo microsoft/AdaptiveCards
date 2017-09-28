@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering
     /// </summary>
     public class ImageRenderer
     {
-        private XamlRenderer _xamlRenderer;
+        private AdaptiveCardRenderer _xamlRenderer;
 
         /// <summary>
         /// You can use this from within a WPF app, passing in resource dictionary directly
@@ -31,7 +31,10 @@ namespace AdaptiveCards.Rendering
         public ImageRenderer(HostConfig hostConfig, ResourceDictionary resources)
         {
             hostConfig.SupportsInteractivity = false;
-            _xamlRenderer = new XamlRenderer(hostConfig, resources);
+            _xamlRenderer = new AdaptiveCardRenderer(hostConfig)
+            {
+                Resources = resources
+            };
         }
 
         /// <summary>
@@ -42,12 +45,15 @@ namespace AdaptiveCards.Rendering
         public ImageRenderer(HostConfig hostConfig, string stylePath)
         {
             hostConfig.SupportsInteractivity = false;
-            _xamlRenderer = new XamlRenderer(hostConfig, stylePath);
+            _xamlRenderer = new AdaptiveCardRenderer(hostConfig)
+            {
+                StylePath = stylePath
+            };
         }
 
-        public XamlRenderer Renderer { get { return this._xamlRenderer; } }
+        public AdaptiveCardRenderer Renderer { get { return this._xamlRenderer; } }
 
-        public HostConfig Options { get { return _xamlRenderer.DefaultConfig; } set { _xamlRenderer.DefaultConfig = value; } }
+        public HostConfig Options { get { return _xamlRenderer.HostConfig; } set { _xamlRenderer.HostConfig = value; } }
 
 
 
@@ -104,6 +110,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
         {
+            // Have to use obsolete method since the official image resolver isn't coded up yet
             var uiCard = this._xamlRenderer.RenderAdaptiveCard(card, imageResolver);
 
             uiCard.Measure(new System.Windows.Size(width, 4000));

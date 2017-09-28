@@ -15,9 +15,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlFactSet
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(FactSet factSet, RenderContext context)
         {
-            FactSet factSet = (FactSet)element;
             var uiFactSet = new Grid();
             // grid.Margin = factSet.Theme.FactSetMargins;
             uiFactSet.Style = context.GetStyle("Adaptive.FactSet");

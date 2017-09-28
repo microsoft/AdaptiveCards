@@ -13,9 +13,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlSubmitAction
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(SubmitAction action, RenderContext context)
         {
-            SubmitAction action = (SubmitAction)element;
             if (context.Config.SupportsInteractivity)
             {
                 Button uiButton = XamlUtilities.CreateActionButton(action, context); // content

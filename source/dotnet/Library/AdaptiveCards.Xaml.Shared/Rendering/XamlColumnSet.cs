@@ -17,9 +17,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlColumnSet 
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(ColumnSet columnSet, RenderContext context)
         {
-            ColumnSet columnSet = (ColumnSet)element;
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
 
@@ -45,12 +44,12 @@ namespace AdaptiveCards.Rendering
                         switch (column.Separation)
                         {
                             case SeparationStyle.Strong:
-                                sepStyle = context.Config.GetSeparationForElement(element, true);
+                                sepStyle = context.Config.GetSeparationForElement(columnSet, true);
                                 break;
 
                             case SeparationStyle.Default:
                             default:
-                                sepStyle = context.Config.GetSeparationForElement(element, false);
+                                sepStyle = context.Config.GetSeparationForElement(columnSet, false);
                                 break;
                         }
                         uiSep.Margin = new Thickness(sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2, 0);

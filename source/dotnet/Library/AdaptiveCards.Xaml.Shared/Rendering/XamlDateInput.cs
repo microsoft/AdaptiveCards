@@ -11,10 +11,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlDateInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(DateInput input, RenderContext context)
         {
-            DateInput input = (DateInput)element;
-
             if (context.Config.SupportsInteractivity)
             {
                 var textBox = new TextBox() { Text = input.Value };

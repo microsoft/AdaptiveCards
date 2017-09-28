@@ -105,24 +105,35 @@ namespace WpfVisualizer
                     }
                     else
                     {
-
-                        _card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
+                        var result = AdaptiveCard.FromJson(this.textBox.Text);
+                        if (result.Card != null)
+                        {
+                            _card = result.Card;
+                        }
                     }
 
                     this.cardGrid.Children.Clear();
                     if (_card != null)
                     {
                         this.Renderer = new XamlRendererExtended(this.HostConfig, this.Resources, _onAction, _OnMissingInput);
-                        var uiCard = this.Renderer.RenderAdaptiveCard(_card, hostConfig: HostConfig);
-                        uiCard.Effect = new DropShadowEffect()
+                        var result = this.Renderer.RenderCard(_card);
+                        if (result.FrameworkElement != null)
                         {
-                            BlurRadius = 15,
-                            Direction = -90,
-                            RenderingBias = RenderingBias.Quality,
-                            ShadowDepth = 2
-                        };
- 
-                        this.cardGrid.Children.Add(uiCard);
+                            // Wire up click handler
+                            result.OnAction += _onAction;
+
+                            var uiCard = result.FrameworkElement;
+
+                            uiCard.Effect = new DropShadowEffect()
+                            {
+                                BlurRadius = 15,
+                                Direction = -90,
+                                RenderingBias = RenderingBias.Quality,
+                                ShadowDepth = 2
+                            };
+
+                            this.cardGrid.Children.Add(uiCard);
+                        }
                     }
                 }
                 catch (Exception err)
@@ -259,20 +270,25 @@ namespace WpfVisualizer
 
         private void speak_Click(object sender, RoutedEventArgs e)
         {
-            var card = JsonConvert.DeserializeObject<AC.AdaptiveCard>(this.textBox.Text);
-            _synth.SpeakAsyncCancelAll();
-            if (card.Speak != null)
-                _synth.SpeakSsmlAsync(FixSSML(card.Speak));
-            else
+            var result = AdaptiveCard.FromJson(this.textBox.Text);
+            if (result.Card != null)
             {
-                foreach (var element in card.Body)
+                var card = result.Card;
+
+                _synth.SpeakAsyncCancelAll();
+                if (card.Speak != null)
+                    _synth.SpeakSsmlAsync(FixSSML(card.Speak));
+                else
                 {
-#pragma warning disable CS0618 // Type or member is obsolete
-                    if (element.Speak != null)
+                    foreach (var element in card.Body)
                     {
-                        _synth.SpeakSsmlAsync(FixSSML(element.Speak));
-                    }
+#pragma warning disable CS0618 // Type or member is obsolete
+                        if (element.Speak != null)
+                        {
+                            _synth.SpeakSsmlAsync(FixSSML(element.Speak));
+                        }
 #pragma warning restore CS0618 // Type or member is obsolete
+                    }
                 }
             }
         }
@@ -350,8 +366,11 @@ namespace WpfVisualizer
 
         private void hostConfigs_Selected(object sender, RoutedEventArgs e)
         {
-            var config = JsonConvert.DeserializeObject<HostConfig>(File.ReadAllText((string)((ComboBoxItem)this.hostConfigs.SelectedItem).Tag));
-            this.HostConfig = config;
+            var parseResult = HostConfig.FromJson(File.ReadAllText((string)((ComboBoxItem)this.hostConfigs.SelectedItem).Tag));
+            if (parseResult.HostConfig != null)
+            {
+                this.HostConfig = parseResult.HostConfig;
+            }
             _dirty = true;
         }
 
@@ -364,7 +383,13 @@ namespace WpfVisualizer
             if (result == true)
             {
                 var json = File.ReadAllText(dlg.FileName);
-                this.HostConfig = JsonConvert.DeserializeObject<HostConfig>(json);
+
+                var parseResult = HostConfig.FromJson(json);
+                if (parseResult.HostConfig != null)
+                {
+                    this.HostConfig = parseResult.HostConfig;
+                }
+
                 _dirty = true;
             }
         }

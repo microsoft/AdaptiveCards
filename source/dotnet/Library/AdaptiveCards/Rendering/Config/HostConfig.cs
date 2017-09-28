@@ -13,6 +13,19 @@ namespace AdaptiveCards.Rendering.Config
     {
         public HostConfig() { }
 
+        public static HostConfigParseResult FromJson(string json)
+        {
+            HostConfig hostConfig = null;
+
+            try
+            {
+                hostConfig = JsonConvert.DeserializeObject<HostConfig>(json);
+            }
+            catch { }
+
+            return new HostConfigParseResult(hostConfig);
+        }
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ActionConfig Actions { get; set; } = new ActionConfig();
 
@@ -128,9 +141,6 @@ namespace AdaptiveCards.Rendering.Config
 
                 case AdaptiveCards.ImageSet.TYPE:
                     return this.ImageSet.Separation;
-
-                case AdaptiveCards.ActionSet.TYPE:
-                    return this.Actions.Separation;
 
                 case AdaptiveCards.ChoiceSet.TYPE:
                     return this.ChoiceSet.Separation;

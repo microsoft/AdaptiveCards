@@ -7,9 +7,8 @@ namespace AdaptiveCards.Rendering
 
     public static class XamlExDateInput
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(DateInput input, RenderContext context)
         {
-            DateInput input = (DateInput)element;
             if (context.Config.SupportsInteractivity)
             {
                 var datePicker = new DatePicker();

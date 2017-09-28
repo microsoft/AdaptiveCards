@@ -17,6 +17,19 @@ namespace AdaptiveCards
             Type = TYPE;
         }
 
+        public static AdaptiveCardParseResult FromJson(string json)
+        {
+            AdaptiveCard card = null;
+
+            try
+            {
+                card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
+            }
+            catch { }
+
+            return new AdaptiveCardParseResult(card);
+        }
+
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
 
 #if NET452
@@ -26,7 +39,6 @@ namespace AdaptiveCards
         [XmlElement(typeof(ColumnSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(FactSet))]
-        [XmlElement(typeof(ActionSet))]
         [XmlElement(typeof(TextInput), ElementName = TextInput.TYPE)]
         [XmlElement(typeof(DateInput), ElementName = DateInput.TYPE)]
         [XmlElement(typeof(TimeInput), ElementName = TimeInput.TYPE)]
@@ -76,13 +88,13 @@ namespace AdaptiveCards
         public string BackgroundImage { get; set; }
 
         /// <summary>
-        ///     version of schema that this card was authored
+        ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Required = Required.Always)]
 #if NET452
         [XmlAttribute]
 #endif
-        public string Version { get; set; }
+        public AdaptiveSchemaVersion Version { get; set; } = new AdaptiveSchemaVersion(1, 0);
 
         /// <summary>
         ///     if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not
@@ -92,7 +104,7 @@ namespace AdaptiveCards
 #if NET452
         [XmlAttribute]
 #endif
-        public string MinVersion { get; set; }
+        public AdaptiveSchemaVersion MinVersion { get; set; }
 
         /// <summary>
         ///     if a client is not able to show the card, show fallbackText to the user. This can be in markdown format.

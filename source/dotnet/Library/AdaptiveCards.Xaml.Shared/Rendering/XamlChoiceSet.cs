@@ -14,10 +14,8 @@ namespace AdaptiveCards.Rendering
 {
     public static class XamlChoiceSet
     {
-        public static FrameworkElement Render(TypedElement element, RenderContext context)
+        public static FrameworkElement Render(ChoiceSet choiceSet, RenderContext context)
         {
-            ChoiceSet choiceSet = (ChoiceSet)element;
-
             var chosen = choiceSet.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
 #if WPF
             if (context.Config.SupportsInteractivity)
