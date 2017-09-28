@@ -30,7 +30,7 @@ namespace AdaptiveCards.Html.Test
                 generatedHtml);
         }
 
-        private class TestHtmlRenderer : HtmlRenderer
+        private class TestHtmlRenderer : AdaptiveCardRenderer
         {
             public TestHtmlRenderer(HostConfig config)
                 : base(config)

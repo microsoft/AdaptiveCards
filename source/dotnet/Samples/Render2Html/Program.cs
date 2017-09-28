@@ -48,7 +48,7 @@ namespace Render2Html
                     Console.WriteLine("<hr/>");
                     Console.WriteLine($"<h1>{file}</h1>");
                     var card = JsonConvert.DeserializeObject<AdaptiveCards.AdaptiveCard>(File.ReadAllText(file));
-                    HtmlRenderer renderer = new HtmlRenderer(new HostConfig() { SupportsInteractivity = supportsInteractivity });
+                    AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(new HostConfig() { SupportsInteractivity = supportsInteractivity });
                     var result = renderer.RenderAdaptiveCard(card);
                     Console.WriteLine($"<div class='cardcontainer'>{result.ToString()}</div>");
                 }

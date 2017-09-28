@@ -47,7 +47,7 @@ namespace AdaptiveCards.Rendering
 
         public XamlRenderer Renderer { get { return this._xamlRenderer; } }
 
-        public HostConfig Options { get { return _xamlRenderer.DefaultConfig; } set { _xamlRenderer.DefaultConfig = value; } }
+        public HostConfig Options { get { return _xamlRenderer.HostConfig; } set { _xamlRenderer.HostConfig = value; } }
 
 
 

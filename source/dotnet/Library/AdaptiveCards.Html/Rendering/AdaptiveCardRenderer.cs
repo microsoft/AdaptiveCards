@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering
     /// <summary>
     ///     Render as texthtml suitable for server side generation
     /// </summary>
-    public class HtmlRenderer : AdaptiveRenderer<HtmlTag, RenderContext>
+    public class AdaptiveCardRenderer : AdaptiveCardRendererBase<HtmlTag, RenderContext>
     {
         // ---------------- INTERNAL METHODS -----------------------------
 
@@ -33,7 +33,9 @@ namespace AdaptiveCards.Rendering
         //#endif
         //        });
 
-        public HtmlRenderer(HostConfig config) : base(config)
+        public AdaptiveCardRenderer() : this(new HostConfig()) { }
+
+        public AdaptiveCardRenderer(HostConfig config) : base(config)
         {
             SetObjectTypes();
         }
@@ -48,13 +50,13 @@ namespace AdaptiveCards.Rendering
 
         public HtmlTag RenderAdaptiveCard(AdaptiveCard card)
         {
-            var context = new RenderContext(this.DefaultConfig, this.ElementRenderers);
+            var context = new RenderContext(this.HostConfig, this.ElementRenderers);
             return context.Render(card);
         }
 
         public HtmlTag RenderShowCard(ShowCardAction showCard)
         {
-            return new RenderContext(this.DefaultConfig, this.ElementRenderers).Render(showCard.Card);
+            return new RenderContext(this.HostConfig, this.ElementRenderers).Render(showCard.Card);
         }
 
         private void SetObjectTypes()
@@ -181,7 +183,7 @@ namespace AdaptiveCards.Rendering
                     {
                         if (uiContainer.Children.Any())
                         {
-                            HtmlRenderer.AddSeparator(uiContainer, cardElement, context);
+                            AdaptiveCardRenderer.AddSeparator(uiContainer, cardElement, context);
                         }
 
                         uiContainer.Children.Add(uiElement);
@@ -281,7 +283,7 @@ namespace AdaptiveCards.Rendering
 
                 if (uiButtonStrip.Children.Any())
                 {
-                    HtmlRenderer.AddSeparator(uiContainer, new Container(), context);
+                    AdaptiveCardRenderer.AddSeparator(uiContainer, new Container(), context);
                     uiContainer.Children.Add(uiButtonStrip);
                 }
 
@@ -975,6 +977,11 @@ namespace AdaptiveCards.Rendering
             }
 #pragma warning restore CS0618 // Type or member is obsolete
             return null;
+        }
+
+        protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
+        {
+            return new AdaptiveSchemaVersion(1, 0);
         }
     }
 }

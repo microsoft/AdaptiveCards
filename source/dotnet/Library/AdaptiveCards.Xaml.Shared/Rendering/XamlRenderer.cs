@@ -14,7 +14,7 @@ using FrameworkElement = Xamarin.Forms.View;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer : AdaptiveRenderer<FrameworkElement, RenderContext>
+    public partial class XamlRenderer : AdaptiveCardRendererBase<FrameworkElement, RenderContext>
     {
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
@@ -126,7 +126,7 @@ namespace AdaptiveCards.Rendering
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Config = hostConfig ?? this.DefaultConfig,
+                Config = hostConfig ?? this.HostConfig,
                 Resources = this.Resources,
                 ElementRenderers = this.ElementRenderers
             };
@@ -137,7 +137,7 @@ namespace AdaptiveCards.Rendering
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
-                Config = hostConfig ?? this.DefaultConfig,
+                Config = hostConfig ?? this.HostConfig,
                 Resources = this.Resources,
                 ElementRenderers = this.ElementRenderers
             };
