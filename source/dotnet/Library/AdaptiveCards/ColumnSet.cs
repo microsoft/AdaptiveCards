@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     A set of containers (each a container of items)
+    ///     A set of columns
     /// </summary>
     public class ColumnSet : CardElement
     {
