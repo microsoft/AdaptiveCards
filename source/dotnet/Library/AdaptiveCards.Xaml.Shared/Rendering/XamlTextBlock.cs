@@ -74,7 +74,7 @@ namespace AdaptiveCards.Rendering
                     break;
                 case TextSize.Default:
                 default:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Normal;
+                    uiTextBlock.FontSize = context.Config.FontSizes.Default;
                     break;
             }
 
