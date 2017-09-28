@@ -45,16 +45,7 @@ namespace AdaptiveCards { namespace Uwp
     {
         return m_frameworkElement.CopyTo(value);
     }
-
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_IsRenderedSuccessfully(boolean* value)
-    {
-        UINT32 errorsSize;
-        RETURN_IF_FAILED(m_errors->get_Size(&errorsSize));
-        *value = errorsSize == 0;
-        return S_OK;
-    }
-
+    
     _Use_decl_annotations_
     HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveCards::Uwp::IAdaptiveInputs** value)
     {

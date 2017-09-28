@@ -63,11 +63,11 @@ namespace AdaptiveCards { namespace Uwp
         }
 
         // IAdaptiveCardStatics
-        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCard** card) noexcept;
-        IFACEMETHODIMP FromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCard** card) noexcept;
+        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
+        IFACEMETHODIMP FromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
 
     private:
-        HRESULT FromJsonString(_In_ const std::string jsonString, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCard** card);
+        HRESULT FromJsonString(_In_ const std::string jsonString, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult);
     };
 
     ActivatableClassWithFactory(AdaptiveCard, AdaptiveCardStaticsImpl);

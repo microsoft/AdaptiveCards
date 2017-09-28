@@ -186,8 +186,8 @@ namespace AdaptiveCards { namespace Uwp
         ComPtr<::AdaptiveCards::Uwp::RenderedAdaptiveCard> renderedCard;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::RenderedAdaptiveCard>(&renderedCard));
 
-        ComPtr<IAdaptiveCard> adaptiveCard;
-        HRESULT hr = CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCard);
+        ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
+        HRESULT hr = CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult);
         if (FAILED(hr))
         {
             HString error;
@@ -200,6 +200,9 @@ namespace AdaptiveCards { namespace Uwp
         }
         else
         {
+            ComPtr<IAdaptiveCard> adaptiveCard;
+            RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&adaptiveCard));
+
             return RenderAdaptiveCard(adaptiveCard.Get(), result);
         }
     }
@@ -219,18 +222,20 @@ namespace AdaptiveCards { namespace Uwp
         HSTRING adaptiveJson,
         IAsyncOperation<UIElement*>** result)
     {
-        ComPtr<IAdaptiveCard> adaptiveCard;
-        RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCard));
+        ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
+        RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
 
+        ComPtr<IAdaptiveCard> adaptiveCard;
+        RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&adaptiveCard));
         return RenderCardAsXamlAsync(adaptiveCard.Get(), result);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson, ABI::AdaptiveCards::Uwp::IAdaptiveCard** adaptiveCard)
+    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson, ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult)
     {
         ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
-        return adaptiveCardStatics->FromJsonString(adaptiveJson, adaptiveCard);
+        return adaptiveCardStatics->FromJsonString(adaptiveJson, parseResult);
     }
 
     IAdaptiveHostConfig* AdaptiveCardRenderer::GetHostConfig()
