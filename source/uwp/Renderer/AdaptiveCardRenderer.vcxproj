@@ -196,7 +196,6 @@
     <ClCompile Include="lib\AdaptiveColumnRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveColumnSetRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveContainerRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveCardGetResourceStreamArgs.cpp" />
     <ClCompile Include="lib\AdaptiveCardRendererComponent.cpp" />
     <ClCompile Include="lib\AdaptiveCardResourceResolvers.cpp" />

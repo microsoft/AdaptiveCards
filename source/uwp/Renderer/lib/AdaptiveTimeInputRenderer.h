@@ -1,24 +1,24 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 #include "Enums.h"
 #include "TimeInput.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     class AdaptiveTimeInputRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementRenderer>
+        ABI::AdaptiveCards::Uwp::IAdaptiveElementRenderer>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveTimeInputRenderer, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveTimeInputRenderer, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
         IFACEMETHODIMP Render(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCardElement* cardElement,
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveCardElement* cardElement,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
     };
 

@@ -431,13 +431,13 @@ HRESULT JsonObjectToHString(IJsonObject* inputJson, HSTRING* result)
     return(asJsonValue->Stringify(result));
 }
 
-HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::XamlCardRenderer::ActionType projectedActionType, HSTRING* result)
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::Uwp::ActionType projectedActionType, HSTRING* result)
 {
     ActionType sharedActionType = static_cast<ActionType>(projectedActionType);
     return UTF8ToHString(ActionTypeToString(sharedActionType), result);
 }
 
-HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::XamlCardRenderer::ElementType projectedElementType, HSTRING* result)
+HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Uwp::ElementType projectedElementType, HSTRING* result)
 {
     CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
