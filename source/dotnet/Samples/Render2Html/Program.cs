@@ -59,6 +59,8 @@ namespace Render2Html
                             SupportsInteractivity = supportsInteractivity
                         });
 
+                        Console.WriteLine($"<h3>Renderer schema version: {renderer.SupportedSchemaVersion}</h3>");
+
                         RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
 
                         if (renderedCard.HtmlTag != null)
