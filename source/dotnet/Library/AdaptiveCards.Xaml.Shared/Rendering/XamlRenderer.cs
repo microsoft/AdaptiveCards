@@ -16,6 +16,11 @@ namespace AdaptiveCards.Rendering
 {
     public partial class XamlRenderer : AdaptiveCardRendererBase<FrameworkElement, RenderContext>
     {
+        protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
+        {
+            return new AdaptiveSchemaVersion(1, 0);
+        }
+
         protected Action<object, ActionEventArgs> actionCallback;
         protected Action<object, MissingInputEventArgs> missingDataCallback;
         protected HostConfig _defaultCardStyling;

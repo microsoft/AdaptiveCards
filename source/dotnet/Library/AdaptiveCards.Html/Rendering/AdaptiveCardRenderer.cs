@@ -17,6 +17,11 @@ namespace AdaptiveCards.Rendering
     /// </summary>
     public class AdaptiveCardRenderer : AdaptiveCardRendererBase<HtmlTag, RenderContext>
     {
+        protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
+        {
+            return new AdaptiveSchemaVersion(1, 0);
+        }
+
         // ---------------- INTERNAL METHODS -----------------------------
 
         //        private static readonly Lazy<string> _stockCss = new Lazy<string>(() =>
@@ -980,11 +985,6 @@ namespace AdaptiveCards.Rendering
             }
 #pragma warning restore CS0618 // Type or member is obsolete
             return null;
-        }
-
-        protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
-        {
-            return new AdaptiveSchemaVersion(1, 0);
         }
     }
 }

@@ -67,7 +67,7 @@ namespace Render2Html
                         }
                         else
                         {
-                            Console.WriteLine($"<p>{renderedCard.Errors.First()}</p>");
+                            Console.WriteLine($"<p>Rendering failed</p>");
                         }
                     }
                 }
