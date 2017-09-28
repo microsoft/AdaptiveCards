@@ -23,6 +23,8 @@
   - Input.ChoiceSet
   - Input.Choice
 - Enumerations:
+  - ImageSize
+  - ImageStyle
   - HorizontalAlignment
-  - ContainerStyle
-  - Size
+  - SeparatorStyle
+  - ChoiceInputStyle
