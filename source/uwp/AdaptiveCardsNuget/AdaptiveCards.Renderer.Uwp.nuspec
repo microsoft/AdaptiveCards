@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>AdaptiveCards.UWP.Nuget.Beta</id>
-        <version>1.0.0</version>
+        <id>AdaptiveCards.Renderer.Uwp</id>
+        <version>1.0.0-beta1</version>
         <authors>Microsoft</authors>
         <owners>microsoft</owners>
         <projectUrl>https://github.com/microsoft/adaptivecards</projectUrl>
@@ -30,7 +30,7 @@
         <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pri" target="runtimes\win10-arm\native"/>
         <file src="..\ARM\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Uwp.pdb" target="runtimes\win10-arm\native"/>
 
-        <file src="AdaptiveCards.UWP.Beta.targets" target="build\uap10.0"/>
-        <file src="AdaptiveCards.UWP.Beta.native.targets" target="build\native"/>
+        <file src="AdaptiveCards.UWP.targets" target="build\uap10.0"/>
+        <file src="AdaptiveCards.UWP.native.targets" target="build\native"/>
     </files>
 </package>
