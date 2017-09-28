@@ -13,6 +13,19 @@ namespace AdaptiveCards.Rendering.Config
     {
         public HostConfig() { }
 
+        public static HostConfigParseResult FromJson(string json)
+        {
+            HostConfig hostConfig = null;
+
+            try
+            {
+                hostConfig = JsonConvert.DeserializeObject<HostConfig>(json);
+            }
+            catch { }
+
+            return new HostConfigParseResult(hostConfig);
+        }
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ActionConfig Actions { get; set; } = new ActionConfig();
 

@@ -17,6 +17,19 @@ namespace AdaptiveCards
             Type = TYPE;
         }
 
+        public static AdaptiveCardParseResult FromJson(string json)
+        {
+            AdaptiveCard card = null;
+
+            try
+            {
+                card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
+            }
+            catch { }
+
+            return new AdaptiveCardParseResult(card);
+        }
+
         public const string ContentType = "application/vnd.microsoft.card.adaptive";
 
 #if NET452

@@ -1,4 +1,5 @@
-﻿using AdaptiveCards.Rendering;
+﻿using AdaptiveCards;
+using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Config;
 using Newtonsoft.Json;
 using System;
@@ -47,10 +48,28 @@ namespace Render2Html
                 {
                     Console.WriteLine("<hr/>");
                     Console.WriteLine($"<h1>{file}</h1>");
-                    var card = JsonConvert.DeserializeObject<AdaptiveCards.AdaptiveCard>(File.ReadAllText(file));
-                    AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(new HostConfig() { SupportsInteractivity = supportsInteractivity });
-                    var result = renderer.RenderAdaptiveCard(card);
-                    Console.WriteLine($"<div class='cardcontainer'>{result.ToString()}</div>");
+
+                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(File.ReadAllText(file));
+                    if (parseResult.Card != null)
+                    {
+                        AdaptiveCard card = parseResult.Card;
+
+                        AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(new HostConfig()
+                        {
+                            SupportsInteractivity = supportsInteractivity
+                        });
+
+                        RenderedAdaptiveCard renderedCard = renderer.RenderCard(card);
+
+                        if (renderedCard.HtmlTag != null)
+                        {
+                            Console.WriteLine($"<div class='cardcontainer'>{renderedCard.HtmlTag.ToString()}</div>");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"<p>{renderedCard.Errors.First()}</p>");
+                        }
+                    }
                 }
                 catch (Exception err)
                 {

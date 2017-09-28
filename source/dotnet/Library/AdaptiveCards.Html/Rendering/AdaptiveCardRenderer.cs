@@ -48,15 +48,18 @@ namespace AdaptiveCards.Rendering
         //    get { return _stockCss.Value; }
         //}
 
-        public HtmlTag RenderAdaptiveCard(AdaptiveCard card)
+        public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
-            var context = new RenderContext(this.HostConfig, this.ElementRenderers);
-            return context.Render(card);
-        }
+            HtmlTag tag = null;
 
-        public HtmlTag RenderShowCard(ShowCardAction showCard)
-        {
-            return new RenderContext(this.HostConfig, this.ElementRenderers).Render(showCard.Card);
+            try
+            {
+                var context = new RenderContext(this.HostConfig, this.ElementRenderers);
+                tag = context.Render(card);
+            }
+            catch { }
+
+            return new RenderedAdaptiveCard(tag, card);
         }
 
         private void SetObjectTypes()
