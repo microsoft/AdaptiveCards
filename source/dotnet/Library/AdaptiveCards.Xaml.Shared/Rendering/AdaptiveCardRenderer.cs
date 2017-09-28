@@ -150,14 +150,7 @@ namespace AdaptiveCards.Rendering
         [Obsolete("Use RenderCard instead, passing in the Card property within the ShowCardAction")]
         public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
         {
-            RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
-            {
-                Config = hostConfig ?? this.HostConfig,
-                Resources = this.Resources,
-                ElementRenderers = this.ElementRenderers
-            };
-
-            return context.Render(showCard.Card);
+            return RenderCard(showCard);
         }
     }
 }
