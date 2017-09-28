@@ -72,17 +72,17 @@ export class ToastContainer extends HostContainer {
                             subtle: "#882E89FC"
                         },
                         attention: {
-                            normal: "#FFD800",
-                            subtle: "#DDFFD800"
+                            normal: "#FF0000",
+                            subtle: "#DDFF0000"
                         },
                         good: {
                             normal: "#00FF00",
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            normal: "#FF0000",
-                            subtle: "#DDFF0000"
-                        }
+                            normal: "#FFD800",
+                            subtle: "#DDFFD800"
+                        }                    
                     }
                 },
                 emphasis: {

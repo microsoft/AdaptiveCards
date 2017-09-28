@@ -110,7 +110,7 @@
 
 <div id="mainContent">
   
-<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
@@ -217,14 +217,8 @@
                       <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
                     </li>
                   
-                </ul>
-              </li>
-          
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Enumerations</span>
-                <ul>
-                  
                     <li class=''>
-                      <a href="/explorer/HorizontalAlignment.html">HorizontalAlignment</a>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
                     </li>
                   
                 </ul>
@@ -255,13 +249,13 @@
 <tbody>
 <tr>
 <td><strong>facts</strong></td>
-<td><code>object</code> <code>[]</code></td>
-<td>No</td>
-<td>&nbsp;</td>
+<td><code>Fact[]</code></td>
+<td>Yes</td>
+<td>The array of Facts</td>
 </tr>
 <tr>
 <td><strong>type</strong></td>
-<td><code>**&quot;FactSet&quot;**</code></td>
+<td><code>&quot;FactSet&quot;</code></td>
 <td>No</td>
 <td>Must be FactSet</td>
 </tr>
@@ -369,14 +363,15 @@
 
 
   <h2 class="w3-container">Properties</h2><div class="w3-container"><h3 id="dedupe-headerfacts">facts</h3>
+<p>The array of Facts</p>
 <ul>
-<li><strong>Type</strong>: <code>object</code> <code>[]</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Type</strong>: <code>Fact[]</code></li>
+<li><strong>Required</strong>: Yes</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
 <p>Must be FactSet</p>
 <ul>
-<li><strong>Type</strong>: <code>**&quot;FactSet&quot;**</code></li>
+<li><strong>Type</strong>: <code>&quot;FactSet&quot;</code></li>
 <li><strong>Required</strong>: No</li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>FactSet</code></li>

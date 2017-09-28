@@ -8,48 +8,43 @@
             "columns": [
                 {
                     "type": "Column",
-                    "width":"auto",
+                    "width": 10,
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Column 1 (auto)"
+                            "text": "Column 1 (10)"
                         },
                         {
                             "type": "Image",
-                            "size":"large",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
+                            "url": "http://adaptivecards.io/api/cat"
                         }
                     ]
                 },
                 {
                     "type": "Column",
-                    "width":"stretch",
+                    "width": 30,
                     "items": [
                         {
                             "type": "TextBlock",
-                            "horizontalAlignment":"center",
-                            "text": "Column 2 (stretch)"
+                            "text": "Column 2 (30)"
                         },
                         {
                             "type": "Image",
-                            "size":"large",
-                            "horizontalAlignment":"center",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
+                            "url": "http://adaptivecards.io/api/cat"
                         }
                     ]
                 },
                 {
                     "type": "Column",
-                    "width":"auto",
+                    "width": 60,
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Column 3 (auto)"
+                            "text": "Column 3 (60)"
                         },
                         {
                             "type": "Image",
-                            "size":"large",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
+                            "url": "http://adaptivecards.io/api/cat"
                         }
                     ]
                 }

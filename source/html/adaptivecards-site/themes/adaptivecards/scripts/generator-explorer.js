@@ -15,7 +15,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
             schema: "../../../schemas/adaptive-card.json",
             toc: "./node_modules/marked-schema/test/toc.yml",
             rootDefinition: "AdaptiveCard",
-            examplesPath: "../../../samples/v1.0/"
+            examplesPath: "../../../samples/v1.0"
         }).then(function (schemaModel) {
             var pages = [];
 

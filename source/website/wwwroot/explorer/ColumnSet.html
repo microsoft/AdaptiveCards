@@ -110,7 +110,7 @@
 
 <div id="mainContent">
   
-<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
@@ -217,14 +217,8 @@
                       <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
                     </li>
                   
-                </ul>
-              </li>
-          
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Enumerations</span>
-                <ul>
-                  
                     <li class=''>
-                      <a href="/explorer/HorizontalAlignment.html">HorizontalAlignment</a>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
                     </li>
                   
                 </ul>
@@ -240,7 +234,7 @@
       <div class="w3-container w3-cell w3-mobile">
         <h1>ColumnSet</h1>
 
-        <p>The column group Item adds the ability to have a set of Column objects</p>
+        <p>ColumnSet divides a region into Column&#39;s allowing elements to sit side-by-side</p>
 
         <div class="ac-properties w3-margin-top"> 
           <table>
@@ -255,19 +249,19 @@
 <tbody>
 <tr>
 <td><strong>columns</strong></td>
-<td><code>object</code> <code>[]</code></td>
+<td><code>Column[]</code></td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>The array of Columns to divide the region into</td>
 </tr>
 <tr>
 <td><strong>selectAction</strong></td>
 <td><code>object</code></td>
 <td>No</td>
-<td>The action that is executed when the ColumnSet is clicked/tapped.</td>
+<td>The Action that is executed when the ColumnSet is clicked/tapped</td>
 </tr>
 <tr>
 <td><strong>type</strong></td>
-<td><code>**&quot;ColumnSet&quot;**</code></td>
+<td><code>&quot;ColumnSet&quot;</code></td>
 <td>No</td>
 <td>Must be ColumnSet</td>
 </tr>
@@ -421,12 +415,13 @@
 
 
   <h2 class="w3-container">Properties</h2><div class="w3-container"><h3 id="dedupe-headercolumns">columns</h3>
+<p>The array of Columns to divide the region into</p>
 <ul>
-<li><strong>Type</strong>: <code>object</code> <code>[]</code></li>
+<li><strong>Type</strong>: <code>Column[]</code></li>
 <li><strong>Required</strong>: No</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerselectaction">selectAction</h3>
-<p>The action that is executed when the ColumnSet is clicked/tapped.</p>
+<p>The Action that is executed when the ColumnSet is clicked/tapped</p>
 <ul>
 <li><strong>Type</strong>: <code>object</code></li>
 <li><strong>Required</strong>: No</li>
@@ -435,7 +430,7 @@
 </div><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
 <p>Must be ColumnSet</p>
 <ul>
-<li><strong>Type</strong>: <code>**&quot;ColumnSet&quot;**</code></li>
+<li><strong>Type</strong>: <code>&quot;ColumnSet&quot;</code></li>
 <li><strong>Required</strong>: No</li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>ColumnSet</code></li>
@@ -464,7 +459,7 @@
 </ul>
 </li>
 </ul>
-</div><h3 class="w3-container">Example</h3><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
+</div><h4 class="w3-container">Example</h4><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
@@ -482,8 +477,22 @@
                     "type": "Column",
                     "items": [
                         {
+                            "type": "Image",
+                            "url": "http://adaptivecards.io/content/cats/1.png"
+                        },
+                        
+                        {
                             "type": "TextBlock",
-                            "text": "Spacing: none"
+                            "text": "(none)"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -496,65 +505,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "ColumnSet",
-            "spacing": "default",
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Spacing: default"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -567,13 +518,28 @@
         {
             "type": "ColumnSet",
             "spacing": "large",
+            "separator": true,
             "columns": [
                 {
                     "type": "Column",
                     "items": [
+                       
+                        {
+                            "type": "Image",
+                            "url": "http://adaptivecards.io/content/cats/1.png"
+                        },
+                         {
+                            "type": "TextBlock",
+                            "text": "(large)"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Spacing: large"
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -586,20 +552,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -628,8 +581,22 @@
                     "type": "Column",
                     "items": [
                         {
+                            "type": "Image",
+                            "url": "http://adaptivecards.io/content/cats/1.png"
+                        },
+                        
+                        {
                             "type": "TextBlock",
-                            "text": "Spacing: none"
+                            "text": "(none)"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -642,65 +609,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "ColumnSet",
-            "spacing": "default",
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Spacing: default"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -713,13 +622,28 @@
         {
             "type": "ColumnSet",
             "spacing": "large",
+            "separator": true,
             "columns": [
                 {
                     "type": "Column",
                     "items": [
+                       
+                        {
+                            "type": "Image",
+                            "url": "http://adaptivecards.io/content/cats/1.png"
+                        },
+                         {
+                            "type": "TextBlock",
+                            "text": "(large)"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Spacing: large"
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -732,20 +656,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -762,161 +673,7 @@
 <li><strong>Type</strong>: <code>boolean</code></li>
 <li><strong>Required</strong>: No, default: <code>false</code></li>
 </ul>
-</div><h3 class="w3-container">Example</h3><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "ColumnSet Spacing and Separator",
-            "size": "extraLarge"
-        },
-        {
-            "type": "ColumnSet",
-            "spacing": "none",
-            "separator": false,
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Spacing: none"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Separator: default"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "ColumnSet",
-            "spacing": "default",
-            "separator": true,
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Spacing: default"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Separator: default"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}</code></pre></div><div class="w3-container w3-cell w3-mobile" style="width: 300px"><div class="adaptivecard">{
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "ColumnSet Spacing and Separator",
-            "size": "extraLarge"
-        },
-        {
-            "type": "ColumnSet",
-            "spacing": "none",
-            "separator": false,
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Spacing: none"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Separator: default"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "ColumnSet",
-            "spacing": "default",
-            "separator": true,
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Spacing: default"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Separator: default"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}</div><a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/ColumnSet.separator.json">Try it Yourself »</a></div></div>
+</div>
 
 </div>
 </div>

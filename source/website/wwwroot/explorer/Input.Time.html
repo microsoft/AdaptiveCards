@@ -110,7 +110,7 @@
 
 <div id="mainContent">
   
-<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
@@ -217,14 +217,8 @@
                       <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
                     </li>
                   
-                </ul>
-              </li>
-          
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Enumerations</span>
-                <ul>
-                  
                     <li class=''>
-                      <a href="/explorer/HorizontalAlignment.html">HorizontalAlignment</a>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
                     </li>
                   
                 </ul>
@@ -256,7 +250,7 @@
 <tr>
 <td><strong>id</strong></td>
 <td><code>string</code></td>
-<td>No</td>
+<td>Yes</td>
 <td>Id for the value (will be used to identify collected input when SUBMIT is clicked)</td>
 </tr>
 <tr>
@@ -279,7 +273,7 @@
 </tr>
 <tr>
 <td><strong>type</strong></td>
-<td><code>**&quot;Input.Time&quot;**</code></td>
+<td><code>&quot;Input.Time&quot;</code></td>
 <td>No</td>
 <td>The type must be Input.Time</td>
 </tr>
@@ -287,7 +281,7 @@
 <td><strong>value</strong></td>
 <td><code>string</code></td>
 <td>No</td>
-<td>The initial value for a field expressed in iso-8601 format</td>
+<td>The initial value for a field expressed in ISO-8601 format</td>
 </tr>
 <tr>
 <td><strong>spacing</strong></td>
@@ -382,7 +376,7 @@
 <p>Id for the value (will be used to identify collected input when SUBMIT is clicked)</p>
 <ul>
 <li><strong>Type</strong>: <code>string</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Required</strong>: Yes</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headermax">max</h3>
 <p>hint of maximum value (may be ignored by some clients)</p>
@@ -405,7 +399,7 @@
 </div><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
 <p>The type must be Input.Time</p>
 <ul>
-<li><strong>Type</strong>: <code>**&quot;Input.Time&quot;**</code></li>
+<li><strong>Type</strong>: <code>&quot;Input.Time&quot;</code></li>
 <li><strong>Required</strong>: No</li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>Input.Time</code></li>
@@ -413,7 +407,7 @@
 </li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headervalue">value</h3>
-<p>The initial value for a field expressed in iso-8601 format</p>
+<p>The initial value for a field expressed in ISO-8601 format</p>
 <ul>
 <li><strong>Type</strong>: <code>string</code></li>
 <li><strong>Required</strong>: No</li>

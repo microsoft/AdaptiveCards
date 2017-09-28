@@ -110,7 +110,7 @@
 
 <div id="mainContent">
   
-<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
@@ -217,14 +217,8 @@
                       <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
                     </li>
                   
-                </ul>
-              </li>
-          
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Enumerations</span>
-                <ul>
-                  
                     <li class=''>
-                      <a href="/explorer/HorizontalAlignment.html">HorizontalAlignment</a>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
                     </li>
                   
                 </ul>
@@ -269,30 +263,30 @@
 <td><strong>selectAction</strong></td>
 <td><code>object</code></td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>An Action that will be invoked when the Image is tapped or selected</td>
 </tr>
 <tr>
 <td><strong>size</strong></td>
-<td><code>string</code></td>
-<td>No</td>
-<td>Controls the horizontal size (width) of Item. </td>
+<td><code>object</code></td>
+<td>No, default: <code>auto</code></td>
+<td>Controls the approximate size of the image. The physical dimensions will vary per host. Specify “auto” for true image dimension or “stretch” to force it to fill the container</td>
 </tr>
 <tr>
 <td><strong>style</strong></td>
 <td><code>string</code></td>
 <td>No</td>
-<td>Controls the way Image Items are displayed</td>
+<td>Controls the way Images are displayed</td>
 </tr>
 <tr>
 <td><strong>type</strong></td>
-<td><code>**&quot;Image&quot;**</code></td>
+<td><code>&quot;Image&quot;</code></td>
 <td>No</td>
 <td>Must be Image</td>
 </tr>
 <tr>
 <td><strong>url</strong></td>
 <td><code>string</code></td>
-<td>No</td>
+<td>Yes</td>
 <td>The URL to the image.</td>
 </tr>
 <tr>
@@ -382,7 +376,7 @@
 </ul>
 </li>
 </ul>
-</div><h3 class="w3-container">Example</h3><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
+</div><h4 class="w3-container">Example</h4><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
@@ -465,289 +459,146 @@
     }
   ]
 }</div><a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/Image.horizontalAlignment.json">Try it Yourself »</a></div></div><div class="w3-container"><h3 id="dedupe-headerselectaction">selectAction</h3>
+<p>An Action that will be invoked when the Image is tapped or selected</p>
 <ul>
 <li><strong>Type</strong>: <code>object</code></li>
 <li><strong>Required</strong>: No</li>
 <li><strong>Allowed values</strong>:</li>
 </ul>
-</div><h3 class="w3-container">Example</h3><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 1"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ],
-                    "selectAction": {
-                        "type": "Action.OpenUrl",
-                        "title": "cool link",
-                        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                    }
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ],
-                    "selectAction": {
-                        "type": "Action.OpenUrl",
-                        "title": "cool link",
-                        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                    }
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ],
-                    "selectAction": {
-                        "type": "Action.OpenUrl",
-                        "title": "cool link",
-                        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                    }
-                }
-            ]
-        }
-    ]
+</div><h4 class="w3-container">Example</h4><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "selectAction on image",
+      "weight": "bolder"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "selectAction": {
+        "type": "Action.OpenUrl",
+        "title": "cool link",
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+    }
+  ]
 }</code></pre></div><div class="w3-container w3-cell w3-mobile" style="width: 300px"><div class="adaptivecard">{
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 1"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ],
-                    "selectAction": {
-                        "type": "Action.OpenUrl",
-                        "title": "cool link",
-                        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                    }
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ],
-                    "selectAction": {
-                        "type": "Action.OpenUrl",
-                        "title": "cool link",
-                        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                    }
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ],
-                    "selectAction": {
-                        "type": "Action.OpenUrl",
-                        "title": "cool link",
-                        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                    }
-                }
-            ]
-        }
-    ]
-}</div><a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/Column.selectAction.json">Try it Yourself »</a></div></div><div class="w3-container"><h3 id="dedupe-headerimagesize">imageSize</h3>
-<p>Controls the horizontal size (width) of Item. </p>
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "selectAction on image",
+      "weight": "bolder"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "selectAction": {
+        "type": "Action.OpenUrl",
+        "title": "cool link",
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+    }
+  ]
+}</div><a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/Image.selectAction.json">Try it Yourself »</a></div></div><div class="w3-container"><h3 id="dedupe-headersize">size</h3>
+<p>Controls the approximate size of the image. The physical dimensions will vary per host. Specify &quot;auto&quot; for true image dimension or &quot;stretch&quot; to force it to fill the container</p>
 <ul>
-<li><strong>Type</strong>: <code>string</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Type</strong>: <code>object</code></li>
+<li><strong>Required</strong>: No, default: <code>auto</code></li>
 <li><strong>Allowed values</strong>:<ul>
-<li><code>&quot;auto&quot;</code></li>
-<li><code>&quot;stretch&quot;</code></li>
-<li><code>&quot;small&quot;</code></li>
-<li><code>&quot;medium&quot;</code></li>
-<li><code>&quot;large&quot;</code></li>
+<li><code>auto</code></li>
+<li><code>stretch</code></li>
+<li><code>small</code></li>
+<li><code>medium</code></li>
+<li><code>large</code></li>
 </ul>
 </li>
 </ul>
-</div><h3 class="w3-container">Example</h3><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "ImageSet",
-            "imageSize": "small",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                }
-            ]
-        },
-        {
-            "type": "ImageSet",
-            "imageSize": "large",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                }
-            ]
-        }
-    ]
+</div><h4 class="w3-container">Example</h4><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "size:small",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "small"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:medium",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "medium"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:large",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "large" 
+    }
+  ]
 }</code></pre></div><div class="w3-container w3-cell w3-mobile" style="width: 300px"><div class="adaptivecard">{
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
-        {
-            "type": "ImageSet",
-            "imageSize": "small",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                }
-            ]
-        },
-        {
-            "type": "ImageSet",
-            "imageSize": "large",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                }
-            ]
-        }
-    ]
-}</div><a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/ImageSet.imageSize.json">Try it Yourself »</a></div></div><div class="w3-container"><h3 id="dedupe-headerstyle">style</h3>
-<p>Controls the way Image Items are displayed</p>
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "size:small",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "small"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:medium",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "medium"
+    },
+    {
+      "type": "TextBlock",
+      "text": "size:large",
+      "weight": "bolder",
+      "size": "large"
+    },
+    {
+      "type": "Image",
+      "url": "http://adaptivecards.io/content/cats/1.png",
+      "size": "large" 
+    }
+  ]
+}</div><a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/Image.size.json">Try it Yourself »</a></div></div><div class="w3-container"><h3 id="dedupe-headerstyle">style</h3>
+<p>Controls the way Images are displayed</p>
 <ul>
 <li><strong>Type</strong>: <code>string</code></li>
 <li><strong>Required</strong>: No</li>
@@ -757,30 +608,45 @@
 </ul>
 </li>
 </ul>
-</div><h3 class="w3-container">Example</h3><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
+</div><h4 class="w3-container">Example</h4><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
   "body": [
     {
-      "type": "TextBlock",
-      "text": "style: default",
-      "weight": "bolder"
-    },
-    {
-      "type": "Image",
-      "url":"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-      "style": "default"
-    },
-      {
-      "type": "TextBlock",
-      "text": "style: person",
-      "weight": "bolder"
-    },
-    {
-      "type": "Image",
-      "url":"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-      "style": "person"
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "style: default",
+              "weight": "bolder"
+            },
+            {
+              "type": "Image",
+              "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+              "style": "default"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "style: person",
+              "weight": "bolder"
+            },
+            {
+              "type": "Image",
+              "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+              "style": "person"
+            }
+          ]
+        }
+      ]
     }
   ]
 }</code></pre></div><div class="w3-container w3-cell w3-mobile" style="width: 300px"><div class="adaptivecard">{
@@ -789,30 +655,45 @@
   "version": "1.0",
   "body": [
     {
-      "type": "TextBlock",
-      "text": "style: default",
-      "weight": "bolder"
-    },
-    {
-      "type": "Image",
-      "url":"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-      "style": "default"
-    },
-      {
-      "type": "TextBlock",
-      "text": "style: person",
-      "weight": "bolder"
-    },
-    {
-      "type": "Image",
-      "url":"http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-      "style": "person"
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "style: default",
+              "weight": "bolder"
+            },
+            {
+              "type": "Image",
+              "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+              "style": "default"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "style: person",
+              "weight": "bolder"
+            },
+            {
+              "type": "Image",
+              "url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+              "style": "person"
+            }
+          ]
+        }
+      ]
     }
   ]
 }</div><a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/Image.style.json">Try it Yourself »</a></div></div><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
 <p>Must be Image</p>
 <ul>
-<li><strong>Type</strong>: <code>**&quot;Image&quot;**</code></li>
+<li><strong>Type</strong>: <code>&quot;Image&quot;</code></li>
 <li><strong>Required</strong>: No</li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>Image</code></li>
@@ -823,7 +704,7 @@
 <p>The URL to the image.</p>
 <ul>
 <li><strong>Type</strong>: <code>string</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Required</strong>: Yes</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerid">id</h3>
 <p>A unique Id associated with the element</p>
@@ -847,7 +728,7 @@
 </ul>
 </li>
 </ul>
-</div><h3 class="w3-container">Example</h3><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
+</div><h4 class="w3-container">Example</h4><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
@@ -866,31 +747,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "spacing: default",
-      "weight": "bolder",
-      "size": "medium"
-    },
-    {
-      "type": "Image",
-      "url": "http://adaptivecards.io/content/cats/1.png",
-      "size": "medium",
-      "spacing": "default"
-    },
-    {
-      "type": "TextBlock",
-      "text": "spacing: large",
-      "weight": "bolder",
-      "size": "medium"
-    },
-    {
-      "type": "Image",
-      "url": "http://adaptivecards.io/content/cats/1.png",
-      "size": "medium",
-      "spacing": "large"
-    },
-    {
-      "type": "TextBlock",
-      "text": "spacing: medium, separator: true",
+      "text": "spacing: large, separator: true",
       "weight": "bolder",
       "size": "medium"
     },
@@ -921,31 +778,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "spacing: default",
-      "weight": "bolder",
-      "size": "medium"
-    },
-    {
-      "type": "Image",
-      "url": "http://adaptivecards.io/content/cats/1.png",
-      "size": "medium",
-      "spacing": "default"
-    },
-    {
-      "type": "TextBlock",
-      "text": "spacing: large",
-      "weight": "bolder",
-      "size": "medium"
-    },
-    {
-      "type": "Image",
-      "url": "http://adaptivecards.io/content/cats/1.png",
-      "size": "medium",
-      "spacing": "large"
-    },
-    {
-      "type": "TextBlock",
-      "text": "spacing: medium, separator: true",
+      "text": "spacing: large, separator: true",
       "weight": "bolder",
       "size": "medium"
     },

@@ -31,6 +31,11 @@ var assets = [
         // visualizer css
         path: "../visualizer/css/*.css",
         dest: function (p) { return "visualizer/css/" + path.basename(p); }
+    },
+    {
+        // visualizer assets
+        path: "../visualizer/assets/*",
+        dest: function (p) { return "visualizer/assets/" + path.basename(p); }
     }
 ];
 

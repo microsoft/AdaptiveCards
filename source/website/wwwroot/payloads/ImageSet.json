@@ -8,27 +8,27 @@
             "images": [
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 }
             ]
         }

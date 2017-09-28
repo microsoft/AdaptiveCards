@@ -110,7 +110,7 @@
 
 <div id="mainContent">
   
-<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
@@ -217,14 +217,8 @@
                       <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
                     </li>
                   
-                </ul>
-              </li>
-          
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Enumerations</span>
-                <ul>
-                  
                     <li class=''>
-                      <a href="/explorer/HorizontalAlignment.html">HorizontalAlignment</a>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
                     </li>
                   
                 </ul>
@@ -255,21 +249,21 @@
 <tbody>
 <tr>
 <td><strong>choices</strong></td>
-<td><code>object</code> <code>[]</code></td>
-<td>No</td>
+<td><code>Input.Choice[]</code></td>
+<td>Yes</td>
 <td>the choice options</td>
 </tr>
 <tr>
 <td><strong>id</strong></td>
 <td><code>string</code></td>
-<td>No</td>
+<td>Yes</td>
 <td>Id for the value (will be used to identify collected input when SUBMIT is clicked)</td>
 </tr>
 <tr>
 <td><strong>isMultiSelect</strong></td>
 <td><code>boolean</code></td>
-<td>No</td>
-<td>allow multiple choices to be selected (Default=false)</td>
+<td>No, default: <code>false</code></td>
+<td>allow multiple choices to be selected</td>
 </tr>
 <tr>
 <td><strong>style</strong></td>
@@ -279,9 +273,15 @@
 </tr>
 <tr>
 <td><strong>type</strong></td>
-<td><code>**&quot;Input.ChoiceSet&quot;**</code></td>
+<td><code>&quot;Input.ChoiceSet&quot;</code></td>
 <td>No</td>
 <td>Must be Input.ChoiceInput</td>
+</tr>
+<tr>
+<td><strong>value</strong></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>The initial choice (or set of choices) that should be selected. For multi-select, specifcy a comma-separated string of values</td>
 </tr>
 <tr>
 <td><strong>spacing</strong></td>
@@ -553,20 +553,20 @@
   <h2 class="w3-container">Properties</h2><div class="w3-container"><h3 id="dedupe-headerchoices">choices</h3>
 <p>the choice options</p>
 <ul>
-<li><strong>Type</strong>: <code>object</code> <code>[]</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Type</strong>: <code>Input.Choice[]</code></li>
+<li><strong>Required</strong>: Yes</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerid">id</h3>
 <p>Id for the value (will be used to identify collected input when SUBMIT is clicked)</p>
 <ul>
 <li><strong>Type</strong>: <code>string</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Required</strong>: Yes</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerismultiselect">isMultiSelect</h3>
-<p>allow multiple choices to be selected (Default=false)</p>
+<p>allow multiple choices to be selected</p>
 <ul>
 <li><strong>Type</strong>: <code>boolean</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Required</strong>: No, default: <code>false</code></li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerstyle">style</h3>
 <p>Style hint for Input.ChoiceSet</p>
@@ -582,12 +582,18 @@
 </div><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
 <p>Must be Input.ChoiceInput</p>
 <ul>
-<li><strong>Type</strong>: <code>**&quot;Input.ChoiceSet&quot;**</code></li>
+<li><strong>Type</strong>: <code>&quot;Input.ChoiceSet&quot;</code></li>
 <li><strong>Required</strong>: No</li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>Input.ChoiceSet</code></li>
 </ul>
 </li>
+</ul>
+</div><div class="w3-container"><h3 id="dedupe-headervalue">value</h3>
+<p>The initial choice (or set of choices) that should be selected. For multi-select, specifcy a comma-separated string of values</p>
+<ul>
+<li><strong>Type</strong>: <code>string</code></li>
+<li><strong>Required</strong>: No</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerspacing">spacing</h3>
 <p>Controls the amount of spacing between this element and the previous element.</p>

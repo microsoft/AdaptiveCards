@@ -22,7 +22,7 @@ hexo.extend.helper.register('propertiesDetails', function (properties) {
       // Load card example file into a div, using JS to render it later
       property.examples.forEach(function (example, i) {
         if (i === 0) {
-          html += '<h3 class="w3-container">Example</h3>';
+          html += '<h4 class="w3-container">Example</h4>';
         }
 
         var exampleContent = fs.readFileSync(example, "utf8");

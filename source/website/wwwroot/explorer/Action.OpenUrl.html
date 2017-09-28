@@ -110,7 +110,7 @@
 
 <div id="mainContent">
   
-<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
@@ -217,14 +217,8 @@
                       <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
                     </li>
                   
-                </ul>
-              </li>
-          
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Enumerations</span>
-                <ul>
-                  
                     <li class=''>
-                      <a href="/explorer/HorizontalAlignment.html">HorizontalAlignment</a>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
                     </li>
                   
                 </ul>
@@ -261,15 +255,15 @@
 </tr>
 <tr>
 <td><strong>type</strong></td>
-<td><code>**&quot;Action.OpenUrl&quot;**</code></td>
-<td>No</td>
-<td>&nbsp;</td>
+<td><code>&quot;Action.OpenUrl&quot;</code></td>
+<td>Yes</td>
+<td>Must be Action.OpenUrl</td>
 </tr>
 <tr>
 <td><strong>url</strong></td>
 <td><code>string</code></td>
-<td>No</td>
-<td>Default (browser) url to use</td>
+<td>Yes</td>
+<td>The URL to open</td>
 </tr>
 </tbody>
 </table>
@@ -343,19 +337,20 @@
 <li><strong>Required</strong>: No</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
+<p>Must be Action.OpenUrl</p>
 <ul>
-<li><strong>Type</strong>: <code>**&quot;Action.OpenUrl&quot;**</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Type</strong>: <code>&quot;Action.OpenUrl&quot;</code></li>
+<li><strong>Required</strong>: Yes</li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>Action.OpenUrl</code></li>
 </ul>
 </li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerurl">url</h3>
-<p>Default (browser) url to use</p>
+<p>The URL to open</p>
 <ul>
 <li><strong>Type</strong>: <code>string</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Required</strong>: Yes</li>
 </ul>
 </div>
 

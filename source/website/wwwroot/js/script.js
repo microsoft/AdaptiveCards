@@ -60,7 +60,7 @@
             subtle: "#882E89FC"
           },
           attention: {
-            normal: "#FFD800",
+            normal: "#FF0000",
             subtle: "#DDFFD800"
           },
           good: {
@@ -68,7 +68,7 @@
             subtle: "#DD00FF00"
           },
           warning: {
-            normal: "#FF0000",
+            normal: "#FFD800",
             subtle: "#DDFF0000"
           }
         }
