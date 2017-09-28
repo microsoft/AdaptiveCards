@@ -40,7 +40,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
             _conversation = await _client.Conversations.StartConversationAsync().ConfigureAwait(false);
 
-            _renderer = new AdaptiveCardRenderer(new HostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
+            _renderer = new AdaptiveCardRenderer(new HostConfig());
         
             // AdaptiveTestBot
             // d5600769-0c92-4ab3-99f4-61380589a887

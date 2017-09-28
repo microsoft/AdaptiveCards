@@ -15,7 +15,7 @@ namespace AdaptiveCards.Html.Test
         {
             var renderContext = new RenderContext(
                 new HostConfig(),
-                new Dictionary<Type, Func<TypedElement, RenderContext, HtmlTag>>());
+                new ElementRenderers<HtmlTag, RenderContext>());
 
             var textBlock = new TextBlock
             {
@@ -37,7 +37,7 @@ namespace AdaptiveCards.Html.Test
             {
             }
 
-            public static HtmlTag CallTextBlockRender(TypedElement element, RenderContext context)
+            public static HtmlTag CallTextBlockRender(TextBlock element, RenderContext context)
             {
                 return TextBlockRender(element, context);
             }
