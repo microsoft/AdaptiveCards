@@ -110,7 +110,7 @@
 
 <div id="mainContent">
   
-<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
@@ -217,14 +217,8 @@
                       <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
                     </li>
                   
-                </ul>
-              </li>
-          
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Enumerations</span>
-                <ul>
-                  
                     <li class=''>
-                      <a href="/explorer/HorizontalAlignment.html">HorizontalAlignment</a>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
                     </li>
                   
                 </ul>
@@ -255,19 +249,19 @@
 <tbody>
 <tr>
 <td><strong>images</strong></td>
-<td><code>object</code> <code>[]</code></td>
-<td>No</td>
-<td>&nbsp;</td>
+<td><code>Image[]</code></td>
+<td>Yes</td>
+<td>The array of Image elements to show</td>
 </tr>
 <tr>
 <td><strong>imageSize</strong></td>
 <td><code>string</code></td>
-<td>No</td>
-<td>Controls the horizontal size (width) of Item. </td>
+<td>No, default: <code>&quot;auto&quot;</code></td>
+<td>Controls the approximate size of the image. The physical dimensions will vary per host. Specify “auto” for true image dimension or “stretch” to force it to fill the container</td>
 </tr>
 <tr>
 <td><strong>type</strong></td>
-<td><code>**&quot;ImageSet&quot;**</code></td>
+<td><code>&quot;ImageSet&quot;</code></td>
 <td>No</td>
 <td>Must be ImageSet</td>
 </tr>
@@ -317,27 +311,27 @@
             "images": [
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 }
             ]
         }
@@ -356,27 +350,27 @@
             "images": [
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 }
             ]
         }
@@ -391,15 +385,16 @@
 
 
   <h2 class="w3-container">Properties</h2><div class="w3-container"><h3 id="dedupe-headerimages">images</h3>
+<p>The array of Image elements to show</p>
 <ul>
-<li><strong>Type</strong>: <code>object</code> <code>[]</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Type</strong>: <code>Image[]</code></li>
+<li><strong>Required</strong>: Yes</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerimagesize">imageSize</h3>
-<p>Controls the horizontal size (width) of Item. </p>
+<p>Controls the approximate size of the image. The physical dimensions will vary per host. Specify &quot;auto&quot; for true image dimension or &quot;stretch&quot; to force it to fill the container</p>
 <ul>
 <li><strong>Type</strong>: <code>string</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Required</strong>: No, default: <code>&quot;auto&quot;</code></li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>&quot;auto&quot;</code></li>
 <li><code>&quot;stretch&quot;</code></li>
@@ -409,7 +404,7 @@
 </ul>
 </li>
 </ul>
-</div><h3 class="w3-container">Example</h3><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
+</div><h4 class="w3-container">Example</h4><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
@@ -420,57 +415,27 @@
             "images": [
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/2.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/3.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/2.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                }
-            ]
-        },
-        {
-            "type": "ImageSet",
-            "imageSize": "large",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/3.png"
                 }
             ]
         }
@@ -486,57 +451,27 @@
             "images": [
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/2.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/3.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
+                    "url": "http://adaptivecards.io/content/cats/1.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
+                    "url": "http://adaptivecards.io/content/cats/2.png"
                 },
                 {
                     "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                }
-            ]
-        },
-        {
-            "type": "ImageSet",
-            "imageSize": "large",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/1"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/2"
-                },
-                {
-                    "type": "Image",
-                    "url": "http://adaptivecards.io/content/cats/1.png/0"
+                    "url": "http://adaptivecards.io/content/cats/3.png"
                 }
             ]
         }
@@ -544,7 +479,7 @@
 }</div><a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/ImageSet.imageSize.json">Try it Yourself »</a></div></div><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
 <p>Must be ImageSet</p>
 <ul>
-<li><strong>Type</strong>: <code>**&quot;ImageSet&quot;**</code></li>
+<li><strong>Type</strong>: <code>&quot;ImageSet&quot;</code></li>
 <li><strong>Required</strong>: No</li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>ImageSet</code></li>

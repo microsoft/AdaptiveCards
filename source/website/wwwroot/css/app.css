@@ -4,6 +4,8 @@ body {
     font-weight: normal;
     margin: 0;
     padding: 0;
+    display: block;
+    overflow: none;
 }
 
 .popupOverlay {
@@ -58,7 +60,7 @@ body {
 
 
 #editor {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 150px);
     border: 1px solid #EEEEEE;    
 }
 

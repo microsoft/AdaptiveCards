@@ -24,7 +24,7 @@ hexo.extend.generator.register("generator-sampleBrowser", function (locals) {
             path: sample.htmlPath,
             layout: "sample",
             data: {
-                title: sample.name,
+                title: "Samples",
                 sample: sample,
                 samples: samples
             }
@@ -36,7 +36,7 @@ hexo.extend.generator.register("generator-sampleBrowser", function (locals) {
                 path: "samples/index.html",
                 layout: "sample",
                 data: {
-                    title: sample.name,
+                    title: "Samples",
                     sample: sample,
                     samples: samples
                 }

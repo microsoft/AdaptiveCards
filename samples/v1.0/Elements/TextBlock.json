@@ -28,7 +28,7 @@
             "type": "TextBlock",
             "text": "You can even draw attention to certain text with color",
             "wrap": true,
-            "color": "warning"
+            "color": "attention"
         }
     ]
 }

@@ -16,8 +16,22 @@
                     "type": "Column",
                     "items": [
                         {
+                            "type": "Image",
+                            "url": "http://adaptivecards.io/content/cats/1.png"
+                        },
+                        
+                        {
                             "type": "TextBlock",
-                            "text": "Spacing: none"
+                            "text": "(none)"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -30,65 +44,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "ColumnSet",
-            "spacing": "default",
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Spacing: default"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -101,13 +57,28 @@
         {
             "type": "ColumnSet",
             "spacing": "large",
+            "separator": true,
             "columns": [
                 {
                     "type": "Column",
                     "items": [
+                       
+                        {
+                            "type": "Image",
+                            "url": "http://adaptivecards.io/content/cats/1.png"
+                        },
+                         {
+                            "type": "TextBlock",
+                            "text": "(large)"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Spacing: large"
+                            "text": " "
                         },
                         {
                             "type": "Image",
@@ -120,20 +91,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "http://adaptivecards.io/content/cats/1.png"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 3"
+                            "text": " "
                         },
                         {
                             "type": "Image",

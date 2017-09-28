@@ -110,7 +110,7 @@
 
 <div id="mainContent">
   
-<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
@@ -217,14 +217,8 @@
                       <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
                     </li>
                   
-                </ul>
-              </li>
-          
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Enumerations</span>
-                <ul>
-                  
                     <li class=''>
-                      <a href="/explorer/HorizontalAlignment.html">HorizontalAlignment</a>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
                     </li>
                   
                 </ul>
@@ -255,26 +249,26 @@
 <tbody>
 <tr>
 <td><strong>type</strong></td>
-<td><code>**&quot;AdaptiveCard&quot;**</code></td>
-<td>No</td>
-<td>&nbsp;</td>
+<td><code>&quot;AdaptiveCard&quot;</code></td>
+<td>Yes</td>
+<td>Must be AdaptiveCard</td>
 </tr>
 <tr>
 <td><strong>actions</strong></td>
-<td><code>array[]</code></td>
+<td><code>Action[]</code></td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>The Actions to show in the card’s action bar</td>
 </tr>
 <tr>
 <td><strong>body</strong></td>
 <td><code>array[]</code></td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>The Card Elements to show in the primary card region</td>
 </tr>
 <tr>
 <td><strong>version</strong></td>
 <td><code>string</code></td>
-<td>No</td>
+<td>Yes</td>
 <td>version of schema that this card was authored </td>
 </tr>
 <tr>
@@ -591,23 +585,26 @@
 
 
   <h2 class="w3-container">Properties</h2><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
+<p>Must be AdaptiveCard</p>
 <ul>
-<li><strong>Type</strong>: <code>**&quot;AdaptiveCard&quot;**</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Type</strong>: <code>&quot;AdaptiveCard&quot;</code></li>
+<li><strong>Required</strong>: Yes</li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>AdaptiveCard</code></li>
 </ul>
 </li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headeractions">actions</h3>
+<p>The Actions to show in the card&#39;s action bar</p>
 <ul>
-<li><strong>Type</strong>: <code>array[]</code><ul>
+<li><strong>Type</strong>: <code>Action[]</code><ul>
 <li>Each element in the array must be one of the following values:</li>
 </ul>
 </li>
 <li><strong>Required</strong>: No</li>
 </ul>
-</div><div class="w3-container"><h3 id="dedupe-headeritems">items</h3>
+</div><div class="w3-container"><h3 id="dedupe-headerbody">body</h3>
+<p>The Card Elements to show in the primary card region</p>
 <ul>
 <li><strong>Type</strong>: <code>array[]</code></li>
 <li><strong>Required</strong>: No</li>
@@ -616,7 +613,7 @@
 <p>version of schema that this card was authored </p>
 <ul>
 <li><strong>Type</strong>: <code>string</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Required</strong>: Yes</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerminversion">minVersion</h3>
 <p>if a client doesn&#39;t support the minVersion the card should be rejected and return the fallbackText.  If it does, then the elements that are not supported are safe to ignore</p>

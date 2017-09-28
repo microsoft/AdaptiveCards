@@ -110,7 +110,7 @@
 
 <div id="mainContent">
   
-<div id="content-wrapper" class="w3-content" style="max-width:1564px">
+<div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
 
   <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-collapse w3-bar-block" style="width: 250px">
@@ -217,14 +217,8 @@
                       <a href="/explorer/Input.ChoiceSet.html">Input.ChoiceSet</a>
                     </li>
                   
-                </ul>
-              </li>
-          
-              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> Enumerations</span>
-                <ul>
-                  
                     <li class=''>
-                      <a href="/explorer/HorizontalAlignment.html">HorizontalAlignment</a>
+                      <a href="/explorer/Input.Choice.html">Input.Choice</a>
                     </li>
                   
                 </ul>
@@ -256,7 +250,7 @@
 <tr>
 <td><strong>id</strong></td>
 <td><code>string</code></td>
-<td>No</td>
+<td>Yes</td>
 <td>Id for the value (will be used to identify collected input when SUBMIT is clicked)</td>
 </tr>
 <tr>
@@ -285,7 +279,7 @@
 </tr>
 <tr>
 <td><strong>type</strong></td>
-<td><code>**&quot;Input.Text&quot;**</code></td>
+<td><code>&quot;Input.Text&quot;</code></td>
 <td>No</td>
 <td>Input.Text</td>
 </tr>
@@ -432,7 +426,7 @@
 <p>Id for the value (will be used to identify collected input when SUBMIT is clicked)</p>
 <ul>
 <li><strong>Type</strong>: <code>string</code></li>
-<li><strong>Required</strong>: No</li>
+<li><strong>Required</strong>: Yes</li>
 </ul>
 </div><div class="w3-container"><h3 id="dedupe-headerismultiline">isMultiline</h3>
 <p>Do you want to allow multiple lines of input</p>
@@ -465,7 +459,7 @@
 </ul>
 </li>
 </ul>
-</div><h3 class="w3-container">Example</h3><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
+</div><h4 class="w3-container">Example</h4><div class="w3-cell-row"><div class="w3-container w3-cell w3-mobile code-snippet"><pre><code class='json'>{
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
@@ -572,7 +566,7 @@
 }</div><a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/Input.Text.style.json">Try it Yourself »</a></div></div><div class="w3-container"><h3 id="dedupe-headertype">type</h3>
 <p>Input.Text</p>
 <ul>
-<li><strong>Type</strong>: <code>**&quot;Input.Text&quot;**</code></li>
+<li><strong>Type</strong>: <code>&quot;Input.Text&quot;</code></li>
 <li><strong>Required</strong>: No</li>
 <li><strong>Allowed values</strong>:<ul>
 <li><code>Input.Text</code></li>

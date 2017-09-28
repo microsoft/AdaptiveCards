@@ -17,31 +17,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "spacing: default",
-      "weight": "bolder",
-      "size": "medium"
-    },
-    {
-      "type": "Image",
-      "url": "http://adaptivecards.io/content/cats/1.png",
-      "size": "medium",
-      "spacing": "default"
-    },
-    {
-      "type": "TextBlock",
-      "text": "spacing: large",
-      "weight": "bolder",
-      "size": "medium"
-    },
-    {
-      "type": "Image",
-      "url": "http://adaptivecards.io/content/cats/1.png",
-      "size": "medium",
-      "spacing": "large"
-    },
-    {
-      "type": "TextBlock",
-      "text": "spacing: medium, separator: true",
+      "text": "spacing: large, separator: true",
       "weight": "bolder",
       "size": "medium"
     },
