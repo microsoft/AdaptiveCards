@@ -7,7 +7,7 @@ namespace AdaptiveCards
     ///     The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive
     ///     Cards.
     /// </summary>
-    public class TextBlock : CardElement
+    public class TextBlock : AdaptiveCardElement
     {
         public const string TYPE = "TextBlock";
 

@@ -53,13 +53,13 @@ namespace AdaptiveCards.Rendering
             this.SetRenderer<TextBlock>(XamlTextBlock.Render);
             this.SetRenderer<Image>(XamlImage.Render);
 
-            this.SetRenderer<Container>(XamlContainer.Render);
-            this.SetRenderer<Column>(XamlColumn.Render);
-            this.SetRenderer<ColumnSet>(XamlColumnSet.Render);
+            this.SetRenderer<AdaptiveContainer>(XamlContainer.Render);
+            this.SetRenderer<AdaptiveColumn>(XamlColumn.Render);
+            this.SetRenderer<AdaptiveColumnSet>(XamlColumnSet.Render);
             this.SetRenderer<FactSet>(XamlFactSet.Render);
             this.SetRenderer<ImageSet>(XamlImageSet.Render);
 
-            this.SetRenderer<ChoiceSet>(XamlChoiceSet.Render);
+            this.SetRenderer<AdaptiveChoiceSetInput>(XamlChoiceSet.Render);
             this.SetRenderer<TextInput>(XamlTextInput.Render);
             this.SetRenderer<NumberInput>(XamlNumberInput.Render);
             this.SetRenderer<DateInput>(XamlDateInput.Render);

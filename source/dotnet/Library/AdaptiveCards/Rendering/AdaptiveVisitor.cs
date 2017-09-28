@@ -5,7 +5,7 @@ namespace AdaptiveCards.Rendering
     /// </summary>
     public class AdaptiveVisitor
     {
-        public virtual void Visit(CardElement cardElement)
+        public virtual void Visit(AdaptiveCardElement cardElement)
         {
             if (cardElement is Image)
                 Visit((Image) cardElement);
@@ -14,11 +14,11 @@ namespace AdaptiveCards.Rendering
                 Visit((TextBlock) cardElement);
 
             // includes Column
-            if (cardElement is Container)
-                Visit((Container)cardElement);
+            if (cardElement is AdaptiveContainer)
+                Visit((AdaptiveContainer)cardElement);
             
-            if (cardElement is ColumnSet)
-                Visit((ColumnSet) cardElement);
+            if (cardElement is AdaptiveColumnSet)
+                Visit((AdaptiveColumnSet) cardElement);
 
             if (cardElement is ImageSet)
                 Visit((ImageSet) cardElement);
@@ -26,8 +26,8 @@ namespace AdaptiveCards.Rendering
             if (cardElement is FactSet)
                 Visit((FactSet) cardElement);
 
-            if (cardElement is ChoiceSet)
-                Visit((ChoiceSet) cardElement);
+            if (cardElement is AdaptiveChoiceSetInput)
+                Visit((AdaptiveChoiceSetInput) cardElement);
 
             if (cardElement is TextInput)
                 Visit((TextInput) cardElement);
@@ -54,13 +54,13 @@ namespace AdaptiveCards.Rendering
                 Visit(action);
         }
 
-        public virtual void Visit(Container container)
+        public virtual void Visit(AdaptiveContainer container)
         {
             foreach (var item in container.Items)
                 Visit(item);
         }
 
-        public virtual void Visit(ColumnSet columnSet)
+        public virtual void Visit(AdaptiveColumnSet columnSet)
         {
             foreach (var column in columnSet.Columns)
                 Visit(column);
@@ -110,11 +110,11 @@ namespace AdaptiveCards.Rendering
         {
         }
 
-        public virtual void Visit(ChoiceSet choiceSet)
+        public virtual void Visit(AdaptiveChoiceSetInput choiceSet)
         {
         }
 
-        public virtual void Visit(ActionBase action)
+        public virtual void Visit(AdaptiveActionBase action)
         {
             if (action is OpenUrlAction)
                 Visit((OpenUrlAction) action);

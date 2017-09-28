@@ -6,7 +6,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     The Image element allows for the inclusion of images in an Adaptive Card.
     /// </summary>
-    public class Image : CardElement
+    public class Image : AdaptiveCardElement
     {
         public const string TYPE = "Image";
 
@@ -55,7 +55,7 @@ namespace AdaptiveCards
         ///     Action for this image (this allows a default action to happen when a click on an image happens)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionBase SelectAction { get; set; }
+        public AdaptiveActionBase SelectAction { get; set; }
 
         /// <summary>
         ///     Alternate text to display for this image

@@ -19,7 +19,7 @@ namespace AdaptiveCards.Rendering
     {
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
-            ColumnSet columnSet = (ColumnSet)element;
+            AdaptiveColumnSet columnSet = (AdaptiveColumnSet)element;
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
 

@@ -7,7 +7,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     Base of Action types
     /// </summary>
-    public class ActionBase : TypedElement
+    public abstract class AdaptiveActionBase : TypedElement
     {
         /// <summary>
         ///     Title of the action
@@ -28,4 +28,7 @@ namespace AdaptiveCards
         [Obsolete("ActionBase.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
     }
+
+    [Obsolete("Use AdaptiveActionBase instead")]
+    public abstract class ActionBase : AdaptiveActionBase { }
 }

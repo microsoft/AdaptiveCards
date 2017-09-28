@@ -114,13 +114,13 @@ namespace AdaptiveCards.Rendering.Config
                 case AdaptiveCards.Image.TYPE:
                     return this.Image.Separation;
 
-                case AdaptiveCards.Column.TYPE:
+                case AdaptiveCards.AdaptiveColumn.TYPE:
                     return this.Column.Separation;
 
-                case AdaptiveCards.ColumnSet.TYPE:
+                case AdaptiveCards.AdaptiveColumnSet.TYPE:
                     return this.ColumnSet.Separation;
 
-                case AdaptiveCards.Container.TYPE:
+                case AdaptiveCards.AdaptiveContainer.TYPE:
                     return this.Container.Separation;
 
                 case AdaptiveCards.FactSet.TYPE:
@@ -129,7 +129,7 @@ namespace AdaptiveCards.Rendering.Config
                 case AdaptiveCards.ImageSet.TYPE:
                     return this.ImageSet.Separation;
 
-                case AdaptiveCards.ChoiceSet.TYPE:
+                case AdaptiveCards.AdaptiveChoiceSetInput.TYPE:
                     return this.ChoiceSet.Separation;
 
                 case AdaptiveCards.TextInput.TYPE:

@@ -79,7 +79,7 @@ namespace AdaptiveCards.Rendering
             this.OnAction?.Invoke(ui, args);
         }
 
-        public void MissingInput(ActionBase sender, MissingInputEventArgs args)
+        public void MissingInput(AdaptiveActionBase sender, MissingInputEventArgs args)
         {
             this.OnMissingInput?.Invoke(sender, args);
         }
@@ -163,7 +163,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// The action that fired
         /// </summary>
-        public ActionBase Action { get; set; }
+        public AdaptiveActionBase Action { get; set; }
 
         /// <summary>
         /// Data for Input controls (if appropriate)

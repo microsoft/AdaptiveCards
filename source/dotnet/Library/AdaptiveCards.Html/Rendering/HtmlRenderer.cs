@@ -64,13 +64,13 @@ namespace AdaptiveCards.Rendering
             this.SetRenderer<TextBlock>(TextBlockRender);
             this.SetRenderer<Image>(ImageRender);
 
-            this.SetRenderer<Container>(ContainerRender);
-            this.SetRenderer<Column>(ColumnRender);
-            this.SetRenderer<ColumnSet>(ColumnSetRender);
+            this.SetRenderer<AdaptiveContainer>(ContainerRender);
+            this.SetRenderer<AdaptiveColumn>(ColumnRender);
+            this.SetRenderer<AdaptiveColumnSet>(ColumnSetRender);
             this.SetRenderer<FactSet>(FactSetRender);
             this.SetRenderer<ImageSet>(ImageSetRender);
 
-            this.SetRenderer<ChoiceSet>(ChoiceSetRender);
+            this.SetRenderer<AdaptiveChoiceSetInput>(ChoiceSetRender);
             this.SetRenderer<TextInput>(TextInputRender);
             this.SetRenderer<NumberInput>(NumberInputRender);
             this.SetRenderer<DateInput>(DateInputRender);
@@ -169,7 +169,7 @@ namespace AdaptiveCards.Rendering
             return uiCard;
         }
 
-        protected static void AddContainerElements(HtmlTag uiContainer, List<CardElement> elements, List<ActionBase> actions, RenderContext context)
+        protected static void AddContainerElements(HtmlTag uiContainer, List<AdaptiveCardElement> elements, List<AdaptiveActionBase> actions, RenderContext context)
         {
             if (elements != null)
             {
@@ -281,7 +281,7 @@ namespace AdaptiveCards.Rendering
 
                 if (uiButtonStrip.Children.Any())
                 {
-                    HtmlRenderer.AddSeparator(uiContainer, new Container(), context);
+                    HtmlRenderer.AddSeparator(uiContainer, new AdaptiveContainer(), context);
                     uiContainer.Children.Add(uiButtonStrip);
                 }
 
@@ -292,7 +292,7 @@ namespace AdaptiveCards.Rendering
             }
         }
 
-        protected static void AddSeparator(HtmlTag uiContainer, CardElement cardElement, RenderContext context)
+        protected static void AddSeparator(HtmlTag uiContainer, AdaptiveCardElement cardElement, RenderContext context)
         {
             switch (cardElement.Separation)
             {
@@ -326,7 +326,7 @@ namespace AdaptiveCards.Rendering
 
         protected static HtmlTag ColumnRender(TypedElement element, RenderContext context)
         {
-            Column column = (Column)element;
+            AdaptiveColumn column = (AdaptiveColumn)element;
             var uiColumn = new DivTag()
                 .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}");
 
@@ -348,7 +348,7 @@ namespace AdaptiveCards.Rendering
 
         protected static HtmlTag ColumnSetRender(TypedElement element, RenderContext context)
         {
-            ColumnSet columnSet = (ColumnSet)element;
+            AdaptiveColumnSet columnSet = (AdaptiveColumnSet)element;
             var uiColumnSet = new DivTag()
                 .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}")
                 .Style("overflow", "hidden")
@@ -440,7 +440,7 @@ namespace AdaptiveCards.Rendering
 
         protected static HtmlTag ContainerRender(TypedElement element, RenderContext context)
         {
-            Container container = (Container)element;
+            AdaptiveContainer container = (AdaptiveContainer)element;
             var uiContainer = new DivTag()
                 .AddClass($"ac-{element.Type.Replace(".", "").ToLower()}");
 
@@ -696,7 +696,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         protected static HtmlTag ChoiceSetRender(TypedElement element, RenderContext context)
         {
-            ChoiceSet choiceSet = (ChoiceSet)element;
+            AdaptiveChoiceSetInput choiceSet = (AdaptiveChoiceSetInput)element;
             if (!choiceSet.IsMultiSelect)
             {
                 if (choiceSet.IsCompact)
@@ -956,7 +956,7 @@ namespace AdaptiveCards.Rendering
             return uiElement.Append(uiCheckboxInput).Append(uiLabel);
         }
 
-        protected static string GetFallbackText(CardElement cardElement)
+        protected static string GetFallbackText(AdaptiveCardElement cardElement)
         {
 #pragma warning disable CS0618 // Type or member is obsolete
             if (!string.IsNullOrEmpty(cardElement.Speak))

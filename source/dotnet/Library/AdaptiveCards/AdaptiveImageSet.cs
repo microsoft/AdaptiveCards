@@ -7,7 +7,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     The ImageSet allows for the inclusion of a collection images like a photogallery.
     /// </summary>
-    public class ImageSet : CardElement
+    public class ImageSet : AdaptiveCardElement
     {
         public const string TYPE = "ImageSet";
 

@@ -9,7 +9,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     The FactSet element makes it simple to display a se ries of "facts" (e.g. name/value pairs) in a tabular form.
     /// </summary>
-    public class FactSet : CardElement
+    public class FactSet : AdaptiveCardElement
     {
         public const string TYPE = "FactSet";
 

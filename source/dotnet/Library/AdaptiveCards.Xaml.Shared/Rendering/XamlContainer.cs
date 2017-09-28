@@ -24,7 +24,7 @@ namespace AdaptiveCards.Rendering
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
             var containerStyle = context.Config.Container.Normal;
-            Container container = (Container)element;
+            AdaptiveContainer container = (AdaptiveContainer)element;
             var uiContainer = new Grid();
             uiContainer.Margin = new Thickness(containerStyle.Padding.Left, containerStyle.Padding.Top, containerStyle.Padding.Right, containerStyle.Padding.Bottom);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
@@ -58,7 +58,7 @@ namespace AdaptiveCards.Rendering
 #endif 
         }
 
-        public static void AddContainerElements(Grid uiContainer, List<CardElement> elements, RenderContext context)
+        public static void AddContainerElements(Grid uiContainer, List<AdaptiveCardElement> elements, RenderContext context)
         {
             foreach (var cardElement in elements)
             {
@@ -77,7 +77,7 @@ namespace AdaptiveCards.Rendering
             }
         }
 
-        public static void AddSeperator(RenderContext context, CardElement element, Grid uiContainer, SeparationStyle seperationStyle)
+        public static void AddSeperator(RenderContext context, AdaptiveCardElement element, Grid uiContainer, SeparationStyle seperationStyle)
         {
             if (seperationStyle == SeparationStyle.None)
                 return;

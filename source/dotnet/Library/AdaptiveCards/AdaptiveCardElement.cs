@@ -7,7 +7,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     Base class for all elements in a container
     /// </summary>
-    public class CardElement : TypedElement
+    public abstract class AdaptiveCardElement : TypedElement
     {
         /// <summary>
         ///     SSML fragment for spoken interaction
@@ -33,4 +33,7 @@ namespace AdaptiveCards
             return Separation != SeparationStyle.Default;
         }
     }
+
+    [Obsolete("Use AdaptiveCardElement instead")]
+    public abstract class CardElement : AdaptiveCardElement { }
 }

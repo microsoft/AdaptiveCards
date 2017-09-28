@@ -144,7 +144,7 @@ namespace AdaptiveCards
 
             if (control is Picker comboBox)
             {
-                var choiceInput = comboBox.BindingContext as ChoiceSet;
+                var choiceInput = comboBox.BindingContext as AdaptiveChoiceSetInput;
                 comboBox.SelectedIndex = 0;
                 return;
             }

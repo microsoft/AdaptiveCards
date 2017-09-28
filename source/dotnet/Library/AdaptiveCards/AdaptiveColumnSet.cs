@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using System;
 
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     A set of containers (each a container of items)
+    ///     A set of columns
     /// </summary>
-    public class ColumnSet : CardElement
+    public class AdaptiveColumnSet : AdaptiveCardElement
     {
         public const string TYPE = "ColumnSet";
 
-        public ColumnSet()
+        public AdaptiveColumnSet()
         {
             Type = TYPE;
         }
@@ -21,14 +22,17 @@ namespace AdaptiveCards
         /// </summary>
         [JsonRequired]
 #if NET452
-        [XmlElement(ElementName = "Column", Type = typeof(Column))]
+        [XmlElement(ElementName = "Column", Type = typeof(AdaptiveColumn))]
 #endif
-        public List<Column> Columns { get; set; } = new List<Column>();
+        public List<AdaptiveColumn> Columns { get; set; } = new List<AdaptiveColumn>();
 
         /// <summary>
         ///     Action for this ColumnSet (this allows a default action at the column set level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ActionBase SelectAction { get; set; }
+        public AdaptiveActionBase SelectAction { get; set; }
     }
+
+    [Obsolete("Use AdaptiveColumnSet instead")]
+    public class ColumnSet : AdaptiveColumnSet { }
 }

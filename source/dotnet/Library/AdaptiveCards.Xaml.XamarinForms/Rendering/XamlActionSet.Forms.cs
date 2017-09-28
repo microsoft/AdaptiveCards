@@ -7,7 +7,7 @@ namespace AdaptiveCards.Rendering
 {
     public static partial class XamlActionSet 
     {
-        public static void AddActions(Grid uiContainer, List<ActionBase> actions, RenderContext context)
+        public static void AddActions(Grid uiContainer, List<AdaptiveActionBase> actions, RenderContext context)
         {
             var actionsToProcess = actions
                 .Take(context.Config.Actions.MaxActions).ToList();

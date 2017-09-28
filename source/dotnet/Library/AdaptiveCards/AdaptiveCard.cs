@@ -22,8 +22,8 @@ namespace AdaptiveCards
 #if NET452
         [XmlElement(typeof(TextBlock))]
         [XmlElement(typeof(Image))]
-        [XmlElement(typeof(Container))]
-        [XmlElement(typeof(ColumnSet))]
+        [XmlElement(typeof(AdaptiveContainer))]
+        [XmlElement(typeof(AdaptiveColumnSet))]
         [XmlElement(typeof(ImageSet))]
         [XmlElement(typeof(FactSet))]
         [XmlElement(typeof(TextInput), ElementName = TextInput.TYPE)]
@@ -31,9 +31,9 @@ namespace AdaptiveCards
         [XmlElement(typeof(TimeInput), ElementName = TimeInput.TYPE)]
         [XmlElement(typeof(NumberInput), ElementName = NumberInput.TYPE)]
         [XmlElement(typeof(ToggleInput), ElementName = ToggleInput.TYPE)]
-        [XmlElement(typeof(ChoiceSet), ElementName = ChoiceSet.TYPE)]
+        [XmlElement(typeof(AdaptiveChoiceSetInput), ElementName = AdaptiveChoiceSetInput.TYPE)]
 #endif
-        public List<CardElement> Body { get; set; } = new List<CardElement>();
+        public List<AdaptiveCardElement> Body { get; set; } = new List<AdaptiveCardElement>();
 
         /// <summary>
         ///     Actions for this container
@@ -45,7 +45,7 @@ namespace AdaptiveCards
         [XmlArrayItem(ElementName = ShowCardAction.TYPE, Type = typeof(ShowCardAction))]
         [XmlArrayItem(ElementName = SubmitAction.TYPE, Type = typeof(SubmitAction))]
 #endif
-        public List<ActionBase> Actions { get; set; } = new List<ActionBase>();
+        public List<AdaptiveActionBase> Actions { get; set; } = new List<AdaptiveActionBase>();
 
         /// <summary>
         ///     Speak annotation for the card

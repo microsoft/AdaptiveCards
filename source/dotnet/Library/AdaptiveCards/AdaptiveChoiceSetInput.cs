@@ -9,11 +9,11 @@ namespace AdaptiveCards
     /// <summary>
     ///     Element which collects choice from the user
     /// </summary>
-    public class ChoiceSet : Input
+    public class AdaptiveChoiceSetInput : Input
     {
         public const string TYPE = "Input.ChoiceSet";
 
-        public ChoiceSet()
+        public AdaptiveChoiceSetInput()
         {
             Type = TYPE;
         }
@@ -112,4 +112,7 @@ namespace AdaptiveCards
 #pragma warning restore CS0618 // Type or member is obsolete
         }
     }
+
+    [Obsolete("Use AdaptiveChoiceSet instead")]
+    public class ChoiceSet : AdaptiveChoiceSetInput { }
 }

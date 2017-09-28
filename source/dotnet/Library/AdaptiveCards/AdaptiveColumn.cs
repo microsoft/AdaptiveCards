@@ -8,11 +8,11 @@ namespace AdaptiveCards
     /// <summary>
     ///     Column
     /// </summary>
-    public class Column : Container
+    public class AdaptiveColumn : AdaptiveContainer
     {
         public new const string TYPE = "Column";
 
-        public Column()
+        public AdaptiveColumn()
         {
             Type = TYPE;
         }
@@ -36,4 +36,7 @@ namespace AdaptiveCards
 #endif
         public string Width { get; set; }
     }
+
+    [Obsolete("Use AdaptiveColumn instead")]
+    public class Column : AdaptiveColumn { }
 }

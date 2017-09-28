@@ -102,15 +102,15 @@ namespace AdaptiveCards.Rendering
 
                 case Image.TYPE:
                     return this.Config.Image.Separation;
-                case Container.TYPE:
+                case AdaptiveContainer.TYPE:
                     return this.Config.Container.Separation;
-                case ColumnSet.TYPE:
+                case AdaptiveColumnSet.TYPE:
                     return this.Config.ColumnSet.Separation;
-                case Column.TYPE:
+                case AdaptiveColumn.TYPE:
                     return this.Config.Column.Separation;
                 case ImageSet.TYPE:
                     return this.Config.ImageSet.Separation;
-                case ChoiceSet.TYPE:
+                case AdaptiveChoiceSetInput.TYPE:
                     return this.Config.ChoiceSet.Separation;
                 case TextInput.TYPE:
                     return this.Config.ImageSet.Separation;

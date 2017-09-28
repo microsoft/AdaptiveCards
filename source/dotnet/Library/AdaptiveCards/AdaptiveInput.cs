@@ -6,7 +6,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     Input is used as part of a Form CardElement to collect information from a user
     /// </summary>
-    public class Input : CardElement
+    public class Input : AdaptiveCardElement
     {
         /// <summary>
         ///     Id for the value (will be used to identify collected input when SUBMIT is clicked)

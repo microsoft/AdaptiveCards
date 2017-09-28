@@ -42,7 +42,7 @@ namespace AdaptiveCards.Rendering
             }
             else
             {
-                Container container = TypedElementConverter.CreateElement<Container>();
+                AdaptiveContainer container = TypedElementConverter.CreateElement<AdaptiveContainer>();
                 container.Separation = input.Separation;
                 TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;

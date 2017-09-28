@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering
     public class XamlUtilities
     {
 
-        public static Button CreateActionButton(ActionBase action, RenderContext context)
+        public static Button CreateActionButton(AdaptiveActionBase action, RenderContext context)
         {
             ActionConfig styling = context.Config.Actions;
             var uiButton = new Button()
@@ -53,7 +53,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string GetFallbackText(CardElement cardElement)
+        public static string GetFallbackText(AdaptiveCardElement cardElement)
         {
 #if WPF
 #pragma warning disable CS0618 // Type or member is obsolete

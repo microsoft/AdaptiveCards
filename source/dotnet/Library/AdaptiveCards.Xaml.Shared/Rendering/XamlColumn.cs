@@ -22,7 +22,7 @@ namespace AdaptiveCards.Rendering
     {
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
-            Column column = (Column)element;
+            AdaptiveColumn column = (AdaptiveColumn)element;
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Column");
 

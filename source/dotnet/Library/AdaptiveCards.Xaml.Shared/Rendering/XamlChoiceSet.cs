@@ -16,7 +16,7 @@ namespace AdaptiveCards.Rendering
     {
         public static FrameworkElement Render(TypedElement element, RenderContext context)
         {
-            ChoiceSet choiceSet = (ChoiceSet)element;
+            AdaptiveChoiceSetInput choiceSet = (AdaptiveChoiceSetInput)element;
 
             var chosen = choiceSet.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
 #if WPF
@@ -149,7 +149,7 @@ namespace AdaptiveCards.Rendering
                     choiceText = $"* {RendererUtilities.JoinString(choices, "\n* ", "\n* ")}";
                 }
             }
-            Container container = TypedElementConverter.CreateElement<Container>();
+            AdaptiveContainer container = TypedElementConverter.CreateElement<AdaptiveContainer>();
             container.Separation = choiceSet.Separation;
             TextBlock textBlock = TypedElementConverter.CreateElement<TextBlock>();
             textBlock.Text = choiceText;
