@@ -15,6 +15,7 @@ namespace AdaptiveCards
         public AdaptiveCard()
         {
             Type = TYPE;
+            Version = new AdaptiveSchemaVersion(1, 0);
         }
 
         public static AdaptiveCardParseResult FromJson(string json)
@@ -24,6 +25,12 @@ namespace AdaptiveCards
             try
             {
                 card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
+
+                // Version must be specified
+                if (card.Version == null)
+                {
+                    card = null;
+                }
             }
             catch { }
 
@@ -90,11 +97,11 @@ namespace AdaptiveCards
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
-        [JsonProperty(Required = Required.Always)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if NET452
         [XmlAttribute]
 #endif
-        public AdaptiveSchemaVersion Version { get; set; } = new AdaptiveSchemaVersion(1, 0);
+        public AdaptiveSchemaVersion Version { get; set; }
 
         /// <summary>
         ///     if a client doesn't support the minVersion the card should be rejected.  If it does, then the elements that are not
@@ -118,6 +125,11 @@ namespace AdaptiveCards
         public bool ShouldSerializeActions()
         {
             return Actions.Any();
+        }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

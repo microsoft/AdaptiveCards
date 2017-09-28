@@ -8,15 +8,21 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering.Config
 {
+
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class CardElementConfig
+    public class SeparatorConfig
     {
-        public CardElementConfig() { }
+        /// <summary>
+        /// If there is a visible line, how thick should the line be
+        /// </summary>
+        public int LineThickness { get; set; } = 1;
 
         /// <summary>
-        /// Separation settings between elements
+        /// If there is a visible color, what color to use
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public SeparationConfig Separation { get; set; } = new SeparationConfig() { Spacing = 10 };
+        public string LineColor { get; set; } = "#FF707070";
+
     }
+
 }

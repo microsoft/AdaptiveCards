@@ -159,7 +159,7 @@ namespace AdaptiveCards.Rendering
             var uiCard = new DivTag()
                 .AddClass($"ac-{card.Type.ToLower()}")
                 .Style("width", "100%")
-                .Style("background-color", context.GetRGBColor(context.Config.AdaptiveCard.BackgroundColor))
+                .Style("background-color", context.GetRGBColor(context.Config.ContainerStyles.Default.BackgroundColor))
                 .Style("box-sizing", "border-box");
 
             if (card.BackgroundImage != null)
@@ -297,33 +297,32 @@ namespace AdaptiveCards.Rendering
 
         protected static void AddSeparator(HtmlTag uiContainer, CardElement cardElement, RenderContext context)
         {
-            switch (cardElement.Separation)
+            if (!cardElement.Separator && cardElement.Spacing == Spacing.None)
             {
-                case SeparationStyle.None:
-                    return;
-                case SeparationStyle.Default:
-                    {
-                        SeparationConfig sep = context.GetElementSeparation(cardElement);
-                        var uiSep = new DivTag()
-                            .AddClass("ac-separator")
-                            .Style("height", $"{sep.Spacing}px");
-                        uiContainer.Children.Add(uiSep);
-                    }
-                    return;
-                case SeparationStyle.Strong:
-                    {
-                        SeparationConfig sep = context.Config.StrongSeparation;
-                        var uiSep = new DivTag()
-                                .AddClass("ac-separator")
-                                .Style("padding-top", $"{sep.Spacing}px")
-                                .Style("margin-top", $"{sep.Spacing}px")
-                                .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
-                                .Style("border-top-width", $"{sep.LineThickness}px")
-                                .Style("border-top-style", "solid")
-                            ;
-                        uiContainer.Children.Add(uiSep);
-                    }
-                    return;
+                return;
+            }
+
+            int spacing = context.Config.GetSpacing(cardElement.Spacing);
+
+            if (cardElement.Separator)
+            {
+                SeparatorConfig sep = context.Config.Separator;
+                var uiSep = new DivTag()
+                        .AddClass("ac-separator")
+                        .Style("padding-top", $"{spacing}px")
+                        .Style("margin-top", $"{spacing}px")
+                        .Style("border-top-color", $"{context.GetRGBColor(sep.LineColor)}")
+                        .Style("border-top-width", $"{sep.LineThickness}px")
+                        .Style("border-top-style", "solid")
+                    ;
+                uiContainer.Children.Add(uiSep);
+            }
+            else
+            {
+                var uiSep = new DivTag()
+                    .AddClass("ac-separator")
+                    .Style("height", $"{spacing}px");
+                uiContainer.Children.Add(uiSep);
             }
         }
 
@@ -376,31 +375,22 @@ namespace AdaptiveCards.Rendering
                 var uiColumn = context.Render(column);
 
                 // Add horizontal Seperator
-                if (uiColumnSet.Children.Any())
+                if (uiColumnSet.Children.Any() && (column.Separator || column.Spacing != Spacing.None))
                 {
-                    SeparationConfig sep = null;
-                    switch (column.Separation)
-                    {
-                        case SeparationStyle.None:
-                            break;
+                    SeparatorConfig sep = context.Config.Separator;
 
-                        case SeparationStyle.Default:
-                            sep = context.Config.Column.Separation;
-                            break;
+                    int spacing = context.Config.GetSpacing(column.Spacing);
+                    int lineThickness = column.Separator ? sep.LineThickness : 0;
 
-                        case SeparationStyle.Strong:
-                            sep = context.Config.StrongSeparation;
-                            break;
-                    }
                     if (sep != null)
                     {
                         uiColumnSet.Children.Add(new DivTag()
                             .AddClass($"ac-columnseparator")
                             .Style("flex", "0 0 auto")
-                            .Style("padding-left", $"{sep.Spacing}px")
-                            .Style("margin-left", $"{sep.Spacing}px")
+                            .Style("padding-left", $"{spacing}px")
+                            .Style("margin-left", $"{spacing}px")
                             .Style("border-left-color", $"{context.GetRGBColor(sep.LineColor)}")
-                            .Style("border-left-width", $"{sep.LineThickness}px")
+                            .Style("border-left-width", $"{lineThickness}px")
                             .Style("border-left-style", $"solid"));
                     }
                 }

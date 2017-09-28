@@ -13,9 +13,9 @@ namespace AdaptiveCards.Rendering.Config
     /// Properties which control rendering of actions
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ActionConfig 
+    public class ActionsConfig 
     {
-        public ActionConfig() { }
+        public ActionsConfig() { }
 
 
         /// <summary>
@@ -42,22 +42,9 @@ namespace AdaptiveCards.Rendering.Config
         public int MaxActions { get; set; } = 5;
 
         /// <summary>
-        /// Separation settings between elements
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public SeparationConfig Separation { get; set; } = new SeparationConfig() { Spacing = 10 };
-
-        /// <summary>
         /// ShowCard configuration
         /// </summary>
         public ShowCardConfig ShowCard { get; set; } = new ShowCardConfig();
-
-        /// <summary>
-        /// extra stuff
-        /// </summary>
-        /// 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public SpacingDefinition Padding { get; set; } = new SpacingDefinition(4);
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BorderColor { get; set; } = "#FF000000";
@@ -79,32 +66,17 @@ namespace AdaptiveCards.Rendering.Config
     {
         public ShowCardConfig() { }
 
-        public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.InlineEdgeToEdge;
-
-        /// <summary>
-        /// Background color for showcard area
-        /// </summary>
-        public string BackgroundColor { get; set; } = "#FFF8F8F8";
+        public ShowCardActionMode ActionMode { get; set; } = ShowCardActionMode.Inline;
 
         /// <summary>
         /// If actionMode is inline this is the margin between the inline card and the actions
         /// </summary>
         public int InlineTopMargin { get; set; } = 8;
-
-        /// <summary>
-        /// Padding for the card when shown inline.  
-        /// </summary>
-        public SpacingDefinition Padding { get; set; } = new SpacingDefinition(10, 10, 10, 10);
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum ShowCardActionMode
     {
-        /// <summary>
-        /// Show the card inline, but with background color extending to container boundaries
-        /// </summary>
-        InlineEdgeToEdge,
-
         /// <summary>
         /// Show the card inline 
         /// </summary>
@@ -114,6 +86,20 @@ namespace AdaptiveCards.Rendering.Config
         /// Popup the card 
         /// </summary>
         Popup
+    }
+
+    [JsonConverter(typeof(StringEnumConverter), true)]
+    public enum ActionsOrientation
+    {
+        /// <summary>
+        /// actions should be laid out horizontally
+        /// </summary>
+        Horizontal,
+
+        /// <summary>
+        /// Actions should be laid out vertically
+        /// </summary>
+        Vertical
     }
 
 }

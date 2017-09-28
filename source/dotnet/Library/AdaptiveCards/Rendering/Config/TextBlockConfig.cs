@@ -10,9 +10,9 @@ namespace AdaptiveCards.Rendering.Config
 {
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class TextConfig
+    public class TextBlockConfig
     {
-        public TextConfig()
+        public TextBlockConfig()
         { }
 
         /// <summary>
@@ -64,36 +64,5 @@ namespace AdaptiveCards.Rendering.Config
         {
             return IsSubtle;
         }
-    }
-
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class TextBlockConfig
-    {
-        public TextBlockConfig()
-        { }
-
-        public TextSizeSeparations Separations { get; set; } = new TextSizeSeparations();
-    }
-
-
-
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-
-    public class TextSizeSeparations
-    {
-        public TextSizeSeparations()
-        {
-        }
-
-        public SeparationConfig Small { get; set; } = new SeparationConfig() { Spacing = 10 };
-
-        public SeparationConfig Normal { get; set; } = new SeparationConfig() { Spacing = 10 };
-
-        public SeparationConfig Medium { get; set; } = new SeparationConfig() { Spacing = 10 };
-
-        public SeparationConfig Large { get; set; } = new SeparationConfig() { Spacing = 10 };
-
-        public SeparationConfig ExtraLarge { get; set; } = new SeparationConfig() { Spacing = 10 };
-
     }
 }

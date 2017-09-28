@@ -29,7 +29,7 @@ namespace AdaptiveCards.Rendering
                 // Add vertical Seperator
                 if (uiColumnSet.ColumnDefinitions.Count > 0)
                 {
-                    if (column.Separation != SeparationStyle.None)
+                    if (column.Separator || column.Spacing != Spacing.None)
                     {
 
                         var uiSep = new Grid();
@@ -40,23 +40,12 @@ namespace AdaptiveCards.Rendering
                         // TOOD: check xamarin separator visual
                         //sep.VerticalAlignment = VerticalAlignment.Stretch;
 #endif
-                        SeparationConfig sepStyle;
-                        switch (column.Separation)
-                        {
-                            case SeparationStyle.Strong:
-                                sepStyle = context.Config.GetSeparationForElement(columnSet, true);
-                                break;
-
-                            case SeparationStyle.Default:
-                            default:
-                                sepStyle = context.Config.GetSeparationForElement(columnSet, false);
-                                break;
-                        }
-                        uiSep.Margin = new Thickness(sepStyle.Spacing / 2, 0, sepStyle.Spacing / 2, 0);
+                        int spacing = context.Config.GetSpacing(column.Spacing);
+                        uiSep.Margin = new Thickness(spacing / 2.0, 0, spacing / 2.0, 0);
 #if WPF
-                    uiSep.Width = sepStyle.LineThickness;
-                    if (sepStyle.LineColor != null)
-                        uiSep.Background = context.GetColorBrush(sepStyle.LineColor);
+                    uiSep.Width = context.Config.Separator.LineThickness;
+                    if (column.Separator && context.Config.Separator.LineColor != null)
+                        uiSep.Background = context.GetColorBrush(context.Config.Separator.LineColor);
 #elif XAMARIN
                         // TODO
 #endif
