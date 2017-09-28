@@ -3,16 +3,16 @@
 
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveTimeInput::RuntimeClassInitialize() noexcept try
     {
@@ -110,14 +110,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
+    HRESULT AdaptiveTimeInput::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedTimeInput->GetSpacing());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedTimeInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTimeInput::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
+    HRESULT AdaptiveTimeInput::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
         m_sharedTimeInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;

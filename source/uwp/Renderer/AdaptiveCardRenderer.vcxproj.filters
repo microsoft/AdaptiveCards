@@ -10,7 +10,6 @@
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
-    <ClCompile Include="lib\XamlCardRendererComponent.cpp" />
     <ClCompile Include="dll\dll.cpp" />
     <ClCompile Include="lib\AdaptiveFact.cpp" />
     <ClCompile Include="lib\AdaptiveFactSet.cpp" />
@@ -38,8 +37,6 @@
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionConfig.cpp" />
-    <ClCompile Include="lib\XamlCardResourceResolvers.cpp" />
-    <ClCompile Include="lib\XamlCardGetResourceStreamArgs.cpp" />
     <ClCompile Include="lib\AdaptiveSpacingConfig.cpp" />
     <ClCompile Include="lib\AdaptiveSeparator.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
@@ -54,10 +51,11 @@
     <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveColumnRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveColumnSetRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveContainerRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveCardGetResourceStreamArgs.cpp" />
+    <ClCompile Include="lib\AdaptiveCardRendererComponent.cpp" />
     <ClCompile Include="lib\AdaptiveDateInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveElementRendererRegistration.cpp" />
+    <ClCompile Include="lib\AdaptiveCardResourceResolvers.cpp" />
     <ClCompile Include="lib\AdaptiveFactSetRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveImageRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveImageSetRenderer.cpp" />
@@ -88,7 +86,6 @@
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
-    <ClInclude Include="lib\XamlCardRendererComponent.h" />
     <ClInclude Include="lib\XamlHelpers.h" />
     <ClInclude Include="lib\XamlStyleKeyGenerators.h" />
     <ClInclude Include="lib\AdaptiveFactSet.h" />
@@ -117,8 +114,6 @@
     <ClInclude Include="lib\AdaptiveFontSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
-    <ClInclude Include="lib\XamlCardGetResourceStreamArgs.h" />
-    <ClInclude Include="lib\XamlCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveSpacingConfig.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
     <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
@@ -128,6 +123,9 @@
     <ClInclude Include="lib\AdaptiveFontWeightsConfig.h" />
     <ClInclude Include="lib\AdaptiveImageConfig.h" />
     <ClInclude Include="lib\AdaptiveSeparatorConfig.h" />
+    <ClInclude Include="lib\AdaptiveCardGetResourceStreamArgs.h" />
+    <ClInclude Include="lib\AdaptiveCardRendererComponent.h" />
+    <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveElementParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionRendererRegistration.h" />
@@ -151,6 +149,6 @@
     <ClInclude Include="lib\AdaptiveSubmitActionRenderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.XamlCardRenderer.idl" />
+    <Midl Include="idl\AdaptiveCards.Uwp.idl" />
   </ItemGroup>
 </Project>

@@ -4,10 +4,10 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveActionsConfig::RuntimeClassInitialize() noexcept try
     {
@@ -61,42 +61,42 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* value)
+    HRESULT AdaptiveActionsConfig::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* value)
     {
-        *value = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedActionsConfig.spacing);
+        *value = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedActionsConfig.spacing);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing value)
+    HRESULT AdaptiveActionsConfig::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing value)
     {
         m_sharedActionsConfig.spacing = static_cast<AdaptiveCards::Spacing>(value);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::get_ActionAlignment(ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment* value)
+    HRESULT AdaptiveActionsConfig::get_ActionAlignment(ABI::AdaptiveCards::Uwp::ActionAlignment* value)
     {
-        *value = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment>(m_sharedActionsConfig.actionAlignment);
+        *value = static_cast<ABI::AdaptiveCards::Uwp::ActionAlignment>(m_sharedActionsConfig.actionAlignment);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::put_ActionAlignment(ABI::AdaptiveCards::XamlCardRenderer::ActionAlignment value)
+    HRESULT AdaptiveActionsConfig::put_ActionAlignment(ABI::AdaptiveCards::Uwp::ActionAlignment value)
     {
         m_sharedActionsConfig.actionAlignment = static_cast<AdaptiveCards::ActionAlignment>(value);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::get_ActionsOrientation(ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation* value)
+    HRESULT AdaptiveActionsConfig::get_ActionsOrientation(ABI::AdaptiveCards::Uwp::ActionsOrientation* value)
     {
-        *value = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation>(m_sharedActionsConfig.actionsOrientation);
+        *value = static_cast<ABI::AdaptiveCards::Uwp::ActionsOrientation>(m_sharedActionsConfig.actionsOrientation);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveActionsConfig::put_ActionsOrientation(ABI::AdaptiveCards::XamlCardRenderer::ActionsOrientation value)
+    HRESULT AdaptiveActionsConfig::put_ActionsOrientation(ABI::AdaptiveCards::Uwp::ActionsOrientation value)
     {
         m_sharedActionsConfig.actionsOrientation = static_cast<AdaptiveCards::ActionsOrientation>(value);
         return S_OK;

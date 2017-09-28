@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XamlCardVisualizer.ViewModel
+namespace AdaptiveCardVisualizer.ViewModel
 {
     public class ErrorViewModel : IComparable<ErrorViewModel>
     {

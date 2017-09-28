@@ -7,10 +7,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize() noexcept
     {
@@ -18,9 +18,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize(
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveHostConfig* hostConfig,
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementRendererRegistration* elementRendererRegistration,
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionRendererRegistration* actionRendererRegistration) noexcept try
+        ABI::AdaptiveCards::Uwp::IAdaptiveHostConfig* hostConfig,
+        ABI::AdaptiveCards::Uwp::IAdaptiveElementRendererRegistration* elementRendererRegistration,
+        ABI::AdaptiveCards::Uwp::IAdaptiveActionRendererRegistration* actionRendererRegistration) noexcept try
     {
         m_hostConfig.Attach(hostConfig);
         m_elementRendererRegistration.Attach(elementRendererRegistration);

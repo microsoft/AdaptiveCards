@@ -3,16 +3,16 @@
 
 #include "Util.h"
 #include <windows.foundation.collections.h>
-#include "XamlCardRendererComponent.h"
+#include "AdaptiveCardRendererComponent.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
     {
@@ -85,13 +85,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle * textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveCards::Uwp::TextInputStyle * textInputStyle)
     {
-        *textInputStyle = static_cast<ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle>(m_sharedTextInput->GetTextInputStyle());
+        *textInputStyle = static_cast<ABI::AdaptiveCards::Uwp::TextInputStyle>(m_sharedTextInput->GetTextInputStyle());
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::XamlCardRenderer::TextInputStyle textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::Uwp::TextInputStyle textInputStyle)
     {
         m_sharedTextInput->SetTextInputStyle(static_cast<AdaptiveCards::TextInputStyle>(textInputStyle));
         return S_OK;
@@ -120,14 +120,14 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing* spacing)
+    HRESULT AdaptiveTextInput::get_Spacing(ABI::AdaptiveCards::Uwp::Spacing* spacing)
     {
-        *spacing = static_cast<ABI::AdaptiveCards::XamlCardRenderer::Spacing>(m_sharedTextInput->GetSpacing());
+        *spacing = static_cast<ABI::AdaptiveCards::Uwp::Spacing>(m_sharedTextInput->GetSpacing());
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::Spacing spacing)
+    HRESULT AdaptiveTextInput::put_Spacing(ABI::AdaptiveCards::Uwp::Spacing spacing)
     {
         m_sharedTextInput->SetSpacing(static_cast<AdaptiveCards::Spacing>(spacing));
         return S_OK;

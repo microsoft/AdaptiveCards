@@ -5,7 +5,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize() noexcept try
     {
@@ -20,25 +20,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleDefinition ** value)
+    HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition ** value)
     {
         return MakeAndInitialize<AdaptiveContainerStyleDefinition>(value, m_sharedContainerStylesDefinition.defaultPalette);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::put_Default(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleDefinition * value)
+    HRESULT  AdaptiveContainerStylesDefinition::put_Default(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition * value)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleDefinition ** value)
+    HRESULT  AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition ** value)
     {
         return MakeAndInitialize<AdaptiveContainerStyleDefinition>(value, m_sharedContainerStylesDefinition.emphasisPalette);
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::put_Emphasis(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStyleDefinition * value)
+    HRESULT  AdaptiveContainerStylesDefinition::put_Emphasis(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStyleDefinition * value)
     {
         return E_NOTIMPL;
     }

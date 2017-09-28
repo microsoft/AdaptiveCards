@@ -270,4 +270,4 @@ product.pbxproj
 **/.DS_Store
 
 #Generated header from MIDL
-**/UWP/Renderer/AdaptiveCards.XamlCardRenderer.h
+**/UWP/Renderer/AdaptiveCards.Uwp.h

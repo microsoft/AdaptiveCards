@@ -1,18 +1,18 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 #include "Enums.h"
 #include "OpenUrlAction.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     class AdaptiveOpenUrlAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveOpenUrlAction,
-            ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement>
+            ABI::AdaptiveCards::Uwp::IAdaptiveOpenUrlAction,
+            ABI::AdaptiveCards::Uwp::IAdaptiveActionElement>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveOpenUrlAction, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveOpenUrlAction, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -23,7 +23,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         IFACEMETHODIMP put_Url(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType);
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Uwp::ActionType* actionType);
 
         IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
         IFACEMETHODIMP put_Title(_In_ HSTRING title);

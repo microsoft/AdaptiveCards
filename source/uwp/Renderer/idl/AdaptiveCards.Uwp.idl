@@ -7,11 +7,11 @@ import "Windows.Data.Json.idl";
 
 namespace AdaptiveCards
 {
-    namespace XamlCardRenderer
+    namespace Uwp
     {
-        runtimeclass XamlCardRenderer;
-        runtimeclass XamlCardResourceResolvers;
-        runtimeclass XamlCardGetResourceStreamArgs;
+        runtimeclass AdaptiveCardRenderer;
+        runtimeclass AdaptiveCardResourceResolvers;
+        runtimeclass AdaptiveCardGetResourceStreamArgs;
 
         runtimeclass AdaptiveTextBlock;
         runtimeclass AdaptiveCard;
@@ -76,9 +76,9 @@ namespace AdaptiveCards
         runtimeclass AdaptiveTimeInputRenderer;
         runtimeclass AdaptiveToggleInputRenderer;
 
-        interface IXamlCardResourceResolvers;
-        interface IXamlCardResourceResolver;
-        interface IXamlCardGetResourceStreamArgs;
+        interface IAdaptiveCardResourceResolvers;
+        interface IAdaptiveCardResourceResolver;
+        interface IAdaptiveCardGetResourceStreamArgs;
 
         interface IAdaptiveCardElement;
         interface IAdaptiveActionElement;
@@ -840,11 +840,11 @@ namespace AdaptiveCards
         [
             uuid(b0586bc4-b62a-4520-84b8-6c2afb88d022),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(XamlCardRenderer),
+            exclusiveto(AdaptiveCardRenderer),
         ]
-        interface IXamlCardRenderer : IInspectable
+        interface IAdaptiveCardRenderer : IInspectable
         {
-            [propget] HRESULT ResourceResolvers([out, retval] XamlCardResourceResolvers** value);
+            [propget] HRESULT ResourceResolvers([out, retval] AdaptiveCardResourceResolvers** value);
 
             [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** hostConfig);
             [propput] HRESULT HostConfig([in] AdaptiveHostConfig* hostConfig);
@@ -869,9 +869,9 @@ namespace AdaptiveCards
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1),
         ]
-        runtimeclass XamlCardRenderer
+        runtimeclass AdaptiveCardRenderer
         {
-            [default] interface IXamlCardRenderer;
+            [default] interface IAdaptiveCardRenderer;
         };
 
         [
@@ -1475,62 +1475,62 @@ namespace AdaptiveCards
         [
             uuid(3b655db6-54d2-47e7-8658-b58ced5fb237),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(XamlCardResourceResolvers)
+            exclusiveto(AdaptiveCardResourceResolvers)
         ]
-        interface IXamlCardResourceResolvers : IInspectable
+        interface IAdaptiveCardResourceResolvers : IInspectable
         {
-            HRESULT Set([in] HSTRING scheme, [in] IXamlCardResourceResolver* resolver);
-            HRESULT Get([in] HSTRING scheme, [out, retval] IXamlCardResourceResolver** resolver);
+            HRESULT Set([in] HSTRING scheme, [in] IAdaptiveCardResourceResolver* resolver);
+            HRESULT Get([in] HSTRING scheme, [out, retval] IAdaptiveCardResourceResolver** resolver);
         };
 
         [
             version(NTDDI_WIN10_RS1),
             activatable(NTDDI_WIN10_RS1)
         ]
-        runtimeclass XamlCardResourceResolvers
+        runtimeclass AdaptiveCardResourceResolvers
         {
-            [default] interface IXamlCardResourceResolvers;
+            [default] interface IAdaptiveCardResourceResolvers;
         };
 
         [
             uuid(30f17ba9-133a-4484-8002-a8f4b6764e3f),
             version(NTDDI_WIN10_RS1)
         ]
-        interface IXamlCardResourceResolver : IInspectable
+        interface IAdaptiveCardResourceResolver : IInspectable
         {
-            HRESULT GetResourceStreamAsync([in] XamlCardGetResourceStreamArgs* args, [out, retval] Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream*>** result);
+            HRESULT GetResourceStreamAsync([in] AdaptiveCardGetResourceStreamArgs* args, [out, retval] Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream*>** result);
         };
 
         [
             uuid(e1d63f44-6550-454f-99f4-d02df5ae9b8c),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(XamlCardGetResourceStreamArgs)
+            exclusiveto(AdaptiveCardGetResourceStreamArgs)
         ]
-        interface IXamlCardGetResourceStreamArgsFactory : IInspectable
+        interface IAdaptiveCardGetResourceStreamArgsFactory : IInspectable
         {
-            HRESULT CreateXamlCardGetResourceStreamArgs(
+            HRESULT CreateAdaptiveCardGetResourceStreamArgs(
                 [in] Windows.Foundation.Uri* value,
-                [out, retval] XamlCardGetResourceStreamArgs** args
+                [out, retval] AdaptiveCardGetResourceStreamArgs** args
                 );
         };
 
         [
             uuid(0eea761b-5a3e-4f1f-86f6-d511c178e671),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(XamlCardGetResourceStreamArgs)
+            exclusiveto(AdaptiveCardGetResourceStreamArgs)
         ]
-        interface IXamlCardGetResourceStreamArgs : IInspectable
+        interface IAdaptiveCardGetResourceStreamArgs : IInspectable
         {
             [propget] HRESULT Url([out, retval] Windows.Foundation.Uri** value);
         };
 
         [
             version(NTDDI_WIN10_RS1),
-            activatable(IXamlCardGetResourceStreamArgsFactory, NTDDI_WIN10_RS1)
+            activatable(IAdaptiveCardGetResourceStreamArgsFactory, NTDDI_WIN10_RS1)
         ]
-        runtimeclass XamlCardGetResourceStreamArgs
+        runtimeclass AdaptiveCardGetResourceStreamArgs
         {
-            [default] interface IXamlCardGetResourceStreamArgs;
+            [default] interface IAdaptiveCardGetResourceStreamArgs;
         };
 
         [

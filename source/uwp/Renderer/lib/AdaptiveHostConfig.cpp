@@ -15,10 +15,10 @@
 #include "AdaptiveSeparatorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveHostConfig** config) noexcept try
@@ -119,13 +119,13 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition** value)
+    HRESULT AdaptiveHostConfig::get_ContainerStyles(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition** value)
     {
         return MakeAndInitialize<AdaptiveContainerStylesDefinition>(value, m_sharedHostConfig.containerStyles);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveContainerStylesDefinition* value)
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(ABI::AdaptiveCards::Uwp::IAdaptiveContainerStylesDefinition* value)
     {
         return E_NOTIMPL;
     }
@@ -143,25 +143,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingConfig** spacingConfig)
+    HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveCards::Uwp::IAdaptiveSpacingConfig** spacingConfig)
     {
         return MakeAndInitialize<AdaptiveSpacingConfig>(spacingConfig, m_sharedHostConfig.spacing);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSpacingConfig* spacingConfig)
+    HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveCards::Uwp::IAdaptiveSpacingConfig* spacingConfig)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparatorConfig** separatorConfig)
+    HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveCards::Uwp::IAdaptiveSeparatorConfig** separatorConfig)
     {
         return MakeAndInitialize<AdaptiveSeparatorConfig>(separatorConfig, m_sharedHostConfig.separator);
     }
 
     _Use_decl_annotations_ 
-    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveSeparatorConfig* separatorConfig)
+    HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveCards::Uwp::IAdaptiveSeparatorConfig* separatorConfig)
     {
         return E_NOTIMPL;
     }

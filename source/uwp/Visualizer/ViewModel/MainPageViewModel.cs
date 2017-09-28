@@ -1,4 +1,4 @@
-﻿using AdaptiveCards.XamlCardRenderer;
+﻿using AdaptiveCards.Uwp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,9 +9,9 @@ using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
-using XamlCardVisualizer.Helpers;
+using AdaptiveCardVisualizer.Helpers;
 
-namespace XamlCardVisualizer.ViewModel
+namespace AdaptiveCardVisualizer.ViewModel
 {
     public class MainPageViewModel : BindableBase
     {

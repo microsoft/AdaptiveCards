@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
-using XamlCardVisualizer.Helpers;
+using AdaptiveCardVisualizer.Helpers;
 
-namespace XamlCardVisualizer.ViewModel
+namespace AdaptiveCardVisualizer.ViewModel
 {
     public abstract class GenericDocumentViewModel : BindableBase
     {

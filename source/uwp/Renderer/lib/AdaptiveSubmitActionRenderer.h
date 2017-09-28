@@ -1,23 +1,23 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 #include "Enums.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     class AdaptiveSubmitActionRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionRenderer>
+        ABI::AdaptiveCards::Uwp::IAdaptiveActionRenderer>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveSubmitActionRenderer, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveSubmitActionRenderer, BaseTrust)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
         IFACEMETHODIMP Render(
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveActionElement* actionElement,
-            _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveActionElement* actionElement,
+            _In_ ABI::AdaptiveCards::Uwp::IAdaptiveRenderContext* renderContext,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
 
     };

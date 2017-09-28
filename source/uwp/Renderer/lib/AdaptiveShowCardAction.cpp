@@ -4,9 +4,9 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
     {
@@ -21,12 +21,12 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard** card)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveCards::Uwp::IAdaptiveCard** card)
     {
         return MakeAndInitialize<AdaptiveCard>(card, m_sharedShowCardAction->GetCard());
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveCard* /*card*/)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveCards::Uwp::IAdaptiveCard* /*card*/)
     {
         return E_NOTIMPL;
     }
@@ -47,9 +47,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveCards::XamlCardRenderer::ActionType* actionType)
+    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveCards::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::XamlCardRenderer::ActionType::ShowCard;
+        *actionType = ABI::AdaptiveCards::Uwp::ActionType::ShowCard;
         return S_OK;
     }
 

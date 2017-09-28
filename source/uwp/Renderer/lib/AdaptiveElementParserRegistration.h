@@ -1,21 +1,21 @@
 #pragma once
 
-#include "AdaptiveCards.XamlCardRenderer.h"
+#include "AdaptiveCards.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     class AdaptiveElementParserRegistration :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementParserRegistration>,
+        Microsoft::WRL::Implements<ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration>,
         Microsoft::WRL::FtmBase>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveElementParserRegistration, BaseTrust)
+        InspectableClass(RuntimeClass_AdaptiveCards_Uwp_AdaptiveElementParserRegistration, BaseTrust)
 
         typedef std::unordered_map<
             std::string,
-            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementParser>,
+            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveElementParser>,
             CaseInsensitiveHash,
             CaseInsensitiveEqualTo> RegistrationMap;
 
@@ -23,8 +23,8 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         AdaptiveElementParserRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
 
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementParser* Parser);
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementParser** result);
+        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Uwp::IAdaptiveElementParser* Parser);
+        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveElementParser** result);
         IFACEMETHODIMP Remove(_In_ HSTRING type);
 
     private:
@@ -33,9 +33,9 @@ namespace AdaptiveCards { namespace XamlCardRenderer
 
     class AdaptiveElementParserRegistrationStaticsImpl WrlFinal
         : public Microsoft::WRL::AgileActivationFactory<
-        ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementParserRegistrationStatics>
+        ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistrationStatics>
     {
-        InspectableClassStatic(RuntimeClass_AdaptiveCards_XamlCardRenderer_AdaptiveElementParserRegistration, TrustLevel::BaseTrust);
+        InspectableClassStatic(RuntimeClass_AdaptiveCards_Uwp_AdaptiveElementParserRegistration, TrustLevel::BaseTrust);
 
     public:
         IFACEMETHOD(ActivateInstance)(_COM_Outptr_ IInspectable** ppvObject) noexcept override
@@ -44,7 +44,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         }
 
         // IAdaptiveElementParserRegistrationStatics
-        IFACEMETHODIMP GetDefault(_COM_Outptr_ ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveElementParserRegistration** result);
+        IFACEMETHODIMP GetDefault(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration** result);
     };
 
     ActivatableClassWithFactory(AdaptiveElementParserRegistration, AdaptiveElementParserRegistrationStaticsImpl);

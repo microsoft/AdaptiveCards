@@ -3,10 +3,10 @@
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept try
     {
@@ -20,28 +20,28 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveCards::XamlCardRenderer::ActionMode* value)
+    HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveCards::Uwp::ActionMode* value)
     {
-        *value = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ActionMode>(m_sharedShowCardActionConfig.actionMode);
+        *value = static_cast<ABI::AdaptiveCards::Uwp::ActionMode>(m_sharedShowCardActionConfig.actionMode);
         return S_OK;
     }
 
     _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::XamlCardRenderer::ActionMode value)
+    HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::Uwp::ActionMode value)
     {
         m_sharedShowCardActionConfig.actionMode = static_cast<AdaptiveCards::ActionMode>(value);
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle* style)
+        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveCards::Uwp::ContainerStyle* style)
     {
-        *style = static_cast<ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle>(m_sharedShowCardActionConfig.style);
+        *style = static_cast<ABI::AdaptiveCards::Uwp::ContainerStyle>(m_sharedShowCardActionConfig.style);
         return S_OK;
     }
 
     _Use_decl_annotations_
-        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::XamlCardRenderer::ContainerStyle style)
+        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::Uwp::ContainerStyle style)
     {
         m_sharedShowCardActionConfig.style = static_cast<AdaptiveCards::ContainerStyle>(style);
         return S_OK;

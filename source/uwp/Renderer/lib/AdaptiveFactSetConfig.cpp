@@ -3,9 +3,9 @@
 #include "AdaptiveTextConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::XamlCardRenderer;
+using namespace ABI::AdaptiveCards::Uwp;
 
-namespace AdaptiveCards { namespace XamlCardRenderer
+namespace AdaptiveCards { namespace Uwp
 {
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept try
     {
@@ -20,25 +20,25 @@ namespace AdaptiveCards { namespace XamlCardRenderer
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig** titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig** titleTextConfig)
     {
         return MakeAndInitialize<AdaptiveTextConfig>(titleTextConfig, m_sharedFactSetConfig.title);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig* /*titleTextConfig*/)
+    HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig* /*titleTextConfig*/)
     {
         return E_NOTIMPL;
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig** valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig** valueTextConfig)
     {
         return MakeAndInitialize<AdaptiveTextConfig>(valueTextConfig, m_sharedFactSetConfig.value);
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveCards::XamlCardRenderer::IAdaptiveTextConfig* /*valueTextConfig*/)
+    HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveCards::Uwp::IAdaptiveTextConfig* /*valueTextConfig*/)
     {
         return E_NOTIMPL;
     }

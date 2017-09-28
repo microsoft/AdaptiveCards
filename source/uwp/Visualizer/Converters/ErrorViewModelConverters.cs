@@ -7,9 +7,9 @@ using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
-using XamlCardVisualizer.ViewModel;
+using AdaptiveCardVisualizer.ViewModel;
 
-namespace XamlCardVisualizer.Converters
+namespace AdaptiveCardVisualizer.Converters
 {
     public class ErrorViewModelTypeToIconBackgroundConverter : IValueConverter
     {
