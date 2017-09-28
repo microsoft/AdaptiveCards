@@ -14,6 +14,15 @@ namespace Render2Html
     {
         static void Main(string[] args)
         {
+            bool supportsInteractivity = false;
+
+            const string supportsInteractivityFlag = "/supportsInteractivity";
+            if (args.Contains(supportsInteractivityFlag))
+            {
+                supportsInteractivity = true;
+                args = args.Except(new string[] { supportsInteractivityFlag }).ToArray();
+            }
+
             Console.WriteLine(@"<html><head>");
             Console.WriteLine(@"<style>");
             Console.WriteLine(@".cardcontainer { ");
@@ -39,7 +48,7 @@ namespace Render2Html
                     Console.WriteLine("<hr/>");
                     Console.WriteLine($"<h1>{file}</h1>");
                     var card = JsonConvert.DeserializeObject<AdaptiveCards.AdaptiveCard>(File.ReadAllText(file));
-                    HtmlRenderer renderer = new HtmlRenderer(new HostConfig() { SupportsInteractivity = false });
+                    HtmlRenderer renderer = new HtmlRenderer(new HostConfig() { SupportsInteractivity = supportsInteractivity });
                     var result = renderer.RenderAdaptiveCard(card);
                     Console.WriteLine($"<div class='cardcontainer'>{result.ToString()}</div>");
                 }
@@ -48,6 +57,14 @@ namespace Render2Html
                     Console.WriteLine($"{file} failed: {err.Message}<br/>");
                 }
             }
+
+#if DEBUG
+            // Leave the console up while debugging
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                Console.ReadLine();
+            }
+#endif
         }
     }
 }
