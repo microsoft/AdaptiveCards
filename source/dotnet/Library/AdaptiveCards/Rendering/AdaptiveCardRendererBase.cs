@@ -33,12 +33,5 @@ namespace AdaptiveCards.Rendering
         public HostConfig HostConfig { get; set; }
 
         public ElementRenderers<TUIElement, TContext> ElementRenderers { get; private set; } = new ElementRenderers<TUIElement, TContext>();
-
-        [Obsolete("Use ElementRenderers.Set instead")]
-        public void SetRenderer<TElement>(Func<TypedElement, TContext, TUIElement> renderer)
-            where TElement : TypedElement
-        {
-            ElementRenderers.Set<TElement>(renderer);
-        }
     }
 }
