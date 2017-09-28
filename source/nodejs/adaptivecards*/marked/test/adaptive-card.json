@@ -54,13 +54,14 @@
         },
         "type": {
           "type": "string",
+          "description": "Must be Action.OpenUrl",
           "enum": [
             "Action.OpenUrl"
           ]
         },
         "url": {
           "type": "string",
-          "description": "Default (browser) url to use"
+          "description": "The URL to open"
         }
       },
       "required": [
@@ -70,11 +71,13 @@
       "type": "object"
     },
     "Action.ShowCard": {
+      "type": "object",
       "additionalProperties": true,
       "description": "Action.ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.",
       "properties": {
         "type": {
           "type": "string",
+          "description": "Must be Action.ShowCard",
           "enum": [
             "Action.ShowCard"
           ]
@@ -90,15 +93,16 @@
       "required": [
         "type",
         "card"
-      ],
-      "type": "object"
+      ]
     },
     "Action.Submit": {
+      "type": "object",
       "additionalProperties": true,
       "description": "Submit action gathers up input fields, merges with optional data field and generates event to client asking for data to be submitted. It is up to the client to determine how that data is processed. For example: With BotFramework bots the client would send an activity through the messaging medium to the bot.",
       "properties": {
         "type": {
           "type": "string",
+          "description": "Must be Action.Submit",
           "enum": [
             "Action.Submit"
           ]
@@ -114,8 +118,7 @@
       },
       "required": [
         "type"
-      ],
-      "type": "object"
+      ]
     },
     "Actions": {
       "additionalItems": true,
@@ -136,9 +139,11 @@
           ]
         },
         "actions": {
+          "description": "The Actions to show in the card's action bar",
           "$ref": "#/definitions/Actions"
         },
         "body": {
+          "description": "The Card Elements to show in the primary card region",
           "$ref": "#/definitions/CardElements"
         }
       },
@@ -218,6 +223,12 @@
     "Input.Choice": {
       "additionalProperties": true,
       "properties": {
+        "type":{
+          "type":"string",
+          "enum": [
+            "Input.Choice"
+          ]
+        },
         "title": {
           "type": "string",
           "description": "The text for a choice"
@@ -252,9 +263,11 @@
       ],
       "properties": {
         "items": {
+          "description": "The Card Elements to include in the Column",
           "$ref": "#/definitions/CardElements"
         },
         "selectAction": {
+          "description": "An Action that will be invoked when the Column is tapped or selected",
           "$ref": "#/definitions/Action"
         },
         "width": {
@@ -279,7 +292,7 @@
     "ColumnSet": {
       "additionalProperties": true,
       "type": "object",
-      "description": "The column group Item adds the ability to have a set of Column objects",
+      "description": "ColumnSet divides a region into Column's allowing elements to sit side-by-side",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -288,13 +301,14 @@
       "properties": {
         "columns": {
           "type": "array",
+          "description": "The array of Columns to divide the region into",
           "items": {
             "$ref": "#/definitions/Column"
           }
         },
         "selectAction": {
           "$ref": "#/definitions/Action",
-          "description": "The action that is executed when the ColumnSet is clicked/tapped."
+          "description": "The Action that is executed when the ColumnSet is clicked/tapped"
         },
         "type": {
           "type": "string",
@@ -315,13 +329,12 @@
         }
       ],
       "properties": {
-        "actions": {
-          "$ref": "#/definitions/Actions"
-        },
         "items": {
+          "description": "The Card Elements to render inside the Container",
           "$ref": "#/definitions/CardElements"
         },
         "selectAction": {
+          "description": "An Action that will be invoked when the Image is tapped or selected",
           "$ref": "#/definitions/Action"
         },
         "style": {
@@ -348,11 +361,20 @@
       "additionalProperties": true,
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Fact"
+          ]
+        },
         "title": {
-          "type": "string"
+          "type": "string",
+          "description": "The title of the fact"
+          
         },
         "value": {
-          "type": "string"
+          "type": "string",
+          "description": "The value of the fact"
         }
       },
       "required": [
@@ -372,6 +394,7 @@
       "properties": {
         "facts": {
           "type": "array",
+          "description": "The array of Facts",
           "items": {
             "$ref": "#/definitions/Fact"
           }
@@ -415,6 +438,7 @@
           "$ref": "#/definitions/HorizontalAlignment"
         },
         "selectAction": {
+          "description": "An Action that will be invoked when the Image is tapped or selected",
           "$ref": "#/definitions/Action"
         },
         "size": {
@@ -451,6 +475,7 @@
       "properties": {
         "images": {
           "type": "array",
+          "description": "The array of Image elements to show",
           "items": {
             "$ref": "#/definitions/Image"
           }
@@ -492,7 +517,7 @@
     "Input.ChoiceSet": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Shows an array of Choice objects",
+      "description": "Shows an array of Choice objects",      
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"

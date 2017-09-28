@@ -33,12 +33,17 @@ function buildModel(options) {
 
                     for (var definitionIndex in rootObj[root.title]) {
 
-                        var definition = {
-                            name: rootObj[root.title][definitionIndex],
-                            examples: []
-                        };
+                        var name = rootObj[root.title][definitionIndex];
+                        var objSchema = schema.definitions[name];
+                        if (objSchema === undefined) {
+                            console.warn("WARN: Unable to locate schema definition for " + name);
+                            continue;
+                        }
 
-                        var objSchema = schema.definitions[definition.name];
+                        var definition = clone(objSchema);
+                        definition.name = name;
+                        definition.examples = [];
+
                         if (objSchema !== undefined) {
                             objSchema = resolveInheritance(objSchema);
 
@@ -46,15 +51,13 @@ function buildModel(options) {
                                 mergeProperties(objSchema.properties, schema.properties);
                             }
 
-                            
                             definition.title = objSchema.title;
                             definition.description = defaultValue(objSchema.description, objSchema.title);
-                            
-                            
+                            definition.properties = objSchema.properties;
+
                             if (defined(options.examplesPath)) {
                                 definition.examples = glob.sync(path.join(options.examplesPath, "/**/" + definition.name + ".json"), { nocase: false })
                             }
-                            definition.properties = objSchema.properties;
 
                             for (var name in definition.properties) {
                                 if (definition.properties.hasOwnProperty(name)) {
@@ -64,21 +67,34 @@ function buildModel(options) {
                                     property.examples = [];
                                     property.required = objSchema.required && objSchema.required.indexOf(name) > -1;
 
-                                    if (defined(options.examplesPath)) {
-                                        property.examples = glob.sync(path.join(options.examplesPath, "**/" + definition.name + "." + name + ".json"), { nocase: false });
+                                    // Get the types of elements allowed in an array
+                                    if (property.type === "array") {
+                                        if (property.items.anyOf) {
+                                            property.itemTypes = property.items.anyOf.map(function (p) {
+                                                if (p.properties.type) {
+                                                    return p.properties.type.enum;
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            var arrayItemProperties = property.items.properties;
+                                            if (arrayItemProperties && arrayItemProperties.type) {
+                                                property.itemTypes = arrayItemProperties.type.enum;
+                                            }
+                                        }
+
+                                        if (defined(options.examplesPath)) {
+                                            property.examples = glob.sync(path.join(options.examplesPath, "**/" + definition.name + "." + name + ".json"), { nocase: false });
+                                        }
                                     }
                                 }
                             }
                             root.children.push(definition);
                         }
-                        else {
-                            console.warn("WARN: Unable to locate schema definition for " + definition.name);
-                        }
-
                     }
 
                     items.push(root);
-                    
+
                 }
 
                 resolve(items);

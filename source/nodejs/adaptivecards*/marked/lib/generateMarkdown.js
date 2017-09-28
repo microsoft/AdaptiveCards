@@ -153,25 +153,40 @@ function getPropertySummary(property, knownTypes, autoLink) {
             insideBrackets = '*-' + property.maxItems;
         }
 
-        var arrayInfo = '[' + insideBrackets + ']';
-
-        if (defined(property.items) && defined(property.items.type)) {
-            if ((property.items.type === 'object') && defined(property.items.title)) {
-                type = property.items.title;
-                formattedType = style.linkType(type, type, autoLink) + ' ';
-
-                type += arrayInfo;
-                formattedType += style.typeValue(arrayInfo);
+        // Custom logic to calculate the types of items in the array
+        if (property.itemTypes) {
+            if (property.itemTypes.length > 5) {
+                // Split on . so Action.Submit => Action
+                var split = property.itemTypes.forEach(function (t) {
+                    var split = t.split(".");
+                    return split.length > 0 ? split[0] : "";
+                });
+                
+                formattedType = "`" + typePrefix + "[]`";
             } else {
-                type = property.items.type;
-                formattedType = style.typeValue(type) + ' ';
-
-                type += arrayInfo;
-                formattedType += style.typeValue(arrayInfo);
+                formattedType = "`" + property.itemTypes[0] + "[]`";
             }
         } else {
-            type += arrayInfo;
-            formattedType = style.typeValue(type);
+            var arrayInfo = '[' + insideBrackets + ']';
+
+            if (defined(property.items) && defined(property.items.type)) {
+                if ((property.items.type === 'object') && defined(property.items.title)) {
+                    type = property.items.title;
+                    formattedType = style.linkType(type, type, autoLink) + ' ';
+
+                    type += arrayInfo;
+                    formattedType += style.typeValue(arrayInfo);
+                } else {
+                    type = property.items.type;
+                    formattedType = style.typeValue(type) + ' ';
+
+                    type += arrayInfo;
+                    formattedType += style.typeValue(arrayInfo);
+                }
+            } else {
+                type += arrayInfo;
+                formattedType = style.typeValue(type);
+            }
         }
     }
 
