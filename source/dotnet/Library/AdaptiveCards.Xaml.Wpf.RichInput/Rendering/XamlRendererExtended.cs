@@ -12,7 +12,7 @@ namespace AdaptiveCards.Rendering
 {
     // TODO: give this a better name
 
-    public class XamlRendererExtended : XamlRenderer
+    public class XamlRendererExtended : AdaptiveCardRenderer
     {
         public XamlRendererExtended(HostConfig hostConfig,
             ResourceDictionary resources,

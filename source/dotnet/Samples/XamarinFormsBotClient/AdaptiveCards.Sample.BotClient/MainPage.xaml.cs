@@ -21,7 +21,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
  
         private Action<object, MissingInputEventArgs> _onMissingInput = (s, e) => { };
         private Action<object, ActionEventArgs> _onAction = (s, a) => { };
-        private XamlRenderer _renderer;
+        private AdaptiveCardRenderer _renderer;
 
         public MainPage()
         {
@@ -40,7 +40,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
             _conversation = await _client.Conversations.StartConversationAsync().ConfigureAwait(false);
 
-            _renderer = new XamlRenderer(new HostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
+            _renderer = new AdaptiveCardRenderer(new HostConfig(), Application.Current.Resources, _onAction, _onMissingInput);
         
             // AdaptiveTestBot
             // d5600769-0c92-4ab3-99f4-61380589a887

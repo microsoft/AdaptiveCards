@@ -14,7 +14,7 @@ using FrameworkElement = Xamarin.Forms.View;
 
 namespace AdaptiveCards.Rendering
 {
-    public partial class XamlRenderer : AdaptiveCardRendererBase<FrameworkElement, RenderContext>
+    public partial class AdaptiveCardRenderer : AdaptiveCardRendererBase<FrameworkElement, RenderContext>
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
@@ -25,7 +25,15 @@ namespace AdaptiveCards.Rendering
         protected Action<object, MissingInputEventArgs> missingDataCallback;
         protected HostConfig _defaultCardStyling;
 
-        public XamlRenderer(HostConfig hostConfig,
+        public AdaptiveCardRenderer() : this(new HostConfig()) { }
+
+        public AdaptiveCardRenderer(HostConfig hostConfig) : base(hostConfig)
+        {
+            SetObjectTypes();
+        }
+
+        [Obsolete("Use the single-parameter constructor instead")]
+        public AdaptiveCardRenderer(HostConfig hostConfig,
             ResourceDictionary resources,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
@@ -38,7 +46,8 @@ namespace AdaptiveCards.Rendering
         }
 
 #if WPF
-        public XamlRenderer(HostConfig hostConfig,
+        [Obsolete("Use the single-parameter constructor instead")]
+        public AdaptiveCardRenderer(HostConfig hostConfig,
             string stylePath,
             Action<object, ActionEventArgs> actionCallback = null,
             Action<object, MissingInputEventArgs> missingDataCallback = null)
