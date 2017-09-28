@@ -35,6 +35,7 @@ static std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> Adaptive
     { AdaptiveCardSchemaKey::Columns, "columns" },
     { AdaptiveCardSchemaKey::ColumnSet, "columnSet" },
     { AdaptiveCardSchemaKey::Container, "container" },
+    { AdaptiveCardSchemaKey::ContainerStyles, "containerStyles" },
     { AdaptiveCardSchemaKey::Dark, "dark" },
     { AdaptiveCardSchemaKey::Data, "data"},
     { AdaptiveCardSchemaKey::DateInput, "dateInput" },
