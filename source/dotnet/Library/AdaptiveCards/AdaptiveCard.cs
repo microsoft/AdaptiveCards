@@ -119,5 +119,10 @@ namespace AdaptiveCards
         {
             return Actions.Any();
         }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }
