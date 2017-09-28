@@ -25,7 +25,7 @@ namespace AdaptiveCards.Rendering
                     datePicker.DisplayDateEnd = maxValue;
                 datePicker.Style = context.GetStyle("Adaptive.Input.Date");
                 datePicker.DataContext = input;
-                context.InputBindings.Add(input.Id, () => datePicker.Text);
+                context.InputBindings.Add(input.Id, () => ToIso8601Date(datePicker.Text));
                 return datePicker;
             }
             else
@@ -34,6 +34,19 @@ namespace AdaptiveCards.Rendering
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 return context.Render(textBlock);
             }
+        }
+
+        static string ToIso8601Date(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return string.Empty;
+
+            DateTime dateTime;
+            var parsed = DateTime.TryParse(text, null, System.Globalization.DateTimeStyles.RoundtripKind, out dateTime);
+            if (!parsed)
+                return string.Empty;
+
+            return dateTime.ToString("yyyy-MM-dd");
         }
     }
 }

@@ -24,7 +24,7 @@ namespace AdaptiveCards.Rendering
                 timePicker.Watermark = input.Placeholder;
                 timePicker.Style = context.GetStyle("Adaptive.Input.Time");
                 timePicker.DataContext = input;
-                context.InputBindings.Add(input.Id, () => timePicker.Text);
+                context.InputBindings.Add(input.Id, () => ToIso8601Time(timePicker.Text));
                 return timePicker;
             }
             else
@@ -34,6 +34,19 @@ namespace AdaptiveCards.Rendering
                 return context.Render(textBlock);
             }
 
+        }
+
+        static string ToIso8601Time(string text)
+        {
+            if(string.IsNullOrEmpty(text))
+                return string.Empty;
+
+            DateTime dateTime;
+            var parsed = DateTime.TryParse(text, null, System.Globalization.DateTimeStyles.RoundtripKind, out dateTime);
+            if (!parsed)
+                return string.Empty;
+
+            return dateTime.ToString("HH:mm");
         }
     }
 }
