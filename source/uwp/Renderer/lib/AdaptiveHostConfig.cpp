@@ -8,6 +8,7 @@
 #include "AdaptiveFactSetConfig.h"
 #include "AdaptiveFontSizesConfig.h"
 #include "AdaptiveFontWeightsConfig.h"
+#include "AdaptiveHostConfigParseResult.h"
 #include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
 #include "AdaptiveImageSizesConfig.h"
@@ -21,32 +22,37 @@ using namespace ABI::Windows::Data::Json;
 namespace AdaptiveCards { namespace Uwp
 {
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveHostConfig** config) noexcept try
+    HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveHostConfigParseResult** parseResult) noexcept try
     {
-        *config = nullptr;
+        *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
-        return FromJsonString(adaptiveJsonString, config);
+        return FromJsonString(adaptiveJsonString, parseResult);
 
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfigStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveHostConfig** config) noexcept try
+    HRESULT AdaptiveHostConfigStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveHostConfigParseResult** parseResult) noexcept try
     {
-        *config = nullptr;
+        *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
 
-        return FromJsonString(adaptiveJsonString, config);
+        return FromJsonString(adaptiveJsonString, parseResult);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(const std::string jsonString, IAdaptiveHostConfig** config)
+    HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(const std::string jsonString, IAdaptiveHostConfigParseResult** parseResult)
     {
         HostConfig sharedHostConfig = HostConfig::DeserializeFromString(jsonString);
-        return MakeAndInitialize<AdaptiveHostConfig>(config, sharedHostConfig);
+
+        ComPtr<IAdaptiveHostConfig> config;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&config, sharedHostConfig));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfigParseResult>(parseResult, config.Get()));
+
+        return S_OK;
     }
 
     HRESULT AdaptiveHostConfig::RuntimeClassInitialize() noexcept try

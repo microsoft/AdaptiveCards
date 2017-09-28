@@ -124,6 +124,8 @@
     <ClInclude Include="lib\AdaptiveCardGetResourceStreamArgs.h" />
     <ClInclude Include="lib\AdaptiveCardRendererComponent.h" />
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
+    <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
+    <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
     <ClInclude Include="lib\AdaptiveContainerStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveElementParserRegistration.h" />
@@ -199,6 +201,8 @@
     <ClCompile Include="lib\AdaptiveCardGetResourceStreamArgs.cpp" />
     <ClCompile Include="lib\AdaptiveCardRendererComponent.cpp" />
     <ClCompile Include="lib\AdaptiveCardResourceResolvers.cpp" />
+    <ClCompile Include="lib\AdaptiveHostConfigParseResult.cpp" />
+    <ClCompile Include="lib\AdaptiveCardParseResult.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStyleDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveContainerStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveElementParserRegistration.cpp" />

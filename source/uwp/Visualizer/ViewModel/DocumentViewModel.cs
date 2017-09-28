@@ -80,7 +80,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 if (JsonObject.TryParse(payload, out jsonObject))
                 {
                     RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCardFromJson(jsonObject);
-                    if (renderResult.IsRenderedSuccessfully)
+                    if (renderResult.FrameworkElement != null)
                     {
                         RenderedCard = renderResult.FrameworkElement;
                         renderResult.Action += async (sender, e) =>
@@ -91,7 +91,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                             {
                                 AdaptiveShowCardAction showCardAction = (AdaptiveShowCardAction)e.Action;
                                 RenderedAdaptiveCard renderedShowCard = _renderer.RenderAdaptiveCard(showCardAction.Card);
-                                if (renderedShowCard.IsRenderedSuccessfully)
+                                if (renderedShowCard.FrameworkElement != null)
                                 {
                                     m_actionDialog.Content = renderedShowCard.FrameworkElement;
                                 }

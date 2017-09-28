@@ -52,6 +52,8 @@ namespace AdaptiveCards
         runtimeclass AdaptiveActionEventArgs;
         runtimeclass RenderedAdaptiveCard;
         runtimeclass AdaptiveInputs;
+        runtimeclass AdaptiveCardParseResult;
+        runtimeclass AdaptiveHostConfigParseResult;
 
         runtimeclass AdaptiveElementParserRegistration;
         runtimeclass AdaptiveActionParserRegistration;
@@ -420,14 +422,33 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(b4db0937-025a-4c08-980b-750703e77e37),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveCardParseResult)
+        ]
+        interface IAdaptiveCardParseResult : IInspectable
+        {
+            [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCard** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+        ]
+        runtimeclass AdaptiveCardParseResult
+        {
+            [default] interface IAdaptiveCardParseResult;
+        }
+
+        [
             uuid(bace01f2-5642-4366-879a-dec601d8b7e3),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveCard),
         ]
         interface IAdaptiveCardStatics : IInspectable
         {
-            HRESULT FromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] AdaptiveCard** card);
-            HRESULT FromJsonString([in] HSTRING adaptiveJson, [out, retval] AdaptiveCard** card);
+            HRESULT FromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] AdaptiveCardParseResult** card);
+            HRESULT FromJsonString([in] HSTRING adaptiveJson, [out, retval] AdaptiveCardParseResult** card);
         };
 
         [
@@ -1375,14 +1396,33 @@ namespace AdaptiveCards
         };
 
         [
+            uuid(0b1f8963-9d45-4ac0-9af4-cd7923f5206e),
+            version(NTDDI_WIN10_RS1),
+            exclusiveto(AdaptiveHostConfigParseResult)
+        ]
+        interface IAdaptiveHostConfigParseResult : IInspectable
+        {
+            [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
+        };
+
+        [
+            version(NTDDI_WIN10_RS1),
+            activatable(NTDDI_WIN10_RS1),
+        ]
+        runtimeclass AdaptiveHostConfigParseResult
+        {
+            [default] interface IAdaptiveHostConfigParseResult;
+        }
+
+        [
             uuid(1a09b9b7-d678-495f-949e-3ad677424fdb),
             version(NTDDI_WIN10_RS1),
             exclusiveto(AdaptiveHostConfig),
         ]
         interface IAdaptiveHostConfigStatics : IInspectable
         {
-            HRESULT FromJsonString([in] HSTRING hostConfigJson, [out, retval] AdaptiveHostConfig** config);
-            HRESULT FromJson([in] Windows.Data.Json.JsonObject* hostConfigJson, [out, retval] AdaptiveHostConfig** config);
+            HRESULT FromJsonString([in] HSTRING hostConfigJson, [out, retval] AdaptiveHostConfigParseResult** config);
+            HRESULT FromJson([in] Windows.Data.Json.JsonObject* hostConfigJson, [out, retval] AdaptiveHostConfigParseResult** config);
         };
 
         [
@@ -1543,8 +1583,6 @@ namespace AdaptiveCards
             [propget] HRESULT OriginatingCard([out, retval] AdaptiveCard** value);
 
             [propget] HRESULT FrameworkElement([out, retval] Windows.UI.Xaml.UIElement** value);
-
-            [propget] HRESULT IsRenderedSuccessfully([out, retval] boolean* value);
 
             [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
 

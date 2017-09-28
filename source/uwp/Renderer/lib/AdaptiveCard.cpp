@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveCard.h"
+#include "AdaptiveCardParseResult.h"
 
 #include <json.h>
 #include "Util.h"
@@ -17,32 +18,36 @@ using namespace Microsoft::WRL::Wrappers;
 namespace AdaptiveCards { namespace Uwp
 {
     _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCard** card) noexcept try
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
     {
-        *card = nullptr;
+        *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
 
-        return FromJsonString(adaptiveJsonString, card);
+        return FromJsonString(adaptiveJsonString, parseResult);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveCard** card) noexcept try
+    HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
     {
-        *card = nullptr;
+        *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
 
-        return FromJsonString(adaptiveJsonString, card);
+        return FromJsonString(adaptiveJsonString, parseResult);
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::FromJsonString(const std::string jsonString, IAdaptiveCard** card)
+    HRESULT AdaptiveCardStaticsImpl::FromJsonString(const std::string jsonString, IAdaptiveCardParseResult** parseResult)
     {
         std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString);
-        return MakeAndInitialize<AdaptiveCard>(card, sharedAdaptiveCard);
+
+        ComPtr<IAdaptiveCard> adaptiveCard;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedAdaptiveCard));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(parseResult, adaptiveCard.Get()));
+        return S_OK;
     }
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()

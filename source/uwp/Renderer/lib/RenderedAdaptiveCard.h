@@ -23,7 +23,6 @@ namespace AdaptiveCards { namespace Uwp
         // IRenderedAdaptiveCard
         IFACEMETHODIMP get_OriginatingCard(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCard** value);
         IFACEMETHODIMP get_FrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** value);
-        IFACEMETHODIMP get_IsRenderedSuccessfully(_Out_ boolean* value);
         IFACEMETHODIMP get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveInputs** value);
         IFACEMETHODIMP add_Action(
             _In_ ABI::Windows::Foundation::ITypedEventHandler<

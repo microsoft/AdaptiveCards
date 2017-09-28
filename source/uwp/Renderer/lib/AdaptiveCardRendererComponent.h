@@ -63,7 +63,7 @@ namespace AdaptiveCards { namespace Uwp
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
 
-        HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCard** adaptiveCard);
+        HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** adaptiveCard);
     };
 
     ActivatableClass(AdaptiveCardRenderer);

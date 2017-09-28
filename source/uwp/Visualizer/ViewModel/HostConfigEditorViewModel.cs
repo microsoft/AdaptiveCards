@@ -22,7 +22,7 @@ namespace AdaptiveCardVisualizer.ViewModel
         {
             try
             {
-                HostConfig = AdaptiveHostConfig.FromJsonString(payload);
+                HostConfig = AdaptiveHostConfig.FromJsonString(payload).HostConfig;
 
                 HostConfigChanged?.Invoke(this, HostConfig);
             }
