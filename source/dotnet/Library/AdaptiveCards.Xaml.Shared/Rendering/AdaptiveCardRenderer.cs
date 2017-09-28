@@ -136,7 +136,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public FrameworkElement RenderAdaptiveCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
+        public FrameworkElement RenderCard(AdaptiveCard card, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)
             {
@@ -147,6 +147,7 @@ namespace AdaptiveCards.Rendering
             return context.Render(card);
         }
 
+        [Obsolete("Use RenderCard instead, passing in the Card property within the ShowCardAction")]
         public FrameworkElement RenderShowCard(ShowCardAction showCard, Func<string, MemoryStream> imageResolver = null, HostConfig hostConfig = null)
         {
             RenderContext context = new RenderContext(this.actionCallback, this.missingDataCallback, imageResolver)

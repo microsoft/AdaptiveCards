@@ -110,7 +110,7 @@ namespace AdaptiveCards.Rendering
         /// <returns></returns>
         protected BitmapSource _renderToBitmapSource(AdaptiveCard card, int width, Func<string, MemoryStream> imageResolver = null)
         {
-            var uiCard = this._xamlRenderer.RenderAdaptiveCard(card, imageResolver);
+            var uiCard = this._xamlRenderer.RenderCard(card, imageResolver);
 
             uiCard.Measure(new System.Windows.Size(width, 4000));
             uiCard.Arrange(new Rect(new System.Windows.Size(width, uiCard.DesiredSize.Height)));

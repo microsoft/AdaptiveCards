@@ -116,7 +116,7 @@ namespace WpfVisualizer
                     if (_card != null)
                     {
                         this.Renderer = new XamlRendererExtended(this.HostConfig, this.Resources, _onAction, _OnMissingInput);
-                        var uiCard = this.Renderer.RenderAdaptiveCard(_card, hostConfig: HostConfig);
+                        var uiCard = this.Renderer.RenderCard(_card, hostConfig: HostConfig);
                         uiCard.Effect = new DropShadowEffect()
                         {
                             BlurRadius = 15,
