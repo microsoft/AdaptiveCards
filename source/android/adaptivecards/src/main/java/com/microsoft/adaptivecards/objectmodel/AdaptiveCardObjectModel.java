@@ -8,7 +8,7 @@
 
 package com.microsoft.adaptivecards.objectmodel;
 
-public class AdaptiveCardObjectModel {
+public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants {
   public static String AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type) {
     return AdaptiveCardObjectModelJNI.AdaptiveCardSchemaKeyToString(type.swigValue());
   }

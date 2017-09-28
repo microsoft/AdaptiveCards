@@ -17,6 +17,8 @@ namespace std {
 %include <std_shared_ptr.i>
 %include <std_vector.i>
 
+#define __ANDROID__ 1
+
 %{
 #include "pch.h"
 #include <memory>

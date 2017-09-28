@@ -103,7 +103,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         {
             if (result.isSuccessful())
             {
-                m_imageView.setImageBitmap( result.getResult());
+                m_imageView.setImageBitmap(result.getResult());
             }
             else
             {

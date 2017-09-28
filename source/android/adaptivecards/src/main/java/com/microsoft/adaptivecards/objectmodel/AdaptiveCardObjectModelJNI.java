@@ -9,6 +9,7 @@
 package com.microsoft.adaptivecards.objectmodel;
 
 public class AdaptiveCardObjectModelJNI {
+  public final static native int __ANDROID___get();
   public final static native long new_BaseCardElementVector__SWIG_0();
   public final static native long new_BaseCardElementVector__SWIG_1(long jarg1);
   public final static native long BaseCardElementVector_size(long jarg1, BaseCardElementVector jarg1_);
@@ -423,9 +424,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long AdaptiveCard_GetBody__SWIG_0(long jarg1, AdaptiveCard jarg1_);
   public final static native long AdaptiveCard_GetActions(long jarg1, AdaptiveCard jarg1_);
   public final static native int AdaptiveCard_GetElementType(long jarg1, AdaptiveCard jarg1_);
-  public final static native long AdaptiveCard_DeserializeFromFile(String jarg1);
-  public final static native long AdaptiveCard_Deserialize(long jarg1);
-  public final static native long AdaptiveCard_DeserializeFromString(String jarg1);
+  public final static native long AdaptiveCard_DeserializeFromFile(String jarg1) throws java.io.IOException;
+  public final static native long AdaptiveCard_Deserialize(long jarg1) throws java.io.IOException;
+  public final static native long AdaptiveCard_DeserializeFromString(String jarg1) throws java.io.IOException;
   public final static native long AdaptiveCard_SerializeToJsonValue(long jarg1, AdaptiveCard jarg1_);
   public final static native String AdaptiveCard_Serialize(long jarg1, AdaptiveCard jarg1_);
   public final static native void delete_AdaptiveCard(long jarg1);
