@@ -134,6 +134,7 @@
       "properties": {
         "type": {
           "type": "string",
+          "description": "Must be AdaptiveCard",
           "enum": [
             "AdaptiveCard"
           ]
