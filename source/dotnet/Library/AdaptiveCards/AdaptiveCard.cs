@@ -97,7 +97,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Version of schema that this card was authored. Defaults to the latest Adaptive Card schema version that this library supports.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if NET452
         [XmlAttribute]
 #endif

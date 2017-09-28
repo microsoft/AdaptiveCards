@@ -24,9 +24,6 @@ namespace AdaptiveCards.Test
 
             Assert.AreEqual(25, result.HostConfig.FontSizes.Small);
             Assert.AreEqual(26, result.HostConfig.FontSizes.Default);
-#pragma warning disable 612, 618
-            Assert.AreEqual(26, result.HostConfig.FontSizes.Normal);
-#pragma warning restore 612, 618
             Assert.AreEqual(27, result.HostConfig.FontSizes.Medium);
             Assert.AreEqual(28, result.HostConfig.FontSizes.Large);
             Assert.AreEqual(29, result.HostConfig.FontSizes.ExtraLarge);
