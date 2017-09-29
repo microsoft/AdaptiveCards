@@ -792,6 +792,9 @@ namespace AdaptiveCards
         interface IAdaptiveColumnSet : IInspectable
         {
             [propget] HRESULT Columns([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveColumn*>** value);
+
+            [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+            [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
         };
 
         [

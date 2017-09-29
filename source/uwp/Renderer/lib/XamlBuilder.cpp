@@ -1530,11 +1530,13 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(gridAsFrameworkElement->put_Style(style.Get()));
         }
 
-        if (true)
+        ComPtr<IAdaptiveActionElement> selectAction;
+        THROW_IF_FAILED(adaptiveColumnSet->get_SelectAction(&selectAction));
+        if (selectAction != nullptr)
         {
             ComPtr<IUIElement> gridAsUIElement;
             THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
-            WrapInFullWidthTouchTarget(gridAsUIElement.Get(), columnSetControl);
+            WrapInFullWidthTouchTarget(gridAsUIElement.Get(), selectAction.Get(), columnSetControl); // TODO
         }
         else
         {
@@ -2059,6 +2061,7 @@ namespace AdaptiveCards { namespace Uwp
 
     void XamlBuilder::WrapInFullWidthTouchTarget(
         IUIElement* elementToWrap,
+        IAdaptiveActionElement* action,
         IUIElement** finalElement)
     {
         ComPtr<IButton> button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
@@ -2092,5 +2095,42 @@ namespace AdaptiveCards { namespace Uwp
         THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin({ negativeCardMargin, 0, negativeCardMargin, 0 }));
 
         THROW_IF_FAILED(button.CopyTo(finalElement));
+    }
+
+    void XamlBuilder::WireButtonCickToAction(
+        IButton* button,
+        IAdaptiveActionElement* action)
+    {
+        ComPtr<IButton> localButton(button);
+        //ComPtr<RenderedAdaptiveCard> strongRenderResult(renderResult);
+
+        ABI::AdaptiveCards::Uwp::ActionType actionType;
+        THROW_IF_FAILED(action->get_ActionType(&actionType));
+
+        if (actionType == ABI::AdaptiveCards::Uwp::ActionType::ShowCard)
+        {
+            throw E_NOTIMPL;
+        }
+
+        // Add click handler
+        ComPtr<IButtonBase> buttonBase;
+        THROW_IF_FAILED(localButton.As(&buttonBase));
+
+        //EventRegistrationToken clickToken;
+        //THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionType, strongRenderResult](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+        //{
+        //    // get the inputElements in Json form.
+        //    ComPtr<IAdaptiveInputs> gatheredInputs;
+        //    THROW_IF_FAILED(strongRenderResult->get_UserInputs(&gatheredInputs));
+        //    ComPtr<IJsonObject> inputsAsJson;
+        //    THROW_IF_FAILED(gatheredInputs->AsJson(InputValueMode::RawString, &inputsAsJson));
+
+        //    // TODO: Data binding for inputs 
+        //    ComPtr<IAdaptiveActionEventArgs> eventArgs;
+        //    THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Uwp::AdaptiveActionEventArgs>(&eventArgs, action.Get(), inputsAsJson.Get()));
+        //    THROW_IF_FAILED(strongRenderResult->SendActionEvent(eventArgs.Get()));
+
+        //    return S_OK;
+        //}).Get(), &clickToken));
     }
 }}

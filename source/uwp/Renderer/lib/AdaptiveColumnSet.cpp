@@ -41,6 +41,18 @@ namespace AdaptiveCards { namespace Uwp
     }
 
     _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveColumnSet::get_SelectAction(IAdaptiveActionElement** action)
+    {
+        return GenerateActionProjection(m_sharedColumnSet->GetSelectAction(), action);
+    }
+
+    _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveColumnSet::put_SelectAction(IAdaptiveActionElement* action)
+    {
+        return E_NOTIMPL;
+    }
+
+    _Use_decl_annotations_
     IFACEMETHODIMP AdaptiveColumnSet::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::ColumnSet;
