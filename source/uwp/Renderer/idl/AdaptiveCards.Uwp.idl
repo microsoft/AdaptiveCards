@@ -307,6 +307,7 @@ namespace AdaptiveCards
         interface IAdaptiveCardElement : IInspectable
         {
             [propget] HRESULT ElementType([out, retval] ElementType* value);
+            [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
 
             [propget] HRESULT Spacing([out, retval] Spacing* value);
             [propput] HRESULT Spacing([in] Spacing value);
@@ -316,8 +317,6 @@ namespace AdaptiveCards
 
             [propget] HRESULT Id([out, retval] HSTRING* value);
             [propput] HRESULT Id([in] HSTRING value);
-
-            [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
         };
 
         [
@@ -445,8 +444,29 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveCardStatics : IInspectable
         {
-            HRESULT FromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] AdaptiveCardParseResult** card);
-            HRESULT FromJsonString([in] HSTRING adaptiveJson, [out, retval] AdaptiveCardParseResult** card);
+            [overload("FromJson")]
+            HRESULT FromJson(
+                [in] Windows.Data.Json.JsonObject* adaptiveJson, 
+                [out, retval] AdaptiveCardParseResult** card);
+
+            [overload("FromJson")]
+            HRESULT FromJsonWithParserRegistration(
+                [in] Windows.Data.Json.JsonObject* adaptiveJson, 
+                [in] AdaptiveElementParserRegistration* elementRegistration, 
+                [in] AdaptiveActionParserRegistration* actionRegistration, 
+                [out, retval] AdaptiveCardParseResult** card);
+
+            [overload("FromJsonString")]
+            HRESULT FromJsonString(
+                [in] HSTRING adaptiveJson, 
+                [out, retval] AdaptiveCardParseResult** card);
+
+            [overload("FromJsonString")]
+            HRESULT FromJsonStringWithParserRegistration(
+                [in] HSTRING adaptiveJson,
+                [in] AdaptiveElementParserRegistration* elementRegistration,
+                [in] AdaptiveActionParserRegistration* actionRegistration,
+                [out, retval] AdaptiveCardParseResult** card);
         };
 
         [
@@ -1635,18 +1655,8 @@ namespace AdaptiveCards
         };
 
         [
-            uuid(f17ba6c5-9eb7-43db-8d72-db5d398d3d39),
             version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveElementParserRegistration),
-        ]
-        interface IAdaptiveElementParserRegistrationStatics : IInspectable
-        {
-            HRESULT GetDefault([out, retval] AdaptiveElementParserRegistration** result);
-        };
-
-        [
-            version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
+            activatable(NTDDI_WIN10_RS1),
         ]
         runtimeclass AdaptiveElementParserRegistration
         {
@@ -1663,16 +1673,6 @@ namespace AdaptiveCards
             HRESULT Set([in] HSTRING type, [in] IAdaptiveActionParser* Parser);
             HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveActionParser** result);
             HRESULT Remove([in] HSTRING type);
-        };
-
-        [
-            uuid(27e0c83f-143a-4d32-a4a9-9794312fd051),
-            version(NTDDI_WIN10_RS1),
-            exclusiveto(AdaptiveActionParserRegistration),
-        ]
-        interface IAdaptiveActionParserRegistrationStatics : IInspectable
-        {
-            HRESULT GetDefault([out, retval] AdaptiveActionParserRegistration** result);
         };
 
         [

@@ -22,6 +22,8 @@
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTimeInput.h"
 #include "AdaptiveToggleInput.h"
+#include "CustomActionWrapper.h"
+#include "CustomElementWrapper.h"
 #include "enums.h"
 #include "util.h"
 
@@ -82,51 +84,54 @@ HRESULT GenerateContainedElementsProjection(
         {
         case CardElementType::TextBlock:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveTextBlock>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::TextBlock>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::TextBlock>(containedElement)));
             break;
         case CardElementType::Image:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveImage>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::Image>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::Image>(containedElement)));
             break;
         case CardElementType::Container:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveContainer>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::Container>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::Container>(containedElement)));
             break;
         case CardElementType::ColumnSet:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveColumnSet>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::ColumnSet>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::ColumnSet>(containedElement)));
             break;
         case CardElementType::FactSet:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveFactSet>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::FactSet>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::FactSet>(containedElement)));
             break;
         case CardElementType::ImageSet:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveImageSet>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::ImageSet>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::ImageSet>(containedElement)));
             break;
         case CardElementType::ChoiceSetInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveChoiceSetInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::ChoiceSetInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::ChoiceSetInput>(containedElement)));
             break;
         case CardElementType::DateInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveDateInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::DateInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::DateInput>(containedElement)));
             break;
         case CardElementType::NumberInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveNumberInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::NumberInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::NumberInput>(containedElement)));
             break;
         case CardElementType::TextInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveTextInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::TextInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::TextInput>(containedElement)));
             break;
         case CardElementType::TimeInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveTimeInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::TimeInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::TimeInput>(containedElement)));
             break;
         case CardElementType::ToggleInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveToggleInput>(&projectedContainedElement,
-                std::static_pointer_cast<AdaptiveCards::ToggleInput>(containedElement)));
+                std::dynamic_pointer_cast<AdaptiveCards::ToggleInput>(containedElement)));
+            break;
+        case CardElementType::Custom:
+            RETURN_IF_FAILED(std::dynamic_pointer_cast<CustomElementWrapper> (containedElement)->GetWrappedElement(&projectedContainedElement));
             break;
         default:
             return E_UNEXPECTED;
@@ -165,15 +170,18 @@ HRESULT GenerateActionProjection(
     {
         case ActionType::OpenUrl:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveOpenUrlAction>(projectedAction,
-                std::static_pointer_cast<AdaptiveCards::OpenUrlAction>(action)));
+                std::dynamic_pointer_cast<AdaptiveCards::OpenUrlAction>(action)));
             break;
         case ActionType::ShowCard:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveShowCardAction>(projectedAction,
-                std::static_pointer_cast<AdaptiveCards::ShowCardAction>(action)));
+                std::dynamic_pointer_cast<AdaptiveCards::ShowCardAction>(action)));
             break;
         case ActionType::Submit:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Uwp::AdaptiveSubmitAction>(projectedAction,
-                std::static_pointer_cast<AdaptiveCards::SubmitAction>(action)));
+                std::dynamic_pointer_cast<AdaptiveCards::SubmitAction>(action)));
+            break;
+        case ActionType::Custom:
+            RETURN_IF_FAILED(std::dynamic_pointer_cast<CustomActionWrapper> (action)->GetWrappedElement(projectedAction));
             break;
         default:
             return E_UNEXPECTED;

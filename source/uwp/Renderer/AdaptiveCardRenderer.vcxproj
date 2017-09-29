@@ -147,6 +147,8 @@
     <ClInclude Include="lib\AdaptiveTextInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveTimeInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleInputRenderer.h" />
+    <ClInclude Include="lib\CustomActionWrapper.h" />
+    <ClInclude Include="lib\CustomElementWrapper.h" />
     <ClInclude Include="lib\RenderedAdaptiveCard.h" />
     <ClInclude Include="lib\AdaptiveSeparatorConfig.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionConfig.h" />
@@ -222,6 +224,8 @@
     <ClCompile Include="lib\AdaptiveTextInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTimeInputRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveToggleInputRenderer.cpp" />
+    <ClCompile Include="lib\CustomActionWrapper.cpp" />
+    <ClCompile Include="lib\CustomElementWrapper.cpp" />
     <ClCompile Include="lib\RenderedAdaptiveCard.cpp" />
     <ClCompile Include="lib\AdaptiveSeparatorConfig.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionConfig.cpp" />

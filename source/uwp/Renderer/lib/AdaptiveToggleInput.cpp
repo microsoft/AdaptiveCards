@@ -23,6 +23,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleInput>& sharedToggleInput)
     {
+        if (sharedToggleInput == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedToggleInput = sharedToggleInput;
         return S_OK;
     }

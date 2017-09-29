@@ -29,6 +29,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ImageSet>& sharedImageSet)
     {
+        if (sharedImageSet == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedImageSet = sharedImageSet;
         GenerateImagesProjection(m_sharedImageSet->GetImages(), m_images.Get());
         return S_OK;

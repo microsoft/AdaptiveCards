@@ -29,6 +29,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceSetInput>& sharedChoiceSetInput)
     {
+        if (sharedChoiceSetInput == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedChoiceSetInput = sharedChoiceSetInput;
         GenerateInputChoicesProjection(m_sharedChoiceSetInput->GetChoices(), m_choices.Get());
         return S_OK;

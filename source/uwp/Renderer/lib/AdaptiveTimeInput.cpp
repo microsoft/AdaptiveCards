@@ -23,6 +23,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TimeInput>& sharedTimeInput)
     {
+        if (sharedTimeInput == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedTimeInput = sharedTimeInput;
         return S_OK;
     }

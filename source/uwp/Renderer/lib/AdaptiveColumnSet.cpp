@@ -29,6 +29,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ColumnSet>& sharedColumnSet)
     {
+        if (sharedColumnSet == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedColumnSet = sharedColumnSet;
         GenerateColumnsProjection(m_sharedColumnSet->GetColumns(), m_columns.Get());
         return S_OK;

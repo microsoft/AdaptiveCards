@@ -26,6 +26,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Image>& sharedImage)
     {
+        if (sharedImage == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedImage = sharedImage;
         return S_OK;
     }

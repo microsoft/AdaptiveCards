@@ -14,13 +14,13 @@ public:
 
     virtual ~BaseActionElement();
 
-    std::string GetTitle() const;
-    void SetTitle(const std::string value);
+    virtual std::string GetTitle() const;
+    virtual void SetTitle(const std::string value);
 
-    std::string GetId() const;
-    void SetId(const std::string value);
+    virtual std::string GetId() const;
+    virtual void SetId(const std::string value);
 
-    const ActionType GetElementType() const;
+    virtual const ActionType GetElementType() const;
 
     virtual std::string Serialize() = 0;
     virtual Json::Value SerializeToJsonValue();

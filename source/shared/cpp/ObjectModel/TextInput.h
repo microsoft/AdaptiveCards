@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "BaseInputElement.h"
 #include "Enums.h"
+#include "ElementParserRegistration.h"
 
 namespace AdaptiveCards
 {
@@ -10,9 +11,6 @@ class TextInput : public BaseInputElement
 {
 public:
     TextInput();
-
-    static std::shared_ptr<TextInput> Deserialize(const Json::Value& root);
-    static std::shared_ptr<TextInput> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
     Json::Value SerializeToJsonValue();
@@ -38,5 +36,19 @@ private:
     bool m_isMultiline;
     unsigned int m_maxLength;
     TextInputStyle m_style;
+};
+
+class TextInputParser : public IBaseCardElementParser
+{
+public:
+    std::shared_ptr<BaseCardElement> Deserialize(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const Json::Value& root);
+
+    std::shared_ptr<BaseCardElement> DeserializeFromString(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const std::string& jsonString);
 };
 }

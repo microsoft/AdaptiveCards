@@ -29,6 +29,11 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Container>& sharedContainer)
     {
+        if (sharedContainer == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
         m_sharedContainer = sharedContainer;
         GenerateContainedElementsProjection(m_sharedContainer->GetItems(), m_items.Get());
         return S_OK;

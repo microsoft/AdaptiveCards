@@ -63,11 +63,32 @@ namespace AdaptiveCards { namespace Uwp
         }
 
         // IAdaptiveCardStatics
-        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
-        IFACEMETHODIMP FromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
+        IFACEMETHODIMP FromJson(
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson, 
+            _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
+
+        IFACEMETHODIMP FromJsonWithParserRegistration(
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson, 
+            ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
+
+        IFACEMETHODIMP FromJsonString(
+            _In_ HSTRING adaptiveJson, 
+            _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
+
+        IFACEMETHODIMP FromJsonStringWithParserRegistration(
+            _In_ HSTRING adaptiveJson,
+            ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
 
     private:
-        HRESULT FromJsonString(_In_ const std::string jsonString, _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult);
+        HRESULT FromJsonString(
+            _In_ const std::string jsonString, 
+            ABI::AdaptiveCards::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveCards::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _COM_Outptr_ ABI::AdaptiveCards::Uwp::IAdaptiveCardParseResult** parseResult);
     };
 
     ActivatableClassWithFactory(AdaptiveCard, AdaptiveCardStaticsImpl);
