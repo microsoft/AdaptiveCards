@@ -24,22 +24,15 @@
 		F4933CC71F79852C00F6EBFD /* Column.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */; };
 		F4933CC81F79852C00F6EBFD /* Column.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9B1F79852C00F6EBFD /* Column.Style.json */; };
 		F4933CC91F79852C00F6EBFD /* Column.Width.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9C1F79852C00F6EBFD /* Column.Width.json */; };
-		F4933CCA1F79852C00F6EBFD /* Column.WidthRatio.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9D1F79852C00F6EBFD /* Column.WidthRatio.json */; };
-		F4933CCB1F79852C00F6EBFD /* ColumnSet.Columns.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9E1F79852C00F6EBFD /* ColumnSet.Columns.json */; };
-		F4933CCC1F79852C00F6EBFD /* ColumnSet.Separator.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C9F1F79852C00F6EBFD /* ColumnSet.Separator.json */; };
 		F4933CCD1F79852C00F6EBFD /* ColumnSet.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA01F79852C00F6EBFD /* ColumnSet.Spacing.json */; };
-		F4933CCE1F79852C00F6EBFD /* Container.Items.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA11F79852C00F6EBFD /* Container.Items.json */; };
 		F4933CCF1F79852C00F6EBFD /* Container.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA21F79852C00F6EBFD /* Container.SelectAction.json */; };
-		F4933CD01F79852C00F6EBFD /* Container.Separator.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA31F79852C00F6EBFD /* Container.Separator.json */; };
 		F4933CD11F79852C00F6EBFD /* Container.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA41F79852C00F6EBFD /* Container.Spacing.json */; };
-		F4933CD21F79852C00F6EBFD /* Container.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA51F79852C00F6EBFD /* Container.Style.json */; };
 		F4933CD31F79852C00F6EBFD /* FactSet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA61F79852C00F6EBFD /* FactSet.json */; };
 		F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA71F79852C00F6EBFD /* Image.HorizontalAlignment.json */; };
 		F4933CD51F79852C00F6EBFD /* Image.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA81F79852C00F6EBFD /* Image.SelectAction.json */; };
 		F4933CD61F79852C00F6EBFD /* Image.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CA91F79852C00F6EBFD /* Image.Size.json */; };
 		F4933CD71F79852C00F6EBFD /* Image.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAA1F79852C00F6EBFD /* Image.Spacing.json */; };
 		F4933CD81F79852C00F6EBFD /* Image.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAB1F79852C00F6EBFD /* Image.Style.json */; };
-		F4933CD91F79852C00F6EBFD /* Image.Url.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAC1F79852C00F6EBFD /* Image.Url.json */; };
 		F4933CDA1F79852C00F6EBFD /* ImageSet.ImageSize.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAD1F79852C00F6EBFD /* ImageSet.ImageSize.json */; };
 		F4933CDB1F79852C00F6EBFD /* ImageSet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAE1F79852C00F6EBFD /* ImageSet.json */; };
 		F4933CDC1F79852C00F6EBFD /* Input.ChoiceSet.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CAF1F79852C00F6EBFD /* Input.ChoiceSet.json */; };
@@ -58,7 +51,6 @@
 		F4933CE91F79852C00F6EBFD /* TextBlock.MaxLines.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBC1F79852C00F6EBFD /* TextBlock.MaxLines.json */; };
 		F4933CEA1F79852C00F6EBFD /* TextBlock.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBD1F79852C00F6EBFD /* TextBlock.Size.json */; };
 		F4933CEB1F79852C00F6EBFD /* TextBlock.Spacing.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBE1F79852C00F6EBFD /* TextBlock.Spacing.json */; };
-		F4933CEC1F79852C00F6EBFD /* TextBlock.Text.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CBF1F79852C00F6EBFD /* TextBlock.Text.json */; };
 		F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CC01F79852C00F6EBFD /* TextBlock.Weight.json */; };
 		F4933CEE1F79852C00F6EBFD /* TextBlock.Wrap.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CC11F79852C00F6EBFD /* TextBlock.Wrap.json */; };
 		F4933CFC1F79853B00F6EBFD /* ActivityUpdate.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */; };
@@ -77,6 +69,7 @@
 		F49CECC01F62412E00D7FB55 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */; };
 		F49CECC11F62412E00D7FB55 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D33E851F04705800941E44 /* ACVTableViewController.m */; };
+		F4D402161F7DB0BF00D0356B /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D402151F7DB0BF00D0356B /* sample.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,22 +129,15 @@
 		F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Spacing.json; path = ../../../../samples/v1.0/Elements/Column.Spacing.json; sourceTree = "<group>"; };
 		F4933C9B1F79852C00F6EBFD /* Column.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Style.json; path = ../../../../samples/v1.0/Elements/Column.Style.json; sourceTree = "<group>"; };
 		F4933C9C1F79852C00F6EBFD /* Column.Width.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Width.json; path = ../../../../samples/v1.0/Elements/Column.Width.json; sourceTree = "<group>"; };
-		F4933C9D1F79852C00F6EBFD /* Column.WidthRatio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.WidthRatio.json; path = ../../../../samples/v1.0/Elements/Column.WidthRatio.json; sourceTree = "<group>"; };
-		F4933C9E1F79852C00F6EBFD /* ColumnSet.Columns.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Columns.json; path = ../../../../samples/v1.0/Elements/ColumnSet.Columns.json; sourceTree = "<group>"; };
-		F4933C9F1F79852C00F6EBFD /* ColumnSet.Separator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Separator.json; path = ../../../../samples/v1.0/Elements/ColumnSet.Separator.json; sourceTree = "<group>"; };
 		F4933CA01F79852C00F6EBFD /* ColumnSet.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Spacing.json; path = ../../../../samples/v1.0/Elements/ColumnSet.Spacing.json; sourceTree = "<group>"; };
-		F4933CA11F79852C00F6EBFD /* Container.Items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Items.json; path = ../../../../samples/v1.0/Elements/Container.Items.json; sourceTree = "<group>"; };
 		F4933CA21F79852C00F6EBFD /* Container.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.SelectAction.json; path = ../../../../samples/v1.0/Elements/Container.SelectAction.json; sourceTree = "<group>"; };
-		F4933CA31F79852C00F6EBFD /* Container.Separator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Separator.json; path = ../../../../samples/v1.0/Elements/Container.Separator.json; sourceTree = "<group>"; };
 		F4933CA41F79852C00F6EBFD /* Container.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Spacing.json; path = ../../../../samples/v1.0/Elements/Container.Spacing.json; sourceTree = "<group>"; };
-		F4933CA51F79852C00F6EBFD /* Container.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Style.json; path = ../../../../samples/v1.0/Elements/Container.Style.json; sourceTree = "<group>"; };
 		F4933CA61F79852C00F6EBFD /* FactSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FactSet.json; path = ../../../../samples/v1.0/Elements/FactSet.json; sourceTree = "<group>"; };
 		F4933CA71F79852C00F6EBFD /* Image.HorizontalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.HorizontalAlignment.json; path = ../../../../samples/v1.0/Elements/Image.HorizontalAlignment.json; sourceTree = "<group>"; };
 		F4933CA81F79852C00F6EBFD /* Image.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.SelectAction.json; path = ../../../../samples/v1.0/Elements/Image.SelectAction.json; sourceTree = "<group>"; };
 		F4933CA91F79852C00F6EBFD /* Image.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Size.json; path = ../../../../samples/v1.0/Elements/Image.Size.json; sourceTree = "<group>"; };
 		F4933CAA1F79852C00F6EBFD /* Image.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Spacing.json; path = ../../../../samples/v1.0/Elements/Image.Spacing.json; sourceTree = "<group>"; };
 		F4933CAB1F79852C00F6EBFD /* Image.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Style.json; path = ../../../../samples/v1.0/Elements/Image.Style.json; sourceTree = "<group>"; };
-		F4933CAC1F79852C00F6EBFD /* Image.Url.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Url.json; path = ../../../../samples/v1.0/Elements/Image.Url.json; sourceTree = "<group>"; };
 		F4933CAD1F79852C00F6EBFD /* ImageSet.ImageSize.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ImageSet.ImageSize.json; path = ../../../../samples/v1.0/Elements/ImageSet.ImageSize.json; sourceTree = "<group>"; };
 		F4933CAE1F79852C00F6EBFD /* ImageSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ImageSet.json; path = ../../../../samples/v1.0/Elements/ImageSet.json; sourceTree = "<group>"; };
 		F4933CAF1F79852C00F6EBFD /* Input.ChoiceSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.ChoiceSet.json; path = ../../../../samples/v1.0/Elements/Input.ChoiceSet.json; sourceTree = "<group>"; };
@@ -170,7 +156,6 @@
 		F4933CBC1F79852C00F6EBFD /* TextBlock.MaxLines.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.MaxLines.json; path = ../../../../samples/v1.0/Elements/TextBlock.MaxLines.json; sourceTree = "<group>"; };
 		F4933CBD1F79852C00F6EBFD /* TextBlock.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Size.json; path = ../../../../samples/v1.0/Elements/TextBlock.Size.json; sourceTree = "<group>"; };
 		F4933CBE1F79852C00F6EBFD /* TextBlock.Spacing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Spacing.json; path = ../../../../samples/v1.0/Elements/TextBlock.Spacing.json; sourceTree = "<group>"; };
-		F4933CBF1F79852C00F6EBFD /* TextBlock.Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Text.json; path = ../../../../samples/v1.0/Elements/TextBlock.Text.json; sourceTree = "<group>"; };
 		F4933CC01F79852C00F6EBFD /* TextBlock.Weight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Weight.json; path = ../../../../samples/v1.0/Elements/TextBlock.Weight.json; sourceTree = "<group>"; };
 		F4933CC11F79852C00F6EBFD /* TextBlock.Wrap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.Wrap.json; path = ../../../../samples/v1.0/Elements/TextBlock.Wrap.json; sourceTree = "<group>"; };
 		F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ActivityUpdate.json; path = ../../../../samples/v1.0/Scenarios/ActivityUpdate.json; sourceTree = "<group>"; };
@@ -189,6 +174,7 @@
 		F49CECBF1F62412E00D7FB55 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D33E841F04705800941E44 /* ACVTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACVTableViewController.h; sourceTree = "<group>"; };
 		F4D33E851F04705800941E44 /* ACVTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACVTableViewController.m; sourceTree = "<group>"; };
+		F4D402151F7DB0BF00D0356B /* sample.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sample.json; path = resources/sample.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +273,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				F4D402151F7DB0BF00D0356B /* sample.json */,
 				F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */,
 				F4933CF01F79853B00F6EBFD /* CalendarReminder.json */,
 				F4933CF11F79853B00F6EBFD /* FlightItinerary.json */,
@@ -308,22 +295,15 @@
 				F4933C9A1F79852C00F6EBFD /* Column.Spacing.json */,
 				F4933C9B1F79852C00F6EBFD /* Column.Style.json */,
 				F4933C9C1F79852C00F6EBFD /* Column.Width.json */,
-				F4933C9D1F79852C00F6EBFD /* Column.WidthRatio.json */,
-				F4933C9E1F79852C00F6EBFD /* ColumnSet.Columns.json */,
-				F4933C9F1F79852C00F6EBFD /* ColumnSet.Separator.json */,
 				F4933CA01F79852C00F6EBFD /* ColumnSet.Spacing.json */,
-				F4933CA11F79852C00F6EBFD /* Container.Items.json */,
 				F4933CA21F79852C00F6EBFD /* Container.SelectAction.json */,
-				F4933CA31F79852C00F6EBFD /* Container.Separator.json */,
 				F4933CA41F79852C00F6EBFD /* Container.Spacing.json */,
-				F4933CA51F79852C00F6EBFD /* Container.Style.json */,
 				F4933CA61F79852C00F6EBFD /* FactSet.json */,
 				F4933CA71F79852C00F6EBFD /* Image.HorizontalAlignment.json */,
 				F4933CA81F79852C00F6EBFD /* Image.SelectAction.json */,
 				F4933CA91F79852C00F6EBFD /* Image.Size.json */,
 				F4933CAA1F79852C00F6EBFD /* Image.Spacing.json */,
 				F4933CAB1F79852C00F6EBFD /* Image.Style.json */,
-				F4933CAC1F79852C00F6EBFD /* Image.Url.json */,
 				F4933CAD1F79852C00F6EBFD /* ImageSet.ImageSize.json */,
 				F4933CAE1F79852C00F6EBFD /* ImageSet.json */,
 				F4933CAF1F79852C00F6EBFD /* Input.ChoiceSet.json */,
@@ -342,19 +322,10 @@
 				F4933CBC1F79852C00F6EBFD /* TextBlock.MaxLines.json */,
 				F4933CBD1F79852C00F6EBFD /* TextBlock.Size.json */,
 				F4933CBE1F79852C00F6EBFD /* TextBlock.Spacing.json */,
-				F4933CBF1F79852C00F6EBFD /* TextBlock.Text.json */,
 				F4933CC01F79852C00F6EBFD /* TextBlock.Weight.json */,
 				F4933CC11F79852C00F6EBFD /* TextBlock.Wrap.json */,
 			);
 			name = Jsons;
-			sourceTree = "<group>";
-		};
-		F4D852561F6B725400669636 /* HostConfig */ = {
-			isa = PBXGroup;
-			children = (
-				F4D852571F6B726D00669636 /* hostconfig.json */,
-			);
-			name = HostConfig;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -470,9 +441,6 @@
 				F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */,
 				F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */,
 				F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */,
-				F4933CCC1F79852C00F6EBFD /* ColumnSet.Separator.json in Resources */,
-				F4933CCA1F79852C00F6EBFD /* Column.WidthRatio.json in Resources */,
-				F4933CD91F79852C00F6EBFD /* Image.Url.json in Resources */,
 				F4933D081F79853B00F6EBFD /* WeatherLarge.json in Resources */,
 				F4933CCD1F79852C00F6EBFD /* ColumnSet.Spacing.json in Resources */,
 				F4933CC21F79852C00F6EBFD /* Action.OpenUrl.json in Resources */,
@@ -481,7 +449,6 @@
 				F4933CE81F79852C00F6EBFD /* TextBlock.Markdown.json in Resources */,
 				F4933D021F79853B00F6EBFD /* InputForm.json in Resources */,
 				F4933D031F79853B00F6EBFD /* Inputs.json in Resources */,
-				F4933CD21F79852C00F6EBFD /* Container.Style.json in Resources */,
 				F4933CD81F79852C00F6EBFD /* Image.Style.json in Resources */,
 				F4933CDD1F79852C00F6EBFD /* Input.Date.json in Resources */,
 				F4933CE91F79852C00F6EBFD /* TextBlock.MaxLines.json in Resources */,
@@ -492,7 +459,6 @@
 				F4933D051F79853B00F6EBFD /* SportsGameUpdate.json in Resources */,
 				F4933D001F79853B00F6EBFD /* FoodOrder.json in Resources */,
 				F4933CE21F79852C00F6EBFD /* Input.Toggle.json in Resources */,
-				F4933CD01F79852C00F6EBFD /* Container.Separator.json in Resources */,
 				F4933CFC1F79853B00F6EBFD /* ActivityUpdate.json in Resources */,
 				F4933CD51F79852C00F6EBFD /* Image.SelectAction.json in Resources */,
 				F4933CDB1F79852C00F6EBFD /* ImageSet.json in Resources */,
@@ -513,14 +479,12 @@
 				F4933CE61F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json in Resources */,
 				F4933CEA1F79852C00F6EBFD /* TextBlock.Size.json in Resources */,
 				F4933CEE1F79852C00F6EBFD /* TextBlock.Wrap.json in Resources */,
-				F4933CCB1F79852C00F6EBFD /* ColumnSet.Columns.json in Resources */,
 				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
-				F4933CEC1F79852C00F6EBFD /* TextBlock.Text.json in Resources */,
 				F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */,
 				F4933CD61F79852C00F6EBFD /* Image.Size.json in Resources */,
+				F4D402161F7DB0BF00D0356B /* sample.json in Resources */,
 				F423C0801EE1FB6100905679 /* Main.storyboard in Resources */,
 				F4933CD71F79852C00F6EBFD /* Image.Spacing.json in Resources */,
-				F4933CCE1F79852C00F6EBFD /* Container.Items.json in Resources */,
 				F4933CDF1F79852C00F6EBFD /* Input.Text.json in Resources */,
 				F4933CD11F79852C00F6EBFD /* Container.Spacing.json in Resources */,
 				F4933CCF1F79852C00F6EBFD /* Container.SelectAction.json in Resources */,

@@ -6,10 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ACOParseResult.h"
+#import "ACOAdaptiveCardParseResult.h"
 
 @interface ACOAdaptiveCard:NSObject
 
-+ (ACOParseResult *)fromJson:(NSString *)payload;
++ (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 
 @end    

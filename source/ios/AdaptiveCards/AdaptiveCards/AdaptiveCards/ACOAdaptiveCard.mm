@@ -5,7 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-#import "ACOParseResult.h"
+#import "ACOAdaptiveCardParseResult.h"
 #import "SharedAdaptiveCard.h"
 #import "ACOAdaptiveCardPrivate.h"
 
@@ -16,9 +16,9 @@ using namespace AdaptiveCards;
     std::shared_ptr<AdaptiveCard> _adaptiveCard;
 }
 
-+ (ACOParseResult *)fromJson:(NSString *)payload;
++ (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 {
-    ACOParseResult *result = [[ACOParseResult alloc] init];
+    ACOAdaptiveCardParseResult *result = [[ACOAdaptiveCardParseResult alloc] init];
 
     if(payload)
     {

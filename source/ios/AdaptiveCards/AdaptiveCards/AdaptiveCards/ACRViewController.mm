@@ -39,7 +39,10 @@ using namespace AdaptiveCards;
     if(self)
     {
         _adaptiveCard = [card getCard];
-        _hostConfig = [config getHostConfig];
+        if(config)
+        {
+            _hostConfig = [config getHostConfig];
+        }
         _guideFrame = frame;
     }
     return self;
