@@ -189,6 +189,9 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
     result.showCard = ParseUtil::ExtractJsonValueAndMergeWithDefault<ShowCardActionConfig>(
         json, AdaptiveCardSchemaKey::ShowCard, defaultValue.showCard, ShowCardActionConfig::Deserialize);
 
+    result.spacing = ParseUtil::GetEnumValue<Spacing>(
+        json, AdaptiveCardSchemaKey::Spacing, defaultValue.spacing, SpacingFromString);
+
     return result;
 }
 
