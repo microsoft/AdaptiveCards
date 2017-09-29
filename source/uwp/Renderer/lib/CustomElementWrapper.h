@@ -22,7 +22,7 @@ namespace AdaptiveCards { namespace Uwp
         std::string GetId() const override;
         void SetId(const std::string value) override;
 
-        virtual std::string Serialize() override;
+        virtual Json::Value SerializeToJsonValue() override;
 
         HRESULT GetWrappedElement(ABI::AdaptiveCards::Uwp::IAdaptiveCardElement** cardElement);
 

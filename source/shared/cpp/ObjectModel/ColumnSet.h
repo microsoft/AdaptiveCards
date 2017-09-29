@@ -15,8 +15,7 @@ public:
     ColumnSet();
     ColumnSet(std::vector<std::shared_ptr<Column>>& columns);
 
-    virtual std::string Serialize();
-    Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::vector<std::shared_ptr<Column>>& GetColumns();
     const std::vector<std::shared_ptr<Column>>& GetColumns() const;

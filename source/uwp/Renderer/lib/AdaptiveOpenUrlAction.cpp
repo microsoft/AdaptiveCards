@@ -121,4 +121,10 @@ namespace AdaptiveCards { namespace Uwp
         m_sharedOpenUrlAction->SetAdditionalProperties(jsonCpp);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveOpenUrlAction::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedOpenUrlAction->Serialize(), result);
+    }
 }}

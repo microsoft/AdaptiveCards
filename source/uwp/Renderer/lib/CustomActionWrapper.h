@@ -19,7 +19,7 @@ namespace AdaptiveCards { namespace Uwp
         std::string GetTitle() const override;
         void SetTitle(const std::string value) override;
 
-        virtual std::string Serialize() override;
+        virtual Json::Value SerializeToJsonValue() override;
 
         HRESULT GetWrappedElement(ABI::AdaptiveCards::Uwp::IAdaptiveActionElement** actionElement);
 

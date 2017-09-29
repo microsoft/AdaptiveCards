@@ -21,8 +21,7 @@ public:
         std::string altText,
         HorizontalAlignment hAlignment);
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetUrl() const;
     void SetUrl(const std::string value);

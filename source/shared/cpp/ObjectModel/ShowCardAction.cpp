@@ -9,12 +9,6 @@ ShowCardAction::ShowCardAction() : BaseActionElement(ActionType::ShowCard)
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card));
 }
 
-std::string ShowCardAction::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value ShowCardAction::SerializeToJsonValue()
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();

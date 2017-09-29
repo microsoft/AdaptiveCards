@@ -16,8 +16,7 @@ public:
     Container(Spacing spacing, bool separator, ContainerStyle style);
     Container(Spacing spacing, bool separator, ContainerStyle style, std::vector<std::shared_ptr<BaseCardElement>>& items);
 
-    virtual std::string Serialize();
-    Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
     const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;

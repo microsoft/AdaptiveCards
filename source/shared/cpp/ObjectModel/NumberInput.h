@@ -12,8 +12,7 @@ class NumberInput : public BaseInputElement
 public:
     NumberInput();
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetPlaceholder() const;
     void SetPlaceholder(const std::string value);

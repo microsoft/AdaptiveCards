@@ -48,12 +48,6 @@ std::vector<std::shared_ptr<Image>>& ImageSet::GetImages()
     return m_images;
 }
 
-std::string ImageSet::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value ImageSet::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();

@@ -8,12 +8,6 @@ DateInput::DateInput() :
 {
 }
 
-std::string DateInput::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value DateInput::SerializeToJsonValue()
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();

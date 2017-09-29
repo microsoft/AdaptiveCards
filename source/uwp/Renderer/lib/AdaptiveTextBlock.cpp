@@ -211,4 +211,10 @@ namespace AdaptiveCards { namespace Uwp
         RETURN_IF_FAILED(get_ElementType(&typeEnum));
         return ProjectedElementTypeToHString(typeEnum, type);
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextBlock::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedTextBlock->Serialize(), result);
+    }
 }}

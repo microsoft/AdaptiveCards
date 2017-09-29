@@ -56,12 +56,6 @@ void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-std::string Container::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value Container::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();

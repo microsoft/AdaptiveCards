@@ -100,4 +100,10 @@ namespace AdaptiveCards { namespace Uwp
         m_sharedSubmitAction->SetAdditionalProperties(jsonCpp);
         return S_OK;
     }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveSubmitAction::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedSubmitAction->Serialize(), result);
+    }
 }}

@@ -35,9 +35,15 @@ void CustomActionWrapper::SetTitle(const std::string value)
     THROW_IF_FAILED(m_actionElement->put_Title(title.Get()));
 }
 
-std::string CustomActionWrapper::Serialize()
+Json::Value CustomActionWrapper::SerializeToJsonValue()
 {
-    throw std::logic_error("Serialize not implemented for custom elements");
+    ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
+    THROW_IF_FAILED(m_actionElement->ToJson(&jsonObject));
+
+    Json::Value jsonCppValue;
+    JsonObjectToJsonCpp(jsonObject.Get(), &jsonCppValue);
+
+    return jsonCppValue;
 }
 
 HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveCards::Uwp::IAdaptiveActionElement** actionElement)

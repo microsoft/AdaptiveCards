@@ -38,12 +38,6 @@ TextBlock::TextBlock(
 {
 }
 
-std::string TextBlock::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value TextBlock::SerializeToJsonValue()
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();

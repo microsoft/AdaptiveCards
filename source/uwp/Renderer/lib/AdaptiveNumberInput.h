@@ -50,6 +50,8 @@ namespace AdaptiveCards { namespace Uwp
 
         IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value);
 
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+
     private:
         std::shared_ptr<AdaptiveCards::NumberInput> m_sharedNumberInput;
     };

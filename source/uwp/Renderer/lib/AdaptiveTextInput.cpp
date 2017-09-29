@@ -184,4 +184,9 @@ namespace AdaptiveCards { namespace Uwp
         return ProjectedElementTypeToHString(typeEnum, type);
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveTextInput::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    {
+        return StringToJsonObject(m_sharedTextInput->Serialize(), result);
+    }
 }}

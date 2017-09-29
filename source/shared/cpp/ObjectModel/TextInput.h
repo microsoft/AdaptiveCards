@@ -12,8 +12,7 @@ class TextInput : public BaseInputElement
 public:
     TextInput();
 
-    virtual std::string Serialize();
-    Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetPlaceholder() const;
     void SetPlaceholder(const std::string value);

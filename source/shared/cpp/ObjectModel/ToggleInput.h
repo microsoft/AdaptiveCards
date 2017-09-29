@@ -12,8 +12,7 @@ class ToggleInput : public BaseInputElement
 public:
     ToggleInput();
 
-    virtual std::string Serialize();
-    Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetTitle() const;
     void SetTitle(const std::string value);

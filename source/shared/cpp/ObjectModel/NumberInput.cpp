@@ -10,12 +10,6 @@ NumberInput::NumberInput() :
 {
 }
 
-std::string NumberInput::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value NumberInput::SerializeToJsonValue()
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();

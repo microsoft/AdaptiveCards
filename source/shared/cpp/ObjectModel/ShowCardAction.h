@@ -13,8 +13,7 @@ class ShowCardAction : public BaseActionElement
 public:
     ShowCardAction();
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::shared_ptr<AdaptiveCards::AdaptiveCard> GetCard() const;
     void SetCard(const std::shared_ptr<AdaptiveCards::AdaptiveCard>);

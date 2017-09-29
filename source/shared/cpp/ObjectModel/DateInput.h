@@ -12,8 +12,7 @@ class DateInput : public BaseInputElement
 public:
     DateInput();
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetMax() const;
     void SetMax(const std::string value);

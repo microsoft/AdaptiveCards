@@ -18,12 +18,6 @@ void SubmitAction::SetDataJson(const std::string value)
     m_dataJson = value;
 }
 
-std::string SubmitAction::Serialize()
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value SubmitAction::SerializeToJsonValue()
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();

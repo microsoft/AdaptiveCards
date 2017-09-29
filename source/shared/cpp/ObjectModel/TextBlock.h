@@ -23,8 +23,7 @@ public:
         int maxLines,
         HorizontalAlignment hAlignment);
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetText() const;
     void SetText(const std::string value);

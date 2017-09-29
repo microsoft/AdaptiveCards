@@ -17,8 +17,7 @@ public:
     FactSet(Spacing spacing, bool separation);
     FactSet(Spacing spacing, bool separation, std::vector<std::shared_ptr<Fact>>& facts);
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::vector<std::shared_ptr<Fact>>& GetFacts();
     const std::vector<std::shared_ptr<Fact>>& GetFacts() const;

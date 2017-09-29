@@ -12,8 +12,7 @@ class OpenUrlAction : public BaseActionElement
 public:
     OpenUrlAction();
 
-    virtual std::string Serialize();
-    virtual Json::Value SerializeToJsonValue();
+    virtual Json::Value SerializeToJsonValue() override;
 
     std::string GetUrl() const;
     void SetUrl(const std::string value);
