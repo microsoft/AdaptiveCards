@@ -78,8 +78,8 @@
     }
   },
   "imageSizes": {
-    "small": 70,
-    "medium": 100,
+    "small": 50,
+    "medium": 80,
     "large": 120
   },
   "actions": {
