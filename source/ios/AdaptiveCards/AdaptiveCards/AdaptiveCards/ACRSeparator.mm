@@ -102,12 +102,38 @@ using namespace AdaptiveCards;
     return constraint;
 }
 
++ (void) renderActionsSeparator:(UIView *)view
+            hostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    std::shared_ptr<BaseCardElement> nullBaseCardElem;
+    [ACRSeparator renderSeparation:nullBaseCardElem superview:view
+                        hostConfig:config
+                           spacing:config->actions.spacing];
+}
+
 + (void)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
             forSuperview:(UIView *)view
           withHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
+    [ACRSeparator renderSeparation:elem superview:view hostConfig:config spacing:Spacing::None];
+}
+
++ (void)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
+               superview:(UIView *)view
+              hostConfig:(std::shared_ptr<HostConfig> const &)config
+                 spacing:(Spacing)spacing
+{
     ACRSeparator *separator = nil;
-    if(Spacing::None != elem->GetSpacing())
+    Spacing requestedSpacing = Spacing::None;
+    if(elem)
+    {
+        requestedSpacing = elem->GetSpacing();
+    }
+    else
+    {
+        requestedSpacing = spacing;
+    }
+    if(Spacing::None != requestedSpacing)
     {
         UIStackView *superview = nil;
 
@@ -121,13 +147,13 @@ using namespace AdaptiveCards;
         }
 
         separator = [[ACRSeparator alloc] init];
-        unsigned int spacing = [separator getSpacing:elem withHostConfig:config];
+        unsigned int spacing = [separator getSpacing:requestedSpacing hostConfig:config];
         if(separator)
         {
             // Shared model has not implemented support
             separator->width  = spacing;
             separator->height = spacing;
-            if(elem->GetSeparator())
+            if(elem && elem->GetSeparator())
             {
                 separator->rgb		 = 0xB2000000;
                 separator->lineWidth = 1;
@@ -147,10 +173,10 @@ using namespace AdaptiveCards;
     }
 }
 
-- (unsigned int)getSpacing:(std::shared_ptr<BaseCardElement> const &)elem
-                           withHostConfig:(std::shared_ptr<HostConfig> const &)config
+- (unsigned int)getSpacing:(Spacing)spacing
+                           hostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    switch (elem->GetSpacing())
+    switch (spacing)
     {
         case Spacing::ExtraLarge:
             return config->spacing.extraLargeSpacing;
