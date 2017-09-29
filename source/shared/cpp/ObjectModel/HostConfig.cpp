@@ -27,6 +27,9 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result.imageSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageSizesConfig>(
         json, AdaptiveCardSchemaKey::ImageSizes, result.imageSizes, ImageSizesConfig::Deserialize);
 
+    result.separator = ParseUtil::ExtractJsonValueAndMergeWithDefault<SeparatorConfig>(
+        json, AdaptiveCardSchemaKey::Separator, result.separator, SeparatorConfig::Deserialize);
+
     result.spacing = ParseUtil::ExtractJsonValueAndMergeWithDefault<SpacingConfig>(
         json, AdaptiveCardSchemaKey::Spacing, result.spacing, SpacingConfig::Deserialize);
 
