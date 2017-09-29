@@ -208,5 +208,9 @@ namespace AdaptiveCards { namespace Uwp
             std::shared_ptr<std::vector<InputItem>> inputElements,
             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
         bool SupportsInteractivity();
+
+        void WrapInFullWidthTouchTarget(
+            _In_ ABI::Windows::UI::Xaml::IUIElement* elementToWrap,
+            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
     };
 }}

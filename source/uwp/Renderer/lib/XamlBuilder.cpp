@@ -1530,7 +1530,16 @@ namespace AdaptiveCards { namespace Uwp
             THROW_IF_FAILED(gridAsFrameworkElement->put_Style(style.Get()));
         }
 
-        THROW_IF_FAILED(xamlGrid.CopyTo(columnSetControl));
+        if (true)
+        {
+            ComPtr<IUIElement> gridAsUIElement;
+            THROW_IF_FAILED(xamlGrid.As(&gridAsUIElement));
+            WrapInFullWidthTouchTarget(gridAsUIElement.Get(), columnSetControl);
+        }
+        else
+        {
+            THROW_IF_FAILED(xamlGrid.CopyTo(columnSetControl));
+        }
     }
 
     _Use_decl_annotations_
@@ -2046,5 +2055,42 @@ namespace AdaptiveCards { namespace Uwp
         boolean supportsInteractivity;
         THROW_IF_FAILED(m_hostConfig->get_SupportsInteractivity(&supportsInteractivity));
         return Boolify(supportsInteractivity);
+    }
+
+    void XamlBuilder::WrapInFullWidthTouchTarget(
+        IUIElement* elementToWrap,
+        IUIElement** finalElement)
+    {
+        ComPtr<IButton> button = XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+
+        ComPtr<IContentControl> buttonAsContentControl;
+        THROW_IF_FAILED(button.As(&buttonAsContentControl));
+        THROW_IF_FAILED(buttonAsContentControl->put_Content(elementToWrap));
+
+        ComPtr<IAdaptiveSpacingConfig> spacingConfig;
+        THROW_IF_FAILED(m_hostConfig->get_Spacing(&spacingConfig));
+
+        UINT32 cardPadding;
+        THROW_IF_FAILED(spacingConfig->get_Padding(&cardPadding));
+
+        double negativeCardMargin = cardPadding * -1.0;
+
+        // TODO: Apply negative margin to top/bottom that causes button to appear halfway between spacing between elements.
+        // However this will be tricky, since to get the spacing for the bottom, we need to know the NEXT card element.
+
+        ComPtr<IControl> buttonAsControl;
+        THROW_IF_FAILED(button.As(&buttonAsControl));
+        THROW_IF_FAILED(buttonAsControl->put_HorizontalContentAlignment(HorizontalAlignment_Stretch));
+        ComPtr<IBrush> buttonBackgroundBrush = GetSolidColorBrush(Color());
+        THROW_IF_FAILED(buttonAsControl->put_Background(buttonBackgroundBrush.Get()));
+        THROW_IF_FAILED(buttonAsControl->put_Padding({ (double)cardPadding, 0, (double)cardPadding, 0 }));
+
+        ComPtr<IFrameworkElement> buttonAsFrameworkElement;
+        THROW_IF_FAILED(button.As(&buttonAsFrameworkElement));
+        THROW_IF_FAILED(buttonAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+
+        THROW_IF_FAILED(buttonAsFrameworkElement->put_Margin({ negativeCardMargin, 0, negativeCardMargin, 0 }));
+
+        THROW_IF_FAILED(button.CopyTo(finalElement));
     }
 }}
