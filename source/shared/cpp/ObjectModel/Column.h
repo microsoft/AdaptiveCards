@@ -17,8 +17,15 @@ public:
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
 
-    static std::shared_ptr<Column> Deserialize(const Json::Value& root);
-    static std::shared_ptr<Column> DeserializeFromString(const std::string& jsonString);
+    static std::shared_ptr<Column> Deserialize(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        const Json::Value& root);
+
+    static std::shared_ptr<Column> DeserializeFromString(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const std::string& jsonString);
 
     std::string GetWidth() const;
     void SetWidth(const std::string value);
@@ -33,7 +40,6 @@ public:
     void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
 private:
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)>, EnumHash> CardElementParsers;
     std::string m_width;
     std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
     std::shared_ptr<BaseActionElement> m_selectAction;

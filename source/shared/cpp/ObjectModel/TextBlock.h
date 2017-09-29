@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "BaseCardElement.h"
 #include "Enums.h"
+#include "ElementParserRegistration.h"
 
 namespace AdaptiveCards
 {
@@ -21,9 +22,6 @@ public:
         bool wrap,
         int maxLines,
         HorizontalAlignment hAlignment);
-
-    static std::shared_ptr<TextBlock> Deserialize(const Json::Value& root);
-    static std::shared_ptr<TextBlock> DeserializeFromString(const std::string& jsonString);
 
     virtual std::string Serialize();
     virtual Json::Value SerializeToJsonValue();
@@ -61,5 +59,19 @@ private:
     bool m_wrap;
     unsigned int m_maxLines;
     HorizontalAlignment m_hAlignment;
+};
+
+class TextBlockParser : public IBaseCardElementParser
+{
+public:
+    std::shared_ptr<BaseCardElement> Deserialize(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+        const Json::Value& root);
+
+    std::shared_ptr<BaseCardElement> DeserializeFromString(
+        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        const std::string& jsonString);
 };
 }

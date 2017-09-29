@@ -28,27 +28,6 @@ Image::Image(
 {
 }
 
-std::shared_ptr<Image> Image::Deserialize(const Json::Value& json)
-{
-    ParseUtil::ExpectTypeString(json, CardElementType::Image);
-
-    return Image::DeserializeWithoutCheckingType(json);
-}
-
-std::shared_ptr<Image> Image::DeserializeWithoutCheckingType(const Json::Value& json)
-{
-    std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
-
-    image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
-    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
-    image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
-    image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
-    image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
-    image->SetSelectAction(BaseCardElement::DeserializeSelectAction(json, AdaptiveCardSchemaKey::SelectAction));
-
-    return image;
-}
-
 std::string Image::Serialize()
 {
     Json::FastWriter writer;
@@ -126,11 +105,6 @@ void AdaptiveCards::Image::SetHorizontalAlignment(const HorizontalAlignment valu
     m_hAlignment = value;
 }
 
-std::shared_ptr<Image> Image::DeserializeFromString(const std::string& jsonString)
-{
-    return Image::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
-}
-
 std::shared_ptr<BaseActionElement> Image::GetSelectAction() const
 {
     return m_selectAction;
@@ -139,4 +113,38 @@ std::shared_ptr<BaseActionElement> Image::GetSelectAction() const
 void Image::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 {
     m_selectAction = action;
+}
+
+std::shared_ptr<BaseCardElement> ImageParser::DeserializeFromString(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    const std::string& jsonString)
+{
+    return ImageParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+std::shared_ptr<BaseCardElement> ImageParser::Deserialize(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration, 
+    const Json::Value& json)
+{
+    ParseUtil::ExpectTypeString(json, CardElementType::Image);
+    return ImageParser::DeserializeWithoutCheckingType(elementParserRegistration, actionParserRegistration, json);
+}
+
+std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& json)
+{
+    std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
+
+    image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
+    image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
+    image->SetImageSize(ParseUtil::GetEnumValue<ImageSize>(json, AdaptiveCardSchemaKey::Size, ImageSize::None, ImageSizeFromString));
+    image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
+    image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+    image->SetSelectAction(BaseCardElement::DeserializeSelectAction(elementParserRegistration, actionParserRegistration, json, AdaptiveCardSchemaKey::SelectAction));
+
+    return image;
 }

@@ -74,7 +74,10 @@ Json::Value ImageSet::SerializeToJsonValue()
     return root;
 }
 
-std::shared_ptr<ImageSet> ImageSet::Deserialize(const Json::Value& value)
+std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ImageSet);
 
@@ -84,13 +87,20 @@ std::shared_ptr<ImageSet> ImageSet::Deserialize(const Json::Value& value)
     imageSet->m_imageSize = ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
 
     // Parse Images
-    auto images = ParseUtil::GetElementCollectionOfSingleType<Image>(value, AdaptiveCardSchemaKey::Images, Image::DeserializeWithoutCheckingType, true);
-    imageSet->m_images = std::move(images);
+    auto images = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Images, true);
+
+    for (auto image : images)
+    {
+        imageSet->m_images.push_back(std::static_pointer_cast<Image>(image));
+    }
 
     return imageSet;
 }
 
-std::shared_ptr<ImageSet> ImageSet::DeserializeFromString(const std::string& jsonString)
+std::shared_ptr<BaseCardElement> ImageSetParser::DeserializeFromString(
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    const std::string& jsonString)
 {
-    return ImageSet::Deserialize(ParseUtil::GetJsonValueFromString(jsonString));
+    return ImageSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
 }

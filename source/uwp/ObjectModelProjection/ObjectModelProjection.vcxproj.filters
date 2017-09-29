@@ -31,6 +31,8 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SharedAdaptiveCard.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\HostConfig.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -67,6 +69,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SharedAdaptiveCard.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">
