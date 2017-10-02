@@ -125,9 +125,13 @@
     self.hostconfig = payload;
 }
 
-- (void)didFetchUserResponses:(NSDictionary *)dictionary
+- (void)didFetchUserResponses:(NSData *)json error:(NSError *)error
 {
-    NSLog(@"user response fetched: %@", dictionary);
+    if(!error && json)
+    {
+        NSString *str = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
+        NSLog(@"user response fetched: %@", str);
+    }
 }
 
 - (void)didFetchHttpRequest:(NSURLRequest *)request

@@ -76,10 +76,13 @@ using namespace AdaptiveCards;
         self.max = [formatter dateFromString:maxDateStr];
         self.placeholder = [formatter stringFromDate:date];
         self.text = self.placeholder;
-        self.allowsEditingTextAttributes = NO;
+        self.allowsEditingTextAttributes = NO;        
+
+        if(date)
+        {
+            picker.date = date;
+        }
         
-        
-        picker.date = date;
         [picker setMinimumDate:self.min];
         [picker setMaximumDate:self.max];
         [picker addTarget:self action:@selector(update:) forControlEvents:UIControlEventValueChanged];
