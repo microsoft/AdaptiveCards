@@ -43,6 +43,7 @@ namespace AdaptiveCards
     void ElementParserRegistration::AddParser(std::string elementType, std::function<std::shared_ptr<BaseCardElement>(const Json::Value&)> parserFunction)
     {
         ElementParserRegistration::EnsureParsersInitialized();
+        ElementParserRegistration::CardElementParsers.erase(elementType);
         ElementParserRegistration::CardElementParsers.insert({ { elementType, parserFunction } });
     }
 
