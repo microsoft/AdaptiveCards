@@ -75,6 +75,7 @@ enum class AdaptiveCardSchemaKey
     FallbackText,
     FontFamily,
     FontSizes,
+    FontWeights,
     Good,
     HorizontalAlignment,
     Id,

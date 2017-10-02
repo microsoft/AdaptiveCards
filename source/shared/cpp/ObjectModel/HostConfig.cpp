@@ -18,12 +18,24 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result.supportsInteractivity = ParseUtil::GetBool(
         json, AdaptiveCardSchemaKey::SupportsInteractivity, result.supportsInteractivity);
 
+    result.factSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetConfig>(
+        json, AdaptiveCardSchemaKey::FactSet, result.factSet, FactSetConfig::Deserialize);
+
     result.fontSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontSizesConfig>(
         json, AdaptiveCardSchemaKey::FontSizes, result.fontSizes, FontSizesConfig::Deserialize);
 
+    result.fontWeights = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontWeightsConfig>(
+        json, AdaptiveCardSchemaKey::FontWeights, result.fontWeights, FontWeightsConfig::Deserialize);
+
     result.containerStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStylesDefinition>(
         json, AdaptiveCardSchemaKey::ContainerStyles, result.containerStyles, ContainerStylesDefinition::Deserialize);
-        
+
+    result.image = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageConfig>(
+        json, AdaptiveCardSchemaKey::Image, result.image, ImageConfig::Deserialize);
+
+    result.imageSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageSetConfig>(
+        json, AdaptiveCardSchemaKey::ImageSet, result.imageSet, ImageSetConfig::Deserialize);
+
     result.imageSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<ImageSizesConfig>(
         json, AdaptiveCardSchemaKey::ImageSizes, result.imageSizes, ImageSizesConfig::Deserialize);
 
@@ -140,7 +152,7 @@ ImageSetConfig ImageSetConfig::Deserialize(const Json::Value& json, const ImageS
 {
     ImageSetConfig result;
     result.imageSize = ParseUtil::GetEnumValue<ImageSize>(
-        json, AdaptiveCardSchemaKey::ImageSet, defaultValue.imageSize, ImageSizeFromString);
+        json, AdaptiveCardSchemaKey::ImageSize, defaultValue.imageSize, ImageSizeFromString);
 
     result.maxImageHeight = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxImageHeight, defaultValue.maxImageHeight);
 
@@ -283,7 +295,7 @@ ImageConfig AdaptiveCards::ImageConfig::Deserialize(const Json::Value & json, co
     ImageConfig result;
 
     result.imageSize = ParseUtil::GetEnumValue<ImageSize>(
-        json, AdaptiveCardSchemaKey::ImageSize, defaultValue.imageSize, ImageSizeFromString);
+        json, AdaptiveCardSchemaKey::Size, defaultValue.imageSize, ImageSizeFromString);
 
     return result;
 }

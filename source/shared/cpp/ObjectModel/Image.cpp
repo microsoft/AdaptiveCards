@@ -6,7 +6,7 @@ using namespace AdaptiveCards;
 Image::Image() :
     BaseCardElement(CardElementType::Image),
     m_imageStyle(ImageStyle::Default),
-    m_imageSize(ImageSize::Auto),
+    m_imageSize(ImageSize::None),
     m_hAlignment(HorizontalAlignment::Left)
 {
 }
