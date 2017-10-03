@@ -1,6 +1,7 @@
 import { HostContainer } from "./host-container";
+import {merge} from 'lodash';
 import {
-    IHostConfig,
+    HostConfig,
     Size,
     TextSize,
     TextColor,
@@ -8,7 +9,9 @@ import {
     Spacing,
     ShowCardActionMode,
     Orientation,
-    ActionAlignment
+    ActionAlignment,
+    FactTitleDefinition,
+    FactTextDefinition
 } from "adaptivecards";
 
 export class ToastContainer extends HostContainer {
@@ -31,8 +34,8 @@ export class ToastContainer extends HostContainer {
         this._width = width;
     }
 
-    public getHostConfig(): IHostConfig {
-        return {
+    public getHostConfig(): HostConfig {
+        return new HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -155,6 +158,6 @@ export class ToastContainer extends HostContainer {
                 },
                 spacing: 10
             }
-        };
+        });
     }
 }

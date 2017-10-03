@@ -1,6 +1,7 @@
 import { HostContainer } from "./host-container";
+import {merge} from 'lodash';
 import {
-    IHostConfig,
+    HostConfig,
     Size,
     TextSize,
     TextColor,
@@ -8,7 +9,9 @@ import {
     Spacing,
     ShowCardActionMode,
     Orientation,
-    ActionAlignment
+    ActionAlignment,
+    FactTitleDefinition,
+    FactTextDefinition
 } from "adaptivecards";
 
 export class WebChatContainer extends HostContainer {
@@ -46,8 +49,8 @@ export class WebChatContainer extends HostContainer {
         return outerElement;
     }
 
-    public getHostConfig(): IHostConfig {
-        return {
+    public getHostConfig(): HostConfig {
+        return new HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -170,6 +173,6 @@ export class WebChatContainer extends HostContainer {
                 },
                 spacing: 10
             }
-        };
+        });
     }
 }
