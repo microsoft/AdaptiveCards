@@ -81,7 +81,7 @@ module.exports = AdaptiveCards;
 Object.defineProperty(exports, "__esModule", { value: true });
 var adaptivecards_1 = __webpack_require__(0);
 var vkbeautify = __webpack_require__(23);
-var HostContainer = (function () {
+var HostContainer = /** @class */ (function () {
     function HostContainer(styleSheet) {
         this.supportsActionBar = false;
         this.styleSheet = styleSheet;
@@ -180,7 +180,7 @@ var HostContainer = (function () {
         }
     };
     HostContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -303,7 +303,7 @@ var HostContainer = (function () {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     HostContainer.prototype.renderContainer = function (renderedCard) {
         return null;
@@ -19948,7 +19948,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var BingContainer = (function (_super) {
+var BingContainer = /** @class */ (function (_super) {
     __extends(BingContainer, _super);
     function BingContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -19965,7 +19965,7 @@ var BingContainer = (function (_super) {
         return element;
     };
     BingContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20088,7 +20088,7 @@ var BingContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     BingContainer.backgroundColor = "#fff";
     return BingContainer;
@@ -20115,7 +20115,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var FacebookContainer = (function (_super) {
+var FacebookContainer = /** @class */ (function (_super) {
     __extends(FacebookContainer, _super);
     function FacebookContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -20131,7 +20131,7 @@ var FacebookContainer = (function (_super) {
         return outerElement;
     };
     FacebookContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20254,7 +20254,7 @@ var FacebookContainer = (function (_super) {
                 },
                 spacing: 20
             }
-        };
+        });
     };
     return FacebookContainer;
 }(host_container_1.HostContainer));
@@ -20280,7 +20280,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var GroupMeContainer = (function (_super) {
+var GroupMeContainer = /** @class */ (function (_super) {
     __extends(GroupMeContainer, _super);
     function GroupMeContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -20296,7 +20296,7 @@ var GroupMeContainer = (function (_super) {
         return outerElement;
     };
     GroupMeContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20419,7 +20419,7 @@ var GroupMeContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return GroupMeContainer;
 }(host_container_1.HostContainer));
@@ -20445,7 +20445,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var KikContainer = (function (_super) {
+var KikContainer = /** @class */ (function (_super) {
     __extends(KikContainer, _super);
     function KikContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -20461,7 +20461,7 @@ var KikContainer = (function (_super) {
         return outerElement;
     };
     KikContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20584,7 +20584,7 @@ var KikContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return KikContainer;
 }(host_container_1.HostContainer));
@@ -20610,7 +20610,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var LiveTileContainer = (function (_super) {
+var LiveTileContainer = /** @class */ (function (_super) {
     __extends(LiveTileContainer, _super);
     function LiveTileContainer(width, height, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -20630,7 +20630,7 @@ var LiveTileContainer = (function (_super) {
         return element;
     };
     LiveTileContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20753,7 +20753,7 @@ var LiveTileContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return LiveTileContainer;
 }(host_container_1.HostContainer));
@@ -20779,7 +20779,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var OutlookContainer = (function (_super) {
+var OutlookContainer = /** @class */ (function (_super) {
     __extends(OutlookContainer, _super);
     function OutlookContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -20794,7 +20794,7 @@ var OutlookContainer = (function (_super) {
         return element;
     };
     OutlookContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -20917,7 +20917,7 @@ var OutlookContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return OutlookContainer;
 }(host_container_1.HostContainer));
@@ -20943,7 +20943,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var SkypeContainer = (function (_super) {
+var SkypeContainer = /** @class */ (function (_super) {
     __extends(SkypeContainer, _super);
     function SkypeContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -20968,7 +20968,7 @@ var SkypeContainer = (function (_super) {
         return element;
     };
     SkypeContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21091,7 +21091,7 @@ var SkypeContainer = (function (_super) {
                 },
                 spacing: 5
             }
-        };
+        });
     };
     return SkypeContainer;
 }(host_container_1.HostContainer));
@@ -21117,7 +21117,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var SlackContainer = (function (_super) {
+var SlackContainer = /** @class */ (function (_super) {
     __extends(SlackContainer, _super);
     function SlackContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -21133,7 +21133,7 @@ var SlackContainer = (function (_super) {
         return outerElement;
     };
     SlackContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21256,7 +21256,7 @@ var SlackContainer = (function (_super) {
                 },
                 spacing: 20
             }
-        };
+        });
     };
     return SlackContainer;
 }(host_container_1.HostContainer));
@@ -21282,7 +21282,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var SMSContainer = (function (_super) {
+var SMSContainer = /** @class */ (function (_super) {
     __extends(SMSContainer, _super);
     function SMSContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -21298,7 +21298,7 @@ var SMSContainer = (function (_super) {
         return outerElement;
     };
     SMSContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21421,7 +21421,7 @@ var SMSContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return SMSContainer;
 }(host_container_1.HostContainer));
@@ -21447,7 +21447,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var TeamsContainer = (function (_super) {
+var TeamsContainer = /** @class */ (function (_super) {
     __extends(TeamsContainer, _super);
     function TeamsContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -21462,7 +21462,7 @@ var TeamsContainer = (function (_super) {
         return element;
     };
     TeamsContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21585,7 +21585,7 @@ var TeamsContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return TeamsContainer;
 }(host_container_1.HostContainer));
@@ -21611,7 +21611,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var TelegramContainer = (function (_super) {
+var TelegramContainer = /** @class */ (function (_super) {
     __extends(TelegramContainer, _super);
     function TelegramContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -21627,7 +21627,7 @@ var TelegramContainer = (function (_super) {
         return outerElement;
     };
     TelegramContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -21750,7 +21750,7 @@ var TelegramContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return TelegramContainer;
 }(host_container_1.HostContainer));
@@ -21776,7 +21776,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var TimelineContainer = (function (_super) {
+var TimelineContainer = /** @class */ (function (_super) {
     __extends(TimelineContainer, _super);
     function TimelineContainer(width, height, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -21796,7 +21796,7 @@ var TimelineContainer = (function (_super) {
         return element;
     };
     TimelineContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 4,
                 default: 12,
@@ -21919,7 +21919,7 @@ var TimelineContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return TimelineContainer;
 }(host_container_1.HostContainer));
@@ -21945,7 +21945,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var ToastContainer = (function (_super) {
+var ToastContainer = /** @class */ (function (_super) {
     __extends(ToastContainer, _super);
     function ToastContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -21961,7 +21961,7 @@ var ToastContainer = (function (_super) {
         return element;
     };
     ToastContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22084,7 +22084,7 @@ var ToastContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return ToastContainer;
 }(host_container_1.HostContainer));
@@ -22110,7 +22110,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(1);
 var adaptivecards_1 = __webpack_require__(0);
-var WebChatContainer = (function (_super) {
+var WebChatContainer = /** @class */ (function (_super) {
     __extends(WebChatContainer, _super);
     function WebChatContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -22140,7 +22140,7 @@ var WebChatContainer = (function (_super) {
         return outerElement;
     };
     WebChatContainer.prototype.getHostConfig = function () {
-        return {
+        return new adaptivecards_1.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -22263,7 +22263,7 @@ var WebChatContainer = (function (_super) {
                 },
                 spacing: 10
             }
-        };
+        });
     };
     return WebChatContainer;
 }(host_container_1.HostContainer));
@@ -22328,7 +22328,7 @@ function renderCard() {
     var hostContainer = hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
     var json = JSON.parse(currentCardPayload);
     var adaptiveCard = new Adaptive.AdaptiveCard();
-    adaptiveCard.hostConfig = Adaptive.parseHostConfig(currentConfigPayload);
+    adaptiveCard.hostConfig = Adaptive.HostConfig.parse(currentConfigPayload);
     adaptiveCard.parse(json);
     lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
     showValidationErrors();
@@ -22404,7 +22404,7 @@ function getParameterByName(name, url) {
         return "";
     }
 }
-var HostContainerOption = (function () {
+var HostContainerOption = /** @class */ (function () {
     function HostContainerOption(name, hostContainer) {
         this.name = name;
         this.hostContainer = hostContainer;
@@ -22614,7 +22614,7 @@ function inlineCardExpanded(action, isExpanded) {
 function elementVisibilityChanged(element) {
     alert("An element is now " + (element.isVisible ? "visible" : "invisible"));
 }
-var ToggleVisibilityAction = (function (_super) {
+var ToggleVisibilityAction = /** @class */ (function (_super) {
     __extends(ToggleVisibilityAction, _super);
     function ToggleVisibilityAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -22702,12 +22702,11 @@ window.onload = function () {
 
 /**
 * vkBeautify - javascript plugin to pretty-print or minify text in XML, JSON, CSS and SQL formats.
-*  
-* Version - 0.99.00.beta 
+*
 * Copyright (c) 2012 Vadim Kiryukhin
 * vkiryukhin @ gmail.com
 * http://www.eslinstructor.net/vkbeautify/
-* 
+*
 * Dual licensed under the MIT and GPL licenses:
 *   http://www.opensource.org/licenses/mit-license.php
 *   http://www.gnu.org/licenses/gpl.html
@@ -22749,7 +22748,7 @@ window.onload = function () {
 function createShiftArr(step) {
 
 	var space = '    ';
-	
+
 	if ( isNaN(parseInt(step)) ) {  // argument is string
 		space = step;
 	} else { // argument is integer
@@ -22770,8 +22769,8 @@ function createShiftArr(step) {
 	}
 
 	var shift = ['\n']; // array of shifts
-	for(ix=0;ix<100;ix++){
-		shift.push(shift[ix]+space); 
+	for(var ix=0;ix<100;ix++) {
+		shift.push(shift[ix]+space);
 	}
 	return shift;
 }
@@ -22797,67 +22796,67 @@ vkbeautify.prototype.xml = function(text,step) {
 
 		for(ix=0;ix<len;ix++) {
 			// start comment or <![CDATA[...]]> or <!DOCTYPE //
-			if(ar[ix].search(/<!/) > -1) { 
+			if(ar[ix].search(/<!/) > -1) {
 				str += shift[deep]+ar[ix];
-				inComment = true; 
+				inComment = true;
 				// end comment  or <![CDATA[...]]> //
-				if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1 || ar[ix].search(/!DOCTYPE/) > -1 ) { 
-					inComment = false; 
+				if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1 || ar[ix].search(/!DOCTYPE/) > -1 ) {
+					inComment = false;
 				}
-			} else 
+			} else
 			// end comment  or <![CDATA[...]]> //
-			if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1) { 
+			if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1) {
 				str += ar[ix];
-				inComment = false; 
-			} else 
+				inComment = false;
+			} else
 			// <elm></elm> //
 			if( /^<\w/.exec(ar[ix-1]) && /^<\/\w/.exec(ar[ix]) &&
-				/^<[\w:\-\.\,]+/.exec(ar[ix-1]) == /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/','')) { 
+				/^<[\w:\-\.\,]+/.exec(ar[ix-1]) == /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/','')) {
 				str += ar[ix];
 				if(!inComment) deep--;
 			} else
 			 // <elm> //
 			if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) == -1 && ar[ix].search(/\/>/) == -1 ) {
 				str = !inComment ? str += shift[deep++]+ar[ix] : str += ar[ix];
-			} else 
+			} else
 			 // <elm>...</elm> //
 			if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) > -1) {
 				str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
-			} else 
+			} else
 			// </elm> //
-			if(ar[ix].search(/<\//) > -1) { 
+			if(ar[ix].search(/<\//) > -1) {
 				str = !inComment ? str += shift[--deep]+ar[ix] : str += ar[ix];
-			} else 
+			} else
 			// <elm/> //
-			if(ar[ix].search(/\/>/) > -1 ) { 
+			if(ar[ix].search(/\/>/) > -1 ) {
 				str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
-			} else 
+			} else
 			// <? xml ... ?> //
-			if(ar[ix].search(/<\?/) > -1) { 
+			if(ar[ix].search(/<\?/) > -1) {
 				str += shift[deep]+ar[ix];
-			} else 
+			} else
 			// xmlns //
-			if( ar[ix].search(/xmlns\:/) > -1  || ar[ix].search(/xmlns\=/) > -1) { 
+			if( ar[ix].search(/xmlns\:/) > -1  || ar[ix].search(/xmlns\=/) > -1) {
 				str += shift[deep]+ar[ix];
-			} 
-			
+			}
+
 			else {
 				str += ar[ix];
 			}
 		}
-		
+
 	return  (str[0] == '\n') ? str.slice(1) : str;
 }
 
 vkbeautify.prototype.json = function(text,step) {
 
 	var step = step ? step : this.step;
-	
-	if (typeof JSON === 'undefined' ) return text; 
-	
+
+	if (typeof JSON === 'undefined' ) return text;
+
 	if ( typeof text === "string" ) return JSON.stringify(JSON.parse(text), null, step);
 	if ( typeof text === "object" ) return JSON.stringify(text, null, step);
-		
+
 	return text; // text is not string nor object
 }
 
@@ -22876,16 +22875,16 @@ vkbeautify.prototype.css = function(text, step) {
 		str = '',
 		ix = 0,
 		shift = step ? createShiftArr(step) : this.shift;
-		
+
 		for(ix=0;ix<len;ix++) {
 
-			if( /\{/.exec(ar[ix]))  { 
+			if( /\{/.exec(ar[ix]))  {
 				str += shift[deep++]+ar[ix];
-			} else 
-			if( /\}/.exec(ar[ix]))  { 
+			} else
+			if( /\}/.exec(ar[ix]))  {
 				str += shift[--deep]+ar[ix];
 			} else
-			if( /\*\\/.exec(ar[ix]))  { 
+			if( /\*\\/.exec(ar[ix]))  {
 				str += shift[deep]+ar[ix];
 			}
 			else {
@@ -22915,13 +22914,13 @@ function split_sql(str, tab) {
 				.replace(/ HAVING /ig,"~::~HAVING ")
 				//.replace(/ SET /ig," SET~::~")
 				.replace(/ IN /ig," IN ")
-				
+
 				.replace(/ JOIN /ig,"~::~JOIN ")
 				.replace(/ CROSS~::~{1,}JOIN /ig,"~::~CROSS JOIN ")
 				.replace(/ INNER~::~{1,}JOIN /ig,"~::~INNER JOIN ")
 				.replace(/ LEFT~::~{1,}JOIN /ig,"~::~LEFT JOIN ")
 				.replace(/ RIGHT~::~{1,}JOIN /ig,"~::~RIGHT JOIN ")
-				
+
 				.replace(/ ON /ig,"~::~"+tab+"ON ")
 				.replace(/ OR /ig,"~::~"+tab+tab+"OR ")
 				.replace(/ ORDER\s{1,}BY/ig,"~::~ORDER BY ")
@@ -22929,21 +22928,21 @@ function split_sql(str, tab) {
 
 				.replace(/\(\s{0,}SELECT /ig,"~::~(SELECT ")
 				.replace(/\)\s{0,}SELECT /ig,")~::~SELECT ")
-				
+
 				.replace(/ THEN /ig," THEN~::~"+tab+"")
 				.replace(/ UNION /ig,"~::~UNION~::~")
 				.replace(/ USING /ig,"~::~USING ")
 				.replace(/ WHEN /ig,"~::~"+tab+"WHEN ")
 				.replace(/ WHERE /ig,"~::~WHERE ")
 				.replace(/ WITH /ig,"~::~WITH ")
-				
+
 				//.replace(/\,\s{0,}\(/ig,",~::~( ")
 				//.replace(/\,/ig,",~::~"+tab+tab+"")
 
 				.replace(/ ALL /ig," ALL ")
 				.replace(/ AS /ig," AS ")
-				.replace(/ ASC /ig," ASC ")	
-				.replace(/ DESC /ig," DESC ")	
+				.replace(/ ASC /ig," ASC ")
+				.replace(/ DESC /ig," DESC ")
 				.replace(/ DISTINCT /ig," DISTINCT ")
 				.replace(/ EXISTS /ig," EXISTS ")
 				.replace(/ NOT /ig," NOT ")
@@ -22952,7 +22951,7 @@ function split_sql(str, tab) {
 				.replace(/\s{0,}SELECT /ig,"SELECT ")
 				.replace(/\s{0,}UPDATE /ig,"UPDATE ")
 				.replace(/ SET /ig," SET ")
-							
+
 				.replace(/~::~{1,}/g,"~::~")
 				.split('~::~');
 }
@@ -22980,36 +22979,36 @@ vkbeautify.prototype.sql = function(text,step) {
 				ar = ar.concat(split_sql(ar_by_quote[ix], tab) );
 			}
 		}
-		
+
 		len = ar.length;
 		for(ix=0;ix<len;ix++) {
-			
+
 			parenthesisLevel = isSubquery(ar[ix], parenthesisLevel);
-			
-			if( /\s{0,}\s{0,}SELECT\s{0,}/.exec(ar[ix]))  { 
+
+			if( /\s{0,}\s{0,}SELECT\s{0,}/.exec(ar[ix]))  {
 				ar[ix] = ar[ix].replace(/\,/g,",\n"+tab+tab+"")
-			} 
-			
-			if( /\s{0,}\s{0,}SET\s{0,}/.exec(ar[ix]))  { 
+			}
+
+			if( /\s{0,}\s{0,}SET\s{0,}/.exec(ar[ix]))  {
 				ar[ix] = ar[ix].replace(/\,/g,",\n"+tab+tab+"")
-			} 
-			
-			if( /\s{0,}\(\s{0,}SELECT\s{0,}/.exec(ar[ix]))  { 
+			}
+
+			if( /\s{0,}\(\s{0,}SELECT\s{0,}/.exec(ar[ix]))  {
 				deep++;
 				str += shift[deep]+ar[ix];
-			} else 
-			if( /\'/.exec(ar[ix]) )  { 
+			} else
+			if( /\'/.exec(ar[ix]) )  {
 				if(parenthesisLevel<1 && deep) {
 					deep--;
 				}
 				str += ar[ix];
 			}
-			else  { 
+			else  {
 				str += shift[deep]+ar[ix];
 				if(parenthesisLevel<1 && deep) {
 					deep--;
 				}
-			} 
+			}
 			var junk = 0;
 		}
 
@@ -23023,19 +23022,19 @@ vkbeautify.prototype.xmlmin = function(text, preserveComments) {
 	var str = preserveComments ? text
 							   : text.replace(/\<![ \r\n\t]*(--([^\-]|[\r\n]|-[^\-])*--[ \r\n\t]*)\>/g,"")
 									 .replace(/[ \r\n\t]{1,}xmlns/g, ' xmlns');
-	return  str.replace(/>\s{0,}</g,"><"); 
+	return  str.replace(/>\s{0,}</g,"><");
 }
 
 vkbeautify.prototype.jsonmin = function(text) {
 
-	if (typeof JSON === 'undefined' ) return text; 
-	
-	return JSON.stringify(JSON.parse(text), null, 0); 
-				
+	if (typeof JSON === 'undefined' ) return text;
+
+	return JSON.stringify(JSON.parse(text), null, 0);
+
 }
 
 vkbeautify.prototype.cssmin = function(text, preserveComments) {
-	
+
 	var str = preserveComments ? text
 							   : text.replace(/\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g,"") ;
 
@@ -23052,7 +23051,6 @@ vkbeautify.prototype.sqlmin = function(text) {
 }
 
 module.exports = new vkbeautify();
-
 
 
 /***/ }),

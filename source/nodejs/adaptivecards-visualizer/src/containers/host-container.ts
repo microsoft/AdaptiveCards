@@ -1,5 +1,6 @@
+import {merge} from 'lodash';
 import {
-    IHostConfig,
+    HostConfig,
     Size,
     TextSize,
     TextColor,
@@ -7,7 +8,9 @@ import {
     Spacing,
     ShowCardActionMode,
     Orientation,
-    ActionAlignment
+    ActionAlignment,
+    FactTextDefinition,
+    FactTitleDefinition
 } from "adaptivecards";
 import * as vkbeautify from "vkbeautify";
 
@@ -96,8 +99,8 @@ export abstract class HostContainer {
         }
     }
 
-    public getHostConfig(): IHostConfig {
-        return {
+    public getHostConfig(): HostConfig {
+        return merge(new HostConfig(), {
             spacing: {
                 small: 3,
                 default: 8,
@@ -220,7 +223,7 @@ export abstract class HostContainer {
                 },
                 spacing: 10
             }
-        };
+        });
     }
 
     protected renderContainer(renderedCard: HTMLElement): HTMLElement {

@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Enums = require("./enums");
 var Utils = require("./utils");
+var HostConfig = require("./host-config");
 var TextFormatters = require("./text-formatters");
 function invokeSetParent(obj, parent) {
     // This is not super pretty, but it the closest emulation of
@@ -31,48 +32,6 @@ function isActionAllowed(action, forbiddenActionTypes) {
     }
     return true;
 }
-function getEffectiveSpacing(hostConfig, spacing) {
-    switch (spacing) {
-        case Enums.Spacing.Small:
-            return hostConfig.spacing.small;
-        case Enums.Spacing.Default:
-            return hostConfig.spacing.default;
-        case Enums.Spacing.Medium:
-            return hostConfig.spacing.medium;
-        case Enums.Spacing.Large:
-            return hostConfig.spacing.large;
-        case Enums.Spacing.ExtraLarge:
-            return hostConfig.spacing.extraLarge;
-        case Enums.Spacing.Padding:
-            return hostConfig.spacing.padding;
-        default:
-            return 0;
-    }
-}
-function getEffectivePadding(hostConfig, padding) {
-    switch (padding) {
-        case Enums.Padding.Default:
-            return hostConfig.spacing.padding;
-        default:
-            return 0;
-    }
-}
-function paddingToSpacingDefinition(hostConfig, padding) {
-    return {
-        top: getEffectivePadding(hostConfig, padding.top),
-        right: getEffectivePadding(hostConfig, padding.right),
-        bottom: getEffectivePadding(hostConfig, padding.bottom),
-        left: getEffectivePadding(hostConfig, padding.left)
-    };
-}
-function getContainerStyleDefinition(hostConfig, containerStyle) {
-    switch (containerStyle) {
-        case Enums.ContainerStyle.Emphasis:
-            return hostConfig.containerStyles.emphasis;
-        default:
-            return hostConfig.containerStyles.default;
-    }
-}
 function createActionInstance(json) {
     var actionType = json["type"];
     var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
@@ -87,7 +46,7 @@ function createActionInstance(json) {
     }
     return result;
 }
-var CardElement = (function () {
+var CardElement = /** @class */ (function () {
     function CardElement() {
         this._internalPadding = null;
         this._parent = null;
@@ -101,7 +60,7 @@ var CardElement = (function () {
     }
     CardElement.prototype.internalRenderSeparator = function () {
         return Utils.renderSeparation({
-            spacing: getEffectiveSpacing(this.hostConfig, this.spacing),
+            spacing: this.hostConfig.getEffectiveSpacing(this.spacing),
             lineThickness: this.separator ? this.hostConfig.separator.lineThickness : null,
             lineColor: this.separator ? this.hostConfig.separator.lineColor : null
         }, this.separatorOrientation);
@@ -168,12 +127,12 @@ var CardElement = (function () {
     });
     Object.defineProperty(CardElement.prototype, "defaultPadding", {
         get: function () {
-            return {
+            return new HostConfig.PaddingDefinition({
                 top: Enums.Padding.None,
                 right: Enums.Padding.None,
                 bottom: Enums.Padding.None,
                 left: Enums.Padding.None
-            };
+            });
         },
         enumerable: true,
         configurable: true
@@ -196,12 +155,12 @@ var CardElement = (function () {
         configurable: true
     });
     CardElement.prototype.getNonZeroPadding = function () {
-        var padding = {
+        var padding = new HostConfig.PaddingDefinition({
             top: Enums.Padding.None,
             right: Enums.Padding.None,
             bottom: Enums.Padding.None,
             left: Enums.Padding.None
-        };
+        });
         this.internalGetNonZeroPadding(padding);
         return padding;
     };
@@ -381,7 +340,7 @@ var CardElement = (function () {
     return CardElement;
 }());
 exports.CardElement = CardElement;
-var TextBlock = (function (_super) {
+var TextBlock = /** @class */ (function (_super) {
     __extends(TextBlock, _super);
     function TextBlock() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -435,7 +394,7 @@ var TextBlock = (function (_super) {
             element.style.fontSize = fontSize + "px";
             element.style.lineHeight = computedLineHeight + "px";
             var parentContainer = this.getParentContainer();
-            var styleDefinition = getContainerStyleDefinition(this.hostConfig, parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
+            var styleDefinition = this.hostConfig.getContainerStyleDefinition(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default);
             var actualTextColor = this.color ? this.color : Enums.TextColor.Default;
             var colorDefinition;
             switch (actualTextColor) {
@@ -553,7 +512,7 @@ var TextBlock = (function (_super) {
     return TextBlock;
 }(CardElement));
 exports.TextBlock = TextBlock;
-var Fact = (function () {
+var Fact = /** @class */ (function () {
     function Fact() {
     }
     Fact.prototype.renderSpeech = function () {
@@ -565,7 +524,7 @@ var Fact = (function () {
     return Fact;
 }());
 exports.Fact = Fact;
-var FactSet = (function (_super) {
+var FactSet = /** @class */ (function (_super) {
     __extends(FactSet, _super);
     function FactSet() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -666,7 +625,7 @@ var FactSet = (function (_super) {
     return FactSet;
 }(CardElement));
 exports.FactSet = FactSet;
-var Image = (function (_super) {
+var Image = /** @class */ (function (_super) {
     __extends(Image, _super);
     function Image() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -810,7 +769,7 @@ var Image = (function (_super) {
     return Image;
 }(CardElement));
 exports.Image = Image;
-var ImageSet = (function (_super) {
+var ImageSet = /** @class */ (function (_super) {
     __extends(ImageSet, _super);
     function ImageSet() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -877,7 +836,7 @@ var ImageSet = (function (_super) {
     return ImageSet;
 }(CardElement));
 exports.ImageSet = ImageSet;
-var Input = (function (_super) {
+var Input = /** @class */ (function (_super) {
     __extends(Input, _super);
     function Input() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -917,7 +876,7 @@ var Input = (function (_super) {
     return Input;
 }(CardElement));
 exports.Input = Input;
-var TextInput = (function (_super) {
+var TextInput = /** @class */ (function (_super) {
     __extends(TextInput, _super);
     function TextInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -983,7 +942,7 @@ var TextInput = (function (_super) {
     return TextInput;
 }(Input));
 exports.TextInput = TextInput;
-var ToggleInput = (function (_super) {
+var ToggleInput = /** @class */ (function (_super) {
     __extends(ToggleInput, _super);
     function ToggleInput() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1043,13 +1002,13 @@ var ToggleInput = (function (_super) {
     return ToggleInput;
 }(Input));
 exports.ToggleInput = ToggleInput;
-var Choice = (function () {
+var Choice = /** @class */ (function () {
     function Choice() {
     }
     return Choice;
 }());
 exports.Choice = Choice;
-var ChoiceSetInput = (function (_super) {
+var ChoiceSetInput = /** @class */ (function (_super) {
     __extends(ChoiceSetInput, _super);
     function ChoiceSetInput() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1228,7 +1187,7 @@ var ChoiceSetInput = (function (_super) {
     return ChoiceSetInput;
 }(Input));
 exports.ChoiceSetInput = ChoiceSetInput;
-var NumberInput = (function (_super) {
+var NumberInput = /** @class */ (function (_super) {
     __extends(NumberInput, _super);
     function NumberInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -1269,7 +1228,7 @@ var NumberInput = (function (_super) {
     return NumberInput;
 }(Input));
 exports.NumberInput = NumberInput;
-var DateInput = (function (_super) {
+var DateInput = /** @class */ (function (_super) {
     __extends(DateInput, _super);
     function DateInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -1297,7 +1256,7 @@ var DateInput = (function (_super) {
     return DateInput;
 }(Input));
 exports.DateInput = DateInput;
-var TimeInput = (function (_super) {
+var TimeInput = /** @class */ (function (_super) {
     __extends(TimeInput, _super);
     function TimeInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -1331,7 +1290,7 @@ var ActionButtonState;
     ActionButtonState[ActionButtonState["Expanded"] = 1] = "Expanded";
     ActionButtonState[ActionButtonState["Subdued"] = 2] = "Subdued";
 })(ActionButtonState || (ActionButtonState = {}));
-var ActionButton = (function () {
+var ActionButton = /** @class */ (function () {
     function ActionButton(action) {
         var _this = this;
         this._element = null;
@@ -1404,7 +1363,7 @@ var ActionButton = (function () {
     });
     return ActionButton;
 }());
-var Action = (function () {
+var Action = /** @class */ (function () {
     function Action() {
         this._parent = null;
         this._actionCollection = null; // hold the reference to its action collection
@@ -1462,7 +1421,7 @@ var Action = (function () {
     return Action;
 }());
 exports.Action = Action;
-var SubmitAction = (function (_super) {
+var SubmitAction = /** @class */ (function (_super) {
     __extends(SubmitAction, _super);
     function SubmitAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1505,7 +1464,7 @@ var SubmitAction = (function (_super) {
     return SubmitAction;
 }(Action));
 exports.SubmitAction = SubmitAction;
-var OpenUrlAction = (function (_super) {
+var OpenUrlAction = /** @class */ (function (_super) {
     __extends(OpenUrlAction, _super);
     function OpenUrlAction() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -1528,7 +1487,7 @@ var OpenUrlAction = (function (_super) {
     return OpenUrlAction;
 }(Action));
 exports.OpenUrlAction = OpenUrlAction;
-var HttpHeader = (function () {
+var HttpHeader = /** @class */ (function () {
     function HttpHeader() {
         this._value = new Utils.StringWithSubstitutions();
     }
@@ -1548,7 +1507,7 @@ var HttpHeader = (function () {
     return HttpHeader;
 }());
 exports.HttpHeader = HttpHeader;
-var HttpAction = (function (_super) {
+var HttpAction = /** @class */ (function (_super) {
     __extends(HttpAction, _super);
     function HttpAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1628,7 +1587,7 @@ var HttpAction = (function (_super) {
     return HttpAction;
 }(Action));
 exports.HttpAction = HttpAction;
-var ShowCardAction = (function (_super) {
+var ShowCardAction = /** @class */ (function (_super) {
     __extends(ShowCardAction, _super);
     function ShowCardAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -1662,7 +1621,7 @@ var ShowCardAction = (function (_super) {
     return ShowCardAction;
 }(Action));
 exports.ShowCardAction = ShowCardAction;
-var ActionCollection = (function () {
+var ActionCollection = /** @class */ (function () {
     function ActionCollection(owner) {
         this._actionButtons = [];
         this._expandedAction = null;
@@ -1697,7 +1656,7 @@ var ActionCollection = (function () {
             this.onShowActionCardPane(null);
         }
         this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? this._owner.hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
-        var padding = paddingToSpacingDefinition(this._owner.hostConfig, this._owner.getNonZeroPadding());
+        var padding = this._owner.hostConfig.paddingToSpacingDefinition(this._owner.getNonZeroPadding());
         if (this._actionCard !== null) {
             this._actionCard.style.paddingLeft = padding.left + "px";
             this._actionCard.style.paddingRight = padding.right + "px";
@@ -1903,7 +1862,7 @@ var ActionCollection = (function () {
     };
     return ActionCollection;
 }());
-var ActionSet = (function (_super) {
+var ActionSet = /** @class */ (function (_super) {
     __extends(ActionSet, _super);
     function ActionSet() {
         var _this = _super.call(this) || this;
@@ -1953,7 +1912,7 @@ var ActionSet = (function (_super) {
     return ActionSet;
 }(CardElement));
 exports.ActionSet = ActionSet;
-var BackgroundImage = (function () {
+var BackgroundImage = /** @class */ (function () {
     function BackgroundImage() {
         this.mode = Enums.BackgroundImageMode.Stretch;
         this.horizontalAlignment = Enums.HorizontalAlignment.Left;
@@ -2005,7 +1964,7 @@ var BackgroundImage = (function () {
     return BackgroundImage;
 }());
 exports.BackgroundImage = BackgroundImage;
-var Container = (function (_super) {
+var Container = /** @class */ (function (_super) {
     __extends(Container, _super);
     function Container() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -2035,7 +1994,7 @@ var Container = (function (_super) {
     });
     Container.prototype.showBottomSpacer = function (requestingElement) {
         if ((!requestingElement || this.isLastElement(requestingElement))) {
-            this.renderedElement.style.paddingBottom = paddingToSpacingDefinition(this.hostConfig, this.internalPadding).bottom + "px";
+            this.renderedElement.style.paddingBottom = this.hostConfig.paddingToSpacingDefinition(this.internalPadding).bottom + "px";
             _super.prototype.showBottomSpacer.call(this, this);
         }
     };
@@ -2047,17 +2006,17 @@ var Container = (function (_super) {
     };
     Container.prototype.applyPadding = function () {
         if (this.hasBackground) {
-            var physicalMargin = { top: 0, right: 0, bottom: 0, left: 0 };
-            var physicalPadding = { top: 0, right: 0, bottom: 0, left: 0 };
+            var physicalMargin = new HostConfig.SpacingDefinition();
+            var physicalPadding = new HostConfig.SpacingDefinition();
             var useAutoPadding = AdaptiveCard.useAutoPadding && (this.parent ? this.parent.canContentBleed() : false);
             if (useAutoPadding) {
                 var effectivePadding = this.getNonZeroPadding();
-                var effectiveMargin = {
+                var effectiveMargin = new HostConfig.PaddingDefinition({
                     top: effectivePadding.top,
                     right: effectivePadding.right,
                     bottom: effectivePadding.bottom,
                     left: effectivePadding.left,
-                };
+                });
                 if (!this.isAtTheVeryTop()) {
                     effectivePadding.top = Enums.Padding.None;
                     effectiveMargin.top = Enums.Padding.None;
@@ -2116,16 +2075,16 @@ var Container = (function (_super) {
                     effectivePadding.bottom = Enums.Padding.Default;
                     effectivePadding.left = Enums.Padding.Default;
                 }
-                physicalMargin = paddingToSpacingDefinition(this.hostConfig, effectiveMargin);
-                physicalPadding = paddingToSpacingDefinition(this.hostConfig, effectivePadding);
+                physicalMargin = this.hostConfig.paddingToSpacingDefinition(effectiveMargin);
+                physicalPadding = this.hostConfig.paddingToSpacingDefinition(effectivePadding);
             }
             else {
-                physicalPadding = paddingToSpacingDefinition(this.hostConfig, {
+                physicalPadding = this.hostConfig.paddingToSpacingDefinition(new HostConfig.PaddingDefinition({
                     top: Enums.Padding.Default,
                     right: Enums.Padding.Default,
                     bottom: Enums.Padding.Default,
                     left: Enums.Padding.Default
-                });
+                }));
             }
             if (this.renderedElement) {
                 this.renderedElement.style.marginTop = "-" + physicalMargin.top + "px";
@@ -2159,7 +2118,7 @@ var Container = (function (_super) {
             if (this.backgroundImage) {
                 this.backgroundImage.apply(element);
             }
-            var styleDefinition = getContainerStyleDefinition(this.hostConfig, this.style);
+            var styleDefinition = this.hostConfig.getContainerStyleDefinition(this.style);
             if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
                 element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
             }
@@ -2394,7 +2353,7 @@ var Container = (function (_super) {
     return Container;
 }(CardElement));
 exports.Container = Container;
-var Column = (function (_super) {
+var Column = /** @class */ (function (_super) {
     __extends(Column, _super);
     function Column() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -2476,7 +2435,7 @@ var Column = (function (_super) {
     return Column;
 }(Container));
 exports.Column = Column;
-var ColumnSet = (function (_super) {
+var ColumnSet = /** @class */ (function (_super) {
     __extends(ColumnSet, _super);
     function ColumnSet() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -2669,7 +2628,7 @@ function raiseParseError(error) {
         AdaptiveCard.onParseError(error);
     }
 }
-var TypeRegistry = (function () {
+var TypeRegistry = /** @class */ (function () {
     function TypeRegistry() {
         this._items = [];
     }
@@ -2712,7 +2671,7 @@ var TypeRegistry = (function () {
     return TypeRegistry;
 }());
 exports.TypeRegistry = TypeRegistry;
-var ContainerWithActions = (function (_super) {
+var ContainerWithActions = /** @class */ (function (_super) {
     __extends(ContainerWithActions, _super);
     function ContainerWithActions() {
         var _this = _super.call(this) || this;
@@ -2726,7 +2685,7 @@ var ContainerWithActions = (function (_super) {
         var renderedActions = this._actionCollection.render();
         if (renderedActions) {
             Utils.appendChild(element, Utils.renderSeparation({
-                spacing: getEffectiveSpacing(this.hostConfig, this.hostConfig.actions.spacing),
+                spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing),
                 lineThickness: null,
                 lineColor: null
             }, Enums.Orientation.Horizontal));
@@ -2774,7 +2733,7 @@ var ContainerWithActions = (function (_super) {
     return ContainerWithActions;
 }(Container));
 exports.ContainerWithActions = ContainerWithActions;
-var AdaptiveCard = (function (_super) {
+var AdaptiveCard = /** @class */ (function (_super) {
     __extends(AdaptiveCard, _super);
     function AdaptiveCard() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -2808,7 +2767,7 @@ var AdaptiveCard = (function (_super) {
         return !unsupportedVersion;
     };
     AdaptiveCard.prototype.applyPadding = function () {
-        var effectivePadding = paddingToSpacingDefinition(this.hostConfig, this.internalPadding);
+        var effectivePadding = this.hostConfig.paddingToSpacingDefinition(this.internalPadding);
         this.renderedElement.style.paddingTop = effectivePadding.top + "px";
         this.renderedElement.style.paddingRight = effectivePadding.right + "px";
         this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
@@ -2816,7 +2775,12 @@ var AdaptiveCard = (function (_super) {
     };
     Object.defineProperty(AdaptiveCard.prototype, "defaultPadding", {
         get: function () {
-            return { top: Enums.Padding.Default, right: Enums.Padding.Default, bottom: Enums.Padding.Default, left: Enums.Padding.Default };
+            return new HostConfig.PaddingDefinition({
+                top: Enums.Padding.Default,
+                right: Enums.Padding.Default,
+                bottom: Enums.Padding.Default,
+                left: Enums.Padding.Default
+            });
         },
         enumerable: true,
         configurable: true
@@ -2907,14 +2871,19 @@ var AdaptiveCard = (function (_super) {
 exports.AdaptiveCard = AdaptiveCard;
 // This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
 AdaptiveCard.initialize();
-var InlineAdaptiveCard = (function (_super) {
+var InlineAdaptiveCard = /** @class */ (function (_super) {
     __extends(InlineAdaptiveCard, _super);
     function InlineAdaptiveCard() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(InlineAdaptiveCard.prototype, "defaultPadding", {
         get: function () {
-            return { top: Enums.Padding.Default, right: Enums.Padding.Default, bottom: Enums.Padding.Default, left: Enums.Padding.Default };
+            return new HostConfig.PaddingDefinition({
+                top: Enums.Padding.Default,
+                right: Enums.Padding.Default,
+                bottom: Enums.Padding.Default,
+                left: Enums.Padding.Default
+            });
         },
         enumerable: true,
         configurable: true
@@ -2937,97 +2906,5 @@ var InlineAdaptiveCard = (function (_super) {
     };
     return InlineAdaptiveCard;
 }(AdaptiveCard));
-var defaultHostConfig = {
-    supportsInteractivity: true,
-    spacing: {
-        small: 3,
-        default: 8,
-        medium: 20,
-        large: 30,
-        extraLarge: 40,
-        padding: 20
-    },
-    separator: {
-        lineThickness: 1,
-        lineColor: "#EEEEEE"
-    },
-    fontFamily: "Segoe UI",
-    fontSizes: {
-        small: 8,
-        default: 10,
-        medium: 12,
-        large: 14,
-        extraLarge: 16
-    },
-    fontWeights: {
-        lighter: 200,
-        default: 400,
-        bolder: 600
-    },
-    containerStyles: {
-        default: {
-            fontColors: {
-                default: { normal: "#0000FF", subtle: "#222222" },
-                accent: { normal: "#0000FF", subtle: "#0000DD" },
-                attention: { normal: "#FF6600", subtle: "#DD4400" },
-                good: { normal: "#00FF00", subtle: "#00DD00" },
-                warning: { normal: "#FF0000", subtle: "#DD0000" }
-            }
-        },
-        emphasis: {
-            backgroundColor: "#EEEEEE",
-            fontColors: {
-                default: { normal: "#0000FF", subtle: "#222222" },
-                accent: { normal: "#0000FF", subtle: "#0000DD" },
-                attention: { normal: "#FF6600", subtle: "#DD4400" },
-                good: { normal: "#00FF00", subtle: "#00DD00" },
-                warning: { normal: "#FF0000", subtle: "#DD0000" }
-            }
-        }
-    },
-    imageSizes: {
-        small: 40,
-        medium: 80,
-        large: 160
-    },
-    actions: {
-        maxActions: 5,
-        spacing: Enums.Spacing.Default,
-        buttonSpacing: 20,
-        showCard: {
-            actionMode: Enums.ShowCardActionMode.Inline,
-            inlineTopMargin: 16
-        },
-        actionsOrientation: Enums.Orientation.Horizontal,
-        actionAlignment: Enums.ActionAlignment.Left
-    },
-    adaptiveCard: {
-        allowCustomStyle: false
-    },
-    image: {
-        size: Enums.Size.Medium
-    },
-    imageSet: {
-        imageSize: Enums.Size.Medium,
-        maxImageHeight: 100
-    },
-    factSet: {
-        title: {
-            color: Enums.TextColor.Default,
-            size: Enums.TextSize.Default,
-            isSubtle: false,
-            weight: Enums.TextWeight.Bolder,
-            wrap: true,
-            maxWidth: 150
-        },
-        value: {
-            color: Enums.TextColor.Default,
-            size: Enums.TextSize.Default,
-            isSubtle: false,
-            weight: Enums.TextWeight.Default,
-            wrap: true
-        },
-        spacing: 10
-    }
-};
+var defaultHostConfig = new HostConfig.HostConfig();
 //# sourceMappingURL=card-elements.js.map

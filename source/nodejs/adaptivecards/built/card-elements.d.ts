@@ -14,7 +14,7 @@ export declare abstract class CardElement {
     private _separatorElement;
     private internalRenderSeparator();
     private updateRenderedElementVisibility();
-    protected internalGetNonZeroPadding(padding: HostConfig.IPaddingDefinition): void;
+    protected internalGetNonZeroPadding(padding: HostConfig.PaddingDefinition): void;
     protected adjustRenderedElementSize(renderedElement: HTMLElement): void;
     protected showBottomSpacer(requestingElement: CardElement): void;
     protected hideBottomSpacer(requestingElement: CardElement): void;
@@ -22,8 +22,8 @@ export declare abstract class CardElement {
     protected readonly useDefaultSizing: boolean;
     protected abstract internalRender(): HTMLElement;
     protected readonly allowCustomPadding: boolean;
-    protected readonly defaultPadding: HostConfig.IPaddingDefinition;
-    protected internalPadding: HostConfig.IPaddingDefinition;
+    protected readonly defaultPadding: HostConfig.PaddingDefinition;
+    protected internalPadding: HostConfig.PaddingDefinition;
     protected readonly separatorOrientation: Enums.Orientation;
     id: string;
     speak: string;
@@ -33,7 +33,7 @@ export declare abstract class CardElement {
     height: "auto" | "stretch";
     abstract getJsonTypeName(): string;
     abstract renderSpeech(): string;
-    getNonZeroPadding(): HostConfig.IPaddingDefinition;
+    getNonZeroPadding(): HostConfig.PaddingDefinition;
     getForbiddenElementTypes(): Array<string>;
     getForbiddenActionTypes(): Array<any>;
     parse(json: any): void;
@@ -54,7 +54,7 @@ export declare abstract class CardElement {
     getAllInputs(): Array<Input>;
     getElementById(id: string): CardElement;
     getActionById(id: string): Action;
-    hostConfig: HostConfig.IHostConfig;
+    hostConfig: HostConfig.HostConfig;
     readonly isInteractive: boolean;
     readonly isStandalone: boolean;
     readonly parent: CardElement;
@@ -359,7 +359,7 @@ export declare class AdaptiveCard extends ContainerWithActions {
     private isVersionSupported();
     private _cardTypeName;
     protected applyPadding(): void;
-    protected readonly defaultPadding: HostConfig.IPaddingDefinition;
+    protected readonly defaultPadding: HostConfig.PaddingDefinition;
     protected readonly allowCustomPadding: boolean;
     protected readonly allowCustomStyle: boolean;
     protected readonly hasBackground: boolean;

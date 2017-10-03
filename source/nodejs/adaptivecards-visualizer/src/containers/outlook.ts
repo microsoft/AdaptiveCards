@@ -1,6 +1,6 @@
 import { HostContainer } from "./host-container";
 import {
-    IHostConfig,
+    HostConfig,
     Size,
     TextSize,
     TextColor,
@@ -24,8 +24,8 @@ export class OutlookContainer extends HostContainer {
         return element;
     }
 
-    public getHostConfig(): IHostConfig {
-        return {
+    public getHostConfig(): HostConfig {
+        return new HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -148,6 +148,6 @@ export class OutlookContainer extends HostContainer {
                 },
                 spacing: 10
             }
-        };
+        });
     }
 }
