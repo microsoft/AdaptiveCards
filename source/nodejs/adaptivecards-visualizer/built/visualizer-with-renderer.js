@@ -372,7 +372,7 @@ __export(__webpack_require__(44));
 Object.defineProperty(exports, "__esModule", { value: true });
 var adaptivecards_1 = __webpack_require__(1);
 var vkbeautify = __webpack_require__(40);
-var HostContainer = (function () {
+var HostContainer = /** @class */ (function () {
     function HostContainer(styleSheet) {
         this.supportsActionBar = false;
         this.styleSheet = styleSheet;
@@ -1492,7 +1492,7 @@ function stringToCssColor(color) {
     }
 }
 exports.stringToCssColor = stringToCssColor;
-var StringWithSubstitutions = (function () {
+var StringWithSubstitutions = /** @class */ (function () {
     function StringWithSubstitutions() {
         this._isProcessed = false;
         this._original = null;
@@ -1666,7 +1666,7 @@ module.exports.postProcess = function emphasis(state) {
       delimiters = state.delimiters,
       max = state.delimiters.length;
 
-  for (i = 0; i < max; i++) {
+  for (i = max - 1; i >= 0; i--) {
     startDelim = delimiters[i];
 
     if (startDelim.marker !== 0x5F/* _ */ && startDelim.marker !== 0x2A/* * */) {
@@ -1680,16 +1680,16 @@ module.exports.postProcess = function emphasis(state) {
 
     endDelim = delimiters[startDelim.end];
 
-    // If the next delimiter has the same marker and is adjacent to this one,
+    // If the previous delimiter has the same marker and is adjacent to this one,
     // merge those into one strong delimiter.
     //
     // `<em><em>whatever</em></em>` -> `<strong>whatever</strong>`
     //
-    isStrong = i + 1 < max &&
-               delimiters[i + 1].end === startDelim.end - 1 &&
-               delimiters[i + 1].token === startDelim.token + 1 &&
-               delimiters[startDelim.end - 1].token === endDelim.token - 1 &&
-               delimiters[i + 1].marker === startDelim.marker;
+    isStrong = i > 0 &&
+               delimiters[i - 1].end === startDelim.end + 1 &&
+               delimiters[i - 1].token === startDelim.token - 1 &&
+               delimiters[startDelim.end + 1].token === endDelim.token + 1 &&
+               delimiters[i - 1].marker === startDelim.marker;
 
     ch = String.fromCharCode(startDelim.marker);
 
@@ -1708,9 +1708,9 @@ module.exports.postProcess = function emphasis(state) {
     token.content = '';
 
     if (isStrong) {
-      state.tokens[delimiters[i + 1].token].content = '';
-      state.tokens[delimiters[startDelim.end - 1].token].content = '';
-      i++;
+      state.tokens[delimiters[i - 1].token].content = '';
+      state.tokens[delimiters[startDelim.end + 1].token].content = '';
+      i--;
     }
   }
 };
@@ -21435,7 +21435,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var BingContainer = (function (_super) {
+var BingContainer = /** @class */ (function (_super) {
     __extends(BingContainer, _super);
     function BingContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -21602,7 +21602,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var FacebookContainer = (function (_super) {
+var FacebookContainer = /** @class */ (function (_super) {
     __extends(FacebookContainer, _super);
     function FacebookContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -21767,7 +21767,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var GroupMeContainer = (function (_super) {
+var GroupMeContainer = /** @class */ (function (_super) {
     __extends(GroupMeContainer, _super);
     function GroupMeContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -21932,7 +21932,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var KikContainer = (function (_super) {
+var KikContainer = /** @class */ (function (_super) {
     __extends(KikContainer, _super);
     function KikContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -22097,7 +22097,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var LiveTileContainer = (function (_super) {
+var LiveTileContainer = /** @class */ (function (_super) {
     __extends(LiveTileContainer, _super);
     function LiveTileContainer(width, height, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -22266,7 +22266,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var OutlookContainer = (function (_super) {
+var OutlookContainer = /** @class */ (function (_super) {
     __extends(OutlookContainer, _super);
     function OutlookContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -22430,7 +22430,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var SkypeContainer = (function (_super) {
+var SkypeContainer = /** @class */ (function (_super) {
     __extends(SkypeContainer, _super);
     function SkypeContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -22604,7 +22604,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var SlackContainer = (function (_super) {
+var SlackContainer = /** @class */ (function (_super) {
     __extends(SlackContainer, _super);
     function SlackContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -22769,7 +22769,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var SMSContainer = (function (_super) {
+var SMSContainer = /** @class */ (function (_super) {
     __extends(SMSContainer, _super);
     function SMSContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -22934,7 +22934,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var TeamsContainer = (function (_super) {
+var TeamsContainer = /** @class */ (function (_super) {
     __extends(TeamsContainer, _super);
     function TeamsContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -23098,7 +23098,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var TelegramContainer = (function (_super) {
+var TelegramContainer = /** @class */ (function (_super) {
     __extends(TelegramContainer, _super);
     function TelegramContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -23263,7 +23263,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var TimelineContainer = (function (_super) {
+var TimelineContainer = /** @class */ (function (_super) {
     __extends(TimelineContainer, _super);
     function TimelineContainer(width, height, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -23432,7 +23432,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var ToastContainer = (function (_super) {
+var ToastContainer = /** @class */ (function (_super) {
     __extends(ToastContainer, _super);
     function ToastContainer(width, styleSheet) {
         var _this = _super.call(this, styleSheet) || this;
@@ -23597,7 +23597,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var host_container_1 = __webpack_require__(2);
 var adaptivecards_1 = __webpack_require__(1);
-var WebChatContainer = (function (_super) {
+var WebChatContainer = /** @class */ (function (_super) {
     __extends(WebChatContainer, _super);
     function WebChatContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -26562,7 +26562,7 @@ function getParameterByName(name, url) {
         return "";
     }
 }
-var HostContainerOption = (function () {
+var HostContainerOption = /** @class */ (function () {
     function HostContainerOption(name, hostContainer) {
         this.name = name;
         this.hostContainer = hostContainer;
@@ -26772,7 +26772,7 @@ function inlineCardExpanded(action, isExpanded) {
 function elementVisibilityChanged(element) {
     alert("An element is now " + (element.isVisible ? "visible" : "invisible"));
 }
-var ToggleVisibilityAction = (function (_super) {
+var ToggleVisibilityAction = /** @class */ (function (_super) {
     __extends(ToggleVisibilityAction, _super);
     function ToggleVisibilityAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -26860,12 +26860,11 @@ window.onload = function () {
 
 /**
 * vkBeautify - javascript plugin to pretty-print or minify text in XML, JSON, CSS and SQL formats.
-*  
-* Version - 0.99.00.beta 
+*
 * Copyright (c) 2012 Vadim Kiryukhin
 * vkiryukhin @ gmail.com
 * http://www.eslinstructor.net/vkbeautify/
-* 
+*
 * Dual licensed under the MIT and GPL licenses:
 *   http://www.opensource.org/licenses/mit-license.php
 *   http://www.gnu.org/licenses/gpl.html
@@ -26907,7 +26906,7 @@ window.onload = function () {
 function createShiftArr(step) {
 
 	var space = '    ';
-	
+
 	if ( isNaN(parseInt(step)) ) {  // argument is string
 		space = step;
 	} else { // argument is integer
@@ -26928,8 +26927,8 @@ function createShiftArr(step) {
 	}
 
 	var shift = ['\n']; // array of shifts
-	for(ix=0;ix<100;ix++){
-		shift.push(shift[ix]+space); 
+	for(var ix=0;ix<100;ix++) {
+		shift.push(shift[ix]+space);
 	}
 	return shift;
 }
@@ -26955,67 +26954,67 @@ vkbeautify.prototype.xml = function(text,step) {
 
 		for(ix=0;ix<len;ix++) {
 			// start comment or <![CDATA[...]]> or <!DOCTYPE //
-			if(ar[ix].search(/<!/) > -1) { 
+			if(ar[ix].search(/<!/) > -1) {
 				str += shift[deep]+ar[ix];
-				inComment = true; 
+				inComment = true;
 				// end comment  or <![CDATA[...]]> //
-				if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1 || ar[ix].search(/!DOCTYPE/) > -1 ) { 
-					inComment = false; 
+				if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1 || ar[ix].search(/!DOCTYPE/) > -1 ) {
+					inComment = false;
 				}
-			} else 
+			} else
 			// end comment  or <![CDATA[...]]> //
-			if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1) { 
+			if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1) {
 				str += ar[ix];
-				inComment = false; 
-			} else 
+				inComment = false;
+			} else
 			// <elm></elm> //
 			if( /^<\w/.exec(ar[ix-1]) && /^<\/\w/.exec(ar[ix]) &&
-				/^<[\w:\-\.\,]+/.exec(ar[ix-1]) == /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/','')) { 
+				/^<[\w:\-\.\,]+/.exec(ar[ix-1]) == /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/','')) {
 				str += ar[ix];
 				if(!inComment) deep--;
 			} else
 			 // <elm> //
 			if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) == -1 && ar[ix].search(/\/>/) == -1 ) {
 				str = !inComment ? str += shift[deep++]+ar[ix] : str += ar[ix];
-			} else 
+			} else
 			 // <elm>...</elm> //
 			if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) > -1) {
 				str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
-			} else 
+			} else
 			// </elm> //
-			if(ar[ix].search(/<\//) > -1) { 
+			if(ar[ix].search(/<\//) > -1) {
 				str = !inComment ? str += shift[--deep]+ar[ix] : str += ar[ix];
-			} else 
+			} else
 			// <elm/> //
-			if(ar[ix].search(/\/>/) > -1 ) { 
+			if(ar[ix].search(/\/>/) > -1 ) {
 				str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
-			} else 
+			} else
 			// <? xml ... ?> //
-			if(ar[ix].search(/<\?/) > -1) { 
+			if(ar[ix].search(/<\?/) > -1) {
 				str += shift[deep]+ar[ix];
-			} else 
+			} else
 			// xmlns //
-			if( ar[ix].search(/xmlns\:/) > -1  || ar[ix].search(/xmlns\=/) > -1) { 
+			if( ar[ix].search(/xmlns\:/) > -1  || ar[ix].search(/xmlns\=/) > -1) {
 				str += shift[deep]+ar[ix];
-			} 
-			
+			}
+
 			else {
 				str += ar[ix];
 			}
 		}
-		
+
 	return  (str[0] == '\n') ? str.slice(1) : str;
 }
 
 vkbeautify.prototype.json = function(text,step) {
 
 	var step = step ? step : this.step;
-	
-	if (typeof JSON === 'undefined' ) return text; 
-	
+
+	if (typeof JSON === 'undefined' ) return text;
+
 	if ( typeof text === "string" ) return JSON.stringify(JSON.parse(text), null, step);
 	if ( typeof text === "object" ) return JSON.stringify(text, null, step);
-		
+
 	return text; // text is not string nor object
 }
 
@@ -27034,16 +27033,16 @@ vkbeautify.prototype.css = function(text, step) {
 		str = '',
 		ix = 0,
 		shift = step ? createShiftArr(step) : this.shift;
-		
+
 		for(ix=0;ix<len;ix++) {
 
-			if( /\{/.exec(ar[ix]))  { 
+			if( /\{/.exec(ar[ix]))  {
 				str += shift[deep++]+ar[ix];
-			} else 
-			if( /\}/.exec(ar[ix]))  { 
+			} else
+			if( /\}/.exec(ar[ix]))  {
 				str += shift[--deep]+ar[ix];
 			} else
-			if( /\*\\/.exec(ar[ix]))  { 
+			if( /\*\\/.exec(ar[ix]))  {
 				str += shift[deep]+ar[ix];
 			}
 			else {
@@ -27073,13 +27072,13 @@ function split_sql(str, tab) {
 				.replace(/ HAVING /ig,"~::~HAVING ")
 				//.replace(/ SET /ig," SET~::~")
 				.replace(/ IN /ig," IN ")
-				
+
 				.replace(/ JOIN /ig,"~::~JOIN ")
 				.replace(/ CROSS~::~{1,}JOIN /ig,"~::~CROSS JOIN ")
 				.replace(/ INNER~::~{1,}JOIN /ig,"~::~INNER JOIN ")
 				.replace(/ LEFT~::~{1,}JOIN /ig,"~::~LEFT JOIN ")
 				.replace(/ RIGHT~::~{1,}JOIN /ig,"~::~RIGHT JOIN ")
-				
+
 				.replace(/ ON /ig,"~::~"+tab+"ON ")
 				.replace(/ OR /ig,"~::~"+tab+tab+"OR ")
 				.replace(/ ORDER\s{1,}BY/ig,"~::~ORDER BY ")
@@ -27087,21 +27086,21 @@ function split_sql(str, tab) {
 
 				.replace(/\(\s{0,}SELECT /ig,"~::~(SELECT ")
 				.replace(/\)\s{0,}SELECT /ig,")~::~SELECT ")
-				
+
 				.replace(/ THEN /ig," THEN~::~"+tab+"")
 				.replace(/ UNION /ig,"~::~UNION~::~")
 				.replace(/ USING /ig,"~::~USING ")
 				.replace(/ WHEN /ig,"~::~"+tab+"WHEN ")
 				.replace(/ WHERE /ig,"~::~WHERE ")
 				.replace(/ WITH /ig,"~::~WITH ")
-				
+
 				//.replace(/\,\s{0,}\(/ig,",~::~( ")
 				//.replace(/\,/ig,",~::~"+tab+tab+"")
 
 				.replace(/ ALL /ig," ALL ")
 				.replace(/ AS /ig," AS ")
-				.replace(/ ASC /ig," ASC ")	
-				.replace(/ DESC /ig," DESC ")	
+				.replace(/ ASC /ig," ASC ")
+				.replace(/ DESC /ig," DESC ")
 				.replace(/ DISTINCT /ig," DISTINCT ")
 				.replace(/ EXISTS /ig," EXISTS ")
 				.replace(/ NOT /ig," NOT ")
@@ -27110,7 +27109,7 @@ function split_sql(str, tab) {
 				.replace(/\s{0,}SELECT /ig,"SELECT ")
 				.replace(/\s{0,}UPDATE /ig,"UPDATE ")
 				.replace(/ SET /ig," SET ")
-							
+
 				.replace(/~::~{1,}/g,"~::~")
 				.split('~::~');
 }
@@ -27138,36 +27137,36 @@ vkbeautify.prototype.sql = function(text,step) {
 				ar = ar.concat(split_sql(ar_by_quote[ix], tab) );
 			}
 		}
-		
+
 		len = ar.length;
 		for(ix=0;ix<len;ix++) {
-			
+
 			parenthesisLevel = isSubquery(ar[ix], parenthesisLevel);
-			
-			if( /\s{0,}\s{0,}SELECT\s{0,}/.exec(ar[ix]))  { 
+
+			if( /\s{0,}\s{0,}SELECT\s{0,}/.exec(ar[ix]))  {
 				ar[ix] = ar[ix].replace(/\,/g,",\n"+tab+tab+"")
-			} 
-			
-			if( /\s{0,}\s{0,}SET\s{0,}/.exec(ar[ix]))  { 
+			}
+
+			if( /\s{0,}\s{0,}SET\s{0,}/.exec(ar[ix]))  {
 				ar[ix] = ar[ix].replace(/\,/g,",\n"+tab+tab+"")
-			} 
-			
-			if( /\s{0,}\(\s{0,}SELECT\s{0,}/.exec(ar[ix]))  { 
+			}
+
+			if( /\s{0,}\(\s{0,}SELECT\s{0,}/.exec(ar[ix]))  {
 				deep++;
 				str += shift[deep]+ar[ix];
-			} else 
-			if( /\'/.exec(ar[ix]) )  { 
+			} else
+			if( /\'/.exec(ar[ix]) )  {
 				if(parenthesisLevel<1 && deep) {
 					deep--;
 				}
 				str += ar[ix];
 			}
-			else  { 
+			else  {
 				str += shift[deep]+ar[ix];
 				if(parenthesisLevel<1 && deep) {
 					deep--;
 				}
-			} 
+			}
 			var junk = 0;
 		}
 
@@ -27181,19 +27180,19 @@ vkbeautify.prototype.xmlmin = function(text, preserveComments) {
 	var str = preserveComments ? text
 							   : text.replace(/\<![ \r\n\t]*(--([^\-]|[\r\n]|-[^\-])*--[ \r\n\t]*)\>/g,"")
 									 .replace(/[ \r\n\t]{1,}xmlns/g, ' xmlns');
-	return  str.replace(/>\s{0,}</g,"><"); 
+	return  str.replace(/>\s{0,}</g,"><");
 }
 
 vkbeautify.prototype.jsonmin = function(text) {
 
-	if (typeof JSON === 'undefined' ) return text; 
-	
-	return JSON.stringify(JSON.parse(text), null, 0); 
-				
+	if (typeof JSON === 'undefined' ) return text;
+
+	return JSON.stringify(JSON.parse(text), null, 0);
+
 }
 
 vkbeautify.prototype.cssmin = function(text, preserveComments) {
-	
+
 	var str = preserveComments ? text
 							   : text.replace(/\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g,"") ;
 
@@ -27210,7 +27209,6 @@ vkbeautify.prototype.sqlmin = function(text) {
 }
 
 module.exports = new vkbeautify();
-
 
 
 /***/ }),
@@ -27370,7 +27368,7 @@ function createActionInstance(json) {
     }
     return result;
 }
-var CardElement = (function () {
+var CardElement = /** @class */ (function () {
     function CardElement() {
         this._internalPadding = null;
         this._parent = null;
@@ -27664,7 +27662,7 @@ var CardElement = (function () {
     return CardElement;
 }());
 exports.CardElement = CardElement;
-var TextBlock = (function (_super) {
+var TextBlock = /** @class */ (function (_super) {
     __extends(TextBlock, _super);
     function TextBlock() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -27836,7 +27834,7 @@ var TextBlock = (function (_super) {
     return TextBlock;
 }(CardElement));
 exports.TextBlock = TextBlock;
-var Fact = (function () {
+var Fact = /** @class */ (function () {
     function Fact() {
     }
     Fact.prototype.renderSpeech = function () {
@@ -27848,7 +27846,7 @@ var Fact = (function () {
     return Fact;
 }());
 exports.Fact = Fact;
-var FactSet = (function (_super) {
+var FactSet = /** @class */ (function (_super) {
     __extends(FactSet, _super);
     function FactSet() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -27949,7 +27947,7 @@ var FactSet = (function (_super) {
     return FactSet;
 }(CardElement));
 exports.FactSet = FactSet;
-var Image = (function (_super) {
+var Image = /** @class */ (function (_super) {
     __extends(Image, _super);
     function Image() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -28093,7 +28091,7 @@ var Image = (function (_super) {
     return Image;
 }(CardElement));
 exports.Image = Image;
-var ImageSet = (function (_super) {
+var ImageSet = /** @class */ (function (_super) {
     __extends(ImageSet, _super);
     function ImageSet() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -28160,7 +28158,7 @@ var ImageSet = (function (_super) {
     return ImageSet;
 }(CardElement));
 exports.ImageSet = ImageSet;
-var Input = (function (_super) {
+var Input = /** @class */ (function (_super) {
     __extends(Input, _super);
     function Input() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28200,7 +28198,7 @@ var Input = (function (_super) {
     return Input;
 }(CardElement));
 exports.Input = Input;
-var TextInput = (function (_super) {
+var TextInput = /** @class */ (function (_super) {
     __extends(TextInput, _super);
     function TextInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28266,7 +28264,7 @@ var TextInput = (function (_super) {
     return TextInput;
 }(Input));
 exports.TextInput = TextInput;
-var ToggleInput = (function (_super) {
+var ToggleInput = /** @class */ (function (_super) {
     __extends(ToggleInput, _super);
     function ToggleInput() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -28326,13 +28324,13 @@ var ToggleInput = (function (_super) {
     return ToggleInput;
 }(Input));
 exports.ToggleInput = ToggleInput;
-var Choice = (function () {
+var Choice = /** @class */ (function () {
     function Choice() {
     }
     return Choice;
 }());
 exports.Choice = Choice;
-var ChoiceSetInput = (function (_super) {
+var ChoiceSetInput = /** @class */ (function (_super) {
     __extends(ChoiceSetInput, _super);
     function ChoiceSetInput() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -28511,7 +28509,7 @@ var ChoiceSetInput = (function (_super) {
     return ChoiceSetInput;
 }(Input));
 exports.ChoiceSetInput = ChoiceSetInput;
-var NumberInput = (function (_super) {
+var NumberInput = /** @class */ (function (_super) {
     __extends(NumberInput, _super);
     function NumberInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28552,7 +28550,7 @@ var NumberInput = (function (_super) {
     return NumberInput;
 }(Input));
 exports.NumberInput = NumberInput;
-var DateInput = (function (_super) {
+var DateInput = /** @class */ (function (_super) {
     __extends(DateInput, _super);
     function DateInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28580,7 +28578,7 @@ var DateInput = (function (_super) {
     return DateInput;
 }(Input));
 exports.DateInput = DateInput;
-var TimeInput = (function (_super) {
+var TimeInput = /** @class */ (function (_super) {
     __extends(TimeInput, _super);
     function TimeInput() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28614,7 +28612,7 @@ var ActionButtonState;
     ActionButtonState[ActionButtonState["Expanded"] = 1] = "Expanded";
     ActionButtonState[ActionButtonState["Subdued"] = 2] = "Subdued";
 })(ActionButtonState || (ActionButtonState = {}));
-var ActionButton = (function () {
+var ActionButton = /** @class */ (function () {
     function ActionButton(action) {
         var _this = this;
         this._element = null;
@@ -28687,7 +28685,7 @@ var ActionButton = (function () {
     });
     return ActionButton;
 }());
-var Action = (function () {
+var Action = /** @class */ (function () {
     function Action() {
         this._parent = null;
         this._actionCollection = null; // hold the reference to its action collection
@@ -28745,7 +28743,7 @@ var Action = (function () {
     return Action;
 }());
 exports.Action = Action;
-var SubmitAction = (function (_super) {
+var SubmitAction = /** @class */ (function (_super) {
     __extends(SubmitAction, _super);
     function SubmitAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -28788,7 +28786,7 @@ var SubmitAction = (function (_super) {
     return SubmitAction;
 }(Action));
 exports.SubmitAction = SubmitAction;
-var OpenUrlAction = (function (_super) {
+var OpenUrlAction = /** @class */ (function (_super) {
     __extends(OpenUrlAction, _super);
     function OpenUrlAction() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -28811,7 +28809,7 @@ var OpenUrlAction = (function (_super) {
     return OpenUrlAction;
 }(Action));
 exports.OpenUrlAction = OpenUrlAction;
-var HttpHeader = (function () {
+var HttpHeader = /** @class */ (function () {
     function HttpHeader() {
         this._value = new Utils.StringWithSubstitutions();
     }
@@ -28831,7 +28829,7 @@ var HttpHeader = (function () {
     return HttpHeader;
 }());
 exports.HttpHeader = HttpHeader;
-var HttpAction = (function (_super) {
+var HttpAction = /** @class */ (function (_super) {
     __extends(HttpAction, _super);
     function HttpAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -28911,7 +28909,7 @@ var HttpAction = (function (_super) {
     return HttpAction;
 }(Action));
 exports.HttpAction = HttpAction;
-var ShowCardAction = (function (_super) {
+var ShowCardAction = /** @class */ (function (_super) {
     __extends(ShowCardAction, _super);
     function ShowCardAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -28945,7 +28943,7 @@ var ShowCardAction = (function (_super) {
     return ShowCardAction;
 }(Action));
 exports.ShowCardAction = ShowCardAction;
-var ActionCollection = (function () {
+var ActionCollection = /** @class */ (function () {
     function ActionCollection(owner) {
         this._actionButtons = [];
         this._expandedAction = null;
@@ -29186,7 +29184,7 @@ var ActionCollection = (function () {
     };
     return ActionCollection;
 }());
-var ActionSet = (function (_super) {
+var ActionSet = /** @class */ (function (_super) {
     __extends(ActionSet, _super);
     function ActionSet() {
         var _this = _super.call(this) || this;
@@ -29236,7 +29234,7 @@ var ActionSet = (function (_super) {
     return ActionSet;
 }(CardElement));
 exports.ActionSet = ActionSet;
-var BackgroundImage = (function () {
+var BackgroundImage = /** @class */ (function () {
     function BackgroundImage() {
         this.mode = Enums.BackgroundImageMode.Stretch;
         this.horizontalAlignment = Enums.HorizontalAlignment.Left;
@@ -29288,7 +29286,7 @@ var BackgroundImage = (function () {
     return BackgroundImage;
 }());
 exports.BackgroundImage = BackgroundImage;
-var Container = (function (_super) {
+var Container = /** @class */ (function (_super) {
     __extends(Container, _super);
     function Container() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -29677,7 +29675,7 @@ var Container = (function (_super) {
     return Container;
 }(CardElement));
 exports.Container = Container;
-var Column = (function (_super) {
+var Column = /** @class */ (function (_super) {
     __extends(Column, _super);
     function Column() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -29759,7 +29757,7 @@ var Column = (function (_super) {
     return Column;
 }(Container));
 exports.Column = Column;
-var ColumnSet = (function (_super) {
+var ColumnSet = /** @class */ (function (_super) {
     __extends(ColumnSet, _super);
     function ColumnSet() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -29767,12 +29765,17 @@ var ColumnSet = (function (_super) {
         return _this;
     }
     ColumnSet.prototype.internalRender = function () {
+        var _this = this;
         if (this._columns.length > 0) {
             var element = document.createElement("div");
             element.className = "ac-columnSet";
             element.style.display = "flex";
             if (this.selectAction) {
                 element.classList.add("ac-selectable");
+                element.onclick = function (e) {
+                    _this.selectAction.execute();
+                    e.cancelBubble = true;
+                };
             }
             switch (this.horizontalAlignment) {
                 case Enums.HorizontalAlignment.Center:
@@ -29952,7 +29955,7 @@ function raiseParseError(error) {
         AdaptiveCard.onParseError(error);
     }
 }
-var TypeRegistry = (function () {
+var TypeRegistry = /** @class */ (function () {
     function TypeRegistry() {
         this._items = [];
     }
@@ -29995,7 +29998,7 @@ var TypeRegistry = (function () {
     return TypeRegistry;
 }());
 exports.TypeRegistry = TypeRegistry;
-var ContainerWithActions = (function (_super) {
+var ContainerWithActions = /** @class */ (function (_super) {
     __extends(ContainerWithActions, _super);
     function ContainerWithActions() {
         var _this = _super.call(this) || this;
@@ -30057,7 +30060,7 @@ var ContainerWithActions = (function (_super) {
     return ContainerWithActions;
 }(Container));
 exports.ContainerWithActions = ContainerWithActions;
-var AdaptiveCard = (function (_super) {
+var AdaptiveCard = /** @class */ (function (_super) {
     __extends(AdaptiveCard, _super);
     function AdaptiveCard() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -30190,7 +30193,7 @@ var AdaptiveCard = (function (_super) {
 exports.AdaptiveCard = AdaptiveCard;
 // This calls acts as a static constructor (see https://github.com/Microsoft/TypeScript/issues/265)
 AdaptiveCard.initialize();
-var InlineAdaptiveCard = (function (_super) {
+var InlineAdaptiveCard = /** @class */ (function (_super) {
     __extends(InlineAdaptiveCard, _super);
     function InlineAdaptiveCard() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -30479,7 +30482,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var AbstractTextFormatter = (function () {
+var AbstractTextFormatter = /** @class */ (function () {
     function AbstractTextFormatter(regularExpression) {
         this._regularExpression = regularExpression;
     }
@@ -30494,7 +30497,7 @@ var AbstractTextFormatter = (function () {
     };
     return AbstractTextFormatter;
 }());
-var DateFormatter = (function (_super) {
+var DateFormatter = /** @class */ (function (_super) {
     __extends(DateFormatter, _super);
     function DateFormatter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -30511,7 +30514,7 @@ var DateFormatter = (function (_super) {
     };
     return DateFormatter;
 }(AbstractTextFormatter));
-var TimeFormatter = (function (_super) {
+var TimeFormatter = /** @class */ (function (_super) {
     __extends(TimeFormatter, _super);
     function TimeFormatter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -31437,10 +31440,8 @@ module.exports = [
   'option',
   'p',
   'param',
-  'pre',
   'section',
   'source',
-  'title',
   'summary',
   'table',
   'tbody',
@@ -31535,18 +31536,18 @@ module.exports = function parseLinkDestination(str, pos, max) {
 
     if (code === 0x28 /* ( */) {
       level++;
-      if (level > 1) { break; }
     }
 
     if (code === 0x29 /* ) */) {
+      if (level === 0) { break; }
       level--;
-      if (level < 0) { break; }
     }
 
     pos++;
   }
 
   if (start === pos) { return result; }
+  if (level !== 0) { return result; }
 
   result.str = unescapeAll(str.slice(start, pos));
   result.lines = lines;
@@ -32281,7 +32282,7 @@ var _rules = [
   [ 'table',      __webpack_require__(73),      [ 'paragraph', 'reference' ] ],
   [ 'code',       __webpack_require__(63) ],
   [ 'fence',      __webpack_require__(64),      [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
-  [ 'blockquote', __webpack_require__(62), [ 'paragraph', 'reference', 'list' ] ],
+  [ 'blockquote', __webpack_require__(62), [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
   [ 'hr',         __webpack_require__(66),         [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
   [ 'list',       __webpack_require__(69),       [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'reference',  __webpack_require__(71) ],
@@ -32346,7 +32347,7 @@ ParserBlock.prototype.tokenize = function (state, startLine, endLine) {
       if (ok) { break; }
     }
 
-    // set state.tight iff we had an empty line before current tag
+    // set state.tight if we had an empty line before current tag
     // i.e. latest empty line should not count
     state.tight = !hasEmptyLines;
 
@@ -32904,7 +32905,7 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
     return highlighted + '\n';
   }
 
-  // If language exists, inject class gently, without mudofying original token.
+  // If language exists, inject class gently, without modifying original token.
   // May be, one day we will add .clone() for token and simplify this part, but
   // now we prefer to keep things local.
   if (info) {
@@ -33200,7 +33201,6 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       ch,
       i,
       initial,
-      isOutdented,
       l,
       lastLineEmpty,
       lines,
@@ -33216,6 +33216,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       terminate,
       terminatorRules,
       token,
+      wasOutdented,
       oldLineMax = state.lineMax,
       pos = state.bMarks[startLine] + state.tShift[startLine],
       max = state.eMarks[startLine];
@@ -33296,6 +33297,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
 
   oldParentType = state.parentType;
   state.parentType = 'blockquote';
+  wasOutdented = false;
 
   // Search the end of the block
   //
@@ -33324,7 +33326,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
     //    > current blockquote
     // 2. checking this line
     // ```
-    isOutdented = state.sCount[nextLine] < state.blkIndent;
+    if (state.sCount[nextLine] < state.blkIndent) wasOutdented = true;
 
     pos = state.bMarks[nextLine] + state.tShift[nextLine];
     max = state.eMarks[nextLine];
@@ -33334,7 +33336,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       break;
     }
 
-    if (state.src.charCodeAt(pos++) === 0x3E/* > */ && !isOutdented) {
+    if (state.src.charCodeAt(pos++) === 0x3E/* > */ && !wasOutdented) {
       // This line is inside the blockquote.
 
       // skip spaces after ">" and re-calculate offset
@@ -33433,8 +33435,6 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
 
       break;
     }
-
-    if (isOutdented) break;
 
     oldBMarks.push(state.bMarks[nextLine]);
     oldBSCount.push(state.bsCount[nextLine]);
@@ -33915,7 +33915,7 @@ module.exports = function lheading(state, startLine, endLine/*, silent*/) {
 var isSpace = __webpack_require__(0).isSpace;
 
 
-// Search `[-+*][\n ]`, returns next pos arter marker on success
+// Search `[-+*][\n ]`, returns next pos after marker on success
 // or -1 on fail.
 function skipBulletListMarker(state, startLine) {
   var marker, pos, max, ch;
@@ -33943,7 +33943,7 @@ function skipBulletListMarker(state, startLine) {
   return pos;
 }
 
-// Search `\d+[.)][\n ]`, returns next pos arter marker on success
+// Search `\d+[.)][\n ]`, returns next pos after marker on success
 // or -1 on fail.
 function skipOrderedListMarker(state, startLine) {
   var ch,
@@ -34120,12 +34120,10 @@ module.exports = function list(state, startLine, endLine, silent) {
     while (pos < max) {
       ch = state.src.charCodeAt(pos);
 
-      if (isSpace(ch)) {
-        if (ch === 0x09) {
-          offset += 4 - (offset + state.bsCount[nextLine]) % 4;
-        } else {
-          offset++;
-        }
+      if (ch === 0x09) {
+        offset += 4 - (offset + state.bsCount[nextLine]) % 4;
+      } else if (ch === 0x20) {
+        offset++;
       } else {
         break;
       }
@@ -34226,7 +34224,7 @@ module.exports = function list(state, startLine, endLine, silent) {
     if (markerCharCode !== state.src.charCodeAt(posAfterMarker - 1)) { break; }
   }
 
-  // Finilize list
+  // Finalize list
   if (isOrdered) {
     token = state.push('ordered_list_close', 'ol', -1);
   } else {
@@ -35743,7 +35741,7 @@ module.exports = function entity(state, silent) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// Proceess escaped chars and hardbreaks
+// Process escaped chars and hardbreaks
 
 
 
