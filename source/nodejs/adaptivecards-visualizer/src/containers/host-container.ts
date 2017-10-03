@@ -1,4 +1,3 @@
-import {merge} from 'lodash';
 import {
     HostConfig,
     Size,
@@ -9,8 +8,6 @@ import {
     ShowCardActionMode,
     Orientation,
     ActionAlignment,
-    FactTextDefinition,
-    FactTitleDefinition
 } from "adaptivecards";
 import * as vkbeautify from "vkbeautify";
 

@@ -1,5 +1,4 @@
 import { HostContainer } from "./host-container";
-import {merge} from 'lodash';
 import {
     HostConfig,
     Size,

@@ -1,5 +1,4 @@
 import { HostContainer } from "./host-container";
-import {merge} from 'lodash';
 import {
     HostConfig,
     Size,
@@ -10,8 +9,6 @@ import {
     ShowCardActionMode,
     Orientation,
     ActionAlignment,
-    FactTitleDefinition,
-    FactTextDefinition
 } from "adaptivecards";
 
 export class SMSContainer extends HostContainer {

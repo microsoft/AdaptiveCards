@@ -8,7 +8,7 @@ import {
     Spacing,
     ShowCardActionMode,
     Orientation,
-    ActionAlignment
+    ActionAlignment,
 } from "adaptivecards";
 
 export class OutlookContainer extends HostContainer {

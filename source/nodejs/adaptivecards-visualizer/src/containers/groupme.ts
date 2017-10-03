@@ -1,5 +1,4 @@
 import { HostContainer } from "./host-container";
-import {merge} from 'lodash';
 import {
     HostConfig,
     Size,
@@ -10,8 +9,6 @@ import {
     ShowCardActionMode,
     Orientation,
     ActionAlignment,
-    FactTitleDefinition,
-    FactTextDefinition
 } from "adaptivecards";
 
 export class GroupMeContainer extends HostContainer {
@@ -66,11 +63,11 @@ export class GroupMeContainer extends HostContainer {
                     fontColors: {
                         default: {
                             normal: "#333333",
-                            subtle: "#EE333333"
+                            subtle: "#EE333333",
                         },
                         accent: {
                             normal: "#2E89FC",
-                            subtle: "#882E89FC"
+                            subtle: "#882E89FC",
                         },
                         attention: {
                             normal: "#FF0000",
@@ -78,13 +75,13 @@ export class GroupMeContainer extends HostContainer {
                         },
                         good: {
                             normal: "#54a254",
-                            subtle: "#DD54a254"
+                            subtle: "#DD54a254",
                         },
                         warning: {
                             normal: "#c3ab23",
-                            subtle: "#DDc3ab23"
-                        }
-                    }
+                            subtle: "#DDc3ab23",
+                        },
+                    },
                 },
                 emphasis: {
                     backgroundColor: "#08000000",
@@ -108,14 +105,14 @@ export class GroupMeContainer extends HostContainer {
                         warning: {
                             normal: "#c3ab23",
                             subtle: "#DDc3ab23"
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
             imageSizes: {
                 small: 60,
                 medium: 120,
-                large: 180
+                large: 180,
             },
             actions: {
                 maxActions: 5,
@@ -123,20 +120,20 @@ export class GroupMeContainer extends HostContainer {
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: ShowCardActionMode.Inline,
-                    inlineTopMargin: 16
+                    inlineTopMargin: 16,
                 },
                 actionsOrientation: Orientation.Horizontal,
-                actionAlignment: ActionAlignment.Left
+                actionAlignment: ActionAlignment.Left,
             },
             adaptiveCard: {
-                allowCustomStyle: false
+                allowCustomStyle: false,
             },
             image: {
                 size: Size.Medium,
             },
             imageSet: {
                 imageSize: Size.Medium,
-                maxImageHeight: 100
+                maxImageHeight: 100,
             },
             factSet: {
                 title: {
@@ -145,17 +142,17 @@ export class GroupMeContainer extends HostContainer {
                     isSubtle: false,
                     weight: TextWeight.Bolder,
                     wrap: true,
-                    maxWidth: 150
+                    maxWidth: 150,
                 },
                 value: {
                     color: TextColor.Default,
                     size: TextSize.Default,
                     isSubtle: false,
                     weight: TextWeight.Default,
-                    wrap: true
+                    wrap: true,
                 },
-                spacing: 10
-            }
+                spacing: 10,
+            },
         });
     }
 }
